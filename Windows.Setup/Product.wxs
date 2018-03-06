@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?if $(var.Platform)=x64 ?>
+	<?define ProductCode = "{B6C2E8DD-03BE-4D1D-9266-2A354446444C}" ?>
+	<?else?>
+	<?define ProductCode = "{0357E3C0-003E-400D-A234-1B1DBB8B96BF}" ?>
+	<?endif?>
+
+	<?define UpgradeCode = "{678E73BE-2859-4B1E-A734-43B0F6DC4892}" ?>
+
+
+	<Product 
+			Id="$(var.ProductCode)" 
+			Name="!(loc.ProductName_$(var.Platform))" 
+			Language="!(loc.Language)" 
+			Version="$(var.BuildVersion)" 
+			Manufacturer="!(loc.Company)" 
+			UpgradeCode="$(var.UpgradeCode)">
+
+		<Package 
+			InstallerVersion="200" 
+			Compressed="yes" 
+			InstallScope="perMachine" 
+			Platform="$(var.Platform)"
+			Manufacturer="!(loc.Company)"
+			Description="!(loc.Description)"
+			Keywords="!(loc.Keywords)"
+			Comments="!(loc.Comments)"
+			Languages="!(loc.Language)"/>
+
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Icon Id="icon.ico" SourceFile="$(var.EmbyStat.ProjectDir)\icon.ico" />
+
+		<Property Id="ARPPRODUCTICON">icon.ico</Property>
+		<Property Id="ARPURLINFOABOUT">!(loc.Url)</Property>
+
+		<UIRef Id="WixUI_Minimal" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\background.bmp" />
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\banner.bmp" />
+
+		<Feature Id="ProductFeature" Title="Setup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="PublishedComponents" />
+		</Feature>
+	</Product>
+</Wix>

@@ -1,0 +1,16 @@
+<app-toolbar (toggleSideNav)="sidenav.toggle()"></app-toolbar>
+
+<mat-sidenav-container class="app-sidenav-container">
+  <mat-sidenav mode="side" class="app-sidenav mat-elevation-z10"
+               [opened]="!isScreenSmall()" #sidenav
+               [mode]="isScreenSmall() ? 'over' : 'side'" position="start">
+    <app-side-nav></app-side-nav>
+  </mat-sidenav>
+
+
+  <mat-sidenav-content class="app-sidenav-content">
+    <div class="wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

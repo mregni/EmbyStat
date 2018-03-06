@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+	<String Id="ProductName_x86">EmbyStat (32-bit)</String>
+	<String Id="ProductName_x64">EmbyStat (64-bit)</String>
+
+	<String Id="ProductNameFolder">EmbyStat</String>
+
+	<String Id="Language">1033</String>
+	<String Id="Company">Uping</String>
+
+	<String Id="Description">Statistics server for Emby server</String>
+	<String Id="Comments">comment</String>
+	<String Id="Keywords">Server, Statistics, Emby, .NET CORE</String>
+	<String Id="Url">Http://embystat.com</String>
+
+	<String Id="DowngradeErrorMessage">A newer version of EmbyStat is already installed.</String>
+</WixLocalization>
