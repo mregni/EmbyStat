@@ -1,21 +1,23 @@
-using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Text;
 using AutoMapper;
+using EmbyStat.Controllers.Helpers;
+using EmbyStat.Repositories;
+using EmbyStat.Repositories.Config;
+using EmbyStat.Services.Config;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
-using Web.Helpers;
 
-namespace Web
+namespace EmbyStat.Web
 {
 	public class Startup
 	{
@@ -35,10 +37,11 @@ namespace Web
 			Configuration = builder.Build();
 		}
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddHangfire(config => config.UseMemoryStorage());
+			services.AddDbContext<ApplicationDbContext>(options =>
+				options.UseSqlite("Data Source=data.db"));
 
 			services.AddMvc();
 			services.AddSwaggerGen(c =>
@@ -50,9 +53,13 @@ namespace Web
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
+
+			services.AddScoped<IConfigurationService, ConfigurationService>();
+			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+
+			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
@@ -62,7 +69,7 @@ namespace Web
 
 			Mapper.Initialize(cfg =>
 			{
-				cfg.AddProfile<AutoMapperProfile>();
+				cfg.AddProfile<MapProfiles>();
 			});
 
 			// Enable middleware to serve generated Swagger as a JSON endpoint.

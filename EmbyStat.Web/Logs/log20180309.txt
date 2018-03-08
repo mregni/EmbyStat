@@ -1,0 +1,154 @@
+2018-03-09 00:05:56 [ERR] ERROR in src/app/configuration/service/configuration.service.ts(22,13): error TS2345: Argument of type 'UnaryFunction<Observable<Configuration>, Observable<Configuration>>' is not assignable to parameter of type 'UnaryFunction<Observable<ConfigurationResponse>, Observable<Configuration>>'.
+
+2018-03-09 00:06:02 [ERR]   Types of parameters 'source' and 'source' are incompatible.
+    Type 'Observable<ConfigurationResponse>' is not assignable to type 'Observable<Configuration>'.
+      Type 'ConfigurationResponse' is not assignable to type 'Configuration'.
+        Property 'wizardFinished' is missing in type 'ConfigurationResponse'.
+
+ERROR in src/app/configuration/service/configuration.service.ts(20,5): error TS2322: Type 'Observable<ConfigurationResponse>' is not assignable to type 'Observable<Configuration>'.
+
+2018-03-09 00:06:10 [ERR]   Type 'ConfigurationResponse' is not assignable to type 'Configuration'.
+    Property 'wizardFinished' is missing in type 'ConfigurationResponse'.
+
+ERROR in src/app/configuration/service/configuration.service.ts(22,13): error TS2345: Argument of type 'UnaryFunction<Observable<Configuration>, Observable<Configuration>>' is not assignable to parameter of type 'UnaryFunction<Observable<ConfigurationResponse>, Observable<Configuration>>'.
+
+2018-03-09 00:06:20 [ERR]   Types of parameters 'source' and 'source' are incompatible.
+    Type 'Observable<ConfigurationResponse>' is not assignable to type 'Observable<Configuration>'.
+      Type 'ConfigurationResponse' is not assignable to type 'Configuration'.
+        Property 'wizardFinished' is missing in type 'ConfigurationResponse'.
+
+ERROR in src/app/configuration/service/configuration.service.ts(20,5): error TS2322: Type 'Observable<ConfigurationResponse>' is not assignable to type 'Observable<Configuration>'.
+
+2018-03-09 00:09:22 [ERR]   Type 'ConfigurationResponse' is not assignable to type 'Configuration'.
+    Property 'wizardFinished' is missing in type 'ConfigurationResponse'.
+
+ERROR in src/app/states/configuration/configuration.reducer.ts(23,22): error TS1005: ':' expected.
+
+2018-03-09 00:09:22 [ERR] src/app/states/configuration/configuration.reducer.ts(23,29): error TS1005: ',' expected.
+src/app/states/configuration/configuration.reducer.ts(23,37): error TS1005: ':' expected.
+
+
+
+2018-03-09 00:09:22 [ERR] ERROR in ./src/app/states/configuration/configuration.reducer.ts
+Module parse failed: Unexpected token (19:56)
+You may need an appropriate loader to handle this file type.
+|     switch (action.type) {
+|         case configuration_actions_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
+|             return __assign({}, state, { configuration: .config, action: .payload });
+|         default:
+|             return state;
+
+
+2018-03-09 00:11:22 [ERR] ERROR in src/app/states/configuration/configuration.reducer.ts(27,7): error TS1003: Identifier expected.
+
+2018-03-09 00:11:22 [ERR] 
+
+
+2018-03-09 00:11:22 [ERR] ERROR in ./src/app/states/configuration/configuration.reducer.ts
+Module parse failed: Unexpected token (20:13)
+You may need an appropriate loader to handle this file type.
+|         case configuration_actions_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
+|             return __assign({}, state, { configuration: action.payload.
+|              });
+|         default:
+|             return state;
+
+
+2018-03-09 00:11:41 [ERR] ERROR in src/app/states/configuration/configuration.reducer.ts(20,24): error TS1005: ',' expected.
+
+2018-03-09 00:11:41 [ERR] src/app/states/configuration/configuration.reducer.ts(21,22): error TS1005: ',' expected.
+src/app/states/configuration/configuration.reducer.ts(30,7): error TS1003: Identifier expected.
+
+
+
+2018-03-09 00:11:41 [ERR] ERROR in ./src/app/states/configuration/configuration.reducer.ts
+Module parse failed: Unexpected token (23:13)
+You may need an appropriate loader to handle this file type.
+|         case configuration_actions_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
+|             return __assign({}, state, { configuration: action.payload.
+|              });
+|         default:
+|             return state;
+
+
+2018-03-09 00:11:46 [ERR] ERROR in src/app/states/configuration/configuration.reducer.ts(21,22): error TS1005: ',' expected.
+
+2018-03-09 00:11:46 [ERR] src/app/states/configuration/configuration.reducer.ts(30,7): error TS1003: Identifier expected.
+
+
+
+2018-03-09 00:11:46 [ERR] ERROR in ./src/app/states/configuration/configuration.reducer.ts
+Module parse failed: Unexpected token (23:13)
+You may need an appropriate loader to handle this file type.
+|         case configuration_actions_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
+|             return __assign({}, state, { configuration: action.payload.
+|              });
+|         default:
+|             return state;
+
+
+2018-03-09 00:11:47 [ERR] ERROR in src/app/states/configuration/configuration.reducer.ts(30,7): error TS1003: Identifier expected.
+
+2018-03-09 00:11:47 [ERR] 
+
+
+2018-03-09 00:11:47 [ERR] ERROR in ./src/app/states/configuration/configuration.reducer.ts
+Module parse failed: Unexpected token (23:13)
+You may need an appropriate loader to handle this file type.
+|         case configuration_actions_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
+|             return __assign({}, state, { configuration: action.payload.
+|              });
+|         default:
+|             return state;
+
+
+2018-03-09 00:11:54 [ERR] ERROR in src/app/states/configuration/configuration.reducer.ts(30,7): error TS1003: Identifier expected.
+
+2018-03-09 00:11:54 [ERR] 
+
+
+2018-03-09 00:11:54 [ERR] ERROR in ./src/app/states/configuration/configuration.reducer.ts
+Module parse failed: Unexpected token (23:13)
+You may need an appropriate loader to handle this file type.
+|         case configuration_actions_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
+|             return __assign({}, state, { configuration: action.payload.
+|              });
+|         default:
+|             return state;
+
+
+2018-03-09 00:12:16 [ERR] ERROR in src/app/states/configuration/configuration.reducer.ts(38,84): error TS2339: Property 'config' does not exist on type 'ConfigurationState'.
+
+2018-03-09 00:13:23 [ERR] 
+ERROR in src/app/states/configuration/configuration.reducer.ts(38,84): error TS2339: Property 'config' does not exist on type 'ConfigurationState'.
+
+2018-03-09 00:14:33 [ERR] 
+ERROR in src/app/states/configuration/configuration.reducer.ts(39,84): error TS2339: Property 'config' does not exist on type 'ConfigurationState'.
+
+2018-03-09 00:14:47 [ERR] 
+ERROR in src/app/states/configuration/configuration.facade.ts(46,5): error TS2322: Type 'Store<ConfigurationState>' is not assignable to type 'Observable<Configuration>'.
+
+2018-03-09 00:17:11 [ERR]   Types of property 'subscribe' are incompatible.
+    Type '{ (observer?: PartialObserver<ConfigurationState>): Subscription; (next?: (value: ConfigurationSt...' is not assignable to type '{ (observer?: PartialObserver<Configuration>): Subscription; (next?: (value: Configuration) => vo...'.
+      Types of parameters 'next' and 'next' are incompatible.
+        Types of parameters 'value' and 'value' are incompatible.
+          Type 'ConfigurationState' is not assignable to type 'Configuration'.
+
+ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+
+2018-03-09 00:17:54 [ERR] src/app/states/configuration/configuration.reducer.ts(21,45): error TS2304: Cannot find name 'ConfigurationState'.
+
+ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+
+2018-03-09 00:21:35 [ERR] 
+ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+
+2018-03-09 00:22:10 [ERR] 
+ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+
+2018-03-09 00:23:17 [ERR] 
+ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+
+2018-03-09 00:27:26 [ERR] 
+ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+

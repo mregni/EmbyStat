@@ -17,7 +17,6 @@ export class AppComponent {
   }
 
   public isScreenSmall(): boolean {
-    console.log(this.mediaMatcher.matches);
     return this.mediaMatcher.matches;
   }
 }

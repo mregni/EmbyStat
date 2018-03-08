@@ -12,6 +12,7 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <ApplicationInsightsResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourcegroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourceGroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsAnnotationResourceId>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,8 +24,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.0.0-preview1-final" />
-    <PackageReference Include="NLog" Version="4.5.0-rc06" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.0.1-dev-00795" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
   </ItemGroup>
 
@@ -47,6 +49,11 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
+    <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\states\app.actions.ts" />
+    <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\states\configuration\configuration.actions.ts" />
+    <None Remove="ClientApp\src\app\states\configuration\configuration.facade.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,10 +62,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
+    <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\states\configuration\configuration.actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\states\configuration\configuration.facade.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

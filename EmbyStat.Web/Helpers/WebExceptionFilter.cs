@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Net;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Web.Helpers
+namespace EmbyStat.Web.Helpers
 {
 	public class WebExceptionFilter : ExceptionFilterAttribute
 	{
@@ -13,12 +12,6 @@ namespace Web.Helpers
 			{
 				// handle explicit 'known' API errors
 				
-			}
-			else if (context.Exception is UnauthorizedAccessException)
-			{
-				context.HttpContext.Response.StatusCode = 401;
-
-				// handle logging here
 			}
 
 			base.OnException(context);
