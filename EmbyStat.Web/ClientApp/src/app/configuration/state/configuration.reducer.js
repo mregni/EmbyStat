@@ -16,7 +16,7 @@ var INITIAL_STATE = {
     embyServerAddress: "",
     username: "",
     userId: "",
-    language: ""
+    language: "en"
 };
 function configurationReducer(state, action) {
     if (state === void 0) { state = INITIAL_STATE; }

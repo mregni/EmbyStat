@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using AutoMapper;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
@@ -15,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
@@ -43,7 +45,10 @@ namespace EmbyStat.Web
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlite("Data Source=data.db"));
 
-			services.AddMvc();
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(new BusinessExceptionFilter());
+			});
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -58,6 +63,7 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+			services.AddScoped<BusinessExceptionFilter>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

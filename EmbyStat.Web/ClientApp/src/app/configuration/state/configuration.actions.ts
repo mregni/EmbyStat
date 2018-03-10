@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
-import { Configuration } from '../../configuration/models/configuration';
+import { Configuration } from '../models/configuration';
 
 export enum ConfigurationActionTypes {
   LOAD_CONFIGURATION = '[Configuration] Load Configuration',
-  LOAD_CONFIGURATION_SUCCESS = '[Configuration] Load Configuration Success',
+  LOAD_CONFIGURATION_SUCCESS = '[Configuration] Load Configuration Success'
 }
 
 export class LoadConfigurationAction implements Action {

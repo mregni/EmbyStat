@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../shared/shared.module';
 import { ConfigurationComponent } from './configuration.component';
 import { ConfigurationService } from './service/configuration.service';
-import { ConfigurationFacade } from '../states/configuration/configuration.facade';
+import { ConfigurationFacade } from './state/configuration.facade';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule,
+    SharedModule
   ],
   providers: [
     ConfigurationService,

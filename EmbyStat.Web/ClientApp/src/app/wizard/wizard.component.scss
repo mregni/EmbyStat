@@ -1,0 +1,24 @@
+.half-width {
+  max-width: 50%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container > * {
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end
+}

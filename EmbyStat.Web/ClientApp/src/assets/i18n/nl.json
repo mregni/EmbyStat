@@ -1,0 +1,29 @@
+{
+  "COMMON": {
+    "HIDE": "Verbergen",
+    "NEXT": "Volgende",
+    "BACK": "Vorige",
+    "FINISH": "Finish"
+  },
+  "EXCEPTIONS": {
+    "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
+    "NOT_FOUND": "Oops, we missen wat bestanden."
+  },
+  "FORM_LABELS": {
+    "NAME_LABEL": "Vul uw naam in",
+    "LANGUAGE_LABEL": "Welke taal wilt u gebruiken"
+  },
+  "FORM_ERRORS": {
+    "NAME_REQUIRED": "Geef uw naam of bijnaam op."
+  },
+  "MENU": {
+    "DASHBOARD": "Dashboard",
+    "SETTINGS": "Instellingen"
+  },
+  "WIZARD": {
+    "INTROLABEL": "Intro",
+    "EMBYLABEL": "Emby",
+    "FINALLABEL": "Final",
+    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is."
+  }
+}

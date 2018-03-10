@@ -1,8 +1,9 @@
+<ng-progress [spinner]="false" [color]="'#bc012a'"></ng-progress>
 <app-toolbar (toggleSideNav)="sidenav.toggle()"></app-toolbar>
 
 <mat-sidenav-container class="app-sidenav-container">
   <mat-sidenav mode="side" class="app-sidenav mat-elevation-z10"
-               [opened]="!isScreenSmall()" #sidenav
+               [opened]="!isScreenSmall() && !closeForWizard" #sidenav
                [mode]="isScreenSmall() ? 'over' : 'side'" position="start">
     <app-side-nav></app-side-nav>
   </mat-sidenav>

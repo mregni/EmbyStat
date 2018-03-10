@@ -152,3 +152,163 @@ ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikh
 2018-03-09 00:27:26 [ERR] 
 ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
 
+2018-03-09 21:06:34 [INF] Booting up server
+2018-03-09 21:06:41 [INF] Migrating database started
+2018-03-09 21:06:41 [INF] Migrating database ended
+2018-03-09 21:06:58 [ERR] 
+
+2018-03-09 21:06:58 [ERR] ERROR in src/app/states/app.state.ts(6,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/states/configuration/configuration.reducer"' has no exported member 'ConfigurationState'.
+
+
+
+2018-03-09 21:11:49 [INF] Booting up server
+2018-03-09 21:11:52 [INF] Migrating database started
+2018-03-09 21:11:53 [INF] Migrating database ended
+2018-03-09 21:29:43 [ERR] ERROR in src/app/dashboard/dashboard.module.ts(9,5): error TS2304: Cannot find name 'RouterModule'.
+
+2018-03-09 21:53:33 [INF] Booting up server
+2018-03-09 21:53:37 [INF] Migrating database started
+2018-03-09 21:53:37 [INF] Migrating database ended
+2018-03-09 21:58:52 [ERR] ERROR in src/app/app.module.ts(8,10): error TS2300: Duplicate identifier 'DashboardComponent'.
+
+2018-03-09 21:59:19 [ERR] src/app/app.module.ts(13,10): error TS2300: Duplicate identifier 'DashboardComponent'.
+src/app/app.module.ts(14,10): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/src/app/configuration/configuration.module"' has no exported member 'ConfigurationComponent'.
+src/app/app.module.ts(39,5): error TS2304: Cannot find name 'DashboardModule'.
+
+ERROR in src/app/app.module.ts(37,5): error TS2304: Cannot find name 'DashboardModule'.
+
+2018-03-09 22:00:41 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:01:33 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:01:45 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:08:03 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:08:17 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:08:45 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:08:55 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS2345: Argument of type '{ imports: (typeof CommonModule)[]; export: (typeof DashboardComponent)[]; declarations: (typeof ...' is not assignable to parameter of type 'NgModule'.
+
+2018-03-09 22:09:23 [ERR]   Object literal may only specify known properties, and 'export' does not exist in type 'NgModule'.
+
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:09:32 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:10:11 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:10:13 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:11:08 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:11:12 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:11:25 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:11:31 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:11:36 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:12:03 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:12:17 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:12:26 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:12:26 [WRN] Heartbeat took longer than ""00:00:01"" at ""2018-03-09T21:12:26.8288256+00:00"".
+2018-03-09 22:13:08 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:13:59 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:14:45 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:14:55 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:15:16 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+2018-03-09 22:21:27 [INF] Booting up server
+2018-03-09 22:21:31 [INF] Migrating database started
+2018-03-09 22:21:32 [INF] Migrating database ended
+2018-03-09 22:21:50 [ERR] 
+
+2018-03-09 22:21:50 [ERR] ERROR in src/app/dashboard/dashboard.module.ts(9,3): error TS1005: ',' expected.
+
+
+
+2018-03-09 22:35:30 [INF] Booting up server
+2018-03-09 22:35:34 [INF] Migrating database started
+2018-03-09 22:35:34 [INF] Migrating database ended
+2018-03-09 22:39:15 [INF] Booting up server
+2018-03-09 22:39:18 [INF] Migrating database started
+2018-03-09 22:39:18 [INF] Migrating database ended
+2018-03-09 23:30:37 [INF] Booting up server
+2018-03-09 23:30:43 [INF] Migrating database started
+2018-03-09 23:30:44 [INF] Migrating database ended
+2018-03-09 23:30:55 [ERR] 
+
+2018-03-09 23:30:55 [ERR] ERROR in src/app/app.component.ts(2,37): error TS2307: Cannot find module './states/configuration/configuration.facade'.
+src/app/configuration/configuration.component.ts(4,37): error TS2307: Cannot find module '../states/configuration/configuration.facade'.
+src/app/configuration/configuration.module.ts(5,37): error TS2307: Cannot find module './states/configuration.facade'.
+
+
+
+2018-03-09 23:31:48 [ERR] ERROR in src/app/configuration/configuration.component.ts(4,37): error TS2307: Cannot find module '../states/configuration/configuration.facade'.
+
+2018-03-09 23:31:54 [ERR] src/app/configuration/configuration.module.ts(5,37): error TS2307: Cannot find module './states/configuration.facade'.
+
+
+
+2018-03-09 23:31:54 [ERR] ERROR in ./src/app/configuration/configuration.component.ts
+Module not found: Error: Can't resolve '../states/configuration/configuration.facade' in 'C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\ClientApp\src\app\configuration'
+ERROR in ./src/app/configuration/configuration.module.ts
+Module not found: Error: Can't resolve './states/configuration.facade' in 'C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\ClientApp\src\app\configuration'
+
+
+2018-03-09 23:32:25 [ERR] 
+
+2018-03-09 23:32:25 [ERR] ERROR in ./src/app/configuration/configuration.component.ts
+Module not found: Error: Can't resolve '../states/configuration/configuration.facade' in 'C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\ClientApp\src\app\configuration'
+
+
+2018-03-09 23:32:26 [ERR] ERROR in src/app/configuration/configuration.component.ts(4,37): error TS2307: Cannot find module '../states/configuration/configuration.facade'.
+
+2018-03-09 23:42:32 [ERR] 
+ERROR in src/app/shared/error.interceptor.ts(18,7): error TS2554: Expected 1 arguments, but got 0.
+
+2018-03-09 23:43:03 [ERR] 
+ERROR in src/app/shared/error.interceptor.ts(18,7): error TS2554: Expected 1 arguments, but got 0.
+
+2018-03-09 23:46:42 [INF] Booting up server
+2018-03-09 23:46:46 [INF] Migrating database started
+2018-03-09 23:46:46 [INF] Migrating database ended

@@ -1,0 +1,267 @@
+2018-03-10 00:30:07 [INF] Booting up server
+2018-03-10 00:30:10 [INF] Migrating database started
+2018-03-10 00:30:11 [INF] Migrating database ended
+2018-03-10 00:30:34 [WRN] Application thrown error: NO_CONFIGURATION_FOUND
+2018-03-10 07:02:18 [INF] Booting up server
+2018-03-10 07:02:23 [INF] Migrating database started
+2018-03-10 07:02:23 [INF] Migrating database ended
+2018-03-10 07:02:52 [WRN] Application thrown error: NO_CONFIGURATION_FOUND
+2018-03-10 07:04:56 [INF] Booting up server
+2018-03-10 07:05:01 [INF] Migrating database started
+2018-03-10 07:05:01 [INF] Migrating database ended
+2018-03-10 07:05:30 [ERR] The method or operation is not implemented.
+System.NotImplementedException: The method or operation is not implemented.
+   at EmbyStat.Controllers.Configuration.ConfigurationController.Get() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\Configuration\ConfigurationController.cs:line 26
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-10 07:44:23 [INF] Booting up server
+2018-03-10 07:44:28 [INF] Migrating database started
+2018-03-10 07:44:28 [INF] Migrating database ended
+2018-03-10 07:44:56 [WRN] Application thrown error: NO_CONFIGURATION_FOUND
+2018-03-10 07:44:56 [WRN] Frontend will know what to do with this!
+2018-03-10 07:45:12 [WRN] Application thrown error: NO_CONFIGURATION_FOUND
+2018-03-10 07:45:12 [WRN] Frontend will know what to do with this!
+2018-03-10 07:45:39 [INF] Booting up server
+2018-03-10 07:45:43 [INF] Migrating database started
+2018-03-10 07:45:44 [INF] Migrating database ended
+2018-03-10 07:48:29 [INF] Booting up server
+2018-03-10 07:48:33 [INF] Migrating database started
+2018-03-10 07:48:33 [INF] Migrating database ended
+2018-03-10 07:49:51 [INF] Booting up server
+2018-03-10 07:49:56 [INF] Migrating database started
+2018-03-10 07:49:56 [INF] Migrating database ended
+2018-03-10 08:42:40 [ERR] 
+
+2018-03-10 08:42:40 [ERR] ERROR in ./src/app/shared/shared.module.ts
+Module not found: Error: Can't resolve 'ng2-translate' in 'C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\ClientApp\src\app\shared'
+
+
+2018-03-10 08:42:41 [ERR] ERROR in src/app/shared/shared.module.ts(5,34): error TS2307: Cannot find module 'ng2-translate'.
+
+2018-03-10 08:54:05 [ERR] 
+ERROR in src/app/dashboard/dashboard.module.ts(8,5): error TS2304: Cannot find name 'TranslateModule'.
+
+2018-03-10 09:24:00 [INF] Booting up server
+2018-03-10 09:24:04 [INF] Migrating database started
+2018-03-10 09:24:04 [INF] Migrating database ended
+2018-03-10 09:26:31 [INF] Booting up server
+2018-03-10 09:26:35 [INF] Migrating database started
+2018-03-10 09:26:35 [INF] Migrating database ended
+2018-03-10 10:41:13 [INF] Booting up server
+2018-03-10 10:41:16 [INF] Migrating database started
+2018-03-10 10:41:17 [INF] Migrating database ended
+2018-03-10 14:54:31 [ERR] ERROR in src/app/app.component.ts(39,24): error TS2339: Property 'url' does not exist on type 'Event'.
+
+2018-03-10 15:28:05 [ERR]   Property 'url' does not exist on type 'RouteConfigLoadStart'.
+
+
+
+2018-03-10 15:28:05 [ERR] ERROR in ./src/app/wizard/wizard.component.ts
+Module not found: Error: Can't resolve '@ngular/form' in 'C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\ClientApp\src\app\wizard'
+
+
+2018-03-10 15:28:06 [ERR] ERROR in src/app/wizard/wizard.component.ts(2,27): error TS2307: Cannot find module '@ngular/form'.
+
+2018-03-10 15:28:06 [ERR] src/app/wizard/wizard.component.ts(10,21): error TS2304: Cannot find name 'Formgroup'.
+src/app/wizard/wizard.component.ts(16,17): error TS2304: Cannot find name 'FormControl'.
+src/app/wizard/wizard.component.ts(17,16): error TS2304: Cannot find name 'FormControl'.
+
+
+
+2018-03-10 15:28:06 [ERR] ERROR in ./src/app/wizard/wizard.component.ts
+Module not found: Error: Can't resolve '@ngular/forms' in 'C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\ClientApp\src\app\wizard'
+
+
+2018-03-10 15:28:06 [ERR] ERROR in src/app/wizard/wizard.component.ts(2,27): error TS2307: Cannot find module '@ngular/forms'.
+
+2018-03-10 15:28:26 [ERR] src/app/wizard/wizard.component.ts(10,21): error TS2304: Cannot find name 'Formgroup'.
+src/app/wizard/wizard.component.ts(16,17): error TS2304: Cannot find name 'FormControl'.
+src/app/wizard/wizard.component.ts(17,16): error TS2304: Cannot find name 'FormControl'.
+
+ERROR in src/app/wizard/wizard.component.ts(10,21): error TS2304: Cannot find name 'Formgroup'.
+
+2018-03-10 15:29:31 [ERR] src/app/wizard/wizard.component.ts(16,17): error TS2304: Cannot find name 'FormControl'.
+src/app/wizard/wizard.component.ts(17,16): error TS2304: Cannot find name 'FormControl'.
+
+ERROR in src/app/wizard/wizard.component.ts(16,17): error TS2304: Cannot find name 'FormControl'.
+
+2018-03-10 15:34:47 [ERR] src/app/wizard/wizard.component.ts(17,16): error TS2304: Cannot find name 'FormControl'.
+
+ERROR in src/app/wizard/wizard.component.ts(16,17): error TS2304: Cannot find name 'FormControl'.
+
+2018-03-10 21:46:47 [INF] Booting up server
+2018-03-10 21:46:51 [INF] Migrating database started
+2018-03-10 21:46:52 [INF] Migrating database ended
+2018-03-10 22:16:00 [ERR] ERROR in src/app/wizard/wizard.component.ts(20,52): error TS2304: Cannot find name 'languageChanged'.
+
+2018-03-10 22:18:16 [ERR] 
+ERROR in src/app/wizard/wizard.component.ts(20,5): error TS2349: Cannot invoke an expression whose type lacks a call signature. Type 'Observable<any>' has no compatible call signatures.
+
+2018-03-10 22:18:41 [ERR] src/app/wizard/wizard.component.ts(20,48): error TS2304: Cannot find name 'languageChanged'.
+
+ERROR in src/app/wizard/wizard.component.ts(20,59): error TS2304: Cannot find name 'languageChanged'.
+
+2018-03-10 22:19:18 [ERR] 
+ERROR in src/app/wizard/wizard.component.ts(20,64): error TS1005: ',' expected.
+
+2018-03-10 22:21:15 [ERR] src/app/wizard/wizard.component.ts(20,71): error TS1005: ',' expected.
+src/app/wizard/wizard.component.ts(20,87): error TS1005: '=' expected.
+src/app/wizard/wizard.component.ts(20,95): error TS1005: '=>' expected.
+
+ERROR in src/app/wizard/wizard.component.ts(31,24): error TS2304: Cannot find name 'value'.
+
+2018-03-10 22:37:24 [ERR] 
+ERROR in src/app/wizard/wizard.component.ts(1,40): error TS2305: Module '"C:/Users/Mikhael/source/repos/EmbyStat/EmbyStat.Web/ClientApp/node_modules/@angular/core/core"' has no exported member 'Subscription'.
+
+2018-03-10 22:43:36 [INF] Booting up server
+2018-03-10 22:43:40 [INF] Migrating database started
+2018-03-10 22:43:41 [INF] Migrating database ended
+2018-03-10 22:48:25 [INF] Booting up server
+2018-03-10 22:48:29 [INF] Migrating database started
+2018-03-10 22:48:30 [INF] Migrating database ended
+2018-03-10 22:52:04 [INF] Booting up server
+2018-03-10 22:52:08 [INF] Migrating database started
+2018-03-10 22:52:08 [INF] Migrating database ended
+2018-03-10 23:06:10 [INF] Booting up server
+2018-03-10 23:06:14 [INF] Migrating database started
+2018-03-10 23:06:14 [INF] Migrating database ended
+2018-03-10 23:38:01 [INF] Booting up server
+2018-03-10 23:38:05 [INF] Migrating database started
+2018-03-10 23:38:05 [INF] Migrating database ended
+2018-03-10 23:38:35 [ERR] Request matched multiple actions resulting in ambiguity. Matching actions: EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers)
+EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers)
+2018-03-10 23:38:39 [ERR] An unhandled exception has occurred while executing the request
+Microsoft.AspNetCore.Mvc.Internal.AmbiguousActionException: Multiple actions matched. The following actions matched route data and had all constraints satisfied:
+
+EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers)
+EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers)
+   at Microsoft.AspNetCore.Mvc.Internal.ActionSelector.SelectBestCandidate(RouteContext context, IReadOnlyList`1 candidates)
+   at Microsoft.AspNetCore.Mvc.Internal.MvcAttributeRouteHandler.RouteAsync(RouteContext context)
+   at Microsoft.AspNetCore.Routing.Tree.TreeRouter.<RouteAsync>d__13.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Routing.RouteCollection.<RouteAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIIndexMiddleware.<Invoke>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-03-10 23:39:03 [ERR] Request matched multiple actions resulting in ambiguity. Matching actions: EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers)
+EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers)
+2018-03-10 23:39:04 [ERR] An unhandled exception has occurred while executing the request
+Microsoft.AspNetCore.Mvc.Internal.AmbiguousActionException: Multiple actions matched. The following actions matched route data and had all constraints satisfied:
+
+EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers)
+EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers)
+   at Microsoft.AspNetCore.Mvc.Internal.ActionSelector.SelectBestCandidate(RouteContext context, IReadOnlyList`1 candidates)
+   at Microsoft.AspNetCore.Mvc.Internal.MvcAttributeRouteHandler.RouteAsync(RouteContext context)
+   at Microsoft.AspNetCore.Routing.Tree.TreeRouter.<RouteAsync>d__13.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Routing.RouteCollection.<RouteAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIIndexMiddleware.<Invoke>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-03-10 23:39:28 [ERR] Request matched multiple actions resulting in ambiguity. Matching actions: EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers)
+EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers)
+2018-03-10 23:39:28 [ERR] An unhandled exception has occurred while executing the request
+Microsoft.AspNetCore.Mvc.Internal.AmbiguousActionException: Multiple actions matched. The following actions matched route data and had all constraints satisfied:
+
+EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers)
+EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers)
+   at Microsoft.AspNetCore.Mvc.Internal.ActionSelector.SelectBestCandidate(RouteContext context, IReadOnlyList`1 candidates)
+   at Microsoft.AspNetCore.Mvc.Internal.MvcAttributeRouteHandler.RouteAsync(RouteContext context)
+   at Microsoft.AspNetCore.Routing.Tree.TreeRouter.<RouteAsync>d__13.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Routing.RouteCollection.<RouteAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIIndexMiddleware.<Invoke>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-03-10 23:39:45 [ERR] An unhandled exception has occurred while executing the request
+System.NotSupportedException: HTTP method "GET" & path "api/Configuration" overloaded by actions - EmbyStat.Controllers.Configuration.ConfigurationController.Get (EmbyStat.Controllers),EmbyStat.Controllers.Configuration.ConfigurationController.SearchEmby (EmbyStat.Controllers). Actions require unique method/path combination for Swagger 2.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItem(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath, String[] schemes)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-03-10 23:40:25 [INF] Booting up server
+2018-03-10 23:40:33 [INF] Migrating database started
+2018-03-10 23:40:33 [INF] Migrating database ended
+2018-03-10 23:47:07 [INF] Booting up server
+2018-03-10 23:47:16 [INF] Migrating database started
+2018-03-10 23:47:16 [INF] Migrating database ended
+2018-03-10 23:47:47 [INF] Getting all server configuration from database.
+2018-03-10 23:47:48 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-10 23:49:11 [INF] Getting all server configuration from database.
+2018-03-10 23:49:13 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-10 23:54:22 [INF] Booting up server
+2018-03-10 23:54:30 [INF] Migrating database started
+2018-03-10 23:54:31 [INF] Migrating database ended
+2018-03-10 23:55:28 [INF] Getting all server configuration from database.
+2018-03-10 23:55:29 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-10 23:55:58 [INF] Getting all server configuration from database.
+2018-03-10 23:55:59 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-10 23:56:54 [INF] Getting all server configuration from database.
+2018-03-10 23:56:55 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-10 23:57:25 [INF] Getting all server configuration from database.
+2018-03-10 23:57:26 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-10 23:57:57 [INF] Getting all server configuration from database.
+2018-03-10 23:57:58 [INF] Searching for an Emby server in the network and returning the IP address.

@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
-import { ApplicationState } from "../app.state";
+import { ApplicationState } from "../../states/app.state";
 
-import { Configuration } from '../../configuration/models/configuration';
+import { Configuration } from '../models/configuration';
 import {
   ConfigurationActionTypes,
   ConfigurationActions
@@ -9,13 +9,13 @@ import {
 
 
 const INITIAL_STATE: Configuration = {
-  wizardFinished: false,
+  wizardFinished: true,
   accessToken: "",
   embyUserName: "",
   embyServerAddress: "",
   username: "",
   userId: "",
-  language: ""
+  language: "en"
 }
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -26,7 +26,6 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         language: action.payload.language,
         wizardFinished: action.payload.wizardFinished
       };
-
     default:
       return state;
   }

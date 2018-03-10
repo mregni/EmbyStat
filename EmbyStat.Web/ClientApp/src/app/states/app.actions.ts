@@ -1,11 +1,12 @@
 import { Action } from "@ngrx/store";
 
 export enum AppActionTypes {
-  NOOP = '[App] NOOP'
+  ERROR = '[Error] Effect Error'
 }
 
-export class NoopAction implements Action {
-  readonly type = AppActionTypes.NOOP;
+export class EffectError implements Action {
+  readonly type = AppActionTypes.ERROR;
+  constructor(payload: Error = null) {}
 }
 
-export type AppActions = NoopAction;
+export type AppActions = EffectError;

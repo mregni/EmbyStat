@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
+
+import { ToastService } from './services/toast.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule,
+    TranslateModule.forChild()
   ],
   exports: [
     ToolbarComponent,
@@ -17,6 +24,9 @@ import { SideNavComponent } from './side-nav/side-nav.component';
   declarations: [
     ToolbarComponent,
     SideNavComponent
+  ],
+  providers: [
+    ToastService
   ]
 })
 export class SharedModule { }

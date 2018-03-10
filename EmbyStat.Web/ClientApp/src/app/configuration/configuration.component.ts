@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ConfigurationFacade } from '../states/configuration/configuration.facade';
+import { ConfigurationFacade } from './state/configuration.facade';
 import { Configuration } from './models/configuration';
 
 @Component({
@@ -16,7 +16,7 @@ export class ConfigurationComponent implements OnInit {
   configuration$: Observable<Configuration>;
 
   ngOnInit() {
-    this.configurationFacade.getConfiguration();
+    
   }
 
 }

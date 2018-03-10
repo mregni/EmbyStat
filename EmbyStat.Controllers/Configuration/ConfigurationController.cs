@@ -1,4 +1,5 @@
 using AutoMapper;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,7 @@ namespace EmbyStat.Controllers.Configuration
 	    [HttpGet]
         public IActionResult Get()
 	    {
+			_logger.LogInformation("Getting all server configuration from database.");
 		    var configuration = _configurationService.GetServerSettings();
             return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
         }
@@ -29,6 +31,15 @@ namespace EmbyStat.Controllers.Configuration
 	    public IActionResult Update()
 	    {
 		    return Ok();
+	    }
+
+	    [HttpGet]
+		[Route("searchemby")]
+	    public IActionResult SearchEmby()
+	    {
+_logger.LogInformation("Searching for an Emby server in the network and returning the IP address.");
+		    var result = _configurationService.SearchEmby();
+		    return Ok(Mapper.Map<EmbyUdpBroadcastViewModel>(result));
 	    }
     }
 }

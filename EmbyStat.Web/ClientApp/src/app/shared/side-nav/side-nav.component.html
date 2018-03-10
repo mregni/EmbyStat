@@ -1,8 +1,4 @@
-<mat-nav-list>
-  <mat-list-item>
-    <a routerLink="">Dashboard</a>
-  </mat-list-item>
-  <mat-list-item>
-    <a routerLink="configuration">Settings</a>
-  </mat-list-item>
+<mat-nav-list class="mat-list__no-padding">
+  <a mat-list-item routerLink="/" routerLinkActive="active">{{ 'MENU.DASHBOARD' | translate }}</a>
+  <a mat-list-item routerLink="/configuration" routerLinkActive="active">{{ 'MENU.SETTINGS' | translate }}</a>
 </mat-nav-list>

@@ -3,10 +3,11 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '../../environments/environment';
 
-import { ConfigurationState, configurationReducer } from './configuration/configuration.reducer';
+import { configurationReducer } from '../configuration/state/configuration.reducer';
+import { Configuration } from '../configuration/models/configuration';
 
 export interface ApplicationState {
-  configuration: ConfigurationState
+  configuration: Configuration
 }
 
 export const ROOT_REDUCER: ActionReducerMap<ApplicationState> = { configuration: configurationReducer };

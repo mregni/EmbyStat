@@ -49,11 +49,17 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
+    <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
-    <None Remove="ClientApp\src\app\states\configuration\configuration.actions.ts" />
-    <None Remove="ClientApp\src\app\states\configuration\configuration.facade.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\src\assets\i18n\en.json" />
+    <Content Include="ClientApp\src\assets\i18n\nl.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,12 +72,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\states\configuration\configuration.actions.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\states\configuration\configuration.facade.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\configuration.actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\configuration.facade.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

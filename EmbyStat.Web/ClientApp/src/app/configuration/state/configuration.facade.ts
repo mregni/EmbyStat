@@ -4,9 +4,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
+
+import 'rxjs/add/observable/throw';
 
 import { Configuration } from '../../configuration/models/configuration';
+import { EmbyUdpBroadcast } from '../../configuration/models/embyUdpBroadcast';
 import { ConfigurationService } from '../../configuration/service/configuration.service';
 
 import { ConfigurationQuery } from './configuration.reducer';
@@ -15,10 +18,9 @@ import {
   LoadConfigurationAction,
   LoadConfigurationSuccessAction
 } from './configuration.actions';
-import { NoopAction } from '../app.actions';
 
-import { ApplicationState } from '../app.state';
-
+import { ApplicationState } from '../../states/app.state';
+import { EffectError } from '../../states/app.actions';
 
 @Injectable()
 export class ConfigurationFacade {
@@ -30,20 +32,25 @@ export class ConfigurationFacade {
 
   configuration$ = this.store.select(ConfigurationQuery.getConfiguration);
 
-  @Effect() getConfiguration$ = this.actions$
+  @Effect()
+  getConfiguration$ = this.actions$
     .ofType(ConfigurationActionTypes.LOAD_CONFIGURATION)
     .pipe(
-    map((data: LoadConfigurationAction) => data.payload),
-    switchMap((configuration: Configuration) => this.configurationService.getConfiguration()),
-    map((configuration: Configuration) => {
-      console.log(configuration);
-        return configuration ? new LoadConfigurationSuccessAction(configuration) : new NoopAction();
-      })
+      map((data: LoadConfigurationAction) => data.payload),
+      switchMap((configuration: Configuration) => this.configurationService.getConfiguration()
+        .pipe(
+        map((configuration: Configuration) => new LoadConfigurationSuccessAction(configuration)),
+        catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err))))
+      )
     );
 
   getConfiguration(): Observable<Configuration> {
     this.store.dispatch(new LoadConfigurationAction());
     return this.configuration$;
+  }
+
+  searchEmby(): Observable<EmbyUdpBroadcast> {
+    return this.configurationService.searchEmby();
   }
 }
 
