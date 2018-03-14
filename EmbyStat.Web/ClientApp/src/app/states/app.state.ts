@@ -3,7 +3,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '../../environments/environment';
 
-import { configurationReducer } from '../configuration/state/configuration.reducer';
+import { configurationReducer } from '../configuration/state/reducer.configuration';
 import { Configuration } from '../configuration/models/configuration';
 
 export interface ApplicationState {

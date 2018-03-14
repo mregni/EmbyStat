@@ -61,16 +61,16 @@
     <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
   </Target>
   <Target Name="BeforeBuild">
-    <Exec Command="rd /s /q ..\EmbyStat\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)" />
-    <Exec Command="dotnet publish ..\EmbyStat\EmbyStat.csproj -c $(Configuration) -r win-$(Platform)" />
-    <Exec Command="&quot;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\editbin.exe&quot; /subsystem:windows ..\EmbyStat\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\publish\EmbyStat.exe" />
-    <GetAssemblyIdentity AssemblyFiles="..\EmbyStat\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\EmbyStat.dll">
+    <Exec Command="rd /s /q ..\EmbyStat.Web\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)" />
+    <Exec Command="dotnet publish ..\EmbyStat.Web\EmbyStat.Web.csproj -c $(Configuration) -r win-$(Platform)" />
+    <Exec Command="&quot;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\editbin.exe&quot; /subsystem:windows ..\EmbyStat.Web\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\publish\EmbyStat.Web.exe" />
+    <GetAssemblyIdentity AssemblyFiles="..\EmbyStat.Web\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\EmbyStat.Web.dll">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
     <PropertyGroup>
-      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\EmbyStat\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\publish\</DefineConstants>
+      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\EmbyStat.Web\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\publish\</DefineConstants>
     </PropertyGroup>
-    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="PublishedComponents" SuppressCom="true" Directory="..\EmbyStat\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\publish" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
+    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="PublishedComponents" SuppressCom="true" Directory="..\EmbyStat.Web\bin\$(Configuration)\netcoreapp2.0\win-$(Platform)\publish" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
   </Target>
   <Target Name="AfterBuild">
   </Target>

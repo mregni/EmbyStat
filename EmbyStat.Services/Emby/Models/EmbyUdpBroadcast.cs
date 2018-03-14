@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Services.Config.Models
+﻿namespace EmbyStat.Services.Emby.Models
 {
     public class EmbyUdpBroadcast
     {

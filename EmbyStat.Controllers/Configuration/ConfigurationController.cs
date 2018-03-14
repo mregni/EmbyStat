@@ -6,40 +6,36 @@ using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Controllers.Configuration
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    public class ConfigurationController : Controller
-    {
-	    private readonly IConfigurationService _configurationService;
-	    private readonly ILogger<ConfigurationController> _logger;
+	[Produces("application/json")]
+	[Route("api/[controller]")]
+	public class ConfigurationController : Controller
+	{
+		private readonly IConfigurationService _configurationService;
+		private readonly ILogger<ConfigurationController> _logger;
 
-	    public ConfigurationController(IConfigurationService configurationService, ILogger<ConfigurationController> logger)
-	    {
-		    _configurationService = configurationService;
-		    _logger = logger;
-	    }
-	    
-	    [HttpGet]
-        public IActionResult Get()
-	    {
-			_logger.LogInformation("Getting all server configuration from database.");
-		    var configuration = _configurationService.GetServerSettings();
-            return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
-        }
+		public ConfigurationController(IConfigurationService configurationService, ILogger<ConfigurationController> logger)
+		{
+			_configurationService = configurationService;
+			_logger = logger;
+		}
 
-	    [HttpPut]
-	    public IActionResult Update()
-	    {
-		    return Ok();
-	    }
+		[HttpGet]
+		public IActionResult Get()
+		{
+			_logger.LogInformation("Getting server configuration from database.");
+			var configuration = _configurationService.GetServerSettings();
+			return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
+		}
 
-	    [HttpGet]
-		[Route("searchemby")]
-	    public IActionResult SearchEmby()
-	    {
-_logger.LogInformation("Searching for an Emby server in the network and returning the IP address.");
-		    var result = _configurationService.SearchEmby();
-		    return Ok(Mapper.Map<EmbyUdpBroadcastViewModel>(result));
-	    }
-    }
+		[HttpPut]
+		public IActionResult Update([FromBody] ConfigurationViewModel configuration)
+		{
+			_logger.LogInformation("Updating the new server configuration.");
+			var config = Mapper.Map<Repositories.Config.Configuration>(configuration);
+			_configurationService.SaveServerSettings(config);
+
+			config = _configurationService.GetServerSettings();
+			return Ok(Mapper.Map<ConfigurationViewModel>(config));
+		}
+	}
 }

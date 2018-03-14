@@ -3,18 +3,22 @@
     "HIDE": "Hide",
     "NEXT": "Next",
     "BACK": "Back",
-    "FINISH": "Finish"
+    "FINISH": "Finish",
+    "SHUTDOWN": "Shutdown",
+    "YES": "Yes",
+    "NO": "No"  
   },
   "EXCEPTIONS": {
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
-    "NOT_FOUND": "Oops, we are missing some files."
+    "NOT_FOUND": "Oops, we are missing some files.",
+    "WRONG_USERNAME_OR_PASSWORD": "Wrong Emby credentials."
   },
   "FORM_LABELS": {
-    "NAME_LABEL": "Enter your name",
-    "LANGUAGE_LABEL": "Please select your language",
-    "EMBYADDRESS_LABEL": "Emby ip address",
-    "EMBYUSERNAME_LABEL": "Emby admin username",
-    "EMBYPASSWORD_LABEL": "Emby admin password"
+    "NAME": "Enter your name",
+    "LANGUAGE": "Please select your language",
+    "EMBYADDRESS": "Emby ip address",
+    "EMBYUSERNAME": "Emby admin username",
+    "EMBYPASSWORD": "Emby admin password"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -26,12 +30,23 @@
     "DASHBOARD": "Dashboard",
     "SETTINGS": "Settings"
   },
+  "NAVBAR": {
+    "SHUTDOWN": "Shutdown"
+  },
+  "SHUTDOWN_DIALOG": {
+    "TITLE": "Shutdown server", 
+    "TEXT": "Are you sure? You will have to start it manually afterwards."
+  },
   "WIZARD": {
     "INTROLABEL": "Intro",
     "EMBYLABEL": "Emby settings",
     "FINALLABEL": "Final",
+    "SAVINGLABEL": "Saving data",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form."
+    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "FAILEDSAVE": "Given account is not a Admin account or credentials are wrong. Please go back and supply Embystat with an admin Emby server login.",
+    "SAVING": "Saving data",
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!" 
   }
 }

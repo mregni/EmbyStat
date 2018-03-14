@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using EmbyStat.Repositories;
 using Microsoft.AspNetCore;
@@ -24,7 +25,7 @@ namespace EmbyStat.Web
 				SetupDatbase(host);
 
 #if !DEBUG
-				OpenBrowser("http://localhost:5123");
+				//OpenBrowser("http://localhost:5123");
 #endif
 
 				host.Run();
@@ -49,6 +50,12 @@ namespace EmbyStat.Web
 
 		public static void CreateLogger()
 		{
+			if (!Directory.Exists("Logs"))
+			{
+				Directory.CreateDirectory("Logs");
+			}
+
+
 			Log.Logger = new LoggerConfiguration()
 #if DEBUG
 				.MinimumLevel.Debug()

@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { ConfigurationComponent } from './configuration.component';
 import { ConfigurationService } from './service/configuration.service';
-import { ConfigurationFacade } from './state/configuration.facade';
+import { ConfigurationFacade } from './state/facade.configuration';
 
 @NgModule({
   imports: [

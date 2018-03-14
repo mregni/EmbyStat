@@ -1,7 +1,3 @@
-.half-width {
-  max-width: 50%;
-}
-
 .center {
   display: flex;
   align-items: center;
@@ -21,4 +17,27 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end
+}
+
+.button-container > button:last-child {
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 850px) {
+  .half-width {
+    max-width: 100%;
+  }
+}
+
+@media only screen and (min-width: 850px) {
+  .half-width {
+    max-width: 50%;
+  }
+}
+
+.center-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

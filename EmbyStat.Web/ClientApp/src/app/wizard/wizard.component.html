@@ -1,19 +1,19 @@
 <div class="center">
-  <mat-vertical-stepper linear class="half-width">
+  <mat-vertical-stepper #stepper linear class="half-width" [selectedIndex]="wizardIndex" (selectionChange)="stepperPageChanged($event)">
     <mat-step label="{{'WIZARD.INTROLABEL' | translate}}" [stepControl]="introFormGroup">
       <div>
         <form [formGroup]="introFormGroup" class="form-container">
           <p [innerHTML]="'WIZARD.INTROTEXT' | translate"></p>
           <mat-form-field>
-            <input matInput placeholder="{{'FORM_LABELS.NAME_LABEL' | translate}}" formControlName="name" required>
-            <mat-error *ngIf="nameControl.required">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>
+            <input matInput placeholder="{{'FORM_LABELS.NAME' | translate}}" formControlName="name" required>
+            <!-- <mat-error *ngIf="nameControl.hasError('required')">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <mat-form-field>
             <mat-select formControlName="language">
               <mat-option value="nl">Nederlands</mat-option>
               <mat-option value="en">English</mat-option>
             </mat-select>
-            <mat-placeholder>{{'FORM_LABELS.LANGUAGE_LABEL' | translate}}</mat-placeholder>
+            <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
           </mat-form-field>
           <div class="button-container">
             <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate}}</button>
@@ -27,17 +27,17 @@
           <p *ngIf="!embyFound" [innerHTML]="'WIZARD.EMBYNOTFOUNDTEXT' | translate"></p>
           <p *ngIf="embyFound" [innerHTML]="'WIZARD.EMBYFOUNDTEXT' | translate"></p>
           <mat-form-field>
-            <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS_LABEL' | translate}}" formControlName="embyAddress" required>
-            <mat-error *ngIf="embyAddressControl.required">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>
+            <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
+            <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME_LABEL' | translate}}" formControlName="embyUsername" required>
-            <mat-error *ngIf="embyUsernameControl.required">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>
+            <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME' | translate}}" formControlName="embyUsername" required>
+            <!--<mat-error *ngIf="embyUsernameControl.hasError('required')">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD_LABEL' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
+            <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
             <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
-            <mat-error *ngIf="embyPasswordControl.required">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>
+            <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <div class="button-container">
             <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate}}</button>
@@ -46,10 +46,24 @@
         </form>
       </div>
     </mat-step>
-    <mat-step label="{{'WIZARD.FINALLABEL' | translate}}">
+    <mat-step label="{{'WIZARD.SAVINGLABEL' | translate }}">
+      <div *ngIf="!noAdminAccount" class="center-column">
+        <mat-spinner></mat-spinner>
+        <p>{{'WIZARD.SAVING' | translate }}</p>
+      </div>
+      <div *ngIf="noAdminAccount">
+        <p>{{'WIZARD.FAILEDSAVE' | translate }}</p>
+      </div>
+      <div class="button-container">
+        <button mat-raised-button color="primary" matStepperPrevious *ngIf="noAdminAccount" type="button">{{'COMMON.BACK' | translate}}</button>
+      </div>
+    </mat-step>
+    <mat-step label="{{'WIZARD.FINALLABEL' | translate }}">
       <div>
-        <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate}}</button>
-        <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.FINISH' | translate}}</button>
+        <p>{{ 'WIZARD.FINISHED' | translate }}</p>
+      </div>
+      <div class="button-container">
+        <button mat-raised-button color="primary" (click)="finishWizard()" type="button">{{ 'COMMON.FINISH' | translate }}</button>
       </div>
     </mat-step>
   </mat-vertical-stepper>

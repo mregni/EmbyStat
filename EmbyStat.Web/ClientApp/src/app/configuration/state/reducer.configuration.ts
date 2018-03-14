@@ -5,7 +5,7 @@ import { Configuration } from '../models/configuration';
 import {
   ConfigurationActionTypes,
   ConfigurationActions
-} from './configuration.actions';
+} from './actions.configuration';
 
 
 const INITIAL_STATE: Configuration = {
@@ -24,8 +24,24 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
       return {
         ...state,
         language: action.payload.language,
-        wizardFinished: action.payload.wizardFinished
+        wizardFinished: action.payload.wizardFinished,
+        username: action.payload.username,
+        accessToken: action.payload.accessToken,
+        embyServerAddress: action.payload.embyServerAddress,
+        embyUserName: action.payload.embyUserName,
+        userId: action.payload.userId
       };
+    case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
+      return {
+        ...state,
+        language: action.payload.language,
+        wizardFinished: action.payload.wizardFinished,
+        username: action.payload.username,
+        accessToken: action.payload.accessToken,
+        embyServerAddress: action.payload.embyServerAddress,
+        embyUserName: action.payload.embyUserName,
+        userId: action.payload.userId
+      }
     default:
       return state;
   }

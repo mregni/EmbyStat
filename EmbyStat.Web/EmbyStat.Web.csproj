@@ -17,9 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0-beta1" />
-    <PackageReference Include="Hangfire.Core" Version="1.7.0-beta1" />
-    <PackageReference Include="Hangfire.MemoryStorage" Version="1.5.2" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.17" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.1.0" />
@@ -51,10 +49,17 @@
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js" />
+    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js" />
+    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js.map" />
+    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js.map" />
+    <None Remove="ClientApp\src\app\shared\dialog\shutdown\shutdown.dialog.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\system\service\system.service.ts" />
+    <None Remove="ClientApp\src\app\system\state\facade.system.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,13 +79,16 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\dialog\shutdown\shutdown.dialog.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\configuration.actions.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\configuration.facade.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\facade.configuration.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\system\service\system.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\system\state\facade.system.ts" />
   </ItemGroup>
 
   <ItemGroup>

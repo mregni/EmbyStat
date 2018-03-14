@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ConfigurationFacade } from './state/configuration.facade';
+import { ConfigurationFacade } from './state/facade.configuration';
 import { Configuration } from './models/configuration';
 
 @Component({

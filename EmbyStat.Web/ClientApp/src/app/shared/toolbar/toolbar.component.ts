@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { ShutdownComponent } from '../dialog/shutdown/shutdown.dialog';
 
 @Component({
   selector: 'app-toolbar',
@@ -8,9 +10,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class ToolbarComponent implements OnInit {
 
   @Output() toggleSideNav = new EventEmitter<void>();
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
-  ngOnInit() {
+  public openShutdownDialog() {
+    this.dialog.open(ShutdownComponent);
   }
 
+  ngOnInit() {
+
+  }
 }

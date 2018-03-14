@@ -32,9 +32,9 @@
 		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
 		<MediaTemplate EmbedCab="yes" />
 
-		<Icon Id="icon.ico" SourceFile="$(var.EmbyStat.ProjectDir)\icon.ico" />
+		<!--<Icon Id="icon.ico" SourceFile="$(var.ProjectDir)\icon.ico" />
 
-		<Property Id="ARPPRODUCTICON">icon.ico</Property>
+		<Property Id="ARPPRODUCTICON">icon.ico</Property>-->
 		<Property Id="ARPURLINFOABOUT">!(loc.Url)</Property>
 
 		<UIRef Id="WixUI_Minimal" />

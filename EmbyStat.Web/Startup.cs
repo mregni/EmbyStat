@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Text;
 using AutoMapper;
@@ -6,6 +7,8 @@ using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Services.Config;
+using EmbyStat.Services.Emby;
+using EmbyStat.Services.System;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
@@ -42,8 +45,8 @@ namespace EmbyStat.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddHangfire(config => config.UseMemoryStorage());
-			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlite("Data Source=data.db"));
+
+			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
 			services.AddMvc(options =>
 			{
@@ -62,11 +65,14 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
+			services.AddScoped<IEmbyService, EmbyService>();
+			services.AddScoped<ISystemService, SystemService>();
+
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<BusinessExceptionFilter>();
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
 			if (env.IsDevelopment())
 			{
@@ -78,6 +84,8 @@ namespace EmbyStat.Web
 				cfg.AddProfile<MapProfiles>();
 			});
 
+			app.UseHangfireServer();
+			app.UseHangfireDashboard();
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
 
@@ -127,6 +135,11 @@ namespace EmbyStat.Web
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
+		}
+
+		private void onShutdown()
+		{
+			
 		}
 	}
 }

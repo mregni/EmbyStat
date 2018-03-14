@@ -1,0 +1,1456 @@
+2018-03-12 17:18:41 [INF] Booting up server
+2018-03-12 17:18:47 [INF] Migrating database started
+2018-03-12 17:18:48 [INF] Migrating database ended
+2018-03-12 17:19:24 [INF] Getting server configuration from database.
+2018-03-12 17:20:27 [INF] Booting up server
+2018-03-12 17:20:32 [INF] Migrating database started
+2018-03-12 17:20:33 [INF] Migrating database ended
+2018-03-12 17:20:33 [INF] Initialising configuration
+2018-03-12 17:21:04 [INF] Getting server configuration from database.
+2018-03-12 17:21:05 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-12 17:31:13 [INF] Booting up server
+2018-03-12 17:31:15 [INF] Migrating database started
+2018-03-12 17:31:15 [INF] Migrating database ended
+2018-03-12 17:31:47 [INF] Getting server configuration from database.
+2018-03-12 17:31:47 [INF] Searching for an Emby server in the network and returning the IP address.
+2018-03-12 17:34:06 [INF] Get emby token for certain login credentials
+2018-03-12 17:34:07 [INF] Updating the new server configuration.
+2018-03-12 17:34:15 [INF] Getting server configuration from database.
+2018-03-12 17:34:20 [INF] Shutdown server on users request.
+2018-03-12 17:34:20 [INF] Sweet dreams!!
+2018-03-12 17:34:20 [INF] Server shutdown
+2018-03-12 17:34:23 [INF] Booting up server
+2018-03-12 17:34:24 [INF] Migrating database started
+2018-03-12 17:34:24 [INF] Migrating database ended
+2018-03-12 17:34:55 [INF] Getting server configuration from database.
+2018-03-12 17:34:55 [INF] Getting server configuration from database.
+2018-03-12 17:35:02 [INF] Shutdown server on users request.
+2018-03-12 17:35:02 [INF] Sweet dreams!!
+2018-03-12 17:35:02 [INF] Server shutdown
+2018-03-12 17:35:04 [INF] Booting up server
+2018-03-12 17:35:06 [INF] Migrating database started
+2018-03-12 17:35:06 [INF] Migrating database ended
+2018-03-12 17:35:35 [INF] Getting server configuration from database.
+2018-03-12 17:36:55 [INF] Shutdown server on users request.
+2018-03-12 17:36:55 [INF] Sweet dreams!!
+2018-03-12 17:36:55 [INF] Server shutdown
+2018-03-12 17:36:55 [INF] Booting up server
+2018-03-12 17:36:57 [INF] Migrating database started
+2018-03-12 17:36:57 [INF] Migrating database ended
+2018-03-12 17:37:24 [INF] Getting server configuration from database.
+2018-03-12 18:22:47 [INF] Booting up server
+2018-03-12 18:22:49 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:22:49 [FTL] Database seed or update failed
+2018-03-12 18:22:49 [FTL] No service for type 'EmbyStat.Repositories.IDatabaseInitializer' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at EmbyStat.Web.Program.SetupDatbase(IWebHost host) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 75
+2018-03-12 18:22:50 [ERR] Connection id "0HLC87NGJSRE8", Request id "0HLC87NGJSRE8:00000001": An unhandled exception was thrown by the application.
+System.InvalidOperationException: Writing to the response body is invalid for responses with status code 500.
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame.HandleNonBodyResponseWrite()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame.<WriteAsyncAwaited>d__199.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamWriter.Flush(Boolean flushStream, Boolean flushEncoder)
+   at System.IO.StreamWriter.Write(String value)
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.<ExecuteAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.Extensions.RazorViews.BaseView.<ExecuteAsync>d__29.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame`1.<ProcessRequestsAsync>d__2.MoveNext()
+2018-03-12 18:24:22 [INF] Booting up server
+2018-03-12 18:24:24 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:24:24 [FTL] Database seed or update failed
+2018-03-12 18:24:24 [FTL] No service for type 'EmbyStat.Repositories.IDatabaseInitializer' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at EmbyStat.Web.Program.SetupDatbase(IWebHost host) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 75
+2018-03-12 18:26:23 [INF] Booting up server
+2018-03-12 18:26:28 [INF] Booting up server
+2018-03-12 18:26:28 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:26:28 [FTL] Database seed or update failed
+2018-03-12 18:26:28 [FTL] No service for type 'EmbyStat.Repositories.IDatabaseInitializer' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at EmbyStat.Web.Program.SetupDatbase(IWebHost host) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 75
+2018-03-12 18:26:48 [INF] Booting up server
+2018-03-12 18:26:49 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:26:49 [FTL] Database seed or update failed
+2018-03-12 18:26:49 [FTL] No service for type 'EmbyStat.Repositories.IDatabaseInitializer' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at EmbyStat.Web.Program.SetupDatbase(IWebHost host) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 78
+2018-03-12 18:27:17 [INF] Booting up server
+2018-03-12 18:27:31 [INF] Booting up server
+2018-03-12 18:27:33 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:27:33 [FTL] Database seed or update failed
+2018-03-12 18:27:33 [FTL] No service for type 'EmbyStat.Repositories.IDatabaseInitializer' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at EmbyStat.Web.Program.SetupDatbase(IWebHost host) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 78
+2018-03-12 18:28:24 [INF] Booting up server
+2018-03-12 18:28:26 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:28:26 [FTL] Server terminated unexpectedly
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+   at Microsoft.AspNetCore.Hosting.WebHostBuilder.Build()
+   at EmbyStat.Web.Program.BuildWebHost(String[] args) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 45
+   at EmbyStat.Web.Program.Main(String[] args) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 23
+2018-03-12 18:28:26 [INF] Server shutdown
+2018-03-12 18:28:35 [INF] Booting up server
+2018-03-12 18:28:36 [FTL] Application startup exception
+System.InvalidOperationException: The ConfigureServices method must either be parameterless or take only one parameter of type IServiceCollection.
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.ConfigureServicesBuilder.<>c__DisplayClass4_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.StartupLoader.<>c__DisplayClass0_0.<LoadMethods>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-03-12 18:28:36 [FTL] Database seed or update failed
+2018-03-12 18:28:36 [FTL] No service for type 'EmbyStat.Repositories.IDatabaseInitializer' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at EmbyStat.Web.Program.SetupDatbase(IWebHost host) in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Web\Program.cs:line 78
+2018-03-12 18:30:48 [INF] Booting up server
+2018-03-12 18:30:51 [INF] Migrating database started
+2018-03-12 18:30:51 [INF] Migrating database ended
+2018-03-12 18:31:14 [INF] Getting server configuration from database.
+2018-03-12 18:31:40 [INF] Booting up server
+2018-03-12 18:31:43 [INF] Migrating database started
+2018-03-12 18:31:43 [INF] Migrating database ended
+2018-03-12 18:32:06 [INF] Getting server configuration from database.
+2018-03-12 18:32:24 [INF] Shutdown server on users request.
+2018-03-12 18:32:24 [INF] Sweet dreams!!
+2018-03-12 18:32:24 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:35:29 [INF] Booting up server
+2018-03-12 18:35:33 [INF] Migrating database started
+2018-03-12 18:35:33 [INF] Migrating database ended
+2018-03-12 18:35:56 [INF] Getting server configuration from database.
+2018-03-12 18:35:59 [INF] Shutdown server on users request.
+2018-03-12 18:35:59 [INF] Sweet dreams!!
+2018-03-12 18:36:00 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:36:26 [INF] Booting up server
+2018-03-12 18:36:30 [INF] Migrating database started
+2018-03-12 18:36:30 [INF] Migrating database ended
+2018-03-12 18:36:53 [INF] Getting server configuration from database.
+2018-03-12 18:36:56 [INF] Shutdown server on users request.
+2018-03-12 18:36:56 [INF] Sweet dreams!!
+2018-03-12 18:36:57 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:39:11 [INF] Booting up server
+2018-03-12 18:39:14 [INF] Migrating database started
+2018-03-12 18:39:14 [INF] Migrating database ended
+2018-03-12 18:39:37 [INF] Getting server configuration from database.
+2018-03-12 18:39:49 [INF] Shutdown server on users request.
+2018-03-12 18:39:49 [INF] Sweet dreams!!
+2018-03-12 18:39:49 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:40:30 [INF] Shutdown server on users request.
+2018-03-12 18:40:30 [INF] Sweet dreams!!
+2018-03-12 18:40:30 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:43:59 [INF] Booting up server
+2018-03-12 18:44:03 [INF] Migrating database started
+2018-03-12 18:44:03 [INF] Migrating database ended
+2018-03-12 18:44:25 [INF] Getting server configuration from database.
+2018-03-12 18:46:32 [INF] Booting up server
+2018-03-12 18:46:35 [INF] Migrating database started
+2018-03-12 18:46:35 [INF] Migrating database ended
+2018-03-12 18:46:58 [INF] Getting server configuration from database.
+2018-03-12 18:52:58 [INF] Booting up server
+2018-03-12 18:53:01 [INF] Migrating database started
+2018-03-12 18:53:01 [INF] Migrating database ended
+2018-03-12 18:53:24 [INF] Getting server configuration from database.
+2018-03-12 18:53:34 [INF] Shutdown server on users request.
+2018-03-12 18:53:34 [INF] Sweet dreams!!
+2018-03-12 18:53:35 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:55:27 [INF] Booting up server
+2018-03-12 18:55:31 [INF] Migrating database started
+2018-03-12 18:55:31 [INF] Migrating database ended
+2018-03-12 18:55:56 [INF] Getting server configuration from database.
+2018-03-12 18:56:25 [INF] Shutdown server on users request.
+2018-03-12 18:56:25 [INF] Sweet dreams!!
+2018-03-12 18:56:26 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 18:57:01 [INF] Booting up server
+2018-03-12 18:57:05 [INF] Migrating database started
+2018-03-12 18:57:05 [INF] Migrating database ended
+2018-03-12 18:57:27 [INF] Getting server configuration from database.
+2018-03-12 18:58:59 [INF] Shutdown server on users request.
+2018-03-12 18:58:59 [INF] Sweet dreams!!
+2018-03-12 18:59:00 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 19:00:05 [INF] Shutdown server on users request.
+2018-03-12 19:00:05 [INF] Sweet dreams!!
+2018-03-12 19:00:06 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 19:08:36 [INF] Booting up server
+2018-03-12 19:08:40 [INF] Migrating database started
+2018-03-12 19:08:40 [INF] Migrating database ended
+2018-03-12 19:09:04 [INF] Getting server configuration from database.
+2018-03-12 19:09:09 [INF] Shutdown server on users request.
+2018-03-12 19:09:09 [INF] Sweet dreams!!
+2018-03-12 19:09:09 [ERR] JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+System.InvalidOperationException: JobStorage.Current property value has not been initialized. You must set it before using Hangfire Client or Server API.
+   at Hangfire.JobStorage.get_Current()
+   at Hangfire.BackgroundJob.<>c.<.cctor>b__39_0()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Hangfire.BackgroundJob.Schedule(Expression`1 methodCall, TimeSpan delay)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 19
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 19:23:56 [INF] Booting up server
+2018-03-12 19:23:59 [INF] Starting Hangfire Server
+2018-03-12 19:23:59 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:23:59 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:23:59 [INF]     Worker count: 20
+2018-03-12 19:23:59 [INF]     Listening queues: 'default'
+2018-03-12 19:23:59 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:23:59 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:23:59 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:23:59 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:23:59 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:23:59 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:23:59 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #72235458' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #53928b2d' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #92b5dfb8' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #2a29bf8a' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #cb80340d' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #1eb58e26' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #25801ac0' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #6fad2318' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #9fb8e7a4' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #f358832b' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #c50ed104' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #ab96ebc2' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #f6cff427' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #256da8f9' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #099c3cf6' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #0c3261ed' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #0ff155fe' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #377350f7' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #61415eed' started.
+2018-03-12 19:23:59 [DBG] Background process 'Worker #5c3465f2' started.
+2018-03-12 19:23:59 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:23:59 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:24:00 [INF] Migrating database started
+2018-03-12 19:24:00 [INF] Migrating database ended
+2018-03-12 19:24:22 [INF] Getting server configuration from database.
+2018-03-12 19:24:34 [INF] Shutdown server on users request.
+2018-03-12 19:24:34 [INF] Sweet dreams!!
+2018-03-12 19:24:44 [INF] 1 scheduled job(s) enqueued.
+2018-03-12 19:24:48 [INF] Shutdown server on users request.
+2018-03-12 19:24:48 [INF] Sweet dreams!!
+2018-03-12 19:24:59 [INF] 1 scheduled job(s) enqueued.
+2018-03-12 19:28:42 [INF] Booting up server
+2018-03-12 19:28:45 [INF] Starting Hangfire Server
+2018-03-12 19:28:45 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:28:45 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:28:45 [INF]     Worker count: 20
+2018-03-12 19:28:45 [INF]     Listening queues: 'default'
+2018-03-12 19:28:45 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:28:45 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:28:45 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:28:45 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:28:46 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:28:46 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:28:46 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #d966e5f7' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #f755c01a' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #4dfdaf78' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #58ce81bb' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #6172e45f' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #d63b227a' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #9a28707c' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #8ca20319' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #d87833ee' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #62fb4f1f' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #612b9bf2' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #1dd1baeb' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #d8dea594' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #59a557fa' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #eb3151b8' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #8db81bab' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #b93ff819' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #d6746d95' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #c3b11271' started.
+2018-03-12 19:28:46 [DBG] Background process 'Worker #009a9b88' started.
+2018-03-12 19:28:46 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:28:46 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:28:46 [INF] Migrating database started
+2018-03-12 19:28:47 [INF] Migrating database ended
+2018-03-12 19:29:10 [INF] Getting server configuration from database.
+2018-03-12 19:31:23 [INF] Shutdown server on users request.
+2018-03-12 19:31:24 [INF] Sweet dreams!!
+2018-03-12 19:33:21 [INF] Booting up server
+2018-03-12 19:33:24 [INF] Starting Hangfire Server
+2018-03-12 19:33:24 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:33:24 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:33:24 [INF]     Worker count: 20
+2018-03-12 19:33:24 [INF]     Listening queues: 'default'
+2018-03-12 19:33:24 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:33:24 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:33:24 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:33:25 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:33:25 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:33:25 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:33:25 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #f3166659' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #452e20a3' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #dab18840' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #a3097054' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #29948f79' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #e2e6de53' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #d7d91ac2' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #4dd7c4b9' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #63545afc' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #284806a9' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #bbcd21b2' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #aacdeeee' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #84ab5907' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #b98ba70f' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #382b3403' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #97bc232e' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #3a2d282c' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #5df7d75e' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #19e44f84' started.
+2018-03-12 19:33:25 [DBG] Background process 'Worker #0a64c5d7' started.
+2018-03-12 19:33:25 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:33:25 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:33:26 [INF] Migrating database started
+2018-03-12 19:33:26 [INF] Migrating database ended
+2018-03-12 19:33:52 [INF] Getting server configuration from database.
+2018-03-12 19:35:26 [INF] Shutdown server on users request.
+2018-03-12 19:35:26 [INF] Sweet dreams!!
+2018-03-12 19:36:10 [INF] Booting up server
+2018-03-12 19:36:12 [INF] Starting Hangfire Server
+2018-03-12 19:36:12 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:36:12 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:36:12 [INF]     Worker count: 20
+2018-03-12 19:36:12 [INF]     Listening queues: 'default'
+2018-03-12 19:36:12 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:36:12 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:36:12 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:36:13 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:36:13 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:36:13 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:36:13 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #930ed5c8' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #5cf3300d' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #9539bc10' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #52cf9e55' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #6fe190fa' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #b8a3b404' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #b6ec17fd' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #b05ad3b3' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #6d5d7e17' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #e3df9228' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #fac1a0b7' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #b8f29f4d' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #9b4bf539' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #e94aff8e' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #3562d4f0' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #284331d0' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #0a2b7fb0' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #3f1d834b' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #9d64ed3c' started.
+2018-03-12 19:36:13 [DBG] Background process 'Worker #fdb60637' started.
+2018-03-12 19:36:13 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:36:13 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:36:14 [INF] Migrating database started
+2018-03-12 19:36:14 [INF] Migrating database ended
+2018-03-12 19:36:36 [INF] Getting server configuration from database.
+2018-03-12 19:36:51 [ERR] Unable to resolve service for type 'Microsoft.Extensions.Logging.ILogger' while attempting to activate 'EmbyStat.Services.System.SystemService'.
+System.InvalidOperationException: Unable to resolve service for type 'Microsoft.Extensions.Logging.ILogger' while attempting to activate 'EmbyStat.Services.System.SystemService'.
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateArgumentCallSites(Type serviceType, Type implementationType, CallSiteChain callSiteChain, ParameterInfo[] parameters, Boolean throwIfCallSiteNotFound)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateConstructorCallSite(Type serviceType, Type implementationType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(Type serviceType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateCallSite(Type serviceType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.CreateServiceAccessor(Type serviceType)
+   at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 19:37:56 [INF] Booting up server
+2018-03-12 19:37:59 [INF] Starting Hangfire Server
+2018-03-12 19:37:59 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:37:59 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:37:59 [INF]     Worker count: 20
+2018-03-12 19:37:59 [INF]     Listening queues: 'default'
+2018-03-12 19:37:59 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:37:59 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:37:59 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:38:00 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:38:00 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:38:00 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:38:00 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #c9555ddb' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #a11396b7' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #a80e952e' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #b8ac7408' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #eb3984c5' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #809c88c6' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #d2875d20' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #679af829' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #f536a8fb' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #ed1d5073' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #bd82a535' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #fa343a00' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #898e7aed' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #dd6374d2' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #d0e992c5' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #37db445e' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #8866c743' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #6fdf7219' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #990f90ff' started.
+2018-03-12 19:38:00 [DBG] Background process 'Worker #ceb11de2' started.
+2018-03-12 19:38:00 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:38:00 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:38:01 [INF] Migrating database started
+2018-03-12 19:38:01 [INF] Migrating database ended
+2018-03-12 19:38:25 [INF] Getting server configuration from database.
+2018-03-12 19:38:31 [INF] Shutdown server on users request.
+2018-03-12 19:38:31 [INF] Sweet dreams!!
+2018-03-12 19:38:31 [ERR] Only public methods can be invoked in the background.
+System.NotSupportedException: Only public methods can be invoked in the background.
+   at Hangfire.Common.Job.Validate(Type type, String typeParameterName, MethodInfo method, String methodParameterName, Int32 argumentCount, String argumentParameterName)
+   at Hangfire.Common.Job..ctor(Type type, MethodInfo method, Object[] args)
+   at Hangfire.Common.Job.FromExpression(LambdaExpression methodCall, Type explicitType)
+   at Hangfire.BackgroundJobClientExtensions.Create(IBackgroundJobClient client, Expression`1 methodCall, IState state)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 23
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 19:38:55 [INF] Booting up server
+2018-03-12 19:38:58 [INF] Starting Hangfire Server
+2018-03-12 19:38:58 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:38:58 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:38:58 [INF]     Worker count: 20
+2018-03-12 19:38:58 [INF]     Listening queues: 'default'
+2018-03-12 19:38:58 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:38:58 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:38:58 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:38:58 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:38:58 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:38:58 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:38:58 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #8e3bb1c3' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #e35f9edd' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #0960da7f' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #dd9719f5' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #9abcbc0c' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #8d7a9aea' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #513cac2b' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #9ad8ed40' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #cc3204e7' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #d3a59814' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #f4e185bf' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #ea9b25aa' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #fa6adb6b' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #748a1828' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #99742613' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #3e2a32c3' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #59b2ba05' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #76179717' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #48549c4c' started.
+2018-03-12 19:38:58 [DBG] Background process 'Worker #77c96ba8' started.
+2018-03-12 19:38:58 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:38:58 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:38:59 [INF] Migrating database started
+2018-03-12 19:38:59 [INF] Migrating database ended
+2018-03-12 19:39:23 [INF] Getting server configuration from database.
+2018-03-12 19:39:42 [INF] Shutdown server on users request.
+2018-03-12 19:39:42 [INF] Sweet dreams!!
+2018-03-12 19:39:43 [ERR] Only public methods can be invoked in the background.
+System.NotSupportedException: Only public methods can be invoked in the background.
+   at Hangfire.Common.Job.Validate(Type type, String typeParameterName, MethodInfo method, String methodParameterName, Int32 argumentCount, String argumentParameterName)
+   at Hangfire.Common.Job..ctor(Type type, MethodInfo method, Object[] args)
+   at Hangfire.Common.Job.FromExpression(LambdaExpression methodCall, Type explicitType)
+   at Hangfire.BackgroundJobClientExtensions.Create(IBackgroundJobClient client, Expression`1 methodCall, IState state)
+   at EmbyStat.Services.System.SystemService.StartShutdownJob() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Services\System\SystemService.cs:line 23
+   at EmbyStat.Controllers.System.SystemController.Shutdown() in C:\Users\Mikhael\source\repos\EmbyStat\EmbyStat.Controllers\System\SystemController.cs:line 35
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextExceptionFilterAsync>d__23.MoveNext()
+2018-03-12 19:40:10 [INF] Booting up server
+2018-03-12 19:40:13 [INF] Starting Hangfire Server
+2018-03-12 19:40:13 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:40:13 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:40:13 [INF]     Worker count: 20
+2018-03-12 19:40:13 [INF]     Listening queues: 'default'
+2018-03-12 19:40:13 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:40:13 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:40:13 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:40:13 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:40:13 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:40:13 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:40:13 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #2d24c538' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #b898d02a' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #141244e4' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #1b897871' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #2cf12e18' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #2787bdcd' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #6f2c50e4' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #2aafbda3' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #5c9b4a06' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #69bcd97b' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #83f9169f' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #0462e630' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #f2fda726' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #5d168c89' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #e4d1b27e' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #3c08d2ef' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #3dc05da1' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #82cdab4a' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #0756306c' started.
+2018-03-12 19:40:13 [DBG] Background process 'Worker #8dbbb4d1' started.
+2018-03-12 19:40:13 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:40:13 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:40:14 [INF] Migrating database started
+2018-03-12 19:40:14 [INF] Migrating database ended
+2018-03-12 19:40:36 [INF] Getting server configuration from database.
+2018-03-12 19:40:41 [INF] Shutdown server on users request.
+2018-03-12 19:40:41 [INF] Sweet dreams!!
+2018-03-12 19:40:41 [INF] Shutdown task started
+2018-03-12 19:40:41 [DBG] Hangfire Server is stopping...
+2018-03-12 19:40:41 [DBG] Background process 'DelayedJobScheduler' stopped.
+2018-03-12 19:40:41 [DBG] Background process 'ServerWatchdog' stopped.
+2018-03-12 19:40:41 [DBG] Background process 'ServerHeartbeat' stopped.
+2018-03-12 19:40:41 [DBG] Background process 'Composite C1 Records Expiration Manager' stopped.
+2018-03-12 19:40:41 [DBG] Background process 'Counter Table Aggregator' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'RecurringJobScheduler' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #0462e630' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #69bcd97b' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #5d168c89' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #f2fda726' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #8dbbb4d1' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #5c9b4a06' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #e4d1b27e' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #1b897871' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #2cf12e18' stopped.
+2018-03-12 19:40:42 [DBG] Background process 'Worker #83f9169f' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #82cdab4a' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #3dc05da1' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #3c08d2ef' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #2787bdcd' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #141244e4' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #2aafbda3' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #2d24c538' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #0756306c' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #6f2c50e4' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'Worker #b898d02a' stopped.
+2018-03-12 19:40:43 [DBG] Background process 'BackgroundProcessingServer' stopped.
+2018-03-12 19:40:43 [INF] Hangfire Server stopped.
+2018-03-12 19:40:43 [INF] Server shutdown
+2018-03-12 19:45:24 [INF] Booting up server
+2018-03-12 19:45:27 [INF] Starting Hangfire Server
+2018-03-12 19:45:27 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:45:27 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:45:27 [INF]     Worker count: 20
+2018-03-12 19:45:27 [INF]     Listening queues: 'default'
+2018-03-12 19:45:27 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:45:27 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:45:27 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:45:28 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:45:28 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:45:28 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:45:28 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #0c7c8128' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #02feb73d' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #2757b40f' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #e45e42ab' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #65c92a9d' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #80e99269' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #cb19bab6' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #12eb3778' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #48a4b750' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #fec8503e' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #00b3b68f' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #31134b16' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #9dad22f9' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #0dc670dd' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #ab9b6619' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #06eeea9c' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #a211e9ac' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #6f73377c' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #01cb59b6' started.
+2018-03-12 19:45:28 [DBG] Background process 'Worker #d7245489' started.
+2018-03-12 19:45:28 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:45:28 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:45:29 [INF] Migrating database started
+2018-03-12 19:45:29 [INF] Migrating database ended
+2018-03-12 19:45:54 [INF] Getting server configuration from database.
+2018-03-12 19:45:58 [INF] Shutdown server on users request.
+2018-03-12 19:45:58 [INF] Sweet dreams!!
+2018-03-12 19:45:58 [INF] Shutdown task started
+2018-03-12 19:45:58 [DBG] Hangfire Server is stopping...
+2018-03-12 19:45:58 [DBG] Background process 'DelayedJobScheduler' stopped.
+2018-03-12 19:45:58 [DBG] Background process 'ServerWatchdog' stopped.
+2018-03-12 19:45:58 [DBG] Background process 'ServerHeartbeat' stopped.
+2018-03-12 19:45:58 [DBG] Background process 'Composite C1 Records Expiration Manager' stopped.
+2018-03-12 19:45:58 [DBG] Background process 'Counter Table Aggregator' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #48a4b750' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #65c92a9d' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #9dad22f9' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #a211e9ac' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #6f73377c' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #0dc670dd' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #01cb59b6' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #fec8503e' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'RecurringJobScheduler' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #31134b16' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #06eeea9c' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #e45e42ab' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #12eb3778' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #2757b40f' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #80e99269' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #02feb73d' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #d7245489' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #00b3b68f' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #cb19bab6' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #ab9b6619' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'Worker #0c7c8128' stopped.
+2018-03-12 19:45:59 [DBG] Background process 'BackgroundProcessingServer' stopped.
+2018-03-12 19:46:00 [INF] Hangfire Server stopped.
+2018-03-12 19:46:00 [INF] Server shutdown
+2018-03-12 19:53:29 [INF] Booting up server
+2018-03-12 19:53:30 [INF] Starting Hangfire Server
+2018-03-12 19:53:30 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:53:30 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:53:30 [INF]     Worker count: 20
+2018-03-12 19:53:30 [INF]     Listening queues: 'default'
+2018-03-12 19:53:30 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:53:30 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:53:30 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:53:30 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:53:30 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:53:30 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:53:30 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #e242e64e' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #20c9fc23' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #28817115' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #aea2063d' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #279c4341' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #5535da48' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #c5628e6d' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #a9434ae4' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #815ef362' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #d99e0cf1' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #27d4090d' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #83521678' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #e7a9df7c' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #b23c518c' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #dee4308a' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #3d56e7dc' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #cc781ee9' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #c19ca6e5' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #9f97f171' started.
+2018-03-12 19:53:30 [DBG] Background process 'Worker #5923d3e2' started.
+2018-03-12 19:53:30 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:53:30 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:53:30 [INF] Migrating database started
+2018-03-12 19:53:30 [INF] Migrating database ended
+2018-03-12 19:53:53 [INF] Getting server configuration from database.
+2018-03-12 19:55:51 [INF] Shutdown server on users request.
+2018-03-12 19:55:51 [INF] Sweet dreams!!
+2018-03-12 19:55:51 [INF] Shutdown task started
+2018-03-12 19:55:51 [DBG] Hangfire Server is stopping...
+2018-03-12 19:55:51 [DBG] Background process 'DelayedJobScheduler' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #e242e64e' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #b23c518c' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #c5628e6d' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #28817115' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #e7a9df7c' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #d99e0cf1' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #20c9fc23' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #aea2063d' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #279c4341' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #5535da48' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'ServerHeartbeat' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #3d56e7dc' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #815ef362' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'ServerWatchdog' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #cc781ee9' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #a9434ae4' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Counter Table Aggregator' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'RecurringJobScheduler' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Composite C1 Records Expiration Manager' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #83521678' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #c19ca6e5' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #9f97f171' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #dee4308a' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #27d4090d' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'Worker #5923d3e2' stopped.
+2018-03-12 19:55:51 [DBG] Background process 'BackgroundProcessingServer' stopped.
+2018-03-12 19:55:51 [INF] Hangfire Server stopped.
+2018-03-12 19:55:51 [INF] Server shutdown
+2018-03-12 19:55:53 [INF] Booting up server
+2018-03-12 19:55:54 [INF] Starting Hangfire Server
+2018-03-12 19:55:54 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:55:54 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:55:54 [INF]     Worker count: 20
+2018-03-12 19:55:54 [INF]     Listening queues: 'default'
+2018-03-12 19:55:54 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:55:54 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:55:54 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:55:54 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:55:54 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:55:54 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:55:54 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #b6733ac8' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #b1677c79' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #6a69b4ab' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #72a76b68' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #58f19e99' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #68edafe8' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #30877658' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #472c51c1' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #3edb98be' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #8b3016c6' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #a4eb2b3f' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #5a6c75b8' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #df82d3ed' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #bea81f66' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #10b0b111' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #c79e84ab' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #382d7ef5' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #1018bf03' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #840f8f65' started.
+2018-03-12 19:55:54 [DBG] Background process 'Worker #dc9b3c57' started.
+2018-03-12 19:55:54 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:55:54 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:55:55 [INF] Migrating database started
+2018-03-12 19:55:55 [INF] Migrating database ended
+2018-03-12 19:56:14 [INF] Getting server configuration from database.
+2018-03-12 19:59:03 [INF] Shutdown server on users request.
+2018-03-12 19:59:03 [INF] Sweet dreams!!
+2018-03-12 19:59:03 [INF] Shutdown task started
+2018-03-12 19:59:03 [DBG] Hangfire Server is stopping...
+2018-03-12 19:59:03 [DBG] Background process 'DelayedJobScheduler' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'ServerHeartbeat' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'ServerWatchdog' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Counter Table Aggregator' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #3edb98be' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Composite C1 Records Expiration Manager' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #5a6c75b8' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'RecurringJobScheduler' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #bea81f66' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #72a76b68' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #6a69b4ab' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #dc9b3c57' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #1018bf03' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #df82d3ed' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #c79e84ab' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #10b0b111' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #840f8f65' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #68edafe8' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #b1677c79' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #a4eb2b3f' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #382d7ef5' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #8b3016c6' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #30877658' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #b6733ac8' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #472c51c1' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'Worker #58f19e99' stopped.
+2018-03-12 19:59:03 [DBG] Background process 'BackgroundProcessingServer' stopped.
+2018-03-12 19:59:03 [INF] Hangfire Server stopped.
+2018-03-12 19:59:03 [INF] Server shutdown
+2018-03-12 19:59:05 [INF] Booting up server
+2018-03-12 19:59:06 [INF] Starting Hangfire Server
+2018-03-12 19:59:06 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 19:59:06 [INF] Using the following options for Hangfire Server:
+2018-03-12 19:59:06 [INF]     Worker count: 20
+2018-03-12 19:59:06 [INF]     Listening queues: 'default'
+2018-03-12 19:59:06 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 19:59:06 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 19:59:06 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 19:59:06 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 19:59:06 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 19:59:06 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 19:59:06 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #034be45b' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #2bf62d02' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #18dceb18' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #9f8ce6a5' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #39add9e3' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #906c5cf5' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #22616f72' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #fb391a36' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #71543760' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #40d614b1' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #cab2cd72' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #64b2a4d0' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #b8e8e12e' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #7e32e297' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #a2104af6' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #eb44b61a' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #12901f7a' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #5c41d1ef' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #92aa019c' started.
+2018-03-12 19:59:06 [DBG] Background process 'Worker #55f83a42' started.
+2018-03-12 19:59:06 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 19:59:06 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 19:59:06 [INF] Migrating database started
+2018-03-12 19:59:06 [INF] Migrating database ended
+2018-03-12 19:59:27 [INF] Getting server configuration from database.
+2018-03-12 20:00:53 [INF] Booting up server
+2018-03-12 20:00:54 [INF] Starting Hangfire Server
+2018-03-12 20:00:54 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:00:54 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:00:54 [INF]     Worker count: 20
+2018-03-12 20:00:54 [INF]     Listening queues: 'default'
+2018-03-12 20:00:54 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:00:54 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:00:54 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 20:00:54 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 20:00:54 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 20:00:54 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 20:00:54 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #ff434052' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #d38d1c2a' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #8a377dfe' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #4e5be1af' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #2fe5a651' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #82ca919e' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #9342e157' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #bfa42e61' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #2612c5d5' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #b193693a' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #08976864' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #d8e4d3cb' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #b72de029' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #f901bf1d' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #2545c4c7' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #0efc6ab1' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #f84bf02e' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #de9f239c' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #3c70cbfe' started.
+2018-03-12 20:00:54 [DBG] Background process 'Worker #9f2617df' started.
+2018-03-12 20:00:54 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 20:00:54 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 20:00:55 [INF] Migrating database started
+2018-03-12 20:00:55 [INF] Migrating database ended
+2018-03-12 20:01:19 [INF] Getting server configuration from database.
+2018-03-12 20:04:57 [INF] Getting server configuration from database.
+2018-03-12 20:05:01 [INF] Shutdown server on users request.
+2018-03-12 20:05:01 [INF] Sweet dreams!!
+2018-03-12 20:05:01 [INF] Shutdown task started
+2018-03-12 20:05:01 [DBG] Hangfire Server is stopping...
+2018-03-12 20:05:01 [DBG] Background process 'DelayedJobScheduler' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Counter Table Aggregator' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #f84bf02e' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #ff434052' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Composite C1 Records Expiration Manager' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #d38d1c2a' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'ServerHeartbeat' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #bfa42e61' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #9342e157' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'ServerWatchdog' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #82ca919e' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #b72de029' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'RecurringJobScheduler' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #8a377dfe' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #2fe5a651' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #3c70cbfe' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #b193693a' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #f901bf1d' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #9f2617df' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #2545c4c7' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #08976864' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #de9f239c' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #0efc6ab1' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #d8e4d3cb' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #2612c5d5' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'Worker #4e5be1af' stopped.
+2018-03-12 20:05:01 [DBG] Background process 'BackgroundProcessingServer' stopped.
+2018-03-12 20:05:01 [INF] Hangfire Server stopped.
+2018-03-12 20:05:01 [INF] Server shutdown
+2018-03-12 20:05:02 [INF] Booting up server
+2018-03-12 20:05:03 [INF] Starting Hangfire Server
+2018-03-12 20:05:03 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:05:03 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:05:03 [INF]     Worker count: 20
+2018-03-12 20:05:03 [INF]     Listening queues: 'default'
+2018-03-12 20:05:03 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:05:03 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:05:03 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 20:05:03 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 20:05:03 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 20:05:03 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 20:05:03 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #1f1c3739' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #792b06f1' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #8ae15437' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #907bc5ca' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #e7634c0c' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #1e2201d2' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #0d390521' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #dfeacf44' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #3e3b3735' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #7028c0a4' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #01e9b54f' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #2569560b' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #88b85be2' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #285025aa' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #9c417510' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #399849b5' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #9ae4ce65' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #8aaf899c' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #223f4082' started.
+2018-03-12 20:05:03 [DBG] Background process 'Worker #13c8eee6' started.
+2018-03-12 20:05:03 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 20:05:03 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 20:05:03 [INF] Migrating database started
+2018-03-12 20:05:03 [INF] Migrating database ended
+2018-03-12 20:05:25 [INF] Getting server configuration from database.
+2018-03-12 20:05:26 [INF] Getting server configuration from database.
+2018-03-12 20:09:42 [INF] Getting server configuration from database.
+2018-03-12 20:12:05 [INF] Booting up server
+2018-03-12 20:12:06 [INF] Starting Hangfire Server
+2018-03-12 20:12:06 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:12:06 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:12:06 [INF]     Worker count: 20
+2018-03-12 20:12:06 [INF]     Listening queues: 'default'
+2018-03-12 20:12:06 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:12:06 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:12:06 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 20:12:06 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 20:12:06 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 20:12:06 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 20:12:06 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #a6a16b2d' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #b22c45a2' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #9cb57b62' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #c894ab13' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #ae6cfefb' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #e033d992' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #54ef2b6a' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #80b25750' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #0e16bff9' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #916e1e7d' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #2c528f12' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #a6535e90' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #c4b3e637' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #bf271ce5' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #373d1c82' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #4cc8008c' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #09356c3d' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #e0a083b6' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #d121fecc' started.
+2018-03-12 20:12:06 [DBG] Background process 'Worker #f0ecac87' started.
+2018-03-12 20:12:06 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 20:12:06 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 20:12:06 [INF] Migrating database started
+2018-03-12 20:12:06 [INF] Migrating database ended
+2018-03-12 20:12:29 [INF] Getting server configuration from database.
+2018-03-12 20:12:33 [INF] Shutdown server on users request.
+2018-03-12 20:12:33 [INF] Sweet dreams!!
+2018-03-12 20:12:33 [INF] Shutdown task started
+2018-03-12 20:12:33 [DBG] Hangfire Server is stopping...
+2018-03-12 20:12:33 [DBG] Background process 'DelayedJobScheduler' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'ServerWatchdog' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #b22c45a2' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'ServerHeartbeat' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #a6535e90' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'RecurringJobScheduler' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #e033d992' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #0e16bff9' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #e0a083b6' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #09356c3d' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #d121fecc' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #ae6cfefb' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #373d1c82' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #bf271ce5' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #4cc8008c' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #2c528f12' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #916e1e7d' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #9cb57b62' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Counter Table Aggregator' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #c894ab13' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #f0ecac87' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Composite C1 Records Expiration Manager' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #54ef2b6a' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #c4b3e637' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #a6a16b2d' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'Worker #80b25750' stopped.
+2018-03-12 20:12:33 [DBG] Background process 'BackgroundProcessingServer' stopped.
+2018-03-12 20:12:33 [INF] Hangfire Server stopped.
+2018-03-12 20:12:33 [INF] Server shutdown
+2018-03-12 20:12:35 [INF] Booting up server
+2018-03-12 20:12:36 [INF] Starting Hangfire Server
+2018-03-12 20:12:36 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:12:36 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:12:36 [INF]     Worker count: 20
+2018-03-12 20:12:36 [INF]     Listening queues: 'default'
+2018-03-12 20:12:36 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:12:36 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:12:36 [DBG] Background process 'BackgroundProcessingServer' started.
+2018-03-12 20:12:36 [DBG] Background process 'ServerHeartbeat' started.
+2018-03-12 20:12:36 [DBG] Background process 'ServerWatchdog' started.
+2018-03-12 20:12:36 [DBG] Background process 'Composite C1 Records Expiration Manager' started.
+2018-03-12 20:12:36 [DBG] Background process 'Counter Table Aggregator' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #24c31d0d' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #0b99dba6' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #93151ab6' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #f2e1a59f' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #e0852211' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #08e88663' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #f4f33f96' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #8f4d784d' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #d0082496' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #39bc1a51' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #9164eff8' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #7704b4f0' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #7f2d166d' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #8b5bd011' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #cddf35d7' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #f224351e' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #fcf78b61' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #96bcfc35' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #ec315a4e' started.
+2018-03-12 20:12:36 [DBG] Background process 'Worker #2cb2c59a' started.
+2018-03-12 20:12:36 [DBG] Background process 'DelayedJobScheduler' started.
+2018-03-12 20:12:36 [DBG] Background process 'RecurringJobScheduler' started.
+2018-03-12 20:12:37 [INF] Migrating database started
+2018-03-12 20:12:37 [INF] Migrating database ended
+2018-03-12 20:12:59 [INF] Getting server configuration from database.
+2018-03-12 20:13:24 [INF] Getting server configuration from database.
+2018-03-12 20:24:54 [INF] Booting up server
+2018-03-12 20:24:57 [INF] Starting Hangfire Server
+2018-03-12 20:24:57 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:24:57 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:24:57 [INF]     Worker count: 20
+2018-03-12 20:24:57 [INF]     Listening queues: 'default'
+2018-03-12 20:24:57 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:24:57 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:24:58 [INF] Migrating database started
+2018-03-12 20:24:59 [INF] Migrating database ended
+2018-03-12 20:25:22 [INF] Getting server configuration from database.
+2018-03-12 20:25:22 [INF] Getting server configuration from database.
+2018-03-12 20:25:37 [INF] Shutdown server on users request.
+2018-03-12 20:25:37 [INF] Sweet dreams!!
+2018-03-12 20:25:37 [INF] Shutdown task started
+2018-03-12 20:25:39 [INF] Hangfire Server stopped.
+2018-03-12 20:25:39 [INF] Server shutdown
+2018-03-12 20:25:41 [INF] Booting up server
+2018-03-12 20:25:42 [INF] Starting Hangfire Server
+2018-03-12 20:25:42 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:25:42 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:25:42 [INF]     Worker count: 20
+2018-03-12 20:25:42 [INF]     Listening queues: 'default'
+2018-03-12 20:25:42 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:25:42 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:25:43 [INF] Migrating database started
+2018-03-12 20:25:43 [INF] Migrating database ended
+2018-03-12 20:26:04 [INF] Getting server configuration from database.
+2018-03-12 20:26:04 [INF] Getting server configuration from database.
+2018-03-12 20:29:27 [INF] Shutdown server on users request.
+2018-03-12 20:29:27 [INF] Sweet dreams!!
+2018-03-12 20:29:27 [INF] Shutdown task started
+2018-03-12 20:29:27 [INF] Hangfire Server stopped.
+2018-03-12 20:29:27 [INF] Server shutdown
+2018-03-12 20:30:01 [INF] Booting up server
+2018-03-12 20:30:02 [INF] Starting Hangfire Server
+2018-03-12 20:30:02 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 20:30:02 [INF] Using the following options for Hangfire Server:
+2018-03-12 20:30:02 [INF]     Worker count: 20
+2018-03-12 20:30:02 [INF]     Listening queues: 'default'
+2018-03-12 20:30:02 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 20:30:02 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 20:30:03 [INF] Migrating database started
+2018-03-12 20:30:03 [INF] Migrating database ended
+2018-03-12 20:30:24 [INF] Getting server configuration from database.
+2018-03-12 20:30:24 [INF] Getting server configuration from database.
+2018-03-12 21:42:32 [INF] Getting server configuration from database.
+2018-03-12 21:42:37 [INF] Shutdown server on users request.
+2018-03-12 21:42:37 [INF] Sweet dreams!!
+2018-03-12 21:42:37 [INF] Shutdown task started
+2018-03-12 21:42:37 [INF] Hangfire Server stopped.
+2018-03-12 21:42:37 [INF] Server shutdown
+2018-03-12 21:42:39 [INF] Booting up server
+2018-03-12 21:42:40 [INF] Starting Hangfire Server
+2018-03-12 21:42:40 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 21:42:40 [INF] Using the following options for Hangfire Server:
+2018-03-12 21:42:40 [INF]     Worker count: 20
+2018-03-12 21:42:40 [INF]     Listening queues: 'default'
+2018-03-12 21:42:40 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 21:42:40 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 21:42:41 [INF] Migrating database started
+2018-03-12 21:42:41 [INF] Migrating database ended
+2018-03-12 21:43:10 [INF] Getting server configuration from database.
+2018-03-12 21:43:10 [INF] Getting server configuration from database.
+2018-03-12 21:43:37 [INF] Shutdown server on users request.
+2018-03-12 21:43:37 [INF] Sweet dreams!!
+2018-03-12 21:43:37 [INF] Shutdown task started
+2018-03-12 21:43:37 [INF] Hangfire Server stopped.
+2018-03-12 21:43:37 [INF] Server shutdown
+2018-03-12 21:43:39 [INF] Booting up server
+2018-03-12 21:43:41 [INF] Starting Hangfire Server
+2018-03-12 21:43:41 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 21:43:41 [INF] Using the following options for Hangfire Server:
+2018-03-12 21:43:41 [INF]     Worker count: 20
+2018-03-12 21:43:41 [INF]     Listening queues: 'default'
+2018-03-12 21:43:41 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 21:43:41 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 21:43:41 [INF] Migrating database started
+2018-03-12 21:43:42 [INF] Migrating database ended
+2018-03-12 21:53:50 [INF] Booting up server
+2018-03-12 21:53:53 [INF] Starting Hangfire Server
+2018-03-12 21:53:53 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 21:53:53 [INF] Using the following options for Hangfire Server:
+2018-03-12 21:53:53 [INF]     Worker count: 20
+2018-03-12 21:53:53 [INF]     Listening queues: 'default'
+2018-03-12 21:53:53 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 21:53:53 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 21:53:55 [INF] Migrating database started
+2018-03-12 21:53:55 [INF] Migrating database ended
+2018-03-12 21:54:32 [INF] Getting server configuration from database.
+2018-03-12 21:54:39 [INF] Shutdown server on users request.
+2018-03-12 21:54:39 [INF] Sweet dreams!!
+2018-03-12 21:54:39 [INF] Shutdown task started
+2018-03-12 21:54:42 [INF] Hangfire Server stopped.
+2018-03-12 21:54:42 [INF] Server shutdown
+2018-03-12 22:06:54 [INF] Booting up server
+2018-03-12 22:06:57 [INF] Starting Hangfire Server
+2018-03-12 22:06:57 [INF] Using job storage: 'Hangfire.MemoryStorage.MemoryStorage'
+2018-03-12 22:06:57 [INF] Using the following options for Hangfire Server:
+2018-03-12 22:06:57 [INF]     Worker count: 20
+2018-03-12 22:06:57 [INF]     Listening queues: 'default'
+2018-03-12 22:06:57 [INF]     Shutdown timeout: 00:00:15
+2018-03-12 22:06:57 [INF]     Schedule polling interval: 00:00:15
+2018-03-12 22:06:59 [INF] Migrating database started
+2018-03-12 22:06:59 [INF] Migrating database ended
+2018-03-12 22:07:30 [INF] Getting server configuration from database.
+2018-03-12 22:52:45 [INF] Shutdown server on users request.
+2018-03-12 22:52:45 [INF] Sweet dreams!!
+2018-03-12 22:52:45 [INF] Shutdown task started
+2018-03-12 22:52:47 [INF] Hangfire Server stopped.
+2018-03-12 22:52:47 [INF] Server shutdown

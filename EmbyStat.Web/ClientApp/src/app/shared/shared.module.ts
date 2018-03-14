@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
+import { ShutdownComponent } from './dialog/shutdown/shutdown.dialog';
 
 import { ToastService } from './services/toast.service';
 
@@ -23,10 +24,11 @@ import { ToastService } from './services/toast.service';
   ],
   declarations: [
     ToolbarComponent,
-    SideNavComponent
+    SideNavComponent,
+    ShutdownComponent
   ],
   providers: [
     ToastService
-  ]
+  ], entryComponents: [ShutdownComponent]
 })
 export class SharedModule { }

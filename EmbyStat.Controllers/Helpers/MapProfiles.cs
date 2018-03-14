@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EmbyStat.Controllers.Configuration;
-using EmbyStat.Services.Config.Models;
+using EmbyStat.Controllers.Emby;
+using EmbyStat.Services.Emby.Models;
 
 namespace EmbyStat.Controllers.Helpers
 {
@@ -10,6 +11,8 @@ namespace EmbyStat.Controllers.Helpers
 	    {
 		    CreateMap<Repositories.Config.Configuration, ConfigurationViewModel>().ReverseMap();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
+		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
+		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
 	    }
     }
 }

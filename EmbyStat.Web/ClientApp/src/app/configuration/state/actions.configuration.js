@@ -4,6 +4,8 @@ var ConfigurationActionTypes;
 (function (ConfigurationActionTypes) {
     ConfigurationActionTypes["LOAD_CONFIGURATION"] = "[Configuration] Load Configuration";
     ConfigurationActionTypes["LOAD_CONFIGURATION_SUCCESS"] = "[Configuration] Load Configuration Success";
+    ConfigurationActionTypes["UPDATE_CONFIGURATION"] = "[Configuration] Updated Configuration";
+    ConfigurationActionTypes["UPDATE_CONFIGURATION_SUCCESS"] = "[Configuration] Updated Configuration Success";
 })(ConfigurationActionTypes = exports.ConfigurationActionTypes || (exports.ConfigurationActionTypes = {}));
 var LoadConfigurationAction = /** @class */ (function () {
     function LoadConfigurationAction(payload) {
@@ -22,4 +24,20 @@ var LoadConfigurationSuccessAction = /** @class */ (function () {
     return LoadConfigurationSuccessAction;
 }());
 exports.LoadConfigurationSuccessAction = LoadConfigurationSuccessAction;
-//# sourceMappingURL=configuration.actions.js.map
+var UpdateConfigurationAction = /** @class */ (function () {
+    function UpdateConfigurationAction(payload) {
+        this.payload = payload;
+        this.type = ConfigurationActionTypes.UPDATE_CONFIGURATION;
+    }
+    return UpdateConfigurationAction;
+}());
+exports.UpdateConfigurationAction = UpdateConfigurationAction;
+var UpdateConfigurationSuccessAction = /** @class */ (function () {
+    function UpdateConfigurationSuccessAction(payload) {
+        this.payload = payload;
+        this.type = ConfigurationActionTypes.UPDATE_CONFIGURATION;
+    }
+    return UpdateConfigurationSuccessAction;
+}());
+exports.UpdateConfigurationSuccessAction = UpdateConfigurationSuccessAction;
+//# sourceMappingURL=actions.configuration.js.map
