@@ -1,0 +1,13 @@
+# Required metadata
+sonar.projectKey=embystat
+sonar.projectName=Embystat
+sonar.projectVersion=1.0
+
+# Comma-separated paths to directories with sources (required)
+sonar.sources=
+
+# Language
+sonar.language=c#
+
+# Encoding of the source files
+sonar.sourceEncoding=UTF-8
