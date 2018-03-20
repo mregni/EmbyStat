@@ -13,6 +13,7 @@
     <ApplicationInsightsResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourcegroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourceGroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsAnnotationResourceId>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

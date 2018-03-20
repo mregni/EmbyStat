@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies timestamp="03/18/2018 13:13:37">
+  <assembly name="Unit.Tests.dll" environment="64-bit .NET Standard [collection-per-class, parallel (8 threads)]" test-framework="xUnit.net 2.3.1.3858" run-date="2018-03-18" run-time="13:13:37" total="1" passed="1" failed="0" skipped="0" time="0.658" errors="0">
+    <errors />
+    <collection total="1" passed="1" failed="0" skipped="0" name="Test collection for Unit.Tests.Controllers.ConfigurationControllerTests" time="0.507">
+      <test name="Unit.Tests.Controllers.ConfigurationControllerTests.TestIfConfigurationIsLoadedCorrect" type="Unit.Tests.Controllers.ConfigurationControllerTests" method="TestIfConfigurationIsLoadedCorrect" time="0.5067376" result="Pass" />
+    </collection>
+  </assembly>
+</assemblies>
