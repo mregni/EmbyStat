@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-	  <RuntimeFrameworkVersion>2.1.101</RuntimeFrameworkVersion>
+	<RuntimeFrameworkVersion>2.0.3</RuntimeFrameworkVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -10,7 +10,7 @@
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="FluentAssertions" Version="5.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
+    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using EmbyStat.Controllers.Configuration;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Services.Config;
 using FluentAssertions;
-using MediaBrowser.Common.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
-using static Xunit.Assert;
 
-namespace Unit.Tests.Controllers
+namespace Tests.Unit.Controllers
 {
 	public class ConfigurationControllerTests
 	{
