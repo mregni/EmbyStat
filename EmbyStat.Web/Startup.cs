@@ -50,7 +50,7 @@ namespace EmbyStat.Web
 
 			services.AddMvc(options =>
 			{
-				options.Filters.Add(new BusinessExceptionFilter());
+				options.Filters.Add(new BusinessExceptionFilterAttribute());
 			});
 			services.AddSwaggerGen(c =>
 			{
@@ -69,7 +69,7 @@ namespace EmbyStat.Web
 			services.AddScoped<ISystemService, SystemService>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-			services.AddScoped<BusinessExceptionFilter>();
+			services.AddScoped<BusinessExceptionFilterAttribute>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
