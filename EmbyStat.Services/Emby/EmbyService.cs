@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Emby.Models;
+using EmbyStat.Services.EmbyClientFacade;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -14,10 +15,12 @@ namespace EmbyStat.Services.Emby
     public class EmbyService : IEmbyService
     {
 	    private readonly ILogger<EmbyService> _logger;
+	    private readonly IEmbyClientFacade _embyClientFacade;
 
-	    public EmbyService(ILogger<EmbyService> logger)
+		public EmbyService(ILogger<EmbyService> logger, IEmbyClientFacade embyClientFacade)
 	    {
 		    _logger = logger;
+		    _embyClientFacade = embyClientFacade;
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -54,31 +57,27 @@ namespace EmbyStat.Services.Emby
 
 	    public async Task<EmbyToken> GetEmbyToken(EmbyLogin login)
 		{
-		    if (!string.IsNullOrEmpty(login.Password) && !string.IsNullOrEmpty(login.UserName))
+		    if (!string.IsNullOrEmpty(login?.Password) && !string.IsNullOrEmpty(login.UserName))
 		    {
-			    using (var client = Emby.Client.GetApiClient(login.Address))
-			    {
-				    try
-				    {
-					    var token = await client.AuthenticateUserAsync(login.UserName, login.Password);
-						return new EmbyToken
-						{
-							Token = token.AccessToken,
-							Username = token.User.ConnectUserName,
-							IsAdmin = token.User.Policy.IsAdministrator
-						};
-				    }
-				    catch (Exception)
-				    {
-					    _logger.LogError("Username or password are wrong, user should try again with other credentials!");
-					    throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
-					}
-
-			    }
-		    }
+				try
+				{
+					var token = await _embyClientFacade.AuthenticateUserAsync(login);
+					return new EmbyToken
+					{
+						Token = token.AccessToken,
+						Username = token.User.ConnectUserName,
+						IsAdmin = token.User.Policy.IsAdministrator
+					};
+				}
+				catch (Exception)
+				{
+					_logger.LogError("Username or password are wrong, user should try again with other credentials!");
+					throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
+				}
+			}
 			
-			_logger.LogError("Username or password are empty, this should not happen!");
-			throw new BusinessException("WRONGUSERNAMEORPASSWORD");
+			_logger.LogError("Username or password are empty, no use to try a login!");
+			throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
 	    }
 	}
 }

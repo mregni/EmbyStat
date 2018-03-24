@@ -16,10 +16,10 @@ namespace EmbyStat.Controllers.System
 	[Route("api/[controller]")]
 	public class SystemController : Controller
 	{
-		private readonly ILogger<EmbyController> _logger;
+		private readonly ILogger<SystemController> _logger;
 		private readonly ISystemService _systemService;
 
-		public SystemController(ILogger<EmbyController> logger, ISystemService systemService)
+		public SystemController(ISystemService systemService, ILogger<SystemController> logger)
 		{
 			_logger = logger;
 			_systemService = systemService;

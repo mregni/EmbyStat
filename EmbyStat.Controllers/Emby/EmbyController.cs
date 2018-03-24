@@ -19,7 +19,7 @@ namespace EmbyStat.Controllers.Emby
 		private readonly ILogger<EmbyController> _logger;
 		private readonly IEmbyService _embyService;
 
-		public EmbyController(ILogger<EmbyController> logger, IEmbyService embyService)
+		public EmbyController(IEmbyService embyService, ILogger<EmbyController> logger)
 		{
 			_logger = logger;
 			_embyService = embyService;
