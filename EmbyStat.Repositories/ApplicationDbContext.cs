@@ -23,12 +23,12 @@ namespace EmbyStat.Repositories
 		    optionsBuilder.UseSqlite("Data Source=data.db");
 	    }
 
-	    protected override void OnModelCreating(ModelBuilder builder)
+	    protected override void OnModelCreating(ModelBuilder modelBuilder)
 	    {
-		    base.OnModelCreating(builder);
+		    base.OnModelCreating(modelBuilder);
 
-		    builder.Entity<Configuration>().Property(s => s.Id).IsRequired();
-		    builder.Entity<Configuration>().Property(s => s.Language).IsRequired();
+		    modelBuilder.Entity<Configuration>().Property(s => s.Id).IsRequired();
+		    modelBuilder.Entity<Configuration>().Property(s => s.Language).IsRequired();
 		}
 	}
 }

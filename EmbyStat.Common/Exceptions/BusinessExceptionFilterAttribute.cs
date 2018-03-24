@@ -9,7 +9,7 @@ using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace EmbyStat.Common.Exceptions
 {
-	public class BusinessExceptionFilter : ExceptionFilterAttribute
+	public class BusinessExceptionFilterAttribute : ExceptionFilterAttribute
 	{
 		public override void OnException(ExceptionContext context)
 		{
@@ -17,12 +17,17 @@ namespace EmbyStat.Common.Exceptions
 			if (context.Exception is BusinessException)
 			{
 				var ex = context.Exception as BusinessException;
+#if !DEBUG
+                string stack = null;
+#else
+				string stack = context.Exception.StackTrace;
+#endif
+				apiError = new ApiError(ex.Message, stack);
 				context.Exception = null;
-				apiError = new ApiError(ex.Message);
 
 				context.HttpContext.Response.StatusCode = ex.StatusCode;
 				Log.Warning($"Application thrown error: {ex.Message}", ex);
-				Log.Warning("Frontend will know what to do with this!", ex);
+				Log.Warning("Frontend will know what to do with this!");
 			}
 			else
 			{
@@ -34,7 +39,7 @@ namespace EmbyStat.Common.Exceptions
 				string stack = context.Exception.StackTrace;
 #endif
 
-				apiError = new ApiError(msg);
+				apiError = new ApiError(msg, stack);
 				context.HttpContext.Response.StatusCode = 500;
 
 				Log.Error(context.Exception, msg);
