@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
-using EmbyStat.Services.EmbyClientFacade;
+using EmbyStat.Services.EmbyClient;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Session;
@@ -17,7 +17,7 @@ namespace Tests.Unit.Services
     public class EmbyServiceTests
     {
 	    private readonly EmbyService _subject;
-	    private readonly Mock<IEmbyClientFacade> _embyClientFacadeMock;
+	    private readonly Mock<IEmbyClient> _embyClientMock;
 	    private readonly AuthenticationResult _authResult;
 
 	    public EmbyServiceTests()
@@ -39,15 +39,15 @@ namespace Tests.Unit.Services
 
 			};
 
-			_embyClientFacadeMock = new Mock<IEmbyClientFacade>();
+			_embyClientMock = new Mock<IEmbyClient>();
 		    var loggerMock = new Mock<ILogger<EmbyService>>();
-		    _subject = new EmbyService(loggerMock.Object, _embyClientFacadeMock.Object);
+		    _subject = new EmbyService(loggerMock.Object, _embyClientMock.Object);
 	    }
 
 	    [Fact]
 	    public async void GetEmbyToken()
 	    {
-		    _embyClientFacadeMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<EmbyLogin>()))
+		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>()))
 			    .Returns(Task.FromResult(_authResult));
 
 		    var login = new EmbyLogin
@@ -63,10 +63,9 @@ namespace Tests.Unit.Services
 		    token.Token.Should().Be(_authResult.AccessToken);
 		    token.IsAdmin.Should().Be(_authResult.User.Policy.IsAdministrator);
 
-		    _embyClientFacadeMock.Verify(x => x.AuthenticateUserAsync(It.Is<EmbyLogin>(
-				y => y.Address == login.Address &&
-				     y.Password == login.Password && 
-				     y.UserName == login.UserName)));
+		    _embyClientMock.Verify(x => x.AuthenticateUserAsync(
+			    It.Is<string>(y => y == login.UserName ), 
+			    It.Is<string>(y => y == login.Password)));
 
 	    }
 
@@ -110,7 +109,7 @@ namespace Tests.Unit.Services
 	    [Fact]
 	    public async Task GetEmbyTokenFailedLogin()
 	    {
-		    _embyClientFacadeMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<EmbyLogin>()))
+		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>()))
 			    .ThrowsAsync(new Exception());
 			var login = new EmbyLogin
 		    {

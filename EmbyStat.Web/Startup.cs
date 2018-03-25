@@ -8,10 +8,13 @@ using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
-using EmbyStat.Services.EmbyClientFacade;
+using EmbyStat.Services.EmbyClient;
+using EmbyStat.Services.EmbyClient.Cryptography;
+using EmbyStat.Services.EmbyClient.Net;
 using EmbyStat.Services.System;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +23,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
@@ -67,7 +69,11 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 			services.AddScoped<IEmbyService, EmbyService>();
-			services.AddScoped<IEmbyClientFacade, EmbyClientFacade>();
+			services.AddScoped<IEmbyClient, EmbyClient>();
+			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
+			services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
+			services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
+			services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
 			services.AddScoped<ISystemService, SystemService>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();

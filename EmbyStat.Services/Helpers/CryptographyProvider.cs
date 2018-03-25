@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using Emby.ApiClient.Cryptography;
+using EmbyStat.Services.EmbyClient.Cryptography;
 
 namespace EmbyStat.Services.Helpers
 {

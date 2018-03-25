@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Emby.Models;
-using EmbyStat.Services.EmbyClientFacade;
+using EmbyStat.Services.EmbyClient;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -16,19 +16,19 @@ namespace EmbyStat.Services.Emby
     public class EmbyService : IEmbyService
     {
 	    private readonly ILogger<EmbyService> _logger;
-	    private readonly IEmbyClientFacade _embyClientFacade;
+	    private readonly IEmbyClient _embyClient;
 
-	    public EmbyService(ILogger<EmbyService> logger, IEmbyClientFacade embyClientFacade)
+	    public EmbyService(ILogger<EmbyService> logger, IEmbyClient embyClient)
 	    {
 		    _logger = logger;
-		    _embyClientFacade = embyClientFacade;
+		    _embyClient = embyClient;
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
 	    {
 		    using (var client = new UdpClient())
 		    {
-			   var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
+			    var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
 			    var serverEp = new IPEndPoint(IPAddress.Any, 7359);
 
 			    client.EnableBroadcast = true;
@@ -62,7 +62,7 @@ namespace EmbyStat.Services.Emby
 		    {
 				try
 				{
-					var token = await _embyClientFacade.AuthenticateUserAsync(login);
+					var token = await _embyClient.AuthenticateUserAsync(login.UserName, login.Password, login.Address);
 					return new EmbyToken
 					{
 						Token = token.AccessToken,
