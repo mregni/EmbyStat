@@ -1200,12 +1200,6 @@ namespace Emby.ApiClient.Model
         /// <returns>Task&lt;DevicesOptions&gt;.</returns>
         Task<DevicesOptions> GetDevicesOptions();
 
-		/// <summary>
-		/// Gets the device info list
-		/// </summary>
-		/// <returns>Task&lt;List&lt;DeviceInfo&gt;&gt;.</returns>
-		Task<QueryResult<DeviceInfo>> GetDevices();
-
         /// <summary>
         /// Updates the item.
         /// </summary>

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using EmbyStat.Controllers.Emby;
-using EmbyStat.Services.Emby.Models;
-using EmbyStat.Services.System;
-using Microsoft.AspNetCore.Hosting;
+﻿using EmbyStat.Services.System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

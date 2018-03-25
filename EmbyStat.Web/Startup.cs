@@ -8,6 +8,7 @@ using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
+using EmbyStat.Services.EmbyClientFacade;
 using EmbyStat.Services.System;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -66,6 +67,7 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 			services.AddScoped<IEmbyService, EmbyService>();
+			services.AddScoped<IEmbyClientFacade, EmbyClientFacade>();
 			services.AddScoped<ISystemService, SystemService>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();

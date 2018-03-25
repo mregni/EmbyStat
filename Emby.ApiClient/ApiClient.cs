@@ -286,7 +286,7 @@ namespace Emby.ApiClient
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -2591,17 +2591,7 @@ namespace Emby.ApiClient
             }
         }
 
-		public async Task<QueryResult<DeviceInfo>> GetDevices()
-		{
-			var url = GetApiUrl("/devices");
-
-			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
-			{
-				return DeserializeFromStream<QueryResult<DeviceInfo>>(stream);
-			}
-		}
-
-		public async Task<PlaybackInfoResponse> GetPlaybackInfo(PlaybackInfoRequest request)
+        public async Task<PlaybackInfoResponse> GetPlaybackInfo(PlaybackInfoRequest request)
         {
             var dict = new QueryStringDictionary { };
 
@@ -2993,5 +2983,5 @@ namespace Emby.ApiClient
                 return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
             }
         }
-	}
+    }
 }

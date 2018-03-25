@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
-using Castle.Core.Logging;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
@@ -12,7 +8,6 @@ using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Users;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -23,7 +18,7 @@ namespace Tests.Unit.Services
     {
 	    private readonly EmbyService _subject;
 	    private readonly Mock<IEmbyClientFacade> _embyClientFacadeMock;
-	    private AuthenticationResult _authResult;
+	    private readonly AuthenticationResult _authResult;
 
 	    public EmbyServiceTests()
 	    {

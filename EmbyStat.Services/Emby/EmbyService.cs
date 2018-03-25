@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -17,7 +18,7 @@ namespace EmbyStat.Services.Emby
 	    private readonly ILogger<EmbyService> _logger;
 	    private readonly IEmbyClientFacade _embyClientFacade;
 
-		public EmbyService(ILogger<EmbyService> logger, IEmbyClientFacade embyClientFacade)
+	    public EmbyService(ILogger<EmbyService> logger, IEmbyClientFacade embyClientFacade)
 	    {
 		    _logger = logger;
 		    _embyClientFacade = embyClientFacade;
@@ -27,7 +28,7 @@ namespace EmbyStat.Services.Emby
 	    {
 		    using (var client = new UdpClient())
 		    {
-			    var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
+			   var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
 			    var serverEp = new IPEndPoint(IPAddress.Any, 7359);
 
 			    client.EnableBroadcast = true;
@@ -69,9 +70,10 @@ namespace EmbyStat.Services.Emby
 						IsAdmin = token.User.Policy.IsAdministrator
 					};
 				}
-				catch (Exception)
+				catch (Exception e)
 				{
 					_logger.LogError("Username or password are wrong, user should try again with other credentials!");
+					_logger.LogError($"Message: {e.Message}");
 					throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
 				}
 			}

@@ -59,7 +59,7 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.configurationFacade.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
-      if (!!data) {
+      if (!!data.address) {
         this.embyFound = true;
         this.embyAddressControl.setValue(data.address);
         this.embyServerName = data.name;

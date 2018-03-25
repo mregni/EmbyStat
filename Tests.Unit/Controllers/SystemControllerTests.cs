@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.System;
-using EmbyStat.Services.Emby;
-using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.System;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;

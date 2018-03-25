@@ -2,7 +2,7 @@
 using EmbyStat.Services.Helpers;
 using MediaBrowser.Model.Logging;
 
-namespace EmbyStat.Services.Emby
+namespace EmbyStat.Services.EmbyClientFacade
 {
     public static class Client
     {
