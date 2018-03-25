@@ -10,7 +10,7 @@ namespace EmbyStat.Services.EmbyClient
         public void SerializeToStream(object obj, Stream stream)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
             using (var jsonWriter = new JsonTextWriter(new StreamWriter(stream)))
             {
                 JsonSerializer.Create(new JsonSerializerSettings()).Serialize(jsonWriter, obj);

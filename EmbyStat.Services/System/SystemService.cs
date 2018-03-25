@@ -20,11 +20,6 @@ namespace EmbyStat.Services.System
 
 		public void StartShutdownJob()
 		{
-			BackgroundJob.Enqueue(() => ShutdownJob());
-		}
-
-		public void ShutdownJob()
-		{
 			_logger.LogInformation("Shutdown task started");
 			_applicationLifetime.StopApplication();
 		}

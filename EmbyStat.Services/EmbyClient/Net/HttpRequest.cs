@@ -16,7 +16,6 @@ namespace EmbyStat.Services.EmbyClient.Net
 	    public HttpHeaders RequestHeaders { get; set; }
 	    public string Url { get; set; }
 	    public Stream RequestStream { get; set; }
-
 	    public int Timeout { get; set; }
 
 	    public HttpRequest()

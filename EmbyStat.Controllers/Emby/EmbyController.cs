@@ -29,9 +29,18 @@ namespace EmbyStat.Controllers.Emby
 		[Route("generatetoken")]
 		public async Task<IActionResult> GenerateToken([FromBody]EmbyLoginViewModel login)
 		{
-			_logger.LogInformation("Get emby token for certain login credentials");
+			_logger.LogInformation("Get emby token for certain login credentials.");
 			var result = await _embyService.GetEmbyToken(Mapper.Map<EmbyLogin>(login));
 			return Ok(Mapper.Map<EmbyTokenViewModel>(result));
+		}
+
+		[HttpPost]
+		[Route("updateserverinfo")]
+		public IActionResult UpdateServerInfo()
+		{
+			_logger.LogInformation("Update basic server info.");
+			_embyService.UpdateServerInfo();
+			return Ok();
 		}
 
 		[HttpGet]

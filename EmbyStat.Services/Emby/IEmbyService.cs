@@ -11,5 +11,7 @@ namespace EmbyStat.Services.Emby
 	{
 	    EmbyUdpBroadcast SearchEmby();
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
-    }
+		void UpdateServerInfo();
+
+	}
 }

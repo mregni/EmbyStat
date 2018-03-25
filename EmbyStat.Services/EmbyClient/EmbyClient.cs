@@ -11,6 +11,7 @@ using EmbyStat.Services.EmbyClient.Model;
 using EmbyStat.Services.EmbyClient.Net;
 using EmbyStat.Services.Helpers;
 using MediaBrowser.Model.Logging;
+using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
 using MediaBrowser.Model.Users;
 
@@ -48,10 +49,10 @@ namespace EmbyStat.Services.EmbyClient
 			ResetHttpHeaders();
 		}
 
-		public string ApiUrl => ServerAddress + "/emby";
-		protected string AuthorizationScheme => "MediaBrowser";
+		private string ApiUrl => ServerAddress + "/emby";
+		private string AuthorizationScheme => "MediaBrowser";
 
-		public void ChangeServerLocation(string address, bool keepExistingAuth = false)
+		private void ChangeServerLocation(string address, bool keepExistingAuth = false)
 		{
 			ServerAddress = address;
 
@@ -61,28 +62,28 @@ namespace EmbyStat.Services.EmbyClient
 			}
 		}
 
-		public void SetAuthenticationInfo(string accessToken, string userId)
+		private void SetAuthenticationInfo(string accessToken, string userId)
 		{
 			CurrentUserId = userId;
 			AccessToken = accessToken;
 			ResetHttpHeaders();
 		}
 
-		public void ClearAuthenticationInfo()
+		private void ClearAuthenticationInfo()
 		{
 			CurrentUserId = null;
 			AccessToken = null;
 			ResetHttpHeaders();
 		}
 
-		public void SetAuthenticationInfo(string accessToken)
+		private void SetAuthenticationInfo(string accessToken)
 		{
 			CurrentUserId = null;
 			AccessToken = accessToken;
 			ResetHttpHeaders();
 		}
 
-		protected void ResetHttpHeaders()
+		private void ResetHttpHeaders()
 		{
 			_httpHeaders.SetAccessToken(AccessToken);
 
@@ -110,7 +111,7 @@ namespace EmbyStat.Services.EmbyClient
 			_httpHeaders.Remove(name);
 		}
 
-		protected string AuthorizationParameter
+		private string AuthorizationParameter
 		{
 			get
 			{
@@ -130,7 +131,7 @@ namespace EmbyStat.Services.EmbyClient
 			}
 		}
 
-		protected string AddDataFormat(string url)
+		private string AddDataFormat(string url)
 		{
 			const string format = "json";
 
@@ -181,7 +182,29 @@ namespace EmbyStat.Services.EmbyClient
 			return result;
 		}
 
-		public string GetConnectPasswordMd5(string password)
+		public async Task<List<PluginInfo>> GetInstalledPluginsAsync()
+		{
+			var url = GetApiUrl("Plugins");
+
+			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
+			{
+				return DeserializeFromStream<List<PluginInfo>>(stream);
+			}
+		}
+
+		private Task<Stream> GetSerializedStreamAsync(string url, CancellationToken cancellationToken)
+		{
+			url = AddDataFormat(url);
+
+			return GetStream(url, cancellationToken);
+		}
+
+		private Task<Stream> GetSerializedStreamAsync(string url)
+		{
+			return GetSerializedStreamAsync(url, CancellationToken.None);
+		}
+
+		private string GetConnectPasswordMd5(string password)
 		{
 			var bytes = Encoding.UTF8.GetBytes(password);
 			bytes = _cryptographyProvider.CreateMD5(bytes);
@@ -190,12 +213,12 @@ namespace EmbyStat.Services.EmbyClient
 			return hash;
 		}
 
-		public string GetApiUrl(string handler)
+		private string GetApiUrl(string handler)
 		{
 			return GetApiUrl(handler, new QueryStringDictionary());
 		}
 
-		protected string GetApiUrl(string handler, QueryStringDictionary queryString)
+		private string GetApiUrl(string handler, QueryStringDictionary queryString)
 		{
 			if (string.IsNullOrEmpty(handler))
 			{
@@ -210,7 +233,7 @@ namespace EmbyStat.Services.EmbyClient
 			return queryString.GetUrl(ApiUrl + "/" + handler);
 		}
 
-		public async Task<T> PostAsync<T>(string url, Dictionary<string, string> args, CancellationToken cancellationToken = default(CancellationToken)) where T : class
+		private async Task<T> PostAsync<T>(string url, Dictionary<string, string> args, CancellationToken cancellationToken = default(CancellationToken)) where T : class
 		{
 			url = AddDataFormat(url);
 
@@ -233,13 +256,24 @@ namespace EmbyStat.Services.EmbyClient
 			}
 		}
 
-		protected T DeserializeFromStream<T>(Stream stream)
+		private Task<Stream> GetStream(string url, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			return SendAsync(new HttpRequest
+			{
+				CancellationToken = cancellationToken,
+				Method = "GET",
+				RequestHeaders = _httpHeaders,
+				Url = url
+			});
+		}
+
+		private T DeserializeFromStream<T>(Stream stream)
 			where T : class
 		{
 			return (T)DeserializeFromStream(stream, typeof(T));
 		}
 
-		protected object DeserializeFromStream(Stream stream, Type type)
+		private object DeserializeFromStream(Stream stream, Type type)
 		{
 			return _jsonSerializer.DeserializeFromStream(stream, type);
 		}

@@ -40,6 +40,7 @@ namespace Tests.Unit.Controllers
 			_embyServiceMock = new Mock<IEmbyService>();
 		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(token));
 		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(emby);
+		    _embyServiceMock.Setup(x => x.UpdateServerInfo());
 
 			var loggerMock = new Mock<ILogger<EmbyController>>();
 
@@ -79,5 +80,14 @@ namespace Tests.Unit.Controllers
 		    result.Should().BeOfType<OkObjectResult>();
 		    _embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
 	    }
-    }
+
+	    [Fact]
+	    public void IsServerInfoUpdated()
+	    {
+		    var result = _subject.UpdateServerInfo();
+
+		    result.Should().BeOfType<OkResult>();
+		    _embyServiceMock.Verify(x => x.UpdateServerInfo(), Times.Once);
+	    }
+	}
 }

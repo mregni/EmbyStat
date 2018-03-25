@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Repositories.Config;
+using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
@@ -6,6 +7,7 @@ namespace EmbyStat.Repositories
     public class ApplicationDbContext : DbContext
     {
 	    public DbSet<Configuration> Configuration { get; set; }
+		public DbSet<PluginInfo> Plugins { get; set; }
 
 	    public ApplicationDbContext() : base()
 	    {
@@ -29,6 +31,8 @@ namespace EmbyStat.Repositories
 
 		    modelBuilder.Entity<Configuration>().Property(s => s.Id).IsRequired();
 		    modelBuilder.Entity<Configuration>().Property(s => s.Language).IsRequired();
+
+		    modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
 		}
 	}
 }

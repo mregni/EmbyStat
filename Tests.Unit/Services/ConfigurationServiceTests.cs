@@ -60,5 +60,20 @@ namespace Tests.Unit.Services
 				     y.Language == config.Language && 
 				     y.Username == config.Username)));
 	    }
+
+	    [Fact]
+	    public void GetServerSettingsFromRepository()
+	    {
+		    var settings = _subject.GetServerSettings();
+		    settings.Should().NotBeNull();
+		    settings.Id.Should().Be("1234567");
+		    settings.UserId.Should().Be("09876");
+		    settings.Language.Should().Be("en");
+		    settings.Username.Should().Be("admin");
+		    settings.WizardFinished.Should().BeTrue();
+		    settings.EmbyServerAddress.Should().Be("http://localhost");
+		    settings.AccessToken.Should().Be("1234567890");
+		    settings.EmbyUserName.Should().Be("reggi");
+		}
     }
 }

@@ -1,13 +1,16 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.EmbyClient;
+using MediaBrowser.Model.Plugins;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -17,11 +20,13 @@ namespace EmbyStat.Services.Emby
     {
 	    private readonly ILogger<EmbyService> _logger;
 	    private readonly IEmbyClient _embyClient;
+	    private readonly IEmbyPluginRepository _embyPluginRepository;
 
-	    public EmbyService(ILogger<EmbyService> logger, IEmbyClient embyClient)
+	    public EmbyService(ILogger<EmbyService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository)
 	    {
 		    _logger = logger;
 		    _embyClient = embyClient;
+		    _embyPluginRepository = embyPluginRepository;
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -81,5 +86,16 @@ namespace EmbyStat.Services.Emby
 			_logger.LogError("Username or password are empty, no use to try a login!");
 			throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
 	    }
+
+	    public List<PluginInfo> GetInstalledPlugins()
+	    {
+		    return _embyPluginRepository.GetPlugins();
+	    }
+
+	    public async void UpdateServerInfo()
+	    {
+		    var plugins = await _embyClient.GetInstalledPluginsAsync();
+			_embyPluginRepository.InsertPluginRange(plugins);
+		}
 	}
 }

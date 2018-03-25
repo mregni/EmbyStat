@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.EmbyClient;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Users;
 using Microsoft.Extensions.Logging;
@@ -18,10 +22,17 @@ namespace Tests.Unit.Services
     {
 	    private readonly EmbyService _subject;
 	    private readonly Mock<IEmbyClient> _embyClientMock;
-	    private readonly AuthenticationResult _authResult;
+	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
+		private readonly AuthenticationResult _authResult;
+	    private List<PluginInfo> _plugins;
 
 	    public EmbyServiceTests()
 	    {
+		    _plugins = new List<PluginInfo>
+		    {
+			    new PluginInfo { Name = "EmbyStat plugin" },
+			    new PluginInfo { Name = "Trakt plugin" }
+		    };
 
 			_authResult = new AuthenticationResult
 			{
@@ -36,12 +47,16 @@ namespace Tests.Unit.Services
 						IsAdministrator = true
 					}
 				}
-
 			};
 
 			_embyClientMock = new Mock<IEmbyClient>();
+		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
 		    var loggerMock = new Mock<ILogger<EmbyService>>();
-		    _subject = new EmbyService(loggerMock.Object, _embyClientMock.Object);
+
+		    _embyPluginRepositoryMock = new Mock<IEmbyPluginRepository>();
+		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
+		    _embyPluginRepositoryMock.Setup(x => x.InsertPluginRange(It.IsAny<List<PluginInfo>>()));
+			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object);
 	    }
 
 	    [Fact]
@@ -71,7 +86,7 @@ namespace Tests.Unit.Services
 	    }
 
 	    [Fact]
-		public async Task GetEmbyTokenWithNoLoginInfo()
+		public async void GetEmbyTokenWithNoLoginInfo()
 	    {
 		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
 
@@ -80,7 +95,7 @@ namespace Tests.Unit.Services
 	    }
 
 	    [Fact]
-	    public async Task GetEmbyTokenWithNoPassword()
+	    public async void GetEmbyTokenWithNoPassword()
 	    {
 			var login = new EmbyLogin
 			{
@@ -94,7 +109,7 @@ namespace Tests.Unit.Services
 	    }
 
 	    [Fact]
-	    public async Task GetEmbyTokenWithNoUserName()
+	    public async void GetEmbyTokenWithNoUserName()
 	    {
 		    var login = new EmbyLogin
 		    {
@@ -108,7 +123,7 @@ namespace Tests.Unit.Services
 	    }
 
 	    [Fact]
-	    public async Task GetEmbyTokenFailedLogin()
+	    public async void GetEmbyTokenFailedLogin()
 	    {
 		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 			    .ThrowsAsync(new Exception());
@@ -123,5 +138,30 @@ namespace Tests.Unit.Services
 		    ex.Message.Should().Be("WRONG_USERNAME_OR_PASSWORD");
 		    ex.StatusCode.Should().Be(500);
 	    }
+
+	    [Fact]
+	    public void UpdateServerInfo()
+	    {
+		    _subject.UpdateServerInfo();
+
+		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
+		    _embyPluginRepositoryMock.Verify(x => x.InsertPluginRange(It.Is<List<PluginInfo>>(
+			    y => y.Count == 2 &&
+			         y.First().Name == _plugins.First().Name)));
+
+		}
+
+	    [Fact]
+	    public void GetPluginsFromDatabase()
+	    {
+		    var plugins = _subject.GetInstalledPlugins();
+
+		    plugins.Should().NotBeNull();
+		    plugins.Count.Should().Be(2);
+		    plugins.First().Name.Should().Be(_plugins.First().Name);
+		    plugins.Skip(1).First().Name.Should().Be(_plugins.Skip(1).First().Name);
+
+			_embyPluginRepositoryMock.Verify(x => x.GetPlugins(), Times.Once);
+		}
 	}
 }

@@ -6,14 +6,10 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
 
 namespace EmbyStat.Services.EmbyClient.Net
 {
-	/// <summary>
-	/// Class HttpWebRequestClient
-	/// </summary>
 	public class HttpWebRequestClient : IAsyncHttpClient
 	{
 		private readonly IHttpWebRequestFactory _requestFactory;
@@ -41,8 +37,7 @@ namespace EmbyStat.Services.EmbyClient.Net
 					await options.RequestStream.CopyToAsync(requestStream).ConfigureAwait(false);
 				}
 			}
-			else if (!string.IsNullOrEmpty(options.RequestContent) ||
-				string.Equals(options.Method, "post", StringComparison.OrdinalIgnoreCase))
+			else if (!string.IsNullOrEmpty(options.RequestContent) || string.Equals(options.Method, "post", StringComparison.OrdinalIgnoreCase))
 			{
 				var bytes = Encoding.UTF8.GetBytes(options.RequestContent ?? string.Empty);
 
@@ -54,8 +49,6 @@ namespace EmbyStat.Services.EmbyClient.Net
 					await requestStream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
 				}
 			}
-
-			var requestTime = DateTime.Now;
 
 			try
 			{
@@ -84,18 +77,14 @@ namespace EmbyStat.Services.EmbyClient.Net
 				if (sendFailureResponse)
 				{
 					var webException = ex as WebException ?? ex.InnerException as WebException;
-					if (webException != null)
+					if (webException?.Response is HttpWebResponse response)
 					{
-						var response = webException.Response as HttpWebResponse;
-						if (response != null)
-						{
-							var headers = ConvertHeaders(response);
-							return GetResponse(response, headers);
-						}
+						var headers = ConvertHeaders(response);
+						return GetResponse(response, headers);
 					}
 				}
 
-				throw GetExceptionToThrow(ex, options, requestTime);
+				throw GetExceptionToThrow(ex);
 			}
 		}
 
@@ -136,11 +125,6 @@ namespace EmbyStat.Services.EmbyClient.Net
 			return response.Content;
 		}
 
-		/// <summary>
-		/// Converts the headers.
-		/// </summary>
-		/// <param name="response">The response.</param>
-		/// <returns>Dictionary&lt;System.String, System.String&gt;.</returns>
 		private Dictionary<string, string> ConvertHeaders(WebResponse response)
 		{
 			var headers = response.Headers;
@@ -148,7 +132,7 @@ namespace EmbyStat.Services.EmbyClient.Net
 			return headers.Cast<string>().ToDictionary(p => p, p => headers[p]);
 		}
 
-		private Exception GetExceptionToThrow(Exception ex, HttpRequest options, DateTime requestTime)
+		private Exception GetExceptionToThrow(Exception ex)
 		{
 			var webException = ex as WebException ?? ex.InnerException as WebException;
 
@@ -156,8 +140,7 @@ namespace EmbyStat.Services.EmbyClient.Net
 			{
 				var httpException = new HttpException(ex.Message, ex);
 
-				var response = webException.Response as HttpWebResponse;
-				if (response != null)
+				if (webException.Response is HttpWebResponse response)
 				{
 					httpException.StatusCode = response.StatusCode;
 				}
@@ -193,21 +176,12 @@ namespace EmbyStat.Services.EmbyClient.Net
 			}
 		}
 
-		/// <summary>
-		/// Throws the cancellation exception.
-		/// </summary>
-		/// <param name="url">The URL.</param>
-		/// <param name="cancellationToken">The cancellation token.</param>
-		/// <param name="exception">The exception.</param>
-		/// <returns>Exception.</returns>
 		private Exception GetCancellationException(string url, CancellationToken cancellationToken, OperationCanceledException exception)
 		{
-			// If the HttpClient's timeout is reached, it will cancel the Task internally
 			if (!cancellationToken.IsCancellationRequested)
 			{
 				var msg = string.Format("Connection to {0} timed out", url);
 
-				// Throw an HttpException so that the caller doesn't think it was cancelled by user code
 				return new HttpException(msg, exception)
 				{
 					IsTimedOut = true
@@ -228,9 +202,6 @@ namespace EmbyStat.Services.EmbyClient.Net
 			}
 		}
 
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
 		public void Dispose()
 		{
 		}
@@ -239,9 +210,7 @@ namespace EmbyStat.Services.EmbyClient.Net
 	public interface IHttpWebRequestFactory
 	{
 		HttpWebRequest Create(HttpRequest options);
-
 		void SetContentLength(HttpWebRequest request, long length);
-
 		Task<WebResponse> GetResponseAsync(HttpWebRequest request, int timeoutMs);
 		Task<Stream> GetRequestStreamAsync(HttpWebRequest request);
 	}
