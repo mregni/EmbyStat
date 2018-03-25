@@ -47,7 +47,7 @@ namespace Tests.Unit.Services
 	    [Fact]
 	    public async void GetEmbyToken()
 	    {
-		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 			    .Returns(Task.FromResult(_authResult));
 
 		    var login = new EmbyLogin
@@ -64,8 +64,9 @@ namespace Tests.Unit.Services
 		    token.IsAdmin.Should().Be(_authResult.User.Policy.IsAdministrator);
 
 		    _embyClientMock.Verify(x => x.AuthenticateUserAsync(
-			    It.Is<string>(y => y == login.UserName ), 
-			    It.Is<string>(y => y == login.Password)));
+			    It.Is<string>(y => y == login.UserName ),
+			    It.Is<string>(y => y == login.Password),
+			    It.Is<string>(y => y == login.Address)));
 
 	    }
 
@@ -109,7 +110,7 @@ namespace Tests.Unit.Services
 	    [Fact]
 	    public async Task GetEmbyTokenFailedLogin()
 	    {
-		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 			    .ThrowsAsync(new Exception());
 			var login = new EmbyLogin
 		    {
