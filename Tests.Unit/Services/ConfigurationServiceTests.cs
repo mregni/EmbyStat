@@ -14,24 +14,23 @@ namespace Tests.Unit.Services
     {
 	    private readonly ConfigurationService _subject;
 	    private readonly Mock<IConfigurationRepository> _configurationRepositoryMock;
-	    private Configuration _configuration;
 
-		public ConfigurationServiceTests()
+	    public ConfigurationServiceTests()
 	    {
-			_configuration = new Configuration
-			{
-				Id = "1234567",
-				UserId = "09876",
-				Language = "en",
-				Username = "admin",
-				WizardFinished = true,
-				EmbyServerAddress = "http://localhost",
-				AccessToken = "1234567890",
-				EmbyUserName = "reggi"
-			};
+		    var configuration = new Configuration
+		    {
+			    Id = "1234567",
+			    UserId = "09876",
+			    Language = "en",
+			    Username = "admin",
+			    WizardFinished = true,
+			    EmbyServerAddress = "http://localhost",
+			    AccessToken = "1234567890",
+			    EmbyUserName = "reggi"
+		    };
 
 			_configurationRepositoryMock = new Mock<IConfigurationRepository>();
-		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(_configuration);
+		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(configuration);
 
 		    _subject = new ConfigurationService(_configurationRepositoryMock.Object);
 		}
@@ -52,7 +51,7 @@ namespace Tests.Unit.Services
 			_subject.SaveServerSettings(config);
 
 			_configurationRepositoryMock.Verify(x => x.GetSingle(), Times.Once);
-			_configurationRepositoryMock.Verify(x => x.Update(It.Is<Configuration>(
+			_configurationRepositoryMock.Verify(x => x.UpdateOrAdd(It.Is<Configuration>(
 				y => y.WizardFinished == config.WizardFinished &&
 				     y.AccessToken == config.AccessToken &&
 				     y.EmbyServerAddress == config.EmbyServerAddress &&

@@ -10,10 +10,9 @@ import { EmbyUdpBroadcast } from '../models/embyUdpBroadcast';
 import { EmbyToken } from '../models/embyToken';
 import { EmbyLogin } from '../models/embyLogin';
 import { ConfigurationService } from '../service/configuration.service';
-import { map, catchError } from 'rxjs/operators';
 
 import { ConfigurationQuery } from './reducer.configuration';
-import { LoadConfigurationAction, UpdateConfigurationAction } from './actions.configuration';
+import { LoadConfigurationAction, UpdateConfigurationAction, FireSmallEmbySyncAction } from './actions.configuration';
 
 import { ApplicationState } from '../../states/app.state';
 
@@ -43,6 +42,10 @@ export class ConfigurationFacade {
 
   searchEmby(): Observable<EmbyUdpBroadcast> {
     return this.configurationService.searchEmby();
+  }
+
+  fireSmallEmbySync(): void {
+    this.store.dispatch(new FireSmallEmbySyncAction());
   }
 }
 

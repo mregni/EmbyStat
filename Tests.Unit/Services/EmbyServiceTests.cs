@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyPlugin;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.EmbyClient;
@@ -11,6 +13,7 @@ using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Session;
+using MediaBrowser.Model.System;
 using MediaBrowser.Model.Users;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -18,13 +21,18 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-    public class EmbyServiceTests
+	[Collection("Services collection")]
+	public class EmbyServiceTests
     {
-	    private readonly EmbyService _subject;
+	    private readonly PluginService _subject;
 	    private readonly Mock<IEmbyClient> _embyClientMock;
 	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
+	    private readonly Mock<IConfigurationRepository> _configurationRepositoryMock;
+	    private readonly Mock<IEmbyServerInfoRepository> _embyServerInfoRepository;
 		private readonly AuthenticationResult _authResult;
-	    private List<PluginInfo> _plugins;
+	    private readonly List<PluginInfo> _plugins;
+	    private readonly SystemInfo _systemInfo;
+	    private readonly ServerInfo _serverInfo;
 
 	    public EmbyServiceTests()
 	    {
@@ -49,14 +57,33 @@ namespace Tests.Unit.Services
 				}
 			};
 
+			_serverInfo = new ServerInfo
+			{
+				Id = Guid.NewGuid().ToString(),
+				HttpServerPortNumber = 8096,
+				HttpsPortNumber = 8097
+			};
+
+		    _systemInfo = new SystemInfo();
+		    var loggerMock = new Mock<ILogger<PluginService>>();
+
 			_embyClientMock = new Mock<IEmbyClient>();
 		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
-		    var loggerMock = new Mock<ILogger<EmbyService>>();
+		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
+		    _embyClientMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(_systemInfo));
 
 		    _embyPluginRepositoryMock = new Mock<IEmbyPluginRepository>();
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
-		    _embyPluginRepositoryMock.Setup(x => x.InsertPluginRange(It.IsAny<List<PluginInfo>>()));
-			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object);
+		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
+
+		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
+		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
+
+		    _embyServerInfoRepository = new Mock<IEmbyServerInfoRepository>();
+		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
+		    _embyServerInfoRepository.Setup(x => x.GetSingle()).Returns(_serverInfo);
+
+			_subject = new PluginService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object);
 	    }
 
 	    [Fact]
@@ -145,10 +172,12 @@ namespace Tests.Unit.Services
 		    _subject.UpdateServerInfo();
 
 		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
-		    _embyPluginRepositoryMock.Verify(x => x.InsertPluginRange(It.Is<List<PluginInfo>>(
+			_embyClientMock.Verify(x => x.GetServerInfo(), Times.Once);
+
+		    _embyPluginRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
 			    y => y.Count == 2 &&
 			         y.First().Name == _plugins.First().Name)));
-
+			_embyServerInfoRepository.Verify(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
 		}
 
 	    [Fact]
@@ -163,5 +192,16 @@ namespace Tests.Unit.Services
 
 			_embyPluginRepositoryMock.Verify(x => x.GetPlugins(), Times.Once);
 		}
+
+	    [Fact]
+	    public void GetServerInfoFromDatabase()
+	    {
+		    var serverInfo = _subject.GetServerInfo();
+
+		    serverInfo.Should().NotBeNull();
+		    serverInfo.Id.Should().Be(_serverInfo.Id);
+		    serverInfo.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
+		    serverInfo.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
+	    }
 	}
 }

@@ -6,6 +6,8 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
+using EmbyStat.Repositories.EmbyPlugin;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.EmbyClient;
@@ -66,15 +68,19 @@ namespace EmbyStat.Web
 			});
 
 			services.AddScoped<IConfigurationService, ConfigurationService>();
-			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+			services.AddScoped<IPluginService, PluginService>();
+			services.AddScoped<ISystemService, SystemService>();
+			services.AddScoped<IPluginService, PluginService>();
 
-			services.AddScoped<IEmbyService, EmbyService>();
+			services.AddScoped<IConfigurationRepository, PluginRepository>();
+			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
+			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
+
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
 			services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
 			services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
 			services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
-			services.AddScoped<ISystemService, SystemService>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<BusinessExceptionFilterAttribute>();

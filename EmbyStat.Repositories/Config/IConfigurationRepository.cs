@@ -3,6 +3,6 @@
     public interface IConfigurationRepository
     {
 	    Configuration GetSingle();
-	    void Update(Configuration entity);
+	    void UpdateOrAdd(Configuration entity);
 	}
 }

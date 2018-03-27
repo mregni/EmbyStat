@@ -6,8 +6,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyPlugin;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.EmbyClient;
 using MediaBrowser.Model.Plugins;
@@ -16,17 +19,21 @@ using Newtonsoft.Json;
 
 namespace EmbyStat.Services.Emby
 {
-    public class EmbyService : IEmbyService
+    public class PluginService : IPluginService
     {
-	    private readonly ILogger<EmbyService> _logger;
+	    private readonly ILogger<PluginService> _logger;
 	    private readonly IEmbyClient _embyClient;
 	    private readonly IEmbyPluginRepository _embyPluginRepository;
+	    private readonly IEmbyServerInfoRepository _embyServerInfoRepository;
+		private readonly IConfigurationRepository _configurationRepository;
 
-	    public EmbyService(ILogger<EmbyService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository)
+		public PluginService(ILogger<PluginService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository, IConfigurationRepository configurationRepository, IEmbyServerInfoRepository embyServerInfoRepository)
 	    {
 		    _logger = logger;
 		    _embyClient = embyClient;
 		    _embyPluginRepository = embyPluginRepository;
+		    _configurationRepository = configurationRepository;
+		    _embyServerInfoRepository = embyServerInfoRepository;
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -92,10 +99,23 @@ namespace EmbyStat.Services.Emby
 		    return _embyPluginRepository.GetPlugins();
 	    }
 
-	    public async void UpdateServerInfo()
+	    public ServerInfo GetServerInfo()
 	    {
-		    var plugins = await _embyClient.GetInstalledPluginsAsync();
-			_embyPluginRepository.InsertPluginRange(plugins);
+		    return _embyServerInfoRepository.GetSingle();
+	    }
+
+	    public async void FireSmallSyncEmbyServerInfo()
+	    {
+		    var settings = _configurationRepository.GetSingle();
+
+			_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+		    var systemInfoReponse = await _embyClient.GetServerInfo();
+			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
+
+		    var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
+
+		    _embyServerInfoRepository.UpdateOrAdd(systemInfo);
+			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
 		}
 	}
 }

@@ -17,9 +17,9 @@ namespace EmbyStat.Controllers.Emby
 	public class EmbyController : Controller
 	{
 		private readonly ILogger<EmbyController> _logger;
-		private readonly IEmbyService _embyService;
+		private readonly IPluginService _embyService;
 
-		public EmbyController(IEmbyService embyService, ILogger<EmbyController> logger)
+		public EmbyController(IPluginService embyService, ILogger<EmbyController> logger)
 		{
 			_logger = logger;
 			_embyService = embyService;
@@ -35,12 +35,21 @@ namespace EmbyStat.Controllers.Emby
 		}
 
 		[HttpPost]
-		[Route("updateserverinfo")]
-		public IActionResult UpdateServerInfo()
+		[Route("firesmallembysync")]
+		public IActionResult FireSmallEmbySync()
 		{
-			_logger.LogInformation("Update basic server info.");
-			_embyService.UpdateServerInfo();
+			_logger.LogInformation("Sync basic Emby server info.");
+			_embyService.FireSmallSyncEmbyServerInfo();
 			return Ok();
+		}
+
+		[HttpGet]
+		[Route("getserverinfo")]
+		public IActionResult GetServerInfo()
+		{
+			_logger.LogInformation("Get Emby server info.");
+			var result = _embyService.GetServerInfo();
+			return Ok(Mapper.Map<ServerInfoViewModel>(result));
 		}
 
 		[HttpGet]

@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
+using MediaBrowser.Model.Plugins;
 
 
 namespace EmbyStat.Services.Emby
 {
-    public interface IEmbyService
+    public interface IPluginService
 	{
 	    EmbyUdpBroadcast SearchEmby();
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
-		void UpdateServerInfo();
+		List<PluginInfo> GetInstalledPlugins();
+		ServerInfo GetServerInfo();
+		void FireSmallSyncEmbyServerInfo();
 
 	}
 }

@@ -28,7 +28,7 @@ namespace EmbyStat.Services.Config
 			dbSettings.Username = configuration.Username;
 			dbSettings.WizardFinished = configuration.WizardFinished;
 
-			_configurationRepository.Update(dbSettings);
+			_configurationRepository.UpdateOrAdd(dbSettings);
 		}
 
 		public Configuration GetServerSettings()

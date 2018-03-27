@@ -11,7 +11,8 @@
   "EXCEPTIONS": {
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
-    "WRONG_USERNAME_OR_PASSWORD": "Wrong Emby credentials."
+    "WRONG_USERNAME_OR_PASSWORD": "Wrong Emby credentials.",
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
   },
   "FORM_LABELS": {
     "NAME": "Enter your name",

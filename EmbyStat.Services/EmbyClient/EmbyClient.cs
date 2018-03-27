@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.EmbyClient.Cryptography;
 using EmbyStat.Services.EmbyClient.Model;
@@ -13,7 +14,9 @@ using EmbyStat.Services.Helpers;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
+using MediaBrowser.Model.System;
 using MediaBrowser.Model.Users;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Services.EmbyClient
 {
@@ -31,12 +34,13 @@ namespace EmbyStat.Services.EmbyClient
 		private readonly ICryptographyProvider _cryptographyProvider;
 		private readonly IJsonSerializer _jsonSerializer;
 		private readonly IAsyncHttpClient _httpClient;
-
-		public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient)
+		private readonly ILogger<EmbyClient> _logger;
+		public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient, ILogger<EmbyClient> logger)
 		{
 			_cryptographyProvider = cryptographyProvider;
 			_jsonSerializer = jsonSerializer;
 			_httpClient = httpClient;
+			_logger = logger;
 
 			ClientName = Constants.AppName;
 			ApplicationVersion = "1.0.0";
@@ -147,6 +151,23 @@ namespace EmbyStat.Services.EmbyClient
 			return url;
 		}
 
+		public void SetAddressAndUrl(string url, string token)
+		{
+			if (string.IsNullOrWhiteSpace(url))
+			{
+				throw new ArgumentNullException(nameof(url));
+			}
+
+			if (string.IsNullOrWhiteSpace(token))
+			{
+				throw new ArgumentNullException(nameof(token));
+			}
+
+			ServerAddress = url;
+			AccessToken = token;
+			ResetHttpHeaders();
+		}
+
 		public async Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
 		{
 			if (string.IsNullOrWhiteSpace(username))
@@ -189,6 +210,16 @@ namespace EmbyStat.Services.EmbyClient
 			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
 			{
 				return DeserializeFromStream<List<PluginInfo>>(stream);
+			}
+		}
+
+		public async Task<SystemInfo> GetServerInfo()
+		{
+			var url = GetApiUrl("System/Info");
+
+			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
+			{
+				return DeserializeFromStream<SystemInfo>(stream);
 			}
 		}
 
@@ -242,29 +273,46 @@ namespace EmbyStat.Services.EmbyClient
 
 			const string contentType = "application/x-www-form-urlencoded";
 
-			using (var stream = await SendAsync(new HttpRequest
+			try
 			{
-				Url = url,
-				CancellationToken = cancellationToken,
-				RequestHeaders = _httpHeaders,
-				Method = "POST",
-				RequestContentType = contentType,
-				RequestContent = postContent
-			}).ConfigureAwait(false))
-			{
-				return DeserializeFromStream<T>(stream);
+				using (var stream = await SendAsync(new HttpRequest
+				{
+					Url = url,
+					CancellationToken = cancellationToken,
+					RequestHeaders = _httpHeaders,
+					Method = "POST",
+					RequestContentType = contentType,
+					RequestContent = postContent
+				}).ConfigureAwait(false))
+				{
+					return DeserializeFromStream<T>(stream);
+				}
 			}
+			catch (Exception e)
+			{
+				_logger.LogError(e, "EMBY_CALL_FAILED");
+				throw new BusinessException("EMBY_CALL_FAILED");
+			}
+			
 		}
 
 		private Task<Stream> GetStream(string url, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return SendAsync(new HttpRequest
+			try
 			{
-				CancellationToken = cancellationToken,
-				Method = "GET",
-				RequestHeaders = _httpHeaders,
-				Url = url
-			});
+				return SendAsync(new HttpRequest
+				{
+					CancellationToken = cancellationToken,
+					Method = "GET",
+					RequestHeaders = _httpHeaders,
+					Url = url
+				});
+			}
+			catch (Exception e)
+			{
+				_logger.LogError(e, "EMBY_CALL_FAILED");
+				throw new BusinessException("EMBY_CALL_FAILED");
+			}
 		}
 
 		private T DeserializeFromStream<T>(Stream stream)

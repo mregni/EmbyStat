@@ -10,6 +10,9 @@ import { EmbyUdpBroadcast } from '../configuration/models/embyUdpBroadcast';
 import { Configuration } from '../configuration/models/configuration';
 import { EmbyToken } from '../configuration/models/embyToken';
 
+import { PluginFacade } from '../plugin/state/facade.plugin';
+
+
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
@@ -41,6 +44,7 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   constructor(private translate: TranslateService,
     private configurationFacade: ConfigurationFacade,
+    private pluginFacade: PluginFacade,
     private router: Router  ) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,

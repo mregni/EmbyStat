@@ -47,6 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configurationFacade.getConfiguration();
+
     this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
       this.translate.use(config.language);
     });

@@ -14,19 +14,13 @@ namespace EmbyStat.Repositories.EmbyPlugin
 		    }
 	    }
 
-	    public void InsertPlugin(PluginInfo plugin)
+	    public void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins)
 	    {
 			using (var context = new ApplicationDbContext())
 			{
-				context.Plugins.Add(plugin);
+				context.RemoveRange(context.Plugins.ToList());
 				context.SaveChanges();
-			}
-		}
 
-	    public void InsertPluginRange(List<PluginInfo> plugins)
-	    {
-			using (var context = new ApplicationDbContext())
-			{
 				context.Plugins.AddRange(plugins);
 				context.SaveChanges();
 			}

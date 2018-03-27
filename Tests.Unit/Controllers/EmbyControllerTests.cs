@@ -5,46 +5,70 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.Helpers;
+using EmbyStat.Controllers.Plugin;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
 using FluentAssertions;
+using MediaBrowser.Model.Plugins;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
+using PluginController = EmbyStat.Controllers.Emby.PluginController;
 
 namespace Tests.Unit.Controllers
 {
 	[Collection("Controller collection")]
 	public class EmbyControllerTests : IDisposable
     {
-	    private readonly EmbyController _subject;
-	    private readonly Mock<IEmbyService> _embyServiceMock;
+	    private readonly PluginController _subject;
+	    private readonly Mock<IPluginService> _embyServiceMock;
 
-	    public EmbyControllerTests()
+	    private readonly List<PluginInfo> _plugins;
+	    private readonly EmbyToken _token;
+	    private readonly ServerInfo _serverInfo;
+	    private readonly EmbyUdpBroadcast _emby;
+
+		public EmbyControllerTests()
 	    {
-			var token = new EmbyToken()
+		    _token = new EmbyToken()
 		    {
 			    IsAdmin = true,
 			    Token = "azerty",
 			    Username = "admin"
 		    };
 
-		    var emby = new EmbyUdpBroadcast()
+		    _emby = new EmbyUdpBroadcast()
 		    {
 			    Id = "azerty",
 			    Address = "http://localhost",
 			    Name = "emby"
 		    };
 
-			_embyServiceMock = new Mock<IEmbyService>();
-		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(token));
-		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(emby);
-		    _embyServiceMock.Setup(x => x.UpdateServerInfo());
+			_plugins = new List<PluginInfo>
+			{
+				new PluginInfo{ Name = "Trakt plugin"},
+				new PluginInfo{ Name = "EmbyStat plugin"}
+			};
 
-			var loggerMock = new Mock<ILogger<EmbyController>>();
+			_serverInfo = new ServerInfo
+			{
+				Id = Guid.NewGuid().ToString(),
+				HttpServerPortNumber = 8096,
+				HttpsPortNumber = 8097
+			};
 
-		    _subject = new EmbyController(_embyServiceMock.Object, loggerMock.Object);
+			_embyServiceMock = new Mock<IPluginService>();
+		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(_token));
+		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
+		    _embyServiceMock.Setup(x => x.FireSmallSyncEmbyServerInfo());
+		    _embyServiceMock.Setup(x => x.GetInstalledPlugins()).Returns(_plugins);
+		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
+
+			var loggerMock = new Mock<ILogger<PluginController>>();
+
+		    _subject = new PluginController(_embyServiceMock.Object, loggerMock.Object);
 		}
 
 	    public void Dispose()
@@ -64,7 +88,13 @@ namespace Tests.Unit.Controllers
 
 		    var result = await _subject.GenerateToken(loginViewModel);
 
-		    result.Should().BeOfType<OkObjectResult>();
+		    var tokenObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		    var token = tokenObject.Should().BeOfType<EmbyTokenViewModel>().Subject;
+
+		    token.IsAdmin.Should().Be(_token.IsAdmin);
+		    token.Token.Should().Be(_token.Token);
+		    token.Username.Should().Be(_token.Username);
+
 		    _embyServiceMock.Verify(x => x.GetEmbyToken(It.Is<EmbyLogin>(
 			    y => y.UserName == loginViewModel.UserName &&
 			         y.Address == loginViewModel.Address &&
@@ -77,17 +107,47 @@ namespace Tests.Unit.Controllers
 	    {
 		    var result = _subject.SearchEmby();
 
-		    result.Should().BeOfType<OkObjectResult>();
-		    _embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
+		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		    var embyUdpBroadcast = resultObject.Should().BeOfType<EmbyUdpBroadcast>().Subject;
+
+		    embyUdpBroadcast.Address.Should().Be(_emby.Address);
+		    embyUdpBroadcast.Id.Should().Be(_emby.Id);
+		    embyUdpBroadcast.Name.Should().Be(_emby.Name);
+
+			_embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
 	    }
 
 	    [Fact]
 	    public void IsServerInfoUpdated()
 	    {
-		    var result = _subject.UpdateServerInfo();
+		    var result = _subject.FireSmallEmbySync();
 
 		    result.Should().BeOfType<OkResult>();
-		    _embyServiceMock.Verify(x => x.UpdateServerInfo(), Times.Once);
+		    _embyServiceMock.Verify(x => x.FireSmallSyncEmbyServerInfo(), Times.Once);
+	    }
+
+	  //  [Fact]
+	  //  public void ArePluginsReturned()
+	  //  {
+		 //   var result = _subject.get();
+		 //   var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		 //   var list = resultObject.Should().BeOfType<List<EmbyPluginViewModel>>().Subject;
+
+		 //   list.Count.Should().Be(2);
+			//_embyServiceMock.Verify(x => x.GetInstalledPlugins(), Times.Once);
+	  //  }
+
+	    [Fact]
+	    public void IsServerInfoReturned()
+	    {
+		    var result = _subject.GetServerInfo();
+		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		    var serverInfo = resultObject.Should().BeOfType<ServerInfoViewModel>().Subject;
+
+		    serverInfo.Should().NotBeNull();
+		    serverInfo.Id.Should().Be(_serverInfo.Id);
+		    serverInfo.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
+		    serverInfo.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
 	    }
 	}
 }

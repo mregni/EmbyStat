@@ -50,8 +50,14 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
+    <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
+    <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
+    <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
+    <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
+    <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js" />
     <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js" />
     <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js.map" />
@@ -80,8 +86,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\actions.plugin.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\facade.plugin.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\dialog\shutdown\shutdown.dialog.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />

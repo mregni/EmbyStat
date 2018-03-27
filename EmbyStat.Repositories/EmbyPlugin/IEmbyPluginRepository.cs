@@ -8,7 +8,6 @@ namespace EmbyStat.Repositories.EmbyPlugin
     public interface IEmbyPluginRepository
     {
 	    List<PluginInfo> GetPlugins();
-	    void InsertPlugin(PluginInfo plugin);
-	    void InsertPluginRange(List<PluginInfo> plugins);
+	    void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins);
     }
 }
