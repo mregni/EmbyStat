@@ -9,7 +9,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_plugin_1 = require("./actions.plugin");
-var INITIAL_STATE = [];
+var INITIAL_STATE = {
+    list: []
+};
 function pluginReducer(state, action) {
     if (state === void 0) { state = INITIAL_STATE; }
     switch (action.type) {

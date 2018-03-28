@@ -15,17 +15,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
-using PluginController = EmbyStat.Controllers.Emby.PluginController;
 
 namespace Tests.Unit.Controllers
 {
-	[Collection("Controller collection")]
+	[Collection("Mapper collection")]
 	public class EmbyControllerTests : IDisposable
     {
-	    private readonly PluginController _subject;
-	    private readonly Mock<IPluginService> _embyServiceMock;
+	    private readonly EmbyController _subject;
+	    private readonly Mock<IEmbyService> _embyServiceMock;
 
-	    private readonly List<PluginInfo> _plugins;
 	    private readonly EmbyToken _token;
 	    private readonly ServerInfo _serverInfo;
 	    private readonly EmbyUdpBroadcast _emby;
@@ -46,12 +44,6 @@ namespace Tests.Unit.Controllers
 			    Name = "emby"
 		    };
 
-			_plugins = new List<PluginInfo>
-			{
-				new PluginInfo{ Name = "Trakt plugin"},
-				new PluginInfo{ Name = "EmbyStat plugin"}
-			};
-
 			_serverInfo = new ServerInfo
 			{
 				Id = Guid.NewGuid().ToString(),
@@ -59,16 +51,15 @@ namespace Tests.Unit.Controllers
 				HttpsPortNumber = 8097
 			};
 
-			_embyServiceMock = new Mock<IPluginService>();
+			_embyServiceMock = new Mock<IEmbyService>();
 		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(_token));
 		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
 		    _embyServiceMock.Setup(x => x.FireSmallSyncEmbyServerInfo());
-		    _embyServiceMock.Setup(x => x.GetInstalledPlugins()).Returns(_plugins);
 		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
 
-			var loggerMock = new Mock<ILogger<PluginController>>();
+			var loggerMock = new Mock<ILogger<EmbyController>>();
 
-		    _subject = new PluginController(_embyServiceMock.Object, loggerMock.Object);
+		    _subject = new EmbyController(_embyServiceMock.Object, loggerMock.Object);
 		}
 
 	    public void Dispose()
@@ -108,7 +99,7 @@ namespace Tests.Unit.Controllers
 		    var result = _subject.SearchEmby();
 
 		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-		    var embyUdpBroadcast = resultObject.Should().BeOfType<EmbyUdpBroadcast>().Subject;
+		    var embyUdpBroadcast = resultObject.Should().BeOfType<EmbyUdpBroadcastViewModel>().Subject;
 
 		    embyUdpBroadcast.Address.Should().Be(_emby.Address);
 		    embyUdpBroadcast.Id.Should().Be(_emby.Id);
@@ -125,17 +116,6 @@ namespace Tests.Unit.Controllers
 		    result.Should().BeOfType<OkResult>();
 		    _embyServiceMock.Verify(x => x.FireSmallSyncEmbyServerInfo(), Times.Once);
 	    }
-
-	  //  [Fact]
-	  //  public void ArePluginsReturned()
-	  //  {
-		 //   var result = _subject.get();
-		 //   var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-		 //   var list = resultObject.Should().BeOfType<List<EmbyPluginViewModel>>().Subject;
-
-		 //   list.Count.Should().Be(2);
-			//_embyServiceMock.Verify(x => x.GetInstalledPlugins(), Times.Once);
-	  //  }
 
 	    [Fact]
 	    public void IsServerInfoReturned()

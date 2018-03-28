@@ -19,15 +19,15 @@ using Newtonsoft.Json;
 
 namespace EmbyStat.Services.Emby
 {
-    public class PluginService : IPluginService
+    public class EmbyService : IEmbyService
     {
-	    private readonly ILogger<PluginService> _logger;
+	    private readonly ILogger<EmbyService> _logger;
 	    private readonly IEmbyClient _embyClient;
 	    private readonly IEmbyPluginRepository _embyPluginRepository;
 	    private readonly IEmbyServerInfoRepository _embyServerInfoRepository;
 		private readonly IConfigurationRepository _configurationRepository;
 
-		public PluginService(ILogger<PluginService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository, IConfigurationRepository configurationRepository, IEmbyServerInfoRepository embyServerInfoRepository)
+		public EmbyService(ILogger<EmbyService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository, IConfigurationRepository configurationRepository, IEmbyServerInfoRepository embyServerInfoRepository)
 	    {
 		    _logger = logger;
 		    _embyClient = embyClient;
@@ -92,11 +92,6 @@ namespace EmbyStat.Services.Emby
 			
 			_logger.LogError("Username or password are empty, no use to try a login!");
 			throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
-	    }
-
-	    public List<PluginInfo> GetInstalledPlugins()
-	    {
-		    return _embyPluginRepository.GetPlugins();
 	    }
 
 	    public ServerInfo GetServerInfo()

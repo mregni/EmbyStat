@@ -7,11 +7,11 @@ import { configurationReducer } from '../configuration/state/reducer.configurati
 import { Configuration } from '../configuration/models/configuration';
 
 import { pluginReducer } from '../plugin/state/reducer.plugin';
-import { EmbyPlugin } from '../plugin/models/embyPlugin';
+import { EmbyPluginStore } from '../plugin/models/embyPluginStore';
 
 export interface ApplicationState {
   configuration: Configuration,
-  plugins: EmbyPlugin[];
+  plugins: EmbyPluginStore;
 }
 
 export const ROOT_REDUCER: ActionReducerMap<ApplicationState> =

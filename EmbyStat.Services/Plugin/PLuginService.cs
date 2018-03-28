@@ -9,13 +9,11 @@ namespace EmbyStat.Services.Plugin
     public class PluginService : IPluginService
     {
 	    private readonly ILogger<PluginService> _logger;
-	    private readonly IEmbyClient _embyClient;
 	    private readonly IEmbyPluginRepository _embyPluginRepository;
 
-	    public PluginService(ILogger<PluginService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository)
+	    public PluginService(ILogger<PluginService> logger, IEmbyPluginRepository embyPluginRepository)
 	    {
 		    _logger = logger;
-		    _embyClient = embyClient;
 		    _embyPluginRepository = embyPluginRepository;
 	    }
 

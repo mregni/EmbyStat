@@ -9,6 +9,7 @@ import { ConfigurationFacade } from '../configuration/state/facade.configuration
 import { EmbyUdpBroadcast } from '../configuration/models/embyUdpBroadcast';
 import { Configuration } from '../configuration/models/configuration';
 import { EmbyToken } from '../configuration/models/embyToken';
+import { EmbyPluginStore } from '../plugin/models/embyPluginStore';
 
 import { PluginFacade } from '../plugin/state/facade.plugin';
 
@@ -33,13 +34,17 @@ export class WizardComponent implements OnInit, OnDestroy {
   public languageChangedSub: Subscription;
   public searchEmbySub: Subscription;
   public configurationSub: Subscription;
+  public pluginSub: Subscription;
 
   public embyFound: boolean = false;
   public embyServerName: string = "";
-  public hidePassword = true;
-  public wizardIndex = 0;
-  public noAdminAccount: boolean = false;
-  public savedConfiguration: boolean = false;
+  public hidePassword: boolean = true;
+  public wizardIndex: number = 0;
+  public embyOnline: boolean = false;
+  public isAdmin: boolean = false;
+  public pluginInstalled: boolean = false;
+  public username: string;
+
   private configuration: Configuration;
 
   constructor(private translate: TranslateService,
@@ -59,6 +64,9 @@ export class WizardComponent implements OnInit, OnDestroy {
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
+    this.pluginSub = this.pluginFacade.plugins$.subscribe(plugins => { console.log(plugins);
+      this.pluginsLoaded(plugins);
+    });
   }
 
   ngOnInit() {
@@ -75,30 +83,35 @@ export class WizardComponent implements OnInit, OnDestroy {
     this.translate.use(value);
   }
 
+  private pluginsLoaded(plugins: EmbyPluginStore) {
+    this.pluginInstalled = plugins.list.some(plugin => plugin.name === "Statistics");
+  }
+
+  public rescan() {
+    this.configurationFacade.fireSmallEmbySync();
+  }
+
   public stepperPageChanged(event) {
     if (event.selectedIndex === 2) {
-      this.noAdminAccount = false;
-      var username = this.embyFormGroup.get('embyUsername').value;
+      this.username = this.embyFormGroup.get('embyUsername').value;
       var password = this.embyFormGroup.get('embyPassword').value;
       var address = this.embyFormGroup.get('embyAddress').value;
-      this.configurationFacade.getToken(username, password, address)
+      this.configurationFacade.getToken(this.username, password, address)
         .subscribe((token: EmbyToken) => {
+          this.embyOnline = true;
+          this.isAdmin = token.isAdmin;
           if (token.isAdmin) {
             var config = { ...this.configuration };
             config.language = this.introFormGroup.get('language').value;
-            config.embyUserName = username;
+            config.embyUserName = this.username;
             config.username = this.introFormGroup.get('name').value;
             config.embyServerAddress = address;
             config.accessToken = token.token;
             config.wizardFinished = true;
             this.configurationFacade.updateConfiguration(config);
-            this.savedConfiguration = true;
-            this.stepper.next();
           } else {
-            this.noAdminAccount = true;
           }
         }, (err) => {
-          this.noAdminAccount = true;
         });
     }
   }
@@ -118,6 +131,10 @@ export class WizardComponent implements OnInit, OnDestroy {
 
     if (this.configurationSub !== undefined) {
       this.configurationSub.unsubscribe();
+    }
+
+    if (this.pluginSub !== undefined) {
+      this.pluginSub.unsubscribe();
     }
   }
 }

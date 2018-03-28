@@ -9,11 +9,10 @@ using MediaBrowser.Model.Plugins;
 
 namespace EmbyStat.Services.Emby
 {
-    public interface IPluginService
+    public interface IEmbyService
 	{
 	    EmbyUdpBroadcast SearchEmby();
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
-		List<PluginInfo> GetInstalledPlugins();
 		ServerInfo GetServerInfo();
 		void FireSmallSyncEmbyServerInfo();
 

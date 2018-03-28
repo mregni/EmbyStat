@@ -1,13 +1,15 @@
 import { createSelector } from '@ngrx/store';
 import { ApplicationState } from "../../states/app.state";
 
-import { EmbyPlugin } from '../models/embyPlugin';
+import { EmbyPluginStore } from '../models/embyPluginStore';
 import { PluginActionTypes, PluginActions } from './actions.plugin';
 
 
-const INITIAL_STATE: EmbyPlugin[] = [];
+const INITIAL_STATE: EmbyPluginStore = {
+  list: []
+};
 
-export function pluginReducer(state: EmbyPlugin[] = INITIAL_STATE, action: PluginActions) {
+export function pluginReducer(state: EmbyPluginStore = INITIAL_STATE, action: PluginActions) {
   switch (action.type) {
   case PluginActionTypes.LOAD_PLUGINS_SUCCESS:
     return {

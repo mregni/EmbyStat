@@ -2,7 +2,7 @@
 
 namespace Tests.Unit.Controllers
 {
-	[CollectionDefinition("Controller collection")]
+	[CollectionDefinition("Mapper collection")]
 	public class ControllerCollection : ICollectionFixture<ControllerFixture>
 	{
     }

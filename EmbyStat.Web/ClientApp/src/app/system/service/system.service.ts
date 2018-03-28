@@ -10,8 +10,4 @@ export class SystemService {
   constructor(private http: HttpClient) {
 
   }
-
-  shutdown(): Observable<void> {
-    return this.http.post<void>('/api' + this.shutdownServerUrl, {});
-  }
 }

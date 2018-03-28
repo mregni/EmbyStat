@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
-using EmbyStat.Controllers.Helpers;
+﻿using AutoMapper;
 using Xunit;
 
-namespace Tests.Unit
+namespace Tests.Unit.Controllers
 {
-	[Collection("Controller collection")]
+	[Collection("Mapper collection")]
 	public class MapperTests
     {
 		public MapperTests()

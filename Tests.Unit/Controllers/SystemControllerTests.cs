@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-	[Collection("Controller collection")]
+	[Collection("Mapper collection")]
 	public class SystemControllerTests : IDisposable
     {
 	    private readonly SystemController _subject;

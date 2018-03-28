@@ -7,9 +7,5 @@ import { SystemService } from '../service/system.service';
 export class SystemFacade {
   constructor(private systemService: SystemService) { }
 
-  shutdownServer(): Observable<void> {
-    return this.systemService.shutdown();
-  }
-
 }
 

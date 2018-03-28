@@ -21,17 +21,15 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Services collection")]
+	[Collection("Mapper collection")]
 	public class EmbyServiceTests
     {
-	    private readonly PluginService _subject;
+	    private readonly EmbyService _subject;
 	    private readonly Mock<IEmbyClient> _embyClientMock;
 	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
-	    private readonly Mock<IConfigurationRepository> _configurationRepositoryMock;
 	    private readonly Mock<IEmbyServerInfoRepository> _embyServerInfoRepository;
 		private readonly AuthenticationResult _authResult;
 	    private readonly List<PluginInfo> _plugins;
-	    private readonly SystemInfo _systemInfo;
 	    private readonly ServerInfo _serverInfo;
 
 	    public EmbyServiceTests()
@@ -64,26 +62,26 @@ namespace Tests.Unit.Services
 				HttpsPortNumber = 8097
 			};
 
-		    _systemInfo = new SystemInfo();
-		    var loggerMock = new Mock<ILogger<PluginService>>();
+		    var systemInfo = new SystemInfo();
+		    var loggerMock = new Mock<ILogger<EmbyService>>();
 
 			_embyClientMock = new Mock<IEmbyClient>();
 		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
 		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
-		    _embyClientMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(_systemInfo));
+		    _embyClientMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(systemInfo));
 
 		    _embyPluginRepositoryMock = new Mock<IEmbyPluginRepository>();
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
-		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
-		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
+		    var configurationRepositoryMock = new Mock<IConfigurationRepository>();
+		    configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
 
 		    _embyServerInfoRepository = new Mock<IEmbyServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
 		    _embyServerInfoRepository.Setup(x => x.GetSingle()).Returns(_serverInfo);
 
-			_subject = new PluginService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object);
+			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, configurationRepositoryMock.Object, _embyServerInfoRepository.Object);
 	    }
 
 	    [Fact]
@@ -109,7 +107,6 @@ namespace Tests.Unit.Services
 			    It.Is<string>(y => y == login.UserName ),
 			    It.Is<string>(y => y == login.Password),
 			    It.Is<string>(y => y == login.Address)));
-
 	    }
 
 	    [Fact]
@@ -169,7 +166,7 @@ namespace Tests.Unit.Services
 	    [Fact]
 	    public void UpdateServerInfo()
 	    {
-		    _subject.UpdateServerInfo();
+		    _subject.FireSmallSyncEmbyServerInfo();
 
 		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
 			_embyClientMock.Verify(x => x.GetServerInfo(), Times.Once);
@@ -178,19 +175,6 @@ namespace Tests.Unit.Services
 			    y => y.Count == 2 &&
 			         y.First().Name == _plugins.First().Name)));
 			_embyServerInfoRepository.Verify(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
-		}
-
-	    [Fact]
-	    public void GetPluginsFromDatabase()
-	    {
-		    var plugins = _subject.GetInstalledPlugins();
-
-		    plugins.Should().NotBeNull();
-		    plugins.Count.Should().Be(2);
-		    plugins.First().Name.Should().Be(_plugins.First().Name);
-		    plugins.Skip(1).First().Name.Should().Be(_plugins.Skip(1).First().Name);
-
-			_embyPluginRepositoryMock.Verify(x => x.GetPlugins(), Times.Once);
 		}
 
 	    [Fact]

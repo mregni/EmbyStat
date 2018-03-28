@@ -8,12 +8,12 @@ namespace Tests.Unit.Services
     {
 	    public ServicesFixture()
 	    {
-			Mapper.Initialize(cfg => cfg.AddProfile<MapProfiles>());
+			
 		}
 
 	    public void Dispose()
 	    {
-			Mapper.Reset();
+			
 	    }
     }
 }

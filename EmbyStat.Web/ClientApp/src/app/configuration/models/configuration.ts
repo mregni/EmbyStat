@@ -1,4 +1,4 @@
-export interface Configuration {
+export class Configuration {
   wizardFinished: boolean;
   accessToken: string;
   embyUserName: string;
