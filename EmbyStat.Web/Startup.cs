@@ -13,7 +13,7 @@ using EmbyStat.Services.Emby;
 using EmbyStat.Services.EmbyClient;
 using EmbyStat.Services.EmbyClient.Cryptography;
 using EmbyStat.Services.EmbyClient.Net;
-using EmbyStat.Services.System;
+using EmbyStat.Services.Plugin;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using MediaBrowser.Model.Serialization;
@@ -69,7 +69,6 @@ namespace EmbyStat.Web
 
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
-			services.AddScoped<ISystemService, SystemService>();
 			services.AddScoped<IPluginService, PluginService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();

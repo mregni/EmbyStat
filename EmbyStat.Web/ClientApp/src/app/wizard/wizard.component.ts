@@ -84,7 +84,7 @@ export class WizardComponent implements OnInit, OnDestroy {
   }
 
   private pluginsLoaded(plugins: EmbyPluginStore) {
-    this.pluginInstalled = plugins.list.some(plugin => plugin.name === "Statistics");
+    this.pluginInstalled = plugins.list.some(plugin => plugin.name === "EmbyStat");
   }
 
   public rescan() {

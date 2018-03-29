@@ -63,8 +63,6 @@
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
-    <None Remove="ClientApp\src\app\system\service\system.service.ts" />
-    <None Remove="ClientApp\src\app\system\state\facade.system.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,11 +96,12 @@
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\facade.configuration.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\system\service\system.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\system\state\facade.system.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\server\models\" />
+    <Folder Include="ClientApp\src\app\server\state\" />
+    <Folder Include="ClientApp\src\app\server\service\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
