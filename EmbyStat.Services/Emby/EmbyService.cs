@@ -1,11 +1,19 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Repositories.Config;
+using EmbyStat.Repositories.EmbyPlugin;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
+using EmbyStat.Services.EmbyClient;
+using MediaBrowser.Model.Plugins;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -14,10 +22,18 @@ namespace EmbyStat.Services.Emby
     public class EmbyService : IEmbyService
     {
 	    private readonly ILogger<EmbyService> _logger;
+	    private readonly IEmbyClient _embyClient;
+	    private readonly IEmbyPluginRepository _embyPluginRepository;
+	    private readonly IEmbyServerInfoRepository _embyServerInfoRepository;
+		private readonly IConfigurationRepository _configurationRepository;
 
-	    public EmbyService(ILogger<EmbyService> logger)
+		public EmbyService(ILogger<EmbyService> logger, IEmbyClient embyClient, IEmbyPluginRepository embyPluginRepository, IConfigurationRepository configurationRepository, IEmbyServerInfoRepository embyServerInfoRepository)
 	    {
 		    _logger = logger;
+		    _embyClient = embyClient;
+		    _embyPluginRepository = embyPluginRepository;
+		    _configurationRepository = configurationRepository;
+		    _embyServerInfoRepository = embyServerInfoRepository;
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -54,31 +70,47 @@ namespace EmbyStat.Services.Emby
 
 	    public async Task<EmbyToken> GetEmbyToken(EmbyLogin login)
 		{
-		    if (!string.IsNullOrEmpty(login.Password) && !string.IsNullOrEmpty(login.UserName))
+		    if (!string.IsNullOrEmpty(login?.Password) && !string.IsNullOrEmpty(login.UserName))
 		    {
-			    using (var client = Emby.Client.GetApiClient(login.Address))
-			    {
-				    try
-				    {
-					    var token = await client.AuthenticateUserAsync(login.UserName, login.Password);
-						return new EmbyToken
-						{
-							Token = token.AccessToken,
-							Username = token.User.ConnectUserName,
-							IsAdmin = token.User.Policy.IsAdministrator
-						};
-				    }
-				    catch (Exception)
-				    {
-					    _logger.LogError("Username or password are wrong, user should try again with other credentials!");
-					    throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
-					}
-
-			    }
-		    }
+				try
+				{
+					var token = await _embyClient.AuthenticateUserAsync(login.UserName, login.Password, login.Address);
+					return new EmbyToken
+					{
+						Token = token.AccessToken,
+						Username = token.User.ConnectUserName,
+						IsAdmin = token.User.Policy.IsAdministrator
+					};
+				}
+				catch (Exception e)
+				{
+					_logger.LogError("Username or password are wrong, user should try again with other credentials!");
+					_logger.LogError($"Message: {e.Message}");
+					throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
+				}
+			}
 			
-			_logger.LogError("Username or password are empty, this should not happen!");
-			throw new BusinessException("WRONGUSERNAMEORPASSWORD");
+			_logger.LogError("Username or password are empty, no use to try a login!");
+			throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
 	    }
+
+	    public ServerInfo GetServerInfo()
+	    {
+		    return _embyServerInfoRepository.GetSingle();
+	    }
+
+	    public async void FireSmallSyncEmbyServerInfo()
+	    {
+		    var settings = _configurationRepository.GetSingle();
+
+			_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+		    var systemInfoReponse = await _embyClient.GetServerInfo();
+			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
+
+		    var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
+
+		    _embyServerInfoRepository.UpdateOrAdd(systemInfo);
+			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
+		}
 	}
 }

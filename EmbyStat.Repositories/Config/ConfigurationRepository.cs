@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories.Config
 {
-    public class ConfigurationRepository : IConfigurationRepository
+    public class PluginRepository : IConfigurationRepository
     {
 		public Configuration GetSingle()
 	    {
@@ -13,7 +13,7 @@ namespace EmbyStat.Repositories.Config
 		    }
 	    }
 
-	    public void Update(Configuration entity)
+	    public void UpdateOrAdd(Configuration entity)
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
@@ -22,9 +22,14 @@ namespace EmbyStat.Repositories.Config
 			    if (settings != null)
 			    {
 				    context.Entry(entity).State = EntityState.Modified;
-				    context.SaveChanges();
 			    }
-		    }
+			    else
+			    {
+				    context.Configuration.Add(entity);
+			    }
+
+			    context.SaveChanges();
+			}
 	    }
 	}
 }

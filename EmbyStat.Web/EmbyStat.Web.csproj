@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
+  <PropertyGroup>
+	  <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -13,6 +15,7 @@
     <ApplicationInsightsResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourcegroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourceGroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsAnnotationResourceId>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,19 +50,19 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
+    <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
+    <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js" />
-    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js" />
-    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js.map" />
-    <None Remove="ClientApp\src\app\shared\dialog\shutdown\error.interceptor.js.map" />
-    <None Remove="ClientApp\src\app\shared\dialog\shutdown\shutdown.dialog.ts" />
+    <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
+    <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
+    <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
+    <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
+    <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
-    <None Remove="ClientApp\src\app\system\service\system.service.ts" />
-    <None Remove="ClientApp\src\app\system\state\facade.system.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,9 +80,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\dialog\shutdown\shutdown.dialog.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\actions.plugin.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\facade.plugin.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
@@ -87,11 +96,12 @@
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\facade.configuration.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\system\service\system.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\system\state\facade.system.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\server\models\" />
+    <Folder Include="ClientApp\src\app\server\state\" />
+    <Folder Include="ClientApp\src\app\server\service\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

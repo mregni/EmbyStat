@@ -8,6 +8,7 @@ import { Configuration } from '../models/configuration';
 import { EmbyUdpBroadcast } from '../models/embyUdpBroadcast';
 import { EmbyLogin } from '../models/embyLogin';
 import { EmbyToken } from '../models/embyToken';
+import { ServerInfo } from '../models/serverInfo';
 
 @Injectable()
 export class ConfigurationService {
@@ -15,6 +16,8 @@ export class ConfigurationService {
   private readonly updateConfigurationUrl: string = '/configuration';
   private readonly searchEmbyUrl: string = '/emby/searchemby';
   private readonly getEmbyTokenUrl: string = '/emby/generatetoken';
+  private readonly getServerInfoUrl: string = '/emby/getserverinfo';
+  private readonly fireSmallEmbyUpdateUrl: string = '/emby/firesmallembysync';
 
   constructor(private http: HttpClient) {
     
@@ -35,5 +38,13 @@ export class ConfigurationService {
 
   searchEmby(): Observable<EmbyUdpBroadcast> {
     return this.http.get<EmbyUdpBroadcast>('/api' + this.searchEmbyUrl);
+  }
+
+  fireSmallEmbyUpdate(): Observable<void> {
+    return this.http.post<void>('/api' + this.fireSmallEmbyUpdateUrl, {});
+  }
+
+  getServerInfo(): Observable<ServerInfo> {
+    return this.http.get<ServerInfo>('/api' + this.getServerInfoUrl);
   }
 }

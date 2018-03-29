@@ -14,6 +14,8 @@ import { SharedModule } from './shared/shared.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { WizardModule } from './wizard/wizard.module';
+import { ServerModule } from './server/server.module';
+import { PluginModule } from './plugin/plugin.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -21,6 +23,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
 import { ConfigurationEffects } from './configuration/state/effects.configuration';
+import { PluginEffects } from './plugin/state/effects.plugin';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +46,8 @@ export function createTranslateLoader(http: HttpClient) {
     ConfigurationModule,
     DashboardModule,
     WizardModule,
+    ServerModule,
+    PluginModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
@@ -54,7 +59,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects]),
+    EffectsModule.forRoot([ConfigurationEffects, PluginEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [

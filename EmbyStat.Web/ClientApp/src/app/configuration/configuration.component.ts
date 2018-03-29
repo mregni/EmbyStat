@@ -10,13 +10,11 @@ import { Configuration } from './models/configuration';
   styleUrls: ['./configuration.component.scss']
 })
 export class ConfigurationComponent implements OnInit {
+  configuration$: Observable<Configuration>;
 
   constructor(private configurationFacade: ConfigurationFacade) { }
-
-  configuration$: Observable<Configuration>;
 
   ngOnInit() {
     
   }
-
 }

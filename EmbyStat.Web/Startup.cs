@@ -6,11 +6,17 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
+using EmbyStat.Repositories.EmbyPlugin;
+using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
-using EmbyStat.Services.System;
+using EmbyStat.Services.EmbyClient;
+using EmbyStat.Services.EmbyClient.Cryptography;
+using EmbyStat.Services.EmbyClient.Net;
+using EmbyStat.Services.Plugin;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +25,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
@@ -50,7 +55,7 @@ namespace EmbyStat.Web
 
 			services.AddMvc(options =>
 			{
-				options.Filters.Add(new BusinessExceptionFilter());
+				options.Filters.Add(new BusinessExceptionFilterAttribute());
 			});
 			services.AddSwaggerGen(c =>
 			{
@@ -63,13 +68,21 @@ namespace EmbyStat.Web
 			});
 
 			services.AddScoped<IConfigurationService, ConfigurationService>();
-			services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+			services.AddScoped<IPluginService, PluginService>();
+			services.AddScoped<IPluginService, PluginService>();
 
-			services.AddScoped<IEmbyService, EmbyService>();
-			services.AddScoped<ISystemService, SystemService>();
+			services.AddScoped<IConfigurationRepository, PluginRepository>();
+			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
+			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
+
+			services.AddScoped<IEmbyClient, EmbyClient>();
+			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
+			services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
+			services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
+			services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-			services.AddScoped<BusinessExceptionFilter>();
+			services.AddScoped<BusinessExceptionFilterAttribute>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
