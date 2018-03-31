@@ -36,7 +36,7 @@
           </mat-form-field>
           <mat-form-field>
             <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
-            <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+            <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <div class="button-container">

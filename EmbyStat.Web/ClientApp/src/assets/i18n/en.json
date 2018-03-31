@@ -60,6 +60,10 @@
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
   },
   "PLUGINS": {
-    "VERSION":  "Version" 
+    "VERSION": "Version"
+  },
+  "CONFIGURATION": {
+    "GENERAL": "General settings",
+    "EMBY": "Emby connection settings" 
   } 
 }

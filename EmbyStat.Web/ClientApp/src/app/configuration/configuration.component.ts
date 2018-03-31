@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ConfigurationFacade } from './state/facade.configuration';
 import { Configuration } from './models/configuration';
+import { EmbyToken } from './models/embyToken';
 
 @Component({
   selector: 'app-configuration',
@@ -20,8 +21,15 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   public nameControl: FormControl = new FormControl('', [Validators.required]);
   public languageControl: FormControl = new FormControl('en', [Validators.required]);
 
+  public embyFormGroup: FormGroup;
+  public embyAddressControl: FormControl = new FormControl('', [Validators.required]);
+  public embyUsernameControl: FormControl = new FormControl('', [Validators.required]);
+  public embyPasswordControl: FormControl = new FormControl('', [Validators.required]);
+
   public languageChangedSub: Subscription;
   public configChangedSub: Subscription;
+
+  public hidePassword: boolean = true;
 
   constructor(private configurationFacade: ConfigurationFacade, private translate: TranslateService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
@@ -31,9 +39,16 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
       language: this.languageControl
     });
 
+    this.embyFormGroup = new FormGroup({
+      embyAddress: this.embyAddressControl,
+      embyUsername: this.embyUsernameControl,
+      embyPassword: this.embyPasswordControl
+    });
+
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
       this.introFormGroup.setValue({ name: config.username, language: config.language });
+      this.embyFormGroup.setValue({ embyUsername: config.embyUserName, embyAddress: config.embyServerAddress, embyPassword: ""});
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
@@ -52,6 +67,29 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
   public resetIntroForm() {
     this.introFormGroup.setValue({ name: this.configuration.username, language: this.configuration.language });
+  }
+
+  public saveEmbyForm() {
+    var username = this.embyFormGroup.get('embyUsername').value;
+    var password = this.embyFormGroup.get('embyPassword').value;
+    var address = this.embyFormGroup.get('embyAddress').value;
+    this.configurationFacade.getToken(username, password, address)
+      .subscribe((token: EmbyToken) => {
+        if (token.isAdmin) {
+          var config = { ...this.configuration };
+          config.language = this.configuration.language;
+          config.embyUserName = username;
+          config.username = this.configuration.username;
+          config.embyServerAddress = address;
+          config.accessToken = token.token;
+          config.wizardFinished = this.configuration.wizardFinished;
+          this.configurationFacade.updateConfiguration(config);
+        }
+      });
+  }
+
+  public resetEmbyForm() {
+    this.embyFormGroup.setValue({ embyAddress: this.configuration.embyServerAddress, embyUsername: this.configuration.embyUserName, embyPassword: "" });
   }
 
   private languageChanged(value: string): void {
