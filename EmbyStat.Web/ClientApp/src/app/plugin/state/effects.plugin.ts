@@ -10,12 +10,11 @@ import 'rxjs/add/observable/throw';
 import { EmbyPlugin } from '../models/embyPlugin';
 import { PluginService } from '../service/plugin.service';
 
-import { PluginActionTypes, LoadPluginAction, LoadPluginSuccessAction } from './actions.plugin';
+import { PluginActionTypes, LoadPluginAction, LoadPluginSuccessAction, NoNeedPluginAction } from './actions.plugin';
 
 import { PluginQuery } from './reducer.plugin';
 import { EffectError } from '../../states/app.actions';
 import { ApplicationState } from '../../states/app.state';
-import { NoopAction } from '../../states/app.actions';
 
 @Injectable()
 export class PluginEffects {
@@ -41,7 +40,7 @@ export class PluginEffects {
       map((plugins: EmbyPlugin[] | null) => {
         return plugins
           ? new LoadPluginSuccessAction(plugins)
-          : new NoopAction();
+          : new NoNeedPluginAction();
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );

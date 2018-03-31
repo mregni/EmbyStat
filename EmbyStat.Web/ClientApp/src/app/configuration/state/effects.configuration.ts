@@ -16,7 +16,8 @@ import {
   LoadConfigurationSuccessAction,
   UpdateConfigurationAction,
   UpdateConfigurationSuccessAction,
-  FireSmallEmbySyncAction
+  FireSmallEmbySyncAction,
+  NoNeedConfigurationAction
 } from './actions.configuration';
 
 import { LoadPluginAction } from '../../plugin/state/actions.plugin'
@@ -51,7 +52,7 @@ export class ConfigurationEffects {
       map((configuration: Configuration | null) => {
         return configuration
           ? new LoadConfigurationSuccessAction(configuration)
-          : new NoopAction();
+          : new NoNeedConfigurationAction();
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
   );

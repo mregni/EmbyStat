@@ -3,7 +3,8 @@ import { ServerInfo } from '../models/serverInfo';
 
 export enum ServerActionTypes {
   LOAD_SERVERINFO = '[Server] Load ServerInfo',
-  LOAD_SERVERINFO_SUCCESS = '[Server] Load ServerInfo Success'
+  LOAD_SERVERINFO_SUCCESS = '[Server] Load ServerInfo Success',
+  NOT_NEEDED = '[Server] Not Needed'
 }
 
 export class LoadServerInfoAction implements Action {
@@ -16,4 +17,8 @@ export class LoadServerInfoSuccessAction implements Action {
   constructor(public payload: ServerInfo) { }
 }
 
-export type ServerActions = LoadServerInfoAction | LoadServerInfoSuccessAction;
+export class NoNeedServerInfoAction implements Action {
+  readonly type = ServerActionTypes.NOT_NEEDED;
+}
+
+export type ServerActions = LoadServerInfoAction | LoadServerInfoSuccessAction | NoNeedServerInfoAction;

@@ -5,7 +5,6 @@
     </mat-card-header>
     <mat-card-content>
       <form class="form-container" [formGroup]="introFormGroup">
-        <p [innerHTML]="'WIZARD.INTROTEXT' | translate"></p>
         <mat-form-field>
           <input matInput placeholder="{{'FORM_LABELS.NAME' | translate}}" formControlName="name" required>
           <!-- <mat-error *ngIf="nameControl.hasError('required')">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>-->

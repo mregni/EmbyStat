@@ -3,7 +3,8 @@ import { EmbyPlugin } from '../models/embyPlugin';
 
 export enum PluginActionTypes {
   LOAD_PLUGINS = '[Plugin] Load Plugins',
-  LOAD_PLUGINS_SUCCESS = '[Plugin] Load Plugins Success'
+  LOAD_PLUGINS_SUCCESS = '[Plugin] Load Plugins Success',
+  NOT_NEEDED = '[Plugin] Not needed'
 }
 
 export class LoadPluginAction implements Action {
@@ -16,4 +17,8 @@ export class LoadPluginSuccessAction implements Action {
   constructor(public payload: EmbyPlugin[]) { }
 }
 
-export type PluginActions = LoadPluginAction | LoadPluginSuccessAction;
+export class NoNeedPluginAction implements Action {
+  readonly type = PluginActionTypes.NOT_NEEDED;
+}
+
+export type PluginActions = LoadPluginAction | LoadPluginSuccessAction | NoNeedPluginAction;

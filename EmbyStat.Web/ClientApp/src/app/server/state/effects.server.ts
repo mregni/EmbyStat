@@ -9,7 +9,7 @@ import 'rxjs/add/observable/throw';
 
 import { ServerInfo } from '../models/serverInfo';
 import { ServerService } from '../service/server.service';
-import { ServerActionTypes, LoadServerInfoAction, LoadServerInfoSuccessAction } from './actions.server';
+import { ServerActionTypes, LoadServerInfoAction, LoadServerInfoSuccessAction, NoNeedServerInfoAction } from './actions.server';
 
 import { ServerQuery } from './reducer.server';
 import { EffectError } from '../../states/app.actions';
@@ -40,7 +40,7 @@ export class ServerEffects {
       map((serverInfo: ServerInfo | null) => {
         return serverInfo
           ? new LoadServerInfoSuccessAction(serverInfo)
-          : new NoopAction();
+          : new NoNeedServerInfoAction();
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );
