@@ -38,7 +38,7 @@ export class ServerEffects {
           : this.serverService.getServerInfo();
       }),
       map((serverInfo: ServerInfo | null) => {
-        return ServerInfo
+        return serverInfo
           ? new LoadServerInfoSuccessAction(serverInfo)
           : new NoopAction();
       }),

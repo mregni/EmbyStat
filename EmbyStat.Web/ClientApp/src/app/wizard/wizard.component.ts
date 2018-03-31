@@ -13,7 +13,6 @@ import { EmbyPlugin } from '../plugin/models/embyPlugin';
 
 import { PluginFacade } from '../plugin/state/facade.plugin';
 
-
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
@@ -64,9 +63,7 @@ export class WizardComponent implements OnInit, OnDestroy {
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
-    this.pluginSub = this.pluginFacade.plugins$.subscribe(plugins => { console.log(plugins);
-      this.pluginsLoaded(plugins);
-    });
+    this.pluginSub = this.pluginFacade.plugins$.subscribe(plugins => this.pluginsLoaded(plugins));
   }
 
   ngOnInit() {

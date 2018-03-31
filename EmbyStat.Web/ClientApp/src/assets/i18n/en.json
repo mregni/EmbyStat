@@ -6,7 +6,9 @@
     "FINISH": "Finish",
     "SHUTDOWN": "Shutdown",
     "YES": "Yes",
-    "NO": "No"  
+    "NO": "No",
+    "SAVE": "Save",
+    "DISCARD": "Discard" 
   },
   "EXCEPTIONS": {
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",

@@ -1,7 +1,46 @@
-<div class="center">
-  <mat-card class="half-width">
-
+<div class="center" *ngIf="configuration$ | async as config">
+  <mat-card class="half-width margin-bottom">
+    <mat-card-header>
+      <mat-card-title>General Settings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="form-container" [formGroup]="introFormGroup">
+        <p [innerHTML]="'WIZARD.INTROTEXT' | translate"></p>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.NAME' | translate}}" formControlName="name" required>
+          <!-- <mat-error *ngIf="nameControl.hasError('required')">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="language">
+            <mat-option value="nl">Nederlands</mat-option>
+            <mat-option value="en">English</mat-option>
+          </mat-select>
+          <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveIntroForm()">{{'COMMON.SAVE' | translate}}</button>
+      <button mat-raised-button color="warn" (click)="resetIntroForm()">{{'COMMON.DISCARD' | translate}}</button>
+    </mat-card-actions>
   </mat-card>
 
+  <mat-card class="half-width margin-bottom">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Shiba Inu</mat-card-title>
+      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+        bred for hunting.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary">{{'COMMON.SAVE' | translate}}</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
 
