@@ -29,7 +29,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   public languageChangedSub: Subscription;
   public configChangedSub: Subscription;
 
-  public hidePassword: boolean = true;
+  public hidePassword: boolean = true; 
 
   constructor(private configurationFacade: ConfigurationFacade, private translate: TranslateService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
