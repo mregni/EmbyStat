@@ -52,21 +52,14 @@
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
+    <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
     <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
-    <None Remove="ClientApp\src\app\server\models\drive.ts" />
-    <None Remove="ClientApp\src\app\server\models\serverInfo.ts" />
-    <None Remove="ClientApp\src\app\server\models\serverInfoStore.ts" />
-    <None Remove="ClientApp\src\app\server\service\server.service.ts" />
-    <None Remove="ClientApp\src\app\server\state\actions.server.ts" />
-    <None Remove="ClientApp\src\app\server\state\facade.server.ts" />
-    <None Remove="ClientApp\src\app\server\state\reducer.server.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
-    <None Remove="ClientApp\src\app\shared\pipes\removeSpaces.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
@@ -89,22 +82,15 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\models\drive.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\models\serverInfo.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\models\serverInfoStore.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\service\server.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\state\actions.server.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\state\facade.server.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\server\state\reducer.server.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\removeSpaces.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
@@ -113,6 +99,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\server\models\" />
+    <Folder Include="ClientApp\src\app\server\state\" />
+    <Folder Include="ClientApp\src\app\server\service\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
