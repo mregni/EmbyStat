@@ -10,12 +10,12 @@ import { Configuration } from '../../configuration/models/configuration';
 })
 export class ToolbarComponent implements OnInit {
 
-  public $configuration: Observable<Configuration>;
+  public configuration$: Observable<Configuration>;
 
   @Output() toggleSideNav = new EventEmitter<void>();
 
   constructor(private configurationFacade: ConfigurationFacade) {
-    this.$configuration = configurationFacade.configuration$;
+    this.configuration$ = configurationFacade.configuration$;
   }
 
   ngOnInit() {

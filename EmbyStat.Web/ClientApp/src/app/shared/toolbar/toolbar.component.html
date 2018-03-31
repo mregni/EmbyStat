@@ -4,7 +4,7 @@
   </button>
   <span>EmbyStat</span>
   <span class="bar-spacer"></span>
-  <div *ngIf="$configuration | async as config">
+  <div *ngIf="configuration$ | async as config">
     <a mat-raised-button href="{{config.embyServerAddress}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">Emby server</a>
   </div>
 </mat-toolbar>
