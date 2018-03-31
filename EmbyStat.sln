@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Common", "EmbyStat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Unit", "Tests.Unit\Tests.Unit.csproj", "{A3F1FF13-B007-45AA-A2F0-2C27731ACA11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Api", "EmbyStat.Api\EmbyStat.Api.csproj", "{DB5C2B0E-C39F-4EDD-A292-8E50A962CA17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Api", "EmbyStat.Api\EmbyStat.Api.csproj", "{DB5C2B0E-C39F-4EDD-A292-8E50A962CA17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
