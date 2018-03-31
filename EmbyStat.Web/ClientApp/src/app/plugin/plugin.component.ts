@@ -4,7 +4,6 @@ import { PluginFacade } from './state/facade.plugin';
 import { ConfigurationFacade } from '../configuration/state/facade.configuration';
 import { EmbyPlugin } from './models/embyPlugin';
 import { Configuration } from '../configuration/models/configuration';
-import { RemoveSpaces } from '../shared/pipes/removeSpaces';
 
 @Component({
   selector: 'app-plugin',
