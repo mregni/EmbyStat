@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EmbyStat.Services.EmbyClient.Cryptography;
+using EmbyStat.Api.EmbyClient.Cryptography;
 using FluentAssertions;
 using Xunit;
 

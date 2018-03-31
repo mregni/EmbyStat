@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -49,7 +50,12 @@ namespace EmbyStat.Controllers.Emby
 		{
 			_logger.LogInformation("Get Emby server info.");
 			var result = _embyService.GetServerInfo();
-			return Ok(Mapper.Map<ServerInfoViewModel>(result));
+			var drives = _embyService.GetLocalDrives();
+
+			var serverInfo = Mapper.Map<ServerInfoViewModel>(result);
+			serverInfo.Drives = Mapper.Map<IList<DriveViewModel>>(drives).ToList();
+
+			return Ok(serverInfo);
 		}
 
 		[HttpGet]

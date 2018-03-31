@@ -29,7 +29,9 @@
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
-    "SETTINGS": "Settings"
+    "SETTINGS": "Settings",
+    "PLUGINS": "Plugins",
+    "SERVER": "Emby server" 
   },
   "NAVBAR": {
     "SHUTDOWN": "Shutdown"
@@ -54,5 +56,8 @@
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
-  }
+  },
+  "PLUGINS": {
+    "VERSION":  "Version" 
+  } 
 }

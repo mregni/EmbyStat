@@ -2,17 +2,18 @@ using System;
 using System.Net;
 using System.Text;
 using AutoMapper;
+using EmbyStat.Api.EmbyClient;
+using EmbyStat.Api.EmbyClient.Cryptography;
+using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
+using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
-using EmbyStat.Services.EmbyClient;
-using EmbyStat.Services.EmbyClient.Cryptography;
-using EmbyStat.Services.EmbyClient.Net;
 using EmbyStat.Services.Plugin;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -69,11 +70,12 @@ namespace EmbyStat.Web
 
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
-			services.AddScoped<IPluginService, PluginService>();
+			services.AddScoped<IEmbyService, EmbyService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
+			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();

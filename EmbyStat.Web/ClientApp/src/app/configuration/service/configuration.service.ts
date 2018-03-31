@@ -8,7 +8,6 @@ import { Configuration } from '../models/configuration';
 import { EmbyUdpBroadcast } from '../models/embyUdpBroadcast';
 import { EmbyLogin } from '../models/embyLogin';
 import { EmbyToken } from '../models/embyToken';
-import { ServerInfo } from '../models/serverInfo';
 
 @Injectable()
 export class ConfigurationService {
@@ -42,9 +41,5 @@ export class ConfigurationService {
 
   fireSmallEmbyUpdate(): Observable<void> {
     return this.http.post<void>('/api' + this.fireSmallEmbyUpdateUrl, {});
-  }
-
-  getServerInfo(): Observable<ServerInfo> {
-    return this.http.get<ServerInfo>('/api' + this.getServerInfoUrl);
   }
 }

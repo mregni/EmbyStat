@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Repositories.Config;
+using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyServerInfo;
 using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ namespace EmbyStat.Repositories
 	    public DbSet<Configuration> Configuration { get; set; }
 		public DbSet<PluginInfo> Plugins { get; set; }
 		public DbSet<ServerInfo> ServerInfo { get; set; }
+		public DbSet<Drives> Drives { get; set; }
 
 		public ApplicationDbContext() : base()
 	    {

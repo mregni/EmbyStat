@@ -16,15 +16,17 @@ var INITIAL_STATE = {
     embyServerAddress: "",
     username: "",
     userId: "",
-    language: "en"
+    language: "en",
+    serverName: "",
+    isLoaded: false
 };
 function configurationReducer(state, action) {
     if (state === void 0) { state = INITIAL_STATE; }
     switch (action.type) {
         case actions_configuration_1.ConfigurationActionTypes.LOAD_CONFIGURATION_SUCCESS:
-            return __assign({}, state, { language: action.payload.language, wizardFinished: action.payload.wizardFinished, username: action.payload.username, accessToken: action.payload.accessToken, embyServerAddress: action.payload.embyServerAddress, embyUserName: action.payload.embyUserName, userId: action.payload.userId });
+            return __assign({}, state, { language: action.payload.language, wizardFinished: action.payload.wizardFinished, username: action.payload.username, accessToken: action.payload.accessToken, embyServerAddress: action.payload.embyServerAddress, embyUserName: action.payload.embyUserName, userId: action.payload.userId, serverName: action.payload.serverName, isLoaded: true });
         case actions_configuration_1.ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
-            return __assign({}, state, { language: action.payload.language, wizardFinished: action.payload.wizardFinished, username: action.payload.username, accessToken: action.payload.accessToken, embyServerAddress: action.payload.embyServerAddress, embyUserName: action.payload.embyUserName, userId: action.payload.userId });
+            return __assign({}, state, { language: action.payload.language, wizardFinished: action.payload.wizardFinished, username: action.payload.username, accessToken: action.payload.accessToken, embyServerAddress: action.payload.embyServerAddress, embyUserName: action.payload.embyUserName, userId: action.payload.userId, serverName: action.payload.serverName, isLoaded: true });
         default:
             return state;
     }

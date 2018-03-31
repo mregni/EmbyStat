@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Repositories.Config;
+using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
-using EmbyStat.Services.EmbyClient;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
@@ -28,11 +29,13 @@ namespace Tests.Unit.Services
 	    private readonly Mock<IEmbyClient> _embyClientMock;
 	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
 	    private readonly Mock<IEmbyServerInfoRepository> _embyServerInfoRepository;
+	    private readonly Mock<IEmbyDriveRepository> _embyDriveRepository;
 		private readonly AuthenticationResult _authResult;
 	    private readonly List<PluginInfo> _plugins;
+	    private readonly List<Drives> _drives;
 	    private readonly ServerInfo _serverInfo;
 
-	    public EmbyServiceTests()
+		public EmbyServiceTests()
 	    {
 		    _plugins = new List<PluginInfo>
 		    {
@@ -62,15 +65,27 @@ namespace Tests.Unit.Services
 				HttpsPortNumber = 8097
 			};
 
-		    var systemInfo = new SystemInfo();
+		    _drives = new List<Drives>
+		    {
+				new Drives() {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
+				new Drives() {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
+			};
+
+		    var embyDrives = new List<EmbyStat.Api.EmbyClient.Model.Drive>
+		    {
+			    new EmbyStat.Api.EmbyClient.Model.Drive()
+		    };
+
+			var systemInfo = new SystemInfo();
 		    var loggerMock = new Mock<ILogger<EmbyService>>();
 
 			_embyClientMock = new Mock<IEmbyClient>();
 		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
 		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
 		    _embyClientMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(systemInfo));
+		    _embyClientMock.Setup(x => x.GetLocalDrives()).Returns(Task.FromResult(embyDrives));
 
-		    _embyPluginRepositoryMock = new Mock<IEmbyPluginRepository>();
+			_embyPluginRepositoryMock = new Mock<IEmbyPluginRepository>();
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
@@ -81,7 +96,11 @@ namespace Tests.Unit.Services
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
 		    _embyServerInfoRepository.Setup(x => x.GetSingle()).Returns(_serverInfo);
 
-			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, configurationRepositoryMock.Object, _embyServerInfoRepository.Object);
+		    _embyDriveRepository = new Mock<IEmbyDriveRepository>();
+		    _embyDriveRepository.Setup(x => x.ClearAndInsertList(It.IsAny<List<Drives>>()));
+		    _embyDriveRepository.Setup(x => x.GetAll()).Returns(_drives);
+
+			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object);
 	    }
 
 	    [Fact]
@@ -186,6 +205,15 @@ namespace Tests.Unit.Services
 		    serverInfo.Id.Should().Be(_serverInfo.Id);
 		    serverInfo.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
 		    serverInfo.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
+	    }
+
+	    [Fact]
+	    public void GetDrivesFromDatabase()
+	    {
+		    var drives = _subject.GetLocalDrives();
+
+		    drives.Should().NotBeNull();
+		    drives.Count.Should().Be(2);
 	    }
 	}
 }

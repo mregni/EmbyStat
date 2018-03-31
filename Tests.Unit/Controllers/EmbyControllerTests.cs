@@ -6,6 +6,7 @@ using AutoMapper;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Controllers.Plugin;
+using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
@@ -27,6 +28,7 @@ namespace Tests.Unit.Controllers
 	    private readonly EmbyToken _token;
 	    private readonly ServerInfo _serverInfo;
 	    private readonly EmbyUdpBroadcast _emby;
+	    private readonly List<Drives> _drives;
 
 		public EmbyControllerTests()
 	    {
@@ -51,11 +53,17 @@ namespace Tests.Unit.Controllers
 				HttpsPortNumber = 8097
 			};
 
+			_drives = new List<Drives>
+			{
+				new Drives(), new Drives()
+			};
+
 			_embyServiceMock = new Mock<IEmbyService>();
 		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(_token));
 		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
 		    _embyServiceMock.Setup(x => x.FireSmallSyncEmbyServerInfo());
 		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
+		    _embyServiceMock.Setup(x => x.GetLocalDrives()).Returns(_drives);
 
 			var loggerMock = new Mock<ILogger<EmbyController>>();
 
@@ -125,7 +133,7 @@ namespace Tests.Unit.Controllers
 		    var serverInfo = resultObject.Should().BeOfType<ServerInfoViewModel>().Subject;
 
 		    serverInfo.Should().NotBeNull();
-		    serverInfo.Id.Should().Be(_serverInfo.Id);
+		    serverInfo.Drives.Count.Should().Be(2);
 		    serverInfo.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
 		    serverInfo.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
 	    }

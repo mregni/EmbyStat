@@ -10,7 +10,7 @@ namespace EmbyStat.Repositories.EmbyPlugin
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
-			    return context.Plugins.ToList();
+			    return context.Plugins.OrderBy(x => x.Name).ToList();
 		    }
 	    }
 

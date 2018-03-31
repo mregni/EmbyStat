@@ -17,8 +17,8 @@ import { ToastService } from './services/toast.service';
     TranslateModule.forChild()
   ],
   exports: [
-    ToolbarComponent,
     SideNavComponent,
+    ToolbarComponent,
     MaterialModule
   ],
   declarations: [

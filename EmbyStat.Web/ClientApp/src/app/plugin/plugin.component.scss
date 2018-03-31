@@ -1,0 +1,15 @@
+.margin-round {
+  margin: 10px;
+}
+
+.plugins__flexcontainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.plugins__plugin-item {
+  flex: 1;
+  min-width: 20%;
+  max-width: 450px;
+}

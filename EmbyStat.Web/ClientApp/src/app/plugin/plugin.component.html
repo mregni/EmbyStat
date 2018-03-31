@@ -1,3 +1,8 @@
-<p>
-  plugin works!
-</p>
+<h1>Plugins</h1>
+<mat-list>
+  <mat-list-item *ngFor="let plugin of plugins$ | async">
+    <img matListAvatar src="{{plugin.imageUrl}}" />
+    <p mat-line>{{plugin.name}}</p>
+    <h3 mat-line>{{'PLUGINS.VERSION' | translate}}: {{plugin.version}} - {{plugin.assemblyFileName}}</h3>
+  </mat-list-item>
+</mat-list>

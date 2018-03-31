@@ -6,7 +6,6 @@ namespace EmbyStat.Controllers.Emby
 {
     public class ServerInfoViewModel
     {
-	    public string Id { get; set; }
 	    public bool SupportsAutoRunAtStartup { get; set; }
 	    public bool HasUpdateAvailable { get; set; }
 	    public int HttpsPortNumber { get; set; }
@@ -30,5 +29,6 @@ namespace EmbyStat.Controllers.Emby
 	    public int SystemUpdateLevel { get; set; }
 	    public bool CanLaunchWebBrowser { get; set; }
 	    public int SystemArchitecture { get; set; }
+	    public List<DriveViewModel> Drives { get; set; }
 	}
 }

@@ -8,12 +8,12 @@ namespace EmbyStat.Common.Exceptions
 	{
 		public int StatusCode { get; set; }
 
-		public BusinessException(string message, int statusCode = 500) : base(message)
+		public BusinessException(string message, int statusCode = 500, Exception e = null) : base(message, e)
 		{
 			StatusCode = statusCode;
 		}
 
-		public BusinessException(Exception ex, int statusCode = 500) : base(ex.Message)
+		public BusinessException(Exception ex, int statusCode = 500, Exception e = null) : base(ex.Message, e)
 		{
 			StatusCode = statusCode;
 		}

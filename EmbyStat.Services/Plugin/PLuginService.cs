@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Repositories.EmbyPlugin;
-using EmbyStat.Services.EmbyClient;
 using MediaBrowser.Model.Plugins;
 using Microsoft.Extensions.Logging;
 

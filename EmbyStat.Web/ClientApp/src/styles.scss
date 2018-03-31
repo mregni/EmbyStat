@@ -1,9 +1,25 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-body{
+body {
   margin: 0;
 }
 
 .text-italic {
+  font-style: italic;
+}
+
+.mat-typography a {
+  color: white;
+}
+
+.mat-list-item-content i {
+  padding-right: 15px;
+}
+
+.mat-list-item-content {
+  font-size: 0.8em;
+}
+
+.italic {
   font-style: italic;
 }

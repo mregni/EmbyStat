@@ -1,7 +1,8 @@
 import { Action } from "@ngrx/store";
 
 export enum AppActionTypes {
-  ERROR = '[Error] Effect Error'
+  ERROR = '[Error] Effect Error',
+  NOOP = '[App] NOOP'
 }
 
 export class EffectError implements Action {
@@ -9,4 +10,8 @@ export class EffectError implements Action {
   constructor(payload: Error = null) {}
 }
 
-export type AppActions = EffectError;
+export class NoopAction implements Action {
+  readonly type = AppActionTypes.NOOP;
+}
+
+export type AppActions = EffectError | NoopAction;

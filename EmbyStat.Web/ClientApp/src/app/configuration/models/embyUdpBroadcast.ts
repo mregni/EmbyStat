@@ -1,5 +1,5 @@
-export interface EmbyUdpBroadcast {
-  address: string;
-  id: string;
-  name: string;
+export class EmbyUdpBroadcast {
+  public address: string;
+  public id: string;
+  public name: string;
 }

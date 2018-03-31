@@ -1,10 +1,10 @@
 export class EmbyPlugin {
-  name: string;
-  configurationDateLastModified: Date;
-  version: string;
-  assemblyFileName: string;
-  configurationFileName: string;
-  description: string;
-  id: string;
-  imageUrl: string;
+  public name: string;
+  public configurationDateLastModified: Date;
+  public version: string;
+  public assemblyFileName: string;
+  public configurationFileName: string;
+  public description: string;
+  public id: string;
+  public imageUrl: string;
 }

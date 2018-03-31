@@ -4,7 +4,7 @@ import { Configuration } from '../models/configuration';
 export enum ConfigurationActionTypes {
   LOAD_CONFIGURATION = '[Configuration] Load Configuration',
   LOAD_CONFIGURATION_SUCCESS = '[Configuration] Load Configuration Success',
-  UPDATE_CONFIGURATION = '[Configuration] Updated Configuration',
+  UPDATE_CONFIGURATION = '[Configuration] Update Configuration',
   UPDATE_CONFIGURATION_SUCCESS = '[Configuration] Updated Configuration Success',
   FIRE_SMALL_EMBY_SYNC = '[Configuration] Start Small Emby Sync'
 }
@@ -34,7 +34,6 @@ export class FireSmallEmbySyncAction implements Action {
   constructor(public payload = null) { }
 }
 
-
-
 export type ConfigurationActions = LoadConfigurationAction | LoadConfigurationSuccessAction |
-                                   UpdateConfigurationAction | UpdateConfigurationSuccessAction;
+                                   UpdateConfigurationAction | UpdateConfigurationSuccessAction
+                                   | FireSmallEmbySyncAction;

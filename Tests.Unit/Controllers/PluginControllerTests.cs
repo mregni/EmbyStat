@@ -48,9 +48,9 @@ namespace Tests.Unit.Controllers
 			var list = resultObject.Should().BeOfType<List<EmbyPluginViewModel>>().Subject;
 
 			list.Count.Should().Be(2);
+			list[0].Name.Should().Be(_plugins[0].Name);
+			list[1].Name.Should().Be(_plugins[1].Name);
 			_pluginServiceMock.Verify(x => x.GetInstalledPlugins(), Times.Once);
-		}
-
-		
+		}	
 	}
 }

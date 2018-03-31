@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 
+import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
+import { Configuration } from '../../configuration/models/configuration';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
@@ -8,8 +10,13 @@ import { MatDialog } from '@angular/material';
 })
 export class ToolbarComponent implements OnInit {
 
+  public $configuration: Observable<Configuration>;
+
   @Output() toggleSideNav = new EventEmitter<void>();
-  constructor(public dialog: MatDialog) { }
+
+  constructor(private configurationFacade: ConfigurationFacade) {
+    this.$configuration = configurationFacade.configuration$;
+  }
 
   ngOnInit() {
 

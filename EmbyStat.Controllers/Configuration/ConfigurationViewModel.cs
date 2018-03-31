@@ -13,5 +13,6 @@ namespace EmbyStat.Controllers.Configuration
 	    public string Username { get; set; }
 	    public string UserId { get; set; }
 	    public string Language { get; set; }
+	    public string ServerName { get; set; }
 	}
 }

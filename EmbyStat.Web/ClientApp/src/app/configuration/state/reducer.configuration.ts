@@ -15,7 +15,9 @@ const INITIAL_STATE: Configuration = {
   embyServerAddress: "",
   username: "",
   userId: "",
-  language: "en"
+  language: "en",
+  serverName: "",
+  isLoaded: false
 }
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -29,7 +31,9 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         accessToken: action.payload.accessToken,
         embyServerAddress: action.payload.embyServerAddress,
         embyUserName: action.payload.embyUserName,
-        userId: action.payload.userId
+        userId: action.payload.userId,
+        serverName: action.payload.serverName,
+        isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
       return {
@@ -40,7 +44,9 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         accessToken: action.payload.accessToken,
         embyServerAddress: action.payload.embyServerAddress,
         embyUserName: action.payload.embyUserName,
-        userId: action.payload.userId
+        userId: action.payload.userId,
+        serverName: action.payload.serverName,
+        isLoaded: true
       }
     default:
       return state;
@@ -49,4 +55,5 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
 
 export namespace ConfigurationQuery {
   export const getConfiguration = (state: ApplicationState) => state.configuration;
+  export const getLoaded = (state: ApplicationState) => state.configuration.isLoaded;
 }

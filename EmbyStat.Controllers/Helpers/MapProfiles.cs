@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Controllers.Configuration;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.Plugin;
@@ -21,14 +22,21 @@ namespace EmbyStat.Controllers.Helpers
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
 		    CreateMap<PluginInfo, EmbyPluginViewModel>().ReverseMap();
 		    CreateMap<ServerInfo, ServerInfoViewModel>().ReverseMap();
+		    CreateMap<Repositories.EmbyDrive.Drives, DriveViewModel>()
+				.ReverseMap()
+			    .ForMember(x => x.Id, y => y.Ignore());
 
 			//EmbyResponses
-		    CreateMap<SystemInfo, ServerInfo>()
+			CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore())
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore())
 			    .ForMember(x => x.FailedPluginAssemblies, y => y.Ignore());
+
+		    CreateMap<Drive, Repositories.EmbyDrive.Drives>()
+			    .ForMember(x => x.Id, y => y.Ignore())
+			    .ReverseMap();
 	    }
     }
 }

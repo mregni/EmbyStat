@@ -6,7 +6,8 @@ import { PluginActionTypes, PluginActions } from './actions.plugin';
 
 
 const INITIAL_STATE: EmbyPluginStore = {
-  list: []
+  list: [],
+  isLoaded: false
 };
 
 export function pluginReducer(state: EmbyPluginStore = INITIAL_STATE, action: PluginActions) {
@@ -14,7 +15,8 @@ export function pluginReducer(state: EmbyPluginStore = INITIAL_STATE, action: Pl
   case PluginActionTypes.LOAD_PLUGINS_SUCCESS:
     return {
       ...state,
-      list: action.payload
+      list: action.payload,
+      isLoaded: true
     };
   default:
     return state;
@@ -22,5 +24,6 @@ export function pluginReducer(state: EmbyPluginStore = INITIAL_STATE, action: Pl
 }
 
 export namespace PluginQuery {
-  export const getPlugins = (state: ApplicationState) => state.plugins;
+  export const getPlugins = (state: ApplicationState) => state.plugins.list;
+  export const getLoaded = (state: ApplicationState) => state.plugins.isLoaded;
 }

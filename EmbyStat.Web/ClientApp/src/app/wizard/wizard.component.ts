@@ -9,7 +9,7 @@ import { ConfigurationFacade } from '../configuration/state/facade.configuration
 import { EmbyUdpBroadcast } from '../configuration/models/embyUdpBroadcast';
 import { Configuration } from '../configuration/models/configuration';
 import { EmbyToken } from '../configuration/models/embyToken';
-import { EmbyPluginStore } from '../plugin/models/embyPluginStore';
+import { EmbyPlugin } from '../plugin/models/embyPlugin';
 
 import { PluginFacade } from '../plugin/state/facade.plugin';
 
@@ -83,8 +83,8 @@ export class WizardComponent implements OnInit, OnDestroy {
     this.translate.use(value);
   }
 
-  private pluginsLoaded(plugins: EmbyPluginStore) {
-    this.pluginInstalled = plugins.list.some(plugin => plugin.name === "EmbyStat");
+  private pluginsLoaded(plugins: EmbyPlugin[]) {
+    this.pluginInstalled = plugins.some(plugin => plugin.name === "Statistics");
   }
 
   public rescan() {

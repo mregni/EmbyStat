@@ -35,6 +35,8 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Language")
                         .IsRequired();
 
+                    b.Property<string>("ServerName");
+
                     b.Property<string>("UserId");
 
                     b.Property<string>("Username");
@@ -44,6 +46,22 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Configuration");
+                });
+
+            modelBuilder.Entity("EmbyStat.Repositories.EmbyDrive.Drives", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Path");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Drives");
                 });
 
             modelBuilder.Entity("EmbyStat.Repositories.EmbyServerInfo.ServerInfo", b =>

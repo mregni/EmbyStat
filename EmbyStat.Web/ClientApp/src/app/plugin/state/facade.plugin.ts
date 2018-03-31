@@ -5,7 +5,7 @@ import { Actions } from '@ngrx/effects';
 
 import 'rxjs/add/observable/throw';
 
-import { EmbyPluginStore } from '../models/embyPluginStore';
+import { EmbyPlugin } from '../models/embyPlugin';
 import { PluginService } from '../service/plugin.service';
 
 import { PluginQuery } from './reducer.plugin';
@@ -17,13 +17,12 @@ import { ApplicationState } from '../../states/app.state';
 export class PluginFacade {
   constructor(
     private actions$: Actions,
-    private store: Store<ApplicationState>,
-    private pluginService: PluginService
+    private store: Store<ApplicationState>
   ) { }
 
   plugins$ = this.store.select(PluginQuery.getPlugins);
 
-  getPlugins(): Observable<EmbyPluginStore> {
+  getPlugins(): Observable<EmbyPlugin[]> {
     this.store.dispatch(new LoadPluginAction());
     return this.plugins$;
   }

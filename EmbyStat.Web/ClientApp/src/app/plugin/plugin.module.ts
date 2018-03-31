@@ -16,6 +16,7 @@ import { PluginFacade } from './state/facade.plugin';
     PluginService,
     PluginFacade
   ],
-  declarations: [PluginComponent]
+  declarations: [
+    PluginComponent]
 })
 export class PluginModule { }
