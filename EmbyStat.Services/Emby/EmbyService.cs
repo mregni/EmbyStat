@@ -99,12 +99,12 @@ namespace EmbyStat.Services.Emby
 				{
 					_logger.LogError("Username or password are wrong, user should try again with other credentials!");
 					_logger.LogError($"Message: {e.Message}");
-					throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
+					throw new BusinessException("TOKEN_FAILED");
 				}
 			}
 			
 			_logger.LogError("Username or password are empty, no use to try a login!");
-			throw new BusinessException("WRONG_USERNAME_OR_PASSWORD");
+			throw new BusinessException("TOKEN_FAILED");
 	    }
 
 	    public ServerInfo GetServerInfo()
