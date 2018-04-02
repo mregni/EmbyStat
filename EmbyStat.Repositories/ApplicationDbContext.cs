@@ -1,6 +1,8 @@
 ﻿using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
+using EmbyStat.Repositories.EmbyHeartBeat;
 using EmbyStat.Repositories.EmbyServerInfo;
+using EmbyStat.Repositories.HangFire;
 using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,9 @@ namespace EmbyStat.Repositories
 		public DbSet<PluginInfo> Plugins { get; set; }
 		public DbSet<ServerInfo> ServerInfo { get; set; }
 		public DbSet<Drives> Drives { get; set; }
+		public DbSet<Ping> Pings { get; set; }
+		public DbSet<Set> Sets { get; set; }
+		public DbSet<Hash> Hashes { get; set; }
 
 		public ApplicationDbContext() : base()
 	    {

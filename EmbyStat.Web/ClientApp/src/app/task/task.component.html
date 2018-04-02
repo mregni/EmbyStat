@@ -1,0 +1,13 @@
+<h1>Tasks</h1>
+<div *ngFor="let task of tasks$ | async" class="task__flexcontainer">
+  <div class="task__start-button">
+    <a mat-mini-fab (click)="fireTask(task.name)">
+      <mat-icon>play_circle_outline</mat-icon>
+    </a>
+    
+  </div>
+  <div class="task__bodycontainer">
+    <div class="task__tasktitle">{{task.name}}</div>
+    <div class="task__tasksub">Next run: {{task.nextExecution | amLocal | amDateFormat: 'HH:mm'}}</div>
+  </div>
+</div>

@@ -21,9 +21,11 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.6.17" />
+    <PackageReference Include="Hangfire.SQLite.Core" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview1-final" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.0.0-preview1-final" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
@@ -63,6 +65,9 @@
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\task\models\task.ts" />
+    <None Remove="ClientApp\src\app\task\service\task.service.ts" />
+    <None Remove="ClientApp\src\app\task\state\facade.task.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -96,6 +101,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\facade.configuration.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\task\models\task.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\task\service\task.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\task\state\facade.task.ts" />
   </ItemGroup>
 
   <ItemGroup>

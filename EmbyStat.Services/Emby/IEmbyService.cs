@@ -17,5 +17,6 @@ namespace EmbyStat.Services.Emby
 		ServerInfo GetServerInfo();
 		List<Drives> GetLocalDrives();
 		void FireSmallSyncEmbyServerInfo();
+		Task PingEmby();
 	}
 }

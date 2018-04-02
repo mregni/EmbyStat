@@ -6,6 +6,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
+using EmbyStat.Repositories.EmbyHeartBeat;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby;
@@ -30,6 +31,8 @@ namespace Tests.Unit.Services
 	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
 	    private readonly Mock<IEmbyServerInfoRepository> _embyServerInfoRepository;
 	    private readonly Mock<IEmbyDriveRepository> _embyDriveRepository;
+	    private readonly Mock<IEmbyHeartBeatRepository> _embyHeartBeatRepository;
+	    private readonly Mock<IConfigurationRepository> _configurationRepositoryMock;
 		private readonly AuthenticationResult _authResult;
 	    private readonly List<PluginInfo> _plugins;
 	    private readonly List<Drives> _drives;
@@ -89,8 +92,7 @@ namespace Tests.Unit.Services
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
-		    var configurationRepositoryMock = new Mock<IConfigurationRepository>();
-		    configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
+		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
 
 		    _embyServerInfoRepository = new Mock<IEmbyServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
@@ -100,7 +102,10 @@ namespace Tests.Unit.Services
 		    _embyDriveRepository.Setup(x => x.ClearAndInsertList(It.IsAny<List<Drives>>()));
 		    _embyDriveRepository.Setup(x => x.GetAll()).Returns(_drives);
 
-			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object);
+		    _embyHeartBeatRepository = new Mock<IEmbyHeartBeatRepository>();
+		    _embyHeartBeatRepository.Setup(x => x.SavePing(It.IsAny<Ping>()));
+
+			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object, _embyHeartBeatRepository.Object);
 	    }
 
 	    [Fact]
@@ -214,6 +219,40 @@ namespace Tests.Unit.Services
 
 		    drives.Should().NotBeNull();
 		    drives.Count.Should().Be(2);
+	    }
+
+	    [Fact]
+	    public async void PingEmbyWithoutToken()
+	    {
+		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
+		    await _subject.PingEmby();
+
+		    _embyClientMock.Verify(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+
+		}
+
+	    [Fact]
+	    public async void PingEmbyWithTokenFailed()
+	    {
+		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration{AccessToken = "token"});
+		    _embyClientMock.Setup(x => x.PingEmby()).Returns(Task.FromResult("wrong"));
+		    await _subject.PingEmby();
+
+		    _embyClientMock.Verify(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+			_embyHeartBeatRepository.Verify(x => x.SavePing(It.Is<Ping>(
+				y => y.Success == false)), Times.Once);
+	    }
+
+	    [Fact]
+	    public async void PingEmbyWithTokenSuccess()
+	    {
+		    _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration { AccessToken = "token" });
+		    _embyClientMock.Setup(x => x.PingEmby()).Returns(Task.FromResult("Emby Server"));
+		    await _subject.PingEmby();
+
+		    _embyClientMock.Verify(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+		    _embyHeartBeatRepository.Verify(x => x.SavePing(It.Is<Ping>(
+			    y => y.Success)), Times.Once);
 	    }
 	}
 }

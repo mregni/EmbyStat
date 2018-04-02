@@ -31,6 +31,7 @@
     "DASHBOARD": "Dashboard",
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
+    "TASKS": "Tasks", 
     "SERVER": "Emby server" 
   },
   "NAVBAR": {

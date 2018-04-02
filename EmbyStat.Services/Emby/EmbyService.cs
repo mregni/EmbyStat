@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
+using EmbyStat.Repositories.EmbyHeartBeat;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
@@ -26,13 +28,15 @@ namespace EmbyStat.Services.Emby
 	    private readonly IEmbyServerInfoRepository _embyServerInfoRepository;
 		private readonly IConfigurationRepository _configurationRepository;
 		private readonly IEmbyDriveRepository _embyDriveRepository;
+	    private readonly IEmbyHeartBeatRepository _embyHeartBeatRepository;
 
 		public EmbyService(ILogger<EmbyService> logger, 
 						   IEmbyClient embyClient, 
 						   IEmbyPluginRepository embyPluginRepository, 
 						   IConfigurationRepository configurationRepository, 
 						   IEmbyServerInfoRepository embyServerInfoRepository,
-						   IEmbyDriveRepository embyDriveRepository)
+						   IEmbyDriveRepository embyDriveRepository,
+						   IEmbyHeartBeatRepository embyHeartBeatRepository)
 	    {
 		    _logger = logger;
 		    _embyClient = embyClient;
@@ -40,6 +44,7 @@ namespace EmbyStat.Services.Emby
 		    _configurationRepository = configurationRepository;
 		    _embyServerInfoRepository = embyServerInfoRepository;
 		    _embyDriveRepository = embyDriveRepository;
+		    _embyHeartBeatRepository = embyHeartBeatRepository;
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -133,5 +138,23 @@ namespace EmbyStat.Services.Emby
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
 			_embyDriveRepository.ClearAndInsertList(localDrives.ToList());
 		}
-	}
+
+	    public async Task PingEmby()
+	    {
+		    var settings = _configurationRepository.GetSingle();
+		    if (!string.IsNullOrWhiteSpace(settings.AccessToken))
+			{
+				_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+				var result = await _embyClient.PingEmby();
+				var ping = new Ping
+				{
+					Id = Guid.NewGuid().ToString(),
+					Time = DateTime.Now,
+					Success = result == ServerConstants.PingString
+				};
+
+				_embyHeartBeatRepository.SavePing(ping);
+			}
+	    }
+    }
 }

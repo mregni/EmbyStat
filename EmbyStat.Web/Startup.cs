@@ -7,16 +7,20 @@ using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Controllers.Helpers;
+using EmbyStat.Controllers.Task;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
+using EmbyStat.Repositories.EmbyHeartBeat;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
+using EmbyStat.Repositories.HangFire;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
+using EmbyStat.Services.HangFire;
 using EmbyStat.Services.Plugin;
 using Hangfire;
-using Hangfire.MemoryStorage;
+using Hangfire.SQLite;
 using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -50,9 +54,10 @@ namespace EmbyStat.Web
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddHangfire(config => config.UseMemoryStorage());
-
+			services.AddHangfire(config => config.UseSQLiteStorage(@"Data Source=data.db;"));
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
+
+			services.AddSignalR();
 
 			services.AddMvc(options =>
 			{
@@ -71,11 +76,14 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
 			services.AddScoped<IEmbyService, EmbyService>();
+			services.AddScoped<IHangFireService, HangFireService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
 			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
+			services.AddScoped<IEmbyHeartBeatRepository, EmbyHeartBeatRepository>();
+			services.AddScoped<IHangFireRepository, HangFireRepository>();
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
@@ -89,6 +97,10 @@ namespace EmbyStat.Web
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
+			applicationLifetime.ApplicationStarted.Register(onStartup);
+			var option = new BackgroundJobServerOptions { WorkerCount = 1 };
+			app.UseHangfireServer(option);
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -99,12 +111,12 @@ namespace EmbyStat.Web
 				cfg.AddProfile<MapProfiles>();
 			});
 
-			app.UseHangfireServer();
-			app.UseHangfireDashboard();
-			// Enable middleware to serve generated Swagger as a JSON endpoint.
-			app.UseSwagger();
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<TaskHub>("taskhub");
+			});
 
-			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+			app.UseSwagger();
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -140,11 +152,7 @@ namespace EmbyStat.Web
 
 			app.UseSpa(spa =>
 			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-
 				spa.Options.SourcePath = "ClientApp";
-
 				if (env.IsDevelopment())
 				{
 					spa.UseAngularCliServer(npmScript: "start");
@@ -152,9 +160,10 @@ namespace EmbyStat.Web
 			});
 		}
 
-		private void onShutdown()
+		private void onStartup()
 		{
-			
+			RecurringJob.RemoveIfExists("PingEmbyJob");
+			RecurringJob.AddOrUpdate<IEmbyService>("Ping Emby", x => x.PingEmby(), Cron.MinuteInterval(10));
 		}
 	}
 }

@@ -90,7 +90,13 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
+		public async Task<string> PingEmby()
+		{
+			var url = GetApiUrl("System/Ping");
+			var args = new Dictionary<string, string>();
 
+			return await PostAsyncToString(url, args, CancellationToken.None).ConfigureAwait(false);
+		}
 		
 
 		public void Dispose()
