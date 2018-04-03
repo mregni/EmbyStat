@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediaBrowser.Common" Version="3.3.29" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ScheduledTasks\Tasks\" />
+  </ItemGroup>
+
+</Project>
