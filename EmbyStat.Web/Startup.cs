@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using System.Text;
 using AutoMapper;
@@ -7,20 +6,15 @@ using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Controllers.Helpers;
-using EmbyStat.Controllers.Task;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyHeartBeat;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
-using EmbyStat.Repositories.HangFire;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
-using EmbyStat.Services.HangFire;
 using EmbyStat.Services.Plugin;
-using Hangfire;
-using Hangfire.SQLite;
 using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -54,10 +48,7 @@ namespace EmbyStat.Web
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddHangfire(config => config.UseSQLiteStorage(@"Data Source=data.db;"));
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
-
-			services.AddSignalR();
 
 			services.AddMvc(options =>
 			{
@@ -76,14 +67,12 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
 			services.AddScoped<IEmbyService, EmbyService>();
-			services.AddScoped<IHangFireService, HangFireService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
 			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
 			services.AddScoped<IEmbyHeartBeatRepository, EmbyHeartBeatRepository>();
-			services.AddScoped<IHangFireRepository, HangFireRepository>();
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
@@ -97,10 +86,6 @@ namespace EmbyStat.Web
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
-			applicationLifetime.ApplicationStarted.Register(onStartup);
-			var option = new BackgroundJobServerOptions { WorkerCount = 1 };
-			app.UseHangfireServer(option);
-
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -109,11 +94,6 @@ namespace EmbyStat.Web
 			Mapper.Initialize(cfg =>
 			{
 				cfg.AddProfile<MapProfiles>();
-			});
-
-			app.UseSignalR(routes =>
-			{
-				routes.MapHub<TaskHub>("taskhub");
 			});
 
 			app.UseSwagger();
@@ -162,8 +142,7 @@ namespace EmbyStat.Web
 
 		private void onStartup()
 		{
-			RecurringJob.RemoveIfExists("PingEmbyJob");
-			RecurringJob.AddOrUpdate<IEmbyService>("Ping Emby", x => x.PingEmby(), Cron.MinuteInterval(10));
+
 		}
 	}
 }
