@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using AutoMapper;
@@ -5,16 +8,20 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
-using EmbyStat.Repositories.EmbyHeartBeat;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
+using EmbyStat.Repositories.EmbyTask;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Plugin;
+using EmbyStat.Services.Tasks;
+using EmbyStat.Tasks;
+using EmbyStat.Tasks.Tasks;
 using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -33,7 +40,7 @@ namespace EmbyStat.Web
 		public IConfiguration Configuration { get; }
 		public IHostingEnvironment HostingEnvironment { get; }
 
-		public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
 		{
 			HostingEnvironment = env;
 			Configuration = configuration;
@@ -67,12 +74,15 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
 			services.AddScoped<IEmbyService, EmbyService>();
+		    services.AddScoped<ITaskService, TaskService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
 			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
-			services.AddScoped<IEmbyHeartBeatRepository, EmbyHeartBeatRepository>();
+
+			services.AddSingleton<ITaskRepository, TaskRepository>();
+            services.AddSingleton<ITaskManager, TaskManager>();
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
@@ -84,9 +94,9 @@ namespace EmbyStat.Web
 			services.AddScoped<BusinessExceptionFilterAttribute>();
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
-			if (env.IsDevelopment())
+            if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
@@ -132,17 +142,30 @@ namespace EmbyStat.Web
 
 			app.UseSpa(spa =>
 			{
+				// To learn more about options for serving an Angular SPA from ASP.NET Core,
+				// see https://go.microsoft.com/fwlink/?linkid=864501
+
 				spa.Options.SourcePath = "ClientApp";
+
 				if (env.IsDevelopment())
 				{
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
-		}
 
-		private void onStartup()
-		{
+		    SetupTaskManager(app);
+        }
+	    private void SetupTaskManager(IApplicationBuilder app)
+	    {
+	        var taskManager = app.ApplicationServices.GetService<ITaskManager>();
 
-		}
-	}
+	        var tasks = new List<IScheduledTask>
+	        {
+	            new PingEmbyTask()
+	        };
+
+	        taskManager.AddTasks(tasks);
+	        taskManager.BoeName = "testing";
+	    }
+    }
 }

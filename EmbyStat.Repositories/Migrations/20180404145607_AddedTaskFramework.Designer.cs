@@ -14,9 +14,10 @@ using System;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180404145607_AddedTaskFramework")]
+    partial class AddedTaskFramework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,20 +64,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Drives");
-                });
-
-            modelBuilder.Entity("EmbyStat.Repositories.EmbyHeartBeat.Ping", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Success");
-
-                    b.Property<DateTime>("Time");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pings");
                 });
 
             modelBuilder.Entity("EmbyStat.Repositories.EmbyServerInfo.ServerInfo", b =>
