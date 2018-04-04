@@ -412,26 +412,6 @@ namespace EmbyStat.Tasks
                 };
             }
 
-            if (info.Type.Equals(typeof(WeeklyTrigger).Name, StringComparison.OrdinalIgnoreCase))
-            {
-                if (!info.TimeOfDayTicks.HasValue)
-                {
-                    throw new ArgumentNullException();
-                }
-
-                if (!info.DayOfWeek.HasValue)
-                {
-                    throw new ArgumentNullException();
-                }
-
-                return new WeeklyTrigger
-                {
-                    TimeOfDay = TimeSpan.FromTicks(info.TimeOfDayTicks.Value),
-                    DayOfWeek = info.DayOfWeek.Value,
-                    TaskOptions = options
-                };
-            }
-
             if (info.Type.Equals(typeof(IntervalTrigger).Name, StringComparison.OrdinalIgnoreCase))
             {
                 if (!info.IntervalTicks.HasValue)

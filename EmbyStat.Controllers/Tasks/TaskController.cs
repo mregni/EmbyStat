@@ -27,5 +27,44 @@ namespace EmbyStat.Controllers.Tasks
             var result = _taskService.GetAllTasks();
             return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
         }
+
+        [HttpGet]
+        [Route("state")]
+        public IActionResult GetStates()
+        {
+            Log.Information("Getting task states;");
+            var result = _taskService.GetStates();
+            return Ok(Mapper.Map<IList<TaskStatusViewModel>>(result));
+        }
+
+        [HttpGet]
+        [Route("state/{id}")]
+        public IActionResult GetState(string id)
+        {
+            Log.Information($"Getting task states for id: {id}");
+            var result = _taskService.GetStateByTaskId(id);
+            return Ok(Mapper.Map<TaskStatusViewModel>(result));
+        }
+
+        [HttpPost]
+        [Route("trigger")]
+        public IActionResult AddTrigger([FromBody] string trigger)
+        {
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("trigger")]
+        public IActionResult DeleteTrigger(string id)
+        {
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Route("fire/{id}")]
+        public IActionResult FireTask(string id)
+        {
+            return NotFound();
+        }
     }
 }

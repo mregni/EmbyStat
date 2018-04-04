@@ -4,17 +4,28 @@ import { Observable } from 'rxjs/Observable';
 import { TaskService } from '../service/task.service';
 
 import { Task } from '../models/task';
+import { TaskStatus } from '../models/taskStatus';
 
 @Injectable()
 export class TaskFacade {
   constructor(private taskService: TaskService) { }
 
+  public tasks$: Observable<Task[]>;
+
   getTasks(): Observable<Task[]> {
-    return this.taskService.getTasks();
+    this.tasks$ = this.taskService.getTasks();
+    return this.tasks$;
+  }
+
+  pollTaskStates(): Observable<TaskStatus[]> {
+    return this.taskService.getStates();
+  }
+
+  pollTaskState(id: string): Observable<TaskStatus> {
+    return this.taskService.getStateForId(id);
   }
 
   fireTask(id: string): void {
-    console.log(id);
     this.taskService.fireTask(id).subscribe();
   }
 }

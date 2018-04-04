@@ -43,7 +43,8 @@ namespace EmbyStat.Web
 
 		public static IWebHost BuildWebHost(string[] args) =>
 			WebHost.CreateDefaultBuilder(args)
-				.UseStartup<Startup>()
+                .UseIISIntegration()
+                .UseStartup<Startup>()
 				.UseSerilog()
 				.Build();
 

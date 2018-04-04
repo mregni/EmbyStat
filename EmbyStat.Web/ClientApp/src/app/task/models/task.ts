@@ -1,7 +1,13 @@
+import { Trigger } from './trigger';
+import { LastExecutionResult } from './lastExecutionResult';
+
 export class Task {
   name: string;
-  cron: number;
-  type: number;
-  lastExecution: Date;
-  nextExecution: Date;
+  state: number;
+  currentProgressPercentage?: any;
+  id: string;
+  lastExecutionResult: LastExecutionResult;
+  triggers: Trigger[];
+  description: string;
+  category: string;
 }

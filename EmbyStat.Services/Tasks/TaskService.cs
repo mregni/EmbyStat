@@ -20,6 +20,16 @@ namespace EmbyStat.Services.Tasks
 
         }
 
+        public List<TaskStatus> GetStates()
+        {
+            return _taskManager.ScheduledTasks.Select(x => new TaskStatus {Id = x.Id, State = x.State, CurrentProgress = x.CurrentProgress}).ToList();
+        }
+
+        public TaskStatus GetStateByTaskId(string id)
+        {
+            return _taskManager.ScheduledTasks.Where(x => x.Id == id).Select(x => new TaskStatus { Id = x.Id, State = x.State, CurrentProgress = x.CurrentProgress }).SingleOrDefault();
+        }
+
         private TaskInfo ConvertToTaskInfo(IScheduledTaskWorker task)
         {
             return new TaskInfo
