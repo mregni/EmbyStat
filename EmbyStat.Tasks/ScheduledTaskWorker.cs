@@ -5,18 +5,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Common.Progress;
+using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.EmbyTask;
-using MediaBrowser.Common.Events;
-using MediaBrowser.Common.Extensions;
-using MediaBrowser.Common.Progress;
-using MediaBrowser.Model.Events;
-using MediaBrowser.Model.Extensions;
-using MediaBrowser.Model.Tasks;
 using Serilog;
-using ITaskTrigger = EmbyStat.Tasks.Interfaces.ITaskTrigger;
-using ITaskManager = EmbyStat.Tasks.Interfaces.ITaskManager;
-using IScheduledTaskWorker = EmbyStat.Tasks.Interfaces.IScheduledTaskWorker;
-using TaskTriggerInfo = EmbyStat.Repositories.EmbyTask.TaskTriggerInfo;
 
 namespace EmbyStat.Tasks
 {
@@ -87,8 +81,8 @@ namespace EmbyStat.Tasks
         }
 
         public double? CurrentProgress { get; private set; }
-        private Tuple<TaskTriggerInfo, ITaskTrigger>[] _triggers;
-        private Tuple<TaskTriggerInfo, ITaskTrigger>[] InternalTriggers
+        private List<Tuple<TaskTriggerInfo, ITaskTrigger>> _triggers;
+        private List<Tuple<TaskTriggerInfo, ITaskTrigger>> InternalTriggers
         {
             get => _triggers;
             set
@@ -103,18 +97,18 @@ namespace EmbyStat.Tasks
                     DisposeTriggers();
                 }
 
-                _triggers = value.ToArray();
+                _triggers = value.ToList();
 
                 ReloadTriggerEvents(false);
             }
         }
 
-        public TaskTriggerInfo[] Triggers
+        public List<TaskTriggerInfo> Triggers
         {
             get
             {
                 var triggers = InternalTriggers;
-                return triggers.Select(i => i.Item1).ToArray(triggers.Length);
+                return triggers.Select(i => i.Item1).ToList();
             }
             set
             {
@@ -127,7 +121,7 @@ namespace EmbyStat.Tasks
 
                 SaveTriggers(triggerList);
 
-                InternalTriggers = triggerList.Select(i => new Tuple<TaskTriggerInfo, ITaskTrigger>(i, GetTrigger(i))).ToArray(triggerList.Count);
+                InternalTriggers = triggerList.Select(i => new Tuple<TaskTriggerInfo, ITaskTrigger>(i, GetTrigger(i))).ToList();
             }
         }
 
@@ -262,12 +256,7 @@ namespace EmbyStat.Tasks
             e = Math.Min(e, 100);
 
             CurrentProgress = e;
-
-            EventHelper.FireEventIfNotNull(TaskProgress, this, new GenericEventArgs<double>
-            {
-                Argument = e
-
-            }, null);
+            TaskProgress?.Invoke(this, new GenericEventArgs<double> { Argument = e });
         }
 
         public void Cancel()
@@ -289,11 +278,11 @@ namespace EmbyStat.Tasks
             }
         }
 
-        private Tuple<TaskTriggerInfo, ITaskTrigger>[] LoadTriggers()
+        private List<Tuple<TaskTriggerInfo, ITaskTrigger>> LoadTriggers()
         {
             var settings = LoadTriggerSettings().Where(i => i != null).ToArray();
 
-            return settings.Select(i => new Tuple<TaskTriggerInfo, ITaskTrigger>(i, GetTrigger(i))).ToArray();
+            return settings.Select(i => new Tuple<TaskTriggerInfo, ITaskTrigger>(i, GetTrigger(i))).ToList();
         }
 
         private TaskTriggerInfo[] LoadTriggerSettings()

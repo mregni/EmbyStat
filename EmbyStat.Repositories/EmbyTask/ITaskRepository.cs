@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MediaBrowser.Model.Tasks;
+using EmbyStat.Common.Tasks;
 
 namespace EmbyStat.Repositories.EmbyTask
 {

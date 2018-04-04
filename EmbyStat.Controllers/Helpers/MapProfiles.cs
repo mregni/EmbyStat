@@ -1,9 +1,11 @@
 ﻿using System;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common.Tasks;
 using EmbyStat.Controllers.Configuration;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.Plugin;
+using EmbyStat.Controllers.Tasks;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
 using MediaBrowser.Model.Plugins;
@@ -25,6 +27,10 @@ namespace EmbyStat.Controllers.Helpers
 		    CreateMap<Repositories.EmbyDrive.Drives, DriveViewModel>()
 				.ReverseMap()
 			    .ForMember(x => x.Id, y => y.Ignore());
+
+	        CreateMap<TaskInfo, TaskInfoViewModel>();
+	        CreateMap<TaskResult, TaskResultViewModel>();
+	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
 
 			//EmbyResponses
 			CreateMap<SystemInfo, ServerInfo>()

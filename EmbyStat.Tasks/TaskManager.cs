@@ -4,17 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.EmbyTask;
-using MediaBrowser.Common.Configuration;
-using MediaBrowser.Common.Events;
-using MediaBrowser.Model.Events;
-using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Serialization;
-using MediaBrowser.Model.System;
-using MediaBrowser.Model.Tasks;
 using Serilog;
-using ITaskManager = EmbyStat.Tasks.Interfaces.ITaskManager;
-using IScheduledTaskWorker = EmbyStat.Tasks.Interfaces.IScheduledTaskWorker;
 
 namespace EmbyStat.Tasks
 {
@@ -23,10 +17,11 @@ namespace EmbyStat.Tasks
     /// </summary>
     public class TaskManager : ITaskManager
     {
+        public string BoeName { get; set; }
         public event EventHandler<GenericEventArgs<IScheduledTaskWorker>> TaskExecuting;
         public event EventHandler<TaskCompletionEventArgs> TaskCompleted;
 
-        public IScheduledTaskWorker[] ScheduledTasks { get; private set; }
+        public List<IScheduledTaskWorker> ScheduledTasks { get; private set; }
 
         private readonly ConcurrentQueue<Tuple<Type, TaskOptions>> _taskQueue = new ConcurrentQueue<Tuple<Type, TaskOptions>>();
         private readonly ITaskRepository _taskRepository;
@@ -35,7 +30,7 @@ namespace EmbyStat.Tasks
         {
             _taskRepository = taskRepository;
 
-            ScheduledTasks = new IScheduledTaskWorker[] { };
+            ScheduledTasks = new List<IScheduledTaskWorker>();
         }
 
         public void CancelIfRunningAndQueue<T>(TaskOptions options) where T : IScheduledTask
@@ -150,7 +145,7 @@ namespace EmbyStat.Tasks
             var list = tasks.ToList();
             myTasks.AddRange(list.Select(t => new ScheduledTaskWorker(_taskRepository, t, this)));
 
-            ScheduledTasks = myTasks.ToArray();
+            ScheduledTasks = myTasks.ToList();
         }
 
         public void Dispose()

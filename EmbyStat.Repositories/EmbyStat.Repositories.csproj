@@ -11,5 +11,8 @@
     <PackageReference Include="MediaBrowser.Common" Version="3.3.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
+  </ItemGroup>
 
 </Project>

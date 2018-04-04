@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaBrowser.Model.Tasks;
-using IScheduledTaskWorker = EmbyStat.Tasks.Interfaces.IScheduledTaskWorker;
+using EmbyStat.Common.Tasks.Interface;
 
-namespace EmbyStat.Tasks
+namespace EmbyStat.Common.Tasks
 {
     public class TaskCompletionEventArgs : EventArgs
     {

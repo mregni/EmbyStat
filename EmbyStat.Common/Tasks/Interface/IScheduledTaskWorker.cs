@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using MediaBrowser.Model.Events;
-using MediaBrowser.Model.Tasks;
-using TaskTriggerInfo = EmbyStat.Repositories.EmbyTask.TaskTriggerInfo;
+using EmbyStat.Common.Tasks.Enum;
 
-namespace EmbyStat.Tasks.Interfaces
+namespace EmbyStat.Common.Tasks.Interface
 {
     public interface IScheduledTaskWorker : IDisposable
     {
@@ -16,7 +13,7 @@ namespace EmbyStat.Tasks.Interfaces
         string Category { get; }
         TaskState State { get; }
         double? CurrentProgress { get; }
-        TaskTriggerInfo[] Triggers { get; set; }
+        List<TaskTriggerInfo> Triggers { get; set; }
         string Id { get; }
         event EventHandler<GenericEventArgs<double>> TaskProgress;
         void ReloadTriggerEvents();

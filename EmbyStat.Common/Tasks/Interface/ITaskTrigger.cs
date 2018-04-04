@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaBrowser.Model.Tasks;
-using Serilog;
 
-namespace EmbyStat.Tasks.Interfaces
+namespace EmbyStat.Common.Tasks.Interface
 {
     public interface ITaskTrigger
     {

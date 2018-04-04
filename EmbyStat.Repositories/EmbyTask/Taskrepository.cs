@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MediaBrowser.Model.Tasks;
+using EmbyStat.Common.Tasks;
 
 namespace EmbyStat.Repositories.EmbyTask
 {

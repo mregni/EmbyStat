@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using MediaBrowser.Model.Events;
-using MediaBrowser.Model.Tasks;
 
-namespace EmbyStat.Tasks.Interfaces
+namespace EmbyStat.Common.Tasks.Interface
 {
     public interface ITaskManager
     {
-        IScheduledTaskWorker[] ScheduledTasks { get; }
+        string BoeName { get; set; }
+        List<IScheduledTaskWorker> ScheduledTasks { get; }
 
         event EventHandler<GenericEventArgs<IScheduledTaskWorker>> TaskExecuting;
         event EventHandler<TaskCompletionEventArgs> TaskCompleted;

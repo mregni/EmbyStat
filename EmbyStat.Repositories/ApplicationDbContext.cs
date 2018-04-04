@@ -1,10 +1,9 @@
-﻿using EmbyStat.Repositories.Config;
+﻿using EmbyStat.Common.Tasks;
+using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyServerInfo;
 using MediaBrowser.Model.Plugins;
-using MediaBrowser.Model.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TaskTriggerInfo = EmbyStat.Repositories.EmbyTask.TaskTriggerInfo;
 
 namespace EmbyStat.Repositories
 {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MediaBrowser.Model.Tasks;
+using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Tasks.Interface;
 
 namespace EmbyStat.Tasks.Tasks
 {
@@ -13,13 +14,21 @@ namespace EmbyStat.Tasks.Tasks
         {
             return Task.Run(() =>
             {
-
+                progress.Report(20);
+                Thread.Sleep(10000);
+                progress.Report(40);
+                Thread.Sleep(10000);
+                progress.Report(60);
+                Thread.Sleep(10000);
+                progress.Report(80);
+                Thread.Sleep(10000);
+                progress.Report(100);
             }, cancellationToken);
         }
 
         public IEnumerable<TaskTriggerInfo> GetDefaultTriggers()
         {
-            throw new NotImplementedException();
+            return new List<TaskTriggerInfo>();
         }
 
         public string Name => "Check Emby connection";

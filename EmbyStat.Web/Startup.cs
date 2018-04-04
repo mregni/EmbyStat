@@ -8,6 +8,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
@@ -18,10 +19,10 @@ using EmbyStat.Repositories.EmbyTask;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Plugin;
+using EmbyStat.Services.Tasks;
 using EmbyStat.Tasks;
 using EmbyStat.Tasks.Tasks;
 using MediaBrowser.Model.Serialization;
-using MediaBrowser.Model.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +32,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
-using ITaskManager = EmbyStat.Tasks.Interfaces.ITaskManager;
 
 namespace EmbyStat.Web
 {
@@ -74,14 +74,15 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
 			services.AddScoped<IEmbyService, EmbyService>();
+		    services.AddScoped<ITaskService, TaskService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
 			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
-			services.AddScoped<ITaskRepository, TaskRepository>();
 
-            services.AddScoped<ITaskManager, TaskManager>();
+			services.AddSingleton<ITaskRepository, TaskRepository>();
+            services.AddSingleton<ITaskManager, TaskManager>();
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
@@ -91,22 +92,7 @@ namespace EmbyStat.Web
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<BusinessExceptionFilterAttribute>();
-
-		    BuildTaskManager(services);
 		}
-
-	    private void BuildTaskManager(IServiceCollection services)
-	    {
-	        var sp = services.BuildServiceProvider();
-	        var taskManager = sp.GetService<ITaskManager>();
-
-	        var tasks = new List<IScheduledTask>
-	        {
-                new PingEmbyTask()
-	        };
-
-            taskManager.AddTasks(tasks);
-        }
 
 	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
@@ -166,26 +152,20 @@ namespace EmbyStat.Web
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
-		}
 
-	    private void OnStartup(IApplicationBuilder app)
+		    SetupTaskManager(app);
+        }
+	    private void SetupTaskManager(IApplicationBuilder app)
 	    {
-	        try
-	        {
-	            var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+	        var taskManager = app.ApplicationServices.GetService<ITaskManager>();
 
-	            var manager = serviceCollection.Single(x => x.ServiceType == typeof(ITaskManager));
-                var taskManager = app.ApplicationServices.GetService<ITaskManager>();
-	        }
-            catch (Exception e)
+	        var tasks = new List<IScheduledTask>
 	        {
-	            Console.WriteLine(e);
-	            throw;
-	        }
-	        
-	        
+	            new PingEmbyTask()
+	        };
 
-            //taskManager.AddTasks(types);
+	        taskManager.AddTasks(tasks);
+	        taskManager.BoeName = "testing";
 	    }
-	}
+    }
 }

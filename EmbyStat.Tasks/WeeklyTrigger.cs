@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
-using MediaBrowser.Model.Tasks;
-using Serilog;
-using ITaskTrigger = EmbyStat.Tasks.Interfaces.ITaskTrigger;
+using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Tasks.Interface;
+
 
 namespace EmbyStat.Tasks
 {
