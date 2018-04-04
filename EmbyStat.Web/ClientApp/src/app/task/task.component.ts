@@ -41,6 +41,8 @@ export class TaskComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+
+  //Wijzigen naar websockets!!!
   private startRapidPoll(id: string) {
     if (this.pollingQueue.every(val => val !== id)) {
       this.pollingQueue.push(id);
@@ -53,7 +55,7 @@ export class TaskComponent implements OnInit, OnDestroy {
             if (task !== undefined) {
               task.currentProgressPercentage = data.currentProgress;
             }
-          }).subscribe();
+          });
           if (data.state !== 2) {
             let index = this.pollingQueue.indexOf(id);
             if (index > -1) {
