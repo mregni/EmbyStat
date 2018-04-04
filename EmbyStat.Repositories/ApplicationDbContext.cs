@@ -2,7 +2,9 @@
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyServerInfo;
 using MediaBrowser.Model.Plugins;
+using MediaBrowser.Model.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TaskTriggerInfo = EmbyStat.Repositories.EmbyTask.TaskTriggerInfo;
 
 namespace EmbyStat.Repositories
 {
@@ -12,8 +14,10 @@ namespace EmbyStat.Repositories
 		public DbSet<PluginInfo> Plugins { get; set; }
 		public DbSet<ServerInfo> ServerInfo { get; set; }
 		public DbSet<Drives> Drives { get; set; }
+        public DbSet<TaskResult> TaskResults { get; set; }
+        public DbSet<TaskTriggerInfo> TaskTriggerInfos { get; set; }
 
-		public ApplicationDbContext() : base()
+        public ApplicationDbContext() : base()
 	    {
 
 	    }
@@ -40,6 +44,8 @@ namespace EmbyStat.Repositories
 
 		    modelBuilder.Entity<ServerInfo>().Property(s => s.Id).IsRequired();
 
-		}
+	        modelBuilder.Entity<TaskTriggerInfo>().Property(t => t.Id).IsRequired();
+
+	    }
 	}
 }

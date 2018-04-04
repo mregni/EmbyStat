@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.17" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.1.0" />
@@ -77,12 +76,12 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
+    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Tasks.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />

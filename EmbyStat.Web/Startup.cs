@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using AutoMapper;
@@ -12,12 +14,14 @@ using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
+using EmbyStat.Repositories.EmbyTask;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Plugin;
-using Hangfire;
-using Hangfire.MemoryStorage;
+using EmbyStat.Tasks;
+using EmbyStat.Tasks.Tasks;
 using MediaBrowser.Model.Serialization;
+using MediaBrowser.Model.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +31,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
+using ITaskManager = EmbyStat.Tasks.Interfaces.ITaskManager;
 
 namespace EmbyStat.Web
 {
@@ -35,7 +40,7 @@ namespace EmbyStat.Web
 		public IConfiguration Configuration { get; }
 		public IHostingEnvironment HostingEnvironment { get; }
 
-		public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
 		{
 			HostingEnvironment = env;
 			Configuration = configuration;
@@ -50,8 +55,6 @@ namespace EmbyStat.Web
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddHangfire(config => config.UseMemoryStorage());
-
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
 			services.AddMvc(options =>
@@ -76,6 +79,9 @@ namespace EmbyStat.Web
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
 			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
+			services.AddScoped<ITaskRepository, TaskRepository>();
+
+            services.AddScoped<ITaskManager, TaskManager>();
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
@@ -85,11 +91,26 @@ namespace EmbyStat.Web
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<BusinessExceptionFilterAttribute>();
+
+		    BuildTaskManager(services);
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+	    private void BuildTaskManager(IServiceCollection services)
+	    {
+	        var sp = services.BuildServiceProvider();
+	        var taskManager = sp.GetService<ITaskManager>();
+
+	        var tasks = new List<IScheduledTask>
+	        {
+                new PingEmbyTask()
+	        };
+
+            taskManager.AddTasks(tasks);
+        }
+
+	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
-			if (env.IsDevelopment())
+            if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
@@ -99,12 +120,7 @@ namespace EmbyStat.Web
 				cfg.AddProfile<MapProfiles>();
 			});
 
-			app.UseHangfireServer();
-			app.UseHangfireDashboard();
-			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
-
-			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -152,9 +168,24 @@ namespace EmbyStat.Web
 			});
 		}
 
-		private void onShutdown()
-		{
-			
-		}
+	    private void OnStartup(IApplicationBuilder app)
+	    {
+	        try
+	        {
+	            var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+
+	            var manager = serviceCollection.Single(x => x.ServiceType == typeof(ITaskManager));
+                var taskManager = app.ApplicationServices.GetService<ITaskManager>();
+	        }
+            catch (Exception e)
+	        {
+	            Console.WriteLine(e);
+	            throw;
+	        }
+	        
+	        
+
+            //taskManager.AddTasks(types);
+	    }
 	}
 }
