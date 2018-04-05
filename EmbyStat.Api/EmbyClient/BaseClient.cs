@@ -235,6 +235,39 @@ namespace EmbyStat.Api.EmbyClient
 
 		}
 
+		protected async Task<string> PostAsyncToString(string url, Dictionary<string, string> args, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			url = AddDataFormat(url);
+
+			var strings = args.Keys.Select(key => string.Format("{0}={1}", key, args[key]));
+			var postContent = string.Join("&", strings.ToArray());
+
+			const string contentType = "application/x-www-form-urlencoded";
+
+			try
+			{
+				using (var stream = await SendAsync(new HttpRequest
+				{
+					Url = url,
+					CancellationToken = cancellationToken,
+					RequestHeaders = HttpHeaders,
+					Method = "POST",
+					RequestContentType = contentType,
+					RequestContent = postContent
+				}).ConfigureAwait(false))
+				{
+					var reader = new StreamReader(stream);
+					return reader.ReadToEnd();
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogError(e, "EMBY_CALL_FAILED");
+				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
+			}
+
+		}
+
 		protected Task<Stream> GetStream(string url, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			try

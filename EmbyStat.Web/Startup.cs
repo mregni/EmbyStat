@@ -1,26 +1,37 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
+using EmbyStat.Controllers.Tasks;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyPlugin;
 using EmbyStat.Repositories.EmbyServerInfo;
+using EmbyStat.Repositories.EmbyTask;
 using EmbyStat.Services.Config;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Plugin;
-using Hangfire;
-using Hangfire.MemoryStorage;
+using EmbyStat.Services.Tasks;
+using EmbyStat.Tasks;
+using EmbyStat.Tasks.Tasks;
 using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +46,7 @@ namespace EmbyStat.Web
 		public IConfiguration Configuration { get; }
 		public IHostingEnvironment HostingEnvironment { get; }
 
-		public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
 		{
 			HostingEnvironment = env;
 			Configuration = configuration;
@@ -50,8 +61,6 @@ namespace EmbyStat.Web
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddHangfire(config => config.UseMemoryStorage());
-
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
 			services.AddMvc(options =>
@@ -71,25 +80,32 @@ namespace EmbyStat.Web
 			services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddScoped<IPluginService, PluginService>();
 			services.AddScoped<IEmbyService, EmbyService>();
+		    services.AddScoped<ITaskService, TaskService>();
 
 			services.AddScoped<IConfigurationRepository, PluginRepository>();
 			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
 			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
 			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
 
+			services.AddSingleton<ITaskRepository, TaskRepository>();
+            services.AddSingleton<ITaskManager, TaskManager>();
+
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
-			services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
+			services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
 			services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
 			services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<BusinessExceptionFilterAttribute>();
-		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+		    services.AddSignalR();
+		    services.AddCors();
+        }
+
+	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
-			if (env.IsDevelopment())
+            if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
@@ -99,12 +115,14 @@ namespace EmbyStat.Web
 				cfg.AddProfile<MapProfiles>();
 			});
 
-			app.UseHangfireServer();
-			app.UseHangfireDashboard();
-			// Enable middleware to serve generated Swagger as a JSON endpoint.
-			app.UseSwagger();
+		    app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
-			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSignalR(routes =>
+		    {
+		        routes.MapHub<TaskHub>("/tasksignal");
+		    });
+
+            app.UseSwagger();
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -150,11 +168,19 @@ namespace EmbyStat.Web
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
-		}
 
-		private void onShutdown()
-		{
-			
-		}
-	}
+		    SetupTaskManager(app);
+        }
+	    private void SetupTaskManager(IApplicationBuilder app)
+	    {
+	        var taskManager = app.ApplicationServices.GetService<ITaskManager>();
+
+	        var tasks = new List<IScheduledTask>
+	        {
+	            new PingEmbyTask()
+	        };
+
+	        taskManager.AddTasks(tasks);
+	    }
+    }
 }

@@ -15,5 +15,7 @@ namespace EmbyStat.Api.EmbyClient
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<SystemInfo> GetServerInfo();
 	    Task<List<Drive>> GetLocalDrives();
+	    Task<string> PingEmby();
+
     }
 }

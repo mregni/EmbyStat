@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
@@ -133,5 +134,5 @@ namespace EmbyStat.Services.Emby
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
 			_embyDriveRepository.ClearAndInsertList(localDrives.ToList());
 		}
-	}
+    }
 }

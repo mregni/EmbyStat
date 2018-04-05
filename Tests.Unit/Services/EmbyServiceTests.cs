@@ -30,6 +30,7 @@ namespace Tests.Unit.Services
 	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
 	    private readonly Mock<IEmbyServerInfoRepository> _embyServerInfoRepository;
 	    private readonly Mock<IEmbyDriveRepository> _embyDriveRepository;
+	    private readonly Mock<IConfigurationRepository> _configurationRepositoryMock;
 		private readonly AuthenticationResult _authResult;
 	    private readonly List<PluginInfo> _plugins;
 	    private readonly List<Drives> _drives;
@@ -89,8 +90,7 @@ namespace Tests.Unit.Services
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
-		    var configurationRepositoryMock = new Mock<IConfigurationRepository>();
-		    configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
+		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
 
 		    _embyServerInfoRepository = new Mock<IEmbyServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
@@ -100,7 +100,7 @@ namespace Tests.Unit.Services
 		    _embyDriveRepository.Setup(x => x.ClearAndInsertList(It.IsAny<List<Drives>>()));
 		    _embyDriveRepository.Setup(x => x.GetAll()).Returns(_drives);
 
-			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object);
+			_subject = new EmbyService(loggerMock.Object, _embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object);
 	    }
 
 	    [Fact]
