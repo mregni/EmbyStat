@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Services.Emby.Models
+﻿namespace EmbyStat.Services.Emby.Models
 {
     public class EmbyToken
     {

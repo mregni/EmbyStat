@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
-using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;

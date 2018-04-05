@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Enum;
+﻿using System.Collections.Generic;
 
 namespace EmbyStat.Controllers.Tasks
 {

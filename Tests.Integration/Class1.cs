@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tests.Integration
+﻿namespace Tests.Integration
 {
     public class Class1
     {

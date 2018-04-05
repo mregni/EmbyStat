@@ -1,6 +1,4 @@
-﻿using EmbyStat.Services.Emby.Models;
-
-namespace EmbyStat.Services.Config
+﻿namespace EmbyStat.Services.Config
 {
     public interface IConfigurationService
     {

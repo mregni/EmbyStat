@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Repositories.EmbyServerInfo
+﻿namespace EmbyStat.Repositories.EmbyServerInfo
 {
     public interface IEmbyServerInfoRepository
     {

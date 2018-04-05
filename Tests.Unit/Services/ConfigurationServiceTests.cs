@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Repositories.Config;
+﻿using EmbyStat.Repositories.Config;
 using EmbyStat.Services.Config;
 using FluentAssertions;
 using Moq;

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
-using MediaBrowser.Model.Plugins;
 
 
 namespace EmbyStat.Services.Emby

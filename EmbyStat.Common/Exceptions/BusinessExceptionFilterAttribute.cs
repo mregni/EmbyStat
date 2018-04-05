@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace EmbyStat.Common.Exceptions
 {

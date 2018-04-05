@@ -1,5 +1,4 @@
 using AutoMapper;
-using EmbyStat.Common.Exceptions;
 using EmbyStat.Services.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

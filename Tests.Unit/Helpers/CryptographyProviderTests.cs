@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using FluentAssertions;

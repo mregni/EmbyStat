@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.Tasks
+﻿namespace EmbyStat.Controllers.Tasks
 {
     public class TaskStatusViewModel
     {

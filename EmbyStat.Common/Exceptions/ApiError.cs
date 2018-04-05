@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Common.Exceptions
+﻿namespace EmbyStat.Common.Exceptions
 {
     public class ApiError
     {

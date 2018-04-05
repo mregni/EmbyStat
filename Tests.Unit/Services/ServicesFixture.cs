@@ -1,6 +1,4 @@
 ﻿using System;
-using AutoMapper;
-using EmbyStat.Controllers.Helpers;
 
 namespace Tests.Unit.Services
 {

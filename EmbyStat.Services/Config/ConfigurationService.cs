@@ -1,10 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using EmbyStat.Repositories.Config;
-using EmbyStat.Services.Emby.Models;
-using Newtonsoft.Json;
+﻿using EmbyStat.Repositories.Config;
 
 namespace EmbyStat.Services.Config
 {

@@ -10,4 +10,10 @@
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Core">
+      <HintPath>..\EmbyStat.Repositories\bin\x64\Debug\netcoreapp2.0\Microsoft.AspNetCore.SignalR.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

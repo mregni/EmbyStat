@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
-using EmbyStat.Common.Exceptions;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
 using MediaBrowser.Model.System;

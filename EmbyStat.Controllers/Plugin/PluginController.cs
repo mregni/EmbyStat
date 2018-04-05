@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Controllers.Emby;
-using EmbyStat.Services.Emby;
-using EmbyStat.Services.Emby.Models;
 using EmbyStat.Services.Plugin;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

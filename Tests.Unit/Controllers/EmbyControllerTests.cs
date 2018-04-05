@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmbyStat.Controllers.Emby;
-using EmbyStat.Controllers.Helpers;
-using EmbyStat.Controllers.Plugin;
 using EmbyStat.Repositories.EmbyDrive;
 using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby;
 using EmbyStat.Services.Emby.Models;
 using FluentAssertions;
-using MediaBrowser.Model.Plugins;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;

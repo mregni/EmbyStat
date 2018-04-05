@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
 using EmbyStat.Controllers.Configuration;
-using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Services.Config;
 using FluentAssertions;
