@@ -6,12 +6,9 @@ namespace EmbyStat.Common.Tasks.Interface
 {
     public interface ITaskManager
     {
-        string BoeName { get; set; }
         List<IScheduledTaskWorker> ScheduledTasks { get; }
-
         event EventHandler<GenericEventArgs<IScheduledTaskWorker>> TaskExecuting;
         event EventHandler<TaskCompletionEventArgs> TaskCompleted;
-
         void AddTasks(IEnumerable<IScheduledTask> tasks);
         void Cancel(IScheduledTaskWorker task);
         void CancelIfRunning<T>() where T : IScheduledTask;

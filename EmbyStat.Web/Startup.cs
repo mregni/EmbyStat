@@ -2,14 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
+using EmbyStat.Controllers.Tasks;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Config;
 using EmbyStat.Repositories.EmbyDrive;
@@ -26,6 +31,7 @@ using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -86,13 +92,16 @@ namespace EmbyStat.Web
 
 			services.AddScoped<IEmbyClient, EmbyClient>();
 			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
-			services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
+			services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
 			services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
 			services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
 
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<BusinessExceptionFilterAttribute>();
-		}
+
+		    services.AddSignalR();
+		    services.AddCors();
+        }
 
 	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
 		{
@@ -106,7 +115,14 @@ namespace EmbyStat.Web
 				cfg.AddProfile<MapProfiles>();
 			});
 
-			app.UseSwagger();
+		    app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+            app.UseSignalR(routes =>
+		    {
+		        routes.MapHub<TaskHub>("/tasksignal");
+		    });
+
+            app.UseSwagger();
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -165,7 +181,6 @@ namespace EmbyStat.Web
 	        };
 
 	        taskManager.AddTasks(tasks);
-	        taskManager.BoeName = "testing";
 	    }
     }
 }

@@ -53,7 +53,7 @@ namespace EmbyStat.Tasks
 
                 lock (_lastExecutionResultSyncLock)
                 {
-                    _taskRepository.SaveTaskResult(_lastExecutionResult);
+                    _taskRepository.AddOrUpdateTaskResult(_lastExecutionResult);
                 }
             }
         }

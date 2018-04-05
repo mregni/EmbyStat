@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories.EmbyTask
 {
@@ -11,15 +12,6 @@ namespace EmbyStat.Repositories.EmbyTask
             using (var context = new ApplicationDbContext())
             {
                 return context.TaskResults.SingleOrDefault(x => x.Id == id);
-            }
-        }
-
-        public void SaveTaskResult(TaskResult result)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                context.TaskResults.Add(result);
-                context.SaveChanges();
             }
         }
 
@@ -36,6 +28,24 @@ namespace EmbyStat.Repositories.EmbyTask
             using (var context = new ApplicationDbContext())
             {
                 context.TaskTriggerInfos.AddRange(list);
+                context.SaveChanges();
+            }
+        }
+
+        public void AddOrUpdateTaskResult(TaskResult lastExecutionResult)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var result = context.TaskResults.AsNoTracking().SingleOrDefault(x => x.Id == lastExecutionResult.Id);
+                if (result == null)
+                {
+                    context.TaskResults.Add(lastExecutionResult);
+                }
+                else
+                {
+                    context.Entry(lastExecutionResult).State = EntityState.Modified;
+                }
+                
                 context.SaveChanges();
             }
         }

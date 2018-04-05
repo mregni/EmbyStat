@@ -10,4 +10,13 @@
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MediaBrowser.Model">
+      <HintPath>..\..\..\..\.nuget\packages\mediabrowser.common\3.3.29\lib\netstandard1.3\MediaBrowser.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Core">
+      <HintPath>..\..\..\..\.nuget\packages\microsoft.aspnetcore.signalr.core\1.0.0-preview1-final\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

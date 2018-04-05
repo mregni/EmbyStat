@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.EmbyTask;
+using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 namespace EmbyStat.Tasks
@@ -17,7 +20,6 @@ namespace EmbyStat.Tasks
     /// </summary>
     public class TaskManager : ITaskManager
     {
-        public string BoeName { get; set; }
         public event EventHandler<GenericEventArgs<IScheduledTaskWorker>> TaskExecuting;
         public event EventHandler<TaskCompletionEventArgs> TaskCompleted;
 
@@ -25,12 +27,17 @@ namespace EmbyStat.Tasks
 
         private readonly ConcurrentQueue<Tuple<Type, TaskOptions>> _taskQueue = new ConcurrentQueue<Tuple<Type, TaskOptions>>();
         private readonly ITaskRepository _taskRepository;
+        private readonly IHubContext<TaskHub> _taskHubContext;
 
-        public TaskManager(ITaskRepository taskRepository)
+        public TaskManager(ITaskRepository taskRepository, IHubContext<TaskHub> taskHubContext)
         {
             _taskRepository = taskRepository;
+            _taskHubContext = taskHubContext;
 
             ScheduledTasks = new List<IScheduledTaskWorker>();
+
+            TaskExecuting += TaskManager_TaskExecuting;
+            TaskCompleted += TaskManager_TaskCompleted;
         }
 
         public void CancelIfRunningAndQueue<T>(TaskOptions options) where T : IScheduledTask
@@ -215,6 +222,28 @@ namespace EmbyStat.Tasks
                     }
                 }
             }
+        }
+
+        private async void TaskManager_TaskCompleted(object sender, TaskCompletionEventArgs e)
+        {
+            e.Task.TaskProgress -= Argument_TaskProgress;
+            await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
+        }
+
+        private async void TaskManager_TaskExecuting(object sender, GenericEventArgs<IScheduledTaskWorker> e)
+        {
+            e.Argument.TaskProgress += Argument_TaskProgress;
+            await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
+        }
+
+        private async void Argument_TaskProgress(object sender, GenericEventArgs<double> e)
+        {
+            await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
+        }
+
+        private IEnumerable<TaskInfo> GetSendData()
+        {
+            return ScheduledTasks.OrderBy(x => x.Name).Select(TaskHelpers.ConvertToTaskInfo);
         }
     }
 }
