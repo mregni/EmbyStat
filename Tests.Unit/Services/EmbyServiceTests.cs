@@ -91,8 +91,9 @@ namespace Tests.Unit.Services
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
 		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
+	        _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
 
-		    _embyServerInfoRepository = new Mock<IEmbyServerInfoRepository>();
+            _embyServerInfoRepository = new Mock<IEmbyServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
 		    _embyServerInfoRepository.Setup(x => x.GetSingle()).Returns(_serverInfo);
 
@@ -133,7 +134,7 @@ namespace Tests.Unit.Services
 	    {
 		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
 
-		    ex.Message.Should().Be("WRONG_USERNAME_OR_PASSWORD");
+		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
@@ -147,7 +148,7 @@ namespace Tests.Unit.Services
 			};
 		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
-		    ex.Message.Should().Be("WRONG_USERNAME_OR_PASSWORD");
+		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
@@ -161,7 +162,7 @@ namespace Tests.Unit.Services
 		    };
 		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
-		    ex.Message.Should().Be("WRONG_USERNAME_OR_PASSWORD");
+		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
@@ -178,7 +179,7 @@ namespace Tests.Unit.Services
 		    };
 		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
-		    ex.Message.Should().Be("WRONG_USERNAME_OR_PASSWORD");
+		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
@@ -189,8 +190,9 @@ namespace Tests.Unit.Services
 
 		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
 			_embyClientMock.Verify(x => x.GetServerInfo(), Times.Once);
+			_embyClientMock.Verify(x => x.GetLocalDrives(), Times.Once);
 
-		    _embyPluginRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
+            _embyPluginRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
 			    y => y.Count == 2 &&
 			         y.First().Name == _plugins.First().Name)));
 			_embyServerInfoRepository.Verify(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
