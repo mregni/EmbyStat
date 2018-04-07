@@ -2,7 +2,8 @@ import { Action } from "@ngrx/store";
 
 export enum AppActionTypes {
   ERROR = '[Error] Effect Error',
-  NOOP = '[App] NOOP'
+  NOOP = '[App] NOOP',
+  RESET_ALL_LOAD_STATES = '[App] Reset all load states'
 }
 
 export class EffectError implements Action {

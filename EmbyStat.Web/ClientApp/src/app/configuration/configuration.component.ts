@@ -65,10 +65,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     this.configurationFacade.updateConfiguration(config);
   }
 
-  public resetIntroForm() {
-    this.introFormGroup.setValue({ name: this.configuration.username, language: this.configuration.language });
-  }
-
   public saveEmbyForm() {
     var username = this.embyFormGroup.get('embyUsername').value;
     var password = this.embyFormGroup.get('embyPassword').value;
@@ -86,10 +82,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           this.configurationFacade.updateConfiguration(config);
         }
       });
-  }
-
-  public resetEmbyForm() {
-    this.embyFormGroup.setValue({ embyAddress: this.configuration.embyServerAddress, embyUsername: this.configuration.embyUserName, embyPassword: "" });
   }
 
   private languageChanged(value: string): void {

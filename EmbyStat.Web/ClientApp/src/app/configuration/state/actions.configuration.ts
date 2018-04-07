@@ -32,7 +32,7 @@ export class UpdateConfigurationSuccessAction implements Action {
 
 export class FireSmallEmbySyncAction implements Action {
   readonly type = ConfigurationActionTypes.FIRE_SMALL_EMBY_SYNC;
-  constructor(public payload = null) { }
+  constructor(public payload = false) { }
 }
 
 export class NoNeedConfigurationAction implements Action {
@@ -40,5 +40,5 @@ export class NoNeedConfigurationAction implements Action {
 }
 
 export type ConfigurationActions = LoadConfigurationAction | LoadConfigurationSuccessAction |
-                                   UpdateConfigurationAction | UpdateConfigurationSuccessAction |
-                                   FireSmallEmbySyncAction | NoNeedConfigurationAction;
+  UpdateConfigurationAction | UpdateConfigurationSuccessAction |
+  FireSmallEmbySyncAction | NoNeedConfigurationAction;
