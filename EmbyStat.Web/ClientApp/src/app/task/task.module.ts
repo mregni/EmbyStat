@@ -7,6 +7,12 @@ import { MomentModule } from 'angular2-moment';
 import { TaskComponent } from './task.component';
 import { TaskService } from './service/task.service';
 import { TaskFacade } from './state/facade.task';
+import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.component';
+
+import { TicksToTime } from '../shared/pipes/ticks-to-time'; 
+import { DateToHoursAgo } from '../shared/pipes/time-to-hours-ago'; 
+import { DateToMinutesAgo } from '../shared/pipes/time-to-minutes-ago'; 
+import { DateToSecondsAgo } from '../shared/pipes/time-to-seconds-ago'; 
 
 @NgModule({
   imports: [
@@ -19,6 +25,14 @@ import { TaskFacade } from './state/facade.task';
     TaskService,
     TaskFacade
   ],
-  declarations: [TaskComponent]
+  declarations: [
+    TaskComponent,
+    TriggerDialogComponent,
+    TicksToTime,
+    DateToHoursAgo,
+    DateToMinutesAgo,
+    DateToSecondsAgo
+  ],
+  entryComponents: [TriggerDialogComponent]
 })
 export class TaskModule { }

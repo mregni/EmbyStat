@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using EmbyStat.Common.Tasks;
 using EmbyStat.Services.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -25,43 +26,21 @@ namespace EmbyStat.Controllers.Tasks
             return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
         }
 
-        [HttpGet]
-        [Route("state")]
-        public IActionResult GetStates()
+        [HttpPut]
+        [Route("triggers")]
+        public IActionResult UpdateTriggers([FromBody] TaskInfoViewModel task)
         {
-            Log.Information("Getting task states;");
-            var result = _taskService.GetStates();
-            return Ok(Mapper.Map<IList<TaskStatusViewModel>>(result));
-        }
-
-        [HttpGet]
-        [Route("state/{id}")]
-        public IActionResult GetState(string id)
-        {
-            Log.Information($"Getting task states for id: {id}");
-            var result = _taskService.GetStateByTaskId(id);
-            return Ok(Mapper.Map<TaskStatusViewModel>(result));
-        }
-
-        [HttpPost]
-        [Route("trigger")]
-        public IActionResult AddTrigger([FromBody] string trigger)
-        {
-            return NotFound();
-        }
-
-        [HttpDelete]
-        [Route("trigger")]
-        public IActionResult DeleteTrigger(string id)
-        {
-            return NotFound();
+            _taskService.UpdateTriggers(Mapper.Map<TaskInfo>(task));
+            var result = _taskService.GetAllTasks();
+            return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
         }
 
         [HttpPost]
         [Route("fire/{id}")]
         public IActionResult FireTask(string id)
         {
-            return NotFound();
+            _taskService.FireTask(id);
+            return Ok();
         }
     }
 }

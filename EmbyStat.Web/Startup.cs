@@ -170,7 +170,8 @@ namespace EmbyStat.Web
 
 	        var tasks = new List<IScheduledTask>
 	        {
-	            new PingEmbyTask()
+	            new PingEmbyTask(),
+                new SmallSyncTask()
 	        };
 
 	        taskManager.AddTasks(tasks);

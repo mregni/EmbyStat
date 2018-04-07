@@ -14,9 +14,10 @@ using System;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180406230624_AddedTaskName")]
+    partial class AddedTaskName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +58,7 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<long?>("MaxRuntimeTicks");
 
-                    b.Property<string>("TaskKey");
+                    b.Property<string>("TaskName");
 
                     b.Property<long?>("TimeOfDayTicks");
 

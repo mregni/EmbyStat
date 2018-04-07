@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatProgressSpinnerModule,
     MatMenuModule,
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressBarModule
   ],
   exports: [
     MatToolbarModule,
@@ -48,7 +50,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatProgressSpinnerModule,
     MatMenuModule,
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressBarModule
   ],
 })
 

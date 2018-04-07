@@ -280,19 +280,26 @@ namespace EmbyStat.Tasks
 
         private List<Tuple<TaskTriggerInfo, ITaskTrigger>> LoadTriggers()
         {
-            var settings = LoadTriggerSettings().Where(i => i != null).ToArray();
+            var settings = LoadTriggerSettings().Where(x => x.TaskKey == ScheduledTask.Key);
 
             return settings.Select(i => new Tuple<TaskTriggerInfo, ITaskTrigger>(i, GetTrigger(i))).ToList();
         }
 
-        private TaskTriggerInfo[] LoadTriggerSettings()
+        private List<TaskTriggerInfo> LoadTriggerSettings()
         {
-            return _taskRepository.GetAllTaskTriggerInfo().ToArray();
+            var triggers = _taskRepository.GetAllTaskTriggerInfo().ToList();
+            if (triggers.Any())
+            {
+                return triggers;
+            }
+
+            return ScheduledTask.GetDefaultTriggers().ToList();
+
         }
 
         private void SaveTriggers(List<TaskTriggerInfo> triggers)
         {
-            _taskRepository.SaveTaskInfoTriggers(triggers);
+            _taskRepository.SaveTaskInfoTriggers(triggers, ScheduledTask.Key);
         }
 
         private void OnTaskCompleted(DateTime startTime, DateTime endTime, TaskCompletionStatus status, Exception ex)

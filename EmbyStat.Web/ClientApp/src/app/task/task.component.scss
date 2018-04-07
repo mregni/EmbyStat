@@ -1,37 +1,69 @@
+@import "../../styles.scss";
+
 .task__flexcontainer {
   display: flex;
   flex-direction: row;
   margin: 10px;
-  transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+  min-height: 50px;
   padding: 20px;
   border-radius: 2px;
   background: #fff;
-  color: rgba(0,0,0,.87);
   align-items: center;
-  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  box-shadow: $normal-box-shadow;
 }
 
-.task__start-button {
-  align-items: center;
+.task__left-content {
+  align-content:flex-start;
   width: 45px;
 }
 
-.task__bodycontainer {
-  display: flex;
-  flex-direction: column;
+.task__left-content mat-icon {
+  margin-top: -2px;
 }
 
-.task__large-icon {
-  font-size: 38px;
+.task__right-content {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-around;
+  width: 40px;
+  margin-top: 7px;
+
+ a {
+    cursor:pointer;
+  }
+}
+
+.task__center {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
 }
 
 .task__tasksub {
   font-style: italic;
   padding: 3px;
-  color: #888;
+  color: $grey-font-color;
 }
 
 .task__tasktitle {
   padding: 3px;
   font-weight: bold;
+}
+
+.task__tasksub-progress {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: $grey-font-color;
+}
+
+.task__tasksub-progress :nth-child(1) {
+  flex: 1 1 auto;
+}
+
+.task__tasksub-progress :nth-child(2) {
+  width: 40px;
+  margin-left: 20px;
+  flex: 0 0 auto;
 }

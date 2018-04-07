@@ -154,6 +154,15 @@ namespace EmbyStat.Tasks
             ScheduledTasks = myTasks.ToList();
         }
 
+        public void UpdateTriggers(TaskInfo taskInfo)
+        {
+            var task = ScheduledTasks.SingleOrDefault(x => x.Id == taskInfo.Id);
+            if (task != null)
+            {
+                task.Triggers = taskInfo.Triggers;
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);

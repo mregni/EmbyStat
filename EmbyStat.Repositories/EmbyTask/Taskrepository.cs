@@ -23,10 +23,12 @@ namespace EmbyStat.Repositories.EmbyTask
             }
         }
 
-        public void SaveTaskInfoTriggers(List<TaskTriggerInfo> list)
+        public void SaveTaskInfoTriggers(List<TaskTriggerInfo> list, string key)
         {
             using (var context = new ApplicationDbContext())
             {
+                context.TaskTriggerInfos.RemoveRange(context.TaskTriggerInfos.Where(x => x.TaskKey == key));
+                context.SaveChanges();
                 context.TaskTriggerInfos.AddRange(list);
                 context.SaveChanges();
             }

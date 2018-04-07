@@ -7,6 +7,7 @@ namespace EmbyStat.Common.Tasks
     {
         [Key]
         public string Id { get; set; }
+        public string TaskKey { get; set; }
         public string Type { get; set; }
         public long? TimeOfDayTicks { get; set; }
         public long? IntervalTicks { get; set; }

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { TaskService } from '../service/task.service';
 
 import { Task } from '../models/task';
-import { TaskStatus } from '../models/taskStatus';
 
 @Injectable()
 export class TaskFacade {
@@ -17,12 +16,9 @@ export class TaskFacade {
     return this.tasks$;
   }
 
-  pollTaskStates(): Observable<TaskStatus[]> {
-    return this.taskService.getStates();
-  }
-
-  pollTaskState(id: string): Observable<TaskStatus> {
-    return this.taskService.getStateForId(id);
+  updateTrigger(task: Task): Observable<Task[]> {
+    this.tasks$ = this.taskService.updateTriggers(task);
+    return this.tasks$;
   }
 
   fireTask(id: string): void {

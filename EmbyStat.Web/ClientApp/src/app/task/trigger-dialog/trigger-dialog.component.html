@@ -1,0 +1,130 @@
+<h1 class="mat-dialog-title">{{task.name}}</h1>
+<div class="mat-dialog-content">
+  <p>{{ task.description | translate }}</p>
+  <div *ngFor="let trigger of task.triggers" class="trigger__flexcontainer">
+    <div class="trigger__left-content">
+      <div *ngIf="trigger.type === 'IntervalTrigger'">
+        {{ 'TRIGGER.INTERVALTRIGGER' | translate }} {{ 'TRIGGER.EVERY' | translate: { interval: trigger.intervalTicks | convertToTime:true } }}
+      </div>
+      <div *ngIf="trigger.type === 'DailyTrigger'">
+        {{ 'TRIGGER.DAILYTRIGGER' | translate }} {{ 'TRIGGER.AT' | translate: { time: trigger.timeOfDayTicks | convertToTime } }}
+      </div>
+      <div *ngIf="trigger.type === 'StartupTrigger'">
+        <span>{{ 'TRIGGER.STARTUPTRIGGER' | translate }}</span>
+      </div>
+    </div>
+    <div class="trigger__right-content">
+      <a (click)="remove(trigger.id)">
+        <mat-icon>remove_circle_outline</mat-icon>
+      </a>
+    </div>
+  </div>
+</div>
+<hr/>
+<div class="mat-dialog-content">
+  <p>Add new trigger</p>
+  <mat-form-field class="fullWidth">
+    <mat-select placeholder="{{'TRIGGER.TRIGGERTYPE' | translate }}" [(value)]="trigger.type">
+      <mat-option value="IntervalTrigger">{{'TRIGGER.INTERVALTRIGGER' | translate }}</mat-option>
+      <mat-option value="DailyTrigger">{{'TRIGGER.DAILYTRIGGER' | translate }}</mat-option>
+      <!--<mat-option value="StartupTrigger">'TRIGGER.STARTUPTRIGGER' | translate </mat-option>-->
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="trigger.type === 'IntervalTrigger'" class="fullWidth">
+    <mat-select placeholder="{{'TRIGGER.INTERVALTRIGGER' | translate }}" [(value)]="trigger.intervalTicks">
+      <mat-option value="10000000">{{'10000000' | convertToTime:true}}</mat-option>
+      <mat-option value="50000000">{{'50000000' | convertToTime:true }}</mat-option>
+      <mat-option value="100000000">{{'100000000' | convertToTime:true }}</mat-option>
+      <mat-option value="150000000">{{'150000000' | convertToTime:true }}</mat-option>
+      <mat-option value="200000000">{{'200000000' | convertToTime:true }}</mat-option>
+      <mat-option value="300000000">{{'300000000' | convertToTime:true }}</mat-option>
+      <mat-option value="450000000">{{'450000000' | convertToTime:true }}</mat-option>
+      <mat-option value="600000000">{{'600000000' | convertToTime:true }}</mat-option>
+      <mat-option value="900000000">{{'900000000' | convertToTime:true }}</mat-option>
+      <mat-option value="1200000000">{{'1200000000' | convertToTime:true }}</mat-option>
+      <mat-option value="3000000000">{{'3000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="6000000000">{{'6000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="9000000000">{{'9000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="12000000000">{{'12000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="15000000000">{{'15000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="18000000000">{{'18000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="27000000000">{{'27000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="36000000000">{{'36000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="45000000000">{{'45000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="54000000000">{{'54000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="63000000000">{{'63000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="72000000000">{{'72000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="108000000000">{{'108000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="144000000000">{{'144000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="180000000000">{{'180000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="216000000000">{{'216000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="324000000000">{{'324000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="432000000000">{{'432000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="540000000000">{{'540000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="648000000000">{{'648000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="756000000000">{{'756000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="864000000000">{{'864000000000' | convertToTime:true }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="trigger.type === 'DailyTrigger'" class="fullWidth">
+    <mat-select placeholder="{{'TRIGGER.DAILYTRIGGER' | translate }}" [(value)]="trigger.timeOfDayTicks">
+      <mat-option value="0">{{'0' | convertToTime:true}}</mat-option>
+      <mat-option value="18000000000">{{'18000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="36000000000">{{'36000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="54000000000">{{'54000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="72000000000">{{'72000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="90000000000">{{'90000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="108000000000">{{'108000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="126000000000">{{'126000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="144000000000">{{'144000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="162000000000">{{'162000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="180000000000">{{'180000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="198000000000">{{'198000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="216000000000">{{'216000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="234000000000">{{'234000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="252000000000">{{'252000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="270000000000">{{'270000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="288000000000">{{'288000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="306000000000">{{'306000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="324000000000">{{'324000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="342000000000">{{'342000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="360000000000">{{'360000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="378000000000">{{'378000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="396000000000">{{'396000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="414000000000">{{'414000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="432000000000">{{'432000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="450000000000">{{'450000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="468000000000">{{'468000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="486000000000">{{'486000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="504000000000">{{'504000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="522000000000">{{'522000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="540000000000">{{'540000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="558000000000">{{'558000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="576000000000">{{'576000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="594000000000">{{'594000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="612000000000">{{'612000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="630000000000">{{'630000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="646000000000">{{'646000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="666000000000">{{'666000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="684000000000">{{'684000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="702000000000">{{'702000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="720000000000">{{'720000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="738000000000">{{'738000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="756000000000">{{'756000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="774000000000">{{'774000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="792000000000">{{'792000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="810000000000">{{'810000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="828000000000">{{'828000000000' | convertToTime:true }}</mat-option>
+      <mat-option value="846000000000">{{'846000000000' | convertToTime:true }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="button-container">
+    <button mat-raised-button color="primary" (click)="saveTrigger()" *ngIf="canSafe()">{{'TRIGGER.SAVETRIGGER' | translate}}</button>
+  </div>
+</div>
+<hr/>
+<div class="mat-dialog-actions button-container">
+  <button mat-raised-button color="primary" (click)="saveTriggers()">{{'COMMON.SAVE' | translate}}</button>
+  <button mat-raised-button color="warn" *ngIf="madeChanges" (click)="cancel()">{{'COMMON.DISCARD' | translate}}</button>
+  <button mat-raised-button color="warn" *ngIf="!madeChanges" (click)="cancel()">{{'COMMON.CANCEL' | translate}}</button>
+</div>

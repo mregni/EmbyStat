@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
+using Serilog;
 
 namespace EmbyStat.Services.Tasks
 {
@@ -16,17 +18,33 @@ namespace EmbyStat.Services.Tasks
         public List<TaskInfo> GetAllTasks()
         {
             return _taskManager.ScheduledTasks.OrderBy(x => x.Name).Select(TaskHelpers.ConvertToTaskInfo).ToList();
-
         }
 
-        public List<TaskStatus> GetStates()
+        public void UpdateTriggers(TaskInfo taskInfo)
         {
-            return _taskManager.ScheduledTasks.Select(x => new TaskStatus {Id = x.Id, State = x.State, CurrentProgress = x.CurrentProgress}).ToList();
+            var task = _taskManager.ScheduledTasks.SingleOrDefault(x => x.Id == taskInfo.Id);
+
+            if (task == null)
+            {
+                Log.Error($"No task was found for id {taskInfo.Id}");
+                throw new BusinessException("INTERNAL_ERROR");
+            }
+
+            taskInfo.Triggers.ForEach(x => x.TaskKey = task.ScheduledTask.Key);
+
+            task.Triggers = taskInfo.Triggers;
         }
 
-        public TaskStatus GetStateByTaskId(string id)
+        public void FireTask(string id)
         {
-            return _taskManager.ScheduledTasks.Where(x => x.Id == id).Select(x => new TaskStatus { Id = x.Id, State = x.State, CurrentProgress = x.CurrentProgress }).SingleOrDefault();
+            var task = _taskManager.ScheduledTasks.SingleOrDefault(x => x.Id == id);
+            if (task == null)
+            {
+                Log.Error($"No task was found for id {id}");
+                throw new BusinessException("INTERNAL_ERROR");
+            }
+
+            _taskManager.Execute(task, new TaskOptions());
         }
     }
 }

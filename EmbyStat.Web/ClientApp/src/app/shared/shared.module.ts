@@ -27,6 +27,7 @@ import { ToastService } from './services/toast.service';
   ],
   providers: [
     ToastService
-  ], entryComponents: []
+  ],
+  entryComponents: []
 })
 export class SharedModule { }

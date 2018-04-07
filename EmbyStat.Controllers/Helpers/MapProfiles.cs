@@ -31,7 +31,6 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<TaskInfo, TaskInfoViewModel>();
 	        CreateMap<TaskResult, TaskResultViewModel>();
 	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
-	        CreateMap<TaskStatus, TaskStatusViewModel>();
 
 			//EmbyResponses
 			CreateMap<SystemInfo, ServerInfo>()

@@ -61,6 +61,10 @@
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\pipes\ticks-to-time.ts" />
+    <None Remove="ClientApp\src\app\shared\pipes\time-to-hours-ago.ts" />
+    <None Remove="ClientApp\src\app\shared\pipes\time-to-minutes-ago.ts" />
+    <None Remove="ClientApp\src\app\shared\pipes\time-to-seconds-ago.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
@@ -93,6 +97,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\ticks-to-time.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\time-to-seconds-ago.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\time-to-minutes-ago.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\time-to-hours-ago.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />

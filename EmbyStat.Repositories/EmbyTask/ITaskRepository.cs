@@ -7,7 +7,7 @@ namespace EmbyStat.Repositories.EmbyTask
     {
         TaskResult GetTaskResultById(string id);
         List<TaskTriggerInfo> GetAllTaskTriggerInfo();
-        void SaveTaskInfoTriggers(List<TaskTriggerInfo> list);
+        void SaveTaskInfoTriggers(List<TaskTriggerInfo> list, string key);
         void AddOrUpdateTaskResult(TaskResult lastExecutionResult);
     }
 }

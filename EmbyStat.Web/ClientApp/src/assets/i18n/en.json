@@ -8,9 +8,11 @@
     "YES": "Yes",
     "NO": "No",
     "SAVE": "Save",
-    "DISCARD": "Discard" 
+    "DISCARD": "Discard",
+    "CANCEL": "Cancel" 
   },
   "EXCEPTIONS": {
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again.", 
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
@@ -36,13 +38,6 @@
     "TASKS": "Tasks", 
     "SERVER": "Emby server" 
   },
-  "NAVBAR": {
-    "SHUTDOWN": "Shutdown"
-  },
-  "SHUTDOWN_DIALOG": {
-    "TITLE": "Shutdown server", 
-    "TEXT": "Are you sure? You will have to start it manually afterwards."
-  },
   "WIZARD": {
     "INTROLABEL": "Intro",
     "EMBYLABEL": "Emby settings",
@@ -65,6 +60,29 @@
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",
-    "EMBY": "Emby connection settings" 
+    "EMBY": "Emby connection settings"
+  },
+  "TASK": {
+    "LASTRUNNOW": "Last run: just now",
+    "LASTRUN": "Last run",
+    "HOURS": "{{hours}} hour(s)",
+    "MINUTES": "{{minutes}} minute(s)",
+    "SECONDS": "{{seconds}} second(s)",
+    "AND": "and",
+    "AGO": "ago",
+    "FOR": "for" 
+  },
+  "TASKS": {
+    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only." 
+  },
+  "TRIGGER": {
+    "INTERVALTRIGGER": "Interval trigger",
+    "DAILYTRIGGER": "Daily trigger",
+    "STARTUPTRIGGER": "Startup trigger",
+    "EVERY": "every {{interval}}",
+    "AT": "at {{time}}",
+    "TRIGGERTYPE": "Trigger type",
+    "SAVETRIGGER": "Save trigger"
   } 
 }

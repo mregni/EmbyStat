@@ -31,7 +31,6 @@ export class ConfigurationService {
   }
 
   updateConfgiguration(configuration: Configuration): Observable<Configuration> {
-    console.log(configuration);
     return this.http.put<Configuration>('/api' + this.updateConfigurationUrl, configuration);
   }
 

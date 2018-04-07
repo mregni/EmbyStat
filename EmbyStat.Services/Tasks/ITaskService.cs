@@ -6,7 +6,7 @@ namespace EmbyStat.Services.Tasks
     public interface ITaskService
     {
         List<TaskInfo> GetAllTasks();
-        List<TaskStatus> GetStates();
-        TaskStatus GetStateByTaskId(string id);
+        void UpdateTriggers(TaskInfo task);
+        void FireTask(string id);
     }
 }

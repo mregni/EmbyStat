@@ -60,7 +60,7 @@
           <mat-list-item>
             <mat-icon mat-list-icon *ngIf="!isAdmin" color="warn">error</mat-icon>
             <mat-icon mat-list-icon *ngIf="isAdmin">check</mat-icon>
-            <h4 mat-line>{{ 'WIZARD.ISADMIN' | translate: { user: 'reggi' } }}</h4>
+            <h4 mat-line>{{ 'WIZARD.ISADMIN' | translate: { user: username } }}</h4>
           </mat-list-item>
           <mat-list-item>
             <mat-icon mat-list-icon *ngIf="!pluginInstalled" color="warn">error</mat-icon>
