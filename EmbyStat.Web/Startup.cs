@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
@@ -40,6 +43,7 @@ namespace EmbyStat.Web
 	{
 		public IConfiguration Configuration { get; }
 		public IHostingEnvironment HostingEnvironment { get; }
+        public IApplicationBuilder ApplicationBuilder { get; set; }
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
 		{
@@ -54,7 +58,7 @@ namespace EmbyStat.Web
 			Configuration = builder.Build();
 		}
 
-		public void ConfigureServices(IServiceCollection services)
+		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
@@ -72,34 +76,58 @@ namespace EmbyStat.Web
 				configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddScoped<IConfigurationService, ConfigurationService>();
-            services.AddScoped<IPluginService, PluginService>();
-            services.AddScoped<IEmbyService, EmbyService>();
-            services.AddScoped<ITaskService, TaskService>();
-
-            services.AddScoped<IConfigurationRepository, PluginRepository>();
-            services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
-            services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
-            services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
-
-            services.AddSingleton<ITaskRepository, TaskRepository>();
-            services.AddSingleton<ITaskManager, TaskManager>();
-
-            services.AddScoped<IEmbyClient, EmbyClient>();
-            services.AddScoped<ICryptographyProvider, CryptographyProvider>();
-            services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
-            services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
-            services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
-
-            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-            services.AddScoped<BusinessExceptionFilterAttribute>();
-
-            services.AddSignalR();
+		    services.AddSignalR();
 		    services.AddCors();
+
+            var containerBuilder = new ContainerBuilder();
+		    containerBuilder.Populate(services);
+		    containerBuilder.RegisterType<ConfigurationService>().As<IConfigurationService>();
+		    containerBuilder.RegisterType<PluginService>().As<IPluginService>();
+		    containerBuilder.RegisterType<EmbyService>().As<IEmbyService>();
+		    containerBuilder.RegisterType<TaskService>().As<ITaskService>();
+		    containerBuilder.RegisterType<PluginRepository>().As<IConfigurationRepository>();
+		    containerBuilder.RegisterType<EmbyPluginRepository>().As<IEmbyPluginRepository>();
+		    containerBuilder.RegisterType<EmbyServerInfoRepository>().As<IEmbyServerInfoRepository>();
+		    containerBuilder.RegisterType<EmbyDriveRepository>().As<IEmbyDriveRepository>();
+		    containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
+            containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
+		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
+		    containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
+		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
+		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
+		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();
+		    containerBuilder.RegisterType<DatabaseInitializer>().As<IDatabaseInitializer>();
+		    containerBuilder.RegisterType<BusinessExceptionFilterAttribute>();
+            var container = containerBuilder.Build();
+		    return new AutofacServiceProvider(container);
+
+            //services.AddScoped<IConfigurationService, ConfigurationService>();
+            //services.AddScoped<IPluginService, PluginService>();
+            //services.AddScoped<IEmbyService, EmbyService>();
+            //services.AddScoped<ITaskService, TaskService>();
+
+            //services.AddScoped<IConfigurationRepository, PluginRepository>();
+            //services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
+            //services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
+            //services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
+
+            //services.AddSingleton<ITaskRepository, TaskRepository>();
+            //services.AddSingleton<ITaskManager, TaskManager>();
+
+            //services.AddScoped<IEmbyClient, EmbyClient>();
+            //services.AddScoped<ICryptographyProvider, CryptographyProvider>();
+            //services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
+            //services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
+            //services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
+
+            //services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            //services.AddScoped<BusinessExceptionFilterAttribute>();
         }
 
 	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
-		{
+	    {
+	        ApplicationBuilder = app;
+            applicationLifetime.ApplicationStarted.Register(OnStarted);
             if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -161,22 +189,29 @@ namespace EmbyStat.Web
 				}
 			});
 
-		    SetupTaskManager(app);
+		    //SetupTaskManager(app);
         }
-	    private async void SetupTaskManager(IApplicationBuilder app)
+
+	    private void OnStarted()
+	    {
+	        var taskManager = ApplicationBuilder.ApplicationServices.GetService<ITaskManager>();
+
+	        var tasks = new List<IScheduledTask>
+	        {
+	            new PingEmbyTask(ApplicationBuilder),
+	            new SmallSyncTask(ApplicationBuilder)
+	        };
+
+	        taskManager.AddTasks(tasks);
+        }
+
+        private async void SetupTaskManager(IApplicationBuilder app)
 	    {
 	        await Task.Run(() =>
 	        {
+                //hack so we give the main process time to create the database first!
                 Thread.Sleep(5000);
-                var taskManager = app.ApplicationServices.GetService<ITaskManager>();
-
-                var tasks = new List<IScheduledTask>
-                {
-                    new PingEmbyTask(),
-                    new SmallSyncTask()
-                };
-
-                taskManager.AddTasks(tasks);
+                
             });
 	    }
     }

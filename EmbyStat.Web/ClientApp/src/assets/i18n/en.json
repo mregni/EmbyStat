@@ -12,7 +12,7 @@
     "CANCEL": "Cancel" 
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again.", 
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",

@@ -78,7 +78,7 @@ export class TaskComponent implements OnInit, OnDestroy {
 
     var milliseconds = to.diff(from);
     var duration = moment.duration(milliseconds);
-    return Math.floor(duration.asSeconds()) % 60 > 0;
+    return (Math.floor(duration.asSeconds()) % 60 + 1)> 0;
   }
 
   public needsAnd(task: Task): boolean {

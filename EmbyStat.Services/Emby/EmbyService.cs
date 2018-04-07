@@ -15,26 +15,24 @@ using EmbyStat.Repositories.EmbyServerInfo;
 using EmbyStat.Services.Emby.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace EmbyStat.Services.Emby
 {
     public class EmbyService : IEmbyService
     {
-	    private readonly ILogger<EmbyService> _logger;
 	    private readonly IEmbyClient _embyClient;
 	    private readonly IEmbyPluginRepository _embyPluginRepository;
 	    private readonly IEmbyServerInfoRepository _embyServerInfoRepository;
 		private readonly IConfigurationRepository _configurationRepository;
 		private readonly IEmbyDriveRepository _embyDriveRepository;
 
-		public EmbyService(ILogger<EmbyService> logger, 
-						   IEmbyClient embyClient, 
+		public EmbyService(IEmbyClient embyClient, 
 						   IEmbyPluginRepository embyPluginRepository, 
 						   IConfigurationRepository configurationRepository, 
 						   IEmbyServerInfoRepository embyServerInfoRepository,
 						   IEmbyDriveRepository embyDriveRepository)
 	    {
-		    _logger = logger;
 		    _embyClient = embyClient;
 		    _embyPluginRepository = embyPluginRepository;
 		    _configurationRepository = configurationRepository;
@@ -97,13 +95,13 @@ namespace EmbyStat.Services.Emby
 				}
 				catch (Exception e)
 				{
-					_logger.LogError("Username or password are wrong, user should try again with other credentials!");
-					_logger.LogError($"Message: {e.Message}");
+					Log.Error("Username or password are wrong, user should try again with other credentials!");
+				    Log.Error($"Message: {e.Message}");
 					throw new BusinessException("TOKEN_FAILED");
 				}
 			}
-			
-			_logger.LogError("Username or password are empty, no use to try a login!");
+
+		    Log.Error("Username or password are empty, no use to try a login!");
 			throw new BusinessException("TOKEN_FAILED");
 	    }
 

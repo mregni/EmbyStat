@@ -4,11 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
+using Microsoft.AspNetCore.Builder;
 
 namespace EmbyStat.Tasks.Tasks
 {
     public class PingEmbyTask : IScheduledTask
     {
+        private readonly IApplicationBuilder _app;
+
+        public PingEmbyTask(IApplicationBuilder app)
+        {
+            _app = app;
+        }
+
         public string Name => "Check Emby connection";
         public string Key => "PingEmbyServer";
         public string Description => "TASKS.PINGEMBYSERVERDESCRIPTION";
@@ -33,7 +41,6 @@ namespace EmbyStat.Tasks.Tasks
                 progress.Report(85);
                 Thread.Sleep(1000);
                 progress.Report(90);
-                Thread.Sleep(60000);
                 progress.Report(100);
             }, cancellationToken);
         }
