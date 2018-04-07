@@ -2,7 +2,7 @@
 @include mat-core();
 
 // Available color palettes: https://www.google.com/design/spec/style/color.html
-$app-primary: mat-palette($mat-blue, A400, A200, A700);
+$app-primary: mat-palette($mat-blue, A400, 100, A700);
 $app-accent: mat-palette($mat-orange, A400, A200, A700);
 $app-warn: mat-palette($mat-red);
 $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
