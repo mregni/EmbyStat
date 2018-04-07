@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Services", "EmbySt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Repositories", "EmbyStat.Repositories\EmbyStat.Repositories.csproj", "{18D66368-671B-4903-858E-C02F5F5F5D0F}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Windows.Setup", "Windows.Setup\Windows.Setup.wixproj", "{C8DF5430-8973-4A79-A331-B9CC820E08BF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Common", "EmbyStat.Common\EmbyStat.Common.csproj", "{2471E76D-C20E-4694-AA4A-018FAEE60497}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Unit", "Tests.Unit\Tests.Unit.csproj", "{A3F1FF13-B007-45AA-A2F0-2C27731ACA11}"
@@ -21,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Api", "EmbyStat.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Integration", "Tests.Integration\Tests.Integration.csproj", "{84B5BF1E-407B-4B7A-8A02-7630C9429E4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Tasks", "EmbyStat.Tasks\EmbyStat.Tasks.csproj", "{6C31E54E-9C66-4AB4-B6F4-EFEF25718FDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Tasks", "EmbyStat.Tasks\EmbyStat.Tasks.csproj", "{6C31E54E-9C66-4AB4-B6F4-EFEF25718FDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,16 +106,6 @@ Global
 		{18D66368-671B-4903-858E-C02F5F5F5D0F}.Release|x64.Build.0 = Release|Any CPU
 		{18D66368-671B-4903-858E-C02F5F5F5D0F}.Release|x86.ActiveCfg = Release|Any CPU
 		{18D66368-671B-4903-858E-C02F5F5F5D0F}.Release|x86.Build.0 = Release|Any CPU
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.Debug|x64.ActiveCfg = Debug|x64
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.Debug|x86.ActiveCfg = Debug|x86
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.DefaultBuild|Any CPU.ActiveCfg = Release|x64
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.DefaultBuild|Any CPU.Build.0 = Release|x64
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.DefaultBuild|x64.ActiveCfg = Debug|x64
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.DefaultBuild|x86.ActiveCfg = Debug|x86
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.Release|Any CPU.ActiveCfg = Release|x86
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.Release|x64.ActiveCfg = Release|x64
-		{C8DF5430-8973-4A79-A331-B9CC820E08BF}.Release|x86.ActiveCfg = Release|x86
 		{2471E76D-C20E-4694-AA4A-018FAEE60497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2471E76D-C20E-4694-AA4A-018FAEE60497}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2471E76D-C20E-4694-AA4A-018FAEE60497}.Debug|x64.ActiveCfg = Debug|Any CPU

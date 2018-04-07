@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
@@ -54,13 +56,13 @@ namespace EmbyStat.Web
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
-			services.AddMvc(options =>
-			{
-				options.Filters.Add(new BusinessExceptionFilterAttribute());
-			});
-			services.AddSwaggerGen(c =>
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new BusinessExceptionFilterAttribute());
+            });
+            services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
 			});
@@ -68,31 +70,31 @@ namespace EmbyStat.Web
 			services.AddSpaStaticFiles(configuration =>
 			{
 				configuration.RootPath = "ClientApp/dist";
-			});
+            });
 
-			services.AddScoped<IConfigurationService, ConfigurationService>();
-			services.AddScoped<IPluginService, PluginService>();
-			services.AddScoped<IEmbyService, EmbyService>();
-		    services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddScoped<IPluginService, PluginService>();
+            services.AddScoped<IEmbyService, EmbyService>();
+            services.AddScoped<ITaskService, TaskService>();
 
-			services.AddScoped<IConfigurationRepository, PluginRepository>();
-			services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
-			services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
-			services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
+            services.AddScoped<IConfigurationRepository, PluginRepository>();
+            services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
+            services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
+            services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
 
-			services.AddSingleton<ITaskRepository, TaskRepository>();
+            services.AddSingleton<ITaskRepository, TaskRepository>();
             services.AddSingleton<ITaskManager, TaskManager>();
 
-			services.AddScoped<IEmbyClient, EmbyClient>();
-			services.AddScoped<ICryptographyProvider, CryptographyProvider>();
-			services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
-			services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
-			services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
+            services.AddScoped<IEmbyClient, EmbyClient>();
+            services.AddScoped<ICryptographyProvider, CryptographyProvider>();
+            services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
+            services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
+            services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
 
-			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-			services.AddScoped<BusinessExceptionFilterAttribute>();
+            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            services.AddScoped<BusinessExceptionFilterAttribute>();
 
-		    services.AddSignalR();
+            services.AddSignalR();
 		    services.AddCors();
         }
 
@@ -103,17 +105,17 @@ namespace EmbyStat.Web
 				app.UseDeveloperExceptionPage();
 			}
 
-			Mapper.Initialize(cfg =>
-			{
-				cfg.AddProfile<MapProfiles>();
-			});
+            Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile<MapProfiles>();
+            });
 
-		    app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseSignalR(routes =>
-		    {
-		        routes.MapHub<TaskHub>("/tasksignal");
-		    });
+            {
+                routes.MapHub<TaskHub>("/tasksignal");
+            });
 
             app.UseSwagger();
 			app.UseSwaggerUI(c =>
@@ -151,9 +153,6 @@ namespace EmbyStat.Web
 
 			app.UseSpa(spa =>
 			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-
 				spa.Options.SourcePath = "ClientApp";
 
 				if (env.IsDevelopment())
@@ -164,17 +163,21 @@ namespace EmbyStat.Web
 
 		    SetupTaskManager(app);
         }
-	    private void SetupTaskManager(IApplicationBuilder app)
+	    private async void SetupTaskManager(IApplicationBuilder app)
 	    {
-	        var taskManager = app.ApplicationServices.GetService<ITaskManager>();
-
-	        var tasks = new List<IScheduledTask>
+	        await Task.Run(() =>
 	        {
-	            new PingEmbyTask(),
-                new SmallSyncTask()
-	        };
+                Thread.Sleep(5000);
+                var taskManager = app.ApplicationServices.GetService<ITaskManager>();
 
-	        taskManager.AddTasks(tasks);
+                var tasks = new List<IScheduledTask>
+                {
+                    new PingEmbyTask(),
+                    new SmallSyncTask()
+                };
+
+                taskManager.AddTasks(tasks);
+            });
 	    }
     }
 }
