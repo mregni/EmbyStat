@@ -1,4 +1,4 @@
-![# Logo!](https://github.com/mregni/EmbyStat/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png)
+![# Logo!](https://github.com/mregni/EmbyStat/blob/master/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png?raw=true)
 
 EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby server. Just install this on your server and let him calculate all kinds of fun stuff. For more reallife statistics you do have to install the EmbyStat plugin on your Emby server as well!
 
