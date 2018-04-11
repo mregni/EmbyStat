@@ -69,14 +69,13 @@ namespace EmbyStat.Tasks.Tasks
                 var j = 0;
                 foreach (var movie in movies)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     j++;
                     Log.Information($"Processing movie ({movie.Id}) {movie.Name}");
                     AddMoviesToDb(movie);
                     progress.Report(Math.Round(50 + (50/(double)rootItems.Count)*(j/(double)movies.Count)));
                 }
             }
-
-            Log.Information("Movie sync completed");
         }
 
         private async Task<List<string>> GetRootItems(string id, CancellationToken cancellationToken)

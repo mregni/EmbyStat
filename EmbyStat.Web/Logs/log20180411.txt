@@ -1,0 +1,799 @@
+2018-04-11 19:44:50 [INF] Booting up server
+2018-04-11 19:44:54 [INF] Migrating database started
+2018-04-11 19:44:55 [INF] Migrating database ended
+2018-04-11 19:44:56 [INF] Daily trigger for Small sync with Emby set to fire at 12/04/2018 0:30:00, which is 285.064609131667 minutes from now.
+2018-04-11 19:44:56 [INF] Daily trigger for Movie sync set to fire at 12/04/2018 0:00:00, which is 255.06412873 minutes from now.
+2018-04-11 19:45:36 [INF] Getting server configuration from database.
+2018-04-11 19:45:40 [INF] Getting all background tasks.
+2018-04-11 19:45:42 [INF] Executing Movie sync
+2018-04-11 19:45:42 [INF] Asking for all root views for admin user with id 47ee2631fb414ffba0429f9bc498adb2
+2018-04-11 19:45:42 [INF] Found 1 views, getting ready for processing
+2018-04-11 19:45:42 [INF] First delete all existing movies from database so we have a clean start.
+2018-04-11 19:45:43 [INF] Asking Emby all movies for parent with id f137a2dd21bbc1b99aa5c0f6bf02a805
+2018-04-11 19:45:53 [INF] Ready to add movies to database. We found 779 movies
+2018-04-11 19:46:41 [INF] Processing movie (756da45bad442b255d44336a07880cf0) (500) Days of Summer
+2018-04-11 19:46:41 [INF] Processing movie (bc79e0222b6d623cc12913f4f5a72887) 2 - Il ritorno di Don Camillo
+2018-04-11 19:46:42 [INF] Processing movie (dd18bf3c431028c0048a324071f0f698) 2 Fast 2 Furious
+2018-04-11 19:46:42 [INF] Processing movie (d3f659e8c17f8264838d63bd00a62ca4) 4F2NMj1JKr0Qh3a58XiUb
+2018-04-11 19:46:42 [INF] Processing movie (9c7df6d834025fcccd51eeb535cf831a) 5th Element
+2018-04-11 19:46:42 [INF] Processing movie (e7cfbe1c72b8288e149b51ceb42ea826) 10 Rules for Sleeping Around
+2018-04-11 19:46:42 [INF] Processing movie (2b50b40e167e6d1e374d8e99148100fb) 12 Angry Men
+2018-04-11 19:46:42 [INF] Processing movie (a53a9a169bb224f6fad356a966a4f7fd) 12 Years a Slave
+2018-04-11 19:46:42 [INF] Processing movie (37bdd37ff889138c32acad1622a8e153) 13 Hours: The Secret Soldiers of Benghazi
+2018-04-11 19:46:42 [INF] Processing movie (c59e74588de6584c52a63d867c9b046f) 21
+2018-04-11 19:46:42 [INF] Processing movie (b713289b87af938e1b6b695eee435513) 21 Jump Street
+2018-04-11 19:46:42 [INF] Processing movie (b6847c83598440e7028557c76c9f34ce) 25th Hour
+2018-04-11 19:46:42 [INF] Processing movie (a1f124b89c8c2ea6cc7cb29aa774ec82) 28 Weeks Later
+2018-04-11 19:46:42 [INF] Processing movie (2e148b615b6584b966607d7a47bf65c7) 50 First Dates
+2018-04-11 19:46:43 [INF] Processing movie (cc08fd8ad749b149764be66247d262f7) 50/50
+2018-04-11 19:46:43 [INF] Processing movie (0aee12fb8b6d1407bd44c712408fe871) 88 Minutes
+2018-04-11 19:46:43 [INF] Processing movie (205592aa359ddef40597dc5aef582a02) 300
+2018-04-11 19:46:43 [INF] Processing movie (75f5152e604af8e251e8b5ed1e1cebc3) 400 Days
+2018-04-11 19:46:43 [INF] Processing movie (f5675ad1fdcc33e63a4349b3d39adeba) 10,000 BC
+2018-04-11 19:46:43 [INF] Processing movie (d955679e97b2e3bd53500040a952f1e8) About Time
+2018-04-11 19:46:43 [INF] Processing movie (f1b168047565124ad1102cbdf94be3aa) Ace Ventura: When Nature Calls
+2018-04-11 19:46:43 [INF] Processing movie (867c9f64fb72586e31006ea2e9ef289e) Across the Universe
+2018-04-11 19:46:43 [INF] Processing movie (951631962ed8c09a6b9e411f6a03b4b3) Across the Universe
+2018-04-11 19:46:43 [INF] Processing movie (149350e7ea84d888b0ee0f039c47eef8) An Act of War
+2018-04-11 19:46:43 [INF] Processing movie (bd35b1590af79a26f57ce8e059f62520) The Adjustment Bureau
+2018-04-11 19:46:43 [INF] Processing movie (0fc27aa81c76a33d4d346ac7102e906c) Aladdin
+2018-04-11 19:46:43 [INF] Processing movie (9aded58fdf12624e881b89d44e605d28) Ali G Indahouse
+2018-04-11 19:46:43 [INF] Processing movie (4ea6062d0472aaa30d01b96f3db0a633) Alice in Wonderland
+2018-04-11 19:46:44 [INF] Processing movie (7903052efeff7214cfb17345b899cfd1) Alice in Wonderland
+2018-04-11 19:46:44 [INF] Processing movie (17b56c4187928c040d79be948c38dfb4) Alien
+2018-04-11 19:46:44 [INF] Processing movie (b5e9d4d42f044163656ad614f8770b50) Aliens
+2018-04-11 19:46:44 [INF] Processing movie (4acf361ae8f0ff3e606f3f37ada91e1c) Aliens vs Predator: Requiem
+2018-04-11 19:46:44 [INF] Processing movie (65704323be501107cc54ba8397e9bdc2) All Quiet on the Western Front
+2018-04-11 19:46:44 [INF] Processing movie (b862f479ed473f90297608c8bd5a01f1) Allegiant
+2018-04-11 19:46:44 [INF] Processing movie (643870881c1b58468e699b4a0b800e60) Aloha
+2018-04-11 19:46:44 [INF] Processing movie (3ca54090181a6b40a75cd58feb776262) Along Came Polly
+2018-04-11 19:46:44 [INF] Processing movie (14c89b53c5d8277707acfb1d0967e8af) Altitude
+2018-04-11 19:46:44 [INF] Processing movie (11b9b469c9aed3864cc9654fa411c645) Alvin and the Chipmunks
+2018-04-11 19:46:44 [INF] Processing movie (2fde75effdee0c7e071922c330b61f11) Alvin en de Chipmunks
+2018-04-11 19:46:44 [INF] Processing movie (a6bea2eabcca784039284821ea2cba83) The Amazing Spider-Man
+2018-04-11 19:46:44 [INF] Processing movie (b5a12553884fe4e201ce75ecb8aa39bc) Amelie
+2018-04-11 19:46:45 [INF] Processing movie (20ec8f0b310d76bac9c0353417a7d28e) Amen.
+2018-04-11 19:46:45 [INF] Processing movie (01af34e50568e246a71dbbf20d154cbf) The American
+2018-04-11 19:46:45 [INF] Processing movie (535f7f2ec50c525143d198d689ebf3fb) American Beauty
+2018-04-11 19:46:45 [INF] Processing movie (07eca5b86eeb3c1af8d213671b9021c4) American History X
+2018-04-11 19:46:45 [INF] Processing movie (5f4fd2cf75576bc913cdcb7ca0147afa) American Hustle
+2018-04-11 19:46:45 [INF] Processing movie (feeaebf705aadc0e73e24e124cd4f89f) American Pie 2
+2018-04-11 19:46:45 [INF] Processing movie (03615e098473fcac4b53080bb517e5d2) American Pie Presents: Beta House
+2018-04-11 19:46:45 [INF] Processing movie (7166ccf8674d1661ebbb8287e34263be) American Pie Presents: The Book of Love
+2018-04-11 19:46:45 [INF] Processing movie (fad6a0a9ca1c8b5e95cf4313768e1b6c) American Sniper
+2018-04-11 19:46:45 [INF] Processing movie (cc0228363b606b943e97a689fd3fe225) American Wedding
+2018-04-11 19:46:45 [INF] Processing movie (279b50b4ca48ee8e8a05aa30c6a5d4ee) AMFZ74pOV6
+2018-04-11 19:46:45 [INF] Processing movie (fa947b4e81abe4800b7f3f23b079eb02) Amistad
+2018-04-11 19:46:45 [INF] Processing movie (27644fe6c2646cd47718d4279381b0fe) Analyze That
+2018-04-11 19:46:45 [INF] Processing movie (136e0332ada9a38792d46020710b0222) Angels & Demons
+2018-04-11 19:46:46 [INF] Processing movie (2b8fffe18f7e7402d3407622d236470b) The Animatrix
+2018-04-11 19:46:46 [INF] Processing movie (a9b83843c14defe50d103554863edddb) Annie Hall
+2018-04-11 19:46:46 [INF] Processing movie (cb6143b1df9b5433b2c344e1628f28c2) Another Earth
+2018-04-11 19:46:46 [INF] Processing movie (da1d198687f38885f197ae20b406c7af) Ant-Man
+2018-04-11 19:46:46 [INF] Processing movie (f71dccce93d440e34006a51e33d0e1d0) Apocalypse Now
+2018-04-11 19:46:46 [INF] Processing movie (42509503d342b5e55ee49f10839c4c14) Argo
+2018-04-11 19:46:46 [INF] Processing movie (452adf3399c785f828df4ecd42340a2a) Army of Darkness
+2018-04-11 19:46:46 [INF] Processing movie (cea4aee9aa370fc16ec573ee5502e458) Arrival
+2018-04-11 19:46:46 [INF] Processing movie (9d6867cc6fae5b6d1eeb84045f928db2) Assepoester
+2018-04-11 19:46:46 [INF] Processing movie (269a3a8e9bc4fe201f8a5febe8228725) Atomic Blonde
+2018-04-11 19:46:46 [INF] Processing movie (6bf941a2445ebfc77c0b7d5d49faea5c) Australia
+2018-04-11 19:46:47 [INF] Processing movie (83a45ace7e15c75188115c861070a8c7) Avatar
+2018-04-11 19:46:47 [INF] Processing movie (83c018fad5924cb7cd0293e5076f8a4e) The Avengers
+2018-04-11 19:46:47 [INF] Processing movie (e3b98e53647a58c035a02fbdb1f32b80) Avengers: Age of Ultron
+2018-04-11 19:46:47 [INF] Processing movie (1b0dc491c3e290f49ca1fb6151a99bfa) AVP: Alien vs. Predator
+2018-04-11 19:46:47 [INF] Processing movie (4e4f448fc977302d5c0ce6fdf9368579) Babylon A.D.
+2018-04-11 19:46:47 [INF] Processing movie (7efa786b7ecff5bea94abdbcecf3146b) Back to the Future
+2018-04-11 19:46:47 [INF] Processing movie (f4718c3fd53a8a44cbd33b40e5f5afd8) Back to the Future Part II
+2018-04-11 19:46:47 [INF] Processing movie (c663b395f86dc513b9e5518d09db0cc2) The Back-Up Plan
+2018-04-11 19:46:48 [INF] Processing movie (3cd2dc2ded77700beb15945f5934246d) Bad Boys
+2018-04-11 19:46:48 [INF] Processing movie (f08387e203fa2048ee6e0f1553ef1b35) Bad Boys II
+2018-04-11 19:46:48 [INF] Processing movie (efd805e2e0a5afd9ad60cb92cb60aa3a) Bad Neighbours
+2018-04-11 19:46:48 [INF] Processing movie (88a8135aa8a0ded120bc3e300ada1416) Bad Neighbours 2
+2018-04-11 19:46:48 [INF] Processing movie (04a41796d97f65a8f5f5cad8c3b18425) Bad Teacher (2011)
+2018-04-11 19:46:48 [INF] Processing movie (3749e902f5c7bcde0941b1c7f6c8a19f) Ballerina
+2018-04-11 19:46:48 [INF] Processing movie (209d7dce5ffdac02971e3f8e4e9b7151) Bambi
+2018-04-11 19:46:48 [INF] Processing movie (0eccec5d6fe274b094f2c1569803fdee) Bannanas (1971)
+2018-04-11 19:46:48 [INF] Processing movie (3b3c84d81c1f8d6bf4521361492a53b8) Basic Instinct
+2018-04-11 19:46:48 [INF] Processing movie (98b94a5b01f6c5b9e5a21e54239ab249) Batman v Superman: Dawn of Justice
+2018-04-11 19:46:48 [INF] Processing movie (a75d0d29963d65a1f0b1f3bfcfdcf00b) Batman: The Dark Knight Returns, Part 1
+2018-04-11 19:46:48 [INF] Processing movie (4a27e442faf6fbb84f4e27d3cef81f8d) Batoru rowaiaru II: Chinkonka
+2018-04-11 19:46:49 [INF] Processing movie (f8eaaf7bfc165d07636b6c062a7aab01) Battle Royale
+2018-04-11 19:46:49 [INF] Processing movie (e490617a062c0a24cf6547d56a2ad245) Battlestar Galactica: The Plan
+2018-04-11 19:46:49 [INF] Processing movie (e2f04670b146240ba4d55a1743fc7de0) Baywatch
+2018-04-11 19:46:49 [INF] Processing movie (61972ecb6138966b9a727549d683d138) The Beach
+2018-04-11 19:46:49 [INF] Processing movie (3e9fa6a8635f8dc42ab183a958ac885e) A Beautiful Mind
+2018-04-11 19:46:49 [INF] Processing movie (02d05b543c9273d675d4c7c72f0fed07) Beauty and the Beast
+2018-04-11 19:46:49 [INF] Processing movie (7d394d1934cedb897c9ad23b4cdb4719) Beauty and the Beast
+2018-04-11 19:46:49 [INF] Processing movie (96dacdebfc4215443042adcbe9749af5) Bee Movie
+2018-04-11 19:46:49 [INF] Processing movie (db27ee8f37880bfe160810d939cf256f) Before the Rain
+2018-04-11 19:46:49 [INF] Processing movie (f4b566b436e2fb52452f604ba7f0fb04) Begin Again
+2018-04-11 19:46:50 [INF] Processing movie (7327fc0018f855976c7ab100ce94e1c0) Behind Enemy Lines
+2018-04-11 19:46:50 [INF] Processing movie (ad385ebed407805db921f8f9fd494502) Being John Malkovich
+2018-04-11 19:46:50 [INF] Processing movie (eb68da94b69245de56e66246856191fd) Bewitched
+2018-04-11 19:46:50 [INF] Processing movie (ebcaff188238dbed12bf1eda887fa9f0) Big Hero 6
+2018-04-11 19:46:50 [INF] Processing movie (b34f2b8c120e68eec4a3ec63bc515fcb) The Big Lebowski
+2018-04-11 19:46:50 [INF] Processing movie (7cac6502b3002849cddcc453d9f967c6) The Big Short
+2018-04-11 19:46:50 [INF] Processing movie (304b8d87effcc22157fd7a35ed67b604) Billy Elliot
+2018-04-11 19:46:50 [INF] Processing movie (e2a8fca60ad319ab0e55f4bada5285c9) Bin-Jip
+2018-04-11 19:46:50 [INF] Processing movie (5bd3634f4da266bd0f1a9c1cb24b496a) Binnenstebuiten
+2018-04-11 19:46:50 [INF] Processing movie (7c74eb52f37205ba5dcb28027b2d68f1) Binnenstebuiten
+2018-04-11 19:46:50 [INF] Processing movie (e976a99a24a866dd5692b1d34bf9c539) Birthday Girl
+2018-04-11 19:46:50 [INF] Processing movie (7905977274ad413a4b04d160b6208256) Black Hawk Down
+2018-04-11 19:46:51 [INF] Processing movie (1f5dfa2d29e4321fd4dd92ba77856c56) Black Swan
+2018-04-11 19:46:51 [INF] Processing movie (6013f42f55d7989d792f6f6d017f4a7f) Blade
+2018-04-11 19:46:51 [INF] Processing movie (2ee2a41c49e52b39e0773fe019f0c864) Blade II
+2018-04-11 19:46:51 [INF] Processing movie (341ec2cda478f04f1ee57681dd2b058a) Blood Diamond
+2018-04-11 19:46:51 [INF] Processing movie (da61973e7059e66323b1a6f7cd55c382) Blow
+2018-04-11 19:46:51 [INF] Processing movie (39e798d3a3939c6152574077f6ced9bd) The Blues Brothers
+2018-04-11 19:46:51 [INF] Processing movie (821cbb3a83bfde1881924ad968803757) Bolt
+2018-04-11 19:46:51 [INF] Processing movie (20889ee36698055dadb94108855e85ad) Boot Camp
+2018-04-11 19:46:51 [INF] Processing movie (d40e1a3b5b91365830f90ef5f1005123) The Bounty Hunter
+2018-04-11 19:46:51 [INF] Processing movie (7c7ba30e2d476c787a08e006b4f49711) The Bourne Identity
+2018-04-11 19:46:51 [INF] Processing movie (3fe62e94aba615e30130d17f4406139d) The Bourne Legacy
+2018-04-11 19:46:51 [INF] Processing movie (44738b0c53d4d768d293a3b28beb9865) The Bourne Supremacy
+2018-04-11 19:46:51 [INF] Processing movie (c3592e2cd14542b32dfe1c1ba1523a24) The Bourne Ultimatum
+2018-04-11 19:46:52 [INF] Processing movie (e75059795e5a3bf808e4b32d852513df) The Box
+2018-04-11 19:46:52 [INF] Processing movie (e982114098631fa9506ed5ee440695a6) Boy A
+2018-04-11 19:46:52 [INF] Processing movie (b0fd10df6d8b0819cc95ded01e06001c) Boyhood
+2018-04-11 19:46:52 [INF] Processing movie (efdea2d4ecd6baae569f07c95aaa1ddd) Brave
+2018-04-11 19:46:52 [INF] Processing movie (f38fb512d75f21b3f626ef11d982c2b5) Braveheart
+2018-04-11 19:46:52 [INF] Processing movie (6ae418371900b028d8b800955c87ce14) Brazil
+2018-04-11 19:46:52 [INF] Processing movie (1605f04b8d6b4d59838c60edcc32c74e) Breakfast at Tiffany's
+2018-04-11 19:46:52 [INF] Processing movie (58512a0d9a086ec614d61983b138fa47) Brick Mansions
+2018-04-11 19:46:52 [INF] Processing movie (e74e6155e815cf316a406f686e2e5b35) Bridge of Spies (2015)
+2018-04-11 19:46:52 [INF] Processing movie (f8fc356ecccb9412dd955a7a3bd4b939) The Bridge on the River Kwai
+2018-04-11 19:46:52 [INF] Processing movie (80de5bfc979e22b5e38a01ed19b4b312) Bridget Jones's Baby
+2018-04-11 19:46:52 [INF] Processing movie (28fe29b0c62b58c0b528f505ea6476ff) Brimstone
+2018-04-11 19:46:53 [INF] Processing movie (19a185217c99ddeb390a4da47b99d2be) Bruce Almighty
+2018-04-11 19:46:53 [INF] Processing movie (0b3e2b91c2a308b779ca94263468ac49) The Bucket List
+2018-04-11 19:46:53 [INF] Processing movie (60e3dcc1782ec35bf83f9d9b506ba5a0) The Butterfly Effect
+2018-04-11 19:46:53 [INF] Processing movie (d1a7f5bdefc905554ef4244eec4d22a8) The Butterfly Effect 3: Revelations
+2018-04-11 19:46:53 [INF] Processing movie (45bf5ccaf1bf6836a98d25271c63f8eb) Byzantium
+2018-04-11 19:46:53 [INF] Processing movie (cbb62117a835b77b09929c4fbb2b55aa) Capitalism: A Love Story
+2018-04-11 19:46:53 [INF] Processing movie (6199a8e71c7180c430206c8bb58304eb) Captain America: Civil War
+2018-04-11 19:46:53 [INF] Processing movie (00100ed75fb8a79fc7368d6f783e3eef) Captain America: The First Avenger
+2018-04-11 19:46:53 [INF] Processing movie (cdc315e6948fa74728919d6428863d48) Captain America: The Winter Soldier
+2018-04-11 19:46:53 [INF] Processing movie (2c08bdca2c9e1528d8d3cf2b3f428eec) Captain Phillips
+2018-04-11 19:46:53 [INF] Processing movie (fabb20ca5d1064d735758b73f4148de5) Carnage
+2018-04-11 19:46:53 [INF] Processing movie (28d570134039496c78da90eacabe3385) Casino Royale
+2018-04-11 19:46:54 [INF] Processing movie (04357df8d518ffcd845b0c4279b17d1c) Cast Away
+2018-04-11 19:46:54 [INF] Processing movie (84dd1f4b93f64897ebda1b8d429484b1) Catwoman
+2018-04-11 19:46:54 [INF] Processing movie (3fdc33850f44ec683fc6427cb7851d9c) Central Intelligence
+2018-04-11 19:46:54 [INF] Processing movie (9b477fe5f7cd412bf21a1dbbbfe90c3c) Centurion
+2018-04-11 19:46:54 [INF] Processing movie (065f527bd2679ea686b490588da2d0ad) The Challenger
+2018-04-11 19:46:54 [INF] Processing movie (60af02aef6fe2ff5cb5364e0b88efe92) Changeling
+2018-04-11 19:46:54 [INF] Processing movie (8d0307eb08aad3fc4a2c688af098bb03) Charlie Wilson's War
+2018-04-11 19:46:54 [INF] Processing movie (557ad436a25e8edeb7dcfe31a8597ea1) Che: Part One
+2018-04-11 19:46:54 [INF] Processing movie (871017917e10556d7b21ce6f1ece3722) Che: Part Two
+2018-04-11 19:46:54 [INF] Processing movie (7de2628fe91e5f15754dfc8e9ed92cfb) Chicken Run
+2018-04-11 19:46:54 [INF] Processing movie (a325ab5dacbbf40f9d20c1d3ae7f69c7) The Chronicles of Riddick
+2018-04-11 19:46:54 [INF] Processing movie (3441d9e40f3094f025cc6fe873fccba9) The Chronicles of Riddick: Pitch Black
+2018-04-11 19:46:54 [INF] Processing movie (b298b3815fb813c5d5f42a68142315f5) Cidade de Deus
+2018-04-11 19:46:55 [INF] Processing movie (fdaaac70e1fab2b2e4edbeb314975901) Cirque du Soleil: Varekai
+2018-04-11 19:46:55 [INF] Processing movie (a0dac0d3da7b3a5d40038b01ea83e778) Cirque du Soleil: Worlds Away
+2018-04-11 19:46:55 [INF] Processing movie (91623a854b82977d7edea7b9bdf312cc) City of Angels
+2018-04-11 19:46:55 [INF] Processing movie (99e9d946226a55934252ef66ec9d17b7) Clockwise
+2018-04-11 19:46:55 [INF] Processing movie (9c63191d2c3fda5602a8231865614704) A Clockwork Orange
+2018-04-11 19:46:55 [INF] Processing movie (2bc0682457f5074ecc337c62f61e4e04) Cloud Atlas
+2018-04-11 19:46:55 [INF] Processing movie (ebb9d25eb2e50b11ec634e8371b39191) Cold in July
+2018-04-11 19:46:55 [INF] Processing movie (d9e998becd0585a03c877ef98866817d) The Collector
+2018-04-11 19:46:55 [INF] Processing movie (5398ad336f4e17f1c850298354479dc7) The Colony
+2018-04-11 19:46:55 [INF] Processing movie (884700107c58db724570d2b8179560c2) The Comedian
+2018-04-11 19:46:55 [INF] Processing movie (626c4422f84afb7bd424bc8aebfe0a7d) Concussion
+2018-04-11 19:46:55 [INF] Processing movie (98fc3c3fc6f4a053bcb94b38592b0db0) Constantine
+2018-04-11 19:46:55 [INF] Processing movie (9a27afa462e66ab4a707a2fb53ec95c6) Coraline
+2018-04-11 19:46:55 [INF] Processing movie (5323417227ae9a9de8b85fc96bfe53ea) The Count of Monte Cristo
+2018-04-11 19:46:55 [INF] Processing movie (d212a73a5c4cf63a2b345820b1ab78bb) The Count of Monte-Cristo
+2018-04-11 19:46:56 [INF] Processing movie (f509d5faba4beb0cf5bbb3d3f30c479e) Crank: High Voltage
+2018-04-11 19:46:56 [INF] Processing movie (65750070ed2ad4f4f70c710df837ed87) Criminal
+2018-04-11 19:46:56 [INF] Processing movie (c67d6a47593f122191af6923af47248c) Cube 2: Hypercube
+2018-04-11 19:46:56 [INF] Processing movie (942b30eb5aaa36b38d35413e569a13f2) Cypher
+2018-04-11 19:46:56 [INF] Processing movie (7040fa9f0bd16bbc6cea40e5fd3192cb) The Da Vinci Code
+2018-04-11 19:46:56 [INF] Processing movie (5c7cfdf0a5822227cc3668f51a22b39d) Dallas Buyers Club
+2018-04-11 19:46:56 [INF] Processing movie (a6392d364b1282b38662a37f392c4e23) Dark City
+2018-04-11 19:46:56 [INF] Processing movie (fc25d3235d4361892044afb36f44945f) The Dark Knight
+2018-04-11 19:46:56 [INF] Processing movie (38bae58dbc37dc60c12de99d167de940) The Dark Knight Rises
+2018-04-11 19:46:57 [INF] Processing movie (60ef6757e34f5f62bbe4ca29ce48a091) Das Boot
+2018-04-11 19:46:57 [INF] Processing movie (146a2c71658e78b17626f7eb80afc1a5) De Aristokatten
+2018-04-11 19:46:57 [INF] Processing movie (9c3749b91fbc0d45c65e3fdddb39984d) De Gelaarsde Kat
+2018-04-11 19:46:57 [INF] Processing movie (c89bcfacab572af825b9de169df6a18f) De GVR
+2018-04-11 19:46:57 [INF] Processing movie (f0a523a2bf23fb4391f066c80c51ce9f) De Jongen en de Wereld
+2018-04-11 19:46:57 [INF] Processing movie (ce725d50bdc2cd0831c4e6ec5d85cf35) De kleine zeemeermin
+2018-04-11 19:46:57 [INF] Processing movie (c9b2f0f9c6d16029843516b8ac9520e2) De Klokkenluider van de Notre Dame
+2018-04-11 19:46:57 [INF] Processing movie (45aa5612e9f8b69d08e574f83973b893) De kronieken van Narnia : De leeuw, de heks en de kleerkast
+2018-04-11 19:46:57 [INF] Processing movie (d0482f0f2e128bc9da29798723c3f455) De kronieken van Narnia : De reis van het drakenschip
+2018-04-11 19:46:57 [INF] Processing movie (c0ffb7f76cb1ca7183dfc0cc47bc138b) De kronieken van Narnia : Prins Caspian
+2018-04-11 19:46:57 [INF] Processing movie (3779ed9d43d9947a1a55180a627af427) De Leeuwenkoning
+2018-04-11 19:46:57 [INF] Processing movie (4ea754eecf44ef361a0d79a8849934e9) De Leeuwenkoning 1½
+2018-04-11 19:46:57 [INF] Processing movie (915978ded00215c50be8022152872c7b) De LEGO Batman Film
+2018-04-11 19:46:58 [INF] Processing movie (7227611bbf67e1d701c52c6b6d490cf6) De Piraten! Alle Buitenbeentjes aan Dek
+2018-04-11 19:46:58 [INF] Processing movie (838897ce10222bc3bbad59dab830d81f) De Smurfen
+2018-04-11 19:46:58 [INF] Processing movie (73b83df171dea54f138bdb61cc66c180) De Smurfen 2
+2018-04-11 19:46:58 [INF] Processing movie (331b033d525bfa2c8c772ccc28c98be7) De Vijf Legendes
+2018-04-11 19:46:58 [INF] Processing movie (60d0a44d72b940b15568667568170e97) Deadpool
+2018-04-11 19:46:58 [INF] Processing movie (17480d379fbaf4256525c88ce3a6ddc1) Death Race
+2018-04-11 19:46:58 [INF] Processing movie (d7e99c7b0332355e51d5300102085020) Deepwater Horizon
+2018-04-11 19:46:58 [INF] Processing movie (f5a6abcaee257cec8c8bf9ca22e1f9a4) Déjà Vu
+2018-04-11 19:46:58 [INF] Processing movie (286d33720b33b3b03bf595dc42f86d7b) Delicatessen
+2018-04-11 19:46:58 [INF] Processing movie (ebcbcb1ee9cadb0167f5d74eb75145b6) The Departed
+2018-04-11 19:46:58 [INF] Processing movie (e5d1140282f0e3955b5a1969de30e9e6) Der Untergang
+2018-04-11 19:46:58 [INF] Processing movie (b22343411a6394f93c6e5a42eea92278) The Descendants
+2018-04-11 19:46:59 [INF] Processing movie (e6e79217d5e92cc3e8e764c4cdc6deee) The Devil Wears Prada
+2018-04-11 19:46:59 [INF] Processing movie (50406d9e18e2209cf3b4d43968307521) The Devil's Advocate
+2018-04-11 19:46:59 [INF] Processing movie (a7b6688bd1aa46aa1e69906df1eba872) Diamonds Are Forever
+2018-04-11 19:46:59 [INF] Processing movie (2c303fd946c27918cd7c12143d0cad18) Die Another Day
+2018-04-11 19:46:59 [INF] Processing movie (3cb6067ba789ab8709df53c6e07bc5ad) Die Hard
+2018-04-11 19:46:59 [INF] Processing movie (b240a770c05959cae0e569591fa48982) Die Hard 2
+2018-04-11 19:46:59 [INF] Processing movie (a51b52eaba0807e0d9ce831b8add5b45) Die Hard: With a Vengeance
+2018-04-11 19:46:59 [INF] Processing movie (20f38e3b5d8dc4a2a5471b0be921e74a) Dikkenek
+2018-04-11 19:46:59 [INF] Processing movie (57929d3dc505386c438f772616b1dd2b) Dinosaur
+2018-04-11 19:46:59 [INF] Processing movie (31c17e8e66d09f322b9076f0ab485a21) Dirty Dancing
+2018-04-11 19:46:59 [INF] Processing movie (d4f7cc4a2c7e8b4ea77c9b98bc396406) District 9
+2018-04-11 19:46:59 [INF] Processing movie (df910bf471d9cba6471000faa90d3e51) Divergent
+2018-04-11 19:46:59 [INF] Processing movie (49d38938b613c6c602633e97c4f7fdfc) Django Unchained
+2018-04-11 19:47:00 [INF] Processing movie (494f42418d9918b5013371d373e51256) DOA: Dead or Alive
+2018-04-11 19:47:00 [INF] Processing movie (48302a41f16f3d7e40a994075e1f5db3) Doctor Strange
+2018-04-11 19:47:00 [INF] Processing movie (4373e9f854a967115dc145e54c012735) Dogville
+2018-04-11 19:47:00 [INF] Processing movie (63755cc74eecff7ea70aa4f24e1ab4e9) Dombo
+2018-04-11 19:47:00 [INF] Processing movie (db8c7f2cac013a36b1c50782035ebac2) Don Camillo en Russie
+2018-04-11 19:47:00 [INF] Processing movie (dded589447ae8216571df65b405faa4c) Don Camillo Monseigneur
+2018-04-11 19:47:00 [INF] Processing movie (ce975aaf0ed8f5c84cf9bfd3d5104a06) Donnie Brasco
+2018-04-11 19:47:00 [INF] Processing movie (4ca1a744ff6ebbe485499d6784a8a59c) Doornroodje (1959)
+2018-04-11 19:47:00 [INF] Processing movie (535b2fac551020fe29ea4a7770386459) Dr. No
+2018-04-11 19:47:00 [INF] Processing movie (9070fcf4f31658ee908cbb727a5a50e4) The Dressmaker
+2018-04-11 19:47:00 [INF] Processing movie (a54c7cf13a88781b0e268408816c4a44) Drive Angry
+2018-04-11 19:47:00 [INF] Processing movie (7876f4051486e5b57ba7ed8a1d5ac02a) Dude, Where’s My Car (2000)
+2018-04-11 19:47:00 [INF] Processing movie (5570fa9ef55a41fae62ef93a3c258b3a) Due Date
+2018-04-11 19:47:01 [INF] Processing movie (438e513e4a04ba32404f5ccfa26b9bbd) The DUFF
+2018-04-11 19:47:01 [INF] Processing movie (3fa09abc1a14427883df01da94b4ab49) Dumb and Dumber
+2018-04-11 19:47:01 [INF] Processing movie (c411e2194f105de35cc85271f8a6d924) Dunkirk
+2018-04-11 19:47:01 [INF] Processing movie (c51d5d6ebd2913b200497169bee04753) The Edge of Seventeen
+2018-04-11 19:47:01 [INF] Processing movie (211b8ae0fcdaa8ec583ef5bb1d2f7b2c) Edge of Tomorrow
+2018-04-11 19:47:01 [INF] Processing movie (84cbff0d758fef3701f3e96bbca6879a) Elle
+2018-04-11 19:47:01 [INF] Processing movie (ab24e7ff20eec40455a044ef151e042d) Elysium
+2018-04-11 19:47:01 [INF] Processing movie (efbfa006cdc7d2a3b0fa69ee39a1fc1c) Enders Game
+2018-04-11 19:47:01 [INF] Processing movie (612a28f4cc49f5b94eb5b1a71a5a78b2) Enemy
+2018-04-11 19:47:01 [INF] Processing movie (923fc223cf522d7b4fe8dc0b21276f80) Enemy at the Gates
+2018-04-11 19:47:01 [INF] Processing movie (5121d4f3f302f2fca2a918e8bc6dabad) Enigma
+2018-04-11 19:47:02 [INF] Processing movie (133170e1dd6e532f921872dbe5a16ade) The Equalizer
+2018-04-11 19:47:02 [INF] Processing movie (a4c75044451da7409b1590e80f400f45) Equals
+2018-04-11 19:47:02 [INF] Processing movie (339df0fefabe26b53c125a0b3ea863ba) Equilibrium
+2018-04-11 19:47:02 [INF] Processing movie (0b88fdbdceaff4d16df797f9c5d44cb9) Erin Brockovich
+2018-04-11 19:47:02 [INF] Processing movie (e245daad019c77a6fc9c9bfb580e4cdd) Escape Plan
+2018-04-11 19:47:02 [INF] Processing movie (f4977218b7aa3178b2414999ff361dc0) The Escort
+2018-04-11 19:47:02 [INF] Processing movie (c6ff28c745603f586daf8ecb46686267) Everest
+2018-04-11 19:47:02 [INF] Processing movie (4509378241c06f3fab7f073be1d6f65e) Everything is Illuminated
+2018-04-11 19:47:02 [INF] Processing movie (f69cfa38cbefbc31b3751e2228210674) Ex Machina
+2018-04-11 19:47:02 [INF] Processing movie (29d373421a3ce213bf56289fbe34de20) The Exception
+2018-04-11 19:47:02 [INF] Processing movie (c2e76687502c2b33059f2617c7609aec) The Expendables
+2018-04-11 19:47:02 [INF] Processing movie (447adf3f10f5f179a4cca945e9b080db) The Expendables 2
+2018-04-11 19:47:02 [INF] Processing movie (bdb3fd64d2fd0549e7ecca8f5e506039) Fallen
+2018-04-11 19:47:02 [INF] Processing movie (2a15473e142f292610e06766ddf7ebf3) Fantasia
+2018-04-11 19:47:03 [INF] Processing movie (d7d8863ed1f2db6423e60ac36e09fd91) Fargo
+2018-04-11 19:47:03 [INF] Processing movie (a5981475f10154c5b54eb975b50de215) Fast & Furious
+2018-04-11 19:47:03 [INF] Processing movie (e1adb250e1745370ff38f26ee7e574a3) Fast & Furious 6
+2018-04-11 19:47:03 [INF] Processing movie (a27935e26ca7c9903e5234a11e967e26) Fast Five
+2018-04-11 19:47:03 [INF] Processing movie (fab9dffb61b9c2351d8e97dd65899466) Fear and Loathing in Las Vegas
+2018-04-11 19:47:03 [INF] Processing movie (fc8225d4a4468001afbd21d5e99b460d) Fender Bender
+2018-04-11 19:47:03 [INF] Processing movie (116719a2bc116868f848b8367d2e883a) Fight Club
+2018-04-11 19:47:03 [INF] Processing movie (aa7c6744479e41593853f1c171aabcc8) Final Fantasy: The Spirits Within
+2018-04-11 19:47:03 [INF] Processing movie (c4684d1b40336be0c40192cd41f39384) The Final Girls
+2018-04-11 19:47:03 [INF] Processing movie (4de570b9dfdf329ee66616536a12f61c) Finding Dory
+2018-04-11 19:47:04 [INF] Processing movie (22d429adc0746fa0cd3eb0dba92d8c9e) Finding Nemo
+2018-04-11 19:47:04 [INF] Processing movie (ffbf74ce30a2d95dd0f5bb82acef68b6) The Finest Hours
+2018-04-11 19:47:04 [INF] Processing movie (cd12f05d5491643b12f298be93f11830) A Fish Called Wanda (1988)
+2018-04-11 19:47:04 [INF] Processing movie (bd1e18db1909b58cb593277080d9feab) Flight
+2018-04-11 19:47:04 [INF] Processing movie (b2a86922af2514c65001ad970795f80c) Flightplan
+2018-04-11 19:47:04 [INF] Processing movie (b27fa5087637064bb595e90084a1ecfc) Focus
+2018-04-11 19:47:04 [INF] Processing movie (dba51b1ef7bb0179e48552471352bd4c) Fool's Gold
+2018-04-11 19:47:04 [INF] Processing movie (8de0aaf0466f3326fee142055019750a) For Your Eyes Only
+2018-04-11 19:47:04 [INF] Processing movie (727532becd6fdc0182e087432e8552ce) Forrest Gump
+2018-04-11 19:47:04 [INF] Processing movie (741113b4e466cb7e589c83c129aec9a8) Frida
+2018-04-11 19:47:05 [INF] Processing movie (90adcf1ce1b1f88a165039473abe9ded) Fright Night
+2018-04-11 19:47:05 [INF] Processing movie (a9dee1035db93b17ae40f03134730013) From Dusk Till Dawn
+2018-04-11 19:47:05 [INF] Processing movie (f4cbbf06f65da0118316844386efb2cf) From Russia with Love
+2018-04-11 19:47:05 [INF] Processing movie (9eb08774080a063022f156fd2008d2c9) Frozen
+2018-04-11 19:47:05 [INF] Processing movie (80f18d71dda5b07d41da6d6249e64a2d) Full Metal Jacket
+2018-04-11 19:47:05 [INF] Processing movie (d65ecd1242bfaddf62e66b661285aebb) Furious 7
+2018-04-11 19:47:05 [INF] Processing movie (5d0e4701aa5b5c69949bae2e915ac150) Fury
+2018-04-11 19:47:05 [INF] Processing movie (42a0fbeef4236577408d2826bc7b7d09) Gadjo Dilo
+2018-04-11 19:47:05 [INF] Processing movie (1c6eb6e8b549d83ad8a4c10fc59912f9) The Game
+2018-04-11 19:47:05 [INF] Processing movie (3d8ba23704bccd91d76222e43f8b633d) Gamer
+2018-04-11 19:47:05 [INF] Processing movie (b651437d59691c00dfc7706b5a80a7fc) Gangster Squad
+2018-04-11 19:47:06 [INF] Processing movie (c4b7c833052aad17b8377fe3fc0fd49e) Ghandi at the Bat
+2018-04-11 19:47:06 [INF] Processing movie (662bc28c50880e5da58383481d04ccc1) Ghost in the Shell
+2018-04-11 19:47:06 [INF] Processing movie (3832c965491a3b6754412619f279cd2b) The Girl Next Door
+2018-04-11 19:47:06 [INF] Processing movie (9009acb459566a73f511f6b0fbec82bb) The Girl on the Train
+2018-04-11 19:47:06 [INF] Processing movie (d8fee9ea66bbb27751f8fae46bd2aaff) The Girl with All the Gifts
+2018-04-11 19:47:06 [INF] Processing movie (943f8a1f32057f6e1edd737a9c51d434) Girls Night Out
+2018-04-11 19:47:06 [INF] Processing movie (a394afa1b7cf3cef4abc35e7671bd455) Gladiator
+2018-04-11 19:47:06 [INF] Processing movie (3cdf0a6ba0190206469acc5b343e6523) Glory
+2018-04-11 19:47:06 [INF] Processing movie (400ffc26da4bc49a29ec4c8634a25302) Gnomeo & Juliet
+2018-04-11 19:47:06 [INF] Processing movie (937f493c9368cfaa0424935ebb7f3a9b) The Godfather
+2018-04-11 19:47:06 [INF] Processing movie (2b9841621537fa2301f3f6ffe90f52b3) The Godfather: Part II
+2018-04-11 19:47:07 [WRN] We couldn't find the person with Id 473fab51173baa822f0686777685a2f5 for movie (2b9841621537fa2301f3f6ffe90f52b3) The Godfather: Part II in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the genre from the movie now.
+2018-04-11 19:47:07 [INF] Processing movie (a1dd1ee87cdf4b3f6f5f200975f644cd) The Godfather: Part III
+2018-04-11 19:47:07 [WRN] We couldn't find the person with Id 91d22dbc00b3d16f4643d86354bcc2e7 for movie (a1dd1ee87cdf4b3f6f5f200975f644cd) The Godfather: Part III in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the genre from the movie now.
+2018-04-11 19:47:07 [INF] Processing movie (0761daf5730734dae55d220d266efa10) The Gods Must Be Crazy
+2018-04-11 19:47:07 [INF] Processing movie (f5fba3e937d8cc0716a197236858b9db) GoldenEye
+2018-04-11 19:47:07 [INF] Processing movie (b759778a8af7df7098db77f683655630) Goldfinger
+2018-04-11 19:47:07 [INF] Processing movie (0a70ec83c79ead6a570bf9f33a391c27) Gomorra
+2018-04-11 19:47:07 [INF] Processing movie (6dbf614cae7d48c635e5663469ec9a9b) Gone Girl
+2018-04-11 19:47:07 [INF] Processing movie (8839c4725ae1eebd9ef8d618b03e176c) Gone in Sixty Seconds
+2018-04-11 19:47:07 [INF] Processing movie (a97447168af34a2b5ac8ebed38e14209) Good, the Bad and the Ugly, The (1966)
+2018-04-11 19:47:07 [INF] Processing movie (10a5d7615ef1d718e955626bafb6f9d2) Good bye, Lenin!
+2018-04-11 19:47:08 [INF] Processing movie (c05bd64db3fa92c5c1fc4f972d596ac1) The Good Dinosaur
+2018-04-11 19:47:09 [INF] Processing movie (e0860a81f5dd78ca3ce364130079d2f8) Good Morning, Vietnam
+2018-04-11 19:47:09 [INF] Processing movie (d43ebea7a633446f30df81c696c9e13b) The Graduate
+2018-04-11 19:47:09 [INF] Processing movie (b9abc4c32688066b10727fb7d847d950) Gravity
+2018-04-11 19:47:09 [INF] Processing movie (a1c5b0a1a0c8d3d3cdfb8a4eed89719f) Grease
+2018-04-11 19:47:09 [INF] Processing movie (8d01162d43f90730fd3cb29755a88016) The Great Escape
+2018-04-11 19:47:09 [INF] Processing movie (bc7925dae12a81eeeee2ead18e038fca) The Great Gatsby
+2018-04-11 19:47:09 [INF] Processing movie (203e8c5b8fa9eee9989c32beb6ca4e23) The Green Mile
+2018-04-11 19:47:09 [INF] Processing movie (d500eb75a1f8c2f1d57f1714c53e197f) Guardians of the Galaxy
+2018-04-11 19:47:10 [INF] Processing movie (09dd8b53a2a05e86e7ff98489d2c575c) Guardians of the Galaxy Vol. 2
+2018-04-11 19:47:10 [INF] Processing movie (ae3ab00fbadeb9b941bdb4948cea42b6) The Guns of Navarone
+2018-04-11 19:47:10 [INF] Processing movie (ff7a7f4828dc252eb16678d68da5306b) Hacker
+2018-04-11 19:47:10 [INF] Processing movie (96c0582e0af1ba3fb665afa432a15694) The Hangover
+2018-04-11 19:47:10 [INF] Processing movie (be1c1377eb1927e7d64c60707f426faa) The Hangover Part III
+2018-04-11 19:47:10 [INF] Processing movie (38f84000dd9a2f4e0a450a3567e452ae) Hannah and Her Sisters
+2018-04-11 19:47:10 [INF] Processing movie (f8e40f8cc6152423638e954e3b83332b) Harold & Kumar Escape from Guantanamo Bay
+2018-04-11 19:47:10 [INF] Processing movie (1ad7d1ebf8a1fbdacc63a014f4ab3a59) Harold & Kumar Go to White Castle
+2018-04-11 19:47:10 [INF] Processing movie (999b2056dd6861429666479464e0e619) Harry Potter en de Geheime Kamer
+2018-04-11 19:47:11 [INF] Processing movie (244f5f7c608cf097585ba0c796f81719) Harry Potter en de Halfbloed Prins
+2018-04-11 19:47:11 [INF] Processing movie (ad408a8c2b95d0628ebf0edb5c65e867) Harry Potter en de Orde van de Feniks
+2018-04-11 19:47:11 [INF] Processing movie (1f3beb70e4b54719147a7e75f5953d09) Harry Potter en de Relieken van de Dood - Deel 2
+2018-04-11 19:47:11 [INF] Processing movie (373283b8bf25cb641cb1a59c2a558511) Harry Potter en de Steen der Wijzen
+2018-04-11 19:47:11 [INF] Processing movie (38b95055d5ac01b5e8ef06445da894ee) Harry Potter en de Vuurbeker
+2018-04-11 19:47:11 [INF] Processing movie (e935970093851b2eab72284ee851ea9c) The Hateful Eight
+2018-04-11 19:47:11 [INF] Processing movie (4db6fb74b44fe7a8d946f7d023a24df3) Heist
+2018-04-11 19:47:12 [INF] Processing movie (cb38e8b2ddd820b21000f6a881256ed4) Hell Baby
+2018-04-11 19:47:12 [INF] Processing movie (dd8538b0871388851e8da416a73e85a2) Her
+2018-04-11 19:47:12 [INF] Processing movie (80fcbc33be75d305630107859f34b3a2) Hercules Reborn
+2018-04-11 19:47:12 [INF] Processing movie (4ab749a5d6861a4bd1904d7ee2e86d70) Het Gouden Kompas
+2018-04-11 19:47:12 [INF] Processing movie (1fba8ad08812e6279427b1ee64281026) Het Grote Verhaal van Winnie de Poeh
+2018-04-11 19:47:12 [INF] Processing movie (df158033e23dd6f9c2bd0ee841074ade) The Hitchhiker's Guide to the Galaxy
+2018-04-11 19:47:12 [INF] Processing movie (2c5e8f0d1ed258949c8531ce8d9f9af8) Hitman
+2018-04-11 19:47:12 [INF] Processing movie (40bcd031c6a7d95acd97eb03b945ddad) Hitman: Agent 47
+2018-04-11 19:47:12 [INF] Processing movie (b598c42d0ab0e53cd3a8f40d6973595e) The Hitman's Bodyguard
+2018-04-11 19:47:12 [INF] Processing movie (ec93306b9ef8efe502065063aa24f462) The Hobbit: The Battle of the Five Armies
+2018-04-11 19:47:12 [INF] Processing movie (c4cab7702b767153784a84613e4a2306) The Hobbit: The Desolation of Smaug
+2018-04-11 19:47:12 [INF] Processing movie (6356050a5dbd07ab1adf88d96fa4968d) The Hobbit: An Unexpected Journey
+2018-04-11 19:47:12 [INF] Processing movie (de3f6ce01466433d4a6f4beee868d369) The Hobbit: An Unexpected Journey
+2018-04-11 19:47:12 [INF] Processing movie (bee81e045dcbe614a5579a3ea4783057) Hoe Tem Je Een Draak
+2018-04-11 19:47:12 [INF] Processing movie (c2fce4c910045e8ee61cbd9de322d524) Hoe Tem Je Een Draak 2
+2018-04-11 19:47:13 [INF] Processing movie (949fcafeccd3ed8a15473ce86f69f967) Hollywood Ending
+2018-04-11 19:47:13 [INF] Processing movie (2707373ab9c2cc761e19237e84f8ae77) Horton
+2018-04-11 19:47:13 [INF] Processing movie (7a5a78dd124c4bc733bbde5f4d0bf43a) Hot Fuzz
+2018-04-11 19:47:13 [INF] Processing movie (daf021c3cd8ef1735c1344af186d7191) Hot Pursuit
+2018-04-11 19:47:13 [INF] Processing movie (b282080d91e245202aad39db893530c8) Hot Tub Time Machine 2
+2018-04-11 19:47:13 [INF] Processing movie (bddc321d96fc87a1f4c6c8e49d9a0002) Hotel Rwanda
+2018-04-11 19:47:13 [INF] Processing movie (1ecc1adf0e7a89a10e61066a87a80c32) Huisdiergeheimen
+2018-04-11 19:47:13 [INF] Processing movie (ed131e2b64622ba8cfb88e6215e79160) Hulk
+2018-04-11 19:47:13 [INF] Processing movie (793e742d59136b3e4e756f8a05158326) The Hunger Games
+2018-04-11 19:47:14 [INF] Processing movie (b042b7c7d198f7f3751f5b0b944a689f) The Hunger Games: Catching Fire
+2018-04-11 19:47:14 [INF] Processing movie (8d4bb1c2df3861bac1b1fc76462f2b30) The Hunger Games: Mockingjay - Part 1
+2018-04-11 19:47:14 [INF] Processing movie (d64a6006e1e489167b97eb2d85f5febb) The Hunger Games: Mockingjay - Part 2
+2018-04-11 19:47:14 [INF] Processing movie (fe17150db5c571c59ef79549ba82480b) The Hunt for Red October
+2018-04-11 19:47:14 [INF] Processing movie (51ece4d1d9db68a0d7cce9359cc5c8e2) The Huntsman: Winter's War
+2018-04-11 19:47:14 [INF] Processing movie (5349f13cdf729af2ecab45c77be3b841) The Huntsman: Winter's War
+2018-04-11 19:47:14 [INF] Processing movie (9df67e76125f4c1586410eef47c197d4) The Hurt Locker
+2018-04-11 19:47:14 [INF] Processing movie (7eea36f39e3531bf4e49da696f7e7ddf) I Am Legend
+2018-04-11 19:47:14 [INF] Processing movie (e63df3eff442d4047c4a264557a172f0) I Am Number Four
+2018-04-11 19:47:15 [INF] Processing movie (7ecd1e17203dab63129999b386797a53) I Origins
+2018-04-11 19:47:15 [INF] Processing movie (f9a803c321d4e1bb53e51294f85e705f) I.T.
+2018-04-11 19:47:15 [INF] Processing movie (4316c0910499a1775b94b9e650409c1e) Ice Age
+2018-04-11 19:47:15 [INF] Processing movie (77ab5761dd5b478032f53981dd1bcc86) Ice Age: Continental Drift
+2018-04-11 19:47:15 [INF] Processing movie (5423c4aac7ade88dafd2d57e11ca7f00) Il Gattopardo
+2018-04-11 19:47:15 [INF] Processing movie (a37d70a550de9064f9ed86474e0497c7) Il Gattopardo
+2018-04-11 19:47:15 [INF] Processing movie (eebeb6b38d0c188ffed7e9abf2fc79b0) The Illusionist
+2018-04-11 19:47:15 [INF] Processing movie (b5e819ac69f304a38ce907660336cf55) Im Labyrinth des Schweigens
+2018-04-11 19:47:15 [INF] Processing movie (827590c406d9ef5ec2b64e4d4ac29b27) The Imitation Game
+2018-04-11 19:47:15 [INF] Processing movie (f2ffe8a3ebd5dfd2e116d275e5e1f736) In Bruges
+2018-04-11 19:47:16 [INF] Processing movie (11c02e23f95312d48feb7e8d42128d70) Incendies
+2018-04-11 19:47:16 [INF] Processing movie (aa593b5f1e9baccb193c5351a5dc7346) Inception
+2018-04-11 19:47:16 [INF] Processing movie (335029952f038b98c93593545bdb71d2) The Incredible Hulk
+2018-04-11 19:47:16 [INF] Processing movie (83378cef78d8d39464c81ec529b22fdd) Indiana Jones and the Kingdom of the Crystal Skull
+2018-04-11 19:47:16 [INF] Processing movie (49c531ab2c173e6ace6579e99ebddc04) Indiana Jones and the Raiders of the Lost Ark
+2018-04-11 19:47:16 [INF] Processing movie (beba59c3edfcab6a0aa33c5eeda5a538) Indiana Jones and the Temple of Doom
+2018-04-11 19:47:16 [INF] Processing movie (5a8b053383ee585bed31b0811663ab83) The Infiltrator
+2018-04-11 19:47:16 [INF] Processing movie (7a179ec604b6a07ab2c1d0d441927635) Infinitely Polar Bear
+2018-04-11 19:47:16 [INF] Processing movie (fb4b0aa8aac4600a52a1a4fb66dc8482) Inglourious Basterds
+2018-04-11 19:47:16 [INF] Processing movie (be728d4807aabc50b5975960380b0753) Inherent Vice
+2018-04-11 19:47:17 [INF] Processing movie (a5eeac3ad502fc7f2a42d646b3ad6177) Inside Job
+2018-04-11 19:47:17 [INF] Processing movie (bc96ea69050b99f83f3cee5aaf631736) Inside Man
+2018-04-11 19:47:17 [INF] Processing movie (e132a283da4c3c86e5525a3958966f2c) The Insider
+2018-04-11 19:47:17 [INF] Processing movie (cb4de89dfe465041abcfb3f22f088429) The Institute
+2018-04-11 19:47:17 [INF] Processing movie (4daae7c233949f364a0ebfd684851a7f) Insurgent
+2018-04-11 19:47:17 [INF] Processing movie (221bc7aad1f4100186b337524e800277) Intern, The (2015)
+2018-04-11 19:47:17 [INF] Processing movie (7a8d8fbe44a34be545de6741e580f132) The Interpreter
+2018-04-11 19:47:17 [INF] Processing movie (3adfd2104e13af1e8cb77f1304fc7428) Interstellar
+2018-04-11 19:47:17 [INF] Processing movie (d75e7661ae8ad1b29b479dd9b3e45590) Interstellar
+2018-04-11 19:47:17 [INF] Processing movie (ba1761cf950d0cfeb25a5324058aaf39) Intouchables
+2018-04-11 19:47:18 [INF] Processing movie (20d6ff078022fa2b59dd38ee06eebb4a) Ip Man
+2018-04-11 19:47:18 [INF] Processing movie (29467a970b8c555ca3db2d5d2d34429b) Ip Man 3
+2018-04-11 19:47:18 [INF] Processing movie (9af7824d13dbf53977dfc3add5cce3b3) Iron Man
+2018-04-11 19:47:18 [INF] Processing movie (f55531076a1e2c31f51dac96a6035495) Iron Man 2
+2018-04-11 19:47:18 [INF] Processing movie (5f013eefa9b02ffb4b09f380a1f6623d) Iron Man 3
+2018-04-11 19:47:18 [INF] Processing movie (817c965e936160d1e13c9fad14bad9e5) The Island
+2018-04-11 19:47:18 [INF] Processing movie (41d4cb592782b26d8f21b73a5a04e6e1) It's a Free World...
+2018-04-11 19:47:18 [INF] Processing movie (aa5802161ff1fe67cbad30f7937db907) Jack Reacher: Never Go Back
+2018-04-11 19:47:19 [INF] Processing movie (1f5f73ed3a5c0d3829b29108ed49f22d) Jackie Brown
+2018-04-11 19:47:19 [INF] Processing movie (d239c18027c09c986376f0afb2630365) Jane Got a Gun
+2018-04-11 19:47:19 [INF] Processing movie (80cb527d70e53609cc96f73ca14973f8) Jay and Silent Bob Strike Back
+2018-04-11 19:47:19 [INF] Processing movie (f21a1398f83b44908b08d0b758298a24) John Wick: Chapter 2
+2018-04-11 19:47:19 [INF] Processing movie (0ca9c0ab9e4bc259966d00836354f7c0) Johnny Stecchino
+2018-04-11 19:47:19 [INF] Processing movie (a6fd2a0e13832e5e91ea647ba5bea5c0) Jumper
+2018-04-11 19:47:19 [INF] Processing movie (bad0ee30bc7f32d98d2eeb2981a752ad) Jungle Boek
+2018-04-11 19:47:19 [INF] Processing movie (e164f7d454083cfbb188f3ef249d672f) Jurassic Park
+2018-04-11 19:47:19 [INF] Processing movie (1d2b84432462e0f19ba67cacde6dde4b) Jurassic Park II
+2018-04-11 19:47:19 [INF] Processing movie (a3aa8c7c20268b46fa6ac281d23607df) Jurassic World
+2018-04-11 19:47:19 [INF] Processing movie (57a006b9c4c4c017e358257d07109002) Kapitein Onderbroek: Het eerste grote avontuur
+2018-04-11 19:47:19 [INF] Processing movie (8b20e1c195edb38c49892d5f831a38de) The Karate Kid
+2018-04-11 19:47:19 [INF] Processing movie (25008c81b0c8f58d6e258f072fb08a24) Keeping Up with the Joneses
+2018-04-11 19:47:19 [INF] Processing movie (5d6eb0602de6ae3b65b9f50d74b37269) Kick-Ass
+2018-04-11 19:47:20 [INF] Processing movie (81a150cd36e28aea7fdd2ceebbb42723) Kick-Ass 2
+2018-04-11 19:47:20 [INF] Processing movie (108a041761b91675f83218aec45b31de) Kill Bill 2
+2018-04-11 19:47:20 [INF] Processing movie (3daa0a655839c0ab1140b9793e9397d4) Kill Bill: Vol. 1
+2018-04-11 19:47:20 [INF] Processing movie (6680fd8c5151cb151f7d27357d19bd04) Kill Switch
+2018-04-11 19:47:20 [INF] Processing movie (4e89199a90728c86ca3cc6f3d35e84c7) Killers
+2018-04-11 19:47:20 [INF] Processing movie (608c1ef381da742fcd6e7f63caf51872) King Arthur
+2018-04-11 19:47:20 [INF] Processing movie (48cbea05e8b24a7527758849f872eda6) King Kong
+2018-04-11 19:47:20 [INF] Processing movie (3ad4507b7f590e99603ce5fb6d0d2028) The King's Speech
+2018-04-11 19:47:20 [INF] Processing movie (5b75ccb5b40a2d53dc67c377c009b3b7) Kingsman: The Golden Circle
+2018-04-11 19:47:20 [INF] Processing movie (732756178db8588ce2fbb56e024084ae) Kingsman: The Secret Service
+2018-04-11 19:47:20 [INF] Processing movie (9448c44bc56f6f5087819c26912b189c) Kinsey
+2018-04-11 19:47:20 [INF] Processing movie (294d8aa0ff98b8114fbc193cf212d2d5) A Knight's Tale
+2018-04-11 19:47:20 [INF] Processing movie (46e75b0ab5ec05aaff88877e4be62e61) Knocked Up
+2018-04-11 19:47:21 [INF] Processing movie (f60fa072369800bedc570803fe185d24) Kung Fu Panda
+2018-04-11 19:47:21 [INF] Processing movie (aa2a32a4f76dc921eb7374234cad1436) Kung Fu Panda 3
+2018-04-11 19:47:21 [INF] Processing movie (5defd512eb3bdb35510cbc93fcb248ce) La Cité des Enfants Perdus
+2018-04-11 19:47:21 [INF] Processing movie (3ecb84ebc69ee76a8f0c25b59918ed70) La Granda Bellezza (2013)
+2018-04-11 19:47:21 [INF] Processing movie (23ce381627bd6ea72dd52497e9974fff) La Grande Bagarre de Don Camillo
+2018-04-11 19:47:21 [INF] Processing movie (a633a13ef513234418e8d44b3c9b8f2b) La grande vandrouille (1966)
+2018-04-11 19:47:21 [INF] Processing movie (8680fb428b07ecaefcc01becd83ad9c7) La huitieme jour (1996)
+2018-04-11 19:47:21 [INF] Processing movie (66e3492aeef1148667948ff5020ed95a) La La Land
+2018-04-11 19:47:21 [INF] Processing movie (fee12fdc556bda4871635e00146138ec) La Notte di San Lorenzo
+2018-04-11 19:47:21 [INF] Processing movie (046f48aa03ad3cb39757bf750b5ab862) Le Dîner de cons
+2018-04-11 19:47:21 [INF] Processing movie (af6886075d5ee16d737a22f06b3f350b) Le Petit Monde de Don Camillo
+2018-04-11 19:47:21 [INF] Processing movie (080bf1af0aa49b45a7fbc6ca1dc036f8) Legend
+2018-04-11 19:47:22 [INF] Processing movie (38c096700538d8b72546bce3d9a7147a) Legende van Ga'Hoole
+2018-04-11 19:47:22 [INF] Processing movie (03aba63a0fabf8609b9e199d42dfc583) Les Barons
+2018-04-11 19:47:22 [INF] Processing movie (7eab49fb50f1e964f86ce9fe6c8c3916) LesTriplettes de Belleville (2003)
+2018-04-11 19:47:22 [INF] Processing movie (c5e98bb68d210ccfb38a7663f175ad2f) Lethal Weapon 4
+2018-04-11 19:47:22 [INF] Processing movie (386f6dfa3f5f6fc651bc16bc3142ddda) Licence to Kill
+2018-04-11 19:47:22 [INF] Processing movie (4e52cbc1af474a16e248ce93c18e922f) Life
+2018-04-11 19:47:22 [INF] Processing movie (a84e95b2ea7a5f2137d5d8b6368c0b5d) Life of Brian
+2018-04-11 19:47:22 [INF] Processing movie (4800f449544421b9263c5fb3f8d0506a) Life of Pi
+2018-04-11 19:47:22 [INF] Processing movie (3002f4af29ac06279f7661f46224c39c) The Light Between Oceans
+2018-04-11 19:47:22 [INF] Processing movie (3a1600ede28169a09b910c5935ccd93a) Lights Out
+2018-04-11 19:47:22 [INF] Processing movie (e189aff1404be50201a37e6bbe8059fa) Lincoln
+2018-04-11 19:47:22 [INF] Processing movie (460446a1a91c1cdd9a396d7efb91e94c) Live and Let Die
+2018-04-11 19:47:22 [INF] Processing movie (494cc8fb5828ab639ef88deb00a03d88) Live Stream
+2018-04-11 19:47:22 [INF] Processing movie (309e93212683ad77a3be134a1c98e859) The Living Daylights
+2018-04-11 19:47:22 [INF] Processing movie (5524ada91e72442e5e48a842cf9ebf88) Lock, Stock and Two Smoking Barrels
+2018-04-11 19:47:22 [INF] Processing movie (c3a590505415bbfe518442ddaac36387) Logan
+2018-04-11 19:47:23 [INF] Processing movie (8b3b29a93ad635c1a35df9dd95c51942) Lola rennt
+2018-04-11 19:47:23 [INF] Processing movie (3157fd1ceae4e9f13fed0c4a303ae126) Lola Rennt - Run Lola Run
+2018-04-11 19:47:23 [INF] Processing movie (cf5ac7a0523dc507883502afe9561f9f) London Has Fallen
+2018-04-11 19:47:23 [INF] Processing movie (e6f2758ce1dd82611d18cee385d2b223) The Lone Ranger
+2018-04-11 19:47:23 [INF] Processing movie (afd106fd44a5ba74b73f7dfeaaad25d2) Lone Survivor (2013)
+2018-04-11 19:47:23 [INF] Processing movie (84ff0fa4f3d3e20d2fd1efd7465ac714) Looper
+2018-04-11 19:47:23 [INF] Processing movie (0effd632b92f8a68ccc3e669fef47ee0) The Lord of the Rings: The Fellowship of the Ring
+2018-04-11 19:47:23 [INF] Processing movie (c005341e81b023a058f454775c7206e0) The Lord of the Rings: The Return of the King
+2018-04-11 19:47:23 [INF] Processing movie (f83488013fef31eec39914b3d2cc69d1) The Lord of the Rings: The Two Towers
+2018-04-11 19:47:24 [INF] Processing movie (bc854589884f8c4d0556a6f19f39bb64) Lord of War
+2018-04-11 19:47:24 [INF] Processing movie (3bd58750aa3b2a7fb0318193b56ee6e0) Los inocentes
+2018-04-11 19:47:24 [INF] Processing movie (a10caffe537823b9ae056c6959560d20) Lost in Translation
+2018-04-11 19:47:24 [INF] Processing movie (13029be6e7a9611eda49b5fdcb9341a0) Love & Friendship
+2018-04-11 19:47:24 [INF] Processing movie (9c73f78a095ce5fe5e424a8435d99954) Love Actually
+2018-04-11 19:47:24 [INF] Processing movie (f7e8fca62b41b0c67383471367f11196) Love and Death
+2018-04-11 19:47:24 [INF] Processing movie (ff71d412890ac4409622b59551dd68ee) Lucky Number Slevin
+2018-04-11 19:47:24 [INF] Processing movie (dddf9784961b9e1d621937c08446e142) Lumumba
+2018-04-11 19:47:24 [INF] Processing movie (2776e255f5936739421572f35d8c20d2) The Machinist
+2018-04-11 19:47:24 [INF] Processing movie (46035df8abbaf47c61580c3afabe0d8e) Mad Max
+2018-04-11 19:47:24 [INF] Processing movie (6e6da136d1375410f0d5de18e87cb692) Mad Max 2
+2018-04-11 19:47:24 [INF] Processing movie (ed4c26d4ba5b561a83d4b475f9638b2e) Mad Max Beyond Thunderdome
+2018-04-11 19:47:24 [INF] Processing movie (31ecf45bec9a1a685c3c4af3556a3745) Mad Max: Fury Road
+2018-04-11 19:47:24 [INF] Processing movie (0f91e4553f18311e99b945d9b3662cce) Maggie
+2018-04-11 19:47:24 [INF] Processing movie (d27bacaefd468b12093ba291617a7d99) Magic in the Moonlight
+2018-04-11 19:47:25 [INF] Processing movie (ca935c7c7825a75e0c457872bd1c1b3b) The Magnificent Seven
+2018-04-11 19:47:25 [INF] Processing movie (96e3be54184ebb013e3c4340ebe32325) Magnolia
+2018-04-11 19:47:25 [INF] Processing movie (7fb818f0e20f1ac1c945fbcdeeccde15) Malcom X (1992)
+2018-04-11 19:47:25 [INF] Processing movie (f6f7c103aced26aa9326cd3d1525f527) Maleficent
+2018-04-11 19:47:25 [INF] Processing movie (724a70adcc73e436efbf4b49d083c3e3) The Man from Earth
+2018-04-11 19:47:25 [INF] Processing movie (06faf05429f76450a0d0d75cc376a282) The Man from U.N.C.L.E.
+2018-04-11 19:47:25 [INF] Processing movie (85f7917f3e5d4d27ee0ba959820a26ae) Man of Steel
+2018-04-11 19:47:25 [INF] Processing movie (69d17ece78250e7fbc6e256eac9a9506) The Man Who Knew Infinity
+2018-04-11 19:47:25 [INF] Processing movie (705968efa0e1d123bf747e37154eca46) The Man with the Golden Gun
+2018-04-11 19:47:25 [INF] Processing movie (3b2975b0767ddd09ea95adde1eb6cbbb) The Manchurian Candidate
+2018-04-11 19:47:25 [INF] Processing movie (a263cde2f88da9cf917c613cc2258521) Manhattan
+2018-04-11 19:47:26 [INF] Processing movie (1a5155d516b6306f4f0cfa55ebde74d7) Manhattan Murder Mystery
+2018-04-11 19:47:26 [INF] Processing movie (89e6fa6e16b8d9e49ea88fbb5e67ab8c) Mars Attacks!
+2018-04-11 19:47:26 [INF] Processing movie (51e839698d41497adc82dcd895a0c4e5) The Martian
+2018-04-11 19:47:26 [INF] Processing movie (00d08067309c5150ecb341bd4a6c2326) Mary and Max
+2018-04-11 19:47:26 [INF] Processing movie (434db5971c3e20aad251b74a9c63c389) Mary Poppins
+2018-04-11 19:47:26 [INF] Processing movie (3a2c761814d203f442cb450c62a19c2f) The Mask
+2018-04-11 19:47:26 [INF] Processing movie (467bd8ce32a310d3eff4b5a4c9492e5e) Master and Commander: The Far Side of the World
+2018-04-11 19:47:26 [INF] Processing movie (c96c9567de06c8acac309c20dba4ecab) The Matrix
+2018-04-11 19:47:26 [INF] Processing movie (d7455f7cdc72d0a0d1cf4db3c457cf50) The Matrix Reloaded
+2018-04-11 19:47:26 [INF] Processing movie (4ce07baa10af66bf19319f68ed1e2be0) The Matrix Revolutions
+2018-04-11 19:47:26 [INF] Processing movie (c08c8b057dd59f567ee06f514e6bceb2) Max Steel
+2018-04-11 19:47:26 [INF] Processing movie (ec5c3e50a8c530b536eb1b97df0c2120) Maze Runner: The Scorch Trials
+2018-04-11 19:47:26 [INF] Processing movie (9a73ecde0eefffee10deb5f79560d1fa) The Measure of a Man
+2018-04-11 19:47:27 [INF] Processing movie (82f404cb088b74bd10b0485ea0c0e617) The Mechanic
+2018-04-11 19:47:27 [INF] Processing movie (47246b7e11f5ec7da03920e460805509) Mechanic: Resurrection
+2018-04-11 19:47:27 [INF] Processing movie (e080f92822c35fc8baeb1b365bda8863) Megamind
+2018-04-11 19:47:27 [INF] Processing movie (41f56ee7ff025202339ab52c7849be1e) Megan Leavey
+2018-04-11 19:47:27 [INF] Processing movie (75eae2d2ea6687379c869a4531c04259) Memento
+2018-04-11 19:47:27 [INF] Processing movie (bdba810260bd099fc9605439ac5c65eb) Men in Black
+2018-04-11 19:47:27 [INF] Processing movie (6a7aaee2170f0156635aefde76a7402a) Men in Black 3
+2018-04-11 19:47:27 [INF] Processing movie (810d736291a6e8e6fcaf968272376184) Men in Black II
+2018-04-11 19:47:27 [INF] Processing movie (ecf6f9ef7c0a65d19464310b4c32fb6d) Men of Honor
+2018-04-11 19:47:27 [INF] Processing movie (ce86cfc77f37687c243d6e8014c75eab) Michael Clayton
+2018-04-11 19:47:27 [INF] Processing movie (d9b89c25ecdc97a6b41768ff0e5fdac8) Michael van Peel Overleeft 2012 (2012)
+2018-04-11 19:47:27 [INF] Processing movie (30173317638efe7224e6b03805aef633) Michael van Peel Overleeft 2013 (2013)
+2018-04-11 19:47:27 [INF] Processing movie (a9fc927cfa3e5d61494c43bd1020afc5) Micmacs à tire-larigot
+2018-04-11 19:47:27 [INF] Processing movie (e4cecb8526ecdff4b37938f76942ad59) Middle Men
+2018-04-11 19:47:27 [INF] Processing movie (9eaefbb11448009f49c7b41594995b00) Midnight in Paris
+2018-04-11 19:47:27 [INF] Processing movie (e3234c00162b9c9f6aec8062c594b91f) A Million Ways to Die in the West
+2018-04-11 19:47:28 [INF] Processing movie (2820c7cb4faec3fbd342670cedb1e1fd) Minions
+2018-04-11 19:47:28 [INF] Processing movie (c97387d91f47f373b625b39e65f12567) Minority Report
+2018-04-11 19:47:28 [INF] Processing movie (4afbfc0d6e7b58454660727e5c22254e) Miss Peregrine's Home for Peculiar Children
+2018-04-11 19:47:28 [INF] Processing movie (353dd8cd20217144bee23fb1d8e059bb) Mission Impossible Rogue Nation
+2018-04-11 19:47:28 [INF] Processing movie (0eca6e3f5e4fab0d05fed3e29178577b) Mission: Impossible - Ghost Protocol
+2018-04-11 19:47:28 [INF] Processing movie (cf9d257a9c0a8413124207e81ed6033e) Mission: Impossible II
+2018-04-11 19:47:28 [INF] Processing movie (cd4b8d7f19c85d12babd9f01fb6ff7ff) Mission: Impossible III
+2018-04-11 19:47:28 [INF] Processing movie (07ec9be2acb22eb92f5b350de9364a8e) A Monster Calls
+2018-04-11 19:47:28 [INF] Processing movie (dee49562da81b40343ea2d94b2d1e1df) Monsters University
+2018-04-11 19:47:28 [INF] Processing movie (5bf024a0428e4670e2622d8133e73a65) Moon
+2018-04-11 19:47:28 [INF] Processing movie (87318fb657086791d576e01c35decf17) Moonraker
+2018-04-11 19:47:28 [INF] Processing movie (6a69de042c938f0afde84f8c05e8d79f) A Most Wanted Man
+2018-04-11 19:47:28 [INF] Processing movie (cdef33e40768a94627870f49fe5cffdf) Moulin Rouge!
+2018-04-11 19:47:29 [INF] Processing movie (719dd35a55cfdeb1f5ba2e1e57b414ff) Mr. Bean's Holiday
+2018-04-11 19:47:29 [INF] Processing movie (d78f01e8260d14ba7a60b2508ed2a80b) Mr. Church
+2018-04-11 19:47:29 [INF] Processing movie (e1114d14fbaac84997b827c8d2a688fc) The Muppet Christmas Carol
+2018-04-11 19:47:29 [INF] Processing movie (8d731776ada8ae472a2cbdb7dd2963fa) Muppets Most Wanted
+2018-04-11 19:47:29 [INF] Processing movie (8018db9ecd7aadd0c57d93cccfc85560) The Naked Gun 2½: The Smell of Fear
+2018-04-11 19:47:29 [INF] Processing movie (b74a354f3bfc1c339be9e565e3d587fb) National Treasure
+2018-04-11 19:47:29 [INF] Processing movie (c9e3abf469785a84a8556ee49e02c563) National Treasure: Book of Secrets
+2018-04-11 19:47:29 [INF] Processing movie (5e8e5e1b9027c24404e742ecd8f211ec) Need for Speed
+2018-04-11 19:47:29 [INF] Processing movie (a34a1c59c29583c5a7040625eee29c0e) Nerve
+2018-04-11 19:47:29 [INF] Processing movie (be262897edc4715766feecbcbe8abf98) Never Say Never Again
+2018-04-11 19:47:30 [INF] Processing movie (4928ee4a35ef497320b7c4bb7143bbb4) The Nice Guys
+2018-04-11 19:47:30 [INF] Processing movie (029fe2dd59d17e1342dd0f00f02c511b) The Night of the Generals
+2018-04-11 19:47:30 [INF] Processing movie (c14958c901c3bb5cf21c174d1f0e1bd3) Nineteen Eighty-Four
+2018-04-11 19:47:30 [INF] Processing movie (d47b207d8235e6a33b9692fcc3a40cef) No Country for Old Men
+2018-04-11 19:47:30 [INF] Processing movie (96a46c490fefe329305a00ac53c6fc32) No Strings Attached
+2018-04-11 19:47:30 [INF] Processing movie (33a860d8ad415fcd2703d822f323e4b5) Noah
+2018-04-11 19:47:30 [INF] Processing movie (be7e9f2246a8f4e3bccb1510296dfa2d) Non-Stop
+2018-04-11 19:47:30 [INF] Processing movie (ee058298c22199c56a82e1a367195fd4) Now You See Me
+2018-04-11 19:47:30 [INF] Processing movie (d6c7be7a559d19b8740fd65e9c37472a) Oblivion
+2018-04-11 19:47:30 [INF] Processing movie (312232729edbb48411c1d45e01d96e8d) Ocean's Eleven
+2018-04-11 19:47:30 [INF] Processing movie (56f6df4b7268ca614c4593a442dd0066) Ocean's Thirteen
+2018-04-11 19:47:30 [INF] Processing movie (d25fdb2a82e0b1a1ccef204c63d55c8b) Octopussy
+2018-04-11 19:47:30 [INF] Processing movie (568bca9899e6d84ebd86332051987bd7) Office Space
+2018-04-11 19:47:31 [INF] Processing movie (dc749f395b3bb5b710064fe8870cd740) Oldboy
+2018-04-11 19:47:31 [INF] Processing movie (4436a12b39154322bd558f2a4a17f71c) Olympus Has Fallen
+2018-04-11 19:47:31 [INF] Processing movie (82abb0c7d92a3ddb6b8fdbe820c9c7ac) On Her Majesty's Secret Service
+2018-04-11 19:47:31 [INF] Processing movie (366cfcf7244da1f49f597108c3c365a5) Once Upon a Time in the West
+2018-04-11 19:47:31 [INF] Processing movie (0500fd9733845d35a2f236c163f6ed7f) Pacific Rim
+2018-04-11 19:47:31 [INF] Processing movie (a92431241a92750d1dfc70c762d7d5a4) Paddington
+2018-04-11 19:47:31 [INF] Processing movie (8cb3835b4ac7190f31e581d63f85aaa4) Pandemic
+2018-04-11 19:47:31 [INF] Processing movie (e507574f71da6d505d47941ec6fc583e) Pan's Labyrinth
+2018-04-11 19:47:31 [INF] Processing movie (e26ba747c4be7e40b6a4acb7d2fbf34f) Patriots Day
+2018-04-11 19:47:31 [INF] Processing movie (6a73caa90b5a400499c03ca9f4f4ac0d) Pearl Harbor
+2018-04-11 19:47:31 [INF] Processing movie (e86fd8c869885831bef7b4a89c71fbb9) Penguins of Madagascar
+2018-04-11 19:47:31 [INF] Processing movie (763ce647de8006951b5227223c1ba884) Percy Jackson: Sea of Monsters
+2018-04-11 19:47:32 [INF] Processing movie (6d355c6709fe6e7e9aeb0ad00c029a02) Personal Shopper
+2018-04-11 19:47:32 [INF] Processing movie (c8ce23e2778ee8ed83082bac73c8b4be) Peter Pan
+2018-04-11 19:47:32 [INF] Processing movie (12dd14e5e7d569080bb3f255959effaa) Pineapple Express
+2018-04-11 19:47:32 [INF] Processing movie (9b61377b5343a0f65c284811a8ef7338) Pinokkio
+2018-04-11 19:47:32 [INF] Processing movie (05a3bdb8d5094d95f134e9ca4bf40785) Piratenplaneet: De Schat van Kapitein Flint
+2018-04-11 19:47:32 [INF] Processing movie (5e4e24eecef66200d71f35a0ea41eb77) Pirates of the Caribbean: At World's End
+2018-04-11 19:47:32 [INF] Processing movie (baa83d06cf7b8811ee96ac24d5c534b6) Pirates of the Caribbean: The Curse of the Black Pearl
+2018-04-11 19:47:32 [INF] Processing movie (3f4f0954107c1c8d5d7614b96a5b5536) Pirates of the Caribbean: Dead Man's Chest
+2018-04-11 19:47:32 [INF] Processing movie (8fa3c07c3d8e19108b4d54af72d49421) Pirates of the Caribbean: Salazar's Revenge
+2018-04-11 19:47:33 [INF] Processing movie (aa4adea919ce9a790225dbf87325d1b3) Pitch Perfect
+2018-04-11 19:47:33 [INF] Processing movie (8c72205c3144c53754921d10a2548983) Pitch Perfect 2
+2018-04-11 19:47:33 [INF] Processing movie (2046f3779caf3f13129e3224c507ca96) Pocahontas
+2018-04-11 19:47:33 [INF] Processing movie (c23a4a8b8c33b43792001662231a7bc1) Podzemlje
+2018-04-11 19:47:33 [INF] Processing movie (a9f88812637b567a3a40a927a1a81a30) Pompeii
+2018-04-11 19:47:33 [INF] Processing movie (3b04a14c278d5932adda35758305ea78) Predestination
+2018-04-11 19:47:33 [INF] Processing movie (ee671456f113cf5d4b43f231d93a9c80) The Prestige
+2018-04-11 19:47:33 [INF] Processing movie (affe813ac885118202eab77961b62a62) Project T
+2018-04-11 19:47:34 [INF] Processing movie (bb138b302c34f0e5191f88a0ef4d4daf) Prometheus
+2018-04-11 19:47:34 [INF] Processing movie (d0625f70e3dd4aab64c9ab00fc3c510f) Public Enemies
+2018-04-11 19:47:34 [INF] Processing movie (c3c31df9525b4a815e02452b7172ef11) Pulp Fiction
+2018-04-11 19:47:34 [INF] Processing movie (2b3a5f96b6bb1fc31dad4be179e1f980) The Purple Rose of Cairo
+2018-04-11 19:47:34 [INF] Processing movie (f17118845d4c34f4681b9cca1f7b15b0) Quantum of Solace
+2018-04-11 19:47:34 [INF] Processing movie (9d4b7e4999ea03107802a23b22948df4) R.I.P.D.
+2018-04-11 19:47:34 [INF] Processing movie (9403581cab38484ed686a37b8b240740) Rango
+2018-04-11 19:47:34 [INF] Processing movie (a70f29a99305cb1e2fe10c3c04c64046) Rapunzel
+2018-04-11 19:47:34 [INF] Processing movie (a5a2cb2dc78d75d102a4c3bdb63d6ad6) Ratatouille
+2018-04-11 19:47:34 [INF] Processing movie (e82c47537e4c93c78507e73b8227664d) The Recruit
+2018-04-11 19:47:35 [INF] Processing movie (bed01a18033b9cb01adbde3f008f57be) RED
+2018-04-11 19:47:35 [INF] Processing movie (8c3a8a35489ccaa261df04c2d5a6c969) Regression
+2018-04-11 19:47:35 [INF] Processing movie (0d91e4f0e1fba0b308f3b48c174552cd) Rememory
+2018-04-11 19:47:35 [INF] Processing movie (3c61f2ce8b76bf2bcfe74b4de69a2092) Reservoir Dogs
+2018-04-11 19:47:35 [INF] Processing movie (b626cd167c3be9af5919f3f1e20b3f2f) Resident Evil: Afterlife
+2018-04-11 19:47:35 [INF] Processing movie (9bd45836172648f26af2533e99855930) Resident Evil: Apocalypse
+2018-04-11 19:47:35 [INF] Processing movie (a96adf2c445d290a12e15e0086674e56) Resident Evil: Extinction
+2018-04-11 19:47:35 [INF] Processing movie (2b9631f50e9b8ac7bf6ce73a4b7df36a) Resident Evil: The Final Chapter
+2018-04-11 19:47:35 [INF] Processing movie (c9b5f15fe91ffff421d3166bf7aba93d) The Revenant
+2018-04-11 19:47:35 [INF] Processing movie (134c918357e9cd44c5cb7ca6e30e480d) Riddick
+2018-04-11 19:47:35 [INF] Processing movie (a4e45fd139495c8450e40a92b789fb0f) Rise of the Planet of the Apes
+2018-04-11 19:47:35 [INF] Processing movie (e8034fb44463c0c10b506d3791ce8328) The Road
+2018-04-11 19:47:35 [INF] Processing movie (778dac9e4725eef899bd82a62dd2e603) Robin Hood
+2018-04-11 19:47:35 [INF] Processing movie (afce92e0d9855f927b97d7b8acb68ecb) Robin Hood: Men in Tights
+2018-04-11 19:47:36 [INF] Processing movie (2e7fc159aa69d2e4de8b6468cb45841b) The Rock
+2018-04-11 19:47:36 [INF] Processing movie (3b10e046c8cb27ec26edeb29cd495048) Ronin
+2018-04-11 19:47:36 [INF] Processing movie (9b7346dfcb65a4c9bb2cbf2268f182f1) Room
+2018-04-11 19:47:36 [INF] Processing movie (515e13fe92f08d6461b08e6cbc744e59) S.W.A.T.
+2018-04-11 19:47:36 [INF] Processing movie (2bc18aa2917df1b06afe6dd7d7c99d6e) Sabotage
+2018-04-11 19:47:36 [INF] Processing movie (296f772168023d2db925ca3b85c08b8b) Sacco e Vanzetti
+2018-04-11 19:47:36 [INF] Processing movie (64c7e620d90f6c85c1763e7eca83ec03) Saints and Soldiers
+2018-04-11 19:47:36 [INF] Processing movie (6a2648baa24de9d9477a125f0ee3a58d) Salt
+2018-04-11 19:47:36 [INF] Processing movie (295c7249cd61921328ede85246b056d9) Salvador
+2018-04-11 19:47:36 [INF] Processing movie (f1a95a6338e56f93750814b608f91c8c) San Andreas
+2018-04-11 19:47:36 [INF] Processing movie (71ebc044706c59a0819b4cafbdd2ef3a) Saving Mr. Banks
+2018-04-11 19:47:36 [INF] Processing movie (a41675393513316f5aa1eb2962444a05) Saving Private Ryan
+2018-04-11 19:47:36 [INF] Processing movie (badf317dbc4919fe7739bb178d7d7ee5) Schindler's List
+2018-04-11 19:47:37 [INF] Processing movie (61dcddbe207ab9b90e152a71e3c8d9d1) Se7en
+2018-04-11 19:47:37 [INF] Processing movie (20a6666584e8dd11b9dc20c79e7f6474) Seal Team Eight: Behind Enemy Lines
+2018-04-11 19:47:37 [INF] Processing movie (1a3673653e8752c9f73817798f46142e) The Secret Life of Walter Mitty
+2018-04-11 19:47:37 [INF] Processing movie (380d0ee22bb0c19e18a0c0c5419310ef) See You In Valhalla
+2018-04-11 19:47:37 [INF] Processing movie (1ed3256b8fb8711551dbbfaec59abeff) Senna
+2018-04-11 19:47:37 [INF] Processing movie (55a0397cea131b6a7c0f01c1751b0b74) Serenity
+2018-04-11 19:47:37 [INF] Processing movie (51647b6f7064a46f87f36625f4fba979) A Serious Man
+2018-04-11 19:47:37 [INF] Processing movie (eaf69eec648af18285a6ba816b2b0af4) Sex Tape
+2018-04-11 19:47:37 [INF] Processing movie (9b3842839b2511ecaa138cbcac91af80) The Shallows
+2018-04-11 19:47:37 [INF] Processing movie (e971de344611e8b0484f6497b2ca4831) Shaun of the Dead
+2018-04-11 19:47:37 [INF] Processing movie (a14d65b80625618c247b4c9d313bacc8) The Shawshank Redemption
+2018-04-11 19:47:37 [INF] Processing movie (066fef1b69e709cfb0ed322fcaa2a1ae) Shooter
+2018-04-11 19:47:37 [INF] Processing movie (ce0b005c19292be1487c53d68a8a5236) Shrek
+2018-04-11 19:47:38 [INF] Processing movie (776d07ce035bd4f6f9eaef1f7bee373d) Shrek de Derde
+2018-04-11 19:47:38 [INF] Processing movie (5c3615743aa06c5f6e78f6be689f8f74) Shrek voor Eeuwig en Altijd
+2018-04-11 19:47:38 [INF] Processing movie (5b75d758ec6e0f7ff4cc2084fc9108b5) Shutter Island
+2018-04-11 19:47:38 [INF] Processing movie (a4465c706faad2be2c5c85f2416b21f5) The Silence of the Lambs
+2018-04-11 19:47:38 [INF] Processing movie (d9ade773c6959b042ae72be4be397bce) The Simpsons Movie
+2018-04-11 19:47:38 [INF] Processing movie (f76adb1176cc96685c0fb97ede07d7e4) The Sixth Sense
+2018-04-11 19:47:38 [INF] Processing movie (6d4629a70e51cd0e8b804d6b81db7106) Sjakie & de Chocoladefabriek
+2018-04-11 19:47:38 [INF] Processing movie (bb0f707082a3376d23c8054159486970) Sjakie en de Chocoladefabriek
+2018-04-11 19:47:38 [INF] Processing movie (0636a6fd78b41f14c756d31220b49d62) Skyfall
+2018-04-11 19:47:38 [INF] Processing movie (545e37a4b8cab914519307e49478cd99) Snatch
+2018-04-11 19:47:39 [INF] Processing movie (585e3b46c5318b517241ca7a941158b4) Snow White and the Huntsman
+2018-04-11 19:47:39 [INF] Processing movie (790511eec17e84d285d3279fd4d00371) Snowden
+2018-04-11 19:47:39 [INF] Processing movie (2add4508c7e983b7babcc48d52ea7abb) Some Like It Hot
+2018-04-11 19:47:39 [INF] Processing movie (ecfd223228cca4b638aea57c353d76f5) Son of Saul
+2018-04-11 19:47:39 [INF] Processing movie (13fd8b5a858ee643af3f8d9c64713d95) Soul Plane
+2018-04-11 19:47:39 [INF] Processing movie (7fe9a687b487c77e25e80bfe4fc8e4e0) Source Code
+2018-04-11 19:47:39 [INF] Processing movie (863d9abf447402256d635afaff12c363) South Park: Bigger, Longer & Uncut
+2018-04-11 19:47:39 [INF] Processing movie (fd438e42710f0c4a74d52f719956d7e9) Space Jam
+2018-04-11 19:47:39 [INF] Processing movie (1bb4f2b17e3a595d5cc0d435109df7c8) Spectre
+2018-04-11 19:47:40 [INF] Processing movie (fcb16f2fa3d5d3b4a0952cafbc42d579) Speed
+2018-04-11 19:47:40 [INF] Processing movie (211a99194d50109a9e55d74d15e5464d) Speed 2: Cruise Control
+2018-04-11 19:47:40 [INF] Processing movie (24fa1bf1bb90ed6f4f679f98b58e63bd) Spider-Man 3 (2007)
+2018-04-11 19:47:40 [INF] Processing movie (3ad01f34102677878cecf87f51d67c5b) Spider-Man: Homecoming
+2018-04-11 19:47:40 [INF] Processing movie (541f1db6ece65abdc2f6588bb5355aa0) Spring, Summer, Fall, Winter... And Spring
+2018-04-11 19:47:40 [INF] Processing movie (50f9535b79c37022e2bc796b20769834) The Spy Who Loved Me
+2018-04-11 19:47:40 [INF] Processing movie (fd1407a4cc5e5feab3c6c1b16ff6957f) Stalingrad
+2018-04-11 19:47:41 [INF] Processing movie (b2ccef11b911a837e66103eae0a0aac8) Star Trek
+2018-04-11 19:47:41 [INF] Processing movie (3be79d5f5e1372dcac9113c2b6c60b28) Star Trek Beyond
+2018-04-11 19:47:41 [INF] Processing movie (d220359e3bfbc6d30ffff39bf79400f5) Star Trek Into Darkness
+2018-04-11 19:47:41 [INF] Processing movie (8ee706e80cdba722583f3eaf785030f3) Star Trek IV: The Voyage Home
+2018-04-11 19:47:41 [INF] Processing movie (bc35cb6f0edf6d7efae97ef725e3d09a) Star Wars - Episode IV - A New Hope
+2018-04-11 19:47:41 [INF] Processing movie (09012b30113679b3bea87f192a27fe4c) Star Wars - Episode V - The Empire Strikes Back
+2018-04-11 19:47:42 [INF] Processing movie (3d96f1320158e9d3f6c6f34ced5a6ae5) Star Wars: The Force Awakens
+2018-04-11 19:47:42 [INF] Processing movie (a3d602c63439d29ae9fe6a4efbfffc21) Star Wars: The Last Jedi
+2018-04-11 19:47:42 [WRN] We couldn't find the person with Id 88d3e1cce03c6137dca765ed0c70659c for movie (a3d602c63439d29ae9fe6a4efbfffc21) Star Wars: The Last Jedi in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the genre from the movie now.
+2018-04-11 19:47:42 [INF] Processing movie (e68eccfc1f7e6305924a33e1b07b9a1c) Stardust
+2018-04-11 19:47:42 [INF] Processing movie (1ca50b60c588cffed0456367646d96e6) Stargate
+2018-04-11 19:47:42 [INF] Processing movie (f580e982c0e14164cd3d26cd7ea34734) Starsky & Hutch
+2018-04-11 19:47:42 [INF] Processing movie (f49083cecb486591314eb074ec833b82) Stonehearst Asylum
+2018-04-11 19:47:42 [INF] Processing movie (241051f719841d7618fa7650795476a2) Stormbreaker
+2018-04-11 19:47:42 [INF] Processing movie (ac39bd50d88fa8180c2bbc2457ac880a) Stranger Than Fiction
+2018-04-11 19:47:42 [INF] Processing movie (7f5f92ea1f379e53a4b4b459e6263781) Suicide Squad
+2018-04-11 19:47:43 [INF] Processing movie (63daa050aaac55cd602c1103d7ff4630) Suite Française
+2018-04-11 19:47:43 [INF] Processing movie (9a872e9917556331b09f2a7912129502) Sweeney Todd: The Demon Barber of Fleet Street
+2018-04-11 19:47:43 [INF] Processing movie (c8c4809ab5ff8a11f655b395ed7bb758) Take the Money and Run
+2018-04-11 19:47:43 [INF] Processing movie (7b4763d01d8bda57f669009429baac15) Taken
+2018-04-11 19:47:43 [INF] Processing movie (f2f03993bb7c6ae16d8591e8ab5ea3a9) Taken 2
+2018-04-11 19:47:43 [INF] Processing movie (c1a30073dae2d28bafb99433b41a4135) Taken 3
+2018-04-11 19:47:43 [INF] Processing movie (218b1fa23fa1789de4d1e5a5d44e85e4) Tarzan
+2018-04-11 19:47:43 [INF] Processing movie (798bb9c378bc37c22c6d2fbfeefc6c49) Taxi
+2018-04-11 19:47:43 [INF] Processing movie (64ad165bcca9ea4b00f69bc46b2aa9aa) Taxi 3
+2018-04-11 19:47:43 [INF] Processing movie (fe8b6f1e31257ef22ff515fe562e4a18) Taxi Driver
+2018-04-11 19:47:43 [INF] Processing movie (d82030ab295900b619e5642798bb76e7) Ted 2
+2018-04-11 19:47:43 [INF] Processing movie (9adfa44c27191ddb516fb642fc5a6842) Teenage Mutant Ninja Turtles
+2018-04-11 19:47:44 [INF] Processing movie (de65b6fbbae7f4415fae41c3a30d0984) Teenage Mutant Ninja Turtles
+2018-04-11 19:47:44 [INF] Processing movie (a014127fdc9b7544a53544e2d70e99ad) Teenage Mutant Ninja Turtles: Out of the Shadows
+2018-04-11 19:47:44 [INF] Processing movie (e789540891f3b3efb0517470e323aecc) The Terminal
+2018-04-11 19:47:44 [INF] Processing movie (d948afb5a4748e2d3d542f9fbe0a987c) The Terminator
+2018-04-11 19:47:44 [INF] Processing movie (e7863fa4925a3a1c72cc4ab8df130b48) Terminator 2 Judgment Day (1991)
+2018-04-11 19:47:44 [INF] Processing movie (b8f39b82cfc5697b232cc474eccab85a) The Theory of Everything
+2018-04-11 19:47:44 [INF] Processing movie (130cba068d234d55b10bcb06ed40c026) The Thin Red Line
+2018-04-11 19:47:44 [INF] Processing movie (a6290d51182c0bc6a5aefb9f848b640e) This Is Where I Leave You
+2018-04-11 19:47:44 [INF] Processing movie (f1ce80873a0401ee4ec77d69861fd859) Thor: The Dark World
+2018-04-11 19:47:44 [INF] Processing movie (22e94323246b830ed1237a2b43c55dbf) Thor: Ragnarok
+2018-04-11 19:47:44 [INF] Processing movie (c36ff597ee3f2842415be760d69f6f85) Thunderball
+2018-04-11 19:47:44 [INF] Processing movie (093eec5c4ddd46c81e6d73dff4213fce) Time Bandits
+2018-04-11 19:47:44 [INF] Processing movie (190fd54781337ce3f7383fdaddbf8cce) Time Lapse
+2018-04-11 19:47:45 [INF] Processing movie (a592c42033a2250f5b8609b33d05dcd8) Titanic
+2018-04-11 19:47:45 [INF] Processing movie (95da27e978ba4c49f73cfc76c857e0bd) Tomorrow Never Dies
+2018-04-11 19:47:45 [INF] Processing movie (91e5bb075d7c8aa996ed64d13aada1f3) Total Recall
+2018-04-11 19:47:45 [INF] Processing movie (b1a4dff98c182e02e668bda4fd845b40) Toy Story
+2018-04-11 19:47:45 [INF] Processing movie (b3c28b8394c5ed6b0e75d8f7cf46a560) Toy Story 2
+2018-04-11 19:47:45 [INF] Processing movie (c494b45b6588f47e0c079c34d2839cbe) Toy Story 3
+2018-04-11 19:47:45 [INF] Processing movie (7c961789cc53c3a72c8127eb1ee4eb62) Trainwreck
+2018-04-11 19:47:45 [INF] Processing movie (34a29158f8a1fdc1cc8616dfa6ce95c4) Transcendence
+2018-04-11 19:47:45 [INF] Processing movie (845b227c9cfecdb43904cd57e671a5a0) Transformers Revenge of the Fallen (2009)
+2018-04-11 19:47:45 [INF] Processing movie (b7f9b9ce987fbf84ee12ae1743c1a57e) Transformers: Dark of the Moon
+2018-04-11 19:47:45 [INF] Processing movie (5215126db2f17f91782156b2bae71cf0) Trolls
+2018-04-11 19:47:46 [INF] Processing movie (e7f0163543b4b4c4bd85e61b12f89251) TRON: Legacy
+2018-04-11 19:47:46 [INF] Processing movie (a38970b4c266235824bbe22a09aed015) Trumbo
+2018-04-11 19:47:46 [INF] Processing movie (f1f39419f5e8fc3253d989c64fc08aae) Twelve Monkeys
+2018-04-11 19:47:46 [INF] Processing movie (14fc00bdc4083e051d344d347ef1f3aa) Twilight
+2018-04-11 19:47:46 [INF] Processing movie (7ab5df29531c89fe91f45fa7a4022dbf) The Twilight Saga: Breaking Dawn - Part 2
+2018-04-11 19:47:46 [INF] Processing movie (bfde4cdfe96210a88b939e2ffe57630f) U-571
+2018-04-11 19:47:46 [INF] Processing movie (c62abe182b15ee372b830f5c1ddec2d7) Unbreakable
+2018-04-11 19:47:46 [INF] Processing movie (b0924ee0a5f17fbff6435c3dea40b0da) Underworld: Blood Wars
+2018-04-11 19:47:46 [INF] Processing movie (2dc1c8ff5a634f07adf6e0eb7c431926) Underworld: Evolution
+2018-04-11 19:47:46 [INF] Processing movie (66dfbfefb84154b094a3c432aba96f2d) Unforgettable
+2018-04-11 19:47:46 [INF] Processing movie (354e85cd947327a8e8fff4781b5917a2) The Untouchables
+2018-04-11 19:47:47 [INF] Processing movie (e1555540adc33d16a31aa8b96c079e97) Up
+2018-04-11 19:47:47 [INF] Processing movie (a9e82c8fb5d454c77dd687275db6d2d9) USS Indianapolis: Men of Courage
+2018-04-11 19:47:47 [INF] Processing movie (e43cccffe980a298c0447bfa9f0d3983) The Usual Suspects
+2018-04-11 19:47:47 [INF] Processing movie (1bd8e55afed30edf36c9f8749958a18f) V for Vendetta
+2018-04-11 19:47:47 [INF] Processing movie (887b6483235cdd554b8fe7eb463db679) Valerian and the City of a Thousand Planets
+2018-04-11 19:47:47 [INF] Processing movie (8bc0fd3b87fb8e28a53d6b7f52d96952) Valkyrie
+2018-04-11 19:47:47 [INF] Processing movie (88ecf9519f3bc6b6250b8c49773f0573) Vampire Academy
+2018-04-11 19:47:47 [INF] Processing movie (5bb2c7505d5b7d84480478e531eb3931) Van Helsing (2004)
+2018-04-11 19:47:47 [INF] Processing movie (819c010816ca9dedf268fa03a2fc5ae1) Vanilla Sky
+2018-04-11 19:47:47 [INF] Processing movie (c75cffc7da5ae08c2cbf64eb83a33759) Verschrikkelijke Ikke
+2018-04-11 19:47:47 [INF] Processing movie (615d007e409125728bd221c745bbc312) Verschrikkelijke Ikke 2
+2018-04-11 19:47:48 [INF] Processing movie (17cfb25d704515c2ff801365b232bd73) Verschrikkelijke Ikke 3
+2018-04-11 19:47:48 [INF] Processing movie (95a9b78098d804625e5b300aff40f804) A View to a Kill
+2018-04-11 19:47:48 [WRN] We couldn't find the person with Id 49d0ec394460057a181c7267eb982151 for movie (95a9b78098d804625e5b300aff40f804) A View to a Kill in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the genre from the movie now.
+2018-04-11 19:47:48 [INF] Processing movie (c58042e4f8becc1dd22028271de7ee0c) Vijftig Tinten Grijs
+2018-04-11 19:47:48 [INF] Processing movie (033f06636f7a5e146bdc518fbeee1c35) Walk the Line
+2018-04-11 19:47:48 [INF] Processing movie (07e39675cbb35c75838f7fb97a63688d) The Wall
+2018-04-11 19:47:48 [INF] Processing movie (a2a0843774252935a52c127a1a1c2cc4) Wall.E
+2018-04-11 19:47:48 [INF] Processing movie (d237aa7335d22e4ea68df0f93186f398) Wanted
+2018-04-11 19:47:48 [INF] Processing movie (7a67f97e28320cd8ac081fd153ba0829) War Dogs
+2018-04-11 19:47:48 [INF] Processing movie (9cafc19990f8990c50bea020003fcc5b) Warcraft: The Beginning
+2018-04-11 19:47:49 [INF] Processing movie (2c71f4647db0bc1cacd92aa079b66fba) Watchmen
+2018-04-11 19:47:49 [INF] Processing movie (659aef42d1e1fd4c6e50b5b37391d441) What We Do in the Shadows
+2018-04-11 19:47:49 [INF] Processing movie (ca355aeabeb68762ea4adecada2ef737) Who Framed Roger Rabbit
+2018-04-11 19:47:49 [INF] Processing movie (fa39f803ca2d0d9f8f978fb7b08cbd27) The Whole Nine Yards
+2018-04-11 19:47:49 [INF] Processing movie (de05f132b0909d34c881dc8a0cdab571) Who's Afraid of Virginia Woolf?
+2018-04-11 19:47:49 [INF] Processing movie (c1eb92370a286f3c2191d4918c8f9ed1) Windtalkers
+2018-04-11 19:47:49 [INF] Processing movie (546309d16eed92ff444388c00cb33743) Winnie de Poeh
+2018-04-11 19:47:49 [INF] Processing movie (d7a10d8447505f2c6da2342e96cf0412) The Wolf of Wall Street
+2018-04-11 19:47:49 [INF] Processing movie (70968c7cac2b49225dd9c2441079c23c) Wonder
+2018-04-11 19:47:49 [INF] Processing movie (ea83dd6b1a00157e444320613842bc43) Wonder Woman
+2018-04-11 19:47:50 [INF] Processing movie (8524567c88bb9372daf3194c89ddbc57) The World Is Not Enough
+2018-04-11 19:47:50 [INF] Processing movie (e4e11f738a04f86c1d8e5fcbfef89a06) World War Z
+2018-04-11 19:47:50 [INF] Processing movie (0753e7eee3942601093c1c2b01caea97) The World's End
+2018-04-11 19:47:50 [INF] Processing movie (ea473c33ce1ceeed868a5218a82db8fe) Wreck-It Ralph
+2018-04-11 19:47:50 [INF] Processing movie (8fd76c85794595ab21b86776c7347638) www.yubraca.net
+2018-04-11 19:47:50 [INF] Processing movie (9268a7c4b03f043837bb69510e1857ee) The X Files: I Want to Believe
+2018-04-11 19:47:50 [INF] Processing movie (29dcdbb0806a68f5b11f62ec047829de) X2
+2018-04-11 19:47:50 [INF] Processing movie (a29feb8d2e67afa075a23587ceef77ea) X-Men
+2018-04-11 19:47:50 [INF] Processing movie (6956bf559fdf9c3a0bf0d24beaf869ff) X-Men: Apocalypse
+2018-04-11 19:47:50 [INF] Processing movie (a5bc68fc5bb1270b161d68221601136b) X-Men: First Class
+2018-04-11 19:47:51 [INF] Processing movie (f1bfe071c44abbd768faddeae9dacf5a) X-Men: The Last Stand
+2018-04-11 19:47:51 [INF] Processing movie (a991315938028f2f52cf159b5ca82353) xXx: Return of Xander Cage
+2018-04-11 19:47:51 [INF] Processing movie (debdd4c29c4318f8a0f55538438518a5) You Only Live Twice
+2018-04-11 19:47:51 [INF] Processing movie (cad4f68bfaa40c814399740afd69a255) Youth
+2018-04-11 19:47:51 [INF] Processing movie (daf6b38304e70c5a53fc7dcd9a704d99) Z
+2018-04-11 19:47:51 [INF] Processing movie (477e40cb0e579cc43d46ff52fea8dd9d) Život je čudo
+2018-04-11 19:47:51 [INF] Processing movie (118f112bab566a2420ceed982bffd533) Zoolander
+2018-04-11 19:47:51 [INF] Processing movie (72a07769be7307ba5c59b31b954aa3eb) Zootopia
+2018-04-11 19:47:51 [INF] Processing movie (65a40b6ad22061e3a9026aa7a8a68727) Zulu
+2018-04-11 19:47:51 [INF] Processing movie (e5cd0a2a7b935440b6a1811cd447290c) ¡Átame!
+2018-04-11 19:47:51 [INF] Processing movie (184dcba0ed4e1de8e02e8abee57ba51d) عمر
+2018-04-11 19:47:52 [INF] Processing movie (e4d55cf101d52ce1bfdb1bcab2c836c0) 수취인불명
+2018-04-11 19:47:52 [INF] Movie sync completed
+2018-04-11 19:47:52 [INF] Movie sync "Completed" after 2 minute(s) and 9 seconds
+2018-04-11 19:47:52 [INF] ExecuteQueuedTasks
