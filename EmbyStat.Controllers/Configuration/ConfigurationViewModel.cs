@@ -7,7 +7,7 @@
 	    public string EmbyUserName { get; set; }
 	    public string EmbyServerAddress { get; set; }
 	    public string Username { get; set; }
-	    public string UserId { get; set; }
+	    public string Id { get; set; }
 	    public string Language { get; set; }
 	    public string ServerName { get; set; }
 	}

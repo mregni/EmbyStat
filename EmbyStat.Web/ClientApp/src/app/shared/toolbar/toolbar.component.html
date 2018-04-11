@@ -2,7 +2,7 @@
   <button mat-button (click)="toggleSideNav.emit()" class="sidenav-toggle">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>EmbyStat</span>
+  <img src="../../../assets/images/logo_white.png" class="toolbar__logo"/>
   <span class="bar-spacer"></span>
   <div *ngIf="configuration$ | async as config">
     <a mat-raised-button href="{{config.embyServerAddress}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">Emby server</a>

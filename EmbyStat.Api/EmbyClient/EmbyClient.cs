@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
+using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Serialization;
 using MediaBrowser.Model.System;
 using MediaBrowser.Model.Users;
@@ -94,9 +96,53 @@ namespace EmbyStat.Api.EmbyClient
 
 			return await PostAsyncToString(url, args, CancellationToken.None).ConfigureAwait(false);
 		}
-		
 
-		public void Dispose()
+	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))
+	    {
+	        var url = GetItemListUrl(query);
+
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        {
+	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
+	        }
+	    }
+
+	    public async Task<QueryResult<BaseItemDto>> GetUserViews(string userId, CancellationToken cancellationToken = default(CancellationToken))
+	    {
+	        var url = GetApiUrl("Users/" + userId + "/Views");
+
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        {
+	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
+	        }
+	    }
+
+	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken = default(CancellationToken))
+	    {
+	        var url = GetItemByNameListUrl("Persons", query);
+
+	        if (query.PersonTypes != null && query.PersonTypes.Length > 0)
+	        {
+	            url += "&PersonTypes=" + string.Join(",", query.PersonTypes);
+	        }
+
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        {
+	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
+	        }
+	    }
+
+	    public async Task<QueryResult<BaseItemDto>> GetGenresAsync(ItemsByNameQuery query, CancellationToken cancellationToken = default(CancellationToken))
+	    {
+	        var url = GetItemByNameListUrl("Genres", query);
+
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        {
+	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
+	        }
+	    }
+
+        public void Dispose()
 		{
 
 		}

@@ -10,11 +10,9 @@ namespace EmbyStat.Tasks.Tasks
 {
     public class PingEmbyTask : IScheduledTask
     {
-        private readonly IApplicationBuilder _app;
-
         public PingEmbyTask(IApplicationBuilder app)
         {
-            _app = app;
+           
         }
 
         public string Name => "Check Emby connection";

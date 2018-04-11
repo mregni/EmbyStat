@@ -9,7 +9,7 @@ using EmbyStat.Common.Progress;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Common.Tasks.Interface;
-using EmbyStat.Repositories.EmbyTask;
+using EmbyStat.Repositories.Interfaces;
 using Serilog;
 
 namespace EmbyStat.Tasks
@@ -288,7 +288,7 @@ namespace EmbyStat.Tasks
         private List<TaskTriggerInfo> LoadTriggerSettings()
         {
             var triggers = _taskRepository.GetAllTaskTriggerInfo().ToList();
-            if (triggers.Any())
+            if (triggers.Any(x => x.Type == ScheduledTask.Key))
             {
                 return triggers;
             }

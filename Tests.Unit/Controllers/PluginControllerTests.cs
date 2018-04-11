@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Controllers.Plugin;
-using EmbyStat.Services.Plugin;
+using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Plugins;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -28,9 +27,8 @@ namespace Tests.Unit.Controllers
 
 			_pluginServiceMock = new Mock<IPluginService>();
 			_pluginServiceMock.Setup(x => x.GetInstalledPlugins()).Returns(_plugins);
-			var loggerMock = new Mock<ILogger<PluginController>>();
 
-			_subject = new PluginController(_pluginServiceMock.Object, loggerMock.Object);
+			_subject = new PluginController(_pluginServiceMock.Object);
 		}
 
 		public void Dispose()

@@ -177,7 +177,7 @@ namespace EmbyStat.Api.EmbyClient
         /// <param name="value">The value.</param>
         public void AddIfNotNull(string name, IEnumerable<string> value)
         {
-            if (value != null)
+            if (value != null && value.Any())
             {
                 Add(name, value);
             }

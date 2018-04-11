@@ -74,7 +74,8 @@
   },
   "TASKS": {
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only." 
+    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+    "MOVIESYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!" 
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
