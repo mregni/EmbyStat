@@ -287,5 +287,5 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-*/EmbyStat.Web/Logs
+EmbyStat.Web/Logs
 *.db
