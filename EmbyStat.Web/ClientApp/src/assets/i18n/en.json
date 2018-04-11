@@ -70,7 +70,8 @@
     "SECONDS": "{{seconds}} second(s)",
     "AND": "and",
     "AGO": "ago",
-    "FOR": "for" 
+    "FOR": "for",
+    "BUTFAILED": "but failed after"
   },
   "TASKS": {
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",

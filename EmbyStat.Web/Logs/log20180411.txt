@@ -797,3 +797,312 @@
 2018-04-11 19:47:52 [INF] Movie sync completed
 2018-04-11 19:47:52 [INF] Movie sync "Completed" after 2 minute(s) and 9 seconds
 2018-04-11 19:47:52 [INF] ExecuteQueuedTasks
+2018-04-11 20:35:28 [INF] Booting up server
+2018-04-11 20:35:32 [INF] Migrating database started
+2018-04-11 20:35:32 [INF] Migrating database ended
+2018-04-11 20:35:33 [INF] Daily trigger for Small sync with Emby set to fire at 12/04/2018 0:30:00, which is 234.445537258333 minutes from now.
+2018-04-11 20:35:33 [INF] Daily trigger for Movie sync set to fire at 12/04/2018 0:00:00, which is 204.444721235 minutes from now.
+2018-04-11 20:36:02 [INF] Getting server configuration from database.
+2018-04-11 21:35:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:35:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:35:33 [INF] Executing Check Emby connection
+2018-04-11 21:35:33 [ERR] Error
+2018-04-11 21:35:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:35:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:37:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:37:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:37:33 [INF] Executing Check Emby connection
+2018-04-11 21:37:33 [ERR] Error
+2018-04-11 21:37:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:37:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:39:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:39:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:39:33 [INF] Executing Check Emby connection
+2018-04-11 21:39:33 [ERR] Error
+2018-04-11 21:39:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:39:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:41:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:41:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:41:33 [INF] Executing Check Emby connection
+2018-04-11 21:41:33 [ERR] Error
+2018-04-11 21:41:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:41:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:43:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:43:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:43:33 [INF] Executing Check Emby connection
+2018-04-11 21:43:33 [ERR] Error
+2018-04-11 21:43:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:43:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:45:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:45:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:45:33 [INF] Executing Check Emby connection
+2018-04-11 21:45:33 [ERR] Error
+2018-04-11 21:45:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:45:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:47:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:47:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:47:33 [INF] Executing Check Emby connection
+2018-04-11 21:47:33 [ERR] Error
+2018-04-11 21:47:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:47:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:49:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:49:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:49:33 [INF] Executing Check Emby connection
+2018-04-11 21:49:33 [ERR] Error
+2018-04-11 21:49:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:49:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:51:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:51:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:51:33 [INF] Executing Check Emby connection
+2018-04-11 21:51:33 [ERR] Error
+2018-04-11 21:51:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:51:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:53:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:53:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:53:33 [INF] Executing Check Emby connection
+2018-04-11 21:53:33 [ERR] Error
+2018-04-11 21:53:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:53:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:55:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:55:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:55:33 [INF] Executing Check Emby connection
+2018-04-11 21:55:33 [ERR] Error
+2018-04-11 21:55:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:55:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:57:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:57:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:57:33 [INF] Executing Check Emby connection
+2018-04-11 21:57:33 [ERR] Error
+2018-04-11 21:57:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:57:33 [INF] ExecuteQueuedTasks
+2018-04-11 21:59:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 21:59:33 [INF] Queueing task PingEmbyTask
+2018-04-11 21:59:33 [INF] Executing Check Emby connection
+2018-04-11 21:59:33 [ERR] Error
+2018-04-11 21:59:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 21:59:33 [INF] ExecuteQueuedTasks
+2018-04-11 22:01:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:01:33 [INF] Queueing task PingEmbyTask
+2018-04-11 22:01:33 [INF] Executing Check Emby connection
+2018-04-11 22:01:33 [ERR] Error
+2018-04-11 22:01:33 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:01:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:03:33 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:03:33 [INF] Queueing task PingEmbyTask
+2018-04-11 22:03:33 [INF] Executing Check Emby connection
+2018-04-11 22:03:34 [ERR] Error
+2018-04-11 22:03:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:03:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:05:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:05:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:05:34 [INF] Executing Check Emby connection
+2018-04-11 22:05:34 [ERR] Error
+2018-04-11 22:05:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:05:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:07:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:07:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:07:34 [INF] Executing Check Emby connection
+2018-04-11 22:07:34 [ERR] Error
+2018-04-11 22:07:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:07:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:09:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:09:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:09:34 [INF] Executing Check Emby connection
+2018-04-11 22:09:34 [ERR] Error
+2018-04-11 22:09:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:09:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:11:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:11:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:11:34 [INF] Executing Check Emby connection
+2018-04-11 22:11:34 [ERR] Error
+2018-04-11 22:11:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:11:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:13:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:13:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:13:34 [INF] Executing Check Emby connection
+2018-04-11 22:13:34 [ERR] Error
+2018-04-11 22:13:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:13:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:15:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:15:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:15:34 [INF] Executing Check Emby connection
+2018-04-11 22:15:34 [ERR] Error
+2018-04-11 22:15:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:15:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:17:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:17:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:17:34 [INF] Executing Check Emby connection
+2018-04-11 22:17:34 [ERR] Error
+2018-04-11 22:17:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:17:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:19:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:19:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:19:34 [INF] Executing Check Emby connection
+2018-04-11 22:19:34 [ERR] Error
+2018-04-11 22:19:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:19:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:21:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:21:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:21:34 [INF] Executing Check Emby connection
+2018-04-11 22:21:34 [ERR] Error
+2018-04-11 22:21:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:21:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:23:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:23:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:23:34 [INF] Executing Check Emby connection
+2018-04-11 22:23:34 [ERR] Error
+2018-04-11 22:23:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:23:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:25:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:25:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:25:34 [INF] Executing Check Emby connection
+2018-04-11 22:25:34 [ERR] Error
+2018-04-11 22:25:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:25:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:27:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:27:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:27:34 [INF] Executing Check Emby connection
+2018-04-11 22:27:34 [ERR] Error
+2018-04-11 22:27:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:27:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:29:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:29:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:29:34 [INF] Executing Check Emby connection
+2018-04-11 22:29:34 [ERR] Error
+2018-04-11 22:29:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:29:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:31:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:31:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:31:34 [INF] Executing Check Emby connection
+2018-04-11 22:31:34 [ERR] Error
+2018-04-11 22:31:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:31:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:33:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:33:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:33:34 [INF] Executing Check Emby connection
+2018-04-11 22:33:34 [ERR] Error
+2018-04-11 22:33:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:33:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:35:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:35:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:35:34 [INF] Executing Check Emby connection
+2018-04-11 22:35:34 [ERR] Error
+2018-04-11 22:35:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:35:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:37:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:37:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:37:34 [INF] Executing Check Emby connection
+2018-04-11 22:37:34 [ERR] Error
+2018-04-11 22:37:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:37:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:39:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:39:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:39:34 [INF] Executing Check Emby connection
+2018-04-11 22:39:34 [ERR] Error
+2018-04-11 22:39:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:39:34 [INF] ExecuteQueuedTasks
+2018-04-11 22:41:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:41:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:41:34 [INF] Executing Check Emby connection
+2018-04-11 22:41:34 [ERR] Error
+2018-04-11 22:41:34 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:41:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:43:34 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:43:34 [INF] Queueing task PingEmbyTask
+2018-04-11 22:43:34 [INF] Executing Check Emby connection
+2018-04-11 22:43:35 [ERR] Error
+2018-04-11 22:43:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:43:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:45:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:45:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:45:35 [INF] Executing Check Emby connection
+2018-04-11 22:45:35 [ERR] Error
+2018-04-11 22:45:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:45:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:47:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:47:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:47:35 [INF] Executing Check Emby connection
+2018-04-11 22:47:35 [ERR] Error
+2018-04-11 22:47:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:47:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:49:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:49:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:49:35 [INF] Executing Check Emby connection
+2018-04-11 22:49:35 [ERR] Error
+2018-04-11 22:49:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:49:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:51:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:51:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:51:35 [INF] Executing Check Emby connection
+2018-04-11 22:51:35 [ERR] Error
+2018-04-11 22:51:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:51:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:53:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:53:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:53:35 [INF] Executing Check Emby connection
+2018-04-11 22:53:35 [ERR] Error
+2018-04-11 22:53:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:53:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:55:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:55:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:55:35 [INF] Executing Check Emby connection
+2018-04-11 22:55:35 [ERR] Error
+2018-04-11 22:55:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:55:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:57:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:57:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:57:35 [INF] Executing Check Emby connection
+2018-04-11 22:57:35 [ERR] Error
+2018-04-11 22:57:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:57:35 [INF] ExecuteQueuedTasks
+2018-04-11 22:59:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 22:59:35 [INF] Queueing task PingEmbyTask
+2018-04-11 22:59:35 [INF] Executing Check Emby connection
+2018-04-11 22:59:35 [ERR] Error
+2018-04-11 22:59:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 22:59:35 [INF] ExecuteQueuedTasks
+2018-04-11 23:01:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 23:01:35 [INF] Queueing task PingEmbyTask
+2018-04-11 23:01:35 [INF] Executing Check Emby connection
+2018-04-11 23:01:35 [ERR] Error
+2018-04-11 23:01:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:01:35 [INF] ExecuteQueuedTasks
+2018-04-11 23:03:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 23:03:35 [INF] Queueing task PingEmbyTask
+2018-04-11 23:03:35 [INF] Executing Check Emby connection
+2018-04-11 23:03:35 [ERR] Error
+2018-04-11 23:03:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:03:35 [INF] ExecuteQueuedTasks
+2018-04-11 23:05:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 23:05:35 [INF] Queueing task PingEmbyTask
+2018-04-11 23:05:35 [INF] Executing Check Emby connection
+2018-04-11 23:05:35 [ERR] Error
+2018-04-11 23:05:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:05:35 [INF] ExecuteQueuedTasks
+2018-04-11 23:07:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 23:07:35 [INF] Queueing task PingEmbyTask
+2018-04-11 23:07:35 [INF] Executing Check Emby connection
+2018-04-11 23:07:35 [ERR] Error
+2018-04-11 23:07:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:07:35 [INF] ExecuteQueuedTasks
+2018-04-11 23:08:33 [INF] Getting all background tasks.
+2018-04-11 23:08:37 [INF] Executing Check Emby connection
+2018-04-11 23:08:37 [ERR] Error
+2018-04-11 23:08:37 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:08:37 [INF] ExecuteQueuedTasks
+2018-04-11 23:08:43 [INF] Executing Check Emby connection
+2018-04-11 23:08:43 [ERR] Error
+2018-04-11 23:08:43 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:08:43 [INF] ExecuteQueuedTasks
+2018-04-11 23:08:54 [INF] Getting server configuration from database.
+2018-04-11 23:08:55 [INF] Getting all background tasks.
+2018-04-11 23:08:58 [INF] Executing Check Emby connection
+2018-04-11 23:08:58 [ERR] Error
+2018-04-11 23:08:58 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:08:58 [INF] ExecuteQueuedTasks
+2018-04-11 23:09:35 [INF] IntervalTrigger fired for task: Check Emby connection
+2018-04-11 23:09:35 [INF] Queueing task PingEmbyTask
+2018-04-11 23:09:35 [INF] Executing Check Emby connection
+2018-04-11 23:09:35 [ERR] Error
+2018-04-11 23:09:35 [INF] Check Emby connection "Failed" after 0 minute(s) and 0 seconds
+2018-04-11 23:09:35 [INF] ExecuteQueuedTasks

@@ -22,6 +22,7 @@ namespace EmbyStat.Tasks.Tasks
 
         public Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
         {
+            throw new Exception();
             return Task.Run(() =>
             {
                 progress.Report(10);
