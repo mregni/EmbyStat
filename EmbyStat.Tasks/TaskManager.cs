@@ -8,7 +8,7 @@ using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Common.Tasks.Interface;
-using EmbyStat.Repositories.EmbyTask;
+using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 

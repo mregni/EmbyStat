@@ -2,12 +2,14 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using EmbyStat.Repositories;
+using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+using Serilog.Exceptions;
+using Serilog.Exceptions.Core;
 
 namespace EmbyStat.Web
 {
@@ -65,6 +67,7 @@ namespace EmbyStat.Web
 				.MinimumLevel.Information()
 #endif
 				.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder().WithDefaultDestructurers().WithRootName("Exception"))
 				.Enrich.FromLogContext()
 				.WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
 				.CreateLogger();

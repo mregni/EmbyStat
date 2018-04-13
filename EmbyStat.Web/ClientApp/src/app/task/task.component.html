@@ -8,14 +8,16 @@
   <div class="task__center">
     <div class="task__tasktitle">{{task.name}}</div>
     <div class="task__tasksub" *ngIf="task.state === 0">
-      <div *ngIf="task.lastExecutionResult !== null && task.lastExecutionResult.endTimeUtc !== null else no_run">
+      <div *ngIf="task.lastExecutionResult !== null && task.lastExecutionResult.endTimeUtc !== null else no_run"
+           [ngClass]="{'task__failed':task.lastExecutionResult.status === 1}">
         <div *ngIf="hasNoTime(task)">
           {{ 'TASK.LASTRUNNOW' | translate}}
         </div>
         <div *ngIf="!hasNoTime(task)">
           {{ 'TASK.LASTRUN' | translate}}
           <span *ngIf="hasHours(task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToHoursAgo} }}</span><span *ngIf="needsComma(task)">, </span>
+            {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToHoursAgo} }}
+          </span><span *ngIf="needsComma(task)">, </span>
           <span *ngIf="hasMinutes(task.lastExecutionResult.endTimeUtc)">
             {{'TASK.MINUTES' | translate: { minutes: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToMinutesAgo} }}
           </span>
@@ -25,10 +27,16 @@
           <span *ngIf="hasSeconds(task.lastExecutionResult.endTimeUtc)">
             {{'TASK.SECONDS' | translate: { seconds: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToSecondsAgo} }}
           </span>
-          {{ 'TASK.AGO' | translate }},
-          {{ 'TASK.FOR' | translate }}
+            {{ 'TASK.AGO' | translate }},
+          <span *ngIf="task.lastExecutionResult.status === 0">
+            {{ 'TASK.FOR' | translate }}
+          </span>
+          <span *ngIf="task.lastExecutionResult.status === 1">
+            {{ 'TASK.BUTFAILED' | translate}}
+          </span>
           <span *ngIf="hasHours(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.startTimeUtc | amLocal | convertToHoursAgo:task.lastExecutionResult.endTimeUtc } }}</span><span *ngIf="needsCommaFor(task)">, </span>
+            {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.startTimeUtc | amLocal | convertToHoursAgo:task.lastExecutionResult.endTimeUtc } }}
+          </span><span *ngIf="needsCommaFor(task)">, </span>
           <span *ngIf="hasMinutes(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
             {{'TASK.MINUTES' | translate: { minutes: task.lastExecutionResult.startTimeUtc | amLocal | convertToMinutesAgo:task.lastExecutionResult.endTimeUtc } }}
           </span>

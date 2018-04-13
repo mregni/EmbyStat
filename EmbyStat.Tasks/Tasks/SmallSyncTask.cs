@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
-using EmbyStat.Repositories.Config;
-using EmbyStat.Repositories.EmbyDrive;
-using EmbyStat.Repositories.EmbyPlugin;
-using EmbyStat.Repositories.EmbyServerInfo;
+using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,21 +16,19 @@ namespace EmbyStat.Tasks.Tasks
 {
     public class SmallSyncTask : IScheduledTask
     {
-        private readonly IApplicationBuilder _app;
         private readonly IEmbyClient _embyClient;
-        private readonly IEmbyPluginRepository _embyPluginRepository;
-        private readonly IEmbyServerInfoRepository _embyServerInfoRepository;
+        private readonly IPluginRepository _embyPluginRepository;
+        private readonly IServerInfoRepository _embyServerInfoRepository;
         private readonly IConfigurationRepository _configurationRepository;
-        private readonly IEmbyDriveRepository _embyDriveRepository;
+        private readonly IDriveRepository _embyDriveRepository;
 
         public SmallSyncTask(IApplicationBuilder app)
         {
-            _app = app;
             _embyClient = app.ApplicationServices.GetService<IEmbyClient>();
-            _embyPluginRepository = app.ApplicationServices.GetService<IEmbyPluginRepository>();
-            _embyServerInfoRepository = app.ApplicationServices.GetService<IEmbyServerInfoRepository>();
+            _embyPluginRepository = app.ApplicationServices.GetService<IPluginRepository>();
+            _embyServerInfoRepository = app.ApplicationServices.GetService<IServerInfoRepository>();
             _configurationRepository = app.ApplicationServices.GetService<IConfigurationRepository>();
-            _embyDriveRepository = app.ApplicationServices.GetService<IEmbyDriveRepository>();
+            _embyDriveRepository = app.ApplicationServices.GetService<IDriveRepository>();
         }
 
         public string Name => "Small sync with Emby";

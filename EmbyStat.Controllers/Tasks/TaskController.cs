@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common.Tasks;
-using EmbyStat.Services.Tasks;
+using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 

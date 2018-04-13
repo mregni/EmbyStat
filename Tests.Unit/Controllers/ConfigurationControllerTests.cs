@@ -1,7 +1,7 @@
 ﻿using System;
+using EmbyStat.Common.Models;
 using EmbyStat.Controllers.Configuration;
-using EmbyStat.Repositories.Config;
-using EmbyStat.Services.Config;
+using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +25,7 @@ namespace Tests.Unit.Controllers
 			    EmbyUserName = "admin",
 			    Id = "0987654321",
 			    Language = "en",
-			    UserId = "12345",
+			    EmbyUserId = "12345",
 			    Username = "usernameAdmin",
 			    WizardFinished = false
 		    };
@@ -62,20 +62,20 @@ namespace Tests.Unit.Controllers
 			    EmbyServerAddress = "https://localhost:8096",
 			    EmbyUserName = "admin",
 			    Language = "en",
-			    UserId = "12345",
+			    Id = "12345",
 			    Username = "usernameAdmin",
 			    WizardFinished = false
 		    };
 
 		    _subject.Update(configuration);
 
-		    _configurationServiceMock.Verify(x => x.SaveServerSettings(It.Is<EmbyStat.Repositories.Config.Configuration>(
+		    _configurationServiceMock.Verify(x => x.SaveServerSettings(It.Is<Configuration>(
 			    y => y.WizardFinished == configuration.WizardFinished &&
 			         y.AccessToken == configuration.AccessToken &&
 			         y.EmbyServerAddress == configuration.EmbyServerAddress &&
 			         y.EmbyUserName == configuration.EmbyUserName &&
 			         y.Language == configuration.Language &&
-			         y.UserId == configuration.UserId &&
+			         y.Id == configuration.Id &&
 			         y.Username == configuration.Username)), Times.Once);
 		    _configurationServiceMock.Verify(x => x.GetServerSettings(), Times.Once);
 	    }

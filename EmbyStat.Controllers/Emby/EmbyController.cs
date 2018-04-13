@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Services.Emby;
-using EmbyStat.Services.Emby.Models;
+using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
