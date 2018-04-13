@@ -5,6 +5,7 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Controllers.Configuration;
 using EmbyStat.Controllers.Emby;
+using EmbyStat.Controllers.Movie;
 using EmbyStat.Controllers.Plugin;
 using EmbyStat.Controllers.Tasks;
 using EmbyStat.Services.Models;
@@ -31,6 +32,7 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<TaskInfo, TaskInfoViewModel>();
 	        CreateMap<TaskResult, TaskResultViewModel>();
 	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
+	        CreateMap<Collection, CollectionViewModel>().ReverseMap();
 
 			//EmbyResponses
 			CreateMap<SystemInfo, ServerInfo>()
