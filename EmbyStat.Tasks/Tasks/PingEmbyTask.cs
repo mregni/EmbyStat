@@ -26,22 +26,7 @@ namespace EmbyStat.Tasks.Tasks
         {
             return Task.Run(() =>
             {
-                progress.Report(10);
-                Thread.Sleep(1000);
-                progress.Report(20);
-                Thread.Sleep(1000);
-                progress.Report(40);
-                Thread.Sleep(1000);
-                progress.Report(60);
-                Thread.Sleep(1000);
-                progress.Report(75);
-                Thread.Sleep(1000);
-                progress.Report(80);
-                Thread.Sleep(1000);
-                progress.Report(85);
-                Thread.Sleep(1000);
-                progress.Report(90);
-                progress.Report(100);
+               
             }, cancellationToken);
         }
 

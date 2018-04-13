@@ -101,6 +101,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\movie\models\" />
+    <Folder Include="ClientApp\src\app\movie\service\" />
+    <Folder Include="ClientApp\src\app\movie\state\" />
     <Folder Include="ClientApp\src\app\server\models\" />
     <Folder Include="ClientApp\src\app\server\state\" />
     <Folder Include="ClientApp\src\app\server\service\" />

@@ -4,7 +4,6 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-
 import 'rxjs/add/observable/throw';
 
 import { ServerInfo } from '../models/serverInfo';
@@ -14,7 +13,6 @@ import { ServerActionTypes, LoadServerInfoAction, LoadServerInfoSuccessAction, N
 import { ServerQuery } from './reducer.server';
 import { EffectError } from '../../states/app.actions';
 import { ApplicationState } from '../../states/app.state';
-import { NoopAction } from '../../states/app.actions';
 
 @Injectable()
 export class ServerEffects {

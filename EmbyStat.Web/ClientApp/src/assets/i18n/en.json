@@ -33,6 +33,7 @@
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
+    "MOVIES": "Movies", 
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
     "TASKS": "Tasks", 

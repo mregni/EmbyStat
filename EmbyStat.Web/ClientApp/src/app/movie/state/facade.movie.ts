@@ -5,25 +5,25 @@ import { Actions } from '@ngrx/effects';
 
 import 'rxjs/add/observable/throw';
 
-import { ServerInfo } from '../models/serverInfo';
+import { GeneralStat } from '../models/generalStat';
 
-import { ServerQuery } from './reducer.server';
-import { LoadServerInfoAction } from './actions.server';
+import { MovieQuery } from './reducer.movie';
+import { LoadGeneralStatsAction } from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
 
 @Injectable()
-export class ServerFacade {
+export class MovieFacade {
   constructor(
     private actions$: Actions,
     private store: Store<ApplicationState>
   ) { }
 
-  serverInfo$ = this.store.select(ServerQuery.getServerInfo);
+  generalStats$ = this.store.select(MovieQuery.getGeneralStats);
 
-  getServerInfo(): Observable<ServerInfo> {
-    this.store.dispatch(new LoadServerInfoAction());
-    return this.serverInfo$;
+  getServerInfo(): Observable<GeneralStat> {
+    this.store.dispatch(new LoadGeneralStatsAction());
+    return this.generalStats$;
   }
 }
 
