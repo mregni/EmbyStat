@@ -30,6 +30,7 @@ namespace EmbyStat.Repositories
         public DbSet<ExtraPerson> ExtraPersons { get; set; }
         public DbSet<MediaGenre> MediaGenres { get; set; }
         public DbSet<Server> Servers { get; set; }
+        public DbSet<Collection> Collections { get; set; }
 
         public ApplicationDbContext() : base()
 	    {
@@ -101,6 +102,8 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<Boxset>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Boxset>().Property(m => m.ParentId).IsRequired();
+
+	        modelBuilder.Entity<Collection>().Property(s => s.Id).IsRequired();
         }
 	}
 }

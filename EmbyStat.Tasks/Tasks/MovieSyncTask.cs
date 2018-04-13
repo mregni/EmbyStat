@@ -10,11 +10,13 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using CollectionType = EmbyStat.Common.Models.CollectionType;
 
 namespace EmbyStat.Tasks.Tasks
 {
@@ -25,6 +27,7 @@ namespace EmbyStat.Tasks.Tasks
         private readonly IMovieRepository _movieRepository;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
+        private readonly ICollectionRepository _collectionRepository;
         private Configuration _settings;
 
         public MovieSyncTask(IApplicationBuilder app)
@@ -34,6 +37,7 @@ namespace EmbyStat.Tasks.Tasks
             _movieRepository = app.ApplicationServices.GetService<IMovieRepository>();
             _genreRepository = app.ApplicationServices.GetService<IGenreRepository>();
             _personRepository = app.ApplicationServices.GetService<IPersonRepository>();
+            _collectionRepository = app.ApplicationServices.GetService<ICollectionRepository>();
         }
 
         public string Name => "Movie sync";
@@ -46,31 +50,32 @@ namespace EmbyStat.Tasks.Tasks
             _settings = _configurationRepository.GetSingle();
             _embyClient.SetAddressAndUrl(_settings.EmbyServerAddress, _settings.AccessToken);
 
-            var rootItems = await GetRootItems(_settings.EmbyUserId, cancellationToken);
+            Log.Information("First delete all existing movies and root movie collections from database so we have a clean start.");
+            CleanUpDatabase();
+            progress.Report(10);
+
+            var rootItems = await GetMovieRootItems(_settings.EmbyUserId, cancellationToken);
+            AddRootItemsToDb(rootItems);
             Log.Information($"Found {rootItems.Count} views, getting ready for processing");
-            progress.Report(2);
+            progress.Report(20);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            Log.Information("First delete all existing movies from database so we have a clean start.");
-            CleanupMovies();
-            progress.Report(20);
 
             foreach (var rootItem in rootItems)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 Log.Information($"Asking Emby all movies for parent with id {rootItem}");
-                var movies = (await GetMoviesFromEmby(rootItem, cancellationToken)).ToList();
-                await ProcessGenresFromEmby(rootItem, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
+                var movies = (await GetMoviesFromEmby(rootItem.Id, cancellationToken)).ToList();
+                await ProcessGenresFromEmby(rootItem.Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
                 progress.Report(30);
-                await ProcessPeopleFromEmby(rootItem, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
+                await ProcessPeopleFromEmby(rootItem.Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
                 progress.Report(50);
 
                 var j = 0;
                 foreach (var movie in movies)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
                     j++;
+                    cancellationToken.ThrowIfCancellationRequested();
                     Log.Information($"Processing movie ({movie.Id}) {movie.Name}");
                     AddMoviesToDb(movie);
                     progress.Report(Math.Round(50 + (50/(double)rootItems.Count)*(j/(double)movies.Count)));
@@ -78,21 +83,33 @@ namespace EmbyStat.Tasks.Tasks
             }
         }
 
-        private async Task<List<string>> GetRootItems(string id, CancellationToken cancellationToken)
+        private void CleanUpDatabase()
+        {
+            _movieRepository.RemoveMovies();
+            _collectionRepository.RemoveCollectionByType(CollectionType.Movies);
+        }
+
+        private async Task<List<Collection>> GetMovieRootItems(string id, CancellationToken cancellationToken)
         {
             Log.Information($"Asking for all root views for admin user with id {id}");
             var rootItems = await _embyClient.GetUserViews(id, cancellationToken);
-            return rootItems.Items.Where(x => x.CollectionType == "movies").Select(x => x.Id).ToList();
-        }
-
-        private void CleanupMovies()
-        {
-            _movieRepository.RemoveMovies();
+            return rootItems.Items.Where(x => x.CollectionType == "movies").Select(x => new Collection
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Type = CollectionType.Movies,
+                PrimaryImage = x.ImageTags.ContainsKey(ImageType.Primary) ? x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value : default(string)
+            }).ToList();
         }
 
         private void AddMoviesToDb(Movie movie)
         {
             _movieRepository.Add(movie);
+        }
+
+        private void AddRootItemsToDb(IEnumerable<Collection> collections)
+        {
+            _collectionRepository.AddCollectionRange(collections);
         }
 
         private async Task<IEnumerable<Movie>> GetMoviesFromEmby(string parentId, CancellationToken cancellationToken)

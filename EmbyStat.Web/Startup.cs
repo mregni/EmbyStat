@@ -85,7 +85,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<DriveRepository>().As<IDriveRepository>();
 		    containerBuilder.RegisterType<GenreRepository>().As<IGenreRepository>();
 		    containerBuilder.RegisterType<PersonRepository>().As<IPersonRepository>();
-
+		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
 
             containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
