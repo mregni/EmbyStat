@@ -14,7 +14,7 @@ const INITIAL_STATE: Configuration = {
   embyUserName: "",
   embyServerAddress: "",
   username: "",
-  userId: "",
+  Id: "",
   language: "en",
   serverName: "",
   isLoaded: false
@@ -31,7 +31,7 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         accessToken: action.payload.accessToken,
         embyServerAddress: action.payload.embyServerAddress,
         embyUserName: action.payload.embyUserName,
-        userId: action.payload.userId,
+        userId: action.payload.Id,
         serverName: action.payload.serverName,
         isLoaded: true
       };
@@ -44,7 +44,7 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         accessToken: action.payload.accessToken,
         embyServerAddress: action.payload.embyServerAddress,
         embyUserName: action.payload.embyUserName,
-        userId: action.payload.userId,
+        userId: action.payload.Id,
         serverName: action.payload.serverName,
         isLoaded: true
       }

@@ -33,7 +33,6 @@ export class WizardComponent implements OnInit, OnDestroy {
   public languageChangedSub: Subscription;
   public searchEmbySub: Subscription;
   public configurationSub: Subscription;
-  public pluginSub: Subscription;
 
   public embyFound: boolean = false;
   public embyServerName: string = "";
@@ -41,7 +40,6 @@ export class WizardComponent implements OnInit, OnDestroy {
   public wizardIndex: number = 0;
   public embyOnline: boolean = false;
   public isAdmin: boolean = false;
-  public pluginInstalled: boolean = false;
   public username: string;
 
   private configuration: Configuration;
@@ -63,7 +61,6 @@ export class WizardComponent implements OnInit, OnDestroy {
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
-    this.pluginSub = this.pluginFacade.plugins$.subscribe(plugins => this.pluginsLoaded(plugins));
   }
 
   ngOnInit() {
@@ -78,10 +75,6 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   private languageChanged(value: string): void {
     this.translate.use(value);
-  }
-
-  private pluginsLoaded(plugins: EmbyPlugin[]) {
-    this.pluginInstalled = plugins.some(plugin => plugin.name === "Statistics");
   }
 
   public rescan() {
@@ -105,6 +98,7 @@ export class WizardComponent implements OnInit, OnDestroy {
             config.embyServerAddress = address;
             config.accessToken = token.token;
             config.wizardFinished = true;
+            config.Id = token.id;
             this.configurationFacade.updateConfiguration(config);
           } else {
           }
@@ -128,10 +122,6 @@ export class WizardComponent implements OnInit, OnDestroy {
 
     if (this.configurationSub !== undefined) {
       this.configurationSub.unsubscribe();
-    }
-
-    if (this.pluginSub !== undefined) {
-      this.pluginSub.unsubscribe();
     }
   }
 }

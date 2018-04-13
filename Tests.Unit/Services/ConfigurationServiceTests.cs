@@ -1,5 +1,6 @@
-﻿using EmbyStat.Repositories.Config;
-using EmbyStat.Services.Config;
+﻿using EmbyStat.Common.Models;
+using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -17,7 +18,7 @@ namespace Tests.Unit.Services
 		    var configuration = new Configuration
 		    {
 			    Id = "1234567",
-			    UserId = "09876",
+			    EmbyUserId = "09876",
 			    Language = "en",
 			    Username = "admin",
 			    WizardFinished = true,
@@ -63,7 +64,7 @@ namespace Tests.Unit.Services
 		    var settings = _subject.GetServerSettings();
 		    settings.Should().NotBeNull();
 		    settings.Id.Should().Be("1234567");
-		    settings.UserId.Should().Be("09876");
+		    settings.EmbyUserId.Should().Be("09876");
 		    settings.Language.Should().Be("en");
 		    settings.Username.Should().Be("admin");
 		    settings.WizardFinished.Should().BeTrue();

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
@@ -15,15 +13,9 @@ using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
-using EmbyStat.Repositories.Config;
-using EmbyStat.Repositories.EmbyDrive;
-using EmbyStat.Repositories.EmbyPlugin;
-using EmbyStat.Repositories.EmbyServerInfo;
-using EmbyStat.Repositories.EmbyTask;
-using EmbyStat.Services.Config;
-using EmbyStat.Services.Emby;
-using EmbyStat.Services.Plugin;
-using EmbyStat.Services.Tasks;
+using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using EmbyStat.Tasks;
 using EmbyStat.Tasks.Tasks;
 using MediaBrowser.Model.Serialization;
@@ -85,43 +77,29 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<PluginService>().As<IPluginService>();
 		    containerBuilder.RegisterType<EmbyService>().As<IEmbyService>();
 		    containerBuilder.RegisterType<TaskService>().As<ITaskService>();
-		    containerBuilder.RegisterType<PluginRepository>().As<IConfigurationRepository>();
-		    containerBuilder.RegisterType<EmbyPluginRepository>().As<IEmbyPluginRepository>();
-		    containerBuilder.RegisterType<EmbyServerInfoRepository>().As<IEmbyServerInfoRepository>();
-		    containerBuilder.RegisterType<EmbyDriveRepository>().As<IEmbyDriveRepository>();
-		    containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
+
+		    containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
+            containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
+		    containerBuilder.RegisterType<PluginRepository>().As<IPluginRepository>();
+		    containerBuilder.RegisterType<ServerInfoRepository>().As<IServerInfoRepository>();
+		    containerBuilder.RegisterType<DriveRepository>().As<IDriveRepository>();
+		    containerBuilder.RegisterType<GenreRepository>().As<IGenreRepository>();
+		    containerBuilder.RegisterType<PersonRepository>().As<IPersonRepository>();
+		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
+
+            containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
+
 		    containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
 		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
 		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
 		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();
+
 		    containerBuilder.RegisterType<DatabaseInitializer>().As<IDatabaseInitializer>();
 		    containerBuilder.RegisterType<BusinessExceptionFilterAttribute>();
             var container = containerBuilder.Build();
 		    return new AutofacServiceProvider(container);
-
-            //services.AddScoped<IConfigurationService, ConfigurationService>();
-            //services.AddScoped<IPluginService, PluginService>();
-            //services.AddScoped<IEmbyService, EmbyService>();
-            //services.AddScoped<ITaskService, TaskService>();
-
-            //services.AddScoped<IConfigurationRepository, PluginRepository>();
-            //services.AddScoped<IEmbyPluginRepository, EmbyPluginRepository>();
-            //services.AddScoped<IEmbyServerInfoRepository, EmbyServerInfoRepository>();
-            //services.AddScoped<IEmbyDriveRepository, EmbyDriveRepository>();
-
-            //services.AddSingleton<ITaskRepository, TaskRepository>();
-            //services.AddSingleton<ITaskManager, TaskManager>();
-
-            //services.AddScoped<IEmbyClient, EmbyClient>();
-            //services.AddScoped<ICryptographyProvider, CryptographyProvider>();
-            //services.AddScoped<IJsonSerializer, NewtonsoftJsonSerializer>();
-            //services.AddScoped<IAsyncHttpClient, HttpWebRequestClient>();
-            //services.AddScoped<IHttpWebRequestFactory, HttpWebRequestFactory>();
-
-            //services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-            //services.AddScoped<BusinessExceptionFilterAttribute>();
         }
 
 	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
@@ -188,8 +166,6 @@ namespace EmbyStat.Web
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
-
-		    //SetupTaskManager(app);
         }
 
 	    private void OnStarted()
@@ -199,20 +175,11 @@ namespace EmbyStat.Web
 	        var tasks = new List<IScheduledTask>
 	        {
 	            new PingEmbyTask(ApplicationBuilder),
-	            new SmallSyncTask(ApplicationBuilder)
+	            new SmallSyncTask(ApplicationBuilder),
+                new MovieSyncTask(ApplicationBuilder)
 	        };
 
 	        taskManager.AddTasks(tasks);
         }
-
-        private async void SetupTaskManager(IApplicationBuilder app)
-	    {
-	        await Task.Run(() =>
-	        {
-                //hack so we give the main process time to create the database first!
-                Thread.Sleep(5000);
-                
-            });
-	    }
     }
 }

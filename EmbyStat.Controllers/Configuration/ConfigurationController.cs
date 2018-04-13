@@ -1,5 +1,5 @@
 using AutoMapper;
-using EmbyStat.Services.Config;
+using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -30,7 +30,7 @@ namespace EmbyStat.Controllers.Configuration
 		public IActionResult Update([FromBody] ConfigurationViewModel configuration)
 		{
 			_logger.LogInformation("Updating the new server configuration.");
-			var config = Mapper.Map<Repositories.Config.Configuration>(configuration);
+			var config = Mapper.Map<Common.Models.Configuration>(configuration);
 			_configurationService.SaveServerSettings(config);
 
 			config = _configurationService.GetServerSettings();

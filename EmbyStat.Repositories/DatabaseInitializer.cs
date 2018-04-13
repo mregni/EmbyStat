@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbyStat.Repositories.Config;
+using EmbyStat.Common.Models;
+using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
