@@ -66,6 +66,7 @@
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\models\collection.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
@@ -98,6 +99,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
@@ -106,7 +108,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\movie\models\" />
     <Folder Include="ClientApp\src\app\movie\service\" />
     <Folder Include="ClientApp\src\app\movie\state\" />
     <Folder Include="ClientApp\src\app\server\models\" />

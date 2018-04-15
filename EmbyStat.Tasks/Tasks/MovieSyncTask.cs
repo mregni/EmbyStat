@@ -48,6 +48,12 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
         {
             _settings = _configurationRepository.GetSingle();
+            if (!_settings.WizardFinished)
+            {
+                Log.Warning("Movie sync task not running because wizard is not finished yet!");
+                return;
+            }
+
             _embyClient.SetAddressAndUrl(_settings.EmbyServerAddress, _settings.AccessToken);
 
             Log.Information("First delete all existing movies and root movie collections from database so we have a clean start.");
@@ -61,15 +67,15 @@ namespace EmbyStat.Tasks.Tasks
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            foreach (var rootItem in rootItems)
+            for (var i = 0; i < rootItems.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                Log.Information($"Asking Emby all movies for parent with id {rootItem}");
-                var movies = (await GetMoviesFromEmby(rootItem.Id, cancellationToken)).ToList();
-                await ProcessGenresFromEmby(rootItem.Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
-                progress.Report(30);
-                await ProcessPeopleFromEmby(rootItem.Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
-                progress.Report(50);
+                Log.Information($"Asking Emby all movies for parent with id {rootItems[i]}");
+                var movies = (await GetMoviesFromEmby(rootItems[i].Id, cancellationToken)).ToList();
+                await ProcessGenresFromEmby(rootItems[i].Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
+                progress.Report(20 + 10 / (double)rootItems.Count * i);
+                await ProcessPeopleFromEmby(rootItems[i].Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
+                progress.Report(20 + 30 / (double)rootItems.Count * i);
 
                 var j = 0;
                 foreach (var movie in movies)
@@ -78,7 +84,7 @@ namespace EmbyStat.Tasks.Tasks
                     cancellationToken.ThrowIfCancellationRequested();
                     Log.Information($"Processing movie ({movie.Id}) {movie.Name}");
                     AddMoviesToDb(movie);
-                    progress.Report(Math.Round(50 + (50/(double)rootItems.Count)*(j/(double)movies.Count)));
+                    progress.Report(Math.Round(50 + (50 / (double)rootItems.Count) * (j / (double)movies.Count)));
                 }
             }
         }

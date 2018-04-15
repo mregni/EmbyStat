@@ -11,6 +11,7 @@ using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace EmbyStat.Tasks.Tasks
 {
@@ -38,6 +39,11 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
         {
             var settings = _configurationRepository.GetSingle();
+            if (!settings.WizardFinished)
+            {
+                Log.Warning("Movie sync task not running because wizard is not finished yet!");
+                return;
+            }
             progress.Report(15);
 
             _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);

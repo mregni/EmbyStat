@@ -13,12 +13,12 @@
 }
 
 .task__left-content {
-  align-content:flex-start;
+  align-content: flex-start;
   width: 45px;
-}
 
-.task__left-content mat-icon {
-  margin-top: -2px;
+  mat-icon {
+    margin-top: -2px;
+  }
 }
 
 .task__right-content {

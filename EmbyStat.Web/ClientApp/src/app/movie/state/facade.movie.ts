@@ -5,25 +5,31 @@ import { Actions } from '@ngrx/effects';
 
 import 'rxjs/add/observable/throw';
 
-import { GeneralStat } from '../models/generalStat';
+import { SmallStat } from '../../shared/models/smallStat';
+import { Collection } from '../../shared/models/collection';
 
 import { MovieQuery } from './reducer.movie';
-import { LoadGeneralStatsAction } from './actions.movie';
+import { LoadGeneralStatsAction, LoadMovieCollectionsAction } from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
 
 @Injectable()
 export class MovieFacade {
   constructor(
-    private actions$: Actions,
     private store: Store<ApplicationState>
   ) { }
 
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
+  collections$ = this.store.select(MovieQuery.getMovieCollections);
 
-  getServerInfo(): Observable<GeneralStat> {
-    this.store.dispatch(new LoadGeneralStatsAction());
+  getGeneralStats(list: string[]): Observable<SmallStat[]> {
+    this.store.dispatch(new LoadGeneralStatsAction(list));
     return this.generalStats$;
+  }
+
+  getCollections(): Observable<Collection[]> {
+    this.store.dispatch(new LoadMovieCollectionsAction());
+    return this.collections$;
   }
 }
 

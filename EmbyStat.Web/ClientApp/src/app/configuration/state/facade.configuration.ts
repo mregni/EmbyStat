@@ -19,7 +19,6 @@ import { ApplicationState } from '../../states/app.state';
 @Injectable()
 export class ConfigurationFacade {
   constructor(
-    private actions$: Actions,
     private store: Store<ApplicationState>,
     private configurationService: ConfigurationService
   ) { }

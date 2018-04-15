@@ -25,7 +25,7 @@ export class ServerEffects {
   public loaded$ = this.store.select(ServerQuery.getLoaded);
 
   @Effect()
-  getPlugins$ = this.actions$
+  getServerInfo$ = this.actions$
     .ofType(ServerActionTypes.LOAD_SERVERINFO)
     .pipe(
       map((data: LoadServerInfoAction) => data.payload),

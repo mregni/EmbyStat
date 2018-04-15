@@ -23,7 +23,14 @@ namespace EmbyStat.Controllers.Movie
         public IActionResult GetCollections()
         {
             var result = _movieService.GetMovieCollections();
-            return Ok(Mapper.Map<CollectionViewModel>(result));
+            return Ok(Mapper.Map<IList<CollectionViewModel>>(result));
+        }
+
+        [HttpPost]
+        [Route("getgeneralstats")]
+        public IActionResult GetGeneralStats([FromBody]List<string> collectionIds)
+        {
+            return Ok();
         }
     }
 }

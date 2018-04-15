@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
 
 import 'rxjs/add/observable/throw';
 
@@ -16,7 +15,6 @@ import { ApplicationState } from '../../states/app.state';
 @Injectable()
 export class PluginFacade {
   constructor(
-    private actions$: Actions,
     private store: Store<ApplicationState>
   ) { }
 

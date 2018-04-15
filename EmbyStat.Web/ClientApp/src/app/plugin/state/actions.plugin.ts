@@ -27,4 +27,5 @@ export class ResetPluginLoadedState implements Action {
 }
 
 
-export type PluginActions = LoadPluginAction | LoadPluginSuccessAction | NoNeedPluginAction | ResetPluginLoadedState;
+export type PluginActions = LoadPluginAction | LoadPluginSuccessAction |
+                            NoNeedPluginAction | ResetPluginLoadedState;

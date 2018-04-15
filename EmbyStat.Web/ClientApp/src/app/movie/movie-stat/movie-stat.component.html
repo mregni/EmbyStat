@@ -1,3 +1,16 @@
-<p>
-  movie-stat works!
-</p>
+<mat-card class="">
+  <mat-card-content class="movie__flexcontainer">
+    <div class="movie__flex-row">
+      <div class="movie__left-content">
+        <h2>General Statistics</h2>
+      </div>
+      <div class="movie__right-content">
+        <mat-form-field>
+          <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
+            <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

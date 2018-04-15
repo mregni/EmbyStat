@@ -1,0 +1,24 @@
+.movie__flexcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.movie__flex-row {
+  flex: 1 1 auto;
+  width: 100%;
+  align-content: flex-start;
+  display: flex;
+  flex-direction: row;
+}
+
+.movie__left-content {
+  flex: 1 1 auto;
+  align-content: flex-start;
+}
+
+.movie__right-content {
+  flex: 0 0 auto;
+  width: 250px;
+}
+
