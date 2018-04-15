@@ -62,6 +62,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     config.embyServerAddress = this.configuration.embyServerAddress;
     config.accessToken = this.configuration.accessToken;
     config.wizardFinished = true;
+    config.Id = this.configuration.Id;
     this.configurationFacade.updateConfiguration(config);
   }
 
@@ -79,6 +80,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           config.embyServerAddress = address;
           config.accessToken = token.token;
           config.wizardFinished = this.configuration.wizardFinished;
+          config.Id = token.id;
           this.configurationFacade.updateConfiguration(config);
         }
       });
