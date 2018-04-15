@@ -8,9 +8,9 @@ This project is still in Alpha fase, but feel free to pull in on your computer a
 Supported platforms as the moment are:
 * Windows x64 (IIS and Kestrel)
 * Windows x86 (IIS and Kestrel)
-* Docker Windows (comming soon)
-* Docker Linux (comming soon)
-* Debian package (comming soon)
+* Docker Windows (coming soon)
+* Docker Linux (coming soon)
+* Debian package (coming soon)
 
 I will try to support as many platforms as possible. More and more will come in the future!
 If you have knownlegde about building unix packages please feel free to contact me so I can support as many platforms as possible.
