@@ -119,9 +119,9 @@ namespace EmbyStat.Services
 		    var settings = _configurationRepository.GetSingle();
 
 			_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
-		    var systemInfoReponse = await _embyClient.GetServerInfo();
+		    var systemInfoReponse = await _embyClient.GetServerInfoAsync();
 			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
-		    var drives = await _embyClient.GetLocalDrives();
+		    var drives = await _embyClient.GetLocalDrivesAsync();
 
 		    var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
 		    var localDrives = Mapper.Map<IList<Drives>>(drives);

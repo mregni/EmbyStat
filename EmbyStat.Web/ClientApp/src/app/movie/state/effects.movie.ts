@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 
 import { MovieService } from '../service/movie.service';
 import { MovieActionTypes as MovieTypes, LoadMovieCollectionsAction, LoadGeneralStatsAction, LoadGeneralStatsSuccessAction, LoadMovieCollectionsSuccessAction } from './actions.movie';
-import { SmallStat } from "../../shared/models/smallStat";
+import { MovieStats } from "../models/movieStats";
 import { Collection } from "../../shared/models/collection";
 
 import { EffectError } from '../../states/app.actions';
@@ -31,7 +31,7 @@ export class MovieEffects {
       switchMap((list: string[]) => {
         return this.movieService.getGeneral(list);
       }),
-      map((stats: SmallStat[]) => {
+      map((stats: MovieStats) => {
         return new LoadGeneralStatsSuccessAction(stats);
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))

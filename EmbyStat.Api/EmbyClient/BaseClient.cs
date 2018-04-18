@@ -303,7 +303,7 @@ namespace EmbyStat.Api.EmbyClient
 			return await HttpClient.SendAsync(request).ConfigureAwait(false);
 		}
 
-        protected string GetItemListUrl(ItemQuery query)
+        protected string GetItemListUrl(string url, ItemQuery query)
         {
             if (query == null)
             {
@@ -406,7 +406,7 @@ namespace EmbyStat.Api.EmbyClient
             dict.AddIfNotNull("IsVirtualUnaired", query.IsVirtualUnaired);
             dict.AddIfNotNull("AiredDuringSeason", query.AiredDuringSeason);
 
-            return GetApiUrl("Users/" + query.UserId + "/Items", dict);
+            return GetApiUrl(url, dict);
         }
 
 	    protected string GetItemByNameListUrl(string type, ItemsByNameQuery query)

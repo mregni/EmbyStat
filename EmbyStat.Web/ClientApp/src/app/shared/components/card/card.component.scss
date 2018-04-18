@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+@import '../../../../theme.scss';
+
+.card__value {
+  font-weight: bold;
+  font-size: 2.4em;
+}
+
+.card__title {
+  font-size: 1em;
+}
+
+.card__flex-column {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card {
+  margin: 10px;
+  background-color: mat-color($app-primary) !important;
+  color: #ffffff !important;
+  width:200px;
+}

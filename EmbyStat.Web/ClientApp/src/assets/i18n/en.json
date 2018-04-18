@@ -9,7 +9,7 @@
     "NO": "No",
     "SAVE": "Save",
     "DISCARD": "Discard",
-    "CANCEL": "Cancel" 
+    "CANCEL": "Cancel"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
@@ -58,6 +58,11 @@
   },
   "PLUGINS": {
     "VERSION": "Version"
+  },
+  "MOVIES": {
+    "TOTALMOVIES": "Total movies",
+    "TOTALGENRES": "Total genres",
+    "TOTALPLAYLENGTH": "Total watchable time" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",

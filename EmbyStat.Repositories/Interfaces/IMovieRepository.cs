@@ -7,5 +7,8 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveMovies();
         void Add(Movie movie);
+        int GetMovieCount(List<string> collections);
+        int GetGenreCount(List<string> collections);
+        long GetPlayLength(List<string> collections);
     }
 }

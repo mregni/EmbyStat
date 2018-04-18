@@ -5,7 +5,7 @@ import { Actions } from '@ngrx/effects';
 
 import 'rxjs/add/observable/throw';
 
-import { SmallStat } from '../../shared/models/smallStat';
+import { MovieStats } from '../models/movieStats';
 import { Collection } from '../../shared/models/collection';
 
 import { MovieQuery } from './reducer.movie';
@@ -22,7 +22,7 @@ export class MovieFacade {
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
   collections$ = this.store.select(MovieQuery.getMovieCollections);
 
-  getGeneralStats(list: string[]): Observable<SmallStat[]> {
+  getGeneralStats(list: string[]): Observable<MovieStats> {
     this.store.dispatch(new LoadGeneralStatsAction(list));
     return this.generalStats$;
   }

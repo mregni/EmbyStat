@@ -47,11 +47,11 @@ namespace EmbyStat.Tasks.Tasks
             progress.Report(15);
 
             _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
-            var systemInfoReponse = await _embyClient.GetServerInfo();
+            var systemInfoReponse = await _embyClient.GetServerInfoAsync();
             progress.Report(35);
             var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
             progress.Report(55);
-            var drives = await _embyClient.GetLocalDrives();
+            var drives = await _embyClient.GetLocalDrivesAsync();
             progress.Report(75);
 
             var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);

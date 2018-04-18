@@ -1,7 +1,7 @@
-import { SmallStat } from '../../shared/models/smallStat';
+import { MovieStats } from './movieStats';
 import { Collection } from '../../shared/models/collection';
 
 export class MovieStore {
-  public generalStats: SmallStat[];
+  public stats: MovieStats;
   public collections: Collection[];
 }

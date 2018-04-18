@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 
 import { MovieFacade } from '../state/facade.movie';
 import { Collection } from '../../shared/models/collection';
+import { MovieStats } from '../models/movieStats';
 
 
 @Component({
@@ -13,13 +14,15 @@ import { Collection } from '../../shared/models/collection';
 })
 export class MovieStatComponent implements OnInit {
   public collections$: Observable<Collection[]>;
+  public stats$: Observable<MovieStats>;
   public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
 
   constructor(private movieFacade: MovieFacade) {
     this.collections$ = this.movieFacade.getCollections();
+    this.stats$ = this.movieFacade.getGeneralStats([]);
 
     this.collectionsFormControl.valueChanges.subscribe((data: string[]) => {
-      this.movieFacade.getGeneralStats(data);
+      this.stats$ = this.movieFacade.getGeneralStats(data);
     });
   }
 

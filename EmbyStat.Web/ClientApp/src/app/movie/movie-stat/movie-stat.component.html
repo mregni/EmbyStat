@@ -1,16 +1,22 @@
-<mat-card class="">
-  <mat-card-content class="movie__flexcontainer">
-    <div class="movie__flex-row">
-      <div class="movie__left-content">
-        <h2>General Statistics</h2>
-      </div>
-      <div class="movie__right-content">
-        <mat-form-field>
-          <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
-            <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+<div class="movie__flexcontainer">
+  <div class="movie__flex-row movie__align-start">
+    <div class="movie__left-content">
+      <h2>General Statistics</h2>
     </div>
-  </mat-card-content>
-</mat-card>
+    <div class="movie__right-content">
+      <mat-form-field class="full-width">
+        <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
+          <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+
+<div class="movie__flexcontainer" *ngIf="stats$ | async as stats">
+  <div class="movie__flex-row movie__align-start">
+    <app-card-number [card]="stats.movieCount"></app-card-number>
+    <app-card-number [card]="stats.genreCount"></app-card-number>
+    <app-card-timespan [card]="stats.totalPlayableTime"></app-card-timespan>
+  </div>
+</div>

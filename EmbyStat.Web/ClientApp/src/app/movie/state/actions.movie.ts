@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { SmallStat } from "../../shared/models/smallStat";
+import { MovieStats } from "../models/movieStats";
 import { Collection } from "../../shared/models/collection";
 
 export enum MovieActionTypes {
@@ -16,7 +16,7 @@ export class LoadGeneralStatsAction implements Action {
 
 export class LoadGeneralStatsSuccessAction implements Action {
   readonly type = MovieActionTypes.LOAD_STATS_GENERAL_SUCCESS;
-  constructor(public payload: SmallStat[]) { }
+  constructor(public payload: MovieStats) { }
 }
 
 export class LoadMovieCollectionsAction implements Action {

@@ -16,11 +16,11 @@ namespace EmbyStat.Api.EmbyClient
 	    void SetAddressAndUrl(string url, string token);
 		Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address);
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
-		Task<SystemInfo> GetServerInfo();
-	    Task<List<Drive>> GetLocalDrives();
-	    Task<string> PingEmby();
+		Task<SystemInfo> GetServerInfoAsync();
+	    Task<List<Drive>> GetLocalDrivesAsync();
+	    Task<string> PingEmbyAsync();
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
-        Task<QueryResult<BaseItemDto>> GetUserViews(string userId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Folder> GetRootFolderAsync(string userId, CancellationToken cancellationToken = default(CancellationToken));
         Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<QueryResult<BaseItemDto>> GetGenresAsync(ItemsByNameQuery query, CancellationToken cancellationToken = default(CancellationToken));
     }

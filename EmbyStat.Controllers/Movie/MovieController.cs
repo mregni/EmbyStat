@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using EmbyStat.Common.Models.Stats;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,8 @@ namespace EmbyStat.Controllers.Movie
         [Route("getgeneralstats")]
         public IActionResult GetGeneralStats([FromBody]List<string> collectionIds)
         {
-            return Ok();
+            var result = _movieService.GetGeneralStatsForCollections(collectionIds);
+            return Ok(Mapper.Map<MovieStatsViewModel>(result));
         }
     }
 }

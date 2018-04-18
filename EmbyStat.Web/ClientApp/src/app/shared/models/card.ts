@@ -1,5 +1,5 @@
-export class SmallStat {
-  public id: string;
+export class Card {
   public title: string;
   public value: string;
+  public poster: string;
 }

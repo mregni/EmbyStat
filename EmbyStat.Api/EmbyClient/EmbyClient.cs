@@ -69,7 +69,7 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<SystemInfo> GetServerInfo()
+		public async Task<SystemInfo> GetServerInfoAsync()
 		{
 			var url = GetApiUrl("System/Info");
 
@@ -79,7 +79,7 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<List<Drive>> GetLocalDrives()
+		public async Task<List<Drive>> GetLocalDrivesAsync()
 		{
 			var url = GetApiUrl("Environment/Drives");
 
@@ -89,7 +89,7 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<string> PingEmby()
+		public async Task<string> PingEmbyAsync()
 		{
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
@@ -99,7 +99,7 @@ namespace EmbyStat.Api.EmbyClient
 
 	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))
 	    {
-	        var url = GetItemListUrl(query);
+	        var url = GetItemListUrl($"Users/{query.UserId}/Items", query);
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
 	        {
@@ -107,13 +107,13 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 	    }
 
-	    public async Task<QueryResult<BaseItemDto>> GetUserViews(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Folder> GetRootFolderAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
 	    {
-	        var url = GetApiUrl("Users/" + userId + "/Views");
+	        var url = GetApiUrl($"/Users/{userId}/Items/Root");
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
 	        {
-	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
+	            return DeserializeFromStream<Folder>(stream);
 	        }
 	    }
 

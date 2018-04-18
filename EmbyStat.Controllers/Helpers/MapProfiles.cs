@@ -2,6 +2,7 @@
 using AutoMapper;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Stats;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Controllers.Configuration;
 using EmbyStat.Controllers.Emby;
@@ -32,7 +33,10 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<TaskInfo, TaskInfoViewModel>();
 	        CreateMap<TaskResult, TaskResultViewModel>();
 	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
-	        CreateMap<Collection, CollectionViewModel>().ReverseMap();
+	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
+	        CreateMap<Card, CardViewModel>();
+            CreateMap<MovieStats, MovieStatsViewModel>();
+            CreateMap<Collection, CollectionViewModel>().ReverseMap();
 
 			//EmbyResponses
 			CreateMap<SystemInfo, ServerInfo>()

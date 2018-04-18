@@ -42,6 +42,55 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public int GetMovieCount(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Count();
+            }
+        }
+
+        public int GetGenreCount(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query
+                    .SelectMany(x => x.MediaGenres)
+                    .Select(x => x.GenreId)
+                    .Distinct()
+                    .Count();
+            }
+        }
+
+        public long GetPlayLength(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Sum(x => x.RunTimeTicks ?? 0);
+            }
+        }
+
         public void RemoveMovies()
         {
             using (var context = new ApplicationDbContext())

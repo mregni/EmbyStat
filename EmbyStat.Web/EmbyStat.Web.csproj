@@ -60,6 +60,7 @@
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
     <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
@@ -88,6 +89,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\serverInfo.ts" />

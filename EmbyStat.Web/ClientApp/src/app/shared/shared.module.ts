@@ -3,9 +3,13 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { CountUpModule } from 'countup.js-angular2';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
+import { CardComponent } from './components/card/card.component';
+import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
+import { CardNumberComponent } from './components/card-number/card-number.component';
 
 import { ToastService } from './services/toast.service';
 
@@ -14,16 +18,23 @@ import { ToastService } from './services/toast.service';
     CommonModule,
     MaterialModule,
     RouterModule,
+    CountUpModule,
     TranslateModule.forChild()
   ],
   exports: [
     SideNavComponent,
     ToolbarComponent,
-    MaterialModule
+    MaterialModule,
+    CardComponent,
+    CardTimespanComponent,
+    CardNumberComponent
   ],
   declarations: [
     ToolbarComponent,
-    SideNavComponent
+    SideNavComponent,
+    CardComponent,
+    CardTimespanComponent,
+    CardNumberComponent
   ],
   providers: [
     ToastService

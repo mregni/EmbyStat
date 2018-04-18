@@ -1,10 +1,11 @@
 import { ApplicationState } from "../../states/app.state";
 
+import { MovieStats } from '../models/movieStats';
 import { MovieStore } from '../models/movieStore';
 import { MovieActions, MovieActionTypes } from './actions.movie';
 
 const INITIAL_STATE: MovieStore = {
-  generalStats: [],
+  stats: new MovieStats(),
   collections: []
 };
 
@@ -13,7 +14,7 @@ export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieAct
     case MovieActionTypes.LOAD_STATS_GENERAL_SUCCESS:
       return {
         ...state,
-        generalStats: action.payload
+        stats: action.payload
       };
     case MovieActionTypes.LOAD_MOVIE_COLLECTIONS_SUCCESS:
       return {
@@ -26,6 +27,6 @@ export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieAct
 }
 
 export namespace MovieQuery {
-  export const getGeneralStats = (state: ApplicationState) => state.movies.generalStats;
+  export const getGeneralStats = (state: ApplicationState) => state.movies.stats;
   export const getMovieCollections = (state: ApplicationState) => state.movies.collections;
 }

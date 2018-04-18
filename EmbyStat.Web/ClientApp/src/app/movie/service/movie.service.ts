@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
-import { SmallStat } from "../../shared/models/smallStat";
+import { MovieStats } from '../models/movieStats';
 import { Collection } from "../../shared/models/collection";
 
 @Injectable()
@@ -14,8 +14,8 @@ export class MovieService {
 
   }
 
-  getGeneral(list: string[]): Observable<SmallStat[]> {
-    return this.http.post<SmallStat[]>('/api' + this.getGeneralUrl, list);
+  getGeneral(list: string[]): Observable<MovieStats> {
+    return this.http.post<MovieStats>('/api' + this.getGeneralUrl, list);
   }
 
   getCollections(): Observable<Collection[]> {

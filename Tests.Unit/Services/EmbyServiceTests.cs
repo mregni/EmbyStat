@@ -79,8 +79,8 @@ namespace Tests.Unit.Services
 			_embyClientMock = new Mock<IEmbyClient>();
 		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
 		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
-		    _embyClientMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(systemInfo));
-		    _embyClientMock.Setup(x => x.GetLocalDrives()).Returns(Task.FromResult(embyDrives));
+		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
+		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
 
 			_embyPluginRepositoryMock = new Mock<IPluginRepository>();
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
@@ -185,8 +185,8 @@ namespace Tests.Unit.Services
 		    _subject.FireSmallSyncEmbyServerInfo();
 
 		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
-			_embyClientMock.Verify(x => x.GetServerInfo(), Times.Once);
-			_embyClientMock.Verify(x => x.GetLocalDrives(), Times.Once);
+			_embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
+			_embyClientMock.Verify(x => x.GetLocalDrivesAsync(), Times.Once);
 
             _embyPluginRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
 			    y => y.Count == 2 &&

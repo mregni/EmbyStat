@@ -62,7 +62,7 @@ namespace EmbyStat.Tasks.Tasks
 
             var rootItems = await GetMovieRootItems(_settings.EmbyUserId, cancellationToken);
             AddRootItemsToDb(rootItems);
-            Log.Information($"Found {rootItems.Count} views, getting ready for processing");
+            Log.Information($"Found {rootItems.Count} root items, getting ready for processing");
             progress.Report(20);
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -70,12 +70,14 @@ namespace EmbyStat.Tasks.Tasks
             for (var i = 0; i < rootItems.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                Log.Information($"Asking Emby all movies for parent with id {rootItems[i]}");
+                Log.Information($"Asking Emby all movies for parent ({rootItems[i].Id}) {rootItems[i].Name}");
                 var movies = (await GetMoviesFromEmby(rootItems[i].Id, cancellationToken)).ToList();
+                movies.ForEach(x => x.CollectionId = rootItems[i].Id);
+
                 await ProcessGenresFromEmby(rootItems[i].Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
-                progress.Report(20 + 10 / (double)rootItems.Count * i);
+                progress.Report(Math.Round(20 + 10 / (double)rootItems.Count * i));
                 await ProcessPeopleFromEmby(rootItems[i].Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
-                progress.Report(20 + 30 / (double)rootItems.Count * i);
+                progress.Report(Math.Round(20 + 30 / (double)rootItems.Count * i));
 
                 var j = 0;
                 foreach (var movie in movies)
@@ -98,8 +100,15 @@ namespace EmbyStat.Tasks.Tasks
         private async Task<List<Collection>> GetMovieRootItems(string id, CancellationToken cancellationToken)
         {
             Log.Information($"Asking for all root views for admin user with id {id}");
-            var rootItems = await _embyClient.GetUserViews(id, cancellationToken);
-            return rootItems.Items.Where(x => x.CollectionType == "movies").Select(x => new Collection
+            var rootItem = await _embyClient.GetRootFolderAsync(id, cancellationToken);
+
+            var items = await _embyClient.GetItemsAsync(new ItemQuery
+            {
+                ParentId = rootItem.Id,
+                UserId = id
+            }, cancellationToken);
+
+            return items.Items.Where(x => x.CollectionType == "movies").Select(x => new Collection
             {
                 Id = x.Id,
                 Name = x.Name,
