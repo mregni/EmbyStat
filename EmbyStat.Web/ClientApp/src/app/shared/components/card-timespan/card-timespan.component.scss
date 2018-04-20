@@ -17,6 +17,10 @@
   flex-direction: column;
 }
 
+.card__small-text {
+  font-size:0.6em;
+}
+
 mat-card {
   margin: 10px;
   background-color: mat-color($app-primary) !important;

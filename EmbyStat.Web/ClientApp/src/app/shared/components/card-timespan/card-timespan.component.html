@@ -2,9 +2,12 @@
   <mat-card-content>
     <div class="card__flex-column">
       <div class="card__value">
-        <span *ngIf="card.days > 0">{{card.days}} days</span>
-        <span *ngIf="card.days > 0 && (card.minutes > 0 || card.hours > 0)"> and </span>
-        <span *ngIf="card.minutes > 0 || card.hours > 0">{{card.hours}}:{{card.minutes}} hours</span>
+        {{card.days}}
+        <span class="card__small-text">{{'COMMON.DAYS' | translate}}</span> /
+        {{card.hours}}
+        <span class="card__small-text">{{'COMMON.HOURS' | translate}}</span> /
+        {{card.minutes}}
+        <span class="card__small-text">{{'COMMON.MINUTES' | translate}}</span>
       </div>
       <span class="card__title">{{card.title | translate}}</span>
     </div>
