@@ -15,7 +15,7 @@
 <div class="content">
   <mat-tab-group>
     <mat-tab label="General">
-      <div class="">
+      <div class="movie__tab-content">
         <div class="movie__flexcontainer" *ngIf="stats$ | async as stats">
           <div class="movie__flex-row movie__align-start">
             <app-card-number [card]="stats.movieCount"></app-card-number>
@@ -31,7 +31,9 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Graphs">Content 1</mat-tab>
+    <mat-tab label="Graphs">
+      <div class="movie__tab-content">Content 1</div>
+    </mat-tab>
     <mat-tab label="Genres">Content 2</mat-tab>
     <mat-tab label="People">Content 2</mat-tab>
     <mat-tab label="List">Content 2</mat-tab>
