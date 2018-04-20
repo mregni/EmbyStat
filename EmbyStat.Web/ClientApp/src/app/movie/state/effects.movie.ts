@@ -17,10 +17,6 @@ export class MovieEffects {
   constructor(
     private actions$: Actions,
     private movieService: MovieService) {
-
-    this.actions$.subscribe(data => {
-      console.log(data.type);
-    });
   }
 
   @Effect()

@@ -28,7 +28,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getTasksSub = this.taskFacade.getTasks().subscribe(data => { console.log(data); this.tasks = data});
+    this.getTasksSub = this.taskFacade.getTasks().subscribe(data => this.tasks = data);
     this.hubConnection
       .start()
       .then(() => {

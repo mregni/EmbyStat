@@ -17,11 +17,10 @@ export class PosterComponent implements OnDestroy {
   @Input() poster: Poster;
 
   constructor(private configurationFacade: ConfigurationFacade, private _sanitizer: DomSanitizer) {
-    this.configurationSub = configurationFacade.getConfiguration().subscribe(data => { console.log(data); this.configuration = data});
+    this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
   }
 
   getBackground() {
-    console.log(this.configuration);
     if (this.configuration === undefined) {
       return "";
     }
