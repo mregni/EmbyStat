@@ -5,4 +5,5 @@ export class Poster {
   public officialRating: string;
   public title: string;
   public tag: string;
+  public durationMinutes: number;
 }

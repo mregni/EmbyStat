@@ -14,5 +14,8 @@ namespace EmbyStat.Repositories.Interfaces
         Movie GetLowestRatedMovie(List<string> collections);
         Movie GetOlderPremieredMovie(List<string> collections);
         Movie GetYoungestPremieredMovie(List<string> collections);
+        Movie GetShortestMovie(List<string> collections);
+        Movie GetLongestMovie(List<string> collections);
+        Movie GetYoungestAddedMovie(List<string> collections);
     }
 }

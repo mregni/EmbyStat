@@ -151,6 +151,51 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public Movie GetShortestMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.RunTimeTicks != null && x.RunTimeTicks != 0).OrderBy(x => x.RunTimeTicks).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
+        public Movie GetLongestMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.RunTimeTicks != null && x.RunTimeTicks != 0).OrderByDescending(x => x.RunTimeTicks).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
+        public Movie GetYoungestAddedMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.DateCreated != null).OrderByDescending(x => x.DateCreated).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
         public void RemoveMovies()
         {
             using (var context = new ApplicationDbContext())

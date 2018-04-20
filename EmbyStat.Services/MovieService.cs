@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Stats;
 using EmbyStat.Repositories.Interfaces;
@@ -36,10 +37,14 @@ namespace EmbyStat.Services
                 HighestRatedMovie = HighestRatedMovie(collectionIds),
                 LowestRatedMovie = LowestRatedMovie(collectionIds),
                 OldestPremieredMovie = OldestPremieredMovie(collectionIds),
-                YoungestPremieredMovie = YoungestPremieredMovie(collectionIds)
+                YoungestPremieredMovie = YoungestPremieredMovie(collectionIds),
+                ShortestMovie = ShortestMovie(collectionIds),
+                LongestMovie = LongestMovie(collectionIds),
+                YoungestAddedMovie = YoungestAddedMovie(collectionIds)
             };
         }
 
+        #region StatCreators
 
         private Card TotalMovieCount(List<string> collectionIds)
         {
@@ -49,6 +54,7 @@ namespace EmbyStat.Services
                 Value = _movieRepository.GetMovieCount(collectionIds).ToString()
             };
         }
+
         private Card TotalMovieGenres(List<string> collectionIds)
         {
             return new Card
@@ -57,78 +63,84 @@ namespace EmbyStat.Services
                 Value = _movieRepository.GetGenreCount(collectionIds).ToString()
             };
         }
+
         private Poster HighestRatedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetHighestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return new Poster
-                {
-                    Title = "MOVIES.HIGHESTRATED",
-                    Name = movie.Name,
-                    CommunityRating = Math.Floor(movie.CommunityRating ?? 0).ToString(CultureInfo.InvariantCulture),
-                    MediaId = movie.Id,
-                    OfficialRating = movie.OfficialRating,
-                    Tag = movie.Primary
-                };
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.LOWESTRATED");
             }
 
             return new Poster();
         }
+
         private Poster LowestRatedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetLowestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return new Poster
-                {
-                    Title = "MOVIES.LOWESTRATED",
-                    Name = movie.Name,
-                    CommunityRating = Math.Floor(movie.CommunityRating ?? 0).ToString(CultureInfo.InvariantCulture),
-                    MediaId = movie.Id,
-                    OfficialRating = movie.OfficialRating,
-                    Tag = movie.Primary
-                };
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.LOWESTRATED");
             }
 
             return new Poster();
         }
+
         private Poster OldestPremieredMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetOlderPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return new Poster
-                {
-                    Title = "MOVIES.OLDESTPREMIEREDMOVIE",
-                    Name = movie.Name,
-                    CommunityRating = Math.Floor(movie.CommunityRating ?? 0).ToString(CultureInfo.InvariantCulture),
-                    MediaId = movie.Id,
-                    OfficialRating = movie.OfficialRating,
-                    Tag = movie.Primary
-                };
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.OLDESTPREMIEREDMOVIE");
             }
 
             return new Poster();
         }
+
         private Poster YoungestPremieredMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetYoungestPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return new Poster
-                {
-                    Title = "MOVIES.YOUNGESTPREMIEREDMOVIE",
-                    Name = movie.Name,
-                    CommunityRating = Math.Floor(movie.CommunityRating ?? 0).ToString(CultureInfo.InvariantCulture),
-                    MediaId = movie.Id,
-                    OfficialRating = movie.OfficialRating,
-                    Tag = movie.Primary
-                };
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.YOUNGESTPREMIEREDMOVIE");
             }
 
             return new Poster();
         }
+
+        private Poster ShortestMovie(List<string> collectionIds)
+        {
+            var movie = _movieRepository.GetShortestMovie(collectionIds);
+            if (movie != null)
+            {
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.SHORTESTMOVIE");
+            }
+
+            return new Poster();
+        }
+
+        private Poster LongestMovie(List<string> collectionIds)
+        {
+            var movie = _movieRepository.GetLongestMovie(collectionIds);
+            if (movie != null)
+            {
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.LONGESTMOVIE");
+            }
+
+            return new Poster();
+        }
+
+        private Poster YoungestAddedMovie(List<string> collectionIds)
+        {
+            var movie = _movieRepository.GetYoungestAddedMovie(collectionIds);
+            if (movie != null)
+            {
+                return PosterHelper.ConvertToPoster(movie, "MOVIES.YOUNGESTADDEDMOVIE");
+            }
+
+            return new Poster();
+        }
+
         private TimeSpanCard TotalPlayLength(List<string> collectionIds)
         {
             var playLength = new TimeSpan(_movieRepository.GetPlayLength(collectionIds));
@@ -139,6 +151,7 @@ namespace EmbyStat.Services
                 Hours = playLength.Hours,
                 Minutes = playLength.Minutes
             };
+        }
     }
-    }
+#endregion
 }

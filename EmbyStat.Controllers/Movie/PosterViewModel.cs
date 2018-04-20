@@ -12,5 +12,6 @@ namespace EmbyStat.Controllers.Movie
         public string OfficialRating { get; set; }
         public string Title { get; set; }
         public string Tag { get; set; }
+        public double DurationMinutes { get; set; }
     }
 }

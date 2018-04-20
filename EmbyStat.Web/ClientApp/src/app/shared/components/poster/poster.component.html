@@ -1,6 +1,7 @@
 <div *ngIf="poster !== undefined">
   <div [style.background-image]="getBackground()" class="poster">
     {{poster.officialRating}}<br />
+    {{poster.durationMinutes}} min<br />
     {{poster.communityRating}}/10<br />
   </div>
   <div>
