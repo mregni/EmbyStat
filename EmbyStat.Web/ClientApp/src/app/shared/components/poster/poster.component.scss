@@ -1,4 +1,27 @@
+@import '../../../../styles.scss';
+
+.poster_container {
+  margin: 0 20px 20px 0;
+}
+
 .poster {
-  width:200px;
-  height:300px;
+  width: 200px;
+  height: 300px;
+  background-size: contain;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.poster__content {
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  color: $white-font-color;
+}
+
+.poster__sub-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #222;
 }

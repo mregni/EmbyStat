@@ -3,6 +3,7 @@
 
 
 $grey-font-color: #888;
+$white-font-color: #fff;
 
 $normal-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 
@@ -51,4 +52,16 @@ body {
     padding:0;
     margin:15px 0px;
   }
+}
+
+.subtext-grey {
+  font-style: italic;
+  padding: 3px;
+  color: $grey-font-color;
+}
+
+.subtext-white {
+  font-style: italic;
+  padding: 3px;
+  color: $white-font-color;
 }

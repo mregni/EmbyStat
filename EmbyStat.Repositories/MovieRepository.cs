@@ -162,7 +162,9 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.RunTimeTicks != null && x.RunTimeTicks != 0).OrderBy(x => x.RunTimeTicks).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= 600000000);
+                query = query.OrderBy(x => x.RunTimeTicks).ThenBy(x => x.SortName);
+                return query.FirstOrDefault();
             }
         }
 
@@ -177,7 +179,7 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.RunTimeTicks != null && x.RunTimeTicks != 0).OrderByDescending(x => x.RunTimeTicks).ThenBy(x => x.SortName).FirstOrDefault();
+                return query.Where(x => x.RunTimeTicks != null).OrderByDescending(x => x.RunTimeTicks).ThenBy(x => x.SortName).FirstOrDefault();
             }
         }
 
