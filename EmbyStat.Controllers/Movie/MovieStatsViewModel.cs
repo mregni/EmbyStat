@@ -10,12 +10,12 @@ namespace EmbyStat.Controllers.Movie
         public CardViewModel GenreCount { get; set; }
         public CardViewModel CollectionCount { get; set; }
         public CardViewModel MostUsedContainer { get; set; }
-        public CardViewModel HighestRatedMovie { get; set; }
-        public CardViewModel LowestRatedMovie { get; set; }
-        public CardViewModel LongestMovie { get; set; }
-        public CardViewModel ShortestMovie { get; set; }
-        public CardViewModel OldestPremieredMovie { get; set; }
-        public CardViewModel YoungestPremieredMovie { get; set; }
+        public PosterViewModel HighestRatedMovie { get; set; }
+        public PosterViewModel LowestRatedMovie { get; set; }
+        public PosterViewModel LongestMovie { get; set; }
+        public PosterViewModel ShortestMovie { get; set; }
+        public PosterViewModel OldestPremieredMovie { get; set; }
+        public PosterViewModel YoungestPremieredMovie { get; set; }
         public CardViewModel YoungestAddedMovie { get; set; }
         public CardViewModel MostFeaturedMovieActor { get; set; }
         public CardViewModel MostFeaturedMovieDirector { get; set; }

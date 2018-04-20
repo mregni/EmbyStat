@@ -6,6 +6,7 @@ namespace EmbyStat.Controllers.Movie
 {
     public class CardViewModel
     {
+        public string MediaId { get; set; }
         public string Title { get; set; }
         public string Value { get; set; }
         public string Poster { get; set; }

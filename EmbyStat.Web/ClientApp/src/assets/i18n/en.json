@@ -62,7 +62,11 @@
   "MOVIES": {
     "TOTALMOVIES": "Total movies",
     "TOTALGENRES": "Total genres",
-    "TOTALPLAYLENGTH": "Total watchable time" 
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATED": "Highest rated movie",
+    "LOWESTRATED": "Lowest rated movie",
+    "OLDESTPREMIEREDMOVIE": "Oldest premiered movie",
+    "YOUNGESTPREMIEREDMOVIE": "Youngest premiered movie" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",

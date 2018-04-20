@@ -1,12 +1,13 @@
 import { Card } from '../../shared/models/card';
 import { TimespanCard } from '../../shared/models/timespanCard';
+import { Poster } from '../../shared/models/poster';
 
 export class MovieStats {
   public movieCount: Card ;
   public genreCount: Card ;
   public collectionCount: Card ;
   public mostUsedContainer: Card ;
-  public highestRatedMovie: Card ;
+  public highestRatedMovie: Poster ;
   public lowestRatedMovie: Card ;
   public longestMovie: Card ;
   public shortestMovie: Card ;

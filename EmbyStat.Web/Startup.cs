@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using Autofac;
@@ -111,6 +112,11 @@ namespace EmbyStat.Web
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+	        if (!Directory.Exists("Clientapp\\src\\assets\\images\\posters"))
+	        {
+	            Directory.CreateDirectory("Clientapp\\src\\assets\\images\\posters");
+	        }
 
             Mapper.Initialize(cfg =>
             {

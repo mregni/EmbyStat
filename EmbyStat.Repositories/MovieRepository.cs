@@ -91,6 +91,66 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public Movie GetHighestRatedMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.CommunityRating != null).OrderByDescending(x => x.CommunityRating).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
+        public Movie GetLowestRatedMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
+        public Movie GetOlderPremieredMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.PremiereDate != null).OrderBy(x => x.PremiereDate).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
+        public Movie GetYoungestPremieredMovie(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.Where(x => x.PremiereDate != null).OrderByDescending(x => x.PremiereDate).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
         public void RemoveMovies()
         {
             using (var context = new ApplicationDbContext())

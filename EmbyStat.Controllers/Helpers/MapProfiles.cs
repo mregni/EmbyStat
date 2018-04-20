@@ -35,6 +35,7 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
+	        CreateMap<Poster, PosterViewModel>();
             CreateMap<MovieStats, MovieStatsViewModel>();
             CreateMap<Collection, CollectionViewModel>().ReverseMap();
 

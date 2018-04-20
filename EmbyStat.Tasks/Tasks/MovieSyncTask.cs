@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,9 +76,9 @@ namespace EmbyStat.Tasks.Tasks
                 movies.ForEach(x => x.CollectionId = rootItems[i].Id);
 
                 await ProcessGenresFromEmby(rootItems[i].Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
-                progress.Report(Math.Round(20 + 10 / (double)rootItems.Count * i));
+                progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i)/4));
                 await ProcessPeopleFromEmby(rootItems[i].Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
-                progress.Report(Math.Round(20 + 30 / (double)rootItems.Count * i));
+                progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i) / 2));
 
                 var j = 0;
                 foreach (var movie in movies)
@@ -86,7 +87,7 @@ namespace EmbyStat.Tasks.Tasks
                     cancellationToken.ThrowIfCancellationRequested();
                     Log.Information($"Processing movie ({movie.Id}) {movie.Name}");
                     AddMoviesToDb(movie);
-                    progress.Report(Math.Round(50 + (50 / (double)rootItems.Count) * (j / (double)movies.Count)));
+                    progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i) / 2 + ((80 / (double)rootItems.Count * i) / 2) / movies.Count * j));
                 }
             }
         }

@@ -19,4 +19,10 @@
     <app-card-number [card]="stats.genreCount"></app-card-number>
     <app-card-timespan [card]="stats.totalPlayableTime"></app-card-timespan>
   </div>
+  <div class="movie__flex-row movie__align-start">
+    <app-poster [poster]="stats.highestRatedMovie"></app-poster>
+    <app-poster [poster]="stats.lowestRatedMovie"></app-poster>
+    <app-poster [poster]="stats.oldestPremieredMovie"></app-poster>
+    <app-poster [poster]="stats.youngestPremieredMovie"></app-poster>
+  </div>
 </div>

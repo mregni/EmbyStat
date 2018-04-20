@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ namespace EmbyStat.Api.EmbyClient
 		{
 			var url = GetApiUrl("Plugins");
 
-			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
+			using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<List<PluginInfo>>(stream);
 			}
@@ -73,7 +74,7 @@ namespace EmbyStat.Api.EmbyClient
 		{
 			var url = GetApiUrl("System/Info");
 
-			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
+			using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<SystemInfo>(stream);
 			}
@@ -83,7 +84,7 @@ namespace EmbyStat.Api.EmbyClient
 		{
 			var url = GetApiUrl("Environment/Drives");
 
-			using (var stream = await GetSerializedStreamAsync(url).ConfigureAwait(false))
+			using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<List<Drive>>(stream);
 			}
@@ -94,14 +95,14 @@ namespace EmbyStat.Api.EmbyClient
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
 
-			return await PostAsyncToString(url, args, CancellationToken.None).ConfigureAwait(false);
+			return await PostAsyncToString(url, args, CancellationToken.None);
 		}
 
 	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))
 	    {
 	        var url = GetItemListUrl($"Users/{query.UserId}/Items", query);
 
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
 	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
 	        }
@@ -111,7 +112,7 @@ namespace EmbyStat.Api.EmbyClient
 	    {
 	        var url = GetApiUrl($"/Users/{userId}/Items/Root");
 
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
 	            return DeserializeFromStream<Folder>(stream);
 	        }
@@ -126,7 +127,7 @@ namespace EmbyStat.Api.EmbyClient
 	            url += "&PersonTypes=" + string.Join(",", query.PersonTypes);
 	        }
 
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
 	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
 	        }
@@ -136,7 +137,7 @@ namespace EmbyStat.Api.EmbyClient
 	    {
 	        var url = GetItemByNameListUrl("Genres", query);
 
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken).ConfigureAwait(false))
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
 	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
 	        }

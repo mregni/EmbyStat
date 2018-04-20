@@ -4,11 +4,13 @@ using System.Text;
 
 namespace EmbyStat.Common.Models.Stats
 {
-    public class Card
+    public class Poster
     {
         public string MediaId { get; set; }
+        public string Name { get; set; }
+        public string CommunityRating { get; set; }
+        public string OfficialRating { get; set; }
         public string Title { get; set; }
-        public string Value { get; set; }
-        public string Poster { get; set; }
+        public string Tag { get; set; }
     }
 }
