@@ -12,7 +12,8 @@
     "CANCEL": "Cancel",
     "DAYS": "days",
     "HOURS": "hours",
-    "MINUTES": "minutes" 
+    "MINUTES": "minutes",
+    "MIN": "min" 
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 

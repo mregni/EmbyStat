@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Poster } from '../../models/poster';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
@@ -25,6 +25,10 @@ export class PosterComponent implements OnDestroy {
       return "";
     }
     return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+  }
+
+  openMovie(): void {
+    window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   ngOnDestroy(): void {

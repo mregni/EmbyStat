@@ -6,4 +6,5 @@ export class Poster {
   public title: string;
   public tag: string;
   public durationMinutes: number;
+  public year: number;
 }

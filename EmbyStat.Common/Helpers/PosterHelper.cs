@@ -15,11 +15,12 @@ namespace EmbyStat.Common.Helpers
             {
                 Title = title,
                 Name = movie.Name,
-                CommunityRating = Math.Floor(movie.CommunityRating ?? 0).ToString(CultureInfo.InvariantCulture),
+                CommunityRating = String.Format("{0:0.0}", movie.CommunityRating ?? 0),
                 MediaId = movie.Id,
                 OfficialRating = movie.OfficialRating,
                 Tag = movie.Primary,
-                DurationMinutes = Math.Floor(new TimeSpan(movie.RunTimeTicks ?? 0).TotalMinutes)
+                DurationMinutes = Math.Floor(new TimeSpan(movie.RunTimeTicks ?? 0).TotalMinutes),
+                Year = movie.PremiereDate?.Year ?? 0
             };
         }
     }
