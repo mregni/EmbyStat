@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Services.Interfaces;
 using Serilog;
+using TaskHelpers = EmbyStat.Services.Converters.TaskHelpers;
 
 namespace EmbyStat.Services
 {

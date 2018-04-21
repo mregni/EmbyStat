@@ -1,6 +1,7 @@
 ﻿using System;
 using EmbyStat.Common.Models;
-using EmbyStat.Controllers.Configuration;
+using EmbyStat.Controllers;
+using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;

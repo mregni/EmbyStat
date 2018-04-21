@@ -69,11 +69,11 @@
     "TOTALPLAYLENGTH": "Total watchable time",
     "HIGHESTRATED": "Highest rated",
     "LOWESTRATED": "Lowest rated",
-    "OLDESTPREMIEREDMOVIE": "Oldest premiered",
-    "YOUNGESTPREMIEREDMOVIE": "Youngest premiered",
-    "SHORTESTMOVIE": "Shortest",
-    "LONGESTMOVIE": "Longest",
-    "YOUNGESTADDEDMOVIE": "Youngest added" 
+    "OLDESTPREMIERED": "Oldest premiered",
+    "YOUNGESTPREMIERED": "Youngest premiered",
+    "SHORTEST": "Shortest",
+    "LONGEST": "Longest",
+    "YOUNGESTADDED": "Youngest added" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",

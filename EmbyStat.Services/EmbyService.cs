@@ -12,6 +12,7 @@ using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models;
+using EmbyStat.Services.Models.Emby;
 using Newtonsoft.Json;
 using Serilog;
 

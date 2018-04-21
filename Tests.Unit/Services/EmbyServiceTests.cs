@@ -7,7 +7,7 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
-using EmbyStat.Services.Models;
+using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using EmbyStat.Common.Helpers;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Stats;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Movie;
+using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services
 {
@@ -50,7 +51,7 @@ namespace EmbyStat.Services
         {
             return new Card
             {
-                Title = "MOVIES.TOTALMOVIES",
+                Title = Constants.MoviesTotalMovies,
                 Value = _movieRepository.GetMovieCount(collectionIds).ToString()
             };
         }
@@ -59,7 +60,7 @@ namespace EmbyStat.Services
         {
             return new Card
             {
-                Title = "MOVIES.TOTALGENRES",
+                Title = Constants.MoviesTotalGenres,
                 Value = _movieRepository.GetGenreCount(collectionIds).ToString()
             };
         }
@@ -69,7 +70,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetHighestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.LOWESTRATED");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesHighestRated);
             }
 
             return new Poster();
@@ -80,7 +81,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetLowestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.LOWESTRATED");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesLowestRated);
             }
 
             return new Poster();
@@ -91,7 +92,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetOlderPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.OLDESTPREMIEREDMOVIE");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesOldestPremiered);
             }
 
             return new Poster();
@@ -102,7 +103,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetYoungestPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.YOUNGESTPREMIEREDMOVIE");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesYoungestPremiered);
             }
 
             return new Poster();
@@ -113,7 +114,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetShortestMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.SHORTESTMOVIE");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesShortest);
             }
 
             return new Poster();
@@ -124,7 +125,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetLongestMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.LONGESTMOVIE");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesLongest);
             }
 
             return new Poster();
@@ -135,7 +136,7 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetYoungestAddedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, "MOVIES.YOUNGESTADDEDMOVIE");
+                return PosterHelper.ConvertToPoster(movie, Constants.MoviesYoungestAdded);
             }
 
             return new Poster();
@@ -146,7 +147,7 @@ namespace EmbyStat.Services
             var playLength = new TimeSpan(_movieRepository.GetPlayLength(collectionIds));
             return new TimeSpanCard
             {
-                Title = "MOVIES.TOTALPLAYLENGTH",
+                Title = Constants.MoviesTotalPlayLength,
                 Days = playLength.Days,
                 Hours = playLength.Hours,
                 Minutes = playLength.Minutes

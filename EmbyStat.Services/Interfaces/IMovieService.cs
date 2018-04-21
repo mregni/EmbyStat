@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Stats;
+using EmbyStat.Services.Models;
+using EmbyStat.Services.Models.Movie;
 
 namespace EmbyStat.Services.Interfaces
 {

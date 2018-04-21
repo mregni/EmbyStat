@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmbyStat.Controllers.Plugin;
+using EmbyStat.Controllers;
+using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Plugins;

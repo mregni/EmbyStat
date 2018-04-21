@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Services.Models;
+using EmbyStat.Services.Models.Emby;
 
 namespace EmbyStat.Services.Interfaces
 {

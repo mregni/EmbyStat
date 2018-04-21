@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
-using EmbyStat.Controllers.Emby;
+using EmbyStat.Controllers;
+using EmbyStat.Controllers.ViewModels.Emby;
+using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models;
+using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

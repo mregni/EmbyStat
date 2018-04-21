@@ -27,9 +27,7 @@ namespace Tests.Unit.Services
 		    _embyPluginRepositoryMock = new Mock<IPluginRepository>();
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
 
-		    var loggerMock = new Mock<ILogger<PluginService>>();
-
-			_subject = new PluginService(loggerMock.Object, _embyPluginRepositoryMock.Object);
+			_subject = new PluginService( _embyPluginRepositoryMock.Object);
 		}
 
 	    [Fact]
