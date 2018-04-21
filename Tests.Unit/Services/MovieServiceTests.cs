@@ -34,7 +34,7 @@ namespace Tests.Unit.Services
                 Name = "The lord of the rings",
                 PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
                 OfficialRating = "R",
-                RunTimeTicks = 6000000000000,
+                RunTimeTicks = 600000000,
                 Primary = "primarImage"
             };
 
