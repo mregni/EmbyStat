@@ -6,7 +6,7 @@ namespace EmbyStat.Services.Models.Movie
     {
         public Card MovieCount { get; set; }
         public Card GenreCount { get; set; }
-        public Card CollectionCount { get; set; }
+        public Card BoxsetCount { get; set; }
         public Card MostUsedContainer { get; set; }
         public Poster HighestRatedMovie { get; set; }
         public Poster LowestRatedMovie { get; set; }

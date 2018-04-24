@@ -45,7 +45,7 @@ namespace EmbyStat.Web
 
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(HostingEnvironment.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				.AddJsonFile($"appsettings.{HostingEnvironment.EnvironmentName}.json", optional: true)
 				.AddEnvironmentVariables();
 			Configuration = builder.Build();
@@ -110,13 +110,8 @@ namespace EmbyStat.Web
             applicationLifetime.ApplicationStarted.Register(OnStarted);
             if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
-			}
-
-	        if (!Directory.Exists("Clientapp\\src\\assets\\images\\posters"))
-	        {
-	            Directory.CreateDirectory("Clientapp\\src\\assets\\images\\posters");
-	        }
+			    app.UseDeveloperExceptionPage();
+            }
 
             Mapper.Initialize(cfg =>
             {

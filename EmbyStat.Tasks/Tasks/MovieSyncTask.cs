@@ -85,7 +85,7 @@ namespace EmbyStat.Tasks.Tasks
                     cancellationToken.ThrowIfCancellationRequested();
                     Log.Information($"Processing movie ({movie.Id}) {movie.Name}");
                     AddMoviesToDb(movie);
-                    progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i) / 2 + ((80 / (double)rootItems.Count * i) / 2) / movies.Count * j));
+                    progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + ((80 / (double)rootItems.Count * i) / 2) / movies.Count * j));
                 }
             }
         }

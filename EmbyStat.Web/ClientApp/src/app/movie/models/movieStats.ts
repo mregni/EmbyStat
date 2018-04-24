@@ -5,7 +5,7 @@ import { Poster } from '../../shared/models/poster';
 export class MovieStats {
   public movieCount: Card ;
   public genreCount: Card ;
-  public collectionCount: Card ;
+  public boxsetCount: Card ;
   public mostUsedContainer: Card ;
   public highestRatedMovie: Poster ;
   public lowestRatedMovie: Card ;

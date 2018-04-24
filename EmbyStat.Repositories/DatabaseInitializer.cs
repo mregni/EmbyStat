@@ -4,29 +4,28 @@ using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace EmbyStat.Repositories
 {
 	public class DatabaseInitializer : IDatabaseInitializer
 	{
 		private readonly ApplicationDbContext _context;
-		private readonly ILogger<DatabaseInitializer> _logger;
 
-		public DatabaseInitializer(ApplicationDbContext context, ILogger<DatabaseInitializer> logger)
+		public DatabaseInitializer(ApplicationDbContext context)
 		{
 			_context = context;
-			_logger = logger;
 		}
 
 		public async Task SeedAsync()
 		{
-			_logger.LogInformation("Migrating database started");
+			Log.Information("Migrating database started");
 			_context.Database.Migrate();
-			_logger.LogInformation("Migrating database ended");
+			Log.Information("Migrating database ended");
 
 			if (!await _context.Configuration.AnyAsync())
 			{
-				_logger.LogInformation("Initialising configuration");
+				Log.Information("Initialising configuration");
 
 				var config = new Configuration()
 				{

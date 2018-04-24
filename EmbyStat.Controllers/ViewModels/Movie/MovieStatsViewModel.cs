@@ -6,7 +6,7 @@ namespace EmbyStat.Controllers.ViewModels.Movie
     {
         public CardViewModel MovieCount { get; set; }
         public CardViewModel GenreCount { get; set; }
-        public CardViewModel CollectionCount { get; set; }
+        public CardViewModel BoxsetCount { get; set; }
         public CardViewModel MostUsedContainer { get; set; }
         public PosterViewModel HighestRatedMovie { get; set; }
         public PosterViewModel LowestRatedMovie { get; set; }

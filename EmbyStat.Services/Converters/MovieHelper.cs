@@ -90,7 +90,8 @@ namespace EmbyStat.Services.Converters
                 ExtraPersons = x.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson()
                 {
                     ExtraId = x.Id,
-                    PersonId = y.Id
+                    PersonId = y.Id,
+                    Type = y.Type
                 }).ToList()
             };
         }

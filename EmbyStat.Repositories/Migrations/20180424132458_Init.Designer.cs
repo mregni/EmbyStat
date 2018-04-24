@@ -16,8 +16,8 @@ using System;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180413224811_AddedCollections")]
-    partial class AddedCollections
+    [Migration("20180424132458_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -166,6 +166,8 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<string>("Banner");
 
+                    b.Property<string>("CollectionId");
+
                     b.Property<DateTime?>("DateCreated");
 
                     b.Property<string>("Discriminator")
@@ -279,6 +281,8 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<string>("PersonId");
 
+                    b.Property<string>("Type");
+
                     b.HasKey("ExtraId", "PersonId");
 
                     b.HasIndex("PersonId");
@@ -305,8 +309,6 @@ namespace EmbyStat.Repositories.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 

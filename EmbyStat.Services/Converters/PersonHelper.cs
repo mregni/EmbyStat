@@ -10,8 +10,7 @@ namespace EmbyStat.Services.Converters
             return new Person
             {
                 Id = person.Id,
-                Name = person.Name,
-                Type = person.Type
+                Name = person.Name
             };
         }
     }

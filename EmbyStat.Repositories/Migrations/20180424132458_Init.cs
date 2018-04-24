@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using System.Collections.Generic;
 
 namespace EmbyStat.Repositories.Migrations
 {
@@ -20,6 +21,20 @@ namespace EmbyStat.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Boxsets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Collections",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    PrimaryImage = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Collections", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,6 +113,7 @@ namespace EmbyStat.Repositories.Migrations
                     TVDB = table.Column<string>(nullable: true),
                     Id = table.Column<string>(nullable: false),
                     Banner = table.Column<string>(nullable: true),
+                    CollectionId = table.Column<string>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     Logo = table.Column<string>(nullable: true),
@@ -134,8 +150,7 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -380,7 +395,8 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     ExtraId = table.Column<string>(nullable: false),
-                    PersonId = table.Column<string>(nullable: false)
+                    PersonId = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -466,6 +482,9 @@ namespace EmbyStat.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "Boxsets");
+
+            migrationBuilder.DropTable(
+                name: "Collections");
 
             migrationBuilder.DropTable(
                 name: "Configuration");

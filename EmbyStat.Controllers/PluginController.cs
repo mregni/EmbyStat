@@ -13,9 +13,9 @@ namespace EmbyStat.Controllers
 	{
 		private readonly IPluginService _pluginService;
 
-		public PluginController(IPluginService pluginService)
+		public PluginController()
 		{
-			_pluginService = pluginService;
+			//_pluginService = pluginService;
 		}
 
 		[HttpGet]
@@ -25,5 +25,11 @@ namespace EmbyStat.Controllers
 			var result = _pluginService.GetInstalledPlugins();
 			return Ok(Mapper.Map<IList<EmbyPluginViewModel>>(result));
 		}
+
+	    [HttpGet]
+	    public IActionResult GetDummy()
+	    {
+	        return Ok();
+	    }
 	}
 }

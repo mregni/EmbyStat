@@ -280,6 +280,8 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<string>("PersonId");
 
+                    b.Property<string>("Type");
+
                     b.HasKey("ExtraId", "PersonId");
 
                     b.HasIndex("PersonId");
@@ -306,8 +308,6 @@ namespace EmbyStat.Repositories.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 
