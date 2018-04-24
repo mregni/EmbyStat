@@ -13,9 +13,9 @@ namespace EmbyStat.Controllers
 	{
 		private readonly IPluginService _pluginService;
 
-		public PluginController()
+		public PluginController(IPluginService pluginService)
 		{
-			//_pluginService = pluginService;
+			_pluginService = pluginService;
 		}
 
 		[HttpGet]
