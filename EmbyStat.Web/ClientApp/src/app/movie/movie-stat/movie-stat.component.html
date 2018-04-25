@@ -15,24 +15,7 @@
 <div class="content">
   <mat-tab-group>
     <mat-tab label="General">
-      <div class="movie__tab-content">
-        <div class="movie__flexcontainer" *ngIf="stats$ | async as stats">
-          <div class="movie__flex-row movie__align-start">
-            <app-card-number [card]="stats.movieCount"></app-card-number>
-            <app-card-number [card]="stats.genreCount"></app-card-number>
-            <app-card-timespan [card]="stats.totalPlayableTime"></app-card-timespan>
-          </div>
-          <div class="movie__flex-row movie__align-start">
-            <app-poster [poster]="stats.highestRatedMovie"></app-poster>
-            <app-poster [poster]="stats.lowestRatedMovie"></app-poster>
-            <app-poster [poster]="stats.oldestPremieredMovie"></app-poster>
-            <app-poster [poster]="stats.youngestPremieredMovie"></app-poster>
-            <app-poster [poster]="stats.shortestMovie"></app-poster>
-            <app-poster [poster]="stats.longestMovie"></app-poster>
-            <app-poster [poster]="stats.youngestAddedMovie"></app-poster>
-          </div>
-        </div>
-      </div>
+      <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>
     </mat-tab>
     <mat-tab label="Graphs">
       <div class="movie__tab-content">Content 1</div>

@@ -7,6 +7,7 @@ import { MovieService } from './service/movie.service';
 import { MovieFacade } from './state/facade.movie';
 
 import { MovieStatComponent } from './movie-stat/movie-stat.component';
+import { MovieGeneralComponent } from './movie-general/movie-general.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,6 @@ import { MovieStatComponent } from './movie-stat/movie-stat.component';
     MovieService,
     MovieFacade
   ],
-  declarations: [MovieStatComponent]
+  declarations: [MovieStatComponent, MovieGeneralComponent]
 })
 export class MovieModule { }

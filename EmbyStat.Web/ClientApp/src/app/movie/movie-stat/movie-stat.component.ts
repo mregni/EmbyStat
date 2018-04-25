@@ -14,15 +14,15 @@ import { MovieStats } from '../models/movieStats';
 })
 export class MovieStatComponent implements OnInit {
   public collections$: Observable<Collection[]>;
-  public stats$: Observable<MovieStats>;
+  public selectedCollections: string[];
+  
   public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
 
   constructor(private movieFacade: MovieFacade) {
     this.collections$ = this.movieFacade.getCollections();
-    this.stats$ = this.movieFacade.getGeneralStats([]);
 
-    this.collectionsFormControl.valueChanges.subscribe((data: string[]) => {
-      this.stats$ = this.movieFacade.getGeneralStats(data);
+    this.collectionsFormControl.valueChanges.subscribe(data => {
+      this.selectedCollections = data;
     });
   }
 
