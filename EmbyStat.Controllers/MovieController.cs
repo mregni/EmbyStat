@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Stat;
@@ -31,7 +32,16 @@ namespace EmbyStat.Controllers
         public IActionResult GetGeneralStats([FromBody]List<string> collectionIds)
         {
             var result = _movieService.GetGeneralStatsForCollections(collectionIds);
-            return Ok(Mapper.Map<MovieStatsViewModel>(result));
+            var convert = Mapper.Map<MovieStatsViewModel>(result);
+            return Ok(convert);
+        }
+
+        [HttpPost]
+        [Route("getpersonstats")]
+        public async Task<IActionResult> GetPersonStats([FromBody]List<string> collectionIds)
+        {
+            var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
+            return Ok(Mapper.Map<MoviePersonStatsViewModel>(result));
         }
     }
 }

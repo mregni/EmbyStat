@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using EmbyStat.Common;
+using System.Threading;
+using System.Threading.Tasks;
+using EmbyStat.Api.EmbyClient;
+using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
+using MediaBrowser.Model.Entities;
+using CollectionType = EmbyStat.Common.Models.CollectionType;
+using Constants = EmbyStat.Common.Constants;
 
 namespace EmbyStat.Services
 {
@@ -16,11 +22,15 @@ namespace EmbyStat.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly ICollectionRepository _collectionRepository;
+        private readonly IConfigurationRepository _configurationRepository;
+        private readonly IEmbyClient _embyClient;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IConfigurationRepository configurationRepository, IEmbyClient embyClient)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
+            _configurationRepository = configurationRepository;
+            _embyClient = embyClient;
         }
 
         public List<Collection> GetMovieCollections()
@@ -42,6 +52,17 @@ namespace EmbyStat.Services
                 ShortestMovie = ShortestMovie(collectionIds),
                 LongestMovie = LongestMovie(collectionIds),
                 YoungestAddedMovie = YoungestAddedMovie(collectionIds)
+            };
+        }
+
+        public async Task<MoviePersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
+        {
+            return new MoviePersonStats
+            {
+                TotalActorCount = TotalActorCount(collectionsIds),
+                TotalDirectorCount = TotalDirectorCount(collectionsIds),
+                TotalWriterCount = TotalWriterCount(collectionsIds),
+                MostFeaturedActor = await GetMostFeaturedActor(collectionsIds)
             };
         }
 
@@ -151,6 +172,55 @@ namespace EmbyStat.Services
                 Days = playLength.Days,
                 Hours = playLength.Hours,
                 Minutes = playLength.Minutes
+            };
+        }
+
+        private Card TotalActorCount(List<string> collectionsIds)
+        {
+            return new Card
+            {
+                Value = _movieRepository.GetTotalActors(collectionsIds).ToString(),
+                Title = Constants.MoviesTotalActors
+            };
+        }
+
+        private Card TotalDirectorCount(List<string> collectionsIds)
+        {
+            return new Card
+            {
+                Value = _movieRepository.GetTotalDirectors(collectionsIds).ToString(),
+                Title = Constants.MoviesTotalDirectors
+            };
+        }
+
+        private Card TotalWriterCount(List<string> collectionsIds)
+        {
+            return new Card
+            {
+                Value = _movieRepository.GetTotalWriters(collectionsIds).ToString(),
+                Title = Constants.MoviesTotalWriters
+            };
+        }
+
+        private async Task<PersonPoster> GetMostFeaturedActor(List<string> collectionIds)
+        {
+            var actorId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Actor);
+            var settings = _configurationRepository.GetSingle();
+            var query = new ItemQuery {UserId = settings.EmbyUserId};
+
+            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            var person = await _embyClient.GetItemAsync(query, actorId, CancellationToken.None);
+            return new PersonPoster
+            {
+                Id = person.Id,
+                Name = person.Name,
+                BirthDate = person.PremiereDate,
+                ChildCount = person.ChildCount,
+                MovieCount = person.MovieCount,
+                EpisodeCount = person.EpisodeCount,
+                Title = Constants.MoviesMostFeaturedActor,
+                HasTitle = true,
+                Tag = person.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value
             };
         }
     }

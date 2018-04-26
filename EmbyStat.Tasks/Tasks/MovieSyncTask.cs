@@ -10,7 +10,9 @@ using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -74,7 +76,7 @@ namespace EmbyStat.Tasks.Tasks
                 movies.ForEach(x => x.CollectionId = rootItems[i].Id);
 
                 await ProcessGenresFromEmby(rootItems[i].Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
-                progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i)/4));
+                progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i) / 4));
                 await ProcessPeopleFromEmby(rootItems[i].Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
                 progress.Report(Math.Round(20 + (80 / (double)rootItems.Count * i) + (80 / (double)rootItems.Count * i) / 2));
 
@@ -171,7 +173,7 @@ namespace EmbyStat.Tasks.Tasks
 
             if (newGenres.Any())
             {
-                Log.Information($"Need to add {newGenres.Count} genres first ({string.Join(", ", newGenres)})");
+                Log.Information($"Need to add {newGenres.Count} genres first ({string.Join(", ", newGenres.Select(x => x.Name))})");
                 var genres = newGenres.Select(GenreHelper.ConvertToGenre);
                 _genreRepository.AddRangeIfMissing(genres);
             }

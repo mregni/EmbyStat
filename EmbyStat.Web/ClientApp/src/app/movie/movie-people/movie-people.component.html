@@ -1,0 +1,12 @@
+<div class="movie__tab-content">
+  <div class="movie__flexcontainer" *ngIf="stats$ | async as stats">
+    <div class="movie__flex-row movie__align-start">
+      <app-card-number [card]="stats.totalActorCount"></app-card-number>
+      <app-card-number [card]="stats.totalDirectorCount"></app-card-number>
+      <app-card-number [card]="stats.totalWriterCount"></app-card-number>
+    </div>
+    <div class="movie__flex-row movie__align-start">
+      <app-poster [poster]="stats.mostFeaturedActor"></app-poster>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
+using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -19,7 +21,7 @@ namespace EmbyStat.Repositories
                     var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
                     if (temp == null)
                     {
-                        Log.Warning($"We couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the genre from the movie now.");
+                        Log.Warning($"We couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
                         peopleToDelete.Add(person.PersonId);
                     }
                 }
@@ -195,6 +197,80 @@ namespace EmbyStat.Repositories
                 }
 
                 return query.Where(x => x.DateCreated != null).OrderByDescending(x => x.DateCreated).ThenBy(x => x.SortName).FirstOrDefault();
+            }
+        }
+
+        public int GetTotalActors(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.Include(x => x.ExtraPersons).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
+                var people = extraPerson.DistinctBy(x => x.PersonId);
+                return people.Count(x => x.Type == Constants.Actor);
+            }
+        }
+
+        public int GetTotalDirectors(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.Include(x => x.ExtraPersons).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
+                var people = extraPerson.DistinctBy(x => x.PersonId);
+                return people.Count(x => x.Type == Constants.Director);
+            }
+        }
+
+        public int GetTotalWriters(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.Include(x => x.ExtraPersons).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
+                var people = extraPerson.DistinctBy(x => x.PersonId);
+                return people.Count(x => x.Type == Constants.Writer);
+            }
+        }
+
+        public string GetMostFeaturedPerson(List<string> collections, string type)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.Include(x => x.ExtraPersons).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var person = query
+                    .SelectMany(x => x.ExtraPersons)
+                    .AsEnumerable()
+                    .Where(x => x.Type == type)
+                    .GroupBy(x => x.PersonId)
+                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Id);
+                return person.FirstOrDefault();
             }
         }
 

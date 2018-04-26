@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 
 import { MovieFacade } from '../state/facade.movie';
 import { Collection } from '../../shared/models/collection';
-import { MovieStats } from '../models/movieStats';
 
 
 @Component({

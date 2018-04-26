@@ -108,6 +108,16 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 	    }
 
+	    public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken)
+	    {
+	        var url = GetItemListUrl($"Users/{personQuery.UserId}/Items/{personId}", personQuery);
+
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
+	        {
+	            return DeserializeFromStream<BaseItemDto>(stream);
+	        }
+	    }
+
         public async Task<Folder> GetRootFolderAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
 	    {
 	        var url = GetApiUrl($"/Users/{userId}/Items/Root");
@@ -143,7 +153,7 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 	    }
 
-        public void Dispose()
+	    public void Dispose()
 		{
 
 		}

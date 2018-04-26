@@ -9,7 +9,6 @@ using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Controllers.ViewModels.Task;
-using EmbyStat.Services.Models;
 using EmbyStat.Services.Models.Stat;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Emby;
@@ -23,15 +22,13 @@ namespace EmbyStat.Controllers.Helpers
 	    public MapProfiles()
 	    { 
 			//Controllers
-		    CreateMap<Common.Models.Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.EmbyUserId, y => y.MapFrom(z => z.Id));
+		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.EmbyUserId, y => y.MapFrom(z => z.Id));
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
-		    CreateMap<PluginInfo, EmbyPluginViewModel>().ReverseMap();
-		    CreateMap<ServerInfo, ServerInfoViewModel>().ReverseMap();
-		    CreateMap<Drives, DriveViewModel>()
-				.ReverseMap()
-			    .ForMember(x => x.Id, y => y.Ignore());
+		    CreateMap<PluginInfo, EmbyPluginViewModel>();
+		    CreateMap<ServerInfo, ServerInfoViewModel>();
+		    CreateMap<Drives, DriveViewModel>();
 
 	        CreateMap<TaskInfo, TaskInfoViewModel>();
 	        CreateMap<TaskResult, TaskResultViewModel>();
@@ -39,14 +36,15 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
 	        CreateMap<Poster, PosterViewModel>();
+	        CreateMap<PersonPoster, PersonPosterViewModel>();
             CreateMap<MovieStats, MovieStatsViewModel>();
-            CreateMap<Collection, CollectionViewModel>().ReverseMap();
+	        CreateMap<MoviePersonStats, MoviePersonStatsViewModel>();
+            CreateMap<Collection, CollectionViewModel>();
 
-			//EmbyResponses
-			CreateMap<SystemInfo, ServerInfo>()
+            //EmbyResponses
+            CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()
-			    .ForMember(x => x.CompletedInstallations, y => y.Ignore())
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore())
 			    .ForMember(x => x.FailedPluginAssemblies, y => y.Ignore());
 

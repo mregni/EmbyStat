@@ -2,14 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { MovieFacade } from '../state/facade.movie';
-import { MovieStats } from '../models/movieStats';
-
+import { MoviePersonStats } from '../models/moviePersonStats';
 @Component({
-  selector: 'app-movie-general',
-  templateUrl: './movie-general.component.html',
-  styleUrls: ['./movie-general.component.scss']
+  selector: 'app-movie-people',
+  templateUrl: './movie-people.component.html',
+  styleUrls: ['./movie-people.component.scss']
 })
-export class MovieGeneralComponent implements OnInit {
+export class MoviePeopleComponent implements OnInit {
   private _selectedCollections: string[];
 
   get selectedCollections(): string[] {
@@ -24,10 +23,10 @@ export class MovieGeneralComponent implements OnInit {
     }
 
     this._selectedCollections = collection;
-    this.stats$ = this.movieFacade.getGeneralStats(collection);
+    this.stats$ = this.movieFacade.getPeopleStats(collection);
   }
 
-  public stats$: Observable<MovieStats>;
+  public stats$: Observable<MoviePersonStats>;
 
   constructor(private movieFacade: MovieFacade) {
 
@@ -35,5 +34,4 @@ export class MovieGeneralComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

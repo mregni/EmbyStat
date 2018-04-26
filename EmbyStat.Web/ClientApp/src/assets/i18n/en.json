@@ -73,7 +73,10 @@
     "YOUNGESTPREMIERED": "Youngest premiered",
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
-    "YOUNGESTADDED": "Youngest added" 
+    "YOUNGESTADDED": "Youngest added",
+    "TOTALACTORS": "Total actors",
+    "TOTALDIRECTORS": "Total directors",
+    "TOTALWRITERS":  "Total writers" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EmbyStat.Common;
+using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using Constants = EmbyStat.Common.Constants;
 
 namespace Tests.Unit.Services
 {
@@ -53,7 +54,9 @@ namespace Tests.Unit.Services
             var collectionRepositoryMock = new Mock<ICollectionRepository>();
             collectionRepositoryMock.Setup(x => x.GetCollectionByType(CollectionType.Movies)).Returns(_collections);
 
-            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object);
+            var configurationRepositoryMock = new Mock<IConfigurationRepository>();
+            var embyClientMock = new Mock<IEmbyClient>();
+            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, configurationRepositoryMock.Object, embyClientMock.Object);
         }
 
         [Fact]
