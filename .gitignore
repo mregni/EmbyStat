@@ -289,3 +289,6 @@ __pycache__/
 
 **/EmbyStat.Web/Logs/**
 *.db
+
+*.js
+*.js.map
