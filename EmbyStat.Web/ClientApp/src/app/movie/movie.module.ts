@@ -9,6 +9,7 @@ import { MovieFacade } from './state/facade.movie';
 import { MovieStatComponent } from './movie-stat/movie-stat.component';
 import { MovieGeneralComponent } from './movie-general/movie-general.component';
 import { MoviePeopleComponent } from './movie-people/movie-people.component';
+import { MovieChartsComponent } from './movie-charts/movie-charts.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,6 @@ import { MoviePeopleComponent } from './movie-people/movie-people.component';
     MovieService,
     MovieFacade
   ],
-  declarations: [MovieStatComponent, MovieGeneralComponent, MoviePeopleComponent]
+  declarations: [MovieStatComponent, MovieGeneralComponent, MoviePeopleComponent, MovieChartsComponent]
 })
 export class MovieModule { }

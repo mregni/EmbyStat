@@ -76,7 +76,10 @@
     "YOUNGESTADDED": "Youngest added",
     "TOTALACTORS": "Total actors",
     "TOTALDIRECTORS": "Total directors",
-    "TOTALWRITERS":  "Total writers" 
+    "TOTALWRITERS": "Total writers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",

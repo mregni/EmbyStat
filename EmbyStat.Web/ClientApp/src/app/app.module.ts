@@ -8,7 +8,6 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { MomentModule } from 'angular2-moment';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -55,7 +54,6 @@ export function createTranslateLoader(http: HttpClient) {
     PluginModule,
     TaskModule,
     MovieModule,
-    MomentModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {

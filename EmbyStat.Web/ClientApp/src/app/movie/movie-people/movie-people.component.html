@@ -6,7 +6,9 @@
       <app-card-number [card]="stats.totalWriterCount"></app-card-number>
     </div>
     <div class="movie__flex-row movie__align-start">
-      <app-poster [poster]="stats.mostFeaturedActor"></app-poster>
+      <app-person-poster [poster]="stats.mostFeaturedActor"></app-person-poster>
+      <app-person-poster [poster]="stats.mostFeaturedDirector"></app-person-poster>
+      <app-person-poster [poster]="stats.mostFeaturedWriter"></app-person-poster>
     </div>
   </div>
 </div>

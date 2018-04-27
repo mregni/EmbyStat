@@ -1,19 +1,19 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Poster } from '../../models/poster';
+import { PersonPoster } from '../../models/personPoster';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
 
 @Component({
-  selector: 'app-poster',
-  templateUrl: './poster.component.html',
-  styleUrls: ['./poster.component.scss']
+  selector: 'app-person-poster',
+  templateUrl: './person-poster.component.html',
+  styleUrls: ['./person-poster.component.scss']
 })
-export class PosterComponent implements OnDestroy {
+export class PersonPosterComponent implements OnDestroy {
   configurationSub: Subscription;
   configuration: Configuration;
-  @Input() poster: Poster;
+  @Input() poster: PersonPoster;
 
   constructor(private configurationFacade: ConfigurationFacade, private _sanitizer: DomSanitizer) {
     this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
@@ -26,7 +26,7 @@ export class PosterComponent implements OnDestroy {
     return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
-  openMovie(): void {
+  openPerson(): void {
     window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 

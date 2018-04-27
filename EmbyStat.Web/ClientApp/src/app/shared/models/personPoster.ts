@@ -1,5 +1,5 @@
 export class PersonPoster {
-  public id: string;
+  public mediaId: string;
   public name: string;
   public birthDate: Date;
   public childCount: number;
