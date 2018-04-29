@@ -7,5 +7,6 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void AddRangeIfMissing(IEnumerable<Genre> genres);
         List<string> GetIds();
+        List<Genre> GetListByIds(List<string> ids);
     }
 }

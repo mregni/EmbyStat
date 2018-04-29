@@ -10,5 +10,10 @@
       <app-person-poster [poster]="stats.mostFeaturedDirector"></app-person-poster>
       <app-person-poster [poster]="stats.mostFeaturedWriter"></app-person-poster>
     </div>
+    <div class="movie__flex-row movie__align-start">
+      <app-person-poster *ngFor="let poster of stats.mostFeaturedActorsPerGenre" [poster]="poster"></app-person-poster>
+    </div>
+
+    
   </div>
 </div>

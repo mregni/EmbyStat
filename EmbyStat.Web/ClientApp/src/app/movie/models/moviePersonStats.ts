@@ -8,4 +8,5 @@ export class MoviePersonStats {
   public mostFeaturedActor: PersonPoster;
   public mostFeaturedDirector: PersonPoster;
   public mostFeaturedWriter: PersonPoster;
+  public mostFeaturedActorsPerGenre: PersonPoster[];
 }

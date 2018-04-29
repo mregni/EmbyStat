@@ -13,5 +13,6 @@ namespace EmbyStat.Services.Models.Movie
         public PersonPoster MostFeaturedActor { get; set; }
         public PersonPoster MostFeaturedDirector { get; set; }
         public PersonPoster MostFeaturedWriter { get; set; }
+        public List<PersonPoster> MostFeaturedActorsPerGenre { get; set; }
     }
 }

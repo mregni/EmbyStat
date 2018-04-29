@@ -203,7 +203,7 @@ namespace EmbyStat.Tasks.Tasks
             if (newPeople.Any())
             {
                 Log.Information($"Need to add {newPeople.Count} people first");
-                var people = newPeople.Select(PersonHelper.ConvertToPerson);
+                var people = newPeople.Select(PersonHelper.ConvertToSmallPerson);
                 _personRepository.AddRangeIfMissing(people);
             }
             else

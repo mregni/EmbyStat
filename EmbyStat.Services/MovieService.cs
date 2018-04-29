@@ -23,14 +23,18 @@ namespace EmbyStat.Services
         private readonly IMovieRepository _movieRepository;
         private readonly ICollectionRepository _collectionRepository;
         private readonly IConfigurationRepository _configurationRepository;
+        private readonly IGenreRepository _genreRepository;
         private readonly IEmbyClient _embyClient;
+        private readonly IPersonService _personService;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IConfigurationRepository configurationRepository, IEmbyClient embyClient)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IConfigurationRepository configurationRepository, IGenreRepository genreRepository, IEmbyClient embyClient, IPersonService personService)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
             _configurationRepository = configurationRepository;
+            _genreRepository = genreRepository;
             _embyClient = embyClient;
+            _personService = personService;
         }
 
         public List<Collection> GetMovieCollections()
@@ -64,7 +68,8 @@ namespace EmbyStat.Services
                 TotalWriterCount = TotalWriterCount(collectionsIds),
                 MostFeaturedActor = await GetMostFeaturedActor(collectionsIds),
                 MostFeaturedDirector = await GetMostFeaturedDirector(collectionsIds),
-                MostFeaturedWriter = await GetMostFeaturedWriter(collectionsIds)
+                MostFeaturedWriter = await GetMostFeaturedWriter(collectionsIds),
+                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
             };
         }
 
@@ -206,35 +211,52 @@ namespace EmbyStat.Services
 
         private async Task<PersonPoster> GetMostFeaturedActor(List<string> collectionIds)
         {
-            var actorId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Actor);
-            var settings = _configurationRepository.GetSingle();
-            var query = new ItemQuery {UserId = settings.EmbyUserId};
+            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Actor);
 
-            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
-            var person = await _embyClient.GetItemAsync(query, actorId, CancellationToken.None);
+            var person = await _personService.GetPersonById(personId);
             return PosterHelper.ConvertToPersonPoster(person, Constants.MoviesMostFeaturedActor);
         }
 
         private async Task<PersonPoster> GetMostFeaturedDirector(List<string> collectionIds)
         {
-            var actorId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Director);
-            var settings = _configurationRepository.GetSingle();
-            var query = new ItemQuery { UserId = settings.EmbyUserId };
+            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Director);
 
-            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
-            var person = await _embyClient.GetItemAsync(query, actorId, CancellationToken.None);
+            var person = await _personService.GetPersonById(personId);
             return PosterHelper.ConvertToPersonPoster(person, Constants.MoviesMostFeaturedDirector);
         }
 
         private async Task<PersonPoster> GetMostFeaturedWriter(List<string> collectionIds)
         {
-            var actorId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Writer);
-            var settings = _configurationRepository.GetSingle();
-            var query = new ItemQuery { UserId = settings.EmbyUserId };
+            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Writer);
 
-            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
-            var person = await _embyClient.GetItemAsync(query, actorId, CancellationToken.None);
+            var person = await _personService.GetPersonById(personId);
             return PosterHelper.ConvertToPersonPoster(person, Constants.MoviesMostFeaturedWriter);
+        }
+
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
+        {
+            var movies = _movieRepository.GetAll(collectionIds);
+            var genreIds = _movieRepository.GetGenres(collectionIds);
+            var genres = _genreRepository.GetListByIds(genreIds);
+
+            var list = new List<PersonPoster>();
+            foreach (var genre in genres.OrderBy(x => x.Name))
+            {
+                var selectedMovies = movies.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
+                var personId = selectedMovies
+                    .SelectMany(x => x.ExtraPersons)
+                    .Where(x => x.Type == Constants.Actor)
+                    .GroupBy(x => x.PersonId)
+                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                var person = await _personService.GetPersonById(personId);
+                list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
+            }
+
+            return list;
         }
     }
 #endregion

@@ -150,7 +150,19 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    BirthDate = table.Column<DateTime>(nullable: true),
+                    ChildCount = table.Column<int>(nullable: false),
+                    EpisodeCount = table.Column<int>(nullable: false),
+                    Etag = table.Column<string>(nullable: true),
+                    HomePageUrl = table.Column<string>(nullable: true),
+                    IMDB = table.Column<string>(nullable: true),
+                    MovieCount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    OverView = table.Column<string>(nullable: true),
+                    Primary = table.Column<string>(nullable: true),
+                    SeriesCount = table.Column<int>(nullable: false),
+                    SortName = table.Column<string>(nullable: true),
+                    TMDB = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

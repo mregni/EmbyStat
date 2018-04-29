@@ -13,5 +13,6 @@ namespace EmbyStat.Controllers.ViewModels.Movie
         public PersonPosterViewModel MostFeaturedActor { get; set; }
         public PersonPosterViewModel MostFeaturedDirector { get; set; }
         public PersonPosterViewModel MostFeaturedWriter { get; set; }
+        public List<PersonPosterViewModel> MostFeaturedActorsPerGenre { get; set; }
     }
 }

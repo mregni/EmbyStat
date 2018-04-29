@@ -24,19 +24,19 @@ namespace EmbyStat.Services.Converters
             };
         }
 
-        public static PersonPoster ConvertToPersonPoster(BaseItemDto person, string title)
+        public static PersonPoster ConvertToPersonPoster(Person person, string title)
         {
             return new PersonPoster
             {
                 MediaId = person.Id,
                 Name = person.Name,
-                BirthDate = person.PremiereDate,
+                BirthDate = person.BirthDate,
                 ChildCount = person.ChildCount,
                 MovieCount = person.MovieCount,
                 EpisodeCount = person.EpisodeCount,
                 Title = title,
                 HasTitle = true,
-                Tag = person.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value
+                Tag = person.Primary
             };
         }
     }

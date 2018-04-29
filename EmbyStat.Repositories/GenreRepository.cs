@@ -25,5 +25,13 @@ namespace EmbyStat.Repositories
                 return context.Genres.Select(x => x.Id).ToList();
             }
         }
+
+        public List<Genre> GetListByIds(List<string> ids)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Genres.Where(x => ids.Any(y => y == x.Id)).ToList();
+            }
+        }
     }
 }

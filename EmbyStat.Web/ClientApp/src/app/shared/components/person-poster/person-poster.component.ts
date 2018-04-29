@@ -30,6 +30,14 @@ export class PersonPosterComponent implements OnDestroy {
     window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
+  needsBarAndTranslation(title: string): boolean {
+    return title.length > 0 && title.startsWith("MOVIES");
+  }
+
+  needsBarButNoTranslation(title: string): boolean {
+    return title.length > 0 && !title.startsWith("MOVIES");
+  }
+
   ngOnDestroy(): void {
     if (this.configurationSub !== undefined) {
       this.configurationSub.unsubscribe();

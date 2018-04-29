@@ -21,5 +21,7 @@ namespace EmbyStat.Repositories.Interfaces
         int GetTotalDirectors(List<string> collections);
         int GetTotalWriters(List<string> collections);
         string GetMostFeaturedPerson(List<string> collections, string type);
+        List<Movie> GetAll(List<string> collections);
+        List<string> GetGenres(List<string> collections);
     }
 }

@@ -16,7 +16,7 @@ using System;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180426142634_Init")]
+    [Migration("20180428201530_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -308,7 +308,31 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("BirthDate");
+
+                    b.Property<int>("ChildCount");
+
+                    b.Property<int>("EpisodeCount");
+
+                    b.Property<string>("Etag");
+
+                    b.Property<string>("HomePageUrl");
+
+                    b.Property<string>("IMDB");
+
+                    b.Property<int>("MovieCount");
+
                     b.Property<string>("Name");
+
+                    b.Property<string>("OverView");
+
+                    b.Property<string>("Primary");
+
+                    b.Property<int>("SeriesCount");
+
+                    b.Property<string>("SortName");
+
+                    b.Property<string>("TMDB");
 
                     b.HasKey("Id");
 

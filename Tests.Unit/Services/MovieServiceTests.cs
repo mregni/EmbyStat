@@ -6,6 +6,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -56,7 +57,9 @@ namespace Tests.Unit.Services
 
             var configurationRepositoryMock = new Mock<IConfigurationRepository>();
             var embyClientMock = new Mock<IEmbyClient>();
-            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, configurationRepositoryMock.Object, embyClientMock.Object);
+            var genreRepositoryMock = new Mock<IGenreRepository>();
+            var personServiceMock = new Mock<IPersonService>();
+            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, configurationRepositoryMock.Object, genreRepositoryMock.Object, embyClientMock.Object, personServiceMock.Object);
         }
 
         [Fact]

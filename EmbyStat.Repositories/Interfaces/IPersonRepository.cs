@@ -7,5 +7,7 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void AddRangeIfMissing(IEnumerable<Person> people);
         List<string> GetIds();
+        Person GetPersonById(string id);
+        void AddOrUpdatePerson(Person person);
     }
 }

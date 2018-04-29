@@ -79,6 +79,8 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<EmbyService>().As<IEmbyService>();
 		    containerBuilder.RegisterType<TaskService>().As<ITaskService>();
 		    containerBuilder.RegisterType<MovieService>().As<IMovieService>();
+		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
+
 
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();

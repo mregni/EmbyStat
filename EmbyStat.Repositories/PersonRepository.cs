@@ -2,6 +2,7 @@
 using System.Linq;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
 {
@@ -23,6 +24,32 @@ namespace EmbyStat.Repositories
             using (var context = new ApplicationDbContext())
             {
                 return context.People.Select(x => x.Id).ToList();
+            }
+        }
+
+        public Person GetPersonById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.People.SingleOrDefault(x => x.Id == id);
+            }
+        }
+
+        public void AddOrUpdatePerson(Person person)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var localPerson = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.Id);
+                if (localPerson == null)
+                {
+                    context.People.Add(person);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    context.Entry(person).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
             }
         }
     }

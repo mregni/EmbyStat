@@ -274,6 +274,41 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public List<Movie> GetAll(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.Include(x => x.ExtraPersons).Include(x => x.MediaGenres).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.ToList();
+            }
+        }
+
+        public List<string> GetGenres(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Movies.Include(x => x.MediaGenres).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var genres = query
+                    .SelectMany(x => x.MediaGenres)
+                    .Select(x => x.GenreId)
+                    .Distinct();
+
+                return genres.ToList();
+            }
+        }
+
         public void RemoveMovies()
         {
             using (var context = new ApplicationDbContext())
