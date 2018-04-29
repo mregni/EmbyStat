@@ -31,7 +31,7 @@ namespace EmbyStat.Services
             if (person == null || !person.Synced)
             {
                 var settings = _configurationRepository.GetSingle();
-                var query = new ItemQuery {UserId = settings.EmbyUserId};
+                var query = new ItemQuery { UserId = settings.EmbyUserId };
 
                 _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
                 var rawPerson = await _embyClient.GetItemAsync(query, id, CancellationToken.None);
