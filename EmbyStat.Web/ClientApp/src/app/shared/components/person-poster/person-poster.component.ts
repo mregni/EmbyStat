@@ -23,6 +23,11 @@ export class PersonPosterComponent implements OnDestroy {
     if (this.configuration === undefined) {
       return "";
     }
+
+    if (this.poster.tag === null) {
+      return this._sanitizer.bypassSecurityTrustStyle("url(../../../../assets/images/icons/person.png)");
+    }
+
     return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
