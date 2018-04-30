@@ -79,7 +79,8 @@
     "TOTALWRITERS": "Total writers",
     "MOSTFEATUREDACTOR": "Most featured actor",
     "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer" 
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "MOSTFEATUREDPERGENRE": "Most featured actor per genre" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",

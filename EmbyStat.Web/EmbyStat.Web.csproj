@@ -120,7 +120,6 @@
     <Folder Include="ClientApp\src\app\server\models\" />
     <Folder Include="ClientApp\src\app\server\state\" />
     <Folder Include="ClientApp\src\app\server\service\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
