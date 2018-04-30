@@ -22,18 +22,14 @@ namespace EmbyStat.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly ICollectionRepository _collectionRepository;
-        private readonly IConfigurationRepository _configurationRepository;
         private readonly IGenreRepository _genreRepository;
-        private readonly IEmbyClient _embyClient;
         private readonly IPersonService _personService;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IConfigurationRepository configurationRepository, IGenreRepository genreRepository, IEmbyClient embyClient, IPersonService personService)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
-            _configurationRepository = configurationRepository;
             _genreRepository = genreRepository;
-            _embyClient = embyClient;
             _personService = personService;
         }
 
@@ -71,6 +67,32 @@ namespace EmbyStat.Services
                 MostFeaturedWriter = await GetMostFeaturedWriter(collectionsIds),
                 MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
             };
+        }
+
+        public List<MovieDuplicate> GetDuplicates(List<string> collectionIds)
+        {
+            var movies = _movieRepository.GetAll(collectionIds);
+            var list = new List<MovieDuplicate>();
+
+            var duplicatesByName = movies.GroupBy(x => x.Name).Select(x => new {x.Key, Count = x.Count()}).Where(x => x.Count > 1).ToList();
+            for (var i = 0; i < duplicatesByName.Count; i++)
+            {
+                var duplicateMovies = movies.Where(x => x.Name == duplicatesByName[i].Key).OrderBy(x => x.Id).ToList();
+                var itemOne = duplicateMovies.First();
+                var itemTwo = duplicateMovies.Skip(1).First();
+
+                list.Add(new MovieDuplicate
+                {
+                    Number = i,
+                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Title = itemOne.Name, Quality = String.Join(",", itemOne.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width)))},
+                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Title = itemTwo.Name, Quality = String.Join(",", itemTwo.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width)))}
+                });
+            }
+
+
+            //var duplicatesByImdb = movies.GroupBy(x => x.IMDB).Select(x => new {x.Key, Count = x.Count()}).Where(x => x.Count > 1).ToList();
+
+            return list;
         }
 
         #region StatCreators

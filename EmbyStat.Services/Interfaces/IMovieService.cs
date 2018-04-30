@@ -13,5 +13,6 @@ namespace EmbyStat.Services.Interfaces
         List<Collection> GetMovieCollections();
         MovieStats GetGeneralStatsForCollections(List<string> collectionIds);
         Task<MoviePersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
+        List<MovieDuplicate> GetDuplicates(List<string> collectionIds);
     }
 }

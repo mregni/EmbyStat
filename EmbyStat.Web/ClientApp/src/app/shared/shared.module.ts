@@ -15,6 +15,8 @@ import { CardNumberComponent } from './components/card-number/card-number.compon
 import { PosterComponent } from './components/poster/poster.component';
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
 
+import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
+
 import { ToastService } from './services/toast.service';
 
 @NgModule({
@@ -37,7 +39,8 @@ import { ToastService } from './services/toast.service';
     CardTimespanComponent,
     CardNumberComponent,
     PosterComponent,
-    PersonPosterComponent
+    PersonPosterComponent,
+    CapitalizeFirstPipe
   ],
   declarations: [
     ToolbarComponent,
@@ -46,7 +49,8 @@ import { ToastService } from './services/toast.service';
     CardTimespanComponent,
     CardNumberComponent,
     PosterComponent,
-    PersonPosterComponent
+    PersonPosterComponent,
+    CapitalizeFirstPipe
   ],
   providers: [
     ToastService

@@ -60,6 +60,7 @@
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\movie\models\graphs\duplicate.ts" />
     <None Remove="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
     <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
@@ -71,6 +72,7 @@
     <None Remove="ClientApp\src\app\shared\models\collection.ts" />
     <None Remove="ClientApp\src\app\shared\models\personPoster.ts" />
     <None Remove="ClientApp\src\app\shared\models\poster.ts" />
+    <None Remove="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
@@ -92,6 +94,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\movie\models\graphs\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
@@ -107,6 +110,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\poster.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
@@ -115,7 +119,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\movie\service\" />
     <Folder Include="ClientApp\src\app\movie\state\" />
     <Folder Include="ClientApp\src\app\server\models\" />
     <Folder Include="ClientApp\src\app\server\state\" />

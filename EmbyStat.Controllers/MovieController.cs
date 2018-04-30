@@ -43,5 +43,13 @@ namespace EmbyStat.Controllers
             var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
             return Ok(Mapper.Map<MoviePersonStatsViewModel>(result));
         }
+
+        [HttpPost]
+        [Route("getduplicates")]
+        public IActionResult GetDuplicates([FromBody] List<string> collectionIds)
+        {
+            var result = _movieService.GetDuplicates(collectionIds);
+            return Ok(Mapper.Map<IList<MovieDuplicateViewModel>>(result));
+        }
     }
 }

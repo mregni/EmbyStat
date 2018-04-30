@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
-
 import 'rxjs/add/observable/throw';
 
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
+import { Duplicate } from '../models/graphs/duplicate';
 
 import { MovieQuery } from './reducer.movie';
-import { LoadGeneralStatsAction, LoadMovieCollectionsAction, LoadPersonStatsAction } from './actions.movie';
+import { LoadGeneralStatsAction, LoadMovieCollectionsAction, LoadPersonStatsAction, LoadDuplicateGraphAction } from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
 
@@ -23,6 +22,7 @@ export class MovieFacade {
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
   personStats$ = this.store.select(MovieQuery.getPersonStats);
   collections$ = this.store.select(MovieQuery.getMovieCollections);
+  duplicates$ = this.store.select(MovieQuery.getDuplicates);
 
   getGeneralStats(list: string[]): Observable<MovieStats> {
     this.store.dispatch(new LoadGeneralStatsAction(list));
@@ -37,6 +37,11 @@ export class MovieFacade {
   getCollections(): Observable<Collection[]> {
     this.store.dispatch(new LoadMovieCollectionsAction());
     return this.collections$;
+  }
+
+  getDuplicates(list: string[]): Observable<Duplicate[]> {
+    this.store.dispatch(new LoadDuplicateGraphAction(list));
+    return this.duplicates$;
   }
 }
 

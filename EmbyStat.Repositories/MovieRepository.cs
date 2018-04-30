@@ -278,7 +278,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var query = context.Movies.Include(x => x.ExtraPersons).Include(x => x.MediaGenres).AsQueryable();
+                var query = context.Movies.Include(x => x.ExtraPersons).Include(x => x.MediaGenres).Include(x => x.VideoStreams).AsQueryable();
 
                 if (collections.Any())
                 {

@@ -6,6 +6,14 @@ namespace EmbyStat.Common
 {
     public static class Constants
     {
+        //QUALITIES
+        public const string FOURK = "4K";
+        public const string THOUSANDFOURFOURP = "1440P";
+        public const string FULLHD = "1080P";
+        public const string HDREADY = "720P";
+        public const string FOURHUNDERDEIGHTY = "480P";
+        public const string LOWEST = "< 480P";
+
         //DATABASE
         public const string Actor = "Actor";
         public const string Director = "Director";

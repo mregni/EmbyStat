@@ -5,10 +5,11 @@ import { map, switchMap, catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
 import { MovieService } from '../service/movie.service';
-import { MovieActionTypes as MovieTypes, LoadMovieCollectionsAction, LoadGeneralStatsAction, LoadGeneralStatsSuccessAction, LoadMovieCollectionsSuccessAction, LoadPersonStatsAction, LoadPersonStatsSuccessAction } from './actions.movie';
+import { MovieActionTypes as MovieTypes, LoadMovieCollectionsAction, LoadGeneralStatsAction, LoadDuplicateGraphSuccessAction, LoadGeneralStatsSuccessAction, LoadMovieCollectionsSuccessAction, LoadPersonStatsAction, LoadPersonStatsSuccessAction } from './actions.movie';
 import { MovieStats } from "../models/movieStats";
 import { MoviePersonStats } from "../models/moviePersonStats";
 import { Collection } from "../../shared/models/collection";
+import { Duplicate } from "../models/graphs/duplicate";
 
 import { EffectError } from '../../states/app.actions';
 
@@ -57,6 +58,20 @@ export class MovieEffects {
     }),
     map((collections: Collection[]) => {
       return new LoadMovieCollectionsSuccessAction(collections);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    );
+
+  @Effect()
+  getDuplicateGraph$ = this.actions$
+    .ofType(MovieTypes.LOAD_DUPLICATE_GRAPH)
+    .pipe(
+    map((data: LoadMovieCollectionsAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.movieService.getDuplicateGraph(list);
+    }),
+    map((list: Duplicate[]) => {
+      return new LoadDuplicateGraphSuccessAction(list);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );

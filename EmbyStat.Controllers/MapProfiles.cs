@@ -40,6 +40,8 @@ namespace EmbyStat.Controllers.Helpers
             CreateMap<MovieStats, MovieStatsViewModel>();
 	        CreateMap<MoviePersonStats, MoviePersonStatsViewModel>();
             CreateMap<Collection, CollectionViewModel>();
+	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
+	        CreateMap<MovieDuplicateItem, MovieDuplicateItemViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()
