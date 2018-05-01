@@ -7,11 +7,11 @@ import { Collection } from '../../shared/models/collection';
 
 
 @Component({
-  selector: 'app-movie-stat',
-  templateUrl: './movie-stat.component.html',
-  styleUrls: ['./movie-stat.component.scss']
+  selector: 'app-movie-overview',
+  templateUrl: './movie-overview.component.html',
+  styleUrls: ['./movie-overview.component.scss']
 })
-export class MovieStatComponent implements OnInit {
+export class MovieOverviewComponent implements OnInit {
   public collections$: Observable<Collection[]>;
   public selectedCollections: string[];
   

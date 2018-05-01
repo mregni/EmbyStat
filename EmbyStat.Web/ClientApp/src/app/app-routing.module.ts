@@ -6,7 +6,7 @@ import { WizardComponent } from './wizard/wizard.component';
 import { PluginComponent } from './plugin/plugin.component';
 import { ServerComponent } from './server/server.component';
 import { TaskComponent } from './task/task.component';
-import { MovieStatComponent } from './movie/movie-stat/movie-stat.component';
+import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'configuration', component: ConfigurationComponent },
@@ -14,7 +14,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'server', component: ServerComponent },
   { path: 'wizard', component: WizardComponent },
   { path: 'task', component: TaskComponent },
-  { path: 'movie', component: MovieStatComponent },
+  { path: 'movie', component: MovieOverviewComponent },
   { path: '**', redirectTo: '/' }];
 
 @NgModule({
