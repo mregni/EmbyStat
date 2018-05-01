@@ -12,7 +12,7 @@ import { MovieFacade } from '../state/facade.movie';
   styleUrls: ['./movie-suspicious.component.scss']
 })
 export class MovieSuspiciousComponent implements OnDestroy {
-  public displayedColumns: string[] = ['number', 'titleOne', 'linkOne', 'qualityOne', 'dateCreatedOne', 'linkTwo', 'qualityTwo', 'dateCreatedTwo'];
+  public displayedColumns: string[] = [ 'number', 'titleOne', 'linkOne', 'qualityOne', 'dateCreatedOne', 'linkTwo', 'qualityTwo', 'dateCreatedTwo'];
   public dataSource = new MatTableDataSource();
   private duplicatesSub: Subscription;
   private configurationSub: Subscription;

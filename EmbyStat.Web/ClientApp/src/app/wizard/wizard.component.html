@@ -16,7 +16,7 @@
             <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
           </mat-form-field>
           <div class="button-container">
-            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate}}</button>
+            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
           </div>
         </form>
       </div>
@@ -40,8 +40,8 @@
             <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <div class="button-container">
-            <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate}}</button>
-            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate}}</button>
+            <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
           </div>
         </form>
       </div>
@@ -68,8 +68,8 @@
         {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
       </p>
       <div class="button-container">
-        <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate}}</button>
-        <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline && isAdmin)" type="button">{{'COMMON.NEXT' | translate}}</button>
+        <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline && isAdmin)" type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
       </div>
     </mat-step>
     <mat-step label="{{'WIZARD.FINALLABEL' | translate }}">
@@ -77,7 +77,7 @@
         <p>{{ 'WIZARD.FINISHED' | translate }}</p>
       </div>
       <div class="button-container">
-        <button mat-raised-button color="primary" (click)="finishWizard()" type="button">{{ 'COMMON.FINISH' | translate }}</button>
+        <button mat-raised-button color="primary" (click)="finishWizard()" type="button">{{ 'COMMON.FINISH' | translate | capitalizeFirst }}</button>
       </div>
     </mat-step>
   </mat-vertical-stepper>
