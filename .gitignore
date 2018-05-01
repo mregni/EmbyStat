@@ -289,3 +289,4 @@ __pycache__/
 /EmbyStat.Web/Logs
 
 *.db
+.sonarcube
