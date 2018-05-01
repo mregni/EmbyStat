@@ -104,7 +104,10 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.CommunityRating != null).OrderByDescending(x => x.CommunityRating).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.CommunityRating != null);
+                query = query.OrderByDescending(x => x.CommunityRating).ThenBy(x => x.SortName);
+
+                return query.FirstOrDefault();
             }
         }
 
@@ -119,7 +122,10 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.CommunityRating != null);
+                query = query.OrderBy(x => x.CommunityRating).ThenBy(x => x.SortName);
+
+                return query.FirstOrDefault();
             }
         }
 
@@ -134,7 +140,10 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.PremiereDate != null).OrderBy(x => x.PremiereDate).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.PremiereDate != null);
+                query = query.OrderBy(x => x.PremiereDate).ThenBy(x => x.SortName);
+
+                return query.FirstOrDefault();
             }
         }
 
@@ -149,7 +158,10 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.PremiereDate != null).OrderByDescending(x => x.PremiereDate).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.PremiereDate != null);
+                query = query.OrderByDescending(x => x.PremiereDate).ThenBy(x => x.SortName);
+
+                return query.FirstOrDefault();
             }
         }
 
@@ -181,7 +193,10 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.RunTimeTicks != null).OrderByDescending(x => x.RunTimeTicks).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.RunTimeTicks != null);
+                query = query.OrderByDescending(x => x.RunTimeTicks).ThenBy(x => x.SortName);
+
+                return query.FirstOrDefault();
             }
         }
 
@@ -196,7 +211,10 @@ namespace EmbyStat.Repositories
                     query = query.Where(x => collections.Any(y => x.CollectionId == y));
                 }
 
-                return query.Where(x => x.DateCreated != null).OrderByDescending(x => x.DateCreated).ThenBy(x => x.SortName).FirstOrDefault();
+                query = query.Where(x => x.DateCreated != null);
+                query = query.OrderByDescending(x => x.DateCreated).ThenBy(x => x.SortName);
+
+                return query.FirstOrDefault();
             }
         }
 
