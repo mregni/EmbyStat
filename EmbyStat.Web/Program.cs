@@ -26,10 +26,6 @@ namespace EmbyStat.Web
 
 				SetupDatbase(host);
 
-#if !DEBUG
-				//OpenBrowser("http://localhost:5123");
-#endif
-
 				host.Run();
 			}
 			catch (Exception ex)
@@ -58,8 +54,7 @@ namespace EmbyStat.Web
 			{
 				Directory.CreateDirectory("Logs");
 			}
-
-
+            
 			Log.Logger = new LoggerConfiguration()
 #if DEBUG
 				.MinimumLevel.Debug()
@@ -88,22 +83,6 @@ namespace EmbyStat.Web
 					Log.Fatal("Database seed or update failed");
 					Log.Fatal($"{ex.Message}\n{ex.StackTrace}");
 				}
-			}
-		}
-
-		public static void OpenBrowser(string url)
-		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-			{
-				Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
-			}
-			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-			{
-				Process.Start("open", url);
-			}
-			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-			{
-				Process.Start("xdg-open", url);
 			}
 		}
 	}
