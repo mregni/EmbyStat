@@ -55,11 +55,9 @@ namespace Tests.Unit.Services
             var collectionRepositoryMock = new Mock<ICollectionRepository>();
             collectionRepositoryMock.Setup(x => x.GetCollectionByType(CollectionType.Movies)).Returns(_collections);
 
-            var configurationRepositoryMock = new Mock<IConfigurationRepository>();
-            var embyClientMock = new Mock<IEmbyClient>();
             var genreRepositoryMock = new Mock<IGenreRepository>();
             var personServiceMock = new Mock<IPersonService>();
-            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, configurationRepositoryMock.Object, genreRepositoryMock.Object, embyClientMock.Object, personServiceMock.Object);
+            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, personServiceMock.Object);
         }
 
         [Fact]
