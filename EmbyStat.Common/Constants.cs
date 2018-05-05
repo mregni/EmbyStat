@@ -36,5 +36,9 @@ namespace EmbyStat.Common
         public const string MoviesTotalActors = "MOVIES.TOTALACTORS";
         public const string MoviesTotalDirectors = "MOVIES.TOTALDIRECTORS";
         public const string MoviesTotalWriters = "MOVIES.TOTALWRITERS";
+
+        //DUPLICATE REASONS
+        public const string ByImdb = "BYIMDB";
+        public const string ByTitle = "BYTITLE";
     }
 }

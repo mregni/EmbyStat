@@ -1,43 +1,47 @@
-<h2>Double movies</h2>
+<h2>{{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}</h2>
 <mat-table #table [dataSource]="dataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
   <ng-container matColumnDef="number">
     <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
     <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="titleOne">
+  <ng-container matColumnDef="title">
     <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.itemOne.title }}</mat-cell>
+    <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="reason">
+    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.REASON' | translate | capitalizeFirst }}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{'COMMON.' + row.reason | translate }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="linkOne">
     <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row"><a (click)="openMovie(row.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    <mat-cell *matCellDef="let row" class="item-one"><a (click)="openMovie(row.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="qualityOne">
     <mat-header-cell *matHeaderCellDef>{{'COMMON.QUALITY' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.itemOne.quality }}</mat-cell>
+    <mat-cell *matCellDef="let row" class="item-one">{{ row.itemOne.quality }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="dateCreatedOne">
     <mat-header-cell *matHeaderCellDef>{{'COMMON.ADDEDON' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
+    <mat-cell *matCellDef="let row" class="item-one">{{ row.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="linkTwo">
     <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row"><a (click)="openMovie(row.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    <mat-cell *matCellDef="let row" class="item-two"><a (click)="openMovie(row.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
   </ng-container>
   <ng-container matColumnDef="qualityTwo">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.QUALITY' | translate | capitalizeFirst
-  }}</mat-header-cell>
-  <mat-cell *matCellDef="let row">{{ row.itemTwo.quality }}</mat-cell>
-</ng-container>
+    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</mat-header-cell>
+    <mat-cell *matCellDef="let row" class="item-two">{{ row.itemTwo.quality }}</mat-cell>
+  </ng-container>
 
   <ng-container matColumnDef="dateCreatedTwo">
     <mat-header-cell *matHeaderCellDef>{{'COMMON.ADDEDON' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
+    <mat-cell *matCellDef="let row" class="item-two">{{ row.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

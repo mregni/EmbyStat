@@ -13,7 +13,10 @@
     "TITLE": "title",
     "ADDEDON": "added on",
     "QUALITY": "quality",
-    "LINK": "link" 
+    "LINK": "link",
+    "REASON": "reason",
+    "BYIMDB": "same imdb id",
+    "BYTITLE": "same title" 
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
@@ -80,7 +83,8 @@
     "MOSTFEATUREDACTOR": "Most featured actor",
     "MOSTFEATUREDDIRECTOR": "Most featured director",
     "MOSTFEATUREDWRITER": "Most featured writer",
-    "MOSTFEATUREDPERGENRE": "Most featured actor per genre" 
+    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
+    "DUPLICATEMOVIES": "duplicate movies" 
   },
   "CONFIGURATION": {
     "GENERAL": "General settings",
