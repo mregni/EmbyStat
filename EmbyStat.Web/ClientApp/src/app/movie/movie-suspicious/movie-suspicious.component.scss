@@ -1,3 +1,6 @@
+@import '~@angular/material/theming';
+@import '../../../theme.scss';
+
 .mat-column-number {
   max-width: 32px;
 }
@@ -7,6 +10,16 @@
 .mat-column-qualityOne,
 .mat-column-qualityTwo,
 .mat-column-linkOne,
-.mat-column-linkTwo {
+.mat-column-linkTwo,
+.mat-column-reason {
   max-width: 100px;
 }
+
+.item-one {
+  color: mat-color($app-primary) !important;
+}
+
+.item-two {
+  color: mat-color($app-accent) !important;
+}
+
