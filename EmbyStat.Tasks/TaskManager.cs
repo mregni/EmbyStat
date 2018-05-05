@@ -3,12 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Common.Tasks.Interface;
-using EmbyStat.Repositories.EmbyTask;
+using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Converters;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 

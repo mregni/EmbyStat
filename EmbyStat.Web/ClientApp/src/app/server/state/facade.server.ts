@@ -19,11 +19,11 @@ export class ServerFacade {
     private store: Store<ApplicationState>
   ) { }
 
-  plugins$ = this.store.select(ServerQuery.getServerInfo);
+  serverInfo$ = this.store.select(ServerQuery.getServerInfo);
 
   getServerInfo(): Observable<ServerInfo> {
     this.store.dispatch(new LoadServerInfoAction());
-    return this.plugins$;
+    return this.serverInfo$;
   }
 }
 

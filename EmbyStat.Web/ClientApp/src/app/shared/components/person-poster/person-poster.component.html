@@ -1,0 +1,24 @@
+<div *ngIf="poster !== undefined" class="poster_container">
+  <div [style.background-image]="getBackground()" class="poster" (click)="openPerson()">
+    <div class="poster__content">
+      <div class="row">
+        <div>{{poster.name}}</div>
+        <div>
+          {{poster.movieCount}} <mat-icon>local_movies</mat-icon>
+        </div>
+      </div>
+      <div class="row">
+        <div>{{poster.birthDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+        <div>
+          {{poster.episodeCount}} <mat-icon>tv</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="subtext-white poster__sub-content" *ngIf="needsBarAndTranslation(poster.title)">
+    <span>{{ poster.title | translate }}</span>
+  </div>
+  <div class="subtext-white poster__sub-content" *ngIf="needsBarButNoTranslation(poster.title)">
+    <span>{{ poster.title | translate }}</span>
+  </div>
+</div>

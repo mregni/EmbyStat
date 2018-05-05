@@ -62,11 +62,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     config.embyServerAddress = this.configuration.embyServerAddress;
     config.accessToken = this.configuration.accessToken;
     config.wizardFinished = true;
+    config.Id = this.configuration.Id;
     this.configurationFacade.updateConfiguration(config);
-  }
-
-  public resetIntroForm() {
-    this.introFormGroup.setValue({ name: this.configuration.username, language: this.configuration.language });
   }
 
   public saveEmbyForm() {
@@ -83,13 +80,10 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           config.embyServerAddress = address;
           config.accessToken = token.token;
           config.wizardFinished = this.configuration.wizardFinished;
+          config.Id = token.id;
           this.configurationFacade.updateConfiguration(config);
         }
       });
-  }
-
-  public resetEmbyForm() {
-    this.embyFormGroup.setValue({ embyAddress: this.configuration.embyServerAddress, embyUsername: this.configuration.embyUserName, embyPassword: "" });
   }
 
   private languageChanged(value: string): void {

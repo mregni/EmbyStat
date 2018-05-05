@@ -2,12 +2,14 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using EmbyStat.Repositories;
+using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+using Serilog.Exceptions;
+using Serilog.Exceptions.Core;
 
 namespace EmbyStat.Web
 {
@@ -23,10 +25,6 @@ namespace EmbyStat.Web
 				var host = BuildWebHost(args);
 
 				SetupDatbase(host);
-
-#if !DEBUG
-				//OpenBrowser("http://localhost:5123");
-#endif
 
 				host.Run();
 			}
@@ -56,8 +54,7 @@ namespace EmbyStat.Web
 			{
 				Directory.CreateDirectory("Logs");
 			}
-
-
+            
 			Log.Logger = new LoggerConfiguration()
 #if DEBUG
 				.MinimumLevel.Debug()
@@ -65,6 +62,7 @@ namespace EmbyStat.Web
 				.MinimumLevel.Information()
 #endif
 				.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder().WithDefaultDestructurers().WithRootName("Exception"))
 				.Enrich.FromLogContext()
 				.WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
 				.CreateLogger();
@@ -85,22 +83,6 @@ namespace EmbyStat.Web
 					Log.Fatal("Database seed or update failed");
 					Log.Fatal($"{ex.Message}\n{ex.StackTrace}");
 				}
-			}
-		}
-
-		public static void OpenBrowser(string url)
-		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-			{
-				Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
-			}
-			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-			{
-				Process.Start("open", url);
-			}
-			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-			{
-				Process.Start("xdg-open", url);
 			}
 		}
 	}

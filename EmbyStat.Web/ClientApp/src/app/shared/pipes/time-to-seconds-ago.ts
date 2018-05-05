@@ -13,7 +13,7 @@ export class DateToSecondsAgo implements PipeTransform {
 
     var milliseconds = to.diff(from);
     var duration = moment.duration(milliseconds);
-    return Math.floor(duration.asSeconds()) % 60;
+    return Math.floor(duration.asSeconds()) % 60 + 1;
   }
 }
 

@@ -124,7 +124,7 @@
 </div>
 <hr/>
 <div class="mat-dialog-actions button-container">
-  <button mat-raised-button color="primary" (click)="saveTriggers()">{{'COMMON.SAVE' | translate}}</button>
-  <button mat-raised-button color="warn" *ngIf="madeChanges" (click)="cancel()">{{'COMMON.DISCARD' | translate}}</button>
-  <button mat-raised-button color="warn" *ngIf="!madeChanges" (click)="cancel()">{{'COMMON.CANCEL' | translate}}</button>
+  <button mat-raised-button color="primary" (click)="saveTriggers()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+  <button mat-raised-button color="warn" *ngIf="madeChanges" (click)="cancel()">{{'COMMON.DISCARD' | translate | capitalizeFirst}}</button>
+  <button mat-raised-button color="warn" *ngIf="!madeChanges" (click)="cancel()">{{'COMMON.CANCEL' | translate | capitalizeFirst}}</button>
 </div>

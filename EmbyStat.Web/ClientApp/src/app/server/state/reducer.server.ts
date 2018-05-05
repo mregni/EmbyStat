@@ -1,4 +1,3 @@
-import { createSelector } from '@ngrx/store';
 import { ApplicationState } from "../../states/app.state";
 
 import { ServerInfoStore } from '../models/serverInfoStore';
@@ -18,7 +17,12 @@ export function serverInfoReducer(state: ServerInfoStore = INITIAL_STATE, action
       ...state,
       serverInfo: action.payload,
       isLoaded: true
-    };
+      };
+    case ServerActionTypes.RESET_LOADED_STATE:
+      return {
+        ...state,
+        isLoaded: false
+      };
   default:
     return state;
   }

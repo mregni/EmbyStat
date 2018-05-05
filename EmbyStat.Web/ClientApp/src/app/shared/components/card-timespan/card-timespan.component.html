@@ -1,0 +1,15 @@
+<mat-card *ngIf="card !== undefined">
+  <mat-card-content>
+    <div class="card__flex-column">
+      <div class="card__value">
+        {{card.days}}
+        <span class="card__small-text">{{'COMMON.DAYS' | translate}}</span> /
+        {{card.hours}}
+        <span class="card__small-text">{{'COMMON.HOURS' | translate}}</span> /
+        {{card.minutes}}
+        <span class="card__small-text">{{'COMMON.MINUTES' | translate}}</span>
+      </div>
+      <span class="card__title">{{card.title | translate}}</span>
+    </div>
+  </mat-card-content>
+</mat-card>

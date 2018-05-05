@@ -19,6 +19,8 @@ function serverInfoReducer(state, action) {
     switch (action.type) {
         case actions_server_1.ServerActionTypes.LOAD_SERVERINFO_SUCCESS:
             return __assign({}, state, { serverInfo: action.payload, isLoaded: true });
+        case actions_server_1.ServerActionTypes.RESET_LOADED_STATE:
+            return __assign({}, state, { isLoaded: false });
         default:
             return state;
     }

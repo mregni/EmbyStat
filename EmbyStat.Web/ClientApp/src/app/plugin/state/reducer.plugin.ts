@@ -17,7 +17,12 @@ export function pluginReducer(state: EmbyPluginStore = INITIAL_STATE, action: Pl
       ...state,
       list: action.payload,
       isLoaded: true
-    };
+      };
+    case PluginActionTypes.RESET_LOADED_STATE:
+      return {
+        ...state,
+        isLoaded: false
+      };
   default:
     return state;
   }

@@ -1,0 +1,9 @@
+@import "../card/card.component.scss";
+
+.card__small-text {
+  font-size: 0.6em;
+}
+
+mat-card {
+  width: 400px !important;
+}

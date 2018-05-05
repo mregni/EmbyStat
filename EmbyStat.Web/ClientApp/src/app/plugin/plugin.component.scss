@@ -1,15 +1,42 @@
-.margin-round {
-  margin: 10px;
-}
+@import "../../styles.scss";
 
-.plugins__flexcontainer {
+.plugin__flexcontainer {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  margin: 10px;
+  min-height: 50px;
+  padding: 10px;
+  border-radius: 2px;
+  background: #fff;
+  align-items: center;
+  box-shadow: $normal-box-shadow;
 }
 
-.plugins__plugin-item {
-  flex: 1;
-  min-width: 20%;
-  max-width: 450px;
+.plugin__left-content {
+  align-content: flex-start;
+  width: 60px;
+}
+
+.plugin__right-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+
+.plugin__subtitle {
+  font-style: italic;
+  padding: 3px;
+  color: $grey-font-color;
+}
+
+.plugin__title {
+  padding: 3px;
+  font-weight: bold;
+}
+
+.plugin-avatar {
+  height: 45px;
+  width: 60px;
+  flex-shrink: 0;
 }

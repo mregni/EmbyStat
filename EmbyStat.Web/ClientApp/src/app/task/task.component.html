@@ -1,56 +1,68 @@
-<h1>Tasks</h1>
-<div *ngFor="let task of tasks" class="task__flexcontainer">
-  <div class="task__left-content ">
-    <a mat-mini-fab (click)="fireTask(task.id)" [disabled]="task.state === 2">
-      <mat-icon>play_circle_outline</mat-icon>
-    </a>
-  </div>
-  <div class="task__center">
-    <div class="task__tasktitle">{{task.name}}</div>
-    <div class="task__tasksub" *ngIf="task.state === 0">
-      <div *ngIf="task.lastExecutionResult !== null && task.lastExecutionResult.endTimeUtc !== null else no_run">
-        <div *ngIf="hasNoTime(task)">
-          {{ 'TASK.LASTRUNNOW' | translate}}
+<div class="title_bar">
+  <h2>Tasks</h2>
+</div>
+<div class="content">
+  <div *ngFor="let task of tasks" class="task__flexcontainer">
+    <div class="task__left-content ">
+      <a mat-mini-fab (click)="fireTask(task.id)" [disabled]="task.state === 2">
+        <mat-icon>play_circle_outline</mat-icon>
+      </a>
+    </div>
+    <div class="task__center">
+      <div class="task__tasktitle">{{task.name}}</div>
+      <div class="subtext-grey" *ngIf="task.state === 0">
+        <div *ngIf="task.lastExecutionResult !== null && task.lastExecutionResult.endTimeUtc !== null else no_run"
+             [ngClass]="{'task__failed':task.lastExecutionResult.status === 1}">
+          <div *ngIf="hasNoTime(task)">
+            {{ 'TASK.LASTRUNNOW' | translate}}
+          </div>
+          <div *ngIf="!hasNoTime(task)">
+            {{ 'TASK.LASTRUN' | translate}}
+            <span *ngIf="hasHours(task.lastExecutionResult.endTimeUtc)">
+              {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToHoursAgo} }}
+            </span><span *ngIf="needsComma(task)">, </span>
+            <span *ngIf="hasMinutes(task.lastExecutionResult.endTimeUtc)">
+              {{'TASK.MINUTES' | translate: { minutes: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToMinutesAgo} }}
+            </span>
+            <span *ngIf="needsAnd(task)">
+              {{'TASK.AND' | translate }}
+            </span>
+            <span *ngIf="hasSeconds(task.lastExecutionResult.endTimeUtc)">
+              {{'TASK.SECONDS' | translate: { seconds: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToSecondsAgo} }}
+            </span>
+            {{ 'TASK.AGO' | translate }},
+            <span *ngIf="task.lastExecutionResult.status === 0">
+              {{ 'TASK.FOR' | translate }}
+            </span>
+            <span *ngIf="task.lastExecutionResult.status === 1">
+              {{ 'TASK.BUTFAILED' | translate}}
+            </span>
+            <span *ngIf="hasHours(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
+              {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.startTimeUtc | amLocal | convertToHoursAgo:task.lastExecutionResult.endTimeUtc } }}
+            </span><span *ngIf="needsCommaFor(task)">, </span>
+            <span *ngIf="hasMinutes(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
+              {{'TASK.MINUTES' | translate: { minutes: task.lastExecutionResult.startTimeUtc | amLocal | convertToMinutesAgo:task.lastExecutionResult.endTimeUtc } }}
+            </span>
+            <span *ngIf="needsAndFor(task)">
+              {{'TASK.AND' | translate }}
+            </span>
+            <span *ngIf="hasSeconds(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
+              {{'TASK.SECONDS' | translate: { seconds: task.lastExecutionResult.startTimeUtc | amLocal | convertToSecondsAgo:task.lastExecutionResult.endTimeUtc } }}
+            </span>
+          </div>
         </div>
-        <div *ngIf="!hasNoTime(task)">
-          {{ 'TASK.LASTRUN' | translate}}
-          <span *ngIf="hasHours(task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToHoursAgo} }}</span><span *ngIf="needsComma(task)">, </span>
-          <span *ngIf="hasMinutes(task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.MINUTES' | translate: { minutes: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToMinutesAgo} }}
-          </span>
-          <span *ngIf="needsAnd(task)">
-            {{'TASK.AND' | translate }}
-          </span>
-          <span *ngIf="hasSeconds(task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.SECONDS' | translate: { seconds: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToSecondsAgo} }}
-          </span>
-          {{ 'TASK.AGO' | translate }},
-          {{ 'TASK.FOR' | translate }}
-          <span *ngIf="hasHours(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.startTimeUtc | amLocal | convertToHoursAgo:task.lastExecutionResult.endTimeUtc } }}</span><span *ngIf="needsCommaFor(task)">, </span>
-          <span *ngIf="hasMinutes(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.MINUTES' | translate: { minutes: task.lastExecutionResult.startTimeUtc | amLocal | convertToMinutesAgo:task.lastExecutionResult.endTimeUtc } }}
-          </span>
-          <span *ngIf="needsAndFor(task)">
-            {{'TASK.AND' | translate }}
-          </span>
-          <span *ngIf="hasSeconds(task.lastExecutionResult.startTimeUtc, task.lastExecutionResult.endTimeUtc)">
-            {{'TASK.SECONDS' | translate: { seconds: task.lastExecutionResult.startTimeUtc | amLocal | convertToSecondsAgo:task.lastExecutionResult.endTimeUtc } }}
-          </span>
-        </div>
+        <ng-template #no_run>
+          Not ran yet
+        </ng-template>
       </div>
-      <ng-template #no_run>
-        Not ran yet
-      </ng-template>
+      <div class="task__tasksub-progress" *ngIf="task.state === 2">
+        <mat-progress-bar mode="determinate" value="{{task.currentProgressPercentage}}"></mat-progress-bar> <span>{{task.currentProgressPercentage}} %</span>
+      </div>
     </div>
-    <div class="task__tasksub-progress" *ngIf="task.state === 2">
-      <mat-progress-bar mode="determinate" value="{{task.currentProgressPercentage}}"></mat-progress-bar> <span>{{task.currentProgressPercentage}} %</span>
+    <div class="task__right-content">
+      <a (click)="openDialog(task)">
+        <mat-icon>settings</mat-icon>
+      </a>
     </div>
-  </div>
-  <div class="task__right-content">
-    <a (click)="openDialog(task)">
-      <mat-icon>settings</mat-icon>
-    </a>
   </div>
 </div>

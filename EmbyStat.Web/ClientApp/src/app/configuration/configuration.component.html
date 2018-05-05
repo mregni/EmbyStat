@@ -1,54 +1,54 @@
-<div class="center" *ngIf="configuration$ | async as config">
-  <mat-card class="half-width margin-bottom">
-    <mat-card-header>
-      <mat-card-title>{{'CONFIGURATION.GENERAL' | translate}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="form-container" [formGroup]="introFormGroup">
-        <mat-form-field>
-          <input matInput placeholder="{{'FORM_LABELS.NAME' | translate}}" formControlName="name" required>
-          <!-- <mat-error *ngIf="nameControl.hasError('required')">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>-->
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select formControlName="language">
-            <mat-option value="nl">Nederlands</mat-option>
-            <mat-option value="en">English</mat-option>
-          </mat-select>
-          <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-    <mat-card-actions class="button-container">
-      <button mat-raised-button color="primary" (click)="saveIntroForm()">{{'COMMON.SAVE' | translate}}</button>
-      <button mat-raised-button color="warn" (click)="resetIntroForm()">{{'COMMON.DISCARD' | translate}}</button>
-    </mat-card-actions>
-  </mat-card>
+<div class="content">
+  <div class="center" *ngIf="configuration$ | async as config">
+    <mat-card class="half-width margin-bottom">
+      <mat-card-header>
+        <mat-card-title>{{'CONFIGURATION.GENERAL' | translate}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form class="form-container" [formGroup]="introFormGroup">
+          <mat-form-field>
+            <input matInput placeholder="{{'FORM_LABELS.NAME' | translate}}" formControlName="name" required>
+            <!-- <mat-error *ngIf="nameControl.hasError('required')">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>-->
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select formControlName="language">
+              <mat-option value="nl">Nederlands</mat-option>
+              <mat-option value="en">English</mat-option>
+            </mat-select>
+            <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="button-container">
+        <button mat-raised-button color="primary" (click)="saveIntroForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+      </mat-card-actions>
+    </mat-card>
 
-  <mat-card class="half-width margin-bottom">
-    <mat-card-header>
-      <mat-card-title>{{'CONFIGURATION.EMBY' | translate}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="embyFormGroup" class="form-container">
-        <mat-form-field>
-          <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
-          <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME' | translate}}" formControlName="embyUsername" required>
-          <!--<mat-error *ngIf="embyUsernameControl.hasError('required')">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>-->
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
-          <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-    <mat-card-actions class="button-container">
-      <button mat-raised-button color="primary" (click)="saveEmbyForm()">{{'COMMON.SAVE' | translate}}</button>
-      <button mat-raised-button color="warn" (click)="resetEmbyForm()">{{'COMMON.DISCARD' | translate}}</button>
-    </mat-card-actions>
-  </mat-card>
+    <mat-card class="half-width margin-bottom">
+      <mat-card-header>
+        <mat-card-title>{{'CONFIGURATION.EMBY' | translate}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="embyFormGroup" class="form-container">
+          <mat-form-field>
+            <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
+            <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME' | translate}}" formControlName="embyUsername" required>
+            <!--<mat-error *ngIf="embyUsernameControl.hasError('required')">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>-->
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="button-container">
+        <button mat-raised-button color="primary" (click)="saveEmbyForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
 </div>
-

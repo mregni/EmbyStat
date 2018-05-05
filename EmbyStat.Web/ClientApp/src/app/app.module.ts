@@ -8,7 +8,6 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { MomentModule } from 'angular2-moment';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -18,6 +17,7 @@ import { WizardModule } from './wizard/wizard.module';
 import { ServerModule } from './server/server.module';
 import { PluginModule } from './plugin/plugin.module';
 import { TaskModule } from './task/task.module';
+import { MovieModule } from './movie/movie.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -27,6 +27,7 @@ import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
 import { ConfigurationEffects } from './configuration/state/effects.configuration';
 import { PluginEffects } from './plugin/state/effects.plugin';
 import { ServerEffects } from './server/state/effects.server';
+import { MovieEffects } from './movie/state/effects.movie';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -52,7 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
     ServerModule,
     PluginModule,
     TaskModule,
-    MomentModule,
+    MovieModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
@@ -64,7 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects]),
+    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [

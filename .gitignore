@@ -286,7 +286,10 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/EmbyStat.Web/Logs
 
+**/EmbyStat.Web/Logs/**
 *.db
 .sonarcube
+
+*.js
+*.js.map

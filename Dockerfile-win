@@ -1,0 +1,6 @@
+FROM microsoft/aspnetcore:2.0-nanoserver-1709 AS base
+
+WORKDIR /app
+COPY EmbyStat.Web/bin/Release/netcoreapp2/win7-x64/publish .
+
+ENTRYPOINT ["dotnet", "EmbyStat.Web.dll", "--server.urls", "http://0.0.0.0:80"]

@@ -1,0 +1,32 @@
+ <div class="title_bar movie__flexcontainer">
+  <div class="movie__flex-row movie__align-start">
+    <div class="movie__left-content">
+      <h2>General Statistics</h2>
+    </div>
+    <div class="movie__right-content">
+      <mat-form-field class="full-width">
+        <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
+          <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div class="content">
+  <mat-tab-group>
+    <mat-tab label="General">
+      <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>
+    </mat-tab>
+    <mat-tab label="Graphs">
+      <app-movie-charts></app-movie-charts>
+    </mat-tab>
+    <mat-tab label="People">
+      <app-movie-people [selectedCollections]="selectedCollections"></app-movie-people>
+    </mat-tab>
+    <mat-tab label="Suspicious">
+      <app-movie-suspicious [selectedCollections]="selectedCollections"></app-movie-suspicious>
+    </mat-tab>
+    <mat-tab label="List">Content 2</mat-tab>
+  </mat-tab-group>
+</div>
+

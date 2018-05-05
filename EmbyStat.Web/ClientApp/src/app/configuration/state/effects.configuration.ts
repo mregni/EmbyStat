@@ -20,8 +20,8 @@ import {
   NoNeedConfigurationAction
 } from './actions.configuration';
 
-import { LoadPluginAction } from '../../plugin/state/actions.plugin'
-import { LoadServerInfoAction } from '../../server/state/actions.server'
+import { LoadPluginAction, ResetPluginLoadedState } from '../../plugin/state/actions.plugin'
+import { LoadServerInfoAction, ResetServerInfoLoadedState } from '../../server/state/actions.server'
 
 import { ConfigurationQuery } from './reducer.configuration';
 import { EffectError } from '../../states/app.actions';
@@ -66,7 +66,10 @@ export class ConfigurationEffects {
         return this.configurationService.updateConfgiguration(config);
       }),
       switchMap((configuration: Configuration | null) => {
-        return [new UpdateConfigurationSuccessAction(configuration), new FireSmallEmbySyncAction()];
+        return [new UpdateConfigurationSuccessAction(configuration),
+          new ResetPluginLoadedState(),
+          new ResetServerInfoLoadedState(),
+          new FireSmallEmbySyncAction()];
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
   );
@@ -77,9 +80,8 @@ export class ConfigurationEffects {
     .pipe(
       map((data: FireSmallEmbySyncAction) => data.payload),
       switchMap(() => this.configurationService.fireSmallEmbyUpdate()),
-      switchMap(() => [
-        new LoadPluginAction(),
-        new LoadServerInfoAction()
-    ])
+      switchMap(() => {
+        return [];
+      })
   );
 }

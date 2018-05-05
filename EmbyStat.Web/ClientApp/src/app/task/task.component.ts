@@ -28,7 +28,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getTasksSub = this.taskFacade.getTasks().subscribe(data => { console.log(data); this.tasks = data});
+    this.getTasksSub = this.taskFacade.getTasks().subscribe(data => this.tasks = data);
     this.hubConnection
       .start()
       .then(() => {
@@ -78,7 +78,7 @@ export class TaskComponent implements OnInit, OnDestroy {
 
     var milliseconds = to.diff(from);
     var duration = moment.duration(milliseconds);
-    return Math.floor(duration.asSeconds()) % 60 > 0;
+    return (Math.floor(duration.asSeconds()) % 60 + 1) > 0;
   }
 
   public needsAnd(task: Task): boolean {
@@ -89,7 +89,7 @@ export class TaskComponent implements OnInit, OnDestroy {
 
   public needsAndFor(task: Task): boolean {
     return (this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc)) ||
-      this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))) &&
+        this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))) &&
       this.hasSeconds(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
   }
 

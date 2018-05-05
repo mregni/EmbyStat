@@ -302,5 +302,163 @@ namespace EmbyStat.Api.EmbyClient
 		{
 			return await HttpClient.SendAsync(request).ConfigureAwait(false);
 		}
-	}
+
+        protected string GetItemListUrl(string url, ItemQuery query)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var dict = new QueryStringDictionary { };
+
+            if (!query.EnableTotalRecordCount)
+            {
+                dict.Add("EnableTotalRecordCount", query.EnableTotalRecordCount);
+            }
+
+            if (query.SortOrder.HasValue)
+            {
+                dict["sortOrder"] = query.SortOrder.ToString();
+            }
+
+            if (query.SeriesStatuses != null)
+            {
+                dict.Add("SeriesStatuses", query.SeriesStatuses.Select(f => f.ToString()));
+            }
+
+            if (query.Fields != null)
+            {
+                dict.Add("fields", query.Fields.Select(f => f.ToString()));
+            }
+
+            if (query.Filters != null)
+            {
+                dict.Add("Filters", query.Filters.Select(f => f.ToString()));
+            }
+
+            if (query.ImageTypes != null)
+            {
+                dict.Add("ImageTypes", query.ImageTypes.Select(f => f.ToString()));
+            }
+
+            if (query.VideoTypes != null)
+            {
+                dict.Add("VideoTypes", query.VideoTypes.Select(f => f.ToString()));
+            }
+
+            if (query.AirDays != null)
+            {
+                dict.Add("AirDays", query.AirDays.Select(f => f.ToString()));
+            }
+
+            if (query.EnableImageTypes != null)
+            {
+                dict.Add("EnableImageTypes", query.EnableImageTypes.Select(f => f.ToString()));
+            }
+
+            if (query.LocationTypes != null && query.LocationTypes.Length > 0)
+            {
+                dict.Add("LocationTypes", query.LocationTypes.Select(f => f.ToString()));
+            }
+
+            if (query.ExcludeLocationTypes != null && query.ExcludeLocationTypes.Length > 0)
+            {
+                dict.Add("ExcludeLocationTypes", query.ExcludeLocationTypes.Select(f => f.ToString()));
+            }
+
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
+            dict.AddIfNotNull("StartIndex", query.StartIndex);
+            dict.AddIfNotNull("Limit", query.Limit);
+            dict.AddIfNotNull("SortBy", query.SortBy);
+            dict.AddIfNotNull("Is3D", query.Is3D);
+            dict.AddIfNotNullOrEmpty("MinOfficialRating", query.MinOfficialRating);
+            dict.AddIfNotNullOrEmpty("MaxOfficialRating", query.MaxOfficialRating);
+            dict.Add("recursive", query.Recursive);
+            dict.AddIfNotNull("MinIndexNumber", query.MinIndexNumber);
+            dict.AddIfNotNull("EnableImages", query.EnableImages);
+            dict.AddIfNotNull("ImageTypeLimit", query.ImageTypeLimit);
+            dict.AddIfNotNull("CollapseBoxSetItems", query.CollapseBoxSetItems);
+            dict.AddIfNotNull("MediaTypes", query.MediaTypes);
+            dict.AddIfNotNull("Genres", query.Genres, "|");
+            dict.AddIfNotNull("Ids", query.Ids);
+            dict.AddIfNotNull("StudioIds", query.StudioIds, "|");
+            dict.AddIfNotNull("ExcludeItemTypes", query.ExcludeItemTypes);
+            dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
+            dict.AddIfNotNull("ArtistIds", query.ArtistIds);
+            dict.AddIfNotNull("IsPlayed", query.IsPlayed);
+            dict.AddIfNotNull("IsInBoxSet", query.IsInBoxSet);
+            dict.AddIfNotNull("PersonIds", query.PersonIds);
+            dict.AddIfNotNull("PersonTypes", query.PersonTypes);
+            dict.AddIfNotNull("Years", query.Years);
+            dict.AddIfNotNull("ParentIndexNumber", query.ParentIndexNumber);
+            dict.AddIfNotNull("IsHD", query.IsHD);
+            dict.AddIfNotNull("HasParentalRating", query.HasParentalRating);
+            dict.AddIfNotNullOrEmpty("SearchTerm", query.SearchTerm);
+            dict.AddIfNotNull("MinCriticRating", query.MinCriticRating);
+            dict.AddIfNotNull("MinCommunityRating", query.MinCommunityRating);
+            dict.AddIfNotNull("MinPlayers", query.MinPlayers);
+            dict.AddIfNotNull("MaxPlayers", query.MaxPlayers);
+            dict.AddIfNotNullOrEmpty("NameStartsWithOrGreater", query.NameStartsWithOrGreater);
+            dict.AddIfNotNullOrEmpty("AlbumArtistStartsWithOrGreater", query.AlbumArtistStartsWithOrGreater);
+            dict.AddIfNotNull("IsMissing", query.IsMissing);
+            dict.AddIfNotNull("IsUnaired", query.IsUnaired);
+            dict.AddIfNotNull("IsVirtualUnaired", query.IsVirtualUnaired);
+            dict.AddIfNotNull("AiredDuringSeason", query.AiredDuringSeason);
+
+            return GetApiUrl(url, dict);
+        }
+
+	    protected string GetItemByNameListUrl(string type, ItemsByNameQuery query)
+	    {
+	        if (query == null)
+	        {
+	            throw new ArgumentNullException("query");
+	        }
+
+	        var dict = new QueryStringDictionary { };
+
+	        if (query.SortOrder.HasValue)
+	        {
+	            dict["sortOrder"] = query.SortOrder.ToString();
+	        }
+
+	        if (query.Fields != null)
+	        {
+	            dict.Add("fields", query.Fields.Select(f => f.ToString()));
+	        }
+
+	        if (query.Filters != null)
+	        {
+	            dict.Add("Filters", query.Filters.Select(f => f.ToString()));
+	        }
+
+	        if (query.ImageTypes != null)
+	        {
+	            dict.Add("ImageTypes", query.ImageTypes.Select(f => f.ToString()));
+	        }
+
+	        if (query.EnableImageTypes != null)
+	        {
+	            dict.Add("EnableImageTypes", query.EnableImageTypes.Select(f => f.ToString()));
+	        }
+
+	        dict.AddIfNotNull("IsPlayed", query.IsPlayed);
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
+	        dict.Add("UserId", query.UserId);
+	        dict.AddIfNotNull("StartIndex", query.StartIndex);
+	        dict.AddIfNotNull("Limit", query.Limit);
+	        dict.AddIfNotNull("SortBy", query.SortBy);
+	        dict.Add("recursive", query.Recursive);
+	        dict.AddIfNotNull("MediaTypes", query.MediaTypes);
+	        dict.AddIfNotNull("ExcludeItemTypes", query.ExcludeItemTypes);
+	        dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
+	        dict.AddIfNotNullOrEmpty("NameLessThan", query.NameLessThan);
+	        dict.AddIfNotNullOrEmpty("NameStartsWithOrGreater", query.NameStartsWithOrGreater);
+	        dict.AddIfNotNull("EnableImages", query.EnableImages);
+            dict.AddIfNotNull("ImageTypeLimit", query.ImageTypeLimit);
+
+	        return GetApiUrl(type, dict);
+	    }
+    }
 }

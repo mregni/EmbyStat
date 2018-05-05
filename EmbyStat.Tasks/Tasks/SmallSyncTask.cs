@@ -1,51 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Repositories.Interfaces;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace EmbyStat.Tasks.Tasks
 {
     public class SmallSyncTask : IScheduledTask
     {
+        private readonly IEmbyClient _embyClient;
+        private readonly IPluginRepository _embyPluginRepository;
+        private readonly IServerInfoRepository _embyServerInfoRepository;
+        private readonly IConfigurationRepository _configurationRepository;
+        private readonly IDriveRepository _embyDriveRepository;
+
+        public SmallSyncTask(IApplicationBuilder app)
+        {
+            _embyClient = app.ApplicationServices.GetService<IEmbyClient>();
+            _embyPluginRepository = app.ApplicationServices.GetService<IPluginRepository>();
+            _embyServerInfoRepository = app.ApplicationServices.GetService<IServerInfoRepository>();
+            _configurationRepository = app.ApplicationServices.GetService<IConfigurationRepository>();
+            _embyDriveRepository = app.ApplicationServices.GetService<IDriveRepository>();
+        }
+
         public string Name => "Small sync with Emby";
         public string Key => "SmallEmbySync";
         public string Description => "TASKS.SMALLEMBYSYNCDESCRIPTION";
         public string Category => "Emby";
-        public Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
+        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
         {
-            return Task.Run(() =>
+            var settings = _configurationRepository.GetSingle();
+            if (!settings.WizardFinished)
             {
-                progress.Report(10);
-                Thread.Sleep(1000);
-                progress.Report(20);
-                Thread.Sleep(500);
-                progress.Report(20);
-                Thread.Sleep(500);
-                progress.Report(22);
-                Thread.Sleep(500);
-                progress.Report(24);
-                Thread.Sleep(500);
-                progress.Report(26);
-                Thread.Sleep(500);
-                progress.Report(28);
-                Thread.Sleep(500);
-                progress.Report(40);
-                Thread.Sleep(1000);
-                progress.Report(60);
-                Thread.Sleep(1000);
-                progress.Report(75);
-                Thread.Sleep(1000);
-                progress.Report(80);
-                Thread.Sleep(1000);
-                progress.Report(85);
-                Thread.Sleep(1000);
-                progress.Report(90);
-                Thread.Sleep(1000);
-                progress.Report(100);
-            }, cancellationToken);
+                Log.Warning("Movie sync task not running because wizard is not finished yet!");
+                return;
+            }
+            progress.Report(15);
+
+            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            var systemInfoReponse = await _embyClient.GetServerInfoAsync();
+            progress.Report(35);
+            var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
+            progress.Report(55);
+            var drives = await _embyClient.GetLocalDrivesAsync();
+            progress.Report(75);
+
+            var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
+            var localDrives = Mapper.Map<IList<Drives>>(drives);
+
+            _embyServerInfoRepository.UpdateOrAdd(systemInfo);
+            progress.Report(85);
+            _embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
+            progress.Report(95);
+            _embyDriveRepository.ClearAndInsertList(localDrives.ToList());
+            progress.Report(100);
         }
 
         public IEnumerable<TaskTriggerInfo> GetDefaultTriggers()

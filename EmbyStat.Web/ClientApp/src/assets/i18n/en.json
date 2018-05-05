@@ -1,18 +1,22 @@
 {
   "COMMON": {
-    "HIDE": "Hide",
-    "NEXT": "Next",
-    "BACK": "Back",
-    "FINISH": "Finish",
-    "SHUTDOWN": "Shutdown",
-    "YES": "Yes",
-    "NO": "No",
-    "SAVE": "Save",
-    "DISCARD": "Discard",
-    "CANCEL": "Cancel" 
+    "NEXT": "next",
+    "BACK": "back",
+    "FINISH": "finish",
+    "SAVE": "save",
+    "DISCARD": "discard",
+    "CANCEL": "cancel",
+    "DAYS": "days",
+    "HOURS": "hours",
+    "MINUTES": "minutes",
+    "MIN": "min",
+    "TITLE": "title",
+    "ADDEDON": "added on",
+    "QUALITY": "quality",
+    "LINK": "link" 
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again.", 
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
@@ -33,6 +37,7 @@
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
+    "MOVIES": "Movies", 
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
     "TASKS": "Tasks", 
@@ -58,6 +63,25 @@
   "PLUGINS": {
     "VERSION": "Version"
   },
+  "MOVIES": {
+    "TOTALMOVIES": "Total movies",
+    "TOTALGENRES": "Total genres",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATED": "Highest rated",
+    "LOWESTRATED": "Lowest rated",
+    "OLDESTPREMIERED": "Oldest premiered",
+    "YOUNGESTPREMIERED": "Youngest premiered",
+    "SHORTEST": "Shortest",
+    "LONGEST": "Longest",
+    "YOUNGESTADDED": "Youngest added",
+    "TOTALACTORS": "Total actors",
+    "TOTALDIRECTORS": "Total directors",
+    "TOTALWRITERS": "Total writers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "MOSTFEATUREDPERGENRE": "Most featured actor per genre" 
+  },
   "CONFIGURATION": {
     "GENERAL": "General settings",
     "EMBY": "Emby connection settings"
@@ -70,11 +94,13 @@
     "SECONDS": "{{seconds}} second(s)",
     "AND": "and",
     "AGO": "ago",
-    "FOR": "for" 
+    "FOR": "for",
+    "BUTFAILED": "but failed after"
   },
   "TASKS": {
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only." 
+    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+    "MOVIESYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!" 
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",

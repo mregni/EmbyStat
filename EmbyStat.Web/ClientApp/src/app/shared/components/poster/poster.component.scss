@@ -1,0 +1,53 @@
+@import '../../../../styles.scss';
+
+.poster_container {
+  margin: 0 20px 20px 0;
+}
+
+.poster {
+  width: 200px;
+  height: 300px;
+  background-size: contain;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  cursor:pointer;
+}
+
+.poster__content {
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: $white-font-color;
+  max-height: 37px;
+  padding: 5px;
+
+  .row {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .rating {
+      border: 1px solid $white-font-color;
+      padding: 1px 6px;
+      font-size: 0.5em;
+      vertical-align: middle;
+    }
+
+    mat-icon {
+      font-size: 1.2em;
+      margin-right: -7px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.poster__sub-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #222;
+}

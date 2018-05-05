@@ -1,0 +1,30 @@
+.movie__flexcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.movie__align-start {
+  justify-content: flex-start;
+}
+
+.movie__flex-row {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.movie__left-content {
+  flex: 1 1 auto;
+}
+
+.movie__right-content {
+  flex: 0 0 auto;
+  width: 250px;
+}
+
+.movie__tab-content {
+  padding:20px 0 0 0;
+}

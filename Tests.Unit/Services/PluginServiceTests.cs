@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Repositories.EmbyPlugin;
-using EmbyStat.Services.Plugin;
+using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services;
 using FluentAssertions;
 using MediaBrowser.Model.Plugins;
 using Microsoft.Extensions.Logging;
@@ -15,7 +15,7 @@ namespace Tests.Unit.Services
     {
 	    private readonly PluginService _subject;
 	    private readonly List<PluginInfo> _plugins;
-	    private readonly Mock<IEmbyPluginRepository> _embyPluginRepositoryMock;
+	    private readonly Mock<IPluginRepository> _embyPluginRepositoryMock;
 		public PluginServiceTests()
 	    {
 			_plugins = new List<PluginInfo>
@@ -24,12 +24,10 @@ namespace Tests.Unit.Services
 				new PluginInfo { Name = "Trakt plugin" }
 			};
 
-		    _embyPluginRepositoryMock = new Mock<IEmbyPluginRepository>();
+		    _embyPluginRepositoryMock = new Mock<IPluginRepository>();
 		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
 
-		    var loggerMock = new Mock<ILogger<PluginService>>();
-
-			_subject = new PluginService(loggerMock.Object, _embyPluginRepositoryMock.Object);
+			_subject = new PluginService( _embyPluginRepositoryMock.Object);
 		}
 
 	    [Fact]

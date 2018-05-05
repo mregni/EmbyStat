@@ -16,7 +16,7 @@
             <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
           </mat-form-field>
           <div class="button-container">
-            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate}}</button>
+            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
           </div>
         </form>
       </div>
@@ -40,8 +40,8 @@
             <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
           </mat-form-field>
           <div class="button-container">
-            <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate}}</button>
-            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate}}</button>
+            <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+            <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
           </div>
         </form>
       </div>
@@ -62,19 +62,14 @@
             <mat-icon mat-list-icon *ngIf="isAdmin">check</mat-icon>
             <h4 mat-line>{{ 'WIZARD.ISADMIN' | translate: { user: username } }}</h4>
           </mat-list-item>
-          <mat-list-item>
-            <mat-icon mat-list-icon *ngIf="!pluginInstalled" color="warn">error</mat-icon>
-            <mat-icon mat-list-icon *ngIf="pluginInstalled">check</mat-icon>
-            <h4 mat-line>{{ 'WIZARD.PLUGININSTALLED' | translate }}</h4>
-          </mat-list-item>
         </mat-list>
       </div>
-      <p *ngIf="!(embyOnline && isAdmin && pluginInstalled)" class="text-italic">
+      <p *ngIf="!(embyOnline && isAdmin)" class="text-italic">
         {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
       </p>
       <div class="button-container">
-        <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate}}</button>
-        <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline && isAdmin && pluginInstalled)" type="button">{{'COMMON.NEXT' | translate}}</button>
+        <button mat-raised-button color="primary" matStepperPrevious type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline && isAdmin)" type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
       </div>
     </mat-step>
     <mat-step label="{{'WIZARD.FINALLABEL' | translate }}">
@@ -82,7 +77,7 @@
         <p>{{ 'WIZARD.FINISHED' | translate }}</p>
       </div>
       <div class="button-container">
-        <button mat-raised-button color="primary" (click)="finishWizard()" type="button">{{ 'COMMON.FINISH' | translate }}</button>
+        <button mat-raised-button color="primary" (click)="finishWizard()" type="button">{{ 'COMMON.FINISH' | translate | capitalizeFirst }}</button>
       </div>
     </mat-step>
   </mat-vertical-stepper>

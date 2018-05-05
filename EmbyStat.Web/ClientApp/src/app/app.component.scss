@@ -9,14 +9,10 @@
 
 .app-sidenav-content {
   display: flex;
-  height: 100%;
   flex-direction: column;
+  height: calc(100% - 64px);
 }
 
 .app-sidenav {
   width: 240px;
-}
-
-.wrapper {
-  margin: 25px;
 }

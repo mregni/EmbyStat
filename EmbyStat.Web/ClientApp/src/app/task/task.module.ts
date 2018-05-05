@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
-import { MomentModule } from 'angular2-moment';
 
 import { TaskComponent } from './task.component';
 import { TaskService } from './service/task.service';
@@ -18,8 +17,7 @@ import { DateToSecondsAgo } from '../shared/pipes/time-to-seconds-ago';
   imports: [
     CommonModule,
     TranslateModule,
-    SharedModule,
-    MomentModule
+    SharedModule
   ],
   providers: [
     TaskService,

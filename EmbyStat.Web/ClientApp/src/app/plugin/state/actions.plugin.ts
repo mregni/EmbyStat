@@ -4,7 +4,8 @@ import { EmbyPlugin } from '../models/embyPlugin';
 export enum PluginActionTypes {
   LOAD_PLUGINS = '[Plugin] Load Plugins',
   LOAD_PLUGINS_SUCCESS = '[Plugin] Load Plugins Success',
-  NOT_NEEDED = '[Plugin] Not needed'
+  NOT_NEEDED = '[Plugin] Not needed',
+  RESET_LOADED_STATE = '[Plugin] Reset Loaded State'
 }
 
 export class LoadPluginAction implements Action {
@@ -21,4 +22,10 @@ export class NoNeedPluginAction implements Action {
   readonly type = PluginActionTypes.NOT_NEEDED;
 }
 
-export type PluginActions = LoadPluginAction | LoadPluginSuccessAction | NoNeedPluginAction;
+export class ResetPluginLoadedState implements Action {
+  readonly type = PluginActionTypes.RESET_LOADED_STATE;
+}
+
+
+export type PluginActions = LoadPluginAction | LoadPluginSuccessAction |
+                            NoNeedPluginAction | ResetPluginLoadedState;
