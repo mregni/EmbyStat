@@ -289,6 +289,7 @@ __pycache__/
 
 **/EmbyStat.Web/Logs/**
 *.db
+.sonarcube
 
 *.js
 *.js.map
