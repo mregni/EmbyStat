@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-movie-charts',
@@ -6,20 +6,52 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./movie-charts.component.scss']
 })
 export class MovieChartsComponent implements OnInit {
-  public view: number[] = [700, 400];
+  private _selectedCollections: string[];
+
+  get selectedCollections(): string[] {
+    return this._selectedCollections;
+  }
+
+  @Input()
+  set selectedCollections(collection: string[]) {
+    console.log(collection);
+    if (collection === undefined) {
+      collection = [];
+    }
+
+    this._selectedCollections = collection;
+  }
+
+  public view: number[] = [700, 350];
   public doughnut: boolean = false;
   public data: any = [
     {
       "name": "Germany",
-      "value": 8940000
-    },
-    {
-      "name": "USA",
-      "value": 5000000
+      "value": 40632
     },
     {
       "name": "France",
-      "value": 7200000
+      "value": 36745
+    },
+    {
+      "name": "United Kingdom",
+      "value": 36240
+    },
+    {
+      "name": "Spain",
+      "value": 33000
+    },
+    {
+      "name": "Uganda",
+      "value": 19294
+    },
+    {
+      "name": "Bonaire, Sint Eustatius and Saba",
+      "value": 50184
+    },
+    {
+      "name": "India",
+      "value": 20303
     }
   ];
   constructor() { }

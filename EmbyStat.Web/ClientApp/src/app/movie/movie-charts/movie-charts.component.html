@@ -1,9 +1,13 @@
-<ngx-charts-pie-chart
-  [view]="view"
-  scheme="vivid"
-  [results]="data"
-  [animations]="true"
-  [legend]="false"
-  [explodeSlices]="false"
-  [labels]="true"
-  [doughnut]="false"></ngx-charts-pie-chart>
+<div class="movie-graph-flexcontainer">
+
+  <ngx-charts-bar-vertical [view]="view"
+                           scheme="vivid"
+                           [results]="data"
+                           [animations]="true"
+                           [legend]="false"
+                           [xAxis]="true"
+                           [yAxis]="true"
+                           schemeType="ordinal"
+                           [showGridLines]="true"></ngx-charts-bar-vertical>
+
+</div>

@@ -1,4 +1,4 @@
- <div class="title_bar movie__flexcontainer">
+<div class="title_bar movie__flexcontainer">
   <div class="movie__flex-row movie__align-start">
     <div class="movie__left-content">
       <h2>General Statistics</h2>
@@ -15,18 +15,28 @@
 <div class="content">
   <mat-tab-group>
     <mat-tab label="General">
-      <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>
+      <div class="movie__tab-content">
+        <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>
+      </div>
     </mat-tab>
     <mat-tab label="Graphs">
-      <app-movie-charts></app-movie-charts>
+      <div class="movie__tab-content">
+        <app-movie-charts [selectedCollections]="selectedCollections"></app-movie-charts>
+      </div>
     </mat-tab>
     <mat-tab label="People">
-      <app-movie-people [selectedCollections]="selectedCollections"></app-movie-people>
+      <div class="movie__tab-content">
+        <app-movie-people [selectedCollections]="selectedCollections"></app-movie-people>
+      </div>
     </mat-tab>
     <mat-tab label="Suspicious">
-      <app-movie-suspicious [selectedCollections]="selectedCollections"></app-movie-suspicious>
+      <div class="movie__tab-content">
+        <app-movie-suspicious [selectedCollections]="selectedCollections"></app-movie-suspicious>
+      </div>
     </mat-tab>
-    <mat-tab label="List">Content 2</mat-tab>
+    <mat-tab label="List">
+      <div class="movie__tab-content">Content 2</div>
+    </mat-tab>
   </mat-tab-group>
 </div>
 
