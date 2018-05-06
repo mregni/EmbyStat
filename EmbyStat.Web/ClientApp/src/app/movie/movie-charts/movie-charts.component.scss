@@ -1,7 +1,23 @@
-.movie-graph-flexcontainer{
-  display:flex;
-  flex-direction:column;
-  flex:1 1 auto;
-  align-items:flex-start;
-  padding-top:10px;
+.movie-graph-flexcontainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  padding-top: 10px;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.movie-graph-row {
+  flex: 0 0 auto;
+  width: calc(100% - 20px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .graph-container {
+    flex: 0 0 auto;
+    width: 50%;
+  }
 }
