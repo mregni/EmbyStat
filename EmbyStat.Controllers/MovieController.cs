@@ -51,5 +51,14 @@ namespace EmbyStat.Controllers
             var result = _movieService.GetDuplicates(collectionIds);
             return Ok(Mapper.Map<IList<MovieDuplicateViewModel>>(result));
         }
+
+        [HttpGet]
+        [Route("getchartdata")]
+        public IActionResult GetChartData()
+        {
+            var result = "[{\"name\": \"Germany\", \"value\": 40632},{\"name\": \"France\", \"value\": 36745 }, { \"name\": \"United Kingdom\",\"value\": 36240},{ \"name\": \"Spain\",\"value\": 33000}, {\"name\": \"Uganda\",\"value\": 19294}, {\"name\": \"Bonaire, Sint Eustatius and Saba\",\"value\": 50184},{\"name\": \"India\",\"value\": 20303}]";
+
+            return Ok(result);
+        }
     }
 }

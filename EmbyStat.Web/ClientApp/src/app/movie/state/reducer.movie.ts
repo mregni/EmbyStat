@@ -15,7 +15,6 @@ const INITIAL_STATE: MovieStore = {
 export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieActions) {
   switch (action.type) {
     case MovieActionTypes.LOAD_STATS_GENERAL_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         stats: action.payload
