@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TaskFacade } from './state/facade.task';
 import { Subscription } from 'rxjs/Subscription';
-import { Task } from './models/Task';
+import { Task } from './models/task';
 import { HubConnection } from '@aspnet/signalr';
 import { MatDialog } from '@angular/material';
 import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.component';
