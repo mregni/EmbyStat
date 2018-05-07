@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
 
+import { MovieChartsService } from '../service/movie-charts.service';
 import { MovieFacade } from '../state/facade.movie';
 import { Collection } from '../../shared/models/collection';
 
@@ -17,7 +18,7 @@ export class MovieOverviewComponent implements OnInit {
 
   public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
 
-  constructor(private movieFacade: MovieFacade) {
+  constructor(private movieFacade: MovieFacade, private movieChartsService: MovieChartsService) {
     this.collections$ = this.movieFacade.getCollections();
 
     this.collectionsFormControl.valueChanges.subscribe(data => {
@@ -29,4 +30,11 @@ export class MovieOverviewComponent implements OnInit {
 
   }
 
+  onTabChanged(event): void {
+    if (event.index === 1) {
+      this.movieChartsService.changeOpened(true);
+    } else {
+      this.movieChartsService.changeOpened(false);
+    }
+  }
 }

@@ -13,7 +13,7 @@
   </div>
 </div>
 <div class="content">
-  <mat-tab-group>
+  <mat-tab-group (selectedTabChange)="onTabChanged($event)">
     <mat-tab label="General">
       <div class="movie__tab-content">
         <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>

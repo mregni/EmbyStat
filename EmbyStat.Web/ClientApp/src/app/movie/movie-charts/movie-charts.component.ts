@@ -1,12 +1,14 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
+import { MovieChartsService } from '../service/movie-charts.service';
 
 @Component({
   selector: 'app-movie-charts',
   templateUrl: './movie-charts.component.html',
   styleUrls: ['./movie-charts.component.scss']
 })
-export class MovieChartsComponent implements OnInit, AfterViewInit  {
+export class MovieChartsComponent implements OnInit  {
   private _selectedCollections: string[];
 
   get selectedCollections(): string[] {
@@ -24,20 +26,20 @@ export class MovieChartsComponent implements OnInit, AfterViewInit  {
 
   public data: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private movieChartsService: MovieChartsService) {
     this.data = [];
-    this.http.get<any[]>('api/movie/getchartdata').subscribe(x  => {
-      console.log(x);
-      this.data = JSON.parse(x.toString());
+
+    movieChartsService.open.subscribe(value => {
+      if (value) {
+        this.http.get<any[]>('api/movie/getchartdata').subscribe(x => {
+          console.log(x);
+          this.data = JSON.parse(x.toString());
+        });
+      }
     });
   }
 
   ngOnInit() {
 
   }
-
-  ngAfterViewInit(): void {
-
-  }
-
 }
