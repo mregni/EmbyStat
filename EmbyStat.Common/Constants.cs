@@ -8,9 +8,6 @@ namespace EmbyStat.Common
     {
         public static class Movies
         {
-            //CHARTS
-            public const string CountPerGenre = "COMMON.COUNTPERGENRE";
-
             //STATISTICS
             public const string TotalMovies = "MOVIES.TOTALMOVIES";
             public const string TotalGenres = "MOVIES.TOTALGENRES";
@@ -29,6 +26,13 @@ namespace EmbyStat.Common
             public const string TotalDirectors = "MOVIES.TOTALDIRECTORS";
             public const string TotalWriters = "MOVIES.TOTALWRITERS";
         }
+
+        //CHARTS
+        public const string CountPerGenre = "COMMON.COUNTPERGENRE";
+        public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";
+
+        //COMMON
+        public const string Unknown = "UNKNOWN";
 
         //QUALITIES
         public const string FOURK = "4K";

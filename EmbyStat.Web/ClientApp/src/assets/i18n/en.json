@@ -17,8 +17,9 @@
     "REASON": "reason",
     "BYIMDB": "same imdb id",
     "BYTITLE": "same title",
-    "MOVIES": "movies", 
-    "COUNTPERGENRE": "count / genre" 
+    "MOVIES": "movies",
+    "COUNTPERGENRE": "count / genre",
+    "COUNTPERCOMMUNITYRATING": "count / rating" 
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 

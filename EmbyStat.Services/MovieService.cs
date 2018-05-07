@@ -121,6 +121,7 @@ namespace EmbyStat.Services
         {
             var graphs = new List<Graph>();
             graphs.Add(CalculateGenreGraph(collectionIds));
+            graphs.Add(CalculateRatingGraph(collectionIds));
 
             return graphs;
 
@@ -324,10 +325,39 @@ namespace EmbyStat.Services
 
             return new Graph
             {
-                Title = Constants.Movies.CountPerGenre,
+                Title = Constants.CountPerGenre,
                 Data = genresData
             };
         }
+
+        private Graph CalculateRatingGraph(List<string> collectionIds)
+        {
+            var movies = _movieRepository.GetAll(collectionIds);
+            var ratingData = movies.GroupBy(x => RoundRating(x.CommunityRating))
+                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown , Count = x.Count() })
+                .Select(x => new Bar { Name = x.Name, Value = x.Count })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            return new Graph
+            {
+                Title = Constants.CountPerCommunityRating,
+                Data = ratingData
+            };
+        }
+        #endregion
+
+        #region Helpers
+
+        private double? RoundRating(float? rating)
+        {
+            if (rating != null)
+            {
+                return Math.Round((double)rating * 2, MidpointRounding.AwayFromZero) / 2;
+            }
+
+            return null;
+        }
+        #endregion
     }
-#endregion
 }
