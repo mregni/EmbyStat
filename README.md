@@ -25,7 +25,7 @@ For full installation guides please see the [Wiki](https://github.com/mregni/Emb
 
 # Technology
 This project is build from scratch with the following technologies:
-* .net CORE 2.0
+* .NET CORE 2.0
 * Sqlite
 * SignalR
 * Serilog
