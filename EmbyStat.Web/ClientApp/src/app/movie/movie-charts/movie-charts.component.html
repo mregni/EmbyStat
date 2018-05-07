@@ -1,37 +1,20 @@
 <div class="movie-graph-flexcontainer">
-  <div class="movie-graph-row">
-    <div class="graph-container">
-      <mat-card>
-        <mat-card-content>
-          <ngx-charts-bar-vertical class="graph-height"
-                                   scheme="vivid"
-                                   [results]="data"
-                                   [animations]="true"
-                                   [legend]="false"
-                                   [xAxis]="true"
-                                   [yAxis]="true"
-                                   schemeType="ordinal"
-                                   [showGridLines]="true"></ngx-charts-bar-vertical>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="graph-container">
-      <mat-card>
-        <mat-card-content>
-          <ngx-charts-bar-vertical class="graph-height"
-                                   scheme="vivid"
-                                   [results]="data"
-                                   [animations]="true"
-                                   [legend]="false"
-                                   [xAxis]="true"
-                                   [yAxis]="true"
-                                   schemeType="ordinal"
-                                   [showGridLines]="true"></ngx-charts-bar-vertical>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-  <div class="movie-graph-row">
-
+  <div class="graph-container" *ngFor="let graph of graphs$ | async">
+    <mat-card>
+      <mat-card-header>
+        <h2>{{'COMMON.MOVIES' | translate | capitalizeFirst}} {{ graph.title | translate }}</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <ngx-charts-bar-vertical class="graph-height"
+                                 scheme="vivid"
+                                 [results]="graph.data"
+                                 [animations]="true"
+                                 [legend]="false"
+                                 [xAxis]="true"
+                                 [yAxis]="true"
+                                 schemeType="ordinal"
+                                 [showGridLines]="true"></ngx-charts-bar-vertical>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

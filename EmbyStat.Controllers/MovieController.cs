@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Controllers.ViewModels.Graph;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Services.Interfaces;
@@ -53,12 +54,11 @@ namespace EmbyStat.Controllers
         }
 
         [HttpGet]
-        [Route("getchartdata")]
-        public IActionResult GetChartData()
+        [Route("getgraphs")]
+        public IActionResult GetGraphs(List<string> collectionIds)
         {
-            var result = "[{\"name\": \"Germany\", \"value\": 40632},{\"name\": \"France\", \"value\": 36745 }, { \"name\": \"United Kingdom\",\"value\": 36240},{ \"name\": \"Spain\",\"value\": 33000}, {\"name\": \"Uganda\",\"value\": 19294}, {\"name\": \"Bonaire, Sint Eustatius and Saba\",\"value\": 50184},{\"name\": \"India\",\"value\": 20303}]";
-
-            return Ok(result);
+            var graphs = _movieService.GetGraphs(collectionIds);
+            return Ok(Mapper.Map<IList<GraphViewModel>>(graphs));
         }
     }
 }

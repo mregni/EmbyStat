@@ -5,6 +5,7 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
+using EmbyStat.Controllers.ViewModels.Graph;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Stat;
@@ -12,6 +13,7 @@ using EmbyStat.Controllers.ViewModels.Task;
 using EmbyStat.Services.Models.Stat;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.Graph;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
 
@@ -42,6 +44,8 @@ namespace EmbyStat.Controllers.Helpers
             CreateMap<Collection, CollectionViewModel>();
 	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
 	        CreateMap<MovieDuplicateItem, MovieDuplicateItemViewModel>();
+	        CreateMap<Bar, BarViewModel>();
+	        CreateMap<Graph, GraphViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

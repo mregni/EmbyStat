@@ -2,7 +2,8 @@ import { Action } from '@ngrx/store';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Duplicate } from '../models/graphs/duplicate';
+import { Graph } from '../../shared/models/graph';
+import { Duplicate } from '../models/duplicate';
 
 export enum MovieActionTypes {
   LOAD_STATS_GENERAL = '[MovieGeneralStats] Load General Movie Stats',
@@ -11,8 +12,10 @@ export enum MovieActionTypes {
   LOAD_MOVIE_COLLECTIONS_SUCCESS = '[MovieCollections] Load Movie Collections Success',
   LOAD_STATS_PERSON = '[MoviePersonStats] Load Person Movie Stats',
   LOAD_STATS_PERSON_SUCCESS = '[MoviePersonStats] Load Person Movie Stats Success',
-  LOAD_DUPLICATE_GRAPH = '[MovieDuplicateGraph] Load Duplicate Graph',
-  LOAD_DUPLICATE_GRAPH_SUCCESS = '[MovieDuplicateGraph] Load Duplicate Graph Success',
+  LOAD_DUPLICATES = '[MovieDuplicateGraph] Load Duplicate Graph',
+  LOAD_DUPLICATES_SUCCESS = '[MovieDuplicateGraph] Load Duplicate Graph Success',
+  LOAD_GRAPHS = '[MovieGraphs] Load Movie Graphs',
+  LOAD_GRAPHS_SUCCESS = '[MovieGraphs] Load Movie Graphs Success'
 }
 
 export class LoadGeneralStatsAction implements Action {
@@ -45,17 +48,28 @@ export class LoadPersonStatsSuccessAction implements Action {
   constructor(public payload: MoviePersonStats) { }
 }
 
-export class LoadDuplicateGraphAction implements Action {
-  readonly type = MovieActionTypes.LOAD_DUPLICATE_GRAPH;
+export class LoadDuplicateAction implements Action {
+  readonly type = MovieActionTypes.LOAD_DUPLICATES;
   constructor(public payload: string[]) { }
 }
 
-export class LoadDuplicateGraphSuccessAction implements Action {
-  readonly type = MovieActionTypes.LOAD_DUPLICATE_GRAPH_SUCCESS;
+export class LoadDuplicateSuccessAction implements Action {
+  readonly type = MovieActionTypes.LOAD_DUPLICATES_SUCCESS;
   constructor(public payload: Duplicate[]) { }
+}
+
+export class LoadGraphsAction implements Action {
+  readonly type = MovieActionTypes.LOAD_GRAPHS;
+  constructor(public payload: string[]) { }
+}
+
+export class LoadGraphsSuccessAction implements Action {
+  readonly type = MovieActionTypes.LOAD_GRAPHS_SUCCESS;
+  constructor(public payload: Graph[]) { }
 }
 
 export type MovieActions = LoadGeneralStatsAction | LoadGeneralStatsSuccessAction |
                            LoadMovieCollectionsAction | LoadMovieCollectionsSuccessAction |
                            LoadPersonStatsAction | LoadPersonStatsSuccessAction |
-                           LoadDuplicateGraphAction | LoadDuplicateGraphSuccessAction;
+                           LoadDuplicateAction | LoadDuplicateSuccessAction |
+                           LoadGraphsAction | LoadGraphsSuccessAction;

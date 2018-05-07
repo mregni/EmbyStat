@@ -6,10 +6,15 @@ import 'rxjs/add/observable/throw';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Duplicate } from '../models/graphs/duplicate';
+import { Graph } from '../../shared/models/graph';
+import { Duplicate } from '../models/duplicate';
 
 import { MovieQuery } from './reducer.movie';
-import { LoadGeneralStatsAction, LoadMovieCollectionsAction, LoadPersonStatsAction, LoadDuplicateGraphAction } from './actions.movie';
+import {
+  LoadGeneralStatsAction, LoadMovieCollectionsAction,
+  LoadPersonStatsAction, LoadDuplicateAction,
+  LoadGraphsAction
+} from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
 
@@ -23,6 +28,7 @@ export class MovieFacade {
   personStats$ = this.store.select(MovieQuery.getPersonStats);
   collections$ = this.store.select(MovieQuery.getMovieCollections);
   duplicates$ = this.store.select(MovieQuery.getDuplicates);
+  graphs$ = this.store.select(MovieQuery.getGraphs);
 
   getGeneralStats(list: string[]): Observable<MovieStats> {
     this.store.dispatch(new LoadGeneralStatsAction(list));
@@ -40,8 +46,13 @@ export class MovieFacade {
   }
 
   getDuplicates(list: string[]): Observable<Duplicate[]> {
-    this.store.dispatch(new LoadDuplicateGraphAction(list));
+    this.store.dispatch(new LoadDuplicateAction(list));
     return this.duplicates$;
+  }
+
+  getGraphs(list: string[]): Observable<Graph[]> {
+    this.store.dispatch(new LoadGraphsAction(list));
+    return this.graphs$;
   }
 }
 

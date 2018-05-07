@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 import { MovieChartsService } from '../service/movie-charts.service';
+import { MovieFacade } from '../state/facade.movie';
+import { Graph } from '../../shared/models/graph';
 
 @Component({
   selector: 'app-movie-charts',
@@ -24,17 +26,12 @@ export class MovieChartsComponent implements OnInit  {
     this._selectedCollections = collection;
   }
 
-  public data: any;
+  public graphs$: Observable<Graph[]>;
 
-  constructor(private http: HttpClient, private movieChartsService: MovieChartsService) {
-    this.data = [];
-
+  constructor(private movieFacade: MovieFacade, private movieChartsService: MovieChartsService) {
     movieChartsService.open.subscribe(value => {
       if (value) {
-        this.http.get<any[]>('api/movie/getchartdata').subscribe(x => {
-          console.log(x);
-          this.data = JSON.parse(x.toString());
-        });
+        this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
       }
     });
   }

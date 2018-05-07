@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Services.Models;
+using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 
 namespace EmbyStat.Services.Interfaces
@@ -14,5 +15,6 @@ namespace EmbyStat.Services.Interfaces
         MovieStats GetGeneralStatsForCollections(List<string> collectionIds);
         Task<MoviePersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
         List<MovieDuplicate> GetDuplicates(List<string> collectionIds);
+        List<Graph> GetGraphs(List<string> collectionIds);
     }
 }

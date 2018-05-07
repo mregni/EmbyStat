@@ -8,35 +8,15 @@
   justify-content: flex-start;
 }
 
-.movie-graph-row {
+.graph-container {
   flex: 0 0 auto;
-  width: calc(100% - 20px);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  width: 100%;
 
-  .graph-container {
-    flex: 0 0 auto;
-    width: 50%;
+  mat-card {
+    margin-bottom: 20px;
 
-    mat-card {
-      margin: 0 20px 20px 0;
+    mat-card-content {
       height: 400px;
-    }
-
-    mat-card mat-card-content {
-      height: 100%;
-      width: 100%;
-    }
-  }
-}
-
-@media screen and (max-width: 1199px) {
-  .movie-graph-row {
-    flex-direction: column;
-
-    .graph-container {
       width: 100%;
     }
   }

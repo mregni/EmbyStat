@@ -9,7 +9,8 @@ const INITIAL_STATE: MovieStore = {
   stats: new MovieStats(),
   personStats: new MoviePersonStats(),
   collections: [],
-  duplicates: []
+  duplicates: [],
+  graphs: []
 };
 
 export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieActions) {
@@ -29,10 +30,15 @@ export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieAct
         ...state,
         collections: action.payload
       };
-    case MovieActionTypes.LOAD_DUPLICATE_GRAPH_SUCCESS:
+    case MovieActionTypes.LOAD_DUPLICATES_SUCCESS:
       return {
         ...state,
         duplicates: action.payload
+      };
+    case MovieActionTypes.LOAD_GRAPHS_SUCCESS:
+      return {
+        ...state,
+        graphs: action.payload
       };
     default:
       return state;
@@ -44,4 +50,5 @@ export namespace MovieQuery {
   export const getMovieCollections = (state: ApplicationState) => state.movies.collections;
   export const getPersonStats = (state: ApplicationState) => state.movies.personStats;
   export const getDuplicates = (state: ApplicationState) => state.movies.duplicates;
+  export const getGraphs = (state: ApplicationState) => state.movies.graphs;
 }

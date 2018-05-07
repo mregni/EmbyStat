@@ -9,16 +9,19 @@ import {
   MovieActionTypes,
   LoadMovieCollectionsAction,
   LoadGeneralStatsAction,
-  LoadDuplicateGraphSuccessAction,
+  LoadDuplicateSuccessAction,
   LoadGeneralStatsSuccessAction,
   LoadMovieCollectionsSuccessAction,
   LoadPersonStatsAction,
-  LoadPersonStatsSuccessAction
+  LoadPersonStatsSuccessAction,
+  LoadGraphsAction,
+  LoadGraphsSuccessAction
 } from './actions.movie';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Duplicate } from '../models/graphs/duplicate';
+import { Graph } from '../../shared/models/graph';
+import { Duplicate } from '../models/duplicate';
 
 import { EffectError } from '../../states/app.actions';
 
@@ -72,15 +75,29 @@ export class MovieEffects {
     );
 
   @Effect()
-  getDuplicateGraph$ = this.actions$
-    .ofType(MovieActionTypes.LOAD_DUPLICATE_GRAPH)
+  getDuplicate$ = this.actions$
+    .ofType(MovieActionTypes.LOAD_DUPLICATES)
     .pipe(
     map((data: LoadMovieCollectionsAction) => data.payload),
     switchMap((list: string[]) => {
-      return this.movieService.getDuplicateGraph(list);
+      return this.movieService.getDuplicates(list);
     }),
     map((list: Duplicate[]) => {
-      return new LoadDuplicateGraphSuccessAction(list);
+      return new LoadDuplicateSuccessAction(list);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    );
+
+  @Effect()
+  getGraphs$ = this.actions$
+    .ofType(MovieActionTypes.LOAD_GRAPHS)
+    .pipe(
+    map((data: LoadGraphsAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.movieService.getGraphs(list);
+    }),
+    map((list: Graph[]) => {
+      return new LoadGraphsSuccessAction(list);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );
