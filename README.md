@@ -8,8 +8,8 @@ This project is still in Alpha fase, but feel free to pull in on your computer a
 Supported platforms as the moment are:
 * Windows x64 (IIS and Kestrel)
 * Windows x86 (IIS and Kestrel)
-* Docker Windows (coming soon)
-* Docker Linux (coming soon)
+* Docker Windows [latest-win](https://hub.docker.com/r/uping/embystat/)
+* Docker Linux [latest-linux](https://hub.docker.com/r/uping/embystat/)
 * Debian package (coming soon)
 
 I will try to support as many platforms as possible. More and more will come in the future!
