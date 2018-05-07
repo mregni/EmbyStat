@@ -14,7 +14,7 @@ import { Collection } from '../../shared/models/collection';
 export class MovieOverviewComponent implements OnInit {
   public collections$: Observable<Collection[]>;
   public selectedCollections: string[];
-  
+
   public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
 
   constructor(private movieFacade: MovieFacade) {
@@ -26,7 +26,7 @@ export class MovieOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

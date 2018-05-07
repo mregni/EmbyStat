@@ -38,7 +38,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public openDialog(task: Task): void {
-    let dialogRef = this.dialog.open(TriggerDialogComponent, {
+    const dialogRef = this.dialog.open(TriggerDialogComponent, {
       width: '500px',
       data: { task: task }
     });
@@ -55,29 +55,29 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public hasHours(time: Date, to = moment.utc()): boolean {
-    var from = moment.utc(time);
+    const from = moment.utc(time);
     to = this.convertToMoment(to);
 
-    var milliseconds = to.diff(from);
-    var duration = moment.duration(milliseconds);
+    const milliseconds = to.diff(from);
+    const duration = moment.duration(milliseconds);
     return Math.floor(duration.asHours()) > 0;
   }
 
   public hasMinutes(time: Date, to = moment.utc()): boolean {
-    var from = moment.utc(time);
+    const from = moment.utc(time);
     to = this.convertToMoment(to);
 
-    var milliseconds = to.diff(from);
-    var duration = moment.duration(milliseconds);
+    const milliseconds = to.diff(from);
+    const duration = moment.duration(milliseconds);
     return Math.floor(duration.asMinutes()) % 60 > 0;
   }
 
   public hasSeconds(time: Date, to = moment.utc()): boolean {
-    var from = moment.utc(time);
+    const from = moment.utc(time);
     to = this.convertToMoment(to);
 
-    var milliseconds = to.diff(from);
-    var duration = moment.duration(milliseconds);
+    const milliseconds = to.diff(from);
+    const duration = moment.duration(milliseconds);
     return (Math.floor(duration.asSeconds()) % 60 + 1) > 0;
   }
 
@@ -98,7 +98,8 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public needsCommaFor(task: Task): boolean {
-    return this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc)) && this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
+    return this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))
+      && this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
   }
 
   public hasNoTime(task: Task): boolean {

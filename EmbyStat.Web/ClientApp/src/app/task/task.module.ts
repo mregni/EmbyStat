@@ -8,10 +8,10 @@ import { TaskService } from './service/task.service';
 import { TaskFacade } from './state/facade.task';
 import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.component';
 
-import { TicksToTime } from '../shared/pipes/ticks-to-time'; 
-import { DateToHoursAgo } from '../shared/pipes/time-to-hours-ago'; 
-import { DateToMinutesAgo } from '../shared/pipes/time-to-minutes-ago'; 
-import { DateToSecondsAgo } from '../shared/pipes/time-to-seconds-ago'; 
+import { TicksToTime } from '../shared/pipes/ticks-to-time';
+import { DateToHoursAgo } from '../shared/pipes/time-to-hours-ago';
+import { DateToMinutesAgo } from '../shared/pipes/time-to-minutes-ago';
+import { DateToSecondsAgo } from '../shared/pipes/time-to-seconds-ago';
 
 @NgModule({
   imports: [

@@ -12,7 +12,7 @@ import { UUID } from 'angular2-uuid';
 export class TriggerDialogComponent implements OnInit {
   public trigger: Trigger;
   public task: Task;
-  public madeChanges: boolean = false;
+  public madeChanges = false;
 
   constructor(public dialogRef: MatDialogRef<TriggerDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.trigger = new Trigger();

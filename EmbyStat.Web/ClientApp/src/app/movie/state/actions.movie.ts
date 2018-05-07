@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
-import { MovieStats } from "../models/movieStats";
-import { MoviePersonStats } from "../models/moviePersonStats";
-import { Collection } from "../../shared/models/collection";
-import { Duplicate } from "../models/graphs/duplicate";
+import { MovieStats } from '../models/movieStats';
+import { MoviePersonStats } from '../models/moviePersonStats';
+import { Collection } from '../../shared/models/collection';
+import { Duplicate } from '../models/graphs/duplicate';
 
 export enum MovieActionTypes {
   LOAD_STATS_GENERAL = '[MovieGeneralStats] Load General Movie Stats',

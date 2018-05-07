@@ -1,4 +1,4 @@
-import { ApplicationState } from "../../states/app.state";
+import { ApplicationState } from '../../states/app.state';
 
 import { ServerInfoStore } from '../models/serverInfoStore';
 import { ServerInfo } from '../models/serverInfo';

@@ -29,7 +29,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   public languageChangedSub: Subscription;
   public configChangedSub: Subscription;
 
-  public hidePassword: boolean = true; 
+  public hidePassword = true;
 
   constructor(private configurationFacade: ConfigurationFacade, private translate: TranslateService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
@@ -48,14 +48,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
       this.introFormGroup.setValue({ name: config.username, language: config.language });
-      this.embyFormGroup.setValue({ embyUsername: config.embyUserName, embyAddress: config.embyServerAddress, embyPassword: ""});
+      this.embyFormGroup.setValue({ embyUsername: config.embyUserName, embyAddress: config.embyServerAddress, embyPassword: ''});
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
   }
 
   public saveIntroForm() {
-    var config = { ...this.configuration };
+    const config = { ...this.configuration };
     config.language = this.introFormGroup.get('language').value;
     config.embyUserName = this.configuration.embyUserName;
     config.username = this.introFormGroup.get('name').value;
@@ -67,13 +67,13 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   }
 
   public saveEmbyForm() {
-    var username = this.embyFormGroup.get('embyUsername').value;
-    var password = this.embyFormGroup.get('embyPassword').value;
-    var address = this.embyFormGroup.get('embyAddress').value;
+    const username = this.embyFormGroup.get('embyUsername').value;
+    const password = this.embyFormGroup.get('embyPassword').value;
+    const address = this.embyFormGroup.get('embyAddress').value;
     this.configurationFacade.getToken(username, password, address)
       .subscribe((token: EmbyToken) => {
         if (token.isAdmin) {
-          var config = { ...this.configuration };
+          const config = { ...this.configuration };
           config.language = this.configuration.language;
           config.embyUserName = username;
           config.username = this.configuration.username;

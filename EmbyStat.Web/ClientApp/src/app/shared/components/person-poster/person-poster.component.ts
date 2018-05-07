@@ -21,14 +21,15 @@ export class PersonPosterComponent implements OnDestroy {
 
   getBackground() {
     if (this.configuration === undefined) {
-      return "";
+      return '';
     }
 
     if (this.poster.tag === null) {
-      return this._sanitizer.bypassSecurityTrustStyle("url(../../../../assets/images/backgrounds/defaultPerson.png)");
+      return this._sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
     }
 
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}
+      /emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openPerson(): void {
@@ -36,11 +37,11 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   needsBarAndTranslation(title: string): boolean {
-    return title.length > 0 && title.startsWith("MOVIES");
+    return title.length > 0 && title.startsWith('MOVIES');
   }
 
   needsBarButNoTranslation(title: string): boolean {
-    return title.length > 0 && !title.startsWith("MOVIES");
+    return title.length > 0 && !title.startsWith('MOVIES');
   }
 
   ngOnDestroy(): void {

@@ -8,8 +8,7 @@ import { Configuration } from '../configuration/models/configuration';
 @Component({
   selector: 'app-plugin',
   templateUrl: './plugin.component.html',
-  styleUrls: ['./plugin.component.scss'],
-  
+  styleUrls: ['./plugin.component.scss']
 })
 export class PluginComponent implements OnInit {
   plugins$: Observable<EmbyPlugin[]>;

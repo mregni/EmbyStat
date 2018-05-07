@@ -5,11 +5,20 @@ import { map, switchMap, catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
 import { MovieService } from '../service/movie.service';
-import { MovieActionTypes as MovieTypes, LoadMovieCollectionsAction, LoadGeneralStatsAction, LoadDuplicateGraphSuccessAction, LoadGeneralStatsSuccessAction, LoadMovieCollectionsSuccessAction, LoadPersonStatsAction, LoadPersonStatsSuccessAction } from './actions.movie';
-import { MovieStats } from "../models/movieStats";
-import { MoviePersonStats } from "../models/moviePersonStats";
-import { Collection } from "../../shared/models/collection";
-import { Duplicate } from "../models/graphs/duplicate";
+import {
+  MovieActionTypes,
+  LoadMovieCollectionsAction,
+  LoadGeneralStatsAction,
+  LoadDuplicateGraphSuccessAction,
+  LoadGeneralStatsSuccessAction,
+  LoadMovieCollectionsSuccessAction,
+  LoadPersonStatsAction,
+  LoadPersonStatsSuccessAction
+} from './actions.movie';
+import { MovieStats } from '../models/movieStats';
+import { MoviePersonStats } from '../models/moviePersonStats';
+import { Collection } from '../../shared/models/collection';
+import { Duplicate } from '../models/graphs/duplicate';
 
 import { EffectError } from '../../states/app.actions';
 
@@ -22,7 +31,7 @@ export class MovieEffects {
 
   @Effect()
   getMovieGeneralStat$ = this.actions$
-    .ofType(MovieTypes.LOAD_STATS_GENERAL)
+    .ofType(MovieActionTypes.LOAD_STATS_GENERAL)
     .pipe(
     map((data: LoadGeneralStatsAction) => data.payload),
     switchMap((list: string[]) => {
@@ -36,7 +45,7 @@ export class MovieEffects {
 
   @Effect()
   getMoviePersonStat$ = this.actions$
-    .ofType(MovieTypes.LOAD_STATS_PERSON)
+    .ofType(MovieActionTypes.LOAD_STATS_PERSON)
     .pipe(
     map((data: LoadPersonStatsAction) => data.payload),
     switchMap((list: string[]) => {
@@ -50,7 +59,7 @@ export class MovieEffects {
 
   @Effect()
   getMovieCollections$ = this.actions$
-    .ofType(MovieTypes.LOAD_MOVIE_COLLECTIONS)
+    .ofType(MovieActionTypes.LOAD_MOVIE_COLLECTIONS)
     .pipe(
     map((data: LoadMovieCollectionsAction) => data.payload),
     switchMap(_ => {
@@ -64,7 +73,7 @@ export class MovieEffects {
 
   @Effect()
   getDuplicateGraph$ = this.actions$
-    .ofType(MovieTypes.LOAD_DUPLICATE_GRAPH)
+    .ofType(MovieActionTypes.LOAD_DUPLICATE_GRAPH)
     .pipe(
     map((data: LoadMovieCollectionsAction) => data.payload),
     switchMap((list: string[]) => {

@@ -3,10 +3,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'convertToTime' })
 export class TicksToTime implements PipeTransform {
   transform(value: number, withSeconds = false): string {
-    var seconds = value / 10000000;
-    var hour = Math.floor(seconds / 3600);
-    var minute = Math.floor((seconds / 60) % 60);
-    var second = Math.floor(seconds) % 60;
+    const seconds = value / 10000000;
+    const hour = Math.floor(seconds / 3600);
+    const minute = Math.floor((seconds / 60) % 60);
+    const second = Math.floor(seconds) % 60;
 
     if (!withSeconds) {
       return pad2(hour) + ':' + pad2(minute);
@@ -20,7 +20,3 @@ export class TicksToTime implements PipeTransform {
     }
   }
 }
-
-
-
-

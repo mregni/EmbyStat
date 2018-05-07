@@ -19,7 +19,7 @@ export class ConfigurationService {
   private readonly fireSmallEmbyUpdateUrl: string = '/emby/firesmallembysync';
 
   constructor(private http: HttpClient) {
-    
+
   }
 
   getConfiguration(): Observable<Configuration> {

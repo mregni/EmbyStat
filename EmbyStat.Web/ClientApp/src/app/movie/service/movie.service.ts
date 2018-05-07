@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
-import { Collection } from "../../shared/models/collection";
-import { Duplicate } from "../models/graphs/duplicate";
+import { Collection } from '../../shared/models/collection';
+import { Duplicate } from '../models/graphs/duplicate';
 
 @Injectable()
 export class MovieService {

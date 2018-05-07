@@ -1,5 +1,4 @@
-import { createSelector } from '@ngrx/store';
-import { ApplicationState } from "../../states/app.state";
+import { ApplicationState } from '../../states/app.state';
 
 import { Configuration } from '../models/configuration';
 import {
@@ -7,18 +6,17 @@ import {
   ConfigurationActions
 } from './actions.configuration';
 
-
 const INITIAL_STATE: Configuration = {
   wizardFinished: true,
-  accessToken: "",
-  embyUserName: "",
-  embyServerAddress: "",
-  username: "",
-  Id: "",
-  language: "en",
-  serverName: "",
+  accessToken: '',
+  embyUserName: '',
+  embyServerAddress: '',
+  username: '',
+  Id: '',
+  language: 'en',
+  serverName: '',
   isLoaded: false
-}
+};
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
   switch (action.type) {
@@ -47,7 +45,7 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         userId: action.payload.Id,
         serverName: action.payload.serverName,
         isLoaded: true
-      }
+      };
     default:
       return state;
   }

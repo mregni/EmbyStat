@@ -33,11 +33,11 @@ export class MovieChartsComponent implements OnInit, AfterViewInit  {
   }
 
   ngOnInit() {
-    
+
   }
 
   ngAfterViewInit(): void {
-    
+
   }
 
 }

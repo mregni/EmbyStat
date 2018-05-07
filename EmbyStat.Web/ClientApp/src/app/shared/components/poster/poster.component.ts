@@ -21,9 +21,10 @@ export class PosterComponent implements OnDestroy {
 
   getBackground() {
     if (this.configuration === undefined) {
-      return "";
+      return '';
     }
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}
+      /emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openMovie(): void {

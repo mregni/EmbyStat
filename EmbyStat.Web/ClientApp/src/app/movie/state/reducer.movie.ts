@@ -1,4 +1,4 @@
-import { ApplicationState } from "../../states/app.state";
+import { ApplicationState } from '../../states/app.state';
 
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
