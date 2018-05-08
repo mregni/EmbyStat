@@ -1,5 +1,7 @@
 ![# Logo!](https://github.com/mregni/EmbyStat/blob/master/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png?raw=true)
 
+
+![GitHub (pre-)release](https://img.shields.io/github/release/mregni/embystat/all.svg?style=flat-square)
 [![GitHub issues-closed](https://img.shields.io/github/issues/mregni/EmbyStat.svg?style=flat-square)](https://GitHub.com/mregni/EmbyStat/issues?q=is%3Aissue+is%3Aopen)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mregni/embystat.svg?style=flat-square)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/mregni/embystat.svg?style=flat-square)
