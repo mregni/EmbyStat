@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { ConfigurationComponent } from './configuration.component';
 import { ConfigurationService } from './service/configuration.service';
 import { ConfigurationFacade } from './state/facade.configuration';
+import { ConfigurationEmbyComponent } from './configuration-emby/configuration-emby.component';
+import { ConfigurationGeneralComponent } from './configuration-general/configuration-general.component';
+import { ConfigurationMoviesComponent } from './configuration-movies/configuration-movies.component';
+import { ConfigurationOverviewComponent } from './configuration-overview/configuration-overview.component';
 
 @NgModule({
   imports: [
@@ -18,6 +21,7 @@ import { ConfigurationFacade } from './state/facade.configuration';
     ConfigurationService,
     ConfigurationFacade
   ],
-  declarations: [ConfigurationComponent]
+  declarations: [ConfigurationEmbyComponent, ConfigurationGeneralComponent
+    , ConfigurationMoviesComponent, ConfigurationOverviewComponent]
 })
 export class ConfigurationModule { }

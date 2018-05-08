@@ -16,7 +16,7 @@ import { ApplicationState } from '../../states/app.state';
 
 @Injectable()
 export class ServerEffects {
-  constructor(  
+  constructor(
     private actions$: Actions,
     private serverService: ServerService,
     private store: Store<ApplicationState>) {

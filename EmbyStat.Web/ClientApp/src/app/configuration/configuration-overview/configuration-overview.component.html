@@ -1,0 +1,26 @@
+<div class="title_bar movie__flexcontainer">
+  <div class="movie__flex-row movie__align-start">
+    <div class="movie__left-content">
+      <h2>{{'CONFIGURATION.SETTINGS' | translate}}</h2>
+    </div>
+  </div>
+</div>
+<div class="content">
+  <mat-tab-group>
+    <mat-tab label="{{'COMMON.GENERAL' | translate | capitalizeFirst}}">
+      <div class="configuration__tab-content">
+        <app-configuration-general></app-configuration-general>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'COMMON.EMBY' | translate | capitalizeFirst}}">
+      <div class="configuration__tab-content">
+        <app-configuration-emby></app-configuration-emby>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'COMMON.MOVIES' | translate | capitalizeFirst}}">
+      <div class="configuration__tab-content">
+        <app-configuration-movies></app-configuration-movies>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

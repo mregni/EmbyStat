@@ -12,8 +12,13 @@ import { MovieFacade } from '../state/facade.movie';
   styleUrls: ['./movie-suspicious.component.scss']
 })
 export class MovieSuspiciousComponent implements OnDestroy {
-  public displayedColumns: string[] = [ 'number', 'titleOne', 'linkOne', 'qualityOne', 'dateCreatedOne', 'linkTwo', 'qualityTwo', 'dateCreatedTwo'];
-  public dataSource = new MatTableDataSource();
+  public suspiciousDisplayedColumns = ['number', 'title', 'reason', 'linkOne', 'qualityOne',
+    'dateCreatedOne', 'linkTwo', 'qualityTwo', 'dateCreatedTwo'];
+  public suspiciousDataSource = new MatTableDataSource();
+
+  public shortDisplayedColumns = ['number', 'title', 'duration', 'link' ];
+  public shortDataSource = new MatTableDataSource();
+
   private duplicatesSub: Subscription;
   private configurationSub: Subscription;
   private configuration: Configuration;
@@ -25,15 +30,16 @@ export class MovieSuspiciousComponent implements OnDestroy {
 
   @Input()
   set selectedCollections(collection: string[]) {
-    console.log(collection);
     if (collection === undefined) {
       collection = [];
     }
 
     this._selectedCollections = collection;
-    this.duplicatesSub = this.movieFacade.getDuplicates(collection).subscribe(data => this.dataSource.data = data);
+    this.duplicatesSub = this.movieFacade.getDuplicates(collection).subscribe(data => {
+      this.suspiciousDataSource.data = data.duplicates;
+      this.shortDataSource.data = data.shorts;
+    });
   }
-
 
   constructor(private movieFacade: MovieFacade, private configurationFacade: ConfigurationFacade) {
     this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);

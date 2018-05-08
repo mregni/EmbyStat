@@ -18,6 +18,14 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public List<Genre> GetAll()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Genres.ToList();
+            }
+        }
+
         public List<string> GetIds()
         {
             using (var context = new ApplicationDbContext())

@@ -20,13 +20,12 @@ import {
   NoNeedConfigurationAction
 } from './actions.configuration';
 
-import { LoadPluginAction, ResetPluginLoadedState } from '../../plugin/state/actions.plugin'
-import { LoadServerInfoAction, ResetServerInfoLoadedState } from '../../server/state/actions.server'
+import { ResetPluginLoadedState } from '../../plugin/state/actions.plugin';
+import { ResetServerInfoLoadedState } from '../../server/state/actions.server';
 
 import { ConfigurationQuery } from './reducer.configuration';
 import { EffectError } from '../../states/app.actions';
 import { ApplicationState } from '../../states/app.state';
-import { NoopAction } from '../../states/app.actions';
 
 @Injectable()
 export class ConfigurationEffects {

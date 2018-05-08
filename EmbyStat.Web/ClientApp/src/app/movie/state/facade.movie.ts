@@ -6,10 +6,15 @@ import 'rxjs/add/observable/throw';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Duplicate } from '../models/graphs/duplicate';
+import { MovieGraphs } from '../models/movieGraphs';
+import { SuspiciousMovies } from '../models/suspiciousMovies';
 
 import { MovieQuery } from './reducer.movie';
-import { LoadGeneralStatsAction, LoadMovieCollectionsAction, LoadPersonStatsAction, LoadDuplicateGraphAction } from './actions.movie';
+import {
+  LoadGeneralStatsAction, LoadMovieCollectionsAction,
+  LoadPersonStatsAction, LoadSuspiciousAction,
+  LoadGraphsAction
+} from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
 
@@ -22,7 +27,8 @@ export class MovieFacade {
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
   personStats$ = this.store.select(MovieQuery.getPersonStats);
   collections$ = this.store.select(MovieQuery.getMovieCollections);
-  duplicates$ = this.store.select(MovieQuery.getDuplicates);
+  suspicious$ = this.store.select(MovieQuery.getSuspicious);
+  graphs$ = this.store.select(MovieQuery.getGraphs);
 
   getGeneralStats(list: string[]): Observable<MovieStats> {
     this.store.dispatch(new LoadGeneralStatsAction(list));
@@ -39,9 +45,14 @@ export class MovieFacade {
     return this.collections$;
   }
 
-  getDuplicates(list: string[]): Observable<Duplicate[]> {
-    this.store.dispatch(new LoadDuplicateGraphAction(list));
-    return this.duplicates$;
+  getDuplicates(list: string[]): Observable<SuspiciousMovies> {
+    this.store.dispatch(new LoadSuspiciousAction(list));
+    return this.suspicious$;
+  }
+
+  getGraphs(list: string[]): Observable<MovieGraphs> {
+    this.store.dispatch(new LoadGraphsAction(list));
+    return this.graphs$;
   }
 }
 

@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CountUpModule } from 'countup.js-angular2';
 import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartModule } from 'angular-highcharts';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
@@ -27,6 +28,7 @@ import { ToastService } from './services/toast.service';
     CountUpModule,
     MomentModule,
     NgxChartsModule,
+    ChartModule,
     TranslateModule.forChild()
   ],
   exports: [
@@ -35,6 +37,7 @@ import { ToastService } from './services/toast.service';
     MaterialModule,
     MomentModule,
     NgxChartsModule,
+    ChartModule,
     CardComponent,
     CardTimespanComponent,
     CardNumberComponent,

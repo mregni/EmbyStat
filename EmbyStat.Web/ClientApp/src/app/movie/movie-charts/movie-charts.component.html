@@ -1,9 +1,20 @@
-<ngx-charts-pie-chart
-  [view]="view"
-  scheme="vivid"
-  [results]="data"
-  [animations]="true"
-  [legend]="false"
-  [explodeSlices]="false"
-  [labels]="true"
-  [doughnut]="false"></ngx-charts-pie-chart>
+<div class="movie-graph-flexcontainer" *ngIf="graphs$ | async as graphs">
+  <div class="graph-container" *ngFor="let graph of graphs.barGraphs">
+    <mat-card>
+      <mat-card-header>
+        <h2>{{'COMMON.MOVIES' | translate | capitalizeFirst}} {{ graph.title | translate }}</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <ngx-charts-bar-vertical class="graph-height"
+                                 scheme="vivid"
+                                 [results]="graph.data"
+                                 [animations]="true"
+                                 [legend]="false"
+                                 [xAxis]="true"
+                                 [yAxis]="true"
+                                 schemeType="ordinal"
+                                 [showGridLines]="true"></ngx-charts-bar-vertical>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

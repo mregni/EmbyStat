@@ -1,5 +1,4 @@
-import { createSelector } from '@ngrx/store';
-import { ApplicationState } from "../../states/app.state";
+import { ApplicationState } from '../../states/app.state';
 
 import { EmbyPluginStore } from '../models/embyPluginStore';
 import { PluginActionTypes, PluginActions } from './actions.plugin';

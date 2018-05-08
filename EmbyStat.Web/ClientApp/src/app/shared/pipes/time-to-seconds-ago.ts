@@ -4,19 +4,15 @@ import * as moment from 'moment';
 @Pipe({ name: 'convertToSecondsAgo' })
 export class DateToSecondsAgo implements PipeTransform {
   transform(value: any, to = moment()): number {
-    var from = moment(value);
+    const from = moment(value);
     if (to instanceof moment) {
 
     } else {
       to = moment(to);
     }
 
-    var milliseconds = to.diff(from);
-    var duration = moment.duration(milliseconds);
+    const milliseconds = to.diff(from);
+    const duration = moment.duration(milliseconds);
     return Math.floor(duration.asSeconds()) % 60 + 1;
   }
 }
-
-
-
-

@@ -1,5 +1,4 @@
-import { createSelector } from '@ngrx/store';
-import { ApplicationState } from "../../states/app.state";
+import { ApplicationState } from '../../states/app.state';
 
 import { Configuration } from '../models/configuration';
 import {
@@ -7,18 +6,18 @@ import {
   ConfigurationActions
 } from './actions.configuration';
 
-
 const INITIAL_STATE: Configuration = {
   wizardFinished: true,
-  accessToken: "",
-  embyUserName: "",
-  embyServerAddress: "",
-  username: "",
-  Id: "",
-  language: "en",
-  serverName: "",
-  isLoaded: false
-}
+  accessToken: '',
+  embyUserName: '',
+  embyServerAddress: '',
+  username: '',
+  language: 'en',
+  serverName: '',
+  isLoaded: false,
+  toShortMovie: 10,
+  embyUserId: ''
+};
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
   switch (action.type) {
@@ -31,8 +30,9 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         accessToken: action.payload.accessToken,
         embyServerAddress: action.payload.embyServerAddress,
         embyUserName: action.payload.embyUserName,
-        userId: action.payload.Id,
         serverName: action.payload.serverName,
+        embyUserId: action.payload.embyUserId,
+        toShortMovie: action.payload.toShortMovie,
         isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
@@ -44,10 +44,11 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         accessToken: action.payload.accessToken,
         embyServerAddress: action.payload.embyServerAddress,
         embyUserName: action.payload.embyUserName,
-        userId: action.payload.Id,
         serverName: action.payload.serverName,
+        embyUserId: action.payload.embyUserId,
+        toShortMovie: action.payload.toShortMovie,
         isLoaded: true
-      }
+      };
     default:
       return state;
   }

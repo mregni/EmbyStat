@@ -5,11 +5,23 @@ import { map, switchMap, catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
 import { MovieService } from '../service/movie.service';
-import { MovieActionTypes as MovieTypes, LoadMovieCollectionsAction, LoadGeneralStatsAction, LoadDuplicateGraphSuccessAction, LoadGeneralStatsSuccessAction, LoadMovieCollectionsSuccessAction, LoadPersonStatsAction, LoadPersonStatsSuccessAction } from './actions.movie';
-import { MovieStats } from "../models/movieStats";
-import { MoviePersonStats } from "../models/moviePersonStats";
-import { Collection } from "../../shared/models/collection";
-import { Duplicate } from "../models/graphs/duplicate";
+import {
+  MovieActionTypes,
+  LoadMovieCollectionsAction,
+  LoadGeneralStatsAction,
+  LoadSuspiciousSuccessAction,
+  LoadGeneralStatsSuccessAction,
+  LoadMovieCollectionsSuccessAction,
+  LoadPersonStatsAction,
+  LoadPersonStatsSuccessAction,
+  LoadGraphsAction,
+  LoadGraphsSuccessAction
+} from './actions.movie';
+import { MovieStats } from '../models/movieStats';
+import { MoviePersonStats } from '../models/moviePersonStats';
+import { Collection } from '../../shared/models/collection';
+import { MovieGraphs } from '../models/movieGraphs';
+import { SuspiciousMovies } from '../models/suspiciousMovies';
 
 import { EffectError } from '../../states/app.actions';
 
@@ -22,7 +34,7 @@ export class MovieEffects {
 
   @Effect()
   getMovieGeneralStat$ = this.actions$
-    .ofType(MovieTypes.LOAD_STATS_GENERAL)
+    .ofType(MovieActionTypes.LOAD_STATS_GENERAL)
     .pipe(
     map((data: LoadGeneralStatsAction) => data.payload),
     switchMap((list: string[]) => {
@@ -36,7 +48,7 @@ export class MovieEffects {
 
   @Effect()
   getMoviePersonStat$ = this.actions$
-    .ofType(MovieTypes.LOAD_STATS_PERSON)
+    .ofType(MovieActionTypes.LOAD_STATS_PERSON)
     .pipe(
     map((data: LoadPersonStatsAction) => data.payload),
     switchMap((list: string[]) => {
@@ -50,7 +62,7 @@ export class MovieEffects {
 
   @Effect()
   getMovieCollections$ = this.actions$
-    .ofType(MovieTypes.LOAD_MOVIE_COLLECTIONS)
+    .ofType(MovieActionTypes.LOAD_MOVIE_COLLECTIONS)
     .pipe(
     map((data: LoadMovieCollectionsAction) => data.payload),
     switchMap(_ => {
@@ -63,15 +75,29 @@ export class MovieEffects {
     );
 
   @Effect()
-  getDuplicateGraph$ = this.actions$
-    .ofType(MovieTypes.LOAD_DUPLICATE_GRAPH)
+  getDuplicate$ = this.actions$
+    .ofType(MovieActionTypes.LOAD_SUSPICIOUS)
     .pipe(
     map((data: LoadMovieCollectionsAction) => data.payload),
     switchMap((list: string[]) => {
-      return this.movieService.getDuplicateGraph(list);
+      return this.movieService.getSuspicious(list);
     }),
-    map((list: Duplicate[]) => {
-      return new LoadDuplicateGraphSuccessAction(list);
+    map((tables: SuspiciousMovies) => {
+      return new LoadSuspiciousSuccessAction(tables);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    );
+
+  @Effect()
+  getGraphs$ = this.actions$
+    .ofType(MovieActionTypes.LOAD_GRAPHS)
+    .pipe(
+    map((data: LoadGraphsAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.movieService.getGraphs(list);
+    }),
+    map((list: MovieGraphs) => {
+      return new LoadGraphsSuccessAction(list);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );

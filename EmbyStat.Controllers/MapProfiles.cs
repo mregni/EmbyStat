@@ -5,6 +5,7 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
+using EmbyStat.Controllers.ViewModels.Graph;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Stat;
@@ -12,6 +13,7 @@ using EmbyStat.Controllers.ViewModels.Task;
 using EmbyStat.Services.Models.Stat;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.Graph;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
 
@@ -22,7 +24,7 @@ namespace EmbyStat.Controllers.Helpers
 	    public MapProfiles()
 	    { 
 			//Controllers
-		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.EmbyUserId, y => y.MapFrom(z => z.Id));
+		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
@@ -42,6 +44,11 @@ namespace EmbyStat.Controllers.Helpers
             CreateMap<Collection, CollectionViewModel>();
 	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
 	        CreateMap<MovieDuplicateItem, MovieDuplicateItemViewModel>();
+	        CreateMap<SimpleGraphValue, SimpleGraphValueViewModel>();
+	        CreateMap<Graph<SimpleGraphValue>, GraphViewModel<SimpleGraphValue>>();
+	        CreateMap<MovieGraphs, MovieGraphsViewModel>();
+	        CreateMap<ShortMovie, ShortMovieViewModel>();
+	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

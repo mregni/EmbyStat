@@ -17,7 +17,6 @@ export class MoviePeopleComponent implements OnInit {
 
   @Input()
   set selectedCollections(collection: string[]) {
-    console.log(collection);
     if (collection === undefined) {
       collection = [];
     }

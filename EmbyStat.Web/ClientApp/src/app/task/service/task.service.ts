@@ -18,7 +18,7 @@ export class TaskService {
   }
 
   updateTriggers(task: Task): Observable<Task[]> {
-    return this.http.put<Task[]>('/api' + this.triggersUrl, task); 
+    return this.http.put<Task[]>('/api' + this.triggersUrl, task);
   }
 
   fireTask(id: string): Observable<void> {

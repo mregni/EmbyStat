@@ -77,6 +77,8 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<string>("ServerName");
 
+                    b.Property<int>("ToShortMovie");
+
                     b.Property<string>("Username");
 
                     b.Property<bool>("WizardFinished");

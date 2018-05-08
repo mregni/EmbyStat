@@ -6,6 +6,36 @@ namespace EmbyStat.Common
 {
     public static class Constants
     {
+        public static class Movies
+        {
+            //STATISTICS
+            public const string TotalMovies = "MOVIES.TOTALMOVIES";
+            public const string TotalGenres = "MOVIES.TOTALGENRES";
+            public const string LowestRated = "MOVIES.LOWESTRATED";
+            public const string HighestRated = "MOVIES.HIGHESTRATED";
+            public const string OldestPremiered = "MOVIES.OLDESTPREMIERED";
+            public const string YoungestPremiered = "MOVIES.YOUNGESTPREMIERED";
+            public const string Shortest = "MOVIES.SHORTEST";
+            public const string Longest = "MOVIES.LONGEST";
+            public const string YoungestAdded = "MOVIES.YOUNGESTADDED";
+            public const string TotalPlayLength = "MOVIES.TOTALPLAYLENGTH";
+            public const string MostFeaturedActor = "MOVIES.MOSTFEATUREDACTOR";
+            public const string MostFeaturedDirector = "MOVIES.MOSTFEATUREDDIRECTOR";
+            public const string MostFeaturedWriter = "MOVIES.MOSTFEATUREDWRITER";
+            public const string TotalActors = "MOVIES.TOTALACTORS";
+            public const string TotalDirectors = "MOVIES.TOTALDIRECTORS";
+            public const string TotalWriters = "MOVIES.TOTALWRITERS";
+        }
+
+        //CHARTS
+        public const string CountPerGenre = "COMMON.COUNTPERGENRE";
+        public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";
+        public const string CountPerPremiereYear = "COMMON.COUNTPERPREMIEREDATE";
+        public const string CountPerOfficialRating = "COMMON.COUNTPEROFFICIALRATING";
+
+        //COMMON
+        public const string Unknown = "UNKNOWN";
+
         //QUALITIES
         public const string FOURK = "4K";
         public const string THOUSANDFOURFOURP = "1440P";
@@ -19,22 +49,8 @@ namespace EmbyStat.Common
         public const string Director = "Director";
         public const string Writer = "Writer";
 
-        //MOVIE STATS
-        public const string MoviesTotalMovies = "MOVIES.TOTALMOVIES";
-        public const string MoviesTotalGenres = "MOVIES.TOTALGENRES";
-        public const string MoviesLowestRated = "MOVIES.LOWESTRATED";
-        public const string MoviesHighestRated = "MOVIES.HIGHESTRATED";
-        public const string MoviesOldestPremiered = "MOVIES.OLDESTPREMIERED";
-        public const string MoviesYoungestPremiered = "MOVIES.YOUNGESTPREMIERED";
-        public const string MoviesShortest = "MOVIES.SHORTEST";
-        public const string MoviesLongest = "MOVIES.LONGEST";
-        public const string MoviesYoungestAdded = "MOVIES.YOUNGESTADDED";
-        public const string MoviesTotalPlayLength = "MOVIES.TOTALPLAYLENGTH";
-        public const string MoviesMostFeaturedActor = "MOVIES.MOSTFEATUREDACTOR";
-        public const string MoviesMostFeaturedDirector = "MOVIES.MOSTFEATUREDDIRECTOR";
-        public const string MoviesMostFeaturedWriter = "MOVIES.MOSTFEATUREDWRITER";
-        public const string MoviesTotalActors = "MOVIES.TOTALACTORS";
-        public const string MoviesTotalDirectors = "MOVIES.TOTALDIRECTORS";
-        public const string MoviesTotalWriters = "MOVIES.TOTALWRITERS";
+        //DUPLICATE REASONS
+        public const string ByImdb = "BYIMDB";
+        public const string ByTitle = "BYTITLE";
     }
 }

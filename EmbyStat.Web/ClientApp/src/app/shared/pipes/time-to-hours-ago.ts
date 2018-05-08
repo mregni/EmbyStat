@@ -4,7 +4,7 @@ import * as moment from 'moment';
 @Pipe({ name: 'convertToHoursAgo' })
 export class DateToHoursAgo implements PipeTransform {
   transform(value: any, to = moment()): number {
-    var from = moment(value);
+    const from = moment(value);
 
     if (to instanceof moment) {
 
@@ -12,12 +12,8 @@ export class DateToHoursAgo implements PipeTransform {
       to = moment(to);
     }
 
-    var milliseconds = to.diff(from);
-    var duration = moment.duration(milliseconds);
+    const milliseconds = to.diff(from);
+    const duration = moment.duration(milliseconds);
     return Math.floor(duration.asHours());
   }
 }
-
-
-
-

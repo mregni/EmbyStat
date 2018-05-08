@@ -15,7 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private smallWidthBreakpoint = 720;
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
   private configChangedSub: Subscription;
-  public closeForWizard: boolean = false;
+  public closeForWizard = false;
 
   constructor(
     private zone: NgZone,
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en');
-    translate.addLangs(["en", "nl"]);
+    translate.addLangs(['en', 'nl']);
 
     router.events.subscribe(event => {
       if (event instanceof NavigationStart) {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Controllers.ViewModels.Graph;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Services.Interfaces;
@@ -45,11 +46,19 @@ namespace EmbyStat.Controllers
         }
 
         [HttpPost]
-        [Route("getduplicates")]
+        [Route("getsuspicious")]
         public IActionResult GetDuplicates([FromBody] List<string> collectionIds)
         {
-            var result = _movieService.GetDuplicates(collectionIds);
-            return Ok(Mapper.Map<IList<MovieDuplicateViewModel>>(result));
+            var result = _movieService.GetSuspiciousMovies(collectionIds);
+            return Ok(Mapper.Map<SuspiciousTablesViewModel>(result));
+        }
+
+        [HttpGet]
+        [Route("getgraphs")]
+        public IActionResult GetGraphs(List<string> collectionIds)
+        {
+            var graphs = _movieService.GetGraphs(collectionIds);
+            return Ok(Mapper.Map<MovieGraphsViewModel>(graphs));
         }
     }
 }

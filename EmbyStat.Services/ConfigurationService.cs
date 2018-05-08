@@ -10,7 +10,6 @@ namespace EmbyStat.Services
 		public ConfigurationService(IConfigurationRepository configurationRepository)
 		{
 			_configurationRepository = configurationRepository;
-
 		}
 
 		public void SaveServerSettings(Configuration configuration)
@@ -24,6 +23,7 @@ namespace EmbyStat.Services
 			dbSettings.Username = configuration.Username;
 			dbSettings.WizardFinished = configuration.WizardFinished;
 		    dbSettings.EmbyUserId = configuration.EmbyUserId;
+		    dbSettings.ToShortMovie = configuration.ToShortMovie;
 
 			_configurationRepository.UpdateOrAdd(dbSettings);
 		}

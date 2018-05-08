@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { MovieService } from './service/movie.service';
+import { MovieChartsService } from './service/movie-charts.service';
 import { MovieFacade } from './state/facade.movie';
 
 import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
@@ -22,6 +23,7 @@ import { MovieSuspiciousComponent } from './movie-suspicious/movie-suspicious.co
   ],
   providers: [
     MovieService,
+    MovieChartsService,
     MovieFacade
   ],
   declarations: [MovieOverviewComponent, MovieGeneralComponent, MoviePeopleComponent, MovieChartsComponent, MovieSuspiciousComponent]

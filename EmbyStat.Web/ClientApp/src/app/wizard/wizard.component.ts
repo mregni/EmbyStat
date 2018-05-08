@@ -18,6 +18,7 @@ import { PluginFacade } from '../plugin/state/facade.plugin';
   templateUrl: './wizard.component.html',
   styleUrls: ['./wizard.component.scss']
 })
+
 export class WizardComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') private stepper: MatStepper;
 
@@ -34,12 +35,12 @@ export class WizardComponent implements OnInit, OnDestroy {
   public searchEmbySub: Subscription;
   public configurationSub: Subscription;
 
-  public embyFound: boolean = false;
-  public embyServerName: string = "";
-  public hidePassword: boolean = true;
-  public wizardIndex: number = 0;
-  public embyOnline: boolean = false;
-  public isAdmin: boolean = false;
+  public embyFound = false;
+  public embyServerName = '';
+  public hidePassword = true;
+  public wizardIndex = 0;
+  public embyOnline = false;
+  public isAdmin = false;
   public username: string;
 
   private configuration: Configuration;
@@ -84,21 +85,21 @@ export class WizardComponent implements OnInit, OnDestroy {
   public stepperPageChanged(event) {
     if (event.selectedIndex === 2) {
       this.username = this.embyFormGroup.get('embyUsername').value;
-      var password = this.embyFormGroup.get('embyPassword').value;
-      var address = this.embyFormGroup.get('embyAddress').value;
+      const password = this.embyFormGroup.get('embyPassword').value;
+      const address = this.embyFormGroup.get('embyAddress').value;
       this.configurationFacade.getToken(this.username, password, address)
         .subscribe((token: EmbyToken) => {
           this.embyOnline = true;
           this.isAdmin = token.isAdmin;
           if (token.isAdmin) {
-            var config = { ...this.configuration };
+            const config = { ...this.configuration };
             config.language = this.introFormGroup.get('language').value;
             config.embyUserName = this.username;
             config.username = this.introFormGroup.get('name').value;
             config.embyServerAddress = address;
             config.accessToken = token.token;
             config.wizardFinished = true;
-            config.Id = token.id;
+            config.embyUserId = token.id;
             this.configurationFacade.updateConfiguration(config);
           } else {
           }

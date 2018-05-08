@@ -63,7 +63,7 @@ namespace Tests.Unit.Controllers
 			    EmbyServerAddress = "https://localhost:8096",
 			    EmbyUserName = "admin",
 			    Language = "en",
-			    Id = "12345",
+			    EmbyUserId = "12345",
 			    Username = "usernameAdmin",
 			    WizardFinished = false
 		    };
@@ -76,7 +76,7 @@ namespace Tests.Unit.Controllers
 			         y.EmbyServerAddress == configuration.EmbyServerAddress &&
 			         y.EmbyUserName == configuration.EmbyUserName &&
 			         y.Language == configuration.Language &&
-			         y.Id == configuration.Id &&
+			         y.EmbyUserId == configuration.EmbyUserId &&
 			         y.Username == configuration.Username)), Times.Once);
 		    _configurationServiceMock.Verify(x => x.GetServerSettings(), Times.Once);
 	    }

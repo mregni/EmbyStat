@@ -16,14 +16,13 @@ import { MovieStore } from '../movie/models/movieStore';
 import { MovieReducer } from '../movie/state/reducer.movie';
 
 export interface ApplicationState {
-  configuration: Configuration,
-  plugins: EmbyPluginStore,
+  configuration: Configuration;
+  plugins: EmbyPluginStore;
   serverInfo: ServerInfoStore;
   movies: MovieStore;
 }
 
-export const ROOT_REDUCER: ActionReducerMap<ApplicationState> =
-{
+export const ROOT_REDUCER: ActionReducerMap<ApplicationState> = {
     configuration: configurationReducer,
     plugins: pluginReducer,
     serverInfo: serverInfoReducer,
