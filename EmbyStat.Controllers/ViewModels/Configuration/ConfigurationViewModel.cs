@@ -7,8 +7,9 @@
 	    public string EmbyUserName { get; set; }
 	    public string EmbyServerAddress { get; set; }
 	    public string Username { get; set; }
-	    public string Id { get; set; }
 	    public string Language { get; set; }
 	    public string ServerName { get; set; }
+        public string EmbyUserId { get; set; }
+        public int ToShortMovie { get; set; }
 	}
 }

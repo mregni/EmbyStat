@@ -4,9 +4,10 @@ var ConfigurationActionTypes;
 (function (ConfigurationActionTypes) {
     ConfigurationActionTypes["LOAD_CONFIGURATION"] = "[Configuration] Load Configuration";
     ConfigurationActionTypes["LOAD_CONFIGURATION_SUCCESS"] = "[Configuration] Load Configuration Success";
-    ConfigurationActionTypes["UPDATE_CONFIGURATION"] = "[Configuration] Updated Configuration";
+    ConfigurationActionTypes["UPDATE_CONFIGURATION"] = "[Configuration] Update Configuration";
     ConfigurationActionTypes["UPDATE_CONFIGURATION_SUCCESS"] = "[Configuration] Updated Configuration Success";
     ConfigurationActionTypes["FIRE_SMALL_EMBY_SYNC"] = "[Configuration] Start Small Emby Sync";
+    ConfigurationActionTypes["NOT_NEEDED"] = "[Configuration] Not Needed";
 })(ConfigurationActionTypes = exports.ConfigurationActionTypes || (exports.ConfigurationActionTypes = {}));
 var LoadConfigurationAction = /** @class */ (function () {
     function LoadConfigurationAction(payload) {
@@ -43,11 +44,18 @@ var UpdateConfigurationSuccessAction = /** @class */ (function () {
 exports.UpdateConfigurationSuccessAction = UpdateConfigurationSuccessAction;
 var FireSmallEmbySyncAction = /** @class */ (function () {
     function FireSmallEmbySyncAction(payload) {
-        if (payload === void 0) { payload = null; }
+        if (payload === void 0) { payload = false; }
         this.payload = payload;
         this.type = ConfigurationActionTypes.FIRE_SMALL_EMBY_SYNC;
     }
     return FireSmallEmbySyncAction;
 }());
 exports.FireSmallEmbySyncAction = FireSmallEmbySyncAction;
+var NoNeedConfigurationAction = /** @class */ (function () {
+    function NoNeedConfigurationAction() {
+        this.type = ConfigurationActionTypes.NOT_NEEDED;
+    }
+    return NoNeedConfigurationAction;
+}());
+exports.NoNeedConfigurationAction = NoNeedConfigurationAction;
 //# sourceMappingURL=actions.configuration.js.map

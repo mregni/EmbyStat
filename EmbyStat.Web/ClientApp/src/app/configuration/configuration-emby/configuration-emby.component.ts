@@ -49,13 +49,10 @@ export class ConfigurationEmbyComponent implements OnInit, OnDestroy {
       .subscribe((token: EmbyToken) => {
         if (token.isAdmin) {
           const config = { ...this.configuration };
-          config.language = this.configuration.language;
           config.embyUserName = username;
-          config.username = this.configuration.username;
           config.embyServerAddress = address;
           config.accessToken = token.token;
-          config.wizardFinished = this.configuration.wizardFinished;
-          config.Id = token.id;
+          config.embyUserId = token.id;
           this.configurationFacade.updateConfiguration(config);
         }
       });

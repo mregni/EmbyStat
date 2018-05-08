@@ -42,12 +42,7 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
   public saveForm() {
     const config = { ...this.configuration };
     config.language = this.form.get('language').value;
-    config.embyUserName = this.configuration.embyUserName;
     config.username = this.form.get('name').value;
-    config.embyServerAddress = this.configuration.embyServerAddress;
-    config.accessToken = this.configuration.accessToken;
-    config.wizardFinished = true;
-    config.Id = this.configuration.Id;
     this.configurationFacade.updateConfiguration(config);
   }
 
@@ -67,5 +62,4 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
       this.configChangedSub.unsubscribe();
     }
   }
-
 }

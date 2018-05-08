@@ -24,7 +24,7 @@ namespace EmbyStat.Controllers.Helpers
 	    public MapProfiles()
 	    { 
 			//Controllers
-		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.EmbyUserId, y => y.MapFrom(z => z.Id));
+		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
@@ -47,6 +47,8 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<SimpleGraphValue, SimpleGraphValueViewModel>();
 	        CreateMap<Graph<SimpleGraphValue>, GraphViewModel<SimpleGraphValue>>();
 	        CreateMap<MovieGraphs, MovieGraphsViewModel>();
+	        CreateMap<ShortMovie, ShortMovieViewModel>();
+	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

@@ -31,6 +31,7 @@ namespace EmbyStat.Repositories
 				{
 					Id = Guid.NewGuid().ToString(),
 					Language = "en",
+                    ToShortMovie = 10
 				};
 
 				_context.Configuration.Add(config);

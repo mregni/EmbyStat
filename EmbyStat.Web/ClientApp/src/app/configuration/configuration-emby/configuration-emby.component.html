@@ -1,8 +1,5 @@
 <div class="configuration__left">
   <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
-    <mat-card-header>
-      <mat-card-title>{{'CONFIGURATION.EMBY' | translate}}</mat-card-title>
-    </mat-card-header>
     <mat-card-content>
       <form [formGroup]="form" class="form-container">
         <mat-form-field>

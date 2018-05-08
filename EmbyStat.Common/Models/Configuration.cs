@@ -15,5 +15,6 @@ namespace EmbyStat.Common.Models
 	    public string Language { get; set; }
 	    public string ServerName { get; set; }
         public string EmbyUserId { get; set; }
-	}
+        public int ToShortMovie { get; set; }
+    }
 }

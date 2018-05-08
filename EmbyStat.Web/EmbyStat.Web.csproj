@@ -57,9 +57,10 @@
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <None Remove="ClientApp\src\app\movie\models\movieGraphs.ts" />
     <None Remove="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
+    <None Remove="ClientApp\src\app\movie\models\shortMovie.ts" />
+    <None Remove="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
     <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
@@ -96,6 +97,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\movie\models\shortMovie.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />

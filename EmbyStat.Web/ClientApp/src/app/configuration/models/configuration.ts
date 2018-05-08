@@ -4,8 +4,9 @@ export class Configuration {
   public embyUserName: string;
   public embyServerAddress: string;
   public username: string;
-  public Id: string;
   public language: string;
   public serverName: string;
   public isLoaded: boolean;
+  public embyUserId: string;
+  public toShortMovie: number;
 }

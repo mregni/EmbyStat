@@ -20,7 +20,11 @@
     "MOVIES": "movies",
     "COUNTPERGENRE": "count / genre",
     "COUNTPERCOMMUNITYRATING": "count / rating",
-    "COUNTPERPREMIEREDATE": "count / year" 
+    "COUNTPERPREMIEREDATE": "count / year",
+    "COUNTPEROFFICIALRATING": "count / official rating",
+    "EMBY": "Emby",
+    "GENERAL": "general",
+    "DURATION": "duration"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
@@ -34,7 +38,8 @@
     "LANGUAGE": "Please select your language",
     "EMBYADDRESS": "Emby ip address",
     "EMBYUSERNAME": "Emby admin username",
-    "EMBYPASSWORD": "Emby admin password"
+    "EMBYPASSWORD": "Emby admin password",
+    "DURATIONINMINUTES": "Duration in minutes" 
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -88,12 +93,12 @@
     "MOSTFEATUREDDIRECTOR": "Most featured director",
     "MOSTFEATUREDWRITER": "Most featured writer",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
-    "DUPLICATEMOVIES": "duplicate movies"
+    "DUPLICATEMOVIES": "duplicate movies",
+    "TOSHORTMOVIES": "movies that are very short" 
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
-    "GENERAL": "General settings",
-    "EMBY": "Emby connection settings"
+    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed."
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",

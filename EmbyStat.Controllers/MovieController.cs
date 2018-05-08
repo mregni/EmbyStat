@@ -46,11 +46,11 @@ namespace EmbyStat.Controllers
         }
 
         [HttpPost]
-        [Route("getduplicates")]
+        [Route("getsuspicious")]
         public IActionResult GetDuplicates([FromBody] List<string> collectionIds)
         {
-            var result = _movieService.GetDuplicates(collectionIds);
-            return Ok(Mapper.Map<IList<MovieDuplicateViewModel>>(result));
+            var result = _movieService.GetSuspiciousMovies(collectionIds);
+            return Ok(Mapper.Map<SuspiciousTablesViewModel>(result));
         }
 
         [HttpGet]

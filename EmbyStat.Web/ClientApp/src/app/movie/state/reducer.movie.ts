@@ -4,13 +4,14 @@ import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { MovieStore } from '../models/movieStore';
 import { MovieGraphs } from '../models/movieGraphs';
+import { SuspiciousMovies } from '../models/suspiciousMovies';
 import { MovieActions, MovieActionTypes } from './actions.movie';
 
 const INITIAL_STATE: MovieStore = {
   stats: new MovieStats(),
   personStats: new MoviePersonStats(),
   collections: [],
-  duplicates: [],
+  suspicious: new SuspiciousMovies(),
   graphs: new MovieGraphs()
 };
 
@@ -31,10 +32,10 @@ export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieAct
         ...state,
         collections: action.payload
       };
-    case MovieActionTypes.LOAD_DUPLICATES_SUCCESS:
+    case MovieActionTypes.LOAD_SUSPICIOUS_SUCCESS:
       return {
         ...state,
-        duplicates: action.payload
+        suspicious: action.payload
       };
     case MovieActionTypes.LOAD_GRAPHS_SUCCESS:
       return {
@@ -50,6 +51,6 @@ export namespace MovieQuery {
   export const getGeneralStats = (state: ApplicationState) => state.movies.stats;
   export const getMovieCollections = (state: ApplicationState) => state.movies.collections;
   export const getPersonStats = (state: ApplicationState) => state.movies.personStats;
-  export const getDuplicates = (state: ApplicationState) => state.movies.duplicates;
+  export const getSuspicious = (state: ApplicationState) => state.movies.suspicious;
   export const getGraphs = (state: ApplicationState) => state.movies.graphs;
 }

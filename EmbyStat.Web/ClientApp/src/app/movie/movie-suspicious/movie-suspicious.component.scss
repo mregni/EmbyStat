@@ -11,7 +11,9 @@
 .mat-column-qualityTwo,
 .mat-column-linkOne,
 .mat-column-linkTwo,
-.mat-column-reason {
+.mat-column-reason,
+.mat-column-link,
+.mat-column-duration {
   max-width: 100px;
 }
 
@@ -23,3 +25,6 @@
   color: mat-color($app-accent) !important;
 }
 
+a {
+  cursor: pointer;
+}

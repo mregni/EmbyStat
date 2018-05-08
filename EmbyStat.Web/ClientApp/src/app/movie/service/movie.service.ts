@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Duplicate } from '../models/duplicate';
+import { SuspiciousMovies } from '../models/suspiciousMovies';
 import { MovieGraphs } from '../models/movieGraphs';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class MovieService {
   private readonly getGeneralUrl: string = '/movie/getgeneralstats';
   private readonly getPersonUrl: string = '/movie/getpersonstats';
   private readonly getCollectionsUrl: string = '/movie/getcollections';
-  private readonly getDuplicateUrl: string = '/movie/getduplicates';
+  private readonly getSuspiciousUrl: string = '/movie/getsuspicious';
   private readonly getGraphsUrl: string = '/movie/getgraphs';
 
   constructor(private http: HttpClient) {
@@ -32,8 +32,8 @@ export class MovieService {
     return this.http.get<Collection[]>('/api' + this.getCollectionsUrl);
   }
 
-  getDuplicates(list: string[]): Observable<Duplicate[]> {
-    return this.http.post<Duplicate[]>('api' + this.getDuplicateUrl, list);
+  getSuspicious(list: string[]): Observable<SuspiciousMovies> {
+    return this.http.post<SuspiciousMovies>('api' + this.getSuspiciousUrl, list);
   }
 
   getGraphs(list: string[]): Observable<MovieGraphs> {

@@ -99,7 +99,7 @@ export class WizardComponent implements OnInit, OnDestroy {
             config.embyServerAddress = address;
             config.accessToken = token.token;
             config.wizardFinished = true;
-            config.Id = token.id;
+            config.embyUserId = token.id;
             this.configurationFacade.updateConfiguration(config);
           } else {
           }

@@ -3,7 +3,7 @@ import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
 import { MovieGraphs } from '../models/movieGraphs';
-import { Duplicate } from '../models/duplicate';
+import { SuspiciousMovies } from '../models/suspiciousMovies';
 
 export enum MovieActionTypes {
   LOAD_STATS_GENERAL = '[MovieGeneralStats] Load General Movie Stats',
@@ -12,8 +12,8 @@ export enum MovieActionTypes {
   LOAD_MOVIE_COLLECTIONS_SUCCESS = '[MovieCollections] Load Movie Collections Success',
   LOAD_STATS_PERSON = '[MoviePersonStats] Load Person Movie Stats',
   LOAD_STATS_PERSON_SUCCESS = '[MoviePersonStats] Load Person Movie Stats Success',
-  LOAD_DUPLICATES = '[MovieDuplicateGraph] Load Duplicate Graph',
-  LOAD_DUPLICATES_SUCCESS = '[MovieDuplicateGraph] Load Duplicate Graph Success',
+  LOAD_SUSPICIOUS = '[MovieSuspicious] Load Suspicious',
+  LOAD_SUSPICIOUS_SUCCESS = '[MovieSuspicious] Load Suspicious Success',
   LOAD_GRAPHS = '[MovieGraphs] Load Movie Graphs',
   LOAD_GRAPHS_SUCCESS = '[MovieGraphs] Load Movie Graphs Success'
 }
@@ -48,14 +48,14 @@ export class LoadPersonStatsSuccessAction implements Action {
   constructor(public payload: MoviePersonStats) { }
 }
 
-export class LoadDuplicateAction implements Action {
-  readonly type = MovieActionTypes.LOAD_DUPLICATES;
+export class LoadSuspiciousAction implements Action {
+  readonly type = MovieActionTypes.LOAD_SUSPICIOUS;
   constructor(public payload: string[]) { }
 }
 
-export class LoadDuplicateSuccessAction implements Action {
-  readonly type = MovieActionTypes.LOAD_DUPLICATES_SUCCESS;
-  constructor(public payload: Duplicate[]) { }
+export class LoadSuspiciousSuccessAction implements Action {
+  readonly type = MovieActionTypes.LOAD_SUSPICIOUS_SUCCESS;
+  constructor(public payload: SuspiciousMovies) { }
 }
 
 export class LoadGraphsAction implements Action {
@@ -69,7 +69,7 @@ export class LoadGraphsSuccessAction implements Action {
 }
 
 export type MovieActions = LoadGeneralStatsAction | LoadGeneralStatsSuccessAction |
-                           LoadMovieCollectionsAction | LoadMovieCollectionsSuccessAction |
-                           LoadPersonStatsAction | LoadPersonStatsSuccessAction |
-                           LoadDuplicateAction | LoadDuplicateSuccessAction |
-                           LoadGraphsAction | LoadGraphsSuccessAction;
+  LoadMovieCollectionsAction | LoadMovieCollectionsSuccessAction |
+  LoadPersonStatsAction | LoadPersonStatsSuccessAction |
+  LoadSuspiciousAction | LoadSuspiciousSuccessAction |
+  LoadGraphsAction | LoadGraphsSuccessAction;

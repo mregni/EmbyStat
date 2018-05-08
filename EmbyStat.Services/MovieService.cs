@@ -27,13 +27,15 @@ namespace EmbyStat.Services
         private readonly ICollectionRepository _collectionRepository;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
+        private readonly IConfigurationRepository _configurationRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
+            _configurationRepository = configurationRepository;
         }
 
         public List<Collection> GetMovieCollections()
@@ -72,9 +74,51 @@ namespace EmbyStat.Services
             };
         }
 
-        public List<MovieDuplicate> GetDuplicates(List<string> collectionIds)
+        public MovieGraphs GetGraphs(List<string> collectionIds)
         {
             var movies = _movieRepository.GetAll(collectionIds);
+
+            var graphs = new MovieGraphs();
+            graphs.BarGraphs.Add(CalculateGenreGraph(movies));
+            graphs.BarGraphs.Add(CalculateRatingGraph(movies));
+            graphs.BarGraphs.Add(CalculatePremiereYearGraph(movies));
+            graphs.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
+
+            return graphs;
+        }
+
+        public SuspiciousTables GetSuspiciousMovies(List<string> collectionsIds)
+        {
+            var movies = _movieRepository.GetAll(collectionsIds);
+
+            return new SuspiciousTables
+            {
+                Duplicates = GetDuplicates(movies),
+                Shorts = GetShortMovies(movies)
+            };
+        }
+
+        private List<ShortMovie> GetShortMovies(List<Movie> movies)
+        {
+            var configuration = _configurationRepository.GetSingle();
+            var shortMovies = movies
+                .Where(x => x.RunTimeTicks != null)
+                .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < configuration.ToShortMovie)
+                .OrderBy(x => x.SortName)
+                .Select((t, i) => new ShortMovie
+                {
+                    Number = i++,
+                    Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
+                    Title = t.Name,
+                    MediaId = t.Id
+                })
+                .ToList();
+
+            return shortMovies;
+        }
+
+        private List<MovieDuplicate> GetDuplicates(List<Movie> movies)
+        {
             var list = new List<MovieDuplicate>();
 
             var duplicatesByImdb = movies.Where(x => !string.IsNullOrWhiteSpace(x.IMDB)).GroupBy(x => x.IMDB).Select(x => new {x.Key, Count = x.Count()}).Where(x => x.Count > 1).ToList();
@@ -117,19 +161,6 @@ namespace EmbyStat.Services
             }
 
             return list.OrderBy(x => x.Title).ToList();
-        }
-
-        public MovieGraphs GetGraphs(List<string> collectionIds)
-        {
-            var movies = _movieRepository.GetAll(collectionIds);
-
-            var graphs = new MovieGraphs();
-            graphs.BarGraphs.Add(CalculateGenreGraph(movies));
-            graphs.BarGraphs.Add(CalculateRatingGraph(movies));
-            graphs.BarGraphs.Add(CalculatePremiereYearGraph(movies));
-            graphs.BarGraphs.Add(CalculateRatingGraph(movies));
-
-            return graphs;
         }
 
         #region StatCreators
@@ -372,6 +403,21 @@ namespace EmbyStat.Services
         }
 
         private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
+        {
+            var ratingData = movies.GroupBy(x => RoundRating(x.CommunityRating))
+                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
+                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            return new Graph<SimpleGraphValue>
+            {
+                Title = Constants.CountPerCommunityRating,
+                Data = ratingData
+            };
+        }
+
+        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(List<Movie> movies)
         {
             var ratingData = movies
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))

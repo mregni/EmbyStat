@@ -1,3 +1,15 @@
-<p>
-  configuration-movies works!
-</p>
+<div class="configuration__left">
+  <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
+    <mat-card-content>
+      <form class="form-container" [formGroup]="form">
+        <p>{{'CONFIGURATION.MOVIETOSHORTTEXT' | translate }}</p>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.DURATIONINMINUTES' | translate}}" formControlName="toShortMovie" required>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

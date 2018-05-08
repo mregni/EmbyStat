@@ -57,7 +57,8 @@ namespace Tests.Unit.Services
 
             var genreRepositoryMock = new Mock<IGenreRepository>();
             var personServiceMock = new Mock<IPersonService>();
-            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, personServiceMock.Object);
+            var configurationServiceMock = new Mock<IConfigurationRepository>();
+            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, personServiceMock.Object, configurationServiceMock.Object);
         }
 
         [Fact]
