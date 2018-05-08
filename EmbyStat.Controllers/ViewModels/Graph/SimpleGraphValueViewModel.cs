@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmbyStat.Services.Models.Graph
+namespace EmbyStat.Controllers.ViewModels.Graph
 {
-    public class Bar
+    public class SimpleGraphValueViewModel
     {
         public string Name { get; set; }
         public int Value { get; set; }

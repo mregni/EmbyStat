@@ -58,7 +58,7 @@ namespace EmbyStat.Controllers
         public IActionResult GetGraphs(List<string> collectionIds)
         {
             var graphs = _movieService.GetGraphs(collectionIds);
-            return Ok(Mapper.Map<IList<GraphViewModel>>(graphs));
+            return Ok(Mapper.Map<MovieGraphsViewModel>(graphs));
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
@@ -14,6 +15,7 @@ using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using CollectionType = EmbyStat.Common.Models.CollectionType;
 using Constants = EmbyStat.Common.Constants;
 
@@ -117,11 +119,14 @@ namespace EmbyStat.Services
             return list.OrderBy(x => x.Title).ToList();
         }
 
-        public List<Graph> GetGraphs(List<string> collectionIds)
+        public MovieGraphs GetGraphs(List<string> collectionIds)
         {
-            var graphs = new List<Graph>();
-            graphs.Add(CalculateGenreGraph(collectionIds));
-            graphs.Add(CalculateRatingGraph(collectionIds));
+            var movies = _movieRepository.GetAll(collectionIds);
+
+            var graphs = new MovieGraphs();
+            graphs.BarGraphs.Add(CalculateGenreGraph(movies));
+            graphs.BarGraphs.Add(CalculateRatingGraph(movies));
+            graphs.BarGraphs.Add(CalculatePremiereYearGraph(movies));
 
             return graphs;
 
@@ -313,47 +318,100 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private Graph CalculateGenreGraph(List<string> collectionIds)
+        private Graph<SimpleGraphValue> CalculateGenreGraph(List<Movie> movies)
         {
-            var movies = _movieRepository.GetAll(collectionIds);
             var genres = _genreRepository.GetAll();
             var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
                 .Select(x => new {Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count()})
-                .Select(x => new Bar{Name = x.Name, Value = x.Count})
+                .Select(x => new SimpleGraphValue{Name = x.Name, Value = x.Count})
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph
+            return new Graph<SimpleGraphValue>
             {
                 Title = Constants.CountPerGenre,
                 Data = genresData
             };
         }
 
-        private Graph CalculateRatingGraph(List<string> collectionIds)
+        private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
         {
-            var movies = _movieRepository.GetAll(collectionIds);
             var ratingData = movies.GroupBy(x => RoundRating(x.CommunityRating))
                 .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown , Count = x.Count() })
-                .Select(x => new Bar { Name = x.Name, Value = x.Count })
+                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph
+            return new Graph<SimpleGraphValue>
             {
                 Title = Constants.CountPerCommunityRating,
                 Data = ratingData
             };
         }
+
+        private Graph<SimpleGraphValue> CalculatePremiereYearGraph(List<Movie> movies)
+        {
+            var yearDataList = movies
+                .Select(x => x.PremiereDate)
+                .GroupBy(RoundYear)
+                .OrderBy(x => x.Key)
+                .ToList();
+
+            var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
+            var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
+
+            var j = 0;
+            for (var i = lowestYear.Value; i < highestYear; i += 5)
+            {
+                if (yearDataList[j].Key != i)
+                {
+                    yearDataList.Add(new GraphGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
+                }
+                else
+                {
+                    j++;
+                }
+            }
+            
+            var yearData = yearDataList
+                .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
+                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            return new Graph<SimpleGraphValue>
+            {
+                Title = Constants.CountPerPremiereYear,
+                Data = yearData
+            };
+        }
+
+        private Graph<SimpleGraphValue> CalculateRatingPieGraph(List<string> collectionIds)
+        {
+
+        }
+
+
         #endregion
 
         #region Helpers
 
         private double? RoundRating(float? rating)
         {
-            if (rating != null)
+            if (rating.HasValue)
             {
-                return Math.Round((double)rating * 2, MidpointRounding.AwayFromZero) / 2;
+                return Math.Round((double)rating.Value * 2, MidpointRounding.AwayFromZero) / 2;
+            }
+
+            return null;
+        }
+
+        private int? RoundYear(DateTime? date)
+        {
+            if (date.HasValue)
+            {
+                var result = (int)Math.Floor((double)date.Value.Year / 5) * 5;
+                return result;
             }
 
             return null;

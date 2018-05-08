@@ -44,8 +44,9 @@ namespace EmbyStat.Controllers.Helpers
             CreateMap<Collection, CollectionViewModel>();
 	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
 	        CreateMap<MovieDuplicateItem, MovieDuplicateItemViewModel>();
-	        CreateMap<Bar, BarViewModel>();
-	        CreateMap<Graph, GraphViewModel>();
+	        CreateMap<SimpleGraphValue, SimpleGraphValueViewModel>();
+	        CreateMap<Graph<SimpleGraphValue>, GraphViewModel<SimpleGraphValue>>();
+	        CreateMap<MovieGraphs, MovieGraphsViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

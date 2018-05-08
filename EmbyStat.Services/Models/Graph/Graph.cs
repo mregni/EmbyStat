@@ -4,9 +4,9 @@ using System.Text;
 
 namespace EmbyStat.Services.Models.Graph
 {
-    public class Graph
+    public class Graph<T> where T : class
     {
         public string Title { get; set; }
-        public List<Bar> Data { get; set; }
+        public List<T> Data { get; set; }
     }
 }
