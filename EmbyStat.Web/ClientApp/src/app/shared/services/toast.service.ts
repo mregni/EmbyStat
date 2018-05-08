@@ -13,7 +13,7 @@ export class ToastService {
 
   pushError(error: string) {
     this.translate.get(error).subscribe(translation => {
-      this.snackBar.open(translation, 'Hide', { duration: 10000 });
+      this.snackBar.open(translation, 'Hide', { duration: 10000, horizontalPosition: "right" });
     });
   }
 }

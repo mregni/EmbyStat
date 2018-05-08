@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigurationComponent } from './configuration.component';
+import { ConfigurationEmbyComponent } from './configuration-emby.component';
 
-describe('ConfigurationComponent', () => {
-  let component: ConfigurationComponent;
-  let fixture: ComponentFixture<ConfigurationComponent>;
+describe('ConfigurationEmbyComponent', () => {
+  let component: ConfigurationEmbyComponent;
+  let fixture: ComponentFixture<ConfigurationEmbyComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfigurationComponent ]
+      declarations: [ ConfigurationEmbyComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfigurationComponent);
+    fixture = TestBed.createComponent(ConfigurationEmbyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,8 +1,8 @@
-.center {
+.configuration__left {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 @media only screen and (max-width: 850px) {
@@ -17,7 +17,7 @@
   }
 }
 
-.margin-bottom{
+.margin-bottom {
   margin-bottom: 20px;
 }
 
@@ -38,5 +38,5 @@
 }
 
 .button-container > button:last-child {
-  margin-left: 10px;
+  margin-right: 10px;
 }

@@ -334,21 +334,6 @@ namespace EmbyStat.Services
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
-        {
-            var ratingData = movies.GroupBy(x => RoundRating(x.CommunityRating))
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown , Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerCommunityRating,
-                Data = ratingData
-            };
-        }
-
         private Graph<SimpleGraphValue> CalculatePremiereYearGraph(List<Movie> movies)
         {
             var yearDataList = movies
@@ -395,9 +380,7 @@ namespace EmbyStat.Services
                 .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
-
-
-
+            
             return new Graph<SimpleGraphValue>
             {
                 Title = Constants.CountPerOfficialRating,

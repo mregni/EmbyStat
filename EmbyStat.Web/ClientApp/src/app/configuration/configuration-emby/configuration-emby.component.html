@@ -1,0 +1,27 @@
+<div class="configuration__left">
+  <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
+    <mat-card-header>
+      <mat-card-title>{{'CONFIGURATION.EMBY' | translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" class="form-container">
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
+          <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME' | translate}}" formControlName="embyUsername" required>
+          <!--<mat-error *ngIf="embyUsernameControl.hasError('required')">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

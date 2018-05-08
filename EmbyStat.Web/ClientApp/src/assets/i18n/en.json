@@ -91,6 +91,7 @@
     "DUPLICATEMOVIES": "duplicate movies"
   },
   "CONFIGURATION": {
+    "SETTINGS": "Settings",
     "GENERAL": "General settings",
     "EMBY": "Emby connection settings"
   },
