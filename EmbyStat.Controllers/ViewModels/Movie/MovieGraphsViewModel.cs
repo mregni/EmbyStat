@@ -9,6 +9,5 @@ namespace EmbyStat.Controllers.ViewModels.Movie
     public class MovieGraphsViewModel
     {
         public List<GraphViewModel<SimpleGraphValueViewModel>> BarGraphs { get; set; }
-        public List<GraphViewModel<SimpleGraphValueViewModel>> PieGraphs { get; set; }
     }
 }

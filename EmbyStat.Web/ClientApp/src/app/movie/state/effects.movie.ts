@@ -20,7 +20,7 @@ import {
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Graph } from '../../shared/models/graph';
+import { MovieGraphs } from '../models/movieGraphs';
 import { Duplicate } from '../models/duplicate';
 
 import { EffectError } from '../../states/app.actions';
@@ -96,7 +96,7 @@ export class MovieEffects {
     switchMap((list: string[]) => {
       return this.movieService.getGraphs(list);
     }),
-    map((list: Graph[]) => {
+      map((list: MovieGraphs) => {
       return new LoadGraphsSuccessAction(list);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))

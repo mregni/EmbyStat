@@ -3,6 +3,7 @@ import { ApplicationState } from '../../states/app.state';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { MovieStore } from '../models/movieStore';
+import { MovieGraphs } from '../models/movieGraphs';
 import { MovieActions, MovieActionTypes } from './actions.movie';
 
 const INITIAL_STATE: MovieStore = {
@@ -10,7 +11,7 @@ const INITIAL_STATE: MovieStore = {
   personStats: new MoviePersonStats(),
   collections: [],
   duplicates: [],
-  graphs: []
+  graphs: new MovieGraphs()
 };
 
 export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieActions) {

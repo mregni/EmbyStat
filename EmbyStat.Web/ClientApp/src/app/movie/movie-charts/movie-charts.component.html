@@ -1,5 +1,5 @@
-<div class="movie-graph-flexcontainer">
-  <div class="graph-container" *ngFor="let graph of graphs$ | async">
+<div class="movie-graph-flexcontainer" *ngIf="graphs$ | async as graphs">
+  <div class="graph-container" *ngFor="let graph of graphs.barGraphs">
     <mat-card>
       <mat-card-header>
         <h2>{{'COMMON.MOVIES' | translate | capitalizeFirst}} {{ graph.title | translate }}</h2>

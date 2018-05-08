@@ -54,6 +54,7 @@
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\movie\models\movieGraphs.ts" />
     <None Remove="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
     <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
@@ -89,6 +90,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
@@ -101,7 +103,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\graph\bar.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\graph\simpleGraphValue.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\poster.ts" />

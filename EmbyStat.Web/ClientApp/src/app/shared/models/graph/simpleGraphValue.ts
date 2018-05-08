@@ -1,4 +1,4 @@
-export class Bar {
+export class SimpleGraphValue {
   public name: string;
   public value: number;
 }

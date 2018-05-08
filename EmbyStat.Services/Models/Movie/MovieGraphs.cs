@@ -8,6 +8,10 @@ namespace EmbyStat.Services.Models.Movie
     public class MovieGraphs
     {
         public List<Graph<SimpleGraphValue>> BarGraphs { get; set; }
-        public List<Graph<SimpleGraphValue>> PieGraphs { get; set; }
+
+        public MovieGraphs()
+        {
+            BarGraphs = new List<Graph<SimpleGraphValue>>();
+        }
     }
 }

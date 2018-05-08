@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Graph } from '../../shared/models/graph';
+import { MovieGraphs } from '../models/movieGraphs';
 import { Duplicate } from '../models/duplicate';
 
 export enum MovieActionTypes {
@@ -65,7 +65,7 @@ export class LoadGraphsAction implements Action {
 
 export class LoadGraphsSuccessAction implements Action {
   readonly type = MovieActionTypes.LOAD_GRAPHS_SUCCESS;
-  constructor(public payload: Graph[]) { }
+  constructor(public payload: MovieGraphs) { }
 }
 
 export type MovieActions = LoadGeneralStatsAction | LoadGeneralStatsSuccessAction |

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { MovieChartsService } from '../service/movie-charts.service';
 import { MovieFacade } from '../state/facade.movie';
-import { Graph } from '../../shared/models/graph';
+import { MovieGraphs } from '../models/movieGraphs';
 
 @Component({
   selector: 'app-movie-charts',
@@ -26,7 +26,7 @@ export class MovieChartsComponent implements OnInit  {
     this._selectedCollections = collection;
   }
 
-  public graphs$: Observable<Graph[]>;
+  public graphs$: Observable<MovieGraphs>;
 
   constructor(private movieFacade: MovieFacade, private movieChartsService: MovieChartsService) {
     movieChartsService.open.subscribe(value => {

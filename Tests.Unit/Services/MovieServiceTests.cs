@@ -76,7 +76,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.MovieCount.Should().NotBeNull();
-            stat.MovieCount.Title.Should().Be(Constants.MoviesTotalMovies);
+            stat.MovieCount.Title.Should().Be(Constants.Movies.TotalMovies);
             stat.MovieCount.Value.Should().Be("2");
         }
 
@@ -87,7 +87,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.GenreCount.Should().NotBeNull();
-            stat.GenreCount.Title.Should().Be(Constants.MoviesTotalGenres);
+            stat.GenreCount.Title.Should().Be(Constants.Movies.TotalGenres);
             stat.GenreCount.Value.Should().Be("14");
         }
 
@@ -98,7 +98,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.LowestRatedMovie.Should().NotBeNull();
-            stat.LowestRatedMovie.Title.Should().Be(Constants.MoviesLowestRated);
+            stat.LowestRatedMovie.Title.Should().Be(Constants.Movies.LowestRated);
             stat.LowestRatedMovie.Name.Should().Be(_movie.Name);
             stat.LowestRatedMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.LowestRatedMovie.DurationMinutes.Should().Be(1);
@@ -115,7 +115,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.HighestRatedMovie.Should().NotBeNull();
-            stat.HighestRatedMovie.Title.Should().Be(Constants.MoviesHighestRated);
+            stat.HighestRatedMovie.Title.Should().Be(Constants.Movies.HighestRated);
             stat.HighestRatedMovie.Name.Should().Be(_movie.Name);
             stat.HighestRatedMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.HighestRatedMovie.DurationMinutes.Should().Be(1);
@@ -132,7 +132,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.OldestPremieredMovie.Should().NotBeNull();
-            stat.OldestPremieredMovie.Title.Should().Be(Constants.MoviesOldestPremiered);
+            stat.OldestPremieredMovie.Title.Should().Be(Constants.Movies.OldestPremiered);
             stat.OldestPremieredMovie.Name.Should().Be(_movie.Name);
             stat.OldestPremieredMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.OldestPremieredMovie.DurationMinutes.Should().Be(1);
@@ -149,7 +149,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.YoungestPremieredMovie.Should().NotBeNull();
-            stat.YoungestPremieredMovie.Title.Should().Be(Constants.MoviesYoungestPremiered);
+            stat.YoungestPremieredMovie.Title.Should().Be(Constants.Movies.YoungestPremiered);
             stat.YoungestPremieredMovie.Name.Should().Be(_movie.Name);
             stat.YoungestPremieredMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.YoungestPremieredMovie.DurationMinutes.Should().Be(1);
@@ -166,7 +166,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.ShortestMovie.Should().NotBeNull();
-            stat.ShortestMovie.Title.Should().Be(Constants.MoviesShortest);
+            stat.ShortestMovie.Title.Should().Be(Constants.Movies.Shortest);
             stat.ShortestMovie.Name.Should().Be(_movie.Name);
             stat.ShortestMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.ShortestMovie.DurationMinutes.Should().Be(1);
@@ -183,7 +183,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.LongestMovie.Should().NotBeNull();
-            stat.LongestMovie.Title.Should().Be(Constants.MoviesLongest);
+            stat.LongestMovie.Title.Should().Be(Constants.Movies.Longest);
             stat.LongestMovie.Name.Should().Be(_movie.Name);
             stat.LongestMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.LongestMovie.DurationMinutes.Should().Be(1);
@@ -200,7 +200,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.YoungestAddedMovie.Should().NotBeNull();
-            stat.YoungestAddedMovie.Title.Should().Be(Constants.MoviesYoungestAdded);
+            stat.YoungestAddedMovie.Title.Should().Be(Constants.Movies.YoungestAdded);
             stat.YoungestAddedMovie.Name.Should().Be(_movie.Name);
             stat.YoungestAddedMovie.CommunityRating.Should().Be(_movie.CommunityRating.ToString());
             stat.YoungestAddedMovie.DurationMinutes.Should().Be(1);
@@ -217,7 +217,7 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.TotalPlayableTime.Should().NotBeNull();
-            stat.TotalPlayableTime.Title.Should().Be(Constants.MoviesTotalPlayLength);
+            stat.TotalPlayableTime.Title.Should().Be(Constants.Movies.TotalPlayLength);
             stat.TotalPlayableTime.Days.Should().Be(6);
             stat.TotalPlayableTime.Hours.Should().Be(22);
             stat.TotalPlayableTime.Minutes.Should().Be(40);

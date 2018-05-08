@@ -1,7 +1,7 @@
 import { MovieStats } from './movieStats';
 import { MoviePersonStats } from './moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Graph } from '../../shared/models/graph';
+import { MovieGraphs } from '../models/movieGraphs';
 import { Duplicate } from './duplicate';
 
 export class MovieStore {
@@ -9,5 +9,5 @@ export class MovieStore {
   public personStats: MoviePersonStats;
   public collections: Collection[];
   public duplicates: Duplicate[];
-  public graphs: Graph[];
+  public graphs: MovieGraphs;
 }

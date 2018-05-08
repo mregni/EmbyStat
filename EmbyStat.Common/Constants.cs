@@ -31,6 +31,7 @@ namespace EmbyStat.Common
         public const string CountPerGenre = "COMMON.COUNTPERGENRE";
         public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";
         public const string CountPerPremiereYear = "COMMON.COUNTPERPREMIEREDATE";
+        public const string CountPerOfficialRating = "COMMON.COUNTPEROFFICIALRATING";
 
         //COMMON
         public const string Unknown = "UNKNOWN";

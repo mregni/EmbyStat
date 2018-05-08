@@ -6,7 +6,7 @@ import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
 import { Duplicate } from '../models/duplicate';
-import { Graph } from '../../shared/models/graph';
+import { MovieGraphs } from '../models/movieGraphs';
 
 @Injectable()
 export class MovieService {
@@ -36,12 +36,12 @@ export class MovieService {
     return this.http.post<Duplicate[]>('api' + this.getDuplicateUrl, list);
   }
 
-  getGraphs(list: string[]): Observable<Graph[]> {
+  getGraphs(list: string[]): Observable<MovieGraphs> {
     const params = new HttpParams();
     if (list.length > 0) {
       params.set('collectionIds', list.join(','));
     }
     const options = { params: params };
-    return this.http.get<Graph[]>('api' + this.getGraphsUrl, options);
+    return this.http.get<MovieGraphs>('api' + this.getGraphsUrl, options);
   }
 }

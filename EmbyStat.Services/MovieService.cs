@@ -127,9 +127,9 @@ namespace EmbyStat.Services
             graphs.BarGraphs.Add(CalculateGenreGraph(movies));
             graphs.BarGraphs.Add(CalculateRatingGraph(movies));
             graphs.BarGraphs.Add(CalculatePremiereYearGraph(movies));
+            graphs.BarGraphs.Add(CalculateRatingGraph(movies));
 
             return graphs;
-
         }
 
         #region StatCreators
@@ -386,9 +386,23 @@ namespace EmbyStat.Services
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateRatingPieGraph(List<string> collectionIds)
+        private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
         {
+            var ratingData = movies
+                .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
+                .GroupBy(x => x.OfficialRating.ToUpper())
+                .Select(x => new { Name = x.Key, Count = x.Count()})
+                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .OrderBy(x => x.Name)
+                .ToList();
 
+
+
+            return new Graph<SimpleGraphValue>
+            {
+                Title = Constants.CountPerOfficialRating,
+                Data = ratingData
+            };
         }
 
 

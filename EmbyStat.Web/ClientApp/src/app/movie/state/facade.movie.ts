@@ -6,7 +6,7 @@ import 'rxjs/add/observable/throw';
 import { MovieStats } from '../models/movieStats';
 import { MoviePersonStats } from '../models/moviePersonStats';
 import { Collection } from '../../shared/models/collection';
-import { Graph } from '../../shared/models/graph';
+import { MovieGraphs } from '../models/movieGraphs';
 import { Duplicate } from '../models/duplicate';
 
 import { MovieQuery } from './reducer.movie';
@@ -50,7 +50,7 @@ export class MovieFacade {
     return this.duplicates$;
   }
 
-  getGraphs(list: string[]): Observable<Graph[]> {
+  getGraphs(list: string[]): Observable<MovieGraphs> {
     this.store.dispatch(new LoadGraphsAction(list));
     return this.graphs$;
   }
