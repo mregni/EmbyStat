@@ -21,7 +21,7 @@ I will try to support as many platforms as possible. More and more will come in 
 If you have knownlegde about building unix packages please feel free to contact me so I can support as many platforms as possible.
 
 # Installation Guides
-For full installation guides please see the [Wiki](https://github.com/mregni/EmbyStat/wiki/Installation-guides) page
+For full installation guides please see the [Wiki](https://github.com/mregni/EmbyStat/wiki) page
 
 # Technology
 This project is build from scratch with the following technologies:
