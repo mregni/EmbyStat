@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<SonarQubeTestProject>true</SonarQubeTestProject>
+	  <SonarQubeTestProject>true</SonarQubeTestProject>
   </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>false</IsPackable>
