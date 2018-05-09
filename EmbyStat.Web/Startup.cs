@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -58,7 +59,8 @@ namespace EmbyStat.Web
             services.AddMvc(options =>
             {
                 options.Filters.Add(new BusinessExceptionFilterAttribute());
-            });
+            }).AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")));
+
             services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -136,12 +138,7 @@ namespace EmbyStat.Web
 			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
 
-			app.UseMvc(routes =>
-			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller}/{action=Index}/{id?}");
-			});
+			app.UseMvc();
 
 			app.UseExceptionHandler(
 				builder =>

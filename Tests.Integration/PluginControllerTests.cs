@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
+using Tests.Integration.Builders;
 using Xunit;
 
 namespace Tests.Integration
@@ -24,46 +25,87 @@ namespace Tests.Integration
     {
         private readonly TestServer _server;
         private readonly HttpClient _client;
-        private readonly List<PluginInfo> _plugins;
-        private readonly ApplicationDbContext _context;
+        private List<PluginInfo> _plugins;
+        private ApplicationDbContext _context;
         public PluginControllerTests()
         {
             _server = new TestServer(new WebHostBuilder()
-                .UseContentRoot("..\\..\\..\\..\\EmbyStat.Web")
                 .UseStartup<Startup>());
 
             _client = _server.CreateClient();
-            _client.BaseAddress = new Uri("http://localhost:4123");
+            _client.BaseAddress = new Uri("http://localhost:4123/api/plugin");
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            FillDatabase();
+        }
 
+        private void FillDatabase()
+        {
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-
             builder.UseSqlite("Data Source=data.db");
 
             _context = new ApplicationDbContext(builder.Options);
             var initlializer = new DatabaseInitializer(_context);
             Task.WaitAll(initlializer.SeedAsync());
 
-            _plugins = new List<PluginInfo>
-            {
-                new PluginInfo{ Name = "Statistics", Version = "1.0.0.0", Id = "e74908335a5042bf9c9391dbebd548fd"},
-                new PluginInfo{ Name = "Studio Cleaner", Version = "2.0.0.0", Id = "942ea4d13c7041a9bb098d988a267cc6"}
-            };
-            //_context.Plugins.AddRange(_plugins);
+            _context.Plugins.RemoveRange(_context.Plugins.ToList());
+            _context.SaveChanges();
+
+            var pluginOne = new PluginBuilder()
+                .AddAssemblyFileName("statistics.dll")
+                .AddConfigurationDateLastModified(new DateTime(2018, 1, 1))
+                .AddConfigurationFileName("statistics.config.xml")
+                .AddDescription("Plugin for calculating statistics")
+                .AddId("d0755cc879dc4aa586a3eefa97907b95")
+                .AddImageUrl("http://google.com")
+                .AddName("Statistics")
+                .AddVersion("1.0.0.0")
+                .Build();
+
+            var pluginTwo = new PluginBuilder()
+                .AddAssemblyFileName("cleaner.dll")
+                .AddConfigurationDateLastModified(new DateTime(2018, 1, 1))
+                .AddConfigurationFileName("cleaner.config.xml")
+                .AddDescription("Plugin for cleaning up studios")
+                .AddId("942ea4d13c7041a9bb098d988a267cc6")
+                .AddImageUrl("http://google.com")
+                .AddName("Studio Cleaner")
+                .AddVersion("2.0.0.0")
+                .Build();
+
+            _plugins = new List<PluginInfo> { pluginOne, pluginTwo };
+            _context.Plugins.AddRange(_plugins);
             _context.SaveChanges();
         }
 
         [Fact]
         public async Task GetPlugins()
         {
-            var response = await _client.GetAsync("/dummy");
-            var text = await response.Content.ReadAsStringAsync();
+            var response = await _client.GetAsync("");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
-            var responseObj = JsonConvert.DeserializeObject<List<EmbyPluginViewModel>>(responseString);
+            var result = JsonConvert.DeserializeObject<List<EmbyPluginViewModel>>(responseString);
 
-            responseObj.Should().NotBeNull();
+            result.Should().NotBeNull();
+            result.Count.Should().Be(2);
+
+            result.ElementAt(0).AssemblyFileName.Should().Be(_plugins[0].AssemblyFileName);
+            result.ElementAt(0).ConfigurationDateLastModified.Should().Be(_plugins[0].ConfigurationDateLastModified);
+            result.ElementAt(0).ConfigurationFileName.Should().Be(_plugins[0].ConfigurationFileName);
+            result.ElementAt(0).Description.Should().Be(_plugins[0].Description);
+            result.ElementAt(0).Id.Should().Be(_plugins[0].Id);
+            result.ElementAt(0).ImageUrl.Should().Be(_plugins[0].ImageUrl);
+            result.ElementAt(0).Name.Should().Be(_plugins[0].Name);
+            result.ElementAt(0).Version.Should().Be(_plugins[0].Version);
+
+            result.ElementAt(1).AssemblyFileName.Should().Be(_plugins[1].AssemblyFileName);
+            result.ElementAt(1).ConfigurationDateLastModified.Should().Be(_plugins[1].ConfigurationDateLastModified);
+            result.ElementAt(1).ConfigurationFileName.Should().Be(_plugins[1].ConfigurationFileName);
+            result.ElementAt(1).Description.Should().Be(_plugins[1].Description);
+            result.ElementAt(1).Id.Should().Be(_plugins[1].Id);
+            result.ElementAt(1).ImageUrl.Should().Be(_plugins[1].ImageUrl);
+            result.ElementAt(1).Name.Should().Be(_plugins[1].Name);
+            result.ElementAt(1).Version.Should().Be(_plugins[1].Version);
         }
 
         public void Dispose()
