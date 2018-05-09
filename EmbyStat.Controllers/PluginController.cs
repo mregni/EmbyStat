@@ -25,5 +25,5 @@ namespace EmbyStat.Controllers
 			var result = _pluginService.GetInstalledPlugins();
 			return Ok(Mapper.Map<IList<EmbyPluginViewModel>>(result));
 		}
-	}
+    }
 }
