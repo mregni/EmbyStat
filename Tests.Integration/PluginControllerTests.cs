@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Repositories;
 using EmbyStat.Web;
@@ -33,7 +34,7 @@ namespace Tests.Integration
                 .UseStartup<Startup>());
 
             _client = _server.CreateClient();
-            _client.BaseAddress = new Uri("http://localhost:4123/api/plugin");
+            _client.BaseAddress = new Uri("http://localhost:4123/api/plugin/");
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             FillDatabase();
         }
@@ -78,7 +79,7 @@ namespace Tests.Integration
         }
 
         [Fact]
-        public async Task GetPlugins()
+        public async void ShouldReturnAllPlugins()
         {
             var response = await _client.GetAsync("");
             response.EnsureSuccessStatusCode();
@@ -114,6 +115,7 @@ namespace Tests.Integration
             _context.SaveChanges();
             _server?.Dispose();
             _client?.Dispose();
+            Mapper.Reset();
         }
     }
 }

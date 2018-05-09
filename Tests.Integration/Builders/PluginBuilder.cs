@@ -7,63 +7,63 @@ namespace Tests.Integration.Builders
 {
     public class PluginBuilder
     {
-        private PluginInfo model;
+        private readonly PluginInfo _model;
         public PluginBuilder()
         {
-            model = new PluginInfo();
+            _model = new PluginInfo();
         }
 
         public PluginBuilder AddId(string id)
         {
-            model.Id = id;
+            _model.Id = id;
             return this;
         }
 
         public PluginBuilder AddName(string name)
         {
-            model.Name = name;
+            _model.Name = name;
             return this;
         }
 
         public PluginBuilder AddAssemblyFileName(string sssemblyFileName)
         {
-            model.AssemblyFileName = sssemblyFileName;
+            _model.AssemblyFileName = sssemblyFileName;
             return this;
         }
 
         public PluginBuilder AddConfigurationDateLastModified(DateTime date)
         {
-            model.ConfigurationDateLastModified = date;
+            _model.ConfigurationDateLastModified = date;
             return this;
         }
 
         public PluginBuilder AddConfigurationFileName(string configurationFileName)
         {
-            model.ConfigurationFileName = configurationFileName;
+            _model.ConfigurationFileName = configurationFileName;
             return this;
         }
 
         public PluginBuilder AddDescription(string description)
         {
-            model.Description = description;
+            _model.Description = description;
             return this;
         }
 
         public PluginBuilder AddImageUrl(string imageUrl)
         {
-            model.ImageUrl = imageUrl;
+            _model.ImageUrl = imageUrl;
             return this;
         }
 
         public PluginBuilder AddVersion(string version)
         {
-            model.Version = version;
+            _model.Version = version;
             return this;
         }
 
         public PluginInfo Build()
         {
-            return model;
+            return _model;
         }
 
     }
