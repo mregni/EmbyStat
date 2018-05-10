@@ -24,7 +24,10 @@
     "COUNTPEROFFICIALRATING": "count / official rating",
     "EMBY": "Emby",
     "GENERAL": "general",
-    "DURATION": "duration"
+    "DURATION": "duration",
+    "GRAPHS": "graphs",
+    "PEOPLE": "people",
+    "SUSPICIOUS": "suspicious" 
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
@@ -49,7 +52,8 @@
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
-    "MOVIES": "Movies", 
+    "MOVIES": "Movies",
+    "SHOWS": "Shows", 
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
     "TASKS": "Tasks", 

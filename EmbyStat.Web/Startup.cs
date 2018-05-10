@@ -173,7 +173,7 @@ namespace EmbyStat.Web
 	        {
 	            new PingEmbyTask(ApplicationBuilder),
 	            new SmallSyncTask(ApplicationBuilder),
-                new MovieSyncTask(ApplicationBuilder)
+                new MediaSyncTask(ApplicationBuilder)
 	        };
 
 	        taskManager.AddTasks(tasks);

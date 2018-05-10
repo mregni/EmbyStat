@@ -26,7 +26,7 @@ export class MovieFacade {
 
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
   personStats$ = this.store.select(MovieQuery.getPersonStats);
-  collections$ = this.store.select(MovieQuery.getMovieCollections);
+  collections$ = this.store.select(MovieQuery.getCollections);
   suspicious$ = this.store.select(MovieQuery.getSuspicious);
   graphs$ = this.store.select(MovieQuery.getGraphs);
 

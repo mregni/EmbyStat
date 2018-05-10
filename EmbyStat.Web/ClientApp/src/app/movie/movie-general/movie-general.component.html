@@ -1,10 +1,10 @@
-<div class="movie__flexcontainer" *ngIf="stats$ | async as stats">
-  <div class="movie__flex-row movie__align-start">
+<div class="media__flexcontainer" *ngIf="stats$ | async as stats">
+  <div class="media__flex-row media__align-start">
     <app-card-number [card]="stats.movieCount"></app-card-number>
     <app-card-number [card]="stats.genreCount"></app-card-number>
     <app-card-timespan [card]="stats.totalPlayableTime"></app-card-timespan>
   </div>
-  <div class="movie__flex-row movie__align-start">
+  <div class="media__flex-row media__align-start">
     <app-poster [poster]="stats.highestRatedMovie"></app-poster>
     <app-poster [poster]="stats.lowestRatedMovie"></app-poster>
     <app-poster [poster]="stats.oldestPremieredMovie"></app-poster>

@@ -1,7 +1,7 @@
 <div class="title_bar media__flexcontainer">
   <div class="media__flex-row media__align-start">
     <div class="media__left-content">
-      <h2>{{ 'MENU.MOVIES' | translate }}</h2>
+      <h2>{{ 'MENU.SHOWS' | translate | capitalizeFirst}}</h2>
     </div>
     <div class="media__right-content">
       <mat-form-field class="full-width">
@@ -16,22 +16,17 @@
   <mat-tab-group (selectedTabChange)="onTabChanged($event)">
     <mat-tab label="{{ 'COMMON.GENERAL' | translate | capitalizeFirst}}">
       <div class="media__tab-content">
-        <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>
+        <app-show-general></app-show-general>
       </div>
     </mat-tab>
     <mat-tab label="{{ 'COMMON.GRAPHS' | translate | capitalizeFirst}}">
       <div class="media__tab-content">
-        <app-movie-charts [selectedCollections]="selectedCollections"></app-movie-charts>
+        <app-show-charts></app-show-charts>
       </div>
     </mat-tab>
     <mat-tab label="{{ 'COMMON.PEOPLE' | translate | capitalizeFirst}}">
-      <div class="momedia__tabvie__tab-content">
-        <app-movie-people [selectedCollections]="selectedCollections"></app-movie-people>
-      </div>
-    </mat-tab>
-    <mat-tab label="{{ 'COMMON.SUSPICIOUS' | translate | capitalizeFirst}}">
       <div class="media__tab-content">
-        <app-movie-suspicious [selectedCollections]="selectedCollections"></app-movie-suspicious>
+        <app-show-people></app-show-people>
       </div>
     </mat-tab>
   </mat-tab-group>

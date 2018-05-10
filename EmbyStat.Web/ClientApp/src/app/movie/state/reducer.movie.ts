@@ -49,7 +49,7 @@ export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieAct
 
 export namespace MovieQuery {
   export const getGeneralStats = (state: ApplicationState) => state.movies.stats;
-  export const getMovieCollections = (state: ApplicationState) => state.movies.collections;
+  export const getCollections = (state: ApplicationState) => state.movies.collections;
   export const getPersonStats = (state: ApplicationState) => state.movies.personStats;
   export const getSuspicious = (state: ApplicationState) => state.movies.suspicious;
   export const getGraphs = (state: ApplicationState) => state.movies.graphs;

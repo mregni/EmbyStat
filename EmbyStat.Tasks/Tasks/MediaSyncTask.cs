@@ -21,7 +21,7 @@ using CollectionType = EmbyStat.Common.Models.CollectionType;
 
 namespace EmbyStat.Tasks.Tasks
 {
-    public class MovieSyncTask : IScheduledTask
+    public class MediaSyncTask : IScheduledTask
     {
         private readonly IEmbyClient _embyClient;
         private readonly IConfigurationRepository _configurationRepository;
@@ -31,7 +31,7 @@ namespace EmbyStat.Tasks.Tasks
         private readonly ICollectionRepository _collectionRepository;
         private Configuration _settings;
 
-        public MovieSyncTask(IApplicationBuilder app)
+        public MediaSyncTask(IApplicationBuilder app)
         {
             _embyClient = app.ApplicationServices.GetService<IEmbyClient>();
             _configurationRepository = app.ApplicationServices.GetService<IConfigurationRepository>();
