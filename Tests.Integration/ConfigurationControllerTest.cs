@@ -26,8 +26,8 @@ namespace Tests.Integration
     {
         private readonly TestServer _server;
         private readonly HttpClient _client;
-        private Configuration _configuration;
         private ApplicationDbContext _context;
+        private string _configurationId;
 
         public ConfigurationControllerTest()
         {
@@ -50,6 +50,8 @@ namespace Tests.Integration
 
             var initlializer = new DatabaseInitializer(_context);
             Task.WaitAll(initlializer.SeedAsync());
+
+            _configurationId = _context.Configuration.Single().Id;
 
             if (withData)
             {
@@ -75,6 +77,7 @@ namespace Tests.Integration
             var result = JsonConvert.DeserializeObject<ConfigurationViewModel>(responseString);
 
             result.Should().NotBeNull();
+            result.Id.Should().Be(_configurationId);
             result.WizardFinished.Should().BeFalse();
             result.Language.Should().Be("en");
             result.ToShortMovie.Should().Be(10);
@@ -97,6 +100,7 @@ namespace Tests.Integration
             var result = JsonConvert.DeserializeObject<ConfigurationViewModel>(responseString);
 
             result.Should().NotBeNull();
+            result.Id.Should().Be(_configurationId);
             result.WizardFinished.Should().BeFalse();
             result.Language.Should().Be("en");
             result.ToShortMovie.Should().Be(10);
@@ -134,6 +138,7 @@ namespace Tests.Integration
             var result = JsonConvert.DeserializeObject<ConfigurationViewModel>(responseString);
 
             result.Should().NotBeNull();
+            result.Id.Should().Be(_configurationId);
             result.WizardFinished.Should().BeTrue();
             result.Language.Should().Be("en");
             result.ToShortMovie.Should().Be(15);

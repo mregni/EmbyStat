@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
@@ -31,12 +32,21 @@ namespace EmbyStat.Controllers
         [Route("update")]
 		public IActionResult Update([FromBody] ConfigurationViewModel configuration)
 		{
-			_logger.LogInformation("Updating the new server configuration.");
-			var config = Mapper.Map<Common.Models.Configuration>(configuration);
-			_configurationService.SaveServerSettings(config);
+		    try
+		    {
+		        _logger.LogInformation("Updating the new server configuration.");
+		        var config = Mapper.Map<Common.Models.Configuration>(configuration);
+		        _configurationService.SaveServerSettings(config);
 
-			config = _configurationService.GetServerSettings();
-			return Ok(Mapper.Map<ConfigurationViewModel>(config));
+		        config = _configurationService.GetServerSettings();
+		        return Ok(Mapper.Map<ConfigurationViewModel>(config));
+            }
+		    catch (Exception e)
+		    {
+		        Console.WriteLine(e);
+		        throw;
+		    }
+			
 		}
 	}
 }

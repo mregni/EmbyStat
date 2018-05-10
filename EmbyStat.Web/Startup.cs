@@ -55,6 +55,7 @@ namespace EmbyStat.Web
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
+		    services.AddAutoMapper(typeof(Startup));
 
             services.AddMvc(options =>
             {
@@ -116,11 +117,6 @@ namespace EmbyStat.Web
 			{
 			    app.UseDeveloperExceptionPage();
             }
-
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<MapProfiles>();
-            });
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 

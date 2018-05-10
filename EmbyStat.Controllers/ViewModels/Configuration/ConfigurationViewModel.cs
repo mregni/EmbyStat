@@ -2,6 +2,7 @@
 {
     public class ConfigurationViewModel
     {
+        public string Id { get; set; }
 	    public bool WizardFinished { get; set; }
 	    public string AccessToken { get; set; }
 	    public string EmbyUserName { get; set; }

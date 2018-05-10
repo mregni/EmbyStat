@@ -1,4 +1,5 @@
 export class Configuration {
+  public id: string;
   public wizardFinished: boolean;
   public accessToken: string;
   public embyUserName: string;

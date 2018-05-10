@@ -16,7 +16,8 @@ const INITIAL_STATE: Configuration = {
   serverName: '',
   isLoaded: false,
   toShortMovie: 10,
-  embyUserId: ''
+  embyUserId: '',
+  id: ''
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -33,6 +34,7 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         serverName: action.payload.serverName,
         embyUserId: action.payload.embyUserId,
         toShortMovie: action.payload.toShortMovie,
+        id: action.payload.id,
         isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
@@ -47,6 +49,7 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         serverName: action.payload.serverName,
         embyUserId: action.payload.embyUserId,
         toShortMovie: action.payload.toShortMovie,
+        id: action.payload.id,
         isLoaded: true
       };
     default:

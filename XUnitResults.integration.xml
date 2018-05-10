@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies timestamp="05/10/2018 09:59:42">
+  <assembly name="Tests.Integration.dll" environment="64-bit .NET Standard [collection-per-class, non-parallel]" test-framework="xUnit.net 2.3.1.3858" run-date="2018-05-10" run-time="09:59:38" total="7" passed="7" failed="0" skipped="0" time="4.102" errors="0">
+    <errors />
+    <collection total="3" passed="3" failed="0" skipped="0" name="Test collection for Tests.Integration.TaskControllerTests" time="3.384">
+      <test name="Tests.Integration.TaskControllerTests.ShouldCrashBecauseWrongTaskId" type="Tests.Integration.TaskControllerTests" method="ShouldCrashBecauseWrongTaskId" time="3.0984403" result="Pass" />
+      <test name="Tests.Integration.TaskControllerTests.ShouldReturnAllTasks" type="Tests.Integration.TaskControllerTests" method="ShouldReturnAllTasks" time="0.0839249" result="Pass" />
+      <test name="Tests.Integration.TaskControllerTests.ShouldAddNewTriggersToTask" type="Tests.Integration.TaskControllerTests" method="ShouldAddNewTriggersToTask" time="0.201356" result="Pass" />
+    </collection>
+    <collection total="3" passed="3" failed="0" skipped="0" name="Test collection for Tests.Integration.ConfigurationControllerTest" time="0.415">
+      <test name="Tests.Integration.ConfigurationControllerTest.ShouldReturnFullConfiguration" type="Tests.Integration.ConfigurationControllerTest" method="ShouldReturnFullConfiguration" time="0.1701269" result="Pass" />
+      <test name="Tests.Integration.ConfigurationControllerTest.ShouldUpdateFullConfiguration" type="Tests.Integration.ConfigurationControllerTest" method="ShouldUpdateFullConfiguration" time="0.142314" result="Pass" />
+      <test name="Tests.Integration.ConfigurationControllerTest.ShouldReturnFirstSeedConfiguration" type="Tests.Integration.ConfigurationControllerTest" method="ShouldReturnFirstSeedConfiguration" time="0.1025319" result="Pass" />
+    </collection>
+    <collection total="1" passed="1" failed="0" skipped="0" name="Test collection for Tests.Integration.PluginControllerTests" time="0.160">
+      <test name="Tests.Integration.PluginControllerTests.ShouldReturnAllPlugins" type="Tests.Integration.PluginControllerTests" method="ShouldReturnAllPlugins" time="0.1601713" result="Pass" />
+    </collection>
+  </assembly>
+</assemblies>
