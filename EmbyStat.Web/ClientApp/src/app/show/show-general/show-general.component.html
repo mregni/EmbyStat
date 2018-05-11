@@ -1,3 +1,7 @@
-<p>
-  show-general works!
-</p>
+<div class="media__flexcontainer" *ngIf="stats$ | async as stats">
+  <div class="media__flex-row media__align-start">
+    <app-card-number [card]="stats.showCount"></app-card-number>
+    <app-card-number [card]="stats.episodeCount"></app-card-number>
+    <app-card-timespan [card]="stats.totalPlayableTime"></app-card-timespan>
+  </div>
+</div>

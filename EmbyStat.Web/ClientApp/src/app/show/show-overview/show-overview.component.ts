@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
 
+import { ShowFacade } from '../state/facade.show';
 import { Collection } from '../../shared/models/collection';
 
 @Component({
@@ -15,7 +16,9 @@ export class ShowOverviewComponent implements OnInit {
 
   public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
 
-  constructor() { }
+  constructor(private showFacade: ShowFacade) {
+    this.collections$ = this.showFacade.getCollections();
+  }
 
   ngOnInit() {
     this.collectionsFormControl.valueChanges.subscribe(data => {

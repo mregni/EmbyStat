@@ -22,7 +22,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void AddRange(List<Show> list)
+        public void AddRange(IEnumerable<Show> list)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -58,7 +58,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void AddRange(List<Season> list)
+        public void AddRange(IEnumerable<Season> list)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -67,23 +67,57 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void AddRange(List<Episode> list)
+        public void AddRange(IEnumerable<Episode> list)
         {
             using (var context = new ApplicationDbContext())
             {
-                foreach (var episode in list)
+                context.Episodes.AddRange(list);
+                context.SaveChanges();
+            }
+        }
+
+        public int CountShows(IEnumerable<string> collectionIds)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Shows.AsQueryable();
+
+                if (collectionIds.Any())
                 {
-                    try
-                    {
-                        context.Episodes.Add(episode);
-                        context.SaveChanges();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                        throw;
-                    }
+                    query = query.Where(x => collectionIds.Any(y => x.CollectionId == y));
                 }
+
+                return query.Count();
+            }
+        }
+
+        public int CountEpisodes(IEnumerable<string> collectionIds)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Episodes.AsQueryable();
+
+                if (collectionIds.Any())
+                {
+                    query = query.Where(x => collectionIds.Any(y => x.CollectionId == y));
+                }
+
+                return query.Count();
+            }
+        }
+
+        public long GetPlayLength(IEnumerable<string> collectionIds)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Episodes.AsQueryable();
+
+                if (collectionIds.Any())
+                {
+                    query = query.Where(x => collectionIds.Any(y => x.CollectionId == y));
+                }
+
+                return query.Sum(x => x.RunTimeTicks ?? 0);
             }
         }
     }

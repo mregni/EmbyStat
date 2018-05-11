@@ -8,9 +8,12 @@ import { ShowService } from '../service/show.service';
 import {
   ShowActionTypes,
   LoadShowCollectionsAction,
-  LoadShowCollectionsSuccessAction
+  LoadShowCollectionsSuccessAction,
+  LoadGeneralStatsAction,
+  LoadGeneralStatsSuccessAction
 } from './actions.show';
 import { Collection } from '../../shared/models/collection';
+import { ShowStats } from '../models/showStats';
 
 import { EffectError } from '../../states/app.actions';
 
@@ -31,6 +34,20 @@ export class ShowEffects {
     }),
     map((collections: Collection[]) => {
       return new LoadShowCollectionsSuccessAction(collections);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    );
+
+  @Effect()
+  getGeneralStats$ = this.actions$
+    .ofType(ShowActionTypes.LOAD_STATS_GENERAL)
+    .pipe(
+    map((data: LoadGeneralStatsAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.showService.getGeneralStats(list);
+    }),
+    map((stats: ShowStats) => {
+      return new LoadGeneralStatsSuccessAction(stats);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );

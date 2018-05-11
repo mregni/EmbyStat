@@ -16,7 +16,7 @@
   <mat-tab-group (selectedTabChange)="onTabChanged($event)">
     <mat-tab label="{{ 'COMMON.GENERAL' | translate | capitalizeFirst}}">
       <div class="media__tab-content">
-        <app-show-general></app-show-general>
+        <app-show-general [selectedCollections]="selectedCollections"></app-show-general>
       </div>
     </mat-tab>
     <mat-tab label="{{ 'COMMON.GRAPHS' | translate | capitalizeFirst}}">

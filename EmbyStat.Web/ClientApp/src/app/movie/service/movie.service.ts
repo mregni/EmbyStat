@@ -23,7 +23,6 @@ export class MovieService {
 
   getGeneral(list: string[]): Observable<MovieStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    console.log(params);
     return this.http.get<MovieStats>('/api' + this.getGeneralUrl + params);
   }
 

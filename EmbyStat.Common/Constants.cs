@@ -27,6 +27,14 @@ namespace EmbyStat.Common
             public const string TotalWriters = "MOVIES.TOTALWRITERS";
         }
 
+        public static class Shows
+        {
+            //STATISTICS
+            public const string TotalShows = "SHOWS.TOTALSHOWS";
+            public const string TotalEpisodes = "SHOWS.TOTALEPISODES";
+            public const string TotalPlayLength = "SHOWS.TOTALPLAYLENGTH";
+        }
+
         //CHARTS
         public const string CountPerGenre = "COMMON.COUNTPERGENRE";
         public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";

@@ -8,8 +8,11 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IShowRepository
     {
         void RemoveShows();
-        void AddRange(List<Show> list);
-        void AddRange(List<Season> list);
-        void AddRange(List<Episode> list);
+        void AddRange(IEnumerable<Show> list);
+        void AddRange(IEnumerable<Season> list);
+        void AddRange(IEnumerable<Episode> list);
+        int CountShows(IEnumerable<string> collectionIds);
+        int CountEpisodes(IEnumerable<string> collectionIds);
+        long GetPlayLength(IEnumerable<string> collectionIds);
     }
 }

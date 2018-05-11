@@ -177,11 +177,12 @@ namespace EmbyStat.Tasks.Tasks
                     }
 
                     Log.Information($"Processing show ({show.Id}) {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
-
+                    episodes.ForEach(x => x.CollectionId = rootItems[i].Id);
                     var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
                     _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
 
                     var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, episodes.Where(y => y.ParentId == x.Id))).ToList();
+                    seasons.ForEach(x => x.CollectionId = rootItems[i].Id);
                     _showRepository.AddRange(seasons);
 
                     cancellationToken.ThrowIfCancellationRequested();

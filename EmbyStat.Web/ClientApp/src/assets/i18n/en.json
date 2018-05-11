@@ -98,7 +98,12 @@
     "MOSTFEATUREDWRITER": "Most featured writer",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
     "DUPLICATEMOVIES": "duplicate movies",
-    "TOSHORTMOVIES": "movies that are very short" 
+    "TOSHORTMOVIES": "movies that are very short"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Total shows",
+    "TOTALEPISODES": "Total Episodes",
+    "TOTALPLAYLENGTH": "Total watchable time" 
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
