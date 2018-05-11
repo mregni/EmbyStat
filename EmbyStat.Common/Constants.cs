@@ -8,7 +8,6 @@ namespace EmbyStat.Common
     {
         public static class Movies
         {
-            //STATISTICS
             public const string TotalMovies = "MOVIES.TOTALMOVIES";
             public const string TotalGenres = "MOVIES.TOTALGENRES";
             public const string LowestRated = "MOVIES.LOWESTRATED";
@@ -29,10 +28,27 @@ namespace EmbyStat.Common
 
         public static class Shows
         {
-            //STATISTICS
             public const string TotalShows = "SHOWS.TOTALSHOWS";
             public const string TotalEpisodes = "SHOWS.TOTALEPISODES";
             public const string TotalPlayLength = "SHOWS.TOTALPLAYLENGTH";
+        }
+
+        public static class Emby
+        {
+            public const string DeviceName = "EmbyStats server";
+            public const string DeviceId = "6d5082f6-dffd-4ce9-8301-03eb339e05d4";
+            public const string AppName = "EmbyStats";
+            public const string AppVersion = "1.0.0";
+            public const string AuthorizationScheme = "MediaBrowser";
+        }
+
+        public static class Tvdb
+        {
+            public const string BaseUrl = "https://www.thetvdb.com/api";
+            public const string SeriesGetZip = "/{0}/series/{1}/all/{2}.zip";
+            public const string ServerTimeUrl = "/Updates.php?type=none";
+            public const string UpdatesUrl = "/Updates.php?type=all&time={0}";
+            public const string ApiKey = "3B9470F2306003B8";
         }
 
         //CHARTS
@@ -43,6 +59,9 @@ namespace EmbyStat.Common
 
         //COMMON
         public const string Unknown = "UNKNOWN";
+
+        //SERVER
+        public const string TempFolder = "temp";
 
         //QUALITIES
         public const string FOURK = "4K";

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Api.Tvdb;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
@@ -31,6 +32,7 @@ namespace EmbyStat.Tasks.Tasks
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
         private readonly ICollectionRepository _collectionRepository;
+        private readonly ITvdbClient _tvdbClient;
         private Configuration _settings;
 
         public MediaSyncTask(IApplicationBuilder app)
@@ -42,6 +44,7 @@ namespace EmbyStat.Tasks.Tasks
             _personRepository = app.ApplicationServices.GetService<IPersonRepository>();
             _collectionRepository = app.ApplicationServices.GetService<ICollectionRepository>();
             _showRepository = app.ApplicationServices.GetService<IShowRepository>();
+            _tvdbClient = app.ApplicationServices.GetService<ITvdbClient>();
         }
 
         public string Name => "Media sync";
@@ -66,6 +69,7 @@ namespace EmbyStat.Tasks.Tasks
 
             await ProcessMovies(cancellationToken, progress);
             await ProcessShows(cancellationToken, progress);
+            await SyncMissingEpisodes(cancellationToken, progress, _settings.LastTvdbUpdate);
 
             progress.Report(100);
         }
@@ -189,6 +193,15 @@ namespace EmbyStat.Tasks.Tasks
                 }
                 cancellationToken.ThrowIfCancellationRequested();
             }
+        }
+
+        private async Task SyncMissingEpisodes(CancellationToken cancellationToken, IProgress<double> progress, DateTime? lastUpdateFromTvdb)
+        {
+            var shows = _showRepository.GetAllShows();
+
+            var tvdbIds = shows.Where(x => !string.IsNullOrWhiteSpace(x.TVDB)).Select(x => x.TVDB);
+
+
         }
 
         private async Task<List<Show>> GetShowsFromEmby(string parentId, CancellationToken cancellationToken)
@@ -344,7 +357,6 @@ namespace EmbyStat.Tasks.Tasks
         }
 
         #endregion
-
 
         public IEnumerable<TaskTriggerInfo> GetDefaultTriggers()
         {

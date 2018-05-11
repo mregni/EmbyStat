@@ -10,6 +10,7 @@ using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
+using EmbyStat.Api.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks.Interface;
@@ -98,8 +99,9 @@ namespace EmbyStat.Web
             containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
+		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
 
-		    containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
+            containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
 		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
 		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
 		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();

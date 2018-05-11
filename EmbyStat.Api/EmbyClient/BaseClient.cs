@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
+using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using MediaBrowser.Model.Serialization;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,7 @@ namespace EmbyStat.Api.EmbyClient
 		protected string AccessToken { get; private set; }
 		protected string CurrentUserId { get; private set; }
 		protected string ApiUrl => ServerAddress + "/emby";
-		protected string AuthorizationScheme => "MediaBrowser";
+		protected string AuthorizationScheme => Constants.Emby.AuthorizationScheme;
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
 		protected readonly ICryptographyProvider CryptographyProvider;
 		protected readonly IJsonSerializer JsonSerializer;
@@ -39,12 +40,12 @@ namespace EmbyStat.Api.EmbyClient
 			HttpClient = httpClient;
 			Logger = logger;
 
-			ClientName = Constants.AppName;
+			ClientName = Constants.Emby.AppName;
 			ApplicationVersion = "1.0.0";
 			Device = new Device
 			{
-				DeviceId = Constants.DeviceId,
-				DeviceName = Constants.DeviceName
+				DeviceId = Constants.Emby.DeviceId,
+				DeviceName = Constants.Emby.DeviceName
 			};
 
 			ResetHttpHeaders();

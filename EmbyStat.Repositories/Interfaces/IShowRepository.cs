@@ -11,6 +11,7 @@ namespace EmbyStat.Repositories.Interfaces
         void AddRange(IEnumerable<Show> list);
         void AddRange(IEnumerable<Season> list);
         void AddRange(IEnumerable<Episode> list);
+        IEnumerable<Show> GetAllShows(bool inludeSubs = false);
         int CountShows(IEnumerable<string> collectionIds);
         int CountEpisodes(IEnumerable<string> collectionIds);
         long GetPlayLength(IEnumerable<string> collectionIds);

@@ -76,6 +76,23 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public IEnumerable<Show> GetAllShows(bool inludeSubs = false)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Shows.AsQueryable();
+
+                if (inludeSubs)
+                {
+                    query = query
+                        .Include(x => x.ExtraPersons)
+                        .Include(x => x.MediaGenres);
+                }
+
+                return query.ToList();
+            }
+        }
+
         public int CountShows(IEnumerable<string> collectionIds)
         {
             using (var context = new ApplicationDbContext())
