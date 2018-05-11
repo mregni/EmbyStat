@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
@@ -331,15 +332,13 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var movieIds = context.Movies.Select(x => x.Id).ToList();
-
-                var personsToRemove = context.ExtraPersons.Where(x => movieIds.Any(y => y == x.ExtraId)).ToList();
-                context.ExtraPersons.RemoveRange(personsToRemove);
-
-                var genresToRemove = context.MediaGenres.Where(x => movieIds.Any(y => y == x.MediaId)).ToList();
-                context.MediaGenres.RemoveRange(genresToRemove);
-
-                context.Movies.RemoveRange(context.Movies);
+                context.Movies.RemoveRange(context.Movies.
+                    Include(x => x.ExtraPersons)
+                    .Include(x => x.AudioStreams)
+                    .Include(x => x.MediaGenres)
+                    .Include(x => x.MediaSources)
+                    .Include(x => x.SubtitleStreams)
+                    .Include(x => x.VideoStreams));
                 context.SaveChanges();
             }
         }

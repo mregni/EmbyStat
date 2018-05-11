@@ -48,6 +48,7 @@ namespace EmbyStat.Repositories.Migrations
                     EmbyUserName = table.Column<string>(nullable: true),
                     Language = table.Column<string>(nullable: false),
                     ServerName = table.Column<string>(nullable: true),
+                    ToShortMovie = table.Column<int>(nullable: false),
                     Username = table.Column<string>(nullable: true),
                     WizardFinished = table.Column<bool>(nullable: false)
                 },
@@ -162,6 +163,7 @@ namespace EmbyStat.Repositories.Migrations
                     Primary = table.Column<string>(nullable: true),
                     SeriesCount = table.Column<int>(nullable: false),
                     SortName = table.Column<string>(nullable: true),
+                    Synced = table.Column<bool>(nullable: false),
                     TMDB = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -356,6 +358,30 @@ namespace EmbyStat.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SeasonEpisodes",
+                columns: table => new
+                {
+                    EpisodeId = table.Column<string>(nullable: false),
+                    SeasonId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SeasonEpisodes", x => new { x.EpisodeId, x.SeasonId });
+                    table.ForeignKey(
+                        name: "FK_SeasonEpisodes_Media_EpisodeId",
+                        column: x => x.EpisodeId,
+                        principalTable: "Media",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SeasonEpisodes_Media_SeasonId",
+                        column: x => x.SeasonId,
+                        principalTable: "Media",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubtitleStreams",
                 columns: table => new
                 {
@@ -472,6 +498,11 @@ namespace EmbyStat.Repositories.Migrations
                 column: "VideoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SeasonEpisodes_SeasonId",
+                table: "SeasonEpisodes",
+                column: "SeasonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubtitleStreams_VideoId",
                 table: "SubtitleStreams",
                 column: "VideoId");
@@ -518,6 +549,9 @@ namespace EmbyStat.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "Plugins");
+
+            migrationBuilder.DropTable(
+                name: "SeasonEpisodes");
 
             migrationBuilder.DropTable(
                 name: "ServerInfo");

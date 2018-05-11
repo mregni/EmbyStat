@@ -16,7 +16,7 @@ using System;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180428201530_Init")]
+    [Migration("20180511092842_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,8 @@ namespace EmbyStat.Repositories.Migrations
                         .IsRequired();
 
                     b.Property<string>("ServerName");
+
+                    b.Property<int>("ToShortMovie");
 
                     b.Property<string>("Username");
 
@@ -303,6 +305,19 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("MediaGenres");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.SeasonEpisode", b =>
+                {
+                    b.Property<string>("EpisodeId");
+
+                    b.Property<string>("SeasonId");
+
+                    b.HasKey("EpisodeId", "SeasonId");
+
+                    b.HasIndex("SeasonId");
+
+                    b.ToTable("SeasonEpisodes");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Person", b =>
                 {
                     b.Property<string>("Id")
@@ -331,6 +346,8 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<int>("SeriesCount");
 
                     b.Property<string>("SortName");
+
+                    b.Property<bool>("Synced");
 
                     b.Property<string>("TMDB");
 
@@ -696,6 +713,19 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.Models.Helpers.Media", "Media")
                         .WithMany("MediaGenres")
                         .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.SeasonEpisode", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Episode", "Episode")
+                        .WithMany("SeasonEpisodes")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EmbyStat.Common.Models.Season", "Season")
+                        .WithMany("SeasonEpisodes")
+                        .HasForeignKey("SeasonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

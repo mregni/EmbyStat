@@ -304,6 +304,19 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("MediaGenres");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.SeasonEpisode", b =>
+                {
+                    b.Property<string>("EpisodeId");
+
+                    b.Property<string>("SeasonId");
+
+                    b.HasKey("EpisodeId", "SeasonId");
+
+                    b.HasIndex("SeasonId");
+
+                    b.ToTable("SeasonEpisodes");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Person", b =>
                 {
                     b.Property<string>("Id")
@@ -699,6 +712,19 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.Models.Helpers.Media", "Media")
                         .WithMany("MediaGenres")
                         .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.SeasonEpisode", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Episode", "Episode")
+                        .WithMany("SeasonEpisodes")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EmbyStat.Common.Models.Season", "Season")
+                        .WithMany("SeasonEpisodes")
+                        .HasForeignKey("SeasonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

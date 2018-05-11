@@ -55,7 +55,7 @@ namespace EmbyStat.Web
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
-		    services.AddAutoMapper(typeof(Startup));
+		    services.AddAutoMapper(typeof(MapProfiles));
 
             services.AddMvc(options =>
             {
@@ -84,7 +84,6 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<MovieService>().As<IMovieService>();
 		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
 
-
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
 		    containerBuilder.RegisterType<PluginRepository>().As<IPluginRepository>();
@@ -92,6 +91,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<DriveRepository>().As<IDriveRepository>();
 		    containerBuilder.RegisterType<GenreRepository>().As<IGenreRepository>();
 		    containerBuilder.RegisterType<PersonRepository>().As<IPersonRepository>();
+		    containerBuilder.RegisterType<ShowRepository>().As<IShowRepository>();
 		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
 
             containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
