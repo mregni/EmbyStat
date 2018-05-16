@@ -69,8 +69,13 @@
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
     <None Remove="ClientApp\src\app\shared\models\collection.ts" />
+    <None Remove="ClientApp\src\app\shared\models\moviePoster.ts" />
     <None Remove="ClientApp\src\app\shared\models\personPoster.ts" />
-    <None Remove="ClientApp\src\app\shared\models\poster.ts" />
+    <None Remove="ClientApp\src\app\shared\models\poster.js" />
+    <None Remove="ClientApp\src\app\shared\models\poster.js" />
+    <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
+    <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
+    <None Remove="ClientApp\src\app\shared\models\showPoster.ts" />
     <None Remove="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\show\models\showStats.ts" />
@@ -120,7 +125,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\graph\simpleGraphValue.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personPoster.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\poster.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\moviePoster.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\showPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showStats.ts" />

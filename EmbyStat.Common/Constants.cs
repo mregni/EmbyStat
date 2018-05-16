@@ -30,7 +30,14 @@ namespace EmbyStat.Common
         {
             public const string TotalShows = "SHOWS.TOTALSHOWS";
             public const string TotalEpisodes = "SHOWS.TOTALEPISODES";
+            public const string TotalMissingEpisodes = "SHOWS.TOTALMISSINGEPISODES";
             public const string TotalPlayLength = "SHOWS.TOTALPLAYLENGTH";
+            public const string HighestRatedShow = "SHOWS.HIGHESTRATEDSHOW";
+            public const string LowestRatedShow = "SHOWS.LOWESTRATEDSHOW";
+            public const string OldestPremiered = "SHOWS.OLDESTPREMIERED";
+            public const string YoungestPremiered = "SHOWS.YOUNGESTPREMIERED";
+            public const string YoungestAdded = "SHOWS.YOUNGESTADDED";
+            public const string MostEpisodes = "SHOWS.WITHMOESTEPISODES";
         }
 
         public static class Emby

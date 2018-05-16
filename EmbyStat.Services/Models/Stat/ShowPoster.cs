@@ -1,6 +1,10 @@
-﻿namespace EmbyStat.Services.Models.Stat
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace EmbyStat.Services.Models.Stat
 {
-    public class Poster
+    public class ShowPoster
     {
         public string MediaId { get; set; }
         public string Name { get; set; }
@@ -8,7 +12,7 @@
         public string OfficialRating { get; set; }
         public string Title { get; set; }
         public string Tag { get; set; }
-        public double DurationMinutes { get; set; }
         public int Year { get; set; }
+        public string Value { get; set; }
     }
 }

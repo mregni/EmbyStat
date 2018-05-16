@@ -23,6 +23,7 @@ export class ShowGeneralComponent implements OnInit {
 
     this._selectedCollections = collection;
     this.stats$ = this.showFacade.getGeneralStats(collection);
+    this.stats$.subscribe(x => console.log(x));
   }
 
   public stats$: Observable<ShowStats>;

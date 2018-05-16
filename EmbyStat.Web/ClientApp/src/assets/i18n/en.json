@@ -103,7 +103,14 @@
   "SHOWS": {
     "TOTALSHOWS": "Total shows",
     "TOTALEPISODES": "Total Episodes",
-    "TOTALPLAYLENGTH": "Total watchable time" 
+    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATEDSHOW": "Highest rated show",
+    "LOWESTRATEDSHOW": "Lowest rated show",
+    "OLDESTPREMIERED": "Oldest premiered show",
+    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTADDED": "Youngest added",
+    "WITHMOESTEPISODES": "With most episodes" 
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",

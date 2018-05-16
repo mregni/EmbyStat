@@ -184,81 +184,81 @@ namespace EmbyStat.Services
             };
         }
 
-        private Poster HighestRatedMovie(List<string> collectionIds)
+        private MoviePoster HighestRatedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetHighestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.HighestRated);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.HighestRated);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster LowestRatedMovie(List<string> collectionIds)
+        private MoviePoster LowestRatedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetLowestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.LowestRated);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.LowestRated);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster OldestPremieredMovie(List<string> collectionIds)
+        private MoviePoster OldestPremieredMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetOlderPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.OldestPremiered);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.OldestPremiered);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster YoungestPremieredMovie(List<string> collectionIds)
+        private MoviePoster YoungestPremieredMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetYoungestPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.YoungestPremiered);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestPremiered);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster ShortestMovie(List<string> collectionIds)
+        private MoviePoster ShortestMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetShortestMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.Shortest);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.Shortest);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster LongestMovie(List<string> collectionIds)
+        private MoviePoster LongestMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetLongestMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.Longest);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.Longest);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster YoungestAddedMovie(List<string> collectionIds)
+        private MoviePoster YoungestAddedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetYoungestAddedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.YoungestAdded);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestAdded);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
         private TimeSpanCard TotalPlayLength(List<string> collectionIds)

@@ -11,5 +11,11 @@ namespace EmbyStat.Services.Models.Show
         public Card EpisodeCount { get; set; }
         public Card MissingEpisodeCount { get; set; }
         public TimeSpanCard TotalPlayableTime { get; set; }
+        public ShowPoster HighestRatedShow { get; set; }
+        public ShowPoster LowestRatedShow { get; set; }
+        public ShowPoster ShowWithMostEpisodes { get; set; }
+        public ShowPoster OldestPremieredShow { get; set; }
+        public ShowPoster YoungestPremieredShow { get; set; }
+        public ShowPoster YoungestAddedShow{ get; set; }
     }
 }

@@ -2,6 +2,15 @@
   <div class="media__flex-row media__align-start">
     <app-card-number [card]="stats.showCount"></app-card-number>
     <app-card-number [card]="stats.episodeCount"></app-card-number>
+    <app-card-number [card]="stats.missingEpisodeCount"></app-card-number>
     <app-card-timespan [card]="stats.totalPlayableTime"></app-card-timespan>
+  </div>
+  <div class="media__flex-row media__align-start">
+    <app-show-poster [poster]="stats.highestRatedShow"></app-show-poster>
+    <app-show-poster [poster]="stats.lowestRatedShow"></app-show-poster>
+    <app-show-poster [poster]="stats.showWithMostEpisodes"></app-show-poster>
+    <app-show-poster [poster]="stats.oldestPremieredShow"></app-show-poster>
+    <app-show-poster [poster]="stats.youngestPremieredShow"></app-show-poster>
+    <app-show-poster [poster]="stats.youngestAddedShow"></app-show-poster>
   </div>
 </div>

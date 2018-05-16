@@ -89,11 +89,16 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Show> GetAllShows(bool inludeSubs = false)
+        public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
                 var query = context.Shows.AsNoTracking().AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
 
                 if (inludeSubs)
                 {

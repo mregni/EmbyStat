@@ -39,8 +39,9 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
-	        CreateMap<Poster, PosterViewModel>();
-	        CreateMap<PersonPoster, PersonPosterViewModel>();
+	        CreateMap<MoviePoster, MoviePosterViewModel>();
+	        CreateMap<ShowPoster, ShowPosterViewModel>();
+            CreateMap<PersonPoster, PersonPosterViewModel>();
             CreateMap<MovieStats, MovieStatsViewModel>();
 	        CreateMap<MoviePersonStats, MoviePersonStatsViewModel>();
             CreateMap<Collection, CollectionViewModel>();

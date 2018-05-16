@@ -73,5 +73,15 @@ namespace EmbyStat.Tasks.Tasks
                 new TaskTriggerInfo{ Type = "DailyTrigger", TimeOfDayTicks = 18000000000, TaskKey = Key}
             };
         }
+
+        public void LogInformation(string log)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LogWarning(string log)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

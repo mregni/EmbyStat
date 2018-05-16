@@ -35,5 +35,15 @@ namespace EmbyStat.Tasks.Tasks
                 new TaskTriggerInfo{ Type = "IntervalTrigger", IntervalTicks = 1200000000, TaskKey = Key}
             };
         }
+
+        public void LogInformation(string log)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LogWarning(string log)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

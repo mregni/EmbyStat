@@ -209,7 +209,7 @@ namespace EmbyStat.Tasks.Tasks
             var lastTvdbUpdate = _configurationRepository.GetSingle().LastTvdbUpdate;
 
             var shows = _showRepository
-                .GetAllShows()
+                .GetAllShows(new string[]{})
                 .Where(x => !string.IsNullOrWhiteSpace(x.TVDB));
 
             var showsWithMissingEpisodes = shows.Where(x => !x.TvdbSynced).ToList();
@@ -455,6 +455,16 @@ namespace EmbyStat.Tasks.Tasks
             {
                 new TaskTriggerInfo{ TaskKey = Key, TimeOfDayTicks = 0, Type = "DailyTrigger"}
             };
+        }
+
+        public void LogInformation(string log)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LogWarning(string log)
+        {
+            throw new NotImplementedException();
         }
     }
 }
