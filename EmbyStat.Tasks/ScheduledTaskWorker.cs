@@ -203,7 +203,7 @@ namespace EmbyStat.Tasks
             }
 
             var progress = new SimpleProgress<double>();
-            var logProgress = new SimpleProgress<string>();
+            var logProgress = new ProgressLogger();
 
             CurrentCancellationTokenSource = new CancellationTokenSource();
 
@@ -212,7 +212,7 @@ namespace EmbyStat.Tasks
             ((TaskManager)_taskManager).OnTaskExecuting(this);
 
             progress.ProgressChanged += progress_ProgressChanged;
-            logProgress.ProgressChanged += LogProgress_ProgressChanged;
+            logProgress.ProgressLogged += LogProgress_ProgressLogged;
 
             TaskCompletionStatus status;
             CurrentExecutionStartTime = DateTime.UtcNow;
@@ -247,7 +247,7 @@ namespace EmbyStat.Tasks
             var endTime = DateTime.UtcNow;
 
             progress.ProgressChanged -= progress_ProgressChanged;
-            logProgress.ProgressChanged -= LogProgress_ProgressChanged;
+            logProgress.ProgressLogged -= LogProgress_ProgressLogged;
             CurrentCancellationTokenSource.Dispose();
             CurrentCancellationTokenSource = null;
             CurrentProgress = null;
@@ -255,7 +255,7 @@ namespace EmbyStat.Tasks
             OnTaskCompleted(startTime, endTime, status, failureException);
         }
 
-        private void LogProgress_ProgressChanged(object sender, string e)
+        private void LogProgress_ProgressLogged(object sender, string e)
         {
             TaskLogging?.Invoke(this, new GenericEventArgs<string> { Argument = e });
         }

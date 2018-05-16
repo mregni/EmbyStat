@@ -8,6 +8,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
@@ -354,7 +355,7 @@ namespace EmbyStat.Services
         {
             var genres = _genreRepository.GetAll();
             var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
-                .Select(x => new {Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count()})
+                .Select(x => new { Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count()})
                 .Select(x => new SimpleGraphValue{Name = x.Name, Value = x.Count})
                 .OrderBy(x => x.Name)
                 .ToList();
@@ -370,7 +371,7 @@ namespace EmbyStat.Services
         {
             var yearDataList = movies
                 .Select(x => x.PremiereDate)
-                .GroupBy(RoundYear)
+                .GroupBy(x => x.RoundToFive())
                 .OrderBy(x => x.Key)
                 .ToList();
 
@@ -405,7 +406,7 @@ namespace EmbyStat.Services
 
         private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
         {
-            var ratingData = movies.GroupBy(x => RoundRating(x.CommunityRating))
+            var ratingData = movies.GroupBy(x => x.CommunityRating.RoundToHalf())
                 .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
                 .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
@@ -436,30 +437,6 @@ namespace EmbyStat.Services
         }
 
 
-        #endregion
-
-        #region Helpers
-
-        private double? RoundRating(float? rating)
-        {
-            if (rating.HasValue)
-            {
-                return Math.Round((double)rating.Value * 2, MidpointRounding.AwayFromZero) / 2;
-            }
-
-            return null;
-        }
-
-        private int? RoundYear(DateTime? date)
-        {
-            if (date.HasValue)
-            {
-                var result = (int)Math.Floor((double)date.Value.Year / 5) * 5;
-                return result;
-            }
-
-            return null;
-        }
         #endregion
     }
 }

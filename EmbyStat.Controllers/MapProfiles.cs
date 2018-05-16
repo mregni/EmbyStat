@@ -50,7 +50,8 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<SimpleGraphValue, SimpleGraphValueViewModel>();
 	        CreateMap<Graph<SimpleGraphValue>, GraphViewModel<SimpleGraphValue>>();
 	        CreateMap<MovieGraphs, MovieGraphsViewModel>();
-	        CreateMap<ShortMovie, ShortMovieViewModel>();
+	        CreateMap<ShowGraphs, ShowGraphsViewModel>();
+            CreateMap<ShortMovie, ShortMovieViewModel>();
 	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
 	        CreateMap<ShowStat, ShowStatViewModel>();
 

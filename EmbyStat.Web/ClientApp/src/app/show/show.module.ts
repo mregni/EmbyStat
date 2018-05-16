@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 
 import { ShowService } from './service/show.service';
+import { ShowChartsService } from './service/show-charts.service';
 import { ShowFacade } from './state/facade.show';
 
 import { ShowOverviewComponent } from './show-overview/show-overview.component';
@@ -22,6 +23,7 @@ import { ShowPeopleComponent } from './show-people/show-people.component';
   ],
   providers: [
     ShowService,
+    ShowChartsService,
     ShowFacade
   ],
   declarations: [ShowOverviewComponent, ShowGeneralComponent, ShowChartsComponent, ShowPeopleComponent]

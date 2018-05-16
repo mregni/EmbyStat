@@ -17,6 +17,7 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool inludeSubs = false);
         void SetTvdbSynced(string showId);
         int CountShows(IEnumerable<string> collectionIds);
+        int CountEpisodes(string showId);
         int CountEpisodes(IEnumerable<string> collectionIds);
         long GetPlayLength(IEnumerable<string> collectionIds);
     }

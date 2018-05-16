@@ -12,6 +12,16 @@
   box-shadow: $normal-box-shadow;
 }
 
+.tasklog__flexcontainer {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 20px;
+  border-radius: 2px;
+  background: #fff;
+  align-items: flex-start;
+  box-shadow: $normal-box-shadow;
+}
+
 .task__left-content {
   align-content: flex-start;
   width: 45px;

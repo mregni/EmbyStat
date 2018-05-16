@@ -15,7 +15,7 @@ export class MovieService {
   private readonly getPersonUrl: string = '/movie/personstats';
   private readonly getCollectionsUrl: string = '/movie/collections';
   private readonly getSuspiciousUrl: string = '/movie/suspicious';
-  private readonly getGraphsUrl: string = '/movie/getgraphs';
+  private readonly getGraphsUrl: string = '/movie/graphs';
 
   constructor(private http: HttpClient) {
 
@@ -45,4 +45,3 @@ export class MovieService {
     return this.http.get<MovieGraphs>('api' + this.getGraphsUrl + params);
   }
 }
-

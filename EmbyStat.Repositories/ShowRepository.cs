@@ -199,6 +199,18 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public int CountEpisodes(string showId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Seasons
+                    .Where(x => x.ParentId == showId)
+                    .Include(x => x.SeasonEpisodes)
+                    .SelectMany(x => x.SeasonEpisodes)
+                    .Count();
+            }
+        }
+
         public long GetPlayLength(IEnumerable<string> collectionIds)
         {
             using (var context = new ApplicationDbContext())

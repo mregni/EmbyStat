@@ -20,7 +20,7 @@ namespace EmbyStat.Tasks.Tasks
         public string Description => "TASKS.PINGEMBYSERVERDESCRIPTION";
         public string Category => "Emby";
 
-        public Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgress<string> logProgress)
+        public Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
             return Task.Run(() =>
             {
@@ -34,16 +34,6 @@ namespace EmbyStat.Tasks.Tasks
             {
                 new TaskTriggerInfo{ Type = "IntervalTrigger", IntervalTicks = 1200000000, TaskKey = Key}
             };
-        }
-
-        public void LogInformation(string log)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LogWarning(string log)
-        {
-            throw new NotImplementedException();
         }
     }
 }
