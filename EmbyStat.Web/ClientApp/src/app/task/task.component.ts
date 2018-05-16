@@ -25,6 +25,10 @@ export class TaskComponent implements OnInit, OnDestroy {
     this.hubConnection.on('ReceiveInfo', (data: Task[]) => {
       this.tasks = data;
     });
+
+    this.hubConnection.on('ReceiveLog', (data: Task[]) => {
+      console.log(data);
+    });
   }
 
   ngOnInit() {

@@ -301,7 +301,7 @@ namespace EmbyStat.Api.EmbyClient
 
 		protected async Task<Stream> SendAsync(HttpRequest request)
 		{
-			return await HttpClient.SendAsync(request).ConfigureAwait(false);
+			return await HttpClient.SendAsync(request);
 		}
 
         protected string GetItemListUrl(string url, ItemQuery query)

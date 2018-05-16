@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 
 namespace EmbyStat.Services

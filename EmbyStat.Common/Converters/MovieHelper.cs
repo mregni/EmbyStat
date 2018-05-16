@@ -6,7 +6,7 @@ using EmbyStat.Common.Models.Joins;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
-namespace EmbyStat.Services.Converters
+namespace EmbyStat.Common.Converters
 {
     public static class MovieHelper
     {

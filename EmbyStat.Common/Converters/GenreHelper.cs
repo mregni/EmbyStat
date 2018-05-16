@@ -1,7 +1,7 @@
 ﻿using EmbyStat.Common.Models;
 using MediaBrowser.Model.Dto;
 
-namespace EmbyStat.Services.Converters
+namespace EmbyStat.Common.Converters
 {
     public static class GenreHelper
     {

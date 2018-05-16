@@ -10,5 +10,8 @@ namespace EmbyStat.Common.Models
         public string HomePageUrl { get; set; }
         public string OfficialRating { get; set; }
         public string Status { get; set; }
+        public bool TvdbSynced { get; set; }
+        public int MissingEpisodesCount { get; set; }
+        public bool TvdbFailed { get; set; }
     }
 }

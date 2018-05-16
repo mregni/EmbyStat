@@ -16,7 +16,7 @@ using System;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180511092842_Init")]
+    [Migration("20180513213054_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,8 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<string>("Language")
                         .IsRequired();
+
+                    b.Property<DateTime?>("LastTvdbUpdate");
 
                     b.Property<string>("ServerName");
 
@@ -533,10 +535,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AssemblyFileName");
-
-                    b.Property<DateTime>("ConfigurationDateLastModified");
-
                     b.Property<string>("ConfigurationFileName");
 
                     b.Property<string>("Description");
@@ -616,10 +614,14 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("HomePageUrl")
                         .HasColumnName("Show_HomePageUrl");
 
+                    b.Property<int>("MissingEpisodesCount");
+
                     b.Property<string>("OfficialRating")
                         .HasColumnName("Show_OfficialRating");
 
                     b.Property<string>("Status");
+
+                    b.Property<bool>("TvdbSynced");
 
                     b.ToTable("Show");
 

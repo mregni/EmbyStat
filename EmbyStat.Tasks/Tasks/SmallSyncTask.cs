@@ -36,7 +36,7 @@ namespace EmbyStat.Tasks.Tasks
         public string Key => "SmallEmbySync";
         public string Description => "TASKS.SMALLEMBYSYNCDESCRIPTION";
         public string Category => "Emby";
-        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
+        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgress<string> logProgress)
         {
             var settings = _configurationRepository.GetSingle();
             if (!settings.WizardFinished)
@@ -44,6 +44,7 @@ namespace EmbyStat.Tasks.Tasks
                 Log.Warning("Movie sync task not running because wizard is not finished yet!");
                 return;
             }
+
             progress.Report(15);
 
             _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);

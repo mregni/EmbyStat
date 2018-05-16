@@ -58,6 +58,19 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public void UpdateShow(Show show)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var data = context.Shows.AsNoTracking().SingleOrDefault(x => x.Id == show.Id);
+                if (data != null)
+                {
+                    context.Entry(show).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public void AddRange(IEnumerable<Season> list)
         {
             using (var context = new ApplicationDbContext())
@@ -80,7 +93,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var query = context.Shows.AsQueryable();
+                var query = context.Shows.AsNoTracking().AsQueryable();
 
                 if (inludeSubs)
                 {
@@ -90,6 +103,64 @@ namespace EmbyStat.Repositories
                 }
 
                 return query.ToList();
+            }
+        }
+
+        public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool inludeSubs = false)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Seasons.AsQueryable();
+
+                if (inludeSubs)
+                {
+                    query = query
+                        .Include(x => x.SeasonEpisodes)
+                        .Include(x => x.MediaGenres);
+                }
+
+                query = query.Where(x => x.ParentId == showId);
+                return query.ToList();
+            }
+        }
+
+        public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool inludeSubs = false)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var episodeIds = context.Seasons
+                    .Where(x => x.ParentId == showId)
+                    .Include(x => x.SeasonEpisodes)
+                    .SelectMany(x => x.SeasonEpisodes)
+                    .Select(x => x.EpisodeId);
+
+                var query = context.Episodes.AsQueryable();
+
+                if (inludeSubs)
+                {
+                    query = query
+                        .Include(x => x.SeasonEpisodes)
+                        .Include(x => x.AudioStreams)
+                        .Include(x => x.ExtraPersons)
+                        .Include(x => x.MediaSources)
+                        .Include(x => x.SubtitleStreams)
+                        .Include(x => x.VideoStreams)
+                        .Include(x => x.MediaGenres);
+                }
+
+                query = query.Where(x => episodeIds.Any(y => y == x.Id));
+                return query.ToList();
+            }
+        }
+
+        public void SetTvdbSynced(string showId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var show = context.Shows.Single(x => x.Id == showId);
+                show.TvdbSynced = true;
+
+                context.SaveChanges();
             }
         }
 

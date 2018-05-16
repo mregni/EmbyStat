@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EmbyStat.Common.Models;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
-namespace EmbyStat.Services.Converters
+namespace EmbyStat.Common.Converters
 {
     public static class PersonHelper
     {

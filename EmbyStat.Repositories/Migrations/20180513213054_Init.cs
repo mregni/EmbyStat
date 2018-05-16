@@ -47,6 +47,7 @@ namespace EmbyStat.Repositories.Migrations
                     EmbyUserId = table.Column<string>(nullable: true),
                     EmbyUserName = table.Column<string>(nullable: true),
                     Language = table.Column<string>(nullable: false),
+                    LastTvdbUpdate = table.Column<DateTime>(nullable: true),
                     ServerName = table.Column<string>(nullable: true),
                     ToShortMovie = table.Column<int>(nullable: false),
                     Username = table.Column<string>(nullable: true),
@@ -138,8 +139,10 @@ namespace EmbyStat.Repositories.Migrations
                     CumulativeRunTimeTicks = table.Column<long>(nullable: true),
                     DateLastMediaAdded = table.Column<DateTime>(nullable: true),
                     Show_HomePageUrl = table.Column<string>(nullable: true),
+                    MissingEpisodesCount = table.Column<int>(nullable: true),
                     Show_OfficialRating = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true)
+                    Status = table.Column<string>(nullable: true),
+                    TvdbSynced = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,8 +179,6 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    AssemblyFileName = table.Column<string>(nullable: true),
-                    ConfigurationDateLastModified = table.Column<DateTime>(nullable: false),
                     ConfigurationFileName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),

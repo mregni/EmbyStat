@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EmbyStat.Common;
-
-namespace EmbyStat.Services.Converters
+﻿namespace EmbyStat.Common.Converters
 {
     public static class QualityHelper
     {

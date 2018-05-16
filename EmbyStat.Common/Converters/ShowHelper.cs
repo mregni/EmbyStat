@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Helpers;
 using EmbyStat.Common.Models.Joins;
@@ -53,7 +52,7 @@ namespace EmbyStat.Services.Converters
             };
         }
 
-        public static Season ConvertToSeason(BaseItemDto season, IEnumerable<Episode> episodes)
+        public static Season ConvertToSeason(BaseItemDto season, IEnumerable<Tuple<string, string>> episodes)
         {
             return new Season
             {
@@ -73,7 +72,7 @@ namespace EmbyStat.Services.Converters
                 Banner = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value,
                 SeasonEpisodes = episodes.Select(x => new SeasonEpisode
                 {
-                    EpisodeId = x.Id,
+                    EpisodeId = x.Item2,
                     SeasonId = season.Id
                 }).ToList()
             };
@@ -90,8 +89,6 @@ namespace EmbyStat.Services.Converters
                 CommunityRating = episode.CommunityRating,
                 Container = episode.Container,
                 DateCreated = episode.DateCreated,
-                DvdEpisodeNumber = episode.DvdEpisodeNumber,
-                DvdSeasonNumber = episode.DvdSeasonNumber,
                 HasSubtitles = episode.HasSubtitles,
                 IndexNumber = episode.IndexNumber,
                 IndexNumberEnd = episode.IndexNumberEnd,

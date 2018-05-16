@@ -8,10 +8,14 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IShowRepository
     {
         void RemoveShows();
+        void UpdateShow(Show show);
         void AddRange(IEnumerable<Show> list);
         void AddRange(IEnumerable<Season> list);
         void AddRange(IEnumerable<Episode> list);
         IEnumerable<Show> GetAllShows(bool inludeSubs = false);
+        IEnumerable<Season> GetAllSeasonsForShow(string showId, bool inludeSubs = false);
+        IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool inludeSubs = false);
+        void SetTvdbSynced(string showId);
         int CountShows(IEnumerable<string> collectionIds);
         int CountEpisodes(IEnumerable<string> collectionIds);
         long GetPlayLength(IEnumerable<string> collectionIds);

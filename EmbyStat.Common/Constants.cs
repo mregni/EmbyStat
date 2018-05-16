@@ -44,11 +44,11 @@ namespace EmbyStat.Common
 
         public static class Tvdb
         {
-            public const string BaseUrl = "https://www.thetvdb.com/api";
-            public const string SeriesGetZip = "/{0}/series/{1}/all/{2}.zip";
-            public const string ServerTimeUrl = "/Updates.php?type=none";
-            public const string UpdatesUrl = "/Updates.php?type=all&time={0}";
-            public const string ApiKey = "3B9470F2306003B8";
+            public const string BaseUrl = " https://api.thetvdb.com";
+            public const string SerieEpisodesUrl = "/series/{0}/episodes?page={1}";
+            public const string UpdatesUrl = "/updated/query?fromTime={0}&toTime={1}";
+            public const string LoginUrl = "/login";
+            public const string ApiKey = "BWLRSNRC0AQUIEYX";
         }
 
         //CHARTS

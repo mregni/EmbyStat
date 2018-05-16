@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.Tvdb;
+using EmbyStat.Api.Tvdb.Models;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
@@ -17,6 +19,7 @@ using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using CollectionType = EmbyStat.Common.Models.CollectionType;
@@ -52,7 +55,7 @@ namespace EmbyStat.Tasks.Tasks
         public string Description => "TASKS.MEDIASYNCDESCRIPTION";
         public string Category => "Sync";
 
-        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
+        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgress<string> logProgress)
         {
             _settings = _configurationRepository.GetSingle();
             if (!_settings.WizardFinished)
@@ -64,10 +67,11 @@ namespace EmbyStat.Tasks.Tasks
             _embyClient.SetAddressAndUrl(_settings.EmbyServerAddress, _settings.AccessToken);
 
             Log.Information("First delete all existing media and root media collections from database so we have a clean start.");
+            logProgress.Report("THis is a test");
             CleanUpDatabase();
             progress.Report(5);
 
-            await ProcessMovies(cancellationToken, progress);
+            //await ProcessMovies(cancellationToken, progress);
             await ProcessShows(cancellationToken, progress);
             await SyncMissingEpisodes(cancellationToken, progress, _settings.LastTvdbUpdate);
 
@@ -170,22 +174,26 @@ namespace EmbyStat.Tasks.Tasks
                 foreach (var show in shows)
                 {
                     j++;
-                    progress.Report(Math.Floor(55 + (double)45 / shows.Count * j / rootItems.Count * i ));
+                    progress.Report(Math.Floor(55 + (double)45 / shows.Count * j / rootItems.Count * i));
                     var rawSeasons = await GetSeasonsFromEmby(show.Id, cancellationToken);
 
                     var episodes = new List<Episode>();
+                    var seasonLinks = new List<Tuple<string, string>>();
                     foreach (var season in rawSeasons)
                     {
                         var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
+                        eps.ForEach(x => x.CollectionId = rootItems[i].Id);
+
                         episodes.AddRange(eps);
+                        seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
                     }
 
                     Log.Information($"Processing show ({show.Id}) {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
-                    episodes.ForEach(x => x.CollectionId = rootItems[i].Id);
+
                     var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
                     _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
 
-                    var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, episodes.Where(y => y.ParentId == x.Id))).ToList();
+                    var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
                     seasons.ForEach(x => x.CollectionId = rootItems[i].Id);
                     _showRepository.AddRange(seasons);
 
@@ -197,11 +205,94 @@ namespace EmbyStat.Tasks.Tasks
 
         private async Task SyncMissingEpisodes(CancellationToken cancellationToken, IProgress<double> progress, DateTime? lastUpdateFromTvdb)
         {
-            var shows = _showRepository.GetAllShows();
+            await _tvdbClient.Login(cancellationToken);
+            var lastTvdbUpdate = _configurationRepository.GetSingle().LastTvdbUpdate;
 
-            var tvdbIds = shows.Where(x => !string.IsNullOrWhiteSpace(x.TVDB)).Select(x => x.TVDB);
+            var shows = _showRepository
+                .GetAllShows()
+                .Where(x => !string.IsNullOrWhiteSpace(x.TVDB));
 
+            var showsWithMissingEpisodes = shows.Where(x => !x.TvdbSynced).ToList();
 
+            if (lastTvdbUpdate.HasValue)
+            {
+                var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB), lastTvdbUpdate.Value, cancellationToken);
+                showsWithMissingEpisodes.AddRange(shows.Where(x => showsThatNeedAnUpdate.Any(y => y == x.TVDB)));
+                showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
+            }
+
+            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
+        }
+
+        //TASK LOGGER AANMAKEN DIE LOG NAAR LOG FILE STUURT EN NAAR GEBRUIKER
+
+        private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
+        {
+            foreach (var show in shows)
+            {
+                var neededEpisodeCount = 0;
+                var seasons = _showRepository.GetAllSeasonsForShow(show.Id).ToList();
+                var episodes = _showRepository.GetAllEpisodesForShow(show.Id, true).ToList();
+
+                try
+                {
+                    var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB, cancellationToken);
+
+                    foreach (var episode in tvdbEpisodes)
+                    {
+                        var season = seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonIndex);
+                        if (IsEpisodeMissing(episodes, season, episode))
+                        {
+                            neededEpisodeCount++;
+                        }
+                    }
+
+                    show.TvdbSynced = true;
+                    show.MissingEpisodesCount = neededEpisodeCount;
+                    _showRepository.UpdateShow(show);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, $"Processing {show.Name} failed. Marking this show as failed");
+                    show.TvdbFailed = true;
+                    _showRepository.UpdateShow(show);
+                }
+            }
+        }
+
+        private bool IsEpisodeMissing(List<Episode> localEpisodes, Season season, VirtualEpisode tvdbEpisode)
+        {
+            if (season == null)
+            {
+                return true;
+            }
+
+            foreach (var localEpisode in localEpisodes)
+            {
+                if (localEpisode.SeasonEpisodes.Any(y => y.SeasonId == season.Id))
+                {
+                    if (!localEpisode.IndexNumberEnd.HasValue)
+                    {
+
+                        if (localEpisode.IndexNumber == tvdbEpisode.EpisodeIndex)
+                        {
+                            return false;
+                        }
+
+                    }
+                    else
+                    {
+
+                        if (localEpisode.IndexNumber <= tvdbEpisode.EpisodeIndex &&
+                            localEpisode.IndexNumberEnd >= tvdbEpisode.EpisodeIndex)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         private async Task<List<Show>> GetShowsFromEmby(string parentId, CancellationToken cancellationToken)

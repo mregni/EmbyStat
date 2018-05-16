@@ -1,7 +1,7 @@
 ﻿using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 
-namespace EmbyStat.Services.Converters
+namespace EmbyStat.Common.Converters
 {
     public static class TaskHelpers
     {

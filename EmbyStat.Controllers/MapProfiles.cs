@@ -57,8 +57,7 @@ namespace EmbyStat.Controllers.Helpers
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()
-			    .ForMember(x => x.CompletedInstallations, y => y.Ignore())
-			    .ForMember(x => x.FailedPluginAssemblies, y => y.Ignore());
+			    .ForMember(x => x.CompletedInstallations, y => y.Ignore());
 
 		    CreateMap<Drive, Drives>()
 			    .ForMember(x => x.Id, y => y.Ignore())
