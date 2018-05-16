@@ -10,10 +10,13 @@ import {
   LoadShowCollectionsAction,
   LoadShowCollectionsSuccessAction,
   LoadGeneralStatsAction,
-  LoadGeneralStatsSuccessAction
+  LoadGeneralStatsSuccessAction,
+  LoadGraphsAction,
+  LoadGraphsSuccessAction
 } from './actions.show';
 import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
+import { ShowGraphs } from '../models/showGraphs';
 
 import { EffectError } from '../../states/app.actions';
 
@@ -50,5 +53,20 @@ export class ShowEffects {
       return new LoadGeneralStatsSuccessAction(stats);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+  );
+
+  @Effect()
+  getGraphs$ = this.actions$
+    .ofType(ShowActionTypes.LOAD_GRAPHS)
+    .pipe(
+      map((data: LoadGraphsAction) => data.payload),
+      switchMap((list: string[]) => {
+        console.log(list);
+        return this.showService.getGraphs(list);
+      }),
+      map((graphs: ShowGraphs) => {
+        return new LoadGraphsSuccessAction(graphs);
+      }),
+      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );
 }

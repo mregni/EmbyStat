@@ -6,16 +6,17 @@ import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
 
 export enum MovieActionTypes {
-  LOAD_STATS_GENERAL = '[MovieGeneralStats] Load General Movie Stats',
-  LOAD_STATS_GENERAL_SUCCESS = '[MovieGeneralStats] Load General Movie Stats Success',
-  LOAD_MOVIE_COLLECTIONS = '[MovieCollections] Load Movie Collections',
-  LOAD_MOVIE_COLLECTIONS_SUCCESS = '[MovieCollections] Load Movie Collections Success',
-  LOAD_STATS_PERSON = '[MoviePersonStats] Load Person Movie Stats',
-  LOAD_STATS_PERSON_SUCCESS = '[MoviePersonStats] Load Person Movie Stats Success',
-  LOAD_SUSPICIOUS = '[MovieSuspicious] Load Suspicious',
-  LOAD_SUSPICIOUS_SUCCESS = '[MovieSuspicious] Load Suspicious Success',
-  LOAD_GRAPHS = '[MovieGraphs] Load Movie Graphs',
-  LOAD_GRAPHS_SUCCESS = '[MovieGraphs] Load Movie Graphs Success'
+  LOAD_STATS_GENERAL = '[Movies] Load General Movie Stats',
+  LOAD_STATS_GENERAL_SUCCESS = '[Movies] Load General Movie Stats Success',
+  LOAD_MOVIE_COLLECTIONS = '[Movies] Load Movie Collections',
+  LOAD_MOVIE_COLLECTIONS_SUCCESS = '[Movies] Load Movie Collections Success',
+  LOAD_STATS_PERSON = '[Movies] Load Person Movie Stats',
+  LOAD_STATS_PERSON_SUCCESS = '[Movies] Load Person Movie Stats Success',
+  LOAD_SUSPICIOUS = '[Movies] Load Suspicious',
+  LOAD_SUSPICIOUS_SUCCESS = '[Movies] Load Suspicious Success',
+  LOAD_GRAPHS = '[Movies] Load Movie Graphs',
+  LOAD_GRAPHS_SUCCESS = '[Movies] Load Movie Graphs Success',
+  CLEAR_GRAPHS_SUCCESS = '[Movies] Clear Movie Graphs Succes'
 }
 
 export class LoadGeneralStatsAction implements Action {
@@ -68,8 +69,13 @@ export class LoadGraphsSuccessAction implements Action {
   constructor(public payload: MovieGraphs) { }
 }
 
+export class ClearGraphsSuccesAction implements Action {
+  readonly type = MovieActionTypes.CLEAR_GRAPHS_SUCCESS;
+  constructor(public payload = null) { }
+}
+
 export type MovieActions = LoadGeneralStatsAction | LoadGeneralStatsSuccessAction |
   LoadMovieCollectionsAction | LoadMovieCollectionsSuccessAction |
   LoadPersonStatsAction | LoadPersonStatsSuccessAction |
   LoadSuspiciousAction | LoadSuspiciousSuccessAction |
-  LoadGraphsAction | LoadGraphsSuccessAction;
+  LoadGraphsAction | LoadGraphsSuccessAction | ClearGraphsSuccesAction;

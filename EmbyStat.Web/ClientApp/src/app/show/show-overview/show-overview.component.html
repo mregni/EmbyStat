@@ -21,7 +21,7 @@
     </mat-tab>
     <mat-tab label="{{ 'COMMON.GRAPHS' | translate | capitalizeFirst}}">
       <div class="media__tab-content">
-        <app-show-charts></app-show-charts>
+        <app-show-charts [selectedCollections]="selectedCollections"></app-show-charts>
       </div>
     </mat-tab>
     <mat-tab label="{{ 'COMMON.PEOPLE' | translate | capitalizeFirst}}">

@@ -10,5 +10,6 @@ namespace EmbyStat.Services.Interfaces
     {
         IEnumerable<Collection> GetShowCollections();
         ShowStat GetGeneralStats(List<string> collectionIds);
+        ShowGraphs GetGraphs(List<string> collectionIds);
     }
 }

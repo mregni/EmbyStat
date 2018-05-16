@@ -22,12 +22,14 @@
     "COUNTPERCOMMUNITYRATING": "count / rating",
     "COUNTPERPREMIEREDATE": "count / year",
     "COUNTPEROFFICIALRATING": "count / official rating",
+    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
     "EMBY": "Emby",
     "GENERAL": "general",
     "DURATION": "duration",
     "GRAPHS": "graphs",
     "PEOPLE": "people",
-    "SUSPICIOUS": "suspicious" 
+    "SUSPICIOUS": "suspicious",
+    "SHOWS": "shows"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
@@ -110,7 +112,8 @@
     "OLDESTPREMIERED": "Oldest premiered show",
     "YOUNGESTPREMIERED": "Yougenst premiered show",
     "YOUNGESTADDED": "Youngest added",
-    "WITHMOESTEPISODES": "With most episodes" 
+    "WITHMOESTEPISODES": "With most episodes",
+    "SHOWSTATUSGRAPH": "Show statuses" 
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",

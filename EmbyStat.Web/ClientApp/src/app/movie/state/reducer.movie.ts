@@ -42,6 +42,11 @@ export function MovieReducer(state: MovieStore = INITIAL_STATE, action: MovieAct
         ...state,
         graphs: action.payload
       };
+    case MovieActionTypes.CLEAR_GRAPHS_SUCCESS:
+      return {
+        ...state,
+        graphs: new MovieGraphs()
+      };
     default:
       return state;
   }

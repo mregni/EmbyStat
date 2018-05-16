@@ -38,6 +38,7 @@ namespace EmbyStat.Common
             public const string YoungestPremiered = "SHOWS.YOUNGESTPREMIERED";
             public const string YoungestAdded = "SHOWS.YOUNGESTADDED";
             public const string MostEpisodes = "SHOWS.WITHMOESTEPISODES";
+            public const string ShowStatusGraph = "SHOWS.SHOWSTATUSGRAPH";
         }
 
         public static class Emby

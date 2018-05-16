@@ -2,11 +2,13 @@ import { ApplicationState } from '../../states/app.state';
 
 import { ShowStore } from '../models/showStore';
 import { ShowStats } from '../models/showStats';
+import { ShowGraphs } from '../models/showGraphs';
 import { ShowActions, ShowActionTypes } from './actions.show';
 
 const INITIAL_STATE: ShowStore = {
   collections: [],
-  showStats: new ShowStats()
+  showStats: new ShowStats(),
+  graphs: new ShowGraphs
 };
 
 export function ShowReducer(state: ShowStore = INITIAL_STATE, action: ShowActions) {
@@ -20,7 +22,18 @@ export function ShowReducer(state: ShowStore = INITIAL_STATE, action: ShowAction
       return {
         ...state,
         showStats: action.payload
-      }
+      };
+    case ShowActionTypes.LOAD_GRAPHS_SUCCESS:
+      console.log(action.payload);
+      return {
+        ...state,
+        graphs: action.payload
+      };
+    case ShowActionTypes.CLEAR_GRAPHS_SUCCESS:
+      return {
+        ...state,
+        graphs: new ShowGraphs()
+      };
   default:
     return state;
   }
@@ -29,4 +42,5 @@ export function ShowReducer(state: ShowStore = INITIAL_STATE, action: ShowAction
 export namespace ShowQuery {
   export const getCollections = (state: ApplicationState) => state.shows.collections;
   export const getGeneralStats = (state: ApplicationState) => state.shows.showStats;
+  export const getGraphs = (state: ApplicationState) => state.shows.graphs;
 }

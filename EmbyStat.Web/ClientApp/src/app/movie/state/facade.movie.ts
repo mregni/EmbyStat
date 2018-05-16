@@ -13,7 +13,7 @@ import { MovieQuery } from './reducer.movie';
 import {
   LoadGeneralStatsAction, LoadMovieCollectionsAction,
   LoadPersonStatsAction, LoadSuspiciousAction,
-  LoadGraphsAction
+  LoadGraphsAction, ClearGraphsSuccesAction
 } from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
@@ -53,6 +53,10 @@ export class MovieFacade {
   getGraphs(list: string[]): Observable<MovieGraphs> {
     this.store.dispatch(new LoadGraphsAction(list));
     return this.graphs$;
+  }
+
+  clearGraphs(): void {
+    this.store.dispatch(new ClearGraphsSuccesAction);
   }
 }
 

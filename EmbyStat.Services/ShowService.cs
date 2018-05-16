@@ -60,8 +60,24 @@ namespace EmbyStat.Services
             graphs.BarGraphs.Add(CalculatePremiereYearGraph(shows));
             graphs.BarGraphs.Add(CalculateCollectedRateGraph(shows));
             graphs.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
+            graphs.PieGraphs.Add(CalculateShowStateGraph(shows));
 
             return graphs;
+        }
+
+        private Graph<SimpleGraphValue> CalculateShowStateGraph(List<Show> shows)
+        {
+            var list = shows
+                .GroupBy(x => x.Status)
+                .Select(x => new SimpleGraphValue { Name = x.Key, Value = x.Count() })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            return new Graph<SimpleGraphValue>
+            {
+                Data = list,
+                Title = Constants.Shows.ShowStatusGraph
+            };
         }
 
         private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(IEnumerable<Show> shows)
@@ -69,8 +85,7 @@ namespace EmbyStat.Services
             var ratingData = shows
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
                 .GroupBy(x => x.OfficialRating.ToUpper())
-                .Select(x => new { Name = x.Key, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .Select(x => new SimpleGraphValue { Name = x.Key, Value = x.Count() })
                 .OrderBy(x => x.Name)
                 .ToList();
 
@@ -90,14 +105,17 @@ namespace EmbyStat.Services
                 percentageList.Add((double)episodeCount / (episodeCount + show.MissingEpisodesCount));
             }
 
-            var groupedList = percentageList.GroupBy(x => x.RoundToFive()).ToList();
+            var groupedList = percentageList
+                .GroupBy(x => x.RoundToFive())
+                .OrderBy(x => x.Key)
+                .ToList();
 
             var j = 0;
-            for (int i = 0; i < 20; i++)
+            for (var i = 0; i < 20; i++)
             {
                 if (groupedList[j].Key != i * 5)
                 {
-                    groupedList.Add(new GraphGrouping<int?, double> { Key = i, Capacity = 0});
+                    groupedList.Add(new GraphGrouping<int?, double> { Key = i * 5, Capacity = 0});
                 }
                 else
                 {
@@ -105,16 +123,16 @@ namespace EmbyStat.Services
                 }
             }
 
-            var yearData = groupedList
-                .Select(x => new { Name = $"{x.Key} - {x.Key + 4}", Count = x.Count() })
+            var rates = groupedList
+                .OrderBy(x => x.Key)
+                .Select(x => new { Name = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Count = x.Count() })
                 .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
                 .ToList();
 
             return new Graph<SimpleGraphValue>
             {
                 Title = Constants.CountPerCollectedRate,
-                Data = yearData
+                Data = rates
             };
         }
 

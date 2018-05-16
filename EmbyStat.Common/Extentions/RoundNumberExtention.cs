@@ -19,7 +19,7 @@ namespace EmbyStat.Common.Extentions
 
         public static int? RoundToFive(this double date)
         {
-            return (int)Math.Floor((double)date / 5) * 5;
+            return (int)Math.Floor((double)date *20) * 5;
         }
 
         public static double? RoundToHalf(this float? rating)

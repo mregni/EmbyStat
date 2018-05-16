@@ -36,5 +36,15 @@ namespace EmbyStat.Controllers
             var convert = Mapper.Map<ShowStatViewModel>(result);
             return Ok(convert);
         }
+
+        [HttpGet]
+        [Route("graphs")]
+        public IActionResult GetGraphs(List<string> collectionIds)
+        {
+            var result = _showService.GetGraphs(collectionIds);
+            var convert = Mapper.Map<ShowGraphsViewModel>(result);
+            return Ok(convert);
+
+        }
     }
 }
