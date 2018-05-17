@@ -4,7 +4,7 @@ import { ListToQueryParam } from '../../shared/helpers/listToQueryParam';
 
 import { Observable } from 'rxjs/Observable';
 import { MovieStats } from '../models/movieStats';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
 import { Collection } from '../../shared/models/collection';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
 import { MovieGraphs } from '../models/movieGraphs';
@@ -26,9 +26,9 @@ export class MovieService {
     return this.http.get<MovieStats>('/api' + this.getGeneralUrl + params);
   }
 
-  getPerson(list: string[]): Observable<MoviePersonStats> {
+  getPerson(list: string[]): Observable<PersonStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<MoviePersonStats>('/api' + this.getPersonUrl + params);
+    return this.http.get<PersonStats>('/api' + this.getPersonUrl + params);
   }
 
   getCollections(): Observable<Collection[]> {
