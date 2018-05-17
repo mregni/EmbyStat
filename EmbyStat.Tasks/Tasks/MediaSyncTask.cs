@@ -226,8 +226,6 @@ namespace EmbyStat.Tasks.Tasks
             await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
         }
 
-        //TASK LOGGER AANMAKEN DIE LOG NAAR LOG FILE STUURT EN NAAR GEBRUIKER
-
         private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
         {
             foreach (var show in shows)

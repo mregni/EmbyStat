@@ -52,7 +52,7 @@ namespace EmbyStat.Common
 
         public static class Tvdb
         {
-            public const string BaseUrl = " https://api.thetvdb.com";
+            public const string BaseUrl = "https://api.thetvdb.com";
             public const string SerieEpisodesUrl = "/series/{0}/episodes?page={1}";
             public const string UpdatesUrl = "/updated/query?fromTime={0}&toTime={1}";
             public const string LoginUrl = "/login";

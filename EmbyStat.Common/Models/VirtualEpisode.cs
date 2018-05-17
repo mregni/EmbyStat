@@ -8,5 +8,6 @@ namespace EmbyStat.Common.Models
     {
         public int SeasonIndex { get; set; }
         public int EpisodeIndex { get; set; }
+        public DateTime? FirstAired { get; set; }
     }
 }

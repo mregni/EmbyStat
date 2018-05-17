@@ -60,7 +60,8 @@ namespace EmbyStat.Api.Tvdb
             {
                 var url = string.Format(Constants.Tvdb.SerieEpisodesUrl, seriesId, i);
                 page = await GetEpisodePage(url, cancellationToken);
-                tvdbEpisodes.AddRange(page.Data.Where(x => x.AiredSeason != 0).Select(EpisodeHelper.ConvertToEpisode));
+                tvdbEpisodes.AddRange(page.Data
+                    .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired)).Select(EpisodeHelper.ConvertToEpisode));
                 i++;
             } while (page.Links.Next.HasValue);
 

@@ -13,7 +13,8 @@ namespace EmbyStat.Api.Tvdb.Converter
             return new VirtualEpisode
             {
                 EpisodeIndex = episode.AiredEpisodeNumber,
-                SeasonIndex = episode.AiredSeason
+                SeasonIndex = episode.AiredSeason,
+                FirstAired = Convert.ToDateTime(episode.FirstAired)
             };
         }
     }
