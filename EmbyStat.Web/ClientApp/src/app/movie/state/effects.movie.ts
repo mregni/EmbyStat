@@ -18,7 +18,7 @@ import {
   LoadGraphsSuccessAction
 } from './actions.movie';
 import { MovieStats } from '../models/movieStats';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
 import { Collection } from '../../shared/models/collection';
 import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
@@ -54,7 +54,7 @@ export class MovieEffects {
     switchMap((list: string[]) => {
       return this.movieService.getPerson(list);
     }),
-    map((stats: MoviePersonStats) => {
+    map((stats: PersonStats) => {
       return new LoadPersonStatsSuccessAction(stats);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))

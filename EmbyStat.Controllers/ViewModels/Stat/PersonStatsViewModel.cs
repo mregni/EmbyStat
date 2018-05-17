@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Controllers.ViewModels.Stat;
+﻿using System.Collections.Generic;
 
-namespace EmbyStat.Controllers.ViewModels.Movie
+namespace EmbyStat.Controllers.ViewModels.Stat
 {
-    public class MoviePersonStatsViewModel
+    public class PersonStatsViewModel
     {
         public CardViewModel TotalActorCount { get; set; }
         public CardViewModel TotalDirectorCount { get; set; }

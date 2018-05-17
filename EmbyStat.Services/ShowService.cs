@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
@@ -19,12 +20,14 @@ namespace EmbyStat.Services
         private readonly IShowRepository _showRepository;
         private readonly ICollectionRepository _collectionRepository;
         private readonly IGenreRepository _genreRepository;
+        private readonly IPersonService _personService;
 
-        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository)
+        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService)
         {
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
+            _personService = personService;
         }
 
         public IEnumerable<Collection> GetShowCollections()
@@ -63,6 +66,63 @@ namespace EmbyStat.Services
             graphs.PieGraphs.Add(CalculateShowStateGraph(shows));
 
             return graphs;
+        }
+
+        public async Task<PersonStats> GetPeopleStats(List<string> collectionIds)
+        {
+            return new PersonStats
+            {
+                TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
+                TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
+                TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters),
+                MostFeaturedActor = await GetMostFeaturedPerson(collectionIds, Constants.Actor, Constants.Common.MostFeaturedActor),
+                MostFeaturedDirector = await GetMostFeaturedPerson(collectionIds, Constants.Director, Constants.Common.MostFeaturedDirector),
+                MostFeaturedWriter = await GetMostFeaturedPerson(collectionIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
+                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionIds)
+            };
+        }
+
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
+        {
+            var movies = _showRepository.GetAll(collectionIds);
+            var genreIds = _showRepository.GetGenres(collectionIds);
+            var genres = _genreRepository.GetListByIds(genreIds);
+
+            var list = new List<PersonPoster>();
+            foreach (var genre in genres.OrderBy(x => x.Name))
+            {
+                var selectedMovies = movies.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
+                var personId = selectedMovies
+                    .SelectMany(x => x.ExtraPersons)
+                    .Where(x => x.Type == Constants.Actor)
+                    .GroupBy(x => x.PersonId)
+                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                var person = await _personService.GetPersonById(personId);
+                list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
+            }
+
+            return list;
+        }
+
+        private async Task<PersonPoster> GetMostFeaturedPerson(List<string> collectionIds, string type, string title)
+        {
+            var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
+
+            var person = await _personService.GetPersonById(personId);
+            return PosterHelper.ConvertToPersonPoster(person, title);
+        }
+
+        private Card TotalTypeCount(List<string> collectionIds, string type, string title)
+        {
+            return new Card
+            {
+                Value = _showRepository.GetTotalPersonByType(collectionIds, type).ToString(),
+                Title = title
+            };
         }
 
         private Graph<SimpleGraphValue> CalculateShowStateGraph(List<Show> shows)

@@ -43,7 +43,7 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<ShowPoster, ShowPosterViewModel>();
             CreateMap<PersonPoster, PersonPosterViewModel>();
             CreateMap<MovieStats, MovieStatsViewModel>();
-	        CreateMap<MoviePersonStats, MoviePersonStatsViewModel>();
+	        CreateMap<PersonStats, PersonStatsViewModel>();
             CreateMap<Collection, CollectionViewModel>();
 	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
 	        CreateMap<MovieDuplicateItem, MovieDuplicateItemViewModel>();

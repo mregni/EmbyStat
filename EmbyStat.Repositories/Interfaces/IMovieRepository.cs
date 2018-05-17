@@ -17,9 +17,7 @@ namespace EmbyStat.Repositories.Interfaces
         Movie GetShortestMovie(List<string> collections);
         Movie GetLongestMovie(List<string> collections);
         Movie GetYoungestAddedMovie(List<string> collections);
-        int GetTotalActors(List<string> collections);
-        int GetTotalDirectors(List<string> collections);
-        int GetTotalWriters(List<string> collections);
+        int GetTotalPersonByType(List<string> collections, string type);
         string GetMostFeaturedPerson(List<string> collections, string type);
         List<Movie> GetAll(List<string> collections);
         List<string> GetGenres(List<string> collections);

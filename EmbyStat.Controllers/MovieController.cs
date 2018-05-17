@@ -42,7 +42,7 @@ namespace EmbyStat.Controllers
         public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
         {
             var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
-            return Ok(Mapper.Map<MoviePersonStatsViewModel>(result));
+            return Ok(Mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]

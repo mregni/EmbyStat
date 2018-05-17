@@ -25,6 +25,9 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
 
     this._selectedCollections = collection;
 
+    this.showFacade.clearGraphs();
+    this.graphs$ = undefined;
+
     if (this.onTab) {
       this.graphs$ = this.showFacade.getGraphs(this._selectedCollections);
     }
@@ -39,9 +42,6 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
       this.onTab = value;
       if (value) {
         this.graphs$ = this.showFacade.getGraphs(this._selectedCollections);
-      } else {
-        this.showFacade.clearGraphs();
-        this.graphs$ = undefined;
       }
     });
   }

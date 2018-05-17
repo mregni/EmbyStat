@@ -11,7 +11,7 @@ import { MovieGraphs } from '../models/movieGraphs';
   templateUrl: './movie-charts.component.html',
   styleUrls: ['./movie-charts.component.scss']
 })
-export class MovieChartsComponent implements OnInit, OnDestroy  {
+export class MovieChartsComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
 
   get selectedCollections(): string[] {
@@ -25,6 +25,9 @@ export class MovieChartsComponent implements OnInit, OnDestroy  {
     }
 
     this._selectedCollections = collection;
+
+    this.movieFacade.clearGraphs();
+    this.graphs$ = undefined;
 
     if (this.onTab) {
       this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
@@ -40,9 +43,6 @@ export class MovieChartsComponent implements OnInit, OnDestroy  {
       this.onTab = value;
       if (value && this.graphs$ === undefined) {
         this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
-      } else {
-        this.movieFacade.clearGraphs();
-        this.graphs$ = undefined;
       }
     });
   }

@@ -62,16 +62,16 @@ namespace EmbyStat.Services
             };
         }
 
-        public async Task<MoviePersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
+        public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
         {
-            return new MoviePersonStats
+            return new PersonStats
             {
-                TotalActorCount = TotalActorCount(collectionsIds),
-                TotalDirectorCount = TotalDirectorCount(collectionsIds),
-                TotalWriterCount = TotalWriterCount(collectionsIds),
-                MostFeaturedActor = await GetMostFeaturedActor(collectionsIds),
-                MostFeaturedDirector = await GetMostFeaturedDirector(collectionsIds),
-                MostFeaturedWriter = await GetMostFeaturedWriter(collectionsIds),
+                TotalActorCount = TotalTypeCount(collectionsIds, Constants.Actor, Constants.Common.TotalActors),
+                TotalDirectorCount = TotalTypeCount(collectionsIds, Constants.Director, Constants.Common.TotalDirectors),
+                TotalWriterCount = TotalTypeCount(collectionsIds, Constants.Writer, Constants.Common.TotalWriters),
+                MostFeaturedActor = await GetMostFeaturedPerson(collectionsIds, Constants.Actor, Constants.Common.MostFeaturedActor),
+                MostFeaturedDirector = await GetMostFeaturedPerson(collectionsIds, Constants.Director, Constants.Common.MostFeaturedDirector),
+                MostFeaturedWriter = await GetMostFeaturedPerson(collectionsIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
                 MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
             };
         }
@@ -274,55 +274,21 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalActorCount(List<string> collectionsIds)
+        private Card TotalTypeCount(List<string> collectionsIds, string type, string title)
         {
             return new Card
             {
-                Value = _movieRepository.GetTotalActors(collectionsIds).ToString(),
-                Title = Constants.Movies.TotalActors
+                Value = _movieRepository.GetTotalPersonByType(collectionsIds, type).ToString(),
+                Title = title
             };
         }
 
-        private Card TotalDirectorCount(List<string> collectionsIds)
+        private async Task<PersonPoster> GetMostFeaturedPerson(List<string> collectionIds, string type, string title)
         {
-            return new Card
-            {
-                Value = _movieRepository.GetTotalDirectors(collectionsIds).ToString(),
-                Title = Constants.Movies.TotalDirectors
-            };
-        }
-
-        private Card TotalWriterCount(List<string> collectionsIds)
-        {
-            return new Card
-            {
-                Value = _movieRepository.GetTotalWriters(collectionsIds).ToString(),
-                Title = Constants.Movies.TotalWriters
-            };
-        }
-
-        private async Task<PersonPoster> GetMostFeaturedActor(List<string> collectionIds)
-        {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Actor);
+            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, type);
 
             var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, Constants.Movies.MostFeaturedActor);
-        }
-
-        private async Task<PersonPoster> GetMostFeaturedDirector(List<string> collectionIds)
-        {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Director);
-
-            var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, Constants.Movies.MostFeaturedDirector);
-        }
-
-        private async Task<PersonPoster> GetMostFeaturedWriter(List<string> collectionIds)
-        {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Writer);
-
-            var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, Constants.Movies.MostFeaturedWriter);
+            return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)

@@ -18,12 +18,16 @@ namespace EmbyStat.Common
             public const string Longest = "MOVIES.LONGEST";
             public const string YoungestAdded = "MOVIES.YOUNGESTADDED";
             public const string TotalPlayLength = "MOVIES.TOTALPLAYLENGTH";
-            public const string MostFeaturedActor = "MOVIES.MOSTFEATUREDACTOR";
-            public const string MostFeaturedDirector = "MOVIES.MOSTFEATUREDDIRECTOR";
-            public const string MostFeaturedWriter = "MOVIES.MOSTFEATUREDWRITER";
-            public const string TotalActors = "MOVIES.TOTALACTORS";
-            public const string TotalDirectors = "MOVIES.TOTALDIRECTORS";
-            public const string TotalWriters = "MOVIES.TOTALWRITERS";
+        }
+
+        public static class Common
+        {
+            public const string TotalActors = "COMMON.TOTALACTORS";
+            public const string TotalDirectors = "COMMON.TOTALDIRECTORS";
+            public const string TotalWriters = "COMMON.TOTALWRITERS";
+            public const string MostFeaturedActor = "COMMON.MOSTFEATUREDACTOR";
+            public const string MostFeaturedDirector = "COMMON.MOSTFEATUREDDIRECTOR";
+            public const string MostFeaturedWriter = "COMMON.MOSTFEATUREDWRITER";
         }
 
         public static class Shows

@@ -2,12 +2,15 @@ import { Action } from '@ngrx/store';
 import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
 import { ShowGraphs } from '../models/showGraphs';
+import { PersonStats } from '../../shared/models/personStats';
 
 export enum ShowActionTypes {
   LOAD_COLLECTIONS = '[Shows] Load Show Collections',
   LOAD_COLLECTIONS_SUCCESS = '[Shows] Load Show Collections Success',
   LOAD_STATS_GENERAL = '[Shows] Load General Show Stats',
   LOAD_STATS_GENERAL_SUCCESS = '[Shows] Load General Show Stats Success',
+  LOAD_STATS_PERSON = '[Shows] Load Person Stats',
+  LOAD_STATS_PERSON_SUCCESS = '[Shows] Load Person Stats Success',
   LOAD_GRAPHS = '[Shows] Load Show Graphs',
   LOAD_GRAPHS_SUCCESS = '[Shows] Load Show Graphs Success',
   CLEAR_GRAPHS_SUCCESS = '[Shows] Clear Show Graphs Success'
@@ -48,6 +51,17 @@ export class ClearGraphsSuccesAction implements Action {
   constructor(public payload = null) { }
 }
 
+export class LoadPersonStatsAction implements Action {
+  readonly type = ShowActionTypes.LOAD_STATS_PERSON;
+  constructor(public payload: string[]) { }
+}
+
+export class LoadPersonStatsSuccessAction implements Action {
+  readonly type = ShowActionTypes.LOAD_STATS_PERSON_SUCCESS;
+  constructor(public payload: PersonStats) { }
+}
+
 export type ShowActions = LoadShowCollectionsAction | LoadShowCollectionsSuccessAction
   | LoadGeneralStatsAction | LoadGeneralStatsSuccessAction
-  | LoadGraphsAction | LoadGraphsSuccessAction | ClearGraphsSuccesAction;
+  | LoadGraphsAction | LoadGraphsSuccessAction | ClearGraphsSuccesAction
+  | LoadPersonStatsAction | LoadPersonStatsSuccessAction;

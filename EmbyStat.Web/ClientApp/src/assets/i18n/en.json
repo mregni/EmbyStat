@@ -29,7 +29,13 @@
     "GRAPHS": "graphs",
     "PEOPLE": "people",
     "SUSPICIOUS": "suspicious",
-    "SHOWS": "shows"
+    "SHOWS": "shows",
+    "TOTALACTORS": "Total actors",
+    "TOTALDIRECTORS": "Total directors",
+    "TOTALWRITERS": "Total writers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
@@ -92,12 +98,6 @@
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
     "YOUNGESTADDED": "Youngest added",
-    "TOTALACTORS": "Total actors",
-    "TOTALDIRECTORS": "Total directors",
-    "TOTALWRITERS": "Total writers",
-    "MOSTFEATUREDACTOR": "Most featured actor",
-    "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
     "DUPLICATEMOVIES": "duplicate movies",
     "TOSHORTMOVIES": "movies that are very short"

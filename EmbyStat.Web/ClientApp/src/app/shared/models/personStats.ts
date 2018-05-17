@@ -1,7 +1,7 @@
-import { Card } from '../../shared/models/card';
-import { PersonPoster } from '../../shared/models/personPoster';
+import { Card } from './card';
+import { PersonPoster } from './personPoster';
 
-export class MoviePersonStats {
+export class PersonStats {
   public totalActorCount: Card;
   public totalDirectorCount: Card;
   public totalWriterCount: Card;

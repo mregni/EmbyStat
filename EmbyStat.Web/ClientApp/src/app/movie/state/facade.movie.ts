@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/throw';
 
 import { MovieStats } from '../models/movieStats';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
 import { Collection } from '../../shared/models/collection';
 import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
@@ -35,7 +35,7 @@ export class MovieFacade {
     return this.generalStats$;
   }
 
-  getPeopleStats(list: string[]): Observable<MoviePersonStats> {
+  getPeopleStats(list: string[]): Observable<PersonStats> {
     this.store.dispatch(new LoadPersonStatsAction(list));
     return this.personStats$;
   }

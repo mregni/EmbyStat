@@ -6,6 +6,7 @@ using EmbyStat.Common.Models;
 using EmbyStat.Services.Models;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
+using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces
 {
@@ -13,7 +14,7 @@ namespace EmbyStat.Services.Interfaces
     {
         List<Collection> GetMovieCollections();
         MovieStats GetGeneralStatsForCollections(List<string> collectionIds);
-        Task<MoviePersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
+        Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
         MovieGraphs GetGraphs(List<string> collectionIds);
         SuspiciousTables GetSuspiciousMovies(List<string> collectionsIds);
     }

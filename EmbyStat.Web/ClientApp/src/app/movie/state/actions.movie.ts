@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { MovieStats } from '../models/movieStats';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
 import { Collection } from '../../shared/models/collection';
 import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
@@ -46,7 +46,7 @@ export class LoadPersonStatsAction implements Action {
 
 export class LoadPersonStatsSuccessAction implements Action {
   readonly type = MovieActionTypes.LOAD_STATS_PERSON_SUCCESS;
-  constructor(public payload: MoviePersonStats) { }
+  constructor(public payload: PersonStats) { }
 }
 
 export class LoadSuspiciousAction implements Action {

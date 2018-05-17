@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Show;
 using EmbyStat.Controllers.ViewModels.Stat;
@@ -45,6 +46,14 @@ namespace EmbyStat.Controllers
             var convert = Mapper.Map<ShowGraphsViewModel>(result);
             return Ok(convert);
 
+        }
+
+        [HttpGet]
+        [Route("personstats")]
+        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
+        {
+            var result = await _showService.GetPeopleStats(collectionIds);
+            return Ok(Mapper.Map<PersonStatsViewModel>(result));
         }
     }
 }

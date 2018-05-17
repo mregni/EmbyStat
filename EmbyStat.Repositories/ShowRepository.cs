@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
+using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -223,6 +225,88 @@ namespace EmbyStat.Repositories
                 }
 
                 return query.Sum(x => x.RunTimeTicks ?? 0);
+            }
+        }
+
+        public int GetTotalPersonByType(List<string> collections, string type)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Shows.Include(x => x.ExtraPersons).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
+                var people = extraPerson.DistinctBy(x => x.PersonId);
+                return people.Count(x => x.Type == type);
+            }
+        }
+
+        public string GetMostFeaturedPerson(List<string> collections, string type)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Shows.Include(x => x.ExtraPersons).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var person = query
+                    .SelectMany(x => x.ExtraPersons)
+                    .AsEnumerable()
+                    .Where(x => x.Type == type)
+                    .GroupBy(x => x.PersonId)
+                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Id);
+                return person.FirstOrDefault();
+            }
+        }
+
+        public List<Show> GetAll(List<string> collections, bool inludeSubs = false)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Shows.AsQueryable();
+
+                if (inludeSubs)
+                {
+                    query = query
+                        .Include(x => x.ExtraPersons)
+                        .Include(x => x.MediaGenres);
+
+                }
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                return query.ToList();
+            }
+        }
+
+        public List<string> GetGenres(List<string> collections)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context.Shows.Include(x => x.MediaGenres).AsQueryable();
+
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+
+                var genres = query
+                    .SelectMany(x => x.MediaGenres)
+                    .Select(x => x.GenreId)
+                    .Distinct();
+
+                return genres.ToList();
             }
         }
     }

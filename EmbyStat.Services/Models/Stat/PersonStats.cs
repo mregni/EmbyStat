@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Services.Models.Stat;
+﻿using System.Collections.Generic;
 
-namespace EmbyStat.Services.Models.Movie
+namespace EmbyStat.Services.Models.Stat
 {
-    public class MoviePersonStats
+    public class PersonStats
     {
         public Card TotalActorCount { get; set; }
         public Card TotalDirectorCount { get; set; }
