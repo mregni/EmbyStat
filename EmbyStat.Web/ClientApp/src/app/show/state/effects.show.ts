@@ -12,11 +12,14 @@ import {
   LoadGeneralStatsAction,
   LoadGeneralStatsSuccessAction,
   LoadGraphsAction,
-  LoadGraphsSuccessAction
+  LoadGraphsSuccessAction,
+  LoadPersonStatsAction,
+  LoadPersonStatsSuccessAction
 } from './actions.show';
 import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
 import { ShowGraphs } from '../models/showGraphs';
+import { PersonStats } from '../../shared/models/personStats';
 
 import { EffectError } from '../../states/app.actions';
 
@@ -61,11 +64,24 @@ export class ShowEffects {
     .pipe(
       map((data: LoadGraphsAction) => data.payload),
       switchMap((list: string[]) => {
-        console.log(list);
         return this.showService.getGraphs(list);
       }),
       map((graphs: ShowGraphs) => {
         return new LoadGraphsSuccessAction(graphs);
+      }),
+      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+  );
+
+  @Effect()
+  getPersonStats$ = this.actions$
+    .ofType(ShowActionTypes.LOAD_STATS_PERSON)
+    .pipe(
+      map((data: LoadPersonStatsAction) => data.payload),
+      switchMap((list: string[]) => {
+        return this.showService.getPersonStats(list);
+      }),
+      map((stats: PersonStats) => {
+        return new LoadPersonStatsSuccessAction(stats);
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );

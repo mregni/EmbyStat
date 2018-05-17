@@ -84,14 +84,14 @@ namespace EmbyStat.Services
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
         {
-            var movies = _showRepository.GetAll(collectionIds);
+            var shows = _showRepository.GetAll(collectionIds, true);
             var genreIds = _showRepository.GetGenres(collectionIds);
             var genres = _genreRepository.GetListByIds(genreIds);
 
             var list = new List<PersonPoster>();
             foreach (var genre in genres.OrderBy(x => x.Name))
             {
-                var selectedMovies = movies.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
+                var selectedMovies = shows.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
                 var personId = selectedMovies
                     .SelectMany(x => x.ExtraPersons)
                     .Where(x => x.Type == Constants.Actor)

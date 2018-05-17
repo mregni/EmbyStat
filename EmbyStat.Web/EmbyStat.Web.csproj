@@ -56,8 +56,8 @@
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <None Remove="ClientApp\src\app\movie\models\moviePersonStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
+    <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\shortMovie.ts" />
     <None Remove="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
     <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
@@ -109,7 +109,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\movie\models\moviePersonStats.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\shortMovie.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\suspiciousMovies.ts" />

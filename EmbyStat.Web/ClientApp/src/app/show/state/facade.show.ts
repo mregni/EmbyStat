@@ -6,11 +6,13 @@ import 'rxjs/add/observable/throw';
 import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
 import { ShowGraphs } from '../models/showGraphs';
+import { PersonStats } from '../../shared/models/personStats';
 
 import { ShowQuery } from './reducer.show';
 import {
   LoadShowCollectionsAction, LoadGeneralStatsAction,
-  LoadGraphsAction, ClearGraphsSuccesAction
+  LoadGraphsAction, ClearGraphsSuccesAction,
+  LoadPersonStatsAction
   } from './actions.show';
 
 import { ApplicationState } from '../../states/app.state';
@@ -24,6 +26,7 @@ export class ShowFacade {
   collections$ = this.store.select(ShowQuery.getCollections);
   generalStats$ = this.store.select(ShowQuery.getGeneralStats);
   graphs$ = this.store.select(ShowQuery.getGraphs);
+  personStats$ = this.store.select(ShowQuery.getPersonStats);
 
   getCollections(): Observable<Collection[]> {
     this.store.dispatch(new LoadShowCollectionsAction());
@@ -42,5 +45,10 @@ export class ShowFacade {
 
   clearGraphs(): void {
     this.store.dispatch(new ClearGraphsSuccesAction);
+  }
+
+  getPersonStats(list: string[]): Observable<PersonStats> {
+    this.store.dispatch(new LoadPersonStatsAction(list));
+    return this.personStats$;
   }
 }
