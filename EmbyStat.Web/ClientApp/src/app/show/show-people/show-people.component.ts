@@ -22,7 +22,6 @@ export class ShowPeopleComponent implements OnInit {
       collection = [];
     }
 
-    console.log("boe");
     this._selectedCollections = collection;
     this.stats$ = this.showFacade.getPersonStats(collection);
   }

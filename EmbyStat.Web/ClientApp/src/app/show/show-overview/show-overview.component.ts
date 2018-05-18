@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 
 import { ShowFacade } from '../state/facade.show';
 import { Collection } from '../../shared/models/collection';
-import { ShowChartsService } from '../service/show-charts.service'
+import { ShowChartsService } from '../service/show-charts.service';
 
 @Component({
   selector: 'app-show-overview',

@@ -39,17 +39,13 @@ export class ShowCollectionComponent implements OnDestroy {
     const percentage = collected / (collected + missing) * 100;
     if (percentage === 100) {
       return '#5B990D';
-    }
-    else if (percentage >= 80) {
+    } else if (percentage >= 80) {
       return '#9DB269';
-    }
-    else if (percentage >= 60) {
+    } else if (percentage >= 60) {
       return '#F2A70D';
-    }
-    else if (percentage >= 40) {
+    } else if (percentage >= 40) {
       return '#F2700D';
-    }
-    else {
+    } else {
       return '#B11A10';
     }
   }
