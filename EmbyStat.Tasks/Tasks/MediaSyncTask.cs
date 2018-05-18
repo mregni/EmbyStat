@@ -184,14 +184,15 @@ namespace EmbyStat.Tasks.Tasks
                     {
                         var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
                         eps.ForEach(x => x.CollectionId = rootItems[i].Id);
-
                         episodes.AddRange(eps);
+
                         seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
                     }
 
                     _progressLogger.LogInformation($"Processing show ({show.Id}) {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
 
                     var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
+
                     _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
 
                     var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
@@ -207,7 +208,6 @@ namespace EmbyStat.Tasks.Tasks
         private async Task SyncMissingEpisodes(CancellationToken cancellationToken, IProgress<double> progress, DateTime? lastUpdateFromTvdb)
         {
             await _tvdbClient.Login(cancellationToken);
-            var lastTvdbUpdate = _configurationRepository.GetSingle().LastTvdbUpdate;
 
             var shows = _showRepository
                 .GetAllShows(new string[]{})
@@ -216,9 +216,9 @@ namespace EmbyStat.Tasks.Tasks
 
             var showsWithMissingEpisodes = shows.Where(x => !x.TvdbSynced).ToList();
 
-            if (lastTvdbUpdate.HasValue)
+            if (lastUpdateFromTvdb.HasValue)
             {
-                var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB), lastTvdbUpdate.Value, cancellationToken);
+                var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB), lastUpdateFromTvdb.Value, cancellationToken);
                 showsWithMissingEpisodes.AddRange(shows.Where(x => showsThatNeedAnUpdate.Any(y => y == x.TVDB)));
                 showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
             }
@@ -358,7 +358,7 @@ namespace EmbyStat.Tasks.Tasks
                 {
                     ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.HomePageUrl,
                     ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
-                    ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId, ItemFields.People
+                    ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId
                 }
             };
 

@@ -236,7 +236,7 @@ namespace EmbyStat.Tasks
             }
             catch (Exception ex)
             {
-                Log.Error("Error", ex);
+                Log.Error(ex, "Error");
 
                 failureException = ex;
 

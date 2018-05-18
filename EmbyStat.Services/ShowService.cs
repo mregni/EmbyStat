@@ -74,33 +74,34 @@ namespace EmbyStat.Services
             {
                 TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
                 TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
-                TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters),
-                MostFeaturedActor = await GetMostFeaturedPerson(collectionIds, Constants.Actor, Constants.Common.MostFeaturedActor),
-                MostFeaturedDirector = await GetMostFeaturedPerson(collectionIds, Constants.Director, Constants.Common.MostFeaturedDirector),
-                MostFeaturedWriter = await GetMostFeaturedPerson(collectionIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
-                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionIds)
+                TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters)
             };
         }
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
         {
-            var shows = _showRepository.GetAll(collectionIds, true);
+            var shows = _showRepository.GetAll(collectionIds);
             var genreIds = _showRepository.GetGenres(collectionIds);
             var genres = _genreRepository.GetListByIds(genreIds);
 
             var list = new List<PersonPoster>();
             foreach (var genre in genres.OrderBy(x => x.Name))
             {
-                var selectedMovies = shows.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
-                var personId = selectedMovies
+                var selectedShows = shows.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
+                var episodes = _showRepository.GetAllEpisodesForShows(selectedShows.Select(x => x.Id), true);
+
+                var grouping = episodes
                     .SelectMany(x => x.ExtraPersons)
                     .Where(x => x.Type == Constants.Actor)
                     .GroupBy(x => x.PersonId)
                     .Select(group => new { Id = group.Key, Count = group.Count() })
-                    .OrderByDescending(x => x.Count)
+                    .OrderByDescending(x => x.Count);
+
+                var personId = grouping
                     .Select(x => x.Id)
                     .FirstOrDefault();
-
+                //Compleet buggy dit! Er moet gekeken worden naar het aantal episodes ipv shows
+                //Misschien ExtraPerson weer toevoegen aan Episode type in sync!
                 var person = await _personService.GetPersonById(personId);
                 list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
             }

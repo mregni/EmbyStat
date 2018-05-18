@@ -160,6 +160,29 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool inludeSubs = false)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var episodeIds = context.Seasons
+                    .Where(x => showIds.Any(y => y == x.ParentId))
+                    .Include(x => x.SeasonEpisodes)
+                    .SelectMany(x => x.SeasonEpisodes)
+                    .Select(x => x.EpisodeId);
+
+                var query = context.Episodes.AsQueryable();
+
+                if (inludeSubs)
+                {
+                    query = query
+                        .Include(x => x.ExtraPersons);
+                }
+
+                query = query.Where(x => episodeIds.Any(y => y == x.Id));
+                return query.ToList();
+            }
+        }
+
         public void SetTvdbSynced(string showId)
         {
             using (var context = new ApplicationDbContext())
