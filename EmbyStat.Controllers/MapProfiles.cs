@@ -54,6 +54,7 @@ namespace EmbyStat.Controllers.Helpers
             CreateMap<ShortMovie, ShortMovieViewModel>();
 	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
 	        CreateMap<ShowStat, ShowStatViewModel>();
+	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

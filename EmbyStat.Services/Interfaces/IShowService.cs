@@ -11,8 +11,9 @@ namespace EmbyStat.Services.Interfaces
     public interface IShowService
     {
         IEnumerable<Collection> GetShowCollections();
-        ShowStat GetGeneralStats(List<string> collectionIds);
-        ShowGraphs GetGraphs(List<string> collectionIds);
-        Task<PersonStats> GetPeopleStats(List<string> collectionsIds);
+        ShowStat GetGeneralStats(IEnumerable<string> collectionIds);
+        ShowGraphs GetGraphs(IEnumerable<string> collectionIds);
+        Task<PersonStats> GetPeopleStats(IEnumerable<string> collectionsIds);
+        List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds);
     }
 }

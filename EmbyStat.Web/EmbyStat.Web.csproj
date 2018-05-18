@@ -78,6 +78,7 @@
     <None Remove="ClientApp\src\app\shared\models\showPoster.ts" />
     <None Remove="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
+    <None Remove="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <None Remove="ClientApp\src\app\show\models\showGraphs.ts" />
     <None Remove="ClientApp\src\app\show\models\showStats.ts" />
     <None Remove="ClientApp\src\app\show\models\showStore.ts" />
@@ -131,6 +132,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\showPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showGraphs.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showStore.ts" />

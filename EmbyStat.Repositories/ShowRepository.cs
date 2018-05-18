@@ -251,7 +251,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(List<string> collections, string type)
+        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -268,7 +268,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(List<string> collections, string type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -291,29 +291,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Show> GetAll(List<string> collections, bool inludeSubs = false)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Shows.AsQueryable();
-
-                if (inludeSubs)
-                {
-                    query = query
-                        .Include(x => x.ExtraPersons)
-                        .Include(x => x.MediaGenres);
-
-                }
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                return query.ToList();
-            }
-        }
-
-        public List<string> GetGenres(List<string> collections)
+        public List<string> GetGenres(IEnumerable<string> collections)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -330,6 +308,31 @@ namespace EmbyStat.Repositories
                     .Distinct();
 
                 return genres.ToList();
+            }
+        }
+
+        public int GetEpisodeCountForShow(string showId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var count = context.Seasons
+                    .Where(x => x.ParentId == showId)
+                    .Include(x => x.SeasonEpisodes)
+                    .SelectMany(x => x.SeasonEpisodes)
+                    .Count();
+
+                return count;
+            }
+        }
+
+        public int GetSeasonCountForShow(string showId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var count = context.Seasons
+                    .Count(x => x.ParentId == showId);
+
+                return count;
             }
         }
     }

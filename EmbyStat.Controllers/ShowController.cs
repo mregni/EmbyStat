@@ -31,7 +31,7 @@ namespace EmbyStat.Controllers
 
         [HttpGet]
         [Route("generalstats")]
-        public IActionResult GetGeneralStats(List<string> collectionIds)
+        public IActionResult GetGeneralStats(IEnumerable<string> collectionIds)
         {
             var result = _showService.GetGeneralStats(collectionIds);
             var convert = Mapper.Map<ShowStatViewModel>(result);
@@ -40,7 +40,7 @@ namespace EmbyStat.Controllers
 
         [HttpGet]
         [Route("graphs")]
-        public IActionResult GetGraphs(List<string> collectionIds)
+        public IActionResult GetGraphs(IEnumerable<string> collectionIds)
         {
             var result = _showService.GetGraphs(collectionIds);
             var convert = Mapper.Map<ShowGraphsViewModel>(result);
@@ -50,10 +50,18 @@ namespace EmbyStat.Controllers
 
         [HttpGet]
         [Route("personstats")]
-        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
+        public async Task<IActionResult> GetPersonStats(IEnumerable<string> collectionIds)
         {
             var result = await _showService.GetPeopleStats(collectionIds);
             return Ok(Mapper.Map<PersonStatsViewModel>(result));
+        }
+
+        [HttpGet]
+        [Route("collectedlist")]
+        public IActionResult GetCollection(IEnumerable<string> collectionIds)
+        {
+            var result = _showService.GetCollectionRows(collectionIds);
+            return Ok(Mapper.Map<IList<ShowCollectionRowViewModel>>(result));
         }
     }
 }

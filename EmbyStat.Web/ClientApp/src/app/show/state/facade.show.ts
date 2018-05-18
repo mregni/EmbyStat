@@ -7,12 +7,13 @@ import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
 import { ShowGraphs } from '../models/showGraphs';
 import { PersonStats } from '../../shared/models/personStats';
+import { ShowCollectionRow } from '../models/showCollectionRow';
 
 import { ShowQuery } from './reducer.show';
 import {
   LoadShowCollectionsAction, LoadGeneralStatsAction,
   LoadGraphsAction, ClearGraphsSuccesAction,
-  LoadPersonStatsAction
+  LoadPersonStatsAction, LoadCollectedListAction
   } from './actions.show';
 
 import { ApplicationState } from '../../states/app.state';
@@ -27,6 +28,7 @@ export class ShowFacade {
   generalStats$ = this.store.select(ShowQuery.getGeneralStats);
   graphs$ = this.store.select(ShowQuery.getGraphs);
   personStats$ = this.store.select(ShowQuery.getPersonStats);
+  collectedList$ = this.store.select(ShowQuery.getCollectedList);
 
   getCollections(): Observable<Collection[]> {
     this.store.dispatch(new LoadShowCollectionsAction());
@@ -50,5 +52,10 @@ export class ShowFacade {
   getPersonStats(list: string[]): Observable<PersonStats> {
     this.store.dispatch(new LoadPersonStatsAction(list));
     return this.personStats$;
+  }
+
+  getCollectionList(list: string[]): Observable<ShowCollectionRow[]> {
+    this.store.dispatch(new LoadCollectedListAction(list));
+    return this.collectedList$;
   }
 }

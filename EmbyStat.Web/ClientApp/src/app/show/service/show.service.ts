@@ -7,6 +7,7 @@ import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
 import { ShowGraphs } from '../models/showGraphs';
 import { PersonStats } from '../../shared/models/personStats';
+import { ShowCollectionRow } from '../models/showCollectionRow';
 
 @Injectable()
 export class ShowService {
@@ -14,6 +15,8 @@ export class ShowService {
   private readonly getGeneralStatsUrl: string = '/show/generalstats';
   private readonly getGraphsUrl: string = '/show/graphs';
   private readonly getPersonStatsUrl: string = '/show/personstats';
+  private readonly getCollectedListUrl: string = '/show/collectedlist';
+
   constructor(private http: HttpClient) {
 
   }
@@ -35,5 +38,10 @@ export class ShowService {
   getPersonStats(list: string[]): Observable<PersonStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
     return this.http.get<PersonStats>('/api' + this.getPersonStatsUrl + params);
+  }
+
+  getCollectedList(list: string[]): Observable<ShowCollectionRow[]> {
+    const params = ListToQueryParam.convert('collectionIds', list);
+    return this.http.get<ShowCollectionRow[]>('/api' + this.getCollectedListUrl + params);
   }
 }

@@ -3,6 +3,7 @@ import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
 import { ShowGraphs } from '../models/showGraphs';
 import { PersonStats } from '../../shared/models/personStats';
+import { ShowCollectionRow } from '../models/showCollectionRow';
 
 export enum ShowActionTypes {
   LOAD_COLLECTIONS = '[Shows] Load Show Collections',
@@ -13,7 +14,9 @@ export enum ShowActionTypes {
   LOAD_STATS_PERSON_SUCCESS = '[Shows] Load Person Stats Success',
   LOAD_GRAPHS = '[Shows] Load Show Graphs',
   LOAD_GRAPHS_SUCCESS = '[Shows] Load Show Graphs Success',
-  CLEAR_GRAPHS_SUCCESS = '[Shows] Clear Show Graphs Success'
+  CLEAR_GRAPHS_SUCCESS = '[Shows] Clear Show Graphs Success',
+  LOAD_COLLECTED_LIST = '[Shows] Load Collected List',
+  LOAD_COLLECTED_LIST_SUCCESS = '[Shows] Load Collected List Success'
 }
 
 export class LoadShowCollectionsAction implements Action {
@@ -61,7 +64,18 @@ export class LoadPersonStatsSuccessAction implements Action {
   constructor(public payload: PersonStats) { }
 }
 
+export class LoadCollectedListAction implements Action {
+  readonly type = ShowActionTypes.LOAD_COLLECTED_LIST;
+  constructor(public payload: string[]) { }
+}
+
+export class LoadCollectedListSuccessAction implements Action {
+  readonly type = ShowActionTypes.LOAD_COLLECTED_LIST_SUCCESS;
+  constructor(public payload: ShowCollectionRow[]) { }
+}
+
 export type ShowActions = LoadShowCollectionsAction | LoadShowCollectionsSuccessAction
   | LoadGeneralStatsAction | LoadGeneralStatsSuccessAction
   | LoadGraphsAction | LoadGraphsSuccessAction | ClearGraphsSuccesAction
-  | LoadPersonStatsAction | LoadPersonStatsSuccessAction;
+  | LoadPersonStatsAction | LoadPersonStatsSuccessAction
+  | LoadCollectedListAction | LoadCollectedListSuccessAction;

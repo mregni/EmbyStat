@@ -10,7 +10,8 @@ const INITIAL_STATE: ShowStore = {
   collections: [],
   showStats: new ShowStats(),
   graphs: new ShowGraphs(),
-  personStats: new PersonStats()
+  personStats: new PersonStats(),
+  showCollection: []
 };
 
 export function ShowReducer(state: ShowStore = INITIAL_STATE, action: ShowActions) {
@@ -40,7 +41,12 @@ export function ShowReducer(state: ShowStore = INITIAL_STATE, action: ShowAction
       return {
         ...state,
         personStats: action.payload
-      }
+      };
+    case ShowActionTypes.LOAD_COLLECTED_LIST_SUCCESS:
+      return {
+        ...state,
+        showCollection: action.payload
+      };
   default:
     return state;
   }
@@ -51,4 +57,5 @@ export namespace ShowQuery {
   export const getGeneralStats = (state: ApplicationState) => state.shows.showStats;
   export const getGraphs = (state: ApplicationState) => state.shows.graphs;
   export const getPersonStats = (state: ApplicationState) => state.shows.personStats;
+  export const getCollectedList = (state: ApplicationState) => state.shows.showCollection;
 }

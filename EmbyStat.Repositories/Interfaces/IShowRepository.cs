@@ -21,9 +21,10 @@ namespace EmbyStat.Repositories.Interfaces
         int CountEpisodes(string showId);
         int CountEpisodes(IEnumerable<string> collectionIds);
         long GetPlayLength(IEnumerable<string> collectionIds);
-        int GetTotalPersonByType(List<string> collections, string type);
-        string GetMostFeaturedPerson(List<string> collections, string type);
-        List<Show> GetAll(List<string> collections, bool inludeSubs = false);
-        List<string> GetGenres(List<string> collections);
+        int GetTotalPersonByType(IEnumerable<string> collections, string type);
+        string GetMostFeaturedPerson(IEnumerable<string> collections, string type);
+        List<string> GetGenres(IEnumerable<string> collections);
+        int GetEpisodeCountForShow(string showId);
+        int GetSeasonCountForShow(string showId);
     }
 }

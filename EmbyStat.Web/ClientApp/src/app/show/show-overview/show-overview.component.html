@@ -24,11 +24,16 @@
         <app-show-charts [selectedCollections]="selectedCollections"></app-show-charts>
       </div>
     </mat-tab>
-    <mat-tab label="{{ 'COMMON.PEOPLE' | translate | capitalizeFirst}}">
+    <mat-tab label="{{ 'COMMON.COLLECTION' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
+        <app-show-collection [selectedCollections]="selectedCollections"></app-show-collection>
+      </div>
+    </mat-tab>
+    <!--<mat-tab label="{{ 'COMMON.PEOPLE' | translate | capitalizeFirst}}">
       <div class="media__tab-content">
         <app-show-people [selectedCollections]="selectedCollections"></app-show-people>
       </div>
-    </mat-tab>
+    </mat-tab>-->
   </mat-tab-group>
 </div>
 

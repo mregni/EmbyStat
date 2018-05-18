@@ -12,6 +12,7 @@ import { ShowOverviewComponent } from './show-overview/show-overview.component';
 import { ShowGeneralComponent } from './show-general/show-general.component';
 import { ShowChartsComponent } from './show-charts/show-charts.component';
 import { ShowPeopleComponent } from './show-people/show-people.component';
+import { ShowCollectionComponent } from './show-collection/show-collection.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,6 @@ import { ShowPeopleComponent } from './show-people/show-people.component';
     ShowChartsService,
     ShowFacade
   ],
-  declarations: [ShowOverviewComponent, ShowGeneralComponent, ShowChartsComponent, ShowPeopleComponent]
+  declarations: [ShowOverviewComponent, ShowGeneralComponent, ShowChartsComponent, ShowPeopleComponent, ShowCollectionComponent]
 })
 export class ShowModule { }

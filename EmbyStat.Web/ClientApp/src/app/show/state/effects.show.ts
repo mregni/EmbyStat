@@ -5,6 +5,7 @@ import { map, switchMap, catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
 import { ShowService } from '../service/show.service';
+import { ShowCollectionRow } from '../models/showCollectionRow';
 import {
   ShowActionTypes,
   LoadShowCollectionsAction,
@@ -14,7 +15,9 @@ import {
   LoadGraphsAction,
   LoadGraphsSuccessAction,
   LoadPersonStatsAction,
-  LoadPersonStatsSuccessAction
+  LoadPersonStatsSuccessAction,
+  LoadCollectedListAction,
+  LoadCollectedListSuccessAction
 } from './actions.show';
 import { Collection } from '../../shared/models/collection';
 import { ShowStats } from '../models/showStats';
@@ -56,33 +59,47 @@ export class ShowEffects {
       return new LoadGeneralStatsSuccessAction(stats);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-  );
+    );
 
   @Effect()
   getGraphs$ = this.actions$
     .ofType(ShowActionTypes.LOAD_GRAPHS)
     .pipe(
-      map((data: LoadGraphsAction) => data.payload),
-      switchMap((list: string[]) => {
-        return this.showService.getGraphs(list);
-      }),
-      map((graphs: ShowGraphs) => {
-        return new LoadGraphsSuccessAction(graphs);
-      }),
-      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-  );
+    map((data: LoadGraphsAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.showService.getGraphs(list);
+    }),
+    map((graphs: ShowGraphs) => {
+      return new LoadGraphsSuccessAction(graphs);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    );
 
   @Effect()
   getPersonStats$ = this.actions$
     .ofType(ShowActionTypes.LOAD_STATS_PERSON)
     .pipe(
-      map((data: LoadPersonStatsAction) => data.payload),
-      switchMap((list: string[]) => {
-        return this.showService.getPersonStats(list);
-      }),
-      map((stats: PersonStats) => {
-        return new LoadPersonStatsSuccessAction(stats);
-      }),
-      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    map((data: LoadPersonStatsAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.showService.getPersonStats(list);
+    }),
+    map((stats: PersonStats) => {
+      return new LoadPersonStatsSuccessAction(stats);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+    );
+
+  @Effect()
+  getShowCollection$ = this.actions$
+    .ofType(ShowActionTypes.LOAD_COLLECTED_LIST)
+    .pipe(
+    map((data: LoadCollectedListAction) => data.payload),
+    switchMap((list: string[]) => {
+      return this.showService.getCollectedList(list);
+    }),
+      map((list: ShowCollectionRow[]) => {
+      return new LoadCollectedListSuccessAction(list);
+    }),
+    catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
     );
 }

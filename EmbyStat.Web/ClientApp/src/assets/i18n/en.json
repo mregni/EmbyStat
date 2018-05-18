@@ -35,10 +35,15 @@
     "TOTALWRITERS": "Total writers",
     "MOSTFEATUREDACTOR": "Most featured actor",
     "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer"
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "COLLECTION": "collection",
+    "PREMIEREDATE": "premiere date",
+    "STATUS": "status",
+    "PERCENTAGE": "percentage",
+    "COLLECTED": "collected" 
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
@@ -50,7 +55,7 @@
     "EMBYADDRESS": "Emby ip address",
     "EMBYUSERNAME": "Emby admin username",
     "EMBYPASSWORD": "Emby admin password",
-    "DURATIONINMINUTES": "Duration in minutes" 
+    "DURATIONINMINUTES": "Duration in minutes"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -61,11 +66,11 @@
   "MENU": {
     "DASHBOARD": "Dashboard",
     "MOVIES": "Movies",
-    "SHOWS": "Shows", 
+    "SHOWS": "Shows",
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
-    "TASKS": "Tasks", 
-    "SERVER": "Emby server" 
+    "TASKS": "Tasks",
+    "SERVER": "Emby server"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -113,7 +118,11 @@
     "YOUNGESTPREMIERED": "Yougenst premiered show",
     "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses" 
+    "SHOWSTATUSGRAPH": "Show statuses",
+    "SEASONS": "seasons",
+    "MISSINGEPISODES": "missing episodes",
+    "CONTINUING": "continuing",
+    "ENDED": "ended"
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
@@ -143,5 +152,5 @@
     "AT": "at {{time}}",
     "TRIGGERTYPE": "Trigger type",
     "SAVETRIGGER": "Save trigger"
-  } 
+  }
 }
