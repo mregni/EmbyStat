@@ -58,10 +58,10 @@ namespace EmbyStat.Web
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 		    services.AddAutoMapper(typeof(MapProfiles));
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new BusinessExceptionFilterAttribute());
-            }).AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")));
+		    services
+		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
+		        .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
+		        .AddApiExplorer().AddJsonFormatters();
 
             services.AddSwaggerGen(c =>
 			{

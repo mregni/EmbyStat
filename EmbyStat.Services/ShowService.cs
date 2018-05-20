@@ -191,7 +191,14 @@ namespace EmbyStat.Services
             foreach (var show in shows)
             {
                 var episodeCount = _showRepository.CountEpisodes(show.Id);
-                percentageList.Add((double)episodeCount / (episodeCount + show.MissingEpisodesCount));
+                if (episodeCount + show.MissingEpisodesCount == 0)
+                {
+                    percentageList.Add(0);
+                }
+                else
+                {
+                    percentageList.Add((double) episodeCount / (episodeCount + show.MissingEpisodesCount));
+                }
             }
 
             var groupedList = percentageList
