@@ -1,6 +1,6 @@
 import { Component, OnDestroy, Input } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
+import * as _ from 'lodash';
 
 import { ShowCollectionRow } from '../models/showCollectionRow';
 import { ShowFacade } from '../state/facade.show';
@@ -24,19 +24,24 @@ export class ShowCollectionComponent implements OnDestroy {
     }
 
     this._selectedCollections = collection;
-    this.dataSub = this.showFacade.getCollectionList(collection).subscribe(data => {
-      this.dataSource.data = data;
+    this.rowsSub = this.showFacade.getCollectionList(collection).subscribe(data => {
+      this.rows = data;
     });
-
   }
 
-  public displayedColumns = ['title', 'premiereDate', 'status', 'seasons', 'collected', 'percentage'];
-  public dataSource = new MatTableDataSource();
-  private dataSub: Subscription;
+  public rows: ShowCollectionRow[];
+  private rowsSub: Subscription;
+  private sortNameAsc = false;
+  private sortStatusAsc = false;
+  private sortSeasonsAsc = false;
+  private sortEpisodesAsc = false;
+  private sortpercentageAsc = false;
+  private sortDateAsc = false;
+
   constructor(private showFacade: ShowFacade) { }
 
-  public getColor(collected: number, missing: number): string {
-    const percentage = collected / (collected + missing) * 100;
+  public getColor(row: ShowCollectionRow): string {
+    const percentage = this.calculatePercentage(row) * 100;
     if (percentage === 100) {
       return '#5B990D';
     } else if (percentage >= 80) {
@@ -50,9 +55,48 @@ export class ShowCollectionComponent implements OnDestroy {
     }
   }
 
+  public order(column: string): void {
+    if (column === 'sortName') {
+      this.rows = _.orderBy(this.rows, ['sortName'], [this.boolToSortString(this.sortNameAsc)]);
+      this.sortNameAsc = !this.sortNameAsc;
+    } else if (column === 'status') {
+      this.rows = _.orderBy(this.rows, ['status', 'sortName'],
+        [this.boolToSortString(this.sortStatusAsc), this.boolToSortString(this.sortStatusAsc)]);
+      this.sortStatusAsc = !this.sortStatusAsc;
+    } else if (column === 'seasons') {
+      this.rows = _.orderBy(this.rows, ['seasons', 'sortName'],
+        [this.boolToSortString(this.sortSeasonsAsc), this.boolToSortString(this.sortSeasonsAsc)]);
+      this.sortSeasonsAsc = !this.sortSeasonsAsc;
+    } else if (column === 'episodes') {
+      this.rows = _.orderBy(this.rows, ['episodes', 'sortName'],
+        [this.boolToSortString(this.sortEpisodesAsc), this.boolToSortString(this.sortEpisodesAsc)]);
+      this.sortEpisodesAsc = !this.sortEpisodesAsc;
+    } else if (column === 'percentage') {
+      this.rows = _.orderBy(this.rows, [d => this.calculatePercentage(d), 'sortName'],
+        [this.boolToSortString(this.sortpercentageAsc), this.boolToSortString(this.sortpercentageAsc)]);
+      this.sortpercentageAsc = !this.sortpercentageAsc;
+    } else if (column === 'date') {
+      this.rows = _.orderBy(this.rows, ['premiereDate', 'sortName'],
+        [this.boolToSortString(this.sortDateAsc), this.boolToSortString(this.sortDateAsc)]);
+      this.sortDateAsc = !this.sortDateAsc;
+    }
+  }
+
+  public calculatePercentage(row: ShowCollectionRow): number {
+    if (row.episodes + row.missingEpisodes === 0) {
+      return 0;
+    } else {
+      return row.episodes / (row.episodes + row.missingEpisodes);
+    }
+  }
+
+  private boolToSortString(value: boolean): string {
+    return value ? 'asc' : 'desc';
+  }
+
   ngOnDestroy(): void {
-    if (this.dataSub !== undefined) {
-      this.dataSub.unsubscribe();
+    if (this.rowsSub !== undefined) {
+      this.rowsSub.unsubscribe();
     }
   }
 }

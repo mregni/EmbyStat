@@ -7,4 +7,6 @@ export class ShowCollectionRow {
   public premiereDate: Date;
   public status: boolean;
   public sortName: string;
+  public specials: number;
+  public percentage: number;
 }

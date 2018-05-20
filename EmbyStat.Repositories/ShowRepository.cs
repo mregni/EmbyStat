@@ -311,28 +311,39 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetEpisodeCountForShow(string showId)
+        public int GetEpisodeCountForShow(string showId, bool includeSpecials = false)
         {
             using (var context = new ApplicationDbContext())
             {
-                var count = context.Seasons
-                    .Where(x => x.ParentId == showId)
-                    .Include(x => x.SeasonEpisodes)
-                    .SelectMany(x => x.SeasonEpisodes)
-                    .Count();
+                var query = context.Seasons.AsQueryable();
+                query = query.Where(x => x.ParentId == showId);
+
+                if (!includeSpecials)
+                {
+                    query = query.Where(x => x.IndexNumber != 0);
+                }
+
+                var count = query.Include(x => x.SeasonEpisodes)
+                     .SelectMany(x => x.SeasonEpisodes)
+                     .Count();
 
                 return count;
             }
         }
 
-        public int GetSeasonCountForShow(string showId)
+        public int GetSeasonCountForShow(string showId, bool includeSpecials = false)
         {
             using (var context = new ApplicationDbContext())
             {
-                var count = context.Seasons
-                    .Count(x => x.ParentId == showId);
+                var query = context.Seasons.AsQueryable();
+                query = query.Where(x => x.ParentId == showId);
 
-                return count;
+                if (!includeSpecials)
+                {
+                    query = query.Where(x => x.IndexNumber != 0);
+                }
+                   
+                return query.Count();
             }
         }
     }

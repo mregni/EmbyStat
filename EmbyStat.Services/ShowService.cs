@@ -86,6 +86,8 @@ namespace EmbyStat.Services
             foreach (var show in shows)
             {
                 var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+                var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
+                var specialCount = totalEpisodeCount - episodeCount;
                 var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
 
                 result.Add(new ShowCollectionRow
@@ -94,6 +96,7 @@ namespace EmbyStat.Services
                     SortName = show.SortName,
                     Episodes = episodeCount,
                     Seasons = seasonCount,
+                    Specials = specialCount,
                     MissingEpisodes = show.MissingEpisodesCount,
                     PremiereDate = show.PremiereDate,
                     Status = show.Status == "Continuing"

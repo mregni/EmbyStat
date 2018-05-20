@@ -24,7 +24,7 @@ namespace EmbyStat.Repositories.Interfaces
         int GetTotalPersonByType(IEnumerable<string> collections, string type);
         string GetMostFeaturedPerson(IEnumerable<string> collections, string type);
         List<string> GetGenres(IEnumerable<string> collections);
-        int GetEpisodeCountForShow(string showId);
-        int GetSeasonCountForShow(string showId);
+        int GetEpisodeCountForShow(string showId, bool includeSpecials = false);
+        int GetSeasonCountForShow(string showId, bool includeSpecials = false);
     }
 }
