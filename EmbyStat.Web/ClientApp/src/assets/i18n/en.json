@@ -70,7 +70,8 @@
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
     "TASKS": "Tasks",
-    "SERVER": "Emby server"
+    "SERVER": "Emby server",
+    "LOGS": "Logs" 
   },
   "WIZARD": {
     "INTROLABEL": "Intro",

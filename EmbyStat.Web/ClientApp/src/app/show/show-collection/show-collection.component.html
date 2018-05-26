@@ -18,50 +18,7 @@
     <span *ngIf="!row.status">{{ 'SHOWS.ENDED' | translate | capitalizeFirst }}</span>
   </div>
   <div class="column">{{ row.seasons }}</div>
-  <div class="column">{{row.episodes }} <span *ngIf="row.specials > 0">+{{row.specials}}</span> / {{ row.episodes + row.missingEpisodes }}</div>
+  <div class="column">{{ row.episodes }} <span *ngIf="row.specials > 0">+{{row.specials}}</span> / {{ row.episodes + row.missingEpisodes }}</div>
   <div class="column">{{ calculatePercentage(row) * 100 | number:'1.0-1' }}%</div>
   <div class="column_small" [style.background-color]="getColor(row)"></div>
 </div>
-
-<!--<mat-table [dataSource]="dataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
-  <ng-container matColumnDef="frontColor">
-    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.background-color]="getColor(row.episodes, row.missingEpisodes)"></mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="title">
-    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.color]="getColor(row.episodes, row.missingEpisodes)">{{ row.title }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="premiereDate">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.color]="getColor(row.episodes, row.missingEpisodes)">{{ row.premiereDate | amLocal | amDateFormat:'DD/MM/YYYY'}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.STATUS' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.color]="getColor(row.episodes, row.missingEpisodes)">
-      <span *ngIf="row.status">{{ 'SHOWS.CONTINUING' | translate | capitalizeFirst }}</span>
-      <span *ngIf="!row.status">{{ 'SHOWS.ENDED' | translate | capitalizeFirst }}</span>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="seasons">
-    <mat-header-cell *matHeaderCellDef>{{ 'SHOWS.SEASONS' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.color]="getColor(row.episodes, row.missingEpisodes)">{{ row.seasons }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="collected">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.COLLECTED' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.color]="getColor(row.episodes, row.missingEpisodes)">{{row.episodes }} <span *ngIf="row.specials > 0">+{{row.specials}}</span> / {{ row.episodes + row.missingEpisodes }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="percentage">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.PERCENTAGE' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" [style.color]="getColor(row.episodes, row.missingEpisodes)">{{ row.episodes / (row.episodes + row.missingEpisodes) * 100 | number:'1.0-1' }}%</mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>-->

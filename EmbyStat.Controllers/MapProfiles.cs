@@ -6,6 +6,7 @@ using EmbyStat.Common.Tasks;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Graph;
+using EmbyStat.Controllers.ViewModels.Logs;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Show;
@@ -55,6 +56,7 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
 	        CreateMap<ShowStat, ShowStatViewModel>();
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
+	        CreateMap<LogFile, LogFileViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

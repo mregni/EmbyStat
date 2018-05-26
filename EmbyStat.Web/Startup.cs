@@ -13,6 +13,7 @@ using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Api.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Settings;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
@@ -55,13 +56,15 @@ namespace EmbyStat.Web
 
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
+		    services.Configure<LogSettings>(Configuration.GetSection("Logging"));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 		    services.AddAutoMapper(typeof(MapProfiles));
 
 		    services
 		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
 		        .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
-		        .AddApiExplorer().AddJsonFormatters();
+		        .AddApiExplorer()
+		        .AddJsonFormatters();
 
             services.AddSwaggerGen(c =>
 			{
@@ -85,6 +88,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<MovieService>().As<IMovieService>();
 		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
 		    containerBuilder.RegisterType<ShowService>().As<IShowService>();
+		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
 
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();

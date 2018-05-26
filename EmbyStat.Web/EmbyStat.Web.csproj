@@ -56,6 +56,8 @@
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
+    <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
+    <None Remove="ClientApp\src\app\logs\state\facade.log.ts" />
     <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\shortMovie.ts" />
@@ -108,6 +110,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\logs\state\facade.log.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
