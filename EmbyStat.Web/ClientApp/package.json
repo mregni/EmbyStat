@@ -47,7 +47,7 @@
     "npm": "^5.7.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19",
-    "snyk": "^1.83.0"
+    "snyk": "^1.88.0"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.0",
