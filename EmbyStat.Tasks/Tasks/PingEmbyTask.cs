@@ -15,7 +15,7 @@ namespace EmbyStat.Tasks.Tasks
            
         }
 
-        public string Name => "Check Emby connection";
+        public string Name => "TASKS.PINGEMBYSERVERTITLE";
         public string Key => "PingEmbyServer";
         public string Description => "TASKS.PINGEMBYSERVERDESCRIPTION";
         public string Category => "Emby";

@@ -32,7 +32,7 @@ namespace EmbyStat.Tasks.Tasks
             _embyDriveRepository = app.ApplicationServices.GetService<IDriveRepository>();
         }
 
-        public string Name => "Small sync with Emby";
+        public string Name => "TASKS.SMALLEMBYSYNCTITLE";
         public string Key => "SmallEmbySync";
         public string Description => "TASKS.SMALLEMBYSYNCDESCRIPTION";
         public string Category => "Emby";

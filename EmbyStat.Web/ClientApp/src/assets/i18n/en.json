@@ -140,9 +140,12 @@
     "BUTFAILED": "but failed after"
   },
   "TASKS": {
+    "PINGEMBYSERVERTITLE": "Check Emby connection",
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!"
+    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+    "MEDIASYNCTITLE": "Media sync"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",

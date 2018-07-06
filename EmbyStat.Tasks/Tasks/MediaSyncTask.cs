@@ -51,7 +51,7 @@ namespace EmbyStat.Tasks.Tasks
             _tvdbClient = app.ApplicationServices.GetService<ITvdbClient>();
         }
 
-        public string Name => "Media sync";
+        public string Name => "TASKS.MEDIASYNCTITLE";
         public string Key => "MediaSync";
         public string Description => "TASKS.MEDIASYNCDESCRIPTION";
         public string Category => "Sync";

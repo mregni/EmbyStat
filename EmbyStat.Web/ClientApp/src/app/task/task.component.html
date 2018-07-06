@@ -9,7 +9,7 @@
       </a>
     </div>
     <div class="task__center">
-      <div class="task__tasktitle">{{task.name}}</div>
+      <div class="task__tasktitle">{{task.name | translate}}</div>
       <div class="subtext-grey" *ngIf="task.state === 0">
         <div *ngIf="task.lastExecutionResult !== null && task.lastExecutionResult.endTimeUtc !== null else no_run"
              [ngClass]="{'task__failed':task.lastExecutionResult.status === 1}">

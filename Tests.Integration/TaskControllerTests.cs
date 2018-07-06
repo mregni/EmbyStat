@@ -66,7 +66,7 @@ namespace Tests.Integration
             result.ElementAt(0).CurrentProgressPercentage.Should().BeNull();
             result.ElementAt(0).Description.Should().Be("TASKS.PINGEMBYSERVERDESCRIPTION");
             result.ElementAt(0).LastExecutionResult.Should().BeNull();
-            result.ElementAt(0).Name.Should().Be("Check Emby connection");
+            result.ElementAt(0).Name.Should().Be("TASKS.PINGEMBYSERVERTITLE");
             result.ElementAt(0).State.Should().Be(0);
             result.ElementAt(0).Triggers.Count.Should().Be(1);
             result.ElementAt(0).Triggers.ElementAt(0).Id.Should().BeNull();
@@ -80,7 +80,7 @@ namespace Tests.Integration
             result.ElementAt(1).CurrentProgressPercentage.Should().BeNull();
             result.ElementAt(1).Description.Should().Be("TASKS.MEDIASYNCDESCRIPTION");
             result.ElementAt(1).LastExecutionResult.Should().BeNull();
-            result.ElementAt(1).Name.Should().Be("Media sync");
+            result.ElementAt(1).Name.Should().Be("TASKS.MEDIASYNCTITLE");
             result.ElementAt(1).State.Should().Be(0);
             result.ElementAt(1).Triggers.Count.Should().Be(1);
             result.ElementAt(1).Triggers.ElementAt(0).Id.Should().BeNull();
@@ -94,7 +94,7 @@ namespace Tests.Integration
             result.ElementAt(2).CurrentProgressPercentage.Should().BeNull();
             result.ElementAt(2).Description.Should().Be("TASKS.SMALLEMBYSYNCDESCRIPTION");
             result.ElementAt(2).LastExecutionResult.Should().BeNull();
-            result.ElementAt(2).Name.Should().Be("Small sync with Emby");
+            result.ElementAt(2).Name.Should().Be("TASKS.SMALLEMBYSYNCTITLE");
             result.ElementAt(2).State.Should().Be(0);
             result.ElementAt(2).Triggers.Count.Should().Be(1);
             result.ElementAt(2).Triggers.ElementAt(0).Id.Should().BeNull();
