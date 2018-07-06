@@ -12,7 +12,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var newPeople = people.Where(x => context.People.All(y => y.Name != x.Name)).ToList();
+                var newPeople = people.Where(x => context.People.AsNoTracking().All(y => y.Name != x.Name)).ToList();
 
                 context.People.AddRange(newPeople);
                 context.SaveChanges();

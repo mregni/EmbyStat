@@ -152,18 +152,7 @@ namespace Tests.Integration
         [Fact]
         public async void ShouldCrashBecauseWrongTaskId()
         {
-            var response = await _client.GetAsync("");
-            response.EnsureSuccessStatusCode();
-
-            var responseString = await response.Content.ReadAsStringAsync();
-            var tasks = JsonConvert.DeserializeObject<List<TaskInfoViewModel>>(responseString);
-
-            tasks.Count.Should().Be(3);
-
-            var task = tasks.First();
-            task.Id = task.Id + "A";
-
-            var jsonTask = JsonConvert.SerializeObject(task);
+            var jsonTask = JsonConvert.SerializeObject(new TaskInfoViewModel(){ Id = Guid.NewGuid().ToString()});
             var content = new StringContent(jsonTask, Encoding.UTF8, "application/json");
 
             var result = await _client.PutAsync("triggers", content);

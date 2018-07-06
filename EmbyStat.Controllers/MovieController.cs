@@ -21,40 +21,40 @@ namespace EmbyStat.Controllers
         }
 
         [HttpGet]
-        [Route("getcollections")]
+        [Route("collections")]
         public IActionResult GetCollections()
         {
             var result = _movieService.GetMovieCollections();
             return Ok(Mapper.Map<IList<CollectionViewModel>>(result));
         }
 
-        [HttpPost]
-        [Route("getgeneralstats")]
-        public IActionResult GetGeneralStats([FromBody]List<string> collectionIds)
+        [HttpGet]
+        [Route("generalstats")]
+        public IActionResult GetGeneralStats(List<string> collectionIds)
         {
             var result = _movieService.GetGeneralStatsForCollections(collectionIds);
             var convert = Mapper.Map<MovieStatsViewModel>(result);
             return Ok(convert);
         }
 
-        [HttpPost]
-        [Route("getpersonstats")]
-        public async Task<IActionResult> GetPersonStats([FromBody]List<string> collectionIds)
+        [HttpGet]
+        [Route("personstats")]
+        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
         {
             var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
-            return Ok(Mapper.Map<MoviePersonStatsViewModel>(result));
+            return Ok(Mapper.Map<PersonStatsViewModel>(result));
         }
 
-        [HttpPost]
-        [Route("getsuspicious")]
-        public IActionResult GetDuplicates([FromBody] List<string> collectionIds)
+        [HttpGet]
+        [Route("suspicious")]
+        public IActionResult GetDuplicates(List<string> collectionIds)
         {
             var result = _movieService.GetSuspiciousMovies(collectionIds);
             return Ok(Mapper.Map<SuspiciousTablesViewModel>(result));
         }
 
         [HttpGet]
-        [Route("getgraphs")]
+        [Route("graphs")]
         public IActionResult GetGraphs(List<string> collectionIds)
         {
             var graphs = _movieService.GetGraphs(collectionIds);

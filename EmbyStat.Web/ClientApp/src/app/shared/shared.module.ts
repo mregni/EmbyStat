@@ -13,8 +13,9 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { CardComponent } from './components/card/card.component';
 import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
 import { CardNumberComponent } from './components/card-number/card-number.component';
-import { PosterComponent } from './components/poster/poster.component';
+import { MoviePosterComponent } from './components/movie-poster/movie-poster.component';
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
+import { ShowPosterComponent } from './components/show-poster/show-poster.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 
@@ -41,8 +42,9 @@ import { ToastService } from './services/toast.service';
     CardComponent,
     CardTimespanComponent,
     CardNumberComponent,
-    PosterComponent,
+    MoviePosterComponent,
     PersonPosterComponent,
+    ShowPosterComponent,
     CapitalizeFirstPipe
   ],
   declarations: [
@@ -51,8 +53,9 @@ import { ToastService } from './services/toast.service';
     CardComponent,
     CardTimespanComponent,
     CardNumberComponent,
-    PosterComponent,
+    MoviePosterComponent,
     PersonPosterComponent,
+    ShowPosterComponent,
     CapitalizeFirstPipe
   ],
   providers: [

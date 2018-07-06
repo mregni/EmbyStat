@@ -5,7 +5,7 @@ using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Services.Interfaces;
 using Serilog;
-using TaskHelpers = EmbyStat.Services.Converters.TaskHelpers;
+using TaskHelpers = EmbyStat.Common.Converters.TaskHelpers;
 
 namespace EmbyStat.Services
 {

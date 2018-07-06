@@ -17,6 +17,7 @@ namespace EmbyStat.Tasks
     public class ScheduledTaskWorker : IScheduledTaskWorker
     {
         public event EventHandler<GenericEventArgs<double>> TaskProgress;
+        public event EventHandler<GenericEventArgs<string>> TaskLogging;
         public IScheduledTask ScheduledTask { get; set; }
         private readonly ITaskManager _taskManager;
         private readonly ITaskRepository _taskRepository;
@@ -202,6 +203,7 @@ namespace EmbyStat.Tasks
             }
 
             var progress = new SimpleProgress<double>();
+            var logProgress = new ProgressLogger();
 
             CurrentCancellationTokenSource = new CancellationTokenSource();
 
@@ -210,6 +212,7 @@ namespace EmbyStat.Tasks
             ((TaskManager)_taskManager).OnTaskExecuting(this);
 
             progress.ProgressChanged += progress_ProgressChanged;
+            logProgress.ProgressLogged += LogProgress_ProgressLogged;
 
             TaskCompletionStatus status;
             CurrentExecutionStartTime = DateTime.UtcNow;
@@ -223,7 +226,7 @@ namespace EmbyStat.Tasks
                     CurrentCancellationTokenSource.CancelAfter(TimeSpan.FromTicks(options.MaxRuntimeTicks.Value));
                 }
 
-                await ScheduledTask.Execute(CurrentCancellationTokenSource.Token, progress).ConfigureAwait(false);
+                await ScheduledTask.Execute(CurrentCancellationTokenSource.Token, progress, logProgress).ConfigureAwait(false);
 
                 status = TaskCompletionStatus.Completed;
             }
@@ -233,7 +236,7 @@ namespace EmbyStat.Tasks
             }
             catch (Exception ex)
             {
-                Log.Error("Error", ex);
+                Log.Error(ex, "Error");
 
                 failureException = ex;
 
@@ -244,11 +247,17 @@ namespace EmbyStat.Tasks
             var endTime = DateTime.UtcNow;
 
             progress.ProgressChanged -= progress_ProgressChanged;
+            logProgress.ProgressLogged -= LogProgress_ProgressLogged;
             CurrentCancellationTokenSource.Dispose();
             CurrentCancellationTokenSource = null;
             CurrentProgress = null;
 
             OnTaskCompleted(startTime, endTime, status, failureException);
+        }
+
+        private void LogProgress_ProgressLogged(object sender, string e)
+        {
+            TaskLogging?.Invoke(this, new GenericEventArgs<string> { Argument = e });
         }
 
         void progress_ProgressChanged(object sender, double e)

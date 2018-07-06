@@ -18,12 +18,24 @@ export class TaskComponent implements OnInit, OnDestroy {
   private hubConnection: HubConnection;
   private getTasksSub: Subscription;
   public tasks: Task[];
+  public lines: string[] = [];
 
   constructor(private taskFacade: TaskFacade, public dialog: MatDialog) {
     this.hubConnection = new HubConnection('/tasksignal');
 
     this.hubConnection.on('ReceiveInfo', (data: Task[]) => {
       this.tasks = data;
+    });
+
+    this.hubConnection.on('ReceiveLog', (data: string) => {
+      const now = moment().format('HH:mm:ss');
+      data = now + ' - ' + data;
+
+      if (this.lines.length >= 10) {
+        this.lines.shift();
+      }
+
+      this.lines.push(data);
     });
   }
 

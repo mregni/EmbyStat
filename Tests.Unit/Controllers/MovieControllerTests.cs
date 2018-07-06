@@ -36,7 +36,7 @@ namespace Tests.Unit.Controllers
 
             _movieStats = new MovieStats
             {
-                LongestMovie = new Poster { Name = "The lord of the rings"}
+                LongestMovie = new MoviePoster { Name = "The lord of the rings"}
             };
 
             _movieServiceMock = new Mock<IMovieService>();

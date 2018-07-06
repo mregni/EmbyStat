@@ -11,7 +11,7 @@ namespace EmbyStat.Common.Tasks.Interface
         string Key { get; }
         string Description { get; }
         string Category { get; }
-        Task Execute(CancellationToken cancellationToken, IProgress<double> progress);
+        Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger progressLogger);
         IEnumerable<TaskTriggerInfo> GetDefaultTriggers();
     }
 }

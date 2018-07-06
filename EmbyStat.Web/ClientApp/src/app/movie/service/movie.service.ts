@@ -1,31 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ListToQueryParam } from '../../shared/helpers/listToQueryParam';
 
 import { Observable } from 'rxjs/Observable';
 import { MovieStats } from '../models/movieStats';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
 import { Collection } from '../../shared/models/collection';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
 import { MovieGraphs } from '../models/movieGraphs';
 
 @Injectable()
 export class MovieService {
-  private readonly getGeneralUrl: string = '/movie/getgeneralstats';
-  private readonly getPersonUrl: string = '/movie/getpersonstats';
-  private readonly getCollectionsUrl: string = '/movie/getcollections';
-  private readonly getSuspiciousUrl: string = '/movie/getsuspicious';
-  private readonly getGraphsUrl: string = '/movie/getgraphs';
+  private readonly getGeneralUrl: string = '/movie/generalstats';
+  private readonly getPersonUrl: string = '/movie/personstats';
+  private readonly getCollectionsUrl: string = '/movie/collections';
+  private readonly getSuspiciousUrl: string = '/movie/suspicious';
+  private readonly getGraphsUrl: string = '/movie/graphs';
 
   constructor(private http: HttpClient) {
 
   }
 
   getGeneral(list: string[]): Observable<MovieStats> {
-    return this.http.post<MovieStats>('/api' + this.getGeneralUrl, list);
+    const params = ListToQueryParam.convert('collectionIds', list);
+    return this.http.get<MovieStats>('/api' + this.getGeneralUrl + params);
   }
 
-  getPerson(list: string[]): Observable<MoviePersonStats> {
-    return this.http.post<MoviePersonStats>('/api' + this.getPersonUrl, list);
+  getPerson(list: string[]): Observable<PersonStats> {
+    const params = ListToQueryParam.convert('collectionIds', list);
+    return this.http.get<PersonStats>('/api' + this.getPersonUrl + params);
   }
 
   getCollections(): Observable<Collection[]> {
@@ -33,15 +36,12 @@ export class MovieService {
   }
 
   getSuspicious(list: string[]): Observable<SuspiciousMovies> {
-    return this.http.post<SuspiciousMovies>('api' + this.getSuspiciousUrl, list);
+    const params = ListToQueryParam.convert('collectionIds', list);
+    return this.http.get<SuspiciousMovies>('api' + this.getSuspiciousUrl + params);
   }
 
   getGraphs(list: string[]): Observable<MovieGraphs> {
-    const params = new HttpParams();
-    if (list.length > 0) {
-      params.set('collectionIds', list.join(','));
-    }
-    const options = { params: params };
-    return this.http.get<MovieGraphs>('api' + this.getGraphsUrl, options);
+    const params = ListToQueryParam.convert('collectionIds', list);
+    return this.http.get<MovieGraphs>('api' + this.getGraphsUrl + params);
   }
 }

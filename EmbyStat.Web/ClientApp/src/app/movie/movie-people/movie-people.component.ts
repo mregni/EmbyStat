@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { MovieFacade } from '../state/facade.movie';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
+
 @Component({
   selector: 'app-movie-people',
   templateUrl: './movie-people.component.html',
@@ -25,7 +26,7 @@ export class MoviePeopleComponent implements OnInit {
     this.stats$ = this.movieFacade.getPeopleStats(collection);
   }
 
-  public stats$: Observable<MoviePersonStats>;
+  public stats$: Observable<PersonStats>;
 
   constructor(private movieFacade: MovieFacade) {
 

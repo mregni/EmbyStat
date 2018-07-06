@@ -25,18 +25,6 @@ namespace Tests.Integration.Builders
             return this;
         }
 
-        public PluginBuilder AddAssemblyFileName(string sssemblyFileName)
-        {
-            _model.AssemblyFileName = sssemblyFileName;
-            return this;
-        }
-
-        public PluginBuilder AddConfigurationDateLastModified(DateTime date)
-        {
-            _model.ConfigurationDateLastModified = date;
-            return this;
-        }
-
         public PluginBuilder AddConfigurationFileName(string configurationFileName)
         {
             _model.ConfigurationFileName = configurationFileName;

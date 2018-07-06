@@ -18,6 +18,8 @@ import { ServerModule } from './server/server.module';
 import { PluginModule } from './plugin/plugin.module';
 import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
+import { ShowModule } from './show/show.module';
+import { LogsModule } from './logs/logs.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -28,6 +30,7 @@ import { ConfigurationEffects } from './configuration/state/effects.configuratio
 import { PluginEffects } from './plugin/state/effects.plugin';
 import { ServerEffects } from './server/state/effects.server';
 import { MovieEffects } from './movie/state/effects.movie';
+import { ShowEffects } from './show/state/effects.show';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -53,7 +56,9 @@ export function createTranslateLoader(http: HttpClient) {
     ServerModule,
     PluginModule,
     TaskModule,
+    ShowModule,
     MovieModule,
+    LogsModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
@@ -65,7 +70,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects]),
+    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects, ShowEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [
