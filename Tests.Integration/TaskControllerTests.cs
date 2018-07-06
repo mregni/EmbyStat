@@ -78,9 +78,9 @@ namespace Tests.Integration
 
             result.ElementAt(1).Category.Should().Be("Sync");
             result.ElementAt(1).CurrentProgressPercentage.Should().BeNull();
-            result.ElementAt(1).Description.Should().Be("TASKS.MOVIESYNCDESCRIPTION");
+            result.ElementAt(1).Description.Should().Be("TASKS.MEDIASYNCDESCRIPTION");
             result.ElementAt(1).LastExecutionResult.Should().BeNull();
-            result.ElementAt(1).Name.Should().Be("Movie sync");
+            result.ElementAt(1).Name.Should().Be("Media sync");
             result.ElementAt(1).State.Should().Be(0);
             result.ElementAt(1).Triggers.Count.Should().Be(1);
             result.ElementAt(1).Triggers.ElementAt(0).Id.Should().BeNull();
