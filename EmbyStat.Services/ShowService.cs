@@ -6,28 +6,35 @@ using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Services
 {
-    public class ShowService : IShowService
+    public class ShowService : MediaService, IShowService
     {
         private readonly IShowRepository _showRepository;
         private readonly ICollectionRepository _collectionRepository;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
+        private readonly ITaskRepository _taskRepository;
+        private readonly IStatisticsRepository _statisticsRepository;
 
-        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService)
-        {
+        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, ITaskRepository taskRepository, IStatisticsRepository statisticsRepository)
+        : base(taskRepository){
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
+            _taskRepository = taskRepository;
+            _statisticsRepository = statisticsRepository;
         }
 
         public IEnumerable<Collection> GetShowCollections()
@@ -37,73 +44,131 @@ namespace EmbyStat.Services
 
         public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
         {
-            var shows = _showRepository.GetAllShows(collectionIds).ToList();
-            return new ShowStat
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
+
+            ShowStat stats;
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
-                ShowCount = TotalShowCount(collectionIds),
-                EpisodeCount = TotalEpisodeCount(collectionIds),
-                MissingEpisodeCount = TotalMissingEpisodeCount(shows),
-                TotalPlayableTime = CalculatePlayableTime(collectionIds),
-                HighestRatedShow = CalculateHighestRatedShow(shows),
-                LowestRatedShow = CalculateLowestRatedShow(shows),
-                OldestPremieredShow = CalculateOldestPremieredShow(shows),
-                ShowWithMostEpisodes = CalculateShowWithMostEpisodes(shows),
-                YoungestAddedShow = CalculateYoungestAddedShow(shows),
-                YoungestPremieredShow = CalculateYoungestPremieredShow(shows)
-            };
+                stats = JsonConvert.DeserializeObject<ShowStat>(statistic.JsonResult);
+            }
+            else
+            {
+                var shows = _showRepository.GetAllShows(collectionIds).ToList();
+                stats = new ShowStat
+                {
+                    ShowCount = TotalShowCount(collectionIds),
+                    EpisodeCount = TotalEpisodeCount(collectionIds),
+                    MissingEpisodeCount = TotalMissingEpisodeCount(shows),
+                    TotalPlayableTime = CalculatePlayableTime(collectionIds),
+                    HighestRatedShow = CalculateHighestRatedShow(shows),
+                    LowestRatedShow = CalculateLowestRatedShow(shows),
+                    OldestPremieredShow = CalculateOldestPremieredShow(shows),
+                    ShowWithMostEpisodes = CalculateShowWithMostEpisodes(shows),
+                    YoungestAddedShow = CalculateYoungestAddedShow(shows),
+                    YoungestPremieredShow = CalculateYoungestPremieredShow(shows)
+                };
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGeneral, collectionIds);
+            }
+
+            return stats;
         }
 
         public ShowGraphs GetGraphs(IEnumerable<string> collectionIds)
         {
-            var shows = _showRepository.GetAllShows(collectionIds, true).ToList();
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
-            var graphs = new ShowGraphs();
-            graphs.BarGraphs.Add(CalculateGenreGraph(shows));
-            graphs.BarGraphs.Add(CalculateRatingGraph(shows));
-            graphs.BarGraphs.Add(CalculatePremiereYearGraph(shows));
-            graphs.BarGraphs.Add(CalculateCollectedRateGraph(shows));
-            graphs.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
-            graphs.PieGraphs.Add(CalculateShowStateGraph(shows));
+            ShowGraphs stats;
+            if (NewStatisticsNeeded(statistic, collectionIds))
+            {
+                stats = JsonConvert.DeserializeObject<ShowGraphs>(statistic.JsonResult);
+            }
+            else
+            {
+                var shows = _showRepository.GetAllShows(collectionIds, true).ToList();
 
-            return graphs;
+                stats = new ShowGraphs();
+                stats.BarGraphs.Add(CalculateGenreGraph(shows));
+                stats.BarGraphs.Add(CalculateRatingGraph(shows));
+                stats.BarGraphs.Add(CalculatePremiereYearGraph(shows));
+                stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
+                stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
+                stats.PieGraphs.Add(CalculateShowStateGraph(shows));
+
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
+            }
+
+            return stats;
         }
 
-        public async Task<PersonStats> GetPeopleStats(IEnumerable<string> collectionIds)
+        public PersonStats GetPeopleStats(IEnumerable<string> collectionIds)
         {
-            return new PersonStats
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
+
+            PersonStats stats;
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
-                TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
-                TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
-                TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters)
-            };
+                stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
+            }
+            else
+            {
+                stats = new PersonStats
+                {
+                    TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
+                    TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
+                    TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters)
+                };
+
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowPeople, collectionIds);
+            }
+
+            return stats;
         }
 
         public List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds)
         {
-            var result = new List<ShowCollectionRow>();
-            var shows = _showRepository.GetAllShows(collectionIds);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
-            foreach (var show in shows)
+            List<ShowCollectionRow> stats;
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
-                var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
-                var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
-                var specialCount = totalEpisodeCount - episodeCount;
-                var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
+                stats = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
+            }
+            else
+            {
+                stats = new List<ShowCollectionRow>();
+                var shows = _showRepository.GetAllShows(collectionIds);
 
-                result.Add(new ShowCollectionRow
+                foreach (var show in shows)
                 {
-                    Title = show.Name,
-                    SortName = show.SortName,
-                    Episodes = episodeCount,
-                    Seasons = seasonCount,
-                    Specials = specialCount,
-                    MissingEpisodes = show.MissingEpisodesCount,
-                    PremiereDate = show.PremiereDate,
-                    Status = show.Status == "Continuing"
-                });
+                    var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+                    var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
+                    var specialCount = totalEpisodeCount - episodeCount;
+                    var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
+
+                    stats.Add(new ShowCollectionRow
+                    {
+                        Title = show.Name,
+                        SortName = show.SortName,
+                        Episodes = episodeCount,
+                        Seasons = seasonCount,
+                        Specials = specialCount,
+                        MissingEpisodes = show.MissingEpisodesCount,
+                        PremiereDate = show.PremiereDate,
+                        Status = show.Status == "Continuing"
+                    });
+                }
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollected, collectionIds);
             }
 
-            return result;
+            return stats;
         }
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)

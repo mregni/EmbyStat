@@ -13,7 +13,7 @@ namespace EmbyStat.Services.Interfaces
         IEnumerable<Collection> GetShowCollections();
         ShowStat GetGeneralStats(IEnumerable<string> collectionIds);
         ShowGraphs GetGraphs(IEnumerable<string> collectionIds);
-        Task<PersonStats> GetPeopleStats(IEnumerable<string> collectionsIds);
+        PersonStats GetPeopleStats(IEnumerable<string> collectionsIds);
         List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds);
     }
 }

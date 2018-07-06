@@ -12,6 +12,7 @@ using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
@@ -25,7 +26,7 @@ using Constants = EmbyStat.Common.Constants;
 
 namespace EmbyStat.Services
 {
-    public class MovieService : IMovieService
+    public class MovieService : MediaService, IMovieService
     {
         private readonly IMovieRepository _movieRepository;
         private readonly ICollectionRepository _collectionRepository;
@@ -36,7 +37,7 @@ namespace EmbyStat.Services
         private readonly ITaskRepository _taskRepository;
 
         public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, ITaskRepository taskRepository)
-        {
+        : base(taskRepository) {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
@@ -53,14 +54,10 @@ namespace EmbyStat.Services
 
         public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
 
             MovieStats stats;
-            if (statistic != null 
-                && lastMediaSync != null 
-                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc 
-                && collectionIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<MovieStats>(statistic.JsonResult);
             }
@@ -87,16 +84,12 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
+        public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MoviePeople);
 
             PersonStats stats;
-            if (statistic != null
-                && lastMediaSync != null
-                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                && collectionsIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
             }
@@ -104,17 +97,17 @@ namespace EmbyStat.Services
             {
                 stats = new PersonStats
                 {
-                    TotalActorCount = TotalTypeCount(collectionsIds, Constants.Actor, Constants.Common.TotalActors),
-                    TotalDirectorCount = TotalTypeCount(collectionsIds, Constants.Director, Constants.Common.TotalDirectors),
-                    TotalWriterCount = TotalTypeCount(collectionsIds, Constants.Writer, Constants.Common.TotalWriters),
-                    MostFeaturedActor = await GetMostFeaturedPerson(collectionsIds, Constants.Actor, Constants.Common.MostFeaturedActor),
-                    MostFeaturedDirector = await GetMostFeaturedPerson(collectionsIds, Constants.Director, Constants.Common.MostFeaturedDirector),
-                    MostFeaturedWriter = await GetMostFeaturedPerson(collectionsIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
-                    MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
+                    TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
+                    TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
+                    TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters),
+                    MostFeaturedActor = await GetMostFeaturedPerson(collectionIds, Constants.Actor, Constants.Common.MostFeaturedActor),
+                    MostFeaturedDirector = await GetMostFeaturedPerson(collectionIds, Constants.Director, Constants.Common.MostFeaturedDirector),
+                    MostFeaturedWriter = await GetMostFeaturedPerson(collectionIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
+                    MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionIds)
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionsIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionIds);
             }
 
             return stats;
@@ -122,14 +115,10 @@ namespace EmbyStat.Services
 
         public MovieGraphs GetGraphs(List<string> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
 
             MovieGraphs stats;
-            if (statistic != null
-                && lastMediaSync != null
-                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                && collectionIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<MovieGraphs>(statistic.JsonResult);
             }
@@ -150,22 +139,18 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public SuspiciousTables GetSuspiciousMovies(List<string> collectionsIds)
+        public SuspiciousTables GetSuspiciousMovies(List<string> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
             SuspiciousTables stats;
-            if (statistic != null
-                && lastMediaSync != null
-                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                && collectionsIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
+            if (NewStatisticsNeeded(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<SuspiciousTables>(statistic.JsonResult);
             }
             else
             {
-                var movies = _movieRepository.GetAll(collectionsIds);
+                var movies = _movieRepository.GetAll(collectionIds);
                 stats = new SuspiciousTables
                 {
                     Duplicates = GetDuplicates(movies),
@@ -173,7 +158,7 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionsIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionIds);
             }
 
             return stats;

@@ -7,9 +7,11 @@ namespace EmbyStat.Common.Extentions
 {
     public static class ListExtention
     {
-        public static bool AreListEqual<T>(this List<T> listA, List<T> listB)
+        public static bool AreListEqual<T>(this IEnumerable<T> listA, IEnumerable<T> listB)
         {
-            return listA.All(listB.Contains) && listA.Count == listB.Count;
+            var a = listA.ToList();
+            var b = listB.ToList();
+            return a.All(b.Contains) && a.Count == b.Count;
         }
     }
 }

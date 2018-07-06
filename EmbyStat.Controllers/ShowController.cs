@@ -50,9 +50,9 @@ namespace EmbyStat.Controllers
 
         [HttpGet]
         [Route("personstats")]
-        public async Task<IActionResult> GetPersonStats(IEnumerable<string> collectionIds)
+        public IActionResult GetPersonStats(IEnumerable<string> collectionIds)
         {
-            var result = await _showService.GetPeopleStats(collectionIds);
+            var result = _showService.GetPeopleStats(collectionIds);
             return Ok(Mapper.Map<PersonStatsViewModel>(result));
         }
 

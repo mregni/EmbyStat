@@ -24,7 +24,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, List<string> collections)
+        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections)
         {
             using (var context = new ApplicationDbContext())
             {
