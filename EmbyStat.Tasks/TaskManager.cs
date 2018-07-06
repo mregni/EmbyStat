@@ -3,12 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Converters;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
@@ -235,13 +235,20 @@ namespace EmbyStat.Tasks
         private async void TaskManager_TaskCompleted(object sender, TaskCompletionEventArgs e)
         {
             e.Task.TaskProgress -= Argument_TaskProgress;
+            e.Task.TaskLogging -= Argument_TaskLogging;
             await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
         }
 
         private async void TaskManager_TaskExecuting(object sender, GenericEventArgs<IScheduledTaskWorker> e)
         {
             e.Argument.TaskProgress += Argument_TaskProgress;
+            e.Argument.TaskLogging += Argument_TaskLogging;
             await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
+        }
+
+        private async void Argument_TaskLogging(object sender, GenericEventArgs<string> e)
+        {
+            await _taskHubContext.Clients.All.SendAsync("ReceiveLog", e.Argument);
         }
 
         private async void Argument_TaskProgress(object sender, GenericEventArgs<double> e)

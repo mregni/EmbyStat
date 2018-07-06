@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmbyStat.Common.Models
 {
@@ -16,5 +17,6 @@ namespace EmbyStat.Common.Models
 	    public string ServerName { get; set; }
         public string EmbyUserId { get; set; }
         public int ToShortMovie { get; set; }
+        public DateTime? LastTvdbUpdate { get; set; }
     }
 }

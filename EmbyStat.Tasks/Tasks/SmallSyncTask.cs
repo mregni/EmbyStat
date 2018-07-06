@@ -36,7 +36,7 @@ namespace EmbyStat.Tasks.Tasks
         public string Key => "SmallEmbySync";
         public string Description => "TASKS.SMALLEMBYSYNCDESCRIPTION";
         public string Category => "Emby";
-        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
+        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
             var settings = _configurationRepository.GetSingle();
             if (!settings.WizardFinished)
@@ -44,14 +44,18 @@ namespace EmbyStat.Tasks.Tasks
                 Log.Warning("Movie sync task not running because wizard is not finished yet!");
                 return;
             }
+
             progress.Report(15);
 
             _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
             var systemInfoReponse = await _embyClient.GetServerInfoAsync();
+            logProgress.LogInformation("Server info found");
             progress.Report(35);
             var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
+            logProgress.LogInformation("Server plugins found");
             progress.Report(55);
             var drives = await _embyClient.GetLocalDrivesAsync();
+            logProgress.LogInformation("Server drives found");
             progress.Report(75);
 
             var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
@@ -62,6 +66,8 @@ namespace EmbyStat.Tasks.Tasks
             _embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
             progress.Report(95);
             _embyDriveRepository.ClearAndInsertList(localDrives.ToList());
+
+            logProgress.LogInformation("All server data is saved");
             progress.Report(100);
         }
 

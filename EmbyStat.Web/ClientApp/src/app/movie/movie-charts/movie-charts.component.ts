@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { MovieChartsService } from '../service/movie-charts.service';
 import { MovieFacade } from '../state/facade.movie';
@@ -10,7 +11,7 @@ import { MovieGraphs } from '../models/movieGraphs';
   templateUrl: './movie-charts.component.html',
   styleUrls: ['./movie-charts.component.scss']
 })
-export class MovieChartsComponent implements OnInit  {
+export class MovieChartsComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
 
   get selectedCollections(): string[] {
@@ -24,13 +25,23 @@ export class MovieChartsComponent implements OnInit  {
     }
 
     this._selectedCollections = collection;
+
+    this.movieFacade.clearGraphs();
+    this.graphs$ = undefined;
+
+    if (this.onTab) {
+      this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
+    }
   }
 
   public graphs$: Observable<MovieGraphs>;
+  private movieChartSub: Subscription;
+  private onTab = false;
 
   constructor(private movieFacade: MovieFacade, private movieChartsService: MovieChartsService) {
-    movieChartsService.open.subscribe(value => {
-      if (value) {
+    this.movieChartSub = movieChartsService.open.subscribe(value => {
+      this.onTab = value;
+      if (value && this.graphs$ === undefined) {
         this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
       }
     });
@@ -38,5 +49,13 @@ export class MovieChartsComponent implements OnInit  {
 
   ngOnInit() {
 
+  }
+
+  ngOnDestroy(): void {
+    this.movieChartsService.changeOpened(false);
+
+    if (this.movieChartSub !== undefined) {
+      this.movieChartSub.unsubscribe();
+    }
   }
 }

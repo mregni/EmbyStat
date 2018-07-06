@@ -7,6 +7,8 @@ import { PluginComponent } from './plugin/plugin.component';
 import { ServerComponent } from './server/server.component';
 import { TaskComponent } from './task/task.component';
 import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.component';
+import { ShowOverviewComponent } from './show/show-overview/show-overview.component';
+import { LogsComponent } from './logs/logs.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'configuration', component: ConfigurationOverviewComponent },
@@ -15,6 +17,8 @@ const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'wizard', component: WizardComponent },
   { path: 'task', component: TaskComponent },
   { path: 'movie', component: MovieOverviewComponent },
+  { path: 'show', component: ShowOverviewComponent },
+  { path: 'logs', component: LogsComponent },
   { path: '**', redirectTo: '/' }];
 
 @NgModule({

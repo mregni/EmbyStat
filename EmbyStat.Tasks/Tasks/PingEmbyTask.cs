@@ -20,7 +20,7 @@ namespace EmbyStat.Tasks.Tasks
         public string Description => "TASKS.PINGEMBYSERVERDESCRIPTION";
         public string Category => "Emby";
 
-        public Task Execute(CancellationToken cancellationToken, IProgress<double> progress)
+        public Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
             return Task.Run(() =>
             {

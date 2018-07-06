@@ -53,6 +53,10 @@ export class MovieSuspiciousComponent implements OnDestroy {
     if (this.duplicatesSub !== undefined) {
       this.duplicatesSub.unsubscribe();
     }
+
+    if (this.configurationSub !== undefined) {
+      this.configurationSub.unsubscribe();
+    }
   }
 
 }

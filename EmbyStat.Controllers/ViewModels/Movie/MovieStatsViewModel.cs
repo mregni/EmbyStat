@@ -8,13 +8,13 @@ namespace EmbyStat.Controllers.ViewModels.Movie
         public CardViewModel GenreCount { get; set; }
         public CardViewModel BoxsetCount { get; set; }
         public CardViewModel MostUsedContainer { get; set; }
-        public PosterViewModel HighestRatedMovie { get; set; }
-        public PosterViewModel LowestRatedMovie { get; set; }
-        public PosterViewModel LongestMovie { get; set; }
-        public PosterViewModel ShortestMovie { get; set; }
-        public PosterViewModel OldestPremieredMovie { get; set; }
-        public PosterViewModel YoungestPremieredMovie { get; set; }
-        public PosterViewModel YoungestAddedMovie { get; set; }
+        public MoviePosterViewModel HighestRatedMovie { get; set; }
+        public MoviePosterViewModel LowestRatedMovie { get; set; }
+        public MoviePosterViewModel LongestMovie { get; set; }
+        public MoviePosterViewModel ShortestMovie { get; set; }
+        public MoviePosterViewModel OldestPremieredMovie { get; set; }
+        public MoviePosterViewModel YoungestPremieredMovie { get; set; }
+        public MoviePosterViewModel YoungestAddedMovie { get; set; }
         public CardViewModel MostFeaturedMovieActor { get; set; }
         public CardViewModel MostFeaturedMovieDirector { get; set; }
         public CardViewModel LastPlayedMovie { get; set; }

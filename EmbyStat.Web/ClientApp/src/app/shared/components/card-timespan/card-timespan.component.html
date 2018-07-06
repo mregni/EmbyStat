@@ -2,11 +2,11 @@
   <mat-card-content>
     <div class="card__flex-column">
       <div class="card__value">
-        {{card.days}}
+        <span countUp [endVal]="card.days" startVal="0"></span>
         <span class="card__small-text">{{'COMMON.DAYS' | translate}}</span> /
-        {{card.hours}}
+        <span countUp [endVal]="card.hours" startVal="0"></span>
         <span class="card__small-text">{{'COMMON.HOURS' | translate}}</span> /
-        {{card.minutes}}
+        <span countUp [endVal]="card.minutes" startVal="0"></span>
         <span class="card__small-text">{{'COMMON.MINUTES' | translate}}</span>
       </div>
       <span class="card__title">{{card.title | translate}}</span>

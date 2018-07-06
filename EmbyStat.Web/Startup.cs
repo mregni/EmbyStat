@@ -10,8 +10,10 @@ using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
+using EmbyStat.Api.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Settings;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Controllers.Helpers;
 using EmbyStat.Repositories;
@@ -54,13 +56,15 @@ namespace EmbyStat.Web
 
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
+		    services.Configure<LogSettings>(Configuration.GetSection("Logging"));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
-		    services.AddAutoMapper(typeof(Startup));
+		    services.AddAutoMapper(typeof(MapProfiles));
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new BusinessExceptionFilterAttribute());
-            }).AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")));
+		    services
+		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
+		        .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
+		        .AddApiExplorer()
+		        .AddJsonFormatters();
 
             services.AddSwaggerGen(c =>
 			{
@@ -83,7 +87,9 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<TaskService>().As<ITaskService>();
 		    containerBuilder.RegisterType<MovieService>().As<IMovieService>();
 		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
-            
+		    containerBuilder.RegisterType<ShowService>().As<IShowService>();
+		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
+
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
 		    containerBuilder.RegisterType<PluginRepository>().As<IPluginRepository>();
@@ -91,14 +97,16 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<DriveRepository>().As<IDriveRepository>();
 		    containerBuilder.RegisterType<GenreRepository>().As<IGenreRepository>();
 		    containerBuilder.RegisterType<PersonRepository>().As<IPersonRepository>();
+		    containerBuilder.RegisterType<ShowRepository>().As<IShowRepository>();
 		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
 		    containerBuilder.RegisterType<StatisticsRepository>().As<IStatisticsRepository>();
 
             containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
+		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
 
-		    containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
+            containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
 		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
 		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
 		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();
@@ -173,7 +181,7 @@ namespace EmbyStat.Web
 	        {
 	            new PingEmbyTask(ApplicationBuilder),
 	            new SmallSyncTask(ApplicationBuilder),
-                new MovieSyncTask(ApplicationBuilder)
+                new MediaSyncTask(ApplicationBuilder)
 	        };
 
 	        taskManager.AddTasks(tasks);

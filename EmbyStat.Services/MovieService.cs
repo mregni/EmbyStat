@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
+using EmbyStat.Common.Converters;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
@@ -60,16 +62,16 @@ namespace EmbyStat.Services
             };
         }
 
-        public async Task<MoviePersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
+        public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
         {
-            return new MoviePersonStats
+            return new PersonStats
             {
-                TotalActorCount = TotalActorCount(collectionsIds),
-                TotalDirectorCount = TotalDirectorCount(collectionsIds),
-                TotalWriterCount = TotalWriterCount(collectionsIds),
-                MostFeaturedActor = await GetMostFeaturedActor(collectionsIds),
-                MostFeaturedDirector = await GetMostFeaturedDirector(collectionsIds),
-                MostFeaturedWriter = await GetMostFeaturedWriter(collectionsIds),
+                TotalActorCount = TotalTypeCount(collectionsIds, Constants.Actor, Constants.Common.TotalActors),
+                TotalDirectorCount = TotalTypeCount(collectionsIds, Constants.Director, Constants.Common.TotalDirectors),
+                TotalWriterCount = TotalTypeCount(collectionsIds, Constants.Writer, Constants.Common.TotalWriters),
+                MostFeaturedActor = await GetMostFeaturedPerson(collectionsIds, Constants.Actor, Constants.Common.MostFeaturedActor),
+                MostFeaturedDirector = await GetMostFeaturedPerson(collectionsIds, Constants.Director, Constants.Common.MostFeaturedDirector),
+                MostFeaturedWriter = await GetMostFeaturedPerson(collectionsIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
                 MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
             };
         }
@@ -183,81 +185,81 @@ namespace EmbyStat.Services
             };
         }
 
-        private Poster HighestRatedMovie(List<string> collectionIds)
+        private MoviePoster HighestRatedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetHighestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.HighestRated);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.HighestRated);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster LowestRatedMovie(List<string> collectionIds)
+        private MoviePoster LowestRatedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetLowestRatedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.LowestRated);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.LowestRated);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster OldestPremieredMovie(List<string> collectionIds)
+        private MoviePoster OldestPremieredMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetOlderPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.OldestPremiered);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.OldestPremiered);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster YoungestPremieredMovie(List<string> collectionIds)
+        private MoviePoster YoungestPremieredMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetYoungestPremieredMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.YoungestPremiered);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestPremiered);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster ShortestMovie(List<string> collectionIds)
+        private MoviePoster ShortestMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetShortestMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.Shortest);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.Shortest);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster LongestMovie(List<string> collectionIds)
+        private MoviePoster LongestMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetLongestMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.Longest);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.Longest);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
-        private Poster YoungestAddedMovie(List<string> collectionIds)
+        private MoviePoster YoungestAddedMovie(List<string> collectionIds)
         {
             var movie = _movieRepository.GetYoungestAddedMovie(collectionIds);
             if (movie != null)
             {
-                return PosterHelper.ConvertToPoster(movie, Constants.Movies.YoungestAdded);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestAdded);
             }
 
-            return new Poster();
+            return new MoviePoster();
         }
 
         private TimeSpanCard TotalPlayLength(List<string> collectionIds)
@@ -272,55 +274,21 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalActorCount(List<string> collectionsIds)
+        private Card TotalTypeCount(List<string> collectionsIds, string type, string title)
         {
             return new Card
             {
-                Value = _movieRepository.GetTotalActors(collectionsIds).ToString(),
-                Title = Constants.Movies.TotalActors
+                Value = _movieRepository.GetTotalPersonByType(collectionsIds, type).ToString(),
+                Title = title
             };
         }
 
-        private Card TotalDirectorCount(List<string> collectionsIds)
+        private async Task<PersonPoster> GetMostFeaturedPerson(List<string> collectionIds, string type, string title)
         {
-            return new Card
-            {
-                Value = _movieRepository.GetTotalDirectors(collectionsIds).ToString(),
-                Title = Constants.Movies.TotalDirectors
-            };
-        }
-
-        private Card TotalWriterCount(List<string> collectionsIds)
-        {
-            return new Card
-            {
-                Value = _movieRepository.GetTotalWriters(collectionsIds).ToString(),
-                Title = Constants.Movies.TotalWriters
-            };
-        }
-
-        private async Task<PersonPoster> GetMostFeaturedActor(List<string> collectionIds)
-        {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Actor);
+            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, type);
 
             var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, Constants.Movies.MostFeaturedActor);
-        }
-
-        private async Task<PersonPoster> GetMostFeaturedDirector(List<string> collectionIds)
-        {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Director);
-
-            var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, Constants.Movies.MostFeaturedDirector);
-        }
-
-        private async Task<PersonPoster> GetMostFeaturedWriter(List<string> collectionIds)
-        {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, Constants.Writer);
-
-            var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, Constants.Movies.MostFeaturedWriter);
+            return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
@@ -353,7 +321,7 @@ namespace EmbyStat.Services
         {
             var genres = _genreRepository.GetAll();
             var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
-                .Select(x => new {Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count()})
+                .Select(x => new { Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count()})
                 .Select(x => new SimpleGraphValue{Name = x.Name, Value = x.Count})
                 .OrderBy(x => x.Name)
                 .ToList();
@@ -369,7 +337,7 @@ namespace EmbyStat.Services
         {
             var yearDataList = movies
                 .Select(x => x.PremiereDate)
-                .GroupBy(RoundYear)
+                .GroupBy(x => x.RoundToFive())
                 .OrderBy(x => x.Key)
                 .ToList();
 
@@ -404,7 +372,7 @@ namespace EmbyStat.Services
 
         private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
         {
-            var ratingData = movies.GroupBy(x => RoundRating(x.CommunityRating))
+            var ratingData = movies.GroupBy(x => x.CommunityRating.RoundToHalf())
                 .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
                 .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
@@ -435,30 +403,6 @@ namespace EmbyStat.Services
         }
 
 
-        #endregion
-
-        #region Helpers
-
-        private double? RoundRating(float? rating)
-        {
-            if (rating.HasValue)
-            {
-                return Math.Round((double)rating.Value * 2, MidpointRounding.AwayFromZero) / 2;
-            }
-
-            return null;
-        }
-
-        private int? RoundYear(DateTime? date)
-        {
-            if (date.HasValue)
-            {
-                var result = (int)Math.Floor((double)date.Value.Year / 5) * 5;
-                return result;
-            }
-
-            return null;
-        }
         #endregion
     }
 }

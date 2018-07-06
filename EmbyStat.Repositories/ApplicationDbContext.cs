@@ -29,6 +29,7 @@ namespace EmbyStat.Repositories
         public DbSet<MediaSource> MediaSources { get; set; }
         public DbSet<ExtraPerson> ExtraPersons { get; set; }
         public DbSet<MediaGenre> MediaGenres { get; set; }
+        public DbSet<SeasonEpisode> SeasonEpisodes { get; set; }
         public DbSet<Server> Servers { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Statistic> Statistics { get; set; }
@@ -70,16 +71,25 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<ExtraPerson>().HasOne(ep => ep.Extra).WithMany(e => e.ExtraPersons).HasForeignKey(ep => ep.ExtraId);
             modelBuilder.Entity<ExtraPerson>().HasOne(ep => ep.Person).WithMany(p => p.ExtraPersons).HasForeignKey(ep => ep.PersonId);
 
-            modelBuilder.Entity<Video>().HasMany(v => v.MediaSources).WithOne(s => s.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
+	        modelBuilder.Entity<SeasonEpisode>().HasKey(s => new {s.EpisodeId, s.SeasonId});
+	        modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Episode).WithMany(e => e.SeasonEpisodes).HasForeignKey(s => s.EpisodeId);
+	        modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Season).WithMany(s => s.SeasonEpisodes).HasForeignKey(s => s.SeasonId);
+
             modelBuilder.Entity<Video>().HasMany(v => v.AudioStreams).WithOne(s => s.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Video>().HasMany(v => v.VideoStreams).WithOne(ms => ms.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Video>().HasMany(v => v.SubtitleStreams).WithOne(ms => ms.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Video>().HasMany(v => v.MediaSources).WithOne(ms => ms.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Movie>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Movie>().Property(m => m.ParentId).IsRequired();
 
+	        modelBuilder.Entity<Extra>().HasMany(v => v.ExtraPersons).WithOne(s => s.Extra).HasForeignKey(s => s.ExtraId).OnDelete(DeleteBehavior.Cascade);
+
+	        modelBuilder.Entity<Media>().HasMany(v => v.MediaGenres).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Episode>().Property(m => m.Id).IsRequired();
-            modelBuilder.Entity<Episode>().Property(m => m.ParentId).IsRequired();
+            modelBuilder.Entity<Episode>().Property(m => m.ParentId).IsRequired(false);
+            modelBuilder.Entity<Episode>().HasMany(e => e.SeasonEpisodes).WithOne(s => s.Episode).HasForeignKey(s => s.EpisodeId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Season>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Season>().Property(m => m.ParentId).IsRequired();

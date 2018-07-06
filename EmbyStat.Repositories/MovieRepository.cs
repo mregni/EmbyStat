@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
@@ -218,7 +219,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalActors(List<string> collections)
+        public int GetTotalPersonByType(List<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -231,41 +232,7 @@ namespace EmbyStat.Repositories
 
                 var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
                 var people = extraPerson.DistinctBy(x => x.PersonId);
-                return people.Count(x => x.Type == Constants.Actor);
-            }
-        }
-
-        public int GetTotalDirectors(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.Include(x => x.ExtraPersons).AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
-                var people = extraPerson.DistinctBy(x => x.PersonId);
-                return people.Count(x => x.Type == Constants.Director);
-            }
-        }
-
-        public int GetTotalWriters(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.Include(x => x.ExtraPersons).AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
-                var people = extraPerson.DistinctBy(x => x.PersonId);
-                return people.Count(x => x.Type == Constants.Writer);
+                return people.Count(x => x.Type == type);
             }
         }
 
@@ -331,15 +298,13 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var movieIds = context.Movies.Select(x => x.Id).ToList();
-
-                var personsToRemove = context.ExtraPersons.Where(x => movieIds.Any(y => y == x.ExtraId)).ToList();
-                context.ExtraPersons.RemoveRange(personsToRemove);
-
-                var genresToRemove = context.MediaGenres.Where(x => movieIds.Any(y => y == x.MediaId)).ToList();
-                context.MediaGenres.RemoveRange(genresToRemove);
-
-                context.Movies.RemoveRange(context.Movies);
+                context.Movies.RemoveRange(context.Movies.
+                    Include(x => x.ExtraPersons)
+                    .Include(x => x.AudioStreams)
+                    .Include(x => x.MediaGenres)
+                    .Include(x => x.MediaSources)
+                    .Include(x => x.SubtitleStreams)
+                    .Include(x => x.VideoStreams));
                 context.SaveChanges();
             }
         }

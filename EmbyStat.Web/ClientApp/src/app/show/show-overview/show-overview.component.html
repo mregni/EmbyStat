@@ -1,0 +1,39 @@
+<div class="title_bar media__flexcontainer">
+  <div class="media__flex-row media__align-start">
+    <div class="media__left-content">
+      <h2>{{ 'MENU.SHOWS' | translate | capitalizeFirst}}</h2>
+    </div>
+    <div class="media__right-content">
+      <mat-form-field class="full-width">
+        <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
+          <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div class="content">
+  <mat-tab-group (selectedTabChange)="onTabChanged($event)">
+    <mat-tab label="{{ 'COMMON.GENERAL' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
+        <app-show-general [selectedCollections]="selectedCollections"></app-show-general>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{ 'COMMON.GRAPHS' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
+        <app-show-charts [selectedCollections]="selectedCollections"></app-show-charts>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{ 'COMMON.COLLECTION' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
+        <app-show-collection [selectedCollections]="selectedCollections"></app-show-collection>
+      </div>
+    </mat-tab>
+    <!--<mat-tab label="{{ 'COMMON.PEOPLE' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
+        <app-show-people [selectedCollections]="selectedCollections"></app-show-people>
+      </div>
+    </mat-tab>-->
+  </mat-tab-group>
+</div>
+

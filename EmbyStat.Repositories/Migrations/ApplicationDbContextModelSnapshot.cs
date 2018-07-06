@@ -75,6 +75,8 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Language")
                         .IsRequired();
 
+                    b.Property<DateTime?>("LastTvdbUpdate");
+
                     b.Property<string>("ServerName");
 
                     b.Property<int>("ToShortMovie");
@@ -304,6 +306,19 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("MediaGenres");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.SeasonEpisode", b =>
+                {
+                    b.Property<string>("EpisodeId");
+
+                    b.Property<string>("SeasonId");
+
+                    b.HasKey("EpisodeId", "SeasonId");
+
+                    b.HasIndex("SeasonId");
+
+                    b.ToTable("SeasonEpisodes");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Person", b =>
                 {
                     b.Property<string>("Id")
@@ -519,10 +534,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AssemblyFileName");
-
-                    b.Property<DateTime>("ConfigurationDateLastModified");
-
                     b.Property<string>("ConfigurationFileName");
 
                     b.Property<string>("Description");
@@ -602,10 +613,16 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("HomePageUrl")
                         .HasColumnName("Show_HomePageUrl");
 
+                    b.Property<int>("MissingEpisodesCount");
+
                     b.Property<string>("OfficialRating")
                         .HasColumnName("Show_OfficialRating");
 
                     b.Property<string>("Status");
+
+                    b.Property<bool>("TvdbFailed");
+
+                    b.Property<bool>("TvdbSynced");
 
                     b.ToTable("Show");
 
@@ -699,6 +716,19 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.Models.Helpers.Media", "Media")
                         .WithMany("MediaGenres")
                         .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.SeasonEpisode", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Episode", "Episode")
+                        .WithMany("SeasonEpisodes")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EmbyStat.Common.Models.Season", "Season")
+                        .WithMany("SeasonEpisodes")
+                        .HasForeignKey("SeasonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

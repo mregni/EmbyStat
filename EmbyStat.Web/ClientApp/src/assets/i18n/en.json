@@ -22,12 +22,28 @@
     "COUNTPERCOMMUNITYRATING": "count / rating",
     "COUNTPERPREMIEREDATE": "count / year",
     "COUNTPEROFFICIALRATING": "count / official rating",
+    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
     "EMBY": "Emby",
     "GENERAL": "general",
-    "DURATION": "duration"
+    "DURATION": "duration",
+    "GRAPHS": "graphs",
+    "PEOPLE": "people",
+    "SUSPICIOUS": "suspicious",
+    "SHOWS": "shows",
+    "TOTALACTORS": "Total actors",
+    "TOTALDIRECTORS": "Total directors",
+    "TOTALWRITERS": "Total writers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "COLLECTION": "collection",
+    "PREMIEREDATE": "premiere date",
+    "STATUS": "status",
+    "PERCENTAGE": "percentage",
+    "COLLECTED": "collected" 
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.", 
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
@@ -39,7 +55,7 @@
     "EMBYADDRESS": "Emby ip address",
     "EMBYUSERNAME": "Emby admin username",
     "EMBYPASSWORD": "Emby admin password",
-    "DURATIONINMINUTES": "Duration in minutes" 
+    "DURATIONINMINUTES": "Duration in minutes"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -49,11 +65,13 @@
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
-    "MOVIES": "Movies", 
+    "MOVIES": "Movies",
+    "SHOWS": "Shows",
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
-    "TASKS": "Tasks", 
-    "SERVER": "Emby server" 
+    "TASKS": "Tasks",
+    "SERVER": "Emby server",
+    "LOGS": "Logs" 
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -86,15 +104,25 @@
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
     "YOUNGESTADDED": "Youngest added",
-    "TOTALACTORS": "Total actors",
-    "TOTALDIRECTORS": "Total directors",
-    "TOTALWRITERS": "Total writers",
-    "MOSTFEATUREDACTOR": "Most featured actor",
-    "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
     "DUPLICATEMOVIES": "duplicate movies",
-    "TOSHORTMOVIES": "movies that are very short" 
+    "TOSHORTMOVIES": "movies that are very short"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Total shows",
+    "TOTALEPISODES": "Total Episodes",
+    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATEDSHOW": "Highest rated show",
+    "LOWESTRATEDSHOW": "Lowest rated show",
+    "OLDESTPREMIERED": "Oldest premiered show",
+    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTADDED": "Youngest added",
+    "WITHMOESTEPISODES": "With most episodes",
+    "SHOWSTATUSGRAPH": "Show statuses",
+    "SEASONS": "seasons",
+    "CONTINUING": "continuing",
+    "ENDED": "ended"
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
@@ -114,8 +142,7 @@
   "TASKS": {
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "MOVIESYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "CALCULATEMOVIESTATISTICS": "Calculate all movie statistics." 
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -125,5 +152,5 @@
     "AT": "at {{time}}",
     "TRIGGERTYPE": "Trigger type",
     "SAVETRIGGER": "Save trigger"
-  } 
+  }
 }
