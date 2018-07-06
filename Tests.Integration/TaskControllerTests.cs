@@ -62,31 +62,31 @@ namespace Tests.Integration
             result.Should().NotBeNull();
             result.Count.Should().Be(3);
 
-            result.ElementAt(0).Category.Should().Be("Emby");
+            result.ElementAt(0).Category.Should().Be("Sync");
             result.ElementAt(0).CurrentProgressPercentage.Should().BeNull();
-            result.ElementAt(0).Description.Should().Be("TASKS.PINGEMBYSERVERDESCRIPTION");
+            result.ElementAt(0).Description.Should().Be("TASKS.MEDIASYNCDESCRIPTION");
             result.ElementAt(0).LastExecutionResult.Should().BeNull();
-            result.ElementAt(0).Name.Should().Be("TASKS.PINGEMBYSERVERTITLE");
+            result.ElementAt(0).Name.Should().Be("TASKS.MEDIASYNCTITLE");
             result.ElementAt(0).State.Should().Be(0);
             result.ElementAt(0).Triggers.Count.Should().Be(1);
             result.ElementAt(0).Triggers.ElementAt(0).Id.Should().BeNull();
-            result.ElementAt(0).Triggers.ElementAt(0).Type.Should().Be("IntervalTrigger");
-            result.ElementAt(0).Triggers.ElementAt(0).TimeOfDayTicks.Should().BeNull();
-            result.ElementAt(0).Triggers.ElementAt(0).IntervalTicks.Should().Be(1200000000);
+            result.ElementAt(0).Triggers.ElementAt(0).Type.Should().Be("DailyTrigger");
+            result.ElementAt(0).Triggers.ElementAt(0).TimeOfDayTicks.Should().Be(0);
+            result.ElementAt(0).Triggers.ElementAt(0).IntervalTicks.Should().BeNull();
             result.ElementAt(0).Triggers.ElementAt(0).DayOfWeek.Should().BeNull();
             result.ElementAt(0).Triggers.ElementAt(0).MaxRuntimeTicks.Should().BeNull();
 
-            result.ElementAt(1).Category.Should().Be("Sync");
+            result.ElementAt(1).Category.Should().Be("Emby");
             result.ElementAt(1).CurrentProgressPercentage.Should().BeNull();
-            result.ElementAt(1).Description.Should().Be("TASKS.MEDIASYNCDESCRIPTION");
+            result.ElementAt(1).Description.Should().Be("TASKS.PINGEMBYSERVERDESCRIPTION");
             result.ElementAt(1).LastExecutionResult.Should().BeNull();
-            result.ElementAt(1).Name.Should().Be("TASKS.MEDIASYNCTITLE");
+            result.ElementAt(1).Name.Should().Be("TASKS.PINGEMBYSERVERTITLE");
             result.ElementAt(1).State.Should().Be(0);
             result.ElementAt(1).Triggers.Count.Should().Be(1);
             result.ElementAt(1).Triggers.ElementAt(0).Id.Should().BeNull();
-            result.ElementAt(1).Triggers.ElementAt(0).Type.Should().Be("DailyTrigger");
-            result.ElementAt(1).Triggers.ElementAt(0).TimeOfDayTicks.Should().Be(0);
-            result.ElementAt(1).Triggers.ElementAt(0).IntervalTicks.Should().BeNull();
+            result.ElementAt(1).Triggers.ElementAt(0).Type.Should().Be("IntervalTrigger");
+            result.ElementAt(1).Triggers.ElementAt(0).TimeOfDayTicks.Should().BeNull();
+            result.ElementAt(1).Triggers.ElementAt(0).IntervalTicks.Should().Be(1200000000);
             result.ElementAt(1).Triggers.ElementAt(0).DayOfWeek.Should().BeNull();
             result.ElementAt(1).Triggers.ElementAt(0).MaxRuntimeTicks.Should().BeNull();
 
