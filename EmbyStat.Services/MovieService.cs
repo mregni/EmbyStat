@@ -89,40 +89,94 @@ namespace EmbyStat.Services
 
         public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)
         {
-            return new PersonStats
+            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MoviePeople);
+
+            PersonStats stats;
+            if (statistic != null
+                && lastMediaSync != null
+                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
+                && collectionsIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
             {
-                TotalActorCount = TotalTypeCount(collectionsIds, Constants.Actor, Constants.Common.TotalActors),
-                TotalDirectorCount = TotalTypeCount(collectionsIds, Constants.Director, Constants.Common.TotalDirectors),
-                TotalWriterCount = TotalTypeCount(collectionsIds, Constants.Writer, Constants.Common.TotalWriters),
-                MostFeaturedActor = await GetMostFeaturedPerson(collectionsIds, Constants.Actor, Constants.Common.MostFeaturedActor),
-                MostFeaturedDirector = await GetMostFeaturedPerson(collectionsIds, Constants.Director, Constants.Common.MostFeaturedDirector),
-                MostFeaturedWriter = await GetMostFeaturedPerson(collectionsIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
-                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
-            };
+                stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
+            }
+            else
+            {
+                stats = new PersonStats
+                {
+                    TotalActorCount = TotalTypeCount(collectionsIds, Constants.Actor, Constants.Common.TotalActors),
+                    TotalDirectorCount = TotalTypeCount(collectionsIds, Constants.Director, Constants.Common.TotalDirectors),
+                    TotalWriterCount = TotalTypeCount(collectionsIds, Constants.Writer, Constants.Common.TotalWriters),
+                    MostFeaturedActor = await GetMostFeaturedPerson(collectionsIds, Constants.Actor, Constants.Common.MostFeaturedActor),
+                    MostFeaturedDirector = await GetMostFeaturedPerson(collectionsIds, Constants.Director, Constants.Common.MostFeaturedDirector),
+                    MostFeaturedWriter = await GetMostFeaturedPerson(collectionsIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
+                    MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionsIds)
+                };
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionsIds);
+            }
+
+            return stats;
         }
 
         public MovieGraphs GetGraphs(List<string> collectionIds)
         {
-            var movies = _movieRepository.GetAll(collectionIds);
+            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
 
-            var graphs = new MovieGraphs();
-            graphs.BarGraphs.Add(CalculateGenreGraph(movies));
-            graphs.BarGraphs.Add(CalculateRatingGraph(movies));
-            graphs.BarGraphs.Add(CalculatePremiereYearGraph(movies));
-            graphs.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
+            MovieGraphs stats;
+            if (statistic != null
+                && lastMediaSync != null
+                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
+                && collectionIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
+            {
+                stats = JsonConvert.DeserializeObject<MovieGraphs>(statistic.JsonResult);
+            }
+            else
+            {
+                var movies = _movieRepository.GetAll(collectionIds);
 
-            return graphs;
+                stats =  new MovieGraphs();
+                stats.BarGraphs.Add(CalculateGenreGraph(movies));
+                stats.BarGraphs.Add(CalculateRatingGraph(movies));
+                stats.BarGraphs.Add(CalculatePremiereYearGraph(movies));
+                stats.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGraphs, collectionIds);
+            }
+
+            return stats;
         }
 
         public SuspiciousTables GetSuspiciousMovies(List<string> collectionsIds)
         {
-            var movies = _movieRepository.GetAll(collectionsIds);
+            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
-            return new SuspiciousTables
+            SuspiciousTables stats;
+            if (statistic != null
+                && lastMediaSync != null
+                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
+                && collectionsIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
             {
-                Duplicates = GetDuplicates(movies),
-                Shorts = GetShortMovies(movies)
-            };
+                stats = JsonConvert.DeserializeObject<SuspiciousTables>(statistic.JsonResult);
+            }
+            else
+            {
+                var movies = _movieRepository.GetAll(collectionsIds);
+                stats = new SuspiciousTables
+                {
+                    Duplicates = GetDuplicates(movies),
+                    Shorts = GetShortMovies(movies)
+                };
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionsIds);
+            }
+
+            return stats;
         }
 
         private List<ShortMovie> GetShortMovies(List<Movie> movies)
