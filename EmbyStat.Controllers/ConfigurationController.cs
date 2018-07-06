@@ -29,7 +29,6 @@ namespace EmbyStat.Controllers
 		}
 
 		[HttpPut]
-        [Route("update")]
 		public IActionResult Update([FromBody] ConfigurationViewModel configuration)
 		{
 		    try
