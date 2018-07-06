@@ -10,6 +10,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
@@ -18,6 +19,7 @@ using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Newtonsoft.Json;
 using CollectionType = EmbyStat.Common.Models.CollectionType;
 using Constants = EmbyStat.Common.Constants;
 
@@ -30,14 +32,18 @@ namespace EmbyStat.Services
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
         private readonly IConfigurationRepository _configurationRepository;
+        private readonly IStatisticsRepository _statisticsRepository;
+        private readonly ITaskRepository _taskRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, ITaskRepository taskRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
             _configurationRepository = configurationRepository;
+            _statisticsRepository = statisticsRepository;
+            _taskRepository = taskRepository;
         }
 
         public List<Collection> GetMovieCollections()
@@ -47,19 +53,38 @@ namespace EmbyStat.Services
 
         public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
         {
-            return new MovieStats
+            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
+
+            MovieStats stats;
+            if (statistic != null 
+                && lastMediaSync != null 
+                && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc 
+                && collectionIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList()))
             {
-                MovieCount = TotalMovieCount(collectionIds),
-                GenreCount = TotalMovieGenres(collectionIds),
-                TotalPlayableTime = TotalPlayLength(collectionIds),
-                HighestRatedMovie = HighestRatedMovie(collectionIds),
-                LowestRatedMovie = LowestRatedMovie(collectionIds),
-                OldestPremieredMovie = OldestPremieredMovie(collectionIds),
-                YoungestPremieredMovie = YoungestPremieredMovie(collectionIds),
-                ShortestMovie = ShortestMovie(collectionIds),
-                LongestMovie = LongestMovie(collectionIds),
-                YoungestAddedMovie = YoungestAddedMovie(collectionIds)
-            };
+                stats = JsonConvert.DeserializeObject<MovieStats>(statistic.JsonResult);
+            }
+            else
+            {
+                stats = new MovieStats
+                {
+                    MovieCount = TotalMovieCount(collectionIds),
+                    GenreCount = TotalMovieGenres(collectionIds),
+                    TotalPlayableTime = TotalPlayLength(collectionIds),
+                    HighestRatedMovie = HighestRatedMovie(collectionIds),
+                    LowestRatedMovie = LowestRatedMovie(collectionIds),
+                    OldestPremieredMovie = OldestPremieredMovie(collectionIds),
+                    YoungestPremieredMovie = YoungestPremieredMovie(collectionIds),
+                    ShortestMovie = ShortestMovie(collectionIds),
+                    LongestMovie = LongestMovie(collectionIds),
+                    YoungestAddedMovie = YoungestAddedMovie(collectionIds)
+                };
+
+                var json = JsonConvert.SerializeObject(stats);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGeneral, collectionIds);
+            }
+
+            return stats;
         }
 
         public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds)

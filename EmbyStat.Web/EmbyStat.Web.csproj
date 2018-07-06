@@ -51,6 +51,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Startup_BACKUP_35740.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />

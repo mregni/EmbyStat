@@ -101,7 +101,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
 		    containerBuilder.RegisterType<StatisticsRepository>().As<IStatisticsRepository>();
 
-            containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
+		    containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
 		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();

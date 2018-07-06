@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +51,17 @@ namespace EmbyStat.Repositories
                 }
                 
                 context.SaveChanges();
+            }
+        }
+
+        public TaskResult GetLatestTaskByKeyAndStatus(string key, TaskCompletionStatus status)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.TaskResults
+                    .Where(x => x.Key == key && x.Status == status)
+                    .OrderByDescending(x => x.EndTimeUtc)
+                    .FirstOrDefault();
             }
         }
     }
