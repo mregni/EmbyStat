@@ -131,7 +131,7 @@ namespace Tests.Integration
             var jsonTask = JsonConvert.SerializeObject(configuration);
             var content = new StringContent(jsonTask, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync("update", content);
+            var response = await _client.PutAsync("", content);
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
