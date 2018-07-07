@@ -34,7 +34,6 @@ namespace EmbyStat.Services
         private readonly IPersonService _personService;
         private readonly IConfigurationRepository _configurationRepository;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly ITaskRepository _taskRepository;
 
         public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, ITaskRepository taskRepository)
         : base(taskRepository) {
@@ -44,7 +43,6 @@ namespace EmbyStat.Services
             _personService = personService;
             _configurationRepository = configurationRepository;
             _statisticsRepository = statisticsRepository;
-            _taskRepository = taskRepository;
         }
 
         public List<Collection> GetMovieCollections()

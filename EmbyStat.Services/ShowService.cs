@@ -24,7 +24,6 @@ namespace EmbyStat.Services
         private readonly ICollectionRepository _collectionRepository;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
-        private readonly ITaskRepository _taskRepository;
         private readonly IStatisticsRepository _statisticsRepository;
 
         public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, ITaskRepository taskRepository, IStatisticsRepository statisticsRepository)
@@ -33,7 +32,6 @@ namespace EmbyStat.Services
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
-            _taskRepository = taskRepository;
             _statisticsRepository = statisticsRepository;
         }
 
@@ -95,8 +93,7 @@ namespace EmbyStat.Services
                 stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
                 stats.PieGraphs.Add(CalculateShowStateGraph(shows));
-
-
+                
                 var json = JsonConvert.SerializeObject(stats);
                 _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
             }
