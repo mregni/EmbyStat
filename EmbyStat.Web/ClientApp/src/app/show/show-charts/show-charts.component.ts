@@ -12,6 +12,7 @@ import { ShowGraphs } from '../models/showGraphs';
 })
 export class ShowChartsComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
+  private previousOnTabValue: boolean;
 
   get selectedCollections(): string[] {
     return this._selectedCollections;
@@ -40,7 +41,8 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
   constructor(private showFacade: ShowFacade, private showChartsService: ShowChartsService) {
     showChartsService.open.subscribe(value => {
       this.onTab = value;
-      if (value) {
+      if (value && !this.previousOnTabValue) {
+        this.previousOnTabValue = value;
         this.graphs$ = this.showFacade.getGraphs(this._selectedCollections);
       }
     });
