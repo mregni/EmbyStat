@@ -5,7 +5,8 @@ import 'rxjs/add/observable/throw';
 
 import { ShowActionTypes } from '../../../../show/state/actions.show';
 import { HideLoaderShowGeneral, ShowLoaderShowGeneral,
-         ShowLoaderShowCharts, HideLoaderShowCharts } from './actions.loader';
+  ShowLoaderShowCharts, HideLoaderShowCharts,
+  ShowLoaderShowCollection, HideLoaderShowCollection } from './actions.loader';
 
 
 @Injectable()
@@ -33,4 +34,14 @@ export class LoaderEffects {
   hideShowGraphs = this.actions$
     .ofType(ShowActionTypes.LOAD_STATS_GENERAL)
     .pipe(map(() => new ShowLoaderShowCharts()));
+
+  @Effect()
+  showShowCollection = this.actions$
+    .ofType(ShowActionTypes.LOAD_COLLECTIONS_SUCCESS)
+    .pipe(map(() => new HideLoaderShowCollection()));
+
+  @Effect()
+  hideShowCollection = this.actions$
+    .ofType(ShowActionTypes.LOAD_COLLECTIONS)
+    .pipe(map(() => new ShowLoaderShowCollection()));
 }

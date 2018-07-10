@@ -4,7 +4,8 @@ import { ApplicationState } from '../../../../states/app.state';
 
 const INITIAL_STATE: LoadingState = {
   isShowGeneralLoading: false,
-  isShowGraphsLoading: false
+  isShowGraphsLoading: false,
+  isShowCollectionLoading: false
 };
 
 export function LoadingReducer(state: LoadingState = INITIAL_STATE, action: LoaderActions) {
@@ -17,6 +18,10 @@ export function LoadingReducer(state: LoadingState = INITIAL_STATE, action: Load
       return { ...state, isShowGraphsLoading: false };
     case LoaderActiontypes.SHOWSHOWCHARTS:
       return { ...state, isShowGraphsLoading: true };
+    case LoaderActiontypes.HIDESHOWCOLLECTION:
+      return { ...state, isShowCollectionLoading: false };
+    case LoaderActiontypes.HIDESHOWCOLLECTION:
+      return { ...state, isShowCollectionLoading: true };
   default:
     return state;
   }
@@ -25,4 +30,5 @@ export function LoadingReducer(state: LoadingState = INITIAL_STATE, action: Load
 export namespace LoaderQuery {
   export const isShowGeneralLoading = (state: ApplicationState) => state.loading.isShowGeneralLoading;
   export const isShowGraphsLoading = (state: ApplicationState) => state.loading.isShowGraphsLoading;
+  export const isShowCollectionLoading = (state: ApplicationState) => state.loading.isShowCollectionLoading;
 }

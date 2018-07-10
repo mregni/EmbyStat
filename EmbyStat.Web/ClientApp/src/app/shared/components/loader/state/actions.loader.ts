@@ -4,7 +4,9 @@ export enum LoaderActiontypes {
   SHOWSHOWGENERAL = '[Loader] Show Show General',
   HIDESHOWGENERAL = '[Loader] Hide Show General',
   SHOWSHOWCHARTS = '[Loader] Show Show Carts',
-  HIDEHOWCHARTS = '[Loader] Hide Show Carts'
+  HIDEHOWCHARTS = '[Loader] Hide Show Carts',
+  SHOWSHOWCOLLECTION = '[Loader] Show Show Collection',
+  HIDESHOWCOLLECTION = '[Loader] Hide Show Collection'
 }
 
 export class HideLoaderShowGeneral implements Action {
@@ -27,5 +29,16 @@ export class HideLoaderShowCharts implements Action {
   constructor(public payload = null) { }
 }
 
+export class ShowLoaderShowCollection implements Action {
+  readonly type = LoaderActiontypes.SHOWSHOWCOLLECTION;
+  constructor(public payload = null) { }
+}
+
+export class HideLoaderShowCollection implements Action {
+  readonly type = LoaderActiontypes.HIDESHOWCOLLECTION;
+  constructor(public payload = null) { }
+}
+
 export type LoaderActions = ShowLoaderShowGeneral | HideLoaderShowGeneral
-  | ShowLoaderShowCharts | HideLoaderShowCharts;
+  | ShowLoaderShowCharts | HideLoaderShowCharts
+  | ShowLoaderShowCollection | HideLoaderShowCollection;
