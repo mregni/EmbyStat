@@ -22,9 +22,25 @@
     "COUNTPERCOMMUNITYRATING": "count / rating",
     "COUNTPERPREMIEREDATE": "count / year",
     "COUNTPEROFFICIALRATING": "count / official rating",
+    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
     "EMBY": "Emby",
     "GENERAL": "general",
-    "DURATION": "duration"
+    "DURATION": "duration",
+    "GRAPHS": "graphs",
+    "PEOPLE": "people",
+    "SUSPICIOUS": "suspicious",
+    "SHOWS": "shows",
+    "TOTALACTORS": "Total actors",
+    "TOTALDIRECTORS": "Total directors",
+    "TOTALWRITERS": "Total writers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "COLLECTION": "collection",
+    "PREMIEREDATE": "premiere date",
+    "STATUS": "status",
+    "PERCENTAGE": "percentage",
+    "COLLECTED": "collected"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -50,10 +66,12 @@
   "MENU": {
     "DASHBOARD": "Dashboard",
     "MOVIES": "Movies",
+    "SHOWS": "Shows",
     "SETTINGS": "Settings",
     "PLUGINS": "Plugins",
     "TASKS": "Tasks",
-    "SERVER": "Emby server"
+    "SERVER": "Emby server",
+    "LOGS": "Logs"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -86,15 +104,25 @@
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
     "YOUNGESTADDED": "Youngest added",
-    "TOTALACTORS": "Total actors",
-    "TOTALDIRECTORS": "Total directors",
-    "TOTALWRITERS": "Total writers",
-    "MOSTFEATUREDACTOR": "Most featured actor",
-    "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
     "DUPLICATEMOVIES": "duplicate movies",
     "TOSHORTMOVIES": "movies that are very short"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Total shows",
+    "TOTALEPISODES": "Total Episodes",
+    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATEDSHOW": "Highest rated show",
+    "LOWESTRATEDSHOW": "Lowest rated show",
+    "OLDESTPREMIERED": "Oldest premiered show",
+    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTADDED": "Youngest added",
+    "WITHMOESTEPISODES": "With most episodes",
+    "SHOWSTATUSGRAPH": "Show statuses",
+    "SEASONS": "seasons",
+    "CONTINUING": "continuing",
+    "ENDED": "ended"
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
@@ -112,9 +140,12 @@
     "BUTFAILED": "but failed after"
   },
   "TASKS": {
+    "PINGEMBYSERVERTITLE": "Check Emby connection",
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "MOVIESYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!"
+    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+    "MEDIASYNCTITLE": "Media sync"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
