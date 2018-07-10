@@ -1,4 +1,13 @@
-<div class="media__flexcontainer" *ngIf="stats$ | async as stats">
+<!--<<div *ngIf="!(isLoading$ | async); else loading">
+
+</div>
+
+<ng-template #loading>
+  Loading...
+  app-loader></app-loader>
+</ng-template>-->
+
+<div class="media__flexcontainer" *ngIf="stats$ | async as stats; else loading">
   <div class="media__flex-row media__align-start">
     <app-card-number [card]="stats.showCount"></app-card-number>
     <app-card-number [card]="stats.episodeCount"></app-card-number>

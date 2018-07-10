@@ -71,6 +71,8 @@
     <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
+    <None Remove="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
+    <None Remove="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
@@ -118,6 +120,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\logs\state\facade.log.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\shortMovie.ts" />

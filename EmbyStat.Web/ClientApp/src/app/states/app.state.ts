@@ -18,19 +18,24 @@ import { MovieReducer } from '../movie/state/reducer.movie';
 import { ShowStore } from '../show/models/showStore';
 import { ShowReducer } from '../show/state/reducer.show';
 
+import { LoadingState } from '../shared/components/loader/model/loadingState';
+import { LoadingReducer } from '../shared/components/loader/state/reducer.loader';
+
 export interface ApplicationState {
   configuration: Configuration;
   plugins: EmbyPluginStore;
   serverInfo: ServerInfoStore;
   movies: MovieStore;
   shows: ShowStore;
+  loading: LoadingState;
 }
 
 export const ROOT_REDUCER: ActionReducerMap<ApplicationState> = {
-    configuration: configurationReducer,
-    plugins: pluginReducer,
-    serverInfo: serverInfoReducer,
-    movies: MovieReducer,
-    shows: ShowReducer
+  configuration: configurationReducer,
+  plugins: pluginReducer,
+  serverInfo: serverInfoReducer,
+  movies: MovieReducer,
+  shows: ShowReducer,
+  loading: LoadingReducer
 };
 export const META_REDUCERS = !environment.production ? [storeFreeze] : [];
