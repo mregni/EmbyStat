@@ -34,7 +34,7 @@ export class ShowGeneralComponent implements OnInit {
   constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isLoading();
+    this.isLoading$ = this.loaderFacade.isShowGeneralLoading();
   }
 
 }
