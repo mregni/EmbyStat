@@ -20,4 +20,12 @@ export class LoaderFacade {
   isShowGraphsLoading(): Observable<boolean> {
     return this.store.select(LoaderQuery.isShowGraphsLoading);
   }
+
+  isShowCollectionLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isShowCollectionLoading);
+  }
+
+  isMovieGeneralLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isMovieGeneralLoading);
+  }
 }

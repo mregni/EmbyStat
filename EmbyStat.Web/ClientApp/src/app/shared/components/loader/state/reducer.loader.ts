@@ -5,7 +5,11 @@ import { ApplicationState } from '../../../../states/app.state';
 const INITIAL_STATE: LoadingState = {
   isShowGeneralLoading: false,
   isShowGraphsLoading: false,
-  isShowCollectionLoading: false
+  isShowCollectionLoading: false,
+  isMovieGeneralLoading: false,
+  isMovieGraphsLoading: false,
+  isMoviePeopleLoading: false,
+  isMovieSuspiciousLoading: false
 };
 
 export function LoadingReducer(state: LoadingState = INITIAL_STATE, action: LoaderActions) {
@@ -22,6 +26,10 @@ export function LoadingReducer(state: LoadingState = INITIAL_STATE, action: Load
       return { ...state, isShowCollectionLoading: false };
     case LoaderActiontypes.HIDESHOWCOLLECTION:
       return { ...state, isShowCollectionLoading: true };
+    case LoaderActiontypes.HIDEMOVIEGENERAL:
+      return { ...state, isMovieGeneralLoading: false };
+    case LoaderActiontypes.SHOWMOVIEGENERAL:
+      return { ...state, isMovieGeneralLoading: true };
   default:
     return state;
   }
@@ -31,4 +39,6 @@ export namespace LoaderQuery {
   export const isShowGeneralLoading = (state: ApplicationState) => state.loading.isShowGeneralLoading;
   export const isShowGraphsLoading = (state: ApplicationState) => state.loading.isShowGraphsLoading;
   export const isShowCollectionLoading = (state: ApplicationState) => state.loading.isShowCollectionLoading;
+  export const isMovieGeneralLoading = (state: ApplicationState) => state.loading.isMovieGeneralLoading;
+
 }
