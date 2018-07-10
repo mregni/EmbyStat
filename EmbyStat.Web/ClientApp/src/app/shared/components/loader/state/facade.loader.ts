@@ -13,7 +13,11 @@ export class LoaderFacade {
     private store: Store<ApplicationState>
   ) { }
 
-  isLoading(): Observable<boolean> {
-    return this.store.select(LoaderQuery.isLoading);
+  isShowGeneralLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isShowGeneralLoading);
+  }
+
+  isShowGraphsLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isShowGraphsLoading);
   }
 }

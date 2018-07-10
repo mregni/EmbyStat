@@ -2,25 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { map } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
-import { HideLoader, ShowLoader } from './actions.loader';
-import {
-  ShowActionTypes,
-  LoadGeneralStatsAction,
-  LoadGeneralStatsSuccessAction,
-  } from '../../../../show/state/actions.show';
 
+import { ShowActionTypes } from '../../../../show/state/actions.show';
+import { HideLoaderShowGeneral, ShowLoaderShowGeneral,
+         ShowLoaderShowCharts, HideLoaderShowCharts } from './actions.loader';
 
-const showLoaderActions = [
-  ShowActionTypes.LOAD_STATS_GENERAL
-];
-
-type ShowLoaderTypes = LoadGeneralStatsAction;
-
-const hideLoaderActions = [
-  ShowActionTypes.LOAD_STATS_GENERAL_SUCCESS
-];
-
-type HideLoaderTypes = LoadGeneralStatsSuccessAction;
 
 @Injectable()
 export class LoaderEffects {
@@ -29,12 +15,22 @@ export class LoaderEffects {
   }
 
   @Effect()
-  showSpinner = this.actions$
-    .ofType<ShowLoaderTypes>(...showLoaderActions)
-    .pipe(map(() => new ShowLoader()));
+  showShowGeneral = this.actions$
+    .ofType(ShowActionTypes.LOAD_STATS_GENERAL_SUCCESS)
+    .pipe(map(() => new HideLoaderShowGeneral()));
 
   @Effect()
-  hideSpinner = this.actions$
-    .ofType<HideLoaderTypes>(...hideLoaderActions)
-    .pipe(map(() => new HideLoader()));
+  hideShowGeneral = this.actions$
+    .ofType(ShowActionTypes.LOAD_STATS_GENERAL)
+    .pipe(map(() => new ShowLoaderShowGeneral()));
+
+  @Effect()
+  showShowGraphs = this.actions$
+    .ofType(ShowActionTypes.LOAD_GRAPHS_SUCCESS)
+    .pipe(map(() => new HideLoaderShowCharts()));
+
+  @Effect()
+  hideShowGraphs = this.actions$
+    .ofType(ShowActionTypes.LOAD_STATS_GENERAL)
+    .pipe(map(() => new ShowLoaderShowCharts()));
 }

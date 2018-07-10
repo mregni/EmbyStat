@@ -1,3 +1,4 @@
 export class LoadingState {
-  isLoading: boolean;
+  isShowGeneralLoading: boolean;
+  isShowGraphsLoading: boolean;
 }
