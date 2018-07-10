@@ -45,7 +45,7 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
   constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isShowGeneralLoading();
+    this.isLoading$ = this.loaderFacade.isShowCollectionLoading();
   }
 
   public getColor(row: ShowCollectionRow): string {
