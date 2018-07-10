@@ -140,7 +140,7 @@
     "BUTFAILED": "maar is gefaald na"
   },
   "TASKS": {
-    "PINGEMBYSERVERTITLE": "Check Emby connection",
+    "PINGEMBYSERVERTITLE": "Emby-verbinding controleren",
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
     "SMALLEMBYSYNCTITLE": "Small sync with Emb",
