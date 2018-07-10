@@ -28,4 +28,16 @@ export class LoaderFacade {
   isMovieGeneralLoading(): Observable<boolean> {
     return this.store.select(LoaderQuery.isMovieGeneralLoading);
   }
+
+  isMovieGraphsLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isMovieGraphsLoading);
+  }
+
+  isMoviePeopleLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isMoviePeopleLoading);
+  }
+
+  isMovieSuspiciousLoading(): Observable<boolean> {
+    return this.store.select(LoaderQuery.isMovieSuspiciousLoading);
+  }
 }

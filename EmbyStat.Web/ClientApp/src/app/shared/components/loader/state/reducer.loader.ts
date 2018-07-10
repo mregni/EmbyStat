@@ -30,6 +30,18 @@ export function LoadingReducer(state: LoadingState = INITIAL_STATE, action: Load
       return { ...state, isMovieGeneralLoading: false };
     case LoaderActiontypes.SHOWMOVIEGENERAL:
       return { ...state, isMovieGeneralLoading: true };
+    case LoaderActiontypes.HIDEMOVIEGRAPHS:
+      return { ...state, isMovieGraphsLoading: false };
+    case LoaderActiontypes.SHOWMOVIEGRAPHS:
+      return { ...state, isMovieGraphsLoading: true };
+    case LoaderActiontypes.HIDEMOVIEPEOPLE:
+      return { ...state, isMoviePeopleLoading: false };
+    case LoaderActiontypes.SHOWMOVIEPEOPLE:
+      return { ...state, isMoviePeopleLoading: true };
+    case LoaderActiontypes.HIDEMOVIESUSPICIOUS:
+      return { ...state, isMovieSuspiciousLoading: false };
+    case LoaderActiontypes.SHOWMOVIESUSPICIOUS:
+      return { ...state, isMovieSuspiciousLoading: true };
   default:
     return state;
   }
@@ -40,5 +52,8 @@ export namespace LoaderQuery {
   export const isShowGraphsLoading = (state: ApplicationState) => state.loading.isShowGraphsLoading;
   export const isShowCollectionLoading = (state: ApplicationState) => state.loading.isShowCollectionLoading;
   export const isMovieGeneralLoading = (state: ApplicationState) => state.loading.isMovieGeneralLoading;
+  export const isMovieGraphsLoading = (state: ApplicationState) => state.loading.isMovieGraphsLoading;
+  export const isMoviePeopleLoading = (state: ApplicationState) => state.loading.isMoviePeopleLoading;
+  export const isMovieSuspiciousLoading = (state: ApplicationState) => state.loading.isMovieSuspiciousLoading;
 
 }

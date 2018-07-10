@@ -1,17 +1,19 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { Configuration } from '../../configuration/models/configuration';
 
 import { MovieFacade } from '../state/facade.movie';
+import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-movie-suspicious',
   templateUrl: './movie-suspicious.component.html',
   styleUrls: ['./movie-suspicious.component.scss']
 })
-export class MovieSuspiciousComponent implements OnDestroy {
+export class MovieSuspiciousComponent implements OnInit, OnDestroy {
   public suspiciousDisplayedColumns = ['number', 'title', 'reason', 'linkOne', 'qualityOne',
     'dateCreatedOne', 'linkTwo', 'qualityTwo', 'dateCreatedTwo'];
   public suspiciousDataSource = new MatTableDataSource();
@@ -41,8 +43,16 @@ export class MovieSuspiciousComponent implements OnDestroy {
     });
   }
 
-  constructor(private movieFacade: MovieFacade, private configurationFacade: ConfigurationFacade) {
+  public isLoading$: Observable<boolean>;
+
+  constructor(private movieFacade: MovieFacade,
+    private configurationFacade: ConfigurationFacade,
+    private loaderFacade: LoaderFacade) {
     this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
+  }
+
+  ngOnInit() {
+    this.isLoading$ = this.loaderFacade.isMovieSuspiciousLoading();
   }
 
   openMovie(id: string): void {
