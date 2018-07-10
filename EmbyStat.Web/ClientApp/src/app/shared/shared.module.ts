@@ -16,10 +16,12 @@ import { CardNumberComponent } from './components/card-number/card-number.compon
 import { MoviePosterComponent } from './components/movie-poster/movie-poster.component';
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 
 import { ToastService } from './services/toast.service';
+import { LoaderFacade } from './components/loader/state/facade.loader';
 
 @NgModule({
   imports: [
@@ -45,6 +47,7 @@ import { ToastService } from './services/toast.service';
     MoviePosterComponent,
     PersonPosterComponent,
     ShowPosterComponent,
+    LoaderComponent,
     CapitalizeFirstPipe
   ],
   declarations: [
@@ -56,10 +59,12 @@ import { ToastService } from './services/toast.service';
     MoviePosterComponent,
     PersonPosterComponent,
     ShowPosterComponent,
+    LoaderComponent,
     CapitalizeFirstPipe
   ],
   providers: [
-    ToastService
+    ToastService,
+    LoaderFacade
   ],
   entryComponents: []
 })
