@@ -1,7 +1,7 @@
 ![# Logo!](https://github.com/mregni/EmbyStat/blob/master/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png?raw=true)
 
 
-[![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg)](https://gitter.im/EmbyStat/Lobby)
+[![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg?style=flat-square)](https://gitter.im/EmbyStat/Lobby)
 ![GitHub (pre-)release](https://img.shields.io/github/release/mregni/embystat/all.svg?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mregni/embystat.svg?style=flat-square)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/mregni/embystat.svg?style=flat-square)
