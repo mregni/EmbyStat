@@ -26,6 +26,9 @@ If you have knownlegde about building unix packages please feel free to contact 
 # Installation Guides
 For full installation guides please see the [Wiki](https://github.com/mregni/EmbyStat/wiki) page
 
+# Translations
+Translations are managed with the Crowdin web service. Feel free to help us translate the application in your own language here: [https://crowdin.com/project/embystat](https://crowdin.com/project/embystat). If your language is not listed just create a new feature request or ping me.
+
 # Technology
 This project is build from scratch with the following technologies:
 * .NET CORE 2.0
