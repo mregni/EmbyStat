@@ -60,26 +60,26 @@
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
     "EMBYADDRESS_REQUIRED": "Tragen Sie Ihre Emby IP-Adresse ein.",
-    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
-    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+    "EMBYUSERNAME_REQUIRED": "Tragen Sie den Benutzernamen des Emby Administrators ein.",
+    "EMBYPASSWORD_REQUIRED": "Tragen Sie das Passwort des Emby Administrators ein."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
-    "MOVIES": "Movies",
-    "SHOWS": "Shows",
-    "SETTINGS": "Settings",
+    "MOVIES": "Filme",
+    "SHOWS": "Serien",
+    "SETTINGS": "Einstellungen",
     "PLUGINS": "Plugins",
-    "TASKS": "Tasks",
-    "SERVER": "Emby server",
+    "TASKS": "Aufgaben",
+    "SERVER": "Emby Server",
     "LOGS": "Logs"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby settings",
-    "SAVINGLABEL": "First Emby server sync",
-    "FINALLABEL": "Final",
-    "CHECKINGSTATUS": "Checking Emby server ...",
-    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
+    "EMBYLABEL": "Emby Einstellungen",
+    "SAVINGLABEL": "Erste Emby Server Synchronisierung",
+    "FINALLABEL": "Fertig",
+    "CHECKINGSTATUS": "Emby Server wird überprüft...",
+    "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
