@@ -3,10 +3,10 @@
 
 [![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg)](https://gitter.im/EmbyStat/Lobby)
 ![GitHub (pre-)release](https://img.shields.io/github/release/mregni/embystat/all.svg?style=flat-square)
-[![GitHub issues-closed](https://img.shields.io/github/issues/mregni/EmbyStat.svg?style=flat-square)](https://GitHub.com/mregni/EmbyStat/issues?q=is%3Aissue+is%3Aopen)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mregni/embystat.svg?style=flat-square)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/mregni/embystat.svg?style=flat-square)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg?style=flat-square)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg?style=flat-square)](https://crowdin.com/project/embystat)
 
 EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby server. Just install this on your server and let him calculate all kinds of fun stuff.
 
