@@ -40,7 +40,7 @@
     "PREMIEREDATE": "premiere date",
     "STATUS": "status",
     "PERCENTAGE": "percentage",
-    "COLLECTED": "collected" 
+    "COLLECTED": "collected"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -71,7 +71,7 @@
     "PLUGINS": "Plugins",
     "TASKS": "Tasks",
     "SERVER": "Emby server",
-    "LOGS": "Logs" 
+    "LOGS": "Logs"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
