@@ -28,7 +28,7 @@
     "DURATION": "Dauer",
     "GRAPHS": "Diagramme",
     "PEOPLE": "Personen",
-    "SUSPICIOUS": "suspicious",
+    "SUSPICIOUS": "verdächtig",
     "SHOWS": "Serien",
     "TOTALACTORS": "Gesamtanzahl Schauspieler",
     "TOTALDIRECTORS": "Gesamtanzahl Regisseure",
@@ -54,12 +54,12 @@
     "LANGUAGE": "Bitte wählen Sie Ihre Sprache",
     "EMBYADDRESS": "Emby IP-Adresse",
     "EMBYUSERNAME": "Emby Admin Benutzername",
-    "EMBYPASSWORD": "Emby admin password",
-    "DURATIONINMINUTES": "Duration in minutes"
+    "EMBYPASSWORD": "Emby Admin-Passwort",
+    "DURATIONINMINUTES": "Dauer in Minuten"
   },
   "FORM_ERRORS": {
-    "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
+    "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
+    "EMBYADDRESS_REQUIRED": "Tragen Sie Ihre Emby IP-Adresse ein.",
     "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
     "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
   },
@@ -140,20 +140,20 @@
     "BUTFAILED": "aber fehlgeschlagen nach"
   },
   "TASKS": {
-    "PINGEMBYSERVERTITLE": "Check Emby connection",
-    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media sync"
+    "PINGEMBYSERVERTITLE": "Emby Verbindung prüfen",
+    "PINGEMBYSERVERDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
+    "SMALLEMBYSYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
+    "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
+    "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
+    "MEDIASYNCTITLE": "Medien synchronisieren"
   },
   "TRIGGER": {
-    "INTERVALTRIGGER": "Interval trigger",
-    "DAILYTRIGGER": "Daily trigger",
-    "STARTUPTRIGGER": "Startup trigger",
-    "EVERY": "every {{interval}}",
-    "AT": "at {{time}}",
-    "TRIGGERTYPE": "Trigger type",
-    "SAVETRIGGER": "Save trigger"
+    "INTERVALTRIGGER": "Intervall-Trigger",
+    "DAILYTRIGGER": "Täglicher Trigger",
+    "STARTUPTRIGGER": "Start-Trigger",
+    "EVERY": "Alle {{interval}}",
+    "AT": "um {{time}}",
+    "TRIGGERTYPE": "Triggertyp",
+    "SAVETRIGGER": "Trigger speichern"
   }
 }
