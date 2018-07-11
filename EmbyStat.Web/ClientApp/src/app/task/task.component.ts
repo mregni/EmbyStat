@@ -100,9 +100,9 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public needsAndFor(task: Task): boolean {
-    return (this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc)) ||
-        this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))) &&
-      this.hasSeconds(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
+    return (this.hasHours(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc)) ||
+      this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc))) &&
+      this.hasSeconds(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc));
   }
 
   public needsComma(task: Task): boolean {
@@ -110,8 +110,8 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public needsCommaFor(task: Task): boolean {
-    return this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))
-      && this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
+    return this.hasHours(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc))
+      && this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc));
   }
 
   public hasNoTime(task: Task): boolean {
