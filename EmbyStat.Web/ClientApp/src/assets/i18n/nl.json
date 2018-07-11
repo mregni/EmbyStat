@@ -1,8 +1,8 @@
 {
   "COMMON": {
-    "NEXT": "Volgende",
-    "BACK": "Vorige",
-    "FINISH": "Finish",
+    "NEXT": "volgende",
+    "BACK": "vorige",
+    "FINISH": "finish",
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
@@ -31,7 +31,7 @@
     "SUSPICIOUS": "verdacht",
     "SHOWS": "series",
     "TOTALACTORS": "Totaal acteurs",
-    "TOTALDIRECTORS": "Totaal registeurs",
+    "TOTALDIRECTORS": "Totaal regisseurs",
     "TOTALWRITERS": "Totale schrijvers",
     "MOSTFEATUREDACTOR": "Most featured actor",
     "MOSTFEATUREDDIRECTOR": "Most featured director",
@@ -79,7 +79,7 @@
     "SAVINGLABEL": "Eerste Emby server sync",
     "FINALLABEL": "Laatste",
     "CHECKINGSTATUS": "Emby server aan het controleren ...",
-    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
+    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
@@ -109,17 +109,17 @@
     "TOSHORTMOVIES": "movies that are very short"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total shows",
-    "TOTALEPISODES": "Total Episodes",
-    "TOTALMISSINGEPISODES": "Total Missing Episodes",
-    "TOTALPLAYLENGTH": "Total watchable time",
+    "TOTALSHOWS": "Totaal series",
+    "TOTALEPISODES": "Totaal afleveringen",
+    "TOTALMISSINGEPISODES": "Totaal ontbrekende afleveringen",
+    "TOTALPLAYLENGTH": "Totale bekijkbare tijd",
     "HIGHESTRATEDSHOW": "Hoogste score",
     "LOWESTRATEDSHOW": "Laagste score",
     "OLDESTPREMIERED": "Oldest premiered show",
     "YOUNGESTPREMIERED": "Yougenst premiered show",
     "YOUNGESTADDED": "Youngest added",
-    "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses",
+    "WITHMOESTEPISODES": "Met de meeste afleveringen",
+    "SHOWSTATUSGRAPH": "Serie status",
     "SEASONS": "seizoenen",
     "CONTINUING": "continuing",
     "ENDED": "geëindigd"
@@ -140,12 +140,12 @@
     "BUTFAILED": "maar is gefaald na"
   },
   "TASKS": {
-    "PINGEMBYSERVERTITLE": "Emby-verbinding controleren",
+    "PINGEMBYSERVERTITLE": "Emby verbinding controleren",
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
     "SMALLEMBYSYNCTITLE": "Small sync with Emb",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media syncronisatie"
+    "MEDIASYNCTITLE": "Media synchronisatie"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
