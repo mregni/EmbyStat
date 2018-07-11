@@ -47,13 +47,13 @@
     "NO_CONFIGURATION_FOUND": "Keine Konfiguration gefunden.",
     "NOT_FOUND": "Hoppla, es fehlen einige Dateien.",
     "TOKEN_FAILED": "Abrufen des Emby Token ist fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen und Adresse.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
+    "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind."
   },
   "FORM_LABELS": {
-    "NAME": "Enter your name",
-    "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby ip address",
-    "EMBYUSERNAME": "Emby admin username",
+    "NAME": "Geben Sie Ihren Namen ein",
+    "LANGUAGE": "Bitte wählen Sie Ihre Sprache",
+    "EMBYADDRESS": "Emby IP-Adresse",
+    "EMBYUSERNAME": "Emby Admin Benutzername",
     "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes"
   },
@@ -115,29 +115,29 @@
     "TOTALPLAYLENGTH": "Total watchable time",
     "HIGHESTRATEDSHOW": "Highest rated show",
     "LOWESTRATEDSHOW": "Lowest rated show",
-    "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Yougenst premiered show",
-    "YOUNGESTADDED": "Youngest added",
-    "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses",
-    "SEASONS": "seasons",
-    "CONTINUING": "continuing",
-    "ENDED": "ended"
+    "OLDESTPREMIERED": "Älteste uraufgeführte Serie",
+    "YOUNGESTPREMIERED": "Neuste uraufgeführte Serie",
+    "YOUNGESTADDED": "Am neusten hinzugefügt",
+    "WITHMOESTEPISODES": "Mit den meisten Episoden",
+    "SHOWSTATUSGRAPH": "Status anzeigen",
+    "SEASONS": "Staffeln",
+    "CONTINUING": "läuft",
+    "ENDED": "beendet"
   },
   "CONFIGURATION": {
-    "SETTINGS": "Settings",
-    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed."
+    "SETTINGS": "Einstellungen",
+    "MOVIETOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern."
   },
   "TASK": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after"
+    "LASTRUNNOW": "Zuletzt ausgeführt: Gerade eben",
+    "LASTRUN": "Zuletzt ausgeführt",
+    "HOURS": "{{hours}} Stunde(n)",
+    "MINUTES": "{{minutes}} Minute(n)",
+    "SECONDS": "{{seconds}} Sekunde(n)",
+    "AND": "und",
+    "AGO": "her",
+    "FOR": "für",
+    "BUTFAILED": "aber fehlgeschlagen nach"
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Check Emby connection",
