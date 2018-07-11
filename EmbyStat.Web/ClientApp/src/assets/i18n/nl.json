@@ -1,29 +1,159 @@
 {
   "COMMON": {
-    "HIDE": "Verbergen",
     "NEXT": "Volgende",
     "BACK": "Vorige",
-    "FINISH": "Finish"
+    "FINISH": "Finish",
+    "SAVE": "opslaan",
+    "DISCARD": "negeren",
+    "CANCEL": "annuleren",
+    "DAYS": "dagen",
+    "HOURS": "uren",
+    "MINUTES": "minuten",
+    "MIN": "min",
+    "TITLE": "titel",
+    "ADDEDON": "toegevoegd op",
+    "QUALITY": "kwaliteit",
+    "LINK": "koppeling",
+    "REASON": "reden",
+    "BYIMDB": "dezelfde imdb id",
+    "BYTITLE": "dezelfde titel",
+    "MOVIES": "films",
+    "COUNTPERGENRE": "aantal / genre",
+    "COUNTPERCOMMUNITYRATING": "aantal / rating",
+    "COUNTPERPREMIEREDATE": "aantal / jaar",
+    "COUNTPEROFFICIALRATING": "aantal / officiële rating",
+    "COUNTPERCOLLECTEDRATE": "aantal / percentage verzameld",
+    "EMBY": "Emby",
+    "GENERAL": "algemeen",
+    "DURATION": "duur",
+    "GRAPHS": "grafieken",
+    "PEOPLE": "mensen",
+    "SUSPICIOUS": "verdacht",
+    "SHOWS": "series",
+    "TOTALACTORS": "Totaal acteurs",
+    "TOTALDIRECTORS": "Totaal registeurs",
+    "TOTALWRITERS": "Totale schrijvers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "COLLECTION": "verzameling",
+    "PREMIEREDATE": "première datum",
+    "STATUS": "status",
+    "PERCENTAGE": "percentage",
+    "COLLECTED": "verzameld"
   },
   "EXCEPTIONS": {
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
     "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
-    "NOT_FOUND": "Oops, we missen wat bestanden."
+    "NOT_FOUND": "Oops, we missen wat bestanden.",
+    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
   },
   "FORM_LABELS": {
-    "NAME_LABEL": "Vul uw naam in",
-    "LANGUAGE_LABEL": "Welke taal wilt u gebruiken"
+    "NAME": "Enter your name",
+    "LANGUAGE": "Please select your language",
+    "EMBYADDRESS": "Emby IP-adres",
+    "EMBYUSERNAME": "Emby admin gebruikersnaam",
+    "EMBYPASSWORD": "Emby admin password",
+    "DURATIONINMINUTES": "Duur in minuten"
   },
   "FORM_ERRORS": {
-    "NAME_REQUIRED": "Geef uw naam of bijnaam op."
+    "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
+    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
+    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
+    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
-    "SETTINGS": "Instellingen"
+    "MOVIES": "Films",
+    "SHOWS": "Series",
+    "SETTINGS": "Instellingen",
+    "PLUGINS": "Plugins",
+    "TASKS": "Taken",
+    "SERVER": "Emby server",
+    "LOGS": "Logs"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
     "EMBYLABEL": "Emby",
-    "FINALLABEL": "Final",
-    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is."
+    "SAVINGLABEL": "Eerste Emby server sync",
+    "FINALLABEL": "Laatste",
+    "CHECKINGSTATUS": "Checking Emby server ...",
+    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
+    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "EMBYRUNNING": "Emby server is running",
+    "ISADMIN": "{{ user }} is an Emby administrator",
+    "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
+    "SAVING": "Saving data",
+    "RESCAN": "Rescan",
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
+  },
+  "PLUGINS": {
+    "VERSION": "Version"
+  },
+  "MOVIES": {
+    "TOTALMOVIES": "Total movies",
+    "TOTALGENRES": "Total genres",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATED": "Highest rated",
+    "LOWESTRATED": "Lowest rated",
+    "OLDESTPREMIERED": "Oldest premiered",
+    "YOUNGESTPREMIERED": "Youngest premiered",
+    "SHORTEST": "Shortest",
+    "LONGEST": "Longest",
+    "YOUNGESTADDED": "Youngest added",
+    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
+    "DUPLICATEMOVIES": "duplicate movies",
+    "TOSHORTMOVIES": "movies that are very short"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Total shows",
+    "TOTALEPISODES": "Total Episodes",
+    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATEDSHOW": "Hoogste score",
+    "LOWESTRATEDSHOW": "Laagste score",
+    "OLDESTPREMIERED": "Oldest premiered show",
+    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTADDED": "Youngest added",
+    "WITHMOESTEPISODES": "With most episodes",
+    "SHOWSTATUSGRAPH": "Show statuses",
+    "SEASONS": "seizoenen",
+    "CONTINUING": "continuing",
+    "ENDED": "geëindigd"
+  },
+  "CONFIGURATION": {
+    "SETTINGS": "Instellingen",
+    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed."
+  },
+  "TASK": {
+    "LASTRUNNOW": "Last run: just now",
+    "LASTRUN": "Last run",
+    "HOURS": "{{hours}} hour(s)",
+    "MINUTES": "{{minutes}} minute(s)",
+    "SECONDS": "{{seconds}} second(s)",
+    "AND": "en",
+    "AGO": "geleden",
+    "FOR": "voor",
+    "BUTFAILED": "maar is gefaald na"
+  },
+  "TASKS": {
+    "PINGEMBYSERVERTITLE": "Emby-verbinding controleren",
+    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+    "MEDIASYNCTITLE": "Media sync"
+  },
+  "TRIGGER": {
+    "INTERVALTRIGGER": "Interval trigger",
+    "DAILYTRIGGER": "Dagelijkse trigger",
+    "STARTUPTRIGGER": "Opstart trigger",
+    "EVERY": "om de {{interval}}",
+    "AT": "om {{time}}",
+    "TRIGGERTYPE": "Trigger type",
+    "SAVETRIGGER": "Trigger opslaan"
   }
 }
