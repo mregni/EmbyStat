@@ -2,7 +2,7 @@
   "COMMON": {
     "NEXT": "volgende",
     "BACK": "vorige",
-    "FINISH": "Finish",
+    "FINISH": "finish",
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
@@ -117,7 +117,7 @@
     "LOWESTRATEDSHOW": "Laagste score",
     "OLDESTPREMIERED": "Oudste in première",
     "YOUNGESTPREMIERED": "Yougenst premiered show",
-    "YOUNGESTADDED": "Jongste toegevoegd",
+    "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "Met de meeste afleveringen",
     "SHOWSTATUSGRAPH": "Serie status",
     "SEASONS": "seizoenen",
