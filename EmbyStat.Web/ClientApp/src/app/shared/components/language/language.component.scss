@@ -1,0 +1,22 @@
+.language__flexcontainer {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction:row;
+  width: 100%;
+  align-items:center;
+}
+
+.language__left-content {
+  flex: 0 0 auto;
+  width:60px;
+  height: 50px;
+
+  img {
+    width: 40px;
+    margin: 5px;
+  }
+}
+
+.language__right-content {
+  flex: 1 1 auto;
+}
