@@ -59,9 +59,9 @@
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
-    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
-    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+    "EMBYADDRESS_REQUIRED": "Vul uw Emby adres ip in.",
+    "EMBYUSERNAME_REQUIRED": "Vul uw Emby admin gebruikersnaam in.",
+    "EMBYPASSWORD_REQUIRED": "Vul je Emby wachtwoord in."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -82,31 +82,31 @@
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "EMBYRUNNING": "Emby server is running",
-    "ISADMIN": "{{ user }} is an Emby administrator",
+    "EMBYRUNNING": "Emby server is actief",
+    "ISADMIN": "{{ user }} is een Emby administrator",
     "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
-    "SAVING": "Saving data",
-    "RESCAN": "Rescan",
+    "SAVING": "Gegevens aan het opslaan",
+    "RESCAN": "Opnieuw scannen",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
   },
   "PLUGINS": {
-    "VERSION": "Version"
+    "VERSION": "Versie"
   },
   "MOVIES": {
-    "TOTALMOVIES": "Total movies",
-    "TOTALGENRES": "Total genres",
+    "TOTALMOVIES": "Totaal aantal films",
+    "TOTALGENRES": "Totaal aantal genres",
     "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATED": "Highest rated",
-    "LOWESTRATED": "Lowest rated",
-    "OLDESTPREMIERED": "Oldest premiered",
+    "HIGHESTRATED": "Hoogste score",
+    "LOWESTRATED": "Laagste score",
+    "OLDESTPREMIERED": "Oudste in première",
     "YOUNGESTPREMIERED": "Youngest premiered",
-    "SHORTEST": "Shortest",
-    "LONGEST": "Longest",
-    "YOUNGESTADDED": "Youngest added",
-    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
+    "SHORTEST": "Kortste",
+    "LONGEST": "Langste",
+    "YOUNGESTADDED": "Jongste toegevoegd",
+    "MOSTFEATUREDPERGENRE": "Meest aanbevolen acteur per genre",
     "DUPLICATEMOVIES": "dubbele films",
-    "TOSHORTMOVIES": "movies that are very short"
+    "TOSHORTMOVIES": "zeer korte films"
   },
   "SHOWS": {
     "TOTALSHOWS": "Totaal series",
@@ -115,13 +115,13 @@
     "TOTALPLAYLENGTH": "Totale bekijkbare tijd",
     "HIGHESTRATEDSHOW": "Hoogste score",
     "LOWESTRATEDSHOW": "Laagste score",
-    "OLDESTPREMIERED": "Oldest premiered show",
+    "OLDESTPREMIERED": "Oudste in première",
     "YOUNGESTPREMIERED": "Yougenst premiered show",
     "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "Met de meeste afleveringen",
     "SHOWSTATUSGRAPH": "Serie status",
     "SEASONS": "seizoenen",
-    "CONTINUING": "continuing",
+    "CONTINUING": "voortzetten",
     "ENDED": "geëindigd"
   },
   "CONFIGURATION": {
@@ -130,7 +130,7 @@
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
+    "LASTRUN": "Laatst uitgevoerd",
     "HOURS": "{{hours}} uur(uren)",
     "MINUTES": "{{minutes}} minuten",
     "SECONDS": "{{seconds}} seconden",
