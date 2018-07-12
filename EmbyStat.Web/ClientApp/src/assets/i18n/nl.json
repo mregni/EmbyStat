@@ -126,10 +126,10 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Instellingen",
-    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed."
+    "MOVIETOSHORTTEXT": "Om films te vinden die verdacht kort zijn moete we weten hoeveel minuten een film moet zijn om als te kort gerekend te worden. Standaard staat dit op 10 minuten maar u kan dit altijd aanpassen hier."
   },
   "TASK": {
-    "LASTRUNNOW": "Last run: just now",
+    "LASTRUNNOW": "Laatst uitgevoerd: nu",
     "LASTRUN": "Laatst uitgevoerd",
     "HOURS": "{{hours}} uur(uren)",
     "MINUTES": "{{minutes}} minuten",
@@ -141,9 +141,9 @@
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Emby verbinding controleren",
-    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Korte Emby syncronisatie",
+    "PINGEMBYSERVERDESCRIPTION": "Ping de Emby server om na te zien of deze online is.",
+    "SMALLEMBYSYNCDESCRIPTION": "Voor een kleine Emby syncronisatie uit. Deze syncronisatie is snel en bevat weinig data.",
+    "SMALLEMBYSYNCTITLE": "Kleine Emby syncronisatie",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation"
   },
