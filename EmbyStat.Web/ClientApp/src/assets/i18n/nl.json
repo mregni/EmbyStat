@@ -43,18 +43,18 @@
     "COLLECTED": "verzameld"
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
+    "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
     "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
     "NOT_FOUND": "Oops, we missen wat bestanden.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
+    "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en adres na te zien.",
+    "EMBY_CALL_FAILED": "Contact opnemen met Emby is gefaald. Gelieve na te zien of de Emby server draait en uw inloggegevens nog kloppen."
   },
   "FORM_LABELS": {
-    "NAME": "Enter your name",
-    "LANGUAGE": "Please select your language",
+    "NAME": "Voer uw naam in",
+    "LANGUAGE": "Gelieve uw taal te kiezen",
     "EMBYADDRESS": "Emby IP-adres",
     "EMBYUSERNAME": "Emby admin gebruikersnaam",
-    "EMBYPASSWORD": "Emby admin password",
+    "EMBYPASSWORD": "Emby administrator wachtwoord",
     "DURATIONINMINUTES": "Duur in minuten"
   },
   "FORM_ERRORS": {
@@ -80,15 +80,15 @@
     "FINALLABEL": "Laatste",
     "CHECKINGSTATUS": "Emby server aan het controleren ...",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "EMBYNOTFOUNDTEXT": "Nu gaan we uw Emby connectie instellen. We hebben geprobeerd uw Emby server te detecteren in het netwerk, maar dat is niet gelukt. Kan u het juiste IP/domein invullen en de rest van het formulier ook invullen.",
+    "EMBYFOUNDTEXT": "We hebben een Emby server in uw lokaal netwerk gevonden en hebben het IP adres al ingevuld. Voel u vrij om dit nog te wijzigen en vul daarna de rest van het formulier verder in.",
     "EMBYRUNNING": "Emby server is actief",
     "ISADMIN": "{{ user }} is een Emby administrator",
-    "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
+    "PLUGININSTALLED": "EmbyStat plugin gevonden op de Emby server",
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Gegevens aan het opslaan",
     "RESCAN": "Opnieuw scannen",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
+    "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!"
   },
   "PLUGINS": {
     "VERSION": "Versie"
@@ -96,7 +96,7 @@
   "MOVIES": {
     "TOTALMOVIES": "Totaal aantal films",
     "TOTALGENRES": "Totaal aantal genres",
-    "TOTALPLAYLENGTH": "Total watchable time",
+    "TOTALPLAYLENGTH": "Totale bekijkbare tijd",
     "HIGHESTRATED": "Hoogste score",
     "LOWESTRATED": "Laagste score",
     "OLDESTPREMIERED": "Oudste in première",
@@ -126,10 +126,10 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Instellingen",
-    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed."
+    "MOVIETOSHORTTEXT": "Om films te vinden die verdacht kort zijn moete we weten hoeveel minuten een film moet zijn om als te kort gerekend te worden. Standaard staat dit op 10 minuten maar u kan dit altijd aanpassen hier."
   },
   "TASK": {
-    "LASTRUNNOW": "Last run: just now",
+    "LASTRUNNOW": "Laatst uitgevoerd: nu",
     "LASTRUN": "Laatst uitgevoerd",
     "HOURS": "{{hours}} uur(uren)",
     "MINUTES": "{{minutes}} minuten",
@@ -141,11 +141,11 @@
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Emby verbinding controleren",
-    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media synchronisation"
+    "PINGEMBYSERVERDESCRIPTION": "Ping de Emby server om na te zien of deze online is.",
+    "SMALLEMBYSYNCDESCRIPTION": "Voor een kleine Emby syncronisatie uit. Deze syncronisatie is snel en bevat weinig data.",
+    "SMALLEMBYSYNCTITLE": "Kleine Emby syncronisatie",
+    "MEDIASYNCDESCRIPTION": "Voor een incrementele syncronisatie uit op uw film collectie. Dit kan enige tijd in beslag nemen!",
+    "MEDIASYNCTITLE": "Media synchronisatie"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
