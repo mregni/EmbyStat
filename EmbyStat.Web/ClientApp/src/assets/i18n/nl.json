@@ -50,8 +50,8 @@
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
   },
   "FORM_LABELS": {
-    "NAME": "Enter your name",
-    "LANGUAGE": "Please select your language",
+    "NAME": "Voer uw naam in",
+    "LANGUAGE": "Gelieve uw taal te kiezen",
     "EMBYADDRESS": "Emby IP-adres",
     "EMBYUSERNAME": "Emby admin gebruikersnaam",
     "EMBYPASSWORD": "Emby admin password",
@@ -143,7 +143,7 @@
     "PINGEMBYSERVERTITLE": "Emby verbinding controleren",
     "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "SMALLEMBYSYNCTITLE": "Korte Emby syncronisatie",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation"
   },
