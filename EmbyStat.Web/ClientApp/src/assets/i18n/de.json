@@ -145,7 +145,7 @@
     "SMALLEMBYSYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
     "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
     "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
-    "MEDIASYNCTITLE": "Medien synchronisieren"
+    "MEDIASYNCTITLE": "Medien-Synchronisierung"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Intervall-Trigger",
