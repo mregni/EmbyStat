@@ -101,11 +101,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ClientApp\src\assets\i18n\en.json" />
-    <Content Include="ClientApp\src\assets\i18n\nl.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 

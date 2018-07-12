@@ -17,6 +17,7 @@ import { MoviePosterComponent } from './components/movie-poster/movie-poster.com
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { LanguageComponent } from './components/language/language.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 
@@ -48,6 +49,7 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
+    LanguageComponent,
     CapitalizeFirstPipe
   ],
   declarations: [
@@ -60,6 +62,7 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
+    LanguageComponent,
     CapitalizeFirstPipe
   ],
   providers: [
