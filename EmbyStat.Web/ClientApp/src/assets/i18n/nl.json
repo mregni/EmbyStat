@@ -144,8 +144,8 @@
     "PINGEMBYSERVERDESCRIPTION": "Ping de Emby server om na te zien of deze online is.",
     "SMALLEMBYSYNCDESCRIPTION": "Voor een kleine Emby syncronisatie uit. Deze syncronisatie is snel en bevat weinig data.",
     "SMALLEMBYSYNCTITLE": "Kleine Emby syncronisatie",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media synchronisation"
+    "MEDIASYNCDESCRIPTION": "Voor een incrementele syncronisatie uit op uw film collectie. Dit kan enige tijd in beslag nemen!",
+    "MEDIASYNCTITLE": "Media synchronisatie"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
