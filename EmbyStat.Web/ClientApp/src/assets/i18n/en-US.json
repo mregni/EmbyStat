@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "HIDE": "Hide", 
     "NEXT": "next",
     "BACK": "back",
     "FINISH": "finish",
@@ -127,7 +128,12 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
-    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed."
+    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+    "SAVED": {
+      "GENERAL": "General Embystat settings are saved!",
+      "EMBY": "Emby settings are saved!",
+      "MOVIES": "Movie settings are saved!" 
+    } 
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",
