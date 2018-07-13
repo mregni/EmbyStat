@@ -24,8 +24,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
-    translate.setDefaultLang('en');
-    translate.addLangs(['en', 'nl']);
+    translate.setDefaultLang('en-US');
+    translate.addLangs(['en-US', 'nl-NL']);
 
     router.events.subscribe(event => {
       if (event instanceof NavigationStart) {

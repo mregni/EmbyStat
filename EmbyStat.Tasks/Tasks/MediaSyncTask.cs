@@ -7,6 +7,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.Tvdb;
 using EmbyStat.Api.Tvdb.Models;
+using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
@@ -144,7 +145,7 @@ namespace EmbyStat.Tasks.Tasks
             var embyMovies = await _embyClient.GetItemsAsync(query, cancellationToken);
 
             _progressLogger.LogInformation($"Ready to add movies to database. We found {embyMovies.TotalRecordCount} movies");
-            return embyMovies.Items.Select(MovieHelper.ConvertToMovie);
+            return embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieHelper.ConvertToMovie);
         }
 
         #endregion

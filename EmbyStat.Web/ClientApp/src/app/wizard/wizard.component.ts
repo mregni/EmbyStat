@@ -3,13 +3,15 @@ import { MatStepper } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import { ConfigurationFacade } from '../configuration/state/facade.configuration';
 import { EmbyUdpBroadcast } from '../configuration/models/embyUdpBroadcast';
 import { Configuration } from '../configuration/models/configuration';
 import { EmbyToken } from '../configuration/models/embyToken';
-import { EmbyPlugin } from '../plugin/models/embyPlugin';
+import { Language } from '../shared/components/language/models/language';
+import { LanguageFacade } from '../shared/components/language/state/facade.language';
 
 import { PluginFacade } from '../plugin/state/facade.plugin';
 
@@ -24,7 +26,7 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   public introFormGroup: FormGroup;
   public nameControl: FormControl = new FormControl('', [Validators.required]);
-  public languageControl: FormControl = new FormControl('en', [Validators.required]);
+  public languageControl: FormControl = new FormControl('en-US', [Validators.required]);
 
   public embyFormGroup: FormGroup;
   public embyAddressControl: FormControl = new FormControl('', [Validators.required]);
@@ -44,10 +46,12 @@ export class WizardComponent implements OnInit, OnDestroy {
   public username: string;
 
   private configuration: Configuration;
+  public languages$: Observable<Language[]>;
 
   constructor(private translate: TranslateService,
     private configurationFacade: ConfigurationFacade,
     private pluginFacade: PluginFacade,
+    private languageFacade: LanguageFacade,
     private router: Router  ) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
@@ -65,6 +69,8 @@ export class WizardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.languages$ = this.languageFacade.getLanguages();
+
     this.configurationFacade.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
       if (!!data.address) {
         this.embyFound = true;

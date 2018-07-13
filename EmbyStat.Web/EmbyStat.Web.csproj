@@ -85,6 +85,8 @@
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
     <None Remove="ClientApp\src\app\shared\models\showPoster.ts" />
     <None Remove="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
+    <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <None Remove="ClientApp\src\app\show\models\showGraphs.ts" />
@@ -98,11 +100,6 @@
     <None Remove="ClientApp\src\app\show\state\reducer.show.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ClientApp\src\assets\i18n\en.json" />
-    <Content Include="ClientApp\src\assets\i18n\nl.json" />
   </ItemGroup>
 
   <ItemGroup>
