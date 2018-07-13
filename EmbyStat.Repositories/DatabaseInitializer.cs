@@ -44,7 +44,7 @@ namespace EmbyStat.Repositories
 	            var config = new Configuration()
 	            {
 	                Id = Guid.NewGuid().ToString(),
-	                Language = "en",
+	                Language = "en-US",
 	                ToShortMovie = 10
 	            };
 
