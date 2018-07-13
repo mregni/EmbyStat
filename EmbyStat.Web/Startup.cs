@@ -89,6 +89,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
 		    containerBuilder.RegisterType<ShowService>().As<IShowService>();
 		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
+		    containerBuilder.RegisterType<LanguageService>().As<ILanguageService>();
 
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
@@ -100,8 +101,9 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<ShowRepository>().As<IShowRepository>();
 		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
 		    containerBuilder.RegisterType<StatisticsRepository>().As<IStatisticsRepository>();
+		    containerBuilder.RegisterType<LanguageRepository>().As<ILanguageRepository>();
 
-		    containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
+            containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
 		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
