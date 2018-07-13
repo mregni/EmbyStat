@@ -9,7 +9,7 @@ namespace EmbyStat.Repositories
 {
     public class ApplicationDbContext : DbContext
     {
-	    public DbSet<Configuration> Configuration { get; set; }
+	    public DbSet<ConfigurationKeyValue> Configuration { get; set; }
 		public DbSet<PluginInfo> Plugins { get; set; }
 		public DbSet<ServerInfo> ServerInfo { get; set; }
 		public DbSet<Drives> Drives { get; set; }
@@ -55,7 +55,7 @@ namespace EmbyStat.Repositories
 	    {
 		    base.OnModelCreating(modelBuilder);
 
-		    modelBuilder.Entity<Configuration>().Property(s => s.Id).IsRequired();
+		    modelBuilder.Entity<ConfigurationKeyValue>().Property(s => s.Id).IsRequired();
 
 		    modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
 

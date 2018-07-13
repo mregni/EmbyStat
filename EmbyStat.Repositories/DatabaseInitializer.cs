@@ -44,25 +44,27 @@ namespace EmbyStat.Repositories
 	        var configuration = _context.Configuration.ToList();
 
             if(configuration.All(x => x.Id != Constants.Configuration.Language))
-	            _context.Configuration.Add(new Configuration { Id = Constants.Configuration.Language, Value = "en-US" });
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.Language, Value = "en-US" });
 	        if(configuration.All(x => x.Id != Constants.Configuration.ToShortMovie))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.ToShortMovie, Value = "10" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ToShortMovie, Value = "10" });
 	        if(configuration.All(x => x.Id != Constants.Configuration.WizardFinished))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.WizardFinished, Value = "False" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.WizardFinished, Value = "False" });
 	        if(configuration.All(x => x.Id != Constants.Configuration.UserName))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.UserName, Value = string.Empty });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UserName, Value = string.Empty });
 	        if(configuration.All(x => x.Id != Constants.Configuration.EmbyServerAddress))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.EmbyServerAddress, Value = string.Empty });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerAddress, Value = string.Empty });
 	        if(configuration.All(x => x.Id != Constants.Configuration.EmbyUserId))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.EmbyUserId, Value = string.Empty });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserId, Value = string.Empty });
 	        if(configuration.All(x => x.Id != Constants.Configuration.ServerName))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.ServerName, Value = string.Empty });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ServerName, Value = string.Empty });
             if(configuration.All(x => x.Id != Constants.Configuration.EmbyUserName))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.EmbyUserName, Value = string.Empty });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserName, Value = string.Empty });
 	        if(configuration.All(x => x.Id != Constants.Configuration.AccessToken))
-                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.AccessToken, Value = string.Empty });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AccessToken, Value = string.Empty });
+	        if (configuration.All(x => x.Id != Constants.Configuration.LastTvdbUpdate))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = string.Empty });
 
-	        await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
 	    private async Task SeedLanguages()

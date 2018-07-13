@@ -167,7 +167,7 @@ namespace EmbyStat.Services
             var configuration = _configurationRepository.GetConfiguration();
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
-                .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < Convert.ToInt32(configuration[Constants.Configuration.ToShortMovie]))
+                .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < configuration.ToShortMovie)
                 .OrderBy(x => x.SortName)
                 .Select((t, i) => new ShortMovie
                 {

@@ -63,7 +63,7 @@ namespace EmbyStat.Services
 						var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
 
 					    var configuration = _configurationRepository.GetConfiguration();
-					    configuration[Constants.Configuration.ServerName] = udpBroadcastResult.Name;
+					    configuration.ServerName = udpBroadcastResult.Name;
 						_configurationRepository.UpdateOrAdd(configuration);
 
 					    return udpBroadcastResult;
@@ -120,7 +120,7 @@ namespace EmbyStat.Services
 	    {
 		    var settings = _configurationRepository.GetConfiguration();
 
-			_embyClient.SetAddressAndUrl(settings[Constants.Configuration.EmbyServerAddress], settings[Constants.Configuration.AccessToken]);
+			_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
 		    var systemInfoReponse = await _embyClient.GetServerInfoAsync();
 			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
 		    var drives = await _embyClient.GetLocalDrivesAsync();

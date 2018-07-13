@@ -5,7 +5,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IConfigurationRepository
     {
-        Dictionary<string, string> GetConfiguration();
-	    void UpdateOrAdd(Dictionary<string, string> entities);
-	}
+        Configuration GetConfiguration();
+        void UpdateOrAdd(Configuration config);
+    }
 }

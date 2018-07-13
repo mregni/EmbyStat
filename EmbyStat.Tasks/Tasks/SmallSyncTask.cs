@@ -41,7 +41,7 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
             var settings = _configurationRepository.GetConfiguration();
-            if (!settings[Constants.Configuration.WizardFinished].ToBoolean())
+            if (!settings.WizardFinished)
             {
                 Log.Warning("Movie sync task not running because wizard is not finished yet!");
                 return;
@@ -49,7 +49,7 @@ namespace EmbyStat.Tasks.Tasks
 
             progress.Report(15);
 
-            _embyClient.SetAddressAndUrl(settings[Constants.Configuration.EmbyServerAddress], settings[Constants.Configuration.AccessToken]);
+            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
             var systemInfoReponse = await _embyClient.GetServerInfoAsync();
             logProgress.LogInformation("Server info found");
             progress.Report(35);

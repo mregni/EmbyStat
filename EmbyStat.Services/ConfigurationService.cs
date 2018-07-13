@@ -14,23 +14,23 @@ namespace EmbyStat.Services
 			_configurationRepository = configurationRepository;
 		}
 
-		public void SaveServerSettings(Dictionary<string, string> configuration)
+		public void SaveServerSettings(Configuration configuration)
 		{
 		    var dbSettings = _configurationRepository.GetConfiguration();
 
-			dbSettings[Constants.Configuration.Language] = configuration[Constants.Configuration.Language];
-		    dbSettings[Constants.Configuration.AccessToken] = configuration[Constants.Configuration.AccessToken];
-		    dbSettings[Constants.Configuration.EmbyServerAddress] = configuration[Constants.Configuration.EmbyServerAddress];
-		    dbSettings[Constants.Configuration.EmbyUserName] = configuration[Constants.Configuration.EmbyUserName];
-		    dbSettings[Constants.Configuration.UserName] = configuration[Constants.Configuration.UserName];
-		    dbSettings[Constants.Configuration.WizardFinished] = configuration[Constants.Configuration.WizardFinished];
-		    dbSettings[Constants.Configuration.EmbyUserId] = configuration[Constants.Configuration.EmbyUserId];
-		    dbSettings[Constants.Configuration.ToShortMovie] = configuration[Constants.Configuration.ToShortMovie];
+		    dbSettings.Language = configuration.Language;
+		    dbSettings.AccessToken = configuration.AccessToken;
+		    dbSettings.EmbyServerAddress = configuration.EmbyServerAddress;
+		    dbSettings.EmbyUserName = configuration.EmbyUserName;
+		    dbSettings.Username = configuration.Username;
+		    dbSettings.WizardFinished = configuration.WizardFinished;
+		    dbSettings.EmbyUserId = configuration.EmbyUserId;
+		    dbSettings.ToShortMovie = configuration.ToShortMovie;
 
-			_configurationRepository.UpdateOrAdd(dbSettings);
-		}
+		    _configurationRepository.UpdateOrAdd(dbSettings);
+        }
 
-		public Dictionary<string, string> GetServerSettings()
+		public Configuration GetServerSettings()
 		{
 			return _configurationRepository.GetConfiguration();
 		}

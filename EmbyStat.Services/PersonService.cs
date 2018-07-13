@@ -32,9 +32,9 @@ namespace EmbyStat.Services
             if (person == null || !person.Synced)
             {
                 var settings = _configurationRepository.GetConfiguration();
-                var query = new ItemQuery { UserId = settings[Constants.Configuration.EmbyUserId] };
+                var query = new ItemQuery { UserId = settings.EmbyUserId };
 
-                _embyClient.SetAddressAndUrl(settings[Constants.Configuration.EmbyServerAddress], settings[Constants.Configuration.AccessToken]);
+                _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
                 var rawPerson = await _embyClient.GetItemAsync(query, id, CancellationToken.None);
                 person = PersonHelper.ConvertToPerson(rawPerson);
                 _personRepository.AddOrUpdatePerson(person);
