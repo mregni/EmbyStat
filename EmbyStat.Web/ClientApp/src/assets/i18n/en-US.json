@@ -78,6 +78,7 @@
     "EMBYLABEL": "Emby settings",
     "SAVINGLABEL": "First Emby server sync",
     "FINALLABEL": "Final",
+    "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
