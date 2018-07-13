@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "HIDE": "Hide",
     "NEXT": "volgende",
     "BACK": "vorige",
     "FINISH": "finish",
@@ -127,7 +128,12 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Instellingen",
-    "MOVIETOSHORTTEXT": "Om films te vinden die verdacht kort zijn moete we weten hoeveel minuten een film moet zijn om als te kort gerekend te worden. Standaard staat dit op 10 minuten maar u kan dit altijd aanpassen hier."
+    "MOVIETOSHORTTEXT": "Om films te vinden die verdacht kort zijn moete we weten hoeveel minuten een film moet zijn om als te kort gerekend te worden. Standaard staat dit op 10 minuten maar u kan dit altijd aanpassen hier.",
+    "SAVED": {
+      "GENERAL": "General Embystat settings are saved!",
+      "EMBY": "Emby settings are saved!",
+      "MOVIES": "Movie settings are saved!"
+    }
   },
   "TASK": {
     "LASTRUNNOW": "Laatst uitgevoerd: nu",

@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "HIDE": "Hide", 
+    "HIDE": "Hide",
     "NEXT": "next",
     "BACK": "back",
     "FINISH": "finish",
@@ -132,8 +132,8 @@
     "SAVED": {
       "GENERAL": "General Embystat settings are saved!",
       "EMBY": "Emby settings are saved!",
-      "MOVIES": "Movie settings are saved!" 
-    } 
+      "MOVIES": "Movie settings are saved!"
+    }
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",
