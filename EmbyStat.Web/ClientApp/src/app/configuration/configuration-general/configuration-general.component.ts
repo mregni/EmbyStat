@@ -20,7 +20,7 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
   public nameControl: FormControl = new FormControl('', [Validators.required]);
-  public languageControl: FormControl = new FormControl('en', [Validators.required]);
+  public languageControl: FormControl = new FormControl('en-US', [Validators.required]);
 
   constructor(private configurationFacade: ConfigurationFacade, private translate: TranslateService) {
     this.configuration$ = this.configurationFacade.getConfiguration();

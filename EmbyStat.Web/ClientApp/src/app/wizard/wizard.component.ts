@@ -26,7 +26,7 @@ export class WizardComponent implements OnInit, OnDestroy {
 
   public introFormGroup: FormGroup;
   public nameControl: FormControl = new FormControl('', [Validators.required]);
-  public languageControl: FormControl = new FormControl('en', [Validators.required]);
+  public languageControl: FormControl = new FormControl('en-US', [Validators.required]);
 
   public embyFormGroup: FormGroup;
   public embyAddressControl: FormControl = new FormControl('', [Validators.required]);
