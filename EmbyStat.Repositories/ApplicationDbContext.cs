@@ -33,6 +33,7 @@ namespace EmbyStat.Repositories
         public DbSet<Server> Servers { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Statistic> Statistics { get; set; }
+        public DbSet<Language> Languages { get; set; }
 
         public ApplicationDbContext() : base()
 	    {
@@ -119,6 +120,8 @@ namespace EmbyStat.Repositories
 	        modelBuilder.Entity<Statistic>().Property(s => s.Id).IsRequired();
 	        modelBuilder.Entity<Statistic>().Property(s => s.CalculationDateTime).IsRequired();
 	        modelBuilder.Entity<Statistic>().Property(s => s.JsonResult).IsRequired();
+
+	        modelBuilder.Entity<Language>().Property(m => m.Id).IsRequired();
         }
     }
 }
