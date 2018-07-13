@@ -78,6 +78,7 @@
     "EMBYLABEL": "Emby Einstellungen",
     "SAVINGLABEL": "Erste Emby Server Synchronisierung",
     "FINALLABEL": "Fertig",
+    "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen.",
     "CHECKINGSTATUS": "Emby Server wird überprüft...",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
     "EMBYNOTFOUNDTEXT": "Jetzt richten wir die Verbindung zu Emby ein. Die automatische Suche nach einem Emby-Server im Netzwerk war leider nicht erfolgreich. Tragen Sie bitte die Emby IP/Domain ein und füllen Sie den Rest des Formulars aus.",
