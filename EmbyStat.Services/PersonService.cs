@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
@@ -30,10 +31,10 @@ namespace EmbyStat.Services
             var person = _personRepository.GetPersonById(id);
             if (person == null || !person.Synced)
             {
-                var settings = _configurationRepository.GetSingle();
-                var query = new ItemQuery { UserId = settings.EmbyUserId };
+                var settings = _configurationRepository.GetConfiguration();
+                var query = new ItemQuery { UserId = settings[Constants.Configuration.EmbyUserId] };
 
-                _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+                _embyClient.SetAddressAndUrl(settings[Constants.Configuration.EmbyServerAddress], settings[Constants.Configuration.AccessToken]);
                 var rawPerson = await _embyClient.GetItemAsync(query, id, CancellationToken.None);
                 person = PersonHelper.ConvertToPerson(rawPerson);
                 _personRepository.AddOrUpdatePerson(person);

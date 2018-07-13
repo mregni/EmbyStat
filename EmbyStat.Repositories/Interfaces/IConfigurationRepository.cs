@@ -1,10 +1,11 @@
-﻿using EmbyStat.Common.Models;
+﻿using System.Collections.Generic;
+using EmbyStat.Common.Models;
 
 namespace EmbyStat.Repositories.Interfaces
 {
     public interface IConfigurationRepository
     {
-	    Configuration GetSingle();
-	    void UpdateOrAdd(Configuration entity);
+        Dictionary<string, string> GetConfiguration();
+	    void UpdateOrAdd(Dictionary<string, string> entities);
 	}
 }

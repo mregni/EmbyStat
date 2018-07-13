@@ -9,6 +9,7 @@ using EmbyStat.Api.Tvdb;
 using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
@@ -37,7 +38,7 @@ namespace EmbyStat.Tasks.Tasks
         private readonly IPersonRepository _personRepository;
         private readonly ICollectionRepository _collectionRepository;
         private readonly ITvdbClient _tvdbClient;
-        private Configuration _settings;
+        private Dictionary<string, string> _settings;
         private IProgressLogger _progressLogger;
 
         public MediaSyncTask(IApplicationBuilder app)
@@ -60,14 +61,14 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger progressLogger)
         {
             _progressLogger = progressLogger;
-            _settings = _configurationRepository.GetSingle();
-            if (!_settings.WizardFinished)
+            _settings = _configurationRepository.GetConfiguration();
+            if (!_settings[Constants.Configuration.WizardFinished].ToBoolean())
             {
                 Log.Warning("Media sync task not running because wizard is not finished yet!");
                 return;
             }
 
-            _embyClient.SetAddressAndUrl(_settings.EmbyServerAddress, _settings.AccessToken);
+            _embyClient.SetAddressAndUrl(_settings[Constants.Configuration.EmbyServerAddress], _settings[Constants.Configuration.AccessToken]);
 
             _progressLogger.LogInformation("First delete all existing media and root media collections from database so we have a clean start.");
             CleanUpDatabase();
@@ -75,7 +76,7 @@ namespace EmbyStat.Tasks.Tasks
 
             await ProcessMovies(cancellationToken, progress);
             await ProcessShows(cancellationToken, progress);
-            await SyncMissingEpisodes(cancellationToken, progress, _settings.LastTvdbUpdate);
+            await SyncMissingEpisodes(cancellationToken, progress, Convert.ToDateTime(_settings[Constants.Configuration.LastTvdbUpdate]));
 
             progress.Report(100);
         }
@@ -92,7 +93,7 @@ namespace EmbyStat.Tasks.Tasks
         private async Task ProcessMovies(CancellationToken cancellationToken, IProgress<double> progress)
         {
             _progressLogger.LogInformation("Lets start processing movies");
-            var rootItems = await GetRootItemsByType("movies", CollectionType.Movies, _settings.EmbyUserId, cancellationToken);
+            var rootItems = await GetRootItemsByType("movies", CollectionType.Movies, _settings[Constants.Configuration.EmbyUserId], cancellationToken);
             _collectionRepository.AddCollectionRange(rootItems);
             _progressLogger.LogInformation($"Found {rootItems.Count} movie root items, getting ready for processing");
             progress.Report(12);
@@ -131,7 +132,7 @@ namespace EmbyStat.Tasks.Tasks
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = _settings[Constants.Configuration.EmbyUserId],
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
                 {
@@ -154,7 +155,7 @@ namespace EmbyStat.Tasks.Tasks
         private async Task ProcessShows(CancellationToken cancellationToken, IProgress<double> progress)
         {
             _progressLogger.LogInformation("Lets start processing shows");
-            var rootItems = await GetRootItemsByType("tvshows", CollectionType.TvShow, _settings.EmbyUserId, cancellationToken);
+            var rootItems = await GetRootItemsByType("tvshows", CollectionType.TvShow, _settings[Constants.Configuration.EmbyUserId], cancellationToken);
             _collectionRepository.AddCollectionRange(rootItems);
             _progressLogger.LogInformation($"Found {rootItems.Count} show root items, getting ready for processing");
             progress.Report(55);
@@ -306,7 +307,7 @@ namespace EmbyStat.Tasks.Tasks
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = _settings[Constants.Configuration.EmbyUserId],
                 IncludeItemTypes = new[] { "Series" },
                 Fields = new[]
                 {
@@ -332,7 +333,7 @@ namespace EmbyStat.Tasks.Tasks
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = _settings[Constants.Configuration.EmbyUserId],
                 IncludeItemTypes = new[] { nameof(Season) },
                 Fields = new[]
                 {
@@ -353,7 +354,7 @@ namespace EmbyStat.Tasks.Tasks
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = _settings[Constants.Configuration.EmbyUserId],
                 IncludeItemTypes = new[] { nameof(Episode) },
                 Fields = new[]
                 {

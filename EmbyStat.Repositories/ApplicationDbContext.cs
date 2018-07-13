@@ -56,7 +56,6 @@ namespace EmbyStat.Repositories
 		    base.OnModelCreating(modelBuilder);
 
 		    modelBuilder.Entity<Configuration>().Property(s => s.Id).IsRequired();
-		    modelBuilder.Entity<Configuration>().Property(s => s.Language).IsRequired();
 
 		    modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -7,29 +8,32 @@ namespace EmbyStat.Repositories
 {
     public class ConfigurationRepository : IConfigurationRepository
     {
-		public Configuration GetSingle()
+		public Dictionary<string, string> GetConfiguration()
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
-			    return context.Configuration.Single();
+		        return context.Configuration.ToDictionary(x => x.Id, y => y.Value);
 		    }
 	    }
 
-	    public void UpdateOrAdd(Configuration entity)
+	    public void UpdateOrAdd(Dictionary<string, string> entities)
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
-			    var settings = context.Configuration.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
+		        foreach (var entity in entities)
+		        {
+		            var config = context.Configuration.SingleOrDefault(x => x.Id == entity.Key);
 
-			    if (settings != null)
-			    {
-				    context.Entry(entity).State = EntityState.Modified;
-			    }
-			    else
-			    {
-				    context.Configuration.Add(entity);
-			    }
-
+		            if (config != null)
+		            {
+		                config.Value = entity.Value;
+		            }
+		            else
+		            {
+		                context.Configuration.Add(new Configuration { Id = entity.Key, Value = entity.Value });
+		            }
+                }
+			    
 			    context.SaveChanges();
 			}
 	    }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
@@ -87,7 +88,11 @@ namespace Tests.Unit.Services
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
 		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
-	        _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(new Configuration());
+	        _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Dictionary<string, string>
+	        {
+	            { Constants.Configuration.AccessToken, "AccessToken" },
+	            { Constants.Configuration.EmbyServerAddress, "EmbyServerAddress" }
+            });
 
             _embyServerInfoRepository = new Mock<IServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));

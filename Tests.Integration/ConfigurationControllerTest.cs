@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Task;
@@ -55,13 +56,14 @@ namespace Tests.Integration
 
             if (withData)
             {
-                var config = _context.Configuration.Single();
-                config.AccessToken = "accesstoken";
-                config.EmbyServerAddress = "localhost";
-                config.EmbyUserId = "433fbe4363a046ff9a11979ccd75aea8";
-                config.EmbyUserName = "admin";
-                config.ServerName = "Emby NAS";
-                config.Username = "admin";
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" });
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.Language, Value = "en-US" });
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.UserName, Value = "admin" });
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.WizardFinished, Value = "true" });
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" });
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.AccessToken, Value = "1234567980" });
+                _context.Configuration.Add(new Configuration { Id = Constants.Configuration.EmbyUserName, Value = "reggi" });
+
                 _context.SaveChanges();
             }
         }

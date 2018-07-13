@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
@@ -38,8 +40,8 @@ namespace EmbyStat.Tasks.Tasks
         public string Category => "Emby";
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
-            var settings = _configurationRepository.GetSingle();
-            if (!settings.WizardFinished)
+            var settings = _configurationRepository.GetConfiguration();
+            if (!settings[Constants.Configuration.WizardFinished].ToBoolean())
             {
                 Log.Warning("Movie sync task not running because wizard is not finished yet!");
                 return;
@@ -47,7 +49,7 @@ namespace EmbyStat.Tasks.Tasks
 
             progress.Report(15);
 
-            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            _embyClient.SetAddressAndUrl(settings[Constants.Configuration.EmbyServerAddress], settings[Constants.Configuration.AccessToken]);
             var systemInfoReponse = await _embyClient.GetServerInfoAsync();
             logProgress.LogInformation("Server info found");
             progress.Report(35);
