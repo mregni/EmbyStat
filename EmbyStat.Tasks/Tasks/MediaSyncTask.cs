@@ -9,6 +9,7 @@ using EmbyStat.Api.Tvdb;
 using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
@@ -60,7 +61,7 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger progressLogger)
         {
             _progressLogger = progressLogger;
-            _settings = _configurationRepository.GetSingle();
+            _settings = _configurationRepository.GetConfiguration();
             if (!_settings.WizardFinished)
             {
                 Log.Warning("Media sync task not running because wizard is not finished yet!");

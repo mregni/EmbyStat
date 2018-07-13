@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
+using EmbyStat.Common;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -20,32 +23,23 @@ namespace EmbyStat.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet]
-		public IActionResult Get()
-		{
-			_logger.LogInformation("Getting server configuration from database.");
-			var configuration = _configurationService.GetServerSettings();
-			return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
-		}
+	    [HttpGet]
+	    public IActionResult Get()
+	    {
+	        _logger.LogInformation("Getting server configuration from database.");
+	        var configuration = _configurationService.GetServerSettings();
+	        return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
+	    }
 
-		[HttpPut]
-		public IActionResult Update([FromBody] ConfigurationViewModel configuration)
-		{
-		    try
-		    {
-		        _logger.LogInformation("Updating the new server configuration.");
-		        var config = Mapper.Map<Common.Models.Configuration>(configuration);
-		        _configurationService.SaveServerSettings(config);
+	    [HttpPut]
+	    public IActionResult Update([FromBody] ConfigurationViewModel configuration)
+	    {
+	        _logger.LogInformation("Updating the new server configuration.");
+	        var config = Mapper.Map<Common.Models.Configuration>(configuration);
+	        _configurationService.SaveServerSettings(config);
 
-		        config = _configurationService.GetServerSettings();
-		        return Ok(Mapper.Map<ConfigurationViewModel>(config));
-            }
-		    catch (Exception e)
-		    {
-		        Console.WriteLine(e);
-		        throw;
-		    }
-			
-		}
-	}
+	        config = _configurationService.GetServerSettings();
+	        return Ok(Mapper.Map<ConfigurationViewModel>(config));
+        }
+    }
 }

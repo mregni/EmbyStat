@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -37,20 +39,32 @@ namespace EmbyStat.Repositories
 
 	    private async Task SeedConfiguration()
 	    {
-	        if (!await _context.Configuration.AnyAsync())
-	        {
-	            Log.Information("Seeding configuration");
+	        Log.Information("Seeding configuration");
 
-	            var config = new Configuration()
-	            {
-	                Id = Guid.NewGuid().ToString(),
-	                Language = "en-US",
-	                ToShortMovie = 10
-	            };
+	        var configuration = _context.Configuration.ToList();
 
-	            _context.Configuration.Add(config);
-	            await _context.SaveChangesAsync();
-	        }
+            if(configuration.All(x => x.Id != Constants.Configuration.Language))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.Language, Value = "en-US" });
+	        if(configuration.All(x => x.Id != Constants.Configuration.ToShortMovie))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ToShortMovie, Value = "10" });
+	        if(configuration.All(x => x.Id != Constants.Configuration.WizardFinished))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.WizardFinished, Value = "False" });
+	        if(configuration.All(x => x.Id != Constants.Configuration.UserName))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UserName, Value = string.Empty });
+	        if(configuration.All(x => x.Id != Constants.Configuration.EmbyServerAddress))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerAddress, Value = string.Empty });
+	        if(configuration.All(x => x.Id != Constants.Configuration.EmbyUserId))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserId, Value = string.Empty });
+	        if(configuration.All(x => x.Id != Constants.Configuration.ServerName))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ServerName, Value = string.Empty });
+            if(configuration.All(x => x.Id != Constants.Configuration.EmbyUserName))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserName, Value = string.Empty });
+	        if(configuration.All(x => x.Id != Constants.Configuration.AccessToken))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AccessToken, Value = string.Empty });
+	        if (configuration.All(x => x.Id != Constants.Configuration.LastTvdbUpdate))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = string.Empty });
+
+            await _context.SaveChangesAsync();
         }
 
 	    private async Task SeedLanguages()

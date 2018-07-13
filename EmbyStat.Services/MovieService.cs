@@ -164,7 +164,7 @@ namespace EmbyStat.Services
 
         private List<ShortMovie> GetShortMovies(List<Movie> movies)
         {
-            var configuration = _configurationRepository.GetSingle();
+            var configuration = _configurationRepository.GetConfiguration();
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
                 .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < configuration.ToShortMovie)

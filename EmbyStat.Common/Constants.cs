@@ -68,6 +68,20 @@ namespace EmbyStat.Common
             public const string Movie = "Movie";
         }
 
+        public static class Configuration
+        {
+            public const string AccessToken = "ACCESSTOKEN";
+            public const string EmbyServerAddress = "EMBYSERVERADDRESS";
+            public const string EmbyUserId = "EMBYUSERID";
+            public const string EmbyUserName = "EMBYUSERNAME";
+            public const string Language = "LANGUAGE";
+            public const string LastTvdbUpdate = "LASTTVDBUPDATE";
+            public const string ServerName = "SERVERNAME";
+            public const string ToShortMovie = "TOSHORTMOVIE";
+            public const string UserName = "USERNAME";
+            public const string WizardFinished = "WIZARDFINISHED";
+        }
+
         //CHARTS
         public const string CountPerGenre = "COMMON.COUNTPERGENRE";
         public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";

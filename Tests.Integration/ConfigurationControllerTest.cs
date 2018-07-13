@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Task;
@@ -27,7 +28,6 @@ namespace Tests.Integration
         private readonly TestServer _server;
         private readonly HttpClient _client;
         private ApplicationDbContext _context;
-        private string _configurationId;
 
         public ConfigurationControllerTest()
         {
@@ -48,21 +48,25 @@ namespace Tests.Integration
             _context.Configuration.RemoveRange(_context.Configuration.ToList());
             _context.SaveChanges();
 
-            var initlializer = new DatabaseInitializer(_context);
-            Task.WaitAll(initlializer.SeedAsync());
-
-            _configurationId = _context.Configuration.Single().Id;
-
             if (withData)
             {
-                var config = _context.Configuration.Single();
-                config.AccessToken = "accesstoken";
-                config.EmbyServerAddress = "localhost";
-                config.EmbyUserId = "433fbe4363a046ff9a11979ccd75aea8";
-                config.EmbyUserName = "admin";
-                config.ServerName = "Emby NAS";
-                config.Username = "admin";
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserId, Value = "433fbe4363a046ff9a11979ccd75aea8" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = "12/01/2018" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AccessToken, Value = "1234567980" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserName, Value = "admin" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.Language, Value = "en-US" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ServerName, Value = "Emby NAS" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UserName, Value = "admin" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.WizardFinished, Value = "true" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ToShortMovie, Value = "10" });
+
                 _context.SaveChanges();
+            }
+            else
+            {
+                var initlializer = new DatabaseInitializer(_context);
+                Task.WaitAll(initlializer.SeedAsync());
             }
         }
 
@@ -77,16 +81,15 @@ namespace Tests.Integration
             var result = JsonConvert.DeserializeObject<ConfigurationViewModel>(responseString);
 
             result.Should().NotBeNull();
-            result.Id.Should().Be(_configurationId);
             result.WizardFinished.Should().BeFalse();
-            result.Language.Should().Be("en");
+            result.Language.Should().Be("en-US");
             result.ToShortMovie.Should().Be(10);
-            result.AccessToken.Should().BeNull();
-            result.EmbyServerAddress.Should().BeNull();
-            result.EmbyUserId.Should().BeNull();
-            result.EmbyUserName.Should().BeNull();
-            result.ServerName.Should().BeNull();
-            result.Username.Should().BeNull();
+            result.AccessToken.Should().BeEmpty();
+            result.EmbyServerAddress.Should().BeEmpty();
+            result.EmbyUserId.Should().BeEmpty();
+            result.EmbyUserName.Should().BeEmpty();
+            result.ServerName.Should().BeEmpty();
+            result.Username.Should().BeEmpty();
         }
 
         [Fact]
@@ -100,12 +103,11 @@ namespace Tests.Integration
             var result = JsonConvert.DeserializeObject<ConfigurationViewModel>(responseString);
 
             result.Should().NotBeNull();
-            result.Id.Should().Be(_configurationId);
             result.WizardFinished.Should().BeFalse();
-            result.Language.Should().Be("en");
+            result.Language.Should().Be("en-US");
             result.ToShortMovie.Should().Be(10);
-            result.AccessToken.Should().Be("accesstoken");
-            result.EmbyServerAddress.Should().Be("localhost");
+            result.AccessToken.Should().Be("1234567980");
+            result.EmbyServerAddress.Should().Be("http://localhost");
             result.EmbyUserId.Should().Be("433fbe4363a046ff9a11979ccd75aea8");
             result.EmbyUserName.Should().Be("admin");
             result.ServerName.Should().Be("Emby NAS");
@@ -122,7 +124,7 @@ namespace Tests.Integration
                 .AddEmbyServerAddress("localhost")
                 .AddEmbyUserId("69eb56e9fe6c43b5aec3723a43568860")
                 .AddEmbyUserName("admin")
-                .AddLanguage("en")
+                .AddLanguage("nl-NL")
                 .AddToShortMovie(15)
                 .AddUserName("admin")
                 .AddWizardFinished(true)
@@ -138,9 +140,8 @@ namespace Tests.Integration
             var result = JsonConvert.DeserializeObject<ConfigurationViewModel>(responseString);
 
             result.Should().NotBeNull();
-            result.Id.Should().Be(_configurationId);
             result.WizardFinished.Should().BeTrue();
-            result.Language.Should().Be("en");
+            result.Language.Should().Be("nl-NL");
             result.ToShortMovie.Should().Be(15);
             result.AccessToken.Should().Be("accessToken");
             result.EmbyServerAddress.Should().Be("localhost");
