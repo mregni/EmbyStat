@@ -70,7 +70,20 @@ namespace Tests.Unit.Services
 				new Drives() {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
 			};
 
-		    var embyDrives = new List<EmbyStat.Api.EmbyClient.Model.Drive>
+	        var configuration = new List<ConfigurationKeyValue>
+	        {
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
+	        };
+
+            var embyDrives = new List<EmbyStat.Api.EmbyClient.Model.Drive>
 		    {
 			    new EmbyStat.Api.EmbyClient.Model.Drive()
 		    };
@@ -88,11 +101,7 @@ namespace Tests.Unit.Services
 		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
 
 		    _configurationRepositoryMock = new Mock<IConfigurationRepository>();
-	        _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Dictionary<string, string>
-	        {
-	            { Constants.Configuration.AccessToken, "AccessToken" },
-	            { Constants.Configuration.EmbyServerAddress, "EmbyServerAddress" }
-            });
+	        _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
 
             _embyServerInfoRepository = new Mock<IServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));

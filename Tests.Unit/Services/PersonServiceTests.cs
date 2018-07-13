@@ -29,11 +29,17 @@ namespace Tests.Unit.Services
         private BaseItemDto basePerson;
         public PersonServiceTests()
         {
-            var configuration = new Dictionary<string, string>
+            var configuration = new List<ConfigurationKeyValue>
             {
-                { Constants.Configuration.EmbyUserId, "EmbyUserId" },
-                { Constants.Configuration.EmbyServerAddress, "localhost" },
-                { Constants.Configuration.AccessToken, "AccessToken" }
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
             };
 
             basePerson = new BaseItemDto()
@@ -57,7 +63,7 @@ namespace Tests.Unit.Services
             _personREpositoryMock.Setup(x => x.AddOrUpdatePerson(It.IsAny<Person>()));
 
             _configurationRepositoryMock = new Mock<IConfigurationRepository>();
-            _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(configuration);
+            _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
 
             _embyClientMock = new Mock<IEmbyClient>();
             _embyClientMock.Setup(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None))

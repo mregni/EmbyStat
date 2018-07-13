@@ -21,22 +21,22 @@ namespace Tests.Unit.Controllers
 
 	    public ConfigurationControllerTests()
 	    {
-			var configuration = new Dictionary<string, string>
+			var configuration = new List<ConfigurationKeyValue>
 			{
-			    { Constants.Configuration.EmbyUserId, "EmbyUserId" },
-			    { Constants.Configuration.Language, "en-US" },
-			    { Constants.Configuration.UserName, "admin" },
-			    { Constants.Configuration.WizardFinished, "true" },
-			    { Constants.Configuration.EmbyServerAddress, "http://localhost" },
-			    { Constants.Configuration.AccessToken, "1234567980" },
-			    { Constants.Configuration.EmbyUserName, "reggi" },
-			    { Constants.Configuration.ToShortMovie, "10" },
-			    { Constants.Configuration.ServerName, "ServerName" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
             };
 
             _configurationServiceMock = new Mock<IConfigurationService>();
-		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(configuration);
-		    _configurationServiceMock.Setup(x => x.SaveServerSettings(It.IsAny<Dictionary<string, string>>()));
+		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(new Configuration(configuration));
+		    _configurationServiceMock.Setup(x => x.SaveServerSettings(It.IsAny<Configuration>()));
 
 			var loggerMock = new Mock<ILogger<ConfigurationController>>();
 
@@ -75,7 +75,7 @@ namespace Tests.Unit.Controllers
 
 		    _subject.Update(configuration);
 
-		    _configurationServiceMock.Verify(x => x.SaveServerSettings(It.IsAny<Dictionary<string, string>>()), Times.Once);
+		    _configurationServiceMock.Verify(x => x.SaveServerSettings(It.IsAny<Configuration>()), Times.Once);
 		    _configurationServiceMock.Verify(x => x.GetServerSettings(), Times.Once);
 	    }
 	}
