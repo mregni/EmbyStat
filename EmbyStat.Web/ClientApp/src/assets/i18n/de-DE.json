@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "HIDE": "Hide",
+    "HIDE": "Ausblenden",
     "NEXT": "weiter",
     "BACK": "zurück",
     "FINISH": "fertig",
@@ -130,9 +130,9 @@
     "SETTINGS": "Einstellungen",
     "MOVIETOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
     "SAVED": {
-      "GENERAL": "General Embystat settings are saved!",
-      "EMBY": "Emby settings are saved!",
-      "MOVIES": "Movie settings are saved!"
+      "GENERAL": "EmbyStat-Einstellungen wurden gespeichert!",
+      "EMBY": "Emby-Einstellungen wurden gespeichert!",
+      "MOVIES": "Film-Einstellungen wurden gespeichert!"
     }
   },
   "TASK": {
