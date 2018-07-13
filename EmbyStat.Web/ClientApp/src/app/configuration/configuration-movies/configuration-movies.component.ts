@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-configuration-movies',
@@ -20,7 +21,7 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
 
-  constructor(private configurationFacade: ConfigurationFacade) {
+  constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
     this.form = new FormGroup({
@@ -37,6 +38,7 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
     const config = { ...this.configuration };
     config.toShortMovie = this.form.get('toShortMovie').value;
     this.configurationFacade.updateConfiguration(config);
+    this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
   }
 
   ngOnInit() {
