@@ -63,6 +63,11 @@ namespace EmbyStat.Common
             public const string ApiKey = "BWLRSNRC0AQUIEYX";
         }
 
+        public static class Type
+        {
+            public const string Movie = "Movie";
+        }
+
         //CHARTS
         public const string CountPerGenre = "COMMON.COUNTPERGENRE";
         public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";
