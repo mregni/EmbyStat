@@ -14,6 +14,7 @@ import { Language } from '../shared/components/language/models/language';
 import { LanguageFacade } from '../shared/components/language/state/facade.language';
 
 import { PluginFacade } from '../plugin/state/facade.plugin';
+import { WizardStateService } from './services/wizard-state.service';
 
 @Component({
   selector: 'app-wizard',
@@ -52,7 +53,7 @@ export class WizardComponent implements OnInit, OnDestroy {
     private configurationFacade: ConfigurationFacade,
     private pluginFacade: PluginFacade,
     private languageFacade: LanguageFacade,
-    private router: Router  ) {
+    private wizardStateService: WizardStateService  ) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
       language: this.languageControl
@@ -107,7 +108,6 @@ export class WizardComponent implements OnInit, OnDestroy {
             config.wizardFinished = true;
             config.embyUserId = token.id;
             this.configurationFacade.updateConfiguration(config);
-          } else {
           }
         }, (err) => {
         });
@@ -115,7 +115,7 @@ export class WizardComponent implements OnInit, OnDestroy {
   }
 
   public finishWizard() {
-    this.router.navigateByUrl('');
+    this.wizardStateService.changeState(true);
   }
 
   ngOnDestroy() {
