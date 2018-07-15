@@ -60,7 +60,6 @@ namespace EmbyStat.Common
             public const string SerieEpisodesUrl = "/series/{0}/episodes?page={1}";
             public const string UpdatesUrl = "/updated/query?fromTime={0}&toTime={1}";
             public const string LoginUrl = "/login";
-            public const string ApiKey = "BWLRSNRC0AQUIEYX";
         }
 
         public static class Type
@@ -80,6 +79,7 @@ namespace EmbyStat.Common
             public const string ToShortMovie = "TOSHORTMOVIE";
             public const string UserName = "USERNAME";
             public const string WizardFinished = "WIZARDFINISHED";
+            public const string TvdbApiKey = "TVDBAPICLIENT";
         }
 
         //CHARTS
