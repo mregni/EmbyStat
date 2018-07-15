@@ -121,7 +121,7 @@ namespace Tests.Unit.Services
             stat.LowestRatedMovie.Title.Should().Be(Constants.Movies.LowestRated);
             stat.LowestRatedMovie.Name.Should().Be(_movieOne.Name);
             stat.LowestRatedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.LowestRatedMovie.DurationMinutes.Should().Be(1);
+            stat.LowestRatedMovie.DurationMinutes.Should().Be(200);
             stat.LowestRatedMovie.MediaId.Should().Be(_movieOne.Id);
             stat.LowestRatedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.LowestRatedMovie.Tag.Should().Be(_movieOne.Primary);
@@ -138,7 +138,7 @@ namespace Tests.Unit.Services
             stat.HighestRatedMovie.Title.Should().Be(Constants.Movies.HighestRated);
             stat.HighestRatedMovie.Name.Should().Be(_movieOne.Name);
             stat.HighestRatedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.HighestRatedMovie.DurationMinutes.Should().Be(1);
+            stat.HighestRatedMovie.DurationMinutes.Should().Be(200);
             stat.HighestRatedMovie.MediaId.Should().Be(_movieOne.Id);
             stat.HighestRatedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.HighestRatedMovie.Tag.Should().Be(_movieOne.Primary);
@@ -155,7 +155,7 @@ namespace Tests.Unit.Services
             stat.OldestPremieredMovie.Title.Should().Be(Constants.Movies.OldestPremiered);
             stat.OldestPremieredMovie.Name.Should().Be(_movieOne.Name);
             stat.OldestPremieredMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.OldestPremieredMovie.DurationMinutes.Should().Be(1);
+            stat.OldestPremieredMovie.DurationMinutes.Should().Be(200);
             stat.OldestPremieredMovie.MediaId.Should().Be(_movieOne.Id);
             stat.OldestPremieredMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.OldestPremieredMovie.Tag.Should().Be(_movieOne.Primary);
@@ -172,7 +172,7 @@ namespace Tests.Unit.Services
             stat.YoungestPremieredMovie.Title.Should().Be(Constants.Movies.YoungestPremiered);
             stat.YoungestPremieredMovie.Name.Should().Be(_movieOne.Name);
             stat.YoungestPremieredMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.YoungestPremieredMovie.DurationMinutes.Should().Be(1);
+            stat.YoungestPremieredMovie.DurationMinutes.Should().Be(200);
             stat.YoungestPremieredMovie.MediaId.Should().Be(_movieOne.Id);
             stat.YoungestPremieredMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.YoungestPremieredMovie.Tag.Should().Be(_movieOne.Primary);
@@ -189,7 +189,7 @@ namespace Tests.Unit.Services
             stat.ShortestMovie.Title.Should().Be(Constants.Movies.Shortest);
             stat.ShortestMovie.Name.Should().Be(_movieOne.Name);
             stat.ShortestMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.ShortestMovie.DurationMinutes.Should().Be(1);
+            stat.ShortestMovie.DurationMinutes.Should().Be(200);
             stat.ShortestMovie.MediaId.Should().Be(_movieOne.Id);
             stat.ShortestMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.ShortestMovie.Tag.Should().Be(_movieOne.Primary);
@@ -204,12 +204,12 @@ namespace Tests.Unit.Services
             stat.Should().NotBeNull();
             stat.LongestMovie.Should().NotBeNull();
             stat.LongestMovie.Title.Should().Be(Constants.Movies.Longest);
-            stat.LongestMovie.Name.Should().Be(_movieOne.Name);
-            stat.LongestMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.LongestMovie.DurationMinutes.Should().Be(1);
-            stat.LongestMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.LongestMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.LongestMovie.Tag.Should().Be(_movieOne.Primary);
+            stat.LongestMovie.Name.Should().Be(_movieTwo.Name);
+            stat.LongestMovie.CommunityRating.Should().Be(_movieTwo.CommunityRating.ToString());
+            stat.LongestMovie.DurationMinutes.Should().Be(10000);
+            stat.LongestMovie.MediaId.Should().Be(_movieTwo.Id);
+            stat.LongestMovie.OfficialRating.Should().Be(_movieTwo.OfficialRating);
+            stat.LongestMovie.Tag.Should().Be(_movieTwo.Primary);
             stat.LongestMovie.Year.Should().Be(2002);
         }
 
