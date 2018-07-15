@@ -21,7 +21,7 @@ namespace EmbyStat.Services.Converters
             };
         }
 
-        public static ShowPoster ConvertToShowPoster(Show show, string title, string value = "")
+        public static ShowPoster ConvertToShowPoster(Show show, string title)
         {
             return new ShowPoster
             {
@@ -31,8 +31,7 @@ namespace EmbyStat.Services.Converters
                 MediaId = show.Id,
                 OfficialRating = show.OfficialRating,
                 Tag = show.Primary,
-                Year = show.PremiereDate?.Year ?? 0,
-                Value = value
+                Year = show.PremiereDate?.Year ?? 0
             };
         }
 
