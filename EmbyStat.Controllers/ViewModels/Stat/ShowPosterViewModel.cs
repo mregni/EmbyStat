@@ -13,6 +13,5 @@ namespace EmbyStat.Controllers.ViewModels.Stat
         public string Title { get; set; }
         public string Tag { get; set; }
         public int Year { get; set; }
-        public string Value { get; set; }
     }
 }

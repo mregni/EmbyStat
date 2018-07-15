@@ -1,7 +1,6 @@
 <div *ngIf="poster !== undefined" class="poster_container">
   <div [style.background-image]="getBackground()" class="poster" (click)="openShow()">
     <div class="poster__content">
-      <div *ngIf="poster.value.length > 0">{{poster.value}}</div>
       <div class="row">
         <div>{{poster.year}} <span class="rating" *ngIf="poster.officialRating != undefined">{{poster.officialRating}}</span></div>
         <div>{{poster.communityRating}}/10</div>

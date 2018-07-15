@@ -6,5 +6,4 @@ export class ShowPoster {
   public title: string;
   public tag: string;
   public year: number;
-  public value: string;
 }
