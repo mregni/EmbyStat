@@ -2,7 +2,7 @@
   <div [style.background-image]="getBackground()" class="poster" (click)="openPerson()">
     <div class="poster__content">
       <div class="row">
-        <div>{{poster.name}}</div>
+        <div>{{poster.name | toShorterString:18 }}</div>
         <div>
           {{poster.movieCount}} <mat-icon>local_movies</mat-icon>
         </div>
