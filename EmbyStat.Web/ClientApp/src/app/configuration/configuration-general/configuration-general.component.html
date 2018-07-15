@@ -8,9 +8,10 @@
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="language">
-            <mat-option value="nl">Nederlands</mat-option>
-            <mat-option value="en">English</mat-option>
-          </mat-select>
+              <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
+                <app-language [language]="language"></app-language>
+              </mat-option>
+            </mat-select>
           <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
         </mat-form-field>
       </form>
@@ -20,3 +21,5 @@
     </mat-card-actions>
   </mat-card>
 </div>
+
+
