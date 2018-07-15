@@ -63,6 +63,8 @@ namespace EmbyStat.Repositories
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AccessToken, Value = string.Empty });
 	        if (configuration.All(x => x.Id != Constants.Configuration.LastTvdbUpdate))
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = string.Empty });
+	        if (configuration.All(x => x.Id != Constants.Configuration.TvdbApiKey))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.TvdbApiKey, Value = "BWLRSNRC0AQUIEYX" });
 
             await _context.SaveChangesAsync();
         }

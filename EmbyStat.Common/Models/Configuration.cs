@@ -64,11 +64,13 @@ namespace EmbyStat.Common.Models
             get => _config[Constants.Configuration.EmbyUserId];
             set => _config[Constants.Configuration.EmbyUserId] = value;
         }
+
         public int ToShortMovie
         {
             get => Convert.ToInt32(_config[Constants.Configuration.ToShortMovie]);
             set => _config[Constants.Configuration.ToShortMovie] = value.ToString();
         }
+
         public DateTime? LastTvdbUpdate
         {
             get
@@ -81,6 +83,12 @@ namespace EmbyStat.Common.Models
                 if (value.HasValue) _config[Constants.Configuration.LastTvdbUpdate] = value.Value.ToString(CultureInfo.InvariantCulture);
                 else _config[Constants.Configuration.LastTvdbUpdate] = null;
             }
+        }
+
+        public string TvdbApiKey
+        {
+            get => _config[Constants.Configuration.TvdbApiKey];
+            set => _config[Constants.Configuration.TvdbApiKey] = value;
         }
 
         public Configuration(IEnumerable<ConfigurationKeyValue> list)

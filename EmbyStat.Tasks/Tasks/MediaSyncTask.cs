@@ -76,7 +76,7 @@ namespace EmbyStat.Tasks.Tasks
 
             await ProcessMovies(cancellationToken, progress);
             await ProcessShows(cancellationToken, progress);
-            await SyncMissingEpisodes(cancellationToken, progress, _settings.LastTvdbUpdate);
+            await SyncMissingEpisodes(_settings.LastTvdbUpdate, _settings.TvdbApiKey, cancellationToken, progress);
 
             _progressLogger.LogInformation("Media syncronisation is finished.");
             progress.Report(100);
@@ -208,9 +208,9 @@ namespace EmbyStat.Tasks.Tasks
             }
         }
 
-        private async Task SyncMissingEpisodes(CancellationToken cancellationToken, IProgress<double> progress, DateTime? lastUpdateFromTvdb)
+        private async Task SyncMissingEpisodes(DateTime? lastUpdateFromTvdb, string tvdbApiKey, CancellationToken cancellationToken, IProgress<double> progress)
         {
-            await _tvdbClient.Login(cancellationToken);
+            await _tvdbClient.Login(tvdbApiKey, cancellationToken);
 
             var shows = _showRepository
                 .GetAllShows(new string[]{})
