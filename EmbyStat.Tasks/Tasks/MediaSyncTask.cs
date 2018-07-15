@@ -78,6 +78,7 @@ namespace EmbyStat.Tasks.Tasks
             await ProcessShows(cancellationToken, progress);
             await SyncMissingEpisodes(cancellationToken, progress, _settings.LastTvdbUpdate);
 
+            _progressLogger.LogInformation("Media syncronisation is finished.");
             progress.Report(100);
         }
 
@@ -103,7 +104,7 @@ namespace EmbyStat.Tasks.Tasks
             for (var i = 0; i < rootItems.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                _progressLogger.LogInformation($"Asking Emby all movies for parent ({rootItems[i].Id}) {rootItems[i].Name}");
+                _progressLogger.LogInformation($"Asking Emby all movies for parent {rootItems[i].Name}");
                 var movies = (await GetMoviesFromEmby(rootItems[i].Id, cancellationToken)).ToList();
                 movies.ForEach(x => x.CollectionId = rootItems[i].Id);
 
@@ -116,7 +117,7 @@ namespace EmbyStat.Tasks.Tasks
                 {
                     j++;
                     cancellationToken.ThrowIfCancellationRequested();
-                    _progressLogger.LogInformation($"Processing movie ({movie.Id}) {movie.Name}");
+                    _progressLogger.LogInformation($"Processing movie {movie.Name}");
                     _movieRepository.Add(movie);
                     progress.Report(Math.Floor(15 + (double)30 / movies.Count * j / rootItems.Count * i));
                 }
@@ -165,7 +166,7 @@ namespace EmbyStat.Tasks.Tasks
             for (var i = 0; i < rootItems.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                _progressLogger.LogInformation($"Asking Emby all shows for parent ({rootItems[i].Id}) {rootItems[i].Name}");
+                _progressLogger.LogInformation($"Asking Emby all shows for parent {rootItems[i].Name}");
                 var shows = await GetShowsFromEmby(rootItems[i].Id, cancellationToken);
                 shows.ForEach(x => x.CollectionId = rootItems[i].Id);
 
@@ -191,7 +192,7 @@ namespace EmbyStat.Tasks.Tasks
                         seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
                     }
 
-                    _progressLogger.LogInformation($"Processing show ({show.Id}) {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
+                    _progressLogger.LogInformation($"Processing show {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
 
                     var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
 
