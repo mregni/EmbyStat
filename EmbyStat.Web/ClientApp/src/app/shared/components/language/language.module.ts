@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LanguageService } from './service/language.service';
 import { LanguageFacade } from './state/facade.language';
-import { LanguageComponent } from './language-overview/language.component';
+import { LanguageComponent } from './language.component';
 
 @NgModule({
   imports: [
