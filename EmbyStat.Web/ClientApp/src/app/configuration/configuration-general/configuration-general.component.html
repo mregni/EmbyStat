@@ -8,12 +8,13 @@
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="language">
-              <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
-                <app-language [language]="language"></app-language>
-              </mat-option>
-            </mat-select>
+            <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
+              <app-language [language]="language"></app-language>
+            </mat-option>
+          </mat-select>
           <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
         </mat-form-field>
+        <p class="subtext-grey-small" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></p>
       </form>
     </mat-card-content>
     <mat-card-actions class="button-container">
