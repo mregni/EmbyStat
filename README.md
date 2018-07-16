@@ -4,6 +4,7 @@
 [![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg?style=flat-square)](https://gitter.im/EmbyStat/Lobby)
 ![GitHub (pre-)release](https://img.shields.io/github/release/mregni/embystat/all.svg?style=flat-square)
 ![Github All Releases](https://img.shields.io/github/downloads/mregni/embystat/total.svg?style=flat-square)
+[![Docker Pulls](https://img.shields.io/docker/pulls/uping/embystat.svg)](https://hub.docker.com/r/uping/embystat/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mregni/embystat.svg?style=flat-square)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/mregni/embystat.svg?style=flat-square)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg?style=flat-square)
