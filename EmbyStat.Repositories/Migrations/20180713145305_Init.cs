@@ -42,16 +42,7 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    AccessToken = table.Column<string>(nullable: true),
-                    EmbyServerAddress = table.Column<string>(nullable: true),
-                    EmbyUserId = table.Column<string>(nullable: true),
-                    EmbyUserName = table.Column<string>(nullable: true),
-                    Language = table.Column<string>(nullable: false),
-                    LastTvdbUpdate = table.Column<DateTime>(nullable: true),
-                    ServerName = table.Column<string>(nullable: true),
-                    ToShortMovie = table.Column<int>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
-                    WizardFinished = table.Column<bool>(nullable: false)
+                    Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,6 +91,19 @@ namespace EmbyStat.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Code = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Media",
                 columns: table => new
                 {
@@ -142,6 +146,7 @@ namespace EmbyStat.Repositories.Migrations
                     MissingEpisodesCount = table.Column<int>(nullable: true),
                     Show_OfficialRating = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true),
+                    TvdbFailed = table.Column<bool>(nullable: true),
                     TvdbSynced = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
@@ -249,6 +254,20 @@ namespace EmbyStat.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Servers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statistics",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CalculationDateTime = table.Column<DateTime>(nullable: false),
+                    JsonResult = table.Column<string>(nullable: false),
+                    Type = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statistics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -478,10 +497,34 @@ namespace EmbyStat.Repositories.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CollectionId",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CId = table.Column<string>(nullable: true),
+                    StatisticId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollectionId", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CollectionId_Statistics_StatisticId",
+                        column: x => x.StatisticId,
+                        principalTable: "Statistics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AudioStreams_VideoId",
                 table: "AudioStreams",
                 column: "VideoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CollectionId_StatisticId",
+                table: "CollectionId",
+                column: "StatisticId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExtraPersons_PersonId",
@@ -528,6 +571,9 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Boxsets");
 
             migrationBuilder.DropTable(
+                name: "CollectionId");
+
+            migrationBuilder.DropTable(
                 name: "Collections");
 
             migrationBuilder.DropTable(
@@ -541,6 +587,9 @@ namespace EmbyStat.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "ExtraPersons");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
 
             migrationBuilder.DropTable(
                 name: "MediaGenres");
@@ -571,6 +620,9 @@ namespace EmbyStat.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "VideoStreams");
+
+            migrationBuilder.DropTable(
+                name: "Statistics");
 
             migrationBuilder.DropTable(
                 name: "People");

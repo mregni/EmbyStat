@@ -60,7 +60,26 @@ namespace EmbyStat.Common
             public const string SerieEpisodesUrl = "/series/{0}/episodes?page={1}";
             public const string UpdatesUrl = "/updated/query?fromTime={0}&toTime={1}";
             public const string LoginUrl = "/login";
-            public const string ApiKey = "BWLRSNRC0AQUIEYX";
+        }
+
+        public static class Type
+        {
+            public const string Movie = "Movie";
+        }
+
+        public static class Configuration
+        {
+            public const string AccessToken = "ACCESSTOKEN";
+            public const string EmbyServerAddress = "EMBYSERVERADDRESS";
+            public const string EmbyUserId = "EMBYUSERID";
+            public const string EmbyUserName = "EMBYUSERNAME";
+            public const string Language = "LANGUAGE";
+            public const string LastTvdbUpdate = "LASTTVDBUPDATE";
+            public const string ServerName = "SERVERNAME";
+            public const string ToShortMovie = "TOSHORTMOVIE";
+            public const string UserName = "USERNAME";
+            public const string WizardFinished = "WIZARDFINISHED";
+            public const string TvdbApiKey = "TVDBAPICLIENT";
         }
 
         //CHARTS

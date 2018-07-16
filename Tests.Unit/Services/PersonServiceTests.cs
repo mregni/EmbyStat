@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
@@ -28,11 +29,17 @@ namespace Tests.Unit.Services
         private BaseItemDto basePerson;
         public PersonServiceTests()
         {
-            var configuration = new Configuration()
+            var configuration = new List<ConfigurationKeyValue>
             {
-                EmbyUserId = "EmbyUserId",
-                EmbyServerAddress = "localhost",
-                AccessToken = "AccessToken"
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
             };
 
             basePerson = new BaseItemDto()
@@ -56,7 +63,7 @@ namespace Tests.Unit.Services
             _personREpositoryMock.Setup(x => x.AddOrUpdatePerson(It.IsAny<Person>()));
 
             _configurationRepositoryMock = new Mock<IConfigurationRepository>();
-            _configurationRepositoryMock.Setup(x => x.GetSingle()).Returns(configuration);
+            _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
 
             _embyClientMock = new Mock<IEmbyClient>();
             _embyClientMock.Setup(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None))
@@ -93,7 +100,7 @@ namespace Tests.Unit.Services
             _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
             _personREpositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
 
-            _configurationRepositoryMock.Verify(x => x.GetSingle(), Times.Once);
+            _configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Once);
 
             _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
@@ -131,7 +138,7 @@ namespace Tests.Unit.Services
             _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
             _personREpositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
 
-            _configurationRepositoryMock.Verify(x => x.GetSingle(), Times.Once);
+            _configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Once);
 
             _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
@@ -181,7 +188,7 @@ namespace Tests.Unit.Services
             _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
             _personREpositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Never);
 
-            _configurationRepositoryMock.Verify(x => x.GetSingle(), Times.Never);
+            _configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Never);
 
             _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Never);
         }

@@ -1,24 +1,30 @@
-<div class="collected__row collection_headers">
-  <div class="column_small"></div>
-  <div class="column__title" (click)="order('sortName')">{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</div>
-  <div class="column-wide" (click)="order('date')">{{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}</div>
-  <div class="column" (click)="order('status')">{{ 'COMMON.STATUS' | translate | capitalizeFirst }}</div>
-  <div class="column" (click)="order('seasons')">{{ 'SHOWS.SEASONS' | translate | capitalizeFirst }}</div>
-  <div class="column" (click)="order('episodes')">{{ 'COMMON.COLLECTED' | translate | capitalizeFirst }}</div>
-  <div class="column" (click)="order('percentage')">{{ 'COMMON.PERCENTAGE' | translate | capitalizeFirst }}</div>
-  <div class="column_small"></div>
+<div *ngIf="!(isLoading$ | async); else loading">
+  <div class="collected__row collection_headers">
+    <div class="column_small"></div>
+    <div class="column__title" (click)="order('sortName')">{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</div>
+    <div class="column-wide" (click)="order('date')">{{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}</div>
+    <div class="column" (click)="order('status')">{{ 'COMMON.STATUS' | translate | capitalizeFirst }}</div>
+    <div class="column" (click)="order('seasons')">{{ 'SHOWS.SEASONS' | translate | capitalizeFirst }}</div>
+    <div class="column" (click)="order('episodes')">{{ 'COMMON.COLLECTED' | translate | capitalizeFirst }}</div>
+    <div class="column" (click)="order('percentage')">{{ 'COMMON.PERCENTAGE' | translate | capitalizeFirst }}</div>
+    <div class="column_small"></div>
+  </div>
+
+  <div *ngFor="let row of rows" [style.color]="getColor(row)" class="collected__row">
+    <div class="column_small" [style.background-color]="getColor(row)"></div>
+    <div class="column__title">{{ row.title }}</div>
+    <div class="column-wide">{{ row.premiereDate | amLocal | amDateFormat:'DD/MM/YYYY'}}</div>
+    <div class="column">
+      <span *ngIf="row.status">{{ 'SHOWS.CONTINUING' | translate | capitalizeFirst }}</span>
+      <span *ngIf="!row.status">{{ 'SHOWS.ENDED' | translate | capitalizeFirst }}</span>
+    </div>
+    <div class="column">{{ row.seasons }}</div>
+    <div class="column">{{ row.episodes }} <span *ngIf="row.specials > 0">+{{row.specials}}</span> / {{ row.episodes + row.missingEpisodes }}</div>
+    <div class="column">{{ calculatePercentage(row) * 100 | number:'1.0-1' }}%</div>
+    <div class="column_small" [style.background-color]="getColor(row)"></div>
+  </div>
 </div>
 
-<div *ngFor="let row of rows" [style.color]="getColor(row)" class="collected__row">
-  <div class="column_small" [style.background-color]="getColor(row)"></div>
-  <div class="column__title">{{ row.title }}</div>
-  <div class="column-wide">{{ row.premiereDate | amLocal | amDateFormat:'DD/MM/YYYY'}}</div>
-  <div class="column">
-    <span *ngIf="row.status">{{ 'SHOWS.CONTINUING' | translate | capitalizeFirst }}</span>
-    <span *ngIf="!row.status">{{ 'SHOWS.ENDED' | translate | capitalizeFirst }}</span>
-  </div>
-  <div class="column">{{ row.seasons }}</div>
-  <div class="column">{{ row.episodes }} <span *ngIf="row.specials > 0">+{{row.specials}}</span> / {{ row.episodes + row.missingEpisodes }}</div>
-  <div class="column">{{ calculatePercentage(row) * 100 | number:'1.0-1' }}%</div>
-  <div class="column_small" [style.background-color]="getColor(row)"></div>
-</div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

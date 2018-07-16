@@ -1,16 +1,18 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
 import { ShowCollectionRow } from '../models/showCollectionRow';
 import { ShowFacade } from '../state/facade.show';
+import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-show-collection',
   templateUrl: './show-collection.component.html',
   styleUrls: ['./show-collection.component.scss']
 })
-export class ShowCollectionComponent implements OnDestroy {
+export class ShowCollectionComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
 
   get selectedCollections(): string[] {
@@ -30,6 +32,8 @@ export class ShowCollectionComponent implements OnDestroy {
   }
 
   public rows: ShowCollectionRow[];
+  public isLoading$: Observable<boolean>;
+
   private rowsSub: Subscription;
   private sortNameAsc = false;
   private sortStatusAsc = false;
@@ -38,7 +42,11 @@ export class ShowCollectionComponent implements OnDestroy {
   private sortpercentageAsc = false;
   private sortDateAsc = false;
 
-  constructor(private showFacade: ShowFacade) { }
+  constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
+
+  ngOnInit() {
+    this.isLoading$ = this.loaderFacade.isShowCollectionLoading();
+  }
 
   public getColor(row: ShowCollectionRow): string {
     const percentage = this.calculatePercentage(row) * 100;

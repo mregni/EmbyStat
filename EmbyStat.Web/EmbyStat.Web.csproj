@@ -71,6 +71,8 @@
     <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
+    <None Remove="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
+    <None Remove="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
@@ -83,6 +85,9 @@
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
     <None Remove="ClientApp\src\app\shared\models\showPoster.ts" />
     <None Remove="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
+    <None Remove="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
+    <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <None Remove="ClientApp\src\app\show\models\showGraphs.ts" />
@@ -96,11 +101,6 @@
     <None Remove="ClientApp\src\app\show\state\reducer.show.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ClientApp\src\assets\i18n\en.json" />
-    <Content Include="ClientApp\src\assets\i18n\nl.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -118,6 +118,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\logs\state\facade.log.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\shortMovie.ts" />
@@ -138,7 +140,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\moviePoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\showPoster.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\wizard\services\wizard-state.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showGraphs.ts" />

@@ -12,7 +12,7 @@ const INITIAL_STATE: Configuration = {
   embyUserName: '',
   embyServerAddress: '',
   username: '',
-  language: 'en',
+  language: 'en-US',
   serverName: '',
   isLoaded: false,
   toShortMovie: 10,

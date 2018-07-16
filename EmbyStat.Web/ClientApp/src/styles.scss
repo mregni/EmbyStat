@@ -40,7 +40,7 @@ body {
 }
 
 .title_bar {
-  display:flex;
+  display: flex;
   flex: 1 1 auto;
   height: 50px;
   padding: 10px 20px;
@@ -49,8 +49,8 @@ body {
   box-shadow: $normal-box-shadow;
 
   h2 {
-    padding:0;
-    margin:15px 0px;
+    padding: 0;
+    margin: 15px 0px;
   }
 }
 
@@ -66,8 +66,16 @@ body {
   color: $white-font-color;
 }
 
+.subtext-grey-small {
+  font-size: 11px;
+  font-style: italic;
+  padding: 3px;
+  color: $grey-font-color;
+}
+
+
 .no-top-margin {
-  margin-top:0 !important;
+  margin-top: 0 !important;
 }
 
 .button-container {
@@ -78,4 +86,28 @@ body {
 
 .button-container > button:last-child {
   margin-left: 10px;
+}
+
+.toast__success {
+  padding: 14px 14px 14px 24px !important;
+
+  .mat-simple-snackbar-action {
+    color: green !important;
+  }
+}
+
+.toast__warning {
+  padding: 14px 14px 14px 24px !important;
+
+  .mat-simple-snackbar-action {
+    color: orange !important;
+  }
+}
+
+.toast__fail {
+  padding: 14px 14px 14px 24px !important;
+
+  .mat-simple-snackbar-action {
+    color: red !important;
+  }
 }

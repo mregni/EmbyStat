@@ -19,7 +19,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'movie', component: MovieOverviewComponent },
   { path: 'show', component: ShowOverviewComponent },
   { path: 'logs', component: LogsComponent },
-  { path: '**', redirectTo: '/' }];
+  { path: '**', redirectTo: '' }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

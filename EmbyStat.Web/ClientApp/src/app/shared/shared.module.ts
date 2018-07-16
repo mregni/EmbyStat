@@ -7,6 +7,7 @@ import { CountUpModule } from 'countup.js-angular2';
 import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular-highcharts';
+import { LanguageModule } from './components/language/language.module';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
@@ -16,10 +17,13 @@ import { CardNumberComponent } from './components/card-number/card-number.compon
 import { MoviePosterComponent } from './components/movie-poster/movie-poster.component';
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
+import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
+import { LoaderFacade } from './components/loader/state/facade.loader';
 
 @NgModule({
   imports: [
@@ -30,6 +34,7 @@ import { ToastService } from './services/toast.service';
     MomentModule,
     NgxChartsModule,
     ChartModule,
+    LanguageModule,
     TranslateModule.forChild()
   ],
   exports: [
@@ -39,13 +44,16 @@ import { ToastService } from './services/toast.service';
     MomentModule,
     NgxChartsModule,
     ChartModule,
+    LanguageModule,
     CardComponent,
     CardTimespanComponent,
     CardNumberComponent,
     MoviePosterComponent,
     PersonPosterComponent,
     ShowPosterComponent,
-    CapitalizeFirstPipe
+    LoaderComponent,
+    CapitalizeFirstPipe,
+    ToShorterStringPipe
   ],
   declarations: [
     ToolbarComponent,
@@ -56,10 +64,13 @@ import { ToastService } from './services/toast.service';
     MoviePosterComponent,
     PersonPosterComponent,
     ShowPosterComponent,
-    CapitalizeFirstPipe
+    LoaderComponent,
+    CapitalizeFirstPipe,
+    ToShorterStringPipe
   ],
   providers: [
-    ToastService
+    ToastService,
+    LoaderFacade
   ],
   entryComponents: []
 })

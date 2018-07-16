@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MovieChartsService } from '../service/movie-charts.service';
 import { MovieFacade } from '../state/facade.movie';
 import { MovieGraphs } from '../models/movieGraphs';
+import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-movie-charts',
@@ -35,10 +36,14 @@ export class MovieChartsComponent implements OnInit, OnDestroy {
   }
 
   public graphs$: Observable<MovieGraphs>;
+  public isLoading$: Observable<boolean>;
+
   private movieChartSub: Subscription;
   private onTab = false;
 
-  constructor(private movieFacade: MovieFacade, private movieChartsService: MovieChartsService) {
+  constructor(private movieFacade: MovieFacade,
+    private movieChartsService: MovieChartsService,
+    private loaderFacade: LoaderFacade) {
     this.movieChartSub = movieChartsService.open.subscribe(value => {
       this.onTab = value;
       if (value && this.graphs$ === undefined) {
@@ -48,7 +53,7 @@ export class MovieChartsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.isLoading$ = this.loaderFacade.isMovieGraphsLoading();
   }
 
   ngOnDestroy(): void {

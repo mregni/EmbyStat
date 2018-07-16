@@ -65,26 +65,7 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AccessToken");
-
-                    b.Property<string>("EmbyServerAddress");
-
-                    b.Property<string>("EmbyUserId");
-
-                    b.Property<string>("EmbyUserName");
-
-                    b.Property<string>("Language")
-                        .IsRequired();
-
-                    b.Property<DateTime?>("LastTvdbUpdate");
-
-                    b.Property<string>("ServerName");
-
-                    b.Property<int>("ToShortMovie");
-
-                    b.Property<string>("Username");
-
-                    b.Property<bool>("WizardFinished");
+                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 
@@ -334,6 +315,20 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasIndex("SeasonId");
 
                     b.ToTable("SeasonEpisodes");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Language", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Person", b =>

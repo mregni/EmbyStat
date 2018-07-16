@@ -26,22 +26,21 @@ namespace EmbyStat.Api.Tvdb
         private TvdbToken JWtoken;
         private readonly IAsyncHttpClient _httpClient;
         private readonly IJsonSerializer _jsonSerializer;
-        private string FullTempPath => $"{AppDomain.CurrentDomain.BaseDirectory}\\{Constants.TempFolder}";
 
-        public TvdbClient( IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer)
+        public TvdbClient(IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer)
         {
             _httpClient = httpClient;
             _jsonSerializer = jsonSerializer;
         }
 
-        public async Task Login(CancellationToken cancellationToken)
+        public async Task Login(string apiKey, CancellationToken cancellationToken)
         {
             var httpRequest = new HttpRequest
             {
                 CancellationToken = cancellationToken,
                 Method = "POST",
                 Url = $"{Constants.Tvdb.BaseUrl}{Constants.Tvdb.LoginUrl}",
-                RequestContent = "{ \"apikey\": \""+ Constants.Tvdb.ApiKey + "\"}",
+                RequestContent = "{ \"apikey\": \""+ apiKey + "\"}",
                 RequestContentType = "application/json"
             };
 

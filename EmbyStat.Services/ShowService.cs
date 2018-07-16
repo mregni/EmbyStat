@@ -408,7 +408,7 @@ namespace EmbyStat.Services
           
             if (resultShow != null)
             {
-                return PosterHelper.ConvertToShowPoster(resultShow, Constants.Shows.MostEpisodes, total.ToString());
+                return PosterHelper.ConvertToShowPoster(resultShow, Constants.Shows.MostEpisodes);
             }
 
             return new ShowPoster();
