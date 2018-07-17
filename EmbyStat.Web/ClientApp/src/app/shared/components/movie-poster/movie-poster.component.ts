@@ -27,7 +27,7 @@ export class MoviePosterComponent implements OnDestroy {
   }
 
   openMovie(): void {
-    window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   ngOnDestroy(): void {
