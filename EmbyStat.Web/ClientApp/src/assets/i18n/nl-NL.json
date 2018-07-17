@@ -1,9 +1,9 @@
 {
   "COMMON": {
-    "HIDE": "Hide",
+    "HIDE": "Verbergen",
     "NEXT": "volgende",
     "BACK": "vorige",
-    "FINISH": "finish",
+    "FINISH": "voltooien",
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
@@ -47,7 +47,7 @@
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
     "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
     "NOT_FOUND": "Oops, we missen wat bestanden.",
-    "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en adres na te zien.",
+    "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en Emby url na te zien.",
     "EMBY_CALL_FAILED": "Contact opnemen met Emby is gefaald. Gelieve na te zien of de Emby server draait en uw inloggegevens nog kloppen."
   },
   "FORM_LABELS": {
