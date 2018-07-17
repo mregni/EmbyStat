@@ -72,13 +72,13 @@ namespace EmbyStat.Tasks.Tasks
 
             _progressLogger.LogInformation("First delete all existing media and root media collections from database so we have a clean start.");
             CleanUpDatabase();
-            progress.Report(5);
+            progress.Report(3);
 
             await ProcessMovies(cancellationToken, progress);
             await ProcessShows(cancellationToken, progress);
             await SyncMissingEpisodes(_settings.LastTvdbUpdate, _settings.TvdbApiKey, cancellationToken, progress);
 
-            _progressLogger.LogInformation("Media syncronisation is finished.");
+            _progressLogger.LogInformation("Media syncronisation completed.");
             progress.Report(100);
         }
 
@@ -97,7 +97,7 @@ namespace EmbyStat.Tasks.Tasks
             var rootItems = await GetRootItemsByType("movies", CollectionType.Movies, _settings.EmbyUserId, cancellationToken);
             _collectionRepository.AddCollectionRange(rootItems);
             _progressLogger.LogInformation($"Found {rootItems.Count} movie root items, getting ready for processing");
-            progress.Report(12);
+            progress.Report(5);
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -119,7 +119,7 @@ namespace EmbyStat.Tasks.Tasks
                     cancellationToken.ThrowIfCancellationRequested();
                     _progressLogger.LogInformation($"Processing movie {movie.Name}");
                     _movieRepository.Add(movie);
-                    progress.Report(Math.Floor(15 + (double)30 / movies.Count * j / rootItems.Count * i));
+                    progress.Report(Math.Floor(5 + 25 / ( (double)movies.Count / j * ((double)rootItems.Count / (i + 1)) )));
                 }
             }
         }
@@ -159,7 +159,7 @@ namespace EmbyStat.Tasks.Tasks
             var rootItems = await GetRootItemsByType("tvshows", CollectionType.TvShow, _settings.EmbyUserId, cancellationToken);
             _collectionRepository.AddCollectionRange(rootItems);
             _progressLogger.LogInformation($"Found {rootItems.Count} show root items, getting ready for processing");
-            progress.Report(55);
+            progress.Report(33);
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -178,7 +178,7 @@ namespace EmbyStat.Tasks.Tasks
                 foreach (var show in shows)
                 {
                     j++;
-                    progress.Report(Math.Floor(55 + (double)45 / shows.Count * j / rootItems.Count * i));
+                    progress.Report(Math.Floor(33 + 36 / ((double)shows.Count / j * (rootItems.Count / (double)(i + 1)))));
                     var rawSeasons = await GetSeasonsFromEmby(show.Id, cancellationToken);
 
                     var episodes = new List<Episode>();
@@ -226,13 +226,18 @@ namespace EmbyStat.Tasks.Tasks
                 showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
             }
 
-            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
+            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken, progress);
         }
 
-        private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
+        private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken, IProgress<double> progress)
         {
+            double i = 0;
+            var showCount = shows.Count();
             foreach (var show in shows)
             {
+                i++;
+                progress.Report(Math.Floor(66 + 33 / (showCount / i)));
+
                 var neededEpisodeCount = 0;
                 var seasons = _showRepository.GetAllSeasonsForShow(show.Id).ToList();
                 var episodes = _showRepository.GetAllEpisodesForShow(show.Id, true).ToList();
