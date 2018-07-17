@@ -27,7 +27,7 @@ namespace EmbyStat.Services
 		    dbSettings.EmbyUserId = configuration.EmbyUserId;
 		    dbSettings.ToShortMovie = configuration.ToShortMovie;
 
-		    _configurationRepository.UpdateOrAdd(dbSettings);
+		    _configurationRepository.Update(dbSettings);
         }
 
 		public Configuration GetServerSettings()

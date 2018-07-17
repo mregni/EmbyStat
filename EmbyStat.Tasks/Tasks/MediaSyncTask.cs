@@ -226,7 +226,11 @@ namespace EmbyStat.Tasks.Tasks
                 showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
             }
 
+            var now = DateTime.Now;
             await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken, progress);
+
+            _settings.LastTvdbUpdate = now;
+            _configurationRepository.Update(_settings);
         }
 
         private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken, IProgress<double> progress)

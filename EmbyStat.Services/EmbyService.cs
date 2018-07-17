@@ -64,7 +64,7 @@ namespace EmbyStat.Services
 
 					    var configuration = _configurationRepository.GetConfiguration();
 					    configuration.ServerName = udpBroadcastResult.Name;
-						_configurationRepository.UpdateOrAdd(configuration);
+						_configurationRepository.Update(configuration);
 
 					    return udpBroadcastResult;
 
