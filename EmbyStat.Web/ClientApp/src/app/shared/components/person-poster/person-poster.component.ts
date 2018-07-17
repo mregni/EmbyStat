@@ -32,7 +32,7 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   openPerson(): void {
-    window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {
