@@ -4,25 +4,24 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 
-import { ConfigurationFacade } from '../configuration/state/facade.configuration';
-import { EmbyUdpBroadcast } from '../configuration/models/embyUdpBroadcast';
-import { Configuration } from '../configuration/models/configuration';
-import { EmbyToken } from '../configuration/models/embyToken';
-import { Language } from '../shared/components/language/models/language';
-import { LanguageFacade } from '../shared/components/language/state/facade.language';
+import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
+import { EmbyUdpBroadcast } from '../../configuration/models/embyUdpBroadcast';
+import { Configuration } from '../../configuration/models/configuration';
+import { EmbyToken } from '../../configuration/models/embyToken';
+import { Language } from '../../shared/components/language/models/language';
+import { LanguageFacade } from '../../shared/components/language/state/facade.language';
 
-import { PluginFacade } from '../plugin/state/facade.plugin';
-import { WizardStateService } from './services/wizard-state.service';
+import { PluginFacade } from '../../plugin/state/facade.plugin';
+import { WizardStateService } from '../services/wizard-state.service';
 
 @Component({
   selector: 'app-wizard',
-  templateUrl: './wizard.component.html',
-  styleUrls: ['./wizard.component.scss']
+  templateUrl: './wizard-overview.component.html',
+  styleUrls: ['./wizard-overview.component.scss']
 })
 
-export class WizardComponent implements OnInit, OnDestroy {
+export class WizardOverviewComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') private stepper: MatStepper;
 
   public introFormGroup: FormGroup;
