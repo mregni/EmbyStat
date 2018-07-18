@@ -63,5 +63,12 @@ namespace EmbyStat.Controllers
             var result = _showService.GetCollectionRows(collectionIds);
             return Ok(Mapper.Map<IList<ShowCollectionRowViewModel>>(result));
         }
+
+        [HttpGet]
+        [Route("showtypepresent")]
+        public IActionResult MovieTypeIsPresent()
+        {
+            return Ok(_showService.ShowTypeIsPresent());
+        }
     }
 }

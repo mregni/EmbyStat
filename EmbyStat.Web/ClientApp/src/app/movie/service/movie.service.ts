@@ -16,6 +16,7 @@ export class MovieService {
   private readonly getCollectionsUrl: string = '/movie/collections';
   private readonly getSuspiciousUrl: string = '/movie/suspicious';
   private readonly getGraphsUrl: string = '/movie/graphs';
+  private readonly checkIfTypeIsPresentUrl: string = '/movie/movietypepresent';
 
   constructor(private http: HttpClient) {
 
@@ -43,5 +44,9 @@ export class MovieService {
   getGraphs(list: string[]): Observable<MovieGraphs> {
     const params = ListToQueryParam.convert('collectionIds', list);
     return this.http.get<MovieGraphs>('api' + this.getGraphsUrl + params);
+  }
+
+  checkIfTypeIsPresent(): Observable<boolean> {
+    return this.http.get<boolean>('api' + this.checkIfTypeIsPresentUrl);
   }
 }

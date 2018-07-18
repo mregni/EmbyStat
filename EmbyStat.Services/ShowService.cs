@@ -168,6 +168,11 @@ namespace EmbyStat.Services
             return stats;
         }
 
+        public bool ShowTypeIsPresent()
+        {
+            return _showRepository.Any();
+        }
+
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
         {
             var shows = _showRepository.GetAllShows(collectionIds);

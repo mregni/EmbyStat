@@ -16,6 +16,8 @@ export class ShowService {
   private readonly getGraphsUrl: string = '/show/graphs';
   private readonly getPersonStatsUrl: string = '/show/personstats';
   private readonly getCollectedListUrl: string = '/show/collectedlist';
+  private readonly checkIfTypeIsPresentUrl: string = '/show/showtypepresent';
+
 
   constructor(private http: HttpClient) {
 
@@ -43,5 +45,9 @@ export class ShowService {
   getCollectedList(list: string[]): Observable<ShowCollectionRow[]> {
     const params = ListToQueryParam.convert('collectionIds', list);
     return this.http.get<ShowCollectionRow[]>('/api' + this.getCollectedListUrl + params);
+  }
+
+  checkIfTypeIsPresent(): Observable<boolean> {
+    return this.http.get<boolean>('api' + this.checkIfTypeIsPresentUrl);
   }
 }

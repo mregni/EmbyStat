@@ -165,6 +165,11 @@ namespace EmbyStat.Services
             return stats;
         }
 
+        public bool MovieTypeIsPresent()
+        {
+            return _movieRepository.Any();
+        }
+
         private List<ShortMovie> GetShortMovies(List<Movie> movies)
         {
             var configuration = _configurationRepository.GetConfiguration();

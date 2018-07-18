@@ -128,6 +128,14 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public bool Any()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies.Any();
+            }
+        }
+
         public void RemoveMovies()
         {
             using (var context = new ApplicationDbContext())

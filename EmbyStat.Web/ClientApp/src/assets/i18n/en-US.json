@@ -152,7 +152,8 @@
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
     "SMALLEMBYSYNCTITLE": "Small sync with Emb",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media synchronisation"
+    "MEDIASYNCTITLE": "Media synchronisation",
+    "STARTMEDIASYNC": "Start media sync" 
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -162,5 +163,15 @@
     "AT": "at {{time}}",
     "TRIGGERTYPE": "Trigger type",
     "SAVETRIGGER": "Save trigger"
-  }
+  },
+  "DIALOGS": {
+    "NOMOVIETYPEFOUND": {
+      "TITLE": "No movies found",
+      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+    },
+    "NOSHOWTYPEFOUND": {
+      "TITLE": "No shows found",
+      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+    } 
+  } 
 }

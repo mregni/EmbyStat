@@ -15,5 +15,6 @@ namespace EmbyStat.Services.Interfaces
         ShowGraphs GetGraphs(IEnumerable<string> collectionIds);
         PersonStats GetPeopleStats(IEnumerable<string> collectionsIds);
         List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds);
+        bool ShowTypeIsPresent();
     }
 }

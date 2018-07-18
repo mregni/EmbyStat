@@ -346,5 +346,13 @@ namespace EmbyStat.Repositories
                 return query.Count();
             }
         }
+
+        public bool Any()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies.Any();
+            }
+        }
     }
 }
