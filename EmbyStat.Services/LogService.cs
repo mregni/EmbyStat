@@ -23,6 +23,7 @@ namespace EmbyStat.Services
 
         public List<LogFile> GetLogFileList()
         {
+            var configration = _configurationService.GetServerSettings();
             var list = new List<LogFile>();
             var logDir = _logSettings.Value.Directory;
             foreach (var filePath in Directory.EnumerateFiles(logDir))
@@ -35,7 +36,7 @@ namespace EmbyStat.Services
                     Size = file.Length
                 });
             }
-            return list.OrderByDescending(x => x.CreatedDate).Take(10).ToList();
+            return list.OrderByDescending(x => x.CreatedDate).Take(configration.KeepLogsCount).ToList();
         }
 
         public Stream GetLogStream(string fileName, bool anonymous)

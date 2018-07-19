@@ -65,6 +65,8 @@ namespace EmbyStat.Repositories
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = string.Empty });
 	        if (configuration.All(x => x.Id != Constants.Configuration.TvdbApiKey))
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.TvdbApiKey, Value = "BWLRSNRC0AQUIEYX" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.KeepLogsCount))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.KeepLogsCount, Value = "10" });
 
             await _context.SaveChangesAsync();
         }
