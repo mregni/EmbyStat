@@ -96,8 +96,7 @@ namespace EmbyStat.Services
 				}
 				catch (Exception e)
 				{
-					Log.Error("Username or password are wrong, user should try again with other credentials!");
-				    Log.Error($"Message: {e.Message}");
+					Log.Error($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
 					throw new BusinessException("TOKEN_FAILED");
 				}
 			}

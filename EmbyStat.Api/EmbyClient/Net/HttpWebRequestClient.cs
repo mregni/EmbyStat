@@ -22,9 +22,7 @@ namespace EmbyStat.Api.EmbyClient.Net
 		public async Task<HttpResponse> GetResponse(HttpRequest options, bool sendFailureResponse = false)
 		{
 			options.CancellationToken.ThrowIfCancellationRequested();
-
 			var httpWebRequest = _requestFactory.Create(options);
-
 			ApplyHeaders(options.RequestHeaders, httpWebRequest);
 
 			if (options.RequestStream != null)
@@ -53,15 +51,11 @@ namespace EmbyStat.Api.EmbyClient.Net
 			try
 			{
 				options.CancellationToken.ThrowIfCancellationRequested();
-
 				var response = await _requestFactory.GetResponseAsync(httpWebRequest, options.Timeout).ConfigureAwait(false);
-
 				var httpResponse = (HttpWebResponse)response;
-
 				var headers = ConvertHeaders(response);
 
 				EnsureSuccessStatusCode(httpResponse);
-
 				options.CancellationToken.ThrowIfCancellationRequested();
 
 				return GetResponse(httpResponse, headers);
@@ -69,7 +63,6 @@ namespace EmbyStat.Api.EmbyClient.Net
 			catch (OperationCanceledException ex)
 			{
 				var exception = GetCancellationException(options.Url, options.CancellationToken, ex);
-
 				throw exception;
 			}
 			catch (Exception ex)

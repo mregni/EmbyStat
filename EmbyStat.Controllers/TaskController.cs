@@ -22,7 +22,6 @@ namespace EmbyStat.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Log.Information("Getting all background tasks.");
             var result = _taskService.GetAllTasks();
             return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
         }
@@ -35,7 +34,7 @@ namespace EmbyStat.Controllers
             var result = _taskService.GetAllTasks();
             return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
         }
-
+        
         [HttpPost]
         [Route("fire/{id}")]
         public IActionResult FireTask(string id)

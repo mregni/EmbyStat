@@ -62,9 +62,7 @@ namespace Tests.Unit.Controllers
 		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
 		    _embyServiceMock.Setup(x => x.GetLocalDrives()).Returns(_drives);
 
-			var loggerMock = new Mock<ILogger<EmbyController>>();
-
-		    _subject = new EmbyController(_embyServiceMock.Object, loggerMock.Object);
+		    _subject = new EmbyController(_embyServiceMock.Object);
 		}
 
 	    public void Dispose()

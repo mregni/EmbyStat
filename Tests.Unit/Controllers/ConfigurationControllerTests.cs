@@ -38,9 +38,7 @@ namespace Tests.Unit.Controllers
 		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(new Configuration(configuration));
 		    _configurationServiceMock.Setup(x => x.SaveServerSettings(It.IsAny<Configuration>()));
 
-			var loggerMock = new Mock<ILogger<ConfigurationController>>();
-
-		    _subject = new ConfigurationController(_configurationServiceMock.Object, loggerMock.Object);
+		    _subject = new ConfigurationController(_configurationServiceMock.Object);
 		}
 
 	    public void Dispose()

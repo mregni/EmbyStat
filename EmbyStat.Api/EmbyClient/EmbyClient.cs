@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
+using EmbyStat.Common;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
@@ -14,13 +15,14 @@ using MediaBrowser.Model.Serialization;
 using MediaBrowser.Model.System;
 using MediaBrowser.Model.Users;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace EmbyStat.Api.EmbyClient
 {
 	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
 	{
-		public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient, ILogger<EmbyClient> logger)
-		: base(cryptographyProvider, jsonSerializer, httpClient, logger)
+        public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient)
+		: base(cryptographyProvider, jsonSerializer, httpClient)
 		{
 			
 		}
@@ -53,6 +55,7 @@ namespace EmbyStat.Api.EmbyClient
 			};
 
 			var url = GetApiUrl("Users/AuthenticateByName");
+            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
 			var result = await PostAsync<AuthenticationResult>(url, args, CancellationToken.None);
 
 			SetAuthenticationInfo(result.AccessToken, result.User.Id);
@@ -63,7 +66,8 @@ namespace EmbyStat.Api.EmbyClient
 		public async Task<List<PluginInfo>> GetInstalledPluginsAsync()
 		{
 			var url = GetApiUrl("Plugins");
-
+            
+            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for plugins");
 			using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<List<PluginInfo>>(stream);
@@ -74,7 +78,8 @@ namespace EmbyStat.Api.EmbyClient
 		{
 			var url = GetApiUrl("System/Info");
 
-			using (var stream = await GetSerializedStreamAsync(url))
+            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for server info");
+            using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<SystemInfo>(stream);
 			}
@@ -84,8 +89,9 @@ namespace EmbyStat.Api.EmbyClient
 		{
 			var url = GetApiUrl("Environment/Drives");
 
+            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for local drives");
 			using (var stream = await GetSerializedStreamAsync(url))
-			{
+            {
 				return DeserializeFromStream<List<Drive>>(stream);
 			}
 		}
@@ -95,7 +101,8 @@ namespace EmbyStat.Api.EmbyClient
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
 
-			return await PostAsyncToString(url, args, CancellationToken.None);
+		    Log.Information($"{Constants.LogPrefix.EmbyClient}\tSending a ping to Emby");
+            return await PostAsyncToString(url, args, CancellationToken.None);
 		}
 
 	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))

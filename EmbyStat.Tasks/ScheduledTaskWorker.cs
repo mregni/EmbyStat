@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Common;
 using EmbyStat.Common.Progress;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
@@ -165,7 +166,7 @@ namespace EmbyStat.Tasks
                 return;
             }
 
-            Log.Information("{0} fired for task: {1}", trigger.GetType().Name, Name);
+            Log.Information($"{Constants.LogPrefix.TaskWorker}\t{trigger.GetType().Name} fired for task: {Name}");
 
             trigger.Stop();
 
@@ -207,7 +208,7 @@ namespace EmbyStat.Tasks
 
             CurrentCancellationTokenSource = new CancellationTokenSource();
 
-            Log.Information("Executing {0}", Name);
+            Log.Information($"{Constants.LogPrefix.TaskWorker}\tExecuting {Name}");
 
             ((TaskManager)_taskManager).OnTaskExecuting(this);
 
@@ -236,7 +237,7 @@ namespace EmbyStat.Tasks
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error");
+                Log.Error(ex, $"{Constants.LogPrefix.TaskWorker}\tError");
 
                 failureException = ex;
 
@@ -282,7 +283,7 @@ namespace EmbyStat.Tasks
         {
             if (State == TaskState.Running)
             {
-                Log.Information("Attempting to cancel Scheduled Task {0}", Name);
+                Log.Information($"{Constants.LogPrefix.TaskWorker}\tAttempting to cancel Scheduled Task {Name}");
                 CurrentCancellationTokenSource.Cancel();
             }
         }
@@ -315,7 +316,7 @@ namespace EmbyStat.Tasks
         {
             var elapsedTime = endTime - startTime;
 
-            Log.Information("{0} {1} after {2} minute(s) and {3} seconds", Name, status, Math.Truncate(elapsedTime.TotalMinutes), elapsedTime.Seconds);
+            Log.Information($"{Constants.LogPrefix.TaskWorker}\t{Name} {status} after {Math.Truncate(elapsedTime.TotalMinutes)} minute(s) and {elapsedTime.Seconds} seconds");
 
             var result = new TaskResult
             {
@@ -357,12 +358,12 @@ namespace EmbyStat.Tasks
                 {
                     try
                     {
-                        Log.Information(Name + ": Cancelling");
+                        Log.Information($"{Constants.LogPrefix.TaskWorker}\t{Name}: Cancelling");
                         token.Cancel();
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("Error calling CancellationToken.Cancel();", ex);
+                        Log.Error(ex, $"{Constants.LogPrefix.TaskWorker}\tError calling CancellationToken.Cancel();");
                     }
                 }
                 var task = _currentTask;
@@ -370,21 +371,21 @@ namespace EmbyStat.Tasks
                 {
                     try
                     {
-                        Log.Information(Name + ": Waiting on Task");
+                        Log.Information($"{Constants.LogPrefix.TaskWorker}\t{Name}: Waiting on Task");
                         var exited = Task.WaitAll(new[] { task }, 2000);
 
                         if (exited)
                         {
-                            Log.Information(Name + ": Task exited");
+                            Log.Information($"{Constants.LogPrefix.TaskWorker}\t{Name}: Task exited");
                         }
                         else
                         {
-                            Log.Information(Name + ": Timed out waiting for task to stop");
+                            Log.Information($"{Constants.LogPrefix.TaskWorker}\t{Name}: Timed out waiting for task to stop");
                         }
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("Error calling Task.WaitAll();", ex);
+                        Log.Error(ex, $"{Constants.LogPrefix.TaskWorker}\tError calling Task.WaitAll();");
                     }
                 }
 
@@ -392,12 +393,12 @@ namespace EmbyStat.Tasks
                 {
                     try
                     {
-                        Log.Debug(Name + ": Disposing CancellationToken");
+                        Log.Debug($"{Constants.LogPrefix.TaskWorker}\t{Name}: Disposing CancellationToken");
                         token.Dispose();
                     }
                     catch (Exception ex)
                     {
-                        Log.Error("Error calling CancellationToken.Dispose();", ex);
+                        Log.Error(ex, $"{Constants.LogPrefix.TaskWorker}\tError calling CancellationToken.Dispose();");
                     }
                 }
                 if (wassRunning)
@@ -447,7 +448,7 @@ namespace EmbyStat.Tasks
                 return new StartupTrigger();
             }
 
-            throw new ArgumentException("Unrecognized trigger type: " + info.Type);
+            throw new ArgumentException($"Unrecognized trigger type: {info.Type}");
         }
 
         private void DisposeTriggers()

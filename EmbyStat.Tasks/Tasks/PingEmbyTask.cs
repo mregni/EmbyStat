@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Common;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using Microsoft.AspNetCore.Builder;
+using Serilog;
 
 namespace EmbyStat.Tasks.Tasks
 {
@@ -12,7 +14,7 @@ namespace EmbyStat.Tasks.Tasks
     {
         public PingEmbyTask(IApplicationBuilder app)
         {
-           
+
         }
 
         public string Name => "TASKS.PINGEMBYSERVERTITLE";
@@ -24,7 +26,10 @@ namespace EmbyStat.Tasks.Tasks
         {
             return Task.Run(() =>
             {
-               
+                progress.Report(0);
+                logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "Let's see if Emby is still online");
+                progress.Report(100);
+
             }, cancellationToken);
         }
 

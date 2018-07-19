@@ -82,6 +82,21 @@ namespace EmbyStat.Common
             public const string TvdbApiKey = "TVDBAPICLIENT";
         }
 
+        public static class LogPrefix
+        {
+            public const string ServerApi = "SERVER-API";
+            public const string TaskManager = "TASK-MANAGER";
+            public const string TaskWorker = "TASK-WORKER";
+            public const string DatabaseSeeder = "DATABASE-SEEDER";
+            public const string MediaSyncTask = "MEDIASYNC-TASK";
+            public const string PingEmbyTask = "PINGEMBYSERVER-TASK";
+            public const string SmallEmbySyncTask = "SMALLEMBYSYNC-TASK";
+            public const string System = "SYSTEM";
+            public const string EmbyClient = "EMBY-CLIENT";
+            public const string TheTVDBCLient = "THETVDB-CLIENT";
+            public const string ExceptionHandler = "EXCEPTION-HANDLER";
+        }
+
         //CHARTS
         public const string CountPerGenre = "COMMON.COUNTPERGENRE";
         public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";
