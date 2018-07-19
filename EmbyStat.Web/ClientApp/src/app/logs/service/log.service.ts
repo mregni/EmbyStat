@@ -17,8 +17,4 @@ export class LogService {
   getLogFiles(): Observable<LogFile[]> {
     return this.http.get<LogFile[]>('/api' + this.getLogFilesUrl);
   }
-
-  downloadLog(fileName: string) {
-    return this.http.get('/api' + this.downloadLogUrl + '/' + fileName);
-  }
 }
