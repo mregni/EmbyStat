@@ -91,6 +91,12 @@ namespace EmbyStat.Common.Models
             set => _config[Constants.Configuration.TvdbApiKey] = value;
         }
 
+        public int KeepLogsCount
+        {
+            get => Convert.ToInt32(_config[Constants.Configuration.KeepLogsCount]);
+            set => _config[Constants.Configuration.KeepLogsCount] = value.ToString();
+        }
+
         public Configuration(IEnumerable<ConfigurationKeyValue> list)
         {
             _config = list.ToDictionary(x => x.Id, y => y.Value);

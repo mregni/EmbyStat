@@ -80,6 +80,7 @@ namespace EmbyStat.Common
             public const string UserName = "USERNAME";
             public const string WizardFinished = "WIZARDFINISHED";
             public const string TvdbApiKey = "TVDBAPICLIENT";
+            public const string KeepLogsCount = "KEEPLOGSCOUNT";
         }
 
         public static class LogPrefix

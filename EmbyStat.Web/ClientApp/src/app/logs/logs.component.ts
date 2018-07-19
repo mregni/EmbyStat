@@ -17,7 +17,11 @@ export class LogsComponent implements OnInit {
   }
 
   public downloadLog(fileName: string): string {
-    return '/api/log/download/' + fileName;
+    return '/api/log/download/' + fileName + '?anonymous=false';
+  }
+
+  public downloadAnonymousLog(fileName: string): string {
+    return '/api/log/download/' + fileName + '?anonymous=true';
   }
 
   public convertToSize(value: number): string {

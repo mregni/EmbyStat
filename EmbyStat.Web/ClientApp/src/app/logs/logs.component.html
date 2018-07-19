@@ -9,7 +9,8 @@
       <div class="log__subtitle">{{log.createdDate | amLocal | amDateFormat: 'DD/MM/YYYY'}} - {{convertToSize(log.size)}}</div>
     </div>
     <div class="log__right-column button-container">
-      <a mat-raised-button color="primary" [attr.href]="downloadLog(log.fileName)" target="_blank">Download</a>
+      <a mat-raised-button color="primary" [attr.href]="downloadLog(log.fileName)" target="_blank">{{ 'COMMON.DOWNLOAD' | translate | capitalizeFirst }}</a>
+      <a mat-raised-button color="primary" [attr.href]="downloadAnonymousLog(log.fileName)" target="_blank">{{ 'COMMON.ANONYMISEDDOWNLOAD' | translate | capitalizeFirst }}</a>
     </div>
   </div>
 </div>
