@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { EmbyUdpBroadcast } from '../../configuration/models/embyUdpBroadcast';
@@ -14,6 +15,9 @@ import { LanguageFacade } from '../../shared/components/language/state/facade.la
 
 import { PluginFacade } from '../../plugin/state/facade.plugin';
 import { WizardStateService } from '../services/wizard-state.service';
+
+import { TaskFacade } from '../../task/state/facade.task';
+import { Task } from '../../task/models/task';
 
 @Component({
   selector: 'app-wizard',
@@ -33,9 +37,10 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   public embyUsernameControl: FormControl = new FormControl('', [Validators.required]);
   public embyPasswordControl: FormControl = new FormControl('', [Validators.required]);
 
-  public languageChangedSub: Subscription;
-  public searchEmbySub: Subscription;
-  public configurationSub: Subscription;
+  private languageChangedSub: Subscription;
+  private searchEmbySub: Subscription;
+  private configurationSub: Subscription;
+  private getTasksSub: Subscription;
 
   public embyFound = false;
   public embyServerName = '';
@@ -48,11 +53,15 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private configuration: Configuration;
   public languages$: Observable<Language[]>;
 
+  private tasks: Task[];
+
   constructor(private translate: TranslateService,
     private configurationFacade: ConfigurationFacade,
     private pluginFacade: PluginFacade,
     private languageFacade: LanguageFacade,
-    private wizardStateService: WizardStateService  ) {
+    private wizardStateService: WizardStateService,
+    private taskFacade: TaskFacade,
+    private router: Router) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
       language: this.languageControl
@@ -66,6 +75,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
+    this.getTasksSub = this.taskFacade.getTasks().subscribe((result: Task[]) => this.tasks = result);
+
   }
 
   ngOnInit() {
@@ -117,6 +128,13 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.wizardStateService.changeState(true);
   }
 
+  public finishWizardAndStartSync() {
+    const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
+    this.taskFacade.fireTask(task.id);
+    this.wizardStateService.changeState(true);
+    this.router.navigate(['/task']);
+  }
+
   ngOnDestroy() {
     if (this.languageChangedSub !== undefined) {
       this.languageChangedSub.unsubscribe();
@@ -128,6 +146,10 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     if (this.configurationSub !== undefined) {
       this.configurationSub.unsubscribe();
+    }
+
+    if (this.getTasksSub !== undefined) {
+      this.getTasksSub.unsubscribe();
     }
   }
 }
