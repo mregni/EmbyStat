@@ -88,7 +88,7 @@ namespace EmbyStat.Services
 
                 stats = new ShowGraphs();
                 stats.BarGraphs.Add(CalculateGenreGraph(shows));
-                stats.BarGraphs.Add(CalculateRatingGraph(shows));
+                stats.BarGraphs.Add(CalculateRatingGraph(shows.Select(x => x.CommunityRating)));
                 stats.BarGraphs.Add(CalculatePremiereYearGraph(shows));
                 stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
@@ -166,6 +166,11 @@ namespace EmbyStat.Services
             }
 
             return stats;
+        }
+
+        public bool ShowTypeIsPresent()
+        {
+            return _showRepository.Any();
         }
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
@@ -331,21 +336,6 @@ namespace EmbyStat.Services
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<Show> shows)
-        {
-            var ratingData = shows.GroupBy(x => x.CommunityRating.RoundToHalf())
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerCommunityRating,
-                Data = ratingData
-            };
-        }
-
         private Graph<SimpleGraphValue> CalculateGenreGraph(IEnumerable<Show> shows)
         {
             var genres = _genreRepository.GetAll();
@@ -408,7 +398,7 @@ namespace EmbyStat.Services
           
             if (resultShow != null)
             {
-                return PosterHelper.ConvertToShowPoster(resultShow, Constants.Shows.MostEpisodes, total.ToString());
+                return PosterHelper.ConvertToShowPoster(resultShow, Constants.Shows.MostEpisodes);
             }
 
             return new ShowPoster();

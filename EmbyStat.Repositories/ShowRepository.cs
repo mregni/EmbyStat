@@ -97,11 +97,6 @@ namespace EmbyStat.Repositories
             {
                 var query = context.Shows.AsNoTracking().AsQueryable();
 
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
                 if (inludeSubs)
                 {
                     query = query
@@ -109,6 +104,11 @@ namespace EmbyStat.Repositories
                         .Include(x => x.MediaGenres);
                 }
 
+                if (collections.Any())
+                {
+                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                }
+                
                 return query.ToList();
             }
         }
@@ -344,6 +344,14 @@ namespace EmbyStat.Repositories
                 }
                    
                 return query.Count();
+            }
+        }
+
+        public bool Any()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies.Any();
             }
         }
     }

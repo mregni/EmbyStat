@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
@@ -38,24 +40,26 @@ namespace EmbyStat.Tasks.Tasks
         public string Category => "Emby";
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
-            var settings = _configurationRepository.GetSingle();
+            progress.Report(0);
+            var settings = _configurationRepository.GetConfiguration();
             if (!settings.WizardFinished)
             {
-                Log.Warning("Movie sync task not running because wizard is not finished yet!");
+                logProgress.LogWarning(Constants.LogPrefix.SmallEmbySyncTask, "Media sync task not running because wizard is not finished yet!");
                 return;
             }
 
+            logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Starting a small syncronisation with Emby");
             progress.Report(15);
 
             _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
             var systemInfoReponse = await _embyClient.GetServerInfoAsync();
-            logProgress.LogInformation("Server info found");
+            logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Server info found");
             progress.Report(35);
             var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
-            logProgress.LogInformation("Server plugins found");
+            logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Server plugins found");
             progress.Report(55);
             var drives = await _embyClient.GetLocalDrivesAsync();
-            logProgress.LogInformation("Server drives found");
+            logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Server drives found");
             progress.Report(75);
 
             var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
@@ -67,7 +71,7 @@ namespace EmbyStat.Tasks.Tasks
             progress.Report(95);
             _embyDriveRepository.ClearAndInsertList(localDrives.ToList());
 
-            logProgress.LogInformation("All server data is saved");
+            logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "All server data is saved");
             progress.Report(100);
         }
 

@@ -9,6 +9,7 @@ import { ShowGraphs } from '../models/showGraphs';
 import { PersonStats } from '../../shared/models/personStats';
 import { ShowCollectionRow } from '../models/showCollectionRow';
 
+import { ShowService } from '../service/show.service';
 import { ShowQuery } from './reducer.show';
 import {
   LoadShowCollectionsAction, LoadGeneralStatsAction,
@@ -21,7 +22,8 @@ import { ApplicationState } from '../../states/app.state';
 @Injectable()
 export class ShowFacade {
   constructor(
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    private showService: ShowService
   ) { }
 
   collections$ = this.store.select(ShowQuery.getCollections);
@@ -57,5 +59,9 @@ export class ShowFacade {
   getCollectionList(list: string[]): Observable<ShowCollectionRow[]> {
     this.store.dispatch(new LoadCollectedListAction(list));
     return this.collectedList$;
+  }
+
+  isShowTypePresent(): Observable<boolean> {
+    return this.showService.checkIfTypeIsPresent();
   }
 }

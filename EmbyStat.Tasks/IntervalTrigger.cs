@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using EmbyStat.Common;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
+using Serilog;
 
 namespace EmbyStat.Tasks
 {
@@ -44,6 +46,7 @@ namespace EmbyStat.Tasks
                 dueTime = maxDueTime;
             }
 
+            Log.Information($"{Constants.LogPrefix.TaskWorker}\tInterval trigger for {taskName} set to fire at {triggerDate}, which is {Math.Floor(dueTime.TotalMinutes)} minutes from now.");
             Timer = new Timer(state => OnTriggered(), null, dueTime, TimeSpan.FromMilliseconds(-1));
         }
 

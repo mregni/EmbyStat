@@ -26,22 +26,22 @@ namespace EmbyStat.Api.Tvdb
         private TvdbToken JWtoken;
         private readonly IAsyncHttpClient _httpClient;
         private readonly IJsonSerializer _jsonSerializer;
-        private string FullTempPath => $"{AppDomain.CurrentDomain.BaseDirectory}\\{Constants.TempFolder}";
 
-        public TvdbClient( IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer)
+        public TvdbClient(IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer)
         {
             _httpClient = httpClient;
             _jsonSerializer = jsonSerializer;
         }
 
-        public async Task Login(CancellationToken cancellationToken)
+        public async Task Login(string apiKey, CancellationToken cancellationToken)
         {
+            Log.Information($"{Constants.LogPrefix.TheTVDBCLient}\tLogging in on theTVDB API with key: {apiKey}");
             var httpRequest = new HttpRequest
             {
                 CancellationToken = cancellationToken,
                 Method = "POST",
                 Url = $"{Constants.Tvdb.BaseUrl}{Constants.Tvdb.LoginUrl}",
-                RequestContent = "{ \"apikey\": \""+ Constants.Tvdb.ApiKey + "\"}",
+                RequestContent = "{ \"apikey\": \""+ apiKey + "\"}",
                 RequestContentType = "application/json"
             };
 
@@ -70,6 +70,7 @@ namespace EmbyStat.Api.Tvdb
 
         private async Task<TvdbEpisodes> GetEpisodePage(string url, CancellationToken cancellationToken)
         {
+            Log.Information($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
             var headers = new HttpHeaders {{"Authorization", $"Bearer {JWtoken.Token}"}};
             var httpRequest = new HttpRequest
             {
@@ -87,6 +88,7 @@ namespace EmbyStat.Api.Tvdb
 
         public async Task<IEnumerable<string>> GetShowsToUpdate(IEnumerable<string> showIds, DateTime lastUpdateTime, CancellationToken cancellationToken)
         {
+            Log.Information($"{Constants.LogPrefix.TheTVDBCLient}\tCalling TheTVDB to udpated shows");
             try
             {
                 var updateList = new List<string>();
@@ -104,6 +106,7 @@ namespace EmbyStat.Api.Tvdb
                         Url = $"{Constants.Tvdb.BaseUrl}{url}"
                     };
 
+                    Log.Information($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
                     using (var stream = await _httpClient.SendAsync(httpRequest))
                     {
                         var list = _jsonSerializer.DeserializeFromStream<Updates>(stream);
@@ -116,7 +119,7 @@ namespace EmbyStat.Api.Tvdb
             }
             catch (Exception e)
             {
-                Log.Error(e, "Could not receive show list from TVDB");
+                Log.Error(e, $"{Constants.LogPrefix.TheTVDBCLient}Could not receive show list from TVDB");
                 throw;
             }
         }

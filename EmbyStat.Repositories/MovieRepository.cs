@@ -45,180 +45,6 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetMovieCount(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                return query.Count();
-            }
-        }
-
-        public int GetGenreCount(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                return query
-                    .SelectMany(x => x.MediaGenres)
-                    .Select(x => x.GenreId)
-                    .Distinct()
-                    .Count();
-            }
-        }
-
-        public long GetPlayLength(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                return query.Sum(x => x.RunTimeTicks ?? 0);
-            }
-        }
-
-        public Movie GetHighestRatedMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.CommunityRating != null);
-                query = query.OrderByDescending(x => x.CommunityRating).ThenBy(x => x.SortName);
-
-                return query.FirstOrDefault();
-            }
-        }
-
-        public Movie GetLowestRatedMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.CommunityRating != null);
-                query = query.OrderBy(x => x.CommunityRating).ThenBy(x => x.SortName);
-
-                return query.FirstOrDefault();
-            }
-        }
-
-        public Movie GetOlderPremieredMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.PremiereDate != null);
-                query = query.OrderBy(x => x.PremiereDate).ThenBy(x => x.SortName);
-
-                return query.FirstOrDefault();
-            }
-        }
-
-        public Movie GetYoungestPremieredMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.PremiereDate != null);
-                query = query.OrderByDescending(x => x.PremiereDate).ThenBy(x => x.SortName);
-
-                return query.FirstOrDefault();
-            }
-        }
-
-        public Movie GetShortestMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= 600000000);
-                query = query.OrderBy(x => x.RunTimeTicks).ThenBy(x => x.SortName);
-                return query.FirstOrDefault();
-            }
-        }
-
-        public Movie GetLongestMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.RunTimeTicks != null);
-                query = query.OrderByDescending(x => x.RunTimeTicks).ThenBy(x => x.SortName);
-
-                return query.FirstOrDefault();
-            }
-        }
-
-        public Movie GetYoungestAddedMovie(List<string> collections)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var query = context.Movies.AsQueryable();
-
-                if (collections.Any())
-                {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
-                }
-
-                query = query.Where(x => x.DateCreated != null);
-                query = query.OrderByDescending(x => x.DateCreated).ThenBy(x => x.SortName);
-
-                return query.FirstOrDefault();
-            }
-        }
-
         public int GetTotalPersonByType(List<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
@@ -259,11 +85,19 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Movie> GetAll(List<string> collections)
+        public List<Movie> GetAll(IEnumerable<string> collections, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
-                var query = context.Movies.Include(x => x.ExtraPersons).Include(x => x.MediaGenres).Include(x => x.VideoStreams).AsQueryable();
+                var query = context.Movies.AsNoTracking().AsQueryable();
+
+                if (inludeSubs)
+                {
+                    query = query
+                        .Include(x => x.ExtraPersons)
+                        .Include(x => x.MediaGenres)
+                        .Include(x => x.VideoStreams);
+                }
 
                 if (collections.Any())
                 {
@@ -291,6 +125,14 @@ namespace EmbyStat.Repositories
                     .Distinct();
 
                 return genres.ToList();
+            }
+        }
+
+        public bool Any()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies.Any();
             }
         }
 

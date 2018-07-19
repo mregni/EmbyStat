@@ -7,19 +7,10 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveMovies();
         void Add(Movie movie);
-        int GetMovieCount(List<string> collections);
-        int GetGenreCount(List<string> collections);
-        long GetPlayLength(List<string> collections);
-        Movie GetHighestRatedMovie(List<string> collections);
-        Movie GetLowestRatedMovie(List<string> collections);
-        Movie GetOlderPremieredMovie(List<string> collections);
-        Movie GetYoungestPremieredMovie(List<string> collections);
-        Movie GetShortestMovie(List<string> collections);
-        Movie GetLongestMovie(List<string> collections);
-        Movie GetYoungestAddedMovie(List<string> collections);
         int GetTotalPersonByType(List<string> collections, string type);
         string GetMostFeaturedPerson(List<string> collections, string type);
-        List<Movie> GetAll(List<string> collections);
+        List<Movie> GetAll(IEnumerable<string> collections, bool inludeSubs = false);
         List<string> GetGenres(List<string> collections);
+        bool Any();
     }
 }

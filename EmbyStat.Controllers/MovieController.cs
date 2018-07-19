@@ -60,5 +60,12 @@ namespace EmbyStat.Controllers
             var graphs = _movieService.GetGraphs(collectionIds);
             return Ok(Mapper.Map<MovieGraphsViewModel>(graphs));
         }
+
+        [HttpGet]
+        [Route("movietypepresent")]
+        public IActionResult MovieTypeIsPresent()
+        {
+            return Ok(_movieService.MovieTypeIsPresent());
+        }
     }
 }

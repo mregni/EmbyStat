@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
@@ -61,9 +62,9 @@ namespace EmbyStat.Services
 					    var serverResponse = Encoding.ASCII.GetString(receivedData);
 						var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
 
-					    var configuration = _configurationRepository.GetSingle();
+					    var configuration = _configurationRepository.GetConfiguration();
 					    configuration.ServerName = udpBroadcastResult.Name;
-						_configurationRepository.UpdateOrAdd(configuration);
+						_configurationRepository.Update(configuration);
 
 					    return udpBroadcastResult;
 
@@ -95,8 +96,7 @@ namespace EmbyStat.Services
 				}
 				catch (Exception e)
 				{
-					Log.Error("Username or password are wrong, user should try again with other credentials!");
-				    Log.Error($"Message: {e.Message}");
+					Log.Error($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
 					throw new BusinessException("TOKEN_FAILED");
 				}
 			}
@@ -117,7 +117,7 @@ namespace EmbyStat.Services
 
 	    public async void FireSmallSyncEmbyServerInfo()
 	    {
-		    var settings = _configurationRepository.GetSingle();
+		    var settings = _configurationRepository.GetConfiguration();
 
 			_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
 		    var systemInfoReponse = await _embyClient.GetServerInfoAsync();

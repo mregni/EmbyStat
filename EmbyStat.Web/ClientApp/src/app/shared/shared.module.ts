@@ -20,9 +20,12 @@ import { ShowPosterComponent } from './components/show-poster/show-poster.compon
 import { LoaderComponent } from './components/loader/loader.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
+import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
 import { LoaderFacade } from './components/loader/state/facade.loader';
+
+import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 
 @NgModule({
   imports: [
@@ -51,7 +54,9 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
-    CapitalizeFirstPipe
+    NoTypeFoundDialog,
+    CapitalizeFirstPipe,
+    ToShorterStringPipe
   ],
   declarations: [
     ToolbarComponent,
@@ -63,12 +68,14 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
-    CapitalizeFirstPipe
+    NoTypeFoundDialog,
+    CapitalizeFirstPipe,
+    ToShorterStringPipe
   ],
   providers: [
     ToastService,
     LoaderFacade
   ],
-  entryComponents: []
+  entryComponents: [NoTypeFoundDialog]
 })
 export class SharedModule { }

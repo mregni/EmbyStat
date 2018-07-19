@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { Language } from './models/language';
+
 @Component({
   selector: 'app-language',
   templateUrl: './language.component.html',

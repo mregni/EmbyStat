@@ -100,5 +100,5 @@ export class MovieEffects {
       return new LoadGraphsSuccessAction(list);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-    );
+  );
 }

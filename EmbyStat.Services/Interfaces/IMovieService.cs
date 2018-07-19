@@ -17,5 +17,6 @@ namespace EmbyStat.Services.Interfaces
         Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
         MovieGraphs GetGraphs(List<string> collectionIds);
         SuspiciousTables GetSuspiciousMovies(List<string> collectionIds);
+        bool MovieTypeIsPresent();
     }
 }

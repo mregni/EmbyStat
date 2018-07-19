@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Configuration;
@@ -19,25 +21,24 @@ namespace Tests.Unit.Controllers
 
 	    public ConfigurationControllerTests()
 	    {
-			var configuration = new Configuration()
-		    {
-			    AccessToken = "1234567890",
-			    EmbyServerAddress = "https://localhost:8096",
-			    EmbyUserName = "admin",
-			    Id = "0987654321",
-			    Language = "en",
-			    EmbyUserId = "12345",
-			    Username = "usernameAdmin",
-			    WizardFinished = false
-		    };
+			var configuration = new List<ConfigurationKeyValue>
+			{
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
+            };
 
-		    _configurationServiceMock = new Mock<IConfigurationService>();
-		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(configuration);
+            _configurationServiceMock = new Mock<IConfigurationService>();
+		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(new Configuration(configuration));
 		    _configurationServiceMock.Setup(x => x.SaveServerSettings(It.IsAny<Configuration>()));
 
-			var loggerMock = new Mock<ILogger<ConfigurationController>>();
-
-		    _subject = new ConfigurationController(_configurationServiceMock.Object, loggerMock.Object);
+		    _subject = new ConfigurationController(_configurationServiceMock.Object);
 		}
 
 	    public void Dispose()
@@ -65,19 +66,14 @@ namespace Tests.Unit.Controllers
 			    Language = "en",
 			    EmbyUserId = "12345",
 			    Username = "usernameAdmin",
-			    WizardFinished = false
+		        ServerName = "ServerName",
+                WizardFinished = false,
+                ToShortMovie = 10
 		    };
 
 		    _subject.Update(configuration);
 
-		    _configurationServiceMock.Verify(x => x.SaveServerSettings(It.Is<Configuration>(
-			    y => y.WizardFinished == configuration.WizardFinished &&
-			         y.AccessToken == configuration.AccessToken &&
-			         y.EmbyServerAddress == configuration.EmbyServerAddress &&
-			         y.EmbyUserName == configuration.EmbyUserName &&
-			         y.Language == configuration.Language &&
-			         y.EmbyUserId == configuration.EmbyUserId &&
-			         y.Username == configuration.Username)), Times.Once);
+		    _configurationServiceMock.Verify(x => x.SaveServerSettings(It.IsAny<Configuration>()), Times.Once);
 		    _configurationServiceMock.Verify(x => x.GetServerSettings(), Times.Once);
 	    }
 	}

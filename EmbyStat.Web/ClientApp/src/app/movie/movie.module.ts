@@ -13,6 +13,7 @@ import { MoviePeopleComponent } from './movie-people/movie-people.component';
 import { MovieChartsComponent } from './movie-charts/movie-charts.component';
 import { MovieSuspiciousComponent } from './movie-suspicious/movie-suspicious.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
