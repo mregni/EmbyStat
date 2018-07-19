@@ -77,9 +77,11 @@
     <mat-step label="{{'WIZARD.FINALLABEL' | translate }}">
       <div>
         <p>{{ 'WIZARD.FINISHED' | translate }}</p>
+        <p>{{ 'WIZARD.FINISHEXPLANATION' | translate }}</p>
       </div>
       <div class="button-container">
         <button mat-raised-button color="primary" (click)="finishWizard()" type="button">{{ 'COMMON.FINISH' | translate | capitalizeFirst }}</button>
+        <button mat-raised-button color="accent" (click)="finishWizardAndStartSync()" type="button">{{ 'WIZARD.FINISHWITHSYNC' | translate | capitalizeFirst }}</button>
       </div>
     </mat-step>
   </mat-vertical-stepper>

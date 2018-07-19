@@ -92,7 +92,9 @@
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
+    "FINISHWITHSYNC": "Start syncronisation", 
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page." 
   },
   "PLUGINS": {
     "VERSION": "Version"
