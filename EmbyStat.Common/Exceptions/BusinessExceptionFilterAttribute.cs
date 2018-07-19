@@ -21,8 +21,8 @@ namespace EmbyStat.Common.Exceptions
 				context.Exception = null;
 
 				context.HttpContext.Response.StatusCode = ex.StatusCode;
-				Log.Warning($"Application thrown error: {ex.Message}", ex);
-				Log.Warning("Frontend will know what to do with this!");
+				Log.Warning($"{Constants.LogPrefix.ExceptionHandler}\tApplication thrown error: {ex.Message}", ex);
+				Log.Warning($"{Constants.LogPrefix.ExceptionHandler}\tFrontend will know what to do with this!");
 			}
 			else
 			{
@@ -33,8 +33,9 @@ namespace EmbyStat.Common.Exceptions
 				var msg = context.Exception.GetBaseException().Message;
 				string stack = context.Exception.StackTrace;
 #endif
+			    Log.Error(context.Exception, $"{Constants.LogPrefix.ExceptionHandler}\tUnhandled backend exception");
 
-				apiError = new ApiError(msg, stack);
+                apiError = new ApiError(msg, stack);
 				context.HttpContext.Response.StatusCode = 500;
 
 				Log.Error(context.Exception, msg);
