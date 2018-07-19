@@ -10,21 +10,21 @@ namespace EmbyStat.Common.Tasks
     {
         public event EventHandler<string> ProgressLogged;
 
-        public void LogInformation(string value)
+        public void LogInformation(string prefix, string value)
         {
-            Log.Information(value);
+            Log.Information($"{prefix}\t{value}");
             ProgressLogged?.Invoke(this, value);
         }
 
-        public void LogWarning(string value)
+        public void LogWarning(string prefix, string value)
         {
-            Log.Warning(value);
+            Log.Warning($"{prefix}\t{value}");
             ProgressLogged?.Invoke(this, value);
         }
 
-        public void LogError(Exception e, string value)
+        public void LogError(string prefix, Exception e, string value)
         {
-            Log.Error(e, value);
+            Log.Error(e, $"{prefix}\t{value}");
             ProgressLogged?.Invoke(this, value);
         }
     }
