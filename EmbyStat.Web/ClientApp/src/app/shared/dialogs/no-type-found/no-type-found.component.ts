@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
-
+import { Router } from '@angular/router';
 
 import { TaskFacade } from '../../../task/state/facade.task';
 import { Task } from '../../../task/models/task';
@@ -18,7 +18,8 @@ export class NoTypeFoundDialog implements OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,
-    private taskFacade: TaskFacade) {
+    private taskFacade: TaskFacade,
+    private router: Router) {
     this.getTasksSub = this.taskFacade.getTasks().subscribe((result: Task[]) => this.tasks = result);
   }
 
@@ -29,7 +30,9 @@ export class NoTypeFoundDialog implements OnDestroy {
   startSyncClick(): void {
     const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
     this.taskFacade.fireTask(task.id);
+    this.router.navigate(['/task']);
     this.dialogRef.close();
+
   }
 
   ngOnDestroy() {
