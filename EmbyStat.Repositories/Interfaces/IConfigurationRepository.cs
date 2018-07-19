@@ -6,6 +6,6 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IConfigurationRepository
     {
         Configuration GetConfiguration();
-        void UpdateOrAdd(Configuration config);
+        void Update(Configuration config);
     }
 }

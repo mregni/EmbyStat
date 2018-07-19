@@ -57,7 +57,7 @@ namespace Tests.Unit.Services
             _subject.SaveServerSettings(new Configuration(configuration));
 
 			_configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Once);
-			_configurationRepositoryMock.Verify(x => x.UpdateOrAdd(It.IsAny<Configuration>()), Times.Once);
+			_configurationRepositoryMock.Verify(x => x.Update(It.IsAny<Configuration>()), Times.Once);
 	    }
 
 	    [Fact]

@@ -17,7 +17,7 @@ namespace EmbyStat.Repositories
 		    }
 	    }
 
-	    public void UpdateOrAdd(Configuration config)
+	    public void Update(Configuration config)
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
