@@ -129,7 +129,7 @@ namespace EmbyStat.Services
 
                 stats = new MovieGraphs();
                 stats.BarGraphs.Add(CalculateGenreGraph(movies));
-                stats.BarGraphs.Add(CalculateRatingGraph(movies));
+                stats.BarGraphs.Add(CalculateRatingGraph(movies.Select(x => x.CommunityRating)));
                 stats.BarGraphs.Add(CalculatePremiereYearGraph(movies));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
 
@@ -163,6 +163,11 @@ namespace EmbyStat.Services
             }
 
             return stats;
+        }
+
+        public bool MovieTypeIsPresent()
+        {
+            return _movieRepository.Any();
         }
 
         private List<ShortMovie> GetShortMovies(List<Movie> movies)
@@ -464,21 +469,6 @@ namespace EmbyStat.Services
             {
                 Title = Constants.CountPerPremiereYear,
                 Data = yearData
-            };
-        }
-
-        private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
-        {
-            var ratingData = movies.GroupBy(x => x.CommunityRating.RoundToHalf())
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerCommunityRating,
-                Data = ratingData
             };
         }
 

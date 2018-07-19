@@ -9,6 +9,7 @@ import { Collection } from '../../shared/models/collection';
 import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
 
+import { MovieService } from '../service/movie.service';
 import { MovieQuery } from './reducer.movie';
 import {
   LoadGeneralStatsAction, LoadMovieCollectionsAction,
@@ -21,7 +22,8 @@ import { ApplicationState } from '../../states/app.state';
 @Injectable()
 export class MovieFacade {
   constructor(
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    private movieService: MovieService
   ) { }
 
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
@@ -57,6 +59,10 @@ export class MovieFacade {
 
   clearGraphs(): void {
     this.store.dispatch(new ClearGraphsSuccesAction);
+  }
+
+  isMovieTypePresent(): Observable<boolean> {
+    return this.movieService.checkIfTypeIsPresent();
   }
 }
 

@@ -16,6 +16,8 @@ export enum MovieActionTypes {
   LOAD_SUSPICIOUS_SUCCESS = '[Movies] Load Suspicious Success',
   LOAD_GRAPHS = '[Movies] Load Movie Graphs',
   LOAD_GRAPHS_SUCCESS = '[Movies] Load Movie Graphs Success',
+  CHECK_TYPE = '[Movies] Check Movie Type',
+  CHECK_TYPE_SUCCESS = '[Movies] Check Movie Type Success',
   CLEAR_GRAPHS_SUCCESS = '[Movies] Clear Movie Graphs Succes'
 }
 

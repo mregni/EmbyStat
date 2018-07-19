@@ -101,5 +101,5 @@ export class ShowEffects {
       return new LoadCollectedListSuccessAction(list);
     }),
     catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-    );
+  );
 }

@@ -11,5 +11,6 @@ namespace EmbyStat.Repositories.Interfaces
         string GetMostFeaturedPerson(List<string> collections, string type);
         List<Movie> GetAll(IEnumerable<string> collections, bool inludeSubs = false);
         List<string> GetGenres(List<string> collections);
+        bool Any();
     }
 }

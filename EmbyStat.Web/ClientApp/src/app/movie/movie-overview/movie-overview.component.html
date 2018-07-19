@@ -12,7 +12,7 @@
     </div>
   </div>
 </div>
-<div class="content">
+<div class="content" *ngIf="typeIsPresent">
   <mat-tab-group (selectedTabChange)="onTabChanged($event)">
     <mat-tab label="{{ 'COMMON.GENERAL' | translate | capitalizeFirst}}">
       <div class="media__tab-content">

@@ -80,7 +80,7 @@ namespace EmbyStat.Common.Models
             }
             set
             {
-                if (value.HasValue) _config[Constants.Configuration.LastTvdbUpdate] = value.Value.ToString(CultureInfo.InvariantCulture);
+                if (value.HasValue) _config[Constants.Configuration.LastTvdbUpdate] = value.Value.ToString("yyyy-MM-ddTHH:mm:sszzz");
                 else _config[Constants.Configuration.LastTvdbUpdate] = null;
             }
         }
