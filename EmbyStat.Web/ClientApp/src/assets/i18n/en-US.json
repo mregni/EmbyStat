@@ -47,20 +47,20 @@
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
     "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, we are missing some files.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
+    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and domain/ip address.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
   },
   "FORM_LABELS": {
     "NAME": "Enter your name",
     "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby ip address",
+    "EMBYADDRESS": "Emby domain/ip address",
     "EMBYUSERNAME": "Emby admin username",
     "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
+    "EMBYADDRESS_REQUIRED": "Fill in your Emby domain/ip address.",
     "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
     "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
   },
