@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +22,7 @@ namespace EmbyStat.Web
 			{
 				CreateLogger();
 
-				Log.Information("Booting up server");
+				Log.Information($"{Constants.LogPrefix.System}\tBooting up server");
 				var host = BuildWebHost(args);
 
 				SetupDatbase(host);
@@ -30,11 +31,11 @@ namespace EmbyStat.Web
 			}
 			catch (Exception ex)
 			{
-				Log.Fatal(ex, "Server terminated unexpectedly");
+				Log.Fatal(ex, $"{Constants.LogPrefix.System}tServer terminated unexpectedly");
 			}
 			finally
 			{
-				Log.Information("Server shutdown");
+				Log.Information($"{Constants.LogPrefix.System}tServer shutdown");
 				Log.CloseAndFlush();
 			}
 		}
@@ -80,8 +81,8 @@ namespace EmbyStat.Web
 				}
 				catch (Exception ex)
 				{
-					Log.Fatal("Database seed or update failed");
-					Log.Fatal($"{ex.Message}\n{ex.StackTrace}");
+					Log.Fatal($"{Constants.LogPrefix.System}tDatabase seed or update failed");
+					Log.Fatal($"{Constants.LogPrefix.System}t{ex.Message}\n{ex.StackTrace}");
 				}
 			}
 		}

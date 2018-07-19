@@ -22,9 +22,9 @@ namespace EmbyStat.Repositories
 
 		public async Task SeedAsync()
 		{
-			Log.Information("Migrating database started");
+			Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tMigrating database started");
 			_context.Database.Migrate();
-			Log.Information("Migrating database ended");
+			Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tMigrating database ended");
 
 		    await SeedConfiguration();
 		    await SeedLanguages();
@@ -39,7 +39,7 @@ namespace EmbyStat.Repositories
 
 	    private async Task SeedConfiguration()
 	    {
-	        Log.Information("Seeding configuration");
+	        Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding configuration");
 
 	        var configuration = _context.Configuration.ToList();
 
@@ -71,7 +71,7 @@ namespace EmbyStat.Repositories
 
 	    private async Task SeedLanguages()
 	    {
-	        Log.Information("Seeding languages");
+	        Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
 
             _context.Languages.RemoveRange(_context.Languages);
 
