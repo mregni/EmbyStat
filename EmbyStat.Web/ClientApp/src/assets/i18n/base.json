@@ -1,0 +1,177 @@
+{
+  "COMMON": {
+    "HIDE": "Hide",
+    "NEXT": "next",
+    "BACK": "back",
+    "FINISH": "finish",
+    "SAVE": "save",
+    "DISCARD": "discard",
+    "CANCEL": "cancel",
+    "DAYS": "days",
+    "HOURS": "hours",
+    "MINUTES": "minutes",
+    "MIN": "min",
+    "TITLE": "title",
+    "ADDEDON": "added on",
+    "QUALITY": "quality",
+    "LINK": "link",
+    "REASON": "reason",
+    "BYIMDB": "same imdb id",
+    "BYTITLE": "same title",
+    "MOVIES": "movies",
+    "COUNTPERGENRE": "count / genre",
+    "COUNTPERCOMMUNITYRATING": "count / rating",
+    "COUNTPERPREMIEREDATE": "count / year",
+    "COUNTPEROFFICIALRATING": "count / official rating",
+    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
+    "EMBY": "Emby",
+    "GENERAL": "general",
+    "DURATION": "duration",
+    "GRAPHS": "graphs",
+    "PEOPLE": "people",
+    "SUSPICIOUS": "suspicious",
+    "SHOWS": "shows",
+    "TOTALACTORS": "Total actors",
+    "TOTALDIRECTORS": "Total directors",
+    "TOTALWRITERS": "Total writers",
+    "MOSTFEATUREDACTOR": "Most featured actor",
+    "MOSTFEATUREDDIRECTOR": "Most featured director",
+    "MOSTFEATUREDWRITER": "Most featured writer",
+    "COLLECTION": "collection",
+    "PREMIEREDATE": "premiere date",
+    "STATUS": "status",
+    "PERCENTAGE": "percentage",
+    "COLLECTED": "collected"
+  },
+  "EXCEPTIONS": {
+    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
+    "NO_CONFIGURATION_FOUND": "No configuration could be found.",
+    "NOT_FOUND": "Oops, we are missing some files.",
+    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
+  },
+  "FORM_LABELS": {
+    "NAME": "Enter your name",
+    "LANGUAGE": "Please select your language",
+    "EMBYADDRESS": "Emby ip address",
+    "EMBYUSERNAME": "Emby admin username",
+    "EMBYPASSWORD": "Emby admin password",
+    "DURATIONINMINUTES": "Duration in minutes"
+  },
+  "FORM_ERRORS": {
+    "NAME_REQUIRED": "Fill in your name or nickname.",
+    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
+    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
+    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+  },
+  "MENU": {
+    "DASHBOARD": "Dashboard",
+    "MOVIES": "Movies",
+    "SHOWS": "Shows",
+    "SETTINGS": "Settings",
+    "PLUGINS": "Plugins",
+    "TASKS": "Tasks",
+    "SERVER": "Emby server",
+    "LOGS": "Logs"
+  },
+  "WIZARD": {
+    "INTROLABEL": "Intro",
+    "EMBYLABEL": "Emby settings",
+    "SAVINGLABEL": "First Emby server sync",
+    "FINALLABEL": "Final",
+    "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CHECKINGSTATUS": "Checking Emby server ...",
+    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
+    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "EMBYRUNNING": "Emby server is running",
+    "ISADMIN": "{{ user }} is an Emby administrator",
+    "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
+    "SAVING": "Saving data",
+    "RESCAN": "Rescan",
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
+  },
+  "PLUGINS": {
+    "VERSION": "Version"
+  },
+  "MOVIES": {
+    "TOTALMOVIES": "Total movies",
+    "TOTALGENRES": "Total genres",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATED": "Highest rated",
+    "LOWESTRATED": "Lowest rated",
+    "OLDESTPREMIERED": "Oldest premiered",
+    "YOUNGESTPREMIERED": "Youngest premiered",
+    "SHORTEST": "Shortest",
+    "LONGEST": "Longest",
+    "YOUNGESTADDED": "Youngest added",
+    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
+    "DUPLICATEMOVIES": "duplicate movies",
+    "TOSHORTMOVIES": "movies that are very short"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Total shows",
+    "TOTALEPISODES": "Total Episodes",
+    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALPLAYLENGTH": "Total watchable time",
+    "HIGHESTRATEDSHOW": "Highest rated show",
+    "LOWESTRATEDSHOW": "Lowest rated show",
+    "OLDESTPREMIERED": "Oldest premiered show",
+    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTADDED": "Youngest added",
+    "WITHMOESTEPISODES": "With most episodes",
+    "SHOWSTATUSGRAPH": "Show statuses",
+    "SEASONS": "seasons",
+    "CONTINUING": "continuing",
+    "ENDED": "ended"
+  },
+  "CONFIGURATION": {
+    "SETTINGS": "Settings",
+    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+    "SAVED": {
+      "GENERAL": "General Embystat settings are saved!",
+      "EMBY": "Emby settings are saved!",
+      "MOVIES": "Movie settings are saved!"
+    }
+  },
+  "TASK": {
+    "LASTRUNNOW": "Last run: just now",
+    "LASTRUN": "Last run",
+    "HOURS": "{{hours}} hour(s)",
+    "MINUTES": "{{minutes}} minute(s)",
+    "SECONDS": "{{seconds}} second(s)",
+    "AND": "and",
+    "AGO": "ago",
+    "FOR": "for",
+    "BUTFAILED": "but failed after"
+  },
+  "TASKS": {
+    "PINGEMBYSERVERTITLE": "Check Emby connection",
+    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+    "MEDIASYNCTITLE": "Media synchronisation",
+    "STARTMEDIASYNC": "Start media sync"
+  },
+  "TRIGGER": {
+    "INTERVALTRIGGER": "Interval trigger",
+    "DAILYTRIGGER": "Daily trigger",
+    "STARTUPTRIGGER": "Startup trigger",
+    "EVERY": "every {{interval}}",
+    "AT": "at {{time}}",
+    "TRIGGERTYPE": "Trigger type",
+    "SAVETRIGGER": "Save trigger"
+  },
+  "DIALOGS": {
+    "NOMOVIETYPEFOUND": {
+      "TITLE": "No movies found",
+      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+    },
+    "NOSHOWTYPEFOUND": {
+      "TITLE": "No shows found",
+      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+    }
+  }
+}
