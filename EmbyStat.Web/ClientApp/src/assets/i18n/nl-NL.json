@@ -1,5 +1,7 @@
 {
   "COMMON": {
+    "DOWNLOAD": "download",
+    "ANONYMISEDDOWNLOAD": "Anonymised download",
     "HIDE": "Verbergen",
     "NEXT": "volgende",
     "BACK": "vorige",
