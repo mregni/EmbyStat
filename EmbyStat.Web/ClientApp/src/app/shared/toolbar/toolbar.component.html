@@ -10,6 +10,11 @@
     </div>
     {{runningTask.name | translate | capitalizeFirst }} task is running
   </div>
+  <div class="toolbar__emby_ping_statusbox">
+    <img *ngIf="missedPings === 0" src="../../../assets/images/icons/green_circle.png" />
+    <img *ngIf="missedPings === 1" src="../../../assets/images/icons/orange_circle.png" />
+    <img *ngIf="missedPings >= 2" src="../../../assets/images/icons/red_circle.png" />
+  </div>
   <div *ngIf="configuration$ | async as config" class="button-container">
     <a mat-raised-button href="{{config.embyServerAddress}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">Emby server</a>
   </div>
