@@ -111,7 +111,9 @@ namespace Tests.Unit.Services
 		    _embyDriveRepository.Setup(x => x.ClearAndInsertList(It.IsAny<List<Drives>>()));
 		    _embyDriveRepository.Setup(x => x.GetAll()).Returns(_drives);
 
-			_subject = new EmbyService(_embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object);
+	        var embyStatusRepositoryMock = new Mock<IEmbyStatusRepository>();
+
+			_subject = new EmbyService(_embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object, embyStatusRepositoryMock.Object);
 	    }
 
 	    [Fact]
