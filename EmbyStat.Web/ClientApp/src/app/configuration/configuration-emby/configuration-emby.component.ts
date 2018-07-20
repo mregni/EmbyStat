@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
-import { EmbyToken } from '../models/embyToken';
+import { EmbyToken } from '../../shared/models/emby/embyToken';
 import { ToastService } from '../../shared/services/toast.service';
 
 @Component({

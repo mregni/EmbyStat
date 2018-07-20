@@ -34,6 +34,7 @@ namespace EmbyStat.Repositories
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Statistic> Statistics { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<EmbyStatusKeyValue> EmbyStatus { get; set; }
 
         public ApplicationDbContext() : base()
 	    {
@@ -121,6 +122,8 @@ namespace EmbyStat.Repositories
 	        modelBuilder.Entity<Statistic>().Property(s => s.JsonResult).IsRequired();
 
 	        modelBuilder.Entity<Language>().Property(m => m.Id).IsRequired();
-        }
+
+	        modelBuilder.Entity<EmbyStatusKeyValue>().Property(x => x.Id).IsRequired();
+	    }
     }
 }

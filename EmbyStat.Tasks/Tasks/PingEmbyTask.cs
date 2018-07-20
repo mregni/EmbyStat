@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace EmbyStat.Tasks.Tasks
 {
     public class PingEmbyTask : IScheduledTask
     {
+        private readonly IEmbyStatusRepository _embyStatusRepository;
         public PingEmbyTask(IApplicationBuilder app)
         {
-
+            _embyStatusRepository =  app.ApplicationServices.GetService<IEmbyStatusRepository>();
         }
 
         public string Name => "TASKS.PINGEMBYSERVERTITLE";
@@ -28,6 +33,7 @@ namespace EmbyStat.Tasks.Tasks
             {
                 progress.Report(0);
                 logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "Let's see if Emby is still online");
+                _embyStatusRepository.IncreaseMissedPings();
                 progress.Report(100);
 
             }, cancellationToken);

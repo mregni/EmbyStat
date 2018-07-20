@@ -28,6 +28,7 @@ namespace EmbyStat.Repositories
 
 		    await SeedConfiguration();
 		    await SeedLanguages();
+		    await SeedEmbyStatus();
 
 			//foreach (var syncronisation in _context.Syncronisations)
 			//{
@@ -100,5 +101,17 @@ namespace EmbyStat.Repositories
 	        _context.Languages.AddRange(languages);
 	        await _context.SaveChangesAsync();
         }
-	}
+
+	    private async Task SeedEmbyStatus()
+	    {
+	        Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
+
+	        var status = _context.EmbyStatus.ToList();
+
+            if (status.All(x => x.Id != Constants.EmbyStatus.MissedPings))
+	            _context.EmbyStatus.Add(new EmbyStatusKeyValue { Id = Constants.EmbyStatus.MissedPings, Value ="0" });
+
+	        await _context.SaveChangesAsync();
+	    }
+    }
 }

@@ -26,18 +26,23 @@ namespace EmbyStat.Services
 	    private readonly IServerInfoRepository _embyServerInfoRepository;
 		private readonly IConfigurationRepository _configurationRepository;
 		private readonly IDriveRepository _embyDriveRepository;
+        private readonly IEmbyStatusRepository _embyStatusRepository;
 
-		public EmbyService(IEmbyClient embyClient, 
+
+        public EmbyService(IEmbyClient embyClient, 
 						   IPluginRepository embyPluginRepository, 
 						   IConfigurationRepository configurationRepository, 
 						   IServerInfoRepository embyServerInfoRepository,
-						   IDriveRepository embyDriveRepository)
+						   IDriveRepository embyDriveRepository,
+                           IEmbyStatusRepository embyStatusRepository)
 	    {
 		    _embyClient = embyClient;
 		    _embyPluginRepository = embyPluginRepository;
 		    _configurationRepository = configurationRepository;
 		    _embyServerInfoRepository = embyServerInfoRepository;
 		    _embyDriveRepository = embyDriveRepository;
+	        _embyStatusRepository = embyStatusRepository;
+
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -131,5 +136,10 @@ namespace EmbyStat.Services
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
 			_embyDriveRepository.ClearAndInsertList(localDrives.ToList());
 		}
+
+        public EmbyStatus GetEmbyStatus()
+        {
+            return _embyStatusRepository.GetEmbyStatus();
+        }
     }
 }

@@ -7,9 +7,9 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
-import { EmbyUdpBroadcast } from '../../configuration/models/embyUdpBroadcast';
+import { EmbyUdpBroadcast } from '../../shared/models/emby/embyUdpBroadcast';
 import { Configuration } from '../../configuration/models/configuration';
-import { EmbyToken } from '../../configuration/models/embyToken';
+import { EmbyToken } from '../../shared/models/emby//embyToken';
 import { Language } from '../../shared/components/language/models/language';
 import { LanguageFacade } from '../../shared/components/language/state/facade.language';
 
