@@ -1,7 +1,7 @@
 {
   "COMMON": {
-    "DOWNLOAD": "download",
-    "ANONYMISEDDOWNLOAD": "Anonymised download",
+    "DOWNLOAD": "Download",
+    "ANONYMISEDDOWNLOAD": "Anonymisierter Download",
     "HIDE": "Ausblenden",
     "NEXT": "weiter",
     "BACK": "zurück",
@@ -84,17 +84,17 @@
     "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen.",
     "CHECKINGSTATUS": "Emby Server wird überprüft...",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "EMBYNOTFOUNDTEXT": "Jetzt richten wir die Verbindung zu Emby ein. Die automatische Suche nach einem Emby-Server im Netzwerk war leider nicht erfolgreich. Tragen Sie bitte die Emby http(s)://IP/Domain:Port ein und füllen Sie den restlichen Felder aus.",
+    "EMBYFOUNDTEXT": "Wir haben einen Emby-Server in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
     "EMBYRUNNING": "Der Emby Server läuft",
     "ISADMIN": "{{ user }} ist ein Emby Administrator",
     "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
     "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
     "SAVING": "Speichere Daten",
     "RESCAN": "Erneut scannen",
-    "FINISHWITHSYNC": "Start syncronisation",
+    "FINISHWITHSYNC": "Synchronisation starten",
     "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -157,7 +157,7 @@
     "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
     "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
     "MEDIASYNCTITLE": "Medien-Synchronisierung",
-    "STARTMEDIASYNC": "Start media sync"
+    "STARTMEDIASYNC": "Mediensynchronisation starten"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Intervall-Trigger",
@@ -170,15 +170,15 @@
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Keine Filme gefunden",
+      "BODY": "Wir konnten keine Filme in der EmbyStat-Datenbank finden. Wenn Sie Filme in Emby haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Keine Serien gefunden",
+      "BODY": "Wir konnten keine Serien in der EmbyStat-Datenbank finden. Wenn Sie Serien in Emby haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten."
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Rufe Statistiken ab..."
   }
 }
