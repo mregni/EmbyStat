@@ -68,5 +68,13 @@ namespace EmbyStat.Controllers
 			}
 			return Ok(Mapper.Map<EmbyUdpBroadcastViewModel>(result));
 		}
-	}
+
+	    [HttpGet]
+	    [Route("getembystatus")]
+	    public IActionResult GetEmbyStatus()
+	    {
+	        var result = _embyService.GetEmbyStatus();
+	        return Ok(Mapper.Map<EmbyStatusViewModel>(result));
+	    }
+    }
 }

@@ -13,5 +13,6 @@ namespace EmbyStat.Services.Interfaces
 		ServerInfo GetServerInfo();
 		List<Drives> GetLocalDrives();
 		void FireSmallSyncEmbyServerInfo();
-	}
+	    EmbyStatus GetEmbyStatus();
+    }
 }

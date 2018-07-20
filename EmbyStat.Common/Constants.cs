@@ -83,6 +83,11 @@ namespace EmbyStat.Common
             public const string KeepLogsCount = "KEEPLOGSCOUNT";
         }
 
+        public static class EmbyStatus
+        {
+            public const string MissedPings = "MISSEDPINGS";
+        }
+
         public static class LogPrefix
         {
             public const string ServerApi = "SERVER-API";

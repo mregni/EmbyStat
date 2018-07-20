@@ -102,6 +102,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
 		    containerBuilder.RegisterType<StatisticsRepository>().As<IStatisticsRepository>();
 		    containerBuilder.RegisterType<LanguageRepository>().As<ILanguageRepository>();
+		    containerBuilder.RegisterType<EmbyStatusRepository>().As<IEmbyStatusRepository>();
 
             containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
