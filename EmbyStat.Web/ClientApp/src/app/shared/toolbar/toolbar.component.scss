@@ -1,3 +1,4 @@
+@import "../../../styles.scss";
 $iconWidth: 56px;
 
 .sidenav-toggle {
@@ -27,4 +28,19 @@ $iconWidth: 56px;
 
 .toolbar__logo {
   height: 30px;
+}
+
+.toolbar__small-text {
+  font-size: 15px;
+}
+
+.toolbar__container {
+  display: flex;
+  flex-direction: row;
+  align-content:flex-end;
+  align-items:center;
+
+  > div {
+    margin-right: 10px;
+  }
 }

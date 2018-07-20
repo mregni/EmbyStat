@@ -2,9 +2,15 @@
   <button mat-button (click)="toggleSideNav.emit()" class="sidenav-toggle">
     <mat-icon>menu</mat-icon>
   </button>
-  <img src="../../../assets/images/logo_white.png" class="toolbar__logo"/>
+  <img src="../../../assets/images/logo_white.png" class="toolbar__logo" />
   <span class="bar-spacer"></span>
-  <div *ngIf="configuration$ | async as config">
+  <div *ngIf="runningTask !== undefined && runningTask.state === 2" class="toolbar__small-text toolbar__container">
+    <div class="la-ball-clip-rotate la-sm">
+      <div></div>
+    </div>
+    {{runningTask.name | translate | capitalizeFirst }} task is running
+  </div>
+  <div *ngIf="configuration$ | async as config" class="button-container">
     <a mat-raised-button href="{{config.embyServerAddress}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">Emby server</a>
   </div>
 </mat-toolbar>
