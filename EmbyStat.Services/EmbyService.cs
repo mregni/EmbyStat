@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
@@ -140,6 +141,13 @@ namespace EmbyStat.Services
         public EmbyStatus GetEmbyStatus()
         {
             return _embyStatusRepository.GetEmbyStatus();
+        }
+
+        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        {
+		    var settings = _configurationRepository.GetConfiguration();
+            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            return await _embyClient.PingEmbyAsync(cancellationToken);
         }
     }
 }
