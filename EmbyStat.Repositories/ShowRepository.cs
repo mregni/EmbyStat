@@ -351,7 +351,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                return context.Movies.Any();
+                return context.Shows.Any();
             }
         }
     }
