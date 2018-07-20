@@ -92,7 +92,9 @@
     "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
     "SAVING": "Speichere Daten",
     "RESCAN": "Erneut scannen",
-    "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!"
+    "FINISHWITHSYNC": "Start syncronisation",
+    "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
+    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -175,5 +177,8 @@
       "TITLE": "No shows found",
       "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
     }
+  },
+  "LOADER": {
+    "FETCHING": "Fetching statistics"
   }
 }
