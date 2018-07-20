@@ -235,7 +235,7 @@ namespace EmbyStat.Api.EmbyClient
 
 		}
 
-		protected async Task<string> PostAsyncToString(string url, Dictionary<string, string> args, CancellationToken cancellationToken = default(CancellationToken))
+		protected async Task<string> PostAsyncToString(string url, Dictionary<string, string> args, int timeout, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			url = AddDataFormat(url);
 
@@ -249,6 +249,7 @@ namespace EmbyStat.Api.EmbyClient
 				using (var stream = await SendAsync(new HttpRequest
 				{
 					Url = url,
+                    Timeout = timeout,
 					CancellationToken = cancellationToken,
 					RequestHeaders = HttpHeaders,
 					Method = "POST",

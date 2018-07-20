@@ -8,7 +8,9 @@ using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common;
+using EmbyStat.Common.Exceptions;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Serialization;
@@ -16,6 +18,7 @@ using MediaBrowser.Model.System;
 using MediaBrowser.Model.Users;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using static System.Threading.Tasks.Task;
 
 namespace EmbyStat.Api.EmbyClient
 {
@@ -96,13 +99,20 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<string> PingEmbyAsync()
+		public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
 		{
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
 
 		    Log.Information($"{Constants.LogPrefix.EmbyClient}\tSending a ping to Emby");
-            return await PostAsyncToString(url, args, CancellationToken.None);
+            try
+            {
+                return await PostAsyncToString(url, args, 5000, cancellationToken);
+            }
+            catch (BusinessException e)
+            {
+                return await Run(() => "Ping failed", cancellationToken);
+            }
 		}
 
 	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))

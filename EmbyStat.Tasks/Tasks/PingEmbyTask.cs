@@ -17,9 +17,11 @@ namespace EmbyStat.Tasks.Tasks
     public class PingEmbyTask : IScheduledTask
     {
         private readonly IEmbyStatusRepository _embyStatusRepository;
+        private readonly IEmbyService _embyService;
         public PingEmbyTask(IApplicationBuilder app)
         {
             _embyStatusRepository =  app.ApplicationServices.GetService<IEmbyStatusRepository>();
+            _embyService = app.ApplicationServices.GetService<IEmbyService>();
         }
 
         public string Name => "TASKS.PINGEMBYSERVERTITLE";
@@ -27,16 +29,23 @@ namespace EmbyStat.Tasks.Tasks
         public string Description => "TASKS.PINGEMBYSERVERDESCRIPTION";
         public string Category => "Emby";
 
-        public Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
+        public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
-            return Task.Run(() =>
+            progress.Report(0);
+            logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "Let's see if Emby is still online");
+            var result = await _embyService.PingEmbyAsync(cancellationToken);
+            progress.Report(50);
+            if (result == "Emby Server")
             {
-                progress.Report(0);
-                logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "Let's see if Emby is still online");
+                logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "We found your Emby server");
+                _embyStatusRepository.ResetMissedPings();
+            }
+            else
+            {
+                logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "We could not ping your Emby server. Might be because it's turned off or dns is wrong");
                 _embyStatusRepository.IncreaseMissedPings();
-                progress.Report(100);
-
-            }, cancellationToken);
+            }
+            progress.Report(100);
         }
 
         public IEnumerable<TaskTriggerInfo> GetDefaultTriggers()
