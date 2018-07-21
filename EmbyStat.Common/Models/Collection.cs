@@ -29,6 +29,6 @@ namespace EmbyStat.Common.Models
         Games = 10,
         LiveTv = 11,
         Playlists = 12,
-        Folders
+        Folders = 13
     }
 }

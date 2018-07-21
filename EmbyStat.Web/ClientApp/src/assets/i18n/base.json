@@ -132,12 +132,15 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
-    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
     "SAVED": {
       "GENERAL": "General Embystat settings are saved!",
       "EMBY": "Emby settings are saved!",
       "MOVIES": "Movie settings are saved!"
-    }
+    },
+    "MOVIE": {
+      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "COLLECTIONTYPES":  "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page." 
+    } 
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",
@@ -180,5 +183,19 @@
   },
   "LOADER": {
     "FETCHING": "Fetching statistics"
+  },
+  "COLLECTIONTYPES": {
+    "MIXED": "Mixed / Other",
+    "MUSIC": "Music",
+    "MUSICVIDEOS": "Music videos",
+    "TRAILERS": "Trailers",
+    "HOMEVIDEOS": "Home trailers",
+    "BOXSETS": "Boxsets",
+    "BOOKS": "Books",
+    "PHOTOS": "Photos",
+    "GAMES": "Games",
+    "LIVETV": "Live TV",
+    "PLAYLISTS": "Playlists",
+    "FOLDERS": "Folders" 
   }
 }

@@ -18,6 +18,7 @@ import { MoviePosterComponent } from './components/movie-poster/movie-poster.com
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { CollectionSelectorComponent } from './components/collection-selector/collection-selector.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
@@ -56,6 +57,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
+    CollectionSelectorComponent,
     NoTypeFoundDialog,
     CapitalizeFirstPipe,
     ToShorterStringPipe
@@ -70,6 +72,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
+    CollectionSelectorComponent,
     NoTypeFoundDialog,
     CapitalizeFirstPipe,
     ToShorterStringPipe

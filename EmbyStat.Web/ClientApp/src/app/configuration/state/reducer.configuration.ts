@@ -17,7 +17,9 @@ const INITIAL_STATE: Configuration = {
   isLoaded: false,
   toShortMovie: 10,
   embyUserId: '',
-  id: ''
+  id: '',
+  movieCollectionTypes: [],
+  showCollectionTypes: []
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {

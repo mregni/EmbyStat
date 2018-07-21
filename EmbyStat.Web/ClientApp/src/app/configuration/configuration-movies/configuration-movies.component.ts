@@ -19,24 +19,31 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
 
   public toShortMovieControl: FormControl = new FormControl('', [Validators.required]);
 
-  public form: FormGroup;
+  public formToShort: FormGroup;
 
   constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
-    this.form = new FormGroup({
+    this.formToShort = new FormGroup({
       toShortMovie: this.toShortMovieControl
     });
 
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
-      this.form.setValue({ toShortMovie: config.toShortMovie });
+      this.formToShort.setValue({ toShortMovie: config.toShortMovie });
     });
   }
 
-  public saveForm() {
+  public saveFormToShort() {
     const config = { ...this.configuration };
-    config.toShortMovie = this.form.get('toShortMovie').value;
+    config.toShortMovie = this.formToShort.get('toShortMovie').value;
+    this.configurationFacade.updateConfiguration(config);
+    this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
+  }
+
+  public saveFormCollectionTypes() {
+    const config = { ...this.configuration };
+    config.toShortMovie = this.formToShort.get('toShortMovie').value;
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
   }

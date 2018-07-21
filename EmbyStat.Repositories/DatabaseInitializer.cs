@@ -68,6 +68,10 @@ namespace EmbyStat.Repositories
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.TvdbApiKey, Value = "BWLRSNRC0AQUIEYX" });
 	        if (configuration.All(x => x.Id != Constants.Configuration.KeepLogsCount))
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.KeepLogsCount, Value = "10" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.MovieCollectionTypes))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MovieCollectionTypes, Value = "{0, 1, 6, 7}" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.ShowCollectionTypes))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ShowCollectionTypes, Value = "{0, 2}" });
 
             await _context.SaveChangesAsync();
         }
