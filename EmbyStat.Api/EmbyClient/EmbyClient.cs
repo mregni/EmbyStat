@@ -145,6 +145,16 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 	    }
 
+	    public async Task<QueryResult<BaseItemDto>> GetMediaFolders(CancellationToken cancellationToken = default(CancellationToken))
+	    {
+	        var url = GetApiUrl("/Library/MediaFolders");
+
+	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
+	        {
+	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
+	        }
+        }
+
 	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken = default(CancellationToken))
 	    {
 	        var url = GetItemByNameListUrl("Persons", query);

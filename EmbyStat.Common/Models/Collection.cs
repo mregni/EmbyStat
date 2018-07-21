@@ -18,6 +18,17 @@ namespace EmbyStat.Common.Models
     {
         Other = 0,
         Movies = 1,
-        TvShow = 2
+        TvShow = 2,
+        Music = 3,
+        MusicVideos = 4,
+        Trailers = 5,
+        HomeVideos = 6,
+        BoxSets = 7,
+        Books = 8,
+        Photos = 9,
+        Games = 10,
+        LiveTv = 11,
+        Playlists = 12,
+        Folders
     }
 }
