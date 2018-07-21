@@ -31,23 +31,27 @@ namespace EmbyStat.Services.Abstract
                    && collectionIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList());
         }
 
-        public Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<float?> movies)
+        public Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<float?> list)
         {
-            var ratingDataList = movies
+            var ratingDataList = list
                 .GroupBy(x => x.RoundToHalf())
                 .OrderBy(x => x.Key)
                 .ToList();
 
-            var j = 0;
-            for (double i = 0; i < 10; i += 0.5)
+            if (ratingDataList.Any())
             {
-                if (ratingDataList[j].Key != i)
+                var j = 0;
+                for (double i = 0; i < 10; i += 0.5)
                 {
-                    ratingDataList.Add(new GraphGrouping<double?, float?> { Key = i, Capacity = 0 });
-                }
-                else
-                {
-                    j++;
+                    var key = ratingDataList[j].Key;
+                    if (key != null && key != i)
+                    {
+                        ratingDataList.Add(new GraphGrouping<double?, float?> {Key = i, Capacity = 0});
+                    }
+                    else
+                    {
+                        j++;
+                    }
                 }
             }
 
@@ -61,6 +65,45 @@ namespace EmbyStat.Services.Abstract
             {
                 Title = Constants.CountPerCommunityRating,
                 Data = ratingData
+            };
+        }
+
+        protected Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<DateTime?> list)
+        {
+            var yearDataList = list
+                .GroupBy(x => x.RoundToFive())
+                .OrderBy(x => x.Key)
+                .ToList();
+
+            if (yearDataList.Any())
+            {
+                var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
+                var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
+
+                var j = 0;
+                for (var i = lowestYear.Value; i < highestYear; i += 5)
+                {
+                    if (yearDataList[j].Key != i)
+                    {
+                        yearDataList.Add(new GraphGrouping<int?, DateTime?> {Key = i, Capacity = 0});
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+            }
+
+            var yearData = yearDataList
+                .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
+                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            return new Graph<SimpleGraphValue>
+            {
+                Title = Constants.CountPerPremiereYear,
+                Data = yearData
             };
         }
     }
