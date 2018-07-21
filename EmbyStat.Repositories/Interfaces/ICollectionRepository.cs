@@ -9,6 +9,6 @@ namespace EmbyStat.Repositories.Interfaces
     {
         IEnumerable<Collection> GetCollectionByType(CollectionType type);
         void AddCollectionRange(IEnumerable<Collection> collections);
-        void RemoveCollectionByType(CollectionType type);
+        void AddOrUpdateRange(IEnumerable<Collection> collections);
     }
 }
