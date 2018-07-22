@@ -74,7 +74,8 @@
     "PLUGINS": "Plugins",
     "TASKS": "Tasks",
     "SERVER": "Emby server",
-    "LOGS": "Logs"
+    "LOGS": "Logs",
+    "ABOUT": "About" 
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
