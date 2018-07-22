@@ -20,6 +20,7 @@ import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
 import { ShowModule } from './show/show.module';
 import { LogsModule } from './logs/logs.module';
+import { AboutModule } from './about/about.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -60,6 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
     ShowModule,
     MovieModule,
     LogsModule,
+    AboutModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
