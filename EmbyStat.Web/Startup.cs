@@ -11,6 +11,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Api.Tvdb;
+using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Settings;
@@ -60,7 +61,10 @@ namespace EmbyStat.Web
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 		    services.AddAutoMapper(typeof(MapProfiles));
 
-		    services
+		    services.AddOptions();
+		    services.Configure<AppSettings>(Configuration);
+
+            services
 		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
 		        .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
 		        .AddApiExplorer()
