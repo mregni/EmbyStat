@@ -9,6 +9,7 @@ import { TaskComponent } from './task/task.component';
 import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.component';
 import { ShowOverviewComponent } from './show/show-overview/show-overview.component';
 import { LogsComponent } from './logs/logs.component';
+import { AboutOverviewComponent } from './about/about-overview/about-overview.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'configuration', component: ConfigurationOverviewComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'movie', component: MovieOverviewComponent },
   { path: 'show', component: ShowOverviewComponent },
   { path: 'logs', component: LogsComponent },
+  { path: 'about', component: AboutOverviewComponent },
   { path: '**', redirectTo: '' }];
 
 @NgModule({
