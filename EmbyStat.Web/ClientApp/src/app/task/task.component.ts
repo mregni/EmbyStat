@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TaskFacade } from './state/facade.task';
 import { Subscription } from 'rxjs/Subscription';
 import { Task } from './models/task';
@@ -9,6 +10,8 @@ import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.componen
 import 'rxjs/Rx';
 import * as moment from 'moment';
 
+import { ProgressLog } from './models/progressLog';
+
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
@@ -18,24 +21,32 @@ export class TaskComponent implements OnInit, OnDestroy {
   private hubConnection: HubConnection;
   private getTasksSub: Subscription;
   public tasks: Task[];
-  public lines: string[] = [];
+  public lines: SafeHtml[] = [];
 
-  constructor(private taskFacade: TaskFacade, public dialog: MatDialog) {
+  constructor(private taskFacade: TaskFacade,
+    public dialog: MatDialog,
+    private sanitizer: DomSanitizer) {
     this.hubConnection = new HubConnection('/tasksignal');
 
     this.hubConnection.on('ReceiveInfo', (data: Task[]) => {
       this.tasks = data;
     });
 
-    this.hubConnection.on('ReceiveLog', (data: string) => {
+    this.hubConnection.on('ReceiveLog', (data: ProgressLog) => {
       const now = moment().format('HH:mm:ss');
-      data = now + ' - ' + data;
+      var line = now + ' - ' + data.value;
 
-      if (this.lines.length >= 10) {
-        this.lines.shift();
+      if (data.type === 1) {
+        this.lines.push(sanitizer.bypassSecurityTrustHtml('<span class="text__accent">' + line + '</span>'));
+      } else if (data.type === 2) {
+        this.lines.push(sanitizer.bypassSecurityTrustHtml('<span class="text__warn">' + line + '</span>'));
+      } else {
+        this.lines.push(line);
       }
 
-      this.lines.push(data);
+      if (this.lines.length >= 15) {
+        this.lines.shift();
+      }
     });
   }
 
