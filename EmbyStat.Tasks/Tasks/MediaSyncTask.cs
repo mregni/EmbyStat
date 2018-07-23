@@ -11,6 +11,8 @@ using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Helpers;
+using EmbyStat.Common.Models.Joins;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
@@ -76,7 +78,7 @@ namespace EmbyStat.Tasks.Tasks
             CleanUpDatabase();
             progress.Report(3);
 
-            var rootItems = await GetRootItemsByType(_settings.EmbyUserId, cancellationToken);
+            var rootItems = await GetRootItems(_settings.EmbyUserId, cancellationToken);
             _collectionRepository.AddOrUpdateRange(rootItems);
             _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, $"Found {rootItems.Count} root items, getting ready for processing");
 
@@ -95,7 +97,7 @@ namespace EmbyStat.Tasks.Tasks
         }
 
         #region Movies
-        private async Task ProcessMovies(List<Collection> rootItems, CancellationToken cancellationToken, IProgress<double> progress)
+        private async Task ProcessMovies(IReadOnlyList<Collection> rootItems, CancellationToken cancellationToken, IProgress<double> progress)
         {
             _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "Lets start processing movies");
             progress.Report(5);
@@ -106,23 +108,27 @@ namespace EmbyStat.Tasks.Tasks
             {
                 var rootItem = rootItems[i];
                 cancellationToken.ThrowIfCancellationRequested();
-                _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, $"Asking Emby all movies for parent {rootItem.Name} ({rootItem.Type.ToString()})");
+                _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, $"Asking Emby all movies for library {rootItem.Name} ({rootItem.Type.ToString()})");
                 var movies = (await GetMoviesFromEmby(rootItem.Id, cancellationToken)).ToList();
+                _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask,
+                    movies.Any()
+                        ? $"We found {movies.Count} movies. Ready to add them to the database."
+                        : "No movies found for this library. Moving on.");
                 if (!movies.Any()) continue;
 
-                movies.ForEach(x => x.CollectionId = rootItem.Id);
+                movies.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
 
                 await ProcessGenresFromEmby(rootItem.Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
                 await ProcessPeopleFromEmby(rootItem.Id, movies.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
 
                 var j = 0;
-                foreach (var movie in movies)
+                foreach (var movie in movies.OrderBy(x => x.OriginalTitle))
                 {
                     j++;
                     cancellationToken.ThrowIfCancellationRequested();
                     _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask,
                         $"Processing movie {movie.Name}");
-                    _movieRepository.Add(movie);
+                    _movieRepository.AddOrUpdate(movie);
                     progress.Report(
                         Math.Floor(5 + 25 / ((double) movies.Count / j * ((double) rootItems.Count / (i + 1)))));
                 }
@@ -150,12 +156,21 @@ namespace EmbyStat.Tasks.Tasks
             };
 
             var embyMovies = await _embyClient.GetItemsAsync(query, cancellationToken);
+            var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieHelper.ConvertToMovie).ToList();
 
-            _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask,
-                embyMovies.TotalRecordCount == 0
-                    ? "No movies found in this collection. Moving on to the next collection."
-                    : $"We found {embyMovies.TotalRecordCount} movies. Ready to add movies to the database.");
-            return embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieHelper.ConvertToMovie);
+            var recursiveMovies = new List<Movie>();
+            if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
+            {
+                
+                foreach (var parent in embyMovies.Items.Where(x => x.Type == Constants.Type.Boxset))
+                {
+                    recursiveMovies.AddRange(await GetMoviesFromEmby(parent.Id, cancellationToken));
+                }
+            }
+
+            movies.AddRange(recursiveMovies);
+
+            return movies.DistinctBy(x => x.Id);
         }
 
         #endregion
@@ -176,7 +191,7 @@ namespace EmbyStat.Tasks.Tasks
                 var shows = await GetShowsFromEmby(rootItem.Id, cancellationToken);
                 if(!shows.Any()) continue;
 
-                shows.ForEach(x => x.CollectionId = rootItem.Id);
+                shows.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
 
                 await ProcessGenresFromEmby(rootItem.Id, shows.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
                 await ProcessPeopleFromEmby(rootItem.Id, shows.SelectMany(x => x.ExtraPersons, (movie, person) => person.PersonId), cancellationToken);
@@ -194,7 +209,7 @@ namespace EmbyStat.Tasks.Tasks
                     foreach (var season in rawSeasons)
                     {
                         var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
-                        eps.ForEach(x => x.CollectionId = rootItem.Id);
+                        eps.ForEach(x => x.Collections.Add(new MediaCollection{CollectionId = rootItem.Id }));
                         episodes.AddRange(eps);
 
                         seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
@@ -207,7 +222,7 @@ namespace EmbyStat.Tasks.Tasks
                     _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
 
                     var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
-                    seasons.ForEach(x => x.CollectionId = rootItem.Id);
+                    seasons.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
                     _showRepository.AddRange(seasons);
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -401,6 +416,8 @@ namespace EmbyStat.Tasks.Tasks
                 Recursive = true
             };
 
+            _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "Asking Emby for all needed genres.");
+
             var embyGenres = await _embyClient.GetGenresAsync(query, cancellationToken);
             var existingGenres = _genreRepository.GetIds();
 
@@ -430,6 +447,7 @@ namespace EmbyStat.Tasks.Tasks
                 Recursive = true
             };
 
+            _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "Asking Emby for all needed people.");
             var embyPeople = await _embyClient.GetPeopleAsync(query, cancellationToken);
 
             var existingPeople = _personRepository.GetIds();
@@ -452,7 +470,7 @@ namespace EmbyStat.Tasks.Tasks
             }
         }
 
-        private async Task<List<Collection>> GetRootItemsByType(string id, CancellationToken cancellationToken)
+        private async Task<List<Collection>> GetRootItems(string id, CancellationToken cancellationToken)
         {
             _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "Asking Emby for all root folders");
             var rootItems = await _embyClient.GetMediaFolders(cancellationToken);

@@ -65,6 +65,7 @@ namespace EmbyStat.Common
         public static class Type
         {
             public const string Movie = "Movie";
+            public const string Boxset = "BoxSet";
         }
 
         public static class Configuration
@@ -81,6 +82,8 @@ namespace EmbyStat.Common
             public const string WizardFinished = "WIZARDFINISHED";
             public const string TvdbApiKey = "TVDBAPICLIENT";
             public const string KeepLogsCount = "KEEPLOGSCOUNT";
+            public const string MovieCollectionTypes = "MOVIECOLLECTIONTYPES";
+            public const string ShowCollectionTypes = "SHOWCOLLECTIONTYPES";
         }
 
         public static class EmbyStatus

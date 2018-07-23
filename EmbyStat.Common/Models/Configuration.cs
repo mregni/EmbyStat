@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using EmbyStat.Common.Extentions;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Models
 {
@@ -95,6 +96,18 @@ namespace EmbyStat.Common.Models
         {
             get => Convert.ToInt32(_config[Constants.Configuration.KeepLogsCount]);
             set => _config[Constants.Configuration.KeepLogsCount] = value.ToString();
+        }
+
+        public List<CollectionType> MovieCollectionTypes
+        {
+            get => JsonConvert.DeserializeObject<List<CollectionType>>(_config[Constants.Configuration.MovieCollectionTypes]);
+            set => _config[Constants.Configuration.MovieCollectionTypes] = JsonConvert.SerializeObject(value);
+        }
+
+        public List<CollectionType> ShowCollectionTypes
+        {
+            get => JsonConvert.DeserializeObject<List<CollectionType>>(_config[Constants.Configuration.ShowCollectionTypes]);
+            set => _config[Constants.Configuration.ShowCollectionTypes] = JsonConvert.SerializeObject(value);
         }
 
         public Configuration(IEnumerable<ConfigurationKeyValue> list)

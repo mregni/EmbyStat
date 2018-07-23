@@ -156,30 +156,12 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("AudioStreams");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Helpers.CollectionId", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CId");
-
-                    b.Property<string>("StatisticId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StatisticId");
-
-                    b.ToTable("CollectionId");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.Models.Helpers.Media", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Banner");
-
-                    b.Property<string>("CollectionId");
 
                     b.Property<DateTime?>("DateCreated");
 
@@ -303,6 +285,24 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("ExtraPersons");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.MediaCollection", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CollectionId");
+
+                    b.Property<string>("MediaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("MediaId");
+
+                    b.ToTable("MediaCollection");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Joins.MediaGenre", b =>
                 {
                     b.Property<string>("GenreId");
@@ -327,6 +327,24 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasIndex("SeasonId");
 
                     b.ToTable("SeasonEpisodes");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.StatisticCollection", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CollectionId");
+
+                    b.Property<string>("StatisticId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("StatisticId");
+
+                    b.ToTable("StatisticCollection");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Language", b =>
@@ -710,13 +728,6 @@ namespace EmbyStat.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Helpers.CollectionId", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Statistic")
-                        .WithMany("Collections")
-                        .HasForeignKey("StatisticId");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.Models.Helpers.MediaSource", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Helpers.Video", "Video")
@@ -754,6 +765,18 @@ namespace EmbyStat.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.MediaCollection", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Collection", "Collection")
+                        .WithMany()
+                        .HasForeignKey("CollectionId");
+
+                    b.HasOne("EmbyStat.Common.Models.Helpers.Media", "Media")
+                        .WithMany("Collections")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Joins.MediaGenre", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Genre", "Genre")
@@ -777,6 +800,18 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.Models.Season", "Season")
                         .WithMany("SeasonEpisodes")
                         .HasForeignKey("SeasonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Joins.StatisticCollection", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Collection", "Collection")
+                        .WithMany()
+                        .HasForeignKey("CollectionId");
+
+                    b.HasOne("EmbyStat.Common.Models.Statistic", "Statistic")
+                        .WithMany("Collections")
+                        .HasForeignKey("StatisticId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

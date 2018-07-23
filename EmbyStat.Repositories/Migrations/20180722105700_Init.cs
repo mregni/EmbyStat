@@ -79,6 +79,18 @@ namespace EmbyStat.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmbyStatus",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmbyStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
                 {
@@ -119,7 +131,6 @@ namespace EmbyStat.Repositories.Migrations
                     TVDB = table.Column<string>(nullable: true),
                     Id = table.Column<string>(nullable: false),
                     Banner = table.Column<string>(nullable: true),
-                    CollectionId = table.Column<string>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     Logo = table.Column<string>(nullable: true),
@@ -330,6 +341,31 @@ namespace EmbyStat.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MediaCollection",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CollectionId = table.Column<string>(nullable: true),
+                    MediaId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaCollection", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MediaCollection_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MediaCollection_Media_MediaId",
+                        column: x => x.MediaId,
+                        principalTable: "Media",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MediaGenres",
                 columns: table => new
                 {
@@ -498,22 +534,28 @@ namespace EmbyStat.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CollectionId",
+                name: "StatisticCollection",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    CId = table.Column<string>(nullable: true),
+                    CollectionId = table.Column<string>(nullable: true),
                     StatisticId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CollectionId", x => x.Id);
+                    table.PrimaryKey("PK_StatisticCollection", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CollectionId_Statistics_StatisticId",
+                        name: "FK_StatisticCollection_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StatisticCollection_Statistics_StatisticId",
                         column: x => x.StatisticId,
                         principalTable: "Statistics",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -522,14 +564,19 @@ namespace EmbyStat.Repositories.Migrations
                 column: "VideoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CollectionId_StatisticId",
-                table: "CollectionId",
-                column: "StatisticId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ExtraPersons_PersonId",
                 table: "ExtraPersons",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MediaCollection_CollectionId",
+                table: "MediaCollection",
+                column: "CollectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MediaCollection_MediaId",
+                table: "MediaCollection",
+                column: "MediaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MediaGenres_MediaId",
@@ -545,6 +592,16 @@ namespace EmbyStat.Repositories.Migrations
                 name: "IX_SeasonEpisodes_SeasonId",
                 table: "SeasonEpisodes",
                 column: "SeasonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StatisticCollection_CollectionId",
+                table: "StatisticCollection",
+                column: "CollectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StatisticCollection_StatisticId",
+                table: "StatisticCollection",
+                column: "StatisticId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubtitleStreams_VideoId",
@@ -571,12 +628,6 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Boxsets");
 
             migrationBuilder.DropTable(
-                name: "CollectionId");
-
-            migrationBuilder.DropTable(
-                name: "Collections");
-
-            migrationBuilder.DropTable(
                 name: "Configuration");
 
             migrationBuilder.DropTable(
@@ -586,10 +637,16 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Drives");
 
             migrationBuilder.DropTable(
+                name: "EmbyStatus");
+
+            migrationBuilder.DropTable(
                 name: "ExtraPersons");
 
             migrationBuilder.DropTable(
                 name: "Languages");
+
+            migrationBuilder.DropTable(
+                name: "MediaCollection");
 
             migrationBuilder.DropTable(
                 name: "MediaGenres");
@@ -607,6 +664,9 @@ namespace EmbyStat.Repositories.Migrations
                 name: "ServerInfo");
 
             migrationBuilder.DropTable(
+                name: "StatisticCollection");
+
+            migrationBuilder.DropTable(
                 name: "SubtitleStreams");
 
             migrationBuilder.DropTable(
@@ -622,13 +682,16 @@ namespace EmbyStat.Repositories.Migrations
                 name: "VideoStreams");
 
             migrationBuilder.DropTable(
-                name: "Statistics");
-
-            migrationBuilder.DropTable(
                 name: "People");
 
             migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Collections");
+
+            migrationBuilder.DropTable(
+                name: "Statistics");
 
             migrationBuilder.DropTable(
                 name: "Servers");

@@ -90,6 +90,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<ShowService>().As<IShowService>();
 		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
 		    containerBuilder.RegisterType<LanguageService>().As<ILanguageService>();
+		    containerBuilder.RegisterType<AboutService>().As<IAboutService>();
 
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();

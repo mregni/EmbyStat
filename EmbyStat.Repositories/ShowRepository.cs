@@ -106,9 +106,9 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
-                
+
                 return query.ToList();
             }
         }
@@ -202,7 +202,7 @@ namespace EmbyStat.Repositories
 
                 if (collectionIds.Any())
                 {
-                    query = query.Where(x => collectionIds.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 return query.Count();
@@ -217,7 +217,8 @@ namespace EmbyStat.Repositories
 
                 if (collectionIds.Any())
                 {
-                    query = query.Where(x => collectionIds.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
+
                 }
 
                 return query.Count();
@@ -244,7 +245,7 @@ namespace EmbyStat.Repositories
 
                 if (collectionIds.Any())
                 {
-                    query = query.Where(x => collectionIds.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 return query.Sum(x => x.RunTimeTicks ?? 0);
@@ -259,7 +260,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
@@ -276,7 +277,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 var person = query
@@ -299,7 +300,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 var genres = query

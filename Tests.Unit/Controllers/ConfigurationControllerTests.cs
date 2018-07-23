@@ -31,7 +31,9 @@ namespace Tests.Unit.Controllers
                 new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
-                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.MovieCollectionTypes, Value = "[1, 2]" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" }
             };
 
             _configurationServiceMock = new Mock<IConfigurationService>();

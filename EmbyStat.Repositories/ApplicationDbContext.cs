@@ -87,6 +87,7 @@ namespace EmbyStat.Repositories
 	        modelBuilder.Entity<Extra>().HasMany(v => v.ExtraPersons).WithOne(s => s.Extra).HasForeignKey(s => s.ExtraId).OnDelete(DeleteBehavior.Cascade);
 
 	        modelBuilder.Entity<Media>().HasMany(v => v.MediaGenres).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
+	        modelBuilder.Entity<Media>().HasMany(v => v.Collections).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Episode>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Episode>().Property(m => m.ParentId).IsRequired(false);
@@ -120,10 +121,16 @@ namespace EmbyStat.Repositories
 	        modelBuilder.Entity<Statistic>().Property(s => s.Id).IsRequired();
 	        modelBuilder.Entity<Statistic>().Property(s => s.CalculationDateTime).IsRequired();
 	        modelBuilder.Entity<Statistic>().Property(s => s.JsonResult).IsRequired();
+	        modelBuilder.Entity<Statistic>().HasMany(v => v.Collections).WithOne(s => s.Statistic).HasForeignKey(s => s.StatisticId).OnDelete(DeleteBehavior.Cascade);
 
-	        modelBuilder.Entity<Language>().Property(m => m.Id).IsRequired();
+            modelBuilder.Entity<Language>().Property(m => m.Id).IsRequired();
 
 	        modelBuilder.Entity<EmbyStatusKeyValue>().Property(x => x.Id).IsRequired();
-	    }
+
+	        modelBuilder.Entity<StatisticCollection>().Property(x => x.Id).IsRequired();
+
+	        modelBuilder.Entity<MediaCollection>().Property(x => x.Id).IsRequired();
+
+        }
     }
 }

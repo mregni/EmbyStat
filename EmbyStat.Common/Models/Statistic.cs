@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using EmbyStat.Common.Models.Helpers;
+using EmbyStat.Common.Models.Joins;
 
 namespace EmbyStat.Common.Models
 {
@@ -13,6 +14,6 @@ namespace EmbyStat.Common.Models
         public DateTime CalculationDateTime { get; set; }
         public StatisticType Type { get; set; }
         public string JsonResult { get; set; }
-        public List<CollectionId> Collections { get; set; }
+        public ICollection<StatisticCollection> Collections { get; set; }
     }
 }
