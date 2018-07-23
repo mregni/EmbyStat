@@ -22,12 +22,13 @@ namespace EmbyStat.Repositories
 
 		public async Task SeedAsync()
 		{
-			Log.Information("Migrating database started");
+			Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tMigrating database started");
 			_context.Database.Migrate();
-			Log.Information("Migrating database ended");
+			Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tMigrating database ended");
 
 		    await SeedConfiguration();
 		    await SeedLanguages();
+		    await SeedEmbyStatus();
 
 			//foreach (var syncronisation in _context.Syncronisations)
 			//{
@@ -39,7 +40,7 @@ namespace EmbyStat.Repositories
 
 	    private async Task SeedConfiguration()
 	    {
-	        Log.Information("Seeding configuration");
+	        Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding configuration");
 
 	        var configuration = _context.Configuration.ToList();
 
@@ -65,13 +66,19 @@ namespace EmbyStat.Repositories
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = string.Empty });
 	        if (configuration.All(x => x.Id != Constants.Configuration.TvdbApiKey))
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.TvdbApiKey, Value = "BWLRSNRC0AQUIEYX" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.KeepLogsCount))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.KeepLogsCount, Value = "10" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.MovieCollectionTypes))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MovieCollectionTypes, Value = "[0, 1, 6]" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.ShowCollectionTypes))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ShowCollectionTypes, Value = "[0, 2]" });
 
             await _context.SaveChangesAsync();
         }
 
 	    private async Task SeedLanguages()
 	    {
-	        Log.Information("Seeding languages");
+	        Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
 
             _context.Languages.RemoveRange(_context.Languages);
 
@@ -98,5 +105,17 @@ namespace EmbyStat.Repositories
 	        _context.Languages.AddRange(languages);
 	        await _context.SaveChangesAsync();
         }
-	}
+
+	    private async Task SeedEmbyStatus()
+	    {
+	        Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
+
+	        var status = _context.EmbyStatus.ToList();
+
+            if (status.All(x => x.Id != Constants.EmbyStatus.MissedPings))
+	            _context.EmbyStatus.Add(new EmbyStatusKeyValue { Id = Constants.EmbyStatus.MissedPings, Value ="0" });
+
+	        await _context.SaveChangesAsync();
+	    }
+    }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
@@ -26,18 +27,23 @@ namespace EmbyStat.Services
 	    private readonly IServerInfoRepository _embyServerInfoRepository;
 		private readonly IConfigurationRepository _configurationRepository;
 		private readonly IDriveRepository _embyDriveRepository;
+        private readonly IEmbyStatusRepository _embyStatusRepository;
 
-		public EmbyService(IEmbyClient embyClient, 
+
+        public EmbyService(IEmbyClient embyClient, 
 						   IPluginRepository embyPluginRepository, 
 						   IConfigurationRepository configurationRepository, 
 						   IServerInfoRepository embyServerInfoRepository,
-						   IDriveRepository embyDriveRepository)
+						   IDriveRepository embyDriveRepository,
+                           IEmbyStatusRepository embyStatusRepository)
 	    {
 		    _embyClient = embyClient;
 		    _embyPluginRepository = embyPluginRepository;
 		    _configurationRepository = configurationRepository;
 		    _embyServerInfoRepository = embyServerInfoRepository;
 		    _embyDriveRepository = embyDriveRepository;
+	        _embyStatusRepository = embyStatusRepository;
+
 	    }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -64,7 +70,7 @@ namespace EmbyStat.Services
 
 					    var configuration = _configurationRepository.GetConfiguration();
 					    configuration.ServerName = udpBroadcastResult.Name;
-						_configurationRepository.UpdateOrAdd(configuration);
+						_configurationRepository.Update(configuration);
 
 					    return udpBroadcastResult;
 
@@ -96,8 +102,7 @@ namespace EmbyStat.Services
 				}
 				catch (Exception e)
 				{
-					Log.Error("Username or password are wrong, user should try again with other credentials!");
-				    Log.Error($"Message: {e.Message}");
+					Log.Error($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
 					throw new BusinessException("TOKEN_FAILED");
 				}
 			}
@@ -132,5 +137,17 @@ namespace EmbyStat.Services
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
 			_embyDriveRepository.ClearAndInsertList(localDrives.ToList());
 		}
+
+        public EmbyStatus GetEmbyStatus()
+        {
+            return _embyStatusRepository.GetEmbyStatus();
+        }
+
+        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        {
+		    var settings = _configurationRepository.GetConfiguration();
+            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            return await _embyClient.PingEmbyAsync(cancellationToken);
+        }
     }
 }

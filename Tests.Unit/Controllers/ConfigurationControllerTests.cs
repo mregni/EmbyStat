@@ -31,16 +31,16 @@ namespace Tests.Unit.Controllers
                 new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
-                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.MovieCollectionTypes, Value = "[1, 2]" },
+			    new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" }
             };
 
             _configurationServiceMock = new Mock<IConfigurationService>();
 		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(new Configuration(configuration));
 		    _configurationServiceMock.Setup(x => x.SaveServerSettings(It.IsAny<Configuration>()));
 
-			var loggerMock = new Mock<ILogger<ConfigurationController>>();
-
-		    _subject = new ConfigurationController(_configurationServiceMock.Object, loggerMock.Object);
+		    _subject = new ConfigurationController(_configurationServiceMock.Object);
 		}
 
 	    public void Dispose()

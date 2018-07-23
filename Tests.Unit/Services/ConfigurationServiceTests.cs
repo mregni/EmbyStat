@@ -28,7 +28,9 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "13/10/2018" }
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "13/10/2018" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.MovieCollectionTypes, Value = "[1, 2]" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" }
             };
 
 			_configurationRepositoryMock = new Mock<IConfigurationRepository>();
@@ -51,13 +53,15 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "13/10/2018" }
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "13/10/2018" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.MovieCollectionTypes, Value = "[1, 2]" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" }
             };
 
             _subject.SaveServerSettings(new Configuration(configuration));
 
 			_configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Once);
-			_configurationRepositoryMock.Verify(x => x.UpdateOrAdd(It.IsAny<Configuration>()), Times.Once);
+			_configurationRepositoryMock.Verify(x => x.Update(It.IsAny<Configuration>()), Times.Once);
 	    }
 
 	    [Fact]
@@ -78,6 +82,8 @@ namespace Tests.Unit.Services
 	        settings.LastTvdbUpdate.Value.Day.Should().Be(13);
 	        settings.LastTvdbUpdate.Value.Month.Should().Be(10);
 	        settings.LastTvdbUpdate.Value.Year.Should().Be(2018);
+	        settings.MovieCollectionTypes.Count.Should().Be(2);
+	        settings.ShowCollectionTypes.Count.Should().Be(3);
         }
     }
 }

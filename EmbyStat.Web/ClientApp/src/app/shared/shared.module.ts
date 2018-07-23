@@ -8,6 +8,7 @@ import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular-highcharts';
 import { LanguageModule } from './components/language/language.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
@@ -18,12 +19,17 @@ import { MoviePosterComponent } from './components/movie-poster/movie-poster.com
 import { PersonPosterComponent } from './components/person-poster/person-poster.component';
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { CollectionSelectorComponent } from './components/collection-selector/collection-selector.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
+import { EmbyService } from './services/emby.service';
 import { LoaderFacade } from './components/loader/state/facade.loader';
+import { ToolbarFacade } from './toolbar/state/facade.toolbar';
+
+import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 
 @NgModule({
   imports: [
@@ -35,6 +41,7 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     NgxChartsModule,
     ChartModule,
     LanguageModule,
+    ReactiveFormsModule,
     TranslateModule.forChild()
   ],
   exports: [
@@ -52,6 +59,8 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
+    CollectionSelectorComponent,
+    NoTypeFoundDialog,
     CapitalizeFirstPipe,
     ToShorterStringPipe
   ],
@@ -65,13 +74,17 @@ import { LoaderFacade } from './components/loader/state/facade.loader';
     PersonPosterComponent,
     ShowPosterComponent,
     LoaderComponent,
+    CollectionSelectorComponent,
+    NoTypeFoundDialog,
     CapitalizeFirstPipe,
     ToShorterStringPipe
   ],
   providers: [
     ToastService,
-    LoaderFacade
+    EmbyService,
+    LoaderFacade,
+    ToolbarFacade
   ],
-  entryComponents: []
+  entryComponents: [NoTypeFoundDialog]
 })
 export class SharedModule { }

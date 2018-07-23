@@ -25,19 +25,28 @@ namespace EmbyStat.Services
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly IConfigurationRepository _configurationRepository;
 
-        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, ITaskRepository taskRepository, IStatisticsRepository statisticsRepository)
+        public ShowService(IShowRepository showRepository, 
+            ICollectionRepository collectionRepository, 
+            IGenreRepository genreRepository, 
+            IPersonService personService, 
+            ITaskRepository taskRepository, 
+            IStatisticsRepository statisticsRepository,
+            IConfigurationRepository configurationRepository)
         : base(taskRepository){
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
             _statisticsRepository = statisticsRepository;
+            _configurationRepository = configurationRepository;
         }
 
         public IEnumerable<Collection> GetShowCollections()
         {
-            return _collectionRepository.GetCollectionByType(CollectionType.TvShow);
+            var config = _configurationRepository.GetConfiguration();
+            return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
         }
 
         public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
@@ -88,8 +97,8 @@ namespace EmbyStat.Services
 
                 stats = new ShowGraphs();
                 stats.BarGraphs.Add(CalculateGenreGraph(shows));
-                stats.BarGraphs.Add(CalculateRatingGraph(shows));
-                stats.BarGraphs.Add(CalculatePremiereYearGraph(shows));
+                stats.BarGraphs.Add(CalculateRatingGraph(shows.Select(x => x.CommunityRating)));
+                stats.BarGraphs.Add(CalculatePremiereYearGraph(shows.Select(x => x.PremiereDate)));
                 stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
                 stats.PieGraphs.Add(CalculateShowStateGraph(shows));
@@ -166,6 +175,11 @@ namespace EmbyStat.Services
             }
 
             return stats;
+        }
+
+        public bool ShowTypeIsPresent()
+        {
+            return _showRepository.Any();
         }
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
@@ -268,16 +282,19 @@ namespace EmbyStat.Services
                 .OrderBy(x => x.Key)
                 .ToList();
 
-            var j = 0;
-            for (var i = 0; i < 20; i++)
+            if (percentageList.Any())
             {
-                if (groupedList[j].Key != i * 5)
+                var j = 0;
+                for (var i = 0; i < 20; i++)
                 {
-                    groupedList.Add(new GraphGrouping<int?, double> { Key = i * 5, Capacity = 0});
-                }
-                else
-                {
-                    j++;
+                    if (groupedList[j].Key != i * 5)
+                    {
+                        groupedList.Add(new GraphGrouping<int?, double> {Key = i * 5, Capacity = 0});
+                    }
+                    else
+                    {
+                        j++;
+                    }
                 }
             }
 
@@ -291,58 +308,6 @@ namespace EmbyStat.Services
             {
                 Title = Constants.CountPerCollectedRate,
                 Data = rates
-            };
-        }
-
-        private Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<Show> shows)
-        {
-            var yearDataList = shows
-                .Select(x => x.PremiereDate)
-                .GroupBy(x => x.RoundToFive())
-                .OrderBy(x => x.Key)
-                .ToList();
-
-            var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
-            var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
-
-            var j = 0;
-            for (var i = lowestYear.Value; i < highestYear; i += 5)
-            {
-                if (yearDataList[j].Key != i)
-                {
-                    yearDataList.Add(new GraphGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
-                }
-                else
-                {
-                    j++;
-                }
-            }
-
-            var yearData = yearDataList
-                .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerPremiereYear,
-                Data = yearData
-            };
-        }
-
-        private Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<Show> shows)
-        {
-            var ratingData = shows.GroupBy(x => x.CommunityRating.RoundToHalf())
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerCommunityRating,
-                Data = ratingData
             };
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
+using EmbyStat.Common;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
 using Serilog;
@@ -28,8 +29,7 @@ namespace EmbyStat.Tasks
 
             var dueTime = triggerDate - now;
 
-            Log.Information("Daily trigger for {0} set to fire at {1}, which is {2} minutes from now.", taskName, triggerDate.ToString(), dueTime.TotalMinutes.ToString(CultureInfo.InvariantCulture));
-
+            Log.Information($"{Constants.LogPrefix.TaskWorker}\tDaily trigger for {taskName} set to fire at {triggerDate}, which is {Math.Floor(dueTime.TotalMinutes)} minutes from now.");
             Timer = new Timer(state => OnTriggered(), null, dueTime, TimeSpan.FromMilliseconds(-1));
         }
 

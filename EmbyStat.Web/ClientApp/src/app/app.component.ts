@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
 import { WizardStateService } from './wizard/services/wizard-state.service';

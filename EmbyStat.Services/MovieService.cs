@@ -46,9 +46,10 @@ namespace EmbyStat.Services
             _statisticsRepository = statisticsRepository;
         }
 
-        public List<Collection> GetMovieCollections()
+        public IEnumerable<Collection> GetMovieCollections()
         {
-            return _collectionRepository.GetCollectionByType(CollectionType.Movies).ToList();
+            var config = _configurationRepository.GetConfiguration();
+            return _collectionRepository.GetCollectionByTypes(config.MovieCollectionTypes);
         }
 
         public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
@@ -129,8 +130,8 @@ namespace EmbyStat.Services
 
                 stats = new MovieGraphs();
                 stats.BarGraphs.Add(CalculateGenreGraph(movies));
-                stats.BarGraphs.Add(CalculateRatingGraph(movies));
-                stats.BarGraphs.Add(CalculatePremiereYearGraph(movies));
+                stats.BarGraphs.Add(CalculateRatingGraph(movies.Select(x => x.CommunityRating)));
+                stats.BarGraphs.Add(CalculatePremiereYearGraph(movies.Select(x => x.PremiereDate)));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
 
                 var json = JsonConvert.SerializeObject(stats);
@@ -163,6 +164,11 @@ namespace EmbyStat.Services
             }
 
             return stats;
+        }
+
+        public bool MovieTypeIsPresent()
+        {
+            return _movieRepository.Any();
         }
 
         private List<ShortMovie> GetShortMovies(List<Movie> movies)
@@ -427,58 +433,6 @@ namespace EmbyStat.Services
             {
                 Title = Constants.CountPerGenre,
                 Data = genresData
-            };
-        }
-
-        private Graph<SimpleGraphValue> CalculatePremiereYearGraph(List<Movie> movies)
-        {
-            var yearDataList = movies
-                .Select(x => x.PremiereDate)
-                .GroupBy(x => x.RoundToFive())
-                .OrderBy(x => x.Key)
-                .ToList();
-
-            var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
-            var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
-
-            var j = 0;
-            for (var i = lowestYear.Value; i < highestYear; i += 5)
-            {
-                if (yearDataList[j].Key != i)
-                {
-                    yearDataList.Add(new GraphGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
-                }
-                else
-                {
-                    j++;
-                }
-            }
-
-            var yearData = yearDataList
-                .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerPremiereYear,
-                Data = yearData
-            };
-        }
-
-        private Graph<SimpleGraphValue> CalculateRatingGraph(List<Movie> movies)
-        {
-            var ratingData = movies.GroupBy(x => x.CommunityRating.RoundToHalf())
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            return new Graph<SimpleGraphValue>
-            {
-                Title = Constants.CountPerCommunityRating,
-                Data = ratingData
             };
         }
 

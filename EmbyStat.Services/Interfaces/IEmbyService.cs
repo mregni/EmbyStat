@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Services.Models;
@@ -13,5 +14,7 @@ namespace EmbyStat.Services.Interfaces
 		ServerInfo GetServerInfo();
 		List<Drives> GetLocalDrives();
 		void FireSmallSyncEmbyServerInfo();
+	    EmbyStatus GetEmbyStatus();
+	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);
 	}
 }

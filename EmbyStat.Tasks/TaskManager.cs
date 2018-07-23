@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks;
@@ -65,7 +66,7 @@ namespace EmbyStat.Tasks
 
             if (scheduledTask == null)
             {
-                Log.Error("Unable to find scheduled task of type {0} in QueueScheduledTask.", typeof(T).Name);
+                Log.Error($"{Constants.LogPrefix.TaskManager}\tUnable to find scheduled task of type {typeof(T).Name} in QueueScheduledTask.");
             }
             else
             {
@@ -94,13 +95,13 @@ namespace EmbyStat.Tasks
 
             if (scheduledTask == null)
             {
-                Log.Error("Unable to find scheduled task of type {0} in Execute.", typeof(T).Name);
+                Log.Error($"{Constants.LogPrefix.TaskManager}\tUnable to find scheduled task of type {typeof(T).Name} in Execute.");
             }
             else
             {
                 var type = scheduledTask.ScheduledTask.GetType();
 
-                Log.Information("Queueing task {0}", type.Name);
+                Log.Information($"{Constants.LogPrefix.TaskManager}\tQueueing task {type.Name}");
 
                 lock (_taskQueue)
                 {
@@ -118,7 +119,7 @@ namespace EmbyStat.Tasks
 
             if (scheduledTask == null)
             {
-                Log.Error("Unable to find scheduled task of type {0} in QueueScheduledTask.", task.GetType().Name);
+                Log.Error($"{Constants.LogPrefix.TaskManager}\tUnable to find scheduled task of type {task.GetType().Name} in QueueScheduledTask.");
             }
             else
             {
@@ -130,7 +131,7 @@ namespace EmbyStat.Tasks
         {
             var type = task.ScheduledTask.GetType();
 
-            Log.Information("Queueing task {0}", type.Name);
+            Log.Information($"{Constants.LogPrefix.TaskManager}\tQueueing task {type.Name}");
 
             lock (_taskQueue)
             {
@@ -205,7 +206,7 @@ namespace EmbyStat.Tasks
 
         private void ExecuteQueuedTasks()
         {
-            Log.Information("ExecuteQueuedTasks");
+            Log.Information($"{Constants.LogPrefix.TaskManager}\tExecuteQueuedTasks");
 
             lock (_taskQueue)
             {

@@ -1,5 +1,7 @@
 {
   "COMMON": {
+    "DOWNLOAD": "download",
+    "ANONYMISEDDOWNLOAD": "Anonymised download",
     "HIDE": "Hide",
     "NEXT": "next",
     "BACK": "back",
@@ -72,7 +74,8 @@
     "PLUGINS": "Plugins",
     "TASKS": "Tasks",
     "SERVER": "Emby server",
-    "LOGS": "Logs"
+    "LOGS": "Logs",
+    "ABOUT": "About"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -82,15 +85,17 @@
     "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby IP/domain and fill in the rest of the form.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the IP address already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
+    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
     "ISADMIN": "{{ user }} is an Emby administrator",
     "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!"
+    "FINISHWITHSYNC": "Start syncronisation",
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -128,11 +133,14 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Settings",
-    "MOVIETOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
     "SAVED": {
       "GENERAL": "General Embystat settings are saved!",
       "EMBY": "Emby settings are saved!",
       "MOVIES": "Movie settings are saved!"
+    },
+    "MOVIE": {
+      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     }
   },
   "TASK": {
@@ -152,7 +160,8 @@
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
     "SMALLEMBYSYNCTITLE": "Small sync with Emb",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media synchronisation"
+    "MEDIASYNCTITLE": "Media synchronisation",
+    "STARTMEDIASYNC": "Start media sync"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -162,5 +171,35 @@
     "AT": "at {{time}}",
     "TRIGGERTYPE": "Trigger type",
     "SAVETRIGGER": "Save trigger"
+  },
+  "DIALOGS": {
+    "NOMOVIETYPEFOUND": {
+      "TITLE": "No movies found",
+      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+    },
+    "NOSHOWTYPEFOUND": {
+      "TITLE": "No shows found",
+      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+    }
+  },
+  "LOADER": {
+    "FETCHING": "Fetching statistics"
+  },
+  "COLLECTIONTYPES": {
+    "MIXED": "Mixed / Other",
+    "MUSIC": "Music",
+    "MUSICVIDEOS": "Music videos",
+    "TRAILERS": "Trailers",
+    "HOMEVIDEOS": "Home videos",
+    "BOXSETS": "Boxsets",
+    "BOOKS": "Books",
+    "PHOTOS": "Photos",
+    "GAMES": "Games",
+    "LIVETV": "Live TV",
+    "PLAYLISTS": "Playlists",
+    "FOLDERS": "Folders"
+  },
+  "TOOLBAR": {
+    "GOTOEMBY": "Go to Emby"
   }
 }

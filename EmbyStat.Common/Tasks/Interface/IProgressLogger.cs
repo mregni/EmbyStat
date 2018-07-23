@@ -6,8 +6,8 @@ namespace EmbyStat.Common.Tasks.Interface
 {
     public interface IProgressLogger
     {
-        void LogInformation(string value);
-        void LogWarning(string value);
-        void LogError(Exception e, string value);
+        void LogInformation(string prefix, string value);
+        void LogWarning(string prefix, string value);
+        void LogError(string prefix, Exception e, string value);
     }
 }

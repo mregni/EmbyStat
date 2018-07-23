@@ -26,5 +26,6 @@ namespace EmbyStat.Repositories.Interfaces
         List<string> GetGenres(IEnumerable<string> collections);
         int GetEpisodeCountForShow(string showId, bool includeSpecials = false);
         int GetSeasonCountForShow(string showId, bool includeSpecials = false);
+        bool Any();
     }
 }

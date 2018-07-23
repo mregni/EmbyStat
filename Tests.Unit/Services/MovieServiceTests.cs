@@ -67,13 +67,13 @@ namespace Tests.Unit.Services
             movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()))
                 .Returns(new List<Movie> { _movieOne, _movieTwo });
             var collectionRepositoryMock = new Mock<ICollectionRepository>();
-            collectionRepositoryMock.Setup(x => x.GetCollectionByType(CollectionType.Movies)).Returns(_collections);
+            collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
 
             var genreRepositoryMock = new Mock<IGenreRepository>();
             var personServiceMock = new Mock<IPersonService>();
             var configurationServiceMock = new Mock<IConfigurationRepository>();
             configurationServiceMock.Setup(x => x.GetConfiguration())
-                .Returns(new Configuration(new List<ConfigurationKeyValue>()) {ToShortMovie = 10});
+                .Returns(new Configuration(new List<ConfigurationKeyValue>()) {ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType>{CollectionType.Movies}});
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var taskRepositoryMock = new Mock<ITaskRepository>();
             _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, 
@@ -86,7 +86,7 @@ namespace Tests.Unit.Services
             var collections = _subject.GetMovieCollections();
 
             collections.Should().NotBeNull();
-            collections.Count.Should().Be(2);
+            collections.Count().Should().Be(2);
         }
 
         [Fact]

@@ -10,4 +10,6 @@ export class Configuration {
   public isLoaded: boolean;
   public embyUserId: string;
   public toShortMovie: number;
+  public movieCollectionTypes: number[];
+  public showCollectionTypes: number[];
 }

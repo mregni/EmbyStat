@@ -26,8 +26,10 @@ namespace EmbyStat.Services
 		    dbSettings.WizardFinished = configuration.WizardFinished;
 		    dbSettings.EmbyUserId = configuration.EmbyUserId;
 		    dbSettings.ToShortMovie = configuration.ToShortMovie;
+		    dbSettings.MovieCollectionTypes = configuration.MovieCollectionTypes;
+		    dbSettings.ShowCollectionTypes = configuration.ShowCollectionTypes;
 
-		    _configurationRepository.UpdateOrAdd(dbSettings);
+		    _configurationRepository.Update(dbSettings);
         }
 
 		public Configuration GetServerSettings()

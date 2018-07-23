@@ -16,29 +16,42 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
   public configChangedSub: Subscription;
+  public newCollectionList: number[];
 
   public toShortMovieControl: FormControl = new FormControl('', [Validators.required]);
 
-  public form: FormGroup;
+  public formToShort: FormGroup;
 
   constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
-    this.form = new FormGroup({
+    this.formToShort = new FormGroup({
       toShortMovie: this.toShortMovieControl
     });
 
     this.configChangedSub = this.configuration$.subscribe(config => {
+      console.log(config);
       this.configuration = config;
-      this.form.setValue({ toShortMovie: config.toShortMovie });
+      this.formToShort.setValue({ toShortMovie: config.toShortMovie });
     });
   }
 
-  public saveForm() {
+  public saveFormToShort() {
     const config = { ...this.configuration };
-    config.toShortMovie = this.form.get('toShortMovie').value;
+    config.toShortMovie = this.formToShort.get('toShortMovie').value;
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
+  }
+
+  public saveFormCollectionTypes() {
+    const config = { ...this.configuration };
+    config.movieCollectionTypes = this.newCollectionList;
+    this.configurationFacade.updateConfiguration(config);
+    this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
+  }
+
+  public onCollectionListChanged(event: number[]) {
+    this.newCollectionList = event;
   }
 
   ngOnInit() {

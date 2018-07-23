@@ -15,9 +15,5 @@ export class LogFacade {
     this.logs$ = this.logService.getLogFiles();
     return this.logs$;
   }
-
-  downloadLog(fileName: string): void {
-    this.logService.downloadLog(fileName).subscribe();
-  }
 }
 

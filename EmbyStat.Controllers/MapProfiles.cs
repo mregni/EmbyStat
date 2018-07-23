@@ -3,6 +3,7 @@ using AutoMapper;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
+using EmbyStat.Controllers.ViewModels.About;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Graph;
@@ -12,6 +13,7 @@ using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Show;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Controllers.ViewModels.Task;
+using EmbyStat.Services.Models.About;
 using EmbyStat.Services.Models.Stat;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Emby;
@@ -57,6 +59,7 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<ShowStat, ShowStatViewModel>();
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 	        CreateMap<LogFile, LogFileViewModel>();
+	        CreateMap<About, AboutViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

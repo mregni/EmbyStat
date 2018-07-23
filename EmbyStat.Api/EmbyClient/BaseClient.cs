@@ -12,13 +12,14 @@ using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using MediaBrowser.Model.Serialization;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace EmbyStat.Api.EmbyClient
 {
 	public abstract class BaseClient<T> where T : class
 	{
 		protected Device Device { get; }
-		protected string ServerAddress { get; set; }
+        protected string ServerAddress { get; set; }
 		protected string ClientName { get; set; }
 		protected string DeviceName => Device.DeviceName;
 		protected string ApplicationVersion { get; set; }
@@ -31,14 +32,12 @@ namespace EmbyStat.Api.EmbyClient
 		protected readonly ICryptographyProvider CryptographyProvider;
 		protected readonly IJsonSerializer JsonSerializer;
 		protected readonly IAsyncHttpClient HttpClient;
-		protected readonly ILogger<T> Logger;
 
-		protected BaseClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient, ILogger<T> logger)
+		protected BaseClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient)
 		{
 			CryptographyProvider = cryptographyProvider;
 			JsonSerializer = jsonSerializer;
 			HttpClient = httpClient;
-			Logger = logger;
 
 			ClientName = Constants.Emby.AppName;
 			ApplicationVersion = "1.0.0";
@@ -230,13 +229,13 @@ namespace EmbyStat.Api.EmbyClient
 			}
 			catch (Exception e)
 			{
-				Logger.LogError(e, "EMBY_CALL_FAILED");
+				Log.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
 				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
 			}
 
 		}
 
-		protected async Task<string> PostAsyncToString(string url, Dictionary<string, string> args, CancellationToken cancellationToken = default(CancellationToken))
+		protected async Task<string> PostAsyncToString(string url, Dictionary<string, string> args, int timeout, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			url = AddDataFormat(url);
 
@@ -250,6 +249,7 @@ namespace EmbyStat.Api.EmbyClient
 				using (var stream = await SendAsync(new HttpRequest
 				{
 					Url = url,
+                    Timeout = timeout,
 					CancellationToken = cancellationToken,
 					RequestHeaders = HttpHeaders,
 					Method = "POST",
@@ -263,7 +263,7 @@ namespace EmbyStat.Api.EmbyClient
 			}
 			catch (Exception e)
 			{
-				Logger.LogError(e, "EMBY_CALL_FAILED");
+			    Log.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
 				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
 			}
 
@@ -283,7 +283,7 @@ namespace EmbyStat.Api.EmbyClient
 			}
 			catch (Exception e)
 			{
-				Logger.LogError(e, "EMBY_CALL_FAILED");
+			    Log.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
 				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
 			}
 		}
@@ -301,6 +301,7 @@ namespace EmbyStat.Api.EmbyClient
 
 		protected async Task<Stream> SendAsync(HttpRequest request)
 		{
+            Log.Information($"{Constants.LogPrefix.EmbyClient}\tSending {request.Method.ToUpper()}: {request.Url}");
 			return await HttpClient.SendAsync(request);
 		}
 

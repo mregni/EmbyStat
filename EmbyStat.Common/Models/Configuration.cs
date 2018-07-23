@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using EmbyStat.Common.Extentions;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Models
 {
@@ -80,7 +81,7 @@ namespace EmbyStat.Common.Models
             }
             set
             {
-                if (value.HasValue) _config[Constants.Configuration.LastTvdbUpdate] = value.Value.ToString(CultureInfo.InvariantCulture);
+                if (value.HasValue) _config[Constants.Configuration.LastTvdbUpdate] = value.Value.ToString("yyyy-MM-ddTHH:mm:sszzz");
                 else _config[Constants.Configuration.LastTvdbUpdate] = null;
             }
         }
@@ -89,6 +90,24 @@ namespace EmbyStat.Common.Models
         {
             get => _config[Constants.Configuration.TvdbApiKey];
             set => _config[Constants.Configuration.TvdbApiKey] = value;
+        }
+
+        public int KeepLogsCount
+        {
+            get => Convert.ToInt32(_config[Constants.Configuration.KeepLogsCount]);
+            set => _config[Constants.Configuration.KeepLogsCount] = value.ToString();
+        }
+
+        public List<CollectionType> MovieCollectionTypes
+        {
+            get => JsonConvert.DeserializeObject<List<CollectionType>>(_config[Constants.Configuration.MovieCollectionTypes]);
+            set => _config[Constants.Configuration.MovieCollectionTypes] = JsonConvert.SerializeObject(value);
+        }
+
+        public List<CollectionType> ShowCollectionTypes
+        {
+            get => JsonConvert.DeserializeObject<List<CollectionType>>(_config[Constants.Configuration.ShowCollectionTypes]);
+            set => _config[Constants.Configuration.ShowCollectionTypes] = JsonConvert.SerializeObject(value);
         }
 
         public Configuration(IEnumerable<ConfigurationKeyValue> list)

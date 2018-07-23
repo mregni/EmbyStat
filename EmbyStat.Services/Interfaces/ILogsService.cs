@@ -9,6 +9,6 @@ namespace EmbyStat.Services.Interfaces
     public interface ILogsService
     {
         List<LogFile> GetLogFileList();
-        Stream GetLogStream(string fileName);
+        Stream GetLogStream(string fileName, bool anonymous);
     }
 }

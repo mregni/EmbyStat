@@ -13,11 +13,11 @@ namespace EmbyStat.Repositories
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
-		        return new Configuration(context.Configuration);
+		        return new Configuration(context.Configuration.AsNoTracking());
 		    }
 	    }
 
-	    public void UpdateOrAdd(Configuration config)
+	    public void Update(Configuration config)
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {

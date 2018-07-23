@@ -30,10 +30,19 @@ namespace EmbyStat.Controllers
 
         [HttpGet]
         [Route("download/{fileName}")]
-        public FileResult GetZipFile(string fileName)
+        public FileResult GetZipFile(string fileName, bool anonymous)
         {
-            var stream = _logService.GetLogStream(fileName);
-            return File(stream, "application/octet-stream", fileName);
+            try
+            {
+                var stream = _logService.GetLogStream(fileName, anonymous);
+                return File(stream, "application/octet-stream", fileName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
     }
 }

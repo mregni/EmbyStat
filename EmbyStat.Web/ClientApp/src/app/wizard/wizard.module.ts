@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { WizardComponent } from './wizard.component';
+import { WizardOverviewComponent } from './wizard-overview/wizard-overview.component';
 import { WizardStateService } from './services/wizard-state.service';
 
 @NgModule({
@@ -15,6 +15,6 @@ import { WizardStateService } from './services/wizard-state.service';
     ReactiveFormsModule
   ],
   providers: [WizardStateService],
-  declarations: [WizardComponent]
+  declarations: [WizardOverviewComponent]
 })
 export class WizardModule { }

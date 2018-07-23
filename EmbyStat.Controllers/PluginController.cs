@@ -21,7 +21,6 @@ namespace EmbyStat.Controllers
 		[HttpGet]
 		public IActionResult Get()
 		{
-			Log.Information("Get installed plugins on Emby.");
 			var result = _pluginService.GetInstalledPlugins();
 			return Ok(Mapper.Map<IList<EmbyPluginViewModel>>(result));
 		}

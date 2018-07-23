@@ -17,6 +17,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { MatTableModule } from '@angular/material/table';
     MatChipsModule,
     MatProgressBarModule,
     MatTabsModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   exports: [
     MatToolbarModule,
@@ -58,7 +60,8 @@ import { MatTableModule } from '@angular/material/table';
     MatChipsModule,
     MatProgressBarModule,
     MatTabsModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
 })
 

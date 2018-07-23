@@ -65,6 +65,7 @@ namespace EmbyStat.Common
         public static class Type
         {
             public const string Movie = "Movie";
+            public const string Boxset = "BoxSet";
         }
 
         public static class Configuration
@@ -80,6 +81,29 @@ namespace EmbyStat.Common
             public const string UserName = "USERNAME";
             public const string WizardFinished = "WIZARDFINISHED";
             public const string TvdbApiKey = "TVDBAPICLIENT";
+            public const string KeepLogsCount = "KEEPLOGSCOUNT";
+            public const string MovieCollectionTypes = "MOVIECOLLECTIONTYPES";
+            public const string ShowCollectionTypes = "SHOWCOLLECTIONTYPES";
+        }
+
+        public static class EmbyStatus
+        {
+            public const string MissedPings = "MISSEDPINGS";
+        }
+
+        public static class LogPrefix
+        {
+            public const string ServerApi = "SERVER-API";
+            public const string TaskManager = "TASK-MANAGER";
+            public const string TaskWorker = "TASK-WORKER";
+            public const string DatabaseSeeder = "DATABASE-SEEDER";
+            public const string MediaSyncTask = "MEDIASYNC-TASK";
+            public const string PingEmbyTask = "PINGEMBYSERVER-TASK";
+            public const string SmallEmbySyncTask = "SMALLEMBYSYNC-TASK";
+            public const string System = "SYSTEM";
+            public const string EmbyClient = "EMBY-CLIENT";
+            public const string TheTVDBCLient = "THETVDB-CLIENT";
+            public const string ExceptionHandler = "EXCEPTION-HANDLER";
         }
 
         //CHARTS
