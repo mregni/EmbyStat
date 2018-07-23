@@ -22,7 +22,6 @@ namespace EmbyStat.Common.Extentions
                 case "musicvideos": return CollectionType.MusicVideos;
                 case "trailers": return CollectionType.Trailers;
                 case "homevideos": return CollectionType.HomeVideos;
-                case "boxsets": return CollectionType.BoxSets;
                 case "books": return CollectionType.Books;
                 case "photos": return CollectionType.Photos;
                 case "games": return CollectionType.Games;

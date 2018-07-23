@@ -23,12 +23,11 @@ namespace EmbyStat.Common.Models
         MusicVideos = 4,
         Trailers = 5,
         HomeVideos = 6,
-        BoxSets = 7,
         Books = 8,
         Photos = 9,
         Games = 10,
         LiveTv = 11,
         Playlists = 12,
-        Folders
+        Folders = 13
     }
 }

@@ -120,7 +120,7 @@ namespace EmbyStat.Api.Tvdb
             catch (Exception e)
             {
                 Log.Error(e, $"{Constants.LogPrefix.TheTVDBCLient}Could not receive show list from TVDB");
-                throw;
+                return new List<string>();
             }
         }
     }

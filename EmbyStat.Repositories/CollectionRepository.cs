@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,11 @@ namespace EmbyStat.Repositories
 {
     public class CollectionRepository : ICollectionRepository
     {
-        public IEnumerable<Collection> GetCollectionByType(CollectionType type)
+        public IEnumerable<Collection> GetCollectionByTypes(IEnumerable<CollectionType> types)
         {
             using (var context = new ApplicationDbContext())
             {
-                return context.Collections.Where(x => x.Type == type).ToList();
+                return context.Collections.Where(x => types.Any(y => y == x.Type)).ToList();
             }
         }
 

@@ -6,7 +6,7 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IMovieRepository
     {
         void RemoveMovies();
-        void Add(Movie movie);
+        void AddOrUpdate(Movie movie);
         int GetTotalPersonByType(List<string> collections, string type);
         string GetMostFeaturedPerson(List<string> collections, string type);
         List<Movie> GetAll(IEnumerable<string> collections, bool inludeSubs = false);
