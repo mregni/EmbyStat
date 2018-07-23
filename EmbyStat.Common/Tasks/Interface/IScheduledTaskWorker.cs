@@ -16,7 +16,7 @@ namespace EmbyStat.Common.Tasks.Interface
         List<TaskTriggerInfo> Triggers { get; set; }
         string Id { get; }
         event EventHandler<GenericEventArgs<double>> TaskProgress;
-        event EventHandler<GenericEventArgs<string>> TaskLogging;
+        event EventHandler<GenericEventArgs<ProgressLog>> TaskLogging;
         void ReloadTriggerEvents();
     }
 }

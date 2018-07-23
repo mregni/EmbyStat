@@ -18,7 +18,7 @@ namespace EmbyStat.Tasks
     public class ScheduledTaskWorker : IScheduledTaskWorker
     {
         public event EventHandler<GenericEventArgs<double>> TaskProgress;
-        public event EventHandler<GenericEventArgs<string>> TaskLogging;
+        public event EventHandler<GenericEventArgs<ProgressLog>> TaskLogging;
         public IScheduledTask ScheduledTask { get; set; }
         private readonly ITaskManager _taskManager;
         private readonly ITaskRepository _taskRepository;
@@ -256,9 +256,9 @@ namespace EmbyStat.Tasks
             OnTaskCompleted(startTime, endTime, status, failureException);
         }
 
-        private void LogProgress_ProgressLogged(object sender, string e)
+        private void LogProgress_ProgressLogged(object sender, ProgressLog e)
         {
-            TaskLogging?.Invoke(this, new GenericEventArgs<string> { Argument = e });
+            TaskLogging?.Invoke(this, new GenericEventArgs<ProgressLog> { Argument = e });
         }
 
         void progress_ProgressChanged(object sender, double e)

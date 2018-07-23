@@ -247,7 +247,7 @@ namespace EmbyStat.Tasks
             await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
         }
 
-        private async void Argument_TaskLogging(object sender, GenericEventArgs<string> e)
+        private async void Argument_TaskLogging(object sender, GenericEventArgs<ProgressLog> e)
         {
             await _taskHubContext.Clients.All.SendAsync("ReceiveLog", e.Argument);
         }

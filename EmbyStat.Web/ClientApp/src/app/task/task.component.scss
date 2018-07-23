@@ -20,6 +20,8 @@
   background: #fff;
   align-items: flex-start;
   box-shadow: $normal-box-shadow;
+  background-color: mat-color($mat-blue, A400);
+  color: white;
 }
 
 .task__left-content {
