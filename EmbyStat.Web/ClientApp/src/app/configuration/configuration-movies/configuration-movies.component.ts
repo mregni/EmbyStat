@@ -30,7 +30,6 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
     });
 
     this.configChangedSub = this.configuration$.subscribe(config => {
-      console.log(config);
       this.configuration = config;
       this.formToShort.setValue({ toShortMovie: config.toShortMovie });
     });
