@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 
 namespace EmbyStat.Common.Progress
 {
@@ -8,10 +9,7 @@ namespace EmbyStat.Common.Progress
 
         public void Report(T value)
         {
-            if (ProgressChanged != null)
-            {
-                ProgressChanged(this, value);
-            }
+            ProgressChanged?.Invoke(this, value);
         }
     }
 }

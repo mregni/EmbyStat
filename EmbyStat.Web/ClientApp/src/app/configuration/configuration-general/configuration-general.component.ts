@@ -6,6 +6,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
+import { ToastService } from '../../shared/services/toast.service';
+import { LanguageFacade } from '../../shared/components/language/state/facade.language';
+import { Language } from '../../shared/components/language/models/language';
 
 @Component({
   selector: 'app-configuration-general',
@@ -17,12 +20,18 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
   private configuration: Configuration;
   public languageChangedSub: Subscription;
   public configChangedSub: Subscription;
+  public languages$: Observable<Language[]>;
 
   public form: FormGroup;
   public nameControl: FormControl = new FormControl('', [Validators.required]);
-  public languageControl: FormControl = new FormControl('en', [Validators.required]);
+  public languageControl: FormControl = new FormControl('en-US', [Validators.required]);
 
-  constructor(private configurationFacade: ConfigurationFacade, private translate: TranslateService) {
+  constructor(
+    private configurationFacade: ConfigurationFacade,
+    private translate: TranslateService,
+    private toaster: ToastService,
+    private languageFacade: LanguageFacade) {
+    this.languages$ = this.languageFacade.getLanguages();
     this.configuration$ = this.configurationFacade.getConfiguration();
 
     this.form = new FormGroup({
@@ -44,6 +53,7 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
     config.language = this.form.get('language').value;
     config.username = this.form.get('name').value;
     this.configurationFacade.updateConfiguration(config);
+    this.toaster.pushSuccess('CONFIGURATION.SAVED.GENERAL');
   }
 
   private languageChanged(value: string): void {

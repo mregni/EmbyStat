@@ -1,0 +1,47 @@
+.swal-icon--warning {
+  border-color: #f8bb86;
+  -webkit-animation: pulseWarning .75s infinite alternate;
+  animation: pulseWarning .75s infinite alternate
+}
+
+.swal-icon--warning__body {
+  width: 5px;
+  height: 47px;
+  top: 10px;
+  border-radius: 2px;
+  margin-left: -2px
+}
+
+.swal-icon--warning__body, .swal-icon--warning__dot {
+  position: absolute;
+  left: 50%;
+  background-color: #f8bb86
+}
+
+.swal-icon--warning__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-left: -4px;
+  bottom: -11px
+}
+
+@-webkit-keyframes pulseWarning {
+  0% {
+    border-color: #f8d486
+  }
+
+  to {
+    border-color: #f8bb86
+  }
+}
+
+@keyframes pulseWarning {
+  0% {
+    border-color: #f8d486
+  }
+
+  to {
+    border-color: #f8bb86
+  }
+}

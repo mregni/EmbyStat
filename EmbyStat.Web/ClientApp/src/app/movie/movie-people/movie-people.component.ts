@@ -2,7 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { MovieFacade } from '../state/facade.movie';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
+import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
+
 @Component({
   selector: 'app-movie-people',
   templateUrl: './movie-people.component.html',
@@ -25,12 +27,14 @@ export class MoviePeopleComponent implements OnInit {
     this.stats$ = this.movieFacade.getPeopleStats(collection);
   }
 
-  public stats$: Observable<MoviePersonStats>;
-
-  constructor(private movieFacade: MovieFacade) {
+  public stats$: Observable<PersonStats>;
+  public isLoading$: Observable<boolean>;
+  
+  constructor(private movieFacade: MovieFacade, private loaderFacade: LoaderFacade) {
 
   }
 
   ngOnInit() {
+    this.isLoading$ = this.loaderFacade.isMoviePeopleLoading();
   }
 }

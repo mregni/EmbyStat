@@ -28,12 +28,11 @@ export class PersonPosterComponent implements OnDestroy {
       return this._sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
     }
 
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}
-      /emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openPerson(): void {
-    window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {

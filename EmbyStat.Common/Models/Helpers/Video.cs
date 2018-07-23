@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EmbyStat.Common.Models.Joins;
 
 namespace EmbyStat.Common.Models.Helpers
 {

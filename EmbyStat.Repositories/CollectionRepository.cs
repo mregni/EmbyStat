@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
 {
     public class CollectionRepository : ICollectionRepository
     {
-        public IEnumerable<Collection> GetCollectionByType(CollectionType type)
+        public IEnumerable<Collection> GetCollectionByTypes(IEnumerable<CollectionType> types)
         {
             using (var context = new ApplicationDbContext())
             {
-                return context.Collections.Where(x => x.Type == type).ToList();
+                return context.Collections.Where(x => types.Any(y => y == x.Type)).ToList();
             }
         }
 
@@ -26,12 +28,23 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void RemoveCollectionByType(CollectionType type)
+        public void AddOrUpdateRange(IEnumerable<Collection> collections)
         {
             using (var context = new ApplicationDbContext())
             {
-                var needRemoval = context.Collections.Where(x => x.Type == type);
-                context.Collections.RemoveRange(needRemoval);
+                foreach (var collection in collections)
+                {
+                    var dbCollection = context.Collections.AsNoTracking().FirstOrDefault(x => x.Id == collection.Id);
+
+                    if (dbCollection == null)
+                    {
+                        context.Add(collection);
+                    }
+                    else
+                    {
+                        context.Entry(collection).State = EntityState.Modified;
+                    }
+                }
                 context.SaveChanges();
             }
         }

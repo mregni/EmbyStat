@@ -1,0 +1,42 @@
+.collected__row {
+  flex: 1;
+  flex-direction: row;
+  padding: 0 10px;
+  display:flex;
+  align-content:center;
+}
+
+.collection_headers {
+  font-weight:bold;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+.column {
+  flex: 0 0 auto;
+  width: 100px;
+  padding: 10px;
+}
+
+.column-wide {
+  flex: 0 0 auto;
+  width: 150px;
+  padding: 10px;
+}
+
+.column_small {
+  flex: 0 0 auto;
+  width: 10px;
+}
+
+.column__title {
+  flex: 1 1 auto;
+  padding: 10px;
+}
+
+//TODO: not working 
+@media only screen and (max-width: 1200px) {
+  .hide-small-screen {
+    display: none;
+  }
+}

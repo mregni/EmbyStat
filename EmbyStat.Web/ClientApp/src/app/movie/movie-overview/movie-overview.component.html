@@ -1,9 +1,9 @@
-<div class="title_bar movie__flexcontainer">
-  <div class="movie__flex-row movie__align-start">
-    <div class="movie__left-content">
-      <h2>General Statistics</h2>
+<div class="title_bar media__flexcontainer">
+  <div class="media__flex-row media__align-start">
+    <div class="media__left-content">
+      <h2>{{ 'MENU.MOVIES' | translate }}</h2>
     </div>
-    <div class="movie__right-content">
+    <div class="media__right-content">
       <mat-form-field class="full-width">
         <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
           <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}</mat-option>
@@ -12,30 +12,27 @@
     </div>
   </div>
 </div>
-<div class="content">
+<div class="content" *ngIf="typeIsPresent">
   <mat-tab-group (selectedTabChange)="onTabChanged($event)">
-    <mat-tab label="General">
-      <div class="movie__tab-content">
+    <mat-tab label="{{ 'COMMON.GENERAL' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
         <app-movie-general [selectedCollections]="selectedCollections"></app-movie-general>
       </div>
     </mat-tab>
-    <mat-tab label="Graphs">
-      <div class="movie__tab-content">
+    <mat-tab label="{{ 'COMMON.GRAPHS' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
         <app-movie-charts [selectedCollections]="selectedCollections"></app-movie-charts>
       </div>
     </mat-tab>
-    <mat-tab label="People">
-      <div class="movie__tab-content">
+    <mat-tab label="{{ 'COMMON.PEOPLE' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
         <app-movie-people [selectedCollections]="selectedCollections"></app-movie-people>
       </div>
     </mat-tab>
-    <mat-tab label="Suspicious">
-      <div class="movie__tab-content">
+    <mat-tab label="{{ 'COMMON.SUSPICIOUS' | translate | capitalizeFirst}}">
+      <div class="media__tab-content">
         <app-movie-suspicious [selectedCollections]="selectedCollections"></app-movie-suspicious>
       </div>
-    </mat-tab>
-    <mat-tab label="List">
-      <div class="movie__tab-content">Content 2</div>
     </mat-tab>
   </mat-tab-group>
 </div>

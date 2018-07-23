@@ -5,9 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 
 namespace EmbyStat.Services
@@ -30,7 +31,7 @@ namespace EmbyStat.Services
             var person = _personRepository.GetPersonById(id);
             if (person == null || !person.Synced)
             {
-                var settings = _configurationRepository.GetSingle();
+                var settings = _configurationRepository.GetConfiguration();
                 var query = new ItemQuery { UserId = settings.EmbyUserId };
 
                 _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);

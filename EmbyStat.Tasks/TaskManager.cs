@@ -3,12 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Common.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Converters;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
@@ -65,7 +66,7 @@ namespace EmbyStat.Tasks
 
             if (scheduledTask == null)
             {
-                Log.Error("Unable to find scheduled task of type {0} in QueueScheduledTask.", typeof(T).Name);
+                Log.Error($"{Constants.LogPrefix.TaskManager}\tUnable to find scheduled task of type {typeof(T).Name} in QueueScheduledTask.");
             }
             else
             {
@@ -94,13 +95,13 @@ namespace EmbyStat.Tasks
 
             if (scheduledTask == null)
             {
-                Log.Error("Unable to find scheduled task of type {0} in Execute.", typeof(T).Name);
+                Log.Error($"{Constants.LogPrefix.TaskManager}\tUnable to find scheduled task of type {typeof(T).Name} in Execute.");
             }
             else
             {
                 var type = scheduledTask.ScheduledTask.GetType();
 
-                Log.Information("Queueing task {0}", type.Name);
+                Log.Information($"{Constants.LogPrefix.TaskManager}\tQueueing task {type.Name}");
 
                 lock (_taskQueue)
                 {
@@ -118,7 +119,7 @@ namespace EmbyStat.Tasks
 
             if (scheduledTask == null)
             {
-                Log.Error("Unable to find scheduled task of type {0} in QueueScheduledTask.", task.GetType().Name);
+                Log.Error($"{Constants.LogPrefix.TaskManager}\tUnable to find scheduled task of type {task.GetType().Name} in QueueScheduledTask.");
             }
             else
             {
@@ -130,7 +131,7 @@ namespace EmbyStat.Tasks
         {
             var type = task.ScheduledTask.GetType();
 
-            Log.Information("Queueing task {0}", type.Name);
+            Log.Information($"{Constants.LogPrefix.TaskManager}\tQueueing task {type.Name}");
 
             lock (_taskQueue)
             {
@@ -205,7 +206,7 @@ namespace EmbyStat.Tasks
 
         private void ExecuteQueuedTasks()
         {
-            Log.Information("ExecuteQueuedTasks");
+            Log.Information($"{Constants.LogPrefix.TaskManager}\tExecuteQueuedTasks");
 
             lock (_taskQueue)
             {
@@ -235,13 +236,20 @@ namespace EmbyStat.Tasks
         private async void TaskManager_TaskCompleted(object sender, TaskCompletionEventArgs e)
         {
             e.Task.TaskProgress -= Argument_TaskProgress;
+            e.Task.TaskLogging -= Argument_TaskLogging;
             await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
         }
 
         private async void TaskManager_TaskExecuting(object sender, GenericEventArgs<IScheduledTaskWorker> e)
         {
             e.Argument.TaskProgress += Argument_TaskProgress;
+            e.Argument.TaskLogging += Argument_TaskLogging;
             await _taskHubContext.Clients.All.SendAsync("ReceiveInfo", GetSendData());
+        }
+
+        private async void Argument_TaskLogging(object sender, GenericEventArgs<string> e)
+        {
+            await _taskHubContext.Clients.All.SendAsync("ReceiveLog", e.Argument);
         }
 
         private async void Argument_TaskProgress(object sender, GenericEventArgs<double> e)

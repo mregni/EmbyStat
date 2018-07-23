@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Linq;
 using EmbyStat.Common.Models;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Services.Converters
 {
     public static class PosterHelper
     {
-        public static Poster ConvertToPoster(Movie movie, string title)
+        public static MoviePoster ConvertToMoviePoster(Movie movie, string title)
         {
-            return new Poster
+            return new MoviePoster
             {
                 Title = title,
                 Name = movie.Name,
@@ -21,6 +18,20 @@ namespace EmbyStat.Services.Converters
                 Tag = movie.Primary,
                 DurationMinutes = Math.Floor(new TimeSpan(movie.RunTimeTicks ?? 0).TotalMinutes),
                 Year = movie.PremiereDate?.Year ?? 0
+            };
+        }
+
+        public static ShowPoster ConvertToShowPoster(Show show, string title)
+        {
+            return new ShowPoster
+            {
+                Title = title,
+                Name = show.Name,
+                CommunityRating = String.Format("{0:0.0}", show.CommunityRating ?? 0),
+                MediaId = show.Id,
+                OfficialRating = show.OfficialRating,
+                Tag = show.Primary,
+                Year = show.PremiereDate?.Year ?? 0
             };
         }
 

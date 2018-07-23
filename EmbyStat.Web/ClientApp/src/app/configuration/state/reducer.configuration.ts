@@ -12,11 +12,14 @@ const INITIAL_STATE: Configuration = {
   embyUserName: '',
   embyServerAddress: '',
   username: '',
-  language: 'en',
+  language: 'en-US',
   serverName: '',
   isLoaded: false,
   toShortMovie: 10,
-  embyUserId: ''
+  embyUserId: '',
+  id: '',
+  movieCollectionTypes: [],
+  showCollectionTypes: []
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -33,6 +36,9 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         serverName: action.payload.serverName,
         embyUserId: action.payload.embyUserId,
         toShortMovie: action.payload.toShortMovie,
+        id: action.payload.id,
+        movieCollectionTypes: action.payload.movieCollectionTypes,
+        showCollectionTypes: action.payload.showCollectionTypes,
         isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
@@ -47,6 +53,9 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         serverName: action.payload.serverName,
         embyUserId: action.payload.embyUserId,
         toShortMovie: action.payload.toShortMovie,
+        id: action.payload.id,
+        movieCollectionTypes: action.payload.movieCollectionTypes,
+        showCollectionTypes: action.payload.showCollectionTypes,
         isLoaded: true
       };
     default:

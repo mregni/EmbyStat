@@ -1,4 +1,6 @@
-﻿using EmbyStat.Common.Models;
+﻿using System.Collections.Generic;
+using EmbyStat.Common;
+using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 
@@ -14,23 +16,25 @@ namespace EmbyStat.Services
 
 		public void SaveServerSettings(Configuration configuration)
 		{
-			var dbSettings = _configurationRepository.GetSingle();
+		    var dbSettings = _configurationRepository.GetConfiguration();
 
-			dbSettings.Language = configuration.Language;
-			dbSettings.AccessToken = configuration.AccessToken;
-			dbSettings.EmbyServerAddress = configuration.EmbyServerAddress;
-			dbSettings.EmbyUserName = configuration.EmbyUserName;
-			dbSettings.Username = configuration.Username;
-			dbSettings.WizardFinished = configuration.WizardFinished;
+		    dbSettings.Language = configuration.Language;
+		    dbSettings.AccessToken = configuration.AccessToken;
+		    dbSettings.EmbyServerAddress = configuration.EmbyServerAddress;
+		    dbSettings.EmbyUserName = configuration.EmbyUserName;
+		    dbSettings.Username = configuration.Username;
+		    dbSettings.WizardFinished = configuration.WizardFinished;
 		    dbSettings.EmbyUserId = configuration.EmbyUserId;
 		    dbSettings.ToShortMovie = configuration.ToShortMovie;
+		    dbSettings.MovieCollectionTypes = configuration.MovieCollectionTypes;
+		    dbSettings.ShowCollectionTypes = configuration.ShowCollectionTypes;
 
-			_configurationRepository.UpdateOrAdd(dbSettings);
-		}
+		    _configurationRepository.Update(dbSettings);
+        }
 
 		public Configuration GetServerSettings()
 		{
-			return _configurationRepository.GetSingle();
+			return _configurationRepository.GetConfiguration();
 		}
 	}
 }

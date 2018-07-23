@@ -9,6 +9,7 @@ import 'rxjs/add/observable/throw';
 
 import { Configuration } from '../models/configuration';
 import { ConfigurationService } from '../service/configuration.service';
+import { EmbyService } from '../../shared/services/emby.service';
 
 import {
   ConfigurationActionTypes,
@@ -32,6 +33,7 @@ export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
     private configurationService: ConfigurationService,
+    private embyService: EmbyService,
     private store: Store<ApplicationState>) {
   }
 
@@ -78,7 +80,7 @@ export class ConfigurationEffects {
     .ofType(ConfigurationActionTypes.FIRE_SMALL_EMBY_SYNC)
     .pipe(
       map((data: FireSmallEmbySyncAction) => data.payload),
-      switchMap(() => this.configurationService.fireSmallEmbyUpdate()),
+      switchMap(() => this.embyService.fireSmallEmbyUpdate()),
       switchMap(() => {
         return [];
       })

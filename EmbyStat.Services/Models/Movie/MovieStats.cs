@@ -8,13 +8,13 @@ namespace EmbyStat.Services.Models.Movie
         public Card GenreCount { get; set; }
         public Card BoxsetCount { get; set; }
         public Card MostUsedContainer { get; set; }
-        public Poster HighestRatedMovie { get; set; }
-        public Poster LowestRatedMovie { get; set; }
-        public Poster LongestMovie { get; set; }
-        public Poster ShortestMovie { get; set; }
-        public Poster OldestPremieredMovie { get; set; }
-        public Poster YoungestPremieredMovie { get; set; }
-        public Poster YoungestAddedMovie { get; set; }
+        public MoviePoster HighestRatedMovie { get; set; }
+        public MoviePoster LowestRatedMovie { get; set; }
+        public MoviePoster LongestMovie { get; set; }
+        public MoviePoster ShortestMovie { get; set; }
+        public MoviePoster OldestPremieredMovie { get; set; }
+        public MoviePoster YoungestPremieredMovie { get; set; }
+        public MoviePoster YoungestAddedMovie { get; set; }
         public Card MostFeaturedMovieActor { get; set; }
         public Card MostFeaturedMovieDirector { get; set; }
         public Card LastPlayedMovie { get; set; }

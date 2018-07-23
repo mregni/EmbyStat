@@ -1,5 +1,5 @@
 <div class="title_bar">
-  <h2>Tasks</h2>
+  <h2>{{'MENU.TASKS' | translate}}</h2>
 </div>
 <div class="content">
   <div *ngFor="let task of tasks" class="task__flexcontainer">
@@ -9,7 +9,7 @@
       </a>
     </div>
     <div class="task__center">
-      <div class="task__tasktitle">{{task.name}}</div>
+      <div class="task__tasktitle">{{task.name | translate}}</div>
       <div class="subtext-grey" *ngIf="task.state === 0">
         <div *ngIf="task.lastExecutionResult !== null && task.lastExecutionResult.endTimeUtc !== null else no_run"
              [ngClass]="{'task__failed':task.lastExecutionResult.status === 1}">
@@ -17,7 +17,7 @@
             {{ 'TASK.LASTRUNNOW' | translate}}
           </div>
           <div *ngIf="!hasNoTime(task)">
-            {{ 'TASK.LASTRUN' | translate}}
+              {{ 'TASK.LASTRUN' | translate}}
             <span *ngIf="hasHours(task.lastExecutionResult.endTimeUtc)">
               {{'TASK.HOURS' | translate: { hours: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToHoursAgo} }}
             </span><span *ngIf="needsComma(task)">, </span>
@@ -30,7 +30,7 @@
             <span *ngIf="hasSeconds(task.lastExecutionResult.endTimeUtc)">
               {{'TASK.SECONDS' | translate: { seconds: task.lastExecutionResult.endTimeUtc | amFromUtc | amLocal | convertToSecondsAgo} }}
             </span>
-            {{ 'TASK.AGO' | translate }},
+              {{ 'TASK.AGO' | translate }},
             <span *ngIf="task.lastExecutionResult.status === 0">
               {{ 'TASK.FOR' | translate }}
             </span>
@@ -64,5 +64,10 @@
         <mat-icon>settings</mat-icon>
       </a>
     </div>
+  </div>
+</div>
+<div class="content tasklog__flexcontainer">
+  <div *ngFor="let line of lines">
+    {{line}}<br/>
   </div>
 </div>

@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace EmbyStat.Controllers
 {
@@ -15,12 +17,10 @@ namespace EmbyStat.Controllers
 	[Route("api/[controller]")]
 	public class EmbyController : Controller
 	{
-		private readonly ILogger<EmbyController> _logger;
 		private readonly IEmbyService _embyService;
 
-		public EmbyController(IEmbyService embyService, ILogger<EmbyController> logger)
+		public EmbyController(IEmbyService embyService)
 		{
-			_logger = logger;
 			_embyService = embyService;
 		}
 
@@ -28,7 +28,7 @@ namespace EmbyStat.Controllers
 		[Route("generatetoken")]
 		public async Task<IActionResult> GenerateToken([FromBody]EmbyLoginViewModel login)
 		{
-			_logger.LogInformation("Get emby token for certain login credentials.");
+			Log.Information($"{Constants.LogPrefix.ServerApi}\tGet emby token for certain login credentials.");
 			var result = await _embyService.GetEmbyToken(Mapper.Map<EmbyLogin>(login));
 			return Ok(Mapper.Map<EmbyTokenViewModel>(result));
 		}
@@ -37,7 +37,7 @@ namespace EmbyStat.Controllers
 		[Route("firesmallembysync")]
 		public IActionResult FireSmallEmbySync()
 		{
-			_logger.LogInformation("Sync basic Emby server info.");
+		    Log.Information($"{Constants.LogPrefix.ServerApi}\tSync basic Emby server info.");
 			_embyService.FireSmallSyncEmbyServerInfo();
 			return Ok();
 		}
@@ -46,7 +46,7 @@ namespace EmbyStat.Controllers
 		[Route("getserverinfo")]
 		public IActionResult GetServerInfo()
 		{
-			_logger.LogInformation("Get Emby server info.");
+		    Log.Information($"{Constants.LogPrefix.ServerApi}\tGet Emby server info.");
 			var result = _embyService.GetServerInfo();
 			var drives = _embyService.GetLocalDrives();
 
@@ -60,13 +60,21 @@ namespace EmbyStat.Controllers
 		[Route("searchemby")]
 		public IActionResult SearchEmby()
 		{
-			_logger.LogInformation("Searching for an Emby server in the network and returning the IP address.");
+		    Log.Information($"{Constants.LogPrefix.ServerApi}\tSearching for an Emby server in the network and returning the IP address.");
 			var result = _embyService.SearchEmby();
 			if (!string.IsNullOrWhiteSpace(result.Address))
 			{
-				_logger.LogInformation("Emby server found at: " + result.Address);
+			    Log.Information($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + result.Address);
 			}
 			return Ok(Mapper.Map<EmbyUdpBroadcastViewModel>(result));
 		}
-	}
+
+	    [HttpGet]
+	    [Route("getembystatus")]
+	    public IActionResult GetEmbyStatus()
+	    {
+	        var result = _embyService.GetEmbyStatus();
+	        return Ok(Mapper.Map<EmbyStatusViewModel>(result));
+	    }
+    }
 }

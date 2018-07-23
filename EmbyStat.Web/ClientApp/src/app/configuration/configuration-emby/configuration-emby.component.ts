@@ -5,7 +5,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
-import { EmbyToken } from '../models/embyToken';
+import { EmbyToken } from '../../shared/models/emby/embyToken';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-configuration-emby',
@@ -25,7 +26,7 @@ export class ConfigurationEmbyComponent implements OnInit, OnDestroy {
 
   public hidePassword = true;
 
-  constructor(private configurationFacade: ConfigurationFacade) {
+  constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
     this.form = new FormGroup({
@@ -54,6 +55,7 @@ export class ConfigurationEmbyComponent implements OnInit, OnDestroy {
           config.accessToken = token.token;
           config.embyUserId = token.id;
           this.configurationFacade.updateConfiguration(config);
+          this.toaster.pushSuccess('CONFIGURATION.SAVED.EMBY');
         }
       });
   }

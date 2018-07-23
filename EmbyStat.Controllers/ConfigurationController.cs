@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
 using AutoMapper;
+using EmbyStat.Common;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace EmbyStat.Controllers
 {
@@ -10,32 +15,34 @@ namespace EmbyStat.Controllers
 	[Route("api/[controller]")]
 	public class ConfigurationController : Controller
 	{
-		private readonly IConfigurationService _configurationService;
-		private readonly ILogger<ConfigurationController> _logger;
+        private readonly IConfigurationService _configurationService;
 
-		public ConfigurationController(IConfigurationService configurationService, ILogger<ConfigurationController> logger)
+		public ConfigurationController(IConfigurationService configurationService)
 		{
 			_configurationService = configurationService;
-			_logger = logger;
 		}
 
-		[HttpGet]
-		public IActionResult Get()
-		{
-			_logger.LogInformation("Getting server configuration from database.");
-			var configuration = _configurationService.GetServerSettings();
-			return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
-		}
+	    [HttpGet]
+	    public IActionResult Get()
+	    {
+	        Log.Information($"{ Constants.LogPrefix.ServerApi}\tGetting server configuration from database.");
+	        var configuration = _configurationService.GetServerSettings();
+	        if (!configuration.WizardFinished)
+	        {
+                Log.Information($"{Constants.LogPrefix.ServerApi}\tStarting wizard for user.");
+	        }
+	        return Ok(Mapper.Map<ConfigurationViewModel>(configuration));
+	    }
 
-		[HttpPut]
-		public IActionResult Update([FromBody] ConfigurationViewModel configuration)
-		{
-			_logger.LogInformation("Updating the new server configuration.");
-			var config = Mapper.Map<Common.Models.Configuration>(configuration);
-			_configurationService.SaveServerSettings(config);
+	    [HttpPut]
+	    public IActionResult Update([FromBody] ConfigurationViewModel configuration)
+	    {
+	        Log.Information($"{Constants.LogPrefix.ServerApi}\tUpdating the new server configuration.");
+	        var config = Mapper.Map<Common.Models.Configuration>(configuration);
+	        _configurationService.SaveServerSettings(config);
 
-			config = _configurationService.GetServerSettings();
-			return Ok(Mapper.Map<ConfigurationViewModel>(config));
-		}
-	}
+	        config = _configurationService.GetServerSettings();
+	        return Ok(Mapper.Map<ConfigurationViewModel>(config));
+        }
+    }
 }

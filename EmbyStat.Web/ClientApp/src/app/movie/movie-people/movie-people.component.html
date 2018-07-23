@@ -1,19 +1,22 @@
-
-<div class="movie__flexcontainer" *ngIf="stats$ | async as stats">
-  <div class="movie__flex-row movie__align-start">
-    <app-card-number [card]="stats.totalActorCount"></app-card-number>
-    <app-card-number [card]="stats.totalDirectorCount"></app-card-number>
-    <app-card-number [card]="stats.totalWriterCount"></app-card-number>
+<div *ngIf="!(isLoading$ | async); else loading">
+  <div class="media__flexcontainer" *ngIf="stats$ | async as stats">
+    <div class="media__flex-row media__align-start">
+      <app-card-number [card]="stats.totalActorCount"></app-card-number>
+      <app-card-number [card]="stats.totalDirectorCount"></app-card-number>
+      <app-card-number [card]="stats.totalWriterCount"></app-card-number>
+    </div>
+    <div class="media__flex-row media__align-start">
+      <app-person-poster [poster]="stats.mostFeaturedActor"></app-person-poster>
+      <app-person-poster [poster]="stats.mostFeaturedDirector"></app-person-poster>
+      <app-person-poster [poster]="stats.mostFeaturedWriter"></app-person-poster>
+    </div>
+    <h2>{{'MOVIES.MOSTFEATUREDPERGENRE' | translate}}</h2>
+    <div class="media__flex-row media__align-start">
+      <app-person-poster *ngFor="let poster of stats.mostFeaturedActorsPerGenre" [poster]="poster"></app-person-poster>
+    </div>
   </div>
-  <div class="movie__flex-row movie__align-start">
-    <app-person-poster [poster]="stats.mostFeaturedActor"></app-person-poster>
-    <app-person-poster [poster]="stats.mostFeaturedDirector"></app-person-poster>
-    <app-person-poster [poster]="stats.mostFeaturedWriter"></app-person-poster>
-  </div>
-  <h2>{{'MOVIES.MOSTFEATUREDPERGENRE' | translate}}</h2>
-  <div class="movie__flex-row movie__align-start">
-    <app-person-poster *ngFor="let poster of stats.mostFeaturedActorsPerGenre" [poster]="poster"></app-person-poster>
-  </div>
-
-
 </div>
+
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

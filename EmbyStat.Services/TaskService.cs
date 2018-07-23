@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks;
 using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Serilog;
-using TaskHelpers = EmbyStat.Services.Converters.TaskHelpers;
+using TaskHelpers = EmbyStat.Common.Converters.TaskHelpers;
 
 namespace EmbyStat.Services
 {
     public class TaskService : ITaskService
     {
         private readonly ITaskManager _taskManager;
+
         public TaskService(ITaskManager taskManager)
         {
             _taskManager = taskManager;
         }
+
         public List<TaskInfo> GetAllTasks()
         {
             return _taskManager.ScheduledTasks.OrderBy(x => x.Name).Select(TaskHelpers.ConvertToTaskInfo).ToList();

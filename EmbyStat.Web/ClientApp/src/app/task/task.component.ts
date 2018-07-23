@@ -18,12 +18,24 @@ export class TaskComponent implements OnInit, OnDestroy {
   private hubConnection: HubConnection;
   private getTasksSub: Subscription;
   public tasks: Task[];
+  public lines: string[] = [];
 
   constructor(private taskFacade: TaskFacade, public dialog: MatDialog) {
     this.hubConnection = new HubConnection('/tasksignal');
 
     this.hubConnection.on('ReceiveInfo', (data: Task[]) => {
       this.tasks = data;
+    });
+
+    this.hubConnection.on('ReceiveLog', (data: string) => {
+      const now = moment().format('HH:mm:ss');
+      data = now + ' - ' + data;
+
+      if (this.lines.length >= 10) {
+        this.lines.shift();
+      }
+
+      this.lines.push(data);
     });
   }
 
@@ -88,9 +100,9 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public needsAndFor(task: Task): boolean {
-    return (this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc)) ||
-        this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))) &&
-      this.hasSeconds(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
+    return (this.hasHours(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc)) ||
+      this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc))) &&
+      this.hasSeconds(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc));
   }
 
   public needsComma(task: Task): boolean {
@@ -98,8 +110,8 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   public needsCommaFor(task: Task): boolean {
-    return this.hasHours(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc))
-      && this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment(task.lastExecutionResult.endTimeUtc));
+    return this.hasHours(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc))
+      && this.hasMinutes(task.lastExecutionResult.startTimeUtc, moment.utc(task.lastExecutionResult.endTimeUtc));
   }
 
   public hasNoTime(task: Task): boolean {

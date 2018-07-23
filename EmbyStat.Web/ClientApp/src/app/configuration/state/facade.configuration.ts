@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
 
 import 'rxjs/add/observable/throw';
 
 import { Configuration } from '../models/configuration';
-import { EmbyUdpBroadcast } from '../models/embyUdpBroadcast';
-import { EmbyToken } from '../models/embyToken';
-import { EmbyLogin } from '../models/embyLogin';
+import { EmbyUdpBroadcast } from '../../shared/models/emby/embyUdpBroadcast';
+import { EmbyToken } from '../../shared/models/emby/embyToken';
+import { EmbyLogin } from '../../shared/models/emby/embyLogin';
 import { ConfigurationService } from '../service/configuration.service';
+import { EmbyService } from '../../shared/services/emby.service';
 
 import { ConfigurationQuery } from './reducer.configuration';
 import { LoadConfigurationAction, UpdateConfigurationAction, FireSmallEmbySyncAction } from './actions.configuration';
@@ -20,7 +20,8 @@ import { ApplicationState } from '../../states/app.state';
 export class ConfigurationFacade {
   constructor(
     private store: Store<ApplicationState>,
-    private configurationService: ConfigurationService
+    private configurationService: ConfigurationService,
+    private embyService: EmbyService
   ) { }
 
   configuration$ = this.store.select(ConfigurationQuery.getConfiguration);
@@ -32,7 +33,7 @@ export class ConfigurationFacade {
 
   getToken(username: string, password: string, address: string): Observable<EmbyToken> {
     const login = new EmbyLogin(username, password, address);
-    return this.configurationService.getEmbyToken(login);
+    return this.embyService.getEmbyToken(login);
   }
 
   updateConfiguration(config: Configuration): void {
@@ -40,7 +41,7 @@ export class ConfigurationFacade {
   }
 
   searchEmby(): Observable<EmbyUdpBroadcast> {
-    return this.configurationService.searchEmby();
+    return this.embyService.searchEmby();
   }
 
   fireSmallEmbySync(): void {

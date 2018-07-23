@@ -4,16 +4,17 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/throw';
 
 import { MovieStats } from '../models/movieStats';
-import { MoviePersonStats } from '../models/moviePersonStats';
+import { PersonStats } from '../../shared/models/personStats';
 import { Collection } from '../../shared/models/collection';
 import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
 
+import { MovieService } from '../service/movie.service';
 import { MovieQuery } from './reducer.movie';
 import {
   LoadGeneralStatsAction, LoadMovieCollectionsAction,
   LoadPersonStatsAction, LoadSuspiciousAction,
-  LoadGraphsAction
+  LoadGraphsAction, ClearGraphsSuccesAction
 } from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
@@ -21,12 +22,13 @@ import { ApplicationState } from '../../states/app.state';
 @Injectable()
 export class MovieFacade {
   constructor(
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    private movieService: MovieService
   ) { }
 
   generalStats$ = this.store.select(MovieQuery.getGeneralStats);
   personStats$ = this.store.select(MovieQuery.getPersonStats);
-  collections$ = this.store.select(MovieQuery.getMovieCollections);
+  collections$ = this.store.select(MovieQuery.getCollections);
   suspicious$ = this.store.select(MovieQuery.getSuspicious);
   graphs$ = this.store.select(MovieQuery.getGraphs);
 
@@ -35,7 +37,7 @@ export class MovieFacade {
     return this.generalStats$;
   }
 
-  getPeopleStats(list: string[]): Observable<MoviePersonStats> {
+  getPeopleStats(list: string[]): Observable<PersonStats> {
     this.store.dispatch(new LoadPersonStatsAction(list));
     return this.personStats$;
   }
@@ -53,6 +55,14 @@ export class MovieFacade {
   getGraphs(list: string[]): Observable<MovieGraphs> {
     this.store.dispatch(new LoadGraphsAction(list));
     return this.graphs$;
+  }
+
+  clearGraphs(): void {
+    this.store.dispatch(new ClearGraphsSuccesAction);
+  }
+
+  isMovieTypePresent(): Observable<boolean> {
+    return this.movieService.checkIfTypeIsPresent();
   }
 }
 

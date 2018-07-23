@@ -1,4 +1,5 @@
 export class Configuration {
+  public id: string;
   public wizardFinished: boolean;
   public accessToken: string;
   public embyUserName: string;
@@ -9,4 +10,6 @@ export class Configuration {
   public isLoaded: boolean;
   public embyUserId: string;
   public toShortMovie: number;
+  public movieCollectionTypes: number[];
+  public showCollectionTypes: number[];
 }
