@@ -21,6 +21,12 @@ namespace EmbyStat.Common.Models.Helpers
         public int? ProductionYear { get; set; }
         public string SortName { get; set; }
         public ICollection<MediaGenre> MediaGenres { get; set; }
-        public string CollectionId { get; set; }
+        public ICollection<MediaCollection> Collections { get; set; }
+
+        public Media()
+        {
+            Collections = new List<MediaCollection>();
+        }
+
     }
 }

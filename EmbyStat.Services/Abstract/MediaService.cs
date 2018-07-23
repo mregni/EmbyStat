@@ -28,7 +28,7 @@ namespace EmbyStat.Services.Abstract
             return statistic != null
                    && lastMediaSync != null
                    && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.CId).ToList());
+                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.StatisticId).ToList());
         }
 
         public Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<float?> list)

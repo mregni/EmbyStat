@@ -25,19 +25,28 @@ namespace EmbyStat.Services
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly IConfigurationRepository _configurationRepository;
 
-        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, ITaskRepository taskRepository, IStatisticsRepository statisticsRepository)
+        public ShowService(IShowRepository showRepository, 
+            ICollectionRepository collectionRepository, 
+            IGenreRepository genreRepository, 
+            IPersonService personService, 
+            ITaskRepository taskRepository, 
+            IStatisticsRepository statisticsRepository,
+            IConfigurationRepository configurationRepository)
         : base(taskRepository){
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
             _statisticsRepository = statisticsRepository;
+            _configurationRepository = configurationRepository;
         }
 
         public IEnumerable<Collection> GetShowCollections()
         {
-            return _collectionRepository.GetCollectionByType(CollectionType.TvShow);
+            var config = _configurationRepository.GetConfiguration();
+            return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
         }
 
         public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)

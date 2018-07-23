@@ -23,7 +23,6 @@ namespace EmbyStat.Common.Models
         MusicVideos = 4,
         Trailers = 5,
         HomeVideos = 6,
-        BoxSets = 7,
         Books = 8,
         Photos = 9,
         Games = 10,

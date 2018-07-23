@@ -5,6 +5,7 @@ using System.Text;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Helpers;
+using EmbyStat.Common.Models.Joins;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,10 +29,10 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var collectionList = collections.Select(x => new CollectionId
+                var collectionList = collections.Select(x => new StatisticCollection
                 {
                     Id = Guid.NewGuid().ToString(),
-                    CId = x
+                    StatisticId = x
                 }).ToList();
 
                 var result = new Statistic

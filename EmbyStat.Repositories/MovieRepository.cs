@@ -12,7 +12,7 @@ namespace EmbyStat.Repositories
 {
     public class MovieRepository : IMovieRepository
     {
-        public void Add(Movie movie)
+        public void AddOrUpdate(Movie movie)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -22,7 +22,7 @@ namespace EmbyStat.Repositories
                     var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
                     if (temp == null)
                     {
-                        Log.Warning($"We couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
+                        Log.Warning($"{Constants.LogPrefix.MediaSyncTask}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
                         peopleToDelete.Add(person.PersonId);
                     }
                 }
@@ -34,14 +34,27 @@ namespace EmbyStat.Repositories
                     var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
                     if (temp == null)
                     {
-                        Log.Warning($"We couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
+                        Log.Warning($"{Constants.LogPrefix.MediaSyncTask}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
                         genresToDelete.Add(genre.GenreId);
                     }
                 }
                 genresToDelete.ForEach(x => movie.MediaGenres.Remove(movie.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
 
-                context.Movies.Add(movie);
-                context.SaveChanges();
+                var dbMovie = context.Movies.Include(x => x.Collections).SingleOrDefault(x => x.Id == movie.Id);
+                if (dbMovie == null)
+                {
+                    context.Movies.Add(movie);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    dbMovie.Collections.ToList().ForEach(x => movie.Collections.Add(x));
+                    context.Movies.Remove(dbMovie);
+                    context.SaveChanges();
+
+                    context.Movies.AddRange(movie);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -53,7 +66,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
@@ -70,7 +83,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 var person = query
@@ -101,7 +114,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 return query.ToList();
@@ -116,7 +129,7 @@ namespace EmbyStat.Repositories
 
                 if (collections.Any())
                 {
-                    query = query.Where(x => collections.Any(y => x.CollectionId == y));
+                    query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
                 }
 
                 var genres = query

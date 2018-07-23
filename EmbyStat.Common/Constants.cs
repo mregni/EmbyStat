@@ -65,6 +65,7 @@ namespace EmbyStat.Common
         public static class Type
         {
             public const string Movie = "Movie";
+            public const string Boxset = "BoxSet";
         }
 
         public static class Configuration

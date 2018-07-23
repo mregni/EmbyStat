@@ -7,7 +7,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface ICollectionRepository
     {
-        IEnumerable<Collection> GetCollectionByType(CollectionType type);
+        IEnumerable<Collection> GetCollectionByTypes(IEnumerable<CollectionType> types);
         void AddCollectionRange(IEnumerable<Collection> collections);
         void AddOrUpdateRange(IEnumerable<Collection> collections);
     }

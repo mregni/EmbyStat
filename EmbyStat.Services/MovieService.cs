@@ -46,9 +46,10 @@ namespace EmbyStat.Services
             _statisticsRepository = statisticsRepository;
         }
 
-        public List<Collection> GetMovieCollections()
+        public IEnumerable<Collection> GetMovieCollections()
         {
-            return _collectionRepository.GetCollectionByType(CollectionType.Movies).ToList();
+            var config = _configurationRepository.GetConfiguration();
+            return _collectionRepository.GetCollectionByTypes(config.MovieCollectionTypes);
         }
 
         public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
