@@ -28,6 +28,7 @@ namespace EmbyStat.Services
 		    dbSettings.ToShortMovie = configuration.ToShortMovie;
 		    dbSettings.MovieCollectionTypes = configuration.MovieCollectionTypes;
 		    dbSettings.ShowCollectionTypes = configuration.ShowCollectionTypes;
+		    dbSettings.TvdbApiKey = configuration.TvdbApiKey;
 
 		    _configurationRepository.Update(dbSettings);
         }
