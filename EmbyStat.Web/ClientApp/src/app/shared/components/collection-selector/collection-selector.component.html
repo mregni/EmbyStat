@@ -1,5 +1,4 @@
 <form class="form-container collectionselector__container" [formGroup]="form">
-  <p>{{'CONFIGURATION.MOVIE.COLLECTIONTYPES' | translate }}</p>
   <mat-checkbox (change)="onChange($event)" formControlName="movieType" value="1">{{ 'COMMON.MOVIES' | translate | capitalizeFirst }}</mat-checkbox>
   <mat-checkbox (change)="onChange($event)" formControlName="showType" value="2">{{ 'COMMON.SHOWS' | translate | capitalizeFirst }}</mat-checkbox>
   <mat-checkbox (change)="onChange($event)" formControlName="mixedType" value="0">{{ 'COLLECTIONTYPES.MIXED' | translate | capitalizeFirst }}</mat-checkbox>
