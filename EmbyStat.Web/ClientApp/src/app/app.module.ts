@@ -33,6 +33,7 @@ import { ServerEffects } from './server/state/effects.server';
 import { MovieEffects } from './movie/state/effects.movie';
 import { ShowEffects } from './show/state/effects.show';
 import { LoaderEffects } from './shared/components/loader/state/effects.loader';
+import { AboutEffects } from './about/state/effects.about';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -73,7 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects, ShowEffects, LoaderEffects]),
+    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects, ShowEffects, LoaderEffects, AboutEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [

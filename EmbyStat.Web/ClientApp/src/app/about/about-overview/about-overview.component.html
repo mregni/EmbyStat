@@ -6,5 +6,8 @@
   </div>
 </div>
 <div class="content">
-  
+  <div *ngIf="about$ | async as about">
+    EmbyStat version: {{ about.version }} <br/>
+    Operating system: {{ about.operatingSystem }} {{about.architecture}} {{ about.operatingSystemVersion }}
+  </div>
 </div>

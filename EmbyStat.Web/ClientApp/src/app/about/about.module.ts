@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { AboutOverviewComponent } from './about-overview/about-overview.component';
 import { AboutService } from './service/about.service';
+import { AboutFacade } from './state/facade.about';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { AboutService } from './service/about.service';
     SharedModule
   ],
   providers: [
-    AboutService
+    AboutService,
+    AboutFacade
   ],
   declarations: [AboutOverviewComponent]
 })
