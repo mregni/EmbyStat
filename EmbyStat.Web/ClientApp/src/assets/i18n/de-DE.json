@@ -74,7 +74,8 @@
     "PLUGINS": "Plugins",
     "TASKS": "Aufgaben",
     "SERVER": "Emby Server",
-    "LOGS": "Logs"
+    "LOGS": "Logs",
+    "ABOUT": "About"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -132,11 +133,14 @@
   },
   "CONFIGURATION": {
     "SETTINGS": "Einstellungen",
-    "MOVIETOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
     "SAVED": {
       "GENERAL": "EmbyStat-Einstellungen wurden gespeichert!",
       "EMBY": "Emby-Einstellungen wurden gespeichert!",
       "MOVIES": "Film-Einstellungen wurden gespeichert!"
+    },
+    "MOVIE": {
+      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     }
   },
   "TASK": {
@@ -180,5 +184,22 @@
   },
   "LOADER": {
     "FETCHING": "Rufe Statistiken ab..."
+  },
+  "COLLECTIONTYPES": {
+    "MIXED": "Mixed / Other",
+    "MUSIC": "Music",
+    "MUSICVIDEOS": "Music videos",
+    "TRAILERS": "Trailers",
+    "HOMEVIDEOS": "Home videos",
+    "BOXSETS": "Boxsets",
+    "BOOKS": "Books",
+    "PHOTOS": "Photos",
+    "GAMES": "Games",
+    "LIVETV": "Live TV",
+    "PLAYLISTS": "Playlists",
+    "FOLDERS": "Folders"
+  },
+  "TOOLBAR": {
+    "GOTOEMBY": "Go to Emby"
   }
 }
