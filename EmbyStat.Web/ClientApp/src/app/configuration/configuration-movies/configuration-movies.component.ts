@@ -16,6 +16,7 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
   public configChangedSub: Subscription;
+  public newCollectionList: number[];
 
   public toShortMovieControl: FormControl = new FormControl('', [Validators.required]);
 
@@ -29,6 +30,7 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
     });
 
     this.configChangedSub = this.configuration$.subscribe(config => {
+      console.log(config);
       this.configuration = config;
       this.formToShort.setValue({ toShortMovie: config.toShortMovie });
     });
@@ -43,9 +45,13 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
 
   public saveFormCollectionTypes() {
     const config = { ...this.configuration };
-    config.toShortMovie = this.formToShort.get('toShortMovie').value;
+    config.movieCollectionTypes = this.newCollectionList;
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
+  }
+
+  public onCollectionListChanged(event: number[]) {
+    this.newCollectionList = event;
   }
 
   ngOnInit() {

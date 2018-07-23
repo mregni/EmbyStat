@@ -37,6 +37,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         embyUserId: action.payload.embyUserId,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
+        movieCollectionTypes: action.payload.movieCollectionTypes,
+        showCollectionTypes: action.payload.showCollectionTypes,
         isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
@@ -52,6 +54,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         embyUserId: action.payload.embyUserId,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
+        movieCollectionTypes: action.payload.movieCollectionTypes,
+        showCollectionTypes: action.payload.showCollectionTypes,
         isLoaded: true
       };
     default:

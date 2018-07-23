@@ -8,6 +8,7 @@ import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular-highcharts';
 import { LanguageModule } from './components/language/language.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
@@ -40,6 +41,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
     NgxChartsModule,
     ChartModule,
     LanguageModule,
+    ReactiveFormsModule,
     TranslateModule.forChild()
   ],
   exports: [

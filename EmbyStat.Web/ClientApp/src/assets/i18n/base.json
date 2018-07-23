@@ -189,13 +189,16 @@
     "MUSIC": "Music",
     "MUSICVIDEOS": "Music videos",
     "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home trailers",
+    "HOMEVIDEOS": "Home videos",
     "BOXSETS": "Boxsets",
     "BOOKS": "Books",
     "PHOTOS": "Photos",
     "GAMES": "Games",
     "LIVETV": "Live TV",
     "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders" 
-  }
+    "FOLDERS": "Folders"
+  },
+  "TOOLBAR": {
+    "GOTOEMBY": "Go to Emby" 
+  } 
 }

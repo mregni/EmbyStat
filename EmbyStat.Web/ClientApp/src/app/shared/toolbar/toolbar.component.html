@@ -16,6 +16,6 @@
     <img *ngIf="missedPings >= 2" src="../../../assets/images/icons/red_circle.png" />
   </div>
   <div *ngIf="configuration$ | async as config" class="button-container">
-    <a mat-raised-button href="{{config.embyServerAddress}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">Emby server</a>
+    <a mat-raised-button href="{{config.embyServerAddress}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
   </div>
 </mat-toolbar>

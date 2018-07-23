@@ -1,17 +1,16 @@
-<form class="form-container" [formGroup]="formCollectionTypes">
+<form class="form-container collectionselector__container" [formGroup]="form">
   <p>{{'CONFIGURATION.MOVIE.COLLECTIONTYPES' | translate }}</p>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="movieType" value="1">{{ 'COMMON.MOVIES' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="showType" value="2">{{ 'COMMON.SHOWS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="mixedType" value="0">{{ 'COLLECTIONTYPES.MIXED' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="musicType" value="3">{{ 'COLLECTIONTYPES.MUSIC' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="musicVideoType" value="4">{{ 'COLLECTIONTYPES.MUSICVIDEOS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="trailersType" value="5">{{ 'COLLECTIONTYPES.TRAILERS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="homeType" value="6">{{ 'COLLECTIONTYPES.HOMEVIDEOS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="boxType" value="7">{{ 'COLLECTIONTYPES.BOXSETS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="bookType" value="8">{{ 'COLLECTIONTYPES.BOOKS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="photoType" value="9">{{ 'COLLECTIONTYPES.PHOTOS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="gameType" value="10">{{ 'COLLECTIONTYPES.GAMES' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="liveType" value="11">{{ 'COLLECTIONTYPES.LIVETV' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="playType" value="12">{{ 'COLLECTIONTYPES.PLAYLISTS' | translate | capitalizeFirst }}</mat-checkbox>
-  <mat-checkbox (onclick)="onChange($event)" formControlName="folderType" value="13">{{ 'COLLECTIONTYPES.FOLDERS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="movieType" value="1">{{ 'COMMON.MOVIES' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="showType" value="2">{{ 'COMMON.SHOWS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="mixedType" value="0">{{ 'COLLECTIONTYPES.MIXED' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="musicType" value="3">{{ 'COLLECTIONTYPES.MUSIC' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="musicVideoType" value="4">{{ 'COLLECTIONTYPES.MUSICVIDEOS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="trailersType" value="5">{{ 'COLLECTIONTYPES.TRAILERS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="homeType" value="6">{{ 'COLLECTIONTYPES.HOMEVIDEOS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="bookType" value="8">{{ 'COLLECTIONTYPES.BOOKS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="photoType" value="9">{{ 'COLLECTIONTYPES.PHOTOS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="gameType" value="10">{{ 'COLLECTIONTYPES.GAMES' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="liveType" value="11">{{ 'COLLECTIONTYPES.LIVETV' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="playType" value="12">{{ 'COLLECTIONTYPES.PLAYLISTS' | translate | capitalizeFirst }}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" formControlName="folderType" value="13">{{ 'COLLECTIONTYPES.FOLDERS' | translate | capitalizeFirst }}</mat-checkbox>
 </form>
