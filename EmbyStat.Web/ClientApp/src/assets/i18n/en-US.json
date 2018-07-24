@@ -145,7 +145,7 @@
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
@@ -165,10 +165,10 @@
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Check Emby connection",
-    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+    "PINGEMBYSERVERDESCRIPTION": "Check Emby server is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+    "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your content. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation",
     "STARTMEDIASYNC": "Start media sync"
   },
@@ -192,7 +192,7 @@
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Generating statistics"
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
