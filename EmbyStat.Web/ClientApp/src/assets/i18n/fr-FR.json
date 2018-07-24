@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "DOWNLOAD": "download",
+    "DOWNLOAD": "télécharger",
     "ANONYMISEDDOWNLOAD": "Téléchargement anonyme",
     "HIDE": "Cacher",
     "NEXT": "suivant",
@@ -43,35 +43,35 @@
     "PREMIEREDATE": "date de sortie",
     "STATUS": "statut",
     "PERCENTAGE": "pourcentage",
-    "COLLECTED": "collected"
+    "COLLECTED": "collecté"
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
-    "NO_CONFIGURATION_FOUND": "No configuration could be found.",
-    "NOT_FOUND": "Oops, we are missing some files.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
+    "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
+    "NO_CONFIGURATION_FOUND": "Aucune configuration n'a été trouvée.",
+    "NOT_FOUND": "Oups, il nous manque des fichiers.",
+    "TOKEN_FAILED": "L'obtention du jeton Emby a échoué. Veuillez vérifier vos informations d'identification et votre adresse.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
   },
   "FORM_LABELS": {
-    "NAME": "Enter your name",
-    "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby ip address",
-    "EMBYUSERNAME": "Emby admin username",
-    "EMBYPASSWORD": "Emby admin password",
-    "DURATIONINMINUTES": "Duration in minutes",
-    "TVDBAPI": "TheTVDB api key"
+    "NAME": "Entrez votre nom",
+    "LANGUAGE": "Sélectionnez votre langue",
+    "EMBYADDRESS": "Adresse IP Emby",
+    "EMBYUSERNAME": "Nom utilisateur de administrateur Emby",
+    "EMBYPASSWORD": "Mot de passe administrateur Emby",
+    "DURATIONINMINUTES": "Durée en minutes",
+    "TVDBAPI": "Clé API TheTVDB"
   },
   "FORM_ERRORS": {
-    "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
-    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
-    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+    "NAME_REQUIRED": "Remplissez votre nom ou pseudo.",
+    "EMBYADDRESS_REQUIRED": "Entrer votre adresse IP Emby.",
+    "EMBYUSERNAME_REQUIRED": "Entrez l'identifiant administrateur Emby.",
+    "EMBYPASSWORD_REQUIRED": "Entrez le mot de passe administrateur Emby."
   },
   "MENU": {
-    "DASHBOARD": "Dashboard",
-    "MOVIES": "Movies",
-    "SHOWS": "Shows",
-    "SETTINGS": "Settings",
+    "DASHBOARD": "Tableau de bord",
+    "MOVIES": "Films",
+    "SHOWS": "Séries",
+    "SETTINGS": "Paramètres",
     "PLUGINS": "Plugins",
     "TASKS": "Tasks",
     "SERVER": "Emby server",
