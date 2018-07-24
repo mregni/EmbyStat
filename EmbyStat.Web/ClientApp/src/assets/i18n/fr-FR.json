@@ -96,21 +96,21 @@
     "RESCAN": "Re-scanner",
     "FINISHWITHSYNC": "Démarrer la syncronisation",
     "FINISHED": "Tous les paramètres sont enregistrés. Vous pouvez commencer à utiliser le serveur Emby maintenant. Profitez de vos nouvelles statistiques!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "La meilleure chose à faire est de démarrer une tâche de synchronisation multimédia. EmbyStat commencera à télécharger toutes les données de votre serveur Emby. Gardez à l'esprit que cette tâche peut prendre du temps en fonction de la taille de votre collection. Si vous ne voulez pas commencer la de syncronisation maintenant, cliquez simplement sur Terminer. Vous pouvez le démarrer manuellement plus tard en accédant à la page Tâches."
   },
   "PLUGINS": {
     "VERSION": "Version"
   },
   "MOVIES": {
-    "TOTALMOVIES": "Total movies",
-    "TOTALGENRES": "Total genres",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATED": "Highest rated",
-    "LOWESTRATED": "Lowest rated",
+    "TOTALMOVIES": "Nombre de films",
+    "TOTALGENRES": "Total des genres",
+    "TOTALPLAYLENGTH": "Temps de visionnage total",
+    "HIGHESTRATED": "Le mieux noté",
+    "LOWESTRATED": "Les mal notés",
     "OLDESTPREMIERED": "Oldest premiered",
     "YOUNGESTPREMIERED": "Youngest premiered",
-    "SHORTEST": "Shortest",
-    "LONGEST": "Longest",
+    "SHORTEST": "Le plus court",
+    "LONGEST": "Le plus long",
     "YOUNGESTADDED": "Youngest added",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
     "DUPLICATEMOVIES": "duplicate movies",
@@ -175,28 +175,28 @@
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
     "DAILYTRIGGER": "Daily trigger",
-    "STARTUPTRIGGER": "Startup trigger",
-    "EVERY": "every {{interval}}",
-    "AT": "at {{time}}",
-    "TRIGGERTYPE": "Trigger type",
-    "SAVETRIGGER": "Save trigger"
+    "STARTUPTRIGGER": "Déclencheur de démarrage",
+    "EVERY": "chaque {{interval}}",
+    "AT": "à {{time}}",
+    "TRIGGERTYPE": "Type de déclencheur",
+    "SAVETRIGGER": "Déclancheur de sauvegarde"
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Aucun film trouvé",
+      "BODY": "Nous n'avons trouvé aucun film dans la base de données EmbyStat. Si vous avez des films dans Emby, vous devriez essayer de démarrer une nouvelle tâche de synchronisation multimédia."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Aucune série trouvée",
+      "BODY": "Nous n'avons trouvé aucun film dans la base de données EmbyStat. Si vous avez des films dans Emby, vous essayez de démarrer une nouvelle tâche de synchronisation multimédia."
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Récupération des statistiques"
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
+    "MIXED": "Mixte / Autre",
+    "MUSIC": "Musique",
     "MUSICVIDEOS": "Music videos",
     "TRAILERS": "Trailers",
     "HOMEVIDEOS": "Home videos",
