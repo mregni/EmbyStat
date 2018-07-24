@@ -50,7 +50,7 @@
     "NO_CONFIGURATION_FOUND": "Aucune configuration n'a été trouvée.",
     "NOT_FOUND": "Oups, il nous manque des fichiers.",
     "TOKEN_FAILED": "L'obtention du jeton Emby a échoué. Veuillez vérifier vos informations d'identification et votre adresse.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
+    "EMBY_CALL_FAILED": "Échec de connexion au serveur Emby. Vérifiez si Emby est en cours d'exécution et si les informations d'identification sont toujours correctes."
   },
   "FORM_LABELS": {
     "NAME": "Entrez votre nom",
@@ -197,18 +197,18 @@
   "COLLECTIONTYPES": {
     "MIXED": "Mixte / Autre",
     "MUSIC": "Musique",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
+    "MUSICVIDEOS": "Clip vidéo",
+    "TRAILERS": "Bande-annonce",
     "HOMEVIDEOS": "Home videos",
     "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
+    "BOOKS": "Livres",
     "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "GAMES": "Jeux",
+    "LIVETV": "En direct",
+    "PLAYLISTS": "Listes de lecture",
+    "FOLDERS": "Dossiers"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Aller à Emby"
   }
 }
