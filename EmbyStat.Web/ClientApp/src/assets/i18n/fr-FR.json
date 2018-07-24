@@ -111,7 +111,7 @@
     "YOUNGESTPREMIERED": "Youngest premiered",
     "SHORTEST": "Le plus court",
     "LONGEST": "Le plus long",
-    "YOUNGESTADDED": "Youngest added",
+    "YOUNGESTADDED": "Récemment ajouté",
     "MOSTFEATUREDPERGENRE": "L'acteur le plus en vue par genre",
     "DUPLICATEMOVIES": "films en double",
     "TOSHORTMOVIES": "court-métrage"
@@ -123,8 +123,8 @@
     "TOTALPLAYLENGTH": "Temps de visionnage total",
     "HIGHESTRATEDSHOW": "Le mieux noté",
     "LOWESTRATEDSHOW": "Les mal notés",
-    "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "OLDESTPREMIERED": "La plus ancienne série",
+    "YOUNGESTPREMIERED": "La série la plus récente",
     "YOUNGESTADDED": "Ajout récent",
     "WITHMOESTEPISODES": "Avec le plus épisodes",
     "SHOWSTATUSGRAPH": "Voir le statut",
@@ -154,7 +154,7 @@
   },
   "TASK": {
     "LASTRUNNOW": "Dernier lancement : il y a peu",
-    "LASTRUN": "Last run",
+    "LASTRUN": "Dernière exécution",
     "HOURS": "{{hours}} heure(s)",
     "MINUTES": "{{minutes}} minute(s)",
     "SECONDS": "{{seconds}} seconde(s)",
