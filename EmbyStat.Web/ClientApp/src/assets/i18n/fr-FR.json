@@ -145,7 +145,7 @@
       "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Pour trouver les films qui sont susceptibles d'être courts, nous devons savoir combien il faut de minutes pour chercher ces films. Par défaut, ce paramètre est défini sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans le menu déroulant de la collection sur la page des statistiques de film."
     },
     "SHOW": {
@@ -166,11 +166,11 @@
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
     "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
-    "SMALLEMBYSYNCDESCRIPTION": "Effectuer une syncronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
-    "SMALLEMBYSYNCTITLE": "Syncronisation rapide avec Emb",
+    "SMALLEMBYSYNCDESCRIPTION": "Effectuer une synchronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
+    "SMALLEMBYSYNCTITLE": "Synchronisation rapide avec Emby",
     "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
-    "MEDIASYNCTITLE": "Syncronisation des médias",
-    "STARTMEDIASYNC": "Débuter une syncronisation des médias"
+    "MEDIASYNCTITLE": "Synchronisation des médias",
+    "STARTMEDIASYNC": "Débuter une synchronisation des médias"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Déclencheur d'intervalle",
@@ -179,7 +179,7 @@
     "EVERY": "chaque {{interval}}",
     "AT": "à {{time}}",
     "TRIGGERTYPE": "Type de déclencheur",
-    "SAVETRIGGER": "Déclancheur de sauvegarde"
+    "SAVETRIGGER": "Déclencheur de sauvegarde"
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
@@ -204,7 +204,7 @@
     "BOOKS": "Livres",
     "PHOTOS": "Photos",
     "GAMES": "Jeux",
-    "LIVETV": "En direct",
+    "LIVETV": "TV en direct",
     "PLAYLISTS": "Listes de lecture",
     "FOLDERS": "Dossiers"
   },
