@@ -167,7 +167,7 @@
     "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
     "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
     "SMALLEMBYSYNCDESCRIPTION": "Effectuer une syncronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "SMALLEMBYSYNCTITLE": "Syncronisation rapide avec Emb",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation",
     "STARTMEDIASYNC": "Start media sync"
