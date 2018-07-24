@@ -58,7 +58,8 @@
     "EMBYADDRESS": "Emby domain/ip address",
     "EMBYUSERNAME": "Emby admin username",
     "EMBYPASSWORD": "Emby admin password",
-    "DURATIONINMINUTES": "Duration in minutes"
+    "DURATIONINMINUTES": "Duration in minutes",
+    "TVDBAPI": "TheTVDB api key"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -134,13 +135,21 @@
   "CONFIGURATION": {
     "SETTINGS": "Settings",
     "SAVED": {
-      "GENERAL": "General Embystat settings are saved!",
-      "EMBY": "Emby settings are saved!",
-      "MOVIES": "Movie settings are saved!"
+      "GENERAL": "General Embystat settings saved!",
+      "EMBY": "Emby settings saved!",
+      "MOVIES": "Movie settings saved!",
+      "SHOWS": "Show settings saved!"
+    },
+    "GENERAL": {
+      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own API key here.",
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+    },
+    "SHOW": {
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     }
   },
   "TASK": {
