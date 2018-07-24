@@ -72,16 +72,16 @@
     "MOVIES": "Films",
     "SHOWS": "Séries",
     "SETTINGS": "Paramètres",
-    "PLUGINS": "Plugins",
-    "TASKS": "Tasks",
-    "SERVER": "Emby server",
-    "LOGS": "Logs",
-    "ABOUT": "About"
+    "PLUGINS": "Extensions",
+    "TASKS": "Tâches",
+    "SERVER": "Serveur Emby",
+    "LOGS": "Journaux",
+    "ABOUT": "À propos"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby settings",
-    "SAVINGLABEL": "First Emby server sync",
+    "EMBYLABEL": "Paramètres Emby",
+    "SAVINGLABEL": "Première synchronisation au serveur Emby",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
