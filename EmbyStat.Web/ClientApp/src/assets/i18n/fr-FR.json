@@ -112,61 +112,61 @@
     "SHORTEST": "Le plus court",
     "LONGEST": "Le plus long",
     "YOUNGESTADDED": "Youngest added",
-    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
-    "DUPLICATEMOVIES": "duplicate movies",
-    "TOSHORTMOVIES": "movies that are very short"
+    "MOSTFEATUREDPERGENRE": "L'acteur le plus en vue par genre",
+    "DUPLICATEMOVIES": "films en double",
+    "TOSHORTMOVIES": "court-métrage"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total shows",
-    "TOTALEPISODES": "Total Episodes",
-    "TOTALMISSINGEPISODES": "Total Missing Episodes",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATEDSHOW": "Highest rated show",
-    "LOWESTRATEDSHOW": "Lowest rated show",
+    "TOTALSHOWS": "Total des séries",
+    "TOTALEPISODES": "Nombre d'épisodes",
+    "TOTALMISSINGEPISODES": "Nombre d'épisodes manquants",
+    "TOTALPLAYLENGTH": "Temps de visionnage total",
+    "HIGHESTRATEDSHOW": "Le mieux noté",
+    "LOWESTRATEDSHOW": "Les mal notés",
     "OLDESTPREMIERED": "Oldest premiered show",
     "YOUNGESTPREMIERED": "Yougenst premiered show",
-    "YOUNGESTADDED": "Youngest added",
-    "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses",
-    "SEASONS": "seasons",
+    "YOUNGESTADDED": "Ajout récent",
+    "WITHMOESTEPISODES": "Avec le plus épisodes",
+    "SHOWSTATUSGRAPH": "Voir le statut",
+    "SEASONS": "saisons",
     "CONTINUING": "continuing",
-    "ENDED": "ended"
+    "ENDED": "terminé"
   },
   "CONFIGURATION": {
-    "SETTINGS": "Settings",
+    "SETTINGS": "Paramètres",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!"
+      "GENERAL": "Paramètres généraux de Embystat enregistrés!",
+      "EMBY": "Paramètres Emby sauvegardés !",
+      "MOVIES": "Paramètres du film sauvegardé!",
+      "SHOWS": "Paramètres de la série sauvegardé!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
+      "TVDBAPIKEY": "Si vous le souhaitez, vous pouvez utiliser EmbyStat avec votre propre clé API ici.",
+      "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans le menu déroulant de la collection sur la page des statistiques de film."
     },
     "SHOW": {
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     }
   },
   "TASK": {
-    "LASTRUNNOW": "Last run: just now",
+    "LASTRUNNOW": "Dernier lancement : il y a peu",
     "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
+    "HOURS": "{{hours}} heure(s)",
     "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after"
+    "SECONDS": "{{seconds}} seconde(s)",
+    "AND": "et",
+    "AGO": "il y a",
+    "FOR": "pour",
+    "BUTFAILED": "a échoué après"
   },
   "TASKS": {
-    "PINGEMBYSERVERTITLE": "Check Emby connection",
-    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-    "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+    "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
+    "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
+    "SMALLEMBYSYNCDESCRIPTION": "Effectuer une syncronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
     "SMALLEMBYSYNCTITLE": "Small sync with Emb",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation",
