@@ -137,19 +137,19 @@
     "SAVED": {
       "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
       "EMBY": "Emby-Einstellungen gespeichert!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!"
+      "MOVIES": "Film-Einstellungen gespeichert!",
+      "SHOWS": "Serien-Einstellungen gespeichert!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
+      "TVDBAPIKEY": "Wenn Sie möchten können Sie für EmbyStat Ihren eigenen API-Schlüssel eingeben.",
+      "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
+      "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Filmstatistiken sehen wollen."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
     }
   },
   "TASK": {
@@ -195,20 +195,20 @@
     "FETCHING": "Rufe Statistiken ab..."
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "MIXED": "Gemischte / Andere",
+    "MUSIC": "Musik",
+    "MUSICVIDEOS": "Musikvideos",
+    "TRAILERS": "Trailer",
+    "HOMEVIDEOS": "Heimvideos",
+    "BOXSETS": "Kollektionen",
+    "BOOKS": "Bücher",
+    "PHOTOS": "Fotos",
+    "GAMES": "Spiele",
+    "LIVETV": "Live-TV",
+    "PLAYLISTS": "Wiedergabelisten",
+    "FOLDERS": "Ordner"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Öffne Emby"
   }
 }
