@@ -59,7 +59,7 @@
     "EMBYUSERNAME": "Emby Admin Benutzername",
     "EMBYPASSWORD": "Emby Admin Passwort",
     "DURATIONINMINUTES": "Dauer in Minuten",
-    "TVDBAPI": "TheTVDB api key"
+    "TVDBAPI": "TheTVDB API key"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
@@ -135,8 +135,8 @@
   "CONFIGURATION": {
     "SETTINGS": "Einstellungen",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
+      "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
+      "EMBY": "Emby-Einstellungen gespeichert!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!"
     },
