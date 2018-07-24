@@ -168,13 +168,13 @@
     "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
     "SMALLEMBYSYNCDESCRIPTION": "Effectuer une syncronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
     "SMALLEMBYSYNCTITLE": "Syncronisation rapide avec Emb",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-    "MEDIASYNCTITLE": "Media synchronisation",
-    "STARTMEDIASYNC": "Start media sync"
+    "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
+    "MEDIASYNCTITLE": "Syncronisation des médias",
+    "STARTMEDIASYNC": "Débuter une syncronisation des médias"
   },
   "TRIGGER": {
-    "INTERVALTRIGGER": "Interval trigger",
-    "DAILYTRIGGER": "Daily trigger",
+    "INTERVALTRIGGER": "Déclencheur d'intervalle",
+    "DAILYTRIGGER": "Déclencheur quotidien",
     "STARTUPTRIGGER": "Déclencheur de démarrage",
     "EVERY": "chaque {{interval}}",
     "AT": "à {{time}}",
