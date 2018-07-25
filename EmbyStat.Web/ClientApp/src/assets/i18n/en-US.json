@@ -25,7 +25,7 @@
     "COUNTPERCOMMUNITYRATING": "count / rating",
     "COUNTPERPREMIEREDATE": "count / year",
     "COUNTPEROFFICIALRATING": "count / official rating",
-    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
+    "COUNTPERCOLLECTEDRATE": "count / percentage collected",
     "EMBY": "Emby",
     "GENERAL": "general",
     "DURATION": "duration",
@@ -47,10 +47,10 @@
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
-    "NO_CONFIGURATION_FOUND": "No configuration could be found.",
+    "NO_CONFIGURATION_FOUND": "Configuration Not found.",
     "NOT_FOUND": "Oops, we are missing some files.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and domain/ip address.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and your credentials are still correct."
   },
   "FORM_LABELS": {
     "NAME": "Enter your name",
@@ -85,8 +85,8 @@
     "FINALLABEL": "Final",
     "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
-    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
+    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will set the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know what we may call you and in what language you want view the UI.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your EMBY URL 'http(s)://IP/domain:port' and fill in the rest of the form.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
     "ISADMIN": "{{ user }} is an Emby administrator",
@@ -95,8 +95,8 @@
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
     "FINISHWITHSYNC": "Start syncronisation",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHED": "All settings have been saved and you can start using EmbyStat now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation right now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -124,7 +124,7 @@
     "HIGHESTRATEDSHOW": "Highest rated show",
     "LOWESTRATEDSHOW": "Lowest rated show",
     "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTPREMIERED": "Youngest premiered show",
     "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "With most episodes",
     "SHOWSTATUSGRAPH": "Show statuses",
@@ -145,7 +145,7 @@
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
@@ -165,10 +165,10 @@
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Check Emby connection",
-    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+    "PINGEMBYSERVERDESCRIPTION": "Check Emby server is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+    "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your content. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation",
     "STARTMEDIASYNC": "Start media sync"
   },
@@ -192,7 +192,7 @@
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Generating statistics"
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
