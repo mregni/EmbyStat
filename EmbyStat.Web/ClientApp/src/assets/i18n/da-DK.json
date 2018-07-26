@@ -49,11 +49,11 @@
     "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
     "NO_CONFIGURATION_FOUND": "Der blev ikke fundet nogen konfigurationer.",
     "NOT_FOUND": "Ups, vi mangler nogle filer.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
+    "TOKEN_FAILED": "Det lykkes ikke at få Emby token. Kontroller venligst dine legitimationsoplysninger og adresse.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
   },
   "FORM_LABELS": {
-    "NAME": "Enter your name",
+    "NAME": "Angiv dit navn",
     "LANGUAGE": "Please select your language",
     "EMBYADDRESS": "Emby ip address",
     "EMBYUSERNAME": "Emby admin username",
