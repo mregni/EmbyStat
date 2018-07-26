@@ -13,17 +13,19 @@ namespace EmbyStat.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskService _taskService;
+        private readonly IMapper _mapper;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskService taskService, IMapper mapper)
         {
             _taskService = taskService;
+            _mapper = mapper;
         }
-
+        
         [HttpGet]
         public IActionResult Get()
         {
             var result = _taskService.GetAllTasks();
-            return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
+            return Ok(_mapper.Map<IList<TaskInfoViewModel>>(result));
         }
 
         [HttpPut]
@@ -32,7 +34,7 @@ namespace EmbyStat.Controllers
         {
             _taskService.UpdateTriggers(Mapper.Map<TaskInfo>(task));
             var result = _taskService.GetAllTasks();
-            return Ok(Mapper.Map<IList<TaskInfoViewModel>>(result));
+            return Ok(_mapper.Map<IList<TaskInfoViewModel>>(result));
         }
         
         [HttpPost]

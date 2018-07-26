@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { HubConnection } from '@aspnet/signalr';
+import * as signalR from "@aspnet/signalr";
 
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { Configuration } from '../../configuration/models/configuration';
@@ -15,7 +15,6 @@ import { ToolbarFacade } from './state/facade.toolbar';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-  private hubConnection: HubConnection;
   public configuration$: Observable<Configuration>;
   private embyStatusSeb: Subscription;
   public runningTask: Task;
@@ -25,11 +24,15 @@ export class ToolbarComponent implements OnInit {
   @Output() toggleSideNav = new EventEmitter<void>();
 
   constructor(private configurationFacade: ConfigurationFacade, private toolbarFacade: ToolbarFacade) {
-    this.missedPings = 0;
-    this.hubConnection = new HubConnection('/tasksignal');
     this.configuration$ = configurationFacade.configuration$;
 
-    this.hubConnection.on('ReceiveInfo', (data: Task[]) => {
+    this.missedPings = 0;
+    const hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl("/tasksignal")
+      .build();
+    hubConnection.start().catch(err => document.write(err));
+
+    hubConnection.on('ReceiveInfo', (data: Task[]) => {
       if (data.some(x => x.state === 2)) {
         this.runningTask = data.find(x => x.state === 2);
       } else {
@@ -44,17 +47,11 @@ export class ToolbarComponent implements OnInit {
       }
     });
 
-    this.hubConnection.on('ReceiveLog', (data: string) => {
+    hubConnection.on('ReceiveLog', (data: string) => {
 
     });
   }
 
   ngOnInit() {
-    this.hubConnection
-      .start()
-      .then(() => {
-        console.log('Connection started!');
-      })
-      .catch(err => console.log('Error while establishing connection :('));
+
   }
-}

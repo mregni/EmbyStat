@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using EmbyStat.Controllers.Helpers;
+using EmbyStat.Controllers;
 
 namespace Tests.Unit.Controllers
 {

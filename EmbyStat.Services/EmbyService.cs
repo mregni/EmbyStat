@@ -28,23 +28,18 @@ namespace EmbyStat.Services
 		private readonly IConfigurationRepository _configurationRepository;
 		private readonly IDriveRepository _embyDriveRepository;
         private readonly IEmbyStatusRepository _embyStatusRepository;
+        private readonly IMapper _mapper;
 
-
-        public EmbyService(IEmbyClient embyClient, 
-						   IPluginRepository embyPluginRepository, 
-						   IConfigurationRepository configurationRepository, 
-						   IServerInfoRepository embyServerInfoRepository,
-						   IDriveRepository embyDriveRepository,
-                           IEmbyStatusRepository embyStatusRepository)
-	    {
-		    _embyClient = embyClient;
-		    _embyPluginRepository = embyPluginRepository;
-		    _configurationRepository = configurationRepository;
-		    _embyServerInfoRepository = embyServerInfoRepository;
-		    _embyDriveRepository = embyDriveRepository;
-	        _embyStatusRepository = embyStatusRepository;
-
-	    }
+        public EmbyService(IEmbyClient embyClient, IPluginRepository embyPluginRepository, IServerInfoRepository embyServerInfoRepository, IConfigurationRepository configurationRepository, IDriveRepository embyDriveRepository, IEmbyStatusRepository embyStatusRepository, IMapper mapper)
+        {
+            _embyClient = embyClient;
+            _embyPluginRepository = embyPluginRepository;
+            _embyServerInfoRepository = embyServerInfoRepository;
+            _configurationRepository = configurationRepository;
+            _embyDriveRepository = embyDriveRepository;
+            _embyStatusRepository = embyStatusRepository;
+            _mapper = mapper;
+        }
 
 	    public EmbyUdpBroadcast SearchEmby()
 	    {
@@ -91,6 +86,7 @@ namespace EmbyStat.Services
 		    {
 				try
 				{
+                    //TODO, fix this code
 					var token = await _embyClient.AuthenticateUserAsync(login.UserName, login.Password, login.Address);
 					return new EmbyToken
 					{
@@ -130,8 +126,8 @@ namespace EmbyStat.Services
 			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
 		    var drives = await _embyClient.GetLocalDrivesAsync();
 
-		    var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
-		    var localDrives = Mapper.Map<IList<Drives>>(drives);
+		    var systemInfo = _mapper.Map<ServerInfo>(systemInfoReponse);
+		    var localDrives = _mapper.Map<IList<Drives>>(drives);
 
 		    _embyServerInfoRepository.UpdateOrAdd(systemInfo);
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);

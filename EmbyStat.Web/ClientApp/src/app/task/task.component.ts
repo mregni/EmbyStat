@@ -3,12 +3,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TaskFacade } from './state/facade.task';
 import { Subscription } from 'rxjs/Subscription';
 import { Task } from './models/task';
-import { HubConnection } from '@aspnet/signalr';
 import { MatDialog } from '@angular/material';
 import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.component';
 
 import 'rxjs/Rx';
 import * as moment from 'moment';
+import * as signalR from "@aspnet/signalr";
 
 import { ProgressLog } from './models/progressLog';
 
@@ -18,7 +18,6 @@ import { ProgressLog } from './models/progressLog';
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit, OnDestroy {
-  private hubConnection: HubConnection;
   private getTasksSub: Subscription;
   public tasks: Task[];
   public lines: SafeHtml[] = [];
@@ -26,13 +25,17 @@ export class TaskComponent implements OnInit, OnDestroy {
   constructor(private taskFacade: TaskFacade,
     public dialog: MatDialog,
     private sanitizer: DomSanitizer) {
-    this.hubConnection = new HubConnection('/tasksignal');
+    const hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl("/tasksignal")
+      .build();
+    hubConnection.start().catch(err => document.write(err));
 
-    this.hubConnection.on('ReceiveInfo', (data: Task[]) => {
+    hubConnection.on('ReceiveInfo', (data: Task[]) => {
       this.tasks = data;
     });
 
-    this.hubConnection.on('ReceiveLog', (data: ProgressLog) => {
+    hubConnection.on('ReceiveLog', (data: ProgressLog) => {
+      console.log("BOE");
       const now = moment().format('HH:mm:ss');
       var line = now + ' - ' + data.value;
 
@@ -52,12 +55,6 @@ export class TaskComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getTasksSub = this.taskFacade.getTasks().subscribe(data => this.tasks = data);
-    this.hubConnection
-      .start()
-      .then(() => {
-        console.log('Connection started!');
-      })
-      .catch(err => console.log('Error while establishing connection :('));
   }
 
   public openDialog(task: Task): void {

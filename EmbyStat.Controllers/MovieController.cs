@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Graph;
@@ -14,51 +15,53 @@ namespace EmbyStat.Controllers
     public class MovieController : Controller
     {
         private readonly IMovieService _movieService;
+        private readonly IMapper _mapper;
 
-        public MovieController(IMovieService movieService)
+        public MovieController(IMovieService movieService, IMapper mapper)
         {
             _movieService = movieService;
+            _mapper = mapper;
         }
-
+        
         [HttpGet]
         [Route("collections")]
         public IActionResult GetCollections()
         {
             var result = _movieService.GetMovieCollections();
-            return Ok(Mapper.Map<IList<CollectionViewModel>>(result));
+            return Ok(_mapper.Map<IList<CollectionViewModel>>(result));
         }
 
         [HttpGet]
         [Route("generalstats")]
-        public IActionResult GetGeneralStats(List<string> collectionIds)
+        public IActionResult GetGeneralStats(List<Guid> collectionIds)
         {
             var result = _movieService.GetGeneralStatsForCollections(collectionIds);
-            var convert = Mapper.Map<MovieStatsViewModel>(result);
+            var convert = _mapper.Map<MovieStatsViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
         [Route("personstats")]
-        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
+        public async Task<IActionResult> GetPersonStats(List<Guid> collectionIds)
         {
             var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
-            return Ok(Mapper.Map<PersonStatsViewModel>(result));
+            return Ok(_mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]
         [Route("suspicious")]
-        public IActionResult GetDuplicates(List<string> collectionIds)
+        public IActionResult GetDuplicates(List<Guid> collectionIds)
         {
             var result = _movieService.GetSuspiciousMovies(collectionIds);
-            return Ok(Mapper.Map<SuspiciousTablesViewModel>(result));
+            return Ok(_mapper.Map<SuspiciousTablesViewModel>(result));
         }
 
         [HttpGet]
         [Route("graphs")]
-        public IActionResult GetGraphs(List<string> collectionIds)
+        public IActionResult GetGraphs(List<Guid> collectionIds)
         {
             var graphs = _movieService.GetGraphs(collectionIds);
-            return Ok(Mapper.Map<MovieGraphsViewModel>(graphs));
+            return Ok(_mapper.Map<MovieGraphsViewModel>(graphs));
         }
 
         [HttpGet]

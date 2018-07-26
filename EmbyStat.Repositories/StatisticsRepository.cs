@@ -25,13 +25,13 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections)
+        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<Guid> collections)
         {
             using (var context = new ApplicationDbContext())
             {
                 var collectionList = collections.Select(x => new StatisticCollection
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
                     StatisticId = x
                 }).ToList();
 
@@ -39,7 +39,7 @@ namespace EmbyStat.Repositories
                 {
                     CalculationDateTime = calculationDateTime,
                     Collections = collectionList,
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
                     Type = type,
                     JsonResult = json
                 };

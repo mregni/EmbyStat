@@ -17,7 +17,7 @@ namespace EmbyStat.Common.Converters
                 Id = x.Id,
                 Name = x.Name,
                 ParentId = x.ParentId,
-                HomePageUrl = x.HomePageUrl,
+                //HomePageUrl = x.HomePageUrl,
                 OriginalTitle = x.OriginalTitle,
                 DateCreated = x.DateCreated,
                 Path = x.Path,
@@ -90,7 +90,7 @@ namespace EmbyStat.Common.Converters
                 ExtraPersons = x.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson()
                 {
                     ExtraId = x.Id,
-                    PersonId = y.Id,
+                    PersonId = new Guid(y.Id),
                     Type = y.Type
                 }).ToList()
             };

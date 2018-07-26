@@ -8,9 +8,9 @@ namespace EmbyStat.Common.Models.Joins
     {
         [Key]
         public string Id { get; set; }
-        public string MediaId { get; set; }
+        public Guid MediaId { get; set; }
         public Media Media { get; set; }
-        public string CollectionId { get; set; }
+        public Guid CollectionId { get; set; }
         public Collection Collection { get; set; }
     }
 }

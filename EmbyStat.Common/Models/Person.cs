@@ -8,7 +8,7 @@ namespace EmbyStat.Common.Models
     public class Person
     {
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public bool Synced { get; set; }
         public int ChildCount { get; set; }

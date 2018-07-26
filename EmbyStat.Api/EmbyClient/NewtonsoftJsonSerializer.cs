@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using MediaBrowser.Model.Serialization;
 using Newtonsoft.Json;
 
@@ -25,9 +26,19 @@ namespace EmbyStat.Api.EmbyClient
             }
         }
 
+        public Task<object> DeserializeFromStreamAsync(Stream stream, Type type)
+        {
+            throw new NotImplementedException();
+        }
+
         public T DeserializeFromStream<T>(Stream stream)
         {
             return (T)DeserializeFromStream(stream, typeof(T));
+        }
+
+        public Task<T> DeserializeFromStreamAsync<T>(Stream stream)
+        {
+            throw new NotImplementedException();
         }
 
         public T DeserializeFromString<T>(string text)

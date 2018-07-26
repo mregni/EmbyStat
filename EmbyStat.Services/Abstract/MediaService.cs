@@ -21,7 +21,7 @@ namespace EmbyStat.Services.Abstract
             _taskRepository = taskRepository;
         }
 
-        public bool NewStatisticsNeeded(Statistic statistic, IEnumerable<string> collectionIds)
+        public bool NewStatisticsNeeded(Statistic statistic, IEnumerable<Guid> collectionIds)
         {
             var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
 

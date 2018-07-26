@@ -8,6 +8,6 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IPersonService
     {
-        Task<Person> GetPersonById(string id);
+        Task<Person> GetPersonById(Guid id);
     }
 }

@@ -6,9 +6,9 @@ namespace EmbyStat.Common.Models.Joins
 {
     public class SeasonEpisode
     {
-        public string SeasonId { get; set; }
+        public Guid SeasonId { get; set; }
         public Season Season { get; set; }
-        public string EpisodeId { get; set; }
+        public Guid EpisodeId { get; set; }
         public Episode Episode { get; set; }
     }
 }

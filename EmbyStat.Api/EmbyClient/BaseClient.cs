@@ -25,7 +25,7 @@ namespace EmbyStat.Api.EmbyClient
 		protected string ApplicationVersion { get; set; }
 		protected string DeviceId => Device.DeviceId;
 		protected string AccessToken { get; private set; }
-		protected string CurrentUserId { get; private set; }
+		protected Guid? CurrentUserId { get; private set; }
 		protected string ApiUrl => ServerAddress + "/emby";
 		protected string AuthorizationScheme => Constants.Emby.AuthorizationScheme;
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
@@ -73,11 +73,11 @@ namespace EmbyStat.Api.EmbyClient
 
 			if (!keepExistingAuth)
 			{
-				SetAuthenticationInfo(null, null);
+				SetAuthenticationInfo(null, Guid.NewGuid());
 			}
 		}
 
-		protected void SetAuthenticationInfo(string accessToken, string userId)
+		protected void SetAuthenticationInfo(string accessToken, Guid userId)
 		{
 			CurrentUserId = userId;
 			AccessToken = accessToken;
@@ -137,7 +137,7 @@ namespace EmbyStat.Api.EmbyClient
 
 				var header = $"Client=\"{ClientName}\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
 
-				if (!string.IsNullOrEmpty(CurrentUserId))
+				if (CurrentUserId.HasValue)
 				{
 					header += string.Format(", UserId=\"{0}\"", CurrentUserId);
 				}
@@ -369,7 +369,7 @@ namespace EmbyStat.Api.EmbyClient
                 dict.Add("ExcludeLocationTypes", query.ExcludeLocationTypes.Select(f => f.ToString()));
             }
 
-            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId.ToString());
             dict.AddIfNotNull("StartIndex", query.StartIndex);
             dict.AddIfNotNull("Limit", query.Limit);
             dict.AddIfNotNull("SortBy", query.SortBy);
@@ -446,7 +446,7 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 
 	        dict.AddIfNotNull("IsPlayed", query.IsPlayed);
-            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId.ToString());
 	        dict.Add("UserId", query.UserId);
 	        dict.AddIfNotNull("StartIndex", query.StartIndex);
 	        dict.AddIfNotNull("Limit", query.Limit);

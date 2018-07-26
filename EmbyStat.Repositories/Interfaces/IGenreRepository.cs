@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EmbyStat.Common.Models;
 
 namespace EmbyStat.Repositories.Interfaces
@@ -7,7 +8,7 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void AddRangeIfMissing(IEnumerable<Genre> genres);
         List<Genre> GetAll();
-        List<string> GetIds();
-        List<Genre> GetListByIds(List<string> ids);
+        List<Guid> GetIds();
+        List<Genre> GetListByIds(List<Guid> ids);
     }
 }

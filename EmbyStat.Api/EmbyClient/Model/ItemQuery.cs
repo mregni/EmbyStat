@@ -7,7 +7,7 @@ namespace EmbyStat.Api.EmbyClient.Model
     public class ItemQuery
     {
         public string UserId { get; set; }
-        public string ParentId { get; set; }
+        public Guid ParentId { get; set; }
         public int? StartIndex { get; set; }
         public int? Limit { get; set; }
         public string[] SortBy { get; set; }

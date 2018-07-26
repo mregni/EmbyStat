@@ -135,7 +135,7 @@ namespace EmbyStat.Tasks.Tasks
             }
         }
 
-        private async Task<IEnumerable<Movie>> GetMoviesFromEmby(string parentId, CancellationToken cancellationToken)
+        private async Task<IEnumerable<Movie>> GetMoviesFromEmby(Guid parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
@@ -148,7 +148,7 @@ namespace EmbyStat.Tasks.Tasks
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
                 {
-                    ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.HomePageUrl,
+                    ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
                     ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
                     ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
                     ItemFields.People
@@ -205,14 +205,14 @@ namespace EmbyStat.Tasks.Tasks
                     var rawSeasons = await GetSeasonsFromEmby(show.Id, cancellationToken);
 
                     var episodes = new List<Episode>();
-                    var seasonLinks = new List<Tuple<string, string>>();
+                    var seasonLinks = new List<Tuple<Guid, Guid>>();
                     foreach (var season in rawSeasons)
                     {
                         var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
                         eps.ForEach(x => x.Collections.Add(new MediaCollection{CollectionId = rootItem.Id }));
                         episodes.AddRange(eps);
 
-                        seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
+                        seasonLinks.AddRange(eps.Select(x => new Tuple<Guid, Guid>(season.Id, x.Id)));
                     }
 
                     _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, $"Processing show {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
@@ -236,7 +236,7 @@ namespace EmbyStat.Tasks.Tasks
             await _tvdbClient.Login(tvdbApiKey, cancellationToken);
 
             var shows = _showRepository
-                .GetAllShows(new string[]{})
+                .GetAllShows(new Guid[]{})
                 .Where(x => !string.IsNullOrWhiteSpace(x.TVDB))
                 .ToList();
 
@@ -331,7 +331,7 @@ namespace EmbyStat.Tasks.Tasks
             return true;
         }
 
-        private async Task<List<Show>> GetShowsFromEmby(string parentId, CancellationToken cancellationToken)
+        private async Task<List<Show>> GetShowsFromEmby(Guid parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
@@ -345,7 +345,7 @@ namespace EmbyStat.Tasks.Tasks
                 Fields = new[]
                 {
 
-                    ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.HomePageUrl,
+                    ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                     ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
                     ItemFields.SortName, ItemFields.ParentId, ItemFields.People
                 }
@@ -360,7 +360,7 @@ namespace EmbyStat.Tasks.Tasks
             return embyShows.Items.Select(ShowHelper.ConvertToShow).ToList();
         }
 
-        private async Task<List<BaseItemDto>> GetSeasonsFromEmby(string parentId, CancellationToken cancellationToken)
+        private async Task<List<BaseItemDto>> GetSeasonsFromEmby(Guid parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
@@ -381,7 +381,7 @@ namespace EmbyStat.Tasks.Tasks
             return embySeasons.Items.ToList();
         }
 
-        private async Task<List<Episode>> GetEpisodesFromEmby(string parentId, CancellationToken cancellationToken)
+        private async Task<List<Episode>> GetEpisodesFromEmby(Guid parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
@@ -394,7 +394,7 @@ namespace EmbyStat.Tasks.Tasks
                 IncludeItemTypes = new[] { nameof(Episode) },
                 Fields = new[]
                 {
-                    ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.HomePageUrl,
+                    ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
                     ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
                     ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId
                 }
@@ -408,7 +408,7 @@ namespace EmbyStat.Tasks.Tasks
 
         #region Helpers
 
-        private async Task ProcessGenresFromEmby(string id, IEnumerable<string> genresNeeded, CancellationToken cancellationToken)
+        private async Task ProcessGenresFromEmby(Guid id, IEnumerable<Guid> genresNeeded, CancellationToken cancellationToken)
         {
             var query = new ItemsByNameQuery
             {
@@ -439,7 +439,7 @@ namespace EmbyStat.Tasks.Tasks
             }
         }
 
-        private async Task ProcessPeopleFromEmby(string id, IEnumerable<string> neededPeople, CancellationToken cancellationToken)
+        private async Task ProcessPeopleFromEmby(Guid id, IEnumerable<Guid> neededPeople, CancellationToken cancellationToken)
         {
             var query = new PersonsQuery
             {
