@@ -107,8 +107,8 @@
     "TOTALPLAYLENGTH": "Temps de visionnage total",
     "HIGHESTRATED": "Le mieux noté",
     "LOWESTRATED": "Les mal notés",
-    "OLDESTPREMIERED": "Oldest premiered",
-    "YOUNGESTPREMIERED": "Youngest premiered",
+    "OLDESTPREMIERED": "La plus ancienne sortie",
+    "YOUNGESTPREMIERED": "La plus récente sortie",
     "SHORTEST": "Le plus court",
     "LONGEST": "Le plus long",
     "YOUNGESTADDED": "Récemment ajouté",
@@ -149,7 +149,7 @@
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans le menu déroulant de la collection sur la page des statistiques de film."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans la liste déroulante de la collection sur la page Afficher les statistiques."
     }
   },
   "TASK": {
@@ -199,8 +199,8 @@
     "MUSIC": "Musique",
     "MUSICVIDEOS": "Clip vidéo",
     "TRAILERS": "Bande-annonce",
-    "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
+    "HOMEVIDEOS": "Vidéos personnels",
+    "BOXSETS": "Coffrets",
     "BOOKS": "Livres",
     "PHOTOS": "Photos",
     "GAMES": "Jeux",
