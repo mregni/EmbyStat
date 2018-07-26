@@ -30,7 +30,7 @@ namespace EmbyStat.Repositories
             {
                 foreach (var show in list)
                 {
-                    var peopleToDelete = new List<string>();
+                    var peopleToDelete = new List<Guid>();
                     foreach (var person in show.ExtraPersons)
                     {
                         var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
@@ -42,7 +42,7 @@ namespace EmbyStat.Repositories
                     }
                     peopleToDelete.ForEach(x => show.ExtraPersons.Remove(show.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
 
-                    var genresToDelete = new List<string>();
+                    var genresToDelete = new List<Guid>();
                     foreach (var genre in show.MediaGenres)
                     {
                         var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
@@ -91,7 +91,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool inludeSubs = false)
+        public IEnumerable<Show> GetAllShows(IEnumerable<Guid> collections, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -113,7 +113,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool inludeSubs = false)
+        public IEnumerable<Season> GetAllSeasonsForShow(Guid showId, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -131,7 +131,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool inludeSubs = false)
+        public IEnumerable<Episode> GetAllEpisodesForShow(Guid showId, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -160,7 +160,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool inludeSubs = false)
+        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<Guid> showIds, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -183,7 +183,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void SetTvdbSynced(string showId)
+        public void SetTvdbSynced(Guid showId)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -194,7 +194,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int CountShows(IEnumerable<string> collectionIds)
+        public int CountShows(IEnumerable<Guid> collectionIds)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -209,7 +209,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int CountEpisodes(IEnumerable<string> collectionIds)
+        public int CountEpisodes(IEnumerable<Guid> collectionIds)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -225,7 +225,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int CountEpisodes(string showId)
+        public int CountEpisodes(Guid showId)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -237,7 +237,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public long GetPlayLength(IEnumerable<string> collectionIds)
+        public long GetPlayLength(IEnumerable<Guid> collectionIds)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -252,7 +252,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
+        public int GetTotalPersonByType(IEnumerable<Guid> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -269,7 +269,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
+        public Guid GetMostFeaturedPerson(IEnumerable<Guid> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -292,7 +292,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<string> GetGenres(IEnumerable<string> collections)
+        public List<Guid> GetGenres(IEnumerable<Guid> collections)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -312,7 +312,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetEpisodeCountForShow(string showId, bool includeSpecials = false)
+        public int GetEpisodeCountForShow(Guid showId, bool includeSpecials = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -332,7 +332,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetSeasonCountForShow(string showId, bool includeSpecials = false)
+        public int GetSeasonCountForShow(Guid showId, bool includeSpecials = false)
         {
             using (var context = new ApplicationDbContext())
             {

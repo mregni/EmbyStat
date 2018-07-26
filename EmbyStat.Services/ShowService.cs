@@ -49,7 +49,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
         }
 
-        public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
+        public ShowStat GetGeneralStats(IEnumerable<Guid> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
@@ -82,7 +82,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public ShowGraphs GetGraphs(IEnumerable<string> collectionIds)
+        public ShowGraphs GetGraphs(IEnumerable<Guid> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
@@ -110,7 +110,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public PersonStats GetPeopleStats(IEnumerable<string> collectionIds)
+        public PersonStats GetPeopleStats(IEnumerable<Guid> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
@@ -136,7 +136,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds)
+        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<Guid> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
@@ -182,7 +182,7 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<Guid> collectionIds)
         {
             var shows = _showRepository.GetAllShows(collectionIds);
             var genreIds = _showRepository.GetGenres(collectionIds);
@@ -213,7 +213,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<Guid> collectionIds, string type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -221,7 +221,7 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
+        private Card TotalTypeCount(IEnumerable<Guid> collectionIds, string type, string title)
         {
             return new Card
             {
@@ -424,7 +424,7 @@ namespace EmbyStat.Services
             return new ShowPoster();
         }
 
-        private Card TotalShowCount(IEnumerable<string> collectionIds)
+        private Card TotalShowCount(IEnumerable<Guid> collectionIds)
         {
             var count = _showRepository.CountShows(collectionIds);
             return new Card
@@ -434,7 +434,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalEpisodeCount(IEnumerable<string> collectionIds)
+        private Card TotalEpisodeCount(IEnumerable<Guid> collectionIds)
         {
             var count = _showRepository.CountEpisodes(collectionIds);
             return new Card
@@ -454,7 +454,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private TimeSpanCard CalculatePlayableTime(IEnumerable<string> collectionIds)
+        private TimeSpanCard CalculatePlayableTime(IEnumerable<Guid> collectionIds)
         {
             var playLength = new TimeSpan(_showRepository.GetPlayLength(collectionIds));
             return new TimeSpanCard

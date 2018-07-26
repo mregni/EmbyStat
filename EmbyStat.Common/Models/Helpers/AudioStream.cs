@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmbyStat.Common.Models.Helpers
 {
@@ -13,6 +14,6 @@ namespace EmbyStat.Common.Models.Helpers
         public string Language { get; set; }
         public int? SampleRate { get; set; }
         public Video Video { get; set; }
-        public string VideoId { get; set; }
+        public Guid VideoId { get; set; }
     }
 }

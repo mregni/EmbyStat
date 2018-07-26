@@ -10,13 +10,11 @@ using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Serialization;
 using MediaBrowser.Model.System;
-using MediaBrowser.Model.Users;
-using Microsoft.Extensions.Logging;
+using MediaBrowser.Controller.Authentication;
 using Serilog;
 using static System.Threading.Tasks.Task;
 
@@ -24,7 +22,7 @@ namespace EmbyStat.Api.EmbyClient
 {
 	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient)
+        public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer,  IAsyncHttpClient httpClient)
 		: base(cryptographyProvider, jsonSerializer, httpClient)
 		{
 			
@@ -125,7 +123,7 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 	    }
 
-	    public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken)
+	    public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, Guid personId, CancellationToken cancellationToken)
 	    {
 	        var url = GetItemListUrl($"Users/{personQuery.UserId}/Items/{personId}", personQuery);
 

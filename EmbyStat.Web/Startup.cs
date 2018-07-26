@@ -16,7 +16,7 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Settings;
 using EmbyStat.Common.Tasks.Interface;
-using EmbyStat.Controllers.Helpers;
+using EmbyStat.Controllers;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
@@ -59,7 +59,6 @@ namespace EmbyStat.Web
 		{
 		    services.Configure<LogSettings>(Configuration.GetSection("Logging"));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
-		    services.AddAutoMapper(typeof(MapProfiles));
 
 		    services.AddOptions();
 		    services.Configure<AppSettings>(Configuration);
@@ -70,6 +69,7 @@ namespace EmbyStat.Web
 		        .AddApiExplorer()
 		        .AddJsonFormatters();
 
+		    services.AddAutoMapper(typeof(MapProfiles));
             services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -149,7 +149,7 @@ namespace EmbyStat.Web
 
 			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
-
+            
 			app.UseMvc();
 
 			app.UseExceptionHandler(

@@ -27,7 +27,7 @@ namespace EmbyStat.Services.Converters
                 CumulativeRunTimeTicks = show.CumulativeRunTimeTicks,
                 DateCreated = show.DateCreated,
                 DateLastMediaAdded = show.DateLastMediaAdded,
-                HomePageUrl = show.HomePageUrl,
+                //HomePageUrl = show.HomePageUrl,
                 IMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value,
                 TMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value,
                 TVDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value,
@@ -46,13 +46,13 @@ namespace EmbyStat.Services.Converters
                 ExtraPersons = show.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson()
                 {
                     ExtraId = show.Id,
-                    PersonId = y.Id,
+                    PersonId = new Guid(y.Id),
                     Type = y.Type
                 }).ToList()
             };
         }
 
-        public static Season ConvertToSeason(BaseItemDto season, IEnumerable<Tuple<string, string>> episodes)
+        public static Season ConvertToSeason(BaseItemDto season, IEnumerable<Tuple<Guid, Guid>> episodes)
         {
             return new Season
             {
@@ -85,7 +85,7 @@ namespace EmbyStat.Services.Converters
                 Id = episode.Id,
                 Name = episode.Name,
                 Path = episode.Path,
-                ParentId = String.Empty,
+                ParentId = new Guid(),
                 CommunityRating = episode.CommunityRating,
                 Container = episode.Container,
                 DateCreated = episode.DateCreated,

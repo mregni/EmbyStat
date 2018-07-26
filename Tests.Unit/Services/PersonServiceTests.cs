@@ -44,7 +44,7 @@ namespace Tests.Unit.Services
 
             basePerson = new BaseItemDto()
             {
-                Id = "Id",
+                Id = Guid.NewGuid(),
                 Name = "name",
                 ImageTags = new Dictionary<ImageType, string> {{ImageType.Primary, ""}},
                 MovieCount = 10,
@@ -52,7 +52,7 @@ namespace Tests.Unit.Services
                 ChildCount = 20,
                 EpisodeCount = 10,
                 Etag = "etag",
-                HomePageUrl = "localhost.be",
+                //HomePageUrl = "localhost.be",
                 ProviderIds = new Dictionary<string, string> { { "Imdb", "12345"}, { "Tmdb", "12345"} },
                 Overview = "Lots of text",
                 SeriesCount = 1,
@@ -66,7 +66,7 @@ namespace Tests.Unit.Services
             _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
 
             _embyClientMock = new Mock<IEmbyClient>();
-            _embyClientMock.Setup(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None))
+            _embyClientMock.Setup(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<Guid>(), CancellationToken.None))
                 .Returns(Task.FromResult(basePerson));
 
             _subject = new PersonService(_personREpositoryMock.Object, _configurationRepositoryMock.Object, _embyClientMock.Object);
@@ -76,9 +76,9 @@ namespace Tests.Unit.Services
         public async void GetPersonByIdShouldGoToEmby()
         {
             returnedPerson = null;
-            _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
+            _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<Guid>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById("");
+            var person = await _subject.GetPersonById(Guid.NewGuid());
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);
@@ -89,7 +89,7 @@ namespace Tests.Unit.Services
             person.ChildCount.Should().Be(basePerson.ChildCount);
             person.EpisodeCount.Should().Be(basePerson.EpisodeCount);
             person.Etag.Should().Be(basePerson.Etag);
-            person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
+            //person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
             person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(basePerson.Overview);
@@ -97,12 +97,12 @@ namespace Tests.Unit.Services
             person.SortName.Should().Be(basePerson.SortName);
             person.Synced.Should().BeTrue();
 
-            _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
+            _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<Guid>()), Times.Once);
             _personREpositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
 
             _configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Once);
 
-            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
+            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<Guid>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -110,13 +110,13 @@ namespace Tests.Unit.Services
         {
             returnedPerson = new Person
             {
-                Id = "Id",
+                Id = Guid.NewGuid(),
                 Name = "name",
                 Synced = false
             };
-            _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
+            _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<Guid>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById("");
+            var person = await _subject.GetPersonById(Guid.NewGuid());
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);
@@ -127,7 +127,7 @@ namespace Tests.Unit.Services
             person.ChildCount.Should().Be(basePerson.ChildCount);
             person.EpisodeCount.Should().Be(basePerson.EpisodeCount);
             person.Etag.Should().Be(basePerson.Etag);
-            person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
+           // person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
             person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(basePerson.Overview);
@@ -135,12 +135,12 @@ namespace Tests.Unit.Services
             person.SortName.Should().Be(basePerson.SortName);
             person.Synced.Should().BeTrue();
 
-            _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
+            _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<Guid>()), Times.Once);
             _personREpositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
 
             _configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Once);
 
-            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
+            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<Guid>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace Tests.Unit.Services
         {
             returnedPerson = new Person
             {
-                Id = "Id",
+                Id = Guid.NewGuid(),
                 Name = "name",
                 Primary = "",
                 MovieCount = 10,
@@ -164,9 +164,9 @@ namespace Tests.Unit.Services
                 SortName = "name",
                 Synced = true
             };
-            _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
+            _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<Guid>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById("");
+            var person = await _subject.GetPersonById(Guid.NewGuid());
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);
@@ -177,7 +177,7 @@ namespace Tests.Unit.Services
             person.ChildCount.Should().Be(basePerson.ChildCount);
             person.EpisodeCount.Should().Be(basePerson.EpisodeCount);
             person.Etag.Should().Be(basePerson.Etag);
-            person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
+            //person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
             person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(basePerson.Overview);
@@ -185,12 +185,12 @@ namespace Tests.Unit.Services
             person.SortName.Should().Be(basePerson.SortName);
             person.Synced.Should().BeTrue();
 
-            _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
+            _personREpositoryMock.Verify(x => x.GetPersonById(It.IsAny<Guid>()), Times.Once);
             _personREpositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Never);
 
             _configurationRepositoryMock.Verify(x => x.GetConfiguration(), Times.Never);
 
-            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Never);
+            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<Guid>(), CancellationToken.None), Times.Never);
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace EmbyStat.Services.Models.Stat
+﻿using System;
+
+namespace EmbyStat.Services.Models.Stat
 {
     public class MoviePoster
     {
-        public string MediaId { get; set; }
+        public Guid MediaId { get; set; }
         public string Name { get; set; }
         public string CommunityRating { get; set; }
         public string OfficialRating { get; set; }

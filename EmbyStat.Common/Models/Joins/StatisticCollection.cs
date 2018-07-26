@@ -9,10 +9,10 @@ namespace EmbyStat.Common.Models.Joins
     public class StatisticCollection
     {
         [Key]
-        public string Id { get; set; }
-        public string StatisticId { get; set; }
+        public Guid Id { get; set; }
+        public Guid StatisticId { get; set; }
         public Statistic Statistic { get; set; }
-        public string CollectionId { get; set; }
+        public Guid CollectionId { get; set; }
         public Collection Collection { get; set; }
     }
 }

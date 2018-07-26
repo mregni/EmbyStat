@@ -30,8 +30,8 @@ namespace Tests.Unit.Controllers
         {
             _collections = new List<Collection>
             {
-                new Collection{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Collection{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Collection{ Id = Guid.NewGuid(), Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
+                new Collection{ Id = Guid.NewGuid(), Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
             _movieStats = new MovieStats
@@ -41,7 +41,7 @@ namespace Tests.Unit.Controllers
 
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieCollections()).Returns(_collections);
-            _movieServiceMock.Setup(x => x.GetGeneralStatsForCollections(It.IsAny<List<string>>()))
+            _movieServiceMock.Setup(x => x.GetGeneralStatsForCollections(It.IsAny<List<Guid>>()))
                 .Returns(_movieStats);
 
             _subject = new MovieController(_movieServiceMock.Object);
@@ -74,7 +74,7 @@ namespace Tests.Unit.Controllers
 
             stat.Should().NotBeNull();
             stat.LongestMovie.Name.Should().Be(_movieStats.LongestMovie.Name);
-            _movieServiceMock.Verify(x => x.GetGeneralStatsForCollections(It.Is<List<string>>(
+            _movieServiceMock.Verify(x => x.GetGeneralStatsForCollections(It.Is<List<Guid>>(
                 y => y[0] == _collections[0].Id &&
                      y[1] == _collections[1].Id)), Times.Once);
         }

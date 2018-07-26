@@ -15,53 +15,55 @@ namespace EmbyStat.Controllers
     public class ShowController : Controller
     {
         private readonly IShowService _showService;
+        private readonly IMapper _mapper;
 
-        public ShowController(IShowService showService)
+        public ShowController(IShowService showService, IMapper mapper)
         {
             _showService = showService;
+            _mapper = mapper;
         }
-
+        
         [HttpGet]
         [Route("collections")]
         public IActionResult GetCollections()
         {
             var result = _showService.GetShowCollections();
-            return Ok(Mapper.Map< IList<CollectionViewModel>>(result));
+            return Ok(_mapper.Map< IList<CollectionViewModel>>(result));
         }
 
         [HttpGet]
         [Route("generalstats")]
-        public IActionResult GetGeneralStats(IEnumerable<string> collectionIds)
+        public IActionResult GetGeneralStats(IEnumerable<Guid> collectionIds)
         {
             var result = _showService.GetGeneralStats(collectionIds);
-            var convert = Mapper.Map<ShowStatViewModel>(result);
+            var convert = _mapper.Map<ShowStatViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
         [Route("graphs")]
-        public IActionResult GetGraphs(IEnumerable<string> collectionIds)
+        public IActionResult GetGraphs(IEnumerable<Guid> collectionIds)
         {
             var result = _showService.GetGraphs(collectionIds);
-            var convert = Mapper.Map<ShowGraphsViewModel>(result);
+            var convert = _mapper.Map<ShowGraphsViewModel>(result);
             return Ok(convert);
 
         }
 
         [HttpGet]
         [Route("personstats")]
-        public IActionResult GetPersonStats(IEnumerable<string> collectionIds)
+        public IActionResult GetPersonStats(IEnumerable<Guid> collectionIds)
         {
             var result = _showService.GetPeopleStats(collectionIds);
-            return Ok(Mapper.Map<PersonStatsViewModel>(result));
+            return Ok(_mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]
         [Route("collectedlist")]
-        public IActionResult GetCollection(IEnumerable<string> collectionIds)
+        public IActionResult GetCollection(IEnumerable<Guid> collectionIds)
         {
             var result = _showService.GetCollectionRows(collectionIds);
-            return Ok(Mapper.Map<IList<ShowCollectionRowViewModel>>(result));
+            return Ok(_mapper.Map<IList<ShowCollectionRowViewModel>>(result));
         }
 
         [HttpGet]

@@ -19,7 +19,7 @@ namespace EmbyStat.Common.Converters
                 ChildCount = person.ChildCount ?? 0,
                 EpisodeCount = person.EpisodeCount ?? 0,
                 Etag = person.Etag,
-                HomePageUrl = person.HomePageUrl,
+               // HomePageUrl = person.HomePageUrl,
                 IMDB = person.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value,
                 TMDB = person.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value,
                 OverView = person.Overview,

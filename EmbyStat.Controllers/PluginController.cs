@@ -12,17 +12,19 @@ namespace EmbyStat.Controllers
 	public class PluginController : Controller
 	{
 		private readonly IPluginService _pluginService;
+	    private readonly IMapper _mapper;
 
-		public PluginController(IPluginService pluginService)
-		{
-			_pluginService = pluginService;
-		}
+	    public PluginController(IPluginService pluginService, IMapper mapper)
+	    {
+	        _pluginService = pluginService;
+	        _mapper = mapper;
+	    }
 
 		[HttpGet]
 		public IActionResult Get()
 		{
 			var result = _pluginService.GetInstalledPlugins();
-			return Ok(Mapper.Map<IList<EmbyPluginViewModel>>(result));
+			return Ok(_mapper.Map<IList<EmbyPluginViewModel>>(result));
 		}
     }
 }

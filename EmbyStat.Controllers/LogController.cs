@@ -13,10 +13,12 @@ namespace EmbyStat.Controllers
     public class LogController : Controller
     {
         private readonly ILogsService _logService;
+        private readonly IMapper _mapper;
 
-        public LogController(ILogsService logService)
+        public LogController(ILogsService logService, IMapper mapper)
         {
             _logService = logService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,7 +27,7 @@ namespace EmbyStat.Controllers
         public IActionResult GetLogFileLIst()
         {
             var files = _logService.GetLogFileList();
-            return Ok(Mapper.Map<IList<LogFileViewModel>>(files));
+            return Ok(_mapper.Map<IList<LogFileViewModel>>(files));
         }
 
         [HttpGet]

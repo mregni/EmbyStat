@@ -8,7 +8,7 @@ namespace EmbyStat.Common.Models
     public class Collection
     {
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string PrimaryImage { get; set; }
         public CollectionType Type { get; set; }

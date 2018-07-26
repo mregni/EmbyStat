@@ -16,7 +16,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var peopleToDelete = new List<string>();
+                var peopleToDelete = new List<Guid>();
                 foreach (var person in movie.ExtraPersons)
                 {
                     var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
@@ -28,7 +28,7 @@ namespace EmbyStat.Repositories
                 }
                 peopleToDelete.ForEach(x => movie.ExtraPersons.Remove(movie.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
 
-                var genresToDelete = new List<string>();
+                var genresToDelete = new List<Guid>();
                 foreach (var genre in movie.MediaGenres)
                 {
                     var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
@@ -58,7 +58,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(List<string> collections, string type)
+        public int GetTotalPersonByType(List<Guid> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -75,7 +75,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(List<string> collections, string type)
+        public Guid GetMostFeaturedPerson(List<Guid> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -98,7 +98,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Movie> GetAll(IEnumerable<string> collections, bool inludeSubs = false)
+        public List<Movie> GetAll(IEnumerable<Guid> collections, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -121,7 +121,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<string> GetGenres(List<string> collections)
+        public List<Guid> GetGenres(List<Guid> collections)
         {
             using (var context = new ApplicationDbContext())
             {

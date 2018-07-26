@@ -18,19 +18,21 @@ namespace EmbyStat.Controllers
 	public class EmbyController : Controller
 	{
 		private readonly IEmbyService _embyService;
+	    private readonly IMapper _mapper;
 
-		public EmbyController(IEmbyService embyService)
-		{
-			_embyService = embyService;
-		}
-
-		[HttpPost]
+	    public EmbyController(IEmbyService embyService, IMapper mapper)
+	    {
+	        _embyService = embyService;
+	        _mapper = mapper;
+	    }
+	    
+        [HttpPost]
 		[Route("generatetoken")]
 		public async Task<IActionResult> GenerateToken([FromBody]EmbyLoginViewModel login)
 		{
 			Log.Information($"{Constants.LogPrefix.ServerApi}\tGet emby token for certain login credentials.");
-			var result = await _embyService.GetEmbyToken(Mapper.Map<EmbyLogin>(login));
-			return Ok(Mapper.Map<EmbyTokenViewModel>(result));
+			var result = await _embyService.GetEmbyToken(_mapper.Map<EmbyLogin>(login));
+			return Ok(_mapper.Map<EmbyTokenViewModel>(result));
 		}
 
 		[HttpPost]
@@ -50,8 +52,8 @@ namespace EmbyStat.Controllers
 			var result = _embyService.GetServerInfo();
 			var drives = _embyService.GetLocalDrives();
 
-			var serverInfo = Mapper.Map<ServerInfoViewModel>(result);
-			serverInfo.Drives = Mapper.Map<IList<DriveViewModel>>(drives).ToList();
+			var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
+			serverInfo.Drives = _mapper.Map<IList<DriveViewModel>>(drives).ToList();
 
 			return Ok(serverInfo);
 		}
@@ -66,7 +68,7 @@ namespace EmbyStat.Controllers
 			{
 			    Log.Information($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + result.Address);
 			}
-			return Ok(Mapper.Map<EmbyUdpBroadcastViewModel>(result));
+			return Ok(_mapper.Map<EmbyUdpBroadcastViewModel>(result));
 		}
 
 	    [HttpGet]
@@ -74,7 +76,7 @@ namespace EmbyStat.Controllers
 	    public IActionResult GetEmbyStatus()
 	    {
 	        var result = _embyService.GetEmbyStatus();
-	        return Ok(Mapper.Map<EmbyStatusViewModel>(result));
+	        return Ok(_mapper.Map<EmbyStatusViewModel>(result));
 	    }
     }
 }

@@ -24,6 +24,7 @@ namespace EmbyStat.Tasks.Tasks
         private readonly IServerInfoRepository _embyServerInfoRepository;
         private readonly IConfigurationRepository _configurationRepository;
         private readonly IDriveRepository _embyDriveRepository;
+        private readonly IMapper _mapper;
 
         public SmallSyncTask(IApplicationBuilder app)
         {
@@ -32,6 +33,7 @@ namespace EmbyStat.Tasks.Tasks
             _embyServerInfoRepository = app.ApplicationServices.GetService<IServerInfoRepository>();
             _configurationRepository = app.ApplicationServices.GetService<IConfigurationRepository>();
             _embyDriveRepository = app.ApplicationServices.GetService<IDriveRepository>();
+            _mapper = app.ApplicationServices.GetService<IMapper>();
         }
 
         public string Name => "TASKS.SMALLEMBYSYNCTITLE";
@@ -62,8 +64,8 @@ namespace EmbyStat.Tasks.Tasks
             logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Server drives found");
             progress.Report(75);
 
-            var systemInfo = Mapper.Map<ServerInfo>(systemInfoReponse);
-            var localDrives = Mapper.Map<IList<Drives>>(drives);
+            var systemInfo = _mapper.Map<ServerInfo>(systemInfoReponse);
+            var localDrives = _mapper.Map<IList<Drives>>(drives);
 
             _embyServerInfoRepository.UpdateOrAdd(systemInfo);
             progress.Report(85);

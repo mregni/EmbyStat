@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EmbyStat.Repositories.Migrations
 {
@@ -13,9 +12,9 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
+                    ParentId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     OfficialRating = table.Column<string>(nullable: true),
-                    ParentId = table.Column<string>(nullable: false),
                     Primary = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -27,7 +26,7 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Collections",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PrimaryImage = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false)
@@ -56,8 +55,8 @@ namespace EmbyStat.Repositories.Migrations
                     Id = table.Column<string>(nullable: false),
                     AppName = table.Column<string>(nullable: true),
                     AppVersion = table.Column<string>(nullable: true),
-                    LastUserName = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    LastUserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,7 +93,7 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -107,8 +106,8 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Code = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -119,46 +118,46 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Media",
                 columns: table => new
                 {
-                    DvdEpisodeNumber = table.Column<float>(nullable: true),
-                    DvdSeasonNumber = table.Column<int>(nullable: true),
-                    IndexNumber = table.Column<int>(nullable: true),
-                    IndexNumberEnd = table.Column<int>(nullable: true),
+                    DateCreated = table.Column<DateTime>(nullable: true),
+                    Id = table.Column<Guid>(nullable: false),
+                    ParentId = table.Column<Guid>(nullable: false),
+                    PremiereDate = table.Column<DateTime>(nullable: true),
+                    ProductionYear = table.Column<int>(nullable: true),
+                    Banner = table.Column<string>(nullable: true),
+                    Logo = table.Column<string>(nullable: true),
+                    Primary = table.Column<string>(nullable: true),
+                    Thumb = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Path = table.Column<string>(nullable: true),
+                    SortName = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
                     CommunityRating = table.Column<float>(nullable: true),
-                    IMDB = table.Column<string>(nullable: true),
-                    Overview = table.Column<string>(nullable: true),
                     RunTimeTicks = table.Column<long>(nullable: true),
+                    Overview = table.Column<string>(nullable: true),
+                    IMDB = table.Column<string>(nullable: true),
                     TMDB = table.Column<string>(nullable: true),
                     TVDB = table.Column<string>(nullable: true),
-                    Id = table.Column<string>(nullable: false),
-                    Banner = table.Column<string>(nullable: true),
-                    DateCreated = table.Column<DateTime>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    Logo = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    ParentId = table.Column<string>(nullable: false),
-                    Path = table.Column<string>(nullable: true),
-                    PremiereDate = table.Column<DateTime>(nullable: true),
-                    Primary = table.Column<string>(nullable: true),
-                    ProductionYear = table.Column<int>(nullable: true),
-                    SortName = table.Column<string>(nullable: true),
-                    Thumb = table.Column<string>(nullable: true),
                     Container = table.Column<string>(nullable: true),
                     HasSubtitles = table.Column<bool>(nullable: true),
                     IdHD = table.Column<bool>(nullable: true),
                     MediaType = table.Column<string>(nullable: true),
+                    DvdEpisodeNumber = table.Column<float>(nullable: true),
+                    DvdSeasonNumber = table.Column<int>(nullable: true),
+                    IndexNumber = table.Column<int>(nullable: true),
+                    IndexNumberEnd = table.Column<int>(nullable: true),
                     HomePageUrl = table.Column<string>(nullable: true),
                     OfficialRating = table.Column<string>(nullable: true),
                     OriginalTitle = table.Column<string>(nullable: true),
-                    Season_IndexNumber = table.Column<int>(nullable: true),
-                    Season_IndexNumberEnd = table.Column<int>(nullable: true),
                     CumulativeRunTimeTicks = table.Column<long>(nullable: true),
                     DateLastMediaAdded = table.Column<DateTime>(nullable: true),
                     Show_HomePageUrl = table.Column<string>(nullable: true),
-                    MissingEpisodesCount = table.Column<int>(nullable: true),
                     Show_OfficialRating = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true),
+                    TvdbSynced = table.Column<bool>(nullable: true),
+                    MissingEpisodesCount = table.Column<int>(nullable: true),
                     TvdbFailed = table.Column<bool>(nullable: true),
-                    TvdbSynced = table.Column<bool>(nullable: true)
+                    Season_IndexNumber = table.Column<int>(nullable: true),
+                    Season_IndexNumberEnd = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,21 +168,21 @@ namespace EmbyStat.Repositories.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    BirthDate = table.Column<DateTime>(nullable: true),
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Synced = table.Column<bool>(nullable: false),
                     ChildCount = table.Column<int>(nullable: false),
                     EpisodeCount = table.Column<int>(nullable: false),
                     Etag = table.Column<string>(nullable: true),
                     HomePageUrl = table.Column<string>(nullable: true),
-                    IMDB = table.Column<string>(nullable: true),
                     MovieCount = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     OverView = table.Column<string>(nullable: true),
-                    Primary = table.Column<string>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: true),
+                    IMDB = table.Column<string>(nullable: true),
+                    TMDB = table.Column<string>(nullable: true),
                     SeriesCount = table.Column<int>(nullable: false),
                     SortName = table.Column<string>(nullable: true),
-                    Synced = table.Column<bool>(nullable: false),
-                    TMDB = table.Column<string>(nullable: true)
+                    Primary = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,12 +193,12 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Plugins",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
                     ConfigurationFileName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Version = table.Column<string>(nullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -211,29 +210,29 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    CachePath = table.Column<string>(nullable: true),
-                    CanLaunchWebBrowser = table.Column<bool>(nullable: false),
-                    CanSelfRestart = table.Column<bool>(nullable: false),
-                    CanSelfUpdate = table.Column<bool>(nullable: false),
-                    EncoderLocationType = table.Column<string>(nullable: true),
-                    HasPendingRestart = table.Column<bool>(nullable: false),
-                    HasUpdateAvailable = table.Column<bool>(nullable: false),
-                    HttpServerPortNumber = table.Column<int>(nullable: false),
-                    HttpsPortNumber = table.Column<int>(nullable: false),
-                    InternalMetadataPath = table.Column<string>(nullable: true),
-                    IsShuttingDown = table.Column<bool>(nullable: false),
-                    ItemsByNamePath = table.Column<string>(nullable: true),
-                    LogPath = table.Column<string>(nullable: true),
-                    OperatingSystemDisplayName = table.Column<string>(nullable: true),
-                    PackageName = table.Column<string>(nullable: true),
-                    ProgramDataPath = table.Column<string>(nullable: true),
                     SupportsAutoRunAtStartup = table.Column<bool>(nullable: false),
+                    HasUpdateAvailable = table.Column<bool>(nullable: false),
+                    HttpsPortNumber = table.Column<int>(nullable: false),
                     SupportsHttps = table.Column<bool>(nullable: false),
-                    SupportsLibraryMonitor = table.Column<bool>(nullable: false),
-                    SystemArchitecture = table.Column<int>(nullable: false),
-                    SystemUpdateLevel = table.Column<int>(nullable: false),
+                    HttpServerPortNumber = table.Column<int>(nullable: false),
                     TranscodingTempPath = table.Column<string>(nullable: true),
-                    WebSocketPortNumber = table.Column<int>(nullable: false)
+                    InternalMetadataPath = table.Column<string>(nullable: true),
+                    LogPath = table.Column<string>(nullable: true),
+                    CachePath = table.Column<string>(nullable: true),
+                    ItemsByNamePath = table.Column<string>(nullable: true),
+                    ProgramDataPath = table.Column<string>(nullable: true),
+                    EncoderLocationType = table.Column<string>(nullable: true),
+                    CanSelfUpdate = table.Column<bool>(nullable: false),
+                    CanSelfRestart = table.Column<bool>(nullable: false),
+                    WebSocketPortNumber = table.Column<int>(nullable: false),
+                    SupportsLibraryMonitor = table.Column<bool>(nullable: false),
+                    IsShuttingDown = table.Column<bool>(nullable: false),
+                    HasPendingRestart = table.Column<bool>(nullable: false),
+                    PackageName = table.Column<string>(nullable: true),
+                    OperatingSystemDisplayName = table.Column<string>(nullable: true),
+                    SystemUpdateLevel = table.Column<int>(nullable: false),
+                    CanLaunchWebBrowser = table.Column<bool>(nullable: false),
+                    SystemArchitecture = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,13 +243,13 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Servers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
                     CanSelfRestart = table.Column<bool>(nullable: false),
                     CanSelfUpdate = table.Column<bool>(nullable: false),
                     HasPendingRestart = table.Column<bool>(nullable: false),
                     HasUpdateAvailable = table.Column<bool>(nullable: false),
                     HttpServerPortNumber = table.Column<int>(nullable: false),
                     HttpsPortNumber = table.Column<int>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     LocalAddress = table.Column<string>(nullable: true),
                     MacAddress = table.Column<string>(nullable: true),
                     OperatingSystem = table.Column<string>(nullable: true),
@@ -271,10 +270,10 @@ namespace EmbyStat.Repositories.Migrations
                 name: "Statistics",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     CalculationDateTime = table.Column<DateTime>(nullable: false),
-                    JsonResult = table.Column<string>(nullable: false),
-                    Type = table.Column<int>(nullable: false)
+                    Type = table.Column<int>(nullable: false),
+                    JsonResult = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -285,14 +284,14 @@ namespace EmbyStat.Repositories.Migrations
                 name: "TaskResults",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    EndTimeUtc = table.Column<DateTime>(nullable: false),
-                    ErrorMessage = table.Column<string>(nullable: true),
-                    Key = table.Column<string>(nullable: true),
-                    LongErrorMessage = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
                     StartTimeUtc = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    EndTimeUtc = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: false),
+                    ErrorMessage = table.Column<string>(nullable: true),
+                    LongErrorMessage = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -304,12 +303,12 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    DayOfWeek = table.Column<int>(nullable: true),
-                    IntervalTicks = table.Column<long>(nullable: true),
-                    MaxRuntimeTicks = table.Column<long>(nullable: true),
                     TaskKey = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
                     TimeOfDayTicks = table.Column<long>(nullable: true),
-                    Type = table.Column<string>(nullable: true)
+                    IntervalTicks = table.Column<long>(nullable: true),
+                    DayOfWeek = table.Column<int>(nullable: true),
+                    MaxRuntimeTicks = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -327,7 +326,7 @@ namespace EmbyStat.Repositories.Migrations
                     Codec = table.Column<string>(nullable: true),
                     Language = table.Column<string>(nullable: true),
                     SampleRate = table.Column<int>(nullable: true),
-                    VideoId = table.Column<string>(nullable: true)
+                    VideoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -345,8 +344,8 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    CollectionId = table.Column<string>(nullable: true),
-                    MediaId = table.Column<string>(nullable: true)
+                    MediaId = table.Column<Guid>(nullable: false),
+                    CollectionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -356,7 +355,7 @@ namespace EmbyStat.Repositories.Migrations
                         column: x => x.CollectionId,
                         principalTable: "Collections",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MediaCollection_Media_MediaId",
                         column: x => x.MediaId,
@@ -369,8 +368,8 @@ namespace EmbyStat.Repositories.Migrations
                 name: "MediaGenres",
                 columns: table => new
                 {
-                    GenreId = table.Column<string>(nullable: false),
-                    MediaId = table.Column<string>(nullable: false)
+                    MediaId = table.Column<Guid>(nullable: false),
+                    GenreId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -399,8 +398,8 @@ namespace EmbyStat.Repositories.Migrations
                     Path = table.Column<string>(nullable: true),
                     Protocol = table.Column<string>(nullable: true),
                     RunTimeTicks = table.Column<long>(nullable: true),
-                    VideoId = table.Column<string>(nullable: true),
-                    VideoType = table.Column<string>(nullable: true)
+                    VideoType = table.Column<string>(nullable: true),
+                    VideoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -417,8 +416,8 @@ namespace EmbyStat.Repositories.Migrations
                 name: "SeasonEpisodes",
                 columns: table => new
                 {
-                    EpisodeId = table.Column<string>(nullable: false),
-                    SeasonId = table.Column<string>(nullable: false)
+                    SeasonId = table.Column<Guid>(nullable: false),
+                    EpisodeId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -446,7 +445,7 @@ namespace EmbyStat.Repositories.Migrations
                     DisplayTitle = table.Column<string>(nullable: true),
                     IsDefault = table.Column<bool>(nullable: false),
                     Language = table.Column<string>(nullable: true),
-                    VideoId = table.Column<string>(nullable: true)
+                    VideoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -470,8 +469,8 @@ namespace EmbyStat.Repositories.Migrations
                     Channels = table.Column<int>(nullable: true),
                     Height = table.Column<int>(nullable: true),
                     Language = table.Column<string>(nullable: true),
-                    VideoId = table.Column<string>(nullable: true),
-                    Width = table.Column<int>(nullable: true)
+                    Width = table.Column<int>(nullable: true),
+                    VideoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -488,9 +487,9 @@ namespace EmbyStat.Repositories.Migrations
                 name: "ExtraPersons",
                 columns: table => new
                 {
-                    ExtraId = table.Column<string>(nullable: false),
-                    PersonId = table.Column<string>(nullable: false),
-                    Type = table.Column<string>(nullable: true)
+                    Type = table.Column<string>(nullable: true),
+                    ExtraId = table.Column<Guid>(nullable: false),
+                    PersonId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -514,12 +513,12 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    IsDisabled = table.Column<bool>(nullable: false),
-                    IsHidden = table.Column<bool>(nullable: false),
                     LastActivityDate = table.Column<DateTime>(nullable: true),
                     LastLoginDate = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    IsHidden = table.Column<bool>(nullable: false),
+                    IsDisabled = table.Column<bool>(nullable: false),
                     ServerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -537,9 +536,9 @@ namespace EmbyStat.Repositories.Migrations
                 name: "StatisticCollection",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    CollectionId = table.Column<string>(nullable: true),
-                    StatisticId = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(nullable: false),
+                    StatisticId = table.Column<Guid>(nullable: false),
+                    CollectionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -549,7 +548,7 @@ namespace EmbyStat.Repositories.Migrations
                         column: x => x.CollectionId,
                         principalTable: "Collections",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_StatisticCollection_Statistics_StatisticId",
                         column: x => x.StatisticId,
