@@ -32,7 +32,6 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger logProgress)
         {
             progress.Report(0);
-            logProgress.LogInformation(Constants.LogPrefix.PingEmbyTask, "Let's see if Emby is still online");
             var result = await _embyService.PingEmbyAsync(cancellationToken);
             progress.Report(50);
             if (result == "Emby Server")

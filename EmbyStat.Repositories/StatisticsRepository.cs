@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Helpers;
@@ -46,6 +47,24 @@ namespace EmbyStat.Repositories
 
                 context.Statistics.Add(result);
                 context.SaveChanges();
+            }
+        }
+
+        public async Task CleanupStatistics()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var lastMediaSync = context.TaskResults
+                    .Where(x => x.Key == "MediaSync")
+                    .OrderByDescending(x => x.EndTimeUtc)
+                    .FirstOrDefault();
+
+                if (lastMediaSync != null)
+                {
+                    var listToRemove = context.Statistics.Where(x => x.CalculationDateTime < lastMediaSync.StartTimeUtc);
+                    context.RemoveRange(listToRemove);
+                    await context.SaveChangesAsync();
+                }
             }
         }
     }
