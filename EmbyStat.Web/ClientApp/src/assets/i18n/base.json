@@ -161,7 +161,8 @@
     "AND": "and",
     "AGO": "ago",
     "FOR": "for",
-    "BUTFAILED": "but failed after"
+    "BUTFAILED": "but failed after",
+    "NOTRAN": "Not ran yet" 
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Check Emby connection",
