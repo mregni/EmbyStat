@@ -19,7 +19,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-
 @NgModule({
   imports: [
     MatToolbarModule,

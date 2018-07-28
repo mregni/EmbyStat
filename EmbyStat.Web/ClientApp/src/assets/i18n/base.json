@@ -209,6 +209,12 @@
     "FOLDERS": "Folders"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby" 
+    "GOTOEMBY": "Go to Emby"
+  },
+  "ABOUT": {
+    "THANKS": {
+      "TITLE": "Thanks",
+      "TEXT": "A big thanks to the following people for translating the app in their native language:" 
+    } 
   } 
 }
