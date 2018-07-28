@@ -170,7 +170,9 @@
     "SMALLEMBYSYNCTITLE": "Synchronisation rapide avec Emby",
     "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
     "MEDIASYNCTITLE": "Synchronisation des médias",
-    "STARTMEDIASYNC": "Débuter une synchronisation des médias"
+    "STARTMEDIASYNC": "Débuter une synchronisation des médias",
+    "DATABASECLEANUP": "Database cleanup",
+    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data."
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Déclencheur d'intervalle",
@@ -210,5 +212,11 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Aller à Emby"
+  },
+  "ABOUT": {
+    "THANKS": {
+      "TITLE": "Thanks",
+      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+    }
   }
 }
