@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Services.Interfaces;
@@ -29,7 +30,9 @@ namespace Tests.Unit.Controllers
 			_pluginServiceMock = new Mock<IPluginService>();
 			_pluginServiceMock.Setup(x => x.GetInstalledPlugins()).Returns(_plugins);
 
-			_subject = new PluginController(_pluginServiceMock.Object);
+		    var _mapperMock = new Mock<IMapper>();
+            _mapperMock.Setup(x => x.Map<IList<EmbyPluginViewModel>>(It.IsAny<List<PluginInfo>>())).Returns(new List<EmbyPluginViewModel>{ new EmbyPluginViewModel { Name = "Trakt plugin" }, new EmbyPluginViewModel { Name = "EmbyStat plugin" } });
+            _subject = new PluginController(_pluginServiceMock.Object, _mapperMock.Object);
 		}
 
 		public void Dispose()

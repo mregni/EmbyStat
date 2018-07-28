@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Common.Models;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
@@ -45,7 +46,6 @@ namespace Tests.Unit.Controllers
 
 			_serverInfo = new ServerInfo
 			{
-				Id = Guid.NewGuid().ToString(),
 				HttpServerPortNumber = 8096,
 				HttpsPortNumber = 8097
 			};
@@ -62,7 +62,13 @@ namespace Tests.Unit.Controllers
 		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
 		    _embyServiceMock.Setup(x => x.GetLocalDrives()).Returns(_drives);
 
-		    _subject = new EmbyController(_embyServiceMock.Object);
+	        var _mapperMock = new Mock<IMapper>();
+	        _mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
+            _mapperMock.Setup(x => x.Map<IList<DriveViewModel>>(It.IsAny<List<Drives>>())).Returns(new List<DriveViewModel>{ new DriveViewModel(), new DriveViewModel()});
+            _mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = true, Token = "azerty", Username = "admin" });
+	        _mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "http://localhost",Name = "emby" });
+
+		    _subject = new EmbyController(_embyServiceMock.Object, _mapperMock.Object);
 		}
 
 	    public void Dispose()
@@ -88,12 +94,6 @@ namespace Tests.Unit.Controllers
 		    token.IsAdmin.Should().Be(_token.IsAdmin);
 		    token.Token.Should().Be(_token.Token);
 		    token.Username.Should().Be(_token.Username);
-
-		    _embyServiceMock.Verify(x => x.GetEmbyToken(It.Is<EmbyLogin>(
-			    y => y.UserName == loginViewModel.UserName &&
-			         y.Address == loginViewModel.Address &&
-			         y.Password == loginViewModel.Password)
-		    ), Times.Once);
 	    }
 
 	    [Fact]

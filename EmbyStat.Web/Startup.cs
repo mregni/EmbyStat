@@ -57,7 +57,6 @@ namespace EmbyStat.Web
 
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
-		    services.Configure<LogSettings>(Configuration.GetSection("Logging"));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
 		    services.AddOptions();
