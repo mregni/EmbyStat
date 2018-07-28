@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace EmbyStat.Common.Exceptions
@@ -42,7 +43,7 @@ namespace EmbyStat.Common.Exceptions
 			}
 
 			// always return a JSON result
-			context.Result = new JsonResult(apiError);
+			context.Result = new JsonResult(JsonConvert.SerializeObject(apiError));
 
 			base.OnException(context);
 		}

@@ -148,7 +148,7 @@ namespace Tests.Unit.Services
         {
             returnedPerson = new Person
             {
-                Id = Guid.NewGuid(),
+                Id = basePerson.Id,
                 Name = "name",
                 Primary = "",
                 MovieCount = 10,
@@ -166,7 +166,7 @@ namespace Tests.Unit.Services
             };
             _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<Guid>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById(Guid.NewGuid());
+            var person = await _subject.GetPersonById(returnedPerson.Id);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);

@@ -23,7 +23,6 @@ using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using CollectionType = EmbyStat.Common.Models.CollectionType;

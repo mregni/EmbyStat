@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
@@ -84,9 +86,9 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
 	        };
 
-            var embyDrives = new List<EmbyStat.Api.EmbyClient.Model.Drive>
+            var embyDrives = new List<Drive>
 		    {
-			    new EmbyStat.Api.EmbyClient.Model.Drive()
+			    new Drive()
 		    };
 
 			var systemInfo = new SystemInfo();
@@ -114,7 +116,11 @@ namespace Tests.Unit.Services
 
 	        var embyStatusRepositoryMock = new Mock<IEmbyStatusRepository>();
 
-			_subject = new EmbyService(_embyClientMock.Object, _embyPluginRepositoryMock.Object, _configurationRepositoryMock.Object, _embyServerInfoRepository.Object, _embyDriveRepository.Object, embyStatusRepositoryMock.Object);
+	        var _mapperMock = new Mock<IMapper>();
+	        _mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
+	        _mapperMock.Setup(x => x.Map<IList<Drives>>(It.IsAny<List<Drive>>())).Returns(new List<Drives> {new Drives()});
+
+			_subject = new EmbyService(_embyClientMock.Object, _embyPluginRepositoryMock.Object, _embyServerInfoRepository.Object, _configurationRepositoryMock.Object, _embyDriveRepository.Object, embyStatusRepositoryMock.Object, _mapperMock.Object);
 	    }
 
 	    //[Fact]
