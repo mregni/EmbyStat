@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
 {
@@ -40,6 +42,19 @@ namespace EmbyStat.Repositories
             using (var context = new ApplicationDbContext())
             {
                 return context.Genres.Where(x => ids.Any(y => y == x.Id)).ToList();
+            }
+        }
+
+        public async Task CleanupGenres()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var genresToRemove = context.Genres
+                    .Include(x => x.MediaGenres)
+                    .Where(x => x.MediaGenres.Count == 0);
+
+                context.Genres.RemoveRange(genresToRemove);
+                await context.SaveChangesAsync();
             }
         }
     }

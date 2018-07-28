@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +52,19 @@ namespace EmbyStat.Repositories
                     context.Entry(person).State = EntityState.Modified;
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public async Task CleanupPersons()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var peopleToRemove = context.People
+                    .Include(x => x.ExtraPersons)
+                    .Where(x => x.ExtraPersons.Count == 0);
+
+                context.People.RemoveRange(peopleToRemove);
+                await context.SaveChangesAsync();
             }
         }
     }

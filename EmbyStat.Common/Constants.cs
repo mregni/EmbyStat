@@ -104,6 +104,7 @@ namespace EmbyStat.Common
             public const string EmbyClient = "EMBY-CLIENT";
             public const string TheTVDBCLient = "THETVDB-CLIENT";
             public const string ExceptionHandler = "EXCEPTION-HANDLER";
+            public const string DatabaseCleanupTask = "DATABASE CLEANUP-TASK";
         }
 
         //CHARTS

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 
 namespace EmbyStat.Repositories.Interfaces
@@ -10,5 +11,6 @@ namespace EmbyStat.Repositories.Interfaces
         List<Guid> GetIds();
         Person GetPersonById(Guid id);
         void AddOrUpdatePerson(Person person);
+        Task CleanupPersons();
     }
 }

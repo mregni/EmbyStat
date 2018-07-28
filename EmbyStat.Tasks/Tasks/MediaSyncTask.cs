@@ -489,7 +489,7 @@ namespace EmbyStat.Tasks.Tasks
         {
             return new List<TaskTriggerInfo>
             {
-                new TaskTriggerInfo{ TaskKey = Key, TimeOfDayTicks = 0, Type = "DailyTrigger"}
+                new TaskTriggerInfo{ TaskKey = Key, TimeOfDayTicks = 10000, Type = "DailyTrigger"}
             };
         }
     }
