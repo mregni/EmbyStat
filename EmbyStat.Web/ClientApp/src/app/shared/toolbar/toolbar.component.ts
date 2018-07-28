@@ -21,7 +21,8 @@ export class ToolbarComponent implements OnInit {
 
   public missedPings: number;
 
-  @Output() toggleSideNav = new EventEmitter<void>();
+  @Output()
+  toggleSideNav = new EventEmitter<void>();
 
   constructor(private configurationFacade: ConfigurationFacade, private toolbarFacade: ToolbarFacade) {
     this.configuration$ = configurationFacade.configuration$;
@@ -32,26 +33,29 @@ export class ToolbarComponent implements OnInit {
       .build();
     hubConnection.start().catch(err => document.write(err));
 
-    hubConnection.on('ReceiveInfo', (data: Task[]) => {
-      if (data.some(x => x.state === 2)) {
-        this.runningTask = data.find(x => x.state === 2);
-      } else {
-        this.runningTask = undefined;
-      }
+    hubConnection.on('ReceiveInfo',
+      (data: Task[]) => {
+        if (data.some(x => x.state === 2)) {
+          this.runningTask = data.find(x => x.state === 2);
+        } else {
+          this.runningTask = undefined;
+        }
 
-      if (data.some(x => x.name === 'TASKS.PINGEMBYSERVERTITLE')) {
-        this.embyStatusSeb = this.toolbarFacade.getEmbyStatus().subscribe((status: EmbyStatus) => {
-          this.missedPings = status.missedPings;
-        });
-        this.embyStatusSeb = undefined;
-      }
-    });
+        if (data.some(x => x.name === 'TASKS.PINGEMBYSERVERTITLE')) {
+          this.embyStatusSeb = this.toolbarFacade.getEmbyStatus().subscribe((status: EmbyStatus) => {
+            this.missedPings = status.missedPings;
+          });
+          this.embyStatusSeb = undefined;
+        }
+      });
 
-    hubConnection.on('ReceiveLog', (data: string) => {
+    hubConnection.on('ReceiveLog',
+      (data: string) => {
 
-    });
+      });
   }
 
   ngOnInit() {
 
   }
+}

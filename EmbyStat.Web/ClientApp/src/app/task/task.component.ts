@@ -141,10 +141,6 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.hubConnection !== undefined) {
-      this.hubConnection.stop();
-    }
-
     if (this.getTasksSub !== undefined) {
       this.getTasksSub.unsubscribe();
     }
