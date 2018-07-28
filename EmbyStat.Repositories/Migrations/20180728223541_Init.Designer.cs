@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180725220942_Init")]
+    [Migration("20180728223541_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -392,48 +392,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("People");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Server", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("CanSelfRestart");
-
-                    b.Property<bool>("CanSelfUpdate");
-
-                    b.Property<bool>("HasPendingRestart");
-
-                    b.Property<bool>("HasUpdateAvailable");
-
-                    b.Property<int>("HttpServerPortNumber");
-
-                    b.Property<int>("HttpsPortNumber");
-
-                    b.Property<string>("LocalAddress");
-
-                    b.Property<string>("MacAddress");
-
-                    b.Property<string>("OperatingSystem");
-
-                    b.Property<string>("OperatingSystemDispayName");
-
-                    b.Property<string>("ServerName");
-
-                    b.Property<string>("SystemArchitecture");
-
-                    b.Property<string>("SystemUpdateLevel");
-
-                    b.Property<string>("Version");
-
-                    b.Property<string>("WanAddress");
-
-                    b.Property<int>("WebSocketPortNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Servers");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.Models.ServerInfo", b =>
                 {
                     b.Property<string>("Id")
@@ -463,13 +421,17 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<string>("ItemsByNamePath");
 
+                    b.Property<string>("LocalAddress");
+
                     b.Property<string>("LogPath");
+
+                    b.Property<string>("OperatingSystem");
 
                     b.Property<string>("OperatingSystemDisplayName");
 
-                    b.Property<string>("PackageName");
-
                     b.Property<string>("ProgramDataPath");
+
+                    b.Property<string>("ServerName");
 
                     b.Property<bool>("SupportsAutoRunAtStartup");
 
@@ -477,11 +439,15 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Property<bool>("SupportsLibraryMonitor");
 
-                    b.Property<int>("SystemArchitecture");
+                    b.Property<string>("SystemArchitecture");
 
-                    b.Property<int>("SystemUpdateLevel");
+                    b.Property<string>("SystemUpdateLevel");
 
                     b.Property<string>("TranscodingTempPath");
+
+                    b.Property<string>("Version");
+
+                    b.Property<string>("WanAddress");
 
                     b.Property<int>("WebSocketPortNumber");
 
@@ -526,11 +492,7 @@ namespace EmbyStat.Repositories.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("ServerId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ServerId");
 
                     b.ToTable("User");
                 });
@@ -807,14 +769,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.Models.Statistic", "Statistic")
                         .WithMany("Collections")
                         .HasForeignKey("StatisticId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.User", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Server", "Server")
-                        .WithMany("Users")
-                        .HasForeignKey("ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
