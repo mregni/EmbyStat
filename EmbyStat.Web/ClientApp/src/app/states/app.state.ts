@@ -6,9 +6,6 @@ import { environment } from '../../environments/environment';
 import { configurationReducer } from '../configuration/state/reducer.configuration';
 import { Configuration } from '../configuration/models/configuration';
 
-import { pluginReducer } from '../plugin/state/reducer.plugin';
-import { EmbyPluginStore } from '../plugin/models/embyPluginStore';
-
 import { serverInfoReducer } from '../server/state/reducer.server';
 import { ServerInfoStore } from '../server/models/serverInfoStore';
 
@@ -27,7 +24,6 @@ import { AboutReducer } from '../about/state/reducer.about';
 export interface ApplicationState {
   configuration: Configuration;
   about: About;
-  plugins: EmbyPluginStore;
   serverInfo: ServerInfoStore;
   movies: MovieStore;
   shows: ShowStore;
@@ -36,7 +32,6 @@ export interface ApplicationState {
 
 export const ROOT_REDUCER: ActionReducerMap<ApplicationState> = {
   configuration: configurationReducer,
-  plugins: pluginReducer,
   serverInfo: serverInfoReducer,
   movies: MovieReducer,
   shows: ShowReducer,

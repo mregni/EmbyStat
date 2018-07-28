@@ -71,11 +71,8 @@
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\shortMovie.ts" />
     <None Remove="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
-    <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <None Remove="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
     <None Remove="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
@@ -136,11 +133,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\emby\embyUdpBroadcast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\facade.plugin.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
