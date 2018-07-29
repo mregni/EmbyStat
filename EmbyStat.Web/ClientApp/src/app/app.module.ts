@@ -28,11 +28,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
 import { ConfigurationEffects } from './configuration/state/effects.configuration';
-import { PluginEffects } from './plugin/state/effects.plugin';
 import { ServerEffects } from './server/state/effects.server';
-import { MovieEffects } from './movie/state/effects.movie';
-import { ShowEffects } from './show/state/effects.show';
-import { LoaderEffects } from './shared/components/loader/state/effects.loader';
 import { AboutEffects } from './about/state/effects.about';
 
 import { environment } from '../environments/environment';
@@ -74,7 +70,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects, ShowEffects, LoaderEffects, AboutEffects]),
+    EffectsModule.forRoot([ConfigurationEffects, ServerEffects, AboutEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [

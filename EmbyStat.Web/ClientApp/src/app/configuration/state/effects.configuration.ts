@@ -21,7 +21,6 @@ import {
   NoNeedConfigurationAction
 } from './actions.configuration';
 
-import { ResetPluginLoadedState } from '../../plugin/state/actions.plugin';
 import { ResetServerInfoLoadedState } from '../../server/state/actions.server';
 
 import { ConfigurationQuery } from './reducer.configuration';
@@ -68,7 +67,6 @@ export class ConfigurationEffects {
       }),
       switchMap((configuration: Configuration | null) => {
         return [new UpdateConfigurationSuccessAction(configuration),
-          new ResetPluginLoadedState(),
           new ResetServerInfoLoadedState(),
           new FireSmallEmbySyncAction()];
       }),

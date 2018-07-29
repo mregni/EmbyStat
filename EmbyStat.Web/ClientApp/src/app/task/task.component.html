@@ -52,7 +52,7 @@
           </div>
         </div>
         <ng-template #no_run>
-          Not ran yet
+          {{ 'TASK.NOTRAN' | translate }}
         </ng-template>
       </div>
       <div class="task__tasksub-progress" *ngIf="task.state === 2">

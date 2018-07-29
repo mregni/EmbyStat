@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { ShowChartsService } from '../service/show-charts.service';
 import { ShowFacade } from '../state/facade.show';
 import { ShowGraphs } from '../models/showGraphs';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-show-charts',
@@ -27,8 +26,6 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
     }
 
     this._selectedCollections = collection;
-
-    this.showFacade.clearGraphs();
     this.graphs$ = undefined;
 
     if (this.onTab) {
@@ -37,13 +34,10 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
   }
 
   public graphs$: Observable<ShowGraphs>;
-  public isLoading$: Observable<boolean>;
   private showChartSub: Subscription;
   private onTab = false;
 
-  constructor(private showFacade: ShowFacade,
-    private showChartsService: ShowChartsService,
-    private loaderFacade: LoaderFacade) {
+  constructor(private showFacade: ShowFacade, private showChartsService: ShowChartsService) {
     showChartsService.open.subscribe(value => {
       this.onTab = value;
       if (value && !this.previousOnTabValue) {
@@ -54,7 +48,7 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isShowGraphsLoading();
+
   }
 
   ngOnDestroy(): void {

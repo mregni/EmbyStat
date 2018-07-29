@@ -6,7 +6,6 @@ import { ConfigurationFacade } from '../../configuration/state/facade.configurat
 import { Configuration } from '../../configuration/models/configuration';
 
 import { MovieFacade } from '../state/facade.movie';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-movie-suspicious',
@@ -43,20 +42,16 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
     });
   }
 
-  public isLoading$: Observable<boolean>;
-
-  constructor(private movieFacade: MovieFacade,
-    private configurationFacade: ConfigurationFacade,
-    private loaderFacade: LoaderFacade) {
+  constructor(private movieFacade: MovieFacade, private configurationFacade: ConfigurationFacade) {
     this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isMovieSuspiciousLoading();
+
   }
 
   openMovie(id: string): void {
-    window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${id}`, '_blank');
+    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
   }
 
   ngOnDestroy(): void {
