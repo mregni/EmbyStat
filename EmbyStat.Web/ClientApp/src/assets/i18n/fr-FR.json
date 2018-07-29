@@ -171,8 +171,8 @@
     "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
     "MEDIASYNCTITLE": "Synchronisation des médias",
     "STARTMEDIASYNC": "Débuter une synchronisation des médias",
-    "DATABASECLEANUP": "Database cleanup",
-    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data."
+    "DATABASECLEANUP": "Nettoyage de la base de données",
+    "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données."
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Déclencheur d'intervalle",
@@ -215,8 +215,8 @@
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Merci",
+      "TEXT": "Un grand merci aux personnes suivantes pour avoir traduit l'application dans leur langue maternelle :"
     }
   }
 }
