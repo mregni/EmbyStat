@@ -170,7 +170,9 @@
     "SMALLEMBYSYNCTITLE": "Small sync with Emby",
     "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your content. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation",
-    "STARTMEDIASYNC": "Start media sync"
+    "STARTMEDIASYNC": "Start media sync",
+    "DATABASECLEANUP": "Database cleanup",
+    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data."
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -210,5 +212,11 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Go to Emby"
+  },
+  "ABOUT": {
+    "THANKS": {
+      "TITLE": "Thanks",
+      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+    }
   }
 }
