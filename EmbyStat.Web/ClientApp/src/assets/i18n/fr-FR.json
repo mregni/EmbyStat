@@ -141,7 +141,7 @@
       "SHOWS": "Paramètres de la série sauvegardé!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "Si vous le souhaitez, vous pouvez utiliser EmbyStat avec votre propre clé API ici.",
+      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
       "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera."
     },
     "MOVIE": {
@@ -161,7 +161,8 @@
     "AND": "et",
     "AGO": "il y a",
     "FOR": "pour",
-    "BUTFAILED": "a échoué après"
+    "BUTFAILED": "a échoué après",
+    "NOTRAN": "Not ran yet"
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
