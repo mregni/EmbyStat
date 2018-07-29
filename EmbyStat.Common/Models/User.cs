@@ -11,7 +11,5 @@ namespace EmbyStat.Common.Models
         public Boolean IsAdmin { get; set; }
 	    public Boolean IsHidden { get; set; }
 	    public Boolean IsDisabled { get; set; }
-		public string ServerId { get; set; }
-        public Server Server { get; set; }
     }
 }

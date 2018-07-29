@@ -30,7 +30,6 @@ namespace EmbyStat.Repositories
         public DbSet<ExtraPerson> ExtraPersons { get; set; }
         public DbSet<MediaGenre> MediaGenres { get; set; }
         public DbSet<SeasonEpisode> SeasonEpisodes { get; set; }
-        public DbSet<Server> Servers { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Statistic> Statistics { get; set; }
         public DbSet<Language> Languages { get; set; }
@@ -101,9 +100,6 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<User>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<User>().Property(m => m.Name).IsRequired().HasMaxLength(100);
-
-            modelBuilder.Entity<Server>().Property(m => m.Id).IsRequired();
-            modelBuilder.Entity<Server>().HasMany(s => s.Users).WithOne(u => u.Server).HasForeignKey(u => u.ServerId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MediaSource>().Property(m => m.Id).IsRequired();
 

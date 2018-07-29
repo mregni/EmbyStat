@@ -210,60 +210,37 @@ namespace EmbyStat.Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    SupportsAutoRunAtStartup = table.Column<bool>(nullable: false),
-                    HasUpdateAvailable = table.Column<bool>(nullable: false),
-                    HttpsPortNumber = table.Column<int>(nullable: false),
-                    SupportsHttps = table.Column<bool>(nullable: false),
-                    HttpServerPortNumber = table.Column<int>(nullable: false),
-                    TranscodingTempPath = table.Column<string>(nullable: true),
-                    InternalMetadataPath = table.Column<string>(nullable: true),
-                    LogPath = table.Column<string>(nullable: true),
-                    CachePath = table.Column<string>(nullable: true),
-                    ItemsByNamePath = table.Column<string>(nullable: true),
-                    ProgramDataPath = table.Column<string>(nullable: true),
-                    EncoderLocationType = table.Column<string>(nullable: true),
-                    CanSelfUpdate = table.Column<bool>(nullable: false),
-                    CanSelfRestart = table.Column<bool>(nullable: false),
-                    WebSocketPortNumber = table.Column<int>(nullable: false),
-                    SupportsLibraryMonitor = table.Column<bool>(nullable: false),
-                    IsShuttingDown = table.Column<bool>(nullable: false),
-                    HasPendingRestart = table.Column<bool>(nullable: false),
-                    PackageName = table.Column<string>(nullable: true),
+                    SystemUpdateLevel = table.Column<string>(nullable: true),
                     OperatingSystemDisplayName = table.Column<string>(nullable: true),
-                    SystemUpdateLevel = table.Column<int>(nullable: false),
+                    HasPendingRestart = table.Column<bool>(nullable: false),
+                    IsShuttingDown = table.Column<bool>(nullable: false),
+                    SupportsLibraryMonitor = table.Column<bool>(nullable: false),
+                    WebSocketPortNumber = table.Column<int>(nullable: false),
+                    CanSelfRestart = table.Column<bool>(nullable: false),
+                    CanSelfUpdate = table.Column<bool>(nullable: false),
                     CanLaunchWebBrowser = table.Column<bool>(nullable: false),
-                    SystemArchitecture = table.Column<int>(nullable: false)
+                    ProgramDataPath = table.Column<string>(nullable: true),
+                    ItemsByNamePath = table.Column<string>(nullable: true),
+                    CachePath = table.Column<string>(nullable: true),
+                    LogPath = table.Column<string>(nullable: true),
+                    InternalMetadataPath = table.Column<string>(nullable: true),
+                    TranscodingTempPath = table.Column<string>(nullable: true),
+                    HttpServerPortNumber = table.Column<int>(nullable: false),
+                    SupportsHttps = table.Column<bool>(nullable: false),
+                    HttpsPortNumber = table.Column<int>(nullable: false),
+                    HasUpdateAvailable = table.Column<bool>(nullable: false),
+                    SupportsAutoRunAtStartup = table.Column<bool>(nullable: false),
+                    EncoderLocationType = table.Column<string>(nullable: true),
+                    SystemArchitecture = table.Column<string>(nullable: true),
+                    LocalAddress = table.Column<string>(nullable: true),
+                    WanAddress = table.Column<string>(nullable: true),
+                    ServerName = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    OperatingSystem = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServerInfo", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Servers",
-                columns: table => new
-                {
-                    CanSelfRestart = table.Column<bool>(nullable: false),
-                    CanSelfUpdate = table.Column<bool>(nullable: false),
-                    HasPendingRestart = table.Column<bool>(nullable: false),
-                    HasUpdateAvailable = table.Column<bool>(nullable: false),
-                    HttpServerPortNumber = table.Column<int>(nullable: false),
-                    HttpsPortNumber = table.Column<int>(nullable: false),
-                    Id = table.Column<string>(nullable: false),
-                    LocalAddress = table.Column<string>(nullable: true),
-                    MacAddress = table.Column<string>(nullable: true),
-                    OperatingSystem = table.Column<string>(nullable: true),
-                    OperatingSystemDispayName = table.Column<string>(nullable: true),
-                    ServerName = table.Column<string>(nullable: true),
-                    SystemArchitecture = table.Column<string>(nullable: true),
-                    SystemUpdateLevel = table.Column<string>(nullable: true),
-                    Version = table.Column<string>(nullable: true),
-                    WanAddress = table.Column<string>(nullable: true),
-                    WebSocketPortNumber = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Servers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -313,6 +290,23 @@ namespace EmbyStat.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TaskTriggerInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    LastActivityDate = table.Column<DateTime>(nullable: true),
+                    LastLoginDate = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    IsHidden = table.Column<bool>(nullable: false),
+                    IsDisabled = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -509,30 +503,6 @@ namespace EmbyStat.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    LastActivityDate = table.Column<DateTime>(nullable: true),
-                    LastLoginDate = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 100, nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    IsHidden = table.Column<bool>(nullable: false),
-                    IsDisabled = table.Column<bool>(nullable: false),
-                    ServerId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_Servers_ServerId",
-                        column: x => x.ServerId,
-                        principalTable: "Servers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StatisticCollection",
                 columns: table => new
                 {
@@ -606,11 +576,6 @@ namespace EmbyStat.Repositories.Migrations
                 name: "IX_SubtitleStreams_VideoId",
                 table: "SubtitleStreams",
                 column: "VideoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_ServerId",
-                table: "User",
-                column: "ServerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VideoStreams_VideoId",
@@ -691,9 +656,6 @@ namespace EmbyStat.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "Statistics");
-
-            migrationBuilder.DropTable(
-                name: "Servers");
 
             migrationBuilder.DropTable(
                 name: "Media");
