@@ -13,18 +13,6 @@ export class LoaderFacade {
     private store: Store<ApplicationState>
   ) { }
 
-  isShowGeneralLoading(): Observable<boolean> {
-    return this.store.select(LoaderQuery.isShowGeneralLoading);
-  }
-
-  isShowGraphsLoading(): Observable<boolean> {
-    return this.store.select(LoaderQuery.isShowGraphsLoading);
-  }
-
-  isShowCollectionLoading(): Observable<boolean> {
-    return this.store.select(LoaderQuery.isShowCollectionLoading);
-  }
-
   isMovieGeneralLoading(): Observable<boolean> {
     return this.store.select(LoaderQuery.isMovieGeneralLoading);
   }

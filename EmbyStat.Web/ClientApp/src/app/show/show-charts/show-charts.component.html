@@ -1,43 +1,41 @@
-<div *ngIf="!(isLoading$ | async); else loading">
-  <div *ngIf="graphs$ | async as graphs">
-    <div class="show-graph-flexcontainer flex_column">
-      <div class="graph-container__full" *ngFor="let graph of graphs.barGraphs">
-        <mat-card>
-          <mat-card-header>
-            <h2>{{'COMMON.SHOWS' | translate | capitalizeFirst}} {{ graph.title | translate }}</h2>
-          </mat-card-header>
-          <mat-card-content>
-            <ngx-charts-bar-vertical class="graph-height"
-                                     scheme="vivid"
-                                     [results]="graph.data"
-                                     [animations]="true"
-                                     [legend]="false"
-                                     [xAxis]="true"
-                                     [yAxis]="true"
-                                     schemeType="ordinal"
-                                     [showGridLines]="true"></ngx-charts-bar-vertical>
-          </mat-card-content>
-        </mat-card>
-      </div>
+<div *ngIf="graphs$ | async as graphs; else loading">
+  <div class="show-graph-flexcontainer flex_column">
+    <div class="graph-container__full" *ngFor="let graph of graphs.barGraphs">
+      <mat-card>
+        <mat-card-header>
+          <h2>{{'COMMON.SHOWS' | translate | capitalizeFirst}} {{ graph.title | translate }}</h2>
+        </mat-card-header>
+        <mat-card-content>
+          <ngx-charts-bar-vertical class="graph-height"
+                                   scheme="vivid"
+                                   [results]="graph.data"
+                                   [animations]="true"
+                                   [legend]="false"
+                                   [xAxis]="true"
+                                   [yAxis]="true"
+                                   schemeType="ordinal"
+                                   [showGridLines]="true"></ngx-charts-bar-vertical>
+        </mat-card-content>
+      </mat-card>
     </div>
-    <div class="show-graph-flexcontainer flex_row">
-      <div class="graph-container__half" *ngFor="let graph of graphs.pieGraphs">
-        <mat-card>
-          <mat-card-header>
-            <h2>{{ graph.title | translate }}</h2>
-          </mat-card-header>
-          <mat-card-content>
-            <ngx-charts-pie-chart class="graph-height"
-                                  scheme="vivid"
-                                  [results]="graph.data"
-                                  [animations]="true"
-                                  [legend]="false"
-                                  [explodeSlices]="false"
-                                  [labels]="true"
-                                  [doughnut]="false"></ngx-charts-pie-chart>
-          </mat-card-content>
-        </mat-card>
-      </div>
+  </div>
+  <div class="show-graph-flexcontainer flex_row">
+    <div class="graph-container__half" *ngFor="let graph of graphs.pieGraphs">
+      <mat-card>
+        <mat-card-header>
+          <h2>{{ graph.title | translate }}</h2>
+        </mat-card-header>
+        <mat-card-content>
+          <ngx-charts-pie-chart class="graph-height"
+                                scheme="vivid"
+                                [results]="graph.data"
+                                [animations]="true"
+                                [legend]="false"
+                                [explodeSlices]="false"
+                                [labels]="true"
+                                [doughnut]="false"></ngx-charts-pie-chart>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

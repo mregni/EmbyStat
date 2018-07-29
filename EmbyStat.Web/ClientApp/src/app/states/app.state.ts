@@ -12,9 +12,6 @@ import { ServerInfoStore } from '../server/models/serverInfoStore';
 import { MovieStore } from '../movie/models/movieStore';
 import { MovieReducer } from '../movie/state/reducer.movie';
 
-import { ShowStore } from '../show/models/showStore';
-import { ShowReducer } from '../show/state/reducer.show';
-
 import { LoadingState } from '../shared/components/loader/model/loadingState';
 import { LoadingReducer } from '../shared/components/loader/state/reducer.loader';
 
@@ -26,7 +23,6 @@ export interface ApplicationState {
   about: About;
   serverInfo: ServerInfoStore;
   movies: MovieStore;
-  shows: ShowStore;
   loading: LoadingState;
 }
 
@@ -34,7 +30,6 @@ export const ROOT_REDUCER: ActionReducerMap<ApplicationState> = {
   configuration: configurationReducer,
   serverInfo: serverInfoReducer,
   movies: MovieReducer,
-  shows: ShowReducer,
   loading: LoadingReducer,
   about: AboutReducer
 };

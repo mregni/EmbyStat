@@ -99,10 +99,7 @@
     <None Remove="ClientApp\src\app\show\models\showStore.ts" />
     <None Remove="ClientApp\src\app\show\service\show-charts.service.ts" />
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
-    <None Remove="ClientApp\src\app\show\state\actions.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\effects.show.ts" />
     <None Remove="ClientApp\src\app\show\state\facade.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\reducer.show.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
   </ItemGroup>
@@ -155,10 +152,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show-charts.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\reducer.show.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\state\facade.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\effects.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\actions.show.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />

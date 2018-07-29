@@ -10,55 +10,31 @@ import { PersonStats } from '../../shared/models/personStats';
 import { ShowCollectionRow } from '../models/showCollectionRow';
 
 import { ShowService } from '../service/show.service';
-import { ShowQuery } from './reducer.show';
-import {
-  LoadShowCollectionsAction, LoadGeneralStatsAction,
-  LoadGraphsAction, ClearGraphsSuccesAction,
-  LoadPersonStatsAction, LoadCollectedListAction
-  } from './actions.show';
 
 import { ApplicationState } from '../../states/app.state';
 
 @Injectable()
 export class ShowFacade {
-  constructor(
-    private store: Store<ApplicationState>,
-    private showService: ShowService
-  ) { }
-
-  collections$ = this.store.select(ShowQuery.getCollections);
-  generalStats$ = this.store.select(ShowQuery.getGeneralStats);
-  graphs$ = this.store.select(ShowQuery.getGraphs);
-  personStats$ = this.store.select(ShowQuery.getPersonStats);
-  collectedList$ = this.store.select(ShowQuery.getCollectedList);
+  constructor(private showService: ShowService ) { }
 
   getCollections(): Observable<Collection[]> {
-    this.store.dispatch(new LoadShowCollectionsAction());
-    return this.collections$;
+    return this.showService.getCollections();
   }
 
   getGeneralStats(list: string[]): Observable<ShowStats> {
-    this.store.dispatch(new LoadGeneralStatsAction(list));
-    return this.generalStats$;
+    return this.showService.getGeneralStats(list);
   }
 
   getGraphs(list: string[]): Observable<ShowGraphs> {
-    this.store.dispatch(new LoadGraphsAction(list));
-    return this.graphs$;
-  }
-
-  clearGraphs(): void {
-    this.store.dispatch(new ClearGraphsSuccesAction);
+    return this.showService.getGraphs(list);
   }
 
   getPersonStats(list: string[]): Observable<PersonStats> {
-    this.store.dispatch(new LoadPersonStatsAction(list));
-    return this.personStats$;
+    return this.showService.getPersonStats(list);
   }
 
   getCollectionList(list: string[]): Observable<ShowCollectionRow[]> {
-    this.store.dispatch(new LoadCollectedListAction(list));
-    return this.collectedList$;
+    return this.showService.getCollectedList(list);
   }
 
   isShowTypePresent(): Observable<boolean> {

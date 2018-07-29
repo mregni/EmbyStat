@@ -29,12 +29,10 @@ export class ShowGeneralComponent implements OnInit {
   }
 
   public stats$: Observable<ShowStats>;
-  public isLoading$: Observable<boolean>;
 
   constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isShowGeneralLoading();
+    
   }
-
 }

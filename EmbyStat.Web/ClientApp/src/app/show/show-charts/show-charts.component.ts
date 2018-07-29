@@ -27,8 +27,6 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
     }
 
     this._selectedCollections = collection;
-
-    this.showFacade.clearGraphs();
     this.graphs$ = undefined;
 
     if (this.onTab) {
@@ -37,7 +35,6 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
   }
 
   public graphs$: Observable<ShowGraphs>;
-  public isLoading$: Observable<boolean>;
   private showChartSub: Subscription;
   private onTab = false;
 
@@ -54,7 +51,7 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isShowGraphsLoading();
+
   }
 
   ngOnDestroy(): void {
