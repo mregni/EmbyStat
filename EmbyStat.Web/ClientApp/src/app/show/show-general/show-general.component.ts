@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { ShowStats } from '../models/showStats';
 import { ShowFacade } from '../state/facade.show';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-show-general',
@@ -30,7 +29,7 @@ export class ShowGeneralComponent implements OnInit {
 
   public stats$: Observable<ShowStats>;
 
-  constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
+  constructor(private showFacade: ShowFacade) { }
 
   ngOnInit() {
     

@@ -26,7 +26,6 @@ import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
 import { EmbyService } from './services/emby.service';
-import { LoaderFacade } from './components/loader/state/facade.loader';
 import { ToolbarFacade } from './toolbar/state/facade.toolbar';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
@@ -82,7 +81,6 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
   providers: [
     ToastService,
     EmbyService,
-    LoaderFacade,
     ToolbarFacade
   ],
   entryComponents: [NoTypeFoundDialog]

@@ -141,7 +141,7 @@
       "SHOWS": "Show settings saved!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own API key here.",
+      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail." 
     },
     "MOVIE": {

@@ -10,55 +10,31 @@ import { MovieGraphs } from '../models/movieGraphs';
 import { SuspiciousMovies } from '../models/suspiciousMovies';
 
 import { MovieService } from '../service/movie.service';
-import { MovieQuery } from './reducer.movie';
-import {
-  LoadGeneralStatsAction, LoadMovieCollectionsAction,
-  LoadPersonStatsAction, LoadSuspiciousAction,
-  LoadGraphsAction, ClearGraphsSuccesAction
-} from './actions.movie';
 
 import { ApplicationState } from '../../states/app.state';
 
 @Injectable()
 export class MovieFacade {
-  constructor(
-    private store: Store<ApplicationState>,
-    private movieService: MovieService
-  ) { }
-
-  generalStats$ = this.store.select(MovieQuery.getGeneralStats);
-  personStats$ = this.store.select(MovieQuery.getPersonStats);
-  collections$ = this.store.select(MovieQuery.getCollections);
-  suspicious$ = this.store.select(MovieQuery.getSuspicious);
-  graphs$ = this.store.select(MovieQuery.getGraphs);
+  constructor(private movieService: MovieService) { }
 
   getGeneralStats(list: string[]): Observable<MovieStats> {
-    this.store.dispatch(new LoadGeneralStatsAction(list));
-    return this.generalStats$;
+    return this.movieService.getGeneral(list);
   }
 
   getPeopleStats(list: string[]): Observable<PersonStats> {
-    this.store.dispatch(new LoadPersonStatsAction(list));
-    return this.personStats$;
+    return this.movieService.getPerson(list);
   }
 
   getCollections(): Observable<Collection[]> {
-    this.store.dispatch(new LoadMovieCollectionsAction());
-    return this.collections$;
+    return this.movieService.getCollections();
   }
 
   getDuplicates(list: string[]): Observable<SuspiciousMovies> {
-    this.store.dispatch(new LoadSuspiciousAction(list));
-    return this.suspicious$;
+    return this.movieService.getSuspicious(list);
   }
 
   getGraphs(list: string[]): Observable<MovieGraphs> {
-    this.store.dispatch(new LoadGraphsAction(list));
-    return this.graphs$;
-  }
-
-  clearGraphs(): void {
-    this.store.dispatch(new ClearGraphsSuccesAction);
+    return this.movieService.getGraphs(list);
   }
 
   isMovieTypePresent(): Observable<boolean> {

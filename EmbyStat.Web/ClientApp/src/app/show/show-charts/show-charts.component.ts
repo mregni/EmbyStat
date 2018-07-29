@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { ShowChartsService } from '../service/show-charts.service';
 import { ShowFacade } from '../state/facade.show';
 import { ShowGraphs } from '../models/showGraphs';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-show-charts',
@@ -38,9 +37,7 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
   private showChartSub: Subscription;
   private onTab = false;
 
-  constructor(private showFacade: ShowFacade,
-    private showChartsService: ShowChartsService,
-    private loaderFacade: LoaderFacade) {
+  constructor(private showFacade: ShowFacade, private showChartsService: ShowChartsService) {
     showChartsService.open.subscribe(value => {
       this.onTab = value;
       if (value && !this.previousOnTabValue) {
