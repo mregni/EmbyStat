@@ -71,13 +71,8 @@
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\shortMovie.ts" />
     <None Remove="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
-    <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
-    <None Remove="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
-    <None Remove="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
@@ -99,13 +94,9 @@
     <None Remove="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <None Remove="ClientApp\src\app\show\models\showGraphs.ts" />
     <None Remove="ClientApp\src\app\show\models\showStats.ts" />
-    <None Remove="ClientApp\src\app\show\models\showStore.ts" />
     <None Remove="ClientApp\src\app\show\service\show-charts.service.ts" />
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
-    <None Remove="ClientApp\src\app\show\state\actions.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\effects.show.ts" />
     <None Remove="ClientApp\src\app\show\state\facade.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\reducer.show.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
   </ItemGroup>
@@ -127,8 +118,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\logs\state\facade.log.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\shortMovie.ts" />
@@ -136,11 +125,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\emby\embyUdpBroadcast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\actions.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\state\facade.plugin.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
@@ -158,13 +144,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showGraphs.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\models\showStats.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\models\showStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show-charts.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\reducer.show.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\state\facade.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\effects.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\actions.show.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />

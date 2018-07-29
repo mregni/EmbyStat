@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 
 import { ShowCollectionRow } from '../models/showCollectionRow';
 import { ShowFacade } from '../state/facade.show';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
 
 @Component({
   selector: 'app-show-collection',
@@ -32,7 +31,6 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
   }
 
   public rows: ShowCollectionRow[];
-  public isLoading$: Observable<boolean>;
 
   private rowsSub: Subscription;
   private sortNameAsc = false;
@@ -42,10 +40,10 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
   private sortpercentageAsc = false;
   private sortDateAsc = false;
 
-  constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
+  constructor(private showFacade: ShowFacade) { }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isShowCollectionLoading();
+  
   }
 
   public getColor(row: ShowCollectionRow): string {
