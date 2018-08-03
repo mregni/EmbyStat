@@ -86,32 +86,32 @@
     "CROWNDINHELP": "Si su idioma no está mencionado o no está completo, siéntase libre de ayudarme a traducir la aplicación en su idioma en <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Comprobando el servidor Emby ...",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "EMBYRUNNING": "Emby server is running",
-    "ISADMIN": "{{ user }} is an Emby administrator",
-    "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
-    "SAVING": "Saving data",
-    "RESCAN": "Rescan",
-    "FINISHWITHSYNC": "Start syncronisation",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "EMBYNOTFOUNDTEXT": "Ahora configuraremos su conexión Emby. Intentamos detectar automáticamente su servidor Emby en la red pero fallamos. ¿Puede proporcionarnos su dirección web http(s)://ip/dominio:puerto y completar el resto del formulario?",
+    "EMBYFOUNDTEXT": "Encontramos un servidor Emby en su red y ya ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
+    "EMBYRUNNING": "El servidor Emby se está ejecutando",
+    "ISADMIN": "{{ user }} es un administrador de Emby",
+    "PLUGININSTALLED": "Plugin EmbyStat encontrado en el servidor Emby",
+    "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, arregle los errores, presione atrás y siguiente.",
+    "SAVING": "Guardando datos",
+    "RESCAN": "Volver a escanear",
+    "FINISHWITHSYNC": "Comience la sincronización",
+    "FINISHED": "Se guardan todas las configuraciones y puede comenzar a usar el servidor Emby ahora. ¡Disfruta de tus nuevas estadísticas!",
+    "FINISHEXPLANATION": "Lo mejor que puede hacer primero es comenzar una tarea de sincronización de medios. EmbyStat comenzará a descargar todos los datos de su servidor Emby. Tenga en cuenta que esta tarea puede llevar mucho tiempo según el tamaño de su colección. Si no desea iniciar un viaje de sincronización ahora simplemente haga clic en finalizar. Puede iniciarlo manualmente más tarde navegando a la página de Tareas."
   },
   "PLUGINS": {
-    "VERSION": "Version"
+    "VERSION": "Versión"
   },
   "MOVIES": {
-    "TOTALMOVIES": "Total movies",
-    "TOTALGENRES": "Total genres",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATED": "Highest rated",
-    "LOWESTRATED": "Lowest rated",
-    "OLDESTPREMIERED": "Oldest premiered",
-    "YOUNGESTPREMIERED": "Youngest premiered",
-    "SHORTEST": "Shortest",
-    "LONGEST": "Longest",
-    "YOUNGESTADDED": "Youngest added",
+    "TOTALMOVIES": "Películas totales",
+    "TOTALGENRES": "Géneros totales",
+    "TOTALPLAYLENGTH": "Tiempo total de visualización",
+    "HIGHESTRATED": "El mejor valorado",
+    "LOWESTRATED": "Calificación más baja",
+    "OLDESTPREMIERED": "Premiado más antiguo",
+    "YOUNGESTPREMIERED": "Premiado más nuevo",
+    "SHORTEST": "Más corto",
+    "LONGEST": "El más largo",
+    "YOUNGESTADDED": "Añadido más nuevo",
     "MOSTFEATUREDPERGENRE": "El actor más destacado por género",
     "DUPLICATEMOVIES": "películas duplicados",
     "TOSHORTMOVIES": "películas que son muy cortas"
@@ -180,44 +180,44 @@
     "DAILYTRIGGER": "Disparador diario",
     "STARTUPTRIGGER": "Activador de inicio",
     "EVERY": "cada {{interval}}",
-    "AT": "at {{time}}",
-    "TRIGGERTYPE": "Trigger type",
-    "SAVETRIGGER": "Save trigger"
+    "AT": "en {{time}}",
+    "TRIGGERTYPE": "Tipo de disparador",
+    "SAVETRIGGER": "Guardar disparador"
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "TITLE": "No se encontraron películas",
+      "BODY": "No pudimos encontrar ninguna película en la base de datos EmbyStat. Si tiene películas en Emby, debería intentar comenzar una nueva tarea de sincronización de medios."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "No se encontró",
+      "BODY": "No pudimos encontrar ningún programa en la base de datos EmbyStat. Si tiene medios en Emby, debería intentar comenzar una nueva tarea de sincronización de medios."
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Obteniendo estadísticas"
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
+    "MIXED": "Mixto / Otro",
+    "MUSIC": "Música",
+    "MUSICVIDEOS": "Videos musicales",
+    "TRAILERS": "Trailer",
+    "HOMEVIDEOS": "Vídeos caseros",
     "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "BOOKS": "Libros",
+    "PHOTOS": "Fotos",
+    "GAMES": "Juegos",
+    "LIVETV": "TV en vivo",
+    "PLAYLISTS": "Listas de Reproducción",
+    "FOLDERS": "Carpetas"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Ir a Emby"
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Gracias",
+      "TEXT": "Muchas gracias a las siguientes personas por traducir la aplicación en su lengua materna:"
     }
   }
 }
