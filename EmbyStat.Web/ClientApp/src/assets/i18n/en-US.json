@@ -200,12 +200,12 @@
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
     "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
+    "MUSICVIDEOS": "Music Video's",
     "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
+    "HOMEVIDEOS": "Home Video's",
+    "BOXSETS": "BoxSets",
     "BOOKS": "Books",
-    "PHOTOS": "Photos",
+    "PHOTOS": "Photo's",
     "GAMES": "Games",
     "LIVETV": "Live TV",
     "PLAYLISTS": "Playlists",
@@ -217,7 +217,7 @@
   "ABOUT": {
     "THANKS": {
       "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TEXT": "A big thanks to the following people for translating EmbyStat into their native language:"
     }
   }
 }
