@@ -28,32 +28,32 @@
     "COUNTPERCOLLECTEDRATE": "recuento / porcentaje recaudado",
     "EMBY": "Emby",
     "GENERAL": "general",
-    "DURATION": "duration",
-    "GRAPHS": "graphs",
-    "PEOPLE": "people",
-    "SUSPICIOUS": "suspicious",
-    "SHOWS": "shows",
-    "TOTALACTORS": "Total actors",
-    "TOTALDIRECTORS": "Total directors",
-    "TOTALWRITERS": "Total writers",
-    "MOSTFEATUREDACTOR": "Most featured actor",
-    "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer",
-    "COLLECTION": "collection",
-    "PREMIEREDATE": "premiere date",
-    "STATUS": "status",
-    "PERCENTAGE": "percentage",
-    "COLLECTED": "collected"
+    "DURATION": "duración",
+    "GRAPHS": "gráficos",
+    "PEOPLE": "personas",
+    "SUSPICIOUS": "sospechoso",
+    "SHOWS": "muestra",
+    "TOTALACTORS": "Total actores",
+    "TOTALDIRECTORS": "Total directores",
+    "TOTALWRITERS": "Escritores totales",
+    "MOSTFEATUREDACTOR": "El actor más destacado",
+    "MOSTFEATUREDDIRECTOR": "Director más destacado",
+    "MOSTFEATUREDWRITER": "Escritor más destacado",
+    "COLLECTION": "colección",
+    "PREMIEREDATE": "fecha de estreno",
+    "STATUS": "estado",
+    "PERCENTAGE": "porcentaje",
+    "COLLECTED": "recogido"
   },
   "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
-    "NO_CONFIGURATION_FOUND": "No configuration could be found.",
-    "NOT_FOUND": "Oops, we are missing some files.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if emby is running and if the credentials are still correct."
+    "INTERNAL_ERROR": "Woops, tenemos un error en el backend, por favor intente de nuevo. Si sigue fallando, verifique los registros para más detalles.",
+    "NO_CONFIGURATION_FOUND": "No se pudo encontrar ninguna configuración.",
+    "NOT_FOUND": "Vaya, nos faltan algunos archivos.",
+    "TOKEN_FAILED": "Error al obtener Emby Token. Por favor verifique sus credenciales y dirección.",
+    "EMBY_CALL_FAILED": "La llamada al servidor Emby falló, compruebe si emby se está ejecutando y si las credenciales siguen siendo correctas."
   },
   "FORM_LABELS": {
-    "NAME": "Enter your name",
+    "NAME": "Ingresa tu nombre",
     "LANGUAGE": "Please select your language",
     "EMBYADDRESS": "Emby ip address",
     "EMBYUSERNAME": "Emby admin username",
@@ -112,57 +112,57 @@
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
     "YOUNGESTADDED": "Youngest added",
-    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
-    "DUPLICATEMOVIES": "duplicate movies",
-    "TOSHORTMOVIES": "movies that are very short"
+    "MOSTFEATUREDPERGENRE": "El actor más destacado por género",
+    "DUPLICATEMOVIES": "películas duplicados",
+    "TOSHORTMOVIES": "películas que son muy cortas"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total shows",
-    "TOTALEPISODES": "Total Episodes",
-    "TOTALMISSINGEPISODES": "Total Missing Episodes",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATEDSHOW": "Highest rated show",
-    "LOWESTRATEDSHOW": "Lowest rated show",
-    "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Yougenst premiered show",
-    "YOUNGESTADDED": "Youngest added",
-    "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses",
-    "SEASONS": "seasons",
-    "CONTINUING": "continuing",
-    "ENDED": "ended"
+    "TOTALSHOWS": "Muestra total",
+    "TOTALEPISODES": "Episodios totales",
+    "TOTALMISSINGEPISODES": "Total de episodios perdidos",
+    "TOTALPLAYLENGTH": "Tiempo total de visualización",
+    "HIGHESTRATEDSHOW": "Espectáculo más votado",
+    "LOWESTRATEDSHOW": "Programa con la calificación más baja",
+    "OLDESTPREMIERED": "El espectáculo premiere más antiguo",
+    "YOUNGESTPREMIERED": "El espectáculo premiere más nuevo",
+    "YOUNGESTADDED": "Añadido más nuevo",
+    "WITHMOESTEPISODES": "Con más episodios",
+    "SHOWSTATUSGRAPH": "Mostrar estados",
+    "SEASONS": "temporada",
+    "CONTINUING": "continuando",
+    "ENDED": "terminado"
   },
   "CONFIGURATION": {
-    "SETTINGS": "Settings",
+    "SETTINGS": "Configuración",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!"
+      "GENERAL": "¡Configuraciones generales de Embystat guardadas!",
+      "EMBY": "Configuraciones Emby guardadas!",
+      "MOVIES": "Configuraciones de película guardadas!",
+      "SHOWS": "¡Configuraciones guardadas!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
+      "TVDBAPIKEY": "Si lo desea, puede suministrar a EmbyStat su propia clave API TheTVDB aquí.",
+      "TVDBAPIKEYWARNING": "¡Asegúrate de proporcionar una clave API que funcione! Si la clave es incorrecta, la tarea de sincronización fracasará."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "Para encontrar las películas que son sospechosamente cortas, necesitamos saber cuál es la cantidad de minutos que encuentra para abreviar una película. El valor predeterminado es 10 minutos, pero puede cambiarlo si es necesario.",
+      "COLLECTIONTYPES": "Seleccione todos los tipos de colecciones Emby que desee que puedan seleccionar en el menú desplegable de colecciones en la página de estadísticas de la película."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Seleccione todos los tipos de colecciones Emby que desee que puedan seleccionar en el menú desplegable de colecciones en la página de estadísticas de la película."
     }
   },
   "TASK": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
-    "NOTRAN": "Not ran yet"
+    "LASTRUNNOW": "Última ejecución: ahora mismo",
+    "LASTRUN": "Última ejecución",
+    "HOURS": "{{hours}} hora (s)",
+    "MINUTES": "{{minutes}} minuto (s)",
+    "SECONDS": "{{seconds}} segundo (s)",
+    "AND": "y",
+    "AGO": "hace",
+    "FOR": "para",
+    "BUTFAILED": "pero falló después",
+    "NOTRAN": "No se ejecutó aún"
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Check Emby connection",
