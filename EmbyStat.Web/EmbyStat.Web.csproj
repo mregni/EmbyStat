@@ -12,8 +12,6 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
-    <ApplicationInsightsResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourcegroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourceGroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsAnnotationResourceId>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <Version>0.1.0.24</Version>
@@ -60,6 +58,8 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\about\state\actions.about.ts" />
     <None Remove="ClientApp\src\app\about\state\facade.about.ts" />
+    <None Remove="ClientApp\src\app\activity\models\activity.ts" />
+    <None Remove="ClientApp\src\app\activity\state\facade.activity.ts" />
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
@@ -114,6 +114,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\about\state\actions.about.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\about\state\facade.about.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\activity\models\activity.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\activity\state\facade.activity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\logs\state\facade.log.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />

@@ -11,6 +11,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Api.Tvdb;
+using EmbyStat.Api.WebSocketClient;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
@@ -71,7 +72,7 @@ namespace EmbyStat.Web
 		    services.AddAutoMapper(typeof(MapProfiles));
             services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+				c.SwaggerDoc("v1", new Info { Title = "EmbyStat API", Version = "v1" });
 			});
 
 			services.AddSpaStaticFiles(configuration =>
@@ -81,6 +82,8 @@ namespace EmbyStat.Web
 
 		    services.AddSignalR();
 		    services.AddCors();
+
+		    services.AddHostedService<WebSocketService>();
 
             var containerBuilder = new ContainerBuilder();
 		    containerBuilder.Populate(services);
@@ -94,6 +97,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
 		    containerBuilder.RegisterType<LanguageService>().As<ILanguageService>();
 		    containerBuilder.RegisterType<AboutService>().As<IAboutService>();
+		    containerBuilder.RegisterType<WebSocketService>().As<IWebSocketService>().SingleInstance();
 
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
@@ -112,6 +116,7 @@ namespace EmbyStat.Web
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
 		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
+		    containerBuilder.RegisterType<WebSocketClient>().As<IWebSocketClient>();
 
             containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
 		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
