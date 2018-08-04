@@ -13,12 +13,19 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).do(event => { }, err => {
       const toaster = this._injector.get(ToastService);
-      toaster.pushError('EXCEPTIONS.' + err.error.message);
+      const error = JSON.parse(err.error);
+
+      if (err.status === 500) {
+        if (error.IsError) {
+          toaster.pushError('EXCEPTIONS.' + error.Message);
+        } else {
+          toaster.pushError('EXCEPTIONS.UNHANDLED');
+        }
+      }
 
       if (err.status === 404) {
         toaster.pushError('EXCEPTIONS.NOT_FOUND');
       }
-
     });
   }
 }
