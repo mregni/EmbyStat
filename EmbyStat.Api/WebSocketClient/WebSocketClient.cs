@@ -36,7 +36,7 @@ namespace EmbyStat.Api.WebSocketClient
         {
             if (webSocket.State != WebSocketState.Closed)
             {
-                await webSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Shutdown EmbyStat", cancellationToken);
+                await webSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "EmbyStat is going offline", cancellationToken);
             }
         }
 
