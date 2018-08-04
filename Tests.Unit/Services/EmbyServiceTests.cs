@@ -79,12 +79,14 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "localhost" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
-	        };
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerPort, Value = "80" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" }
+            };
 
             var embyDrives = new List<Drive>
 		    {
