@@ -17,5 +17,7 @@ namespace EmbyStat.Controllers.ViewModels.Configuration
         public List<int> MovieCollectionTypes { get; set; } 
         public List<int> ShowCollectionTypes { get; set; }
         public string TvdbApiKey { get; set; }
+        public int EmbyServerPort { get; set; }
+        public int EmbyServerProtocol { get; set; }
     }
 }

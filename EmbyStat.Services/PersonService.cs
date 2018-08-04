@@ -34,7 +34,7 @@ namespace EmbyStat.Services
                 var settings = _configurationRepository.GetConfiguration();
                 var query = new ItemQuery { UserId = settings.EmbyUserId };
 
-                _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+                _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
                 var rawPerson = await _embyClient.GetItemAsync(query, id, CancellationToken.None);
                 person = PersonHelper.ConvertToPerson(rawPerson);
                 _personRepository.AddOrUpdatePerson(person);

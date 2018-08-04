@@ -20,7 +20,9 @@ const INITIAL_STATE: Configuration = {
   id: '',
   movieCollectionTypes: [],
   showCollectionTypes: [],
-  tvdbApiKey: ''
+  tvdbApiKey: '',
+  embyServerPort: 8096,
+  embyServerProtocol: 0
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -41,6 +43,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         movieCollectionTypes: action.payload.movieCollectionTypes,
         showCollectionTypes: action.payload.showCollectionTypes,
         tvdbApiKey: action.payload.tvdbApiKey,
+        embyServerPort: action.payload.embyServerPort,
+        embyServerProtocol: action.payload.embyServerProtocol,
         isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
@@ -59,6 +63,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         movieCollectionTypes: action.payload.movieCollectionTypes,
         showCollectionTypes: action.payload.showCollectionTypes,
         tvdbApiKey: action.payload.tvdbApiKey,
+        embyServerPort: action.payload.embyServerPort,
+        embyServerProtocol: action.payload.embyServerProtocol,
         isLoaded: true
       };
     default:

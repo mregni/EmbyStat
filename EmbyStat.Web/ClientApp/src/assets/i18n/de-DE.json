@@ -141,7 +141,7 @@
       "SHOWS": "Serien-Einstellungen gespeichert!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
+      "TVDBAPIKEY": "Wenn Sie möchten, können Sie für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
       "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen."
     },
     "MOVIE": {
@@ -162,7 +162,7 @@
     "AGO": "her",
     "FOR": "für",
     "BUTFAILED": "aber fehlgeschlagen nach",
-    "NOTRAN": "Not ran yet"
+    "NOTRAN": "Noch nicht druchgeführt"
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Emby Verbindung prüfen",
@@ -172,8 +172,8 @@
     "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
     "MEDIASYNCTITLE": "Medien-Synchronisierung",
     "STARTMEDIASYNC": "Mediensynchronisation starten",
-    "DATABASECLEANUP": "Database cleanup",
-    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data."
+    "DATABASECLEANUP": "Datenbankbereinigung",
+    "DATABASECLEANUPDESCRIPTION": "Bereinigen Sie die Datenbank von unnötigen Daten."
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Intervall-Trigger",
@@ -216,8 +216,8 @@
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Vielen Dank",
+      "TEXT": "Vielen Dank an die folgenden Personen für die Übersetzung der App in ihre Muttersprache:"
     }
   }
 }

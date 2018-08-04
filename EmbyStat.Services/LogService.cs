@@ -58,7 +58,7 @@ namespace EmbyStat.Services
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    line = line.Replace(configuration.EmbyServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
+                    line = line.Replace(configuration.GetFullEmbyServerAddress(), "http://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.TvdbApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(configuration.EmbyUserName, "{EMBY ADMIN USER}");
                     writer.WriteLine(line);

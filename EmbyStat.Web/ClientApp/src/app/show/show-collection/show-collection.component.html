@@ -1,4 +1,4 @@
-<div *ngIf="!(isLoading$ | async); else loading">
+<div *ngIf="!isLoading else loading">
   <div class="collected__row collection_headers">
     <div class="column_small"></div>
     <div class="column__title" (click)="order('sortName')">{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</div>

@@ -13,19 +13,22 @@ import { ShowFacade } from '../state/facade.show';
 })
 export class ShowCollectionComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
-
+  public isLoading: boolean;
+  
   get selectedCollections(): string[] {
     return this._selectedCollections;
   }
 
   @Input()
   set selectedCollections(collection: string[]) {
+    this.isLoading = true;
     if (collection === undefined) {
       collection = [];
     }
 
     this._selectedCollections = collection;
     this.rowsSub = this.showFacade.getCollectionList(collection).subscribe(data => {
+      this.isLoading = false;
       this.rows = data;
     });
   }

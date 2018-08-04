@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
 import { ShowPoster } from '../../models/showPoster';
+import { ConfigHelper } from '../../helpers/configHelper';
 
 @Component({
   selector: 'app-show-poster',
@@ -23,11 +24,11 @@ export class ShowPosterComponent implements OnDestroy {
     if (this.configuration === undefined) {
       return '';
     }
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${ConfigHelper.getFullEmbyAddress(this.configuration)}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openShow(): void {
-    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.configuration)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   ngOnDestroy(): void {

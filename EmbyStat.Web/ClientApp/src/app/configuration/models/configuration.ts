@@ -13,4 +13,6 @@ export class Configuration {
   public movieCollectionTypes: number[];
   public showCollectionTypes: number[];
   public tvdbApiKey: string;
+  public embyServerPort: number;
+  public embyServerProtocol: number;
 }

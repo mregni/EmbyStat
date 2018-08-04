@@ -72,6 +72,10 @@ namespace EmbyStat.Repositories
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MovieCollectionTypes, Value = "[0, 1, 6]" });
 	        if (configuration.All(x => x.Id != Constants.Configuration.ShowCollectionTypes))
 	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ShowCollectionTypes, Value = "[0, 2]" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerPort))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerPort, Value = "8096" });
+	        if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerProtocol))
+	            _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerProtocol, Value = "0" });
 
             await _context.SaveChangesAsync();
         }
