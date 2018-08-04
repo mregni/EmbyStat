@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using EmbyStat.Api.WebSocketClient;
+using EmbyStat.Common.Enums;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Timer = System.Threading.Timer;
@@ -61,7 +62,8 @@ namespace EmbyStat.Services
         private async Task OpenWebSocketConnection(CancellationToken cancellationToken)
         {
             var settings = _configurationService.GetServerSettings();
-            var socketUrl = $"wss://reggi.ddns.net:8097?api_key={settings.AccessToken}&deviceId={Guid.NewGuid().ToString()}"; //TODO: change to settings url
+            var protocol = settings.EmbyServerProtocol == ConnectionProtocol.Http ? "ws" : "wss";
+            var socketUrl = $"{protocol}://{settings.EmbyServerAddress}:{settings.EmbyServerPort}?api_key={settings.AccessToken}&deviceId={Guid.NewGuid().ToString()}"; //TODO: change to settings url
 
             await _webSocketClient.Connect(socketUrl, cancellationToken);
         }
