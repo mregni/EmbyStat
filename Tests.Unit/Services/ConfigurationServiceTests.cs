@@ -28,7 +28,7 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "13/10/2018" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "09/10/2018" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.MovieCollectionTypes, Value = "[1, 2]" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.TvdbApiKey, Value = "qsdfqsdfqsdfqsdqsdf" }
@@ -54,7 +54,7 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "13/10/2018" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.LastTvdbUpdate, Value = "09/10/2018" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.MovieCollectionTypes, Value = "[1, 2]" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.TvdbApiKey, Value = "qsdfqsdfqsdfqsdqsdf" }
