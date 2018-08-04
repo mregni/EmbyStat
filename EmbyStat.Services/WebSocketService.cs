@@ -63,7 +63,7 @@ namespace EmbyStat.Services
         {
             var settings = _configurationService.GetServerSettings();
             var protocol = settings.EmbyServerProtocol == ConnectionProtocol.Http ? "ws" : "wss";
-            var socketUrl = $"{protocol}://{settings.EmbyServerAddress}:{settings.EmbyServerPort}?api_key={settings.AccessToken}&deviceId={Guid.NewGuid().ToString()}"; //TODO: change to settings url
+            var socketUrl = $"{protocol}://{settings.EmbyServerAddress}:{settings.EmbyServerPort}?api_key={settings.AccessToken}&deviceId={Guid.NewGuid().ToString()}";
 
             await _webSocketClient.Connect(socketUrl, cancellationToken);
         }
