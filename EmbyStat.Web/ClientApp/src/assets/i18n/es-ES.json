@@ -48,9 +48,10 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, tenemos un error en el backend, por favor intente de nuevo. Si sigue fallando, verifique los registros para más detalles.",
     "NO_CONFIGURATION_FOUND": "No se pudo encontrar ninguna configuración.",
-    "NOT_FOUND": "Vaya, nos faltan algunos archivos.",
+    "NOT_FOUND": "Oops, didn't find what you are looking for.",
     "TOKEN_FAILED": "Error al obtener Emby Token. Por favor verifique sus credenciales y dirección.",
-    "EMBY_CALL_FAILED": "La llamada al servidor Emby falló, compruebe si emby se está ejecutando y si las credenciales siguen siendo correctas."
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
+    "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
     "NAME": "Ingresa tu nombre",
@@ -86,7 +87,7 @@
     "CROWNDINHELP": "Si su idioma no está mencionado o no está completo, siéntase libre de ayudarme a traducir la aplicación en su idioma en <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Comprobando el servidor Emby ...",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
-    "EMBYNOTFOUNDTEXT": "Ahora configuraremos su conexión Emby. Intentamos detectar automáticamente su servidor Emby en la red pero fallamos. ¿Puede proporcionarnos su dirección web http(s)://ip/dominio:puerto y completar el resto del formulario?",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "Encontramos un servidor Emby en su red y ya ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
     "EMBYRUNNING": "El servidor Emby se está ejecutando",
     "ISADMIN": "{{ user }} es un administrador de Emby",
@@ -150,6 +151,9 @@
     },
     "SHOW": {
       "COLLECTIONTYPES": "Seleccione todos los tipos de colecciones Emby que desee que puedan seleccionar en el menú desplegable de colecciones en la página de estadísticas de la película."
+    },
+    "EMBY": {
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     }
   },
   "TASK": {
