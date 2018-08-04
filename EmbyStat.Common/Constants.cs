@@ -72,6 +72,8 @@ namespace EmbyStat.Common
         {
             public const string AccessToken = "ACCESSTOKEN";
             public const string EmbyServerAddress = "EMBYSERVERADDRESS";
+            public const string EmbyServerPort = "EMBYSERVERPORT";
+            public const string EmbyServerProtocol = "EMBYSERVERPROTOCOL";
             public const string EmbyUserId = "EMBYUSERID";
             public const string EmbyUserName = "EMBYUSERNAME";
             public const string Language = "LANGUAGE";

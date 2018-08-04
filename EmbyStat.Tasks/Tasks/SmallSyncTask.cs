@@ -53,7 +53,7 @@ namespace EmbyStat.Tasks.Tasks
             logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Starting a small syncronisation with Emby");
             progress.Report(15);
 
-            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
             var systemInfoReponse = await _embyClient.GetServerInfoAsync();
             logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Server info found");
             progress.Report(35);

@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import * as signalR from "@aspnet/signalr";
+import { ConfigHelper } from '../helpers/configHelper';
 
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { Configuration } from '../../configuration/models/configuration';
@@ -53,6 +54,10 @@ export class ToolbarComponent implements OnInit {
       (data: string) => {
 
       });
+  }
+
+  public getFullAddress(config: Configuration): string {
+    return ConfigHelper.getFullEmbyAddress(config);
   }
 
   ngOnInit() {
