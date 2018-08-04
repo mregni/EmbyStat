@@ -121,7 +121,7 @@ namespace EmbyStat.Services
 	    {
 		    var settings = _configurationRepository.GetConfiguration();
 
-			_embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+			_embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
 		    var systemInfoReponse = await _embyClient.GetServerInfoAsync();
 			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
 		    var drives = await _embyClient.GetLocalDrivesAsync();
@@ -142,7 +142,7 @@ namespace EmbyStat.Services
         public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
         {
 		    var settings = _configurationRepository.GetConfiguration();
-            _embyClient.SetAddressAndUrl(settings.EmbyServerAddress, settings.AccessToken);
+            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
             return await _embyClient.PingEmbyAsync(cancellationToken);
         }
     }
