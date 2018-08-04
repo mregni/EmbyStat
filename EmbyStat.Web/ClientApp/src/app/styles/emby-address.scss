@@ -1,0 +1,21 @@
+.emby-address-container {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+
+  .emby-protocol {
+    margin-right: 10px;
+    width: 100px;
+    flex: 0;
+  }
+
+  .emby-address {
+    margin-right: 10px;
+    flex: 1 1 auto;
+  }
+
+  .emby-port {
+    width: 100px;
+    flex: 0;
+  }
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extentions;
 using Newtonsoft.Json;
 
@@ -40,6 +41,18 @@ namespace EmbyStat.Common.Models
         {
             get => _config[Constants.Configuration.EmbyServerAddress];
             set => _config[Constants.Configuration.EmbyServerAddress] = value;
+        }
+
+        public int EmbyServerPort
+        {
+            get => Convert.ToInt32(_config[Constants.Configuration.EmbyServerPort]);
+            set => _config[Constants.Configuration.EmbyServerPort] = value.ToString();
+        }
+
+        public ConnectionProtocol EmbyServerProtocol
+        {
+            get => (ConnectionProtocol)Convert.ToInt32(_config[Constants.Configuration.EmbyServerProtocol]);
+            set => _config[Constants.Configuration.EmbyServerProtocol] = ((int)value).ToString();
         }
 
         public string Username
@@ -123,7 +136,13 @@ namespace EmbyStat.Common.Models
 
         public IEnumerable<ConfigurationKeyValue> GetKeyValuePairs()
         {
-            return _config.Select(x => new ConfigurationKeyValue {Id = x.Key, Value = x.Value});
+            return _config.Select(x => new ConfigurationKeyValue { Id = x.Key, Value = x.Value });
+        }
+
+        public string GetFullEmbyServerAddress()
+        {
+            var protocol = EmbyServerProtocol == ConnectionProtocol.Http ? "http" : "https";
+            return $"{protocol}://{EmbyServerAddress}:{EmbyServerPort}";
         }
     }
 }

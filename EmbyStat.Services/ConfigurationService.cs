@@ -16,21 +16,7 @@ namespace EmbyStat.Services
 
 		public void SaveServerSettings(Configuration configuration)
 		{
-		    var dbSettings = _configurationRepository.GetConfiguration();
-
-		    dbSettings.Language = configuration.Language;
-		    dbSettings.AccessToken = configuration.AccessToken;
-		    dbSettings.EmbyServerAddress = configuration.EmbyServerAddress;
-		    dbSettings.EmbyUserName = configuration.EmbyUserName;
-		    dbSettings.Username = configuration.Username;
-		    dbSettings.WizardFinished = configuration.WizardFinished;
-		    dbSettings.EmbyUserId = configuration.EmbyUserId;
-		    dbSettings.ToShortMovie = configuration.ToShortMovie;
-		    dbSettings.MovieCollectionTypes = configuration.MovieCollectionTypes;
-		    dbSettings.ShowCollectionTypes = configuration.ShowCollectionTypes;
-		    dbSettings.TvdbApiKey = configuration.TvdbApiKey;
-
-		    _configurationRepository.Update(dbSettings);
+		    _configurationRepository.Update(configuration);
         }
 
 		public Configuration GetServerSettings()

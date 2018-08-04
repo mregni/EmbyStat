@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PersonPoster } from '../../models/personPoster';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
+import { ConfigHelper } from '../../helpers/configHelper';
 
 @Component({
   selector: 'app-person-poster',
@@ -28,11 +29,11 @@ export class PersonPosterComponent implements OnDestroy {
       return this._sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
     }
 
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${this.configuration.embyServerAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${ConfigHelper.getFullEmbyAddress(this.configuration)}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openPerson(): void {
-    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.configuration)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {

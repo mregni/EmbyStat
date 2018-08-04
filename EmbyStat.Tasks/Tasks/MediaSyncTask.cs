@@ -71,7 +71,7 @@ namespace EmbyStat.Tasks.Tasks
                 return;
             }
 
-            _embyClient.SetAddressAndUrl(_settings.EmbyServerAddress, _settings.AccessToken);
+            _embyClient.SetAddressAndUrl(_settings.GetFullEmbyServerAddress(), _settings.AccessToken);
 
             _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "First delete all existing media and root media collections from database so we have a clean start.");
             CleanUpDatabase();

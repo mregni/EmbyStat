@@ -40,8 +40,10 @@ namespace Tests.Unit.Controllers
 		    _emby = new EmbyUdpBroadcast()
 		    {
 			    Id = "azerty",
-			    Address = "http://localhost",
-			    Name = "emby"
+			    Address = "localhost",
+			    Name = "emby",
+                Port = 80,
+                Protocol = 0
 		    };
 
 			_serverInfo = new ServerInfo
@@ -66,7 +68,7 @@ namespace Tests.Unit.Controllers
 	        _mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
             _mapperMock.Setup(x => x.Map<IList<DriveViewModel>>(It.IsAny<List<Drives>>())).Returns(new List<DriveViewModel>{ new DriveViewModel(), new DriveViewModel()});
             _mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = true, Token = "azerty", Username = "admin" });
-	        _mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "http://localhost",Name = "emby" });
+	        _mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "localhost", Name = "emby", Protocol = 0, Port = 80});
 
 		    _subject = new EmbyController(_embyServiceMock.Object, _mapperMock.Object);
 		}
@@ -105,7 +107,9 @@ namespace Tests.Unit.Controllers
 		    var embyUdpBroadcast = resultObject.Should().BeOfType<EmbyUdpBroadcastViewModel>().Subject;
 
 		    embyUdpBroadcast.Address.Should().Be(_emby.Address);
-		    embyUdpBroadcast.Id.Should().Be(_emby.Id);
+		    embyUdpBroadcast.Port.Should().Be(_emby.Port);
+		    embyUdpBroadcast.Protocol.Should().Be(_emby.Protocol);
+            embyUdpBroadcast.Id.Should().Be(_emby.Id);
 		    embyUdpBroadcast.Name.Should().Be(_emby.Name);
 
 			_embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
