@@ -48,9 +48,10 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
     "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
-    "NOT_FOUND": "Oops, we missen wat bestanden.",
+    "NOT_FOUND": "Oops, didn't find what you are looking for.",
     "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en Emby url na te zien.",
-    "EMBY_CALL_FAILED": "Contact opnemen met Emby is gefaald. Gelieve na te zien of de Emby server draait en uw inloggegevens nog kloppen."
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
+    "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
     "NAME": "Voer uw naam in",
@@ -86,7 +87,7 @@
     "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Emby server aan het controleren ...",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is actief",
     "ISADMIN": "{{ user }} is een Emby administrator",
@@ -150,6 +151,9 @@
     },
     "SHOW": {
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+    },
+    "EMBY": {
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     }
   },
   "TASK": {

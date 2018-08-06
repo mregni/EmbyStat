@@ -48,9 +48,10 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
     "NO_CONFIGURATION_FOUND": "Aucune configuration n'a été trouvée.",
-    "NOT_FOUND": "Oups, il nous manque des fichiers.",
+    "NOT_FOUND": "Oops, didn't find what you are looking for.",
     "TOKEN_FAILED": "L'obtention du jeton Emby a échoué. Veuillez vérifier vos informations d'identification et votre adresse.",
-    "EMBY_CALL_FAILED": "Échec de connexion au serveur Emby. Vérifiez si Emby est en cours d'exécution et si les informations d'identification sont toujours correctes."
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
+    "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
     "NAME": "Entrez votre nom",
@@ -86,7 +87,7 @@
     "CROWNDINHELP": "Si votre langue n'est pas mentionné ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "CHECKINGSTATUS": "Vérification du serveur Emby ...",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
-    "EMBYNOTFOUNDTEXT": "Nous allons maintenant configurer votre connexion Emby. Nous avons essayé de détecter automatiquement votre serveur Emby dans le réseau mais nous avons échoué. Pouvez-vous s'il vous plaît nous fournir l'IP sous la forme suivante : http(s)://IP/domaine:port et remplir le reste du formulaire.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "Nous avons trouvé un serveur Emby dans votre réseau et entré automatiquement l'URL dans le formulaire. N'hésitez pas à l'ajuster et à remplir le reste du formulaire.",
     "EMBYRUNNING": "Le serveur Emby est en cours d'exécution",
     "ISADMIN": "{{ user }} est un administrateur Emby",
@@ -150,6 +151,9 @@
     },
     "SHOW": {
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans la liste déroulante de la collection sur la page Afficher les statistiques."
+    },
+    "EMBY": {
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     }
   },
   "TASK": {
