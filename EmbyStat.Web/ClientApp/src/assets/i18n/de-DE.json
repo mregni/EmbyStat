@@ -48,9 +48,9 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
     "NO_CONFIGURATION_FOUND": "Keine Konfiguration gefunden.",
-    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "NOT_FOUND": "Hoppla, wir konnten nicht finden wonach Sie suchen.",
     "TOKEN_FAILED": "Abrufen des Emby Token ist fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen und Adresse.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
+    "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind.",
     "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
