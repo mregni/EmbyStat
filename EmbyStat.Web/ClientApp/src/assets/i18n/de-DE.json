@@ -87,7 +87,7 @@
     "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen.",
     "CHECKINGSTATUS": "Emby Server wird überprüft...",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "EMBYNOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu Emby einrichten. Wir haben versucht deinen Emby Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen Emby Server finden kann.",
     "EMBYFOUNDTEXT": "Wir haben einen Emby-Server in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
     "EMBYRUNNING": "Der Emby Server läuft",
     "ISADMIN": "{{ user }} ist ein Emby Administrator",
@@ -153,7 +153,7 @@
       "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+      "NOPASSWORD": "Vergessen Sie nicht Ihr Emby Passwort einzugeben wenn Sie die Emby Url-Einstellungen ändern möchten."
     }
   },
   "TASK": {
