@@ -11,6 +11,7 @@ namespace EmbyStat.Common.Models.Helpers
         public string TMDB { get; set; }
         public string TVDB { get; set; }
         public long? RunTimeTicks { get; set; }
+        public string OfficialRating { get; set; }
         public ICollection<ExtraPerson> ExtraPersons { get; set; }
     }
 }

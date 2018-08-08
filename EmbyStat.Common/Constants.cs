@@ -138,5 +138,34 @@ namespace EmbyStat.Common
         //DUPLICATE REASONS
         public const string ByImdb = "BYIMDB";
         public const string ByTitle = "BYTITLE";
+
+        public static class Tables
+        {
+            public static string BoxSets = "BoxSets";
+            public static string Collections = "Collections";
+            public static string Configuration = "Configuration";
+            public static string Devices = "Devices";
+            public static string Drives = "Drives";
+            public static string EmbyStatus = "EmbyStatus";
+            public static string Genres = "Genres";
+            public static string Languages = "Languages";
+            public static string Media = "Media";
+            public static string People = "People";
+            public static string Plugins = "Plugins";
+            public static string ServerInfo = "ServerInfo";
+            public static string Statistics = "Statistics";
+            public static string TaskResults = "TaskResults";
+            public static string TaskTriggerInfos = "TaskTriggerInfos";
+            public static string User = "Users";
+            public static string AudioStreams = "AudioStreams";
+            public static string MediaCollection = "MediaCollection";
+            public static string MediaGenres = "MediaGenres";
+            public static string MediaSources = "MediaSources";
+            public static string SeasonEpisodes = "SeasonEpisodes";
+            public static string SubtitleStreams = "SubtitleStreams";
+            public static string VideoStreams = "VideoStreams";
+            public static string ExtraPersons = "ExtraPersons";
+            public static string StatisticCollection = "StatisticCollection";
+        }
     }
 }

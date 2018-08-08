@@ -49,6 +49,7 @@ namespace EmbyStat.Repositories
 	    {
 		    base.OnConfiguring(optionsBuilder);
 		    optionsBuilder.UseSqlite("Data Source=data.db");
+	        optionsBuilder.EnableSensitiveDataLogging();
 	    }
 
 	    protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -63,16 +64,16 @@ namespace EmbyStat.Repositories
 
 	        modelBuilder.Entity<TaskTriggerInfo>().Property(t => t.Id).IsRequired();
 
-            modelBuilder.Entity<MediaGenre>().HasKey(mg => new { mg.GenreId, mg.MediaId });
+            modelBuilder.Entity<MediaGenre>().HasKey(mg => mg.Id);
             modelBuilder.Entity<MediaGenre>().HasOne(mg => mg.Media).WithMany(m => m.MediaGenres).HasForeignKey(mg => mg.MediaId);
             modelBuilder.Entity<MediaGenre>().HasOne(mg => mg.Genre).WithMany(g => g.MediaGenres).HasForeignKey(mg => mg.GenreId);
 
-            modelBuilder.Entity<ExtraPerson>().HasKey(ep => new { ep.ExtraId, ep.PersonId });
+            modelBuilder.Entity<ExtraPerson>().HasKey(ep => ep.Id);
             modelBuilder.Entity<ExtraPerson>().HasOne(ep => ep.Extra).WithMany(e => e.ExtraPersons).HasForeignKey(ep => ep.ExtraId);
             modelBuilder.Entity<ExtraPerson>().HasOne(ep => ep.Person).WithMany(p => p.ExtraPersons).HasForeignKey(ep => ep.PersonId);
 
-	        modelBuilder.Entity<SeasonEpisode>().HasKey(s => new {s.EpisodeId, s.SeasonId});
-	        modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Episode).WithMany(e => e.SeasonEpisodes).HasForeignKey(s => s.EpisodeId);
+	        modelBuilder.Entity<SeasonEpisode>().HasKey(ep => ep.Id);
+            modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Episode).WithMany(e => e.SeasonEpisodes).HasForeignKey(s => s.EpisodeId);
 	        modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Season).WithMany(s => s.SeasonEpisodes).HasForeignKey(s => s.SeasonId);
 
             modelBuilder.Entity<Video>().HasMany(v => v.AudioStreams).WithOne(s => s.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
