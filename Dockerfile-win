@@ -17,7 +17,7 @@ COPY EmbyStat.Tasks/. .
 COPY EmbyStat.Web/. .
 
 FROM build AS publish
-WORDIR /builder/EmbyStat.Web
+WORKDIR /builder/EmbyStat.Web
 RUN dotnet publish --framework netcoreapp2.1 --configuration Release --runtime win7-x64 --output /app
 
 FROM base AS final
