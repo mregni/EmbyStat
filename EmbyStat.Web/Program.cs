@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Repositories.Migrations;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,7 +78,8 @@ namespace EmbyStat.Web
 				var services = scope.ServiceProvider;
 				try
 				{
-					var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
+				    UpdateDatabase();
+                    var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
 					databaseInitializer.SeedAsync().Wait();
 				}
 				catch (Exception ex)
@@ -86,6 +89,21 @@ namespace EmbyStat.Web
 				}
 			}
 		}
-	}
+
+	    private static void UpdateDatabase()
+	    {
+	        var serviceProvider = new ServiceCollection()
+	            .AddFluentMigratorCore()
+	            .ConfigureRunner(rb => rb
+	                .AddSQLite()
+	                .WithGlobalConnectionString("Data Source=data.db")
+	                .ScanIn(typeof(InitMigration).Assembly).For.Migrations())
+	            .AddLogging(lb => lb.AddSerilog())
+	            .BuildServiceProvider(false);
+
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+	        runner.MigrateUp();
+	    }
+    }
 }
 

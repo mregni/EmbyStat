@@ -7,8 +7,6 @@ namespace EmbyStat.Common.Models
     {
         public long? CumulativeRunTimeTicks { get; set; }
         public DateTime? DateLastMediaAdded { get; set; }
-        public string HomePageUrl { get; set; }
-        public string OfficialRating { get; set; }
         public string Status { get; set; }
         public bool TvdbSynced { get; set; }
         public int MissingEpisodesCount { get; set; }

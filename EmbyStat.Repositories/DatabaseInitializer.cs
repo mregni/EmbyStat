@@ -22,18 +22,9 @@ namespace EmbyStat.Repositories
 
 		public async Task SeedAsync()
 		{
-			Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tMigrating database started");
-			_context.Database.Migrate();
-			Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tMigrating database ended");
-
 		    await SeedConfiguration();
 		    await SeedLanguages();
 		    await SeedEmbyStatus();
-
-			//foreach (var syncronisation in _context.Syncronisations)
-			//{
-			// syncronisation.IsRunning = false;
-			//}
 
 			await _context.SaveChangesAsync();
 		}
