@@ -20,6 +20,12 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
   public shortDisplayedColumns = ['number', 'title', 'duration', 'link' ];
   public shortDataSource = new MatTableDataSource();
 
+  public noImdbDisplayedColumns = ['number', 'title', 'link'];
+  public noImdbDataSource = new MatTableDataSource();
+
+  public noPrimaryDisplayedColumns = ['number', 'title', 'link'];
+  public noPrimaryDataSource = new MatTableDataSource();
+
   private duplicatesSub: Subscription;
   private configurationSub: Subscription;
   private configuration: Configuration;
@@ -39,6 +45,8 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
     this.duplicatesSub = this.movieFacade.getDuplicates(collection).subscribe(data => {
       this.suspiciousDataSource.data = data.duplicates;
       this.shortDataSource.data = data.shorts;
+      this.noImdbDataSource.data = data.noImdb;
+      this.noPrimaryDataSource.data = data.noPrimary;
     });
   }
 
