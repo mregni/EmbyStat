@@ -102,7 +102,7 @@
   </mat-table>
 </div>
 
-<div *ngIf="noImdbDataSource !== undefined && noImdbyDataSource.data.length > 0">
+<div *ngIf="noImdbDataSource !== undefined && noImdbDataSource.data.length > 0">
   <h2>{{ 'MOVIES.NOIMDB' | translate | capitalizeFirst }}</h2>
   <mat-table [dataSource]="noImdbDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
     <ng-container matColumnDef="number">
