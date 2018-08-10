@@ -114,8 +114,10 @@
     "LONGEST": "Am längsten",
     "YOUNGESTADDED": "Am neusten hinzugefügt",
     "MOSTFEATUREDPERGENRE": "Häufigster Schauspieler je Genre",
-    "DUPLICATEMOVIES": "Doppelte Filme",
-    "TOSHORTMOVIES": "Sehr kurze Filme"
+    "DUPLICATEMOVIES": "Duplicate movies",
+    "TOSHORTMOVIES": "Movies that are very short",
+    "NOPOSTER": "Movies without a poster",
+    "NOIMDB": "Movies without a IMDB id"
   },
   "SHOWS": {
     "TOTALSHOWS": "Anzahl Serien",
