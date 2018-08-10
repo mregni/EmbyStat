@@ -114,8 +114,10 @@
     "LONGEST": "Le plus long",
     "YOUNGESTADDED": "Récemment ajouté",
     "MOSTFEATUREDPERGENRE": "L'acteur le plus en vue par genre",
-    "DUPLICATEMOVIES": "films en double",
-    "TOSHORTMOVIES": "court-métrage"
+    "DUPLICATEMOVIES": "Duplicate movies",
+    "TOSHORTMOVIES": "Movies that are very short",
+    "NOPOSTER": "Movies without a poster",
+    "NOIMDB": "Movies without a IMDB id"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total des séries",
