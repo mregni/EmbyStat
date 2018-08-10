@@ -60,6 +60,7 @@ namespace EmbyStat.Controllers
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 	        CreateMap<LogFile, LogFileViewModel>();
 	        CreateMap<About, AboutViewModel>();
+	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

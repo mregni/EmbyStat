@@ -156,7 +156,9 @@ namespace EmbyStat.Services
                 stats = new SuspiciousTables
                 {
                     Duplicates = GetDuplicates(movies),
-                    Shorts = GetShortMovies(movies)
+                    Shorts = GetShortMovies(movies),
+                    NoImdb = GetMoviesWithoutImdbLink(movies),
+                    NoPrimary = GetMoviesWithoutPrimaryImage(movies)
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
@@ -171,7 +173,7 @@ namespace EmbyStat.Services
             return _movieRepository.Any();
         }
 
-        private List<ShortMovie> GetShortMovies(List<Movie> movies)
+        private List<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
         {
             var configuration = _configurationRepository.GetConfiguration();
             var shortMovies = movies
@@ -190,7 +192,39 @@ namespace EmbyStat.Services
             return shortMovies;
         }
 
-        private List<MovieDuplicate> GetDuplicates(List<Movie> movies)
+        private List<SuspiciousMovie> GetMoviesWithoutImdbLink(IEnumerable<Movie> movies)
+        {
+            var noImdbMovies = movies
+                .Where(x => string.IsNullOrWhiteSpace(x.IMDB))
+                .OrderBy(x => x.SortName)
+                .Select((t, i) => new SuspiciousMovie
+                {
+                    Number = i++,
+                    Title = t.Name,
+                    MediaId = t.Id
+                })
+                .ToList();
+
+            return noImdbMovies;
+        }
+
+        private List<SuspiciousMovie> GetMoviesWithoutPrimaryImage(IEnumerable<Movie> movies)
+        {
+            var noPrimaryImageMovies = movies
+                .Where(x => string.IsNullOrWhiteSpace(x.Primary))
+                .OrderBy(x => x.SortName)
+                .Select((t, i) => new SuspiciousMovie
+                {
+                    Number = i++,
+                    Title = t.Name,
+                    MediaId = t.Id
+                })
+                .ToList();
+
+            return noPrimaryImageMovies;
+        }
+
+        private List<MovieDuplicate> GetDuplicates(IReadOnlyCollection<Movie> movies)
         {
             var list = new List<MovieDuplicate>();
 
@@ -225,7 +259,7 @@ namespace EmbyStat.Services
 
                 list.Add(new MovieDuplicate
                 {
-                    Number = i,
+                    Number = list.LastOrDefault() != null ? list.Last().Number++ : i,
                     Title = itemOne.Name,
                     Reason = Constants.ByTitle,
                     ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = String.Join(",", itemOne.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width))) },

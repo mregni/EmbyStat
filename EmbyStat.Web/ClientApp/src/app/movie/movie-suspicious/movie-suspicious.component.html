@@ -1,76 +1,126 @@
-<h2 class="no-top-margin">{{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}</h2>
-<mat-table [dataSource]="suspiciousDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
-  <ng-container matColumnDef="number">
-    <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
-  </ng-container>
+<div *ngIf="suspiciousDataSource !== undefined && suspiciousDataSource.data.length > 0">
+  <h2 class="no-top-margin">{{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}</h2>
+  <mat-table [dataSource]="suspiciousDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+    <ng-container matColumnDef="number">
+      <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="title">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="reason">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.REASON' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{'COMMON.' + row.reason | translate }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="reason">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.REASON' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{'COMMON.' + row.reason | translate }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="linkOne">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" class="item-one"><a (click)="openMovie(row.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="linkOne">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="item-one"><a (click)="openMovie(row.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="qualityOne">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.QUALITY' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" class="item-one">{{ row.itemOne.quality }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="qualityOne">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.QUALITY' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="item-one">{{ row.itemOne.quality }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="dateCreatedOne">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.ADDEDON' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" class="item-one">{{ row.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="dateCreatedOne">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.ADDEDON' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="item-one">{{ row.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="linkTwo">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" class="item-two"><a (click)="openMovie(row.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="linkTwo">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="item-two"><a (click)="openMovie(row.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="qualityTwo">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" class="item-two">{{ row.itemTwo.quality }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="qualityTwo">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="item-two">{{ row.itemTwo.quality }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="dateCreatedTwo">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.ADDEDON' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" class="item-two">{{ row.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="dateCreatedTwo">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.ADDEDON' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="item-two">{{ row.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="suspiciousDisplayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: suspiciousDisplayedColumns;"></mat-row>
-</mat-table>
+    <mat-header-row *matHeaderRowDef="suspiciousDisplayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: suspiciousDisplayedColumns;"></mat-row>
+  </mat-table>
+</div>
 
-<h2>{{'MOVIES.TOSHORTMOVIES' | translate | capitalizeFirst}}</h2>
-<mat-table [dataSource]="shortDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
-  <ng-container matColumnDef="number">
-    <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
-  </ng-container>
+<div *ngIf="shortDataSource !== undefined && shortDataSource.data.length > 0">
+  <h2>{{'MOVIES.TOSHORTMOVIES' | translate | capitalizeFirst}}</h2>
+  <mat-table [dataSource]="shortDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+    <ng-container matColumnDef="number">
+      <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="title">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="duration">
-    <mat-header-cell *matHeaderCellDef>{{ 'COMMON.DURATION' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row.duration }} {{ 'COMMON.MINUTES' | translate }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="duration">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.DURATION' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.duration }} {{ 'COMMON.MINUTES' | translate }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="link">
-    <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-    <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="link">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="shortDisplayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: shortDisplayedColumns;"></mat-row>
-</mat-table>
+    <mat-header-row *matHeaderRowDef="shortDisplayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: shortDisplayedColumns;"></mat-row>
+  </mat-table>
+</div>
+
+<div *ngIf="noPrimaryDataSource !== undefined && noPrimaryDataSource.data.length > 0">
+  <h2>{{ 'MOVIES.NOPOSTER' | translate | capitalizeFirst }}</h2>
+  <mat-table [dataSource]="noPrimaryDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+    <ng-container matColumnDef="number">
+      <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="link">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="noPrimaryDisplayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: noPrimaryDisplayedColumns;"></mat-row>
+  </mat-table>
+</div>
+
+<div *ngIf="noImdbyDataSource !== undefined && noImdbyDataSource.data.length > 0">
+  <h2>{{ 'MOVIES.NOIMDB' | translate | capitalizeFirst }}</h2>
+  <mat-table [dataSource]="noImdbyDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+    <ng-container matColumnDef="number">
+      <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="link">
+      <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+      <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="noImdbDisplayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: noImdbDisplayedColumns;"></mat-row>
+  </mat-table>
+</div>
