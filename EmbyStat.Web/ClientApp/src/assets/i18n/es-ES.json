@@ -114,8 +114,10 @@
     "LONGEST": "El más largo",
     "YOUNGESTADDED": "Añadido más nuevo",
     "MOSTFEATUREDPERGENRE": "El actor más destacado por género",
-    "DUPLICATEMOVIES": "películas duplicados",
-    "TOSHORTMOVIES": "películas que son muy cortas"
+    "DUPLICATEMOVIES": "Duplicate movies",
+    "TOSHORTMOVIES": "Movies that are very short",
+    "NOPOSTER": "Movies without a poster",
+    "NOIMDB": "Movies without a IMDB id"
   },
   "SHOWS": {
     "TOTALSHOWS": "Muestra total",
