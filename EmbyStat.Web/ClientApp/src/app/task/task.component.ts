@@ -1,16 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SafeHtml } from '@angular/platform-browser';
 import { TaskFacade } from './state/facade.task';
 import { Subscription } from 'rxjs/Subscription';
 import { Task } from './models/task';
 import { MatDialog } from '@angular/material';
 import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.component';
-
 import 'rxjs/Rx';
 import * as moment from 'moment';
-import * as signalR from "@aspnet/signalr";
 
-import { ProgressLog } from './models/progressLog';
+import { TaskSignalService } from '../shared/services/signalR/task-signal.service';
 
 @Component({
   selector: 'app-task',
@@ -19,37 +17,21 @@ import { ProgressLog } from './models/progressLog';
 })
 export class TaskComponent implements OnInit, OnDestroy {
   private getTasksSub: Subscription;
+  private taskInfoSignalSub: Subscription;
+  private taskLogsSignalSub: Subscription;
   public tasks: Task[];
   public lines: SafeHtml[] = [];
 
   constructor(private taskFacade: TaskFacade,
     public dialog: MatDialog,
-    private sanitizer: DomSanitizer) {
-    const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl("/tasksignal")
-      .build();
-    hubConnection.start().catch(err => document.write(err));
+    private taskSignalService: TaskSignalService) {
 
-    hubConnection.on('ReceiveInfo', (data: Task[]) => {
-      this.tasks = data;
+    this.taskLogsSignalSub = taskSignalService.logsSubject.subscribe(logs => {
+      this.lines = logs;
     });
 
-    hubConnection.on('ReceiveLog', (data: ProgressLog) => {
-      console.log("BOE");
-      const now = moment().format('HH:mm:ss');
-      var line = now + ' - ' + data.value;
-
-      if (data.type === 1) {
-        this.lines.push(sanitizer.bypassSecurityTrustHtml('<span class="text__accent">' + line + '</span>'));
-      } else if (data.type === 2) {
-        this.lines.push(sanitizer.bypassSecurityTrustHtml('<span class="text__warn">' + line + '</span>'));
-      } else {
-        this.lines.push(line);
-      }
-
-      if (this.lines.length >= 15) {
-        this.lines.shift();
-      }
+    this.taskInfoSignalSub = taskSignalService.infoSubject.subscribe(tasks => {
+      this.tasks = tasks;
     });
   }
 
@@ -143,6 +125,14 @@ export class TaskComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.getTasksSub !== undefined) {
       this.getTasksSub.unsubscribe();
+    }
+
+    if (this.taskInfoSignalSub !== undefined) {
+      this.taskInfoSignalSub.unsubscribe();
+    }
+
+    if (this.taskLogsSignalSub !== undefined) {
+      this.taskLogsSignalSub.unsubscribe();
     }
   }
 }
