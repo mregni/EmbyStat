@@ -25,6 +25,7 @@ import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
+import { TaskSignalService } from './services/signalR/task-signal.service';
 import { EmbyService } from './services/emby.service';
 import { ToolbarFacade } from './toolbar/state/facade.toolbar';
 
@@ -81,6 +82,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
   providers: [
     ToastService,
     EmbyService,
+    TaskSignalService,
     ToolbarFacade
   ],
   entryComponents: [NoTypeFoundDialog]
