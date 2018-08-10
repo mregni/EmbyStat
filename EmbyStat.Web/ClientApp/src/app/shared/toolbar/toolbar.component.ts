@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import * as signalR from "@aspnet/signalr";
 import { ConfigHelper } from '../helpers/configHelper';
 
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
