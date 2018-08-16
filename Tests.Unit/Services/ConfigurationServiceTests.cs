@@ -91,7 +91,7 @@ namespace Tests.Unit.Services
 	        settings.ToShortMovie.Should().Be(10);
 	        settings.ServerName.Should().Be("ServerName");
 	        settings.LastTvdbUpdate.Should().NotBeNull();
-	        settings.LastTvdbUpdate.Value.Day.Should().Be(13);
+	        settings.LastTvdbUpdate.Value.Day.Should().Be(9);
 	        settings.LastTvdbUpdate.Value.Month.Should().Be(10);
 	        settings.LastTvdbUpdate.Value.Year.Should().Be(2018);
 	        settings.MovieCollectionTypes.Count.Should().Be(2);
