@@ -8,12 +8,12 @@
     <div class="la-ball-clip-rotate la-sm">
       <div></div>
     </div>
-    {{runningTask.name | translate | capitalizeFirst }} task is running
+    {{ 'TOOLBAD.TASKISRUNNING' | translate: { time: runningTask.name | translate | capitalizeFirst } }}
   </div>
-  <div class="toolbar__emby_ping_statusbox">
-    <img *ngIf="missedPings === 0" src="../../../assets/images/icons/green_circle.png" />
-    <img *ngIf="missedPings === 1" src="../../../assets/images/icons/orange_circle.png" />
-    <img *ngIf="missedPings >= 2" src="../../../assets/images/icons/red_circle.png" />
+  <div class="toolbar__emby_ping_statusbox" *ngIf="configuration$ | async as config">
+    <img *ngIf="missedPings === 0 && config.embyServerAddress" src="../../../assets/images/icons/green_circle.png" />
+    <img *ngIf="missedPings === 1 && config.embyServerAddress" src="../../../assets/images/icons/orange_circle.png" />
+    <img *ngIf="missedPings >= 2 && config.embyServerAddress" src="../../../assets/images/icons/red_circle.png" />
   </div>
   <div *ngIf="configuration$ | async as config" class="button-container">
     <a mat-raised-button href="{{getFullAddress(config)}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
