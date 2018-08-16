@@ -8,7 +8,7 @@
     <div class="la-ball-clip-rotate la-sm">
       <div></div>
     </div>
-    {{ 'TOOLBAD.TASKISRUNNING' | translate: { time: runningTask.name | translate | capitalizeFirst } }}
+    {{ 'TOOLBAR.TASKISRUNNING' | translate: { task: runningTask.name | translate | capitalizeFirst } }}
   </div>
   <div class="toolbar__emby_ping_statusbox" *ngIf="configuration$ | async as config">
     <img *ngIf="missedPings === 0 && config.embyServerAddress" src="../../../assets/images/icons/green_circle.png" />
