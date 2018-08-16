@@ -12,5 +12,7 @@ namespace EmbyStat.Repositories.Interfaces
         Statistic GetLastResultByType(StatisticType type);
         void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<Guid> collections);
         Task CleanupStatistics();
+        void MarkMovieTypesAsInvalid();
+        void MarkShowTypesAsInvalid();
     }
 }

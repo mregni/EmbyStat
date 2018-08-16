@@ -27,7 +27,7 @@ namespace EmbyStat.Repositories.Migrations
 
             Create.Table(Constants.Tables.Configuration)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Configuration")
-                .WithColumn("Value").AsString().NotNullable();
+                .WithColumn("Value").AsString().Nullable();
 
             Create.Table(Constants.Tables.Devices)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Devices")
@@ -154,6 +154,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Statistics")
                 .WithColumn("CalculationDateTime").AsDateTime().NotNullable()
                 .WithColumn("Type").AsInt32().NotNullable()
+                .WithColumn("IsValid").AsBoolean().NotNullable()
                 .WithColumn("JsonResult").AsString().NotNullable();
 
             Create.Table(Constants.Tables.TaskResults)
@@ -259,9 +260,9 @@ namespace EmbyStat.Repositories.Migrations
             Create.Table(Constants.Tables.StatisticCollection)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_StatisticCollection")
                 .WithColumn("StatisticId").AsGuid().NotNullable()
-                .ForeignKey("FK_StatisticCollection_Statistics_StatisticId", Constants.Tables.Collections, "Id").OnDelete(Rule.Cascade)
+                .ForeignKey("FK_StatisticCollection_Statistics_StatisticId", Constants.Tables.Statistics, "Id").OnDelete(Rule.Cascade)
                 .WithColumn("CollectionId").AsGuid().NotNullable()
-                .ForeignKey("FK_StatisticCollection_Collections_CollectionId", Constants.Tables.Statistics, "Id").OnDelete(Rule.Cascade);
+                .ForeignKey("FK_StatisticCollection_Collections_CollectionId", Constants.Tables.Collections, "Id").OnDelete(Rule.Cascade);
 
             Create.Index("IX_AudioStreams_VideoId").OnTable(Constants.Tables.AudioStreams).OnColumn("VideoId");
             Create.Index("IX_ExtraPersons_PersonId").OnTable(Constants.Tables.ExtraPersons).OnColumn("PersonId");
@@ -274,6 +275,8 @@ namespace EmbyStat.Repositories.Migrations
             Create.Index("IX_StatisticCollection_StatisticId").OnTable(Constants.Tables.StatisticCollection).OnColumn("StatisticId");
             Create.Index("IX_SubtitleStreams_VideoId").OnTable(Constants.Tables.SubtitleStreams).OnColumn("VideoId");
             Create.Index("IX_VideoStreams_VideoId").OnTable(Constants.Tables.VideoStreams).OnColumn("VideoId");
+            Create.Index("IX_ExtraPersons_ExtraId").OnTable(Constants.Tables.ExtraPersons).OnColumn("ExtraId");
+            Create.Index("IX_SeasonEpisodes_EpisodeId").OnTable(Constants.Tables.SeasonEpisodes).OnColumn("EpisodeId");
         }
     }
 }

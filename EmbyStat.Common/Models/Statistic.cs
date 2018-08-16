@@ -15,5 +15,6 @@ namespace EmbyStat.Common.Models
         public StatisticType Type { get; set; }
         public string JsonResult { get; set; }
         public ICollection<StatisticCollection> Collections { get; set; }
+        public bool IsValid { get; set; }
     }
 }

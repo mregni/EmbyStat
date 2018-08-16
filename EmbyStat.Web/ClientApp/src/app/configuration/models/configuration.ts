@@ -15,4 +15,6 @@ export class Configuration {
   public tvdbApiKey: string;
   public embyServerPort: number;
   public embyServerProtocol: number;
+  public lastTvdbUpdate: Date;
+  public keepLogsCount: number;
 }
