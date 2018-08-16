@@ -218,7 +218,8 @@
     "FOLDERS": "Carpetas"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Ir a Emby"
+    "GOTOEMBY": "Ir a Emby",
+    "TASKISRUNNING": "{{task}} task is running"
   },
   "ABOUT": {
     "THANKS": {
