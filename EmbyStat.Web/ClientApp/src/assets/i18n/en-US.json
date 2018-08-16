@@ -9,6 +9,7 @@
     "SAVE": "save",
     "DISCARD": "discard",
     "CANCEL": "cancel",
+    "CLOSE":  "close",
     "DAYS": "days",
     "HOURS": "hours",
     "MINUTES": "minutes",
@@ -25,7 +26,7 @@
     "COUNTPERCOMMUNITYRATING": "count / rating",
     "COUNTPERPREMIEREDATE": "count / year",
     "COUNTPEROFFICIALRATING": "count / official rating",
-    "COUNTPERCOLLECTEDRATE": "count / percentage collected",
+    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
     "EMBY": "Emby",
     "GENERAL": "general",
     "DURATION": "duration",
@@ -47,24 +48,24 @@
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
-    "NO_CONFIGURATION_FOUND": "Configuration Not found.",
+    "NO_CONFIGURATION_FOUND": "No configuration could be found.",
     "NOT_FOUND": "Oops, didn't find what you are looking for.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and domain/ip address.",
+    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
     "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
     "NAME": "Enter your name",
     "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby domain/ip address",
+    "EMBYADDRESS": "Emby ip address",
     "EMBYUSERNAME": "Emby admin username",
     "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes",
-    "TVDBAPI": "TheTVDB api key"
+    "TVDBAPI": "TheTVDB api key" 
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby domain/ip address.",
+    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
     "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
     "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
   },
@@ -77,7 +78,7 @@
     "TASKS": "Tasks",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About"
+    "ABOUT": "About" 
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -86,7 +87,7 @@
     "FINALLABEL": "Final",
     "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
-    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will set the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know what we may call you and in what language you want view the UI.",
+    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
@@ -95,9 +96,9 @@
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
-    "FINISHWITHSYNC": "Start syncronisation",
-    "FINISHED": "All settings have been saved and you can start using EmbyStat now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation right now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHWITHSYNC": "Start syncronisation", 
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page." 
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -117,7 +118,7 @@
     "DUPLICATEMOVIES": "Duplicate movies",
     "TOSHORTMOVIES": "Movies that are very short",
     "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "NOIMDB": "Movies without a IMDB id" 
   },
   "SHOWS": {
     "TOTALSHOWS": "Total shows",
@@ -127,7 +128,7 @@
     "HIGHESTRATEDSHOW": "Highest rated show",
     "LOWESTRATEDSHOW": "Lowest rated show",
     "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Youngest premiered show",
+    "YOUNGESTPREMIERED": "Yougenst premiered show",
     "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "With most episodes",
     "SHOWSTATUSGRAPH": "Show statuses",
@@ -145,18 +146,18 @@
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail." 
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
-    }
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings." 
+    } 
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",
@@ -168,18 +169,19 @@
     "AGO": "ago",
     "FOR": "for",
     "BUTFAILED": "but failed after",
-    "NOTRAN": "Not ran yet"
+    "NOTRAN": "Not ran yet" 
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Check Emby connection",
-    "PINGEMBYSERVERDESCRIPTION": "Check Emby server is still online.",
+    "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
     "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-    "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your content. This can take some time to run!",
+    "SMALLEMBYSYNCTITLE": "Small sync with Emb",
+    "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
     "MEDIASYNCTITLE": "Media synchronisation",
     "STARTMEDIASYNC": "Start media sync",
     "DATABASECLEANUP": "Database cleanup",
-    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data."
+    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+    "OPENTASKPAGE": "Go to task page"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -198,32 +200,37 @@
     "NOSHOWTYPEFOUND": {
       "TITLE": "No shows found",
       "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
-    }
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Media sync task is running",
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running." 
+    } 
   },
   "LOADER": {
-    "FETCHING": "Generating statistics"
+    "FETCHING": "Fetching statistics"
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
     "MUSIC": "Music",
-    "MUSICVIDEOS": "Music Video's",
+    "MUSICVIDEOS": "Music videos",
     "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home Video's",
-    "BOXSETS": "BoxSets",
+    "HOMEVIDEOS": "Home videos",
+    "BOXSETS": "Boxsets",
     "BOOKS": "Books",
-    "PHOTOS": "Photo's",
+    "PHOTOS": "Photos",
     "GAMES": "Games",
     "LIVETV": "Live TV",
     "PLAYLISTS": "Playlists",
     "FOLDERS": "Folders"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Go to Emby",
+    "TASKISRUNNING": "{{task}} task is running" 
   },
   "ABOUT": {
     "THANKS": {
       "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating EmbyStat into their native language:"
-    }
-  }
+      "TEXT": "A big thanks to the following people for translating the app in their native language:" 
+    } 
+  } 
 }

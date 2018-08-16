@@ -35,6 +35,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './shared/error.interceptor';
 
+import { SyncGuard } from './shared/guards/sync.guard';
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
@@ -74,6 +76,7 @@ export function createTranslateLoader(http: HttpClient) {
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [
+    SyncGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
