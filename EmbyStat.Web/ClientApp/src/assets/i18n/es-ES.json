@@ -9,6 +9,7 @@
     "SAVE": "guardar",
     "DISCARD": "descartar",
     "CANCEL": "cancelar",
+    "CLOSE": "close",
     "DAYS": "días",
     "HOURS": "horas",
     "MINUTES": "minutos",
@@ -179,7 +180,8 @@
     "MEDIASYNCTITLE": "Sincronización de medios",
     "STARTMEDIASYNC": "Inicia la sincronización de medios",
     "DATABASECLEANUP": "Limpieza de la base de datos",
-    "DATABASECLEANUPDESCRIPTION": "Limpieza de la base de datos con datos innecesarios."
+    "DATABASECLEANUPDESCRIPTION": "Limpieza de la base de datos con datos innecesarios.",
+    "OPENTASKPAGE": "Go to task page"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Intervalo de disparador",
@@ -198,6 +200,10 @@
     "NOSHOWTYPEFOUND": {
       "TITLE": "No se encontró",
       "BODY": "No pudimos encontrar ningún programa en la base de datos EmbyStat. Si tiene medios en Emby, debería intentar comenzar una nueva tarea de sincronización de medios."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Media sync task is running",
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
     }
   },
   "LOADER": {
