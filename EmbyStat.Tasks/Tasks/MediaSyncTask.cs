@@ -39,6 +39,7 @@ namespace EmbyStat.Tasks.Tasks
         private readonly IPersonRepository _personRepository;
         private readonly ICollectionRepository _collectionRepository;
         private readonly ITvdbClient _tvdbClient;
+        private readonly IStatisticsRepository _statisticsRepository;
         private Configuration _settings;
         private IProgressLogger _progressLogger;
 
@@ -51,6 +52,7 @@ namespace EmbyStat.Tasks.Tasks
             _personRepository = app.ApplicationServices.GetService<IPersonRepository>();
             _collectionRepository = app.ApplicationServices.GetService<ICollectionRepository>();
             _showRepository = app.ApplicationServices.GetService<IShowRepository>();
+            _statisticsRepository = app.ApplicationServices.GetService<IStatisticsRepository>();
             _tvdbClient = app.ApplicationServices.GetService<ITvdbClient>();
         }
         
@@ -84,6 +86,9 @@ namespace EmbyStat.Tasks.Tasks
             await ProcessMovies(rootItems, cancellationToken, progress);
             await ProcessShows(rootItems, cancellationToken, progress);
             await SyncMissingEpisodes(_settings.LastTvdbUpdate, _settings.TvdbApiKey, cancellationToken, progress);
+
+            _statisticsRepository.MarkShowTypesAsInvalid();
+            _statisticsRepository.MarkMovieTypesAsInvalid();
 
             _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "Media syncronisation completed.");
             progress.Report(100);

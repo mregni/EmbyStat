@@ -11,14 +11,16 @@ import { ShowOverviewComponent } from './show/show-overview/show-overview.compon
 import { LogsComponent } from './logs/logs.component';
 import { AboutOverviewComponent } from './about/about-overview/about-overview.component';
 
+import { SyncGuard } from './shared/guards/sync.guard';
+
 const routes: Routes = [{ path: '', component: DashboardComponent },
   { path: 'configuration', component: ConfigurationOverviewComponent },
   { path: 'plugin', component: PluginComponent },
   { path: 'server', component: ServerComponent },
   { path: 'wizard', component: WizardOverviewComponent },
   { path: 'task', component: TaskComponent },
-  { path: 'movie', component: MovieOverviewComponent },
-  { path: 'show', component: ShowOverviewComponent },
+  { path: 'movie', component: MovieOverviewComponent, canActivate: [SyncGuard] },
+  { path: 'show', component: ShowOverviewComponent, canActivate: [SyncGuard] },
   { path: 'logs', component: LogsComponent },
   { path: 'about', component: AboutOverviewComponent },
   { path: '**', redirectTo: '' }];

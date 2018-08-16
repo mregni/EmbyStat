@@ -30,6 +30,7 @@ import { EmbyService } from './services/emby.service';
 import { ToolbarFacade } from './toolbar/state/facade.toolbar';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
+import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
     LoaderComponent,
     CollectionSelectorComponent,
     NoTypeFoundDialog,
+    SyncIsRunningDialog,
     CapitalizeFirstPipe,
     ToShorterStringPipe
   ],
@@ -76,6 +78,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
     LoaderComponent,
     CollectionSelectorComponent,
     NoTypeFoundDialog,
+    SyncIsRunningDialog,
     CapitalizeFirstPipe,
     ToShorterStringPipe
   ],
@@ -85,6 +88,8 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
     TaskSignalService,
     ToolbarFacade
   ],
-  entryComponents: [NoTypeFoundDialog]
+  entryComponents: [
+    NoTypeFoundDialog,
+    SyncIsRunningDialog]
 })
 export class SharedModule { }

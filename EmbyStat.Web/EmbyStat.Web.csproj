@@ -77,6 +77,7 @@
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
@@ -126,6 +127,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\suspiciousMovie.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
