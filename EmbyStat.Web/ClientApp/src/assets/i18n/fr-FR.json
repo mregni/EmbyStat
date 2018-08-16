@@ -218,7 +218,8 @@
     "FOLDERS": "Dossiers"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Aller à Emby"
+    "GOTOEMBY": "Aller à Emby",
+    "TASKISRUNNING": "{{task}} task is running"
   },
   "ABOUT": {
     "THANKS": {
