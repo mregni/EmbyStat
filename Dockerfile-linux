@@ -1,6 +1,0 @@
-FROM microsoft/dotnet:2.1-sdk-alpine3.7 AS base
-
-WORKDIR /app
-COPY EmbyStat.Web/bin/Release/netcoreapp2.1/ubuntu-x64/publish .
-
-ENTRYPOINT ["dotnet", "EmbyStat.Web.dll", "--server.urls", "http://0.0.0.0:80"]
