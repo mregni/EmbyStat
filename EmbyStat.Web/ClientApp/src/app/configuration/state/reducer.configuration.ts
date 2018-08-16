@@ -22,7 +22,9 @@ const INITIAL_STATE: Configuration = {
   showCollectionTypes: [],
   tvdbApiKey: '',
   embyServerPort: 8096,
-  embyServerProtocol: 0
+  embyServerProtocol: 0,
+  lastTvdbUpdate: undefined,
+  keepLogsCount: 0
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -45,6 +47,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         tvdbApiKey: action.payload.tvdbApiKey,
         embyServerPort: action.payload.embyServerPort,
         embyServerProtocol: action.payload.embyServerProtocol,
+        lastTvdbUpdate: action.payload.lastTvdbUpdate,
+        keepLogsCount: action.payload.keepLogsCount,
         isLoaded: true
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
@@ -65,6 +69,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         tvdbApiKey: action.payload.tvdbApiKey,
         embyServerPort: action.payload.embyServerPort,
         embyServerProtocol: action.payload.embyServerProtocol,
+        lastTvdbUpdate: action.payload.lastTvdbUpdate,
+        keepLogsCount: action.payload.keepLogsCount,
         isLoaded: true
       };
     default:

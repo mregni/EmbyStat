@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmbyStat.Controllers.ViewModels.Configuration
 {
@@ -19,5 +20,7 @@ namespace EmbyStat.Controllers.ViewModels.Configuration
         public string TvdbApiKey { get; set; }
         public int EmbyServerPort { get; set; }
         public int EmbyServerProtocol { get; set; }
+        public DateTime? LastTvdbUpdate { get; set; }
+        public int KeepLogsCount { get; set; }
     }
 }
