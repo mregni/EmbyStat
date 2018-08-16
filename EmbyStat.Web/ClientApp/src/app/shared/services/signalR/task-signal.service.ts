@@ -12,12 +12,13 @@ export class TaskSignalService {
   private lines: SafeHtml[];
   public logsSubject = new BehaviorSubject<SafeHtml[]>([]);
   public infoSubject = new BehaviorSubject<Task[]>([]);
+  public isSyncRunning: boolean = false;
 
   constructor(private sanitizer: DomSanitizer) {
     this.lines = [];
   }
 
-  updateTasksLogs(value: string, type: number) {
+  public updateTasksLogs(value: string, type: number) {
     const now = moment().format('HH:mm:ss');
     var line = now + ' - ' + value;
 
@@ -36,7 +37,10 @@ export class TaskSignalService {
     this.logsSubject.next(this.lines);
   }
 
-  updateTasksInfo(tasks: Task[]) {
+  public updateTasksInfo(tasks: Task[]) {
+    var task = tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
+    this.isSyncRunning = !!task && task.state === 2;
+
     this.infoSubject.next(tasks);
   }
 }

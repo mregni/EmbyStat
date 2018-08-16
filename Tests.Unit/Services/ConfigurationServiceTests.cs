@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
+using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
@@ -39,7 +40,11 @@ namespace Tests.Unit.Services
 			_configurationRepositoryMock = new Mock<IConfigurationRepository>();
 		    _configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
 
-		    _subject = new ConfigurationService(_configurationRepositoryMock.Object);
+	        var _statisticsREpositoryMock = new Mock<IStatisticsRepository>();
+	        _statisticsREpositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
+	        _statisticsREpositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
+
+            _subject = new ConfigurationService(_configurationRepositoryMock.Object, _statisticsREpositoryMock.Object);
 		}
 
 	    [Fact]
