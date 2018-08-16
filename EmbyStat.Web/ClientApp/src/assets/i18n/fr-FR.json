@@ -9,6 +9,7 @@
     "SAVE": "sauvegarder",
     "DISCARD": "annuler",
     "CANCEL": "annuler",
+    "CLOSE": "close",
     "DAYS": "jours",
     "HOURS": "heures",
     "MINUTES": "minutes",
@@ -179,7 +180,8 @@
     "MEDIASYNCTITLE": "Synchronisation des médias",
     "STARTMEDIASYNC": "Débuter une synchronisation des médias",
     "DATABASECLEANUP": "Nettoyage de la base de données",
-    "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données."
+    "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
+    "OPENTASKPAGE": "Go to task page"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Déclencheur d'intervalle",
@@ -198,6 +200,10 @@
     "NOSHOWTYPEFOUND": {
       "TITLE": "Aucune série trouvée",
       "BODY": "Nous n'avons trouvé aucun film dans la base de données EmbyStat. Si vous avez des films dans Emby, vous essayez de démarrer une nouvelle tâche de synchronisation multimédia."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Media sync task is running",
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
     }
   },
   "LOADER": {
@@ -218,7 +224,8 @@
     "FOLDERS": "Dossiers"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Aller à Emby"
+    "GOTOEMBY": "Aller à Emby",
+    "TASKISRUNNING": "{{task}} task is running"
   },
   "ABOUT": {
     "THANKS": {

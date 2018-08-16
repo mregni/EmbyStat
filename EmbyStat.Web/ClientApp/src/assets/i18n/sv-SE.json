@@ -9,6 +9,7 @@
     "SAVE": "save",
     "DISCARD": "discard",
     "CANCEL": "cancel",
+    "CLOSE": "close",
     "DAYS": "days",
     "HOURS": "hours",
     "MINUTES": "minutes",
@@ -179,7 +180,8 @@
     "MEDIASYNCTITLE": "Media synchronisation",
     "STARTMEDIASYNC": "Start media sync",
     "DATABASECLEANUP": "Database cleanup",
-    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data."
+    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+    "OPENTASKPAGE": "Go to task page"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -198,6 +200,10 @@
     "NOSHOWTYPEFOUND": {
       "TITLE": "No shows found",
       "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Media sync task is running",
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
     }
   },
   "LOADER": {
@@ -218,7 +224,8 @@
     "FOLDERS": "Folders"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Go to Emby",
+    "TASKISRUNNING": "{{task}} task is running"
   },
   "ABOUT": {
     "THANKS": {
