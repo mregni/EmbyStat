@@ -245,28 +245,6 @@ namespace EmbyStat.Services
                 });
             }
 
-            var duplicateIds = list.Select(x => x.ItemOne.Id).ToList();
-            duplicateIds.AddRange(list.Select(x => x.ItemTwo.Id).ToList());
-
-            var duplicatesByName = movies
-                .Where(x => duplicateIds.All(y => y != x.Id))
-                .GroupBy(x => x.Name).Select(x => new { x.Key, Count = x.Count() }).Where(x => x.Count > 1).ToList();
-            for (var i = 0; i < duplicatesByName.Count; i++)
-            {
-                var duplicateMovies = movies.Where(x => x.Name == duplicatesByName[i].Key).OrderBy(x => x.Id).ToList();
-                var itemOne = duplicateMovies.First();
-                var itemTwo = duplicateMovies.ElementAt(1);
-
-                list.Add(new MovieDuplicate
-                {
-                    Number = list.LastOrDefault() != null ? list.Last().Number++ : i,
-                    Title = itemOne.Name,
-                    Reason = Constants.ByTitle,
-                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = String.Join(",", itemOne.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width))) },
-                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = String.Join(",", itemTwo.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width))) }
-                });
-            }
-
             return list.OrderBy(x => x.Title).ToList();
         }
 
