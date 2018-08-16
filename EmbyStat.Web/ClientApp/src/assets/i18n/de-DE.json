@@ -218,7 +218,8 @@
     "FOLDERS": "Ordner"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Öffne Emby"
+    "GOTOEMBY": "Öffne Emby",
+    "TASKISRUNNING": "{{task}} task is running"
   },
   "ABOUT": {
     "THANKS": {
