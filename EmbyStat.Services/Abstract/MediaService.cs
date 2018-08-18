@@ -5,8 +5,8 @@ using System.Text;
 using EmbyStat.Common;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Models.Graph;
 

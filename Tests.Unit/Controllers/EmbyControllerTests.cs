@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Server;

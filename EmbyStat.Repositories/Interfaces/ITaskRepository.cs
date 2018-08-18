@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Tasks;
+using EmbyStat.Common.Models.Tasks.Enum;
 
 namespace EmbyStat.Repositories.Interfaces
 {

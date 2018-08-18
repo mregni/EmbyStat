@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Models.Tasks;
 
 namespace EmbyStat.Services.Interfaces
 {

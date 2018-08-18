@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Tasks;
+using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

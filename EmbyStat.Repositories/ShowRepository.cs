@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;

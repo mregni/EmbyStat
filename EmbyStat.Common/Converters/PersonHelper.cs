@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 

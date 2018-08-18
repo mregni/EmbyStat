@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Task;
 using EmbyStat.Repositories;

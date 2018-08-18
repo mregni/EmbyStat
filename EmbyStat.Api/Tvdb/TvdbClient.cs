@@ -15,6 +15,7 @@ using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using MediaBrowser.Common.Net;
 using MediaBrowser.Model.Serialization;
 using Serilog;

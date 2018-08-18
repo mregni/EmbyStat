@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Common.Models.Tasks;
+using EmbyStat.Common.Models.Tasks.Interface;
 
 namespace EmbyStat.Tasks
 {

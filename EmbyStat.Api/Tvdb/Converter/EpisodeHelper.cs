@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Api.Tvdb.Converter
 {

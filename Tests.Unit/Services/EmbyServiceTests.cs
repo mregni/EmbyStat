@@ -8,6 +8,7 @@ using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Models.Emby;

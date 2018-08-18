@@ -11,10 +11,10 @@ using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Models.Joins;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Joins;
+using EmbyStat.Common.Models.Tasks;
+using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
 using MediaBrowser.Model.Dto;
@@ -25,7 +25,7 @@ using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using CollectionType = EmbyStat.Common.Models.CollectionType;
+using CollectionType = EmbyStat.Common.Models.Entities.CollectionType;
 
 namespace EmbyStat.Tasks.Tasks
 {

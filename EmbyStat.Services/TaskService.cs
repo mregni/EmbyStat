@@ -2,8 +2,8 @@
 using System.Linq;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Common.Models.Tasks;
+using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Serilog;

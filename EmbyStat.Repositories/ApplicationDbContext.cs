@@ -1,7 +1,8 @@
 ﻿using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Models.Joins;
-using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Joins;
+using EmbyStat.Common.Models.Tasks;
 using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
 

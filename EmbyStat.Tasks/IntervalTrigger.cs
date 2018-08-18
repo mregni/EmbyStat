@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using EmbyStat.Common;
-using EmbyStat.Common.Tasks;
-using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Common.Models.Tasks;
+using EmbyStat.Common.Models.Tasks.Interface;
 using Serilog;
 
 namespace EmbyStat.Tasks

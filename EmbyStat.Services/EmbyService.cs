@@ -11,6 +11,7 @@ using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models;

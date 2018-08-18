@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using EmbyStat.Common.Tasks;
+using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Controllers.ViewModels.Task;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;

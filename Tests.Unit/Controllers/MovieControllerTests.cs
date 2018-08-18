@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AutoMapper;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Movie;
