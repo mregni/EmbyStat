@@ -15,6 +15,7 @@ using EmbyStat.Api.Tvdb;
 using EmbyStat.Api.WebSocketClient;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Controllers;
@@ -24,7 +25,6 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Tasks;
 using EmbyStat.Tasks.Tasks;
-using MediaBrowser.Model.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +34,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
+using JsonSerializer = EmbyStat.Common.Helpers.JsonSerializer;
 
 namespace EmbyStat.Web
 {
