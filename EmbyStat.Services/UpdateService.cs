@@ -24,11 +24,19 @@ namespace EmbyStat.Services
             _githubClient = githubClient;
         }
 
-        public async void UpdateServer()
+        public async void CheckForUpdate()
         {
             var currentVersion = GetType().GetTypeInfo().Assembly.GetName().Version;
             var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, "win10-x64-v{version}.zip", "EmbystatUpdate", "update.zip", new CancellationToken(false));
 
+            if (result.IsUpdateAvailable)
+            {
+                //Notify everyone that there is an update
+            }
+        }
+
+        public void UpdateServer()
+        {
             Log.Information("Starting updater process.");
 
             var args = $"callerId={Process.GetCurrentProcess().Id}";
