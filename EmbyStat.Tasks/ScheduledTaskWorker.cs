@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common;
+using EmbyStat.Common.Models.Progress;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Common.Models.Tasks.Interface;
-using EmbyStat.Common.Progress;
 using EmbyStat.Repositories.Interfaces;
 using Serilog;
 

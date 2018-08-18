@@ -121,7 +121,7 @@ namespace EmbyStat.Web
             containerBuilder.RegisterType<WebSocketClient>().As<IWebSocketClient>();
 
             containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
-		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
+		    containerBuilder.RegisterType<JsonSerializer>().As<IJsonSerializer>();
 		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
 		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();
 

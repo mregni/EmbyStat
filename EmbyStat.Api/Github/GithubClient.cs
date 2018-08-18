@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.Github.Models;
@@ -10,18 +9,18 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using MediaBrowser.Model.Serialization;
 using EmbyStat.Api.EmbyClient.Net;
-using MediaBrowser.Common.Net;
-using Newtonsoft.Json;
 
 namespace EmbyStat.Api.Github
 {
     public class GithubClient : IGithubClient
     {
         private readonly IAsyncHttpClient _httpClient;
+        private readonly IJsonSerializer _jsonSerializer;
 
-        public GithubClient(IAsyncHttpClient httpClient)
+        public GithubClient(IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer)
         {
             _httpClient = httpClient;
+            _jsonSerializer = jsonSerializer;
         }
 
         public async Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, string packageName, string targetFilename, CancellationToken cancellationToken)
@@ -37,14 +36,8 @@ namespace EmbyStat.Api.Github
 
             using (var stream = await _httpClient.SendAsync(options))
             {
-                var serializer = new JsonSerializer();
-
-                using (var sr = new StreamReader(stream))
-                using (var jsonTextReader = new JsonTextReader(sr))
-                {
-                    var obj = serializer.Deserialize<ReleaseObject[]>(jsonTextReader);
-                    return CheckForUpdateResult(obj, minVersion, UpdateLevel.Release, assetFileName, packageName, targetFilename);
-                }
+                var obj = _jsonSerializer.DeserializeFromStream<ReleaseObject[]>(stream);
+                return CheckForUpdateResult(obj, minVersion, UpdateLevel.Beta, assetFileName, packageName, targetFilename);
             }
         }
 

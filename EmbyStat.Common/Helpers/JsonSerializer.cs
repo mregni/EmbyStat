@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using MediaBrowser.Model.Serialization;
 using Newtonsoft.Json;
 
-namespace EmbyStat.Api.EmbyClient
+namespace EmbyStat.Common.Helpers
 {
-    public class NewtonsoftJsonSerializer : IJsonSerializer
+    public class JsonSerializer : IJsonSerializer
     {
         public void SerializeToStream(object obj, Stream stream)
         {
@@ -14,7 +13,7 @@ namespace EmbyStat.Api.EmbyClient
                 throw new ArgumentNullException(nameof(obj));
             using (var jsonWriter = new JsonTextWriter(new StreamWriter(stream)))
             {
-                JsonSerializer.Create(new JsonSerializerSettings()).Serialize(jsonWriter, obj);
+                Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()).Serialize(jsonWriter, obj);
             }
         }
 
@@ -22,23 +21,13 @@ namespace EmbyStat.Api.EmbyClient
         {
             using (var jsonReader = new JsonTextReader(new StreamReader(stream)))
             {
-                return JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(jsonReader, type);
+                return Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(jsonReader, type);
             }
-        }
-
-        public Task<object> DeserializeFromStreamAsync(Stream stream, Type type)
-        {
-            throw new NotImplementedException();
         }
 
         public T DeserializeFromStream<T>(Stream stream)
         {
             return (T)DeserializeFromStream(stream, typeof(T));
-        }
-
-        public Task<T> DeserializeFromStreamAsync<T>(Stream stream)
-        {
-            throw new NotImplementedException();
         }
 
         public T DeserializeFromString<T>(string text)
@@ -60,21 +49,6 @@ namespace EmbyStat.Api.EmbyClient
         {
             string serialized = SerializeToString(obj);
             return global::System.Text.Encoding.UTF8.GetBytes(serialized);
-        }
-
-        public void SerializeToFile(object obj, string file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object DeserializeFromFile(Type type, string file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T DeserializeFromFile<T>(string file) where T : class
-        {
-            throw new NotImplementedException();
         }
     }
 }

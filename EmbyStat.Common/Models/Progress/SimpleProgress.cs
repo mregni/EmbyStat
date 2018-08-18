@@ -1,7 +1,6 @@
 ﻿using System;
-using Serilog;
 
-namespace EmbyStat.Common.Progress
+namespace EmbyStat.Common.Models.Progress
 {
     public class SimpleProgress<T> : IProgress<T>
     {
