@@ -17,5 +17,6 @@
   </div>
   <div *ngIf="configuration$ | async as config" class="button-container">
     <a mat-raised-button href="{{getFullAddress(config)}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
+    <button mat-raised-button (click)="startUpdate()" color="accent">Update</button>
   </div>
 </mat-toolbar>

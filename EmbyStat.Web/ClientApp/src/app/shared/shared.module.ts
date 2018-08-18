@@ -27,6 +27,7 @@ import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 import { ToastService } from './services/toast.service';
 import { TaskSignalService } from './services/signalR/task-signal.service';
 import { EmbyService } from './services/emby.service';
+import { UpdateService } from './services/update.service';
 import { ToolbarFacade } from './toolbar/state/facade.toolbar';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
@@ -86,7 +87,8 @@ import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.c
     ToastService,
     EmbyService,
     TaskSignalService,
-    ToolbarFacade
+    ToolbarFacade,
+    UpdateService
   ],
   entryComponents: [
     NoTypeFoundDialog,

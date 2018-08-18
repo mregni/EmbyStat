@@ -96,6 +96,7 @@
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\signalR\task-signal.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\update.service.ts" />
     <None Remove="ClientApp\src\app\shared\toolbar\state\facade.toolbar.ts" />
     <None Remove="ClientApp\src\app\show\models\showCollectionRow.ts" />
     <None Remove="ClientApp\src\app\show\models\showGraphs.ts" />
@@ -148,6 +149,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\showPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\signalR\task-signal.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\toolbar\state\facade.toolbar.ts" />

@@ -9,6 +9,7 @@ import { Task } from '../../task/models/task';
 import { EmbyStatus } from '../models/emby/embyStatus';
 import { ToolbarFacade } from './state/facade.toolbar';
 import { TaskSignalService } from '../services/signalR/task-signal.service';
+import { UpdateService } from '../services/update.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -29,6 +30,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   constructor(
     private configurationFacade: ConfigurationFacade,
     private toolbarFacade: ToolbarFacade,
+    private updateService: UpdateService,
     private taskSignalService: TaskSignalService) {
     this.configuration$ = configurationFacade.configuration$;
 
@@ -51,6 +53,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   public getFullAddress(config: Configuration): string {
     return ConfigHelper.getFullEmbyAddress(config);
+  }
+
+  public startUpdate() {
+    this.updateService.startEmbyStatUpdate().subscribe();
   }
 
   ngOnInit() {
