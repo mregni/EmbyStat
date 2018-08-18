@@ -68,6 +68,10 @@ namespace EmbyStat.Repositories
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerPort, Value = "8096" });
             if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerProtocol))
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerProtocol, Value = "0" });
+            if (configuration.All(x => x.Id != Constants.Configuration.AutoUpdate))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AutoUpdate, Value = "True" });
+            if (configuration.All(x => x.Id != Constants.Configuration.UpdateTrain))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "2" });
 
             await _context.SaveChangesAsync();
         }

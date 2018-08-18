@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using EmbyStat.Api.Github.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
-using MediaBrowser.Model.Serialization;
 using EmbyStat.Api.EmbyClient.Net;
+using EmbyStat.Common.Helpers;
 
 namespace EmbyStat.Api.Github
 {
@@ -23,7 +23,7 @@ namespace EmbyStat.Api.Github
             _jsonSerializer = jsonSerializer;
         }
 
-        public async Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, string packageName, string targetFilename, CancellationToken cancellationToken)
+        public async Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName,  CancellationToken cancellationToken)
         {
             var options = new HttpRequest
             {
@@ -37,7 +37,7 @@ namespace EmbyStat.Api.Github
             using (var stream = await _httpClient.SendAsync(options))
             {
                 var obj = _jsonSerializer.DeserializeFromStream<ReleaseObject[]>(stream);
-                return CheckForUpdateResult(obj, minVersion, UpdateLevel.Beta, assetFileName, packageName, targetFilename);
+                return CheckForUpdateResult(obj, minVersion, UpdateTrain.Beta, assetFileName);
             }
         }
 
@@ -46,33 +46,30 @@ namespace EmbyStat.Api.Github
             throw new NotImplementedException();
         }
 
-        private CheckForUpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateLevel updateLevel, string assetFilename, string packageName, string targetFilename)
+        private CheckForUpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
         {
-            if (updateLevel == UpdateLevel.Release)
+            if (updateTrain == UpdateTrain.Release)
             {
                 obj = obj.Where(i => !i.prerelease).ToArray();
             }
-            else if (updateLevel == UpdateLevel.Beta)
+            else if (updateTrain == UpdateTrain.Beta)
             {
                 obj = obj.Where(i => i.prerelease && i.name.EndsWith("-beta", StringComparison.OrdinalIgnoreCase)).ToArray();
             }
-            else if (updateLevel == UpdateLevel.Dev)
+            else if (updateTrain == UpdateTrain.Dev)
             {
                 obj = obj.Where(i => i.prerelease && i.name.EndsWith("-dev", StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
             var availableUpdate = obj
-                .Select(i => CheckForUpdateResult(i, minVersion, assetFilename, packageName, targetFilename))
+                .Select(i => CheckForUpdateResult(i, minVersion, assetFilename))
                 .Where(i => i != null)
                 .OrderByDescending(i => Version.Parse(i.AvailableVersion))
                 .FirstOrDefault();
 
-            return availableUpdate ?? new CheckForUpdateResult
-            {
-                IsUpdateAvailable = false
-            };
+            return availableUpdate ?? new CheckForUpdateResult();
         }
-        private CheckForUpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename, string packageName, string targetFilename)
+        private CheckForUpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
         {
             var versionString = obj.tag_name;
             if (!Version.TryParse(versionString, out var version))
@@ -98,14 +95,11 @@ namespace EmbyStat.Api.Github
                 Package = new PackageInfo
                 {
                     classification = obj.prerelease
-                        ? (obj.name.EndsWith("-dev", StringComparison.OrdinalIgnoreCase) ? UpdateLevel.Dev : UpdateLevel.Beta)
-                        : UpdateLevel.Release,
-                    name = packageName,
+                        ? (obj.name.EndsWith("-dev", StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
+                        : UpdateTrain.Release,
+                    name = $"Update-v{version}",
                     sourceUrl = asset.browser_download_url,
-                    targetFilename = targetFilename,
                     versionStr = version.ToString(),
-                    requiredVersionStr = "1.0.0",
-                    description = obj.body,
                     infoUrl = obj.html_url
                 }
             };

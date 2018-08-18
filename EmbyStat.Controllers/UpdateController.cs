@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,9 @@ namespace EmbyStat.Controllers
         }
 
         [HttpPost]
-        public IActionResult StartUpdate()
+        public async Task<IActionResult> StartUpdate()
         {
-            _updateService.UpdateServer();
+            await _updateService.CheckForUpdate();
             return Ok();
         }
     }

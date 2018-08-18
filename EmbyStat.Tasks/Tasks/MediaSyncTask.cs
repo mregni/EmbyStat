@@ -25,7 +25,6 @@ using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using CollectionType = EmbyStat.Common.Models.Entities.CollectionType;
 
 namespace EmbyStat.Tasks.Tasks
 {
@@ -64,6 +63,7 @@ namespace EmbyStat.Tasks.Tasks
         public async Task Execute(CancellationToken cancellationToken, IProgress<double> progress, IProgressLogger progressLogger)
         {
             progress.Report(0);
+            _progressLogger.LogInformation(Constants.LogPrefix.MediaSyncTask, "Media syncronisation started.");
 
             _progressLogger = progressLogger;
             _settings = _configurationRepository.GetConfiguration();

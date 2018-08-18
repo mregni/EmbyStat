@@ -122,6 +122,18 @@ namespace EmbyStat.Common.Models.Entities
             set => _config[Constants.Configuration.ShowCollectionTypes] = JsonConvert.SerializeObject(value);
         }
 
+        public bool AutoUpdate
+        {
+            get => _config[Constants.Configuration.AutoUpdate].ToBoolean();
+            set => _config[Constants.Configuration.AutoUpdate] = value.ToString();
+        }
+
+        public UpdateTrain UpdateTrain
+        {
+            get => (UpdateTrain)Convert.ToInt32(_config[Constants.Configuration.UpdateTrain]);
+            set => _config[Constants.Configuration.UpdateTrain] = ((int)value).ToString();
+        }
+
         public Configuration(IEnumerable<ConfigurationKeyValue> list)
         {
             _config = list.ToDictionary(x => x.Id, y => y.Value);

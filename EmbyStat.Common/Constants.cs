@@ -86,6 +86,8 @@ namespace EmbyStat.Common
             public const string KeepLogsCount = "KEEPLOGSCOUNT";
             public const string MovieCollectionTypes = "MOVIECOLLECTIONTYPES";
             public const string ShowCollectionTypes = "SHOWCOLLECTIONTYPES";
+            public const string AutoUpdate = "AUTOUPDATE";
+            public const string UpdateTrain = "UPDATETRAIN";
         }
 
         public static class EmbyStatus
@@ -100,6 +102,7 @@ namespace EmbyStat.Common
             public const string TaskWorker = "TASK-WORKER";
             public const string DatabaseSeeder = "DATABASE-SEEDER";
             public const string MediaSyncTask = "MEDIASYNC-TASK";
+            public const string CheckUpdateTask = "CHECKUDPATE-TASK";
             public const string PingEmbyTask = "PINGEMBYSERVER-TASK";
             public const string SmallEmbySyncTask = "SMALLEMBYSYNC-TASK";
             public const string System = "SYSTEM";

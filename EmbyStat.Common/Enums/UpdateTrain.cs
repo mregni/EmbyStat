@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EmbyStat.Common.Enums
 {
-    public enum UpdateLevel
+    public enum UpdateTrain
     {
         Dev = 0,
         Beta = 1,

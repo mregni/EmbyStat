@@ -10,7 +10,7 @@ namespace EmbyStat.Api.Github
 {
     public interface IGithubClient
     {
-        Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, string packageName, string targetFilename, CancellationToken cancellationToken);
+        Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, CancellationToken cancellationToken);
         Stream DownloadUpdate();
     }
 }

@@ -14,10 +14,9 @@ using EmbyStat.Api.Tvdb.Converter;
 using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Model.Serialization;
 using Serilog;
 
 namespace EmbyStat.Api.Tvdb

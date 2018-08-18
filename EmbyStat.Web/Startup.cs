@@ -197,7 +197,8 @@ namespace EmbyStat.Web
 	            new PingEmbyTask(ApplicationBuilder),
 	            new SmallSyncTask(ApplicationBuilder),
                 new MediaSyncTask(ApplicationBuilder),
-                new DatabaseCleanupTask(ApplicationBuilder)
+                new DatabaseCleanupTask(ApplicationBuilder),
+                new UpdateCheckTask(ApplicationBuilder)
             };
 
 	        taskManager.AddTasks(tasks);
