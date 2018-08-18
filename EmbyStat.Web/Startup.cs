@@ -10,6 +10,7 @@ using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
 using EmbyStat.Api.EmbyClient.Net;
+using EmbyStat.Api.Github;
 using EmbyStat.Api.Tvdb;
 using EmbyStat.Api.WebSocketClient;
 using EmbyStat.Common;
@@ -98,6 +99,7 @@ namespace EmbyStat.Web
 		    containerBuilder.RegisterType<LanguageService>().As<ILanguageService>();
 		    containerBuilder.RegisterType<AboutService>().As<IAboutService>();
 		    containerBuilder.RegisterType<WebSocketService>().As<IWebSocketService>().SingleInstance();
+		    containerBuilder.RegisterType<UpdateService>().As<IUpdateService>().SingleInstance();
 
             containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
@@ -116,7 +118,8 @@ namespace EmbyStat.Web
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
 		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
 		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
-		    containerBuilder.RegisterType<WebSocketClient>().As<IWebSocketClient>();
+		    containerBuilder.RegisterType<GithubClient>().As<IGithubClient>();
+            containerBuilder.RegisterType<WebSocketClient>().As<IWebSocketClient>();
 
             containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
 		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();

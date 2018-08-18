@@ -109,6 +109,11 @@ namespace EmbyStat.Common
             public const string DatabaseCleanupTask = "DATABASE CLEANUP-TASK";
         }
 
+        public static class GitHub
+        {
+            public const string GitHubReleaseUrl = "https://api.github.com/repos/mregni/embystat/releases";
+        }
+
         //CHARTS
         public const string CountPerGenre = "COMMON.COUNTPERGENRE";
         public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";

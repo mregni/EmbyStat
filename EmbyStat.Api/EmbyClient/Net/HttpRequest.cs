@@ -15,6 +15,7 @@ namespace EmbyStat.Api.EmbyClient.Net
 	    public string Url { get; set; }
 	    public Stream RequestStream { get; set; }
 	    public int Timeout { get; set; }
+        public string UserAgent { get; set; }
 
 	    public HttpRequest()
 	    {

@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using EmbyStat.Api.Github.Models;
+
+namespace EmbyStat.Api.Github
+{
+    public interface IGithubClient
+    {
+        Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, string packageName, string targetFilename, CancellationToken cancellationToken);
+        Stream DownloadUpdate();
+    }
+}
