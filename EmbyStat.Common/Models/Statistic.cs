@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Helpers;
 using EmbyStat.Common.Models.Joins;
 

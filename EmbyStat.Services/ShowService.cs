@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Tasks.Enum;

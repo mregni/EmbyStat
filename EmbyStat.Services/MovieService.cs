@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
-using EmbyStat.Common.Extentions;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -18,11 +13,7 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Newtonsoft.Json;
-using CollectionType = EmbyStat.Common.Models.CollectionType;
-using Constants = EmbyStat.Common.Constants;
 
 namespace EmbyStat.Services
 {
