@@ -203,7 +203,7 @@
     },
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
+      "BODY": "Die Synchronisation der Medien wird im Hintergrund durchgeführt. Während dieser Zeit können keine korrekten Statistiken angezeigt werden."
     }
   },
   "LOADER": {
@@ -225,7 +225,7 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Öffne Emby",
-    "TASKISRUNNING": "{{task}} task is running"
+    "TASKISRUNNING": "{{task}} Aufgabe wird ausgeführt"
   },
   "ABOUT": {
     "THANKS": {
