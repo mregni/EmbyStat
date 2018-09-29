@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "DOWNLOAD": "hent",
+    "DOWNLOAD": "download",
     "ANONYMISEDDOWNLOAD": "Anonymiseret download",
     "HIDE": "Skjul",
     "NEXT": "næste",
@@ -33,7 +33,7 @@
     "GRAPHS": "grafer",
     "PEOPLE": "personer",
     "SUSPICIOUS": "mistænksom",
-    "SHOWS": "shows",
+    "SHOWS": "serier",
     "TOTALACTORS": "Total skuespillere",
     "TOTALDIRECTORS": "Total direktører",
     "TOTALWRITERS": "Total forfattere",
@@ -49,82 +49,82 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
     "NO_CONFIGURATION_FOUND": "Der blev ikke fundet nogen konfigurationer.",
-    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "NOT_FOUND": "Undskyld, vi kan ikke finde det, som du leder efter.",
     "TOKEN_FAILED": "Det lykkes ikke at få Emby token. Kontroller venligst dine legitimationsoplysninger og adresse.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
-    "UNHANDLED": "Unhandled backend exception"
+    "EMBY_CALL_FAILED": "Opkald til Emby-server mislykkedes. Kontroller, om Emby kører, og hvis legitimationsoplysningerne stadig er korrekte.",
+    "UNHANDLED": "Ubegrænset backend-undtagelse"
   },
   "FORM_LABELS": {
     "NAME": "Angiv dit navn",
-    "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby ip address",
-    "EMBYUSERNAME": "Emby admin username",
-    "EMBYPASSWORD": "Emby admin password",
-    "DURATIONINMINUTES": "Duration in minutes",
-    "TVDBAPI": "TheTVDB api key"
+    "LANGUAGE": "Vælg dit sprog",
+    "EMBYADDRESS": "Emby Ip adresse",
+    "EMBYUSERNAME": "Emby admin brugernavn",
+    "EMBYPASSWORD": "Emby admin adgangskode",
+    "DURATIONINMINUTES": "Varighed: ~5 minutter",
+    "TVDBAPI": "TheTVDB api nøglen"
   },
   "FORM_ERRORS": {
-    "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
-    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
-    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+    "NAME_REQUIRED": "Udfyld dit navn eller kaldenavn.",
+    "EMBYADDRESS_REQUIRED": "Udfyld din Emby-adresse ip.",
+    "EMBYUSERNAME_REQUIRED": "Udfyld dit Emby admin brugernavn.",
+    "EMBYPASSWORD_REQUIRED": "Udfyld dit Emby admin brugernavn."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
-    "MOVIES": "Movies",
-    "SHOWS": "Shows",
-    "SETTINGS": "Settings",
+    "MOVIES": "Film",
+    "SHOWS": "Serier",
+    "SETTINGS": "Indstillinger",
     "PLUGINS": "Plugins",
-    "TASKS": "Tasks",
+    "TASKS": "Opgaver",
     "SERVER": "Emby server",
-    "LOGS": "Logs",
-    "ABOUT": "About"
+    "LOGS": "Logfiler",
+    "ABOUT": "Om"
   },
   "WIZARD": {
-    "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby settings",
-    "SAVINGLABEL": "First Emby server sync",
-    "FINALLABEL": "Final",
-    "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Checking Emby server ...",
-    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "EMBYRUNNING": "Emby server is running",
-    "ISADMIN": "{{ user }} is an Emby administrator",
-    "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
-    "SAVING": "Saving data",
-    "RESCAN": "Rescan",
-    "FINISHWITHSYNC": "Start syncronisation",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "INTROLABEL": "Introduktion",
+    "EMBYLABEL": "Emby indstillinger",
+    "SAVINGLABEL": "Første Emby-server synkronisering",
+    "FINALLABEL": "Sidste",
+    "CROWNDINHELP": "Hvis dit sprog ikke er angivet eller ikke er komplet, kan du hjælpe mig med at oversætte appen i dit sprog på <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CHECKINGSTATUS": "Kontrollerer Emby server ...",
+    "INTROTEXT": "Velkommen til EmbyStat server guiden.<br/><br/>Med denne guide opretter vi de grundlæggende indstillinger, så du kan begynde at arbejde med EmbyStat uden for meget hovedpine. Når guiden er færdig, kan du nyde alle funktioner på serveren. Hvis du vil tilpasse serveren mere, kan du altid gå til indstillingssiden.<br/><br/>For nu skal vi bare vide, hvordan vi skal kalde dig og på hvilket sprog du vil se brugergrænsefladen.",
+    "EMBYNOTFOUNDTEXT": "Nu vil vi opsætte din Emby-forbindelse. Vi har forsøgt at opdage din Emby-server automatisk i netværket, men fejlede. Udfyld alle felter, så EmbyStat kan finde din Emby-server.",
+    "EMBYFOUNDTEXT": "Vi fandt en Emby-server i dit netværk og indtastede url i formularen. Du er velkommen til at justere dette og udfylde resten af ​​formularen.",
+    "EMBYRUNNING": "Webserver kører",
+    "ISADMIN": "{{ user }} er en Emby administrator",
+    "PLUGININSTALLED": "EmbyStat plugin fundet på Emby server",
+    "SAVINGINSTRUCTIONS": "Hvis noget fejler, kan du ikke begynde at bruge EmbyStat. I så fald skal du rette fejlene, trykke tilbage og næste.",
+    "SAVING": "Gemmer data",
+    "RESCAN": "Scan igen",
+    "FINISHWITHSYNC": "Start synkronisering",
+    "FINISHED": "Alle indstillinger gemmes, og du kan nu begynde at bruge Emby-serveren. Nyd din nye statistik!",
+    "FINISHEXPLANATION": "Det bedste er først at starte en medie-synkroniseringsopgave. EmbyStat vil begynde at downloade alle data fra din Emby server. Husk, at denne opgave kan tage lang tid afhængigt af din samlingsstørrelse. Hvis du ikke vil starte en synkronisering nu, kan du bare klikke på Færdig. Du kan starte det manuelt senere ved at navigere til siden Opgaver."
   },
   "PLUGINS": {
     "VERSION": "Version"
   },
   "MOVIES": {
-    "TOTALMOVIES": "Total movies",
-    "TOTALGENRES": "Total genres",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATED": "Highest rated",
-    "LOWESTRATED": "Lowest rated",
-    "OLDESTPREMIERED": "Oldest premiered",
-    "YOUNGESTPREMIERED": "Youngest premiered",
+    "TOTALMOVIES": "Samlet antal film",
+    "TOTALGENRES": "Samlet antal genrer",
+    "TOTALPLAYLENGTH": "Samlet status tid",
+    "HIGHESTRATED": "Højeste bedømmelse",
+    "LOWESTRATED": "Laveste bedømmelse",
+    "OLDESTPREMIERED": "Ældste premieredato",
+    "YOUNGESTPREMIERED": "Nyeste premieredato",
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
     "YOUNGESTADDED": "Youngest added",
     "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
     "DUPLICATEMOVIES": "Duplicate movies",
     "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "NOPOSTER": "Film uden plakat",
+    "NOIMDB": "Film uden IMDB-id"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total shows",
+    "TOTALSHOWS": "Samlede shows",
     "TOTALEPISODES": "Total Episodes",
     "TOTALMISSINGEPISODES": "Total Missing Episodes",
-    "TOTALPLAYLENGTH": "Total watchable time",
+    "TOTALPLAYLENGTH": "Samlet status tid",
     "HIGHESTRATEDSHOW": "Highest rated show",
     "LOWESTRATEDSHOW": "Lowest rated show",
     "OLDESTPREMIERED": "Oldest premiered show",
@@ -137,7 +137,7 @@
     "ENDED": "ended"
   },
   "CONFIGURATION": {
-    "SETTINGS": "Settings",
+    "SETTINGS": "Indstillinger",
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
       "EMBY": "Emby settings saved!",
@@ -215,22 +215,22 @@
     "MUSICVIDEOS": "Music videos",
     "TRAILERS": "Trailers",
     "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
+    "BOXSETS": "Bokssæt",
     "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
+    "PHOTOS": "Billeder",
+    "GAMES": "Spil",
     "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "PLAYLISTS": "Afspilningslister",
+    "FOLDERS": "Mapper"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby",
-    "TASKISRUNNING": "{{task}} task is running"
+    "GOTOEMBY": "Gå til Emby",
+    "TASKISRUNNING": "{{task}} opgaven kører"
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Tak",
+      "TEXT": "En stor tak til følgende personer til oversættelse af appen på deres modersmål:"
     }
   }
 }
