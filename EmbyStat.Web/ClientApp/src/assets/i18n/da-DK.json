@@ -1,15 +1,15 @@
 {
   "COMMON": {
     "DOWNLOAD": "hent",
-    "ANONYMISEDDOWNLOAD": "Anonymised download",
+    "ANONYMISEDDOWNLOAD": "Anonymiseret download",
     "HIDE": "Skjul",
     "NEXT": "næste",
     "BACK": "tilbage",
     "FINISH": "færdig",
     "SAVE": "gem",
-    "DISCARD": "discard",
+    "DISCARD": "kassér",
     "CANCEL": "annuller",
-    "CLOSE": "close",
+    "CLOSE": "luk",
     "DAYS": "dage",
     "HOURS": "timer",
     "MINUTES": "minutter",
