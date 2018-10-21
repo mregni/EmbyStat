@@ -194,7 +194,7 @@
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
+      "TITLE": "Geen films gevonden",
       "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
     },
     "NOSHOWTYPEFOUND": {
@@ -211,25 +211,25 @@
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
+    "MUSIC": "Muziek",
+    "MUSICVIDEOS": "Muziekvideo 's",
     "TRAILERS": "Trailers",
     "HOMEVIDEOS": "Home videos",
     "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
+    "BOOKS": "Boeken",
+    "PHOTOS": "Foto’s",
+    "GAMES": "Spellen",
     "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "PLAYLISTS": "Afspeellijsten",
+    "FOLDERS": "Mappen"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby",
-    "TASKISRUNNING": "{{task}} task is running"
+    "GOTOEMBY": "Ga naar Emby",
+    "TASKISRUNNING": "{{task}} taak wordt uitgevoerd"
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
+      "TITLE": "Bedankt",
       "TEXT": "A big thanks to the following people for translating the app in their native language:"
     }
   }
