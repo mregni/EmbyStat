@@ -97,7 +97,7 @@ namespace EmbyStat.Api.Github
                     classification = obj.prerelease
                         ? (obj.name.EndsWith("-dev", StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
                         : UpdateTrain.Release,
-                    name = $"Update-v{version}",
+                    name = asset.name,
                     sourceUrl = asset.browser_download_url,
                     versionStr = version.ToString(),
                     infoUrl = obj.html_url

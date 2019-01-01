@@ -50,7 +50,6 @@ namespace EmbyStat.Repositories
 	    {
 		    base.OnConfiguring(optionsBuilder);
 		    optionsBuilder.UseSqlite("Data Source=data.db");
-	        optionsBuilder.EnableSensitiveDataLogging();
 	    }
 
 	    protected override void OnModelCreating(ModelBuilder modelBuilder)

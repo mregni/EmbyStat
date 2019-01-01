@@ -42,7 +42,7 @@ namespace EmbyStat.Tasks.Tasks
 
             if (update.IsUpdateAvailable && settings.AutoUpdate)
             {
-                //start auto update
+                _updateService.UpdateServer();
             }
 
             progressLogger.LogInformation(Constants.LogPrefix.CheckUpdateTask, "Embystat update check completed.");

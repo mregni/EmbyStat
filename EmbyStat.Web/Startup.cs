@@ -17,6 +17,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Controllers;
 using EmbyStat.Repositories;

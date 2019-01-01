@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UpdateService {
-  private readonly startUpdateUrl: string = '/update';
+  private readonly startUpdateUrl: string = '/update/checkforupdate';
 
   constructor(private http: HttpClient) { }
 
   startEmbyStatUpdate(): Observable<void> {
-    return this.http.post<void>('/api' + this.startUpdateUrl, null);
+    return this.http.get<void>('/api' + this.startUpdateUrl);
   }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EmbyStat.Common;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;
 using Microsoft.Extensions.Options;
