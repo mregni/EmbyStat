@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,48 +35,19 @@ namespace EmbyStat.Services
             _appSettings = appSettings.Value;
         }
 
-        public async Task<CheckForUpdateResult> CheckForUpdate(CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
         {
             var currentVersion = new Version(_appSettings.Version);
             var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.UpdateAsset, cancellationToken);
 
+            Log.Debug($"result is {result.IsUpdateAvailable} {result.Package.name}");
             if (result.IsUpdateAvailable)
             {
-                CreateUpdateFile(result.Package);
+                DownloadZip(result);
                 //Notify everyone that there is an update
             }
 
             return result;
-        }
-
-        public void UpdateServer()
-        {
-            Log.Information("Starting updater process.");
-            var updateFile = CheckForUpdateFiles();
-            if (updateFile != null)
-            {
-                var package = ReadUpdateFile(updateFile);
-
-                var args = $"{Process.GetCurrentProcess().Id} {package.sourceUrl} {package.name}";
-                Log.Information("Args: {0}", args);
-
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "dotnet",
-                    Arguments = $"../Updater/bin/Release/netcoreapp2.1/win-x64/Updater.dll {args}",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    ErrorDialog = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    WorkingDirectory = Directory.GetCurrentDirectory()
-                });
-            }
-        }
-
-        private PackageInfo ReadUpdateFile(FileInfo file)
-        {
-            var json = File.ReadAllText(file.Name);
-            return _jsonSerializer.DeserializeFromString<PackageInfo>(json);
         }
 
         private FileInfo CheckForUpdateFiles()
@@ -92,6 +67,107 @@ namespace EmbyStat.Services
             }
             
             File.WriteAllText($"{fileName}", obj);
+        }
+
+        private void DownloadZip(UpdateResult result)
+        {
+            if (Directory.Exists(_appSettings.Dirs.TempUpdateDir))
+            {
+                Directory.Delete(_appSettings.Dirs.TempUpdateDir, true);
+            }
+            Directory.CreateDirectory(_appSettings.Dirs.TempUpdateDir);
+
+            try
+            {
+                Log.Information("---------------------------------");
+                Log.Information($"Downloading zip file {result.Package.name}");
+
+                var webClient = new WebClient();
+                webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(sender, e, result); };
+                var task = webClient.DownloadFileTaskAsync(result.Package.sourceUrl, result.Package.name);
+                Task.WaitAll(task);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Downloading update zip failed!");
+            }
+        }
+
+        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e, UpdateResult result)
+        {
+            Log.Information("Downloading finished");
+            UnPackZip(result);
+            CreateUpdateFile(result.Package);
+        }
+
+        private void UnPackZip(UpdateResult result)
+        {
+            Log.Information("---------------------------------");
+            Log.Information("Starting to unpack new version");
+
+            try
+            {
+                ZipFile.ExtractToDirectory(result.Package.name, _appSettings.Dirs.TempUpdateDir, true);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Unpack error", e);
+            }
+
+            File.Delete(result.Package.name);
+        }
+
+        public void UpdateServer()
+        {
+            Log.Information("Starting updater process.");
+            var updateFile = CheckForUpdateFiles();
+            if (updateFile != null)
+            {
+                var package = ReadUpdateFile(updateFile);
+
+                var updaterExtension = string.Empty;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    updaterExtension = ".exe";
+                }
+                var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir, _appSettings.Dirs.Updater, $"Updater{updaterExtension}");
+                var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir);
+
+                Log.Information($"Update tool located at {updaterTool}");
+                Log.Information($"Arguments passed are {GetArgs()}");
+                Log.Information($"Working directory is {workingDirectory}");
+
+                var start = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    FileName = updaterTool,
+                    Arguments = GetArgs(),
+                    WorkingDirectory = workingDirectory
+                };
+
+                using (var proc = new Process { StartInfo = start })
+                {
+                    proc.Start();
+                }
+            }
+        }
+
+        private string GetArgs()
+        {
+            var currentLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
+            var sb = new StringBuilder();
+            sb.Append($"--applicationPath \"{currentLocation}\"");
+            sb.Append($" --processId {Process.GetCurrentProcess().Id}");
+
+            return sb.ToString();
+        }
+
+        private PackageInfo ReadUpdateFile(FileInfo file)
+        {
+            var json = File.ReadAllText(file.Name);
+            return _jsonSerializer.DeserializeFromString<PackageInfo>(json);
         }
     }
 }

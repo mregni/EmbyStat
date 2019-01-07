@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Services
 {
-    public class LogService : ILogsService
+    public class LogService : ILogService
     {
         private readonly IOptions<AppSettings> _logSettings;
         private readonly IConfigurationService _configurationService;

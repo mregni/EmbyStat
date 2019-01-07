@@ -12,10 +12,10 @@ namespace EmbyStat.Controllers
     [Route("api/[controller]")]
     public class LogController : Controller
     {
-        private readonly ILogsService _logService;
+        private readonly ILogService _logService;
         private readonly IMapper _mapper;
 
-        public LogController(ILogsService logService, IMapper mapper)
+        public LogController(ILogService logService, IMapper mapper)
         {
             _logService = logService;
             _mapper = mapper;

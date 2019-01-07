@@ -20,6 +20,7 @@ using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Controllers;
+using EmbyStat.DI;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
@@ -58,12 +59,15 @@ namespace EmbyStat.Web
 			Configuration = builder.Build();
 		}
 
-		public IServiceProvider ConfigureServices(IServiceCollection services)
+		public void ConfigureServices(IServiceCollection services)
 		{
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
 
 		    services.AddOptions();
 		    services.Configure<AppSettings>(Configuration);
+
+            var settings = Configuration.Get<AppSettings>();
+            SetupDirectories(settings);
 
             services
 		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
@@ -87,50 +91,7 @@ namespace EmbyStat.Web
 
 		    services.AddHostedService<WebSocketService>();
 
-            var containerBuilder = new ContainerBuilder();
-		    containerBuilder.Populate(services);
-		    containerBuilder.RegisterType<ConfigurationService>().As<IConfigurationService>();
-		    containerBuilder.RegisterType<PluginService>().As<IPluginService>();
-		    containerBuilder.RegisterType<EmbyService>().As<IEmbyService>();
-		    containerBuilder.RegisterType<TaskService>().As<ITaskService>();
-		    containerBuilder.RegisterType<MovieService>().As<IMovieService>();
-		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
-		    containerBuilder.RegisterType<ShowService>().As<IShowService>();
-		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
-		    containerBuilder.RegisterType<LanguageService>().As<ILanguageService>();
-		    containerBuilder.RegisterType<AboutService>().As<IAboutService>();
-		    containerBuilder.RegisterType<WebSocketService>().As<IWebSocketService>().SingleInstance();
-		    containerBuilder.RegisterType<UpdateService>().As<IUpdateService>().SingleInstance();
-
-            containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
-            containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
-		    containerBuilder.RegisterType<PluginRepository>().As<IPluginRepository>();
-		    containerBuilder.RegisterType<ServerInfoRepository>().As<IServerInfoRepository>();
-		    containerBuilder.RegisterType<DriveRepository>().As<IDriveRepository>();
-		    containerBuilder.RegisterType<GenreRepository>().As<IGenreRepository>();
-		    containerBuilder.RegisterType<PersonRepository>().As<IPersonRepository>();
-		    containerBuilder.RegisterType<ShowRepository>().As<IShowRepository>();
-		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
-		    containerBuilder.RegisterType<StatisticsRepository>().As<IStatisticsRepository>();
-		    containerBuilder.RegisterType<LanguageRepository>().As<ILanguageRepository>();
-		    containerBuilder.RegisterType<EmbyStatusRepository>().As<IEmbyStatusRepository>();
-
-            containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
-            containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
-		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
-		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
-		    containerBuilder.RegisterType<GithubClient>().As<IGithubClient>();
-            containerBuilder.RegisterType<WebSocketClient>().As<IWebSocketClient>();
-
-            containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
-		    containerBuilder.RegisterType<JsonSerializer>().As<IJsonSerializer>();
-		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
-		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();
-
-		    containerBuilder.RegisterType<DatabaseInitializer>().As<IDatabaseInitializer>();
-		    containerBuilder.RegisterType<BusinessExceptionFilterAttribute>();
-            var container = containerBuilder.Build();
-		    return new AutofacServiceProvider(container);
+            services.RegisterApplicationDependencies();
         }
 
 	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
@@ -203,6 +164,13 @@ namespace EmbyStat.Web
             };
 
 	        taskManager.AddTasks(tasks);
+        }
+
+        private void SetupDirectories(AppSettings settings)
+        {
+            if (Directory.Exists(settings.Dirs.TempUpdateDir)) {
+                Directory.Delete(settings.Dirs.TempUpdateDir, true);
+            }
         }
     }
 }

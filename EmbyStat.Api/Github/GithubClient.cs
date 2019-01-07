@@ -23,7 +23,7 @@ namespace EmbyStat.Api.Github
             _jsonSerializer = jsonSerializer;
         }
 
-        public async Task<CheckForUpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName,  CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName,  CancellationToken cancellationToken)
         {
             var options = new HttpRequest
             {
@@ -46,7 +46,7 @@ namespace EmbyStat.Api.Github
             throw new NotImplementedException();
         }
 
-        private CheckForUpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
+        private UpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
         {
             if (updateTrain == UpdateTrain.Release)
             {
@@ -54,11 +54,11 @@ namespace EmbyStat.Api.Github
             }
             else if (updateTrain == UpdateTrain.Beta)
             {
-                obj = obj.Where(i => i.prerelease && i.name.EndsWith("-beta", StringComparison.OrdinalIgnoreCase)).ToArray();
+                obj = obj.Where(i => i.prerelease && i.name.Contains("-beta", StringComparison.OrdinalIgnoreCase)).ToArray();
             }
             else if (updateTrain == UpdateTrain.Dev)
             {
-                obj = obj.Where(i => i.prerelease && i.name.EndsWith("-dev", StringComparison.OrdinalIgnoreCase)).ToArray();
+                obj = obj.Where(i => i.prerelease && i.name.Contains("-dev", StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
             var availableUpdate = obj
@@ -67,11 +67,13 @@ namespace EmbyStat.Api.Github
                 .OrderByDescending(i => Version.Parse(i.AvailableVersion))
                 .FirstOrDefault();
 
-            return availableUpdate ?? new CheckForUpdateResult();
+            return availableUpdate ?? new UpdateResult();
         }
-        private CheckForUpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
+        private UpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
         {
             var versionString = obj.tag_name;
+            versionString = versionString.Replace("-beta", "").Replace("-dev", "");
+
             if (!Version.TryParse(versionString, out var version))
             {
                 return null;
@@ -88,14 +90,14 @@ namespace EmbyStat.Api.Github
                 return null;
             }
 
-            return new CheckForUpdateResult
+            return new UpdateResult
             {
                 AvailableVersion = version.ToString(),
                 IsUpdateAvailable = version > minVersion,
                 Package = new PackageInfo
                 {
                     classification = obj.prerelease
-                        ? (obj.name.EndsWith("-dev", StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
+                        ? (obj.name.Contains("-dev", StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
                         : UpdateTrain.Release,
                     name = asset.name,
                     sourceUrl = asset.browser_download_url,

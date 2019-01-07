@@ -6,7 +6,7 @@ using EmbyStat.Services.Models.Logs;
 
 namespace EmbyStat.Services.Interfaces
 {
-    public interface ILogsService
+    public interface ILogService
     {
         List<LogFile> GetLogFileList();
         Stream GetLogStream(string fileName, bool anonymous);

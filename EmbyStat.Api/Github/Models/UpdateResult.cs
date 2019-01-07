@@ -4,9 +4,9 @@ using System.Text;
 
 namespace EmbyStat.Api.Github.Models
 {
-    public class CheckForUpdateResult
+    public class UpdateResult
     {
-        public CheckForUpdateResult()
+        public UpdateResult()
         {
             IsUpdateAvailable = false;
         }

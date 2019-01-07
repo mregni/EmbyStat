@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models;
@@ -13,7 +14,7 @@ namespace EmbyStat.Services.Interfaces
 	    EmbyUdpBroadcast SearchEmby();
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
 		ServerInfo GetServerInfo();
-		List<Drives> GetLocalDrives();
+		List<Drive> GetLocalDrives();
 		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();
 	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);

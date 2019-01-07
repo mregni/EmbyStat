@@ -9,7 +9,7 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IUpdateService
     {
-        Task<CheckForUpdateResult> CheckForUpdate(CancellationToken cancellationToken);
+        Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken);
         void UpdateServer();
     }
 }

@@ -20,7 +20,12 @@ namespace EmbyStat.Web
 	{
 		public static void Main(string[] args)
 		{
-			try
+            Console.Title = "EmbyStat";
+            Console.WriteLine(" ==============================");
+            Console.WriteLine("        Starting EmbyStat");
+            Console.WriteLine(" ==============================");
+
+            try
 			{
 				CreateLogger();
 
