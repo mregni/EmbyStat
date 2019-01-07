@@ -6,5 +6,8 @@ branches:
     tag: dev
   master:
     mode: ContinuousDelivery
+  dev(elop)?(ment)?$:
+    mode: ContinuousDeployment
+    tag: dev
 ignore:
   sha: []

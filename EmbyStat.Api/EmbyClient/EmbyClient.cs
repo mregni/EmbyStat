@@ -10,6 +10,7 @@ using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Entities;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
@@ -75,25 +76,25 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<SystemInfo> GetServerInfoAsync()
+		public async Task<ServerInfo> GetServerInfoAsync()
 		{
 			var url = GetApiUrl("System/Info");
 
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for server info");
             using (var stream = await GetSerializedStreamAsync(url))
 			{
-				return DeserializeFromStream<SystemInfo>(stream);
+				return DeserializeFromStream<ServerInfo>(stream);
 			}
 		}
 
-		public async Task<List<Drive>> GetLocalDrivesAsync()
+		public async Task<List<Drives>> GetLocalDrivesAsync()
 		{
 			var url = GetApiUrl("Environment/Drives");
 
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for local drives");
 			using (var stream = await GetSerializedStreamAsync(url))
             {
-				return DeserializeFromStream<List<Drive>>(stream);
+				return DeserializeFromStream<List<Drives>>(stream);
 			}
 		}
 

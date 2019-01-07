@@ -11,6 +11,5 @@ namespace EmbyStat.Api.Github
     public interface IGithubClient
     {
         Task<UpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, CancellationToken cancellationToken);
-        Stream DownloadUpdate();
     }
 }

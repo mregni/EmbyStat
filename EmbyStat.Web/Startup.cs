@@ -4,8 +4,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Cryptography;
@@ -40,67 +38,69 @@ using JsonSerializer = EmbyStat.Common.Helpers.JsonSerializer;
 
 namespace EmbyStat.Web
 {
-	public class Startup
-	{
-		public IConfiguration Configuration { get; }
-		public IHostingEnvironment HostingEnvironment { get; }
+    public class Startup
+    {
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
         public IApplicationBuilder ApplicationBuilder { get; set; }
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
-		{
-			HostingEnvironment = env;
-			Configuration = configuration;
+        {
+            HostingEnvironment = env;
+            Configuration = configuration;
 
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(HostingEnvironment.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{HostingEnvironment.EnvironmentName}.json", optional: true)
-				.AddEnvironmentVariables();
-			Configuration = builder.Build();
-		}
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
 
 		public void ConfigureServices(IServiceCollection services)
-		{
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
+        {
+            services.AddOptions();
+            services.Configure<AppSettings>(Configuration);
+            var config = Configuration.Get<AppSettings>();
 
-		    services.AddOptions();
-		    services.Configure<AppSettings>(Configuration);
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionString));
 
             var settings = Configuration.Get<AppSettings>();
             SetupDirectories(settings);
 
             services
-		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
-		        .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
-		        .AddApiExplorer()
-		        .AddJsonFormatters();
+                .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
+                .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
+                .AddApiExplorer()
+                .AddJsonFormatters();
 
-		    services.AddAutoMapper(typeof(MapProfiles));
+            services.AddAutoMapper(typeof(MapProfiles));
             services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new Info { Title = "EmbyStat API", Version = "v1" });
-			});
-
-			services.AddSpaStaticFiles(configuration =>
-			{
-				configuration.RootPath = "ClientApp/dist";
+            {
+                c.SwaggerDoc("v1", new Info { Title = "EmbyStat API", Version = "v1" });
             });
 
-		    services.AddSignalR();
-		    services.AddCors();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
 
-		    services.AddHostedService<WebSocketService>();
+            services.AddSignalR();
+            services.AddCors();
+
+            services.AddHostedService<WebSocketService>();
 
             services.RegisterApplicationDependencies();
+            services.AddSingleton<IUpdateService, UpdateService>();
         }
 
-	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
-	    {
-	        ApplicationBuilder = app;
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+        {
+            ApplicationBuilder = app;
             applicationLifetime.ApplicationStarted.Register(OnStarted);
             if (env.IsDevelopment())
-			{
-			    app.UseDeveloperExceptionPage();
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
@@ -111,59 +111,59 @@ namespace EmbyStat.Web
             });
 
             app.UseSwagger();
-			app.UseSwaggerUI(c =>
-			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-			});
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
-			app.UseStaticFiles();
-			app.UseSpaStaticFiles();
-            
-			app.UseMvc();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
-			app.UseExceptionHandler(
-				builder =>
-				{
-					builder.Run(
-						async context =>
-						{
-							context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-							context.Response.ContentType = "application/json";
-							var ex = context.Features.Get<IExceptionHandlerFeature>();
-							if (ex != null)
-							{
-								var err = JsonConvert.SerializeObject(new { ex.Error.Message });
-								await context.Response.Body.WriteAsync(Encoding.ASCII.GetBytes(err), 0, err.Length).ConfigureAwait(false);
-							}
-						});
-				}
-			);
+            app.UseMvc();
 
-			app.UseSpa(spa =>
-			{
-				spa.Options.SourcePath = "ClientApp";
+            app.UseExceptionHandler(
+                builder =>
+                {
+                    builder.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "application/json";
+                            var ex = context.Features.Get<IExceptionHandlerFeature>();
+                            if (ex != null)
+                            {
+                                var err = JsonConvert.SerializeObject(new { ex.Error.Message });
+                                await context.Response.Body.WriteAsync(Encoding.ASCII.GetBytes(err), 0, err.Length).ConfigureAwait(false);
+                            }
+                        });
+                }
+            );
 
-				if (env.IsDevelopment())
-				{
-					spa.UseAngularCliServer(npmScript: "start");
-				}
-			});
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
         }
 
-	    private void OnStarted()
-	    {
-	        var taskManager = ApplicationBuilder.ApplicationServices.GetService<ITaskManager>();
+        private void OnStarted()
+        {
+            var taskManager = ApplicationBuilder.ApplicationServices.GetService<ITaskManager>();
 
-	        var tasks = new List<IScheduledTask>
-	        {
-	            new PingEmbyTask(ApplicationBuilder),
-	            new SmallSyncTask(ApplicationBuilder),
+            var tasks = new List<IScheduledTask>
+            {
+                new PingEmbyTask(ApplicationBuilder),
+                new SmallSyncTask(ApplicationBuilder),
                 new MediaSyncTask(ApplicationBuilder),
                 new DatabaseCleanupTask(ApplicationBuilder),
                 new UpdateCheckTask(ApplicationBuilder)
             };
 
-	        taskManager.AddTasks(tasks);
+            taskManager.AddTasks(tasks);
         }
 
         private void SetupDirectories(AppSettings settings)

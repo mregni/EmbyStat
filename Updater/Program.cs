@@ -22,7 +22,6 @@ namespace Updater
             var result = Parser.Default.ParseArguments<StartupOptions>(args);
             StartupOptions options = null;
             result.WithParsed(opts => options = opts);
-
             Console.WriteLine("Fetching options");
 
             var updater = new Updater(options);

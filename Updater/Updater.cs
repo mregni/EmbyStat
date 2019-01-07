@@ -63,19 +63,30 @@ namespace Updater
             Console.WriteLine(updatedLocation);
             Console.WriteLine(_options.ApplicationPath);
 
-            foreach (string dirPath in Directory.GetDirectories(updatedLocation, "*", SearchOption.AllDirectories))
+            try
             {
-                var newDir = dirPath.Replace(updatedLocation, _options.ApplicationPath);
-                Directory.CreateDirectory(newDir);
-                Log.Debug($"Created dir {newDir}");
-            }
+		foreach (string dirPath in Directory.GetDirectories(updatedLocation, "*", SearchOption.AllDirectories))
+                {
+                	var newDir = dirPath.Replace(updatedLocation, _options.ApplicationPath);
+                	Directory.CreateDirectory(newDir);
+                	Log.Debug($"Created dir {newDir}");
+                }
             
-            foreach (string currentPath in Directory.GetFiles(updatedLocation, "*.*", SearchOption.AllDirectories))
-            {
-                var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
-                File.Copy(currentPath, newFile, true);
-                Log.Debug($"Replaced file {newFile}");
+                foreach (var file in Directory.GetFiles(UpdateTempFolder, "*.*", SearchOption.AllDirectories))
+                {
+                	var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
+                	File.Copy(currentPath, newFile, true);
+                	Log.Debug($"Replaced file {newFile}");
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Log.Error("error", e);
+                Log.Error(e.Message);
+                throw;
+            }
+
         }
 
         private void StartEmbyStat()
@@ -104,6 +115,7 @@ namespace Updater
             Log.Debug($"Working dir: {_options.ApplicationPath} (Application Path)");
             Log.Debug($"Filename: {Path.Combine(_options.ApplicationPath, fileName)}");
             Environment.Exit(0);
+
         }
     }
 }

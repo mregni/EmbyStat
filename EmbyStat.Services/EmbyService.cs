@@ -29,9 +29,8 @@ namespace EmbyStat.Services
 		private readonly IConfigurationRepository _configurationRepository;
 		private readonly IDriveRepository _embyDriveRepository;
         private readonly IEmbyStatusRepository _embyStatusRepository;
-        private readonly IMapper _mapper;
 
-        public EmbyService(IEmbyClient embyClient, IPluginRepository embyPluginRepository, IServerInfoRepository embyServerInfoRepository, IConfigurationRepository configurationRepository, IDriveRepository embyDriveRepository, IEmbyStatusRepository embyStatusRepository, IMapper mapper)
+        public EmbyService(IEmbyClient embyClient, IPluginRepository embyPluginRepository, IServerInfoRepository embyServerInfoRepository, IConfigurationRepository configurationRepository, IDriveRepository embyDriveRepository, IEmbyStatusRepository embyStatusRepository)
         {
             _embyClient = embyClient;
             _embyPluginRepository = embyPluginRepository;
@@ -39,7 +38,6 @@ namespace EmbyStat.Services
             _configurationRepository = configurationRepository;
             _embyDriveRepository = embyDriveRepository;
             _embyStatusRepository = embyStatusRepository;
-            _mapper = mapper;
         }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -127,12 +125,9 @@ namespace EmbyStat.Services
 			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
 		    var drives = await _embyClient.GetLocalDrivesAsync();
 
-		    var systemInfo = _mapper.Map<ServerInfo>(systemInfoReponse);
-		    var localDrives = _mapper.Map<IList<Drives>>(drives);
-
-		    _embyServerInfoRepository.UpdateOrAdd(systemInfo);
+		    _embyServerInfoRepository.UpdateOrAdd(systemInfoReponse);
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
-			_embyDriveRepository.ClearAndInsertList(localDrives.ToList());
+			_embyDriveRepository.ClearAndInsertList(drives.ToList());
 		}
 
         public EmbyStatus GetEmbyStatus()

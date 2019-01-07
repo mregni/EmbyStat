@@ -25,7 +25,6 @@ namespace EmbyStat.Tasks.Tasks
         private readonly IServerInfoRepository _embyServerInfoRepository;
         private readonly IConfigurationRepository _configurationRepository;
         private readonly IDriveRepository _embyDriveRepository;
-        private readonly IMapper _mapper;
 
         public SmallSyncTask(IApplicationBuilder app)
         {
@@ -34,7 +33,6 @@ namespace EmbyStat.Tasks.Tasks
             _embyServerInfoRepository = app.ApplicationServices.GetService<IServerInfoRepository>();
             _configurationRepository = app.ApplicationServices.GetService<IConfigurationRepository>();
             _embyDriveRepository = app.ApplicationServices.GetService<IDriveRepository>();
-            _mapper = app.ApplicationServices.GetService<IMapper>();
         }
 
         public string Name => "TASKS.SMALLEMBYSYNCTITLE";
@@ -64,15 +62,11 @@ namespace EmbyStat.Tasks.Tasks
             var drives = await _embyClient.GetLocalDrivesAsync();
             logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "Server drives found");
             progress.Report(75);
-
-            var systemInfo = _mapper.Map<ServerInfo>(systemInfoReponse);
-            var localDrives = _mapper.Map<IList<Drives>>(drives);
-
-            _embyServerInfoRepository.UpdateOrAdd(systemInfo);
+            _embyServerInfoRepository.UpdateOrAdd(systemInfoReponse);
             progress.Report(85);
             _embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
             progress.Report(95);
-            _embyDriveRepository.ClearAndInsertList(localDrives.ToList());
+            _embyDriveRepository.ClearAndInsertList(drives.ToList());
 
             logProgress.LogInformation(Constants.LogPrefix.SmallEmbySyncTask, "All server data is saved");
             progress.Report(100);

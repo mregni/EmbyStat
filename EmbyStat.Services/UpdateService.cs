@@ -38,7 +38,7 @@ namespace EmbyStat.Services
         public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
         {
             var currentVersion = new Version(_appSettings.Version);
-            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.UpdateAsset, cancellationToken);
+            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.Updater.UpdateAsset, cancellationToken);
 
             Log.Debug($"result is {result.IsUpdateAvailable} {result.Package.name}");
             if (result.IsUpdateAvailable)
@@ -124,7 +124,7 @@ namespace EmbyStat.Services
             if (updateFile != null)
             {
                 var package = ReadUpdateFile(updateFile);
-
+                Log.Information(Directory.GetCurrentDirectory());
                 var updaterExtension = string.Empty;
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
