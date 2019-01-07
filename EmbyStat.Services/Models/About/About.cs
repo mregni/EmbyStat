@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Services.Models.About
+﻿namespace EmbyStat.Services.Models.About
 {
     public class About
     {

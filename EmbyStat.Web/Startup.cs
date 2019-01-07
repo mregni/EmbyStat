@@ -1,29 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Cryptography;
-using EmbyStat.Api.EmbyClient.Net;
-using EmbyStat.Api.Github;
-using EmbyStat.Api.Tvdb;
-using EmbyStat.Api.WebSocketClient;
-using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
 using EmbyStat.Repositories;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Tasks;
 using EmbyStat.Tasks.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -34,7 +23,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
-using JsonSerializer = EmbyStat.Common.Helpers.JsonSerializer;
 
 namespace EmbyStat.Web
 {

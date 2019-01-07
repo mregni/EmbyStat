@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Interface;
@@ -10,7 +9,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace EmbyStat.Tasks.Tasks
 {

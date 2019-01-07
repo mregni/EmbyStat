@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Repositories.Migrations;
@@ -20,11 +18,6 @@ namespace EmbyStat.Web
 	{
 		public static void Main(string[] args)
 		{
-            Console.Title = "EmbyStat";
-            Console.WriteLine(" ==============================");
-            Console.WriteLine("        Starting EmbyStat");
-            Console.WriteLine(" ==============================");
-
             try
 			{
 				CreateLogger();

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Controllers.ViewModels.Task;
+﻿using EmbyStat.Controllers.ViewModels.Task;
 
 namespace Tests.Integration.Builders
 {

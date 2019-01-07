@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 

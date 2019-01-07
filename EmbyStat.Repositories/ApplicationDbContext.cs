@@ -1,10 +1,11 @@
-﻿using EmbyStat.Common.Models;
+﻿using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Joins;
 using EmbyStat.Common.Models.Tasks;
 using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
+using Device = EmbyStat.Common.Models.Entities.Device;
 
 namespace EmbyStat.Repositories
 {
@@ -13,7 +14,7 @@ namespace EmbyStat.Repositories
 	    public DbSet<ConfigurationKeyValue> Configuration { get; set; }
 		public DbSet<PluginInfo> Plugins { get; set; }
 		public DbSet<ServerInfo> ServerInfo { get; set; }
-		public DbSet<Drives> Drives { get; set; }
+		public DbSet<Drive> Drives { get; set; }
         public DbSet<TaskResult> TaskResults { get; set; }
         public DbSet<TaskTriggerInfo> TaskTriggerInfos { get; set; }
         public DbSet<Movie> Movies { get; set; }

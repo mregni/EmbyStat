@@ -1,5 +1,4 @@
 ﻿using System;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Stat;
 

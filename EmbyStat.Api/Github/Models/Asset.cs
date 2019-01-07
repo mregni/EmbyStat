@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Api.Github.Models
+﻿namespace EmbyStat.Api.Github.Models
 {
     public class Asset
     {

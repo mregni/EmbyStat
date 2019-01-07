@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaBrowser.Model.Plugins;
+﻿using MediaBrowser.Model.Plugins;
 
 namespace Tests.Integration.Builders
 {

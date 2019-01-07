@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.Github.Models;
-using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common.Helpers;
@@ -71,7 +70,7 @@ namespace EmbyStat.Api.Github
         private UpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
         {
             var versionString = CleanUpVersionString(obj.tag_name);
-            versionString = versionString.Replace("-beta", "").Replace("-dev", "");
+            versionString = versionString.Replace(_appSettings.Updater.BetaString, "").Replace(_appSettings.Updater.DevString, "");
 
             if (!Version.TryParse(versionString, out var version))
             {

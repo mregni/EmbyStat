@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.ViewModels.Language
+﻿namespace EmbyStat.Controllers.ViewModels.Language
 {
     public class LanguageViewModel
     {

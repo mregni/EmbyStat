@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-
-namespace EmbyStat.Api.WebSocketClient
+﻿namespace EmbyStat.Api.WebSocketClient
 {
     public class EmbyMessage
     {

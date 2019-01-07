@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Joins;
 using EmbyStat.Repositories.Interfaces;

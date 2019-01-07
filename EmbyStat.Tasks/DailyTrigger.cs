@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Tasks;

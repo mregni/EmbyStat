@@ -13,7 +13,6 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace EmbyStat.DI
 {

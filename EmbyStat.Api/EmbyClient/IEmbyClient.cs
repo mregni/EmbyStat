@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient.Model;
@@ -8,7 +7,6 @@ using EmbyStat.Common.Models.Entities;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
-using MediaBrowser.Model.System;
 using MediaBrowser.Controller.Authentication;
 
 namespace EmbyStat.Api.EmbyClient
@@ -19,7 +17,7 @@ namespace EmbyStat.Api.EmbyClient
 		Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address);
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();
-	    Task<List<Drives>> GetLocalDrivesAsync();
+	    Task<List<Drive>> GetLocalDrivesAsync();
         Task<string> PingEmbyAsync(CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, Guid personId, CancellationToken cancellationToken);

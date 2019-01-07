@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities;
+using EmbyStat.Api.EmbyClient.Model;
 
 namespace EmbyStat.Repositories.Interfaces
 {
     public interface IDriveRepository
     {
-	    List<Drives> GetAll();
-		void ClearAndInsertList(List<Drives> drives);
+	    List<Drive> GetAll();
+		void ClearAndInsertList(List<Drive> drives);
     }
 }

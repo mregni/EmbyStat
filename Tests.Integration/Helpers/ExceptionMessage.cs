@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tests.Integration.Helpers
+﻿namespace Tests.Integration.Helpers
 {
     public class ExceptionMessage
     {

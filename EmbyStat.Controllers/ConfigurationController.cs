@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace EmbyStat.Controllers

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Api.Tvdb.Models
+﻿namespace EmbyStat.Api.Tvdb.Models
 {
     public class TvdbToken
     {

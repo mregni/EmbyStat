@@ -6,15 +6,13 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmbyStat.Api.EmbyClient;
+using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models;
 using EmbyStat.Services.Models.Emby;
 using Newtonsoft.Json;
 using Serilog;
@@ -97,7 +95,7 @@ namespace EmbyStat.Services
 				}
 				catch (Exception e)
 				{
-					Log.Error($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
+					Log.Warning($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
 					throw new BusinessException("TOKEN_FAILED");
 				}
 			}
@@ -111,7 +109,7 @@ namespace EmbyStat.Services
 		    return _embyServerInfoRepository.GetSingle();
 	    }
 
-	    public List<Drives> GetLocalDrives()
+	    public List<Drive> GetLocalDrives()
 	    {
 		    return _embyDriveRepository.GetAll();
 	    }

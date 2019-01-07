@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Api.Tvdb.Converter;
 using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using Serilog;
 

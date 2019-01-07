@@ -3,7 +3,6 @@ using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace EmbyStat.Controllers
 {

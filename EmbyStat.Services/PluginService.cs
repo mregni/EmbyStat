@@ -2,7 +2,6 @@
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Plugins;
-using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Services
 {

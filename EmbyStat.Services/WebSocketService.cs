@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -8,7 +6,6 @@ using EmbyStat.Api.WebSocketClient;
 using EmbyStat.Common.Enums;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
-using Timer = System.Threading.Timer;
 
 namespace EmbyStat.Services
 {

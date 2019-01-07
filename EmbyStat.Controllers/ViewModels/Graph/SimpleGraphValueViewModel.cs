@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.ViewModels.Graph
+﻿namespace EmbyStat.Controllers.ViewModels.Graph
 {
     public class SimpleGraphValueViewModel
     {

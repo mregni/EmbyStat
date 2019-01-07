@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-using EmbyStat.Common.Enums;
+﻿using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Api.Github.Models
 {

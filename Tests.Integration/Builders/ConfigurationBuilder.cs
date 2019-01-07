@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common.Models;
-using EmbyStat.Controllers.ViewModels.Configuration;
+﻿using EmbyStat.Controllers.ViewModels.Configuration;
 
 namespace Tests.Integration.Builders
 {

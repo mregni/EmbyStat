@@ -11,7 +11,6 @@ namespace Updater
     public class Updater
     {
         private readonly StartupOptions _options;
-        private const string UpdateTempFolder = "update";
 
         public Updater(StartupOptions options)
         {
@@ -37,15 +36,17 @@ namespace Updater
             var process = Process.GetProcesses().FirstOrDefault(p => p.Id == _options.ProcessId);
             if (process == null)
             {
-                Console.WriteLine($"Cannot find process with name: {process.ProcessName}");
+                Console.WriteLine($"Cannot find process with name: {_options.ProcessName}");
                 return false;
             }
-            else if (process.Id > 0)
+
+            if (process.Id > 0)
             {
                 Console.WriteLine($"{process.Id}: Killing process");
                 process.Kill();
                 process.WaitForExit();
                 Console.WriteLine($"{process.Id}: Process terminated successfully");
+
 
                 return true;
             }
@@ -57,51 +58,41 @@ namespace Updater
         {
             var location = System.Reflection.Assembly.GetEntryAssembly().Location;
             location = Path.GetDirectoryName(location);
-
             var updatedLocation = Directory.GetParent(location).FullName;
+
             Console.WriteLine(location);
             Console.WriteLine(updatedLocation);
             Console.WriteLine(_options.ApplicationPath);
 
-            try
+            foreach (string dirPath in Directory.GetDirectories(updatedLocation, "*", SearchOption.AllDirectories))
             {
-		foreach (string dirPath in Directory.GetDirectories(updatedLocation, "*", SearchOption.AllDirectories))
-                {
-                	var newDir = dirPath.Replace(updatedLocation, _options.ApplicationPath);
-                	Directory.CreateDirectory(newDir);
-                	Log.Debug($"Created dir {newDir}");
-                }
-            
-                foreach (var file in Directory.GetFiles(UpdateTempFolder, "*.*", SearchOption.AllDirectories))
-                {
-                	var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
-                	File.Copy(currentPath, newFile, true);
-                	Log.Debug($"Replaced file {newFile}");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                Log.Error("error", e);
-                Log.Error(e.Message);
-                throw;
+                var newDir = dirPath.Replace(updatedLocation, _options.ApplicationPath);
+                Directory.CreateDirectory(newDir);
+                Log.Debug($"Created dir {newDir}");
             }
 
+            foreach (string currentPath in Directory.GetFiles(updatedLocation, "*.*", SearchOption.AllDirectories))
+            {
+                var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
+                File.Copy(currentPath, newFile, true);
+                Log.Debug($"Replaced file {newFile}");
+            }
         }
 
         private void StartEmbyStat()
         {
             Log.Debug("Starting EmbyStat");
-            var fileName = "EmbyStat.Web";
+            var processName = _options.ProcessName;
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                fileName += ".exe";
+                processName += ".exe";
             }
 
             var start = new ProcessStartInfo
             {
                 UseShellExecute = false,
-                FileName = Path.Combine(_options.ApplicationPath, fileName),
+                FileName = Path.Combine(_options.ApplicationPath, processName),
                 WorkingDirectory = _options.ApplicationPath,
                 Arguments = ""
             };
@@ -113,9 +104,9 @@ namespace Updater
 
             Log.Debug($"EmbyStat started, now exiting");
             Log.Debug($"Working dir: {_options.ApplicationPath} (Application Path)");
-            Log.Debug($"Filename: {Path.Combine(_options.ApplicationPath, fileName)}");
-            Environment.Exit(0);
+            Log.Debug($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
 
+            Environment.Exit(0);
         }
     }
 }

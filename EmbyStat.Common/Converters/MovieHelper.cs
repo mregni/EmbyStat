@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Joins;

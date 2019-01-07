@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.Github;
 using EmbyStat.Api.Github.Models;
-using EmbyStat.Common;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
@@ -160,6 +158,7 @@ namespace EmbyStat.Services
             var sb = new StringBuilder();
             sb.Append($"--applicationPath \"{currentLocation}\"");
             sb.Append($" --processId {Process.GetCurrentProcess().Id}");
+            sb.Append($" --processName {_appSettings.ProcessName}");
 
             return sb.ToString();
         }

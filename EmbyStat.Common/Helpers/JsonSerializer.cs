@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Helpers

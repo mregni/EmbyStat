@@ -1,10 +1,5 @@
 ﻿using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.About;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using EmbyStat.Common;
 using EmbyStat.Common.Models.Settings;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.Options;

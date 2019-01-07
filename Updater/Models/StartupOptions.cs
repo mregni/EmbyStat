@@ -8,5 +8,7 @@ namespace Updater.Models
         public int ProcessId { get; set; }
         [Option("applicationPath", Required = true)]
         public string ApplicationPath { get; set; }
+        [Option("processName", Required = true)]
+        public string ProcessName { get; set; }
     }
 }

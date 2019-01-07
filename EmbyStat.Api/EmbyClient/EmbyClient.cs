@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ using EmbyStat.Common.Models.Entities;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
-using MediaBrowser.Model.System;
 using MediaBrowser.Controller.Authentication;
 using Serilog;
 using static System.Threading.Tasks.Task;
@@ -87,14 +85,14 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<List<Drives>> GetLocalDrivesAsync()
+		public async Task<List<Drive>> GetLocalDrivesAsync()
 		{
 			var url = GetApiUrl("Environment/Drives");
 
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for local drives");
 			using (var stream = await GetSerializedStreamAsync(url))
             {
-				return DeserializeFromStream<List<Drives>>(stream);
+				return DeserializeFromStream<List<Drive>>(stream);
 			}
 		}
 

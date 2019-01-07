@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Services.Models.Movie
+﻿namespace EmbyStat.Services.Models.Movie
 {
     public class ShortMovie : SuspiciousMovie
     {

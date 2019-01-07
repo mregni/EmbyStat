@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using EmbyStat.Services.Models.Logs;
 
 namespace EmbyStat.Services.Interfaces

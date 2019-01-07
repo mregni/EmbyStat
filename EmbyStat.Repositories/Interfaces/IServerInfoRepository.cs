@@ -1,5 +1,4 @@
-﻿using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities;
+﻿using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {

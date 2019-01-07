@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common;
-using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace EmbyStat.Tasks.Tasks
 {
