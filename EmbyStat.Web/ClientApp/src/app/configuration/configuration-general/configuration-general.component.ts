@@ -47,8 +47,9 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
 
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
-      this.form.setValue({ name: config.username, language: config.language });
-      this.tvdbForm.setValue({ tvdbApiKey: config.tvdbApiKey  });
+      this.nameControl.setValue(config.username);
+      this.languageControl.setValue(config.language);
+      this.tvdbApiKeyControl.setValue(config.tvdbApiKey);
     });
 
     this.languageChangedSub = this.languageControl.valueChanges

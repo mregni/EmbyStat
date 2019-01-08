@@ -31,13 +31,13 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
 
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
-      this.formToShort.setValue({ toShortMovie: config.toShortMovie });
+      this.toShortMovieControl.setValue(config.toShortMovie);
     });
   }
 
   public saveFormToShort() {
     const config = { ...this.configuration };
-    config.toShortMovie = this.formToShort.get('toShortMovie').value;
+    config.toShortMovie = this.toShortMovieControl.value
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
   }

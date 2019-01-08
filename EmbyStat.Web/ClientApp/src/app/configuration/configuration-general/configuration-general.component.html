@@ -29,7 +29,7 @@
       <form class="form-container" [formGroup]="tvdbForm">
         <p>{{ 'CONFIGURATION.GENERAL.TVDBAPIKEY' | translate }}</p>
         <mat-form-field>
-          <input matInput placeholder="{{ 'FORM_LABELS.TVDBAPI' | translate }}" formControlName="tvdbApiKey" required>
+          <input matInput type="password" placeholder="{{ 'FORM_LABELS.TVDBAPI' | translate }}" formControlName="tvdbApiKey" required>
         </mat-form-field>
         <p class="subtext-grey-small">{{ 'CONFIGURATION.GENERAL.TVDBAPIKEYWARNING' | translate }}</p>
       </form>
