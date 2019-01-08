@@ -55,6 +55,7 @@ namespace EmbyStat.Web
 
             var settings = Configuration.Get<AppSettings>();
             SetupDirectories(settings);
+            RemoveVersionFiles();
 
             services
                 .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
@@ -158,6 +159,14 @@ namespace EmbyStat.Web
         {
             if (Directory.Exists(settings.Dirs.TempUpdateDir)) {
                 Directory.Delete(settings.Dirs.TempUpdateDir, true);
+            }
+        }
+
+        private void RemoveVersionFiles()
+        {
+            foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
+            {
+                File.Delete(file);
             }
         }
     }
