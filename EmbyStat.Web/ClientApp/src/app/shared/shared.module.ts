@@ -20,6 +20,7 @@ import { PersonPosterComponent } from './components/person-poster/person-poster.
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { CollectionSelectorComponent } from './components/collection-selector/collection-selector.component';
+import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
@@ -28,10 +29,13 @@ import { ToastService } from './services/toast.service';
 import { TaskSignalService } from './services/signalR/task-signal.service';
 import { EmbyService } from './services/emby.service';
 import { UpdateService } from './services/update.service';
+import { SpinnerOverlayService } from './services/spinner-overlay.service';
 import { ToolbarFacade } from './toolbar/state/facade.toolbar';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
+
+import { DisableControlDirective } from './directives/disable-control/disable-control.directive';
 
 @NgModule({
   imports: [
@@ -65,7 +69,9 @@ import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.c
     NoTypeFoundDialog,
     SyncIsRunningDialog,
     CapitalizeFirstPipe,
-    ToShorterStringPipe
+    ToShorterStringPipe,
+    DisableControlDirective,
+    SpinnerOverlayComponent
   ],
   declarations: [
     ToolbarComponent,
@@ -76,22 +82,26 @@ import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.c
     MoviePosterComponent,
     PersonPosterComponent,
     ShowPosterComponent,
+    SpinnerOverlayComponent,
     LoaderComponent,
     CollectionSelectorComponent,
     NoTypeFoundDialog,
     SyncIsRunningDialog,
     CapitalizeFirstPipe,
-    ToShorterStringPipe
+    ToShorterStringPipe,
+    DisableControlDirective
   ],
   providers: [
     ToastService,
     EmbyService,
     TaskSignalService,
     ToolbarFacade,
-    UpdateService
+    UpdateService,
+    SpinnerOverlayService
   ],
   entryComponents: [
     NoTypeFoundDialog,
-    SyncIsRunningDialog]
+    SyncIsRunningDialog,
+    SpinnerOverlayComponent]
 })
 export class SharedModule { }

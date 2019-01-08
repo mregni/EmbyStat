@@ -47,15 +47,15 @@ namespace EmbyStat.Api.Tvdb
         {
             var tvdbEpisodes = new List<VirtualEpisode>();
             var page = new TvdbEpisodes();
-            var i = 1;
+            var i = 0;
             do
             {
+                i++;
                 var url = string.Format(Constants.Tvdb.SerieEpisodesUrl, seriesId, i);
                 page = await GetEpisodePage(url, cancellationToken);
                 tvdbEpisodes.AddRange(page.Data
                     .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired)).Select(EpisodeHelper.ConvertToEpisode));
-                i++;
-            } while (page.Links.Next.HasValue);
+            } while (page.Links.Next != i);
 
             return tvdbEpisodes;
         }

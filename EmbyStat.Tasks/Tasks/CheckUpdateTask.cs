@@ -13,19 +13,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EmbyStat.Tasks.Tasks
 {
-    public class UpdateCheckTask : IScheduledTask
+    public class CheckUpdateTask : IScheduledTask
     {
         private readonly IUpdateService _updateService;
         private readonly IConfigurationRepository _configurationRepository;
 
-        public UpdateCheckTask(IApplicationBuilder app)
+        public CheckUpdateTask(IApplicationBuilder app)
         {
             _updateService = app.ApplicationServices.GetService<IUpdateService>();
             _configurationRepository = app.ApplicationServices.GetService<IConfigurationRepository>();
         }
 
         public string Name => $"TASKS.{Key.ToUpper(CultureInfo.InvariantCulture)}";
-        public string Key => "UpdateCheck";
+        public string Key => "CheckUpdate";
         public string Description => $"TASKS.{Key.ToUpper(CultureInfo.InvariantCulture)}DESCRIPTION";
         public string Category => "System";
 
@@ -35,7 +35,7 @@ namespace EmbyStat.Tasks.Tasks
             progressLogger.LogInformation(Constants.LogPrefix.CheckUpdateTask, "Embystat update check started.");
             var settings = _configurationRepository.GetConfiguration();
 
-            var update = await _updateService.CheckForUpdate(cancellationToken);
+            var update = await _updateService.CheckForUpdate(settings, cancellationToken);
 
             if (update.IsUpdateAvailable && settings.AutoUpdate)
             {

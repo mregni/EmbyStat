@@ -26,7 +26,7 @@ namespace EmbyStat.Api.Github
             _appSettings = appSettings.Value;
         }
 
-        public async Task<UpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName,  CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken)
         {
             var options = new HttpRequest
             {
@@ -40,7 +40,7 @@ namespace EmbyStat.Api.Github
             using (var stream = await _httpClient.SendAsync(options))
             {
                 var obj = _jsonSerializer.DeserializeFromStream<ReleaseObject[]>(stream);
-                return CheckForUpdateResult(obj, minVersion, UpdateTrain.Beta, assetFileName);
+                return CheckForUpdateResult(obj, minVersion, updateTrain, assetFileName);
             }
         }
 

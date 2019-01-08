@@ -149,7 +149,7 @@ namespace EmbyStat.Web
                 new SmallSyncTask(ApplicationBuilder),
                 new MediaSyncTask(ApplicationBuilder),
                 new DatabaseCleanupTask(ApplicationBuilder),
-                new UpdateCheckTask(ApplicationBuilder)
+                new CheckUpdateTask(ApplicationBuilder)
             };
 
             taskManager.AddTasks(tasks);

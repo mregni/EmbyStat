@@ -134,6 +134,12 @@ namespace EmbyStat.Common.Models.Entities
             set => _config[Constants.Configuration.UpdateTrain] = ((int)value).ToString();
         }
 
+        public bool UpdateInProgress
+        {
+            get => _config[Constants.Configuration.UpdateInProgress].ToBoolean();
+            set => _config[Constants.Configuration.UpdateInProgress] = value.ToString();
+        }
+
         public Configuration(IEnumerable<ConfigurationKeyValue> list)
         {
             _config = list.ToDictionary(x => x.Id, y => y.Value);

@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using EmbyStat.Controllers.ViewModels.Update;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,27 +12,33 @@ namespace EmbyStat.Controllers
     public class UpdateController : Controller
     {
         private readonly IUpdateService _updateService;
+        private readonly IMapper _mapper;
 
-        public UpdateController(IUpdateService updateService)
+        public UpdateController(IUpdateService updateService, IMapper mapper)
         {
             _updateService = updateService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("checkforupdate")]
         public async Task<ActionResult> CheckForUpdate()
         {
-            await _updateService.CheckForUpdate(new CancellationToken());
-            _updateService.UpdateServer();
-
-            return Ok();
+            var result = await _updateService.CheckForUpdate(new CancellationToken());
+            return Ok(_mapper.Map<UpdateResultViewModel>(result));
         }
 
         [HttpPost]
         [Route("startupdate")]
         public async Task<IActionResult> StartUpdate()
         {
-            _updateService.UpdateServer();
+            var result = await _updateService.CheckForUpdate(new CancellationToken());
+            if (result.IsUpdateAvailable)
+            {
+                await _updateService.DownloadZip(result);
+                await _updateService.UpdateServer();
+            }
+
             return Ok();
         }
     }

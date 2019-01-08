@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Api.Github.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Controllers.ViewModels.About;
@@ -13,6 +14,7 @@ using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Show;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Controllers.ViewModels.Task;
+using EmbyStat.Controllers.ViewModels.Update;
 using EmbyStat.Services.Models.About;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Graph;
@@ -36,6 +38,7 @@ namespace EmbyStat.Controllers
 		    CreateMap<PluginInfo, EmbyPluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
 		    CreateMap<Drive, DriveViewModel>();
+            CreateMap<UpdateResult, UpdateResultViewModel>();
 
 	        CreateMap<TaskInfo, TaskInfoViewModel>();
 	        CreateMap<TaskResult, TaskResultViewModel>();

@@ -68,7 +68,9 @@ namespace EmbyStat.Repositories
             if (configuration.All(x => x.Id != Constants.Configuration.AutoUpdate))
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AutoUpdate, Value = "True" });
             if (configuration.All(x => x.Id != Constants.Configuration.UpdateTrain))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "2" });
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "1" });
+            if (configuration.All(x => x.Id != Constants.Configuration.UpdateInProgress))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateInProgress, Value = "False" });
 
             await _context.SaveChangesAsync();
         }

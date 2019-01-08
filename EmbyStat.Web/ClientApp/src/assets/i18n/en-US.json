@@ -44,7 +44,8 @@
     "PREMIEREDATE": "premiere date",
     "STATUS": "status",
     "PERCENTAGE": "percentage",
-    "COLLECTED": "collected"
+    "COLLECTED": "collected",
+    "UPDATES": "Updates"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -142,7 +143,8 @@
       "GENERAL": "General Embystat settings saved!",
       "EMBY": "Emby settings saved!",
       "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!"
+      "SHOWS": "Show settings saved!",
+      "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
@@ -156,8 +158,15 @@
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings." 
-    } 
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+    },
+    "UPDATE": {
+      "AUTO": "Enable auto updates",
+      "CHECK": "Check and update server now",
+      "TRAIN": "Change the update train if you want to have beta updates.",
+      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
+      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
+    }
   },
   "TASK": {
     "LASTRUNNOW": "Last run: just now",
@@ -181,7 +190,9 @@
     "STARTMEDIASYNC": "Start media sync",
     "DATABASECLEANUP": "Database cleanup",
     "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-    "OPENTASKPAGE": "Go to task page"
+    "OPENTASKPAGE": "Go to task page",
+    "CHECKUPDATE": "Check for new updates",
+    "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",

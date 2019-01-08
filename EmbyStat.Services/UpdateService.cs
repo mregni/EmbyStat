@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 using EmbyStat.Api.Github;
 using EmbyStat.Api.Github.Models;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -24,24 +26,32 @@ namespace EmbyStat.Services
     {
         private readonly IGithubClient _githubClient;
         private readonly IJsonSerializer _jsonSerializer;
+        private readonly IConfigurationRepository _configurationRepository;
         private readonly AppSettings _appSettings;
 
-        public UpdateService(IGithubClient githubClient, IOptions<AppSettings> appSettings, IJsonSerializer jsonSerializer)
+        public UpdateService(IGithubClient githubClient, IOptions<AppSettings> appSettings, IJsonSerializer jsonSerializer, IConfigurationRepository configurationRepository)
         {
             _githubClient = githubClient;
             _jsonSerializer = jsonSerializer;
             _appSettings = appSettings.Value;
+            _configurationRepository = configurationRepository;
         }
 
         public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
         {
+            var settings = _configurationRepository.GetConfiguration();
+            return await CheckForUpdate(settings, cancellationToken);
+        }
+
+
+        public async Task<UpdateResult> CheckForUpdate(Configuration settings, CancellationToken cancellationToken)
+        {
             var currentVersion = new Version(_appSettings.Version);
-            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.Updater.UpdateAsset, cancellationToken);
+            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
 
             Log.Debug($"result is {result.IsUpdateAvailable} {result.Package.name}");
             if (result.IsUpdateAvailable)
             {
-                DownloadZip(result);
                 //Notify everyone that there is an update
             }
 
@@ -67,7 +77,7 @@ namespace EmbyStat.Services
             File.WriteAllText($"{fileName}", obj);
         }
 
-        private void DownloadZip(UpdateResult result)
+        public async Task DownloadZip(UpdateResult result)
         {
             if (Directory.Exists(_appSettings.Dirs.TempUpdateDir))
             {
@@ -82,8 +92,7 @@ namespace EmbyStat.Services
 
                 var webClient = new WebClient();
                 webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(sender, e, result); };
-                var task = webClient.DownloadFileTaskAsync(result.Package.sourceUrl, result.Package.name);
-                Task.WaitAll(task);
+                await webClient.DownloadFileTaskAsync(result.Package.sourceUrl, result.Package.name);
             }
             catch (Exception e)
             {
@@ -115,40 +124,43 @@ namespace EmbyStat.Services
             File.Delete(result.Package.name);
         }
 
-        public void UpdateServer()
+        public async Task UpdateServer()
         {
-            Log.Information("Starting updater process.");
-            var updateFile = CheckForUpdateFiles();
-            if (updateFile != null)
+            await Task.Run(() =>
             {
-                var package = ReadUpdateFile(updateFile);
-                Log.Information(Directory.GetCurrentDirectory());
-                var updaterExtension = string.Empty;
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Log.Information("Starting updater process.");
+                var updateFile = CheckForUpdateFiles();
+                if (updateFile != null)
                 {
-                    updaterExtension = ".exe";
+                    var package = ReadUpdateFile(updateFile);
+                    Log.Information(Directory.GetCurrentDirectory());
+                    var updaterExtension = string.Empty;
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        updaterExtension = ".exe";
+                    }
+                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir, _appSettings.Dirs.Updater, $"Updater{updaterExtension}");
+                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir);
+
+                    Log.Information($"Update tool located at {updaterTool}");
+                    Log.Information($"Arguments passed are {GetArgs()}");
+                    Log.Information($"Working directory is {workingDirectory}");
+
+                    var start = new ProcessStartInfo
+                    {
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        FileName = updaterTool,
+                        Arguments = GetArgs(),
+                        WorkingDirectory = workingDirectory
+                    };
+
+                    using (var proc = new Process { StartInfo = start })
+                    {
+                        proc.Start();
+                    }
                 }
-                var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir, _appSettings.Dirs.Updater, $"Updater{updaterExtension}");
-                var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir);
-
-                Log.Information($"Update tool located at {updaterTool}");
-                Log.Information($"Arguments passed are {GetArgs()}");
-                Log.Information($"Working directory is {workingDirectory}");
-
-                var start = new ProcessStartInfo
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    FileName = updaterTool,
-                    Arguments = GetArgs(),
-                    WorkingDirectory = workingDirectory
-                };
-
-                using (var proc = new Process { StartInfo = start })
-                {
-                    proc.Start();
-                }
-            }
+            });
         }
 
         private string GetArgs()

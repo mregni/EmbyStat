@@ -84,6 +84,7 @@
             public static string ShowCollectionTypes => "SHOWCOLLECTIONTYPES";
             public static string AutoUpdate => "AUTOUPDATE";
             public static string UpdateTrain => "UPDATETRAIN";
+            public static string UpdateInProgress => "UPDATEINPROGRESS";
         }
 
         public static class EmbyStatus
