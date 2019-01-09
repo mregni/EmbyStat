@@ -7,6 +7,7 @@ import * as signalR from "@aspnet/signalr";
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
 import { WizardStateService } from './wizard/services/wizard-state.service';
 import { TaskSignalService } from './shared/services/signalR/task-signal.service';
+import { SideBarService } from './shared/services/side-bar.service';
 import { Task } from './task/models/task';
 import { ProgressLog } from './task/models/progressLog';
 
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private configChangedSub: Subscription;
   private configLoadSub: Subscription;
   private wizardStateSub: Subscription;
-  public closeForWizard = false;
+  public openMenu = true;
 
   constructor(
     private zone: NgZone,
@@ -31,9 +32,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private router: Router,
     private wizardStateService: WizardStateService,
-    private taskSignalService: TaskSignalService) {
+    private taskSignalService: TaskSignalService,
+    private sideBarService: SideBarService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
-
+    
     translate.setDefaultLang('en-US');
     translate.addLangs(['en-US', 'nl-NL']);
 
@@ -49,19 +51,23 @@ export class AppComponent implements OnInit, OnDestroy {
     hubConnection.on('ReceiveLog', (data: ProgressLog) => {
       taskSignalService.updateTasksLogs(data.value, data.type);
     });
+
+    sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
+      this.openMenu = state;
+    });
   }
 
   ngOnInit(): void {
     this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
-        this.closeForWizard = true;
+        this.openMenu = false;
       }
     });
 
     this.wizardStateSub = this.wizardStateService.finished.subscribe(finished => {
       if (finished) {
-        this.closeForWizard = false;
+        this.openMenu = true;
         this.router.navigate(['']);
       }
     });

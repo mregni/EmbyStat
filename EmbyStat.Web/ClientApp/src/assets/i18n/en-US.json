@@ -218,7 +218,9 @@
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Fetching statistics",
+    "UPDATING": "Updating EmbyStat",
+    "UPDATINGSUB": "Refresh page when update is done. (auto refresh not yet working, sorry)"
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",

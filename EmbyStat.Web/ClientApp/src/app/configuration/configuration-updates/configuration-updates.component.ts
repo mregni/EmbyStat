@@ -9,6 +9,7 @@ import { UpdateResult } from '../../shared/models/updateResult';
 import { ToastService } from '../../shared/services/toast.service';
 import { UpdateService } from '../../shared/services/update.service';
 import { SpinnerOverlayService } from '../../shared/services/spinner-overlay.service';
+import { SideBarService } from '../../shared/services/side-bar.service';
 
 @Component({
   selector: 'app-configuration-updates',
@@ -22,17 +23,17 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
   public configChangedSub: Subscription;
   public updatingSub: Subscription;
   public onMaster: boolean = true;
-  public updating: boolean = false;
 
   public form: FormGroup;
   public autoUpdateControl: FormControl = new FormControl('', [Validators.required] );
   public trainControl: FormControl = new FormControl('', [Validators.required]);
-
+  
   constructor(
     private configurationFacade: ConfigurationFacade,
     private toaster: ToastService,
     private updateService: UpdateService,
-    private spinnerOverlayService: SpinnerOverlayService) {
+    private spinnerOverlayService: SpinnerOverlayService,
+    private sideBarService: SideBarService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
     this.updateResult$ = this.updateService.checkForUpdate();
@@ -62,12 +63,12 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
   }
 
   public startUpdate() {
-    this.updating = true;
-    this.spinnerOverlayService.show('Updating app, please wait');
-    //this.setUpdateState(true);
-    //this.updateService.checkAndStartUpdate().subscribe(() => {
-    //  this.setUpdateState(false);
-    //});
+    this.sideBarService.closeMenu();
+    this.spinnerOverlayService.show();
+    this.setUpdateState(true);
+    this.updateService.checkAndStartUpdate().subscribe(() => {
+      this.setUpdateState(false);
+    });
   }
 
   private setUpdateState(state: boolean) {

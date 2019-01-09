@@ -30,6 +30,7 @@ import { TaskSignalService } from './services/signalR/task-signal.service';
 import { EmbyService } from './services/emby.service';
 import { UpdateService } from './services/update.service';
 import { SpinnerOverlayService } from './services/spinner-overlay.service';
+import { SideBarService } from './services/side-bar.service'; 
 import { ToolbarFacade } from './toolbar/state/facade.toolbar';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
@@ -97,7 +98,8 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     TaskSignalService,
     ToolbarFacade,
     UpdateService,
-    SpinnerOverlayService
+    SpinnerOverlayService,
+    SideBarService
   ],
   entryComponents: [
     NoTypeFoundDialog,

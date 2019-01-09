@@ -92,6 +92,7 @@
     <None Remove="ClientApp\src\app\shared\services\emby.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\signalR\task-signal.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\spinner-overlay.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
@@ -151,6 +152,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\spinner-overlay.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\signalR\task-signal.service.ts" />
