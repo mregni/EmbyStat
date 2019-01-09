@@ -5,10 +5,10 @@ import { Observable } from 'rxjs/Observable';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
-import { UpdateResult } from '../../shared/models/updateResult';
+import { UpdateResult } from '../../shared/models/update-result';
 import { ToastService } from '../../shared/services/toast.service';
 import { UpdateService } from '../../shared/services/update.service';
-import { SpinnerOverlayService } from '../../shared/services/spinner-overlay.service';
+import { UpdateOverlayService } from '../../shared/services/update-overlay.service';
 import { SideBarService } from '../../shared/services/side-bar.service';
 
 @Component({
@@ -19,20 +19,20 @@ import { SideBarService } from '../../shared/services/side-bar.service';
 export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   updateResult$: Observable<UpdateResult>;
-  public configuration: Configuration;
-  public configChangedSub: Subscription;
-  public updatingSub: Subscription;
-  public onMaster: boolean = true;
+  configuration: Configuration;
+  configChangedSub: Subscription;
+  updatingSub: Subscription;
+  onMaster = true;
 
-  public form: FormGroup;
-  public autoUpdateControl: FormControl = new FormControl('', [Validators.required] );
-  public trainControl: FormControl = new FormControl('', [Validators.required]);
-  
+  form: FormGroup;
+  autoUpdateControl = new FormControl('', [Validators.required] );
+  trainControl = new FormControl('', [Validators.required]);
+
   constructor(
     private configurationFacade: ConfigurationFacade,
     private toaster: ToastService,
     private updateService: UpdateService,
-    private spinnerOverlayService: SpinnerOverlayService,
+    private updateOverlayService: UpdateOverlayService,
     private sideBarService: SideBarService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
@@ -64,7 +64,7 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
 
   public startUpdate() {
     this.sideBarService.closeMenu();
-    this.spinnerOverlayService.show();
+    this.updateOverlayService.show();
     this.setUpdateState(true);
     this.updateService.checkAndStartUpdate().subscribe(() => {
       this.setUpdateState(false);

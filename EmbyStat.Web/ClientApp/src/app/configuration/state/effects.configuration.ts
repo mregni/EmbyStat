@@ -36,7 +36,7 @@ export class ConfigurationEffects {
     private store: Store<ApplicationState>) {
   }
 
-  public loaded$ = this.store.select(ConfigurationQuery.getLoaded);
+  loaded$ = this.store.select(ConfigurationQuery.getLoaded);
 
   @Effect()
   getConfiguration$ = this.actions$

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ShowStats } from '../models/showStats';
-import { ShowFacade } from '../state/facade.show';
+import { ShowStats } from '../models/show-stats';
+import { ShowService } from '../service/show.service';
 
 @Component({
   selector: 'app-show-general',
@@ -24,14 +24,14 @@ export class ShowGeneralComponent implements OnInit {
     }
 
     this._selectedCollections = collection;
-    this.stats$ = this.showFacade.getGeneralStats(collection);
+    this.stats$ = this.showService.getGeneralStats(collection);
   }
 
-  public stats$: Observable<ShowStats>;
+  stats$: Observable<ShowStats>;
 
-  constructor(private showFacade: ShowFacade) { }
+  constructor(private showService: ShowService) { }
 
   ngOnInit() {
-    
+
   }
 }

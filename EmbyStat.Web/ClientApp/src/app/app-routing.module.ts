@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardOverviewComponent } from './dashboard/dashboard-overview/dashboard-overview.component';
 import { ConfigurationOverviewComponent } from './configuration/configuration-overview/configuration-overview.component';
 import { WizardOverviewComponent } from './wizard/wizard-overview/wizard-overview.component';
-import { PluginComponent } from './plugin/plugin.component';
-import { ServerComponent } from './server/server.component';
-import { TaskComponent } from './task/task.component';
+import { PluginOverviewComponent } from './plugin/plugin-overview/plugin-overview.component';
+import { ServerOverviewComponent } from './server/server-overview/server-overview.component';
+import { TaskOverviewComponent } from './task/task-overview/task-overview.component';
 import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.component';
 import { ShowOverviewComponent } from './show/show-overview/show-overview.component';
-import { LogsComponent } from './logs/logs.component';
+import { LogsOverviewComponent } from './logs/logs-overview/logs-overview.component';
 import { AboutOverviewComponent } from './about/about-overview/about-overview.component';
 
 import { SyncGuard } from './shared/guards/sync.guard';
 
-const routes: Routes = [{ path: '', component: DashboardComponent },
+const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
   { path: 'configuration', component: ConfigurationOverviewComponent },
-  { path: 'plugin', component: PluginComponent },
-  { path: 'server', component: ServerComponent },
+  { path: 'plugin', component: PluginOverviewComponent },
+  { path: 'server', component: ServerOverviewComponent },
   { path: 'wizard', component: WizardOverviewComponent },
-  { path: 'task', component: TaskComponent },
+  { path: 'task', component: TaskOverviewComponent },
   { path: 'movie', component: MovieOverviewComponent, canActivate: [SyncGuard] },
   { path: 'show', component: ShowOverviewComponent, canActivate: [SyncGuard] },
-  { path: 'logs', component: LogsComponent },
+  { path: 'logs', component: LogsOverviewComponent },
   { path: 'about', component: AboutOverviewComponent },
   { path: '**', redirectTo: '' }];
 

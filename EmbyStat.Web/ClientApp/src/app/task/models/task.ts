@@ -1,5 +1,5 @@
 import { Trigger } from './trigger';
-import { LastExecutionResult } from './lastExecutionResult';
+import { LastExecutionResult } from './last-execution-result';
 
 export class Task {
   name: string;

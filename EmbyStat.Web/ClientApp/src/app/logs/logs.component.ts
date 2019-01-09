@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { LogFacade } from './state/facade.log';
+import { LogService } from './service/log.service';
 import { LogFile } from './models/logFile';
 
 @Component({
@@ -12,19 +12,15 @@ import { LogFile } from './models/logFile';
 export class LogsComponent implements OnInit {
   public logs$: Observable<LogFile[]>;
 
-  constructor(private logFacade: LogFacade) {
-    this.logs$ = this.logFacade.getLogFiles();
+  constructor(private logService: LogService) {
+    this.logs$ = this.logService.getLogFiles();
   }
 
-  public downloadLog(fileName: string): string {
-    return '/api/log/download/' + fileName + '?anonymous=false';
+  downloadLog(fileName: string, anonymous: boolean): string {
+    return '/api/log/download/' + fileName + '?anonymous=' + anonymous;
   }
 
-  public downloadAnonymousLog(fileName: string): string {
-    return '/api/log/download/' + fileName + '?anonymous=true';
-  }
-
-  public convertToSize(value: number): string {
+  convertToSize(value: number): string {
     if (value < 1024) {
       return value + ' b';
     } else if (value < 1024 * 1024) {
@@ -36,5 +32,4 @@ export class LogsComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

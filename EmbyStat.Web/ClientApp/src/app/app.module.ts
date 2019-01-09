@@ -36,7 +36,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './shared/error.interceptor';
 
 import { SyncGuard } from './shared/guards/sync.guard';
-import { TestComponent } from './test/test.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -44,8 +43,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TestComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

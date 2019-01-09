@@ -1,9 +1,10 @@
+/* tslint:disable:component-class-suffix */
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { TaskSignalService } from '../../services/signalR/task-signal.service';
+import { TaskSignalService } from '../../services/task-signal.service';
 import { Task } from '../../../task/models/task';
 
 @Component({

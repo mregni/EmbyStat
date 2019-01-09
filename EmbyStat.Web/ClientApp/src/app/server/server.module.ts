@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 
-import { ServerComponent } from './server.component';
-
-import { ServerService } from './service/server.service';
 import { ServerFacade } from './state/facade.server';
+import { ServerOverviewComponent } from './server-overview/server-overview.component';
 
 @NgModule({
   imports: [
@@ -13,9 +11,10 @@ import { ServerFacade } from './state/facade.server';
     SharedModule
   ],
   providers: [
-    ServerService,
     ServerFacade
   ],
-  declarations: [ServerComponent]
+  declarations: [
+    ServerOverviewComponent
+  ]
 })
 export class ServerModule { }

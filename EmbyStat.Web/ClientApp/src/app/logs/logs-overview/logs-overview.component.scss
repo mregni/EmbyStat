@@ -1,0 +1,36 @@
+@import "../../../styles.scss";
+
+.log__flexcontainer {
+  display: flex;
+  flex-direction: row;
+  margin: 0px 0px 20px 0px;
+  padding: 20px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: $normal-box-shadow;
+  max-width: 450px;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.log__title {
+  padding: 3px;
+  font-weight: bold;
+}
+
+.log__subtitle {
+  color: $grey-font-color;
+}
+
+.log__left-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.log__right-column {
+  flex: 1 1 auto;
+  align-items: flex-end;
+}

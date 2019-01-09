@@ -4,19 +4,20 @@ import { ListToQueryParam } from '../../shared/helpers/listToQueryParam';
 
 import { Observable } from 'rxjs/Observable';
 import { Collection } from '../../shared/models/collection';
-import { ShowStats } from '../models/showStats';
-import { ShowGraphs } from '../models/showGraphs';
-import { PersonStats } from '../../shared/models/personStats';
-import { ShowCollectionRow } from '../models/showCollectionRow';
+import { ShowStats } from '../models/show-stats';
+import { ShowGraphs } from '../models/show-graphs';
+import { PersonStats } from '../../shared/models/person-stats';
+import { ShowCollectionRow } from '../models/show-collection-row';
 
 @Injectable()
 export class ShowService {
-  private readonly getCollectionsUrl: string = '/show/collections';
-  private readonly getGeneralStatsUrl: string = '/show/generalstats';
-  private readonly getGraphsUrl: string = '/show/graphs';
-  private readonly getPersonStatsUrl: string = '/show/personstats';
-  private readonly getCollectedListUrl: string = '/show/collectedlist';
-  private readonly checkIfTypeIsPresentUrl: string = '/show/showtypepresent';
+  private readonly baseUrl = '/api/show';
+  private getCollectionsUrl = this.baseUrl + '/collections';
+  private getGeneralStatsUrl = this.baseUrl + '/generalstats';
+  private getGraphsUrl = this.baseUrl + '/graphs';
+  private getPersonStatsUrl = this.baseUrl + '/personstats';
+  private getCollectedListUrl = this.baseUrl + '/collectedlist';
+  private checkIfTypeIsPresentUrl = this.baseUrl + '/showtypepresent';
 
 
   constructor(private http: HttpClient) {
@@ -24,30 +25,30 @@ export class ShowService {
   }
 
   getCollections(): Observable<Collection[]> {
-    return this.http.get<Collection[]>('/api' + this.getCollectionsUrl);
+    return this.http.get<Collection[]>(this.getCollectionsUrl);
   }
 
   getGeneralStats(list: string[]): Observable<ShowStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<ShowStats>('/api' + this.getGeneralStatsUrl + params);
+    return this.http.get<ShowStats>(this.getGeneralStatsUrl + params);
   }
 
   getGraphs(list: string[]): Observable<ShowGraphs> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<ShowGraphs>('/api' + this.getGraphsUrl + params);
+    return this.http.get<ShowGraphs>(this.getGraphsUrl + params);
   }
 
   getPersonStats(list: string[]): Observable<PersonStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<PersonStats>('/api' + this.getPersonStatsUrl + params);
+    return this.http.get<PersonStats>(this.getPersonStatsUrl + params);
   }
 
   getCollectedList(list: string[]): Observable<ShowCollectionRow[]> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<ShowCollectionRow[]>('/api' + this.getCollectedListUrl + params);
+    return this.http.get<ShowCollectionRow[]>(this.getCollectedListUrl + params);
   }
 
   checkIfTypeIsPresent(): Observable<boolean> {
-    return this.http.get<boolean>('api' + this.checkIfTypeIsPresentUrl);
+    return this.http.get<boolean>(this.checkIfTypeIsPresentUrl);
   }
 }

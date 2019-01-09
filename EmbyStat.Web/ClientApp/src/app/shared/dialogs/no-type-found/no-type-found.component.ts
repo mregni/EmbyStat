@@ -1,9 +1,10 @@
+/* tslint:disable:component-class-suffix */
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { TaskFacade } from '../../../task/state/facade.task';
+import { TaskService } from '../../../task/service/task.service';
 import { Task } from '../../../task/models/task';
 
 @Component({
@@ -18,9 +19,9 @@ export class NoTypeFoundDialog implements OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,
-    private taskFacade: TaskFacade,
+    private taskService: TaskService,
     private router: Router) {
-    this.getTasksSub = this.taskFacade.getTasks().subscribe((result: Task[]) => this.tasks = result);
+    this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
   }
 
   cancelClick(): void {
@@ -29,7 +30,7 @@ export class NoTypeFoundDialog implements OnDestroy {
 
   startSyncClick(): void {
     const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
-    this.taskFacade.fireTask(task.id);
+    this.taskService.fireTask(task.id);
     this.router.navigate(['/task']);
     this.dialogRef.close();
 

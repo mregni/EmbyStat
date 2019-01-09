@@ -7,7 +7,7 @@ import { configurationReducer } from '../configuration/state/reducer.configurati
 import { Configuration } from '../configuration/models/configuration';
 
 import { serverInfoReducer } from '../server/state/reducer.server';
-import { ServerInfoStore } from '../server/models/serverInfoStore';
+import { ServerInfoStore } from '../server/models/server-info-store';
 
 import { About } from '../about/models/about';
 import { AboutReducer } from '../about/state/reducer.about';

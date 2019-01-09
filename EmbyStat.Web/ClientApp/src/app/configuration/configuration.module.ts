@@ -23,7 +23,13 @@ import { ConfigurationUpdatesComponent } from './configuration-updates/configura
     ConfigurationService,
     ConfigurationFacade
   ],
-  declarations: [ConfigurationEmbyComponent, ConfigurationGeneralComponent
-    , ConfigurationMoviesComponent, ConfigurationOverviewComponent, ConfigurationShowsComponent, ConfigurationUpdatesComponent]
+  declarations: [
+    ConfigurationEmbyComponent,
+    ConfigurationGeneralComponent,
+    ConfigurationMoviesComponent,
+    ConfigurationOverviewComponent,
+    ConfigurationShowsComponent,
+    ConfigurationUpdatesComponent
+  ]
 })
 export class ConfigurationModule { }

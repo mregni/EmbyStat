@@ -15,12 +15,12 @@ import { ToastService } from '../../shared/services/toast.service';
 export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
-  public configChangedSub: Subscription;
-  public newCollectionList: number[];
 
-  public toShortMovieControl: FormControl = new FormControl('', [Validators.required]);
+  configChangedSub: Subscription;
+  newCollectionList: number[];
 
-  public formToShort: FormGroup;
+  formToShort: FormGroup;
+  toShortMovieControl: FormControl = new FormControl('', [Validators.required]);
 
   constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
@@ -37,7 +37,7 @@ export class ConfigurationMoviesComponent implements OnInit, OnDestroy {
 
   public saveFormToShort() {
     const config = { ...this.configuration };
-    config.toShortMovie = this.toShortMovieControl.value
+    config.toShortMovie = this.toShortMovieControl.value;
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.MOVIES');
   }

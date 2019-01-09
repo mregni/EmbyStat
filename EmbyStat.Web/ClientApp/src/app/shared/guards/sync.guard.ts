@@ -3,8 +3,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { MatDialog } from '@angular/material';
 
 import { SyncIsRunningDialog } from '../dialogs/sync-is-running/sync-is-running.component';
-import { TaskSignalService } from '../services/signalR/task-signal.service';
-import { Task } from '../../task/models/task';
+import { TaskSignalService } from '../services/task-signal.service';
 
 @Injectable()
 export class SyncGuard implements CanActivate {
