@@ -296,3 +296,4 @@ __pycache__/
 *.js.map
 
 **/*.ver
+**/updateFiles/**
