@@ -43,11 +43,11 @@ export class AppComponent implements OnInit, OnDestroy {
       .build();
     hubConnection.start().catch(err => document.write(err));
 
-    hubConnection.on('ReceiveInfo', (data: Task[]) => {
+    hubConnection.on('TaskUpdateReceived', (data: Task[]) => {
       taskSignalService.updateTasksInfo(data);
     });
 
-    hubConnection.on('ReceiveLog', (data: ProgressLog) => {
+    hubConnection.on('LogUpdateReceived', (data: ProgressLog) => {
       taskSignalService.updateTasksLogs(data.value, data.type);
     });
 

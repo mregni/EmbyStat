@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.ViewModels.Update
+﻿namespace EmbyStat.Controllers.ViewModels.Update
 {
     public class UpdateResultViewModel
     {

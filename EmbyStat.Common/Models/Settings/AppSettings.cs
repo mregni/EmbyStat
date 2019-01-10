@@ -6,7 +6,7 @@
         public string ProcessName { get; set; }
         public Updater Updater { get; set; }
         public Dirs Dirs { get; set; }
-        public string ConnectionString { get; set; }
+        public ConnectionStrings ConnectionStrings { get; set; }
     }
 
     public class Updater
@@ -23,5 +23,11 @@
         public string TempUpdateDir { get; set; }
         public string Updater { get; set; }
         public string Logs { get; set; }
+    }
+
+    public class ConnectionStrings
+    {
+        public string Main { get; set; }
+        public string Hangfire { get; set; }
     }
 }

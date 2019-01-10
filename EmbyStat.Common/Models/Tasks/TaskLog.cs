@@ -1,6 +1,6 @@
 ﻿namespace EmbyStat.Common.Models.Tasks
 {
-    public class ProgressLog
+    public class TaskLog
     {
         public string Value { get; set; }
         public ProgressLogType Type { get; set; }

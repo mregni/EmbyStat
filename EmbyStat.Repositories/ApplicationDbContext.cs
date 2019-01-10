@@ -16,7 +16,6 @@ namespace EmbyStat.Repositories
 		public DbSet<ServerInfo> ServerInfo { get; set; }
 		public DbSet<Drive> Drives { get; set; }
         public DbSet<TaskResult> TaskResults { get; set; }
-        public DbSet<TaskTriggerInfo> TaskTriggerInfos { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Show> Shows { get; set; }
         public DbSet<Season> Seasons { get; set; }
@@ -62,8 +61,6 @@ namespace EmbyStat.Repositories
 		    modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
 
 		    modelBuilder.Entity<ServerInfo>().Property(s => s.Id).IsRequired();
-
-	        modelBuilder.Entity<TaskTriggerInfo>().Property(t => t.Id).IsRequired();
 
             modelBuilder.Entity<MediaGenre>().HasKey(mg => mg.Id);
             modelBuilder.Entity<MediaGenre>().HasOne(mg => mg.Media).WithMany(m => m.MediaGenres).HasForeignKey(mg => mg.MediaId);

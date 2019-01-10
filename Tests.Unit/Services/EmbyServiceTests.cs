@@ -14,7 +14,6 @@ using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Moq;
 using Xunit;
 

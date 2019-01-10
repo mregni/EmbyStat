@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
@@ -14,25 +13,6 @@ namespace EmbyStat.Repositories
             using (var context = new ApplicationDbContext())
             {
                 return context.TaskResults.SingleOrDefault(x => x.Id == id);
-            }
-        }
-
-        public List<TaskTriggerInfo> GetAllTaskTriggerInfo()
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.TaskTriggerInfos.ToList();
-            }
-        }
-
-        public void SaveTaskInfoTriggers(List<TaskTriggerInfo> list, string key)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                context.TaskTriggerInfos.RemoveRange(context.TaskTriggerInfos.Where(x => x.TaskKey == key));
-                context.SaveChanges();
-                context.TaskTriggerInfos.AddRange(list);
-                context.SaveChanges();
             }
         }
 

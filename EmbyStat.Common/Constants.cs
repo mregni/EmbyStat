@@ -85,6 +85,11 @@
             public static string AutoUpdate => "AUTOUPDATE";
             public static string UpdateTrain => "UPDATETRAIN";
             public static string UpdateInProgress => "UPDATEINPROGRESS";
+            public static string DatabaseCleanupTaskTrigger => "TRIGGERDATABASECLEANUPTASK";
+            public static string PingEmbyTaskTrigger => "TRIGGERPINGMEBYTASK";
+            public static string MediaSyncTaskTrigger => "TRIGGERMEDIASYNCTASK";
+            public static string SmallSyncTaskTrigger => "TRIGGERSMALLSYNCTASK";
+            public static string UpdateCheckTaskTrigger => "TRIGGERUPDATECHECKTASK";
         }
 
         public static class EmbyStatus

@@ -2,6 +2,7 @@
   <h2>{{'MENU.TASKS' | translate}}</h2>
 </div>
 <div class="content">
+  <a mat-raised-button (click)="firePing()" color="accent">Start ping task</a>
   <div *ngFor="let task of tasks" class="task__flexcontainer">
     <div class="task__left-content ">
       <a mat-mini-fab (click)="fireTask(task.id)" [disabled]="task.state === 2">

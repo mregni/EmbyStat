@@ -71,6 +71,16 @@ namespace EmbyStat.Repositories
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "1" });
             if (configuration.All(x => x.Id != Constants.Configuration.UpdateInProgress))
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateInProgress, Value = "False" });
+            if (configuration.All(x => x.Id != Constants.Configuration.DatabaseCleanupTaskTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.DatabaseCleanupTaskTrigger, Value = "0 15 2 * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.PingEmbyTaskTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.PingEmbyTaskTrigger, Value = "0 0/5 * * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.MediaSyncTaskTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MediaSyncTaskTrigger, Value = "0 0 3 * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.SmallSyncTaskTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.SmallSyncTaskTrigger, Value = "0 0 2 * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.UpdateCheckTaskTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateCheckTaskTrigger, Value = "0 0 2/12 * *" });
 
             await _context.SaveChangesAsync();
         }

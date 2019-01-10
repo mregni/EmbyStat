@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -7,13 +6,11 @@ using AutoMapper;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Common.Models.Tasks.Interface;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
 using EmbyStat.Repositories;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Tasks.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -51,7 +48,7 @@ namespace EmbyStat.Web
             services.Configure<AppSettings>(Configuration);
             var config = Configuration.Get<AppSettings>();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionString));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main));
 
             var settings = Configuration.Get<AppSettings>();
             SetupDirectories(settings);
@@ -83,10 +80,9 @@ namespace EmbyStat.Web
             services.AddSingleton<IUpdateService, UpdateService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             ApplicationBuilder = app;
-            applicationLifetime.ApplicationStarted.Register(OnStarted);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -137,22 +133,6 @@ namespace EmbyStat.Web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-        }
-
-        private void OnStarted()
-        {
-            var taskManager = ApplicationBuilder.ApplicationServices.GetService<ITaskManager>();
-
-            var tasks = new List<IScheduledTask>
-            {
-                new PingEmbyTask(ApplicationBuilder),
-                new SmallSyncTask(ApplicationBuilder),
-                new MediaSyncTask(ApplicationBuilder),
-                new DatabaseCleanupTask(ApplicationBuilder),
-                new CheckUpdateTask(ApplicationBuilder)
-            };
-
-            taskManager.AddTasks(tasks);
         }
 
         private void SetupDirectories(AppSettings settings)

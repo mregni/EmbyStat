@@ -37,8 +37,13 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getTasksSub = this.taskService.getTasks().subscribe(data => this.tasks = data);
+    //this.getTasksSub = this.taskService.getTasks().subscribe(data => this.tasks = data);
   }
+
+  firePing() {
+    this.taskService.firePingTask().subscribe();
+  }
+
 
   openDialog(task: Task): void {
     const dialogRef = this.dialog.open(TriggerDialogComponent, {
@@ -47,13 +52,13 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result: Task) => {
-      if (result !== null) {
-        this.taskService.updateTriggers(result).subscribe(data => {
-          this.tasks = data;
-        });
-      } else {
-        this.getTasksSub = this.taskService.getTasks().subscribe(data => this.tasks = data);
-      }
+      //if (result !== null) {
+      //  this.taskService.updateTriggers(result).subscribe(data => {
+      //    this.tasks = data;
+      //  });
+      //} else {
+      //  this.getTasksSub = this.taskService.getTasks().subscribe(data => this.tasks = data);
+      //}
     });
   }
 
@@ -112,7 +117,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   }
 
   fireTask(id: string): void {
-    this.fireTaskSub = this.taskService.fireTask(id).subscribe();
+    //this.fireTaskSub = this.taskService.fireTask(id).subscribe();
   }
 
   private convertToMoment(value: any) {

@@ -42,7 +42,6 @@ namespace EmbyStat.Controllers
 
 	        CreateMap<TaskInfo, TaskInfoViewModel>();
 	        CreateMap<TaskResult, TaskResultViewModel>();
-	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
