@@ -27,10 +27,6 @@ export class EmbyService {
     return this.http.get<EmbyUdpBroadcast>(this.searchEmbyUrl);
   }
 
-  fireSmallEmbyUpdate(): Observable<void> {
-    return this.http.post<void>(this.fireSmallEmbyUpdateUrl, {});
-  }
-
   getEmbyStatus(): Observable<EmbyStatus> {
     return this.http.get<EmbyStatus>(this.getEmbyStatusUrl);
   }

@@ -142,7 +142,7 @@ namespace EmbyStat.Services
                     var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir, _appSettings.Dirs.Updater, $"Updater{updaterExtension}");
                     var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir);
 
-                    Log.Information($"Update tool located at {updaterTool}");
+                    Log.Information($"StartJob tool located at {updaterTool}");
                     Log.Information($"Arguments passed are {GetArgs()}");
                     Log.Information($"Working directory is {workingDirectory}");
 

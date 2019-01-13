@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using EmbyStat.Common;
+using EmbyStat.Common.Models.Tasks.Enum;
 using FluentMigrator;
 
 namespace EmbyStat.Repositories.Migrations
@@ -154,24 +155,14 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("IsValid").AsBoolean().NotNullable()
                 .WithColumn("JsonResult").AsString().NotNullable();
 
-            Create.Table(Constants.Tables.TaskResults)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_TaskResults")
-                .WithColumn("StartTimeUtc").AsDateTime().NotNullable()
-                .WithColumn("EndTimeUtc").AsDateTime().NotNullable()
-                .WithColumn("Status").AsInt32().NotNullable()
-                .WithColumn("Name").AsString().NotNullable()
-                .WithColumn("Key").AsString().NotNullable()
-                .WithColumn("ErrorMessage").AsString().Nullable()
-                .WithColumn("LongErrorMessage").AsString().Nullable();
-
-            Create.Table(Constants.Tables.TaskTriggerInfos)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_TaskTriggerInfos")
-                .WithColumn("TaskKey").AsString().NotNullable()
-                .WithColumn("Type").AsString().NotNullable()
-                .WithColumn("TimeOfDayTicks").AsInt64().Nullable()
-                .WithColumn("IntervalTicks").AsInt64().Nullable()
-                .WithColumn("DayOfWeek").AsInt32().Nullable()
-                .WithColumn("MaxRuntimeTicks").AsInt64().Nullable();
+            Create.Table(Constants.Tables.Jobs)
+                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Jobs")
+                .WithColumn("StartTimeUtc").AsDateTime().Nullable()
+                .WithColumn("EndTimeUtc").AsDateTime().Nullable()
+                .WithColumn("State").AsInt32().NotNullable().WithDefaultValue(JobState.Idle)
+                .WithColumn("CurrentProgressPercentage").AsDouble().NotNullable().WithDefaultValue(0)
+                .WithColumn("Title").AsString().NotNullable()
+                .WithColumn("Description").AsString().NotNullable();
 
             Create.Table(Constants.Tables.User)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_User")

@@ -1,4 +1,6 @@
-﻿namespace EmbyStat.Common
+﻿using System;
+
+namespace EmbyStat.Common
 {
     public static class Constants
     {
@@ -85,11 +87,11 @@
             public static string AutoUpdate => "AUTOUPDATE";
             public static string UpdateTrain => "UPDATETRAIN";
             public static string UpdateInProgress => "UPDATEINPROGRESS";
-            public static string DatabaseCleanupTaskTrigger => "TRIGGERDATABASECLEANUPTASK";
-            public static string PingEmbyTaskTrigger => "TRIGGERPINGMEBYTASK";
-            public static string MediaSyncTaskTrigger => "TRIGGERMEDIASYNCTASK";
-            public static string SmallSyncTaskTrigger => "TRIGGERSMALLSYNCTASK";
-            public static string UpdateCheckTaskTrigger => "TRIGGERUPDATECHECKTASK";
+            public static string DatabaseCleanupJobTrigger => "TRIGGERDATABASECLEANUPJOB";
+            public static string PingEmbyJobTrigger => "TRIGGERPINGMEBYJOB";
+            public static string MediaSyncJobTrigger => "TRIGGERMEDIASYNCJOB";
+            public static string SmallSyncJobTrigger => "TRIGGERSMALLSYNCJOB";
+            public static string UpdateCheckJobTrigger => "TRIGGERUPDATECHECKJOB";
         }
 
         public static class EmbyStatus
@@ -103,15 +105,25 @@
             public static string TaskManager => "TASK-MANAGER";
             public static string TaskWorker => "TASK-WORKER";
             public static string DatabaseSeeder => "DATABASE-SEEDER";
-            public static string MediaSyncTask => "MEDIASYNC-TASK";
-            public static string CheckUpdateTask => "CHECKUDPATE-TASK";
-            public static string PingEmbyTask => "PINGEMBYSERVER-TASK";
-            public static string SmallEmbySyncTask => "SMALLEMBYSYNC-TASK";
+            public static string MediaSyncJob => "MEDIASYNC-JOB";
+            public static string CheckUpdateJob => "CHECKUDPATE-JOB";
+            public static string PingEmbyJob => "PINGEMBYSERVER-JOB";
+            public static string SmallEmbySyncJob => "SMALLEMBYSYNC-JOB";
             public static string System => "SYSTEM";
             public static string EmbyClient => "EMBY-CLIENT";
             public static string TheTVDBCLient => "THETVDB-CLIENT";
             public static string ExceptionHandler => "EXCEPTION-HANDLER";
-            public static string DatabaseCleanupTask => "DATABASE CLEANUP-TASK";
+            public static string DatabaseCleanupJob => "DATABASE CLEANUP-JOB";
+            public static string JobController => "JOB CONTROLLER";
+        }
+
+        public static class JobIds
+        {
+            public static Guid MediaSyncId => new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e");
+            public static Guid SmallSyncId => new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f");
+            public static Guid CheckUpdateId => new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a");
+            public static Guid PingEmbyId => new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e");
+            public static Guid DatabaseCleanupId => new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
         }
 
         //CHARTS
@@ -159,8 +171,7 @@
             public static string Plugins => "Plugins";
             public static string ServerInfo => "ServerInfo";
             public static string Statistics => "Statistics";
-            public static string TaskResults => "TaskResults";
-            public static string TaskTriggerInfos => "TaskTriggerInfos";
+            public static string Jobs => "Jobs";
             public static string User => "Users";
             public static string AudioStreams => "AudioStreams";
             public static string MediaCollection => "MediaCollection";

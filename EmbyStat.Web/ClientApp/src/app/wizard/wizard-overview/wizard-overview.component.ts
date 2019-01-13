@@ -16,8 +16,7 @@ import { LanguageFacade } from '../../shared/components/language/state/facade.la
 import { PluginService } from '../../plugin/service/plugin.service';
 import { WizardStateService } from '../services/wizard-state.service';
 
-import { TaskService } from '../../task/service/task.service';
-import { Task } from '../../task/models/task';
+import { JobService } from '../../jobs/service/job.service';
 
 @Component({
   selector: 'app-wizard',
@@ -56,14 +55,13 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private configuration: Configuration;
   languages$: Observable<Language[]>;
 
-  private tasks: Task[];
 
   constructor(private translate: TranslateService,
     private configurationFacade: ConfigurationFacade,
     private pluginService: PluginService,
     private languageFacade: LanguageFacade,
     private wizardStateService: WizardStateService,
-    private taskService: TaskService,
+    private jobService: JobService,
     private router: Router) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
@@ -80,7 +78,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
-    this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
+    //this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
 
     this.embyProtocolControl.setValue(0);
   }
@@ -101,10 +99,6 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
   private languageChanged(value: string): void {
     this.translate.use(value);
-  }
-
-  rescan() {
-    this.configurationFacade.fireSmallEmbySync();
   }
 
   stepperPageChanged(event) {
@@ -143,8 +137,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   finishWizardAndStartSync() {
-    const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
-    this.taskService.fireTask(task.id);
+    //this.taskService.fireTask(task.id);
     this.wizardStateService.changeState(true);
     this.router.navigate(['/task']);
   }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -8,9 +9,14 @@ using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
+using EmbyStat.Jobs;
 using EmbyStat.Repositories;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using Hangfire;
+using Hangfire.Dashboard;
+using Hangfire.RecurringJobExtensions;
+using Hangfire.SQLite;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -42,13 +48,19 @@ namespace EmbyStat.Web
                 .Build();
         }
 
-		public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             var config = Configuration.Get<AppSettings>();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main));
+
+            services.AddHangfire(x =>
+            {
+                x.UseSQLiteStorage(config.ConnectionStrings.Hangfire, new SQLiteStorageOptions {JobExpirationCheckInterval = TimeSpan.FromHours(24)});
+                x.UseRecurringJob();
+            });
 
             var settings = Configuration.Get<AppSettings>();
             SetupDirectories(settings);
@@ -80,7 +92,7 @@ namespace EmbyStat.Web
             services.AddSingleton<IUpdateService, UpdateService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             ApplicationBuilder = app;
             if (env.IsDevelopment())
@@ -88,11 +100,33 @@ namespace EmbyStat.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseHangfireServer(new BackgroundJobServerOptions
+            {
+                WorkerCount = 2,
+                SchedulePollingInterval = new TimeSpan(0, 0, 5),
+                ServerTimeout = TimeSpan.FromDays(1),
+                ShutdownTimeout = TimeSpan.FromDays(1),
+                ServerName = "Main jobs",
+                Queues = new[] { "main"}
+            });
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 
+            if (env.IsDevelopment())
+            {
+                app.UseHangfireDashboard("/hangfire",
+                    new DashboardOptions
+                    {
+                        Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
+                    });
+            }
+
+            var taskInitializer = serviceProvider.GetService<IJobInitializer>();
+            taskInitializer.Setup();
+
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseSignalR(routes =>
             {
-                routes.MapHub<TaskHub>("/tasksignal");
+                routes.MapHub<JobHub>("/jobs-socket");
             });
 
             app.UseSwagger();
@@ -137,7 +171,8 @@ namespace EmbyStat.Web
 
         private void SetupDirectories(AppSettings settings)
         {
-            if (Directory.Exists(settings.Dirs.TempUpdateDir)) {
+            if (Directory.Exists(settings.Dirs.TempUpdateDir))
+            {
                 Directory.Delete(settings.Dirs.TempUpdateDir, true);
             }
         }

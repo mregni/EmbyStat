@@ -1,0 +1,59 @@
+<div class="job__flexcontainer" *ngIf="job !== undefined">
+  <div class="job__left-content ">
+    <a mat-mini-fab (click)="fireJob()" [disabled]="disableStart()">
+      <mat-icon>play_circle_outline</mat-icon>
+    </a>
+  </div>
+  <div class="job__center">
+    <div class="job__jobtitle">{{ 'JOB.INFO.' + job.title | translate}}</div>
+    <div class="subtext-grey" *ngIf="job.state !== 1">
+      <div *ngIf="job.state === 0">
+        {{ 'JOB.NORUN' | translate }}
+      </div>
+      <div *ngIf="job.state !== 0" [ngClass]="{'job__failed':job.state === 2}">
+        <div *ngIf="hasNoTime(job)">
+          {{ 'JOB.LASTRUNNOW' | translate}}
+        </div>
+        <div *ngIf="!hasNoTime(job)">
+          {{ 'JOB.LASTRUN' | translate}}
+          <span *ngIf="hasHours(job.endTimeUtc)">
+            {{'JOB.HOURS' | translate: { hours: job.endTimeUtc | amFromUtc | amLocal | convertToHoursAgo} }}
+          </span>
+          <span *ngIf="needsAnd(job)">
+            {{'JOB.AND' | translate }}
+          </span>
+          <span *ngIf="hasMinutes(job.endTimeUtc)">
+            {{'JOB.MINUTES' | translate: { minutes: job.endTimeUtc | amFromUtc | amLocal | convertToMinutesAgo} }}
+          </span>
+          {{ 'JOB.AGO' | translate }},
+          <span *ngIf="job.state === 3">
+            {{ 'JOB.FOR' | translate }}
+          </span>
+          <span *ngIf="job.state === 2">
+            {{ 'JOB.BUTFAILED' | translate}}
+          </span>
+          <span *ngIf="hasHours(job.startTimeUtc, job.endTimeUtc)">
+            {{'JOB.HOURS' | translate: { hours: job.startTimeUtc | amLocal | convertToHoursAgo:job.endTimeUtc } }}
+          </span><span *ngIf="needsCommaFor(job)">, </span>
+          <span *ngIf="hasMinutes(job.startTimeUtc, job.endTimeUtc)">
+            {{'JOB.MINUTES' | translate: { minutes: job.startTimeUtc | amLocal | convertToMinutesAgo:job.endTimeUtc } }}
+          </span>
+          <span *ngIf="needsAndFor(job)">
+            {{'JOB.AND' | translate }}
+          </span>
+          <span *ngIf="hasSeconds(job.startTimeUtc, job.endTimeUtc)">
+            {{'JOB.SECONDS' | translate: { seconds: job.startTimeUtc | amLocal | convertToSecondsAgo:job.endTimeUtc } }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="job__jobsub-progress" *ngIf="job.state === 1">
+      <mat-progress-bar mode="determinate" value="{{job.currentProgressPercentage}}"></mat-progress-bar> <span>{{job.currentProgressPercentage}} %</span>
+    </div>
+  </div>
+  <div class="job__right-content">
+    <a (click)="openSettings()">
+      <mat-icon>settings</mat-icon>
+    </a>
+  </div>
+</div>

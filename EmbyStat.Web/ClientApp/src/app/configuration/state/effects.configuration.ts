@@ -17,7 +17,6 @@ import {
   LoadConfigurationSuccessAction,
   UpdateConfigurationAction,
   UpdateConfigurationSuccessAction,
-  FireSmallEmbySyncAction,
   NoNeedConfigurationAction
 } from './actions.configuration';
 
@@ -67,20 +66,8 @@ export class ConfigurationEffects {
       }),
       switchMap((configuration: Configuration | null) => {
         return [new UpdateConfigurationSuccessAction(configuration),
-          new ResetServerInfoLoadedState(),
-          new FireSmallEmbySyncAction()];
+          new ResetServerInfoLoadedState()];
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-  );
-
-  @Effect()
-  fireSmallEmbySync = this.actions$
-    .ofType(ConfigurationActionTypes.FIRE_SMALL_EMBY_SYNC)
-    .pipe(
-      map((data: FireSmallEmbySyncAction) => data.payload),
-      switchMap(() => this.embyService.fireSmallEmbyUpdate()),
-      switchMap(() => {
-        return [];
-      })
   );
 }

@@ -4,8 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { TaskSignalService } from '../../services/task-signal.service';
-import { Task } from '../../../task/models/task';
+import { JobSocketService } from '../../services/job-socket.service';
 
 @Component({
   selector: 'app-sync-is-running',
@@ -14,23 +13,21 @@ import { Task } from '../../../task/models/task';
 })
 export class SyncIsRunningDialog implements OnDestroy {
   private getTaskInfuSub: Subscription;
-  private taskInfoSignalSub: Subscription;
-  private tasks: Task[];
 
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,
-    private taskSignalService: TaskSignalService,
+    private jobSocketService: JobSocketService,
     private router: Router) {
-    this.getTaskInfuSub = this.taskSignalService.infoSubject.subscribe();
+    this.getTaskInfuSub = this.jobSocketService.infoSubject.subscribe();
   }
 
   cancelClick(): void {
     this.dialogRef.close();
   }
 
-  goToTasks(): void {
-    this.router.navigate(['/task']);
+  goToJobs(): void {
+    this.router.navigate(['/job']);
     this.dialogRef.close();
   }
 

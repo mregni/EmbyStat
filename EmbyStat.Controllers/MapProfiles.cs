@@ -40,8 +40,7 @@ namespace EmbyStat.Controllers
 		    CreateMap<Drive, DriveViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 
-	        CreateMap<TaskInfo, TaskInfoViewModel>();
-	        CreateMap<TaskResult, TaskResultViewModel>();
+	        CreateMap<Job, JobViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
 	        CreateMap<MoviePoster, MoviePosterViewModel>();

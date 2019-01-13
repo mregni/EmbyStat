@@ -20,9 +20,6 @@
     <Reference Include="MediaBrowser.Model">
       <HintPath>..\..\..\..\.nuget\packages\mediabrowser.common\3.3.10\lib\netstandard1.3\MediaBrowser.Model.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.identitymodel.clients.activedirectory\3.14.1\lib\netstandard1.3\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

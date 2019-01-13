@@ -6,10 +6,18 @@ using EmbyStat.Api.Tvdb;
 using EmbyStat.Api.WebSocketClient;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Hubs;
+using EmbyStat.Jobs;
+using EmbyStat.Jobs.Jobs.Interfaces;
+using EmbyStat.Jobs.Jobs.Maintenance;
+using EmbyStat.Jobs.Jobs.Sync;
+using EmbyStat.Jobs.Jobs.Updater;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using Hangfire;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -21,7 +29,7 @@ namespace EmbyStat.DI
         {
             services.RegisterServices();
             services.RegisterRepositories();
-            services.RegisterTasks();
+            services.RegisterJobs();
             services.RegisterClients();
             services.RegisterHttp();
             services.RegisterSignalR();
@@ -40,6 +48,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IAboutService, AboutService>();
             services.TryAddTransient<IWebSocketService, WebSocketService>();
             services.TryAddTransient<IUpdateService, UpdateService>();
+            services.TryAddTransient<IJobService, JobService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -58,20 +67,19 @@ namespace EmbyStat.DI
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IEmbyStatusRepository, EmbyStatusRepository>();
-            services.TryAddTransient<ITaskRepository, TaskRepository>();
+            services.TryAddTransient<IJobRepository, JobRepository>();
         }
 
-        public static void RegisterTasks(this IServiceCollection services)
+        public static void RegisterJobs(this IServiceCollection services)
         {
-            services.AddSingleton<ITaskRepository, TaskRepository>();
-            //services.TryAddTransient<IBackgroundJobClient, BackgroundJobClient>();
-            //services.TryAddTransient<ITaskInitializer, TaskInitializer>();
+            services.TryAddSingleton<IBackgroundJobClient, BackgroundJobClient>();
+            services.TryAddTransient<IJobInitializer, JobInitializer>();
 
-            //services.TryAddTransient<IDatabaseCleanupTask, DatabaseCleanupTask>();
-            //services.TryAddTransient<IPingEmbyTask, PingEmbyTask>();
-            //services.TryAddTransient<IMediaSyncTask, MediaSyncTask>();
-            //services.TryAddTransient<ISmallSyncTask, SmallSyncTask>();
-            //services.TryAddTransient<ICheckUpdateTask, CheckUpdateTask>();
+            services.TryAddSingleton<IDatabaseCleanupJob, DatabaseCleanupJob>();
+            services.TryAddSingleton<IPingEmbyJob, PingEmbyJob>();
+            services.TryAddSingleton<IMediaSyncJob, MediaSyncJob>();
+            services.TryAddSingleton<ISmallSyncJob, SmallSyncJob>();
+            services.TryAddSingleton<ICheckUpdateJob, CheckUpdateJob>();
         }
 
         public static void RegisterClients(this IServiceCollection services)
@@ -93,7 +101,7 @@ namespace EmbyStat.DI
 
         public static void RegisterSignalR(this IServiceCollection services)
         {
-            //services.TryAddSingleton<IHubHelper, HubHelper>();
+            services.TryAddSingleton<IJobHubHelper, JobHubHelper>();
         }
     }
 }

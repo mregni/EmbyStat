@@ -5,10 +5,10 @@ import { ConfigHelper } from '../../helpers/configHelper';
 
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
-import { Task } from '../../../task/models/task';
 import { EmbyStatus } from '../../models/emby/emby-status';
-import { TaskSignalService } from '../../services/task-signal.service';
+import { JobSocketService } from '../../services/job-socket.service';
 import { EmbyService } from '../../services/emby.service';
+import { Job } from '../../../jobs/models/job';
 
 @Component({
   selector: 'app-toolbar',
@@ -18,8 +18,9 @@ import { EmbyService } from '../../services/emby.service';
 export class ToolbarComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private embyStatusSeb: Subscription;
-  private taskInfoSignalSub: Subscription;
-  runningTask: Task;
+  private jobSocketSub: Subscription;
+  private missedPingsSub: Subscription;
+  runningJob: Job;
 
   missedPings: number;
 
@@ -28,24 +29,21 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private configurationFacade: ConfigurationFacade,
-    private taskSignalService: TaskSignalService,
+    private jobSocketService: JobSocketService,
     private embyService: EmbyService) {
     this.configuration$ = configurationFacade.configuration$;
 
     this.missedPings = 0;
-    this.taskInfoSignalSub = taskSignalService.infoSubject.subscribe(data => {
-      if (data.some(x => x.state === 2)) {
-        this.runningTask = data.find(x => x.state === 2);
+    this.jobSocketSub = jobSocketService.infoSubject.subscribe((job: Job) => {
+      if (job != null && job.state === 1) {
+        this.runningJob = job;
       } else {
-        this.runningTask = undefined;
+        this.runningJob = undefined;
       }
+    });
 
-      if (data.some(x => x.name === 'TASKS.PINGEMBYSERVERTITLE')) {
-        this.embyStatusSeb = this.embyService.getEmbyStatus().subscribe((status: EmbyStatus) => {
-          this.missedPings = status.missedPings;
-        });
-        this.embyStatusSeb = undefined;
-      }
+    this.missedPingsSub = jobSocketService.missedPingsSubject.subscribe((count: number) => {
+      this.missedPings = count;
     });
   }
 
@@ -58,12 +56,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.taskInfoSignalSub !== undefined) {
-      this.taskInfoSignalSub.unsubscribe();
+    if (this.jobSocketSub !== undefined) {
+      this.jobSocketSub.unsubscribe();
     }
 
     if (this.embyStatusSeb !== undefined) {
       this.embyStatusSeb.unsubscribe();
+    }
+
+    if (this.missedPingsSub !== undefined) {
+      this.missedPingsSub.unsubscribe();
     }
   }
 }

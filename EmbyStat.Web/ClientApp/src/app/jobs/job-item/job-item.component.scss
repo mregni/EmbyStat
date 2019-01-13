@@ -1,0 +1,67 @@
+@import '../../../styles.scss';
+
+.job__flexcontainer {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 20px 0;
+  min-height: 50px;
+  padding: 20px;
+  border-radius: 2px;
+  background: #fff;
+  align-items: center;
+  box-shadow: $normal-box-shadow;
+}
+
+.job__left-content {
+  align-content: flex-start;
+  width: 45px;
+
+  mat-icon {
+    margin-top: -2px;
+  }
+}
+
+.job__right-content {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-around;
+  width: 40px;
+  margin-top: 7px;
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.job__center {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+
+.job__jobtitle {
+  padding: 3px;
+  font-weight: bold;
+}
+
+.job__jobsub-progress {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: $grey-font-color;
+}
+
+.job__jobsub-progress :nth-child(1) {
+  flex: 1 1 auto;
+}
+
+.job__jobsub-progress :nth-child(2) {
+  width: 40px;
+  margin-left: 20px;
+  flex: 0 0 auto;
+}
+
+.job__failed {
+  color: mat-color($mat-red, A700);
+}

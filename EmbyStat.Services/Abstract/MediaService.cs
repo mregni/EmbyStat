@@ -12,16 +12,16 @@ namespace EmbyStat.Services.Abstract
 {
     public abstract class MediaService
     {
-        private readonly ITaskRepository _taskRepository;
+        private readonly IJobRepository _jobRepository;
 
-        protected MediaService(ITaskRepository taskRepository)
+        protected MediaService(IJobRepository jobRepository)
         {
-            _taskRepository = taskRepository;
+            _jobRepository = jobRepository;
         }
 
-        public bool NewStatisticsNeeded(Statistic statistic, IEnumerable<Guid> collectionIds)
+        public bool StatisticsAreValid(Statistic statistic, IEnumerable<Guid> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
 
             return statistic != null
                    && lastMediaSync != null

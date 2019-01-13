@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.21" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Api\EmbyStat.Api.csproj" />
+    <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
+    <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
+    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning" Version="2.3.38" />
+  </ItemGroup>
+
+</Project>

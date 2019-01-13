@@ -26,7 +26,7 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
-import { TaskSignalService } from './services/task-signal.service';
+import { JobSocketService } from './services/job-socket.service';
 import { EmbyService } from './services/emby.service';
 import { UpdateService } from './services/update.service';
 import { UpdateOverlayService } from './services/update-overlay.service';
@@ -94,7 +94,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
   providers: [
     ToastService,
     EmbyService,
-    TaskSignalService,
+    JobSocketService,
     UpdateService,
     UpdateOverlayService,
     SideBarService

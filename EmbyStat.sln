@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Api", "EmbyStat.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Integration", "Tests.Integration\Tests.Integration.csproj", "{84B5BF1E-407B-4B7A-8A02-7630C9429E4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Tasks", "EmbyStat.Tasks\EmbyStat.Tasks.csproj", "{6C31E54E-9C66-4AB4-B6F4-EFEF25718FDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Jobs", "EmbyStat.Tasks\EmbyStat.Jobs.csproj", "{6C31E54E-9C66-4AB4-B6F4-EFEF25718FDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Updater", "Updater\Updater.csproj", "{48B28697-EF3C-49B7-A49F-B48FD881AC2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.DI", "EmbyStat.DI\EmbyStat.DI.csproj", "{BEDE87DC-0600-4056-A7FB-2148D315C13D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.DI", "EmbyStat.DI\EmbyStat.DI.csproj", "{BEDE87DC-0600-4056-A7FB-2148D315C13D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -15,7 +15,7 @@ namespace EmbyStat.Repositories
 		public DbSet<PluginInfo> Plugins { get; set; }
 		public DbSet<ServerInfo> ServerInfo { get; set; }
 		public DbSet<Drive> Drives { get; set; }
-        public DbSet<TaskResult> TaskResults { get; set; }
+        public DbSet<Job> Jobs { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Show> Shows { get; set; }
         public DbSet<Season> Seasons { get; set; }

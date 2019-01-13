@@ -26,8 +26,9 @@ namespace EmbyStat.Services
         private readonly IConfigurationRepository _configurationRepository;
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, ITaskRepository taskRepository)
-        : base(taskRepository)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, 
+            IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, 
+            IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(jobRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
@@ -48,7 +49,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
 
             MovieStats stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<MovieStats>(statistic.JsonResult);
             }
@@ -82,7 +83,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MoviePeople);
 
             PersonStats stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
             }
@@ -111,7 +112,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
 
             MovieGraphs stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<MovieGraphs>(statistic.JsonResult);
             }
@@ -137,7 +138,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
             SuspiciousTables stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<SuspiciousTables>(statistic.JsonResult);
             }

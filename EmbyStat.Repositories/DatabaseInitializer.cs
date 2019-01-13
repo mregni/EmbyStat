@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using Serilog;
 
@@ -23,6 +24,7 @@ namespace EmbyStat.Repositories
             await SeedConfiguration();
             await SeedLanguages();
             await SeedEmbyStatus();
+            await SeedJobs();
 
             await _context.SaveChangesAsync();
         }
@@ -71,16 +73,16 @@ namespace EmbyStat.Repositories
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "1" });
             if (configuration.All(x => x.Id != Constants.Configuration.UpdateInProgress))
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateInProgress, Value = "False" });
-            if (configuration.All(x => x.Id != Constants.Configuration.DatabaseCleanupTaskTrigger))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.DatabaseCleanupTaskTrigger, Value = "0 15 2 * *" });
-            if (configuration.All(x => x.Id != Constants.Configuration.PingEmbyTaskTrigger))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.PingEmbyTaskTrigger, Value = "0 0/5 * * *" });
-            if (configuration.All(x => x.Id != Constants.Configuration.MediaSyncTaskTrigger))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MediaSyncTaskTrigger, Value = "0 0 3 * *" });
-            if (configuration.All(x => x.Id != Constants.Configuration.SmallSyncTaskTrigger))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.SmallSyncTaskTrigger, Value = "0 0 2 * *" });
-            if (configuration.All(x => x.Id != Constants.Configuration.UpdateCheckTaskTrigger))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateCheckTaskTrigger, Value = "0 0 2/12 * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.DatabaseCleanupJobTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.DatabaseCleanupJobTrigger, Value = "0 4 * * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.PingEmbyJobTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.PingEmbyJobTrigger, Value = "0/5 * * * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.MediaSyncJobTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MediaSyncJobTrigger, Value = "0 3 * * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.SmallSyncJobTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.SmallSyncJobTrigger, Value = "0 2 * * *" });
+            if (configuration.All(x => x.Id != Constants.Configuration.UpdateCheckJobTrigger))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateCheckJobTrigger, Value = "0 */12 * * *" });
 
             await _context.SaveChangesAsync();
         }
@@ -123,6 +125,26 @@ namespace EmbyStat.Repositories
 
             if (status.All(x => x.Id != Constants.EmbyStatus.MissedPings))
                 _context.EmbyStatus.Add(new EmbyStatusKeyValue { Id = Constants.EmbyStatus.MissedPings, Value = "0" });
+
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task SeedJobs()
+        {
+            Log.Information("${Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+
+            var jobs = _context.Jobs.ToList();
+
+            if (!jobs.Exists(x => x.Id == new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a")))
+                _context.Jobs.Add(new Job { Id = new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a"), State = JobState.Idle, Description = "CHECKUPDATEDESCRIPTION", Title = "CHECKUPDATETITLE", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f")))
+                _context.Jobs.Add(new Job { Id = new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f"), State = JobState.Idle, Description = "SMALLEMBYSYNCDESCRIPTION", Title = "SMALLEMBYSYNCTITLE", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e")))
+                _context.Jobs.Add(new Job { Id = new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e"), State = JobState.Idle, Description = "MEDIASYNCDESCRIPTION", Title = "MEDIASYNCTITLE", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e")))
+                _context.Jobs.Add(new Job { Id = new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e"), State = JobState.Idle, Description = "PINGEMBYSERVERDESCRIPTION", Title = "PINGEMBYSERVERTITLE", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9")))
+                _context.Jobs.Add(new Job { Id = new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9"), State = JobState.Idle, Description = "DATABASECLEANUPDESCRIPTION", Title = "DATABASECLEANUPTITLE", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
 
             await _context.SaveChangesAsync();
         }

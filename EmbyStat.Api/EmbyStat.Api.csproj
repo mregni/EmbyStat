@@ -14,12 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.identitymodel.clients.activedirectory\3.14.1\lib\netstandard1.3\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Update="Nerdbank.GitVersioning" Version="2.3.38" />
   </ItemGroup>
 

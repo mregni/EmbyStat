@@ -22,6 +22,9 @@
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.1.3" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.21" />
+    <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
+    <PackageReference Include="Hangfire.SQLite.Core" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
@@ -100,7 +103,7 @@
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
-    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Tasks.csproj" />
+    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Jobs.csproj" />
     <ProjectReference Include="..\Updater\Updater.csproj" />
   </ItemGroup>
 
@@ -124,7 +127,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\task-signal.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\wizard\services\wizard-state.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show-charts.service.ts" />

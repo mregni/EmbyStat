@@ -73,7 +73,7 @@ namespace Tests.Unit.Services
             configurationServiceMock.Setup(x => x.GetConfiguration())
                 .Returns(new Configuration(new List<ConfigurationKeyValue>()) {ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType>{CollectionType.Movies}});
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            var taskRepositoryMock = new Mock<ITaskRepository>();
+            var taskRepositoryMock = new Mock<IJobRepository>();
             _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, 
                 personServiceMock.Object, configurationServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
         }

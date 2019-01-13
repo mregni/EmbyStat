@@ -5,7 +5,7 @@ import { ConfigurationOverviewComponent } from './configuration/configuration-ov
 import { WizardOverviewComponent } from './wizard/wizard-overview/wizard-overview.component';
 import { PluginOverviewComponent } from './plugin/plugin-overview/plugin-overview.component';
 import { ServerOverviewComponent } from './server/server-overview/server-overview.component';
-import { TaskOverviewComponent } from './task/task-overview/task-overview.component';
+import { JobsOverviewComponent } from './jobs/jobs-overview/jobs-overview.component';
 import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.component';
 import { ShowOverviewComponent } from './show/show-overview/show-overview.component';
 import { LogsOverviewComponent } from './logs/logs-overview/logs-overview.component';
@@ -18,7 +18,7 @@ const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
   { path: 'plugin', component: PluginOverviewComponent },
   { path: 'server', component: ServerOverviewComponent },
   { path: 'wizard', component: WizardOverviewComponent },
-  { path: 'task', component: TaskOverviewComponent },
+  { path: 'jobs', component: JobsOverviewComponent },
   { path: 'movie', component: MovieOverviewComponent, canActivate: [SyncGuard] },
   { path: 'show', component: ShowOverviewComponent, canActivate: [SyncGuard] },
   { path: 'logs', component: LogsOverviewComponent },

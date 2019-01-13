@@ -140,34 +140,34 @@ namespace EmbyStat.Common.Models.Entities
             set => _config[Constants.Configuration.UpdateInProgress] = value.ToString();
         }
 
-        public string DatabaseCleanupTaskTrigger
+        public string DatabaseCleanupJobTrigger
         {
-            get => _config[Constants.Configuration.DatabaseCleanupTaskTrigger];
-            set => _config[Constants.Configuration.DatabaseCleanupTaskTrigger] = value;
+            get => _config[Constants.Configuration.DatabaseCleanupJobTrigger];
+            set => _config[Constants.Configuration.DatabaseCleanupJobTrigger] = value;
         }
 
-        public string PingEmbyTaskTrigger
+        public string PingEmbyJobTrigger
         {
-            get => _config[Constants.Configuration.PingEmbyTaskTrigger];
-            set => _config[Constants.Configuration.PingEmbyTaskTrigger] = value;
+            get => _config[Constants.Configuration.PingEmbyJobTrigger];
+            set => _config[Constants.Configuration.PingEmbyJobTrigger] = value;
         }
 
-        public string MediaSyncTaskTrigger
+        public string MediaSyncJobTrigger
         {
-            get => _config[Constants.Configuration.MediaSyncTaskTrigger];
-            set => _config[Constants.Configuration.MediaSyncTaskTrigger] = value;
+            get => _config[Constants.Configuration.MediaSyncJobTrigger];
+            set => _config[Constants.Configuration.MediaSyncJobTrigger] = value;
         }
 
-        public string SmallSyncTaskTrigger
+        public string SmallSyncJobTrigger
         {
-            get => _config[Constants.Configuration.SmallSyncTaskTrigger];
-            set => _config[Constants.Configuration.SmallSyncTaskTrigger] = value;
+            get => _config[Constants.Configuration.SmallSyncJobTrigger];
+            set => _config[Constants.Configuration.SmallSyncJobTrigger] = value;
         }
 
-        public string UpdateCheckTaskTrigger
+        public string UpdateCheckJobTrigger
         {
-            get => _config[Constants.Configuration.UpdateCheckTaskTrigger];
-            set => _config[Constants.Configuration.UpdateCheckTaskTrigger] = value;
+            get => _config[Constants.Configuration.UpdateCheckJobTrigger];
+            set => _config[Constants.Configuration.UpdateCheckJobTrigger] = value;
         }
 
 

@@ -1,0 +1,11 @@
+<h1 class="mat-dialog-title">{{ title | translate }}</h1>
+<div class="mat-dialog-content">
+  <p>{{ 'JOB.INFO.' + description | translate }}</p>
+  
+</div>
+<hr/>
+<div class="mat-dialog-actions button-container">
+  <button mat-raised-button color="primary" (click)="saveTriggers()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+  <button mat-raised-button color="warn" *ngIf="madeChanges" (click)="cancel()">{{'COMMON.DISCARD' | translate | capitalizeFirst}}</button>
+  <button mat-raised-button color="warn" *ngIf="!madeChanges" (click)="cancel()">{{'COMMON.CANCEL' | translate | capitalizeFirst}}</button>
+</div>

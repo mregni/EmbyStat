@@ -6,10 +6,10 @@ import * as signalR from '@aspnet/signalr';
 
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
 import { WizardStateService } from './wizard/services/wizard-state.service';
-import { TaskSignalService } from './shared/services/task-signal.service';
+import { JobSocketService } from './shared/services/job-socket.service';
 import { SideBarService } from './shared/services/side-bar.service';
-import { Task } from './task/models/task';
-import { ProgressLog } from './task/models/progress-log';
+import { Job } from './jobs/models/job';
+import { JobLog } from './jobs/models/job-log';
 
 const SMALL_WIDTH_BREAKPOINT = 768;
 
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private router: Router,
     private wizardStateService: WizardStateService,
-    private taskSignalService: TaskSignalService,
+    private jobSocketService: JobSocketService,
     private sideBarService: SideBarService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
@@ -39,16 +39,21 @@ export class AppComponent implements OnInit, OnDestroy {
     translate.addLangs(['en-US', 'nl-NL']);
 
     const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/tasksignal')
+      .withUrl('/jobs-socket')
       .build();
     hubConnection.start().catch(err => document.write(err));
 
-    hubConnection.on('TaskUpdateReceived', (data: Task[]) => {
-      taskSignalService.updateTasksInfo(data);
+    hubConnection.on('job-report-progress', (data: Job) => {
+      console.log(data);
+      jobSocketService.updateTasksInfo(data);
     });
 
-    hubConnection.on('LogUpdateReceived', (data: ProgressLog) => {
-      taskSignalService.updateTasksLogs(data.value, data.type);
+    hubConnection.on('job-report-log', (data: JobLog) => {
+      jobSocketService.updateTasksLogs(data.value, data.type);
+    });
+
+    hubConnection.on('emby-connection-status', (data: number) => {
+      jobSocketService.updateMissedPings(data);
     });
 
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {

@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
-    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Tasks.csproj" />
+    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Jobs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

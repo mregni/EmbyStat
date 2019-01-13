@@ -4,8 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { TaskService } from '../../../task/service/task.service';
-import { Task } from '../../../task/models/task';
+import { JobService } from '../../../jobs/service/job.service';
 
 @Component({
   selector: 'app-no-type-found',
@@ -14,14 +13,13 @@ import { Task } from '../../../task/models/task';
 })
 export class NoTypeFoundDialog implements OnDestroy {
   private getTasksSub: Subscription;
-  private tasks: Task[];
 
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,
-    private taskService: TaskService,
+    private jobService: JobService,
     private router: Router) {
-    this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
+    //this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
   }
 
   cancelClick(): void {
@@ -29,8 +27,7 @@ export class NoTypeFoundDialog implements OnDestroy {
   }
 
   startSyncClick(): void {
-    const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
-    this.taskService.fireTask(task.id);
+    //this.taskService.fireTask(task.id);
     this.router.navigate(['/task']);
     this.dialogRef.close();
 

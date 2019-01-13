@@ -13,6 +13,13 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
+    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Jobs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\..\..\.nuget\packages\hangfire.core\1.6.21\lib\netstandard1.3\Hangfire.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
