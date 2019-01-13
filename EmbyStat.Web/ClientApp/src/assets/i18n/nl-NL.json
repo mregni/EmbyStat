@@ -96,7 +96,7 @@
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Gegevens aan het opslaan",
     "RESCAN": "Opnieuw scannen",
-    "FINISHWITHSYNC": "Start syncronisation",
+    "FINISHWITHSYNC": "Start synchronisatie",
     "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
     "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
@@ -115,7 +115,7 @@
     "LONGEST": "Langste",
     "YOUNGESTADDED": "Jongste toegevoegd",
     "MOSTFEATUREDPERGENRE": "Meest aanbevolen acteur per genre",
-    "DUPLICATEMOVIES": "Duplicate movies",
+    "DUPLICATEMOVIES": "Dubbele films",
     "TOSHORTMOVIES": "Movies that are very short",
     "NOPOSTER": "Movies without a poster",
     "NOIMDB": "Movies without a IMDB id"
@@ -140,7 +140,7 @@
     "SETTINGS": "Instellingen",
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
+      "EMBY": "Emby instellingen opgeslagen!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!"
     },
@@ -194,7 +194,7 @@
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
+      "TITLE": "Geen films gevonden",
       "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
     },
     "NOSHOWTYPEFOUND": {
@@ -211,26 +211,26 @@
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
+    "MUSIC": "Muziek",
+    "MUSICVIDEOS": "Muziekvideo 's",
     "TRAILERS": "Trailers",
     "HOMEVIDEOS": "Home videos",
     "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "BOOKS": "Boeken",
+    "PHOTOS": "Foto’s",
+    "GAMES": "Spellen",
+    "LIVETV": "Live tv",
+    "PLAYLISTS": "Afspeellijsten",
+    "FOLDERS": "Mappen"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby",
-    "TASKISRUNNING": "{{task}} task is running"
+    "GOTOEMBY": "Ga naar Emby",
+    "TASKISRUNNING": "{{task}} taak wordt uitgevoerd"
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Bedankt",
+      "TEXT": "Grote dank aan de volgende personen voor het vertalen van de app in hun moedertaal:"
     }
   }
 }
