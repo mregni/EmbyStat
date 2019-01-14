@@ -12,30 +12,29 @@ import { JobService } from '../../../jobs/service/job.service';
   styleUrls: ['./no-type-found.component.scss']
 })
 export class NoTypeFoundDialog implements OnDestroy {
-  private getTasksSub: Subscription;
+  private jobSub: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,
     private jobService: JobService,
     private router: Router) {
-    //this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
   }
 
   cancelClick(): void {
     this.dialogRef.close();
   }
 
-  startSyncClick(): void {
-    //this.taskService.fireTask(task.id);
+  startMediaSync(): void {
+    this.jobSub = this.jobService.fireMediaSyncJob().subscribe();
     this.router.navigate(['/task']);
     this.dialogRef.close();
 
   }
 
   ngOnDestroy() {
-    if (this.getTasksSub !== undefined) {
-      this.getTasksSub.unsubscribe();
+    if (this.jobSub !== undefined) {
+      this.jobSub.unsubscribe();
     }
   }
 }
