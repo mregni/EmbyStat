@@ -8,8 +8,7 @@
   border-radius: 2px;
   background: #fff;
   box-shadow: $normal-box-shadow;
-  max-width: 450px;
-  width: 100%;
+  width: 50%;
   flex: 0 0 auto;
 }
 
@@ -33,4 +32,10 @@
 .log__right-column {
   flex: 1 1 auto;
   align-items: flex-end;
+}
+
+@media only screen and (max-width: $large-size) {
+  .log__flexcontainer {
+    width: auto;
+  }
 }
