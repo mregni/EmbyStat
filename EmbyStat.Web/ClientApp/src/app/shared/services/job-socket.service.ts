@@ -19,7 +19,7 @@ export class JobSocketService {
     this.lines = [];
   }
 
-  updateTasksLogs(value: string, type: number) {
+  updateJobLogs(value: string, type: number) {
     const now = moment().format('HH:mm:ss DD-MM-YY');
     const line = now + ' ' + value;
 
@@ -38,7 +38,7 @@ export class JobSocketService {
     this.logsSubject.next(this.lines);
   }
 
-  updateTasksInfo(job: Job) {
+  updateJobsInfo(job: Job) {
     this.isSyncRunning = !!job && job.state === 2 && job.id === 'be68900b-ee1d-41ef-b12f-60ef3106052e';
     this.infoSubject.next(job);
   }

@@ -45,11 +45,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     hubConnection.on('job-report-progress', (data: Job) => {
       console.log(data);
-      jobSocketService.updateTasksInfo(data);
+      jobSocketService.updateJobsInfo(data);
     });
 
     hubConnection.on('job-report-log', (data: JobLog) => {
-      jobSocketService.updateTasksLogs(data.value, data.type);
+      jobSocketService.updateJobLogs(data.value, data.type);
     });
 
     hubConnection.on('emby-connection-status', (data: number) => {
