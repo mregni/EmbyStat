@@ -11,6 +11,7 @@ namespace EmbyStat.Common.Models.Tasks
         public JobState State { get; set; }
         public double? CurrentProgressPercentage { get; set; }
         public DateTime StartTimeUtc { get; set; }
+        public DateTime? EndDateUtc { get; set; }
         public string Title { get; set; }
     }
 }

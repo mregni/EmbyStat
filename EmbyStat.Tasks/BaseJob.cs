@@ -114,7 +114,7 @@ namespace EmbyStat.Jobs
             await _hubHelper.BroadCastJobLog(JobPrefix, message, type);
         }
 
-        private async void SendLogProgressToFront(double progress)
+        private async void SendLogProgressToFront(double progress, DateTime? endDateTime = null)
         {
             var info = new JobProgress
             {
@@ -122,6 +122,7 @@ namespace EmbyStat.Jobs
                 CurrentProgressPercentage = progress,
                 State = State,
                 StartTimeUtc = StartTimeUtc ?? DateTime.UtcNow,
+                EndDateUtc = endDateTime ,
                 Title = Title
             };
             await _hubHelper.BroadcastJobProgress(info);
