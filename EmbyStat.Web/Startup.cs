@@ -102,11 +102,11 @@ namespace EmbyStat.Web
 
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
-                WorkerCount = 2,
+                WorkerCount = 1,
                 SchedulePollingInterval = new TimeSpan(0, 0, 5),
                 ServerTimeout = TimeSpan.FromDays(1),
                 ShutdownTimeout = TimeSpan.FromDays(1),
-                ServerName = "Main jobs",
+                ServerName = "Main server",
                 Queues = new[] { "main"}
             });
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
