@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Job } from '../models/job';
@@ -43,5 +43,10 @@ export class JobService {
 
   fireDatabaseCleanupJob(): Observable<void> {
     return this.http.post<void>(this.fireDatabaseCleanupUrl, null);
+  }
+
+  updateTrigger(id: string, cron: string): Observable<void> {
+    let httpParams = new HttpParams().append("cron", cron);
+    return this.http.patch<void>(this.baseUrl + '/' + id, {}, { params: httpParams });
   }
 }

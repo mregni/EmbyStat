@@ -162,6 +162,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("State").AsInt32().NotNullable().WithDefaultValue(JobState.Idle)
                 .WithColumn("CurrentProgressPercentage").AsDouble().NotNullable().WithDefaultValue(0)
                 .WithColumn("Title").AsString().NotNullable()
+                .WithColumn("Trigger").AsString().NotNullable()
                 .WithColumn("Description").AsString().NotNullable();
 
             Create.Table(Constants.Tables.User)

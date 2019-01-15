@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { JobService } from './service/job.service';
 import { TriggerDialogComponent } from './trigger-dialog/trigger-dialog.component';
@@ -17,7 +18,8 @@ import { JobItemComponent } from './job-item/job-item.component';
   imports: [
     CommonModule,
     TranslateModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [
     JobService

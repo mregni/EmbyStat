@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\..\..\.nuget\packages\hangfire.core\1.6.21\lib\netstandard1.3\Hangfire.Core.dll</HintPath>
+    </Reference>
     <Reference Include="MediaBrowser.Model">
       <HintPath>..\..\..\..\.nuget\packages\mediabrowser.common\3.3.10\lib\netstandard1.3\MediaBrowser.Model.dll</HintPath>
     </Reference>

@@ -62,7 +62,8 @@
     "EMBYUSERNAME": "Emby admin username",
     "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes",
-    "TVDBAPI": "TheTVDB api key" 
+    "TVDBAPI": "TheTVDB api key",
+    "CRON": "Cron string"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -79,7 +80,7 @@
     "JOBS": "Jobs",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About" 
+    "ABOUT": "About"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -97,9 +98,9 @@
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
-    "FINISHWITHSYNC": "Start synchronization", 
+    "FINISHWITHSYNC": "Start synchronization",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page." 
+    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -119,7 +120,7 @@
     "DUPLICATEMOVIES": "Duplicate movies",
     "TOSHORTMOVIES": "Movies that are very short",
     "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id" 
+    "NOIMDB": "Movies without a IMDB id"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total shows",
@@ -148,7 +149,7 @@
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail." 
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
@@ -179,6 +180,7 @@
     "FOR": "for",
     "BUTFAILED": "but failed after",
     "NORUN": "Not ran yet",
+    "MOMENT_AGO": "a moment",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
@@ -206,7 +208,11 @@
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media sync task is running",
       "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
-    }
+    },
+    "EDIT_TRIGGER": {
+      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+    } 
   },
   "LOADER": {
     "FETCHING": "Fetching statistics",
@@ -232,12 +238,12 @@
     "JOBISRUNNING": "{{job}} job is running",
     "NOMISSEDPINGS": "Emby server is alive",
     "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!" 
+    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
   },
   "ABOUT": {
     "THANKS": {
       "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:" 
-    } 
-  } 
+      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+    }
+  }
 }

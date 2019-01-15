@@ -13,8 +13,8 @@
             </mat-option>
           </mat-select>
           <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
+          <mat-hint align="start" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></mat-hint>
         </mat-form-field>
-        <p class="subtext-grey-small" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></p>
       </form>
     </mat-card-content>
     <mat-card-actions class="button-container">
@@ -30,8 +30,8 @@
         <p>{{ 'CONFIGURATION.GENERAL.TVDBAPIKEY' | translate }}</p>
         <mat-form-field>
           <input matInput type="password" placeholder="{{ 'FORM_LABELS.TVDBAPI' | translate }}" formControlName="tvdbApiKey" required>
+          <mat-hint align="start">{{ 'CONFIGURATION.GENERAL.TVDBAPIKEYWARNING' | translate }}</mat-hint>
         </mat-form-field>
-        <p class="subtext-grey-small">{{ 'CONFIGURATION.GENERAL.TVDBAPIKEYWARNING' | translate }}</p>
       </form>
     </mat-card-content>
     <mat-card-actions class="button-container">

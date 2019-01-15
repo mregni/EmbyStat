@@ -25,6 +25,9 @@
           <span *ngIf="hasMinutes(job.endTimeUtc)">
             {{'JOB.MINUTES' | translate: { minutes: job.endTimeUtc | amFromUtc | amLocal | convertToMinutesAgo} }}
           </span>
+          <span *ngIf="!hasMinutes(job.endTimeUtc) && !hasHours(job.endTimeUtc)">
+            {{'JOB.MOMENT_AGO' | translate }}
+          </span>
           {{ 'JOB.AGO' | translate }},
           <span *ngIf="job.state === 3">
             {{ 'JOB.FOR' | translate }}

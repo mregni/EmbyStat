@@ -7,6 +7,7 @@ using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Controllers.ViewModels.Task;
+using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
@@ -19,27 +20,18 @@ namespace EmbyStat.Controllers
     public class JobController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IPingEmbyJob _pingEmbyJob;
         private readonly IJobService _jobService;
         private readonly IJobHubHelper _jobHubHelper;
-        private readonly ICheckUpdateJob _checkUpdateJob;
-        private readonly IMediaSyncJob _mediaSyncJob;
-        private readonly ISmallSyncJob _smallSyncJob;
-        private readonly IDatabaseCleanupJob _databaseCleanupJob;
+        private readonly IJobInitializer _jobInitializer;
         private string LogPrefix => Constants.LogPrefix.JobController;
 
-        public JobController(IMapper mapper, IPingEmbyJob pingEmbyJob, IJobService jobService, 
-            IJobHubHelper jobHubHelper, ICheckUpdateJob checkUpdateJob, IMediaSyncJob mediaSyncJob, 
-            ISmallSyncJob smallSyncJob, IDatabaseCleanupJob databaseCleanupJob)
+        public JobController(IMapper mapper, IJobService jobService, IJobHubHelper jobHubHelper,
+            IJobInitializer jobInitializer)
         {
             _mapper = mapper;
-            _pingEmbyJob = pingEmbyJob;
             _jobService = jobService;
             _jobHubHelper = jobHubHelper;
-            _checkUpdateJob = checkUpdateJob;
-            _mediaSyncJob = mediaSyncJob;
-            _smallSyncJob = smallSyncJob;
-            _databaseCleanupJob = databaseCleanupJob;
+            _jobInitializer = jobInitializer;
         }
         
         [HttpGet]
@@ -63,6 +55,19 @@ namespace EmbyStat.Controllers
             return Ok(_mapper.Map<JobViewModel>(job));
         }
 
+        [HttpPatch]
+        [Route("{id}")]
+        public IActionResult UpdateTrigger(Guid id, string cron)
+        {
+            if (_jobService.UpdateTrigger(id, cron))
+            {
+                _jobInitializer.UpdateTrigger(id, cron);
+                return NoContent();
+            }
+
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("ping/fire")]
         public async Task<IActionResult> FireTask()
@@ -76,7 +81,7 @@ namespace EmbyStat.Controllers
         [Route("checkupdate/fire")]
         public async Task<IActionResult> FireCheckUpdate()
         {
-            BackgroundJob.Enqueue(() => _checkUpdateJob.Execute());
+            RecurringJob.Trigger(Constants.JobIds.CheckUpdateId.ToString());
             await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.CheckUpdateJob} job queued", ProgressLogType.Information);
             return Ok();
         }
@@ -85,7 +90,7 @@ namespace EmbyStat.Controllers
         [Route("mediasync/fire")]
         public async Task<IActionResult> FireMediaSync()
         {
-            BackgroundJob.Enqueue(() => _mediaSyncJob.Execute());
+            RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString());
             await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.MediaSyncJob} job queued", ProgressLogType.Information);
             return Ok();
         }
@@ -94,7 +99,7 @@ namespace EmbyStat.Controllers
         [Route("smallsync/fire")]
         public async Task<IActionResult> FireSmallSync()
         {
-            BackgroundJob.Enqueue(() => _smallSyncJob.Execute());
+            RecurringJob.Trigger(Constants.JobIds.SmallSyncId.ToString());
             await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.SmallEmbySyncJob} job queued", ProgressLogType.Information);
             return Ok();
         }

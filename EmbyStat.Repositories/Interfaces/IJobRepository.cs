@@ -11,5 +11,6 @@ namespace EmbyStat.Repositories.Interfaces
         Job GetById(Guid id);
         void StartJob(Job job);
         void EndJob(Guid id, DateTime endTime, JobState state);
+        bool UpdateTrigger(Guid id, string trigger);
     }
 }

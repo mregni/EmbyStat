@@ -6,4 +6,5 @@ export class Job {
   endTimeUtc: Date;
   title: string;
   description: string;
+  trigger: string;
 }

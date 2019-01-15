@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './sync-is-running.component.html',
   styleUrls: ['./sync-is-running.component.scss']
 })
-export class SyncIsRunningDialog implements {
+export class SyncIsRunningDialog {
   private getTaskInfuSub: Subscription;
 
   constructor(

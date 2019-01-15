@@ -140,37 +140,6 @@ namespace EmbyStat.Common.Models.Entities
             set => _config[Constants.Configuration.UpdateInProgress] = value.ToString();
         }
 
-        public string DatabaseCleanupJobTrigger
-        {
-            get => _config[Constants.Configuration.DatabaseCleanupJobTrigger];
-            set => _config[Constants.Configuration.DatabaseCleanupJobTrigger] = value;
-        }
-
-        public string PingEmbyJobTrigger
-        {
-            get => _config[Constants.Configuration.PingEmbyJobTrigger];
-            set => _config[Constants.Configuration.PingEmbyJobTrigger] = value;
-        }
-
-        public string MediaSyncJobTrigger
-        {
-            get => _config[Constants.Configuration.MediaSyncJobTrigger];
-            set => _config[Constants.Configuration.MediaSyncJobTrigger] = value;
-        }
-
-        public string SmallSyncJobTrigger
-        {
-            get => _config[Constants.Configuration.SmallSyncJobTrigger];
-            set => _config[Constants.Configuration.SmallSyncJobTrigger] = value;
-        }
-
-        public string UpdateCheckJobTrigger
-        {
-            get => _config[Constants.Configuration.UpdateCheckJobTrigger];
-            set => _config[Constants.Configuration.UpdateCheckJobTrigger] = value;
-        }
-
-
         public Configuration(IEnumerable<ConfigurationKeyValue> list)
         {
             _config = list.ToDictionary(x => x.Id, y => y.Value);

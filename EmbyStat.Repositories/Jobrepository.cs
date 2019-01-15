@@ -59,5 +59,22 @@ namespace EmbyStat.Repositories
                 }
             }
         }
+
+        public bool UpdateTrigger(Guid id, string trigger)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var obj = context.Jobs.Single(x => x.Id == id);
+
+                if (obj != null)
+                {
+                    obj.Trigger = trigger;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+        }
     }
 }

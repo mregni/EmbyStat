@@ -32,19 +32,8 @@ export class JobItemComponent implements OnInit, OnDestroy {
     private jobSocketService: JobSocketService,
     private jobService: JobService) {
     this.jobSocketSub = jobSocketService.infoSubject.subscribe((job: Job) => {
-      console.log(job);
       if (job != null && job.id === this.id) {
-        this.job.currentProgressPercentage = job.currentProgressPercentage;
-        this.job.startTimeUtc = job.startTimeUtc;
-        this.job.state = job.state;
-
-        if (job.state === 2 || job.state === 3) {
-          this.jobSub = this.jobService.getById(this.id).subscribe((data: Job) => {
-            if (data != null) {
-              this.job = data;
-            }
-          });
-        }
+        this.job = job;
       }
     });
   }
@@ -64,10 +53,23 @@ export class JobItemComponent implements OnInit, OnDestroy {
   openSettings(): void {
     const dialogRef = this.dialog.open(TriggerDialogComponent, {
       width: '500px',
-      data: { title: this.job.title, description: this.job.description }
+      data: {
+        title: this.job.title,
+        description: this.job.description,
+        id: this.job.id,
+        trigger: this.job.trigger
+      }
     });
 
-    dialogRef.afterClosed().subscribe((result: boolean) => { });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.jobSub = this.jobService.getById(this.id).subscribe((job: Job) => {
+          if (job != null) {
+            this.job = job;
+          }
+        });
+      }
+    });
   }
 
   fireJob() {
@@ -78,7 +80,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     const from = moment.utc(time);
     to = this.convertToMoment(to);
 
-    const milliseconds = to.diff(from);
+    let milliseconds = to.diff(from);
     const duration = moment.duration(milliseconds);
     return Math.floor(duration.asHours()) > 0;
   }
@@ -87,7 +89,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     const from = moment.utc(time);
     to = this.convertToMoment(to);
 
-    const milliseconds = to.diff(from);
+    let milliseconds = to.diff(from);
     const duration = moment.duration(milliseconds);
     return Math.floor(duration.asMinutes()) % 60 > 0;
   }
@@ -96,7 +98,10 @@ export class JobItemComponent implements OnInit, OnDestroy {
     const from = moment.utc(time);
     to = this.convertToMoment(to);
 
-    const milliseconds = to.diff(from);
+    let milliseconds = to.diff(from);
+    if (milliseconds < 1000) {
+      milliseconds = 1000;
+    }
     const duration = moment.duration(milliseconds);
     return (Math.floor(duration.asSeconds()) % 60 + 1) > 0;
   }

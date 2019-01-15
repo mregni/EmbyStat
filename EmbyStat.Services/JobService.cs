@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using Hangfire;
 
 namespace EmbyStat.Services
 {
@@ -24,6 +26,11 @@ namespace EmbyStat.Services
         public Job GetById(Guid id)
         {
             return _jobRepository.GetById(id);
+        }
+
+        public bool UpdateTrigger(Guid id, string trigger)
+        {
+            return _jobRepository.UpdateTrigger(id, trigger);
         }
     }
 }

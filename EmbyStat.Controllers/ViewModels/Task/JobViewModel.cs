@@ -12,5 +12,6 @@ namespace EmbyStat.Controllers.ViewModels.Task
         public DateTime? EndTimeUtc { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string Trigger { get; set; }
     }
 }

@@ -87,11 +87,6 @@ namespace EmbyStat.Common
             public static string AutoUpdate => "AUTOUPDATE";
             public static string UpdateTrain => "UPDATETRAIN";
             public static string UpdateInProgress => "UPDATEINPROGRESS";
-            public static string DatabaseCleanupJobTrigger => "TRIGGERDATABASECLEANUPJOB";
-            public static string PingEmbyJobTrigger => "TRIGGERPINGMEBYJOB";
-            public static string MediaSyncJobTrigger => "TRIGGERMEDIASYNCJOB";
-            public static string SmallSyncJobTrigger => "TRIGGERSMALLSYNCJOB";
-            public static string UpdateCheckJobTrigger => "TRIGGERUPDATECHECKJOB";
         }
 
         public static class EmbyStatus

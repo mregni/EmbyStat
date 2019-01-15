@@ -71,7 +71,7 @@ namespace EmbyStat.Jobs
             var now = DateTime.UtcNow;
             State = JobState.Completed;
             _jobRepository.EndJob(Id, now , State);
-            SendLogProgressToFront(100);
+            SendLogProgressToFront(100, now);
 
             var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
             LogInformation(Math.Ceiling(runTime) == 1
@@ -114,7 +114,7 @@ namespace EmbyStat.Jobs
             await _hubHelper.BroadCastJobLog(JobPrefix, message, type);
         }
 
-        private async void SendLogProgressToFront(double progress, DateTime? endDateTime = null)
+        private async void SendLogProgressToFront(double progress, DateTime? EndTimeUtc = null)
         {
             var info = new JobProgress
             {
@@ -122,7 +122,7 @@ namespace EmbyStat.Jobs
                 CurrentProgressPercentage = progress,
                 State = State,
                 StartTimeUtc = StartTimeUtc ?? DateTime.UtcNow,
-                EndDateUtc = endDateTime ,
+                EndTimeUtc = EndTimeUtc,
                 Title = Title
             };
             await _hubHelper.BroadcastJobProgress(info);
