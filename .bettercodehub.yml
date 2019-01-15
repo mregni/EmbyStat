@@ -1,8 +1,11 @@
-exclude:
-- /EmbyStat.Common/Models/.*
-- /EmbyStat.Controllers/ViewModels/.*
-- /EmbyStat.Common\Models/.*   
+component_depth: 1
+
 languages:
 - csharp
 - javascript
 - typescript
+
+exclude:
+- /EmbyStat.Common/Models/.*
+- /EmbyStat.Controllers/ViewModels/.*
+- /EmbyStat.Common\Models/.*   
