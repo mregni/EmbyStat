@@ -1,30 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Cryptography;
-using EmbyStat.Api.EmbyClient.Net;
-using EmbyStat.Api.Tvdb;
-using EmbyStat.Api.WebSocketClient;
-using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
-using EmbyStat.Common.Settings;
-using EmbyStat.Common.Tasks.Interface;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers;
+using EmbyStat.DI;
+using EmbyStat.Jobs;
 using EmbyStat.Repositories;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Tasks;
-using EmbyStat.Tasks.Tasks;
-using MediaBrowser.Model.Serialization;
+using Hangfire;
+using Hangfire.Dashboard;
+using Hangfire.RecurringJobExtensions;
+using Hangfire.SQLite;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -37,167 +29,160 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
 {
-	public class Startup
-	{
-		public IConfiguration Configuration { get; }
-		public IHostingEnvironment HostingEnvironment { get; }
+    public class Startup
+    {
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
         public IApplicationBuilder ApplicationBuilder { get; set; }
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
-		{
-			HostingEnvironment = env;
-			Configuration = configuration;
+        {
+            HostingEnvironment = env;
+            Configuration = configuration;
 
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(HostingEnvironment.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{HostingEnvironment.EnvironmentName}.json", optional: true)
-				.AddEnvironmentVariables();
-			Configuration = builder.Build();
-		}
-
-		public IServiceProvider ConfigureServices(IServiceCollection services)
-		{
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=data.db"));
-
-		    services.AddOptions();
-		    services.Configure<AppSettings>(Configuration);
-
-            services
-		        .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
-		        .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
-		        .AddApiExplorer()
-		        .AddJsonFormatters();
-
-		    services.AddAutoMapper(typeof(MapProfiles));
-            services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new Info { Title = "EmbyStat API", Version = "v1" });
-			});
-
-			services.AddSpaStaticFiles(configuration =>
-			{
-				configuration.RootPath = "ClientApp/dist";
-            });
-
-		    services.AddSignalR();
-		    services.AddCors();
-
-		    services.AddHostedService<WebSocketService>();
-
-            var containerBuilder = new ContainerBuilder();
-		    containerBuilder.Populate(services);
-		    containerBuilder.RegisterType<ConfigurationService>().As<IConfigurationService>();
-		    containerBuilder.RegisterType<PluginService>().As<IPluginService>();
-		    containerBuilder.RegisterType<EmbyService>().As<IEmbyService>();
-		    containerBuilder.RegisterType<TaskService>().As<ITaskService>();
-		    containerBuilder.RegisterType<MovieService>().As<IMovieService>();
-		    containerBuilder.RegisterType<PersonService>().As<IPersonService>();
-		    containerBuilder.RegisterType<ShowService>().As<IShowService>();
-		    containerBuilder.RegisterType<LogService>().As<ILogsService>();
-		    containerBuilder.RegisterType<LanguageService>().As<ILanguageService>();
-		    containerBuilder.RegisterType<AboutService>().As<IAboutService>();
-		    containerBuilder.RegisterType<WebSocketService>().As<IWebSocketService>().SingleInstance();
-
-            containerBuilder.RegisterType<MovieRepository>().As<IMovieRepository>();
-            containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
-		    containerBuilder.RegisterType<PluginRepository>().As<IPluginRepository>();
-		    containerBuilder.RegisterType<ServerInfoRepository>().As<IServerInfoRepository>();
-		    containerBuilder.RegisterType<DriveRepository>().As<IDriveRepository>();
-		    containerBuilder.RegisterType<GenreRepository>().As<IGenreRepository>();
-		    containerBuilder.RegisterType<PersonRepository>().As<IPersonRepository>();
-		    containerBuilder.RegisterType<ShowRepository>().As<IShowRepository>();
-		    containerBuilder.RegisterType<CollectionRepository>().As<ICollectionRepository>();
-		    containerBuilder.RegisterType<StatisticsRepository>().As<IStatisticsRepository>();
-		    containerBuilder.RegisterType<LanguageRepository>().As<ILanguageRepository>();
-		    containerBuilder.RegisterType<EmbyStatusRepository>().As<IEmbyStatusRepository>();
-
-            containerBuilder.RegisterType<TaskRepository>().As<ITaskRepository>().SingleInstance();
-            containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().SingleInstance();
-		    containerBuilder.RegisterType<EmbyClient>().As<IEmbyClient>();
-		    containerBuilder.RegisterType<TvdbClient>().As<ITvdbClient>();
-		    containerBuilder.RegisterType<WebSocketClient>().As<IWebSocketClient>();
-
-            containerBuilder.RegisterType<CryptographyProvider>().As<ICryptographyProvider>();
-		    containerBuilder.RegisterType<NewtonsoftJsonSerializer>().As<IJsonSerializer>();
-		    containerBuilder.RegisterType<HttpWebRequestClient>().As<IAsyncHttpClient>();
-		    containerBuilder.RegisterType<HttpWebRequestFactory>().As<IHttpWebRequestFactory>();
-
-		    containerBuilder.RegisterType<DatabaseInitializer>().As<IDatabaseInitializer>();
-		    containerBuilder.RegisterType<BusinessExceptionFilterAttribute>();
-            var container = containerBuilder.Build();
-		    return new AutofacServiceProvider(container);
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
         }
 
-	    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
-	    {
-	        ApplicationBuilder = app;
-            applicationLifetime.ApplicationStarted.Register(OnStarted);
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddOptions();
+            services.Configure<AppSettings>(Configuration);
+            var config = Configuration.Get<AppSettings>();
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main));
+
+            services.AddHangfire(x =>
+            {
+                x.UseSQLiteStorage(config.ConnectionStrings.Hangfire, new SQLiteStorageOptions {JobExpirationCheckInterval = TimeSpan.FromHours(24)});
+                x.UseRecurringJob();
+            });
+
+            var settings = Configuration.Get<AppSettings>();
+            SetupDirectories(settings);
+            RemoveVersionFiles();
+
+            services
+                .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
+                .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
+                .AddApiExplorer()
+                .AddJsonFormatters();
+
+            services.AddAutoMapper(typeof(MapProfiles));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "EmbyStat API", Version = "v1" });
+            });
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddSignalR();
+            services.AddCors();
+
+            services.AddHostedService<WebSocketService>();
+
+            services.RegisterApplicationDependencies();
+            services.AddSingleton<IUpdateService, UpdateService>();
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        {
+            ApplicationBuilder = app;
             if (env.IsDevelopment())
-			{
-			    app.UseDeveloperExceptionPage();
+            {
+                app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseHangfireServer(new BackgroundJobServerOptions
+            {
+                WorkerCount = 1,
+                SchedulePollingInterval = new TimeSpan(0, 0, 5),
+                ServerTimeout = TimeSpan.FromDays(1),
+                ShutdownTimeout = TimeSpan.FromDays(1),
+                ServerName = "Main server",
+                Queues = new[] { "main"}
+            });
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 
+            if (env.IsDevelopment())
+            {
+                app.UseHangfireDashboard("/hangfire",
+                    new DashboardOptions
+                    {
+                        Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
+                    });
+            }
+
+            var taskInitializer = serviceProvider.GetService<IJobInitializer>();
+            taskInitializer.Setup();
+
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseSignalR(routes =>
             {
-                routes.MapHub<TaskHub>("/tasksignal");
+                routes.MapHub<JobHub>("/jobs-socket");
             });
 
             app.UseSwagger();
-			app.UseSwaggerUI(c =>
-			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-			});
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
-			app.UseStaticFiles();
-			app.UseSpaStaticFiles();
-            
-			app.UseMvc();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
-			app.UseExceptionHandler(
-				builder =>
-				{
-					builder.Run(
-						async context =>
-						{
-							context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-							context.Response.ContentType = "application/json";
-							var ex = context.Features.Get<IExceptionHandlerFeature>();
-							if (ex != null)
-							{
-								var err = JsonConvert.SerializeObject(new { ex.Error.Message });
-								await context.Response.Body.WriteAsync(Encoding.ASCII.GetBytes(err), 0, err.Length).ConfigureAwait(false);
-							}
-						});
-				}
-			);
+            app.UseMvc();
 
-			app.UseSpa(spa =>
-			{
-				spa.Options.SourcePath = "ClientApp";
+            app.UseExceptionHandler(
+                builder =>
+                {
+                    builder.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "application/json";
+                            var ex = context.Features.Get<IExceptionHandlerFeature>();
+                            if (ex != null)
+                            {
+                                var err = JsonConvert.SerializeObject(new { ex.Error.Message });
+                                await context.Response.Body.WriteAsync(Encoding.ASCII.GetBytes(err), 0, err.Length).ConfigureAwait(false);
+                            }
+                        });
+                }
+            );
 
-				if (env.IsDevelopment())
-				{
-					spa.UseAngularCliServer(npmScript: "start");
-				}
-			});
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
         }
 
-	    private void OnStarted()
-	    {
-	        var taskManager = ApplicationBuilder.ApplicationServices.GetService<ITaskManager>();
+        private void SetupDirectories(AppSettings settings)
+        {
+            if (Directory.Exists(settings.Dirs.TempUpdateDir))
+            {
+                Directory.Delete(settings.Dirs.TempUpdateDir, true);
+            }
+        }
 
-	        var tasks = new List<IScheduledTask>
-	        {
-	            new PingEmbyTask(ApplicationBuilder),
-	            new SmallSyncTask(ApplicationBuilder),
-                new MediaSyncTask(ApplicationBuilder),
-                new DatabaseCleanupTask(ApplicationBuilder)
-            };
-
-	        taskManager.AddTasks(tasks);
+        private void RemoveVersionFiles()
+        {
+            foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
+            {
+                File.Delete(file);
+            }
         }
     }
 }

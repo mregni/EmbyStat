@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Common;
-using EmbyStat.Common.Models;
-using EmbyStat.Repositories;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
@@ -34,7 +34,9 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.TvdbApiKey, Value = "qsdfqsdfqsdfqsdqsdf" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerPort, Value = "8096" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" }
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.AutoUpdate, Value = "True" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.UpdateTrain, Value = "2" }
             };
 
 			_configurationRepositoryMock = new Mock<IConfigurationRepository>();
@@ -66,7 +68,9 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.ShowCollectionTypes, Value = "[1, 2, 3]" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.TvdbApiKey, Value = "qsdfqsdfqsdfqsdqsdf" },
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerPort, Value = "8096" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" }
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.AutoUpdate, Value = "True" },
+	            new ConfigurationKeyValue{ Id = Constants.Configuration.UpdateTrain, Value = "2" }
             };
 
             _subject.SaveServerSettings(new Configuration(configuration));
@@ -96,6 +100,8 @@ namespace Tests.Unit.Services
 	        settings.LastTvdbUpdate.Value.Year.Should().Be(2018);
 	        settings.MovieCollectionTypes.Count.Should().Be(2);
 	        settings.ShowCollectionTypes.Count.Should().Be(3);
-        }
+	        settings.UpdateTrain.Should().Be(UpdateTrain.Release);
+	        settings.AutoUpdate.Should().BeTrue();
+	    }
     }
 }

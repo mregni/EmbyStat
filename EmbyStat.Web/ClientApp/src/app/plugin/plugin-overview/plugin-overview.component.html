@@ -1,0 +1,14 @@
+<div class="title_bar">
+  <h2>Plugins</h2>
+</div>
+<div class="content">
+  <div class="plugin-flexcontainer" *ngFor="let plugin of plugins$ | async">
+    <div class="plugin-left-content">
+      <img class="plugin-avatar" src="{{plugin.imageUrl}}" />
+    </div>
+    <div class="plugin-right-content">
+      <div class="plugin-title">{{plugin.name}}</div>
+      <div class="plugin-subtitle">{{'PLUGINS.VERSION' | translate}}: {{plugin.version}} - {{plugin.assemblyFileName}}</div>
+    </div>
+  </div>
+</div>

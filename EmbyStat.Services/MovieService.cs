@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
-using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -18,11 +13,7 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Newtonsoft.Json;
-using CollectionType = EmbyStat.Common.Models.CollectionType;
-using Constants = EmbyStat.Common.Constants;
 
 namespace EmbyStat.Services
 {
@@ -35,8 +26,9 @@ namespace EmbyStat.Services
         private readonly IConfigurationRepository _configurationRepository;
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, ITaskRepository taskRepository)
-        : base(taskRepository)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, 
+            IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, 
+            IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(jobRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
@@ -57,7 +49,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
 
             MovieStats stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<MovieStats>(statistic.JsonResult);
             }
@@ -91,7 +83,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MoviePeople);
 
             PersonStats stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
             }
@@ -120,7 +112,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
 
             MovieGraphs stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<MovieGraphs>(statistic.JsonResult);
             }
@@ -146,7 +138,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
             SuspiciousTables stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<SuspiciousTables>(statistic.JsonResult);
             }

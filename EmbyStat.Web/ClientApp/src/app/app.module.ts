@@ -8,6 +8,7 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -16,7 +17,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { WizardModule } from './wizard/wizard.module';
 import { ServerModule } from './server/server.module';
 import { PluginModule } from './plugin/plugin.module';
-import { TaskModule } from './task/task.module';
+import { JobsModule } from './jobs/jobs.module';
 import { MovieModule } from './movie/movie.module';
 import { ShowModule } from './show/show.module';
 import { LogsModule } from './logs/logs.module';
@@ -56,10 +57,11 @@ export function createTranslateLoader(http: HttpClient) {
     WizardModule,
     ServerModule,
     PluginModule,
-    TaskModule,
+    JobsModule,
     ShowModule,
     MovieModule,
     LogsModule,
+    TooltipModule,
     AboutModule,
     AppRoutingModule,
     TranslateModule.forRoot({

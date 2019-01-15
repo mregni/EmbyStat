@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common;
 using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Models.Graph;
 
@@ -14,16 +12,16 @@ namespace EmbyStat.Services.Abstract
 {
     public abstract class MediaService
     {
-        private readonly ITaskRepository _taskRepository;
+        private readonly IJobRepository _jobRepository;
 
-        protected MediaService(ITaskRepository taskRepository)
+        protected MediaService(IJobRepository jobRepository)
         {
-            _taskRepository = taskRepository;
+            _jobRepository = jobRepository;
         }
 
-        public bool NewStatisticsNeeded(Statistic statistic, IEnumerable<Guid> collectionIds)
+        public bool StatisticsAreValid(Statistic statistic, IEnumerable<Guid> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
 
             return statistic != null
                    && lastMediaSync != null

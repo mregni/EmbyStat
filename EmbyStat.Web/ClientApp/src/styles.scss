@@ -3,18 +3,29 @@
 @import "app/styles/ball-scale-ripple-multiple.min.scss";
 @import "app/styles/ball-clip-rotate.min.scss";
 
-
 $grey-font-color: #888;
-$white-font-color: #fff;
-
+$white-color: #fff;
 $normal-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+
+$small-size: 768px;
+$medium-size: 960px;
+$large-size: 1899px;
 
 body {
   margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .content {
   margin: 25px;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
 }
 
 .text-italic {
@@ -65,7 +76,7 @@ body {
 .subtext-white {
   font-style: italic;
   padding: 3px;
-  color: $white-font-color;
+  color: $white-color;
 }
 
 .subtext-grey-small {
@@ -123,5 +134,5 @@ body {
 }
 
 .text__warn {
-  color: mat-color($mat-red, A400);
+  color: mat-color($mat-red, A700);
 }

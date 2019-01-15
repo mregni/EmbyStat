@@ -10,8 +10,7 @@ using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
-using MediaBrowser.Model.Serialization;
-using Microsoft.Extensions.Logging;
+using EmbyStat.Common.Helpers;
 using Serilog;
 
 namespace EmbyStat.Api.EmbyClient

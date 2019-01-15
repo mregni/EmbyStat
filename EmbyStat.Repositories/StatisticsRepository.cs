@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using EmbyStat.Common;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Models.Joins;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Joins;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

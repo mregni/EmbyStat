@@ -1,4 +1,4 @@
-@import '../../../../styles.scss';
+@import "../../../../styles";
 
 .poster_container {
   margin: 0 20px 20px 0;
@@ -14,13 +14,13 @@
   cursor:pointer;
 }
 
-.poster__content {
+.poster-content {
   background-color: rgba(0, 0, 0, 0.65);
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: flex-end;
-  color: $white-font-color;
+  color: $white-color;
   max-height: 37px;
   padding: 5px;
 
@@ -31,7 +31,7 @@
     justify-content: space-between;
 
     .rating {
-      border: 1px solid $white-font-color;
+      border: 1px solid $white-color;
       padding: 1px 6px;
       font-size: 0.5em;
       vertical-align: middle;
@@ -45,7 +45,7 @@
   }
 }
 
-.poster__sub-content {
+.poster-sub-content {
   display: flex;
   align-items: center;
   justify-content: center;

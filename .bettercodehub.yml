@@ -1,0 +1,8 @@
+exclude:
+- /EmbyStat.Common/Models/.*
+- /EmbyStat.Controllers/ViewModels/.*
+- /EmbyStat.Common\Models/.*   
+languages:
+- csharp
+- javascript
+- typescript

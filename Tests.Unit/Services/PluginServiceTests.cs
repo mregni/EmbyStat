@@ -4,7 +4,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
 using MediaBrowser.Model.Plugins;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 

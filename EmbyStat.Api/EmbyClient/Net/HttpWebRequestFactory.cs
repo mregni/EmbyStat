@@ -14,6 +14,7 @@ namespace EmbyStat.Api.EmbyClient.Net
         {
             var request = WebRequest.CreateHttp(options.Url);
 
+            request.UserAgent = options.UserAgent;
             request.AutomaticDecompression = DecompressionMethods.Deflate;
             request.CachePolicy = new global::System.Net.Cache.RequestCachePolicy(global::System.Net.Cache.RequestCacheLevel.Revalidate);
             request.KeepAlive = true;

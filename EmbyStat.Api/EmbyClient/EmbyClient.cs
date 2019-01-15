@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,11 +8,11 @@ using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Entities;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
-using MediaBrowser.Model.Serialization;
-using MediaBrowser.Model.System;
 using MediaBrowser.Controller.Authentication;
 using Serilog;
 using static System.Threading.Tasks.Task;
@@ -75,14 +74,14 @@ namespace EmbyStat.Api.EmbyClient
 			}
 		}
 
-		public async Task<SystemInfo> GetServerInfoAsync()
+		public async Task<ServerInfo> GetServerInfoAsync()
 		{
 			var url = GetApiUrl("System/Info");
 
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for server info");
             using (var stream = await GetSerializedStreamAsync(url))
 			{
-				return DeserializeFromStream<SystemInfo>(stream);
+				return DeserializeFromStream<ServerInfo>(stream);
 			}
 		}
 

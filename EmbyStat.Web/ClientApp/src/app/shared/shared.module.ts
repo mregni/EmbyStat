@@ -10,8 +10,6 @@ import { ChartModule } from 'angular-highcharts';
 import { LanguageModule } from './components/language/language.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { SideNavComponent } from './side-nav/side-nav.component';
 import { CardComponent } from './components/card/card.component';
 import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
 import { CardNumberComponent } from './components/card-number/card-number.component';
@@ -20,17 +18,25 @@ import { PersonPosterComponent } from './components/person-poster/person-poster.
 import { ShowPosterComponent } from './components/show-poster/show-poster.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { CollectionSelectorComponent } from './components/collection-selector/collection-selector.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { UpdateOverlayComponent } from './components/update-overlay/update-overlay.component';
+import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 
-import { CapitalizeFirstPipe } from './pipes/capitalizefirst.pipe';
+import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 
 import { ToastService } from './services/toast.service';
-import { TaskSignalService } from './services/signalR/task-signal.service';
+import { JobSocketService } from './services/job-socket.service';
 import { EmbyService } from './services/emby.service';
-import { ToolbarFacade } from './toolbar/state/facade.toolbar';
+import { UpdateService } from './services/update.service';
+import { UpdateOverlayService } from './services/update-overlay.service';
+import { SideBarService } from './services/side-bar.service';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
+
+import { DisableControlDirective } from './directives/disable-control/disable-control.directive';
+
 
 @NgModule({
   imports: [
@@ -46,7 +52,6 @@ import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.c
     TranslateModule.forChild()
   ],
   exports: [
-    SideNavComponent,
     ToolbarComponent,
     MaterialModule,
     MomentModule,
@@ -64,11 +69,12 @@ import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.c
     NoTypeFoundDialog,
     SyncIsRunningDialog,
     CapitalizeFirstPipe,
-    ToShorterStringPipe
+    ToShorterStringPipe,
+    DisableControlDirective,
+    SideNavigationComponent
   ],
   declarations: [
     ToolbarComponent,
-    SideNavComponent,
     CardComponent,
     CardTimespanComponent,
     CardNumberComponent,
@@ -80,16 +86,22 @@ import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.c
     NoTypeFoundDialog,
     SyncIsRunningDialog,
     CapitalizeFirstPipe,
-    ToShorterStringPipe
+    ToShorterStringPipe,
+    DisableControlDirective,
+    UpdateOverlayComponent,
+    SideNavigationComponent
   ],
   providers: [
     ToastService,
     EmbyService,
-    TaskSignalService,
-    ToolbarFacade
+    JobSocketService,
+    UpdateService,
+    UpdateOverlayService,
+    SideBarService
   ],
   entryComponents: [
     NoTypeFoundDialog,
-    SyncIsRunningDialog]
+    SyncIsRunningDialog,
+    UpdateOverlayComponent]
 })
 export class SharedModule { }

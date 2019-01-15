@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common.Models;
+﻿using System.Collections.Generic;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {

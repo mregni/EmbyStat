@@ -24,7 +24,10 @@ const INITIAL_STATE: Configuration = {
   embyServerPort: 8096,
   embyServerProtocol: 0,
   lastTvdbUpdate: undefined,
-  keepLogsCount: 0
+  keepLogsCount: 0,
+  autoUpdate: false,
+  updateTrain: 2,
+  updateInProgress: false
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -49,7 +52,10 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         embyServerProtocol: action.payload.embyServerProtocol,
         lastTvdbUpdate: action.payload.lastTvdbUpdate,
         keepLogsCount: action.payload.keepLogsCount,
-        isLoaded: true
+        isLoaded: true,
+        autoUpdate: action.payload.autoUpdate,
+        updateTrain: action.payload.updateTrain,
+        updateInProgress: action.payload.updateInProgress
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
       return {
@@ -71,7 +77,10 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         embyServerProtocol: action.payload.embyServerProtocol,
         lastTvdbUpdate: action.payload.lastTvdbUpdate,
         keepLogsCount: action.payload.keepLogsCount,
-        isLoaded: true
+        isLoaded: true,
+        autoUpdate: action.payload.autoUpdate,
+        updateTrain: action.payload.updateTrain,
+        updateInProgress: action.payload.updateInProgress
       };
     default:
       return state;

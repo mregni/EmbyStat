@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Model;
-using EmbyStat.Common;
 using EmbyStat.Common.Converters;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 

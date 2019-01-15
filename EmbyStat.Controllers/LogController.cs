@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Logs;
 using EmbyStat.Services.Interfaces;
@@ -12,10 +10,10 @@ namespace EmbyStat.Controllers
     [Route("api/[controller]")]
     public class LogController : Controller
     {
-        private readonly ILogsService _logService;
+        private readonly ILogService _logService;
         private readonly IMapper _mapper;
 
-        public LogController(ILogsService logService, IMapper mapper)
+        public LogController(ILogService logService, IMapper mapper)
         {
             _logService = logService;
             _mapper = mapper;

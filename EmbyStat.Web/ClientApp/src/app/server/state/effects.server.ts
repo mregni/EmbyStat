@@ -6,8 +6,8 @@ import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import 'rxjs/add/observable/throw';
 
-import { ServerInfo } from '../models/serverInfo';
-import { ServerService } from '../service/server.service';
+import { ServerInfo } from '../../shared/models//emby/server-info';
+import { EmbyService } from '../../shared/services/emby.service';
 import { ServerActionTypes, LoadServerInfoAction, LoadServerInfoSuccessAction, NoNeedServerInfoAction } from './actions.server';
 
 import { ServerQuery } from './reducer.server';
@@ -18,11 +18,11 @@ import { ApplicationState } from '../../states/app.state';
 export class ServerEffects {
   constructor(
     private actions$: Actions,
-    private serverService: ServerService,
+    private embyService: EmbyService,
     private store: Store<ApplicationState>) {
   }
 
-  public loaded$ = this.store.select(ServerQuery.getLoaded);
+  loaded$ = this.store.select(ServerQuery.getLoaded);
 
   @Effect()
   getServerInfo$ = this.actions$
@@ -33,7 +33,7 @@ export class ServerEffects {
       switchMap(([_, loaded]) => {
         return loaded
           ? of(null)
-          : this.serverService.getServerInfo();
+          : this.embyService.getServerInfo();
       }),
       map((serverInfo: ServerInfo | null) => {
         return serverInfo

@@ -1,15 +1,15 @@
 <mat-card *ngIf="card !== undefined">
   <mat-card-content>
-    <div class="card__flex-column">
-      <div class="card__value">
+    <div class="card-flex-column">
+      <div class="card-value">
         <span countUp [endVal]="card.days" startVal="0"></span>
-        <span class="card__small-text">{{'COMMON.DAYS' | translate}}</span> /
+        <span class="card-small-text">{{'COMMON.DAYS' | translate}}</span> /
         <span countUp [endVal]="card.hours" startVal="0"></span>
-        <span class="card__small-text">{{'COMMON.HOURS' | translate}}</span> /
+        <span class="card-small-text">{{'COMMON.HOURS' | translate}}</span> /
         <span countUp [endVal]="card.minutes" startVal="0"></span>
-        <span class="card__small-text">{{'COMMON.MINUTES' | translate}}</span>
+        <span class="card-small-text">{{'COMMON.MINUTES' | translate}}</span>
       </div>
-      <span class="card__title">{{card.title | translate}}</span>
+      <span class="card-title">{{card.title | translate}}</span>
     </div>
   </mat-card-content>
 </mat-card>

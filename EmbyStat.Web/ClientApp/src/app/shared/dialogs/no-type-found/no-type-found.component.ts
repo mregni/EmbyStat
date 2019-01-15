@@ -1,10 +1,10 @@
+/* tslint:disable:component-class-suffix */
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { TaskFacade } from '../../../task/state/facade.task';
-import { Task } from '../../../task/models/task';
+import { JobService } from '../../../jobs/service/job.service';
 
 @Component({
   selector: 'app-no-type-found',
@@ -12,32 +12,29 @@ import { Task } from '../../../task/models/task';
   styleUrls: ['./no-type-found.component.scss']
 })
 export class NoTypeFoundDialog implements OnDestroy {
-  private getTasksSub: Subscription;
-  private tasks: Task[];
+  private jobSub: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,
-    private taskFacade: TaskFacade,
+    private jobService: JobService,
     private router: Router) {
-    this.getTasksSub = this.taskFacade.getTasks().subscribe((result: Task[]) => this.tasks = result);
   }
 
   cancelClick(): void {
     this.dialogRef.close();
   }
 
-  startSyncClick(): void {
-    const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
-    this.taskFacade.fireTask(task.id);
+  startMediaSync(): void {
+    this.jobSub = this.jobService.fireMediaSyncJob().subscribe();
     this.router.navigate(['/task']);
     this.dialogRef.close();
 
   }
 
   ngOnDestroy() {
-    if (this.getTasksSub !== undefined) {
-      this.getTasksSub.unsubscribe();
+    if (this.jobSub !== undefined) {
+      this.jobSub.unsubscribe();
     }
   }
 }

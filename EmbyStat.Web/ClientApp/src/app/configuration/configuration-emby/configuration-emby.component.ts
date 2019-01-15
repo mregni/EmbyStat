@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
-import { EmbyToken } from '../../shared/models/emby/embyToken';
+import { EmbyToken } from '../../shared/models/emby/emby-token';
 import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
@@ -17,16 +17,15 @@ export class ConfigurationEmbyComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
 
-  public form: FormGroup;
-  public embyAddressControl = new FormControl('', [Validators.required]);
-  public embyPortControl = new FormControl('', [Validators.required]);
-  public embyProtocolControl = new FormControl('', [Validators.required]);
-  public embyUsernameControl = new FormControl('', [Validators.required]);
-  public embyPasswordControl = new FormControl('', [Validators.required]);
+  form: FormGroup;
+  embyAddressControl = new FormControl('', [Validators.required]);
+  embyPortControl = new FormControl('', [Validators.required]);
+  embyProtocolControl = new FormControl('', [Validators.required]);
+  embyUsernameControl = new FormControl('', [Validators.required]);
+  embyPasswordControl = new FormControl('', [Validators.required]);
 
-  public configChangedSub: Subscription;
-
-  public hidePassword = true;
+  configChangedSub: Subscription;
+  hidePassword = true;
 
   constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();

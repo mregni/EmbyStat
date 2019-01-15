@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 import { NoTypeFoundDialog } from '../../shared/dialogs/no-type-found/no-type-found.component';
-import { ShowFacade } from '../state/facade.show';
+import { ShowService } from '../service/show.service';
 import { Collection } from '../../shared/models/collection';
 import { ShowChartsService } from '../service/show-charts.service';
 
@@ -15,20 +15,20 @@ import { ShowChartsService } from '../service/show-charts.service';
   styleUrls: ['./show-overview.component.scss']
 })
 export class ShowOverviewComponent implements OnInit, OnDestroy {
-  public collections$: Observable<Collection[]>;
-  public selectedCollections: string[];
   private isShowTypePresentSub: Subscription;
+  collections$: Observable<Collection[]>;
+  selectedCollections: string[];
 
-  public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
-  public typeIsPresent: boolean;
+  collectionsFormControl = new FormControl('', { updateOn: 'blur' });
+  typeIsPresent: boolean;
 
   constructor(
-    private showFacade: ShowFacade,
+    private showService: ShowService,
     private showChartsService: ShowChartsService,
     public dialog: MatDialog) {
-    this.collections$ = this.showFacade.getCollections();
+    this.collections$ = this.showService.getCollections();
 
-    this.isShowTypePresentSub = this.showFacade.isShowTypePresent().subscribe((typePresent: boolean) => {
+    this.isShowTypePresentSub = this.showService.checkIfTypeIsPresent().subscribe((typePresent: boolean) => {
       this.typeIsPresent = typePresent;
       if (!typePresent) {
         this.dialog.open(NoTypeFoundDialog,

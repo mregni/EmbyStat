@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MoviePoster } from '../../models/moviePoster';
+import { MoviePoster } from '../../models/movie-poster';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
 import { ConfigHelper } from '../../helpers/configHelper';
@@ -24,7 +24,8 @@ export class MoviePosterComponent implements OnDestroy {
     if (this.configuration === undefined) {
       return '';
     }
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${ConfigHelper.getFullEmbyAddress(this.configuration)}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    const fullAddress = ConfigHelper.getFullEmbyAddress(this.configuration);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openMovie(): void {

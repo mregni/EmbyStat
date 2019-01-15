@@ -1,6 +1,6 @@
 <div *ngIf="poster !== undefined" class="poster_container">
   <div [style.background-image]="getBackground()" class="poster" (click)="openPerson()">
-    <div class="poster__content">
+    <div class="poster-content">
       <div class="row">
         <div>{{poster.name | toShorterString:18 }}</div>
         <div>
@@ -15,10 +15,10 @@
       </div>
     </div>
   </div>
-  <div class="subtext-white poster__sub-content" *ngIf="needsBarAndTranslation(poster.title)">
+  <div class="subtext-white poster-sub-content" *ngIf="needsBarAndTranslation(poster.title)">
     <span>{{ poster.title | translate }}</span>
   </div>
-  <div class="subtext-white poster__sub-content" *ngIf="needsBarButNoTranslation(poster.title)">
+  <div class="subtext-white poster-sub-content" *ngIf="needsBarButNoTranslation(poster.title)">
     <span>{{ poster.title | translate }}</span>
   </div>
 </div>

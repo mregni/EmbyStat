@@ -22,5 +22,8 @@ namespace EmbyStat.Controllers.ViewModels.Configuration
         public int EmbyServerProtocol { get; set; }
         public DateTime? LastTvdbUpdate { get; set; }
         public int KeepLogsCount { get; set; }
+        public bool AutoUpdate { get; set; }
+        public int UpdateTrain { get; set; }
+        public bool UpdateInProgress { get; set; }
     }
 }

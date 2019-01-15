@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { DashboardComponent } from './dashboard.component';
+import { DashboardOverviewComponent } from './dashboard-overview/dashboard-overview.component';
 
 @NgModule({
   imports: [
@@ -10,6 +10,6 @@ import { DashboardComponent } from './dashboard.component';
     TranslateModule,
     SharedModule
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardOverviewComponent]
 })
 export class DashboardModule { }

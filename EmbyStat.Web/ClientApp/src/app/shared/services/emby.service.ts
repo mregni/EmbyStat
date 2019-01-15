@@ -2,34 +2,36 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { EmbyUdpBroadcast } from '../models/emby/embyUdpBroadcast';
-import { EmbyLogin } from '../models/emby//embyLogin';
-import { EmbyToken } from '../models/emby/embyToken';
-import { EmbyStatus } from '../models/emby/embyStatus';
+import { EmbyUdpBroadcast } from '../models/emby/emby-udp-broadcast';
+import { EmbyLogin } from '../models/emby//emby-login';
+import { EmbyToken } from '../models/emby/emby-token';
+import { EmbyStatus } from '../models/emby/emby-status';
+import { ServerInfo } from '../models/emby/server-info';
 
 @Injectable()
 export class EmbyService {
-  private readonly searchEmbyUrl: string = '/emby/searchemby';
-  private readonly getEmbyTokenUrl: string = '/emby/generatetoken';
-  private readonly getServerInfoUrl: string = '/emby/getserverinfo';
-  private readonly fireSmallEmbyUpdateUrl: string = '/emby/firesmallembysync';
-  private readonly getEmbyStatusUrl: string = '/emby/getembystatus';
+  private readonly baseUrl = '/api/emby/';
+  private searchEmbyUrl = this.baseUrl + 'searchemby';
+  private getEmbyTokenUrl = this.baseUrl + 'generatetoken';
+  private getServerInfoUrl = this.baseUrl + 'getserverinfo';
+  private fireSmallEmbyUpdateUrl = this.baseUrl + 'firesmallembysync';
+  private getEmbyStatusUrl = this.baseUrl + 'getembystatus';
 
   constructor(private http: HttpClient) { }
 
   getEmbyToken(login: EmbyLogin): Observable<EmbyToken> {
-    return this.http.post<EmbyToken>('/api' + this.getEmbyTokenUrl, login);
+    return this.http.post<EmbyToken>(this.getEmbyTokenUrl, login);
   }
 
   searchEmby(): Observable<EmbyUdpBroadcast> {
-    return this.http.get<EmbyUdpBroadcast>('/api' + this.searchEmbyUrl);
-  }
-
-  fireSmallEmbyUpdate(): Observable<void> {
-    return this.http.post<void>('/api' + this.fireSmallEmbyUpdateUrl, {});
+    return this.http.get<EmbyUdpBroadcast>(this.searchEmbyUrl);
   }
 
   getEmbyStatus(): Observable<EmbyStatus> {
-    return this.http.get<EmbyStatus>('/api' + this.getEmbyStatusUrl);
+    return this.http.get<EmbyStatus>(this.getEmbyStatusUrl);
+  }
+
+  getServerInfo(): Observable<ServerInfo> {
+    return this.http.get<ServerInfo>(this.getServerInfoUrl);
   }
 }

@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using EmbyStat.Api.EmbyClient;
 using EmbyStat.Api.EmbyClient.Net;
 using EmbyStat.Api.Tvdb.Converter;
 using EmbyStat.Api.Tvdb.Models;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
-using EmbyStat.Common.Models;
-using MediaBrowser.Common.Net;
-using MediaBrowser.Model.Serialization;
+using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Entities;
 using Serilog;
 
 namespace EmbyStat.Api.Tvdb
@@ -55,15 +47,15 @@ namespace EmbyStat.Api.Tvdb
         {
             var tvdbEpisodes = new List<VirtualEpisode>();
             var page = new TvdbEpisodes();
-            var i = 1;
+            var i = 0;
             do
             {
+                i++;
                 var url = string.Format(Constants.Tvdb.SerieEpisodesUrl, seriesId, i);
                 page = await GetEpisodePage(url, cancellationToken);
                 tvdbEpisodes.AddRange(page.Data
                     .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired)).Select(EpisodeHelper.ConvertToEpisode));
-                i++;
-            } while (page.Links.Next.HasValue);
+            } while (page.Links.Next != i && page.Links.Next != null);
 
             return tvdbEpisodes;
         }

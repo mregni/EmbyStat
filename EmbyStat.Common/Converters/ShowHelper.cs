@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Models.Joins;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Joins;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
-namespace EmbyStat.Services.Converters
+namespace EmbyStat.Common.Converters
 {
     public static class ShowHelper
     {

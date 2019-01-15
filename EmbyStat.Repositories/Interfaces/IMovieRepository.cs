@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {

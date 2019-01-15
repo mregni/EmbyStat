@@ -37,15 +37,11 @@
   },
   "lint": [
     {
-      "project": "src/tsconfig.app.json",
+      "project": "tsconfig.app.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/tsconfig.spec.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "e2e/tsconfig.e2e.json",
+      "project": "tsconfig.spec.json",
       "exclude": "**/node_modules/**"
     }
   ],
@@ -56,6 +52,14 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+    "component": {},
+    "spec": {
+      "class": false,
+      "component": false,
+      "directive": false,
+      "module": false,
+      "pipe": false,
+      "service": false
+    }
   }
 }

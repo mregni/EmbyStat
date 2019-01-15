@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -31,10 +30,10 @@ namespace EmbyStat.Services
             ICollectionRepository collectionRepository, 
             IGenreRepository genreRepository, 
             IPersonService personService, 
-            ITaskRepository taskRepository, 
+            IJobRepository jobRepository, 
             IStatisticsRepository statisticsRepository,
             IConfigurationRepository configurationRepository)
-        : base(taskRepository){
+        : base(jobRepository){
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
@@ -54,7 +53,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
             ShowStat stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<ShowStat>(statistic.JsonResult);
             }
@@ -87,7 +86,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
             ShowGraphs stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<ShowGraphs>(statistic.JsonResult);
             }
@@ -115,7 +114,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
             PersonStats stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
             }
@@ -141,7 +140,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
             List<ShowCollectionRow> stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
             }

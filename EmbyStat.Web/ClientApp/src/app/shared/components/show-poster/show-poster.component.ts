@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
-import { ShowPoster } from '../../models/showPoster';
+import { ShowPoster } from '../../models/show-poster';
 import { ConfigHelper } from '../../helpers/configHelper';
 
 @Component({
@@ -24,7 +24,8 @@ export class ShowPosterComponent implements OnDestroy {
     if (this.configuration === undefined) {
       return '';
     }
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${ConfigHelper.getFullEmbyAddress(this.configuration)}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    const fullAddress = ConfigHelper.getFullEmbyAddress(this.configuration);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openShow(): void {

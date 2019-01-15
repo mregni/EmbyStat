@@ -6,7 +6,6 @@ import { SharedModule } from '../shared/shared.module';
 
 import { ShowService } from './service/show.service';
 import { ShowChartsService } from './service/show-charts.service';
-import { ShowFacade } from './state/facade.show';
 
 import { ShowOverviewComponent } from './show-overview/show-overview.component';
 import { ShowGeneralComponent } from './show-general/show-general.component';
@@ -24,8 +23,7 @@ import { ShowCollectionComponent } from './show-collection/show-collection.compo
   ],
   providers: [
     ShowService,
-    ShowChartsService,
-    ShowFacade
+    ShowChartsService
   ],
   declarations: [ShowOverviewComponent, ShowGeneralComponent, ShowChartsComponent, ShowPeopleComponent, ShowCollectionComponent]
 })

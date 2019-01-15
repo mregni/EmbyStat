@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Show;
 using EmbyStat.Controllers.ViewModels.Stat;

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EmbyStat.Common;
-using EmbyStat.Common.Models;
+﻿using System.Linq;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 

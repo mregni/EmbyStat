@@ -1,0 +1,13 @@
+assembly-versioning-scheme: MajorMinorPatch
+mode: ContinuousDeployment
+branches:
+  dev:
+    mode: ContinuousDeployment
+    tag: dev
+  master:
+    mode: ContinuousDelivery
+  dev(elop)?(ment)?$:
+    mode: ContinuousDeployment
+    tag: dev
+ignore:
+  sha: []

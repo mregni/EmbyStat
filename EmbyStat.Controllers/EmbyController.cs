@@ -8,7 +8,6 @@ using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace EmbyStat.Controllers

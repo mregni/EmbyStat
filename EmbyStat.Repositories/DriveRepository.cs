@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Models;
+using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Repositories.Interfaces;
 
 namespace EmbyStat.Repositories
 {
     public class DriveRepository : IDriveRepository
     {
-	    public List<Drives> GetAll()
+	    public List<Drive> GetAll()
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
@@ -15,7 +15,7 @@ namespace EmbyStat.Repositories
 		    }
 	    }
 
-	    public void ClearAndInsertList(List<Drives> drives)
+	    public void ClearAndInsertList(List<Drive> drives)
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {

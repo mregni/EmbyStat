@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Extentions;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace EmbyStat.Controllers
@@ -40,7 +37,7 @@ namespace EmbyStat.Controllers
 	    public IActionResult Update([FromBody] ConfigurationViewModel configuration)
 	    {
 	        Log.Information($"{Constants.LogPrefix.ServerApi}\tUpdating the new server configuration.");
-	        var config = _mapper.Map<Common.Models.Configuration>(configuration);
+	        var config = _mapper.Map<Configuration>(configuration);
 	        _configurationService.SaveServerSettings(config);
 
 	        config = _configurationService.GetServerSettings();

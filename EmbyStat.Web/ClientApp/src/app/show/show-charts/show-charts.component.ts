@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import { ShowChartsService } from '../service/show-charts.service';
-import { ShowFacade } from '../state/facade.show';
-import { ShowGraphs } from '../models/showGraphs';
+import { ShowService } from '../service/show.service';
+import { ShowGraphs } from '../models/show-graphs';
 
 @Component({
   selector: 'app-show-charts',
@@ -14,6 +14,8 @@ import { ShowGraphs } from '../models/showGraphs';
 export class ShowChartsComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
   private previousOnTabValue: boolean;
+  private showChartSub: Subscription;
+  private onTab = false;
 
   get selectedCollections(): string[] {
     return this._selectedCollections;
@@ -29,20 +31,18 @@ export class ShowChartsComponent implements OnInit, OnDestroy {
     this.graphs$ = undefined;
 
     if (this.onTab) {
-      this.graphs$ = this.showFacade.getGraphs(this._selectedCollections);
+      this.graphs$ = this.showService.getGraphs(this._selectedCollections);
     }
   }
 
-  public graphs$: Observable<ShowGraphs>;
-  private showChartSub: Subscription;
-  private onTab = false;
+  graphs$: Observable<ShowGraphs>;
 
-  constructor(private showFacade: ShowFacade, private showChartsService: ShowChartsService) {
+  constructor(private showService: ShowService, private showChartsService: ShowChartsService) {
     showChartsService.open.subscribe(value => {
       this.onTab = value;
       if (value && !this.previousOnTabValue) {
         this.previousOnTabValue = value;
-        this.graphs$ = this.showFacade.getGraphs(this._selectedCollections);
+        this.graphs$ = this.showService.getGraphs(this._selectedCollections);
       }
     });
   }

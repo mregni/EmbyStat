@@ -1,7 +1,7 @@
 import { ApplicationState } from '../../states/app.state';
 
-import { ServerInfoStore } from '../models/serverInfoStore';
-import { ServerInfo } from '../models/serverInfo';
+import { ServerInfoStore } from '../models/server-info-store';
+import { ServerInfo } from '../../shared/models/emby/server-info';
 import { ServerActionTypes, ServerActions } from './actions.server';
 
 

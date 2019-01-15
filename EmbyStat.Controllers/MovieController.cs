@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Controllers.ViewModels.Graph;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Services.Interfaces;

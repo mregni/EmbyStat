@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace EmbyStat.Repositories
@@ -25,6 +24,7 @@ namespace EmbyStat.Repositories
             await SeedConfiguration();
             await SeedLanguages();
             await SeedEmbyStatus();
+            await SeedJobs();
 
             await _context.SaveChangesAsync();
         }
@@ -67,6 +67,12 @@ namespace EmbyStat.Repositories
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerPort, Value = "8096" });
             if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerProtocol))
                 _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerProtocol, Value = "0" });
+            if (configuration.All(x => x.Id != Constants.Configuration.AutoUpdate))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AutoUpdate, Value = "True" });
+            if (configuration.All(x => x.Id != Constants.Configuration.UpdateTrain))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "1" });
+            if (configuration.All(x => x.Id != Constants.Configuration.UpdateInProgress))
+                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateInProgress, Value = "False" });
 
             await _context.SaveChangesAsync();
         }
@@ -109,6 +115,26 @@ namespace EmbyStat.Repositories
 
             if (status.All(x => x.Id != Constants.EmbyStatus.MissedPings))
                 _context.EmbyStatus.Add(new EmbyStatusKeyValue { Id = Constants.EmbyStatus.MissedPings, Value = "0" });
+
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task SeedJobs()
+        {
+            Log.Information("${Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+
+            var jobs = _context.Jobs.ToList();
+
+            if (!jobs.Exists(x => x.Id == Constants.JobIds.CheckUpdateId))
+                _context.Jobs.Add(new Job { Id = Constants.JobIds.CheckUpdateId, State = JobState.Idle, Description = "CHECKUPDATEDESCRIPTION", Title = "CHECKUPDATETITLE", Trigger = "0 */12 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == Constants.JobIds.SmallSyncId))
+                _context.Jobs.Add(new Job { Id = Constants.JobIds.SmallSyncId, State = JobState.Idle, Description = "SMALLEMBYSYNCDESCRIPTION", Title = "SMALLEMBYSYNCTITLE", Trigger = "0 2 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == Constants.JobIds.MediaSyncId))
+                _context.Jobs.Add(new Job { Id = Constants.JobIds.MediaSyncId, State = JobState.Idle, Description = "MEDIASYNCDESCRIPTION", Title = "MEDIASYNCTITLE", Trigger = "0 3 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == Constants.JobIds.PingEmbyId))
+                _context.Jobs.Add(new Job { Id = Constants.JobIds.PingEmbyId, State = JobState.Idle, Description = "PINGEMBYSERVERDESCRIPTION", Title = "PINGEMBYSERVERTITLE", Trigger = "*/5 * * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            if (!jobs.Exists(x => x.Id == Constants.JobIds.DatabaseCleanupId))
+                _context.Jobs.Add(new Job { Id = Constants.JobIds.DatabaseCleanupId, State = JobState.Idle, Description = "DATABASECLEANUPDESCRIPTION", Title = "DATABASECLEANUPTITLE", Trigger = "0 4 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
 
             await _context.SaveChangesAsync();
         }

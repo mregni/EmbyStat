@@ -1,6 +1,6 @@
-import { SimpleGraphValue } from './simpleGraphValue';
+import { SimpleGraphValue } from './simple-graph-value';
 
 export class Graph<T> {
-  public title: string;
-  public data: SimpleGraphValue[];
+  title: string;
+  data: SimpleGraphValue[];
 }

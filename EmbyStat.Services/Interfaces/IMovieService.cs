@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using EmbyStat.Common.Models;
-using EmbyStat.Services.Models;
-using EmbyStat.Services.Models.Graph;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 

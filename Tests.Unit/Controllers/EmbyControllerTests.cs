@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common.Models;
+using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models;
 using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -26,7 +25,7 @@ namespace Tests.Unit.Controllers
 	    private readonly EmbyToken _token;
 	    private readonly ServerInfo _serverInfo;
 	    private readonly EmbyUdpBroadcast _emby;
-	    private readonly List<Drives> _drives;
+	    private readonly List<Drive> _drives;
 
 		public EmbyControllerTests()
 	    {
@@ -52,9 +51,9 @@ namespace Tests.Unit.Controllers
 				HttpsPortNumber = 8097
 			};
 
-			_drives = new List<Drives>
+			_drives = new List<Drive>
 			{
-				new Drives(), new Drives()
+				new Drive(), new Drive()
 			};
 
 			_embyServiceMock = new Mock<IEmbyService>();
@@ -66,7 +65,7 @@ namespace Tests.Unit.Controllers
 
 	        var _mapperMock = new Mock<IMapper>();
 	        _mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
-            _mapperMock.Setup(x => x.Map<IList<DriveViewModel>>(It.IsAny<List<Drives>>())).Returns(new List<DriveViewModel>{ new DriveViewModel(), new DriveViewModel()});
+            _mapperMock.Setup(x => x.Map<IList<DriveViewModel>>(It.IsAny<List<Drive>>())).Returns(new List<DriveViewModel>{ new DriveViewModel(), new DriveViewModel()});
             _mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = true, Token = "azerty", Username = "admin" });
 	        _mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "localhost", Name = "emby", Protocol = 0, Port = 80});
 

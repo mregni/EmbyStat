@@ -294,3 +294,6 @@ __pycache__/
 
 *.js
 *.js.map
+
+**/*.ver
+**/updateFiles/**

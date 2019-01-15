@@ -18,15 +18,16 @@ import { Language } from '../../shared/components/language/models/language';
 export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
-  public languageChangedSub: Subscription;
-  public configChangedSub: Subscription;
-  public languages$: Observable<Language[]>;
 
-  public form: FormGroup;
-  public tvdbForm: FormGroup;
-  public nameControl = new FormControl('', [Validators.required]);
-  public languageControl = new FormControl('en-US', [Validators.required]);
-  public tvdbApiKeyControl = new FormControl('', [Validators.required]);
+  languageChangedSub: Subscription;
+  configChangedSub: Subscription;
+  languages$: Observable<Language[]>;
+
+  form: FormGroup;
+  tvdbForm: FormGroup;
+  nameControl = new FormControl('', [Validators.required]);
+  languageControl = new FormControl('en-US', [Validators.required]);
+  tvdbApiKeyControl = new FormControl('', [Validators.required]);
 
   constructor(
     private configurationFacade: ConfigurationFacade,
@@ -47,8 +48,9 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
 
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
-      this.form.setValue({ name: config.username, language: config.language });
-      this.tvdbForm.setValue({ tvdbApiKey: config.tvdbApiKey  });
+      this.nameControl.setValue(config.username);
+      this.languageControl.setValue(config.language);
+      this.tvdbApiKeyControl.setValue(config.tvdbApiKey);
     });
 
     this.languageChangedSub = this.languageControl.valueChanges

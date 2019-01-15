@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PersonPoster } from '../../models/personPoster';
+import { PersonPoster } from '../../models/person-poster';
 import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
 import { Configuration } from '../../../configuration/models/configuration';
 import { ConfigHelper } from '../../helpers/configHelper';
@@ -29,7 +29,8 @@ export class PersonPosterComponent implements OnDestroy {
       return this._sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
     }
 
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${ConfigHelper.getFullEmbyAddress(this.configuration)}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    const fullAddress = ConfigHelper.getFullEmbyAddress(this.configuration);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openPerson(): void {

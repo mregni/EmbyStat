@@ -1,4 +1,4 @@
-<div class="configuration__left">
+<div class="configuration-left">
   <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
     <mat-card-content>
       <form class="form-container" [formGroup]="form">
@@ -13,8 +13,8 @@
             </mat-option>
           </mat-select>
           <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
+          <mat-hint align="start" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></mat-hint>
         </mat-form-field>
-        <p class="subtext-grey-small" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></p>
       </form>
     </mat-card-content>
     <mat-card-actions class="button-container">
@@ -23,15 +23,15 @@
   </mat-card>
 </div>
 
-<div class="configuration__left">
+<div class="configuration-left">
   <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
     <mat-card-content>
       <form class="form-container" [formGroup]="tvdbForm">
         <p>{{ 'CONFIGURATION.GENERAL.TVDBAPIKEY' | translate }}</p>
         <mat-form-field>
-          <input matInput placeholder="{{ 'FORM_LABELS.TVDBAPI' | translate }}" formControlName="tvdbApiKey" required>
+          <input matInput type="password" placeholder="{{ 'FORM_LABELS.TVDBAPI' | translate }}" formControlName="tvdbApiKey" required>
+          <mat-hint align="start">{{ 'CONFIGURATION.GENERAL.TVDBAPIKEYWARNING' | translate }}</mat-hint>
         </mat-form-field>
-        <p class="subtext-grey-small">{{ 'CONFIGURATION.GENERAL.TVDBAPIKEYWARNING' | translate }}</p>
       </form>
     </mat-card-content>
     <mat-card-actions class="button-container">

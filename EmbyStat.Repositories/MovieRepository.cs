@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ namespace EmbyStat.Repositories
                     var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
                     if (temp == null)
                     {
-                        Log.Warning($"{Constants.LogPrefix.MediaSyncTask}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
+                        Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
                         peopleToDelete.Add(person.PersonId);
                     }
                 }
@@ -34,7 +34,7 @@ namespace EmbyStat.Repositories
                     var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
                     if (temp == null)
                     {
-                        Log.Warning($"{Constants.LogPrefix.MediaSyncTask}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
+                        Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
                         genresToDelete.Add(genre.GenreId);
                     }
                 }

@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 
-import { LogsComponent } from './logs.component';
+import { LogsOverviewComponent } from './logs-overview/logs-overview.component';
 import { LogService } from './service/log.service';
-import { LogFacade } from './state/facade.log';
 
 @
 NgModule({
@@ -15,9 +14,8 @@ NgModule({
     TranslateModule
   ],
   providers: [
-    LogService,
-    LogFacade
+    LogService
   ],
-  declarations: [LogsComponent]
+  declarations: [LogsOverviewComponent]
 })
 export class LogsModule { }
