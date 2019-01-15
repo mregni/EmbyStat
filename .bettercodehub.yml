@@ -17,3 +17,4 @@ exclude:
 - /EmbyStat.Web/ClientApp/src/app/configuration/state/reducer.configuration.ts
 - /EmbyStat.Web/ClientApp/src/app/shared/material.module.ts
 - /EmbyStat.Web/ClientApp/src/app/shared/shared.module.ts
+- /EmbyStat.Common/Constants.cs
