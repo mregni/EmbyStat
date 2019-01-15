@@ -9,3 +9,8 @@ exclude:
 - /EmbyStat.Common/Models/.*
 - /EmbyStat.Controllers/ViewModels/.*
 - /EmbyStat.Common/Models/.*   
+- /EmbyStat/EmbyStat.Repositories/DatabaseInitializer.cs
+- /EmbyStat/EmbyStat.Repositories/Migrations/.*
+- /EmbyStat/EmbyStat.Common/Helpers/.*
+- /EmbyStat/EmbyStat.Common/Converters/.*
+- /EmbyStat/EmbyStat.Api/EmbyClient/.*
