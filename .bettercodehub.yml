@@ -8,4 +8,4 @@ languages:
 exclude:
 - /EmbyStat.Common/Models/.*
 - /EmbyStat.Controllers/ViewModels/.*
-- /EmbyStat.Common\Models/.*   
+- /EmbyStat.Common/Models/.*   
