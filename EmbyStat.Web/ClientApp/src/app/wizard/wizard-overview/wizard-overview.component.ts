@@ -41,7 +41,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private languageChangedSub: Subscription;
   private searchEmbySub: Subscription;
   private configurationSub: Subscription;
-  private getTasksSub: Subscription;
+  private fireSyncSub: Subscription;
 
   embyFound = false;
   embyServerName = '';
@@ -78,8 +78,6 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
-    //this.getTasksSub = this.taskService.getTasks().subscribe((result: Task[]) => this.tasks = result);
-
     this.embyProtocolControl.setValue(0);
   }
 
@@ -137,7 +135,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   finishWizardAndStartSync() {
-    //this.taskService.fireTask(task.id);
+    this.jobService.fireMediaSyncJob();
     this.wizardStateService.changeState(true);
     this.router.navigate(['/task']);
   }
@@ -155,8 +153,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       this.configurationSub.unsubscribe();
     }
 
-    if (this.getTasksSub !== undefined) {
-      this.getTasksSub.unsubscribe();
+    if (this.fireSyncSub !== undefined) {
+      this.fireSyncSub.unsubscribe();
     }
   }
 }
