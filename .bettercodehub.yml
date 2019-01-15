@@ -14,3 +14,6 @@ exclude:
 - /EmbyStat.Common/Helpers/.*
 - /EmbyStat.Common/Converters/.*
 - /EmbyStat.Api/EmbyClient/.*
+- /EmbyStat.Web/ClientApp/src/app/configuration/state/reducer.configuration.ts
+- /EmbyStat.Web/ClientApp/src/app/shared/material.module.ts
+- /EmbyStat.Web/ClientApp/src/app/shared/shared.module.ts
