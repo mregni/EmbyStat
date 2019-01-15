@@ -1,4 +1,4 @@
-@import "../../../styles.scss";
+@import "../../../styles";
 
 .configuration__left {
   display: flex;
@@ -30,10 +30,6 @@
   .half-width {
     max-width: 100%;
   }
-}
-
-@media only screen and (min-width: 850px) {
-  
 }
 
 .margin-bottom {

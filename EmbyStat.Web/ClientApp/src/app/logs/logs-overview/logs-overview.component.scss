@@ -1,20 +1,20 @@
-@import "../../../styles.scss";
+@import "../../../styles";
 
 .log__flexcontainer {
-  display: flex;
-  flex-direction: row;
-  margin: 0px 0px 20px 0px;
-  padding: 20px;
+  background: $white-color;
   border-radius: 2px;
-  background: #fff;
   box-shadow: $normal-box-shadow;
-  width: 50%;
+  display: flex;
   flex: 0 0 auto;
+  flex-direction: row;
+  margin: 0 0 20px 0;
+  padding: 20px;
+  width: 50%;
 }
 
 .log__title {
-  padding: 3px;
   font-weight: bold;
+  padding: 3px;
 }
 
 .log__subtitle {
@@ -22,16 +22,16 @@
 }
 
 .log__left-column {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
   align-items: flex-start;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
   justify-content: flex-start;
 }
 
 .log__right-column {
-  flex: 1 1 auto;
   align-items: flex-end;
+  flex: 1 1 auto;
 }
 
 @media only screen and (max-width: $large-size) {

@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@import "../../../styles";
 
 .jobs_overview__flexcontainer {
   display: flex;
@@ -17,10 +17,10 @@
   border-radius: 2px;
   background: #fff;
   align-items: flex-start;
-  justify-content:flex-end;
+  justify-content: flex-end;
   box-shadow: $normal-box-shadow;
   background-color: mat-color($mat-blue, A400);
-  color: white;
+  color: $white-color;
   font-family: Menlo,Monaco,Consolas,"Courier New",monospac;
   line-height: 20px;
   margin: 0 0 20px 20px;
@@ -29,13 +29,14 @@
 @media only screen and (max-width: $large-size) {
   .jobs_overview__flexcontainer {
     flex-direction: column;
-     > div {
+
+    > div {
        flex: 0 1 100%;
        width: auto;
-     }
+    }
   }
 
   .joblog__flexcontainer {
-    margin: 0px;
+    margin: 0;
   }
 }
