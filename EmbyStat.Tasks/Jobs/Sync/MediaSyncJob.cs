@@ -28,7 +28,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
     public class MediaSyncJob : BaseJob, IMediaSyncJob
     {
         private readonly IEmbyClient _embyClient;
-        private readonly IConfigurationRepository _configurationRepository;
+        private readonly IConfigurationService _configurationService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly IGenreRepository _genreRepository;
@@ -39,13 +39,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private Configuration _settings;
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
-            IEmbyClient embyClient, IConfigurationRepository configurationRepository, IMovieRepository movieRepository, 
-            IShowRepository showRepository, IGenreRepository genreRepository, IPersonRepository personRepository, 
-            ICollectionRepository collectionRepository, ITvdbClient tvdbClient, IStatisticsRepository statisticsRepository) 
-            : base(hubHelper, jobRepository, configurationService)
+            IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository, IGenreRepository genreRepository, 
+            IPersonRepository personRepository, ICollectionRepository collectionRepository, ITvdbClient tvdbClient, 
+            IStatisticsRepository statisticsRepository): base(hubHelper, jobRepository, configurationService)
         {
             _embyClient = embyClient;
-            _configurationRepository = configurationRepository;
+            _configurationService = configurationService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _genreRepository = genreRepository;
@@ -64,7 +63,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             var cancellationToken = new CancellationToken(false);
 
-            _settings = _configurationRepository.GetConfiguration();
+            _settings = _configurationService.GetServerSettings();
             if (!_settings.WizardFinished)
             {
                 LogWarning("Media sync task not running because wizard is not yet finished!");
@@ -263,7 +262,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
 
             _settings.LastTvdbUpdate = now;
-            _configurationRepository.Update(_settings);
+            _configurationService.SaveServerSettings(_settings);
         }
 
         private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)

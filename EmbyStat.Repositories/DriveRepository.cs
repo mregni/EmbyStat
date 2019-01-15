@@ -15,7 +15,7 @@ namespace EmbyStat.Repositories
 		    }
 	    }
 
-	    public void ClearAndInsertList(List<Drive> drives)
+	    public void RemoveAllAndInsertDriveRange(List<Drive> drives)
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {

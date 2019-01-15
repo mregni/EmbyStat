@@ -90,7 +90,7 @@ namespace Tests.Unit.Services
 		    _embyServerInfoRepository.Setup(x => x.GetSingle()).Returns(_serverInfo);
 
 		    var embyDriveRepository = new Mock<IDriveRepository>();
-		    embyDriveRepository.Setup(x => x.ClearAndInsertList(It.IsAny<List<Drive>>()));
+		    embyDriveRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
 		    embyDriveRepository.Setup(x => x.GetAll()).Returns(drives);
 
 	        var embyStatusRepositoryMock = new Mock<IEmbyStatusRepository>();

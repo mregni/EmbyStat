@@ -14,6 +14,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
+using MediaBrowser.Model.Plugins;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -109,12 +110,42 @@ namespace EmbyStat.Services
 		    return _embyServerInfoRepository.GetSingle();
 	    }
 
-	    public List<Drive> GetLocalDrives()
+        public Task<ServerInfo> GetLiveServerInfo()
+        {
+            return _embyClient.GetServerInfoAsync();
+        }
+
+        public Task<List<PluginInfo>> GetLivePluginInfo()
+        {
+            return _embyClient.GetInstalledPluginsAsync();
+        }
+
+        public List<Drive> GetLocalDrives()
 	    {
 		    return _embyDriveRepository.GetAll();
 	    }
 
-	    public async void FireSmallSyncEmbyServerInfo()
+        public Task<List<Drive>> GetLiveEmbyDriveInfo()
+        {
+            return _embyClient.GetLocalDrivesAsync();
+        }
+
+        public void UpdateOrAddServerInfo(ServerInfo server)
+        {
+            _embyServerInfoRepository.UpdateOrAdd(server);
+        }
+
+        public void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins)
+        {
+            _embyPluginRepository.RemoveAllAndInsertPluginRange(plugins);
+        }
+
+        public void RemoveAllAndInsertDriveRange(List<Drive> drives)
+        {
+            _embyDriveRepository.RemoveAllAndInsertDriveRange(drives);
+        }
+
+        public async void FireSmallSyncEmbyServerInfo()
 	    {
 		    var settings = _configurationRepository.GetConfiguration();
 
@@ -125,7 +156,7 @@ namespace EmbyStat.Services
 
 		    _embyServerInfoRepository.UpdateOrAdd(systemInfoReponse);
 			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
-			_embyDriveRepository.ClearAndInsertList(drives.ToList());
+			_embyDriveRepository.RemoveAllAndInsertDriveRange(drives.ToList());
 		}
 
         public EmbyStatus GetEmbyStatus()
@@ -138,6 +169,16 @@ namespace EmbyStat.Services
 		    var settings = _configurationRepository.GetConfiguration();
             _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
             return await _embyClient.PingEmbyAsync(cancellationToken);
+        }
+
+        public void SetEmbyClientAddressAndUrl(string url, string token)
+        {
+            _embyClient.SetAddressAndUrl(url, token);
+        }
+
+        public void Dispose()
+        {
+            _embyClient?.Dispose();
         }
     }
 }

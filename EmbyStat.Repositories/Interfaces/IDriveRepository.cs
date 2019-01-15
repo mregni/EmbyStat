@@ -6,6 +6,6 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IDriveRepository
     {
 	    List<Drive> GetAll();
-		void ClearAndInsertList(List<Drive> drives);
+		void RemoveAllAndInsertDriveRange(List<Drive> drives);
     }
 }
