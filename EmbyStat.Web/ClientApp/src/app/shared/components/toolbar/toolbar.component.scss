@@ -1,4 +1,4 @@
-@import "../../../../styles.scss";
+@import "../../../../styles";
 $iconWidth: 56px;
 
 .sidenav-toggle {
@@ -26,15 +26,15 @@ $iconWidth: 56px;
   flex: 1 1 auto;
 }
 
-.toolbar__logo {
+.toolbar-logo {
   height: 30px;
 }
 
-.toolbar__small-text {
+.toolbar-small-text {
   font-size: 15px;
 }
 
-.toolbar__container {
+.toolbar-container {
   display: flex;
   flex-direction: row;
   align-content: flex-end;
@@ -46,7 +46,7 @@ $iconWidth: 56px;
   }
 }
 
-.toolbar__emby_ping_statusbox {
+.toolbar-emby-ping-statusbox {
   display: flex;
 
   img {

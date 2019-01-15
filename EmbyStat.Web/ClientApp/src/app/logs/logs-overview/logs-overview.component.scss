@@ -1,27 +1,27 @@
 @import "../../../styles";
 
-.log__flexcontainer {
+.log-flexcontainer {
   background: $white-color;
   border-radius: 2px;
   box-shadow: $normal-box-shadow;
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
   padding: 20px;
   width: 50%;
 }
 
-.log__title {
+.log-title {
   font-weight: bold;
   padding: 3px;
 }
 
-.log__subtitle {
+.log-subtitle {
   color: $grey-font-color;
 }
 
-.log__left-column {
+.log-left-column {
   align-items: flex-start;
   display: flex;
   flex: 1 1 auto;
@@ -29,13 +29,13 @@
   justify-content: flex-start;
 }
 
-.log__right-column {
+.log-right-column {
   align-items: flex-end;
   flex: 1 1 auto;
 }
 
 @media only screen and (max-width: $large-size) {
-  .log__flexcontainer {
+  .log-flexcontainer {
     width: auto;
   }
 }

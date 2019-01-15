@@ -1,5 +1,5 @@
 <div *ngIf="!isLoading else loading">
-  <div class="collected__row collection_headers">
+  <div class="collected-row collection_headers">
     <div class="column_small"></div>
     <div class="column__title" (click)="order('sortName')">{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</div>
     <div class="column-wide hide-small-screen" (click)="order('date')">{{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}</div>
@@ -10,7 +10,7 @@
     <div class="column_small"></div>
   </div>
 
-  <div *ngFor="let row of rows" [style.color]="getColor(row)" class="collected__row">
+  <div *ngFor="let row of rows" [style.color]="getColor(row)" class="collected-row">
     <div class="column_small" [style.background-color]="getColor(row)"></div>
     <div class="column__title">{{ row.title }}</div>
     <div class="column-wide hide-small-screen">{{ row.premiereDate | amLocal | amDateFormat:'DD/MM/YYYY'}}</div>

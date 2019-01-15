@@ -1,6 +1,6 @@
 @import "../../../styles.scss";
 
-.plugin__flexcontainer {
+.plugin-flexcontainer {
   display: flex;
   flex-direction: row;
   margin: 10px;
@@ -12,25 +12,25 @@
   box-shadow: $normal-box-shadow;
 }
 
-.plugin__left-content {
+.plugin-left-content {
   align-content: flex-start;
   width: 60px;
 }
 
-.plugin__right-content {
+.plugin-right-content {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   margin: 0 10px;
 }
 
-.plugin__subtitle {
+.plugin-subtitle {
   font-style: italic;
   padding: 3px;
   color: $grey-font-color;
 }
 
-.plugin__title {
+.plugin-title {
   padding: 3px;
   font-weight: bold;
 }

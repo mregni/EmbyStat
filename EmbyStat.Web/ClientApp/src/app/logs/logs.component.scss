@@ -1,6 +1,6 @@
 @import "../../styles.scss";
 
-.log__flexcontainer {
+.log-flexcontainer {
   display: flex;
   flex-direction: row;
   margin: 0px 0px 20px 0px;
@@ -13,16 +13,16 @@
   flex: 0 0 auto;
 }
 
-.log__title {
+.log-title {
   padding: 3px;
   font-weight: bold;
 }
 
-.log__subtitle {
+.log-subtitle {
   color: $grey-font-color;
 }
 
-.log__left-column {
+.log-left-column {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -30,7 +30,7 @@
   justify-content: flex-start;
 }
 
-.log__right-column {
+.log-right-column {
   flex: 1 1 auto;
   align-items: flex-end;
 }

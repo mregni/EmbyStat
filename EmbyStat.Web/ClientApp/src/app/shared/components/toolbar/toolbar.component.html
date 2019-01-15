@@ -2,15 +2,15 @@
   <button mat-button (click)="toggleSideNav.emit()" class="sidenav-toggle">
     <mat-icon>menu</mat-icon>
   </button>
-  <img src="../../../assets/images/logo_white.png" class="toolbar__logo" />
+  <img src="../../../assets/images/logo_white.png" class="toolbar-logo" />
   <span class="bar-spacer"></span>
-  <div *ngIf="runningJob !== undefined && runningJob.state === 1" class="toolbar__small-text toolbar__container">
+  <div *ngIf="runningJob !== undefined && runningJob.state === 1" class="toolbar-small-text toolbar-container">
     <div class="la-ball-clip-rotate la-sm">
       <div></div>
     </div>
     {{ 'TOOLBAR.JOBISRUNNING' | translate: { job: 'JOB.INFO.' + runningJob.title | translate | capitalizeFirst } }}
   </div>
-  <div class="toolbar__emby_ping_statusbox" *ngIf="configuration$ | async as config">
+  <div class="toolbar-emby-ping-statusbox" *ngIf="configuration$ | async as config">
     <img *ngIf="missedPings === 0 && config.embyServerAddress" matTooltip="{{ 'TOOLBAR.NOMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/green_circle.png"/>
     <img *ngIf="missedPings === 1 && config.embyServerAddress" matTooltip="{{ 'TOOLBAR.ONEMISSEDPING' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/orange_circle.png" />
     <img *ngIf="missedPings >= 2 && config.embyServerAddress" matTooltip="{{ 'TOOLBAR.MOREMISSEDPINGS' | translate }}" matTooltipHideDelay="2000"position="below" src="../../../assets/images/icons/red_circle.png" />

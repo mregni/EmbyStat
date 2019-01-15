@@ -1,6 +1,6 @@
 @import "../../../styles";
 
-.jobs_overview__flexcontainer {
+.jobs-overview-flexcontainer {
   display: flex;
   flex-direction: row;
 
@@ -10,7 +10,7 @@
   }
 }
 
-.joblog__flexcontainer {
+.joblog-flexcontainer {
   display: flex;
   flex-direction: column-reverse;
   padding: 0 20px 20px 20px;
@@ -27,7 +27,7 @@
 }
 
 @media only screen and (max-width: $large-size) {
-  .jobs_overview__flexcontainer {
+  .jobs-overview-flexcontainer {
     flex-direction: column;
 
     > div {
@@ -36,7 +36,7 @@
     }
   }
 
-  .joblog__flexcontainer {
+  .joblog-flexcontainer {
     margin: 0;
   }
 }

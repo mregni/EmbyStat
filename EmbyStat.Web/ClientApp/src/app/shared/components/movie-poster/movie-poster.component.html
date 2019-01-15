@@ -1,6 +1,6 @@
 <div *ngIf="poster !== undefined" class="poster_container">
   <div [style.background-image]="getBackground()" class="poster" (click)="openMovie()">
-    <div class="poster__content">
+    <div class="poster-content">
       <div>{{poster.durationMinutes}} {{'COMMON.MIN' | translate}}</div>
       <div class="row">
         <div>{{poster.year}} <span class="rating">{{poster.officialRating}}</span></div>
@@ -8,7 +8,7 @@
       </div>
     </div>
   </div>
-  <div class="subtext-white poster__sub-content">
+  <div class="subtext-white poster-sub-content">
     <span>{{ poster.title | translate }}</span>
   </div>
 </div>

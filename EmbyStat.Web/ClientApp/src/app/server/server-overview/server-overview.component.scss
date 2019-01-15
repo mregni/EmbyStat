@@ -1,14 +1,14 @@
-.server__flexcontainer {
+.server-flexcontainer {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.server__align-start {
+.server-align-start {
   justify-content: flex-start;
 }
 
-.server__flex-row {
+.server-flex-row {
   flex: 1 1 auto;
   width: 100%;
   display: flex;
@@ -16,13 +16,13 @@
   flex-wrap: wrap;
 }
 
-.server__left-content {
+.server-left-content {
   flex: 0 0 auto;
   width: 100px;
   margin-right: 10px;
 }
 
-.server__left-logo {
+.server-left-logo {
   flex: 0 0 auto;
   width: 150px;
   height: 150px;
@@ -34,7 +34,7 @@
   }
 }
 
-.server__right-content {
+.server-right-content {
   flex: 1 1 auto;
   flex-direction: column;
 }

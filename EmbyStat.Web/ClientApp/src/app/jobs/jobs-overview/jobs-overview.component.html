@@ -1,7 +1,7 @@
 <div class="title_bar">
   <h2>{{'MENU.JOBS' | translate}}</h2>
 </div>
-<div class="content jobs_overview__flexcontainer">
+<div class="content jobs-overview-flexcontainer">
   <div>
     <app-job-item id="ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e" (fireAction)="firePing()"></app-job-item>
     <app-job-item id="78bc2bf0-abd9-48ef-aeff-9c396d644f2a" (fireAction)="fireCheckUpdate()"></app-job-item>
@@ -9,7 +9,7 @@
     <app-job-item id="41e0bf22-1e6b-4f5d-90be-ec966f746a2f" (fireAction)="fireSmallSync()"></app-job-item>
     <app-job-item id="b109ca73-0563-4062-a3e2-f7e6a00b73e9" (fireAction)="fireDatabaseCleanup()"></app-job-item>
   </div>
-  <div class="joblog__flexcontainer">
+  <div class="joblog-flexcontainer">
     <div *ngFor="let line of lines">
       <div [innerHtml]="line"></div>
     </div>

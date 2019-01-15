@@ -1,6 +1,6 @@
 @import "../../../styles";
 
-.job__flexcontainer {
+.job-flexcontainer {
   display: flex;
   flex-direction: row;
   margin: 0 0 20px;
@@ -12,7 +12,7 @@
   box-shadow: $normal-box-shadow;
 }
 
-.job__left-content {
+.job-left-content {
   align-content: flex-start;
   width: 45px;
 
@@ -21,7 +21,7 @@
   }
 }
 
-.job__right-content {
+.job-right-content {
   flex: 0 0 auto;
   display: flex;
   justify-content: space-around;
@@ -33,19 +33,19 @@
   }
 }
 
-.job__center {
+.job-center {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   margin: 0 10px;
 }
 
-.job__jobtitle {
+.job-jobtitle {
   padding: 3px;
   font-weight: bold;
 }
 
-.job__jobsub-progress {
+.job-jobsub-progress {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -62,6 +62,6 @@
   }
 }
 
-.job__failed {
+.job-failed {
   color: mat-color($mat-red, A700);
 }

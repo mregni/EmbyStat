@@ -1,4 +1,4 @@
-.language__flexcontainer {
+.language-flexcontainer {
   display: flex;
   flex: 1 1 auto;
   flex-direction:row;
@@ -6,7 +6,7 @@
   align-items:center;
 }
 
-.language__left-content {
+.language-left-content {
   flex: 0 0 auto;
   width:60px;
   height: 50px;
@@ -17,6 +17,6 @@
   }
 }
 
-.language__right-content {
+.language-right-content {
   flex: 1 1 auto;
 }

@@ -1,16 +1,16 @@
-<div class="job__flexcontainer" *ngIf="job !== undefined">
-  <div class="job__left-content ">
+<div class="job-flexcontainer" *ngIf="job !== undefined">
+  <div class="job-left-content ">
     <a mat-mini-fab (click)="fireJob()" [disabled]="disableStart()">
       <mat-icon>play_circle_outline</mat-icon>
     </a>
   </div>
-  <div class="job__center">
-    <div class="job__jobtitle">{{ 'JOB.INFO.' + job.title | translate}}</div>
+  <div class="job-center">
+    <div class="job-jobtitle">{{ 'JOB.INFO.' + job.title | translate}}</div>
     <div class="subtext-grey" *ngIf="job.state !== 1">
       <div *ngIf="job.state === 0">
         {{ 'JOB.NORUN' | translate }}
       </div>
-      <div *ngIf="job.state !== 0" [ngClass]="{'job__failed':job.state === 2}">
+      <div *ngIf="job.state !== 0" [ngClass]="{'job-failed':job.state === 2}">
         <div *ngIf="hasNoTime(job)">
           {{ 'JOB.LASTRUNNOW' | translate}}
         </div>
@@ -50,11 +50,11 @@
         </div>
       </div>
     </div>
-    <div class="job__jobsub-progress" *ngIf="job.state === 1">
+    <div class="job-jobsub-progress" *ngIf="job.state === 1">
       <mat-progress-bar mode="determinate" value="{{job.currentProgressPercentage}}"></mat-progress-bar> <span>{{job.currentProgressPercentage}} %</span>
     </div>
   </div>
-  <div class="job__right-content">
+  <div class="job-right-content">
     <a (click)="openSettings()">
       <mat-icon>settings</mat-icon>
     </a>
