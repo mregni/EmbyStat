@@ -1,15 +1,15 @@
 @import "../../../styles";
 
 .job-flexcontainer {
+  align-items: center;
+  background: $white-color;
+  border-radius: 2px;
+  box-shadow: $normal-box-shadow;
   display: flex;
   flex-direction: row;
   margin: 0 0 20px;
   min-height: 50px;
   padding: 20px;
-  border-radius: 2px;
-  background: $white-color;
-  align-items: center;
-  box-shadow: $normal-box-shadow;
 }
 
 .job-left-content {
@@ -22,11 +22,11 @@
 }
 
 .job-right-content {
-  flex: 0 0 auto;
   display: flex;
+  flex: 0 0 auto;
   justify-content: space-around;
-  width: 40px;
   margin-top: 7px;
+  width: 40px;
 
   a {
     cursor: pointer;
@@ -34,31 +34,31 @@
 }
 
 .job-center {
-  flex: 1 1 auto;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   margin: 0 10px;
 }
 
 .job-jobtitle {
-  padding: 3px;
   font-weight: bold;
+  padding: 3px;
 }
 
 .job-jobsub-progress {
-  display: flex;
-  flex-direction: row;
   align-items: center;
   color: $grey-font-color;
+  display: flex;
+  flex-direction: row;
 
   :nth-child(1) {
     flex: 1 1 auto;
   }
 
   :nth-child(2) {
-    width: 40px;
-    margin-left: 20px;
     flex: 0 0 auto;
+    margin-left: 20px;
+    width: 40px;
   }
 }
 
