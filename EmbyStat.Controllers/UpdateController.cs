@@ -37,9 +37,10 @@ namespace EmbyStat.Controllers
             {
                 await _updateService.DownloadZip(result);
                 await _updateService.UpdateServer();
+                return Ok(true);
             }
 
-            return Ok();
+            return Ok(false);
         }
     }
 }

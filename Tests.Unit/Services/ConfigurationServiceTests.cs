@@ -2,9 +2,11 @@
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -46,7 +48,10 @@ namespace Tests.Unit.Services
 	        _statisticsREpositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
 	        _statisticsREpositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
 
-            _subject = new ConfigurationService(_configurationRepositoryMock.Object, _statisticsREpositoryMock.Object);
+            var _appSettingsMock = new Mock<IOptions<AppSettings>>();
+            _appSettingsMock.Setup(x => x.Value).Returns(new AppSettings(){Version = "0.0.0.0"});
+
+            _subject = new ConfigurationService(_configurationRepositoryMock.Object, _statisticsREpositoryMock.Object, _appSettingsMock.Object);
 		}
 
 	    [Fact]
@@ -102,6 +107,7 @@ namespace Tests.Unit.Services
 	        settings.ShowCollectionTypes.Count.Should().Be(3);
 	        settings.UpdateTrain.Should().Be(UpdateTrain.Release);
 	        settings.AutoUpdate.Should().BeTrue();
-	    }
+            settings.Version.Should().Be("0.0.0.0");
+        }
     }
 }

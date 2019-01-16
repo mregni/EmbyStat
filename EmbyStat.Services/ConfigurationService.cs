@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Services
 {
@@ -9,11 +11,13 @@ namespace EmbyStat.Services
     {
 		private readonly IConfigurationRepository _configurationRepository;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly AppSettings _appSettings;
 
-        public ConfigurationService(IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository)
+        public ConfigurationService(IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, IOptions<AppSettings> appSettings)
         {
             _configurationRepository = configurationRepository;
             _statisticsRepository = statisticsRepository;
+            _appSettings = appSettings.Value;
         }
 
 		public void SaveServerSettings(Configuration configuration)
@@ -27,8 +31,10 @@ namespace EmbyStat.Services
 
 		public Configuration GetServerSettings()
 		{
-			return _configurationRepository.GetConfiguration();
-		}
+            var config = _configurationRepository.GetConfiguration();
+            config.Version = _appSettings.Version;
+            return config;
+        }
 
         private void MarkMovieStatisticsAsInvalidIfNeeded(Configuration configuration, Configuration oldConfig)
         {

@@ -25,5 +25,6 @@ namespace EmbyStat.Controllers.ViewModels.Configuration
         public bool AutoUpdate { get; set; }
         public int UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
+        public string Version { get; set; }
     }
 }

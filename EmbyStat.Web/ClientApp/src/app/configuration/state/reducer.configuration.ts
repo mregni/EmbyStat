@@ -27,7 +27,8 @@ const INITIAL_STATE: Configuration = {
   keepLogsCount: 0,
   autoUpdate: false,
   updateTrain: 2,
-  updateInProgress: false
+  updateInProgress: false,
+  version: ""
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -55,7 +56,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         isLoaded: true,
         autoUpdate: action.payload.autoUpdate,
         updateTrain: action.payload.updateTrain,
-        updateInProgress: action.payload.updateInProgress
+        updateInProgress: action.payload.updateInProgress,
+        version: action.payload.version
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
       return {
@@ -80,7 +82,8 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         isLoaded: true,
         autoUpdate: action.payload.autoUpdate,
         updateTrain: action.payload.updateTrain,
-        updateInProgress: action.payload.updateInProgress
+        updateInProgress: action.payload.updateInProgress,
+        version: action.payload.version
       };
     default:
       return state;

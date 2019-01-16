@@ -5,6 +5,7 @@
         public UpdateResult()
         {
             IsUpdateAvailable = false;
+            Package = new PackageInfo();
         }
         public bool IsUpdateAvailable { get; set; }
         public string AvailableVersion { get; set; }

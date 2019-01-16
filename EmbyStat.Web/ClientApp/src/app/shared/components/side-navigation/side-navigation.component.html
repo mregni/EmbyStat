@@ -1,11 +1,16 @@
-<mat-nav-list class="mat-list-no-padding">
-  <a mat-list-item routerLink="/" routerLinkActive="active" class="menuItem"><i class="material-icons">dashboard</i> {{ 'MENU.DASHBOARD' | translate }}</a>
-  <a mat-list-item routerLink="/movie" routerLinkActive="active" class="menuItem"><i class="material-icons">local_movies</i> {{ 'MENU.MOVIES' | translate }}</a>
-  <a mat-list-item routerLink="/show" routerLinkActive="active" class="menuItem"><i class="material-icons">tv</i> {{ 'MENU.SHOWS' | translate }}</a>
-  <a mat-list-item routerLink="/plugin" routerLinkActive="active" class="menuItem"><i class="material-icons">archive</i> {{ 'MENU.PLUGINS' | translate }}</a>
-  <a mat-list-item routerLink="/server" routerLinkActive="active" class="menuItem"><i class="material-icons">computer</i> {{ 'MENU.SERVER' | translate }}</a>
-  <a mat-list-item routerLink="/jobs" routerLinkActive="active" class="menuItem"><i class="material-icons">content_paste</i> {{ 'MENU.JOBS' | translate }}</a>
-  <a mat-list-item routerLink="/configuration" routerLinkActive="active" class="menuItem"><i class="material-icons">settings_applications</i> {{ 'MENU.SETTINGS' | translate }}</a>
-  <a mat-list-item routerLink="/logs" routerLinkActive="active" class="menuItem"><i class="material-icons">collections_bookmark</i> {{ 'MENU.LOGS' | translate }}</a>
-  <a mat-list-item routerLink="/about" routerLinkActive="active" class="menuItem"><i class="material-icons">info</i> {{ 'MENU.ABOUT' | translate }}</a>
-</mat-nav-list>
+<div class="toolbar-flexcontainer">
+  <mat-nav-list class="mat-list-no-padding">
+    <a mat-list-item routerLink="/" routerLinkActive="active" class="menuItem"><i class="material-icons">dashboard</i> {{ 'MENU.DASHBOARD' | translate }}</a>
+    <a mat-list-item routerLink="/movie" routerLinkActive="active" class="menuItem"><i class="material-icons">local_movies</i> {{ 'MENU.MOVIES' | translate }}</a>
+    <a mat-list-item routerLink="/show" routerLinkActive="active" class="menuItem"><i class="material-icons">tv</i> {{ 'MENU.SHOWS' | translate }}</a>
+    <a mat-list-item routerLink="/plugin" routerLinkActive="active" class="menuItem"><i class="material-icons">archive</i> {{ 'MENU.PLUGINS' | translate }}</a>
+    <a mat-list-item routerLink="/server" routerLinkActive="active" class="menuItem"><i class="material-icons">computer</i> {{ 'MENU.SERVER' | translate }}</a>
+    <a mat-list-item routerLink="/jobs" routerLinkActive="active" class="menuItem"><i class="material-icons">content_paste</i> {{ 'MENU.JOBS' | translate }}</a>
+    <a mat-list-item routerLink="/configuration" routerLinkActive="active" class="menuItem"><i class="material-icons">settings_applications</i> {{ 'MENU.SETTINGS' | translate }}</a>
+    <a mat-list-item routerLink="/logs" routerLinkActive="active" class="menuItem"><i class="material-icons">collections_bookmark</i> {{ 'MENU.LOGS' | translate }}</a>
+    <a mat-list-item routerLink="/about" routerLinkActive="active" class="menuItem"><i class="material-icons">info</i> {{ 'MENU.ABOUT' | translate }}</a>
+  </mat-nav-list>
+  <div class="version-string">
+    v{{version}}
+  </div>
+</div>

@@ -5,6 +5,7 @@
         <h3 *ngIf="result.isUpdateAvailable; else noUpdate">Version {{result.availableVersion}} available for download!</h3>
         <ng-template #noUpdate><p>No update available</p></ng-template>
       </div>
+      <p class="subtext-grey">Current version: {{configuration.version}}</p>
       <ng-template #loading>
         <div class="la-ball-scale-ripple-multiple la-dark">
           <div></div>

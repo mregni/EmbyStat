@@ -66,8 +66,12 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
     this.sideBarService.closeMenu();
     this.updateOverlayService.show();
     this.setUpdateState(true);
-    this.updateService.checkAndStartUpdate().subscribe(() => {
-      this.setUpdateState(false);
+    this.updateService.checkAndStartUpdate().subscribe((newVersion: boolean) => {
+      if (!newVersion) {
+        this.sideBarService.openMenu();
+        this.setUpdateState(false);
+        this.updateOverlayService.hide();
+      }
     });
   }
 

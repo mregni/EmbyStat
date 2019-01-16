@@ -14,10 +14,8 @@ exclude:
 - /EmbyStat.Common/Helpers/.*
 - /EmbyStat.Common/Converters/.*
 - /EmbyStat.Api/EmbyClient/.*
-- /EmbyStat.Web/ClientApp/src/app/configuration/state/reducer.configuration.ts
-- /EmbyStat.Web/ClientApp/src/app/server/state/reducer.server.ts
-- /EmbyStat.Web/ClientApp/src/app/about/state/reducer.about.ts
-- /EmbyStat.Web/ClientApp/src/app/shared/material.module.ts
-- /EmbyStat.Web/ClientApp/src/app/shared/shared.module.ts
+- /EmbyStat.Web/ClientApp/.*
 - /EmbyStat.Common/Constants.cs
 - /EmbyStat.DI/DIExtentions.cs
+- /Tests.Unit/.*
+- /Tests.Integration/.*

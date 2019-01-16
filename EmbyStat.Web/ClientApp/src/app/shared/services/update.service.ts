@@ -16,7 +16,7 @@ export class UpdateService {
     return this.http.get<UpdateResult>(this.checkForUpdateUrl);
   }
 
-  checkAndStartUpdate(): Observable<void> {
-    return this.http.post<void>(this.startUpdateUrl, {});
+  checkAndStartUpdate(): Observable<boolean> {
+    return this.http.post<boolean>(this.startUpdateUrl, {});
   }
 }

@@ -49,7 +49,6 @@ namespace EmbyStat.Services
             var currentVersion = new Version(_appSettings.Version);
             var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
 
-            Log.Debug($"result is {result.IsUpdateAvailable} {result.Package.name}");
             if (result.IsUpdateAvailable)
             {
                 //Notify everyone that there is an update

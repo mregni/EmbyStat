@@ -20,4 +20,5 @@ export class Configuration {
   autoUpdate: boolean;
   updateTrain: number;
   updateInProgress: boolean;
+  version: string;
 }

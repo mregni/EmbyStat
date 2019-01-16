@@ -84,6 +84,11 @@ namespace EmbyStat.Common.Models.Entities
             set => _config[Constants.Configuration.ToShortMovie] = value.ToString();
         }
 
+        /// <summary>
+        /// Version string from appsettings.json. This is not stored in the database!
+        /// </summary>
+        public string Version { get; set; }
+
         public DateTime? LastTvdbUpdate
         {
             get

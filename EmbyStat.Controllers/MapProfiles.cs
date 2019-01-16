@@ -30,7 +30,7 @@ namespace EmbyStat.Controllers
 	    public MapProfiles()
 	    { 
 			//Controllers
-		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap();
+		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.Version, x => x.Ignore());
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
