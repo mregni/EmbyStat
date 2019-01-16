@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using EmbyStat.Common.Models.Tasks.Enum;
 
 namespace EmbyStat.Common.Models.Entities

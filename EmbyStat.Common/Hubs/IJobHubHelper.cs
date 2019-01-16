@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 

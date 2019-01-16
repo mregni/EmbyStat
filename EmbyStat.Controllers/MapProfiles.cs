@@ -3,7 +3,6 @@ using AutoMapper;
 using EmbyStat.Api.EmbyClient.Model;
 using EmbyStat.Api.Github.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Controllers.ViewModels.About;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;

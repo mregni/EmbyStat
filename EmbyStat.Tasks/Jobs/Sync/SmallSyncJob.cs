@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using EmbyStat.Api.EmbyClient;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs.Jobs.Interfaces;

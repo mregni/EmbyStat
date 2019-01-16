@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
 {
