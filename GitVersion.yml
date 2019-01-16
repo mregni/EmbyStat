@@ -5,10 +5,6 @@ branches:
     mode: ContinuousDelivery
     tag: ''
     increment: Patch
-  beta:
-    mode: ContinuousDelivery
-    tag: beta
-    increment: Patch
   features?[/-]:
     mode: ContinuousDelivery
     tag: useBranchName
