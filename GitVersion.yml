@@ -1,20 +1,16 @@
 assembly-versioning-scheme: MajorMinorPatch
-mode: ContinuousDeployment
+mode:  ContinuousDelivery
 branches:
   master:
-    mode: ContinuousDelivery
     tag: ''
     increment: Patch
   features?[/-]:
-    mode: ContinuousDelivery
     tag: useBranchName
     increment: Inherit
   hotfix(es)?[/-]:
-    mode: ContinuousDelivery
     tag: beta
     increment: Patch
   dev(elop)?(ment)?$:
-    mode: ContinuousDeployment
     tag: dev
     increment: Minor
 ignore:
