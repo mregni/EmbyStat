@@ -2,9 +2,54 @@ assembly-versioning-scheme: MajorMinorPatch
 mode: ContinuousDeployment
 branches:
   master:
+    regex: master
     mode: ContinuousDelivery
-  dev:
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+    source-branches: ['beta']
+  beta:
+    regex: beta
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
+    source-branches: ['develop', 'master', 'hotfix']
+  feature:
+    regex: features?[/-]
+    mode: ContinuousDelivery
+    tag: useBranchName
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+    source-branches: ['develop']
+  hotfix:
+    regex: hotfix(es)?[/-]
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+    source-branches: ['master']
+  develop:
+    regex: dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: dev
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    tracks-release-branches: true
+    is-release-branch: false
+    source-branches: ['master', 'beta', 'feature', 'hotfix']
 ignore:
   sha: []
