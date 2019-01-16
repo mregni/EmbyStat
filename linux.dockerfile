@@ -6,7 +6,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
-ENV DOTNET_SDK_VERSION 2.1.400
+ENV DOTNET_SDK_VERSION 2.2.103
 
 #set up dotnet
 RUN apt-get update
@@ -22,7 +22,7 @@ RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 
 RUN apt-get update
-RUN apt-get install dotnet-sdk-2.1 -y
+RUN apt-get install dotnet-sdk-2.2 -y
 
 # set up node
 ENV NODE_VERSION 8.9.4
@@ -34,7 +34,8 @@ ENV DOTNET_USE_POLLING_FILE_WATCHER false
 ENV NUGET_XMLDOC_MODE skip
 
 COPY . .
-RUN dotnet publish ./EmbyStat.Web/EmbyStat.Web.csproj --framework netcoreapp2.1 --configuration Release --runtime ubuntu-x64 --output /app
+RUN dotnet publish ./EmbyStat.Web/EmbyStat.Web.csproj --framework netcoreapp2.2 --configuration Release --runtime ubuntu-x64 --output /app
+RUN dotnet publish ./Updater/Updater.csproj --framework netcoreapp2.2 --configuration Release --runtime ubuntu-x64 --output /app/updater
 
 FROM microsoft/dotnet:2.1-runtime-deps-stretch-slim as base
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false

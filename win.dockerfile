@@ -3,15 +3,15 @@
 #installer env image
 FROM microsoft/windowsservercore:1803 AS installer-env
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-ENV DOTNET_SDK_VERSION 2.1.302
+ENV DOTNET_SDK_VERSION 2.2.103
 ENV NODEJS_VERSION 8.9.4
 
 RUN Invoke-WebRequest -OutFile dotnet.zip https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$Env:DOTNET_SDK_VERSION/dotnet-sdk-$Env:DOTNET_SDK_VERSION-win-x64.zip; `
-    $dotnet_sha512 = 'a8a74d3329191df6357a00e26591cdc64153970e0cf42f820ade0fb520c9cb0e6ab16ab357dc9538a8c488245c505930b4b0a6b63721e4eebf8682613a63441e'; `
+    $dotnet_sha512 = 'a74d230ab184c6571e445c8e05361f1db32ffb9bd76baafe4d307ef42b7bf9cebd70e1aed37136caa485ebace185fea24b476907ff7bf522f3b485c8cf0c285b'; `
     if ((Get-FileHash dotnet.zip -Algorithm sha512).Hash -ne $dotnet_sha512) { `
         Write-Host 'CHECKSUM VERIFICATION FAILED!'; `
         exit 1; `
-    };
+    }; `
     
 RUN Expand-Archive dotnet.zip -DestinationPath dotnet
 RUN Remove-Item -Force dotnet.zip
@@ -32,7 +32,8 @@ RUN setx /M PATH "%PATH%;C:\Program Files\nodejs"
 USER ContainerUser
 
 COPY . .
-RUN dotnet publish ./EmbyStat.Web/EmbyStat.Web.csproj --framework netcoreapp2.1 --configuration Release --runtime win7-x64 --output /app
+RUN dotnet publish ./EmbyStat.Web/EmbyStat.Web.csproj --framework netcoreapp2.2 --configuration Release --runtime win7-x64 --output /app
+RUN dotnet publish ./Updater/Updater.csproj --framework netcoreapp2.2 --configuration Release --runtime win7-x64 --output /app/updater
 
 #Runtime image
 FROM microsoft/nanoserver:1803 AS base
