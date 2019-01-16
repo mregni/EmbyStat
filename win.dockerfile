@@ -11,7 +11,7 @@ RUN Invoke-WebRequest -OutFile dotnet.zip https://dotnetcli.blob.core.windows.ne
     if ((Get-FileHash dotnet.zip -Algorithm sha512).Hash -ne $dotnet_sha512) { `
         Write-Host 'CHECKSUM VERIFICATION FAILED!'; `
         exit 1; `
-    }; `
+    };
     
 RUN Expand-Archive dotnet.zip -DestinationPath dotnet
 RUN Remove-Item -Force dotnet.zip
