@@ -1,7 +1,39 @@
-mode: ContinuousDelivery
+assembly-versioning-scheme: MajorMinorPatch
+mode: ContinuousDeployment
 branches:
-  develop:
-    regex: dev(elop)?(ment)?$
+  master:
+    mode: ContinuousDelivery
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  beta:
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
+  features?[/-]:
+    mode: ContinuousDelivery
+    tag: useBranchName
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  hotfix(es)?[/-]:
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  dev(elop)?(ment)?$:
     mode: ContinuousDeployment
     tag: dev
     increment: Minor
@@ -9,6 +41,5 @@ branches:
     track-merge-target: true
     tracks-release-branches: true
     is-release-branch: false
-  feature: {}
 ignore:
   sha: []
