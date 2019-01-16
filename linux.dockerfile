@@ -49,8 +49,8 @@ RUN rm -rf /var/lib/apt/lists/*
 
 RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
-RUN dpkg --purge packages-microsoft-prod && sudo dpkg -i packages-microsoft-prod.deb
-RUN add-apt-repository universe
+RUN dpkg --purge packages-microsoft-prod && dpkg -i packages-microsoft-prod.deb
+RUN add-apt-repository universesudo
 RUN apt-get install apt-transport-https
 RUN apt-get update
 RUN apt-get install dotnet-sdk-2.2 -y
