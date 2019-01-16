@@ -13,8 +13,4 @@
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Nerdbank.GitVersioning" Version="2.3.38" />
-  </ItemGroup>
-
 </Project>
