@@ -49,6 +49,7 @@ namespace Tests.Unit.Services
 	        _statisticsREpositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
 
             var _appSettingsMock = new Mock<IOptions<AppSettings>>();
+            _appSettingsMock.Setup(x => x.Value).Returns(new AppSettings(){Version = "0.0.0.0"});
 
             _subject = new ConfigurationService(_configurationRepositoryMock.Object, _statisticsREpositoryMock.Object, _appSettingsMock.Object);
 		}
@@ -106,6 +107,7 @@ namespace Tests.Unit.Services
 	        settings.ShowCollectionTypes.Count.Should().Be(3);
 	        settings.UpdateTrain.Should().Be(UpdateTrain.Release);
 	        settings.AutoUpdate.Should().BeTrue();
-	    }
+            settings.Version.Should().Be("0.0.0.0");
+        }
     }
 }
