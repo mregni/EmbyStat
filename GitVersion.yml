@@ -3,7 +3,7 @@ mode: ContinuousDeployment
 branches:
   master:
     mode: ContinuousDelivery
-  dev(elop)?(ment)?$:
+  dev:
     mode: ContinuousDeployment
     tag: dev
 ignore:
