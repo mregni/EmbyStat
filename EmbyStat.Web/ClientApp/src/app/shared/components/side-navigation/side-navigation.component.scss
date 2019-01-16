@@ -3,8 +3,8 @@
 .toolbar-flexcontainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: calc(100% - #{$menu-height});
+  justify-content: space-between;
 }
 
 .mat-list-no-padding {
@@ -13,8 +13,8 @@
 
 .version-string {
   color: $grey-font-color;
+  font-size: 0.8em;
   font-style: italic;
   padding: 0 0 10px 10px;
   text-align: center;
-  font-size: 0.8em
 }
