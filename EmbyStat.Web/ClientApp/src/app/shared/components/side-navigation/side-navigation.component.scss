@@ -1,3 +1,20 @@
+@import "../../../../styles";
+
+.toolbar-flexcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - #{$menu-height});
+}
+
 .mat-list-no-padding {
   padding: 0;
+}
+
+.version-string {
+  color: $grey-font-color;
+  font-style: italic;
+  padding: 0 0 10px 10px;
+  text-align: center;
+  font-size: 0.8em
 }

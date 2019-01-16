@@ -11,6 +11,11 @@ $small-size: 768px;
 $medium-size: 960px;
 $large-size: 1899px;
 
+$menu-height: 64px;
+
+html, body {
+  height: 100%;
+}
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -44,10 +49,6 @@ body {
   font-size: 0.8em;
 }
 
-.italic {
-  font-style: italic;
-}
-
 .full-width {
   width: 100%;
 }
@@ -69,7 +70,7 @@ body {
 
 .subtext-grey {
   font-style: italic;
-  padding: 3px;
+  padding: 3px 3px 3px;
   color: $grey-font-color;
 }
 
