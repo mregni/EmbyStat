@@ -4,7 +4,7 @@ branches:
   master:
     mode: ContinuousDelivery
     tag: ''
-    increment: Patch
+    increment: Minor
   beta:
     mode: ContinuousDelivery
     tag: beta
@@ -20,6 +20,6 @@ branches:
   dev(elop)?(ment)?$:
     mode: ContinuousDeployment
     tag: dev
-    increment: Minor
+    increment: Patch
 ignore:
   sha: []
