@@ -17,3 +17,5 @@ exclude:
 - /EmbyStat.Web/ClientApp/.*
 - /EmbyStat.Common/Constants.cs
 - /EmbyStat.DI/DIExtentions.cs
+- /Tests.Unit/.*
+- /Tests.Integration/.*
