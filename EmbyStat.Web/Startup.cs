@@ -15,8 +15,8 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Hangfire.Dashboard;
+using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
-using Hangfire.SQLite;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -58,7 +58,7 @@ namespace EmbyStat.Web
 
             services.AddHangfire(x =>
             {
-                x.UseSQLiteStorage(config.ConnectionStrings.Hangfire, new SQLiteStorageOptions {JobExpirationCheckInterval = TimeSpan.FromHours(24)});
+                x.UseMemoryStorage();
                 x.UseRecurringJob();
             });
 
