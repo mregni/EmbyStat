@@ -28,6 +28,5 @@
     public class ConnectionStrings
     {
         public string Main { get; set; }
-        public string Hangfire { get; set; }
     }
 }
