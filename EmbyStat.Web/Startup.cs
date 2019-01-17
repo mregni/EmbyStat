@@ -25,6 +25,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using SQLitePCL;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
@@ -50,6 +51,8 @@ namespace EmbyStat.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            SQLitePCL.raw.SetProvider(new SQLite3Provider_e_sqlite3());
+
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             var config = Configuration.Get<AppSettings>();
