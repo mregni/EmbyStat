@@ -29,15 +29,15 @@ namespace Tests.Unit.Controllers
 
 		public EmbyControllerTests()
 	    {
-		    _token = new EmbyToken()
-		    {
+		    _token = new EmbyToken
+            {
 			    IsAdmin = true,
 			    Token = "azerty",
 			    Username = "admin"
 		    };
 
-		    _emby = new EmbyUdpBroadcast()
-		    {
+		    _emby = new EmbyUdpBroadcast
+            {
 			    Id = "azerty",
 			    Address = "localhost",
 			    Name = "emby",

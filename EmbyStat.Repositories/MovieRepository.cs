@@ -4,6 +4,7 @@ using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -16,7 +17,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var peopleToDelete = new List<Guid>();
+                var peopleToDelete = new List<string>();
                 foreach (var person in movie.ExtraPersons)
                 {
                     var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
@@ -28,7 +29,7 @@ namespace EmbyStat.Repositories
                 }
                 peopleToDelete.ForEach(x => movie.ExtraPersons.Remove(movie.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
 
-                var genresToDelete = new List<Guid>();
+                var genresToDelete = new List<string>();
                 foreach (var genre in movie.MediaGenres)
                 {
                     var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
@@ -58,7 +59,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(List<Guid> collections, string type)
+        public int GetTotalPersonByType(List<string> collections, PersonType type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -75,7 +76,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public Guid GetMostFeaturedPerson(List<Guid> collections, string type)
+        public string GetMostFeaturedPerson(List<string> collections, PersonType type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -98,7 +99,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Movie> GetAll(IEnumerable<Guid> collections, bool inludeSubs = false)
+        public List<Movie> GetAll(IEnumerable<string> collections, bool inludeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -121,7 +122,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Guid> GetGenres(List<Guid> collections)
+        public List<string> GetGenres(List<string> collections)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -146,6 +147,16 @@ namespace EmbyStat.Repositories
             using (var context = new ApplicationDbContext())
             {
                 return context.Movies.Any();
+            }
+        }
+
+        public int GetMovieCountForPerson(string personId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies
+                    .Include(x => x.ExtraPersons)
+                    .Count(x => x.ExtraPersons.Any(y => y.PersonId == personId));
             }
         }
 

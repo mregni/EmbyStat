@@ -6,7 +6,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
     {
         public string Container { get; set; }
         public bool? HasSubtitles { get; set; }
-        public bool? IdHD { get; set; }
         public string MediaType { get; set; }
         public ICollection<MediaSource> MediaSources { get; set; }
         public ICollection<VideoStream> VideoStreams { get; set; }

@@ -18,14 +18,14 @@ namespace EmbyStat.Services.Abstract
             _jobRepository = jobRepository;
         }
 
-        public bool StatisticsAreValid(Statistic statistic, IEnumerable<Guid> collectionIds)
+        public bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds)
         {
             var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
 
             return statistic != null
                    && lastMediaSync != null
                    && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.StatisticId).ToList());
+                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.StatisticId.ToString()).ToList());
         }
 
         public Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<float?> list)
@@ -65,10 +65,10 @@ namespace EmbyStat.Services.Abstract
             };
         }
 
-        protected Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<DateTime?> list)
+        protected Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<DateTimeOffset?> list)
         {
             var yearDataList = list
-                .GroupBy(x => x.RoundToFive())
+                .GroupBy(x => x.RoundToFiveYear())
                 .OrderBy(x => x.Key)
                 .ToList();
 
@@ -82,7 +82,7 @@ namespace EmbyStat.Services.Abstract
                 {
                     if (yearDataList[j].Key != i)
                     {
-                        yearDataList.Add(new GraphGrouping<int?, DateTime?> {Key = i, Capacity = 0});
+                        yearDataList.Add(new GraphGrouping<int?, DateTimeOffset?> {Key = i, Capacity = 0});
                     }
                     else
                     {

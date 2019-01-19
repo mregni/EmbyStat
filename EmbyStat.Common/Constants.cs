@@ -142,11 +142,6 @@ namespace EmbyStat.Common
         public static string FOURHUNDERDEIGHTY => "480P";
         public static string LOWEST => "< 480P";
 
-        //DATABASE
-        public static string Actor => "Actor";
-        public static string Director => "Director";
-        public static string Writer => "Writer";
-
         //DUPLICATE REASONS
         public static string ByImdb => "BYIMDB";
         public static string ByTitle => "BYTITLE";

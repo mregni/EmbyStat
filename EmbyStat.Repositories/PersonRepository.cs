@@ -21,7 +21,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Guid> GetIds()
+        public List<string> GetIds()
         {
             using (var context = new ApplicationDbContext())
             {
@@ -29,7 +29,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public Person GetPersonById(Guid id)
+        public Person GetPersonById(string id)
         {
             using (var context = new ApplicationDbContext())
             {

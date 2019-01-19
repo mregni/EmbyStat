@@ -122,7 +122,7 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 	    }
 
-	    public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, Guid personId, CancellationToken cancellationToken)
+        public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken)
 	    {
 	        var url = GetItemListUrl($"Users/{personQuery.UserId}/Items/{personId}", personQuery);
 

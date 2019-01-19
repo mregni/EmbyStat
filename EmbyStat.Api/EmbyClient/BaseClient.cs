@@ -343,11 +343,6 @@ namespace EmbyStat.Api.EmbyClient
                 dict.Add("ImageTypes", query.ImageTypes.Select(f => f.ToString()));
             }
 
-            if (query.VideoTypes != null)
-            {
-                dict.Add("VideoTypes", query.VideoTypes.Select(f => f.ToString()));
-            }
-
             if (query.AirDays != null)
             {
                 dict.Add("AirDays", query.AirDays.Select(f => f.ToString()));
@@ -368,7 +363,7 @@ namespace EmbyStat.Api.EmbyClient
                 dict.Add("ExcludeLocationTypes", query.ExcludeLocationTypes.Select(f => f.ToString()));
             }
 
-            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId.ToString());
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
             dict.AddIfNotNull("StartIndex", query.StartIndex);
             dict.AddIfNotNull("Limit", query.Limit);
             dict.AddIfNotNull("SortBy", query.SortBy);
@@ -393,7 +388,6 @@ namespace EmbyStat.Api.EmbyClient
             dict.AddIfNotNull("PersonTypes", query.PersonTypes);
             dict.AddIfNotNull("Years", query.Years);
             dict.AddIfNotNull("ParentIndexNumber", query.ParentIndexNumber);
-            dict.AddIfNotNull("IsHD", query.IsHD);
             dict.AddIfNotNull("HasParentalRating", query.HasParentalRating);
             dict.AddIfNotNullOrEmpty("SearchTerm", query.SearchTerm);
             dict.AddIfNotNull("MinCriticRating", query.MinCriticRating);
@@ -445,7 +439,7 @@ namespace EmbyStat.Api.EmbyClient
 	        }
 
 	        dict.AddIfNotNull("IsPlayed", query.IsPlayed);
-            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId.ToString());
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
 	        dict.Add("UserId", query.UserId);
 	        dict.AddIfNotNull("StartIndex", query.StartIndex);
 	        dict.AddIfNotNull("Limit", query.Limit);

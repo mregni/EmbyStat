@@ -34,9 +34,9 @@ namespace Tests.Integration.Builders
             return this;
         }
 
-        public PluginBuilder AddImageUrl(string imageUrl)
+        public PluginBuilder AddImage(string imageUrl)
         {
-            _model.ImageUrl = imageUrl;
+            _model.ImageTag = imageUrl;
             return this;
         }
 

@@ -9,5 +9,6 @@ namespace EmbyStat.Services.Interfaces
         IEnumerable<Job> GetAll();
         Job GetById(Guid id);
         bool UpdateTrigger(Guid id, string trigger);
+        void ResetAllJobs();
     }
 }

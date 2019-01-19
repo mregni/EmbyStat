@@ -117,15 +117,24 @@ namespace EmbyStat.Jobs.Jobs.Sync
             for (var i = 0; i < rootItems.Count; i++)
             {
                 var rootItem = rootItems[i];
+
+                if (!_settings.MovieCollectionTypes.Contains(rootItem.Type))
+                {
+                    LogInformation($"Skipping collection {rootItem.Name} ({rootItem.Type.ToString()}) because it's not a wanted movie collection type.");
+                    continue;;
+                }
+
                 cancellationToken.ThrowIfCancellationRequested();
                 LogInformation($"Asking Emby all movies for library {rootItem.Name} ({rootItem.Type.ToString()})");
                 var movies = (await GetMoviesFromEmby(rootItem.Id, cancellationToken)).ToList();
-                LogInformation(movies.Any()
-                    ? $"We found {movies.Count} movies. Ready to add them to the database."
-                    : "No movies found for this library. Moving on.");
 
-            if (!movies.Any()) continue;
+                if (!movies.Any())
+                {
+                    LogInformation("No movies found for this library. Moving on.");
+                    continue;
+                }
 
+                LogInformation($"We found {movies.Count} movies. Ready to add them to the database.");
                 movies.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
 
                 await ProcessGenresFromEmby(rootItem.Id, movies.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
@@ -136,18 +145,18 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     j++;
                     cancellationToken.ThrowIfCancellationRequested();
-                    LogInformation($"Processing movie {movie.Name}");
+                    LogInformation($"Processing movie ({j}/{movies.Count}) {movie.Name}");
                     _movieRepository.AddOrUpdate(movie);
                    LogProgress(Math.Floor(5 + 25 / ((double)movies.Count / j * ((double)rootItems.Count / (i + 1)))));
                 }
             }
         }
 
-        private async Task<IEnumerable<Movie>> GetMoviesFromEmby(Guid parentId, CancellationToken cancellationToken)
+        private async Task<IEnumerable<Movie>> GetMoviesFromEmby(string parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
-                SortBy = new[] { "sortname" },
+                SortBy = new[] { "SortName" },
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
@@ -194,11 +203,24 @@ namespace EmbyStat.Jobs.Jobs.Sync
             for (var i = 0; i < rootItems.Count; i++)
             {
                 var rootItem = rootItems[i];
+
+                if (!_settings.ShowCollectionTypes.Contains(rootItem.Type))
+                {
+                    LogInformation($"Skipping collection {rootItem.Name} ({rootItem.Type.ToString()}) because it's not a wanted show collection type.");
+                    continue; ;
+                }
+
                 cancellationToken.ThrowIfCancellationRequested();
                 LogInformation($"Asking Emby all shows for parent {rootItem.Name}");
                 var shows = await GetShowsFromEmby(rootItem.Id, cancellationToken);
-                if (!shows.Any()) continue;
 
+                if (!shows.Any())
+                {
+                    LogInformation("No shows found for this library. Moving on.");
+                    continue;
+                }
+
+                LogInformation($"We found {shows.Count} shows. Ready to add them to the database.");
                 shows.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
 
                 await ProcessGenresFromEmby(rootItem.Id, shows.SelectMany(x => x.MediaGenres, (movie, genre) => genre.GenreId), cancellationToken);
@@ -213,17 +235,17 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     var rawSeasons = await GetSeasonsFromEmby(show.Id, cancellationToken);
 
                     var episodes = new List<Episode>();
-                    var seasonLinks = new List<Tuple<Guid, Guid>>();
+                    var seasonLinks = new List<Tuple<string, string>>();
                     foreach (var season in rawSeasons)
                     {
                         var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
                         eps.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
                         episodes.AddRange(eps);
 
-                        seasonLinks.AddRange(eps.Select(x => new Tuple<Guid, Guid>(season.Id, x.Id)));
+                        seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
                     }
 
-                    LogInformation($"Processing show {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
+                    LogInformation($"Processing show ({j}/{shows.Count})  {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
 
                     var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
 
@@ -245,7 +267,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await _tvdbClient.Login(tvdbApiKey, cancellationToken);
 
             var shows = _showRepository
-                .GetAllShows(new Guid[] { })
+                .GetAllShows(new string[] { })
                 .Where(x => !string.IsNullOrWhiteSpace(x.TVDB))
                 .ToList();
 
@@ -341,11 +363,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
             return true;
         }
 
-        private async Task<List<Show>> GetShowsFromEmby(Guid parentId, CancellationToken cancellationToken)
+        private async Task<List<Show>> GetShowsFromEmby(string parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
-                SortBy = new[] { "sortname" },
+                SortBy = new[] { "SortName" },
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
@@ -362,6 +384,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             };
 
             var embyShows = await _embyClient.GetItemsAsync(query, cancellationToken);
+            embyShows.Items = embyShows.Items.Where(x => x.Type == "Series").ToArray();
 
             LogInformation(embyShows.TotalRecordCount == 0
                 ? "No TV shows found in this collection. Moving on to the next collection."
@@ -370,7 +393,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             return embyShows.Items.Select(ShowHelper.ConvertToShow).ToList();
         }
 
-        private async Task<List<BaseItemDto>> GetSeasonsFromEmby(Guid parentId, CancellationToken cancellationToken)
+        private async Task<List<BaseItemDto>> GetSeasonsFromEmby(string parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
@@ -391,7 +414,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             return embySeasons.Items.ToList();
         }
 
-        private async Task<List<Episode>> GetEpisodesFromEmby(Guid parentId, CancellationToken cancellationToken)
+        private async Task<List<Episode>> GetEpisodesFromEmby(string parentId, CancellationToken cancellationToken)
         {
             var query = new ItemQuery
             {
@@ -418,7 +441,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
-        private async Task ProcessGenresFromEmby(Guid id, IEnumerable<Guid> genresNeeded, CancellationToken cancellationToken)
+        private async Task ProcessGenresFromEmby(string id, IEnumerable<string> genresNeeded, CancellationToken cancellationToken)
         {
             var query = new ItemsByNameQuery
             {
@@ -449,7 +472,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task ProcessPeopleFromEmby(Guid id, IEnumerable<Guid> neededPeople, CancellationToken cancellationToken)
+        private async Task ProcessPeopleFromEmby(string id, IEnumerable<string> neededPeople, CancellationToken cancellationToken)
         {
             var query = new PersonsQuery
             {

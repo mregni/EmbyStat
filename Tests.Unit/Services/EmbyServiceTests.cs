@@ -46,8 +46,8 @@ namespace Tests.Unit.Services
 
 		    var drives = new List<Drive>
 		    {
-		        new Drive() {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
-		        new Drive() {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
+		        new Drive {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
+		        new Drive {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
 		    };
 
 	        var configuration = new List<ConfigurationKeyValue>

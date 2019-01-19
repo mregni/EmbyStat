@@ -3,18 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
-  <ItemGroup>
-	<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentMigrator" Version="3.1.3" />
     <PackageReference Include="FluentMigrator.Runner.Core" Version="3.1.3" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.1.3" />
-    <PackageReference Include="MediaBrowser.Common" Version="3.5.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.0" />
+    <PackageReference Include="MediaBrowser.Common" Version="4.0.0.2" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Api\EmbyStat.Api.csproj" />

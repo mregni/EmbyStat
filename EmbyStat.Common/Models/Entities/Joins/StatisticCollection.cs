@@ -9,7 +9,7 @@ namespace EmbyStat.Common.Models.Entities.Joins
         public Guid Id { get; set; }
         public Guid StatisticId { get; set; }
         public Statistic Statistic { get; set; }
-        public Guid CollectionId { get; set; }
+        public string CollectionId { get; set; }
         public Collection Collection { get; set; }
     }
 }

@@ -9,8 +9,8 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void AddRangeIfMissing(IEnumerable<Genre> genres);
         List<Genre> GetAll();
-        List<Guid> GetIds();
-        List<Genre> GetListByIds(List<Guid> ids);
+        List<string> GetIds();
+        List<Genre> GetListByIds(List<string> ids);
         Task CleanupGenres();
     }
 }

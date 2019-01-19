@@ -44,7 +44,7 @@ namespace EmbyStat.Jobs
             }
             catch (Exception e)
             {
-                Log.Error("Error while running job", e);
+                Log.Error(e, "Error while running job");
                 FailExecution();
                 throw;
             }

@@ -29,5 +29,10 @@ namespace EmbyStat.Services
         {
             return _jobRepository.UpdateTrigger(id, trigger);
         }
+
+        public void ResetAllJobs()
+        {
+            _jobRepository.ResetAllJobs();
+        }
     }
 }

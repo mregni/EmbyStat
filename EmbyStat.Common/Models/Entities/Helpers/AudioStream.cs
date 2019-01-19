@@ -14,6 +14,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public string Language { get; set; }
         public int? SampleRate { get; set; }
         public Video Video { get; set; }
-        public Guid VideoId { get; set; }
+        public string VideoId { get; set; }
     }
 }

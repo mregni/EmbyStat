@@ -13,6 +13,7 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
+using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services
@@ -48,7 +49,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
         }
 
-        public ShowStat GetGeneralStats(IEnumerable<Guid> collectionIds)
+        public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
@@ -81,7 +82,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public ShowGraphs GetGraphs(IEnumerable<Guid> collectionIds)
+        public ShowGraphs GetGraphs(IEnumerable<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
@@ -109,7 +110,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public PersonStats GetPeopleStats(IEnumerable<Guid> collectionIds)
+        public PersonStats GetPeopleStats(IEnumerable<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
@@ -122,9 +123,9 @@ namespace EmbyStat.Services
             {
                 stats = new PersonStats
                 {
-                    TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
-                    TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
-                    TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters)
+                    TotalActorCount = TotalTypeCount(collectionIds, PersonType.Actor, Constants.Common.TotalActors),
+                    TotalDirectorCount = TotalTypeCount(collectionIds, PersonType.Director, Constants.Common.TotalDirectors),
+                    TotalWriterCount = TotalTypeCount(collectionIds, PersonType.Writer, Constants.Common.TotalWriters)
                 };
 
 
@@ -135,7 +136,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<Guid> collectionIds)
+        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
@@ -181,7 +182,7 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<Guid> collectionIds)
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
         {
             var shows = _showRepository.GetAllShows(collectionIds);
             var genreIds = _showRepository.GetGenres(collectionIds);
@@ -195,7 +196,7 @@ namespace EmbyStat.Services
 
                 var grouping = episodes
                     .SelectMany(x => x.ExtraPersons)
-                    .Where(x => x.Type == Constants.Actor)
+                    .Where(x => x.Type == PersonType.Actor)
                     .GroupBy(x => x.PersonId)
                     .Select(group => new { Id = group.Key, Count = group.Count() })
                     .OrderByDescending(x => x.Count);
@@ -212,7 +213,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<Guid> collectionIds, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, PersonType type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -220,7 +221,7 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<Guid> collectionIds, string type, string title)
+        private Card TotalTypeCount(IEnumerable<string> collectionIds, PersonType type, string title)
         {
             return new Card
             {
@@ -423,7 +424,7 @@ namespace EmbyStat.Services
             return new ShowPoster();
         }
 
-        private Card TotalShowCount(IEnumerable<Guid> collectionIds)
+        private Card TotalShowCount(IEnumerable<string> collectionIds)
         {
             var count = _showRepository.CountShows(collectionIds);
             return new Card
@@ -433,7 +434,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalEpisodeCount(IEnumerable<Guid> collectionIds)
+        private Card TotalEpisodeCount(IEnumerable<string> collectionIds)
         {
             var count = _showRepository.CountEpisodes(collectionIds);
             return new Card
@@ -453,7 +454,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private TimeSpanCard CalculatePlayableTime(IEnumerable<Guid> collectionIds)
+        private TimeSpanCard CalculatePlayableTime(IEnumerable<string> collectionIds)
         {
             var playLength = new TimeSpan(_showRepository.GetPlayLength(collectionIds));
             return new TimeSpanCard

@@ -49,7 +49,7 @@ namespace Tests.Unit.Services
 	        _statisticsREpositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
 
             var _appSettingsMock = new Mock<IOptions<AppSettings>>();
-            _appSettingsMock.Setup(x => x.Value).Returns(new AppSettings(){Version = "0.0.0.0"});
+            _appSettingsMock.Setup(x => x.Value).Returns(new AppSettings {Version = "0.0.0.0"});
 
             _subject = new ConfigurationService(_configurationRepositoryMock.Object, _statisticsREpositoryMock.Object, _appSettingsMock.Object);
 		}

@@ -7,7 +7,7 @@ namespace EmbyStat.Api.EmbyClient.Model
     public class ItemQuery
     {
         public string UserId { get; set; }
-        public Guid ParentId { get; set; }
+        public string ParentId { get; set; }
         public int? StartIndex { get; set; }
         public int? Limit { get; set; }
         public string[] SortBy { get; set; }
@@ -17,7 +17,6 @@ namespace EmbyStat.Api.EmbyClient.Model
         public ItemFields[] Fields { get; set; }
         public string[] MediaTypes { get; set; }
         public bool? Is3D { get; set; }
-        public VideoType[] VideoTypes { get; set; }
         public bool Recursive { get; set; }
         public string[] Genres { get; set; }
         public string[] StudioIds { get; set; }
@@ -35,7 +34,6 @@ namespace EmbyStat.Api.EmbyClient.Model
         public string MaxOfficialRating { get; set; }
         public int? MinIndexNumber { get; set; }
         public bool? HasParentalRating { get; set; }
-        public bool? IsHD { get; set; }
         public int? ParentIndexNumber { get; set; }
         public int? MinPlayers { get; set; }
         public int? MaxPlayers { get; set; }
@@ -70,7 +68,6 @@ namespace EmbyStat.Api.EmbyClient.Model
             Filters = new ItemFilter[] { };
             Fields = new ItemFields[] { };
             MediaTypes = new string[] { };
-            VideoTypes = new VideoType[] { };
             EnableTotalRecordCount = true;
             Genres = new string[] { };
             StudioIds = new string[] { };

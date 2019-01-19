@@ -6,7 +6,7 @@ namespace EmbyStat.Common.Models.Entities
     public class Collection
     {
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string PrimaryImage { get; set; }
         public CollectionType Type { get; set; }

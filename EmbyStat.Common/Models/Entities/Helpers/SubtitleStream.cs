@@ -12,6 +12,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public bool IsDefault { get; set; }
         public string Language { get; set; }
         public Video Video { get; set; }
-        public Guid VideoId { get; set; }
+        public string VideoId { get; set; }
     }
 }

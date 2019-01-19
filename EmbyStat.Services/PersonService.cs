@@ -23,7 +23,7 @@ namespace EmbyStat.Services
             _embyClient = embyClient;
         }
 
-        public async Task<Person> GetPersonById(Guid id)
+        public async Task<Person> GetPersonById(string id)
         {
             var person = _personRepository.GetPersonById(id);
             if (person == null || !person.Synced)

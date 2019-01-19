@@ -11,14 +11,14 @@ namespace EmbyStat.Repositories.Migrations
         public override void Up()
         {
             Create.Table(Constants.Tables.BoxSets)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Boxsets")
-                .WithColumn("ParentId").AsGuid().NotNullable()
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Boxsets")
+                .WithColumn("ParentId").AsString().NotNullable()
                 .WithColumn("Name").AsString(200).NotNullable()
                 .WithColumn("OfficialRating").AsString().Nullable()
                 .WithColumn("Primary").AsString().Nullable();
 
             Create.Table(Constants.Tables.Collections)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Collections")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Collections")
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("PrimaryImage").AsString().Nullable()
                 .WithColumn("Type").AsInt32().NotNullable();
@@ -28,14 +28,14 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Value").AsString().Nullable();
 
             Create.Table(Constants.Tables.Devices)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Devices")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Devices")
                 .WithColumn("AppName").AsString().Nullable()
                 .WithColumn("AppVersion").AsString().Nullable()
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("LastUserName").AsString().Nullable();
 
             Create.Table(Constants.Tables.Drives)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Drives")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Drives")
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("Path").AsString().NotNullable()
                 .WithColumn("Type").AsString().NotNullable();
@@ -45,16 +45,16 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Value").AsString().NotNullable();
 
             Create.Table(Constants.Tables.Genres)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Genres")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Genres")
                 .WithColumn("Name").AsString().NotNullable();
 
             Create.Table(Constants.Tables.Languages)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Languages")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Languages")
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("Code").AsString().NotNullable();
 
             Create.Table(Constants.Tables.Media)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Media")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Media")
                 .WithColumn("DateCreated").AsDateTime().Nullable()
                 .WithColumn("ParentId").AsGuid().NotNullable()
                 .WithColumn("PremiereDate").AsDateTime().Nullable()
@@ -94,11 +94,9 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Season_IndexNumberEnd").AsInt32().Nullable();
 
             Create.Table(Constants.Tables.People)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_People")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_People")
                 .WithColumn("Name").AsString().Nullable()
                 .WithColumn("Synced").AsBoolean().NotNullable()
-                .WithColumn("ChildCount").AsInt32().NotNullable()
-                .WithColumn("EpisodeCount").AsInt32().NotNullable()
                 .WithColumn("Etag").AsString().Nullable()
                 .WithColumn("HomePageUrl").AsString().Nullable()
                 .WithColumn("MovieCount").AsInt32().NotNullable()
@@ -175,59 +173,59 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("IsDisabled").AsBoolean().NotNullable();
 
             Create.Table(Constants.Tables.AudioStreams)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_AudioStreams")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_AudioStreams")
                 .WithColumn("BitRate").AsInt64().Nullable()
                 .WithColumn("ChannelLayout").AsString().Nullable()
                 .WithColumn("Channels").AsInt32().NotNullable()
                 .WithColumn("Codec").AsString().NotNullable()
                 .WithColumn("Language").AsString().Nullable()
                 .WithColumn("SampleRate").AsInt32().NotNullable()
-                .WithColumn("VideoId").AsGuid().NotNullable()
+                .WithColumn("VideoId").AsString().NotNullable()
                     .ForeignKey("FK_AudioStreams_Media_VideoId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.MediaCollection)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_MediaCollection")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_MediaCollection")
                 .WithColumn("MediaId").AsGuid().NotNullable()
                     .ForeignKey("FK_MediaCollection_Media_MediaId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade)
-                .WithColumn("CollectionId").AsGuid().NotNullable()
+                .WithColumn("CollectionId").AsString().NotNullable()
                     .ForeignKey("FK_MediaCollection_Collections_CollectionId", Constants.Tables.Collections, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.MediaGenres)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_MediaGenres")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_MediaGenres")
                 .WithColumn("MediaId").AsGuid().NotNullable()
                     .ForeignKey("FK_MediaGenres_Media_MediaId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade)
                 .WithColumn("GenreId").AsGuid().NotNullable()
                     .ForeignKey("FK_MediaGenres_Genres_GenreId", Constants.Tables.Genres, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.MediaSources)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_MediaSources")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_MediaSources")
                 .WithColumn("BitRate").AsInt64().Nullable()
                 .WithColumn("Container").AsString().Nullable()
                 .WithColumn("Path").AsString().Nullable()
                 .WithColumn("Protocol").AsString().Nullable()
                 .WithColumn("RunTimeTicks").AsInt64().Nullable()
                 .WithColumn("VideoType").AsString().Nullable()
-                .WithColumn("VideoId").AsGuid().NotNullable()
+                .WithColumn("VideoId").AsString().NotNullable()
                     .ForeignKey("FK_MediaSources_Media_VideoId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.SeasonEpisodes)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_SeasonEpisodes")
-                .WithColumn("SeasonId").AsGuid().NotNullable()
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_SeasonEpisodes")
+                .WithColumn("SeasonId").AsString().NotNullable()
                     .ForeignKey("FK_SeasonEpisodes_Media_EpisodeId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade)
-                .WithColumn("EpisodeId").AsGuid().NotNullable()
+                .WithColumn("EpisodeId").AsString().NotNullable()
                     .ForeignKey("FK_SeasonEpisodes_Media_SeasonId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.SubtitleStreams)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_SubtitleStreams")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_SubtitleStreams")
                 .WithColumn("Codec").AsString().Nullable()
                 .WithColumn("DisplayTitle").AsString().Nullable()
                 .WithColumn("IsDefault").AsBoolean().NotNullable()
                 .WithColumn("Language").AsString().Nullable()
-                .WithColumn("VideoId").AsGuid().NotNullable()
+                .WithColumn("VideoId").AsString().NotNullable()
                     .ForeignKey("FK_SubtitleStreams_Media_VideoId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.VideoStreams)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_VideoStreams")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_VideoStreams")
                 .WithColumn("AspectRatio").AsString().Nullable()
                 .WithColumn("AverageFrameRate").AsString().Nullable()
                 .WithColumn("BitRate").AsInt64().Nullable()
@@ -235,22 +233,22 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Height").AsInt32().Nullable()
                 .WithColumn("Language").AsString().Nullable()
                 .WithColumn("Width").AsInt32().Nullable()
-                .WithColumn("VideoId").AsGuid().NotNullable()
+                .WithColumn("VideoId").AsString().NotNullable()
                 .ForeignKey("FK_VideoStreams_Media_VideoId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.ExtraPersons)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_ExtraPersons")
+                .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_ExtraPersons")
                 .WithColumn("Type").AsString().Nullable()
-                .WithColumn("ExtraId").AsGuid().NotNullable()
+                .WithColumn("ExtraId").AsString().NotNullable()
                 .ForeignKey("FK_ExtraPersons_Media_ExtraId", Constants.Tables.Media, "Id").OnDelete(Rule.Cascade)
-                .WithColumn("PersonId").AsGuid().NotNullable()
+                .WithColumn("PersonId").AsString().NotNullable()
                 .ForeignKey("FK_ExtraPersons_People_PersonId", Constants.Tables.People, "Id").OnDelete(Rule.Cascade);
 
             Create.Table(Constants.Tables.StatisticCollection)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_StatisticCollection")
                 .WithColumn("StatisticId").AsGuid().NotNullable()
                 .ForeignKey("FK_StatisticCollection_Statistics_StatisticId", Constants.Tables.Statistics, "Id").OnDelete(Rule.Cascade)
-                .WithColumn("CollectionId").AsGuid().NotNullable()
+                .WithColumn("CollectionId").AsString().NotNullable()
                 .ForeignKey("FK_StatisticCollection_Collections_CollectionId", Constants.Tables.Collections, "Id").OnDelete(Rule.Cascade);
 
             Create.Index("IX_AudioStreams_VideoId").OnTable(Constants.Tables.AudioStreams).OnColumn("VideoId");
