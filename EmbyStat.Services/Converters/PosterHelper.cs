@@ -42,9 +42,8 @@ namespace EmbyStat.Services.Converters
                 MediaId = person.Id,
                 Name = person.Name,
                 BirthDate = person.BirthDate,
-                ChildCount = person.ChildCount,
                 MovieCount = person.MovieCount,
-                EpisodeCount = person.EpisodeCount,
+                EpisodeCount = person.seriesCount,
                 Title = title,
                 HasTitle = true,
                 Tag = person.Primary

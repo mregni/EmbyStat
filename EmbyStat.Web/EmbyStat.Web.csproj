@@ -16,7 +16,6 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <Version>0.1.0.24</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +25,7 @@
     <PackageReference Include="Hangfire.AspNetCore" Version="1.6.21" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
@@ -50,10 +49,6 @@
   <ItemGroup>
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
     <None Remove="ClientApp\src\app\components\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Startup_BACKUP_35740.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -101,8 +96,7 @@
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
-    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Jobs.csproj" />
-    <ProjectReference Include="..\Updater\Updater.csproj" />
+    <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

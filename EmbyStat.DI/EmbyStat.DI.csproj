@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
-    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Jobs.csproj" />
+    <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

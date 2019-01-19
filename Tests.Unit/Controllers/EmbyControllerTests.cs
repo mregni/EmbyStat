@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
@@ -29,15 +29,15 @@ namespace Tests.Unit.Controllers
 
 		public EmbyControllerTests()
 	    {
-		    _token = new EmbyToken()
-		    {
+		    _token = new EmbyToken
+            {
 			    IsAdmin = true,
 			    Token = "azerty",
 			    Username = "admin"
 		    };
 
-		    _emby = new EmbyUdpBroadcast()
-		    {
+		    _emby = new EmbyUdpBroadcast
+            {
 			    Id = "azerty",
 			    Address = "localhost",
 			    Name = "emby",

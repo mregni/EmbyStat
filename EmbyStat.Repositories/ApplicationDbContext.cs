@@ -1,4 +1,4 @@
-﻿using EmbyStat.Api.EmbyClient.Model;
+﻿using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Joins;

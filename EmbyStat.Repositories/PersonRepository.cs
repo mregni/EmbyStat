@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
@@ -21,7 +20,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<Guid> GetIds()
+        public List<string> GetIds()
         {
             using (var context = new ApplicationDbContext())
             {
@@ -29,7 +28,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public Person GetPersonById(Guid id)
+        public Person GetPersonById(string id)
         {
             using (var context = new ApplicationDbContext())
             {

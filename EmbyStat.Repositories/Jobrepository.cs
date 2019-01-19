@@ -74,5 +74,22 @@ namespace EmbyStat.Repositories
                 return false;
             }
         }
+
+        public void ResetAllJobs()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var jobs = context.Jobs.ToList();
+                jobs.ForEach(x =>
+                {
+                    if (x.State == JobState.Running)
+                    {
+                        x.State = JobState.Failed;
+                    }
+                });
+
+                context.SaveChanges();
+            }
+        }
     }
 }

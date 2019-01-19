@@ -52,7 +52,7 @@ namespace Tests.Integration
                 .AddConfigurationFileName("statistics.config.xml")
                 .AddDescription("Plugin for calculating statistics")
                 .AddId("d0755cc879dc4aa586a3eefa97907b95")
-                .AddImageUrl("http://google.com")
+                .AddImage("http://google.com")
                 .AddName("Statistics")
                 .AddVersion("1.0.0.0")
                 .Build();
@@ -61,7 +61,7 @@ namespace Tests.Integration
                 .AddConfigurationFileName("cleaner.config.xml")
                 .AddDescription("Plugin for cleaning up studios")
                 .AddId("942ea4d13c7041a9bb098d988a267cc6")
-                .AddImageUrl("http://google.com")
+                .AddImage("http://google.com")
                 .AddName("Studio Cleaner")
                 .AddVersion("2.0.0.0")
                 .Build();
@@ -86,14 +86,14 @@ namespace Tests.Integration
             result.ElementAt(0).ConfigurationFileName.Should().Be(_plugins[0].ConfigurationFileName);
             result.ElementAt(0).Description.Should().Be(_plugins[0].Description);
             result.ElementAt(0).Id.Should().Be(_plugins[0].Id);
-            result.ElementAt(0).ImageUrl.Should().Be(_plugins[0].ImageUrl);
+            result.ElementAt(0).ImageUrl.Should().Be(_plugins[0].ImageTag);
             result.ElementAt(0).Name.Should().Be(_plugins[0].Name);
             result.ElementAt(0).Version.Should().Be(_plugins[0].Version);
 
             result.ElementAt(1).ConfigurationFileName.Should().Be(_plugins[1].ConfigurationFileName);
             result.ElementAt(1).Description.Should().Be(_plugins[1].Description);
             result.ElementAt(1).Id.Should().Be(_plugins[1].Id);
-            result.ElementAt(1).ImageUrl.Should().Be(_plugins[1].ImageUrl);
+            result.ElementAt(1).ImageUrl.Should().Be(_plugins[1].ImageTag);
             result.ElementAt(1).Name.Should().Be(_plugins[1].Name);
             result.ElementAt(1).Version.Should().Be(_plugins[1].Version);
         }

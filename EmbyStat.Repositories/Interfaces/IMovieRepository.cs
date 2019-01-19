@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities;
+using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -8,10 +8,11 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveMovies();
         void AddOrUpdate(Movie movie);
-        int GetTotalPersonByType(List<Guid> collections, string type);
-        Guid GetMostFeaturedPerson(List<Guid> collections, string type);
-        List<Movie> GetAll(IEnumerable<Guid> collections, bool inludeSubs = false);
-        List<Guid> GetGenres(List<Guid> collections);
+        int GetTotalPersonByType(List<string> collections, PersonType type);
+        string GetMostFeaturedPerson(List<string> collections, PersonType type);
+        List<Movie> GetAll(IEnumerable<string> collections, bool includeSubs = false);
+        List<string> GetGenres(List<string> collections);
         bool Any();
+        int GetMovieCountForPerson(string personId);
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Clients.EmbyClient;
+using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
@@ -46,8 +46,8 @@ namespace Tests.Unit.Services
 
 		    var drives = new List<Drive>
 		    {
-		        new Drive() {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
-		        new Drive() {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
+		        new Drive {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
+		        new Drive {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
 		    };
 
 	        var configuration = new List<ConfigurationKeyValue>

@@ -25,14 +25,14 @@ namespace Tests.Unit.Services
         {
             _collections = new List<Collection>
             {
-                new Collection{ Id = Guid.NewGuid(), Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Collection{ Id = Guid.NewGuid(), Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Collection{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
+                new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
             _movieOne = new Movie
             {
                 CommunityRating = (float)1.7,
-                Id = Guid.NewGuid(),
+                Id = string.Empty,
                 Name = "The lord of the rings",
                 PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
                 DateCreated = new DateTime(2018, 1, 1, 0, 0, 0),
@@ -41,14 +41,14 @@ namespace Tests.Unit.Services
                 Primary = "primarImage",
                 MediaGenres = new List<MediaGenre>
                 {
-                    new MediaGenre {GenreId = Guid.NewGuid()}
+                    new MediaGenre {GenreId = string.Empty}
                 }
             };
 
             _movieTwo = new Movie
             {
                 CommunityRating = (float)1.7,
-                Id = Guid.NewGuid(),
+                Id = string.Empty,
                 Name = "The lord of the rings, two towers",
                 PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
                 DateCreated = new DateTime(2017, 1, 1, 0, 0, 0),
@@ -57,12 +57,12 @@ namespace Tests.Unit.Services
                 Primary = "primarImage",
                 MediaGenres = new List<MediaGenre>
                 {
-                    new MediaGenre {GenreId = Guid.NewGuid()}
+                    new MediaGenre {GenreId = string.Empty}
                 }
             };
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
-            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<Guid>>(), It.IsAny<bool>()))
+            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()))
                 .Returns(new List<Movie> { _movieOne, _movieTwo });
             var collectionRepositoryMock = new Mock<ICollectionRepository>();
             collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);

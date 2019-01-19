@@ -13,6 +13,7 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
+using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services
@@ -44,7 +45,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(config.MovieCollectionTypes);
         }
 
-        public MovieStats GetGeneralStatsForCollections(List<Guid> collectionIds)
+        public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
 
@@ -78,7 +79,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public async Task<PersonStats> GetPeopleStatsForCollections(List<Guid> collectionIds)
+        public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MoviePeople);
 
@@ -91,12 +92,12 @@ namespace EmbyStat.Services
             {
                 stats = new PersonStats
                 {
-                    TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
-                    TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
-                    TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters),
-                    MostFeaturedActor = await GetMostFeaturedPerson(collectionIds, Constants.Actor, Constants.Common.MostFeaturedActor),
-                    MostFeaturedDirector = await GetMostFeaturedPerson(collectionIds, Constants.Director, Constants.Common.MostFeaturedDirector),
-                    MostFeaturedWriter = await GetMostFeaturedPerson(collectionIds, Constants.Writer, Constants.Common.MostFeaturedWriter),
+                    TotalActorCount = TotalTypeCount(collectionIds, PersonType.Actor, Constants.Common.TotalActors),
+                    TotalDirectorCount = TotalTypeCount(collectionIds, PersonType.Director, Constants.Common.TotalDirectors),
+                    TotalWriterCount = TotalTypeCount(collectionIds, PersonType.Writer, Constants.Common.TotalWriters),
+                    MostFeaturedActor = await GetMostFeaturedPerson(collectionIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
+                    MostFeaturedDirector = await GetMostFeaturedPerson(collectionIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
+                    MostFeaturedWriter = await GetMostFeaturedPerson(collectionIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
                     MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenre(collectionIds)
                 };
 
@@ -107,7 +108,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public MovieGraphs GetGraphs(List<Guid> collectionIds)
+        public MovieGraphs GetGraphs(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
 
@@ -133,7 +134,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public SuspiciousTables GetSuspiciousMovies(List<Guid> collectionIds)
+        public SuspiciousTables GetSuspiciousMovies(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
@@ -381,7 +382,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalTypeCount(List<Guid> collectionsIds, string type, string title)
+        private Card TotalTypeCount(List<string> collectionsIds, PersonType type, string title)
         {
             return new Card
             {
@@ -390,15 +391,16 @@ namespace EmbyStat.Services
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(List<Guid> collectionIds, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(List<string> collectionIds, PersonType type, string title)
         {
             var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, type);
 
             var person = await _personService.GetPersonById(personId);
+            person.MovieCount = _movieRepository.GetMovieCountForPerson(personId);
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<Guid> collectionIds)
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
         {
             var movies = _movieRepository.GetAll(collectionIds, true);
             var genreIds = _movieRepository.GetGenres(collectionIds);
@@ -410,7 +412,7 @@ namespace EmbyStat.Services
                 var selectedMovies = movies.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
                 var personId = selectedMovies
                     .SelectMany(x => x.ExtraPersons)
-                    .Where(x => x.Type == Constants.Actor)
+                    .Where(x => x.Type == PersonType.Actor)
                     .GroupBy(x => x.PersonId)
                     .Select(group => new { Id = group.Key, Count = group.Count() })
                     .OrderByDescending(x => x.Count)
@@ -418,6 +420,7 @@ namespace EmbyStat.Services
                     .FirstOrDefault();
 
                 var person = await _personService.GetPersonById(personId);
+                person.MovieCount = _movieRepository.GetMovieCountForPerson(personId);
                 list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
             }
 

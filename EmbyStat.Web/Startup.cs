@@ -25,7 +25,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using SQLitePCL;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
@@ -51,8 +50,6 @@ namespace EmbyStat.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            SQLitePCL.raw.SetProvider(new SQLite3Provider_e_sqlite3());
-
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             var config = Configuration.Get<AppSettings>();
@@ -95,9 +92,13 @@ namespace EmbyStat.Web
             services.AddSingleton<IUpdateService, UpdateService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, IApplicationLifetime lifetime)
         {
             ApplicationBuilder = app;
+
+            lifetime.ApplicationStarted.Register(ResetAllJobs);
+            lifetime.ApplicationStopped.Register(ResetAllJobs);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -119,6 +120,7 @@ namespace EmbyStat.Web
                 app.UseHangfireDashboard("/hangfire",
                     new DashboardOptions
                     {
+                        
                         Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
                     });
             }
@@ -186,6 +188,12 @@ namespace EmbyStat.Web
             {
                 File.Delete(file);
             }
+        }
+
+        private void ResetAllJobs()
+        {
+            var jobService = ApplicationBuilder.ApplicationServices.GetService<IJobService>();
+            jobService.ResetAllJobs();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using EmbyStat.Api.EmbyClient.Cryptography;
+using EmbyStat.Clients.EmbyClient.Cryptography;
 using FluentAssertions;
 using Xunit;
 

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities;
+using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -11,20 +11,20 @@ namespace EmbyStat.Repositories.Interfaces
         void AddRange(IEnumerable<Show> list);
         void AddRange(IEnumerable<Season> list);
         void AddRange(IEnumerable<Episode> list);
-        IEnumerable<Show> GetAllShows(IEnumerable<Guid> collections, bool inludeSubs = false);
-        IEnumerable<Season> GetAllSeasonsForShow(Guid showId, bool inludeSubs = false);
-        IEnumerable<Episode> GetAllEpisodesForShow(Guid showId, bool inludeSubs = false);
-        IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<Guid> showIds, bool inludeSubs = false);
-        void SetTvdbSynced(Guid showId);
-        int CountShows(IEnumerable<Guid> collectionIds);
-        int CountEpisodes(Guid showId);
-        int CountEpisodes(IEnumerable<Guid> collectionIds);
-        long GetPlayLength(IEnumerable<Guid> collectionIds);
-        int GetTotalPersonByType(IEnumerable<Guid> collections, string type);
-        Guid GetMostFeaturedPerson(IEnumerable<Guid> collections, string type);
-        List<Guid> GetGenres(IEnumerable<Guid> collections);
-        int GetEpisodeCountForShow(Guid showId, bool includeSpecials = false);
-        int GetSeasonCountForShow(Guid showId, bool includeSpecials = false);
+        IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool includeSubs = false);
+        IEnumerable<Season> GetAllSeasonsForShow(string showId, bool includeSubs = false);
+        IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool includeSubs = false);
+        IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool includeSubs = false);
+        void SetTvdbSynced(string showId);
+        int CountShows(IEnumerable<string> collectionIds);
+        int CountEpisodes(string showId);
+        int CountEpisodes(IEnumerable<string> collectionIds);
+        long GetPlayLength(IEnumerable<string> collectionIds);
+        int GetTotalPersonByType(IEnumerable<string> collections, PersonType type);
+        string GetMostFeaturedPerson(IEnumerable<string> collections, PersonType type);
+        List<string> GetGenres(IEnumerable<string> collections);
+        int GetEpisodeCountForShow(string showId, bool includeSpecials = false);
+        int GetSeasonCountForShow(string showId, bool includeSpecials = false);
         bool Any();
     }
 }

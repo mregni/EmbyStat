@@ -10,7 +10,7 @@ namespace EmbyStat.Services.Models.Show
         public int Episodes { get; set; }
         public int Specials { get; set; }
         public int MissingEpisodes { get; set; }
-        public DateTime? PremiereDate { get; set; }
+        public DateTimeOffset? PremiereDate { get; set; }
         public bool Status { get; set; }
         public string SortName { get; set; }
     }

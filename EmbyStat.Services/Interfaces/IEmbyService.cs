@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Emby;
 using MediaBrowser.Model.Plugins;
