@@ -41,7 +41,7 @@ namespace Tests.Unit.Services
                 Primary = "primarImage",
                 MediaGenres = new List<MediaGenre>
                 {
-                    new MediaGenre {GenreId = string.Empty}
+                    new MediaGenre {GenreId = "id1"}
                 }
             };
 
@@ -57,7 +57,7 @@ namespace Tests.Unit.Services
                 Primary = "primarImage",
                 MediaGenres = new List<MediaGenre>
                 {
-                    new MediaGenre {GenreId = string.Empty}
+                    new MediaGenre {GenreId = "id2"}
                 }
             };
 
