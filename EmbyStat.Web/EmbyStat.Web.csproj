@@ -52,10 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Startup_BACKUP_35740.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="ClientApp\src\app\about\state\actions.about.ts" />
     <None Remove="ClientApp\src\app\about\state\facade.about.ts" />
     <None Remove="ClientApp\src\app\activity\models\activity.ts" />
@@ -100,8 +96,7 @@
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
-    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Jobs.csproj" />
-    <ProjectReference Include="..\Updater\Updater.csproj" />
+    <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

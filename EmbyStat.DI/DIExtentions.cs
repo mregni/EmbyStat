@@ -1,9 +1,9 @@
-﻿using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Cryptography;
-using EmbyStat.Api.EmbyClient.Net;
-using EmbyStat.Api.Github;
-using EmbyStat.Api.Tvdb;
-using EmbyStat.Api.WebSocketClient;
+﻿using EmbyStat.Clients.EmbyClient;
+using EmbyStat.Clients.EmbyClient.Cryptography;
+using EmbyStat.Clients.EmbyClient.Net;
+using EmbyStat.Clients.Github;
+using EmbyStat.Clients.Tvdb;
+using EmbyStat.Clients.WebSocketClient;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Hubs;

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using EmbyStat.Api.WebSocketClient;
+using EmbyStat.Clients.WebSocketClient;
 using EmbyStat.Common.Enums;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Hosting;

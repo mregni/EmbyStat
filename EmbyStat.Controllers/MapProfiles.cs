@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoMapper;
-using EmbyStat.Api.EmbyClient.Model;
-using EmbyStat.Api.Github.Models;
+using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.ViewModels.About;
 using EmbyStat.Controllers.ViewModels.Configuration;

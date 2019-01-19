@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Clients.EmbyClient.Model;
 
 namespace EmbyStat.Repositories.Interfaces
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Services.Models.Stat
+﻿namespace EmbyStat.Services.Models.Stat
 {
     public class MoviePoster
     {

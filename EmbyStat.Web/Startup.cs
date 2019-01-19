@@ -25,7 +25,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using SQLitePCL;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web

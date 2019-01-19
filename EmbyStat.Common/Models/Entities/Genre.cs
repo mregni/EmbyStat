@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using EmbyStat.Common.Models.Entities.Joins;
 namespace EmbyStat.Common.Models.Entities

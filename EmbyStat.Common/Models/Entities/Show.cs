@@ -1,5 +1,4 @@
-﻿using System;
-using EmbyStat.Common.Models.Entities.Helpers;
+﻿using EmbyStat.Common.Models.Entities.Helpers;
 
 namespace EmbyStat.Common.Models.Entities
 {

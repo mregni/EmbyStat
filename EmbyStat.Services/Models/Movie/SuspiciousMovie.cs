@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Services.Models.Movie
+﻿namespace EmbyStat.Services.Models.Movie
 {
     public class SuspiciousMovie
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Api.Github.Models;
+using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Services.Interfaces

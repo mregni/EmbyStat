@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Controllers.ViewModels.Movie
+﻿namespace EmbyStat.Controllers.ViewModels.Movie
 {
     public class SuspiciousMovieViewModel
     {

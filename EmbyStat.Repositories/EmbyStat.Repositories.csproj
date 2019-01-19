@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Api\EmbyStat.Api.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
 
