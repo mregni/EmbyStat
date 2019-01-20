@@ -7,18 +7,17 @@ import { Configuration } from '../models/configuration';
 
 @Injectable()
 export class ConfigurationService {
-  private readonly getConfigurationUrl: string = '/configuration';
-  private readonly updateConfigurationUrl: string = '/configuration';
+  private readonly baseUrl = '/api/configuration';
 
   constructor(private http: HttpClient) {
 
   }
 
   getConfiguration(): Observable<Configuration> {
-    return this.http.get<Configuration>('/api' + this.getConfigurationUrl);
+    return this.http.get<Configuration>(this.baseUrl);
   }
 
   updateConfgiguration(configuration: Configuration): Observable<Configuration> {
-    return this.http.put<Configuration>('/api' + this.updateConfigurationUrl, configuration);
+    return this.http.put<Configuration>(this.baseUrl, configuration);
   }
 }

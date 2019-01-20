@@ -1,15 +1,24 @@
 export class Configuration {
-  public id: string;
-  public wizardFinished: boolean;
-  public accessToken: string;
-  public embyUserName: string;
-  public embyServerAddress: string;
-  public username: string;
-  public language: string;
-  public serverName: string;
-  public isLoaded: boolean;
-  public embyUserId: string;
-  public toShortMovie: number;
-  public movieCollectionTypes: number[];
-  public showCollectionTypes: number[];
+  id: string;
+  wizardFinished: boolean;
+  accessToken: string;
+  embyUserName: string;
+  embyServerAddress: string;
+  username: string;
+  language: string;
+  serverName: string;
+  isLoaded: boolean;
+  embyUserId: string;
+  toShortMovie: number;
+  movieCollectionTypes: number[];
+  showCollectionTypes: number[];
+  tvdbApiKey: string;
+  embyServerPort: number;
+  embyServerProtocol: number;
+  lastTvdbUpdate: Date;
+  keepLogsCount: number;
+  autoUpdate: boolean;
+  updateTrain: number;
+  updateInProgress: boolean;
+  version: string;
 }

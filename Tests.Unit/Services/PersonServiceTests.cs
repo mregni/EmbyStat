@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Api.EmbyClient.Model;
+using EmbyStat.Clients.EmbyClient;
+using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
@@ -35,24 +34,23 @@ namespace Tests.Unit.Services
                 new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
-                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "http://localhost" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "localhost" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
                 new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
-                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" }
+                new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" },
+                new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerPort, Value = "8096" }
             };
 
-            basePerson = new BaseItemDto()
+            basePerson = new BaseItemDto
             {
-                Id = "Id",
+                Id = string.Empty,
                 Name = "name",
                 ImageTags = new Dictionary<ImageType, string> {{ImageType.Primary, ""}},
                 MovieCount = 10,
                 PremiereDate = new DateTime(2000, 1, 1),
-                ChildCount = 20,
-                EpisodeCount = 10,
                 Etag = "etag",
-                HomePageUrl = "localhost.be",
                 ProviderIds = new Dictionary<string, string> { { "Imdb", "12345"}, { "Tmdb", "12345"} },
                 Overview = "Lots of text",
                 SeriesCount = 1,
@@ -78,7 +76,7 @@ namespace Tests.Unit.Services
             returnedPerson = null;
             _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById("");
+            var person = await _subject.GetPersonById(string.Empty);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);
@@ -86,10 +84,7 @@ namespace Tests.Unit.Services
             person.Primary.Should().Be(basePerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
             person.MovieCount.Should().Be(basePerson.MovieCount);
             person.BirthDate.Should().Be(basePerson.PremiereDate);
-            person.ChildCount.Should().Be(basePerson.ChildCount);
-            person.EpisodeCount.Should().Be(basePerson.EpisodeCount);
             person.Etag.Should().Be(basePerson.Etag);
-            person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
             person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(basePerson.Overview);
@@ -110,13 +105,13 @@ namespace Tests.Unit.Services
         {
             returnedPerson = new Person
             {
-                Id = "Id",
+                Id = string.Empty,
                 Name = "name",
                 Synced = false
             };
             _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById("");
+            var person = await _subject.GetPersonById(string.Empty);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);
@@ -124,10 +119,7 @@ namespace Tests.Unit.Services
             person.Primary.Should().Be(basePerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
             person.MovieCount.Should().Be(basePerson.MovieCount);
             person.BirthDate.Should().Be(basePerson.PremiereDate);
-            person.ChildCount.Should().Be(basePerson.ChildCount);
-            person.EpisodeCount.Should().Be(basePerson.EpisodeCount);
             person.Etag.Should().Be(basePerson.Etag);
-            person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
             person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(basePerson.Overview);
@@ -148,13 +140,12 @@ namespace Tests.Unit.Services
         {
             returnedPerson = new Person
             {
-                Id = "Id",
+                Id = basePerson.Id,
                 Name = "name",
                 Primary = "",
                 MovieCount = 10,
                 BirthDate = new DateTime(2000, 1, 1),
-                ChildCount = 20,
-                EpisodeCount = 10,
+                seriesCount = 10,
                 Etag = "etag",
                 HomePageUrl = "localhost.be",
                 IMDB = "12345",
@@ -166,7 +157,7 @@ namespace Tests.Unit.Services
             };
             _personREpositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
 
-            var person = await _subject.GetPersonById("");
+            var person = await _subject.GetPersonById(returnedPerson.Id);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(basePerson.Id);
@@ -174,10 +165,7 @@ namespace Tests.Unit.Services
             person.Primary.Should().Be(basePerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
             person.MovieCount.Should().Be(basePerson.MovieCount);
             person.BirthDate.Should().Be(basePerson.PremiereDate);
-            person.ChildCount.Should().Be(basePerson.ChildCount);
-            person.EpisodeCount.Should().Be(basePerson.EpisodeCount);
             person.Etag.Should().Be(basePerson.Etag);
-            person.HomePageUrl.Should().Be(basePerson.HomePageUrl);
             person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(basePerson.Overview);

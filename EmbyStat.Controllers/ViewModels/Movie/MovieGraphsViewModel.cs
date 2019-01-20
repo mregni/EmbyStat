@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using EmbyStat.Controllers.ViewModels.Graph;
-using EmbyStat.Services.Models.Graph;
 
 namespace EmbyStat.Controllers.ViewModels.Movie
 {

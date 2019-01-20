@@ -15,8 +15,8 @@
               </mat-option>
             </mat-select>
             <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
+            <mat-hint align="start" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></mat-hint>
           </mat-form-field>
-          <p class="subtext-grey-small" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></p>
           <div class="button-container">
             <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
           </div>
@@ -28,10 +28,25 @@
         <form [formGroup]="embyFormGroup" class="form-container">
           <p *ngIf="!embyFound" [innerHTML]="'WIZARD.EMBYNOTFOUNDTEXT' | translate"></p>
           <p *ngIf="embyFound" [innerHTML]="'WIZARD.EMBYFOUNDTEXT' | translate"></p>
-          <mat-form-field>
-            <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
-            <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
-          </mat-form-field>
+          <div class="emby-address-container">
+            <mat-form-field required class="emby-protocol">
+              <mat-select formControlName="embyProtocol">
+                <mat-option [value]="0">Http://</mat-option>
+                <mat-option [value]="1">Https://</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="emby-address">
+              <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
+              <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
+            </mat-form-field>
+
+            <mat-form-field class="emby-port">
+              <input matInput placeholder="Port" formControlName="embyPort" required>
+              <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
+            </mat-form-field>
+          </div>
+
           <mat-form-field>
             <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME' | translate}}" formControlName="embyUsername" required>
             <!--<mat-error *ngIf="embyUsernameControl.hasError('required')">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>-->

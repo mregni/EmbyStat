@@ -9,6 +9,7 @@
     "SAVE": "speichern",
     "DISCARD": "verwerfen",
     "CANCEL": "abbrechen",
+    "CLOSE": "Schließen",
     "DAYS": "Tage",
     "HOURS": "Stunden",
     "MINUTES": "Minuten",
@@ -48,9 +49,10 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
     "NO_CONFIGURATION_FOUND": "Keine Konfiguration gefunden.",
-    "NOT_FOUND": "Hoppla, es fehlen einige Dateien.",
+    "NOT_FOUND": "Hoppla, wir konnten nicht finden wonach Sie suchen.",
     "TOKEN_FAILED": "Abrufen des Emby Token ist fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen und Adresse.",
-    "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind."
+    "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind.",
+    "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
     "NAME": "Geben Sie Ihren Namen ein",
@@ -58,7 +60,8 @@
     "EMBYADDRESS": "Emby IP-Adresse",
     "EMBYUSERNAME": "Emby Admin Benutzername",
     "EMBYPASSWORD": "Emby Admin Passwort",
-    "DURATIONINMINUTES": "Dauer in Minuten"
+    "DURATIONINMINUTES": "Dauer in Minuten",
+    "TVDBAPI": "TheTVDB API key"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
@@ -85,7 +88,7 @@
     "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen.",
     "CHECKINGSTATUS": "Emby Server wird überprüft...",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
-    "EMBYNOTFOUNDTEXT": "Jetzt richten wir die Verbindung zu Emby ein. Die automatische Suche nach einem Emby-Server im Netzwerk war leider nicht erfolgreich. Tragen Sie bitte die Emby http(s)://IP/Domain:Port ein und füllen Sie den restlichen Felder aus.",
+    "EMBYNOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu Emby einrichten. Wir haben versucht deinen Emby Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen Emby Server finden kann.",
     "EMBYFOUNDTEXT": "Wir haben einen Emby-Server in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
     "EMBYRUNNING": "Der Emby Server läuft",
     "ISADMIN": "{{ user }} ist ein Emby Administrator",
@@ -113,7 +116,9 @@
     "YOUNGESTADDED": "Am neusten hinzugefügt",
     "MOSTFEATUREDPERGENRE": "Häufigster Schauspieler je Genre",
     "DUPLICATEMOVIES": "Doppelte Filme",
-    "TOSHORTMOVIES": "Sehr kurze Filme"
+    "TOSHORTMOVIES": "Sehr kurze Filme",
+    "NOPOSTER": "Filme ohne ein Poster",
+    "NOIMDB": "Filme ohne eine IMDB ID"
   },
   "SHOWS": {
     "TOTALSHOWS": "Anzahl Serien",
@@ -134,13 +139,24 @@
   "CONFIGURATION": {
     "SETTINGS": "Einstellungen",
     "SAVED": {
-      "GENERAL": "EmbyStat-Einstellungen wurden gespeichert!",
-      "EMBY": "Emby-Einstellungen wurden gespeichert!",
-      "MOVIES": "Film-Einstellungen wurden gespeichert!"
+      "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
+      "EMBY": "Emby-Einstellungen gespeichert!",
+      "MOVIES": "Film-Einstellungen gespeichert!",
+      "SHOWS": "Serien-Einstellungen gespeichert!"
+    },
+    "GENERAL": {
+      "TVDBAPIKEY": "Wenn Sie möchten, können Sie für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
+      "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
+      "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Filmstatistiken sehen wollen."
+    },
+    "SHOW": {
+      "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
+    },
+    "EMBY": {
+      "NOPASSWORD": "Vergessen Sie nicht Ihr Emby Passwort einzugeben wenn Sie die Emby Url-Einstellungen ändern möchten."
     }
   },
   "TASK": {
@@ -152,7 +168,8 @@
     "AND": "und",
     "AGO": "her",
     "FOR": "für",
-    "BUTFAILED": "aber fehlgeschlagen nach"
+    "BUTFAILED": "aber fehlgeschlagen nach",
+    "NOTRAN": "Noch nicht druchgeführt"
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Emby Verbindung prüfen",
@@ -161,7 +178,10 @@
     "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
     "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
     "MEDIASYNCTITLE": "Medien-Synchronisierung",
-    "STARTMEDIASYNC": "Mediensynchronisation starten"
+    "STARTMEDIASYNC": "Mediensynchronisation starten",
+    "DATABASECLEANUP": "Datenbankbereinigung",
+    "DATABASECLEANUPDESCRIPTION": "Bereinigen Sie die Datenbank von unnötigen Daten.",
+    "OPENTASKPAGE": "Zur Aufgabenseite"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Intervall-Trigger",
@@ -180,26 +200,37 @@
     "NOSHOWTYPEFOUND": {
       "TITLE": "Keine Serien gefunden",
       "BODY": "Wir konnten keine Serien in der EmbyStat-Datenbank finden. Wenn Sie Serien in Emby haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Die Synchronisierung der Medien lauft",
+      "BODY": "Die Synchronisation der Medien wird im Hintergrund durchgeführt. Während dieser Zeit können keine korrekten Statistiken angezeigt werden."
     }
   },
   "LOADER": {
     "FETCHING": "Rufe Statistiken ab..."
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "MIXED": "Gemischte / Andere",
+    "MUSIC": "Musik",
+    "MUSICVIDEOS": "Musikvideos",
+    "TRAILERS": "Trailer",
+    "HOMEVIDEOS": "Heimvideos",
+    "BOXSETS": "Kollektionen",
+    "BOOKS": "Bücher",
+    "PHOTOS": "Fotos",
+    "GAMES": "Spiele",
+    "LIVETV": "Live-TV",
+    "PLAYLISTS": "Wiedergabelisten",
+    "FOLDERS": "Ordner"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Öffne Emby",
+    "TASKISRUNNING": "{{task}} Aufgabe wird ausgeführt"
+  },
+  "ABOUT": {
+    "THANKS": {
+      "TITLE": "Vielen Dank",
+      "TEXT": "Vielen Dank an die folgenden Personen für die Übersetzung der App in ihre Muttersprache:"
+    }
   }
 }

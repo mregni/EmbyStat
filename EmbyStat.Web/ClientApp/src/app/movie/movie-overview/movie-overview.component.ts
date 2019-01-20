@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material';
 
 import { NoTypeFoundDialog } from '../../shared/dialogs/no-type-found/no-type-found.component';
 import { MovieChartsService } from '../service/movie-charts.service';
-import { MovieFacade } from '../state/facade.movie';
+import { MovieService } from '../service/movie.service';
 
 import { Collection } from '../../shared/models/collection';
 
@@ -16,19 +16,19 @@ import { Collection } from '../../shared/models/collection';
   styleUrls: ['./movie-overview.component.scss']
 })
 export class MovieOverviewComponent implements OnInit, OnDestroy {
-  public collections$: Observable<Collection[]>;
-  public selectedCollections: string[];
   private isMovieTypePresentSub: Subscription;
 
-  public collectionsFormControl = new FormControl('', { updateOn: 'blur' });
-  public typeIsPresent: boolean;
+  collections$: Observable<Collection[]>;
+  selectedCollections: string[];
+  collectionsFormControl = new FormControl('', { updateOn: 'blur' });
+  typeIsPresent: boolean;
 
   constructor(
-    private movieFacade: MovieFacade,
+    private movieService: MovieService,
     private movieChartsService: MovieChartsService,
     public dialog: MatDialog) {
-    this.collections$ = this.movieFacade.getCollections();
-    this.isMovieTypePresentSub = this.movieFacade.isMovieTypePresent().subscribe((typePresent: boolean) => {
+    this.collections$ = this.movieService.getCollections();
+    this.isMovieTypePresentSub = this.movieService.checkIfTypeIsPresent().subscribe((typePresent: boolean) => {
       this.typeIsPresent = typePresent;
       if (!typePresent) {
         this.dialog.open(NoTypeFoundDialog,
@@ -45,9 +45,7 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit() {
-  
-  }
+  ngOnInit() { }
 
   ngOnDestroy(): void {
     if (this.isMovieTypePresentSub !== undefined) {

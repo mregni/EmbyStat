@@ -5,14 +5,14 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/throw';
 
 import { Configuration } from '../models/configuration';
-import { EmbyUdpBroadcast } from '../../shared/models/emby/embyUdpBroadcast';
-import { EmbyToken } from '../../shared/models/emby/embyToken';
-import { EmbyLogin } from '../../shared/models/emby/embyLogin';
+import { EmbyUdpBroadcast } from '../../shared/models/emby/emby-udp-broadcast';
+import { EmbyToken } from '../../shared/models/emby/emby-token';
+import { EmbyLogin } from '../../shared/models/emby/emby-login';
 import { ConfigurationService } from '../service/configuration.service';
 import { EmbyService } from '../../shared/services/emby.service';
 
 import { ConfigurationQuery } from './reducer.configuration';
-import { LoadConfigurationAction, UpdateConfigurationAction, FireSmallEmbySyncAction } from './actions.configuration';
+import { LoadConfigurationAction, UpdateConfigurationAction } from './actions.configuration';
 
 import { ApplicationState } from '../../states/app.state';
 
@@ -42,10 +42,6 @@ export class ConfigurationFacade {
 
   searchEmby(): Observable<EmbyUdpBroadcast> {
     return this.embyService.searchEmby();
-  }
-
-  fireSmallEmbySync(): void {
-    this.store.dispatch(new FireSmallEmbySyncAction());
   }
 }
 

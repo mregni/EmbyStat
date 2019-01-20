@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ShowFacade } from '../state/facade.show';
-import { PersonStats } from '../../shared/models/personStats';
+import { ShowService } from '../service/show.service';
+import { PersonStats } from '../../shared/models/person-stats';
 
 @Component({
   selector: 'app-show-people',
@@ -23,12 +23,12 @@ export class ShowPeopleComponent implements OnInit {
     }
 
     this._selectedCollections = collection;
-    this.stats$ = this.showFacade.getPersonStats(collection);
+    this.stats$ = this.showService.getPersonStats(collection);
   }
 
   public stats$: Observable<PersonStats>;
 
-  constructor(private showFacade: ShowFacade) { }
+  constructor(private showService: ShowService) { }
 
   ngOnInit() {
   }

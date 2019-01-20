@@ -1,17 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0-preview1-final" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
+    <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\..\..\.nuget\packages\hangfire.core\1.6.21\lib\netstandard1.3\Hangfire.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

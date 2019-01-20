@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmbyStat.Common.Extentions
 {
     public static class RoundExtention
     {
-        public static int? RoundToFive(this DateTime? date)
+        public static int? RoundToFiveYear(this DateTimeOffset? date)
         {
             if (date.HasValue)
             {

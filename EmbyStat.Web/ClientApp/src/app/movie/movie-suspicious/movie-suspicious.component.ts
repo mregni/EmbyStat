@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { Configuration } from '../../configuration/models/configuration';
 
-import { MovieFacade } from '../state/facade.movie';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
+import { MovieService } from '../service/movie.service';
 
 @Component({
   selector: 'app-movie-suspicious',
@@ -16,18 +14,24 @@ import { LoaderFacade } from '../../shared/components/loader/state/facade.loader
 export class MovieSuspiciousComponent implements OnInit, OnDestroy {
   public suspiciousDisplayedColumns = ['number', 'title', 'reason', 'linkOne', 'qualityOne',
     'dateCreatedOne', 'linkTwo', 'qualityTwo', 'dateCreatedTwo'];
-  public suspiciousDataSource = new MatTableDataSource();
+  suspiciousDataSource = new MatTableDataSource();
 
-  public shortDisplayedColumns = ['number', 'title', 'duration', 'link' ];
-  public shortDataSource = new MatTableDataSource();
+  shortDisplayedColumns = ['number', 'title', 'duration', 'link' ];
+  shortDataSource = new MatTableDataSource();
+
+  noImdbDisplayedColumns = ['number', 'title', 'link'];
+  noImdbDataSource = new MatTableDataSource();
+
+  noPrimaryDisplayedColumns = ['number', 'title', 'link'];
+  noPrimaryDataSource = new MatTableDataSource();
 
   private duplicatesSub: Subscription;
   private configurationSub: Subscription;
   private configuration: Configuration;
 
-  private _selectedCollections: string[];
+  private selectedCollectionsPriv: string[];
   get selectedCollections(): string[] {
-    return this._selectedCollections;
+    return this.selectedCollectionsPriv;
   }
 
   @Input()
@@ -36,27 +40,25 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
       collection = [];
     }
 
-    this._selectedCollections = collection;
-    this.duplicatesSub = this.movieFacade.getDuplicates(collection).subscribe(data => {
+    this.selectedCollectionsPriv = collection;
+    this.duplicatesSub = this.movieService.getSuspicious(collection).subscribe(data => {
       this.suspiciousDataSource.data = data.duplicates;
       this.shortDataSource.data = data.shorts;
+      this.noImdbDataSource.data = data.noImdb;
+      this.noPrimaryDataSource.data = data.noPrimary;
     });
   }
 
-  public isLoading$: Observable<boolean>;
-
-  constructor(private movieFacade: MovieFacade,
-    private configurationFacade: ConfigurationFacade,
-    private loaderFacade: LoaderFacade) {
+  constructor(private movieService: MovieService, private configurationFacade: ConfigurationFacade) {
     this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isMovieSuspiciousLoading();
+
   }
 
   openMovie(id: string): void {
-    window.open(`${this.configuration.embyServerAddress}/emby/web/itemdetails.html?id=${id}`, '_blank');
+    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
   }
 
   ngOnDestroy(): void {
@@ -68,5 +70,4 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
       this.configurationSub.unsubscribe();
     }
   }
-
 }

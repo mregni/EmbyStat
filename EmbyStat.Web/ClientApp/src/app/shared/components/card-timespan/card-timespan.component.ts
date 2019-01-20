@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { TimespanCard } from '../../models/timespanCard';
+import { TimespanCard } from '../../models/timespan-card';
 
 @Component({
   selector: 'app-card-timespan',

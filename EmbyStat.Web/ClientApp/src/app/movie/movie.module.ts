@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { MovieService } from './service/movie.service';
 import { MovieChartsService } from './service/movie-charts.service';
-import { MovieFacade } from './state/facade.movie';
 
 import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
 import { MovieGeneralComponent } from './movie-general/movie-general.component';
@@ -24,9 +23,14 @@ import { MovieSuspiciousComponent } from './movie-suspicious/movie-suspicious.co
   ],
   providers: [
     MovieService,
-    MovieChartsService,
-    MovieFacade
+    MovieChartsService
   ],
-  declarations: [MovieOverviewComponent, MovieGeneralComponent, MoviePeopleComponent, MovieChartsComponent, MovieSuspiciousComponent]
+  declarations: [
+    MovieOverviewComponent,
+    MovieGeneralComponent,
+    MoviePeopleComponent,
+    MovieChartsComponent,
+    MovieSuspiciousComponent
+  ]
 })
 export class MovieModule { }

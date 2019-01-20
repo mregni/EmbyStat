@@ -19,7 +19,16 @@ const INITIAL_STATE: Configuration = {
   embyUserId: '',
   id: '',
   movieCollectionTypes: [],
-  showCollectionTypes: []
+  showCollectionTypes: [],
+  tvdbApiKey: '',
+  embyServerPort: 8096,
+  embyServerProtocol: 0,
+  lastTvdbUpdate: undefined,
+  keepLogsCount: 0,
+  autoUpdate: false,
+  updateTrain: 2,
+  updateInProgress: false,
+  version: ""
 };
 
 export function configurationReducer(state: Configuration = INITIAL_STATE, action: ConfigurationActions) {
@@ -39,7 +48,16 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         id: action.payload.id,
         movieCollectionTypes: action.payload.movieCollectionTypes,
         showCollectionTypes: action.payload.showCollectionTypes,
-        isLoaded: true
+        tvdbApiKey: action.payload.tvdbApiKey,
+        embyServerPort: action.payload.embyServerPort,
+        embyServerProtocol: action.payload.embyServerProtocol,
+        lastTvdbUpdate: action.payload.lastTvdbUpdate,
+        keepLogsCount: action.payload.keepLogsCount,
+        isLoaded: true,
+        autoUpdate: action.payload.autoUpdate,
+        updateTrain: action.payload.updateTrain,
+        updateInProgress: action.payload.updateInProgress,
+        version: action.payload.version
       };
     case ConfigurationActionTypes.UPDATE_CONFIGURATION_SUCCESS:
       return {
@@ -56,7 +74,16 @@ export function configurationReducer(state: Configuration = INITIAL_STATE, actio
         id: action.payload.id,
         movieCollectionTypes: action.payload.movieCollectionTypes,
         showCollectionTypes: action.payload.showCollectionTypes,
-        isLoaded: true
+        tvdbApiKey: action.payload.tvdbApiKey,
+        embyServerPort: action.payload.embyServerPort,
+        embyServerProtocol: action.payload.embyServerProtocol,
+        lastTvdbUpdate: action.payload.lastTvdbUpdate,
+        keepLogsCount: action.payload.keepLogsCount,
+        isLoaded: true,
+        autoUpdate: action.payload.autoUpdate,
+        updateTrain: action.payload.updateTrain,
+        updateInProgress: action.payload.updateInProgress,
+        version: action.payload.version
       };
     default:
       return state;

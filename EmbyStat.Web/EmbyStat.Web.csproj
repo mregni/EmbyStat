@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
 	  <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -12,8 +12,6 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
-    <ApplicationInsightsResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourcegroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/8a2bab4d-2ca1-4077-b71d-cdd9697035fb/resourceGroups/CurieuzeNeuzen/providers/microsoft.insights/components/CurieuzeNeuzen</ApplicationInsightsAnnotationResourceId>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <Version>0.1.0.24</Version>
@@ -21,22 +19,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.0" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="AutoMapper" Version="6.2.2" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.0.0-preview1-final" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.1.3" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.21" />
+    <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
+    <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Serilog.Exceptions" Version="4.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.0.1-dev-00795" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,58 +52,38 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Startup_BACKUP_35740.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="ClientApp\src\app\about\state\actions.about.ts" />
     <None Remove="ClientApp\src\app\about\state\facade.about.ts" />
+    <None Remove="ClientApp\src\app\activity\models\activity.ts" />
+    <None Remove="ClientApp\src\app\activity\state\facade.activity.ts" />
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
     <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
     <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
     <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
     <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
-    <None Remove="ClientApp\src\app\logs\state\facade.log.ts" />
-    <None Remove="ClientApp\src\app\movie\models\movieStats.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
-    <None Remove="ClientApp\src\app\movie\models\shortMovie.ts" />
-    <None Remove="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
-    <None Remove="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\actions.plugin.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\facade.plugin.ts" />
-    <None Remove="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
-    <None Remove="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
-    <None Remove="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
+    <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
     <None Remove="ClientApp\src\app\shared\models\collection.ts" />
-    <None Remove="ClientApp\src\app\shared\models\moviePoster.ts" />
-    <None Remove="ClientApp\src\app\shared\models\personPoster.ts" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
-    <None Remove="ClientApp\src\app\shared\models\showPoster.ts" />
-    <None Remove="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
     <None Remove="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <None Remove="ClientApp\src\app\shared\services\emby.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
-    <None Remove="ClientApp\src\app\shared\toolbar\state\facade.toolbar.ts" />
-    <None Remove="ClientApp\src\app\show\models\showCollectionRow.ts" />
-    <None Remove="ClientApp\src\app\show\models\showGraphs.ts" />
-    <None Remove="ClientApp\src\app\show\models\showStats.ts" />
-    <None Remove="ClientApp\src\app\show\models\showStore.ts" />
+    <None Remove="ClientApp\src\app\shared\services\update-overlay.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\update.service.ts" />
     <None Remove="ClientApp\src\app\show\service\show-charts.service.ts" />
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
-    <None Remove="ClientApp\src\app\show\state\actions.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\effects.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\facade.show.ts" />
-    <None Remove="ClientApp\src\app\show\state\reducer.show.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
   </ItemGroup>
@@ -115,55 +94,36 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
+    <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
-    <ProjectReference Include="..\EmbyStat.Tasks\EmbyStat.Tasks.csproj" />
+    <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\about\state\actions.about.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\about\state\facade.about.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\activity\models\activity.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\activity\state\facade.activity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\logs\state\facade.log.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieGraphs.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\effects.loader.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\components\loader\state\facade.loader.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\personStats.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\movie\models\movieStats.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\movie\models\shortMovie.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\movie\models\suspiciousMovies.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPlugin.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\emby\embyUdpBroadcast.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\models\embyPluginStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\actions.plugin.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\facade.plugin.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\state\reducer.plugin.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\graph\simpleGraphValue.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\personPoster.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\moviePoster.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\showPoster.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\capitalizefirst.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\toolbar\state\facade.toolbar.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\wizard\services\wizard-state.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\models\showCollectionRow.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\models\showGraphs.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\models\showStats.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\models\showStore.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show-charts.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\reducer.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\facade.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\effects.show.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\state\actions.show.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />
@@ -173,12 +133,15 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\server\models\" />
     <Folder Include="ClientApp\src\app\server\state\" />
-    <Folder Include="ClientApp\src\app\server\service\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="ClientApp\src\app\show\show-overview\show-overview.component.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning" Version="2.3.38" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

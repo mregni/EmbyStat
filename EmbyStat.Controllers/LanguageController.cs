@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Language;
 using EmbyStat.Services.Interfaces;
@@ -14,18 +11,20 @@ namespace EmbyStat.Controllers
     public class LanguageController : Controller
     {
         private readonly ILanguageService _languageService;
+        private readonly IMapper _mapper;
 
-        public LanguageController(ILanguageService languageService)
+        public LanguageController(ILanguageService languageService, IMapper mapper)
         {
             _languageService = languageService;
+            _mapper = mapper;
         }
-
+        
         [HttpGet]
         [Route("getlist")]
         public IActionResult GetList()
         {
             var result = _languageService.GetLanguages();
-            return Ok(Mapper.Map<IList<LanguageViewModel>>(result));
+            return Ok(_mapper.Map<IList<LanguageViewModel>>(result));
         }
     }
 }

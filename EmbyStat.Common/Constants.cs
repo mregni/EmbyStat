@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmbyStat.Common
 {
@@ -8,132 +6,172 @@ namespace EmbyStat.Common
     {
         public static class Movies
         {
-            public const string TotalMovies = "MOVIES.TOTALMOVIES";
-            public const string TotalGenres = "MOVIES.TOTALGENRES";
-            public const string LowestRated = "MOVIES.LOWESTRATED";
-            public const string HighestRated = "MOVIES.HIGHESTRATED";
-            public const string OldestPremiered = "MOVIES.OLDESTPREMIERED";
-            public const string YoungestPremiered = "MOVIES.YOUNGESTPREMIERED";
-            public const string Shortest = "MOVIES.SHORTEST";
-            public const string Longest = "MOVIES.LONGEST";
-            public const string YoungestAdded = "MOVIES.YOUNGESTADDED";
-            public const string TotalPlayLength = "MOVIES.TOTALPLAYLENGTH";
+            public static string TotalMovies => "MOVIES.TOTALMOVIES";
+            public static string TotalGenres => "MOVIES.TOTALGENRES";
+            public static string LowestRated => "MOVIES.LOWESTRATED";
+            public static string HighestRated => "MOVIES.HIGHESTRATED";
+            public static string OldestPremiered => "MOVIES.OLDESTPREMIERED";
+            public static string YoungestPremiered => "MOVIES.YOUNGESTPREMIERED";
+            public static string Shortest => "MOVIES.SHORTEST";
+            public static string Longest => "MOVIES.LONGEST";
+            public static string YoungestAdded => "MOVIES.YOUNGESTADDED";
+            public static string TotalPlayLength => "MOVIES.TOTALPLAYLENGTH";
         }
 
         public static class Common
         {
-            public const string TotalActors = "COMMON.TOTALACTORS";
-            public const string TotalDirectors = "COMMON.TOTALDIRECTORS";
-            public const string TotalWriters = "COMMON.TOTALWRITERS";
-            public const string MostFeaturedActor = "COMMON.MOSTFEATUREDACTOR";
-            public const string MostFeaturedDirector = "COMMON.MOSTFEATUREDDIRECTOR";
-            public const string MostFeaturedWriter = "COMMON.MOSTFEATUREDWRITER";
+            public static string TotalActors => "COMMON.TOTALACTORS";
+            public static string TotalDirectors => "COMMON.TOTALDIRECTORS";
+            public static string TotalWriters => "COMMON.TOTALWRITERS";
+            public static string MostFeaturedActor => "COMMON.MOSTFEATUREDACTOR";
+            public static string MostFeaturedDirector => "COMMON.MOSTFEATUREDDIRECTOR";
+            public static string MostFeaturedWriter => "COMMON.MOSTFEATUREDWRITER";
         }
 
         public static class Shows
         {
-            public const string TotalShows = "SHOWS.TOTALSHOWS";
-            public const string TotalEpisodes = "SHOWS.TOTALEPISODES";
-            public const string TotalMissingEpisodes = "SHOWS.TOTALMISSINGEPISODES";
-            public const string TotalPlayLength = "SHOWS.TOTALPLAYLENGTH";
-            public const string HighestRatedShow = "SHOWS.HIGHESTRATEDSHOW";
-            public const string LowestRatedShow = "SHOWS.LOWESTRATEDSHOW";
-            public const string OldestPremiered = "SHOWS.OLDESTPREMIERED";
-            public const string YoungestPremiered = "SHOWS.YOUNGESTPREMIERED";
-            public const string YoungestAdded = "SHOWS.YOUNGESTADDED";
-            public const string MostEpisodes = "SHOWS.WITHMOESTEPISODES";
-            public const string ShowStatusGraph = "SHOWS.SHOWSTATUSGRAPH";
+            public static string TotalShows => "SHOWS.TOTALSHOWS";
+            public static string TotalEpisodes => "SHOWS.TOTALEPISODES";
+            public static string TotalMissingEpisodes => "SHOWS.TOTALMISSINGEPISODES";
+            public static string TotalPlayLength => "SHOWS.TOTALPLAYLENGTH";
+            public static string HighestRatedShow => "SHOWS.HIGHESTRATEDSHOW";
+            public static string LowestRatedShow => "SHOWS.LOWESTRATEDSHOW";
+            public static string OldestPremiered => "SHOWS.OLDESTPREMIERED";
+            public static string YoungestPremiered => "SHOWS.YOUNGESTPREMIERED";
+            public static string YoungestAdded => "SHOWS.YOUNGESTADDED";
+            public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
+            public static string ShowStatusGraph => "SHOWS.SHOWSTATUSGRAPH";
         }
 
         public static class Emby
         {
-            public const string DeviceName = "EmbyStats server";
-            public const string DeviceId = "6d5082f6-dffd-4ce9-8301-03eb339e05d4";
-            public const string AppName = "EmbyStats";
-            public const string AppVersion = "1.0.0";
-            public const string AuthorizationScheme = "MediaBrowser";
+            public static string DeviceName => "EmbyStats server";
+            public static string DeviceId => "6d5082f6-dffd-4ce9-8301-03eb339e05d4";
+            public static string AppName => "EmbyStats";
+            public static string AppVersion => "1.0.0";
+            public static string AuthorizationScheme => "MediaBrowser";
         }
 
         public static class Tvdb
         {
-            public const string BaseUrl = "https://api.thetvdb.com";
-            public const string SerieEpisodesUrl = "/series/{0}/episodes?page={1}";
-            public const string UpdatesUrl = "/updated/query?fromTime={0}&toTime={1}";
-            public const string LoginUrl = "/login";
+            public static string BaseUrl => "https://api.thetvdb.com";
+            public static string SerieEpisodesUrl => "/series/{0}/episodes?page=>{1}";
+            public static string UpdatesUrl => "/updated/query?fromTime=>{0}&toTime=>{1}";
+            public static string LoginUrl => "/login";
         }
 
         public static class Type
         {
-            public const string Movie = "Movie";
-            public const string Boxset = "BoxSet";
+            public static string Movie => "Movie";
+            public static string Boxset => "BoxSet";
         }
 
         public static class Configuration
         {
-            public const string AccessToken = "ACCESSTOKEN";
-            public const string EmbyServerAddress = "EMBYSERVERADDRESS";
-            public const string EmbyUserId = "EMBYUSERID";
-            public const string EmbyUserName = "EMBYUSERNAME";
-            public const string Language = "LANGUAGE";
-            public const string LastTvdbUpdate = "LASTTVDBUPDATE";
-            public const string ServerName = "SERVERNAME";
-            public const string ToShortMovie = "TOSHORTMOVIE";
-            public const string UserName = "USERNAME";
-            public const string WizardFinished = "WIZARDFINISHED";
-            public const string TvdbApiKey = "TVDBAPICLIENT";
-            public const string KeepLogsCount = "KEEPLOGSCOUNT";
-            public const string MovieCollectionTypes = "MOVIECOLLECTIONTYPES";
-            public const string ShowCollectionTypes = "SHOWCOLLECTIONTYPES";
+            public static string AccessToken => "ACCESSTOKEN";
+            public static string EmbyServerAddress => "EMBYSERVERADDRESS";
+            public static string EmbyServerPort => "EMBYSERVERPORT";
+            public static string EmbyServerProtocol => "EMBYSERVERPROTOCOL";
+            public static string EmbyUserId => "EMBYUSERID";
+            public static string EmbyUserName => "EMBYUSERNAME";
+            public static string Language => "LANGUAGE";
+            public static string LastTvdbUpdate => "LASTTVDBUPDATE";
+            public static string ServerName => "SERVERNAME";
+            public static string ToShortMovie => "TOSHORTMOVIE";
+            public static string UserName => "USERNAME";
+            public static string WizardFinished => "WIZARDFINISHED";
+            public static string TvdbApiKey => "TVDBAPICLIENT";
+            public static string KeepLogsCount => "KEEPLOGSCOUNT";
+            public static string MovieCollectionTypes => "MOVIECOLLECTIONTYPES";
+            public static string ShowCollectionTypes => "SHOWCOLLECTIONTYPES";
+            public static string AutoUpdate => "AUTOUPDATE";
+            public static string UpdateTrain => "UPDATETRAIN";
+            public static string UpdateInProgress => "UPDATEINPROGRESS";
         }
 
         public static class EmbyStatus
         {
-            public const string MissedPings = "MISSEDPINGS";
+            public static string MissedPings => "MISSEDPINGS";
         }
 
         public static class LogPrefix
         {
-            public const string ServerApi = "SERVER-API";
-            public const string TaskManager = "TASK-MANAGER";
-            public const string TaskWorker = "TASK-WORKER";
-            public const string DatabaseSeeder = "DATABASE-SEEDER";
-            public const string MediaSyncTask = "MEDIASYNC-TASK";
-            public const string PingEmbyTask = "PINGEMBYSERVER-TASK";
-            public const string SmallEmbySyncTask = "SMALLEMBYSYNC-TASK";
-            public const string System = "SYSTEM";
-            public const string EmbyClient = "EMBY-CLIENT";
-            public const string TheTVDBCLient = "THETVDB-CLIENT";
-            public const string ExceptionHandler = "EXCEPTION-HANDLER";
+            public static string ServerApi => "SERVER-API";
+            public static string TaskManager => "TASK-MANAGER";
+            public static string TaskWorker => "TASK-WORKER";
+            public static string DatabaseSeeder => "DATABASE-SEEDER";
+            public static string MediaSyncJob => "MEDIASYNC-JOB";
+            public static string CheckUpdateJob => "CHECKUDPATE-JOB";
+            public static string PingEmbyJob => "PINGEMBYSERVER-JOB";
+            public static string SmallEmbySyncJob => "SMALLEMBYSYNC-JOB";
+            public static string System => "SYSTEM";
+            public static string EmbyClient => "EMBY-CLIENT";
+            public static string TheTVDBCLient => "THETVDB-CLIENT";
+            public static string ExceptionHandler => "EXCEPTION-HANDLER";
+            public static string DatabaseCleanupJob => "DATABASE CLEANUP-JOB";
+            public static string JobController => "JOB CONTROLLER";
+        }
+
+        public static class JobIds
+        {
+            public static Guid MediaSyncId => new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e");
+            public static Guid SmallSyncId => new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f");
+            public static Guid CheckUpdateId => new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a");
+            public static Guid PingEmbyId => new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e");
+            public static Guid DatabaseCleanupId => new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
         }
 
         //CHARTS
-        public const string CountPerGenre = "COMMON.COUNTPERGENRE";
-        public const string CountPerCommunityRating = "COMMON.COUNTPERCOMMUNITYRATING";
-        public const string CountPerPremiereYear = "COMMON.COUNTPERPREMIEREDATE";
-        public const string CountPerCollectedRate = "COMMON.COUNTPERCOLLECTEDRATE";
-        public const string CountPerOfficialRating = "COMMON.COUNTPEROFFICIALRATING";
+        public static string CountPerGenre => "COMMON.COUNTPERGENRE";
+        public static string CountPerCommunityRating => "COMMON.COUNTPERCOMMUNITYRATING";
+        public static string CountPerPremiereYear => "COMMON.COUNTPERPREMIEREDATE";
+        public static string CountPerCollectedRate => "COMMON.COUNTPERCOLLECTEDRATE";
+        public static string CountPerOfficialRating => "COMMON.COUNTPEROFFICIALRATING";
 
         //COMMON
-        public const string Unknown = "UNKNOWN";
+        public static string Unknown => "UNKNOWN";
 
         //SERVER
-        public const string TempFolder = "temp";
+        public static string TempFolder => "temp";
 
         //QUALITIES
-        public const string FOURK = "4K";
-        public const string THOUSANDFOURFOURP = "1440P";
-        public const string FULLHD = "1080P";
-        public const string HDREADY = "720P";
-        public const string FOURHUNDERDEIGHTY = "480P";
-        public const string LOWEST = "< 480P";
-
-        //DATABASE
-        public const string Actor = "Actor";
-        public const string Director = "Director";
-        public const string Writer = "Writer";
+        public static string FOURK => "4K";
+        public static string THOUSANDFOURFOURP => "1440P";
+        public static string FULLHD => "1080P";
+        public static string HDREADY => "720P";
+        public static string FOURHUNDERDEIGHTY => "480P";
+        public static string LOWEST => "< 480P";
 
         //DUPLICATE REASONS
-        public const string ByImdb = "BYIMDB";
-        public const string ByTitle = "BYTITLE";
+        public static string ByImdb => "BYIMDB";
+        public static string ByTitle => "BYTITLE";
+
+        public static class Tables
+        {
+            public static string BoxSets => "BoxSets";
+            public static string Collections => "Collections";
+            public static string Configuration => "Configuration";
+            public static string Devices => "Devices";
+            public static string Drives => "Drives";
+            public static string EmbyStatus => "EmbyStatus";
+            public static string Genres => "Genres";
+            public static string Languages => "Languages";
+            public static string Media => "Media";
+            public static string People => "People";
+            public static string Plugins => "Plugins";
+            public static string ServerInfo => "ServerInfo";
+            public static string Statistics => "Statistics";
+            public static string Jobs => "Jobs";
+            public static string User => "Users";
+            public static string AudioStreams => "AudioStreams";
+            public static string MediaCollection => "MediaCollection";
+            public static string MediaGenres => "MediaGenres";
+            public static string MediaSources => "MediaSources";
+            public static string SeasonEpisodes => "SeasonEpisodes";
+            public static string SubtitleStreams => "SubtitleStreams";
+            public static string VideoStreams => "VideoStreams";
+            public static string ExtraPersons => "ExtraPersons";
+            public static string StatisticCollection => "StatisticCollection";
+        }
     }
 }

@@ -9,6 +9,7 @@
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
+    "CLOSE": "close",
     "DAYS": "dagen",
     "HOURS": "uren",
     "MINUTES": "minuten",
@@ -48,9 +49,10 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
     "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
-    "NOT_FOUND": "Oops, we missen wat bestanden.",
+    "NOT_FOUND": "Oops, didn't find what you are looking for.",
     "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en Emby url na te zien.",
-    "EMBY_CALL_FAILED": "Contact opnemen met Emby is gefaald. Gelieve na te zien of de Emby server draait en uw inloggegevens nog kloppen."
+    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
+    "UNHANDLED": "Unhandled backend exception"
   },
   "FORM_LABELS": {
     "NAME": "Voer uw naam in",
@@ -58,7 +60,8 @@
     "EMBYADDRESS": "Emby IP-adres",
     "EMBYUSERNAME": "Emby admin gebruikersnaam",
     "EMBYPASSWORD": "Emby administrator wachtwoord",
-    "DURATIONINMINUTES": "Duur in minuten"
+    "DURATIONINMINUTES": "Duur in minuten",
+    "TVDBAPI": "TheTVDB api key"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
@@ -85,7 +88,7 @@
     "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Emby server aan het controleren ...",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but we failed. Can you please provide us with your emby http(s)://IP/domain:port and fill in the rest of the form.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is actief",
     "ISADMIN": "{{ user }} is een Emby administrator",
@@ -93,7 +96,7 @@
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Gegevens aan het opslaan",
     "RESCAN": "Opnieuw scannen",
-    "FINISHWITHSYNC": "Start syncronisation",
+    "FINISHWITHSYNC": "Start synchronisatie",
     "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
     "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
@@ -112,8 +115,10 @@
     "LONGEST": "Langste",
     "YOUNGESTADDED": "Jongste toegevoegd",
     "MOSTFEATUREDPERGENRE": "Meest aanbevolen acteur per genre",
-    "DUPLICATEMOVIES": "dubbele films",
-    "TOSHORTMOVIES": "zeer korte films"
+    "DUPLICATEMOVIES": "Dubbele films",
+    "TOSHORTMOVIES": "Movies that are very short",
+    "NOPOSTER": "Movies without a poster",
+    "NOIMDB": "Movies without a IMDB id"
   },
   "SHOWS": {
     "TOTALSHOWS": "Totaal series",
@@ -124,7 +129,7 @@
     "LOWESTRATEDSHOW": "Laagste score",
     "OLDESTPREMIERED": "Oudste in première",
     "YOUNGESTPREMIERED": "Yougenst premiered show",
-    "YOUNGESTADDED": "Youngest added",
+    "YOUNGESTADDED": "Jongste toegevoegd",
     "WITHMOESTEPISODES": "Met de meeste afleveringen",
     "SHOWSTATUSGRAPH": "Serie status",
     "SEASONS": "seizoenen",
@@ -134,13 +139,24 @@
   "CONFIGURATION": {
     "SETTINGS": "Instellingen",
     "SAVED": {
-      "GENERAL": "General Embystat settings are saved!",
-      "EMBY": "Emby settings are saved!",
-      "MOVIES": "Movie settings are saved!"
+      "GENERAL": "General Embystat settings saved!",
+      "EMBY": "Emby instellingen opgeslagen!",
+      "MOVIES": "Movie settings saved!",
+      "SHOWS": "Show settings saved!"
+    },
+    "GENERAL": {
+      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+    },
+    "SHOW": {
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+    },
+    "EMBY": {
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     }
   },
   "TASK": {
@@ -152,7 +168,8 @@
     "AND": "en",
     "AGO": "geleden",
     "FOR": "voor",
-    "BUTFAILED": "maar is gefaald na"
+    "BUTFAILED": "maar is gefaald na",
+    "NOTRAN": "Not ran yet"
   },
   "TASKS": {
     "PINGEMBYSERVERTITLE": "Emby verbinding controleren",
@@ -161,7 +178,10 @@
     "SMALLEMBYSYNCTITLE": "Kleine Emby syncronisatie",
     "MEDIASYNCDESCRIPTION": "Voor een incrementele syncronisatie uit op uw film collectie. Dit kan enige tijd in beslag nemen!",
     "MEDIASYNCTITLE": "Media synchronisatie",
-    "STARTMEDIASYNC": "Start media sync"
+    "STARTMEDIASYNC": "Start media sync",
+    "DATABASECLEANUP": "Database cleanup",
+    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+    "OPENTASKPAGE": "Go to task page"
   },
   "TRIGGER": {
     "INTERVALTRIGGER": "Interval trigger",
@@ -174,12 +194,16 @@
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
+      "TITLE": "Geen films gevonden",
       "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
     },
     "NOSHOWTYPEFOUND": {
       "TITLE": "No shows found",
       "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Media sync task is running",
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
     }
   },
   "LOADER": {
@@ -187,19 +211,26 @@
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
+    "MUSIC": "Muziek",
+    "MUSICVIDEOS": "Muziekvideo 's",
     "TRAILERS": "Trailers",
     "HOMEVIDEOS": "Home videos",
     "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "BOOKS": "Boeken",
+    "PHOTOS": "Foto’s",
+    "GAMES": "Spellen",
+    "LIVETV": "Live tv",
+    "PLAYLISTS": "Afspeellijsten",
+    "FOLDERS": "Mappen"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby"
+    "GOTOEMBY": "Ga naar Emby",
+    "TASKISRUNNING": "{{task}} taak wordt uitgevoerd"
+  },
+  "ABOUT": {
+    "THANKS": {
+      "TITLE": "Bedankt",
+      "TEXT": "Grote dank aan de volgende personen voor het vertalen van de app in hun moedertaal:"
+    }
   }
 }

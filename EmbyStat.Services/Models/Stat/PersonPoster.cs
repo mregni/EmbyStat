@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmbyStat.Services.Models.Stat
 {
@@ -8,8 +6,7 @@ namespace EmbyStat.Services.Models.Stat
     {
         public string MediaId { get; set; }
         public string Name { get; set; }
-        public DateTime? BirthDate { get; set; }
-        public int? ChildCount { get; set; }
+        public DateTimeOffset? BirthDate { get; set; }
         public int? MovieCount { get; set; }
         public int? EpisodeCount { get; set; }
         public bool HasTitle { get; set; }

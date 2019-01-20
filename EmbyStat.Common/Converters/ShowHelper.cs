@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Models.Joins;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Joins;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
-namespace EmbyStat.Services.Converters
+namespace EmbyStat.Common.Converters
 {
     public static class ShowHelper
     {
@@ -24,10 +24,8 @@ namespace EmbyStat.Services.Converters
                 ParentId = show.ParentId,
                 Path = show.Path,
                 CommunityRating = show.CommunityRating,
-                CumulativeRunTimeTicks = show.CumulativeRunTimeTicks,
+                CumulativeRunTimeTicks = show.RunTimeTicks,
                 DateCreated = show.DateCreated,
-                DateLastMediaAdded = show.DateLastMediaAdded,
-                HomePageUrl = show.HomePageUrl,
                 IMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value,
                 TMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value,
                 TVDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value,
@@ -38,12 +36,12 @@ namespace EmbyStat.Services.Converters
                 RunTimeTicks = show.RunTimeTicks,
                 SortName = show.SortName,
                 Status = show.Status,
-                MediaGenres = show.GenreItems.Select(y => new MediaGenre()
+                MediaGenres = show.GenreItems.Select(y => new MediaGenre
                 {
-                    GenreId = y.Id,
+                    GenreId = y.Id.ToString(),
                     MediaId = show.Id
                 }).ToList(),
-                ExtraPersons = show.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson()
+                ExtraPersons = show.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson
                 {
                     ExtraId = show.Id,
                     PersonId = y.Id,
@@ -85,7 +83,7 @@ namespace EmbyStat.Services.Converters
                 Id = episode.Id,
                 Name = episode.Name,
                 Path = episode.Path,
-                ParentId = String.Empty,
+                ParentId = string.Empty,
                 CommunityRating = episode.CommunityRating,
                 Container = episode.Container,
                 DateCreated = episode.DateCreated,
@@ -98,7 +96,6 @@ namespace EmbyStat.Services.Converters
                 PremiereDate = episode.PremiereDate,
                 RunTimeTicks = episode.RunTimeTicks,
                 SortName = episode.SortName,
-                IdHD = episode.IsHD,
                 Primary = episode.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = episode.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = episode.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,
@@ -106,7 +103,7 @@ namespace EmbyStat.Services.Converters
                 IMDB = episode.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value,
                 TMDB = episode.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value,
                 TVDB = episode.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value,
-                AudioStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Audio).Select(y => new AudioStream()
+                AudioStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Audio).Select(y => new AudioStream
                 {
                     Id = Guid.NewGuid().ToString(),
                     VideoId = episode.Id,
@@ -117,7 +114,7 @@ namespace EmbyStat.Services.Converters
                     Language = y.Language,
                     SampleRate = y.SampleRate
                 }).ToList(),
-                SubtitleStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Subtitle).Select(y => new SubtitleStream()
+                SubtitleStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Subtitle).Select(y => new SubtitleStream
                 {
                     Id = Guid.NewGuid().ToString(),
                     Language = y.Language,
@@ -126,7 +123,7 @@ namespace EmbyStat.Services.Converters
                     IsDefault = y.IsDefault,
                     VideoId = episode.Id
                 }).ToList(),
-                VideoStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Video).Select(y => new VideoStream()
+                VideoStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Video).Select(y => new VideoStream
                 {
                     Id = Guid.NewGuid().ToString(),
                     VideoId = episode.Id,
@@ -146,8 +143,7 @@ namespace EmbyStat.Services.Converters
                     Container = y.Container,
                     Protocol = y.Protocol.ToString(),
                     RunTimeTicks = y.RunTimeTicks,
-                    VideoId = episode.Id,
-                    VideoType = y.VideoType.ToString()
+                    VideoId = episode.Id
                 }).ToList()
             };
         }

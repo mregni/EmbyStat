@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
-import { EmbyToken } from '../../shared/models/emby/embyToken';
+import { EmbyToken } from '../../shared/models/emby/emby-token';
 import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
@@ -17,20 +17,23 @@ export class ConfigurationEmbyComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
 
-  public form: FormGroup;
-  public embyAddressControl: FormControl = new FormControl('', [Validators.required]);
-  public embyUsernameControl: FormControl = new FormControl('', [Validators.required]);
-  public embyPasswordControl: FormControl = new FormControl('', [Validators.required]);
+  form: FormGroup;
+  embyAddressControl = new FormControl('', [Validators.required]);
+  embyPortControl = new FormControl('', [Validators.required]);
+  embyProtocolControl = new FormControl('', [Validators.required]);
+  embyUsernameControl = new FormControl('', [Validators.required]);
+  embyPasswordControl = new FormControl('', [Validators.required]);
 
-  public configChangedSub: Subscription;
-
-  public hidePassword = true;
+  configChangedSub: Subscription;
+  hidePassword = true;
 
   constructor(private configurationFacade: ConfigurationFacade, private toaster: ToastService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
     this.form = new FormGroup({
       embyAddress: this.embyAddressControl,
+      embyPort: this.embyPortControl,
+      embyProtocol: this.embyProtocolControl,
       embyUsername: this.embyUsernameControl,
       embyPassword: this.embyPasswordControl
     });
@@ -38,26 +41,43 @@ export class ConfigurationEmbyComponent implements OnInit, OnDestroy {
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
       this.form.markAsUntouched();
-      this.form.setValue({ embyUsername: config.embyUserName, embyAddress: config.embyServerAddress, embyPassword: '' });
+      this.form.setValue({
+        embyUsername: config.embyUserName,
+        embyAddress: config.embyServerAddress,
+        embyPort: config.embyServerPort,
+        embyProtocol: config.embyServerProtocol,
+        embyPassword: ''
+      });
     });
   }
 
   public saveForm() {
-    const username = this.form.get('embyUsername').value;
-    const password = this.form.get('embyPassword').value;
-    const address = this.form.get('embyAddress').value;
-    this.configurationFacade.getToken(username, password, address)
-      .subscribe((token: EmbyToken) => {
-        if (token.isAdmin) {
-          const config = { ...this.configuration };
-          config.embyUserName = username;
-          config.embyServerAddress = address;
-          config.accessToken = token.token;
-          config.embyUserId = token.id;
-          this.configurationFacade.updateConfiguration(config);
-          this.toaster.pushSuccess('CONFIGURATION.SAVED.EMBY');
-        }
-      });
+    const username = this.embyUsernameControl.value;
+    const password = this.embyPasswordControl.value;
+    const address = this.embyAddressControl.value;
+    const port = this.embyPortControl.value;
+    const protocol = this.embyProtocolControl.value;
+
+    if (password.length === 0) {
+      this.toaster.pushWarning('CONFIGURATION.EMBY.NOPASSWORD');
+    } else {
+      const url = (protocol === 0 ? 'http://' : 'https://') + address + ':' + port;
+      console.log(url);
+      this.configurationFacade.getToken(username, password, url)
+        .subscribe((token: EmbyToken) => {
+          if (token.isAdmin) {
+            const config = { ...this.configuration };
+            config.embyUserName = username;
+            config.embyServerAddress = address;
+            config.accessToken = token.token;
+            config.embyUserId = token.id;
+            config.embyServerPort = port;
+            config.embyServerProtocol = protocol;
+            this.configurationFacade.updateConfiguration(config);
+            this.toaster.pushSuccess('CONFIGURATION.SAVED.EMBY');
+          }
+        });
+    }
   }
 
   ngOnInit() {

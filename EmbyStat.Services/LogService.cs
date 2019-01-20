@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using EmbyStat.Common.Settings;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;
 using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Services
 {
-    public class LogService : ILogsService
+    public class LogService : ILogService
     {
-        private readonly IOptions<LogSettings> _logSettings;
+        private readonly IOptions<AppSettings> _logSettings;
         private readonly IConfigurationService _configurationService;
 
-        public LogService(IOptions<LogSettings> logSettings, IConfigurationService configurationService)
+        public LogService(IOptions<AppSettings> logSettings, IConfigurationService configurationService)
         {
             _logSettings = logSettings;
             _configurationService = configurationService;
@@ -25,7 +23,7 @@ namespace EmbyStat.Services
         {
             var configration = _configurationService.GetServerSettings();
             var list = new List<LogFile>();
-            var logDir = _logSettings.Value.Directory;
+            var logDir = _logSettings.Value.Dirs.Logs;
             foreach (var filePath in Directory.EnumerateFiles(logDir))
             {
                 var file = new FileInfo(filePath);
@@ -41,7 +39,7 @@ namespace EmbyStat.Services
 
         public Stream GetLogStream(string fileName, bool anonymous)
         {
-            var logDir = _logSettings.Value.Directory;
+            var logDir = _logSettings.Value.Dirs.Logs;
             var logStream = new FileStream($"{logDir}/{fileName}", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
             if (!anonymous)
@@ -57,7 +55,7 @@ namespace EmbyStat.Services
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    line = line.Replace(configuration.EmbyServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
+                    line = line.Replace(configuration.GetFullEmbyServerAddress(), "http://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.TvdbApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(configuration.EmbyUserName, "{EMBY ADMIN USER}");
                     writer.WriteLine(line);

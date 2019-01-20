@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
-import { ShowCollectionRow } from '../models/showCollectionRow';
-import { ShowFacade } from '../state/facade.show';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
+import { ShowCollectionRow } from '../models/show-collection-row';
+import { ShowService } from '../service/show.service';
 
 @Component({
   selector: 'app-show-collection',
@@ -14,6 +12,7 @@ import { LoaderFacade } from '../../shared/components/loader/state/facade.loader
 })
 export class ShowCollectionComponent implements OnInit, OnDestroy {
   private _selectedCollections: string[];
+  isLoading: boolean;
 
   get selectedCollections(): string[] {
     return this._selectedCollections;
@@ -21,18 +20,19 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
 
   @Input()
   set selectedCollections(collection: string[]) {
+    this.isLoading = true;
     if (collection === undefined) {
       collection = [];
     }
 
     this._selectedCollections = collection;
-    this.rowsSub = this.showFacade.getCollectionList(collection).subscribe(data => {
+    this.rowsSub = this.showService.getCollectedList(collection).subscribe(data => {
+      this.isLoading = false;
       this.rows = data;
     });
   }
 
-  public rows: ShowCollectionRow[];
-  public isLoading$: Observable<boolean>;
+  rows: ShowCollectionRow[];
 
   private rowsSub: Subscription;
   private sortNameAsc = false;
@@ -42,13 +42,11 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
   private sortpercentageAsc = false;
   private sortDateAsc = false;
 
-  constructor(private showFacade: ShowFacade, private loaderFacade: LoaderFacade) { }
+  constructor(private showService: ShowService) { }
 
-  ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isShowCollectionLoading();
-  }
+  ngOnInit() { }
 
-  public getColor(row: ShowCollectionRow): string {
+  getColor(row: ShowCollectionRow): string {
     const percentage = this.calculatePercentage(row) * 100;
     if (percentage === 100) {
       return '#5B990D';
@@ -63,7 +61,7 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  public order(column: string): void {
+  order(column: string): void {
     if (column === 'sortName') {
       this.rows = _.orderBy(this.rows, ['sortName'], [this.boolToSortString(this.sortNameAsc)]);
       this.sortNameAsc = !this.sortNameAsc;
@@ -90,7 +88,7 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  public calculatePercentage(row: ShowCollectionRow): number {
+  calculatePercentage(row: ShowCollectionRow): number {
     if (row.episodes + row.missingEpisodes === 0) {
       return 0;
     } else {

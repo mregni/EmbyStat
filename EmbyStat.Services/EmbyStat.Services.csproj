@@ -1,22 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediaBrowser.Common" Version="3.3.38" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="MediaBrowser.Common" Version="4.0.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Api\EmbyStat.Api.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\..\..\.nuget\packages\hangfire.core\1.6.21\lib\netstandard1.3\Hangfire.Core.dll</HintPath>
+    </Reference>
     <Reference Include="MediaBrowser.Model">
       <HintPath>..\..\..\..\.nuget\packages\mediabrowser.common\3.3.10\lib\netstandard1.3\MediaBrowser.Model.dll</HintPath>
     </Reference>

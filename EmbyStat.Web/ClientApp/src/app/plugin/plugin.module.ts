@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
-import { PluginComponent } from './plugin.component';
 import { PluginService } from './service/plugin.service';
-import { PluginFacade } from './state/facade.plugin';
+import { PluginOverviewComponent } from './plugin-overview/plugin-overview.component';
 
 @NgModule({
   imports: [
@@ -13,10 +12,9 @@ import { PluginFacade } from './state/facade.plugin';
     SharedModule
   ],
   providers: [
-    PluginService,
-    PluginFacade
+    PluginService
   ],
   declarations: [
-    PluginComponent]
+    PluginOverviewComponent]
 })
 export class PluginModule { }

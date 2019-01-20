@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { MovieFacade } from '../state/facade.movie';
-import { MovieStats } from '../models/movieStats';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
+import { MovieService } from '../service/movie.service';
+import { MovieStats } from '../models/movie-stats';
 
 @Component({
   selector: 'app-movie-general',
@@ -11,10 +10,10 @@ import { LoaderFacade } from '../../shared/components/loader/state/facade.loader
   styleUrls: ['./movie-general.component.scss']
 })
 export class MovieGeneralComponent implements OnInit {
-  private _selectedCollections: string[];
+  private selectedCollectionsPriv: string[];
 
   get selectedCollections(): string[] {
-    return this._selectedCollections;
+    return this.selectedCollectionsPriv;
   }
 
   @Input()
@@ -23,19 +22,17 @@ export class MovieGeneralComponent implements OnInit {
       collection = [];
     }
 
-    this._selectedCollections = collection;
-    this.stats$ = this.movieFacade.getGeneralStats(collection);
+    this.selectedCollectionsPriv = collection;
+    this.stats$ = this.movieService.getGeneral(collection);
   }
 
-  public stats$: Observable<MovieStats>;
-  public isLoading$: Observable<boolean>;
+  stats$: Observable<MovieStats>;
 
-  constructor(private movieFacade: MovieFacade, private loaderFacade: LoaderFacade) {
+  constructor(private movieService: MovieService) {
 
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isMovieGeneralLoading();
   }
 
 }

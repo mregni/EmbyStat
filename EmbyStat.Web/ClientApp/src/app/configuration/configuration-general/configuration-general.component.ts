@@ -18,13 +18,16 @@ import { Language } from '../../shared/components/language/models/language';
 export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
   configuration$: Observable<Configuration>;
   private configuration: Configuration;
-  public languageChangedSub: Subscription;
-  public configChangedSub: Subscription;
-  public languages$: Observable<Language[]>;
 
-  public form: FormGroup;
-  public nameControl: FormControl = new FormControl('', [Validators.required]);
-  public languageControl: FormControl = new FormControl('en-US', [Validators.required]);
+  languageChangedSub: Subscription;
+  configChangedSub: Subscription;
+  languages$: Observable<Language[]>;
+
+  form: FormGroup;
+  tvdbForm: FormGroup;
+  nameControl = new FormControl('', [Validators.required]);
+  languageControl = new FormControl('en-US', [Validators.required]);
+  tvdbApiKeyControl = new FormControl('', [Validators.required]);
 
   constructor(
     private configurationFacade: ConfigurationFacade,
@@ -39,9 +42,15 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
       language: this.languageControl
     });
 
+    this.tvdbForm = new FormGroup({
+      tvdbApiKey: this.tvdbApiKeyControl
+    });
+
     this.configChangedSub = this.configuration$.subscribe(config => {
       this.configuration = config;
-      this.form.setValue({ name: config.username, language: config.language });
+      this.nameControl.setValue(config.username);
+      this.languageControl.setValue(config.language);
+      this.tvdbApiKeyControl.setValue(config.tvdbApiKey);
     });
 
     this.languageChangedSub = this.languageControl.valueChanges
@@ -52,6 +61,14 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
     const config = { ...this.configuration };
     config.language = this.form.get('language').value;
     config.username = this.form.get('name').value;
+    this.configurationFacade.updateConfiguration(config);
+    this.toaster.pushSuccess('CONFIGURATION.SAVED.GENERAL');
+  }
+
+  public saveTvdbForm() {
+    const config = { ...this.configuration };
+    config.tvdbApiKey = this.tvdbForm.get('tvdbApiKey').value;
+    console.log(config.tvdbApiKey);
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.GENERAL');
   }

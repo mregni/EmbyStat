@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EmbyStat.Common.Models;
+using AutoMapper;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
-using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Controllers.ViewModels.Movie;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using FluentAssertions;
-using MediaBrowser.Model.Plugins;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -44,7 +41,25 @@ namespace Tests.Unit.Controllers
             _movieServiceMock.Setup(x => x.GetGeneralStatsForCollections(It.IsAny<List<string>>()))
                 .Returns(_movieStats);
 
-            _subject = new MovieController(_movieServiceMock.Object);
+            var _mapperMock = new Mock<IMapper>();
+            _mapperMock.Setup(x => x.Map<MovieStatsViewModel>(It.IsAny<MovieStats>())).Returns(new MovieStatsViewModel {LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } });
+            _mapperMock.Setup(x => x.Map<IList<CollectionViewModel>>(It.IsAny<List<Collection>>())).Returns(
+                new List<CollectionViewModel>
+                {
+                    new CollectionViewModel
+                    {
+                        Name = "collection1",
+                        PrimaryImage = "image1",
+                        Type = (int)CollectionType.Movies
+                    },
+                    new CollectionViewModel
+                    {
+                        Name = "collection2",
+                        PrimaryImage = "image2",
+                        Type = (int)CollectionType.Movies
+                    }
+                });
+            _subject = new MovieController(_movieServiceMock.Object, _mapperMock.Object);
         }
 
         public void Dispose()

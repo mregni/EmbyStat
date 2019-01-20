@@ -9,6 +9,8 @@ import { ConfigurationEmbyComponent } from './configuration-emby/configuration-e
 import { ConfigurationGeneralComponent } from './configuration-general/configuration-general.component';
 import { ConfigurationMoviesComponent } from './configuration-movies/configuration-movies.component';
 import { ConfigurationOverviewComponent } from './configuration-overview/configuration-overview.component';
+import { ConfigurationShowsComponent } from './configuration-shows/configuration-shows.component';
+import { ConfigurationUpdatesComponent } from './configuration-updates/configuration-updates.component';
 
 @NgModule({
   imports: [
@@ -21,7 +23,13 @@ import { ConfigurationOverviewComponent } from './configuration-overview/configu
     ConfigurationService,
     ConfigurationFacade
   ],
-  declarations: [ConfigurationEmbyComponent, ConfigurationGeneralComponent
-    , ConfigurationMoviesComponent, ConfigurationOverviewComponent]
+  declarations: [
+    ConfigurationEmbyComponent,
+    ConfigurationGeneralComponent,
+    ConfigurationMoviesComponent,
+    ConfigurationOverviewComponent,
+    ConfigurationShowsComponent,
+    ConfigurationUpdatesComponent
+  ]
 })
 export class ConfigurationModule { }

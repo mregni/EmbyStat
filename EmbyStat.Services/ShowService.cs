@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -14,6 +13,7 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
+using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services
@@ -31,10 +31,10 @@ namespace EmbyStat.Services
             ICollectionRepository collectionRepository, 
             IGenreRepository genreRepository, 
             IPersonService personService, 
-            ITaskRepository taskRepository, 
+            IJobRepository jobRepository, 
             IStatisticsRepository statisticsRepository,
             IConfigurationRepository configurationRepository)
-        : base(taskRepository){
+        : base(jobRepository){
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
@@ -54,7 +54,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
             ShowStat stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<ShowStat>(statistic.JsonResult);
             }
@@ -87,7 +87,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
             ShowGraphs stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<ShowGraphs>(statistic.JsonResult);
             }
@@ -115,7 +115,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
             PersonStats stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
             }
@@ -123,9 +123,9 @@ namespace EmbyStat.Services
             {
                 stats = new PersonStats
                 {
-                    TotalActorCount = TotalTypeCount(collectionIds, Constants.Actor, Constants.Common.TotalActors),
-                    TotalDirectorCount = TotalTypeCount(collectionIds, Constants.Director, Constants.Common.TotalDirectors),
-                    TotalWriterCount = TotalTypeCount(collectionIds, Constants.Writer, Constants.Common.TotalWriters)
+                    TotalActorCount = TotalTypeCount(collectionIds, PersonType.Actor, Constants.Common.TotalActors),
+                    TotalDirectorCount = TotalTypeCount(collectionIds, PersonType.Director, Constants.Common.TotalDirectors),
+                    TotalWriterCount = TotalTypeCount(collectionIds, PersonType.Writer, Constants.Common.TotalWriters)
                 };
 
 
@@ -141,7 +141,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
             List<ShowCollectionRow> stats;
-            if (NewStatisticsNeeded(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, collectionIds))
             {
                 stats = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
             }
@@ -196,7 +196,7 @@ namespace EmbyStat.Services
 
                 var grouping = episodes
                     .SelectMany(x => x.ExtraPersons)
-                    .Where(x => x.Type == Constants.Actor)
+                    .Where(x => x.Type == PersonType.Actor)
                     .GroupBy(x => x.PersonId)
                     .Select(group => new { Id = group.Key, Count = group.Count() })
                     .OrderByDescending(x => x.Count);
@@ -213,7 +213,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, PersonType type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -221,7 +221,7 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
+        private Card TotalTypeCount(IEnumerable<string> collectionIds, PersonType type, string title)
         {
             return new Card
             {

@@ -1,19 +1,34 @@
-.configuration__left {
+@import "../../../styles";
+
+.configuration-left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (min-width: $medium-size + 1){
   .half-width {
-    max-width: 100%;
+    width: 50%;
   }
 }
 
-@media only screen and (min-width: 850px) {
+@media only screen and (max-width: $medium-size) {
   .half-width {
-    width: 50%;
+    width: calc(100% - 52px);
+  }
+}
+
+@media only screen and (max-width: $small-size) {
+  .half-width {
+    width: calc(100% - 52px);
+  }
+}
+
+
+@media only screen and (max-width: 850px) {
+  .half-width {
+    max-width: 100%;
   }
 }
 

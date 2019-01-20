@@ -1,8 +1,8 @@
 ﻿using System;
 using AutoMapper;
-using EmbyStat.Api.EmbyClient.Model;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Tasks;
+using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Github.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.ViewModels.About;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
@@ -13,33 +13,33 @@ using EmbyStat.Controllers.ViewModels.Server;
 using EmbyStat.Controllers.ViewModels.Show;
 using EmbyStat.Controllers.ViewModels.Stat;
 using EmbyStat.Controllers.ViewModels.Task;
+using EmbyStat.Controllers.ViewModels.Update;
 using EmbyStat.Services.Models.About;
-using EmbyStat.Services.Models.Stat;
-using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Graph;
+using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Show;
+using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
 
-namespace EmbyStat.Controllers.Helpers
+namespace EmbyStat.Controllers
 {
     public class MapProfiles : Profile
     {
 	    public MapProfiles()
 	    { 
 			//Controllers
-		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap();
+		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.Version, x => x.Ignore());
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
 		    CreateMap<PluginInfo, EmbyPluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
-		    CreateMap<Drives, DriveViewModel>();
+		    CreateMap<Drive, DriveViewModel>();
+            CreateMap<UpdateResult, UpdateResultViewModel>();
 
-	        CreateMap<TaskInfo, TaskInfoViewModel>();
-	        CreateMap<TaskResult, TaskResultViewModel>();
-	        CreateMap<TaskTriggerInfo, TaskTriggerInfoViewModel>();
+	        CreateMap<Job, JobViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
@@ -60,16 +60,13 @@ namespace EmbyStat.Controllers.Helpers
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 	        CreateMap<LogFile, LogFileViewModel>();
 	        CreateMap<About, AboutViewModel>();
+	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore());
-
-		    CreateMap<Drive, Drives>()
-			    .ForMember(x => x.Id, y => y.Ignore())
-			    .ReverseMap();
 	    }
     }
 }

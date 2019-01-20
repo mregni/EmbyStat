@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{'DIALOGS.MEDIASYNCTASKRUNNING.TITLE' | translate | capitalizeFirst}}</h1>
+<div mat-dialog-content>
+  <p>{{'DIALOGS.MEDIASYNCTASKRUNNING.BODY' | translate | capitalizeFirst}}</p>
+</div>
+<div mat-dialog-actions class="button-container">
+  <button mat-raised-button color="warn" (click)="cancelClick()">{{ 'COMMON.CLOSE' | translate | capitalizeFirst }}</button>
+  <button mat-raised-button color="primary" (click)="goToJobs()" cdkFocusInitial>{{ 'JOB.INFO.OPENJOBSPAGE' | translate | capitalizeFirst }}</button>
+</div>

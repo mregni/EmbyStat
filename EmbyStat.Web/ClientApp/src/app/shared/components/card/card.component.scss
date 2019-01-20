@@ -1,16 +1,16 @@
-@import '~@angular/material/theming';
-@import '../../../../theme.scss';
+@import "~@angular/material/theming";
+@import "../../../../theme.scss";
 
-.card__value {
+.card-value {
   font-weight: bold;
   font-size: 2.4em;
 }
 
-.card__title {
+.card-title {
   font-size: 1em;
 }
 
-.card__flex-column {
+.card-flex-column {
   flex: 1 1 auto;
   width: 100%;
   display: flex;

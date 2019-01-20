@@ -8,6 +8,7 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -16,7 +17,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { WizardModule } from './wizard/wizard.module';
 import { ServerModule } from './server/server.module';
 import { PluginModule } from './plugin/plugin.module';
-import { TaskModule } from './task/task.module';
+import { JobsModule } from './jobs/jobs.module';
 import { MovieModule } from './movie/movie.module';
 import { ShowModule } from './show/show.module';
 import { LogsModule } from './logs/logs.module';
@@ -28,16 +29,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
 import { ConfigurationEffects } from './configuration/state/effects.configuration';
-import { PluginEffects } from './plugin/state/effects.plugin';
 import { ServerEffects } from './server/state/effects.server';
-import { MovieEffects } from './movie/state/effects.movie';
-import { ShowEffects } from './show/state/effects.show';
-import { LoaderEffects } from './shared/components/loader/state/effects.loader';
 import { AboutEffects } from './about/state/effects.about';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './shared/error.interceptor';
+
+import { SyncGuard } from './shared/guards/sync.guard';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -58,10 +57,11 @@ export function createTranslateLoader(http: HttpClient) {
     WizardModule,
     ServerModule,
     PluginModule,
-    TaskModule,
+    JobsModule,
     ShowModule,
     MovieModule,
     LogsModule,
+    TooltipModule,
     AboutModule,
     AppRoutingModule,
     TranslateModule.forRoot({
@@ -74,10 +74,11 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, PluginEffects, ServerEffects, MovieEffects, ShowEffects, LoaderEffects, AboutEffects]),
+    EffectsModule.forRoot([ConfigurationEffects, ServerEffects, AboutEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [
+    SyncGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,

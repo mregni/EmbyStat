@@ -3,20 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { ListToQueryParam } from '../../shared/helpers/listToQueryParam';
 
 import { Observable } from 'rxjs/Observable';
-import { MovieStats } from '../models/movieStats';
-import { PersonStats } from '../../shared/models/personStats';
+import { MovieStats } from '../models/movie-stats';
+import { PersonStats } from '../../shared/models/person-stats';
 import { Collection } from '../../shared/models/collection';
-import { SuspiciousMovies } from '../models/suspiciousMovies';
-import { MovieGraphs } from '../models/movieGraphs';
+import { SuspiciousMovieContainer } from '../models/suspicious-movie-container';
+import { MovieGraphs } from '../models/movie-graphs';
 
 @Injectable()
 export class MovieService {
-  private readonly getGeneralUrl: string = '/movie/generalstats';
-  private readonly getPersonUrl: string = '/movie/personstats';
-  private readonly getCollectionsUrl: string = '/movie/collections';
-  private readonly getSuspiciousUrl: string = '/movie/suspicious';
-  private readonly getGraphsUrl: string = '/movie/graphs';
-  private readonly checkIfTypeIsPresentUrl: string = '/movie/movietypepresent';
+  private readonly baseUrl = '/api/movie/';
+  private getGeneralUrl = this.baseUrl + 'generalstats';
+  private getPersonUrl = this.baseUrl + 'personstats';
+  private getCollectionsUrl = this.baseUrl + 'collections';
+  private getSuspiciousUrl = this.baseUrl + 'suspicious';
+  private getGraphsUrl = this.baseUrl + 'graphs';
+  private checkIfTypeIsPresentUrl = this.baseUrl + 'movietypepresent';
 
   constructor(private http: HttpClient) {
 
@@ -24,29 +25,29 @@ export class MovieService {
 
   getGeneral(list: string[]): Observable<MovieStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<MovieStats>('/api' + this.getGeneralUrl + params);
+    return this.http.get<MovieStats>(this.getGeneralUrl + params);
   }
 
-  getPerson(list: string[]): Observable<PersonStats> {
+  getPeople(list: string[]): Observable<PersonStats> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<PersonStats>('/api' + this.getPersonUrl + params);
+    return this.http.get<PersonStats>(this.getPersonUrl + params);
   }
 
   getCollections(): Observable<Collection[]> {
-    return this.http.get<Collection[]>('/api' + this.getCollectionsUrl);
+    return this.http.get<Collection[]>(this.getCollectionsUrl);
   }
 
-  getSuspicious(list: string[]): Observable<SuspiciousMovies> {
+  getSuspicious(list: string[]): Observable<SuspiciousMovieContainer> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<SuspiciousMovies>('api' + this.getSuspiciousUrl + params);
+    return this.http.get<SuspiciousMovieContainer>(this.getSuspiciousUrl + params);
   }
 
   getGraphs(list: string[]): Observable<MovieGraphs> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<MovieGraphs>('api' + this.getGraphsUrl + params);
+    return this.http.get<MovieGraphs>(this.getGraphsUrl + params);
   }
 
   checkIfTypeIsPresent(): Observable<boolean> {
-    return this.http.get<boolean>('api' + this.checkIfTypeIsPresentUrl);
+    return this.http.get<boolean>(this.checkIfTypeIsPresentUrl);
   }
 }

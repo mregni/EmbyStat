@@ -1,0 +1,50 @@
+.server-flexcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.server-align-start {
+  justify-content: flex-start;
+}
+
+.server-flex-row {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.server-left-content {
+  flex: 0 0 auto;
+  width: 100px;
+  margin-right: 10px;
+}
+
+.server-left-logo {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+
+  img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+.server-right-content {
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.mat-raised-button.mat-small {
+  height: 18px;
+  line-height: 18px;
+  min-height: 18px;
+  vertical-align: top;
+  font-size: 10px;
+  padding: 0 0;
+  margin: 1px;
+}

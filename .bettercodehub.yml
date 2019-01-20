@@ -1,0 +1,21 @@
+component_depth: 1
+
+languages:
+- csharp
+- javascript
+- typescript
+
+exclude:
+- /EmbyStat.Clients/EmbyClient/.*
+- /EmbyStat.Common/Helpers/.*
+- /EmbyStat.Common/Models/.*
+- /EmbyStat.Common/Constants.cs
+- /EmbyStat.Common/Converters/.*
+- /EmbyStat.Controllers/ViewModels/.*   
+- /EmbyStat.DI/DIExtentions.cs
+- /EmbyStat.Repositories/DatabaseInitializer.cs
+- /EmbyStat.Repositories/Migrations/.*
+- /EmbyStat.Web/ClientApp/.*
+- /EmbyStat.Web/Startup.cs
+- /Tests.Integration/.*
+- /Tests.Unit/.*

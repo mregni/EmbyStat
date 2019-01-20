@@ -3,9 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { MovieChartsService } from '../service/movie-charts.service';
-import { MovieFacade } from '../state/facade.movie';
-import { MovieGraphs } from '../models/movieGraphs';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
+import { MovieService } from '../service/movie.service';
+import { MovieGraphs } from '../models/movie-graphs';
 
 @Component({
   selector: 'app-movie-charts',
@@ -13,10 +12,10 @@ import { LoaderFacade } from '../../shared/components/loader/state/facade.loader
   styleUrls: ['./movie-charts.component.scss']
 })
 export class MovieChartsComponent implements OnInit, OnDestroy {
-  private _selectedCollections: string[];
+  private selectedCollectionsPriv: string[];
 
   get selectedCollections(): string[] {
-    return this._selectedCollections;
+    return this.selectedCollectionsPriv;
   }
 
   @Input()
@@ -25,35 +24,29 @@ export class MovieChartsComponent implements OnInit, OnDestroy {
       collection = [];
     }
 
-    this._selectedCollections = collection;
-
-    this.movieFacade.clearGraphs();
+    this.selectedCollectionsPriv = collection;
     this.graphs$ = undefined;
 
     if (this.onTab) {
-      this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
+      this.graphs$ = this.movieService.getGraphs(this.selectedCollectionsPriv);
     }
   }
 
   public graphs$: Observable<MovieGraphs>;
-  public isLoading$: Observable<boolean>;
 
   private movieChartSub: Subscription;
   private onTab = false;
 
-  constructor(private movieFacade: MovieFacade,
-    private movieChartsService: MovieChartsService,
-    private loaderFacade: LoaderFacade) {
+  constructor(private movieService: MovieService, private movieChartsService: MovieChartsService) {
     this.movieChartSub = movieChartsService.open.subscribe(value => {
       this.onTab = value;
       if (value && this.graphs$ === undefined) {
-        this.graphs$ = this.movieFacade.getGraphs(this._selectedCollections);
+        this.graphs$ = this.movieService.getGraphs(this.selectedCollectionsPriv);
       }
     });
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isMovieGraphsLoading();
   }
 
   ngOnDestroy(): void {

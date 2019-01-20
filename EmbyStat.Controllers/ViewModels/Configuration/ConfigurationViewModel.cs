@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmbyStat.Controllers.ViewModels.Configuration
 {
@@ -16,5 +17,14 @@ namespace EmbyStat.Controllers.ViewModels.Configuration
         public int ToShortMovie { get; set; }
         public List<int> MovieCollectionTypes { get; set; } 
         public List<int> ShowCollectionTypes { get; set; }
+        public string TvdbApiKey { get; set; }
+        public int EmbyServerPort { get; set; }
+        public int EmbyServerProtocol { get; set; }
+        public DateTime? LastTvdbUpdate { get; set; }
+        public int KeepLogsCount { get; set; }
+        public bool AutoUpdate { get; set; }
+        public int UpdateTrain { get; set; }
+        public bool UpdateInProgress { get; set; }
+        public string Version { get; set; }
     }
 }

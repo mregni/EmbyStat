@@ -1,4 +1,4 @@
-<div class="configuration__left">
+<div class="configuration-left">
   <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
     <mat-card-content>
       <form class="form-container" [formGroup]="formToShort">
@@ -14,9 +14,10 @@
   </mat-card>
 </div>
 
-<div class="configuration__left">
+<div class="configuration-left">
   <mat-card class="half-width margin-bottom" *ngIf="configuration$ | async as config">
     <mat-card-content>
+      <p>{{ 'CONFIGURATION.MOVIE.COLLECTIONTYPES' | translate }}</p>
       <app-collection-selector [list]="config.movieCollectionTypes" (newList)="onCollectionListChanged($event)"></app-collection-selector>
     </mat-card-content>
     <mat-card-actions class="button-container">

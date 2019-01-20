@@ -1,9 +1,9 @@
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Repositories.Migrations;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +18,7 @@ namespace EmbyStat.Web
 	{
 		public static void Main(string[] args)
 		{
-			try
+            try
 			{
 				CreateLogger();
 
@@ -31,11 +31,11 @@ namespace EmbyStat.Web
 			}
 			catch (Exception ex)
 			{
-				Log.Fatal(ex, $"{Constants.LogPrefix.System}tServer terminated unexpectedly");
+				Log.Fatal(ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
 			}
 			finally
 			{
-				Log.Information($"{Constants.LogPrefix.System}tServer shutdown");
+				Log.Information($"{Constants.LogPrefix.System}\tServer shutdown");
 				Log.CloseAndFlush();
 			}
 		}
@@ -76,16 +76,32 @@ namespace EmbyStat.Web
 				var services = scope.ServiceProvider;
 				try
 				{
-					var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
+				    UpdateDatabase();
+                    var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
 					databaseInitializer.SeedAsync().Wait();
 				}
 				catch (Exception ex)
 				{
-					Log.Fatal($"{Constants.LogPrefix.System}tDatabase seed or update failed");
-					Log.Fatal($"{Constants.LogPrefix.System}t{ex.Message}\n{ex.StackTrace}");
+					Log.Fatal($"{Constants.LogPrefix.System}\tDatabase seed or update failed");
+					Log.Fatal($"{Constants.LogPrefix.System}\t{ex.Message}\n{ex.StackTrace}");
 				}
 			}
 		}
-	}
+
+	    private static void UpdateDatabase()
+	    {
+	        var serviceProvider = new ServiceCollection()
+	            .AddFluentMigratorCore()
+	            .ConfigureRunner(rb => rb
+	                .AddSQLite()
+	                .WithGlobalConnectionString("Data Source=data.db")
+	                .ScanIn(typeof(InitMigration).Assembly).For.Migrations())
+	            .AddLogging(lb => lb.AddSerilog())
+	            .BuildServiceProvider(false);
+
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+	        runner.MigrateUp();
+	    }
+    }
 }
 

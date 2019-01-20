@@ -17,11 +17,9 @@ import {
   LoadConfigurationSuccessAction,
   UpdateConfigurationAction,
   UpdateConfigurationSuccessAction,
-  FireSmallEmbySyncAction,
   NoNeedConfigurationAction
 } from './actions.configuration';
 
-import { ResetPluginLoadedState } from '../../plugin/state/actions.plugin';
 import { ResetServerInfoLoadedState } from '../../server/state/actions.server';
 
 import { ConfigurationQuery } from './reducer.configuration';
@@ -37,7 +35,7 @@ export class ConfigurationEffects {
     private store: Store<ApplicationState>) {
   }
 
-  public loaded$ = this.store.select(ConfigurationQuery.getLoaded);
+  loaded$ = this.store.select(ConfigurationQuery.getLoaded);
 
   @Effect()
   getConfiguration$ = this.actions$
@@ -68,21 +66,8 @@ export class ConfigurationEffects {
       }),
       switchMap((configuration: Configuration | null) => {
         return [new UpdateConfigurationSuccessAction(configuration),
-          new ResetPluginLoadedState(),
-          new ResetServerInfoLoadedState(),
-          new FireSmallEmbySyncAction()];
+          new ResetServerInfoLoadedState()];
       }),
       catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-  );
-
-  @Effect()
-  fireSmallEmbySync = this.actions$
-    .ofType(ConfigurationActionTypes.FIRE_SMALL_EMBY_SYNC)
-    .pipe(
-      map((data: FireSmallEmbySyncAction) => data.payload),
-      switchMap(() => this.embyService.fireSmallEmbyUpdate()),
-      switchMap(() => {
-        return [];
-      })
   );
 }

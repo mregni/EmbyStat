@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EmbyStat.Api.EmbyClient;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Joins;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Joins;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
@@ -27,14 +25,14 @@ namespace Tests.Unit.Services
         {
             _collections = new List<Collection>
             {
-                new Collection{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Collection{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Collection{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
+                new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
             _movieOne = new Movie
             {
                 CommunityRating = (float)1.7,
-                Id = "id1",
+                Id = string.Empty,
                 Name = "The lord of the rings",
                 PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
                 DateCreated = new DateTime(2018, 1, 1, 0, 0, 0),
@@ -43,14 +41,14 @@ namespace Tests.Unit.Services
                 Primary = "primarImage",
                 MediaGenres = new List<MediaGenre>
                 {
-                    new MediaGenre {GenreId = "C9E8E40A-20F4-4B21-8F41-0EDA9166C8E0"}
+                    new MediaGenre {GenreId = "id1"}
                 }
             };
 
             _movieTwo = new Movie
             {
                 CommunityRating = (float)1.7,
-                Id = "id1",
+                Id = string.Empty,
                 Name = "The lord of the rings, two towers",
                 PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
                 DateCreated = new DateTime(2017, 1, 1, 0, 0, 0),
@@ -59,7 +57,7 @@ namespace Tests.Unit.Services
                 Primary = "primarImage",
                 MediaGenres = new List<MediaGenre>
                 {
-                    new MediaGenre {GenreId = "70C1D48B-9715-4840-9DE4-3FFC1E05EC74"}
+                    new MediaGenre {GenreId = "id2"}
                 }
             };
 
@@ -75,7 +73,7 @@ namespace Tests.Unit.Services
             configurationServiceMock.Setup(x => x.GetConfiguration())
                 .Returns(new Configuration(new List<ConfigurationKeyValue>()) {ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType>{CollectionType.Movies}});
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            var taskRepositoryMock = new Mock<ITaskRepository>();
+            var taskRepositoryMock = new Mock<IJobRepository>();
             _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, 
                 personServiceMock.Object, configurationServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
         }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmbyStat.Services.Models.Movie
 {
@@ -15,7 +13,7 @@ namespace EmbyStat.Services.Models.Movie
 
     public class MovieDuplicateItem
     {
-        public DateTime? DateCreated { get; set; }
+        public DateTimeOffset? DateCreated { get; set; }
         public string Id { get; set; }
         public string Quality { get; set; }
     }

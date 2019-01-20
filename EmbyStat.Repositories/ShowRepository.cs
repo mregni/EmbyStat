@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EmbyStat.Common;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -91,13 +89,13 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool inludeSubs = false)
+        public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool includeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
                 var query = context.Shows.AsNoTracking().AsQueryable();
 
-                if (inludeSubs)
+                if (includeSubs)
                 {
                     query = query
                         .Include(x => x.ExtraPersons)
@@ -113,13 +111,13 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool inludeSubs = false)
+        public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool includeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
                 var query = context.Seasons.AsQueryable();
 
-                if (inludeSubs)
+                if (includeSubs)
                 {
                     query = query
                         .Include(x => x.SeasonEpisodes)
@@ -131,7 +129,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool inludeSubs = false)
+        public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool includeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -143,7 +141,7 @@ namespace EmbyStat.Repositories
 
                 var query = context.Episodes.AsQueryable();
 
-                if (inludeSubs)
+                if (includeSubs)
                 {
                     query = query
                         .Include(x => x.SeasonEpisodes)
@@ -160,7 +158,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool inludeSubs = false)
+        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool includeSubs = false)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -172,7 +170,7 @@ namespace EmbyStat.Repositories
 
                 var query = context.Episodes.AsQueryable();
 
-                if (inludeSubs)
+                if (includeSubs)
                 {
                     query = query
                         .Include(x => x.ExtraPersons);
@@ -252,7 +250,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
+        public int GetTotalPersonByType(IEnumerable<string> collections, PersonType type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -269,7 +267,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collections, PersonType type)
         {
             using (var context = new ApplicationDbContext())
             {

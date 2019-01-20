@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { MovieFacade } from '../state/facade.movie';
-import { PersonStats } from '../../shared/models/personStats';
-import { LoaderFacade } from '../../shared/components/loader/state/facade.loader';
+import { MovieService } from '../service/movie.service';
+import { PersonStats } from '../../shared/models/person-stats';
 
 @Component({
   selector: 'app-movie-people',
@@ -11,10 +10,10 @@ import { LoaderFacade } from '../../shared/components/loader/state/facade.loader
   styleUrls: ['./movie-people.component.scss']
 })
 export class MoviePeopleComponent implements OnInit {
-  private _selectedCollections: string[];
+  private selectedCollectionsPriv: string[];
 
   get selectedCollections(): string[] {
-    return this._selectedCollections;
+    return this.selectedCollectionsPriv;
   }
 
   @Input()
@@ -23,18 +22,17 @@ export class MoviePeopleComponent implements OnInit {
       collection = [];
     }
 
-    this._selectedCollections = collection;
-    this.stats$ = this.movieFacade.getPeopleStats(collection);
+    this.selectedCollectionsPriv = collection;
+    this.stats$ = this.movieService.getPeople(collection);
   }
 
-  public stats$: Observable<PersonStats>;
-  public isLoading$: Observable<boolean>;
-  
-  constructor(private movieFacade: MovieFacade, private loaderFacade: LoaderFacade) {
+  stats$: Observable<PersonStats>;
+
+  constructor(private movieService: MovieService) {
 
   }
 
   ngOnInit() {
-    this.isLoading$ = this.loaderFacade.isMoviePeopleLoading();
+
   }
 }

@@ -1,3 +1,5 @@
+@import "../styles";
+
 .app-sidenav-container {
   flex: 1;
   position: fixed;
@@ -10,7 +12,7 @@
 .app-sidenav-content {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 64px);
+  height: calc(100% - #{$menu-height});
 }
 
 .app-sidenav {

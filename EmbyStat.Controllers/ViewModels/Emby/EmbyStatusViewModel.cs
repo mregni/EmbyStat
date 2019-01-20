@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.ViewModels.Emby
+﻿namespace EmbyStat.Controllers.ViewModels.Emby
 {
     public class EmbyStatusViewModel
     {

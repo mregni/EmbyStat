@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Logs;
 using EmbyStat.Services.Interfaces;
@@ -12,11 +10,13 @@ namespace EmbyStat.Controllers
     [Route("api/[controller]")]
     public class LogController : Controller
     {
-        private readonly ILogsService _logService;
+        private readonly ILogService _logService;
+        private readonly IMapper _mapper;
 
-        public LogController(ILogsService logService)
+        public LogController(ILogService logService, IMapper mapper)
         {
             _logService = logService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace EmbyStat.Controllers
         public IActionResult GetLogFileLIst()
         {
             var files = _logService.GetLogFileList();
-            return Ok(Mapper.Map<IList<LogFileViewModel>>(files));
+            return Ok(_mapper.Map<IList<LogFileViewModel>>(files));
         }
 
         [HttpGet]

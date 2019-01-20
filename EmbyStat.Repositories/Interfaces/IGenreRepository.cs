@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Common.Models;
+using System.Threading.Tasks;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -9,5 +10,6 @@ namespace EmbyStat.Repositories.Interfaces
         List<Genre> GetAll();
         List<string> GetIds();
         List<Genre> GetListByIds(List<string> ids);
+        Task CleanupGenres();
     }
 }

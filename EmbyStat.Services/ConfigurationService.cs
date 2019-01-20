@@ -1,40 +1,57 @@
-﻿using System.Collections.Generic;
-using EmbyStat.Common;
-using EmbyStat.Common.Models;
+﻿using System.Linq;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Services
 {
     public class ConfigurationService : IConfigurationService
     {
 		private readonly IConfigurationRepository _configurationRepository;
-		public ConfigurationService(IConfigurationRepository configurationRepository)
-		{
-			_configurationRepository = configurationRepository;
-		}
+        private readonly IStatisticsRepository _statisticsRepository;
+        private readonly AppSettings _appSettings;
+
+        public ConfigurationService(IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, IOptions<AppSettings> appSettings)
+        {
+            _configurationRepository = configurationRepository;
+            _statisticsRepository = statisticsRepository;
+            _appSettings = appSettings.Value;
+        }
 
 		public void SaveServerSettings(Configuration configuration)
 		{
-		    var dbSettings = _configurationRepository.GetConfiguration();
+		    var oldConfig = _configurationRepository.GetConfiguration();
+		    MarkMovieStatisticsAsInvalidIfNeeded(configuration, oldConfig);
+            MarkShowStatisticsAsInvalidIfNeeded(configuration, oldConfig);
 
-		    dbSettings.Language = configuration.Language;
-		    dbSettings.AccessToken = configuration.AccessToken;
-		    dbSettings.EmbyServerAddress = configuration.EmbyServerAddress;
-		    dbSettings.EmbyUserName = configuration.EmbyUserName;
-		    dbSettings.Username = configuration.Username;
-		    dbSettings.WizardFinished = configuration.WizardFinished;
-		    dbSettings.EmbyUserId = configuration.EmbyUserId;
-		    dbSettings.ToShortMovie = configuration.ToShortMovie;
-		    dbSettings.MovieCollectionTypes = configuration.MovieCollectionTypes;
-		    dbSettings.ShowCollectionTypes = configuration.ShowCollectionTypes;
-
-		    _configurationRepository.Update(dbSettings);
+            _configurationRepository.Update(configuration);
         }
 
 		public Configuration GetServerSettings()
 		{
-			return _configurationRepository.GetConfiguration();
-		}
-	}
+            var config = _configurationRepository.GetConfiguration();
+            config.Version = _appSettings.Version;
+            return config;
+        }
+
+        private void MarkMovieStatisticsAsInvalidIfNeeded(Configuration configuration, Configuration oldConfig)
+        {
+            if (!(oldConfig.MovieCollectionTypes.All(configuration.MovieCollectionTypes.Contains) &&
+                  oldConfig.MovieCollectionTypes.Count == configuration.MovieCollectionTypes.Count))
+            {
+                _statisticsRepository.MarkMovieTypesAsInvalid();
+            }
+        }
+
+        private void MarkShowStatisticsAsInvalidIfNeeded(Configuration configuration, Configuration oldConfig)
+        {
+            if (!(oldConfig.ShowCollectionTypes.All(configuration.ShowCollectionTypes.Contains) &&
+                  oldConfig.ShowCollectionTypes.Count == configuration.ShowCollectionTypes.Count))
+            {
+                _statisticsRepository.MarkShowTypesAsInvalid();
+            }
+        }
+    }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Services.Models.Movie;
 
 namespace EmbyStat.Controllers.ViewModels.Movie
 {

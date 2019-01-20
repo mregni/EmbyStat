@@ -1,6 +1,0 @@
-FROM microsoft/aspnetcore:2.0-jessie AS base
-
-WORKDIR /app
-COPY EmbyStat.Web/bin/Release/netcoreapp2/ubuntu-x64/publish .
-
-ENTRYPOINT ["dotnet", "EmbyStat.Web.dll", "--server.urls", "http://0.0.0.0:80"]

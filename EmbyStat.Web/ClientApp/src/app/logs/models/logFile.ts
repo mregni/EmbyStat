@@ -1,5 +1,5 @@
 export class LogFile {
-  public fileName: string;
-  public createdDate: Date;
-  public size: number;
+  fileName: string;
+  createdDate: Date;
+  size: number;
 }

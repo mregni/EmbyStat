@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common;
 using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Helpers;
-using EmbyStat.Common.Tasks.Enum;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Models.Graph;
 
@@ -14,21 +11,21 @@ namespace EmbyStat.Services.Abstract
 {
     public abstract class MediaService
     {
-        private readonly ITaskRepository _taskRepository;
+        private readonly IJobRepository _jobRepository;
 
-        protected MediaService(ITaskRepository taskRepository)
+        protected MediaService(IJobRepository jobRepository)
         {
-            _taskRepository = taskRepository;
+            _jobRepository = jobRepository;
         }
 
-        public bool NewStatisticsNeeded(Statistic statistic, IEnumerable<string> collectionIds)
+        public bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds)
         {
-            var lastMediaSync = _taskRepository.GetLatestTaskByKeyAndStatus("MediaSync", TaskCompletionStatus.Completed);
+            var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
 
             return statistic != null
                    && lastMediaSync != null
                    && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.StatisticId).ToList());
+                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.StatisticId.ToString()).ToList());
         }
 
         public Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<float?> list)
@@ -68,10 +65,10 @@ namespace EmbyStat.Services.Abstract
             };
         }
 
-        protected Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<DateTime?> list)
+        protected Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<DateTimeOffset?> list)
         {
             var yearDataList = list
-                .GroupBy(x => x.RoundToFive())
+                .GroupBy(x => x.RoundToFiveYear())
                 .OrderBy(x => x.Key)
                 .ToList();
 
@@ -85,7 +82,7 @@ namespace EmbyStat.Services.Abstract
                 {
                     if (yearDataList[j].Key != i)
                     {
-                        yearDataList.Add(new GraphGrouping<int?, DateTime?> {Key = i, Capacity = 0});
+                        yearDataList.Add(new GraphGrouping<int?, DateTimeOffset?> {Key = i, Capacity = 0});
                     }
                     else
                     {

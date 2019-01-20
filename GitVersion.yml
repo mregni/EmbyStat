@@ -1,0 +1,17 @@
+assembly-versioning-scheme: MajorMinorPatch
+mode:  ContinuousDelivery
+branches:
+  master:
+    tag: ''
+    increment: Patch
+  features?[/-]:
+    tag: useBranchName
+    increment: Inherit
+  hotfix(es)?[/-]:
+    tag: beta
+    increment: Patch
+  dev(elop)?(ment)?$:
+    tag: dev
+    increment: Minor
+ignore:
+  sha: []

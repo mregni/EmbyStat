@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Services.Models.Stat
+﻿namespace EmbyStat.Services.Models.Stat
 {
     public class ShowPoster
     {

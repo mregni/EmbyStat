@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ServerInfo } from '../models/serverInfo';
+import { ServerInfo } from '../../shared/models//emby/server-info';
 
 export enum ServerActionTypes {
   LOAD_SERVERINFO = '[Server] Load ServerInfo',

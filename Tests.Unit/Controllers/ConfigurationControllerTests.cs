@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -40,7 +40,9 @@ namespace Tests.Unit.Controllers
 		    _configurationServiceMock.Setup(x => x.GetServerSettings()).Returns(new Configuration(configuration));
 		    _configurationServiceMock.Setup(x => x.SaveServerSettings(It.IsAny<Configuration>()));
 
-		    _subject = new ConfigurationController(_configurationServiceMock.Object);
+	        var _mapperMock = new Mock<IMapper>();
+
+		    _subject = new ConfigurationController(_configurationServiceMock.Object, _mapperMock.Object);
 		}
 
 	    public void Dispose()

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

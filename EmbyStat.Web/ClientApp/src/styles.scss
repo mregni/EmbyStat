@@ -3,18 +3,36 @@
 @import "app/styles/ball-scale-ripple-multiple.min.scss";
 @import "app/styles/ball-clip-rotate.min.scss";
 
-
 $grey-font-color: #888;
-$white-font-color: #fff;
-
+$white-color: #fff;
 $normal-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+
+$small-size: 768px;
+$medium-size: 960px;
+$large-size: 1899px;
+
+$menu-height: 64px;
+
+html,
+body {
+  height: 100%;
+}
 
 body {
   margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .content {
   margin: 25px;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
 }
 
 .text-italic {
@@ -31,10 +49,6 @@ body {
 
 .mat-list-item-content {
   font-size: 0.8em;
-}
-
-.italic {
-  font-style: italic;
 }
 
 .full-width {
@@ -58,14 +72,14 @@ body {
 
 .subtext-grey {
   font-style: italic;
-  padding: 3px;
+  padding: 3px 3px 3px;
   color: $grey-font-color;
 }
 
 .subtext-white {
   font-style: italic;
   padding: 3px;
-  color: $white-font-color;
+  color: $white-color;
 }
 
 .subtext-grey-small {
@@ -116,4 +130,12 @@ body {
   .mat-simple-snackbar-action {
     color: red !important;
   }
+}
+
+.text__accent {
+  color: mat-color($mat-orange, A400);
+}
+
+.text__warn {
+  color: mat-color($mat-red, A700);
 }

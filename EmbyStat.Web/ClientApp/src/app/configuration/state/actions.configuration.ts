@@ -6,7 +6,6 @@ export enum ConfigurationActionTypes {
   LOAD_CONFIGURATION_SUCCESS = '[Configuration] Load Configuration Success',
   UPDATE_CONFIGURATION = '[Configuration] Update Configuration',
   UPDATE_CONFIGURATION_SUCCESS = '[Configuration] Updated Configuration Success',
-  FIRE_SMALL_EMBY_SYNC = '[Configuration] Start Small Emby Sync',
   NOT_NEEDED = '[Configuration] Not Needed'
 }
 
@@ -30,15 +29,10 @@ export class UpdateConfigurationSuccessAction implements Action {
   constructor(public payload: Configuration) { }
 }
 
-export class FireSmallEmbySyncAction implements Action {
-  readonly type = ConfigurationActionTypes.FIRE_SMALL_EMBY_SYNC;
-  constructor(public payload = false) { }
-}
-
 export class NoNeedConfigurationAction implements Action {
   readonly type = ConfigurationActionTypes.NOT_NEEDED;
 }
 
 export type ConfigurationActions = LoadConfigurationAction | LoadConfigurationSuccessAction |
   UpdateConfigurationAction | UpdateConfigurationSuccessAction |
-  FireSmallEmbySyncAction | NoNeedConfigurationAction;
+  NoNeedConfigurationAction;

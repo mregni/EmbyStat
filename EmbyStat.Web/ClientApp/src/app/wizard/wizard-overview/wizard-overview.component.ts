@@ -7,17 +7,16 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
-import { EmbyUdpBroadcast } from '../../shared/models/emby/embyUdpBroadcast';
+import { EmbyUdpBroadcast } from '../../shared/models/emby/emby-udp-broadcast';
 import { Configuration } from '../../configuration/models/configuration';
-import { EmbyToken } from '../../shared/models/emby//embyToken';
+import { EmbyToken } from '../../shared/models/emby/emby-token';
 import { Language } from '../../shared/components/language/models/language';
 import { LanguageFacade } from '../../shared/components/language/state/facade.language';
 
-import { PluginFacade } from '../../plugin/state/facade.plugin';
+import { PluginService } from '../../plugin/service/plugin.service';
 import { WizardStateService } from '../services/wizard-state.service';
 
-import { TaskFacade } from '../../task/state/facade.task';
-import { Task } from '../../task/models/task';
+import { JobService } from '../../jobs/service/job.service';
 
 @Component({
   selector: 'app-wizard',
@@ -28,39 +27,41 @@ import { Task } from '../../task/models/task';
 export class WizardOverviewComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') private stepper: MatStepper;
 
-  public introFormGroup: FormGroup;
-  public nameControl: FormControl = new FormControl('', [Validators.required]);
-  public languageControl: FormControl = new FormControl('en-US', [Validators.required]);
+  introFormGroup: FormGroup;
+  nameControl = new FormControl('', [Validators.required]);
+  languageControl = new FormControl('en-US', [Validators.required]);
 
-  public embyFormGroup: FormGroup;
-  public embyAddressControl: FormControl = new FormControl('', [Validators.required]);
-  public embyUsernameControl: FormControl = new FormControl('', [Validators.required]);
-  public embyPasswordControl: FormControl = new FormControl('', [Validators.required]);
+  embyFormGroup: FormGroup;
+  embyAddressControl = new FormControl('', [Validators.required]);
+  embyPortControl = new FormControl('', [Validators.required]);
+  embyProtocolControl = new FormControl('', [Validators.required]);
+  embyUsernameControl = new FormControl('', [Validators.required]);
+  embyPasswordControl = new FormControl('', [Validators.required]);
 
   private languageChangedSub: Subscription;
   private searchEmbySub: Subscription;
   private configurationSub: Subscription;
-  private getTasksSub: Subscription;
+  private fireSyncSub: Subscription;
 
-  public embyFound = false;
-  public embyServerName = '';
-  public hidePassword = true;
-  public wizardIndex = 0;
-  public embyOnline = false;
-  public isAdmin = false;
-  public username: string;
+  embyFound = false;
+  embyServerName = '';
+  hidePassword = true;
+  wizardIndex = 0;
+  embyOnline = false;
+  isAdmin = false;
+  username: string;
+  selectedProtocol: number;
 
   private configuration: Configuration;
-  public languages$: Observable<Language[]>;
+  languages$: Observable<Language[]>;
 
-  private tasks: Task[];
 
   constructor(private translate: TranslateService,
     private configurationFacade: ConfigurationFacade,
-    private pluginFacade: PluginFacade,
+    private pluginService: PluginService,
     private languageFacade: LanguageFacade,
     private wizardStateService: WizardStateService,
-    private taskFacade: TaskFacade,
+    private jobService: JobService,
     private router: Router) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
@@ -69,14 +70,15 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     this.embyFormGroup = new FormGroup({
       embyAddress: this.embyAddressControl,
+      embyPort: this.embyPortControl,
+      embyProtocol: this.embyProtocolControl,
       embyUsername: this.embyUsernameControl,
       embyPassword: this.embyPasswordControl
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
-    this.getTasksSub = this.taskFacade.getTasks().subscribe((result: Task[]) => this.tasks = result);
-
+    this.embyProtocolControl.setValue(0);
   }
 
   ngOnInit() {
@@ -86,6 +88,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       if (!!data.address) {
         this.embyFound = true;
         this.embyAddressControl.setValue(data.address);
+        this.embyPortControl.setValue(data.port);
+        this.embyProtocolControl.setValue(data.protocol);
         this.embyServerName = data.name;
       }
     });
@@ -95,28 +99,30 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.translate.use(value);
   }
 
-  public rescan() {
-    this.configurationFacade.fireSmallEmbySync();
-  }
-
-  public stepperPageChanged(event) {
+  stepperPageChanged(event) {
     if (event.selectedIndex === 2) {
-      this.username = this.embyFormGroup.get('embyUsername').value;
-      const password = this.embyFormGroup.get('embyPassword').value;
-      const address = this.embyFormGroup.get('embyAddress').value;
-      this.configurationFacade.getToken(this.username, password, address)
+      this.username = this.embyUsernameControl.value;
+      const password = this.embyPasswordControl.value;
+      const address = this.embyAddressControl.value;
+      const port = this.embyPortControl.value;
+      const protocol = this.embyProtocolControl.value;
+
+      const url = (protocol === 0 ? 'http://' : 'https://') + address + ':' + port;
+      this.configurationFacade.getToken(this.username, password, url)
         .subscribe((token: EmbyToken) => {
           this.embyOnline = true;
           this.isAdmin = token.isAdmin;
           if (token.isAdmin) {
             const config = { ...this.configuration };
-            config.language = this.introFormGroup.get('language').value;
+            config.language = this.languageControl.value;
             config.embyUserName = this.username;
-            config.username = this.introFormGroup.get('name').value;
+            config.username = this.nameControl.value;
             config.embyServerAddress = address;
             config.accessToken = token.token;
             config.wizardFinished = true;
             config.embyUserId = token.id;
+            config.embyServerPort = port;
+            config.embyServerProtocol = protocol;
             this.configurationFacade.updateConfiguration(config);
           }
         }, (err) => {
@@ -124,13 +130,12 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public finishWizard() {
+  finishWizard() {
     this.wizardStateService.changeState(true);
   }
 
-  public finishWizardAndStartSync() {
-    const task = this.tasks.find(x => x.name === 'TASKS.MEDIASYNCTITLE');
-    this.taskFacade.fireTask(task.id);
+  finishWizardAndStartSync() {
+    this.jobService.fireMediaSyncJob();
     this.wizardStateService.changeState(true);
     this.router.navigate(['/task']);
   }
@@ -148,8 +153,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       this.configurationSub.unsubscribe();
     }
 
-    if (this.getTasksSub !== undefined) {
-      this.getTasksSub.unsubscribe();
+    if (this.fireSyncSub !== undefined) {
+      this.fireSyncSub.unsubscribe();
     }
   }
 }
