@@ -1,13 +1,10 @@
 #installer env image
 FROM mcr.microsoft.com/windows/nanoserver:latest AS installer-env
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-ENV NODEJS_VERSION 8.9.4
 
-RUN Invoke-WebRequest -OutFile node.zip https://nodejs.org/dist/v$Env:NODEJS_VERSION/node-v$Env:NODEJS_VERSION-win-x64.zip
+RUN Invoke-WebRequest -OutFile node.zip https://nodejs.org/dist/v8.9.4/node-v8.9.4-win-x64.zip
 RUN Expand-Archive node.zip -DestinationPath nodejs
 RUN Remove-Item -Force node.zip
-
-RUN dir nodejs/node-v8.9.4-win-x64
 
 #Build image
 FROM microsoft/dotnet:2.2.103-sdk AS builder
