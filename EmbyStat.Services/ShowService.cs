@@ -147,34 +147,35 @@ namespace EmbyStat.Services
             }
             else
             {
-                stats = new List<ShowCollectionRow>();
                 var shows = _showRepository.GetAllShows(collectionIds);
 
-                foreach (var show in shows)
-                {
-                    var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
-                    var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
-                    var specialCount = totalEpisodeCount - episodeCount;
-                    var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
-
-                    stats.Add(new ShowCollectionRow
-                    {
-                        Title = show.Name,
-                        SortName = show.SortName,
-                        Episodes = episodeCount,
-                        Seasons = seasonCount,
-                        Specials = specialCount,
-                        MissingEpisodes = show.MissingEpisodesCount,
-                        PremiereDate = show.PremiereDate,
-                        Status = show.Status == "Continuing"
-                    });
-                }
+                stats = shows.Select(CreateShowCollectionRow).ToList();
 
                 var json = JsonConvert.SerializeObject(stats);
                 _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollected, collectionIds);
             }
 
             return stats;
+        }
+
+        private ShowCollectionRow CreateShowCollectionRow(Show show)
+        {
+            var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
+            var specialCount = totalEpisodeCount - episodeCount;
+            var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
+
+            return new ShowCollectionRow
+            {
+                Title = show.Name,
+                SortName = show.SortName,
+                Episodes = episodeCount,
+                Seasons = seasonCount,
+                Specials = specialCount,
+                MissingEpisodes = show.MissingEpisodesCount,
+                PremiereDate = show.PremiereDate,
+                Status = show.Status == "Continuing"
+            };
         }
 
         public bool ShowTypeIsPresent()

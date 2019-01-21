@@ -302,27 +302,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 LogProgress(Math.Floor(66 + 33 / (showCount / i)));
                 LogInformation($"Processing {show.Name}");
 
-                var neededEpisodeCount = 0;
                 var seasons = _showRepository.GetAllSeasonsForShow(show.Id).ToList();
                 var episodes = _showRepository.GetAllEpisodesForShow(show.Id, true).ToList();
 
                 try
                 {
-                    var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB, cancellationToken);
-
-                    foreach (var episode in tvdbEpisodes)
-                    {
-                        var season = seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonIndex);
-                        if (IsEpisodeMissing(episodes, season, episode))
-                        {
-                            neededEpisodeCount++;
-                        }
-                    }
-
-                    LogInformation($"Found {neededEpisodeCount} missing episodes for show {show.Name}");
-                    show.TvdbSynced = true;
-                    show.MissingEpisodesCount = neededEpisodeCount;
-                    _showRepository.UpdateShow(show);
+                    await ProgressMissingEpisodes(show, seasons, episodes, cancellationToken);
                 }
                 catch (Exception e)
                 {
@@ -331,6 +316,26 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     _showRepository.UpdateShow(show);
                 }
             }
+        }
+
+        private async Task ProgressMissingEpisodes(Show show, List<Season> seasons, List<Episode> episodes, CancellationToken cancellationToken)
+        {
+            var neededEpisodeCount = 0;
+            var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB, cancellationToken);
+
+            foreach (var episode in tvdbEpisodes)
+            {
+                var season = seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonIndex);
+                if (IsEpisodeMissing(episodes, season, episode))
+                {
+                    neededEpisodeCount++;
+                }
+            }
+
+            LogInformation($"Found {neededEpisodeCount} missing episodes for show {show.Name}");
+            show.TvdbSynced = true;
+            show.MissingEpisodesCount = neededEpisodeCount;
+            _showRepository.UpdateShow(show);
         }
 
         private bool IsEpisodeMissing(List<Episode> localEpisodes, Season season, VirtualEpisode tvdbEpisode)

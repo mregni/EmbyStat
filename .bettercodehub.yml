@@ -11,7 +11,8 @@ exclude:
 - /EmbyStat.Common/Models/.*
 - /EmbyStat.Common/Constants.cs
 - /EmbyStat.Common/Converters/.*
-- /EmbyStat.Controllers/ViewModels/.*   
+- /EmbyStat.Controllers/ViewModels/.* 
+- /EmbyStat.Controllers/MapProfiles.cs   
 - /EmbyStat.DI/DIExtentions.cs
 - /EmbyStat.Repositories/ApplicationDbContext.cs
 - /EmbyStat.Repositories/DatabaseInitializer.cs
