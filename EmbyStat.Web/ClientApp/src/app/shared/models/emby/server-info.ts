@@ -1,12 +1,12 @@
 import { Drive } from './drive';
 
 export class ServerInfo {
-  systemUpdateLevel: string;
+  systemUpdateLevel: number;
   operatingSystemDisplayName: string;
   hasPendingRestart: boolean;
   isShuttingDown: boolean;
   supportsLibraryMonitor: boolean;
-  webSocketPortNumber: number;
+  webSocketPortNumber: string;
   canSelfRestart: boolean;
   canSelfUpdate: boolean;
   canLaunchWebBrowser: boolean;
@@ -18,11 +18,10 @@ export class ServerInfo {
   transcodingTempPath: string;
   httpServerPortNumber: number;
   supportsHttps: boolean;
-  httpsPortNumber: number;
+  httpsPortNumber: string;
   hasUpdateAvailable: boolean;
   supportsAutoRunAtStartup: boolean;
-  encoderLocationType: string;
-  systemArchitecture: string;
+  hardwareAccelerationRequiresPremiere: boolean;
   localAddress: string;
   wanAddress: string;
   serverName: string;

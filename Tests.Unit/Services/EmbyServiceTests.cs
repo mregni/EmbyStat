@@ -87,7 +87,7 @@ namespace Tests.Unit.Services
 
             _embyServerInfoRepository = new Mock<IServerInfoRepository>();
 		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
-		    _embyServerInfoRepository.Setup(x => x.GetSingle()).Returns(_serverInfo);
+		    _embyServerInfoRepository.Setup(x => x.GetSingleOrDefault()).Returns(_serverInfo);
 
 		    var embyDriveRepository = new Mock<IDriveRepository>();
 		    embyDriveRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
@@ -202,9 +202,9 @@ namespace Tests.Unit.Services
 		    var serverInfo = _subject.GetServerInfo();
 
 		    serverInfo.Should().NotBeNull();
-		    serverInfo.Id.Should().Be(_serverInfo.Id);
-		    serverInfo.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
-		    serverInfo.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
+		    serverInfo.Result.Id.Should().Be(_serverInfo.Id);
+		    serverInfo.Result.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
+		    serverInfo.Result.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
 	    }
 
 	    [Fact]
