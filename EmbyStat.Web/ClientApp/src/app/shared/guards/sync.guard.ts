@@ -3,25 +3,27 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { MatDialog } from '@angular/material';
 
 import { SyncIsRunningDialog } from '../dialogs/sync-is-running/sync-is-running.component';
-import { JobSocketService } from '../services/job-socket.service';
+import { JobService } from '../../jobs/service/job.service';
 
 @Injectable()
 export class SyncGuard implements CanActivate {
   constructor(
     private router: Router,
-    private jobSocketService: JobSocketService,
+    private jobService: JobService,
     private dialog: MatDialog) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.jobSocketService.isSyncRunning) {
-      this.dialog.open(SyncIsRunningDialog,
-        {
-          width: '550px'
-        });
-      return false;
-    }
+    return this.jobService.getMediaSyncJob().map(job => {
+      if (job.state === 1) {
+        this.dialog.open(SyncIsRunningDialog,
+          {
+            width: '550px'
+          });
+        return false;
+      }
 
-    return true;
+      return true;
+    });
   }
 }
