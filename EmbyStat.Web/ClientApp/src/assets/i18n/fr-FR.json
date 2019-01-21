@@ -44,7 +44,8 @@
     "PREMIEREDATE": "date de sortie",
     "STATUS": "statut",
     "PERCENTAGE": "pourcentage",
-    "COLLECTED": "collecté"
+    "COLLECTED": "collecté",
+    "UPDATES": "Updates"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -61,7 +62,8 @@
     "EMBYUSERNAME": "Nom d'utilisateur de l'administrateur Emby",
     "EMBYPASSWORD": "Mot de passe l'administrateur Emby",
     "DURATIONINMINUTES": "Durée en minutes",
-    "TVDBAPI": "Clé API TheTVDB"
+    "TVDBAPI": "Clé API TheTVDB",
+    "CRON": "Cron string"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Remplissez votre nom ou pseudo.",
@@ -75,7 +77,7 @@
     "SHOWS": "Séries",
     "SETTINGS": "Paramètres",
     "PLUGINS": "Extensions",
-    "TASKS": "Tâches",
+    "JOBS": "Jobs",
     "SERVER": "Serveur Emby",
     "LOGS": "Journaux",
     "ABOUT": "À propos"
@@ -85,7 +87,7 @@
     "EMBYLABEL": "Paramètres Emby",
     "SAVINGLABEL": "Première synchronisation au serveur Emby",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "Si votre langue n'est pas mentionné ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Vérification du serveur Emby ...",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
@@ -96,9 +98,9 @@
     "SAVINGINSTRUCTIONS": "Si quelque chose échoue, vous ne pourrez pas commencer à utiliser EmbyStat. Dans ce cas, corrigez les erreurs, appuyez sur précédent et suivant.",
     "SAVING": "Enregistrement des données",
     "RESCAN": "Re-scanner",
-    "FINISHWITHSYNC": "Démarrer la synchronisation",
+    "FINISHWITHSYNC": "Start synchronization",
     "FINISHED": "Tous les paramètres sont enregistrés. Vous pouvez commencer à utiliser le serveur Emby maintenant. Profitez de vos nouvelles statistiques!",
-    "FINISHEXPLANATION": "La meilleure chose à faire est de démarrer une tâche de synchronisation multimédia. EmbyStat commencera à télécharger toutes les données de votre serveur Emby. Gardez à l'esprit que cette tâche peut prendre du temps en fonction de la taille de votre collection. Si vous ne voulez pas commencer la synchronisation maintenant, cliquez simplement sur Terminer. Vous pourez le démarrer manuellement plus tard en accédant à la page Tâches."
+    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -128,7 +130,7 @@
     "HIGHESTRATEDSHOW": "Le mieux noté",
     "LOWESTRATEDSHOW": "Les mal notés",
     "OLDESTPREMIERED": "La plus ancienne série",
-    "YOUNGESTPREMIERED": "La série la plus récente",
+    "YOUNGESTPREMIERED": "Youngest premiered show",
     "YOUNGESTADDED": "Ajout récent",
     "WITHMOESTEPISODES": "Avec le plus épisodes",
     "SHOWSTATUSGRAPH": "Voir le statut",
@@ -142,14 +144,15 @@
       "GENERAL": "Paramètres généraux de Embystat enregistrés!",
       "EMBY": "Paramètres Emby sauvegardés !",
       "MOVIES": "Paramètres du film sauvegardé!",
-      "SHOWS": "Paramètres de la série sauvegardé!"
+      "SHOWS": "Paramètres de la série sauvegardé!",
+      "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera."
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "Pour trouver les films qui sont susceptibles d'être courts, nous devons savoir combien il faut de minutes pour chercher ces films. Par défaut, ce paramètre est défini sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans le menu déroulant de la collection sur la page des statistiques de film."
     },
     "SHOW": {
@@ -157,40 +160,41 @@
     },
     "EMBY": {
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+    },
+    "UPDATE": {
+      "AUTO": "Enable auto updates",
+      "CHECK": "Check and update server now",
+      "TRAIN": "Change the update train if you want to have beta updates.",
+      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
+      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
   },
-  "TASK": {
-    "LASTRUNNOW": "Dernier lancement : il y a peu",
-    "LASTRUN": "Dernière exécution",
-    "HOURS": "{{hours}} heure(s)",
+  "JOB": {
+    "LASTRUNNOW": "Last run: just now",
+    "LASTRUN": "Last run",
+    "HOURS": "{{hours}} hour(s)",
     "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} seconde(s)",
-    "AND": "et",
-    "AGO": "il y a",
-    "FOR": "pour",
-    "BUTFAILED": "a échoué après",
-    "NOTRAN": "Not ran yet"
-  },
-  "TASKS": {
-    "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
-    "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
-    "SMALLEMBYSYNCDESCRIPTION": "Effectuer une synchronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
-    "SMALLEMBYSYNCTITLE": "Synchronisation rapide avec Emby",
-    "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
-    "MEDIASYNCTITLE": "Synchronisation des médias",
-    "STARTMEDIASYNC": "Débuter une synchronisation des médias",
-    "DATABASECLEANUP": "Nettoyage de la base de données",
-    "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
-    "OPENTASKPAGE": "Go to task page"
-  },
-  "TRIGGER": {
-    "INTERVALTRIGGER": "Déclencheur d'intervalle",
-    "DAILYTRIGGER": "Déclencheur quotidien",
-    "STARTUPTRIGGER": "Déclencheur de démarrage",
-    "EVERY": "chaque {{interval}}",
-    "AT": "à {{time}}",
-    "TRIGGERTYPE": "Type de déclencheur",
-    "SAVETRIGGER": "Déclencheur de sauvegarde"
+    "SECONDS": "{{seconds}} second(s)",
+    "AND": "and",
+    "AGO": "ago",
+    "FOR": "for",
+    "BUTFAILED": "but failed after",
+    "NORUN": "Not ran yet",
+    "MOMENT_AGO": "a moment",
+    "INFO": {
+      "PINGEMBYSERVERTITLE": "Check Emby connection",
+      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIASYNCTITLE": "Media synchronization",
+      "STARTMEDIASYNC": "Start media sync",
+      "DATABASECLEANUPTITLE": "Database cleanup",
+      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "OPENJOBPAGE": "Go to job page",
+      "CHECKUPDATETITLE": "Check for new updates",
+      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+    }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
@@ -203,11 +207,17 @@
     },
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+    },
+    "EDIT_TRIGGER": {
+      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
     }
   },
   "LOADER": {
-    "FETCHING": "Récupération des statistiques"
+    "FETCHING": "Récupération des statistiques",
+    "UPDATING": "Updating EmbyStat",
+    "UPDATINGSUB": "Refresh page when update is done. (auto refresh not yet working, sorry)"
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixte / Autre",
@@ -225,7 +235,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Aller à Emby",
-    "TASKISRUNNING": "{{task}} task is running"
+    "JOBISRUNNING": "{{job}} job is running",
+    "NOMISSEDPINGS": "Emby server is alive",
+    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
+    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
   },
   "ABOUT": {
     "THANKS": {
