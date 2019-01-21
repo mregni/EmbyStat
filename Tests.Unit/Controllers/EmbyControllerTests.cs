@@ -127,7 +127,7 @@ namespace Tests.Unit.Controllers
 	    public void IsServerInfoReturned()
 	    {
 		    var result = _subject.GetServerInfo();
-		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		    var resultObject = result.Result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var serverInfo = resultObject.Should().BeOfType<ServerInfoViewModel>().Subject;
 
 		    serverInfo.Should().NotBeNull();
