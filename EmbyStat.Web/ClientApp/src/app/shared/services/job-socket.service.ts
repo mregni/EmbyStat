@@ -13,7 +13,6 @@ export class JobSocketService {
   logsSubject = new BehaviorSubject<SafeHtml[]>([]);
   infoSubject = new BehaviorSubject<Job>(null);
   missedPingsSubject = new BehaviorSubject<number>(0);
-  isSyncRunning = false;
 
   constructor(private sanitizer: DomSanitizer) {
     this.lines = [];
@@ -39,7 +38,6 @@ export class JobSocketService {
   }
 
   updateJobsInfo(job: Job) {
-    this.isSyncRunning = !!job && job.state === 2 && job.id === 'be68900b-ee1d-41ef-b12f-60ef3106052e';
     this.infoSubject.next(job);
   }
 
