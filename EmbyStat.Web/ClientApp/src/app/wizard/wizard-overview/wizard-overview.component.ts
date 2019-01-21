@@ -14,7 +14,7 @@ import { Language } from '../../shared/components/language/models/language';
 import { LanguageFacade } from '../../shared/components/language/state/facade.language';
 
 import { PluginService } from '../../plugin/service/plugin.service';
-import { WizardStateService } from '../services/wizard-state.service';
+import { SideBarService } from '../../shared/services/side-bar.service';
 
 import { JobService } from '../../jobs/service/job.service';
 
@@ -42,6 +42,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private searchEmbySub: Subscription;
   private configurationSub: Subscription;
   private fireSyncSub: Subscription;
+  private checkUrlNeeded = true;
 
   embyFound = false;
   embyServerName = '';
@@ -60,7 +61,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     private configurationFacade: ConfigurationFacade,
     private pluginService: PluginService,
     private languageFacade: LanguageFacade,
-    private wizardStateService: WizardStateService,
+    private sideBarService: SideBarService,
     private jobService: JobService,
     private router: Router) {
     this.introFormGroup = new FormGroup({
@@ -77,7 +78,15 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
-    this.configurationSub = this.configurationFacade.configuration$.subscribe(config => this.configuration = config);
+    this.configurationSub = this.configurationFacade.configuration$.subscribe(config => {
+      this.configuration = config;
+      if (config.wizardFinished && this.checkUrlNeeded) {
+        this.router.navigate(['']);
+      }
+
+      this.checkUrlNeeded = false;
+      this.sideBarService.closeMenu();
+    });
     this.embyProtocolControl.setValue(0);
   }
 
@@ -132,14 +141,15 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
   finishWizard() {
     this.jobService.fireSmallSyncJob();
-    this.wizardStateService.changeState(true);
+    this.sideBarService.openMenu();
+    this.router.navigate(['']);
   }
 
   finishWizardAndStartSync() {
     this.jobService.fireSmallSyncJob();
     this.jobService.fireMediaSyncJob();
-    this.wizardStateService.changeState(true);
-    this.router.navigate(['/task']);
+    this.sideBarService.openMenu();
+    this.router.navigate(['/jobs']);
   }
 
   ngOnDestroy() {

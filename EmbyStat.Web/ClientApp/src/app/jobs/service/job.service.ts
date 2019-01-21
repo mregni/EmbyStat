@@ -10,6 +10,7 @@ export class JobService {
   private firePingJobUrl = this.baseUrl + '/ping/fire';
   private fireCheckUpdateJobUrl = this.baseUrl + '/checkupdate/fire';
   private fireMediaSyncJobUrl = this.baseUrl + '/mediasync/fire';
+  private getMediaSyncJobUrl = this.baseUrl + '/mediasync';
   private fireSmallSyncUrl = this.baseUrl + '/smallsync/fire';
   private fireDatabaseCleanupUrl = this.baseUrl + '/databasecleanup/fire';
 
@@ -35,6 +36,10 @@ export class JobService {
 
   fireMediaSyncJob(): Observable<void> {
     return this.http.post<void>(this.fireMediaSyncJobUrl, null);
+  }
+
+  getMediaSyncJob(): Observable<Job> {
+    return this.http.get<Job>(this.getMediaSyncJobUrl);
   }
 
   fireSmallSyncJob(): Observable<void> {

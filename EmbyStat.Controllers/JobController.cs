@@ -93,6 +93,14 @@ namespace EmbyStat.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("mediasync")]
+        public IActionResult IsFireMediaSyncRunning()
+        {
+            var job = _jobService.GetById(Constants.JobIds.MediaSyncId);
+            return Ok(_mapper.Map<JobViewModel>(job));
+        }
+
         [HttpPost]
         [Route("smallsync/fire")]
         public async Task<IActionResult> FireSmallSync()
