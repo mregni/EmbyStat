@@ -6,7 +6,7 @@
   </div>
 </div>
 <div class="content">
-  <mat-tab-group>
+  <mat-tab-group [selectedIndex]="selected">
     <mat-tab label="{{'COMMON.GENERAL' | translate | capitalizeFirst}}">
       <div class="configuration__tab-content">
         <app-configuration-general></app-configuration-general>
