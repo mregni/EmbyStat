@@ -232,33 +232,38 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     j++;
                     LogProgress(Math.Floor(33 + 36 / ((double)shows.Count / j * (rootItems.Count / (double)(i + 1)))));
-                    var rawSeasons = await GetSeasonsFromEmby(show.Id, cancellationToken);
-
-                    var episodes = new List<Episode>();
-                    var seasonLinks = new List<Tuple<string, string>>();
-                    foreach (var season in rawSeasons)
-                    {
-                        var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
-                        eps.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
-                        episodes.AddRange(eps);
-
-                        seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
-                    }
-
-                    LogInformation($"Processing show ({j}/{shows.Count})  {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
-
-                    var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
-
-                    _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
-
-                    var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
-                    seasons.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
-                    _showRepository.AddRange(seasons);
-
-                    cancellationToken.ThrowIfCancellationRequested();
+                    await ProcessShow(show, rootItem, j, shows.Count, cancellationToken);
                 }
                 cancellationToken.ThrowIfCancellationRequested();
             }
+        }
+
+        private async Task ProcessShow(Show show, Collection rootItem, int index, int showCount, CancellationToken cancellationToken)
+        {
+            var rawSeasons = await GetSeasonsFromEmby(show.Id, cancellationToken);
+
+            var episodes = new List<Episode>();
+            var seasonLinks = new List<Tuple<string, string>>();
+            foreach (var season in rawSeasons)
+            {
+                var eps = await GetEpisodesFromEmby(season.Id, cancellationToken);
+                eps.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
+                episodes.AddRange(eps);
+
+                seasonLinks.AddRange(eps.Select(x => new Tuple<string, string>(season.Id, x.Id)));
+            }
+
+            LogInformation($"Processing show ({index}/{showCount})  {show.Name} with {rawSeasons.Count} seasons and {episodes.Count} episodes");
+
+            var groupedEpisodes = episodes.GroupBy(x => x.Id).Select(x => new { Episode = episodes.First(y => y.Id == x.Key) });
+
+            _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
+
+            var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
+            seasons.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
+            _showRepository.AddRange(seasons);
+
+            cancellationToken.ThrowIfCancellationRequested();
         }
 
         private async Task SyncMissingEpisodes(DateTime? lastUpdateFromTvdb, string tvdbApiKey, CancellationToken cancellationToken)
