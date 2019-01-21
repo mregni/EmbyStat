@@ -17,6 +17,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
         {
             _embyService = embyService;
+            Title = jobRepository.GetById(Id).Title;
         }
 
         public sealed override Guid Id => Constants.JobIds.SmallSyncId;
