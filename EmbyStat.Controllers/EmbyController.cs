@@ -45,10 +45,10 @@ namespace EmbyStat.Controllers
 
 		[HttpGet]
 		[Route("getserverinfo")]
-		public IActionResult GetServerInfo()
+		public async Task<IActionResult> GetServerInfo()
 		{
 		    Log.Information($"{Constants.LogPrefix.ServerApi}\tGet Emby server info.");
-			var result = _embyService.GetServerInfo();
+			var result = await _embyService.GetServerInfo();
 			var drives = _embyService.GetLocalDrives();
 
 			var serverInfo = _mapper.Map<ServerInfoViewModel>(result);

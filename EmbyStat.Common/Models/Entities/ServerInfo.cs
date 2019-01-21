@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Common.Models.Entities
 {
     public class ServerInfo
     {
-	    [Key]
-	    public string Id { get; set; }
-        public string SystemUpdateLevel { get; set; }
+        [Key] public string Id { get; set; }
+        public UpdateLevel SystemUpdateLevel { get; set; }
         public string OperatingSystemDisplayName { get; set; }
         public bool HasPendingRestart { get; set; }
         public bool IsShuttingDown { get; set; }
@@ -26,8 +26,7 @@ namespace EmbyStat.Common.Models.Entities
         public int HttpsPortNumber { get; set; }
         public bool HasUpdateAvailable { get; set; }
         public bool SupportsAutoRunAtStartup { get; set; }
-        public string EncoderLocationType { get; set; }
-        public string SystemArchitecture { get; set; }
+        public bool HardwareAccelerationRequiresPremiere { get; set; }
         public string LocalAddress { get; set; }
         public string WanAddress { get; set; }
         public string ServerName { get; set; }

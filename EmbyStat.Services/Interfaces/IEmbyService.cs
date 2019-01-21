@@ -13,7 +13,7 @@ namespace EmbyStat.Services.Interfaces
     {
 	    EmbyUdpBroadcast SearchEmby();
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
-		ServerInfo GetServerInfo();
+        Task<ServerInfo> GetServerInfo();
 		List<Drive> GetLocalDrives();
 		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();

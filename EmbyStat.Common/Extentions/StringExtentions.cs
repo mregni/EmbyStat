@@ -28,5 +28,10 @@ namespace EmbyStat.Common.Extentions
                 default: return CollectionType.Other;
             }
         }
+
+        public static string ToCleanVersionString(this string version)
+        {
+            return version.Replace("-dev", string.Empty).Replace("-beta", string.Empty);
+        }
     }
 }

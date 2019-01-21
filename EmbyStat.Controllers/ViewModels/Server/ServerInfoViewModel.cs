@@ -4,7 +4,8 @@ namespace EmbyStat.Controllers.ViewModels.Server
 {
     public class ServerInfoViewModel
     {
-        public string SystemUpdateLevel { get; set; }
+        public string Id { get; set; }
+        public int SystemUpdateLevel { get; set; }
         public string OperatingSystemDisplayName { get; set; }
         public bool HasPendingRestart { get; set; }
         public bool IsShuttingDown { get; set; }
@@ -24,8 +25,7 @@ namespace EmbyStat.Controllers.ViewModels.Server
         public int HttpsPortNumber { get; set; }
         public bool HasUpdateAvailable { get; set; }
         public bool SupportsAutoRunAtStartup { get; set; }
-        public string EncoderLocationType { get; set; }
-        public string SystemArchitecture { get; set; }
+        public bool HardwareAccelerationRequiresPremiere { get; set; }
         public string LocalAddress { get; set; }
         public string WanAddress { get; set; }
         public string ServerName { get; set; }

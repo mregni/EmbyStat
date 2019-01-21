@@ -131,10 +131,12 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   finishWizard() {
+    this.jobService.fireSmallSyncJob();
     this.wizardStateService.changeState(true);
   }
 
   finishWizardAndStartSync() {
+    this.jobService.fireSmallSyncJob();
     this.jobService.fireMediaSyncJob();
     this.wizardStateService.changeState(true);
     this.router.navigate(['/task']);

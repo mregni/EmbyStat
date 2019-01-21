@@ -105,24 +105,37 @@ namespace EmbyStat.Services
 			throw new BusinessException("TOKEN_FAILED");
 	    }
 
-	    public ServerInfo GetServerInfo()
+	    public async Task<ServerInfo> GetServerInfo()
 	    {
-		    return _embyServerInfoRepository.GetSingle();
-	    }
+		    var server = _embyServerInfoRepository.GetSingleOrDefault();
+            if (server == null)
+            {
+                server = await GetLiveServerInfo();
+                _embyServerInfoRepository.UpdateOrAdd(server);
+            }
+
+            return server;
+        }
 
         public Task<ServerInfo> GetLiveServerInfo()
         {
+            var settings = _configurationRepository.GetConfiguration();
+            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
             return _embyClient.GetServerInfoAsync();
         }
 
         public Task<List<PluginInfo>> GetLivePluginInfo()
         {
+            var settings = _configurationRepository.GetConfiguration();
+            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
             return _embyClient.GetInstalledPluginsAsync();
         }
 
         public List<Drive> GetLocalDrives()
 	    {
-		    return _embyDriveRepository.GetAll();
+            var settings = _configurationRepository.GetConfiguration();
+            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
+            return _embyDriveRepository.GetAll();
 	    }
 
         public Task<List<Drive>> GetLiveEmbyDriveInfo()

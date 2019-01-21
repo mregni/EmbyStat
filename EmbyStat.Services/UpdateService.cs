@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Github;
 using EmbyStat.Clients.Github.Models;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
@@ -46,7 +47,7 @@ namespace EmbyStat.Services
 
         public async Task<UpdateResult> CheckForUpdate(Configuration settings, CancellationToken cancellationToken)
         {
-            var currentVersion = new Version(_appSettings.Version);
+            var currentVersion = new Version(_appSettings.Version.ToCleanVersionString());
             var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
 
             if (result.IsUpdateAvailable)

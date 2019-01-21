@@ -13,12 +13,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
     public class SmallSyncJob : BaseJob, ISmallSyncJob
     {
         private readonly IEmbyService _embyService;
-        private readonly IConfigurationRepository _configurationRepository;
 
-        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, IEmbyService embyService, IConfigurationRepository configurationRepository) : base(hubHelper, jobRepository, configurationService)
+        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
         {
             _embyService = embyService;
-            _configurationRepository = configurationRepository;
         }
 
         public sealed override Guid Id => Constants.JobIds.SmallSyncId;
@@ -27,10 +25,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public override async Task RunJob()
         {
-            var settings = _configurationRepository.GetConfiguration();
-            LogProgress(15);
-
-            _embyService.SetEmbyClientAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
             var server = await _embyService.GetLiveServerInfo();
             LogInformation("Server info found");
             LogProgress(35);

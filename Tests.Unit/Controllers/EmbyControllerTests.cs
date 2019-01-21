@@ -60,7 +60,7 @@ namespace Tests.Unit.Controllers
 		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(_token));
 		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
 		    _embyServiceMock.Setup(x => x.FireSmallSyncEmbyServerInfo());
-		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
+		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(_serverInfo));
 		    _embyServiceMock.Setup(x => x.GetLocalDrives()).Returns(_drives);
 
 	        var _mapperMock = new Mock<IMapper>();
@@ -127,7 +127,7 @@ namespace Tests.Unit.Controllers
 	    public void IsServerInfoReturned()
 	    {
 		    var result = _subject.GetServerInfo();
-		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		    var resultObject = result.Result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var serverInfo = resultObject.Should().BeOfType<ServerInfoViewModel>().Subject;
 
 		    serverInfo.Should().NotBeNull();

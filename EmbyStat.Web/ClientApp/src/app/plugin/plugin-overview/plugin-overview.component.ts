@@ -4,6 +4,7 @@ import { PluginService } from '../service/plugin.service';
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { EmbyPlugin } from '../../shared/models/emby/emby-plugin';
 import { Configuration } from '../../configuration/models/configuration';
+import { ConfigHelper } from '../../shared/helpers/configHelper';
 
 @Component({
   selector: 'app-plugin-overview',
@@ -22,4 +23,7 @@ export class PluginOverviewComponent implements OnInit {
   ngOnInit() {
   }
 
+  getFullAddress(config: Configuration): string {
+    return ConfigHelper.getFullEmbyAddress(config);
+  }
 }

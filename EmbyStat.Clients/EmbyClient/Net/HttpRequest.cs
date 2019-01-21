@@ -20,7 +20,7 @@ namespace EmbyStat.Clients.EmbyClient.Net
 	    public HttpRequest()
 	    {
 		    RequestHeaders = new HttpHeaders();
-		    Timeout = 30000;
+		    Timeout = 120000;
 	    }
 
 	    public void SetPostData(IDictionary<string, string> values)
