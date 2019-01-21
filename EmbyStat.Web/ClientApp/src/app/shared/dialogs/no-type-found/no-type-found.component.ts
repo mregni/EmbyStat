@@ -27,7 +27,7 @@ export class NoTypeFoundDialog implements OnDestroy {
 
   startMediaSync(): void {
     this.jobSub = this.jobService.fireMediaSyncJob().subscribe();
-    this.router.navigate(['/task']);
+    this.router.navigate(['/jobs']);
     this.dialogRef.close();
 
   }

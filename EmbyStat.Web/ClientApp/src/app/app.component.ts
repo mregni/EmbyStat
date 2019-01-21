@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs/Subscription';
 import * as signalR from '@aspnet/signalr';
 
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
-import { WizardStateService } from './wizard/services/wizard-state.service';
 import { JobSocketService } from './shared/services/job-socket.service';
 import { SideBarService } from './shared/services/side-bar.service';
 import { Job } from './jobs/models/job';
@@ -22,7 +21,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
   private configChangedSub: Subscription;
   private configLoadSub: Subscription;
-  private wizardStateSub: Subscription;
   openMenu = true;
 
   constructor(
@@ -30,7 +28,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private configurationFacade: ConfigurationFacade,
     private translate: TranslateService,
     private router: Router,
-    private wizardStateService: WizardStateService,
     private jobSocketService: JobSocketService,
     private sideBarService: SideBarService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
@@ -65,19 +62,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
-        this.openMenu = false;
-      }
-    });
-
-    this.wizardStateSub = this.wizardStateService.finished.subscribe(finished => {
-      if (finished) {
-        this.openMenu = true;
-        this.router.navigate(['']);
       }
     });
 
     this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
       this.translate.use(config.language);
+      console.log("lang changed");
     });
   }
 
@@ -88,10 +78,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (this.configLoadSub !== undefined) {
       this.configLoadSub.unsubscribe();
-    }
-
-    if (this.wizardStateSub !== undefined) {
-      this.wizardStateSub.unsubscribe();
     }
   }
 
