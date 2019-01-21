@@ -44,7 +44,8 @@
     "PREMIEREDATE": "première datum",
     "STATUS": "status",
     "PERCENTAGE": "percentage",
-    "COLLECTED": "verzameld"
+    "COLLECTED": "verzameld",
+    "UPDATES": "Updates"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
@@ -61,7 +62,8 @@
     "EMBYUSERNAME": "Emby admin gebruikersnaam",
     "EMBYPASSWORD": "Emby administrator wachtwoord",
     "DURATIONINMINUTES": "Duur in minuten",
-    "TVDBAPI": "TheTVDB api key"
+    "TVDBAPI": "TheTVDB api key",
+    "CRON": "Cron string"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
@@ -75,7 +77,7 @@
     "SHOWS": "Series",
     "SETTINGS": "Instellingen",
     "PLUGINS": "Plugins",
-    "TASKS": "Taken",
+    "JOBS": "Jobs",
     "SERVER": "Emby server",
     "LOGS": "Logs",
     "ABOUT": "About"
@@ -85,7 +87,7 @@
     "EMBYLABEL": "Emby",
     "SAVINGLABEL": "Eerste Emby server sync",
     "FINALLABEL": "Laatste",
-    "CROWNDINHELP": "If your language is not metioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Emby server aan het controleren ...",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
     "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
@@ -96,9 +98,9 @@
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
     "SAVING": "Gegevens aan het opslaan",
     "RESCAN": "Opnieuw scannen",
-    "FINISHWITHSYNC": "Start synchronisatie",
+    "FINISHWITHSYNC": "Start synchronization",
     "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media syncronisation task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "PLUGINS": {
     "VERSION": "Versie"
@@ -128,7 +130,7 @@
     "HIGHESTRATEDSHOW": "Hoogste score",
     "LOWESTRATEDSHOW": "Laagste score",
     "OLDESTPREMIERED": "Oudste in première",
-    "YOUNGESTPREMIERED": "Yougenst premiered show",
+    "YOUNGESTPREMIERED": "Youngest premiered show",
     "YOUNGESTADDED": "Jongste toegevoegd",
     "WITHMOESTEPISODES": "Met de meeste afleveringen",
     "SHOWSTATUSGRAPH": "Serie status",
@@ -142,14 +144,15 @@
       "GENERAL": "General Embystat settings saved!",
       "EMBY": "Emby instellingen opgeslagen!",
       "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!"
+      "SHOWS": "Show settings saved!",
+      "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the syncronisation task will fail."
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspisiously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
@@ -157,40 +160,41 @@
     },
     "EMBY": {
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+    },
+    "UPDATE": {
+      "AUTO": "Enable auto updates",
+      "CHECK": "Check and update server now",
+      "TRAIN": "Change the update train if you want to have beta updates.",
+      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
+      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
   },
-  "TASK": {
-    "LASTRUNNOW": "Laatst uitgevoerd: nu",
-    "LASTRUN": "Laatst uitgevoerd",
-    "HOURS": "{{hours}} uur(uren)",
-    "MINUTES": "{{minutes}} minuten",
-    "SECONDS": "{{seconds}} seconden",
-    "AND": "en",
-    "AGO": "geleden",
-    "FOR": "voor",
-    "BUTFAILED": "maar is gefaald na",
-    "NOTRAN": "Not ran yet"
-  },
-  "TASKS": {
-    "PINGEMBYSERVERTITLE": "Emby verbinding controleren",
-    "PINGEMBYSERVERDESCRIPTION": "Ping de Emby server om na te zien of deze online is.",
-    "SMALLEMBYSYNCDESCRIPTION": "Voor een kleine Emby syncronisatie uit. Deze syncronisatie is snel en bevat weinig data.",
-    "SMALLEMBYSYNCTITLE": "Kleine Emby syncronisatie",
-    "MEDIASYNCDESCRIPTION": "Voor een incrementele syncronisatie uit op uw film collectie. Dit kan enige tijd in beslag nemen!",
-    "MEDIASYNCTITLE": "Media synchronisatie",
-    "STARTMEDIASYNC": "Start media sync",
-    "DATABASECLEANUP": "Database cleanup",
-    "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-    "OPENTASKPAGE": "Go to task page"
-  },
-  "TRIGGER": {
-    "INTERVALTRIGGER": "Interval trigger",
-    "DAILYTRIGGER": "Dagelijkse trigger",
-    "STARTUPTRIGGER": "Opstart trigger",
-    "EVERY": "om de {{interval}}",
-    "AT": "om {{time}}",
-    "TRIGGERTYPE": "Trigger type",
-    "SAVETRIGGER": "Trigger opslaan"
+  "JOB": {
+    "LASTRUNNOW": "Last run: just now",
+    "LASTRUN": "Last run",
+    "HOURS": "{{hours}} hour(s)",
+    "MINUTES": "{{minutes}} minute(s)",
+    "SECONDS": "{{seconds}} second(s)",
+    "AND": "and",
+    "AGO": "ago",
+    "FOR": "for",
+    "BUTFAILED": "but failed after",
+    "NORUN": "Not ran yet",
+    "MOMENT_AGO": "a moment",
+    "INFO": {
+      "PINGEMBYSERVERTITLE": "Check Emby connection",
+      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIASYNCTITLE": "Media synchronization",
+      "STARTMEDIASYNC": "Start media sync",
+      "DATABASECLEANUPTITLE": "Database cleanup",
+      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "OPENJOBPAGE": "Go to job page",
+      "CHECKUPDATETITLE": "Check for new updates",
+      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+    }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
@@ -203,11 +207,17 @@
     },
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+    },
+    "EDIT_TRIGGER": {
+      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics"
+    "FETCHING": "Fetching statistics",
+    "UPDATING": "Updating EmbyStat",
+    "UPDATINGSUB": "Refresh page when update is done. (auto refresh not yet working, sorry)"
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
@@ -225,7 +235,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Ga naar Emby",
-    "TASKISRUNNING": "{{task}} taak wordt uitgevoerd"
+    "JOBISRUNNING": "{{job}} job is running",
+    "NOMISSEDPINGS": "Emby server is alive",
+    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
+    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
   },
   "ABOUT": {
     "THANKS": {
