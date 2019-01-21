@@ -5,7 +5,7 @@ branches:
     tag: ''
     increment: Minor
   features?[/-]:
-    tag: useBranchName
+    tag: 'ES'
     increment: Inherit
   hotfix(es)?[/-]:
     tag: beta
@@ -16,5 +16,6 @@ branches:
   dev(elop)?(ment)?$:
     tag: dev
     increment: Patch
+    mode: ContinuousDeployment
 ignore:
   sha: []
