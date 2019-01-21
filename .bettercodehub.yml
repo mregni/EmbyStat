@@ -13,6 +13,7 @@ exclude:
 - /EmbyStat.Common/Converters/.*
 - /EmbyStat.Controllers/ViewModels/.*   
 - /EmbyStat.DI/DIExtentions.cs
+- /EmbyStat.Repositories/ApplicationDbContext.cs
 - /EmbyStat.Repositories/DatabaseInitializer.cs
 - /EmbyStat.Repositories/Migrations/.*
 - /EmbyStat.Web/ClientApp/.*
