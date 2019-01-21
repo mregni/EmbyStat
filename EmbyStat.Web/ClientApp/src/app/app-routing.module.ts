@@ -15,12 +15,15 @@ import { SyncGuard } from './shared/guards/sync.guard';
 
 const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
   { path: 'configuration', component: ConfigurationOverviewComponent },
+  { path: 'configuration/:tab', component: ConfigurationOverviewComponent },
   { path: 'plugin', component: PluginOverviewComponent },
   { path: 'server', component: ServerOverviewComponent },
   { path: 'wizard', component: WizardOverviewComponent },
   { path: 'jobs', component: JobsOverviewComponent },
-  { path: 'movie', component: MovieOverviewComponent, canActivate: [SyncGuard] },
-  { path: 'show', component: ShowOverviewComponent, canActivate: [SyncGuard] },
+  { path: 'movies', component: MovieOverviewComponent, canActivate: [SyncGuard] },
+  { path: 'movies/:tab', component: MovieOverviewComponent, canActivate: [SyncGuard] },
+  { path: 'shows', component: ShowOverviewComponent, canActivate: [SyncGuard] },
+  { path: 'shows/:tab', component: ShowOverviewComponent, canActivate: [SyncGuard] },
   { path: 'logs', component: LogsOverviewComponent },
   { path: 'about', component: AboutOverviewComponent },
   { path: '**', redirectTo: '' }];

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 
 import { NoTypeFoundDialog } from '../../shared/dialogs/no-type-found/no-type-found.component';
 import { ShowService } from '../service/show.service';
@@ -16,6 +17,9 @@ import { ShowChartsService } from '../service/show-charts.service';
 })
 export class ShowOverviewComponent implements OnInit, OnDestroy {
   private isShowTypePresentSub: Subscription;
+  private paramSub: Subscription;
+
+  selected = 0;
   collections$: Observable<Collection[]>;
   selectedCollections: string[];
 
@@ -25,7 +29,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private showService: ShowService,
     private showChartsService: ShowChartsService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private readonly activatedRoute: ActivatedRoute) {
     this.collections$ = this.showService.getCollections();
 
     this.isShowTypePresentSub = this.showService.checkIfTypeIsPresent().subscribe((typePresent: boolean) => {
@@ -36,6 +41,20 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
             width: '550px',
             data: 'SHOWS'
           });
+      }
+    });
+
+    this.paramSub = this.activatedRoute.params.subscribe(params => {
+      const tab = params['tab'];
+      switch (tab) {
+        case "charts":
+          this.selected = 1;
+          break;
+        case "collection":
+          this.selected = 2;
+          break;
+        default:
+          this.selected = 0;
       }
     });
   }
@@ -57,6 +76,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.isShowTypePresentSub !== undefined) {
       this.isShowTypePresentSub.unsubscribe();
+    }
+
+    if (this.paramSub !== undefined) {
+      this.paramSub.unsubscribe();
     }
   }
 }

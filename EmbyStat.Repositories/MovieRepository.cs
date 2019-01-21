@@ -16,29 +16,8 @@ namespace EmbyStat.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var peopleToDelete = new List<string>();
-                foreach (var person in movie.ExtraPersons)
-                {
-                    var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
-                    if (temp == null)
-                    {
-                        Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
-                        peopleToDelete.Add(person.PersonId);
-                    }
-                }
-                peopleToDelete.ForEach(x => movie.ExtraPersons.Remove(movie.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
-
-                var genresToDelete = new List<string>();
-                foreach (var genre in movie.MediaGenres)
-                {
-                    var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
-                    if (temp == null)
-                    {
-                        Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
-                        genresToDelete.Add(genre.GenreId);
-                    }
-                }
-                genresToDelete.ForEach(x => movie.MediaGenres.Remove(movie.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
+                RemovePeopleWithoutLink(context, movie);
+                RemoveGenreWithoutLink(context, movie);
 
                 var dbMovie = context.Movies.Include(x => x.Collections).SingleOrDefault(x => x.Id == movie.Id);
                 if (dbMovie == null)
@@ -56,6 +35,36 @@ namespace EmbyStat.Repositories
                     context.SaveChanges();
                 }
             }
+        }
+
+        private void RemovePeopleWithoutLink(ApplicationDbContext context, Movie movie)
+        {
+            var peopleToDelete = new List<string>();
+            foreach (var person in movie.ExtraPersons)
+            {
+                var temp = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
+                if (temp == null)
+                {
+                    Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
+                    peopleToDelete.Add(person.PersonId);
+                }
+            }
+            peopleToDelete.ForEach(x => movie.ExtraPersons.Remove(movie.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
+        }
+
+        public void RemoveGenreWithoutLink(ApplicationDbContext context, Movie movie)
+        {
+            var genresToDelete = new List<string>();
+            foreach (var genre in movie.MediaGenres)
+            {
+                var temp = context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
+                if (temp == null)
+                {
+                    Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
+                    genresToDelete.Add(genre.GenreId);
+                }
+            }
+            genresToDelete.ForEach(x => movie.MediaGenres.Remove(movie.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
         }
 
         public int GetTotalPersonByType(List<string> collections, PersonType type)

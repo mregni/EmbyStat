@@ -120,7 +120,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\wizard\services\wizard-state.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show-charts.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />

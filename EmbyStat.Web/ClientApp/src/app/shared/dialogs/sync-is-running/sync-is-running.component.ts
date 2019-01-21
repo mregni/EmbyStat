@@ -23,7 +23,7 @@ export class SyncIsRunningDialog {
   }
 
   goToJobs(): void {
-    this.router.navigate(['/job']);
+    this.router.navigate(['/jobs']);
     this.dialogRef.close();
   }
 }

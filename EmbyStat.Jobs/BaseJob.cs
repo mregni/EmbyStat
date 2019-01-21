@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper.Mappers;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
@@ -42,10 +43,14 @@ namespace EmbyStat.Jobs
                 await RunJob();
                 PostJobExecution();
             }
+            catch (WizardNotFinishedException e)
+            {
+                LogWarning(e.Message);
+            }
             catch (Exception e)
             {
                 Log.Error(e, "Error while running job");
-                FailExecution();
+                FailExecution(string.Empty);
                 throw;
             }
         }
@@ -79,10 +84,14 @@ namespace EmbyStat.Jobs
                 : $"Job finished after {Math.Ceiling(runTime)} minutes.");
         }
 
-        private void FailExecution()
+        private void FailExecution(string message)
         {
             State = JobState.Failed;
             _jobRepository.EndJob(Id, DateTime.UtcNow, State);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                LogError(message);
+            }
             SendLogProgressToFront(100);
         }
         
