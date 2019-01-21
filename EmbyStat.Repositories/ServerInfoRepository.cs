@@ -7,14 +7,14 @@ namespace EmbyStat.Repositories
 {
     public class ServerInfoRepository : IServerInfoRepository
     {
-	    public ServerInfo GetSingle()
+	    public ServerInfo GetSingleOrDefault()
 	    {
 		    using (var context = new ApplicationDbContext())
 		    {
-			    return context.ServerInfo.Single();
+			    return context.ServerInfo.SingleOrDefault();
 		    }
 	    }
-
+        
 	    public void UpdateOrAdd(ServerInfo entity)
 	    {
 		    using (var context = new ApplicationDbContext())

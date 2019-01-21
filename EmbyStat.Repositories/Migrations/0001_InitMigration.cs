@@ -114,11 +114,11 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Version").AsString().NotNullable()
                 .WithColumn("ConfigurationFileName").AsString().Nullable()
                 .WithColumn("Description").AsString().Nullable()
-                .WithColumn("ImageUrl").AsString().Nullable();
+                .WithColumn("ImageTag").AsString().Nullable();
 
             Create.Table(Constants.Tables.ServerInfo)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_ServerInfo")
-                .WithColumn("SystemUpdateLevel").AsString().NotNullable()
+                .WithColumn("SystemUpdateLevel").AsInt16().NotNullable()
                 .WithColumn("OperatingSystemDisplayName").AsString().NotNullable()
                 .WithColumn("HasPendingRestart").AsBoolean().NotNullable()
                 .WithColumn("IsShuttingDown").AsBoolean().NotNullable()
@@ -138,8 +138,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("HttpsPortNumber").AsBoolean().NotNullable()
                 .WithColumn("HasUpdateAvailable").AsBoolean().NotNullable()
                 .WithColumn("SupportsAutoRunAtStartup").AsBoolean().NotNullable()
-                .WithColumn("EncoderLocationType").AsString().NotNullable()
-                .WithColumn("SystemArchitecture").AsString().NotNullable()
+                .WithColumn("HardwareAccelerationRequiresPremiere").AsBoolean().NotNullable()
                 .WithColumn("LocalAddress").AsString().NotNullable()
                 .WithColumn("WanAddress").AsString().NotNullable()
                 .WithColumn("ServerName").AsString().NotNullable()

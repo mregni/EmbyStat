@@ -4,7 +4,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IServerInfoRepository
     {
-	    ServerInfo GetSingle();
+	    ServerInfo GetSingleOrDefault();
 	    void UpdateOrAdd(ServerInfo entity);
     }
 }
