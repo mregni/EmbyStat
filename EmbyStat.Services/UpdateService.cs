@@ -171,6 +171,7 @@ namespace EmbyStat.Services
             sb.Append($"--applicationPath \"{currentLocation}\"");
             sb.Append($" --processId {Process.GetCurrentProcess().Id}");
             sb.Append($" --processName {_appSettings.ProcessName}");
+            sb.Append($" --port {_appSettings.Port}");
 
             return sb.ToString();
         }

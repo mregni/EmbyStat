@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using Serilog;
 using Updater.Models;
 
@@ -94,7 +96,7 @@ namespace Updater
                 UseShellExecute = false,
                 FileName = Path.Combine(_options.ApplicationPath, processName),
                 WorkingDirectory = _options.ApplicationPath,
-                Arguments = ""
+                Arguments = GetArgs()
             };
 
             using (var proc = new Process { StartInfo = start })
@@ -107,6 +109,14 @@ namespace Updater
             Log.Debug($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
 
             Environment.Exit(0);
+        }
+
+        private string GetArgs()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"--port {_options.Port}");
+
+            return sb.ToString();
         }
     }
 }
