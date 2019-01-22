@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using CommandLine;
 using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Repositories.Migrations;
 using FluentMigrator.Runner;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
@@ -20,15 +23,22 @@ namespace EmbyStat.Web
 		{
             try
 			{
-				CreateLogger();
+                CreateLogger();
 
-				Log.Information($"{Constants.LogPrefix.System}\tBooting up server");
-				var host = BuildWebHost(args);
+                var result = Parser.Default.ParseArguments<StartupOptions>(args);
+                StartupOptions options = null;
+                result.WithParsed(opts => options = opts);
+                
+                var listeningUrl = $"http://localhost:{options.Port};http://*:{options.Port}";
+                
+                Log.Information($"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
+                var configArgs = new Dictionary<string, string> {{"Port", options.Port.ToString()}};
+                var config = BuildConfigurationRoot(configArgs);
+                var host = BuildWebHost(args, listeningUrl, config);
 
-				SetupDatbase(host);
-
-				host.Run();
-			}
+				SetupDatabase(host);
+				host.Run(); 
+            }
 			catch (Exception ex)
 			{
 				Log.Fatal(ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
@@ -40,16 +50,25 @@ namespace EmbyStat.Web
 			}
 		}
 
-		public static IWebHost BuildWebHost(string[] args) =>
+		public static IWebHost BuildWebHost(string[] args, string listeningUrl, IConfigurationRoot config) =>
 			WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseIISIntegration()
+                .UseUrls(listeningUrl)
+                .UseConfiguration(config)
                 .UseStartup<Startup>()
 				.UseSerilog()
 				.Build();
 
+        public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
+            new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddInMemoryCollection(configArgs)
+                .AddEnvironmentVariables()
+                .Build();
 
-		public static void CreateLogger()
+        public static void CreateLogger()
 		{
 			if (!Directory.Exists("Logs"))
 			{
@@ -69,7 +88,7 @@ namespace EmbyStat.Web
 				.CreateLogger();
 		}
 
-		public static void SetupDatbase(IWebHost host)
+		public static void SetupDatabase(IWebHost host)
 		{
 			using (var scope = host.Services.CreateScope())
 			{

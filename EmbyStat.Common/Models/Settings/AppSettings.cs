@@ -7,6 +7,7 @@
         public Updater Updater { get; set; }
         public Dirs Dirs { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
+        public int Port { get; set; }
     }
 
     public class Updater
