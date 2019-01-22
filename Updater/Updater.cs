@@ -21,7 +21,7 @@ namespace Updater
 
         public void Start()
         {
-            Console.WriteLine("Start killing EmbyStat now");
+            Log.Information("Start killing EmbyStat now");
             var state = KillProcess();
             if (!state)
             {
@@ -38,17 +38,16 @@ namespace Updater
             var process = Process.GetProcesses().FirstOrDefault(p => p.Id == _options.ProcessId);
             if (process == null)
             {
-                Console.WriteLine($"Cannot find process with name: {_options.ProcessName}");
-                return false;
+                Log.Information($"Cannot find process with name: {_options.ProcessName}");
+                return true;
             }
 
             if (process.Id > 0)
             {
-                Console.WriteLine($"{process.Id}: Killing process");
+                Log.Information($"{process.Id}: Killing process");
                 process.Kill();
                 process.WaitForExit();
-                Console.WriteLine($"{process.Id}: Process terminated successfully");
-
+                Log.Information($"{process.Id}: Process terminated successfully");
 
                 return true;
             }
