@@ -82,7 +82,7 @@ namespace EmbyStat.Clients.Github
                 return null;
             }
 
-            var asset = (obj.assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, versionString));
+            var asset = (obj.assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, obj.tag_name));
             if (asset == null)
             {
                 return null;

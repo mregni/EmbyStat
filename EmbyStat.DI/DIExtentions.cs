@@ -45,7 +45,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<ILogService, LogService>();
             services.TryAddTransient<ILanguageService, LanguageService>();
             services.TryAddTransient<IAboutService, AboutService>();
-            services.TryAddTransient<IWebSocketService, WebSocketService>();
+            services.TryAddSingleton<IWebSocketService, WebSocketService>();
             services.TryAddTransient<IUpdateService, UpdateService>();
             services.TryAddTransient<IJobService, JobService>();
         }
