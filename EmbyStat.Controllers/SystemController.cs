@@ -3,18 +3,19 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.ViewModels.Update;
 using EmbyStat.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class UpdateController : Controller
+    public class SystemController : Controller
     {
         private readonly IUpdateService _updateService;
         private readonly IMapper _mapper;
 
-        public UpdateController(IUpdateService updateService, IMapper mapper)
+        public SystemController(IUpdateService updateService, IMapper mapper)
         {
             _updateService = updateService;
             _mapper = mapper;

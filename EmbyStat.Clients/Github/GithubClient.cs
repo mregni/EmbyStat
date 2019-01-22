@@ -70,8 +70,7 @@ namespace EmbyStat.Clients.Github
         private UpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
         {
             var versionString = CleanUpVersionString(obj.tag_name);
-            versionString = versionString.Replace(_appSettings.Updater.BetaString, "").Replace(_appSettings.Updater.DevString, "");
-
+            
             if (!Version.TryParse(versionString, out var version))
             {
                 return null;
@@ -82,7 +81,7 @@ namespace EmbyStat.Clients.Github
                 return null;
             }
 
-            var asset = (obj.assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, versionString));
+            var asset = (obj.assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, obj.tag_name));
             if (asset == null)
             {
                 return null;

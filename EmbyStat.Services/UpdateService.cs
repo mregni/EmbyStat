@@ -18,6 +18,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 
@@ -28,14 +29,17 @@ namespace EmbyStat.Services
         private readonly IGithubClient _githubClient;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IConfigurationRepository _configurationRepository;
+        private readonly IApplicationLifetime _applicationLifetime;
         private readonly AppSettings _appSettings;
 
-        public UpdateService(IGithubClient githubClient, IOptions<AppSettings> appSettings, IJsonSerializer jsonSerializer, IConfigurationRepository configurationRepository)
+        public UpdateService(IGithubClient githubClient, IOptions<AppSettings> appSettings, 
+            IJsonSerializer jsonSerializer, IConfigurationRepository configurationRepository, IApplicationLifetime appLifetime)
         {
             _githubClient = githubClient;
             _jsonSerializer = jsonSerializer;
             _appSettings = appSettings.Value;
             _configurationRepository = configurationRepository;
+            _applicationLifetime = appLifetime;
         }
 
         public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
@@ -158,6 +162,7 @@ namespace EmbyStat.Services
                     using (var proc = new Process { StartInfo = start })
                     {
                         proc.Start();
+                        _applicationLifetime.StopApplication();
                     }
                 }
             });
