@@ -6,7 +6,7 @@ import { UpdateResult } from '../models/update-result';
 
 @Injectable()
 export class UpdateService {
-  private readonly baseUrl: string = '/api/update/';
+  private readonly baseUrl: string = '/api/system/';
   private checkForUpdateUrl: string = this.baseUrl + 'checkforupdate';
   private startUpdateUrl: string = this.baseUrl + 'startupdate';
 
