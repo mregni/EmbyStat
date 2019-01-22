@@ -39,13 +39,6 @@ namespace EmbyStat.Web
         {
             HostingEnvironment = env;
             Configuration = configuration;
-
-            Configuration = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
         }
 
         public void ConfigureServices(IServiceCollection services)

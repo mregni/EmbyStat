@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using CommandLine;
 using EmbyStat.Common;
@@ -27,16 +28,16 @@ namespace EmbyStat.Web
                 var result = Parser.Default.ParseArguments<StartupOptions>(args);
                 StartupOptions options = null;
                 result.WithParsed(opts => options = opts);
+                
                 var listeningUrl = $"http://localhost:{options.Port};http://*:{options.Port}";
-
+                
                 Log.Information($"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
-
-                var config = BuildConfigurationRoot(args);
+                var configArgs = new Dictionary<string, string> {{"Port", options.Port.ToString()}};
+                var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
 
-				SetupDatbase(host);
+				SetupDatabase(host);
 				host.Run(); 
-
             }
 			catch (Exception ex)
 			{
@@ -59,12 +60,12 @@ namespace EmbyStat.Web
 				.UseSerilog()
 				.Build();
 
-        public static IConfigurationRoot BuildConfigurationRoot(string[] args) =>
+        public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
+                .AddInMemoryCollection(configArgs)
                 .AddEnvironmentVariables()
-                .AddCommandLine(args)
                 .Build();
 
         public static void CreateLogger()
@@ -87,7 +88,7 @@ namespace EmbyStat.Web
 				.CreateLogger();
 		}
 
-		public static void SetupDatbase(IWebHost host)
+		public static void SetupDatabase(IWebHost host)
 		{
 			using (var scope = host.Services.CreateScope())
 			{
