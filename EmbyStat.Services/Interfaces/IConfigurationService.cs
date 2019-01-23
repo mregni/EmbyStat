@@ -6,5 +6,6 @@ namespace EmbyStat.Services.Interfaces
     {
 	    void SaveServerSettings(Configuration configuration);
         Configuration GetServerSettings();
+        void ResetConfiguration();
     }
 }

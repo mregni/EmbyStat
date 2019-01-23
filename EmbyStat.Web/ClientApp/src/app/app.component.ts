@@ -9,6 +9,8 @@ import { JobSocketService } from './shared/services/job-socket.service';
 import { SideBarService } from './shared/services/side-bar.service';
 import { Job } from './jobs/models/job';
 import { JobLog } from './jobs/models/job-log';
+import { UpdateOverlayService } from './shared/services/update-overlay.service';
+import { Configuration } from './configuration/models/configuration';
 
 const SMALL_WIDTH_BREAKPOINT = 768;
 
@@ -21,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
   private configChangedSub: Subscription;
   private configLoadSub: Subscription;
+  configuration: Configuration;
   openMenu = true;
 
   constructor(
@@ -29,7 +32,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private router: Router,
     private jobSocketService: JobSocketService,
-    private sideBarService: SideBarService) {
+    private sideBarService: SideBarService,
+    private updateOverlayService: UpdateOverlayService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en-US');
@@ -59,15 +63,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
+    this.configLoadSub = this.configurationFacade.getConfiguration().subscribe();
+
+    this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
+      this.configuration = config;
+      console.log(config.updateInProgress);
+      this.translate.use(config.language);
+      this.updateOverlayService.show(config.updateInProgress);
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
       }
-    });
-
-    this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
-      this.translate.use(config.language);
-      console.log("lang changed");
     });
   }
 
