@@ -34,11 +34,13 @@ namespace EmbyStat.Jobs.Jobs.Updater
             var settings = _configurationRepository.GetConfiguration();
             LogInformation("Contacting Github now to see if new version is available.");
             var update = await _updateService.CheckForUpdate(settings, new CancellationToken(false));
-            LogProgress(50);
+            LogProgress(20);
             if (update.IsUpdateAvailable && settings.AutoUpdate)
             {
                 LogInformation($"New version found: v{update.AvailableVersion}");
                 LogInformation($"Auto update is enabled so going to update the server now!");
+                Task.WaitAll(_updateService.DownloadZip(update));
+                LogProgress(50);
                 await _updateService.UpdateServer();
             }
             else if (update.IsUpdateAvailable)

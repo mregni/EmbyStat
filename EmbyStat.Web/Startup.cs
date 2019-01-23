@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using AutoMapper;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
@@ -57,7 +58,6 @@ namespace EmbyStat.Web
 
             var settings = Configuration.Get<AppSettings>();
             SetupDirectories(settings);
-            RemoveVersionFiles();
 
             services
                 .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
@@ -89,8 +89,8 @@ namespace EmbyStat.Web
         {
             ApplicationBuilder = app;
 
-            lifetime.ApplicationStarted.Register(ResetAllJobs);
-            lifetime.ApplicationStopped.Register(ResetAllJobs);
+            lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
+            lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
 
             if (env.IsDevelopment())
             {
@@ -175,6 +175,19 @@ namespace EmbyStat.Web
             }
         }
 
+        private void PerformPostStartupFunctions()
+        {
+            RemoveVersionFiles();
+            ResetAllJobs();
+            StartSocketConnectionToEmby();
+        }
+
+        private void PerformPreShutdownFunctions()
+        {
+            ResetAllJobs();
+            StopSocketConnectionToEmby();
+        }
+
         private void RemoveVersionFiles()
         {
             foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
@@ -187,6 +200,18 @@ namespace EmbyStat.Web
         {
             var jobService = ApplicationBuilder.ApplicationServices.GetService<IJobService>();
             jobService.ResetAllJobs();
+        }
+
+        private void StartSocketConnectionToEmby()
+        {
+            var socketService = ApplicationBuilder.ApplicationServices.GetService<IWebSocketService>();
+            socketService.StartAsync(new CancellationToken(false));
+        }
+
+        private void StopSocketConnectionToEmby()
+        {
+            var socketService = ApplicationBuilder.ApplicationServices.GetService<IWebSocketService>();
+            socketService.StopAsync(new CancellationToken(false));
         }
     }
 }

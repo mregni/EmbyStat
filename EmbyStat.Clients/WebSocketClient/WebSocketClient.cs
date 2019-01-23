@@ -57,8 +57,9 @@ namespace EmbyStat.Clients.WebSocketClient
                     }
                     else
                     {
-                        var message = JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(buffer));
-                        var data = message["Data"]; //TODO map event on MessageType (switch?)
+                        //var message = JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(buffer));
+                        //var data = message["Data"]; //TODO map event on MessageType (switch?)
+                        Log.Information(Encoding.UTF8.GetString(buffer));
                     }
                 }
                 catch (Exception ex)
