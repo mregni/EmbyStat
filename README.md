@@ -6,7 +6,6 @@
 ![Github All Releases](https://img.shields.io/github/downloads/mregni/embystat/total.svg?style=flat-square)
 [![Docker Pulls](https://img.shields.io/docker/pulls/uping/embystat.svg?style=flat-square)](https://hub.docker.com/r/uping/embystat/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mregni/embystat.svg?style=flat-square)
-![Libraries.io for GitHub](https://img.shields.io/librariesio/github/mregni/embystat.svg?style=flat-square)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg?style=flat-square)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg?style=flat-square)](https://crowdin.com/project/embystat)
 
