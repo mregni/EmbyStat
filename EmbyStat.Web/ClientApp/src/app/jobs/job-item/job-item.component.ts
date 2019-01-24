@@ -24,8 +24,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
   private jobSub: Subscription;
 
   job: Job;
-
-  private startingJob = false;
+  startingJob = false;
 
   constructor(
     public dialog: MatDialog,
@@ -34,6 +33,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     this.jobSocketSub = jobSocketService.infoSubject.subscribe((job: Job) => {
       if (job != null && job.id === this.id) {
         this.job = job;
+        this.startingJob = false;
       }
     });
   }
@@ -73,6 +73,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
   }
 
   fireJob() {
+    this.startingJob = true;
     this.fireAction.emit(true);
   }
 
