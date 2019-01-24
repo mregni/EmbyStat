@@ -217,7 +217,7 @@
   "LOADER": {
     "FETCHING": "Obteniendo estadísticas",
     "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Refresh page when update is done. (auto refresh not yet working, sorry)"
+    "UPDATINGSUB": "Page will refresh when the update is finished."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixto / Otro",
