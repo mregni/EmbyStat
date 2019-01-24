@@ -39,7 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en-US');
-    translate.addLangs(['en-US', 'nl-NL']);
+    translate.addLangs(['en-US', 'nl-NL', 'de-DE', 'da-DK', 'el-GR', 'es-ES',
+      'fi-FI', 'fr-FR', 'hu-HU', 'it-IT', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'sv-SE']);
 
     const hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('/jobs-socket')
