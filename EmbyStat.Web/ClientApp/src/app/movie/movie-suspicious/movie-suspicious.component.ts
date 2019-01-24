@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
 import { Configuration } from '../../configuration/models/configuration';
+import { ConfigHelper } from '../../shared/helpers/configHelper';
 
 import { MovieService } from '../service/movie.service';
 
@@ -58,7 +59,8 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
   }
 
   openMovie(id: string): void {
-    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
+    const embyUrl = ConfigHelper.getFullEmbyAddress(this.configuration);
+    window.open(`${embyUrl}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
   }
 
   ngOnDestroy(): void {
