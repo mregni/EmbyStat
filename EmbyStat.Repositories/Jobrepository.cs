@@ -85,6 +85,7 @@ namespace EmbyStat.Repositories
                     if (x.State == JobState.Running)
                     {
                         x.State = JobState.Failed;
+                        x.EndTimeUtc = DateTime.Now;
                     }
                 });
 
