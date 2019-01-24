@@ -68,7 +68,6 @@ export class ConfigurationGeneralComponent implements OnInit, OnDestroy {
   public saveTvdbForm() {
     const config = { ...this.configuration };
     config.tvdbApiKey = this.tvdbForm.get('tvdbApiKey').value;
-    console.log(config.tvdbApiKey);
     this.configurationFacade.updateConfiguration(config);
     this.toaster.pushSuccess('CONFIGURATION.SAVED.GENERAL');
   }

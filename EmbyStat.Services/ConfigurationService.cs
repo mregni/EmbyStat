@@ -36,10 +36,10 @@ namespace EmbyStat.Services
             return config;
         }
 
-        public void ResetConfiguration()
+        public void SetUpdateInProgressSetting(bool value)
         {
             var config = _configurationRepository.GetConfiguration();
-            config.UpdateInProgress = false;
+            config.UpdateInProgress = value;
             _configurationRepository.Update(config);
         }
 

@@ -10,6 +10,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Joins;
 using EmbyStat.Jobs.Jobs.Interfaces;
@@ -92,6 +93,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
+        }
+
+        public override void OnFail()
+        {
+            
         }
 
         private void CleanUpDatabase()

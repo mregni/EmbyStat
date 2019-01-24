@@ -58,12 +58,9 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  public startUpdate() {
-    this.setUpdateState(true);
+  startUpdate() {
     this.systemService.checkAndStartUpdate().subscribe((newVersion: boolean) => {
-      if (!newVersion) {
-        this.setUpdateState(false);
-      }
+      this.setUpdateState(newVersion);
     });
   }
 

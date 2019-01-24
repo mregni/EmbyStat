@@ -1,16 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using Microsoft.AspNetCore.SignalR;
 
-namespace EmbyStat.Common.Hubs
+namespace EmbyStat.Common.Hubs.Job
 {
     public class JobHubHelper : IJobHubHelper
     {
         private readonly IHubContext<JobHub> _jobHubContext;
-        private string JobReportLogMethod => "job-report-log";
-        private string JobReportProgressMethod => "job-report-progress";
-        private string EmbyConnectionStatusMethod => "emby-connection-status";
+        private static string JobReportLogMethod => "job-report-log";
+        private static string JobReportProgressMethod => "job-report-progress";
+        private static string EmbyConnectionStatusMethod => "emby-connection-state";
+        private static string UpdateIsRunningMethod => "update-state";
 
         public JobHubHelper(IHubContext<JobHub> jobHubContext)
         {
@@ -33,6 +35,11 @@ namespace EmbyStat.Common.Hubs
         public async Task BroadcastEmbyConnectionStatus(int missedPings)
         {
             await _jobHubContext.Clients.All.SendAsync(EmbyConnectionStatusMethod, missedPings);
+        }
+
+        public async Task BroadcastUpdateState(bool isRunning)
+        {
+            await _jobHubContext.Clients.All.SendAsync(UpdateIsRunningMethod, isRunning);
         }
     }
 }

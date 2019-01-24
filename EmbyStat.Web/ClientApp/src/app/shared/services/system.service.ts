@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { UpdateResult } from '../models/update-result';
-import { Ping } from '../models/ping';
 
 @Injectable()
 export class SystemService {
