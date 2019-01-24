@@ -28,7 +28,7 @@ import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 import { ToastService } from './services/toast.service';
 import { JobSocketService } from './services/job-socket.service';
 import { EmbyService } from './services/emby.service';
-import { UpdateService } from './services/update.service';
+import { SystemService } from './services/system.service';
 import { UpdateOverlayService } from './services/update-overlay.service';
 import { SideBarService } from './services/side-bar.service';
 
@@ -95,7 +95,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     ToastService,
     EmbyService,
     JobSocketService,
-    UpdateService,
+    SystemService,
     UpdateOverlayService,
     SideBarService
   ],

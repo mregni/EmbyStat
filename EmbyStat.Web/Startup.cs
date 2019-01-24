@@ -113,7 +113,6 @@ namespace EmbyStat.Web
                 app.UseHangfireDashboard("/hangfire",
                     new DashboardOptions
                     {
-                        
                         Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
                     });
             }
@@ -180,6 +179,7 @@ namespace EmbyStat.Web
             RemoveVersionFiles();
             ResetAllJobs();
             StartSocketConnectionToEmby();
+            ResetConfiguration();
         }
 
         private void PerformPreShutdownFunctions()
@@ -200,6 +200,12 @@ namespace EmbyStat.Web
         {
             var jobService = ApplicationBuilder.ApplicationServices.GetService<IJobService>();
             jobService.ResetAllJobs();
+        }
+
+        private void ResetConfiguration()
+        {
+            var configurationService = ApplicationBuilder.ApplicationServices.GetService<IConfigurationService>();
+            configurationService.ResetConfiguration();
         }
 
         private void StartSocketConnectionToEmby()

@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs/Subscription';
 import * as signalR from '@aspnet/signalr';
 
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
+import { UpdateOverlayService } from './shared/services/update-overlay.service';
 import { JobSocketService } from './shared/services/job-socket.service';
+import { SystemService } from './shared/services/system.service';
 import { SideBarService } from './shared/services/side-bar.service';
 import { Job } from './jobs/models/job';
 import { JobLog } from './jobs/models/job-log';
-import { UpdateOverlayService } from './shared/services/update-overlay.service';
 import { Configuration } from './configuration/models/configuration';
 
 const SMALL_WIDTH_BREAKPOINT = 768;
@@ -26,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   configuration: Configuration;
   openMenu = true;
 
+  private backendIsOffline = false;
+
   constructor(
     private zone: NgZone,
     private configurationFacade: ConfigurationFacade,
@@ -33,7 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private jobSocketService: JobSocketService,
     private sideBarService: SideBarService,
-    private updateOverlayService: UpdateOverlayService) {
+    private updateOverlayService: UpdateOverlayService,
+    private systemService: SystemService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en-US');
@@ -67,11 +71,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
       this.configuration = config;
-      console.log(config.updateInProgress);
       this.translate.use(config.language);
       this.updateOverlayService.show(config.updateInProgress);
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
+      }
+
+      if (config.updateInProgress) {
+        setInterval(() => {
+          this.systemService.ping().subscribe((ping: string) => {
+            if (ping === 'pong') {
+              if (!this.backendIsOffline) {
+                window.location.reload(true);
+              }
+            } else {
+              this.backendIsOffline = false;
+            }
+          });
+        }, 5000);
       }
     });
   }

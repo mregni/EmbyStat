@@ -7,7 +7,7 @@ import { ConfigurationFacade } from '../state/facade.configuration';
 import { Configuration } from '../models/configuration';
 import { UpdateResult } from '../../shared/models/update-result';
 import { ToastService } from '../../shared/services/toast.service';
-import { UpdateService } from '../../shared/services/update.service';
+import { SystemService } from '../../shared/services/system.service';
 
 @Component({
   selector: 'app-configuration-updates',
@@ -29,10 +29,10 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
   constructor(
     private configurationFacade: ConfigurationFacade,
     private toaster: ToastService,
-    private updateService: UpdateService) {
+    private systemService: SystemService) {
     this.configuration$ = this.configurationFacade.getConfiguration();
 
-    this.updateResult$ = this.updateService.checkForUpdate();
+    this.updateResult$ = this.systemService.checkForUpdate();
 
     this.form = new FormGroup({
       autoUpdate: this.autoUpdateControl,
@@ -60,7 +60,7 @@ export class ConfigurationUpdatesComponent implements OnInit, OnDestroy {
 
   public startUpdate() {
     this.setUpdateState(true);
-    this.updateService.checkAndStartUpdate().subscribe((newVersion: boolean) => {
+    this.systemService.checkAndStartUpdate().subscribe((newVersion: boolean) => {
       if (!newVersion) {
         this.setUpdateState(false);
       }
