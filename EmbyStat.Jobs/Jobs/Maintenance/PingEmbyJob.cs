@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -46,6 +47,11 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
             var status = _embyStatusRepository.GetEmbyStatus();
             await _hubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
+        }
+
+        public override void OnFail()
+        {
+            
         }
 
         public override void Dispose()

@@ -16,6 +16,7 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <Version>0.0.0.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <AssemblyName>EmbyStat</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

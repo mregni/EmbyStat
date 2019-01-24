@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Controllers.ViewModels.Task;
 using EmbyStat.Jobs;

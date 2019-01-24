@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -42,6 +43,11 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
             await _genreRepository.CleanupGenres();
             LogInformation("Removed unused genres.");
+        }
+
+        public override void OnFail()
+        {
+            
         }
 
         public override void Dispose()

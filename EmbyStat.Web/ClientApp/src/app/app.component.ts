@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs/Subscription';
 import * as signalR from '@aspnet/signalr';
 
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
-import { UpdateOverlayService } from './shared/services/update-overlay.service';
 import { JobSocketService } from './shared/services/job-socket.service';
 import { UpdateService } from './shared/services/update.service';
 import { SideBarService } from './shared/services/side-bar.service';
@@ -34,7 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private jobSocketService: JobSocketService,
     private sideBarService: SideBarService,
-    private updateOverlayService: UpdateOverlayService,
     private updateService: UpdateService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
@@ -56,29 +54,37 @@ export class AppComponent implements OnInit, OnDestroy {
       jobSocketService.updateJobLogs(data.value, data.type);
     });
 
-    hubConnection.on('emby-connection-status', (data: number) => {
+    hubConnection.on('emby-connection-state', (data: number) => {
       jobSocketService.updateMissedPings(data);
+    });
+
+    hubConnection.on('update-state', (state: boolean) => {
+      console.log("update-state triggered");
+      if (this.configuration !== undefined) {
+        console.log("config updated");
+        const copy = { ...this.configuration };
+        copy.updateInProgress = state;
+        this.configurationFacade.updateConfiguration(copy);
+      }
     });
 
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
       this.openMenu = state;
     });
-  }
-
-  ngOnInit(): void {
+    this.configuration = undefined;
     this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
-      this.configuration = config;
-      this.translate.use(config.language);
-
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
       }
 
-      this.updateOverlayService.show(config.updateInProgress);
-      if (config.updateInProgress) {
-        this.updateService.startPing();
-      }
+      this.configuration = config;
+      this.translate.use(config.language);
+      this.updateService.setUiToUpdateState(config.updateInProgress);
     });
+  }
+
+  ngOnInit(): void {
+    
   }
 
   ngOnDestroy() {

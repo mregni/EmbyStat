@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -45,6 +46,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
             LogProgress(95);
 
             _embyService.RemoveAllAndInsertDriveRange(drives);
+        }
+
+        public override void OnFail()
+        {
+            
         }
 
         public override void Dispose()

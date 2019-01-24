@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper.Mappers;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
@@ -33,6 +34,7 @@ namespace EmbyStat.Jobs
         public abstract string JobPrefix { get; }
         public abstract string Title { get; }
         public abstract Task RunJob();
+        public abstract void OnFail();
         public abstract void Dispose();
 
         public async Task Execute()
@@ -50,6 +52,7 @@ namespace EmbyStat.Jobs
             catch (Exception e)
             {
                 Log.Error(e, "Error while running job");
+                OnFail();
                 FailExecution(string.Empty);
                 throw;
             }

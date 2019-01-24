@@ -7,6 +7,7 @@ using System.Threading;
 using AutoMapper;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
@@ -205,7 +206,7 @@ namespace EmbyStat.Web
         private void ResetConfiguration()
         {
             var configurationService = ApplicationBuilder.ApplicationServices.GetService<IConfigurationService>();
-            configurationService.ResetConfiguration();
+            configurationService.SetUpdateInProgressSetting(false);
         }
 
         private void StartSocketConnectionToEmby()
