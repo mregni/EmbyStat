@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { UpdateResult } from '../models/update-result';
+import { Ping } from '../models/ping';
 
 @Injectable()
 export class SystemService {
-  private readonly baseUrl: string = '/api/system/';
-  private checkForUpdateUrl: string = this.baseUrl + 'checkforupdate';
-  private startUpdateUrl: string = this.baseUrl + 'startupdate';
-  private pingUrl: string = this.baseUrl + 'ping';
+  private readonly baseUrl = '/api/system/';
+  private checkForUpdateUrl = this.baseUrl + 'checkforupdate';
+  private startUpdateUrl = this.baseUrl + 'startupdate';
+  private pingUrl = this.baseUrl + 'ping';
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +22,11 @@ export class SystemService {
     return this.http.post<boolean>(this.startUpdateUrl, {});
   }
 
-  ping(): Observable<string> {
-    return this.http.get<string>(this.pingUrl);
+  ping(): Observable<void> {
+    const headers = new HttpHeaders({
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache'
+    });
+    return this.http.get<void>(this.pingUrl, { headers: headers});
   }
 }

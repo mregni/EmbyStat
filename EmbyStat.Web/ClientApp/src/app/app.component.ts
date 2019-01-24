@@ -7,7 +7,7 @@ import * as signalR from '@aspnet/signalr';
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
 import { UpdateOverlayService } from './shared/services/update-overlay.service';
 import { JobSocketService } from './shared/services/job-socket.service';
-import { SystemService } from './shared/services/system.service';
+import { UpdateService } from './shared/services/update.service';
 import { SideBarService } from './shared/services/side-bar.service';
 import { Job } from './jobs/models/job';
 import { JobLog } from './jobs/models/job-log';
@@ -22,12 +22,10 @@ const SMALL_WIDTH_BREAKPOINT = 768;
 })
 export class AppComponent implements OnInit, OnDestroy {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
-  private configChangedSub: Subscription;
   private configLoadSub: Subscription;
   configuration: Configuration;
   openMenu = true;
 
-  private backendIsOffline = false;
 
   constructor(
     private zone: NgZone,
@@ -37,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private jobSocketService: JobSocketService,
     private sideBarService: SideBarService,
     private updateOverlayService: UpdateOverlayService,
-    private systemService: SystemService) {
+    private updateService: UpdateService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en-US');
@@ -67,37 +65,22 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configLoadSub = this.configurationFacade.getConfiguration().subscribe();
-
-    this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
+    this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
       this.configuration = config;
       this.translate.use(config.language);
-      this.updateOverlayService.show(config.updateInProgress);
+
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
       }
 
+      this.updateOverlayService.show(config.updateInProgress);
       if (config.updateInProgress) {
-        setInterval(() => {
-          this.systemService.ping().subscribe((ping: string) => {
-            if (ping === 'pong') {
-              if (!this.backendIsOffline) {
-                window.location.reload(true);
-              }
-            } else {
-              this.backendIsOffline = false;
-            }
-          });
-        }, 5000);
+        this.updateService.startPing();
       }
     });
   }
 
   ngOnDestroy() {
-    if (this.configChangedSub !== undefined) {
-      this.configChangedSub.unsubscribe();
-    }
-
     if (this.configLoadSub !== undefined) {
       this.configLoadSub.unsubscribe();
     }

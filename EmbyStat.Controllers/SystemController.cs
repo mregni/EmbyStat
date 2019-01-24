@@ -48,7 +48,7 @@ namespace EmbyStat.Controllers
         [Route("ping")]
         public IActionResult Ping()
         {
-            return Ok("pong");
+            return Ok();
         }
     }
 }

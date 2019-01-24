@@ -83,6 +83,7 @@
     <None Remove="ClientApp\src\app\shared\services\system.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\update-overlay.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\update.service.ts" />
     <None Remove="ClientApp\src\app\show\service\show-charts.service.ts" />
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
@@ -116,6 +117,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\system.service.ts" />
