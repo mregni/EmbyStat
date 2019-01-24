@@ -71,19 +71,20 @@ export class AppComponent implements OnInit, OnDestroy {
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
       this.openMenu = state;
     });
-  }
-
-  ngOnInit(): void {
+    this.configuration = undefined;
     this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
-      this.configuration = config;
-      this.translate.use(config.language);
-
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
       }
 
+      this.configuration = config;
+      this.translate.use(config.language);
       this.updateService.setUiToUpdateState(config.updateInProgress);
     });
+  }
+
+  ngOnInit(): void {
+    
   }
 
   ngOnDestroy() {
