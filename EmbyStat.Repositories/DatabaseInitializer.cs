@@ -31,7 +31,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedConfiguration()
         {
-            Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding configuration");
+            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding configuration");
 
             var configuration = _context.Configuration.ToList();
 
@@ -79,7 +79,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedLanguages()
         {
-            Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
+            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
 
             _context.Languages.RemoveRange(_context.Languages);
 
@@ -109,7 +109,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedEmbyStatus()
         {
-            Log.Information($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
+            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
 
             var status = _context.EmbyStatus.ToList();
 
@@ -121,7 +121,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedJobs()
         {
-            Log.Information("${Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+            Log.Debug("${Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
 
             var jobs = _context.Jobs.ToList();
 
