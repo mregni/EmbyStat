@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 
-import { UpdateResult } from '../models/update-result';
+import { SystemService } from './system.service';
 
 @Injectable()
 export class UpdateService {
-  private readonly baseUrl: string = '/api/system/';
-  private checkForUpdateUrl: string = this.baseUrl + 'checkforupdate';
-  private startUpdateUrl: string = this.baseUrl + 'startupdate';
+  private backendIsOnline = true;
+  private intervalId;
+  constructor(private systemService: SystemService) {
 
-  constructor(private http: HttpClient) { }
-
-  checkForUpdate(): Observable<UpdateResult> {
-    return this.http.get<UpdateResult>(this.checkForUpdateUrl);
   }
 
-  checkAndStartUpdate(): Observable<boolean> {
-    return this.http.post<boolean>(this.startUpdateUrl, {});
+  startPing() {
+    if (this.intervalId === undefined) {
+      this.intervalId = setInterval(() => {
+        this.systemService.ping().subscribe(() => {
+          if (!this.backendIsOnline) {
+            window.location.reload(true);
+          }
+        }, error => {
+          this.backendIsOnline = false;
+        });
+      }, 5000);
+    }
   }
+
 }

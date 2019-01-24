@@ -9,18 +9,19 @@ export class UpdateOverlayService {
 
   constructor(private overlay: Overlay) { }
 
-  public show() {
-    if (!this.overlayRef) {
-      this.overlayRef = this.overlay.create();
+  public show(state: boolean) {
+    if (state) {
+      if (!this.overlayRef) {
+        this.overlayRef = this.overlay.create();
+      }
+
+      const spinnerOverlayPortal = new ComponentPortal(UpdateOverlayComponent);
+      const component = this.overlayRef.attach(spinnerOverlayPortal);
     }
-
-    const spinnerOverlayPortal = new ComponentPortal(UpdateOverlayComponent);
-    const component = this.overlayRef.attach(spinnerOverlayPortal);
-  }
-
-  public hide() {
-    if (!!this.overlayRef) {
-      this.overlayRef.detach();
+    else {
+      if (!!this.overlayRef) {
+        this.overlayRef.detach();
+      }
     }
   }
 }

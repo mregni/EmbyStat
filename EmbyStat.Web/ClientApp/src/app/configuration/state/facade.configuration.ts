@@ -8,7 +8,6 @@ import { Configuration } from '../models/configuration';
 import { EmbyUdpBroadcast } from '../../shared/models/emby/emby-udp-broadcast';
 import { EmbyToken } from '../../shared/models/emby/emby-token';
 import { EmbyLogin } from '../../shared/models/emby/emby-login';
-import { ConfigurationService } from '../service/configuration.service';
 import { EmbyService } from '../../shared/services/emby.service';
 
 import { ConfigurationQuery } from './reducer.configuration';
@@ -20,7 +19,6 @@ import { ApplicationState } from '../../states/app.state';
 export class ConfigurationFacade {
   constructor(
     private store: Store<ApplicationState>,
-    private configurationService: ConfigurationService,
     private embyService: EmbyService
   ) { }
 

@@ -28,9 +28,10 @@ import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
 import { ToastService } from './services/toast.service';
 import { JobSocketService } from './services/job-socket.service';
 import { EmbyService } from './services/emby.service';
-import { UpdateService } from './services/update.service';
+import { SystemService } from './services/system.service';
 import { UpdateOverlayService } from './services/update-overlay.service';
 import { SideBarService } from './services/side-bar.service';
+import { UpdateService } from './services/update.service';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
@@ -95,9 +96,10 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     ToastService,
     EmbyService,
     JobSocketService,
-    UpdateService,
+    SystemService,
     UpdateOverlayService,
-    SideBarService
+    SideBarService,
+    UpdateService
   ],
   entryComponents: [
     NoTypeFoundDialog,

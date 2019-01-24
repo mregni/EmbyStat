@@ -6,6 +6,7 @@ using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Repositories.Migrations;
 using FluentMigrator.Runner;
+using FluentMigrator.Runner.Initialization;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -115,8 +116,7 @@ namespace EmbyStat.Web
 	                .AddSQLite()
 	                .WithGlobalConnectionString("Data Source=data.db")
 	                .ScanIn(typeof(InitMigration).Assembly).For.Migrations())
-	            .AddLogging(lb => lb.AddSerilog())
-	            .BuildServiceProvider(false);
+                .BuildServiceProvider(false);
 
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 	        runner.MigrateUp();

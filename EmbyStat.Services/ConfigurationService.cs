@@ -36,6 +36,13 @@ namespace EmbyStat.Services
             return config;
         }
 
+        public void ResetConfiguration()
+        {
+            var config = _configurationRepository.GetConfiguration();
+            config.UpdateInProgress = false;
+            _configurationRepository.Update(config);
+        }
+
         private void MarkMovieStatisticsAsInvalidIfNeeded(Configuration configuration, Configuration oldConfig)
         {
             if (!(oldConfig.MovieCollectionTypes.All(configuration.MovieCollectionTypes.Contains) &&

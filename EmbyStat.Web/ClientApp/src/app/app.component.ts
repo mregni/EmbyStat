@@ -5,10 +5,13 @@ import { Subscription } from 'rxjs/Subscription';
 import * as signalR from '@aspnet/signalr';
 
 import { ConfigurationFacade } from './configuration/state/facade.configuration';
+import { UpdateOverlayService } from './shared/services/update-overlay.service';
 import { JobSocketService } from './shared/services/job-socket.service';
+import { UpdateService } from './shared/services/update.service';
 import { SideBarService } from './shared/services/side-bar.service';
 import { Job } from './jobs/models/job';
 import { JobLog } from './jobs/models/job-log';
+import { Configuration } from './configuration/models/configuration';
 
 const SMALL_WIDTH_BREAKPOINT = 768;
 
@@ -19,9 +22,10 @@ const SMALL_WIDTH_BREAKPOINT = 768;
 })
 export class AppComponent implements OnInit, OnDestroy {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
-  private configChangedSub: Subscription;
   private configLoadSub: Subscription;
+  configuration: Configuration;
   openMenu = true;
+
 
   constructor(
     private zone: NgZone,
@@ -29,7 +33,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private router: Router,
     private jobSocketService: JobSocketService,
-    private sideBarService: SideBarService) {
+    private sideBarService: SideBarService,
+    private updateOverlayService: UpdateOverlayService,
+    private updateService: UpdateService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en-US');
@@ -60,22 +66,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
+      this.configuration = config;
+      this.translate.use(config.language);
+
       if (!config.wizardFinished) {
         this.router.navigate(['/wizard']);
       }
-    });
 
-    this.configChangedSub = this.configurationFacade.configuration$.subscribe(config => {
-      this.translate.use(config.language);
-      console.log("lang changed");
+      this.updateOverlayService.show(config.updateInProgress);
+      if (config.updateInProgress) {
+        this.updateService.startPing();
+      }
     });
   }
 
   ngOnDestroy() {
-    if (this.configChangedSub !== undefined) {
-      this.configChangedSub.unsubscribe();
-    }
-
     if (this.configLoadSub !== undefined) {
       this.configLoadSub.unsubscribe();
     }
