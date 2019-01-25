@@ -32,7 +32,7 @@ namespace EmbyStat.Services
 
                 _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
                 var rawPerson = await _embyClient.GetItemAsync(query, id, CancellationToken.None);
-                person = PersonHelper.ConvertToPerson(rawPerson);
+                person = PersonConverter.ConvertToPerson(rawPerson);
                 _personRepository.AddOrUpdatePerson(person);
             }
 

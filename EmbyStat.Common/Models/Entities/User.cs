@@ -60,6 +60,7 @@ namespace EmbyStat.Common.Models.Entities
         public string AuthenticationProviderId { get; set; }
         public List<string> ExcludedSubFolders { get; set; }
         public bool DisablePremiumFeatures { get; set; }
+        public bool Deleted { get; set; }
     }
 
     public class UserAccessSchedule

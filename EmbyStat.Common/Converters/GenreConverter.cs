@@ -3,7 +3,7 @@ using MediaBrowser.Model.Dto;
 
 namespace EmbyStat.Common.Converters
 {
-    public static class GenreHelper
+    public static class GenreConverter
     {
         public static Genre ConvertToGenre(BaseItemDto genre)
         {

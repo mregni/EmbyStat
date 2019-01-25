@@ -8,6 +8,7 @@ using MediaBrowser.Controller.Authentication;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
+using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Clients.EmbyClient
 {
@@ -18,6 +19,7 @@ namespace EmbyStat.Clients.EmbyClient
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();
 	    Task<List<Drive>> GetLocalDrivesAsync();
+        Task<JObject> GetEmbyUsers();
         Task<string> PingEmbyAsync(CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken);

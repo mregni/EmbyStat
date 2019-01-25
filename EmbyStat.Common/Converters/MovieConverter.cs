@@ -8,7 +8,7 @@ using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Common.Converters
 {
-    public static class MovieHelper
+    public static class MovieConverter
     {
         public static Movie ConvertToMovie(BaseItemDto x)
         {

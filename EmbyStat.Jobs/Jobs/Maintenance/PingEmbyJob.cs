@@ -14,13 +14,11 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     [DisableConcurrentExecution(30)]
     public class PingEmbyJob : BaseJob, IPingEmbyJob
     {
-        private readonly IEmbyStatusRepository _embyStatusRepository;
         private readonly IEmbyService _embyService;
 
         public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
-            IEmbyStatusRepository embyStatusRepository, IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
+            IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
         {
-            _embyStatusRepository = embyStatusRepository;
             _embyService = embyService;
             Title = jobRepository.GetById(Id).Title;
         }
@@ -36,15 +34,15 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
             if (result == "Emby Server")
             {
                 LogInformation("We found your Emby server");
-                _embyStatusRepository.ResetMissedPings();
+                _embyService.ResetMissedPings();
             }
             else
             {
                 LogInformation("We could not ping your Emby server. Might be because it's turned off or dns is wrong");
-                _embyStatusRepository.IncreaseMissedPings();
+                _embyService.IncreaseMissedPings();
             }
 
-            var status = _embyStatusRepository.GetEmbyStatus();
+            var status = _embyService.GetEmbyStatus();
             await _hubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
         }

@@ -9,7 +9,7 @@ using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Common.Converters
 {
-    public static class ShowHelper
+    public static class ShowConverter
     {
         public static Show ConvertToShow(BaseItemDto show)
         {

@@ -179,7 +179,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             };
 
             var embyMovies = await _embyClient.GetItemsAsync(query, cancellationToken);
-            var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieHelper.ConvertToMovie).ToList();
+            var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieConverter.ConvertToMovie).ToList();
 
             var recursiveMovies = new List<Movie>();
             if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
@@ -265,7 +265,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
 
-            var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
+            var seasons = rawSeasons.Select(x => ShowConverter.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
             seasons.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
             _showRepository.AddRange(seasons);
 
@@ -406,7 +406,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 ? "No TV shows found in this collection. Moving on to the next collection."
                 : $"Ready to add shows to database. We found {embyShows.TotalRecordCount} shows");
 
-            return embyShows.Items.Select(ShowHelper.ConvertToShow).ToList();
+            return embyShows.Items.Select(ShowConverter.ConvertToShow).ToList();
         }
 
         private async Task<List<BaseItemDto>> GetSeasonsFromEmby(string parentId, CancellationToken cancellationToken)
@@ -450,7 +450,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             };
 
             var embyEpisodes = await _embyClient.GetItemsAsync(query, cancellationToken);
-            return embyEpisodes.Items.Select(ShowHelper.ConvertToEpisode).ToList();
+            return embyEpisodes.Items.Select(ShowConverter.ConvertToEpisode).ToList();
         }
 
         #endregion
@@ -479,7 +479,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             if (newGenres.Any())
             {
                 LogInformation($"Need to add {newGenres.Count} genres first ({string.Join(", ", newGenres.Select(x => x.Name))})");
-                var genres = newGenres.DistinctBy(x => x.Id).Select(GenreHelper.ConvertToGenre);
+                var genres = newGenres.DistinctBy(x => x.Id).Select(GenreConverter.ConvertToGenre);
                 _genreRepository.AddRangeIfMissing(genres);
             }
             else
@@ -510,7 +510,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 var extraLogText = newPeople.Count > 100 ? ", this can take some time." : "";
                 LogInformation($"Need to add {newPeople.Count} people first{extraLogText}");
-                var people = newPeople.DistinctBy(x => x.Id).Select(PersonHelper.ConvertToSmallPerson);
+                var people = newPeople.DistinctBy(x => x.Id).Select(PersonConverter.ConvertToSmallPerson);
                 _personRepository.AddRangeIfMissing(people);
             }
             else

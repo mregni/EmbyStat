@@ -1,6 +1,6 @@
 ﻿namespace EmbyStat.Common.Converters
 {
-    public static class QualityHelper
+    public static class QualityConverter
     {
         public static string ConvertToQualityString(int? number)
         {

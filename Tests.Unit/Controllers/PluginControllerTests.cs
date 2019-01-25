@@ -16,7 +16,7 @@ namespace Tests.Unit.Controllers
 	public class PluginControllerTests : IDisposable
 	{
 		private readonly PluginController _subject;
-		private readonly Mock<IPluginService> _pluginServiceMock;
+		private readonly Mock<IEmbyService> _embyServiceMock;
 		private readonly List<PluginInfo> _plugins;
 
 		public PluginControllerTests()
@@ -27,12 +27,12 @@ namespace Tests.Unit.Controllers
 				new PluginInfo{ Name = "EmbyStat plugin"}
 			};
 
-			_pluginServiceMock = new Mock<IPluginService>();
-			_pluginServiceMock.Setup(x => x.GetInstalledPlugins()).Returns(_plugins);
+            _embyServiceMock = new Mock<IEmbyService>();
+            _embyServiceMock.Setup(x => x.GetAllPlugins()).Returns(_plugins);
 
 		    var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<IList<EmbyPluginViewModel>>(It.IsAny<List<PluginInfo>>())).Returns(new List<EmbyPluginViewModel>{ new EmbyPluginViewModel { Name = "Trakt plugin" }, new EmbyPluginViewModel { Name = "EmbyStat plugin" } });
-            _subject = new PluginController(_pluginServiceMock.Object, _mapperMock.Object);
+            _subject = new PluginController(_embyServiceMock.Object, _mapperMock.Object);
 		}
 
 		public void Dispose()
@@ -50,7 +50,7 @@ namespace Tests.Unit.Controllers
 			list.Count.Should().Be(2);
 			list[0].Name.Should().Be(_plugins[0].Name);
 			list[1].Name.Should().Be(_plugins[1].Name);
-			_pluginServiceMock.Verify(x => x.GetInstalledPlugins(), Times.Once);
+            _embyServiceMock.Verify(x => x.GetAllPlugins(), Times.Once);
 		}	
 	}
 }

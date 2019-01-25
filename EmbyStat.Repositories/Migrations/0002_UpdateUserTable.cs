@@ -16,6 +16,7 @@ namespace EmbyStat.Repositories.Migrations
                 .FromTable(Constants.Tables.User);
 
             Alter.Table(Constants.Tables.User)
+                .AddColumn("Deleted").AsBoolean().NotNullable().WithDefaultValue(false)
                 .AddColumn("ServerId").AsGuid().NotNullable().WithDefaultValue(Guid.NewGuid())
                 .AddColumn("HasPassword").AsBoolean().NotNullable().WithDefaultValue(false)
                 .AddColumn("HasConfiguredPassword").AsBoolean().NotNullable().WithDefaultValue(false)

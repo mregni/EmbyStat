@@ -27,25 +27,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public override async Task RunJob()
         {
-            var server = await _embyService.GetLiveServerInfo();
-            LogInformation("Server info found");
+            await _embyService.GetAndProcessServerInfo();
+            LogInformation("Server info downloaded");
             LogProgress(35);
 
-            var pluginsResponse = await _embyService.GetLivePluginInfo();
-            LogInformation("Server plugins found");
+            await _embyService.GetAndProcessPluginInfo();
+            LogInformation("Server plugins downloaded");
             LogProgress(55);
 
-            var drives = await _embyService.GetLiveEmbyDriveInfo();
-            LogInformation("Server drives found");
-            LogProgress(75);
+            await _embyService.GetAndProcessEmbyDriveInfo();
+            LogInformation("Server drives downloaded");
+            LogProgress(65);
 
-            _embyService.UpdateOrAddServerInfo(server);
-            LogProgress(85);
-
-            _embyService.RemoveAllAndInsertPluginRange(pluginsResponse);
-            LogProgress(95);
-
-            _embyService.RemoveAllAndInsertDriveRange(drives);
+            await _embyService.GetAndProcessEmbyUsers();
+            LogInformation("Server users downloaded");
         }
 
         public override void OnFail()

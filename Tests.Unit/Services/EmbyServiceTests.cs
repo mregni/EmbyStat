@@ -24,8 +24,7 @@ namespace Tests.Unit.Services
     {
 	    private readonly EmbyService _subject;
 	    private readonly Mock<IEmbyClient> _embyClientMock;
-	    private readonly Mock<IPluginRepository> _embyPluginRepositoryMock;
-	    private readonly Mock<IServerInfoRepository> _embyServerInfoRepository;
+        private readonly Mock<IEmbyRepository> _embyRepository;
         private readonly List<PluginInfo> _plugins;
         private readonly ServerInfo _serverInfo;
 
@@ -78,28 +77,22 @@ namespace Tests.Unit.Services
 		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
 		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
 
-			_embyPluginRepositoryMock = new Mock<IPluginRepository>();
-		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
-		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
+            _embyRepository = new Mock<IEmbyRepository>();
+            _embyRepository.Setup(x => x.GetAllPlugins()).Returns(_plugins);
+            _embyRepository.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
+            _embyRepository.Setup(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
+            _embyRepository.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
+            _embyRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
+            _embyRepository.Setup(x => x.GetAllDrives()).Returns(drives);
 
-		    var configurationRepositoryMock = new Mock<IConfigurationRepository>();
+            var configurationRepositoryMock = new Mock<IConfigurationRepository>();
 	        configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
-
-            _embyServerInfoRepository = new Mock<IServerInfoRepository>();
-		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
-		    _embyServerInfoRepository.Setup(x => x.GetSingleOrDefault()).Returns(_serverInfo);
-
-		    var embyDriveRepository = new Mock<IDriveRepository>();
-		    embyDriveRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
-		    embyDriveRepository.Setup(x => x.GetAll()).Returns(drives);
-
-	        var embyStatusRepositoryMock = new Mock<IEmbyStatusRepository>();
 
 	        var _mapperMock = new Mock<IMapper>();
 	        _mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
 	        _mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<Drive>>())).Returns(new List<Drive> {new Drive()});
 
-			_subject = new EmbyService(_embyClientMock.Object, _embyPluginRepositoryMock.Object, _embyServerInfoRepository.Object, configurationRepositoryMock.Object, embyDriveRepository.Object, embyStatusRepositoryMock.Object);
+			_subject = new EmbyService(_embyClientMock.Object, configurationRepositoryMock.Object, _embyRepository.Object);
 	    }
 
 	    //[Fact]
@@ -190,10 +183,10 @@ namespace Tests.Unit.Services
 			_embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
 			_embyClientMock.Verify(x => x.GetLocalDrivesAsync(), Times.Once);
 
-            _embyPluginRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
+            _embyRepository.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
 			    y => y.Count == 2 &&
 			         y.First().Name == _plugins.First().Name)));
-			_embyServerInfoRepository.Verify(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
+            _embyRepository.Verify(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
 		}
 
 	    [Fact]

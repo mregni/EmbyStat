@@ -5,7 +5,7 @@ using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Common.Converters
 {
-    public static class PersonHelper
+    public static class PersonConverter
     {
         public static Person ConvertToPerson(BaseItemDto person)
         {

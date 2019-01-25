@@ -18,12 +18,12 @@ namespace EmbyStat.Services.Interfaces
 		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();
 	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);
-        void SetEmbyClientAddressAndUrl(string url, string token);
-        Task<ServerInfo> GetLiveServerInfo();
-        Task<List<PluginInfo>> GetLivePluginInfo();
-        Task<List<Drive>> GetLiveEmbyDriveInfo();
-        void UpdateOrAddServerInfo(ServerInfo server);
-        void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins);
-        void RemoveAllAndInsertDriveRange(List<Drive> drives);
+        Task GetAndProcessServerInfo();
+        Task GetAndProcessPluginInfo();
+        Task GetAndProcessEmbyDriveInfo();
+        Task GetAndProcessEmbyUsers();
+        List<PluginInfo> GetAllPlugins();
+        void ResetMissedPings();
+        void IncreaseMissedPings();
     }
 }

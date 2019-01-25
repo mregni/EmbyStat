@@ -14,6 +14,7 @@ using MediaBrowser.Controller.Authentication;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
+using Newtonsoft.Json.Linq;
 using Serilog;
 
 namespace EmbyStat.Clients.EmbyClient
@@ -77,7 +78,6 @@ namespace EmbyStat.Clients.EmbyClient
 		{
 			var url = GetApiUrl("System/Info");
 
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for server info");
             using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<ServerInfo>(stream);
@@ -88,14 +88,23 @@ namespace EmbyStat.Clients.EmbyClient
 		{
 			var url = GetApiUrl("Environment/Drives");
 
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for local drives");
 			using (var stream = await GetSerializedStreamAsync(url))
             {
 				return DeserializeFromStream<List<Drive>>(stream);
 			}
 		}
 
-		public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        public async Task<JObject> GetEmbyUsers()
+        {
+            var url = GetApiUrl("Users");
+
+            using (var stream = await GetSerializedStreamAsync(url))
+            {
+                return DeserializeFromStream<JObject>(stream);
+            }
+        }
+
+        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
 		{
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
