@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Common;
+using EmbyStat.Sockets.EmbyClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
 
 namespace EmbyStat.Clients.WebSocketClient
 {
-    public class WebSocketClient : IWebSocketClient
+    public class EmbySocketClient : IEmbySocketClient
     {
         private ClientWebSocket webSocket;
         public async Task Connect(string url, CancellationToken cancellationToken)
@@ -18,7 +21,7 @@ namespace EmbyStat.Clients.WebSocketClient
             {
                 webSocket = new ClientWebSocket();
                 await webSocket.ConnectAsync(new Uri(url), cancellationToken);
-                await Task.WhenAll(OnMessage(webSocket, cancellationToken));
+                await Task.WhenAll(ReceiveMessages(webSocket, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -43,7 +46,7 @@ namespace EmbyStat.Clients.WebSocketClient
             return webSocket.State == WebSocketState.Open;
         }
 
-        public async Task OnMessage(ClientWebSocket webSocket, CancellationToken cancellationToken)
+        private async Task ReceiveMessages(ClientWebSocket webSocket, CancellationToken cancellationToken)
         {
             var buffer = new byte[4096];
             while (webSocket.State == WebSocketState.Open)
@@ -57,9 +60,10 @@ namespace EmbyStat.Clients.WebSocketClient
                     }
                     else
                     {
-                        //var message = JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(buffer));
-                        //var data = message["Data"]; //TODO map event on MessageType (switch?)
-                        Log.Information(Encoding.UTF8.GetString(buffer));
+                        var rawMessage = Encoding.UTF8.GetString(buffer);
+                        ProcessMessage(rawMessage);
+
+                        Array.Clear(buffer, 0, buffer.Length);
                     }
                 }
                 catch (Exception ex)
@@ -67,6 +71,19 @@ namespace EmbyStat.Clients.WebSocketClient
                     var a = ex;
                     Log.Error(ex, "ERROR ON MESSAGE");
                 }
+            }
+        }
+
+        private void ProcessMessage(string rawMessage)
+        {
+            var message = JsonConvert.DeserializeObject<EmbyMessage>(rawMessage);
+            var boe = message.MessageType;
+            switch (message.MessageType)
+            {
+                case "UserDataChanged":
+                    break;
+                default:
+                    break;
             }
         }
     }

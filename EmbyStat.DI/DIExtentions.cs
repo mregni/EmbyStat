@@ -17,6 +17,7 @@ using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Sockets.EmbyClient;
 using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -68,6 +69,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IEmbyStatusRepository, EmbyStatusRepository>();
             services.TryAddTransient<IJobRepository, JobRepository>();
+            services.TryAddTransient<IEventRepository, EventRepository>();
         }
 
         public static void RegisterJobs(this IServiceCollection services)
@@ -87,7 +89,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IEmbyClient, EmbyClient>();
             services.TryAddTransient<ITvdbClient, TvdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
-            services.TryAddTransient<IWebSocketClient, WebSocketClient>();
+            services.TryAddTransient<IEmbySocketClient, EmbySocketClient>();
         }
 
         public static void RegisterHttp(this IServiceCollection services)

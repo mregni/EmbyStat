@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmbyStat.Clients.WebSocketClient
+namespace EmbyStat.Sockets.EmbyClient
 {
-    public interface IWebSocketClient
+    public interface IEmbySocketClient
     {
         Task Connect(string url, CancellationToken cancellationToken);
         Task Close(CancellationToken cancellationToken);

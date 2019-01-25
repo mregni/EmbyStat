@@ -5,17 +5,18 @@ using System.Timers;
 using EmbyStat.Clients.WebSocketClient;
 using EmbyStat.Common.Enums;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Sockets.EmbyClient;
 using Microsoft.Extensions.Hosting;
 
 namespace EmbyStat.Services
 {
     public class WebSocketService : IWebSocketService, IHostedService
     {
-        private System.Timers.Timer checkForEmbyCredentialsTimer;
-        private readonly IWebSocketClient _webSocketClient;
+        private System.Timers.Timer _checkForEmbyCredentialsTimer;
+        private readonly IEmbySocketClient _webSocketClient;
         private readonly IConfigurationService _configurationService;
 
-        public WebSocketService(IWebSocketClient webSocketClient, IConfigurationService configurationService)
+        public WebSocketService(IEmbySocketClient webSocketClient, IConfigurationService configurationService)
         {
             _webSocketClient = webSocketClient;
             _configurationService = configurationService;
@@ -29,10 +30,10 @@ namespace EmbyStat.Services
             }
             else
             {
-                checkForEmbyCredentialsTimer = new System.Timers.Timer(5000);
-                checkForEmbyCredentialsTimer.Elapsed += CheckForEmbyCredentialsTimer_Elapsed;
-                checkForEmbyCredentialsTimer.AutoReset = true;
-                checkForEmbyCredentialsTimer.Start();
+                _checkForEmbyCredentialsTimer = new System.Timers.Timer(5000);
+                _checkForEmbyCredentialsTimer.Elapsed += CheckForEmbyCredentialsTimer_Elapsed;
+                _checkForEmbyCredentialsTimer.AutoReset = true;
+                _checkForEmbyCredentialsTimer.Start();
             }
         }
 
@@ -51,7 +52,7 @@ namespace EmbyStat.Services
         {
             if (IsEmbyConnected())
             {
-                checkForEmbyCredentialsTimer.Stop();
+                _checkForEmbyCredentialsTimer.Stop();
                 await OpenWebSocketConnection(new CancellationToken(false));
             }
         }

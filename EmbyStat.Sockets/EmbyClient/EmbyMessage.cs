@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Clients.WebSocketClient
+﻿namespace EmbyStat.Sockets.EmbyClient
 {
     public class EmbyMessage
     {

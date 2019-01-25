@@ -14,6 +14,7 @@
     <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
+    <ProjectReference Include="..\EmbyStat.Sockets\EmbyStat.Sockets.csproj" />
   </ItemGroup>
 
   <ItemGroup>
