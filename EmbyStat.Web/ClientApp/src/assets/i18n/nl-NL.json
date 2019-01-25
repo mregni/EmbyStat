@@ -9,7 +9,7 @@
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
-    "CLOSE": "close",
+    "CLOSE": "sluiten",
     "DAYS": "dagen",
     "HOURS": "uren",
     "MINUTES": "minuten",
@@ -63,7 +63,7 @@
     "EMBYPASSWORD": "Emby administrator wachtwoord",
     "DURATIONINMINUTES": "Duur in minuten",
     "TVDBAPI": "TheTVDB api key",
-    "CRON": "Cron string"
+    "CRON": "Cron-tekenreeks"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
@@ -77,10 +77,10 @@
     "SHOWS": "Series",
     "SETTINGS": "Instellingen",
     "PLUGINS": "Plugins",
-    "JOBS": "Jobs",
+    "JOBS": "Taken",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About"
+    "ABOUT": "Over"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -171,16 +171,16 @@
   },
   "JOB": {
     "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
+    "LASTRUN": "Laatst uitgevoerd",
+    "HOURS": "{{hours}} u(u)r(en)",
+    "MINUTES": "{{minutes}} minute(n)",
+    "SECONDS": "{{seconds}} seconde(n)",
+    "AND": "en",
+    "AGO": "geleden",
+    "FOR": "voor",
+    "BUTFAILED": "maar is gefaald na",
     "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
+    "MOMENT_AGO": "een moment",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
