@@ -39,6 +39,8 @@ namespace EmbyStat.Repositories
         public DbSet<Statistic> Statistics { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<EmbyStatusKeyValue> EmbyStatus { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserAccessSchedule> UserAccessSchedules { get; set; }
 
         public ApplicationDbContext() : base()
         {
@@ -130,6 +132,8 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<MediaCollection>().Property(x => x.Id).IsRequired();
 
+            modelBuilder.Entity<UserAccessSchedule>().Property(x => x.Id).IsRequired();
+
             modelBuilder.Entity<Job>().Property(x => x.Id).IsRequired();
 
             var listConverter = new ValueConverter<List<string>, string>(
@@ -139,7 +143,7 @@ namespace EmbyStat.Repositories
                 v => v.ToString(), 
                 v => DateTimeOffset.Parse(v));
 
-            modelBuilder.Entity<User>().HasMany(x => x.AccessSchedules).WithOne().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>().HasMany(x => x.AccessSchedules).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>().Property(x => x.BlockedTags).HasConversion(listConverter);
             modelBuilder.Entity<User>().Property(x => x.BlockUnratedItems).HasConversion(listConverter);
             modelBuilder.Entity<User>().Property(x => x.EnabledDevices).HasConversion(listConverter);

@@ -149,9 +149,14 @@ namespace EmbyStat.Services
         {
             var settings = _configurationRepository.GetConfiguration();
             _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
-            var usersJson = await _embyClient.GetEmbyUsers();
-            var users = UserConverter.ConvertToUserList(usersJson);
 
+            var usersJson = await _embyClient.GetEmbyUsers();
+            var newUsers = UserConverter.ConvertToUserList(usersJson).ToList();
+            _embyRepository.AddOrUpdateUsers(newUsers);
+
+            var localUsers = _embyRepository.GetAllUsers();
+            var removedUsers = localUsers.Where(u => newUsers.All(u2 => u2.Id != u.Id));
+            _embyRepository.MarkAsDeleted(removedUsers);
         }
 
         public async void FireSmallSyncEmbyServerInfo()

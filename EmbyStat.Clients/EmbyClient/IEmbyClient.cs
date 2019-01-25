@@ -19,7 +19,7 @@ namespace EmbyStat.Clients.EmbyClient
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();
 	    Task<List<Drive>> GetLocalDrivesAsync();
-        Task<JObject> GetEmbyUsers();
+        Task<JArray> GetEmbyUsers();
         Task<string> PingEmbyAsync(CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken);

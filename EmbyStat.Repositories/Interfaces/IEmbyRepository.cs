@@ -29,5 +29,13 @@ namespace EmbyStat.Repositories.Interfaces
         List<Drive> GetAllDrives();
         void RemoveAllAndInsertDriveRange(List<Drive> drives);
         #endregion
+
+        #region Emby Users
+        void AddOrUpdateUsers(IEnumerable<User> users);
+        IEnumerable<User> GetAllUsers();
+        void MarkAsDeleted(IEnumerable<User> users);
+
+        #endregion
+
     }
 }

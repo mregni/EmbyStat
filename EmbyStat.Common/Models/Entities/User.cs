@@ -28,7 +28,7 @@ namespace EmbyStat.Common.Models.Entities
         public bool IsAdministrator { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDisabled { get; set; }
-        public long MaxParentalRating { get; set; }
+        public long? MaxParentalRating { get; set; }
         public List<string> BlockedTags { get; set; }
         public bool EnableUserPreferenceAccess { get; set; }
         public ICollection<UserAccessSchedule> AccessSchedules { get; set; }

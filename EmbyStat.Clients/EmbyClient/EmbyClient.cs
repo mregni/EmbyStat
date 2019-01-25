@@ -94,13 +94,13 @@ namespace EmbyStat.Clients.EmbyClient
 			}
 		}
 
-        public async Task<JObject> GetEmbyUsers()
+        public async Task<JArray> GetEmbyUsers()
         {
             var url = GetApiUrl("Users");
 
             using (var stream = await GetSerializedStreamAsync(url))
             {
-                return DeserializeFromStream<JObject>(stream);
+                return DeserializeFromStream<JArray>(stream);
             }
         }
 

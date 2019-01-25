@@ -122,5 +122,58 @@ namespace EmbyStat.Repositories
         }
 
         #endregion
+
+        #region Emby Users
+
+        public void AddOrUpdateUsers(IEnumerable<User> users)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var entity in users)
+                {
+                    var user = context.Users.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
+
+                    if (user != null)
+                    {
+                        context.Entry(entity).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        context.Users.Add(entity);
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Users.ToList();
+            }
+        }
+
+        public void MarkAsDeleted(IEnumerable<User> users)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var entity in users)
+                {
+                    var user = context.Users.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
+
+                    if (user != null)
+                    {
+                        user.Deleted = true;
+                        context.Entry(entity).State = EntityState.Modified;
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
     }
 }
