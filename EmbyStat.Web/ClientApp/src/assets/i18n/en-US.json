@@ -50,7 +50,7 @@
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
     "NO_CONFIGURATION_FOUND": "Configuration Not found.",
-    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "NOT_FOUND": "We couldn't find what you are looking for.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and domain/ip address.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
     "UNHANDLED": "Unhandled backend exception"
