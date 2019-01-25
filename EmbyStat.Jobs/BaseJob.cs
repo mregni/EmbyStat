@@ -53,7 +53,7 @@ namespace EmbyStat.Jobs
             {
                 Log.Error(e, "Error while running job");
                 OnFail();
-                FailExecution(string.Empty);
+                FailExecution("Job failed, check logs for more info.");
                 throw;
             }
         }
@@ -89,13 +89,14 @@ namespace EmbyStat.Jobs
 
         private void FailExecution(string message)
         {
+            var now = DateTime.UtcNow;
             State = JobState.Failed;
-            _jobRepository.EndJob(Id, DateTime.UtcNow, State);
+            _jobRepository.EndJob(Id, now, State);
             if (!string.IsNullOrWhiteSpace(message))
             {
                 LogError(message);
             }
-            SendLogProgressToFront(100);
+            SendLogProgressToFront(100, now);
         }
         
         public void LogProgress(double progress)
