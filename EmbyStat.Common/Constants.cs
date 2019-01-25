@@ -172,6 +172,8 @@ namespace EmbyStat.Common
             public static string VideoStreams => "VideoStreams";
             public static string ExtraPersons => "ExtraPersons";
             public static string StatisticCollection => "StatisticCollection";
+            public static string Events => "Events";
+            public static string UserAccessSchedules => "UserAccessSchedules";
         }
     }
 }
