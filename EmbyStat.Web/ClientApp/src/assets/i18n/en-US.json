@@ -235,8 +235,8 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Go to Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
+    "JOBISRUNNING": "{{job}} task is running",
+    "NOMISSEDPINGS": "Emby server is running",
     "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
     "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
   },
