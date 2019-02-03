@@ -63,7 +63,7 @@
     "EMBYPASSWORD": "Emby Admin Passwort",
     "DURATIONINMINUTES": "Dauer in Minuten",
     "TVDBAPI": "TheTVDB API key",
-    "CRON": "Cron string"
+    "CRON": "Cron Intervall"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
