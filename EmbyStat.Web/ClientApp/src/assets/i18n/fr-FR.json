@@ -77,7 +77,7 @@
     "SHOWS": "Séries",
     "SETTINGS": "Paramètres",
     "PLUGINS": "Extensions",
-    "JOBS": "Jobs",
+    "JOBS": "Tâches planifiées",
     "SERVER": "Serveur Emby",
     "LOGS": "Journaux",
     "ABOUT": "À propos"
@@ -184,15 +184,15 @@
     "INFO": {
       "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
       "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
+      "SMALLEMBYSYNCDESCRIPTION": "Effectuer une synchronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
+      "SMALLEMBYSYNCTITLE": "Synchronisation rapide avec Emby",
+      "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
+      "MEDIASYNCTITLE": "Synchronisation des médias",
+      "STARTMEDIASYNC": "Débuter une synchronisation des médias",
+      "DATABASECLEANUPTITLE": "Nettoyage de la base de données",
+      "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
+      "OPENJOBPAGE": "Allez à la page des tâches",
+      "CHECKUPDATETITLE": "Rechercher des mises à jour",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
@@ -206,18 +206,18 @@
       "BODY": "Nous n'avons trouvé aucun film dans la base de données EmbyStat. Si vous avez des films dans Emby, vous essayez de démarrer une nouvelle tâche de synchronisation multimédia."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "La tâche de synchronisation multimédia est en cours d'exécution",
+      "BODY": "La tâche de synchronisation des médias s'exécute en arrière-plan. Pour cette raison, toutes les pages de statistiques sont bloquées, car les calculs seraient complètement faux tant que la synchronisation est en cours d'exécution."
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Ici</a> vous pouvez trouver plus d'informations sur la façon de formater une chaîne CRON. Seuls les nombres *, / et - sont autorisés."
     }
   },
   "LOADER": {
     "FETCHING": "Récupération des statistiques",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Page will refresh when the update is finished."
+    "UPDATING": "Mise à jour d'EmbyStat",
+    "UPDATINGSUB": "La page s'actualisera une fois la mise à jour terminée."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixte / Autre",
@@ -235,10 +235,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Aller à Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "JOBISRUNNING": "{{job}} est en cours d'exécution",
+    "NOMISSEDPINGS": "Le serveur Emby est en cours d'exécution",
+    "ONEMISSEDPING": "Impossible de se connecter à Emby lors du dernier contrôle!",
+    "MOREMISSEDPINGS": "Impossible de se connecter à Emby après plusieurs tentatives!"
   },
   "ABOUT": {
     "THANKS": {
