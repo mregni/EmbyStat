@@ -42,11 +42,13 @@ namespace EmbyStat.Web
             }
 			catch (Exception ex)
 			{
+                Console.WriteLine(ex.Message);
 				Log.Fatal(ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
 			}
 			finally
 			{
-				Log.Information($"{Constants.LogPrefix.System}\tServer shutdown");
+                Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
+                Log.Information($"{Constants.LogPrefix.System}\tServer shutdown");
 				Log.CloseAndFlush();
 			}
 		}
