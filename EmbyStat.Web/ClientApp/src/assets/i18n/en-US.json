@@ -90,7 +90,7 @@
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will set the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know what we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server on the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
     "ISADMIN": "{{ user }} is an Emby administrator",
@@ -130,7 +130,7 @@
     "HIGHESTRATEDSHOW": "Highest rated show",
     "LOWESTRATEDSHOW": "Lowest rated show",
     "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Youngest premiered show",
+    "YOUNGESTPREMIERED": "Most recent premiered show",
     "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "With most episodes",
     "SHOWSTATUSGRAPH": "Show statuses",
@@ -145,7 +145,7 @@
       "EMBY": "Emby settings saved!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "UPDATES": "Settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
@@ -162,7 +162,7 @@
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
-      "AUTO": "Enable auto updates",
+      "AUTO": "Enable Auto-Update",
       "CHECK": "Check and update server now",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
@@ -187,10 +187,10 @@
       "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
+      "MEDIASYNCTITLE": "Media synchronisation",
       "STARTMEDIASYNC": "Start media sync",
       "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "DATABASECLEANUPDESCRIPTION": "Cleanup database, remove unnecessary data.",
       "OPENJOBPAGE": "Go to job page",
       "CHECKUPDATETITLE": "Check for new updates",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
@@ -207,7 +207,7 @@
     },
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
@@ -235,8 +235,8 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Go to Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
+    "JOBISRUNNING": "{{job}} task is running",
+    "NOMISSEDPINGS": "Emby server is running",
     "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
     "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
   },
