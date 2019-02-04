@@ -9,7 +9,7 @@
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
-    "CLOSE": "close",
+    "CLOSE": "sluiten",
     "DAYS": "dagen",
     "HOURS": "uren",
     "MINUTES": "minuten",
@@ -62,8 +62,8 @@
     "EMBYUSERNAME": "Emby admin gebruikersnaam",
     "EMBYPASSWORD": "Emby administrator wachtwoord",
     "DURATIONINMINUTES": "Duur in minuten",
-    "TVDBAPI": "TheTVDB api key",
-    "CRON": "Cron string"
+    "TVDBAPI": "De api-sleutel van TheTVDB",
+    "CRON": "Cron-tekenreeks"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
@@ -77,10 +77,10 @@
     "SHOWS": "Series",
     "SETTINGS": "Instellingen",
     "PLUGINS": "Plugins",
-    "JOBS": "Jobs",
+    "JOBS": "Taken",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About"
+    "ABOUT": "Over"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -118,9 +118,9 @@
     "YOUNGESTADDED": "Jongste toegevoegd",
     "MOSTFEATUREDPERGENRE": "Meest aanbevolen acteur per genre",
     "DUPLICATEMOVIES": "Dubbele films",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "TOSHORTMOVIES": "Zeer korte films",
+    "NOPOSTER": "Films zonder een poster",
+    "NOIMDB": "Films zonder een IMDB-ID"
   },
   "SHOWS": {
     "TOTALSHOWS": "Totaal series",
@@ -141,11 +141,11 @@
   "CONFIGURATION": {
     "SETTINGS": "Instellingen",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
+      "GENERAL": "Algemene Embystat-instellingen opgeslagen!",
       "EMBY": "Emby instellingen opgeslagen!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "MOVIES": "Filminstellingen opgeslagen!",
+      "SHOWS": "Show instellingen opgeslagen!",
+      "UPDATES": "Update instellingen opgeslagen!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
@@ -162,25 +162,25 @@
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
-      "AUTO": "Enable auto updates",
-      "CHECK": "Check and update server now",
-      "TRAIN": "Change the update train if you want to have beta updates.",
+      "AUTO": "Automatisch bijwerken inschakelen",
+      "CHECK": "Controleer en update de server nu",
+      "TRAIN": "Wijzig de updatetrein als u bèta-updates wilt ontvangen.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
+    "LASTRUNNOW": "Laatste run: zojuist",
+    "LASTRUN": "Laatst uitgevoerd",
+    "HOURS": "{{hours}} u(u)r(en)",
+    "MINUTES": "{{minutes}} minute(n)",
+    "SECONDS": "{{seconds}} seconde(n)",
+    "AND": "en",
+    "AGO": "geleden",
+    "FOR": "voor",
+    "BUTFAILED": "maar is gefaald na",
     "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
+    "MOMENT_AGO": "een moment",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
@@ -188,10 +188,10 @@
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
+      "STARTMEDIASYNC": "Start mediasynchronisatie",
+      "DATABASECLEANUPTITLE": "Database opruimen",
       "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
+      "OPENJOBPAGE": "Ga naar Taken pagina",
       "CHECKUPDATETITLE": "Check for new updates",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
     }
@@ -224,7 +224,7 @@
     "MUSIC": "Muziek",
     "MUSICVIDEOS": "Muziekvideo 's",
     "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
+    "HOMEVIDEOS": "Home Video 's",
     "BOXSETS": "Boxsets",
     "BOOKS": "Boeken",
     "PHOTOS": "Foto’s",
@@ -235,10 +235,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Ga naar Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "JOBISRUNNING": "{{job}} taak wordt uitgevoerd",
+    "NOMISSEDPINGS": "Emby server is actief",
+    "ONEMISSEDPING": "Kon bij de laatste controle geen verbinding maken met Emby!",
+    "MOREMISSEDPINGS": "Kon geen verbinding maken met Emby na meerdere pogingen!"
   },
   "ABOUT": {
     "THANKS": {

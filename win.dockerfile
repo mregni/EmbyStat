@@ -21,10 +21,8 @@ RUN dotnet publish ./Updater/Updater.csproj --framework netcoreapp2.2 --configur
 
 #Runtime image
 FROM microsoft/dotnet:2.2.1-runtime AS base
-
-WORKDIR /app
-ENV ASPNETCORE_URLS=http://*:5432
 LABEL author="UPing"
 
+WORKDIR /app
 COPY --from=builder /app .
-ENTRYPOINT ["dotnet", "EmbyStat.Web.dll"]
+ENTRYPOINT ["dotnet", "EmbyStat.dll"]
