@@ -30,7 +30,7 @@ namespace EmbyStat.Web
                 StartupOptions options = null;
                 result.WithParsed(opts => options = opts);
                 
-                var listeningUrl = $"http://localhost:{options.Port};http://*:{options.Port}";
+                var listeningUrl = $"http://*:{options.Port}";
                 
                 Log.Information($"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
                 var configArgs = new Dictionary<string, string> {{"Port", options.Port.ToString()}};
