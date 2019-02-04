@@ -30,7 +30,7 @@ namespace EmbyStat.Web
                 StartupOptions options = null;
                 result.WithParsed(opts => options = opts);
                 
-                var listeningUrl = $"http://localhost:{options.Port};http://*:{options.Port}";
+                var listeningUrl = $"http://*:{options.Port}";
                 
                 Log.Information($"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
                 var configArgs = new Dictionary<string, string> {{"Port", options.Port.ToString()}};
@@ -42,11 +42,13 @@ namespace EmbyStat.Web
             }
 			catch (Exception ex)
 			{
+                Console.WriteLine(ex.Message);
 				Log.Fatal(ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
 			}
 			finally
 			{
-				Log.Information($"{Constants.LogPrefix.System}\tServer shutdown");
+                Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
+                Log.Information($"{Constants.LogPrefix.System}\tServer shutdown");
 				Log.CloseAndFlush();
 			}
 		}
