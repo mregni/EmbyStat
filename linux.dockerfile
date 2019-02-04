@@ -5,7 +5,7 @@ FROM microsoft/dotnet:2.2.103-sdk AS builder
 ENV NODE_VERSION 8.9.4
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get update
-RUN apt-get install -y nodejs 
+RUN apt-get install -y apt-utils nodejs 
 
 ENV DOTNET_USE_POLLING_FILE_WATCHER false
 ENV NUGET_XMLDOC_MODE skip
@@ -18,10 +18,8 @@ FROM microsoft/dotnet:2.2.1-runtime as base
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
-
-WORKDIR /app
-ENV ASPNETCORE_URLS=http://*:5432
 LABEL author="UPing"
 
+WORKDIR /app
 COPY --from=builder /app .
-ENTRYPOINT ["dotnet", "EmbyStat.Web.dll"] 
+ENTRYPOINT ["dotnet", "EmbyStat.dll"] 
