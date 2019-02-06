@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Emby.ApiClient.Model;
 using EmbyStat.Clients.EmbyClient.Cryptography;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Controller.Authentication;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
+using MediaBrowser.Model.Users;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
 namespace EmbyStat.Clients.EmbyClient
 {
@@ -58,7 +60,7 @@ namespace EmbyStat.Clients.EmbyClient
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
 			var result = await PostAsync<AuthenticationResult>(url, args, CancellationToken.None);
 
-			SetAuthenticationInfo(result.AccessToken, result.User.Id);
+			SetAuthenticationInfo(result.AccessToken, new Guid(result.User.Id));
 
 			return result;
 		}
@@ -84,13 +86,13 @@ namespace EmbyStat.Clients.EmbyClient
 			}
 		}
 
-		public async Task<List<Drive>> GetLocalDrivesAsync()
+		public async Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync()
 		{
 			var url = GetApiUrl("Environment/Drives");
 
 			using (var stream = await GetSerializedStreamAsync(url))
             {
-				return DeserializeFromStream<List<Drive>>(stream);
+				return DeserializeFromStream<List<FileSystemEntryInfo>>(stream);
 			}
 		}
 
@@ -101,6 +103,16 @@ namespace EmbyStat.Clients.EmbyClient
             using (var stream = await GetSerializedStreamAsync(url))
             {
                 return DeserializeFromStream<JArray>(stream);
+            }
+        }
+
+        public async Task<JObject> GetEmbyDevices()
+        {
+            var url = GetApiUrl("Devices");
+
+            using (var stream = await GetSerializedStreamAsync(url))
+            {
+                return DeserializeFromStream<JObject>(stream);
             }
         }
 
