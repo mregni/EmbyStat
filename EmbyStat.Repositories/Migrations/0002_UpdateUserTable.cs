@@ -66,7 +66,8 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("IsHidden").AsBoolean().NotNullable()
                 .WithColumn("IsDisabled").AsBoolean().NotNullable()
                 .WithColumn("LastLoginDate").AsString().Nullable()
-                .WithColumn("LastActivityDate").AsString().Nullable();
+                .WithColumn("LastActivityDate").AsString().Nullable()
+                .WithColumn("PrimaryImageTag").AsString().Nullable();
 
             Create.Table(Constants.Tables.UserAccessSchedules)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_UserAccessSchedules")

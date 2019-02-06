@@ -61,6 +61,7 @@ namespace EmbyStat.Common.Models.Entities
         public List<string> ExcludedSubFolders { get; set; }
         public bool DisablePremiumFeatures { get; set; }
         public bool Deleted { get; set; }
+        public string PrimaryImageTag { get; set; }
     }
 
     public class UserAccessSchedule
