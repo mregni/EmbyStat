@@ -174,6 +174,10 @@ namespace EmbyStat.Common
             public static string StatisticCollection => "StatisticCollection";
             public static string Events => "Events";
             public static string UserAccessSchedules => "UserAccessSchedules";
+            public static string Sessions => "Sessions";
+            public static string Plays => "Plays";
+            public static string PlayStates => "PlayStates";
+            public static string TranscodingInfos => "TranscodingInfos";
         }
     }
 }
