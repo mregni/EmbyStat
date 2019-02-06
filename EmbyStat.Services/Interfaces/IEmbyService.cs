@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Emby;
-using MediaBrowser.Model.Plugins;
 
 namespace EmbyStat.Services.Interfaces
 {
@@ -18,10 +16,11 @@ namespace EmbyStat.Services.Interfaces
 		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();
 	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);
-        Task GetAndProcessServerInfo();
-        Task GetAndProcessPluginInfo();
-        Task GetAndProcessEmbyDriveInfo();
-        Task GetAndProcessEmbyUsers();
+        Task GetAndProcessServerInfo(string embyAddress, string accessToken);
+        Task GetAndProcessPluginInfo(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessEmbyDriveInfo(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessEmbyUsers(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessDevices(string embyAddress, string settingsAccessToken);
         List<PluginInfo> GetAllPlugins();
         void ResetMissedPings();
         void IncreaseMissedPings();

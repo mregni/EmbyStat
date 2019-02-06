@@ -161,10 +161,12 @@ namespace EmbyStat.Common.Models.Entities
             return _config.Select(x => new ConfigurationKeyValue { Id = x.Key, Value = x.Value });
         }
 
-        public string GetFullEmbyServerAddress()
+        public string FullEmbyServerAddress
         {
-            var protocol = EmbyServerProtocol == ConnectionProtocol.Http ? "http" : "https";
-            return $"{protocol}://{EmbyServerAddress}:{EmbyServerPort}";
+            get {
+                var protocol = EmbyServerProtocol == ConnectionProtocol.Http ? "http" : "https";
+                return $"{protocol}://{EmbyServerAddress}:{EmbyServerPort}";
+            }
         }
     }
 }

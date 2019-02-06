@@ -13,5 +13,6 @@ namespace EmbyStat.Common.Models.Entities
         public string LastUserId { get; set; }
         public DateTime DateLastActivity { get; set; }
         public string IconUrl { get; set; }
+        public bool Deleted { get; set; }
 	}
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Model.Plugins;
+using Device = EmbyStat.Common.Models.Entities.Device;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -17,7 +18,7 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region Emby Plugins
         List<PluginInfo> GetAllPlugins();
-        void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins);
+        void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins);
         #endregion
 
         #region Emby Server Info
@@ -27,14 +28,19 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region Emby Drives
         List<Drive> GetAllDrives();
-        void RemoveAllAndInsertDriveRange(List<Drive> drives);
+        void RemoveAllAndInsertDriveRange(IEnumerable<Drive> drives);
         #endregion
 
         #region Emby Users
         void AddOrUpdateUsers(IEnumerable<User> users);
         IEnumerable<User> GetAllUsers();
-        void MarkAsDeleted(IEnumerable<User> users);
+        Task MarkUserAsDeleted(IEnumerable<User> users);
 
+        #endregion
+
+        #region Devices
+        IEnumerable<Device> GetAllDevices();
+        Task MarkDeviceUserAsDeleted(IEnumerable<Device> devices);
         #endregion
 
     }

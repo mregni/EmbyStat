@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EmbyStat.Clients.EmbyClient.Model;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
@@ -55,7 +53,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins)
+        public void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -109,7 +107,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void RemoveAllAndInsertDriveRange(List<Drive> drives)
+        public void RemoveAllAndInsertDriveRange(IEnumerable<Drive> drives)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -155,7 +153,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public void MarkAsDeleted(IEnumerable<User> users)
+        public async Task MarkUserAsDeleted(IEnumerable<User> users)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -165,12 +163,44 @@ namespace EmbyStat.Repositories
 
                     if (user != null)
                     {
-                        user.Deleted = true;
+                        entity.Deleted = true;
                         context.Entry(entity).State = EntityState.Modified;
                     }
                 }
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
+            }
+        }
+
+        #endregion
+
+
+        #region Devices
+
+        public IEnumerable<Device> GetAllDevices()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Devices.ToList();
+            }
+        }
+
+        public async Task MarkDeviceUserAsDeleted(IEnumerable<Device> devices)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var entity in devices)
+                {
+                    var device = context.Users.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
+
+                    if (device != null)
+                    {
+                        entity.Deleted = true;
+                        context.Entry(entity).State = EntityState.Modified;
+                    }
+                }
+
+                await context.SaveChangesAsync();
             }
         }
 

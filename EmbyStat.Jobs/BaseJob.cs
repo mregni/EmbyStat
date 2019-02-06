@@ -17,17 +17,17 @@ namespace EmbyStat.Jobs
     [Queue("main")]
     public abstract class BaseJob : IBaseJob
     {
-        protected readonly IJobHubHelper _hubHelper;
+        protected readonly IJobHubHelper HubHelper;
         private readonly IJobRepository _jobRepository;
-        private readonly IConfigurationService _configurationService;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
+        protected Configuration Settings { get; set; }
 
         protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService)
         {
-            _hubHelper = hubHelper;
+            HubHelper = hubHelper;
             _jobRepository = jobRepository;
-            _configurationService = configurationService;
+            Settings = configurationService.GetServerSettings();
         }
 
         public abstract Guid Id { get; }
@@ -60,7 +60,7 @@ namespace EmbyStat.Jobs
 
         private void PreJobExecution()
         {
-            if (!_configurationService.GetServerSettings().WizardFinished)
+            if (!Settings.WizardFinished)
             {
                 throw new WizardNotFinishedException("Job not running because wizard is not finished");
             }
@@ -124,7 +124,7 @@ namespace EmbyStat.Jobs
 
         private async void SendLogUpdateToFront(string message, ProgressLogType type)
         {
-            await _hubHelper.BroadCastJobLog(JobPrefix, message, type);
+            await HubHelper.BroadCastJobLog(JobPrefix, message, type);
         }
 
         private async void SendLogProgressToFront(double progress, DateTime? EndTimeUtc = null)
@@ -138,7 +138,7 @@ namespace EmbyStat.Jobs
                 EndTimeUtc = EndTimeUtc,
                 Title = Title
             };
-            await _hubHelper.BroadcastJobProgress(info);
+            await HubHelper.BroadcastJobProgress(info);
         }
     }
 }
