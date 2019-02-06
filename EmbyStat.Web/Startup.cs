@@ -179,14 +179,12 @@ namespace EmbyStat.Web
         {
             RemoveVersionFiles();
             ResetAllJobs();
-            StartSocketConnectionToEmby();
             ResetConfiguration();
         }
 
         private void PerformPreShutdownFunctions()
         {
             ResetAllJobs();
-            StopSocketConnectionToEmby();
         }
 
         private void RemoveVersionFiles()
@@ -207,18 +205,6 @@ namespace EmbyStat.Web
         {
             var configurationService = ApplicationBuilder.ApplicationServices.GetService<IConfigurationService>();
             configurationService.SetUpdateInProgressSetting(false);
-        }
-
-        private void StartSocketConnectionToEmby()
-        {
-            var socketService = ApplicationBuilder.ApplicationServices.GetService<IWebSocketService>();
-            socketService.StartAsync(new CancellationToken(false));
-        }
-
-        private void StopSocketConnectionToEmby()
-        {
-            var socketService = ApplicationBuilder.ApplicationServices.GetService<IWebSocketService>();
-            socketService.StopAsync(new CancellationToken(false));
         }
     }
 }
