@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Joins;
-using EmbyStat.Common.Models.Tasks.Enum;
-using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Device = EmbyStat.Common.Models.Entities.Device;
@@ -41,6 +40,11 @@ namespace EmbyStat.Repositories
         public DbSet<EmbyStatusKeyValue> EmbyStatus { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserAccessSchedule> UserAccessSchedules { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Play> Plays { get; set; }
+        public DbSet<PlayState> PlayStates { get; set; }
+        public DbSet<TranscodingInfo> TranscodingInfos { get; set; }
+
 
         public ApplicationDbContext() : base()
         {
@@ -136,22 +140,40 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<Job>().Property(x => x.Id).IsRequired();
 
-            var listConverter = new ValueConverter<List<string>, string>(
+            modelBuilder.Entity<Session>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<Session>().HasMany(x => x.Plays).WithOne(x => x.Session).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Play>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<Play>().HasMany(x => x.PlayStates).WithOne(x => x.Play).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Play>().HasMany(x => x.TranscodingInfos).WithOne(x => x.Play).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayState>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<TranscodingInfo>().Property(x => x.Id).IsRequired();
+
+
+            var stringListConverter = new ValueConverter<List<string>, string>(
                 v => string.Join(";", v),
                 v => v.Split(";", StringSplitOptions.RemoveEmptyEntries).ToList());
+            var transcodeReasonEnumListConverter = new ValueConverter<List<TranscodeReason>, string>(
+                v => string.Join(";", v),
+                v => v.Split(";", StringSplitOptions.RemoveEmptyEntries).ToList()
+                    .Select(x => (TranscodeReason)Enum.Parse(typeof(TranscodeReason), x)).ToList());
             var dateTimeOffsetConverter = new ValueConverter<DateTimeOffset, string>(
                 v => v.ToString(), 
                 v => DateTimeOffset.Parse(v));
 
             modelBuilder.Entity<User>().HasMany(x => x.AccessSchedules).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<User>().Property(x => x.BlockedTags).HasConversion(listConverter);
-            modelBuilder.Entity<User>().Property(x => x.BlockUnratedItems).HasConversion(listConverter);
-            modelBuilder.Entity<User>().Property(x => x.EnabledDevices).HasConversion(listConverter);
-            modelBuilder.Entity<User>().Property(x => x.EnabledChannels).HasConversion(listConverter);
-            modelBuilder.Entity<User>().Property(x => x.EnabledFolders).HasConversion(listConverter);
-            modelBuilder.Entity<User>().Property(x => x.ExcludedSubFolders).HasConversion(listConverter);
+            modelBuilder.Entity<User>().Property(x => x.BlockedTags).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.BlockUnratedItems).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.EnabledDevices).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.EnabledChannels).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.EnabledFolders).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.ExcludedSubFolders).HasConversion(stringListConverter);
             modelBuilder.Entity<User>().Property(x => x.LastLoginDate).HasConversion(dateTimeOffsetConverter);
             modelBuilder.Entity<User>().Property(x => x.LastActivityDate).HasConversion(dateTimeOffsetConverter);
+
+            modelBuilder.Entity<Session>().Property(x => x.PlayableMediaTypes).HasConversion(stringListConverter);
+            modelBuilder.Entity<TranscodingInfo>().Property(x => x.TranscodeReasons).HasConversion(transcodeReasonEnumListConverter);
         }
     }
 }
