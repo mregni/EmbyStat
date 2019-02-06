@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using EmbyStat.Clients.EmbyClient;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
+using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
+using MediaBrowser.Model.System;
 using Moq;
 using Xunit;
+using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace Tests.Unit.Services
 {
@@ -28,7 +33,8 @@ namespace Tests.Unit.Services
 		    _embyRepositoryMock = new Mock<IEmbyRepository>();
 		    _embyRepositoryMock.Setup(x => x.GetAllPlugins()).Returns(_plugins);
 
-			_subject = new EmbyService(new Mock<IEmbyClient>().Object, new Mock<IConfigurationRepository>().Object, _embyRepositoryMock.Object);
+            var _mapperMock = new Mock<IMapper>();
+            _subject = new EmbyService(new Mock<IEmbyClient>().Object, new Mock<IConfigurationRepository>().Object, _embyRepositoryMock.Object, _mapperMock.Object);
 		}
 
 	    [Fact]

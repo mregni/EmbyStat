@@ -12,10 +12,12 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
+using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
 using Moq;
 using Xunit;
+using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace Tests.Unit.Services
 {
@@ -35,6 +37,12 @@ namespace Tests.Unit.Services
 			    new PluginInfo { Name = "EmbyStat plugin" },
 			    new PluginInfo { Name = "Trakt plugin" }
 		    };
+
+            var embyPlugins = new List<MediaBrowser.Model.Plugins.PluginInfo>()
+            {
+                new MediaBrowser.Model.Plugins.PluginInfo() {Name = "EmbyStat plugin"},
+                new MediaBrowser.Model.Plugins.PluginInfo() {Name = "Trakt plugin"}
+            };
 
 			_serverInfo = new ServerInfo
 			{
@@ -64,15 +72,15 @@ namespace Tests.Unit.Services
 	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" }
             };
 
-            var embyDrives = new List<Drive>
+            var embyDrives = new List<FileSystemEntryInfo>
 		    {
-			    new Drive()
+			    new FileSystemEntryInfo()
 		    };
 
 			var systemInfo = new ServerInfo();
 
 			_embyClientMock = new Mock<IEmbyClient>();
-		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
+		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(embyPlugins));
 		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
 		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
 		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
@@ -90,35 +98,12 @@ namespace Tests.Unit.Services
 
 	        var _mapperMock = new Mock<IMapper>();
 	        _mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
-	        _mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<Drive>>())).Returns(new List<Drive> {new Drive()});
+	        _mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<FileSystemEntryInfo>>())).Returns(new List<Drive> {new Drive()});
+	        _mapperMock.Setup(x => x.Map<IList<PluginInfo>>(It.IsAny<List<MediaBrowser.Model.Plugins.PluginInfo>>())).Returns(_plugins);
 
-			_subject = new EmbyService(_embyClientMock.Object, configurationRepositoryMock.Object, _embyRepository.Object);
+            _subject = new EmbyService(_embyClientMock.Object, configurationRepositoryMock.Object, _embyRepository.Object, _mapperMock.Object);
 	    }
 
-	    //[Fact]
-	    //public async void GetEmbyToken()
-	    //{
-		   // _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-			  //  .Returns(Task.FromResult(_authResult));
-
-		   // var login = new EmbyLogin
-		   // {
-			  //  Address = "http://localhost",
-			  //  UserName = "admin",
-			  //  Password = "adminpass"
-		   // };
-
-		   // var token = await _subject.GetEmbyToken(login);
-
-		   // token.Username.Should().Be(_authResult.User.ConnectUserName);
-		   // token.Token.Should().Be(_authResult.AccessToken);
-		   // token.IsAdmin.Should().Be(_authResult.User.Policy.IsAdministrator);
-
-		   // _embyClientMock.Verify(x => x.AuthenticateUserAsync(
-			  //  It.Is<string>(y => y == login.UserName ),
-			  //  It.Is<string>(y => y == login.Password),
-			  //  It.Is<string>(y => y == login.Address)));
-	    //}
 
 	    [Fact]
 		public async void GetEmbyTokenWithNoLoginInfo()

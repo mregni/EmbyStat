@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.ViewModels.Emby;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
-using MediaBrowser.Model.Plugins;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
