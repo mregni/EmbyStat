@@ -8,7 +8,7 @@ using FluentMigrator;
 namespace EmbyStat.Repositories.Migrations
 {
     [Migration(2)]
-    public class UpdateUserTable : Migration
+    public class AlterUserTable : Migration
     {
         public override void Up()
         {
