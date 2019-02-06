@@ -382,7 +382,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalTypeCount(List<string> collectionsIds, PersonType type, string title)
+        private Card TotalTypeCount(IEnumerable<string> collectionsIds, string type, string title)
         {
             return new Card
             {
@@ -391,7 +391,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(List<string> collectionIds, PersonType type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
         {
             var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -427,7 +427,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private Graph<SimpleGraphValue> CalculateGenreGraph(List<Movie> movies)
+        private Graph<SimpleGraphValue> CalculateGenreGraph(IEnumerable<Movie> movies)
         {
             var genres = _genreRepository.GetAll();
             var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
@@ -443,7 +443,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(List<Movie> movies)
+        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(IEnumerable<Movie> movies)
         {
             var ratingData = movies
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))

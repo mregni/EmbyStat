@@ -67,7 +67,7 @@ namespace EmbyStat.Repositories
             genresToDelete.ForEach(x => movie.MediaGenres.Remove(movie.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
         }
 
-        public int GetTotalPersonByType(List<string> collections, PersonType type)
+        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -84,7 +84,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(List<string> collections, PersonType type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -130,7 +130,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<string> GetGenres(List<string> collections)
+        public List<string> GetGenres(IEnumerable<string> collections)
         {
             using (var context = new ApplicationDbContext())
             {

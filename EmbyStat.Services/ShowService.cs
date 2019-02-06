@@ -214,7 +214,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, PersonType type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -222,7 +222,7 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionIds, PersonType type, string title)
+        private Card TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
         {
             return new Card
             {

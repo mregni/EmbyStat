@@ -250,7 +250,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(IEnumerable<string> collections, PersonType type)
+        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -267,7 +267,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(IEnumerable<string> collections, PersonType type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
