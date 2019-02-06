@@ -123,7 +123,7 @@ namespace EmbyStat.Repositories
 
         #region Emby Users
 
-        public void AddOrUpdateUsers(IEnumerable<User> users)
+        public async Task AddOrUpdateUsers(IEnumerable<User> users)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -141,7 +141,7 @@ namespace EmbyStat.Repositories
                     }
                 }
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
 
@@ -185,7 +185,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public async Task MarkDeviceUserAsDeleted(IEnumerable<Device> devices)
+        public async Task MarkDeviceAsDeleted(IEnumerable<Device> devices)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -197,6 +197,28 @@ namespace EmbyStat.Repositories
                     {
                         entity.Deleted = true;
                         context.Entry(entity).State = EntityState.Modified;
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddOrUpdateDevices(IEnumerable<Device> devices)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var entity in devices)
+                {
+                    var device = context.Devices.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
+
+                    if (device != null)
+                    {
+                        context.Entry(entity).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        context.Devices.Add(entity);
                     }
                 }
 

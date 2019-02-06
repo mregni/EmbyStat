@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EmbyStat.Repositories.Migrations
 {
     [Migration(4)]
-    class AlterDeviceTable : Migration
+    public class AlterDeviceTable : Migration
     {
         public override void Up()
         {
@@ -21,6 +21,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("LastUserId").AsString().NotNullable()
                     .ForeignKey("FK_Devices_User_Id", Constants.Tables.User, "Id").OnDelete(Rule.Cascade)
                 .WithColumn("AppName").AsString().NotNullable()
+                .WithColumn("Deleted").AsBoolean().NotNullable().WithDefaultValue(false)
                 .WithColumn("AppVersion").AsString().NotNullable()
                 .WithColumn("IconUrl").AsString().Nullable()
                 .WithColumn("DateLastActivity").AsDateTime().NotNullable();

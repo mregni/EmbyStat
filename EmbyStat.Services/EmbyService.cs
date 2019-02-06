@@ -148,7 +148,7 @@ namespace EmbyStat.Services
 
             var usersJson = await _embyClient.GetEmbyUsers();
             var users = UserConverter.ConvertToUserList(usersJson).ToList();
-            _embyRepository.AddOrUpdateUsers(users);
+            await _embyRepository.AddOrUpdateUsers(users);
 
             var localUsers = _embyRepository.GetAllUsers();
             var removedUsers = localUsers.Where(u => users.All(u2 => u2.Id != u.Id));
@@ -159,11 +159,12 @@ namespace EmbyStat.Services
         {
             _embyClient.SetAddressAndUrl(embyAddress, accessToken);
             var devicesJson = await _embyClient.GetEmbyDevices();
-            var devices = DeviceConverter.ConvertToDeviceList(devicesJson);
+            var devices = DeviceConverter.ConvertToDeviceList(devicesJson).ToList();
+            await _embyRepository.AddOrUpdateDevices(devices);
 
             var localDevices = _embyRepository.GetAllDevices();
             var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
-            await _embyRepository.MarkDeviceUserAsDeleted(removedDevices);
+            await _embyRepository.MarkDeviceAsDeleted(removedDevices);
         }
 
         public async void FireSmallSyncEmbyServerInfo()
@@ -185,10 +186,9 @@ namespace EmbyStat.Services
             return _embyRepository.GetEmbyStatus();
         }
 
-        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
         {
-		    var settings = _configurationRepository.GetConfiguration();
-            _embyClient.SetAddressAndUrl(settings.FullEmbyServerAddress, settings.AccessToken);
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
             return await _embyClient.PingEmbyAsync(cancellationToken);
         }
 

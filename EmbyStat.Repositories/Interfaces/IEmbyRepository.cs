@@ -32,7 +32,7 @@ namespace EmbyStat.Repositories.Interfaces
         #endregion
 
         #region Emby Users
-        void AddOrUpdateUsers(IEnumerable<User> users);
+        Task AddOrUpdateUsers(IEnumerable<User> users);
         IEnumerable<User> GetAllUsers();
         Task MarkUserAsDeleted(IEnumerable<User> users);
 
@@ -40,7 +40,9 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region Devices
         IEnumerable<Device> GetAllDevices();
-        Task MarkDeviceUserAsDeleted(IEnumerable<Device> devices);
+        Task MarkDeviceAsDeleted(IEnumerable<Device> devices);
+        Task AddOrUpdateDevices(IEnumerable<Device> devices);
+
         #endregion
 
     }
