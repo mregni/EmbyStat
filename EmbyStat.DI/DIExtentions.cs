@@ -74,11 +74,11 @@ namespace EmbyStat.DI
             services.TryAddSingleton<IBackgroundJobClient, BackgroundJobClient>();
             services.TryAddTransient<IJobInitializer, JobInitializer>();
 
-            services.TryAddSingleton<IDatabaseCleanupJob, DatabaseCleanupJob>();
-            services.TryAddSingleton<IPingEmbyJob, PingEmbyJob>();
-            services.TryAddSingleton<IMediaSyncJob, MediaSyncJob>();
-            services.TryAddSingleton<ISmallSyncJob, SmallSyncJob>();
-            services.TryAddSingleton<ICheckUpdateJob, CheckUpdateJob>();
+            services.TryAddTransient<IDatabaseCleanupJob, DatabaseCleanupJob>();
+            services.TryAddTransient<IPingEmbyJob, PingEmbyJob>();
+            services.TryAddTransient<IMediaSyncJob, MediaSyncJob>();
+            services.TryAddTransient<ISmallSyncJob, SmallSyncJob>();
+            services.TryAddTransient<ICheckUpdateJob, CheckUpdateJob>();
         }
 
         public static void RegisterClients(this IServiceCollection services)
