@@ -8,10 +8,10 @@ namespace EmbyStat.Services.Interfaces
     public interface IShowService
     {
         IEnumerable<Collection> GetShowCollections();
-        ShowStat GetGeneralStats(IEnumerable<string> collectionIds);
-        ShowGraphs GetGraphs(IEnumerable<string> collectionIds);
-        PersonStats GetPeopleStats(IEnumerable<string> collectionsIds);
-        List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds);
+        ShowStat GetGeneralStats(List<string> collectionIds);
+        ShowGraphs GetGraphs(List<string> collectionIds);
+        PersonStats GetPeopleStats(List<string> collectionsIds);
+        List<ShowCollectionRow> GetCollectionRows(List<string> collectionIds);
         bool ShowTypeIsPresent();
     }
 }

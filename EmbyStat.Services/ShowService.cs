@@ -49,7 +49,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
         }
 
-        public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
+        public ShowStat GetGeneralStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
@@ -82,7 +82,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public ShowGraphs GetGraphs(IEnumerable<string> collectionIds)
+        public ShowGraphs GetGraphs(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
@@ -110,7 +110,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public PersonStats GetPeopleStats(IEnumerable<string> collectionIds)
+        public PersonStats GetPeopleStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
@@ -136,7 +136,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds)
+        public List<ShowCollectionRow> GetCollectionRows(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
