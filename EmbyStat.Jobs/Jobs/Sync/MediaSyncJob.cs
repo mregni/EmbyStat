@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Emby.ApiClient.Model;
 using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.Tvdb;
@@ -71,11 +72,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            _embyClient.SetAddressAndUrl(_settings.GetFullEmbyServerAddress(), _settings.AccessToken);
+            _embyClient.SetAddressAndUrl(_settings.FullEmbyServerAddress, _settings.AccessToken);
 
             if (!await IsEmbyAlive(cancellationToken))
             {
-                LogWarning($"Halting task because we can't contact the Emby server on {_settings.GetFullEmbyServerAddress()}, please check the connection and try again.");
+                LogWarning($"Halting task because we can't contact the Emby server on {_settings.FullEmbyServerAddress}, please check the connection and try again.");
                 return;
             }
 
