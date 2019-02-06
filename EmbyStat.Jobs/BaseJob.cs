@@ -18,6 +18,7 @@ namespace EmbyStat.Jobs
     public abstract class BaseJob : IBaseJob
     {
         protected readonly IJobHubHelper HubHelper;
+        protected readonly IConfigurationService ConfigurationService;
         private readonly IJobRepository _jobRepository;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
@@ -28,6 +29,7 @@ namespace EmbyStat.Jobs
             HubHelper = hubHelper;
             _jobRepository = jobRepository;
             Settings = configurationService.GetServerSettings();
+            ConfigurationService = configurationService;
         }
 
         public abstract Guid Id { get; }

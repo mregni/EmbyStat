@@ -29,7 +29,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJob()
         {
-            var result = await _embyService.PingEmbyAsync(new CancellationToken(false));
+            var result = await _embyService.PingEmbyAsync(Settings.FullEmbyServerAddress, Settings.AccessToken, new CancellationToken(false));
             LogProgress(50);
             if (result == "Emby Server")
             {
@@ -43,7 +43,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
             }
 
             var status = _embyService.GetEmbyStatus();
-            await _hubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
+            await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
         }
 
