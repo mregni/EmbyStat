@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmbyStat.Clients.EmbyClient.Model
+namespace EmbyStat.Common.Models.Entities
 {
     public class Drive
     {
