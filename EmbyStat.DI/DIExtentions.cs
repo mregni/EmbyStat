@@ -1,9 +1,10 @@
-﻿using EmbyStat.Clients.EmbyClient;
+﻿using Emby.ApiClient;
+using Emby.ApiClient.Model;
+using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Clients.EmbyClient.Cryptography;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Clients.Github;
 using EmbyStat.Clients.Tvdb;
-using EmbyStat.Clients.WebSocketClient;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Hubs;
@@ -17,7 +18,6 @@ using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Sockets.EmbyClient;
 using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -86,7 +86,6 @@ namespace EmbyStat.DI
             services.TryAddTransient<IEmbyClient, EmbyClient>();
             services.TryAddTransient<ITvdbClient, TvdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
-            services.TryAddTransient<IEmbySocketClient, EmbySocketClient>();
         }
 
         public static void RegisterHttp(this IServiceCollection services)
