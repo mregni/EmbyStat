@@ -39,7 +39,7 @@
     "d3": "^5.8.0",
     "hammerjs": "^2.0.8",
     "highcharts": "^6.1.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "ng2-tooltip-directive": "^2.1.6",
     "ngrx-store-freeze": "^0.2.1",
     "ngx-moment": "^2.0.0",
