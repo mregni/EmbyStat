@@ -17,12 +17,10 @@ namespace EmbyStat.Clients.Tvdb
     {
         private TvdbToken JWtoken;
         private readonly IAsyncHttpClient _httpClient;
-        private readonly IJsonSerializer _jsonSerializer;
 
-        public TvdbClient(IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer)
+        public TvdbClient(IAsyncHttpClient httpClient)
         {
             _httpClient = httpClient;
-            _jsonSerializer = jsonSerializer;
         }
 
         public async Task Login(string apiKey, CancellationToken cancellationToken)
@@ -39,7 +37,7 @@ namespace EmbyStat.Clients.Tvdb
 
             using (var stream = await _httpClient.SendAsync(httpRequest))
             {
-                JWtoken = _jsonSerializer.DeserializeFromStream<TvdbToken>(stream);
+                JWtoken = JsonSerializerExtentions.DeserializeFromStream<TvdbToken>(stream);
             }
         }
 
@@ -74,7 +72,7 @@ namespace EmbyStat.Clients.Tvdb
 
             using (var stream = await _httpClient.SendAsync(httpRequest))
             {
-                return _jsonSerializer.DeserializeFromStream<TvdbEpisodes>(stream);
+                return JsonSerializerExtentions.DeserializeFromStream<TvdbEpisodes>(stream);
             }
         }
 
@@ -101,7 +99,7 @@ namespace EmbyStat.Clients.Tvdb
                     Log.Information($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
                     using (var stream = await _httpClient.SendAsync(httpRequest))
                     {
-                        var list = _jsonSerializer.DeserializeFromStream<Updates>(stream);
+                        var list = JsonSerializerExtentions.DeserializeFromStream<Updates>(stream);
                         var neededList = list.Data.Where(x => showIds.Any(y => y == x.Id.ToString())).Select(x => x.Id.ToString()).ToList();
                         updateList.AddRange(neededList);
                     }

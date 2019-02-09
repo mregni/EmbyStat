@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Emby.ApiClient.Model;
 using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Converters;

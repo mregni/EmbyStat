@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.ApiClient.Model;
 using EmbyStat.Clients.EmbyClient.Model;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;

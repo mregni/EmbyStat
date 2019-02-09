@@ -1,13 +1,10 @@
-﻿using Emby.ApiClient;
-using Emby.ApiClient.Model;
+﻿using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Clients.EmbyClient.Cryptography;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Clients.Github;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
@@ -50,6 +47,7 @@ namespace EmbyStat.DI
             services.TryAddSingleton<IWebSocketService, WebSocketService>();
             services.TryAddTransient<IUpdateService, UpdateService>();
             services.TryAddTransient<IJobService, JobService>();
+            services.TryAddTransient<IEventService, EventService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -86,12 +84,14 @@ namespace EmbyStat.DI
             services.TryAddTransient<IEmbyClient, EmbyClient>();
             services.TryAddTransient<ITvdbClient, TvdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
+
+            services.TryAddSingleton<IWebSocketApi, WebSocketApi>();
+            services.TryAddSingleton<IClientWebSocket, ClientWebSocket>();
         }
 
         public static void RegisterHttp(this IServiceCollection services)
         {
             services.TryAddTransient<ICryptographyProvider, CryptographyProvider>();
-            services.TryAddTransient<IJsonSerializer, JsonSerializer>();
             services.TryAddTransient<IAsyncHttpClient, HttpWebRequestClient>();
             services.TryAddTransient<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.TryAddTransient<BusinessExceptionFilterAttribute>();

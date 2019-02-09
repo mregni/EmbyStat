@@ -15,7 +15,7 @@ namespace EmbyStat.Services.Interfaces
 		List<Drive> GetLocalDrives();
 		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();
-	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);
+	    Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken);
         Task GetAndProcessServerInfo(string embyAddress, string accessToken);
         Task GetAndProcessPluginInfo(string embyAddress, string settingsAccessToken);
         Task GetAndProcessEmbyDriveInfo(string embyAddress, string settingsAccessToken);

@@ -1,53 +1,54 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Helpers
 {
-    public class JsonSerializer : IJsonSerializer
+    public static class JsonSerializerExtentions
     {
-        public void SerializeToStream(object obj, Stream stream)
+        public static void SerializeToStream(object obj, Stream stream)
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
             using (var jsonWriter = new JsonTextWriter(new StreamWriter(stream)))
             {
-                Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()).Serialize(jsonWriter, obj);
+                JsonSerializer.Create(new JsonSerializerSettings()).Serialize(jsonWriter, obj);
             }
         }
 
-        public object DeserializeFromStream(Stream stream, Type type)
+        public static object DeserializeFromStream(Stream stream, Type type)
         {
             using (var jsonReader = new JsonTextReader(new StreamReader(stream)))
             {
-                return Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(jsonReader, type);
+                return JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(jsonReader, type);
             }
         }
 
-        public T DeserializeFromStream<T>(Stream stream)
+        public static T DeserializeFromStream<T>(Stream stream)
         {
             return (T)DeserializeFromStream(stream, typeof(T));
         }
 
-        public T DeserializeFromString<T>(string text)
+        public static  T DeserializeFromString<T>(string text)
         {
             return JsonConvert.DeserializeObject<T>(text);
         }
 
-        public object DeserializeFromString(string json, Type type)
+        public static object DeserializeFromString(string json, Type type)
         {
             return JsonConvert.DeserializeObject(json, type);
         }
 
-        public string SerializeToString(object obj)
+        public static string SerializeToString(object obj)
         {
             return JsonConvert.SerializeObject(obj);
         }
 
-        public byte[] SerializeToBytes(object obj)
+        public static byte[] SerializeToBytes(object obj)
         {
-            string serialized = SerializeToString(obj);
-            return global::System.Text.Encoding.UTF8.GetBytes(serialized);
+            var serialized = SerializeToString(obj);
+            return Encoding.UTF8.GetBytes(serialized);
         }
     }
 }

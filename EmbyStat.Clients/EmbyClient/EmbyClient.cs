@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Emby.ApiClient.Model;
 using EmbyStat.Clients.EmbyClient.Cryptography;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.EmbyClient.Net;
@@ -23,8 +22,8 @@ namespace EmbyStat.Clients.EmbyClient
 {
 	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer,  IAsyncHttpClient httpClient)
-		: base(cryptographyProvider, jsonSerializer, httpClient)
+        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient)
+		: base(cryptographyProvider, httpClient)
 		{
 			
 		}

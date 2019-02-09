@@ -74,7 +74,6 @@ namespace EmbyStat.Common.Converters
                         VolumeLevel = session["PlayState"]["VolumeLevel"].Value<int>(),
                         IsTranscoding = session["TranscodingInfo"] != null,
                         AudioCodec = session["TranscodingInfo"]?["AudioCodec"].Value<string>(),
-                        Framerate = session["TranscodingInfo"]?["Framerate"]?.Value<float>(),
                         TranscodeReasons = session["TranscodingInfo"]?["TranscodeReasons"]
                             ?.ToObject<List<TranscodeReason>>(),
                         VideoCodec = session["TranscodingInfo"]?["VideoCodec"]?.Value<string>(),

@@ -27,16 +27,14 @@ namespace EmbyStat.Services
     public class UpdateService : IUpdateService
     {
         private readonly IGithubClient _githubClient;
-        private readonly IJsonSerializer _jsonSerializer;
         private readonly IConfigurationRepository _configurationRepository;
         private readonly IApplicationLifetime _applicationLifetime;
         private readonly AppSettings _appSettings;
 
         public UpdateService(IGithubClient githubClient, IOptions<AppSettings> appSettings, 
-            IJsonSerializer jsonSerializer, IConfigurationRepository configurationRepository, IApplicationLifetime appLifetime)
+            IConfigurationRepository configurationRepository, IApplicationLifetime appLifetime)
         {
             _githubClient = githubClient;
-            _jsonSerializer = jsonSerializer;
             _appSettings = appSettings.Value;
             _configurationRepository = configurationRepository;
             _applicationLifetime = appLifetime;
@@ -71,7 +69,7 @@ namespace EmbyStat.Services
         private void CreateUpdateFile(PackageInfo package)
         {
             var fileName = $"{package.versionStr}.ver";
-            var obj = _jsonSerializer.SerializeToString(package);
+            var obj = JsonSerializerExtentions.SerializeToString(package);
 
             foreach (var file in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ver"))
             {
@@ -184,7 +182,7 @@ namespace EmbyStat.Services
         private PackageInfo ReadUpdateFile(FileInfo file)
         {
             var json = File.ReadAllText(file.Name);
-            return _jsonSerializer.DeserializeFromString<PackageInfo>(json);
+            return JsonSerializerExtentions.DeserializeFromString<PackageInfo>(json);
         }
     }
 }

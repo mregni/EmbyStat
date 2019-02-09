@@ -11,6 +11,7 @@ using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
+using MediaBrowser.Model.Querying;
 using Serilog;
 
 namespace EmbyStat.Clients.EmbyClient
@@ -29,13 +30,11 @@ namespace EmbyStat.Clients.EmbyClient
 		protected string AuthorizationScheme => Constants.Emby.AuthorizationScheme;
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
 		protected readonly ICryptographyProvider CryptographyProvider;
-		protected readonly IJsonSerializer JsonSerializer;
 		protected readonly IAsyncHttpClient HttpClient;
 
-		protected BaseClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient)
+		protected BaseClient(ICryptographyProvider cryptographyProvider, IAsyncHttpClient httpClient)
 		{
 			CryptographyProvider = cryptographyProvider;
-			JsonSerializer = jsonSerializer;
 			HttpClient = httpClient;
 
 			ClientName = Constants.Emby.AppName;
@@ -295,7 +294,7 @@ namespace EmbyStat.Clients.EmbyClient
 
 		protected object DeserializeFromStream(Stream stream, Type type)
 		{
-			return JsonSerializer.DeserializeFromStream(stream, type);
+			return JsonSerializerExtentions.DeserializeFromStream(stream, type);
 		}
 
 		protected async Task<Stream> SendAsync(HttpRequest request)

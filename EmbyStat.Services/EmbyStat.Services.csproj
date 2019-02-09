@@ -6,15 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediaBrowser.Common" Version="4.0.0.2" />
+    <PackageReference Include="MediaBrowser.Common" Version="3.3.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Clients.Emby.WebSocket\EmbyStat.Clients.Emby.WebSocket.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
-    <ProjectReference Include="..\EmbyStat.Sockets\EmbyStat.Sockets.csproj" />
   </ItemGroup>
 
   <ItemGroup>
