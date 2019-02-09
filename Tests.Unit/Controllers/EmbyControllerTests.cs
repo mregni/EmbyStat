@@ -115,15 +115,6 @@ namespace Tests.Unit.Controllers
 	    }
 
 	    [Fact]
-	    public void IsServerInfoUpdated()
-	    {
-		    var result = _subject.FireSmallEmbySync();
-
-		    result.Should().BeOfType<OkResult>();
-		    _embyServiceMock.Verify(x => x.FireSmallSyncEmbyServerInfo(), Times.Once);
-	    }
-
-	    [Fact]
 	    public void IsServerInfoReturned()
 	    {
 		    var result = _subject.GetServerInfo();
