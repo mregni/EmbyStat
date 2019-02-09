@@ -160,21 +160,6 @@ namespace Tests.Unit.Services
 	    }
 
 	    [Fact]
-	    public void UpdateServerInfo()
-	    {
-		    _subject.FireSmallSyncEmbyServerInfo();
-
-		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
-			_embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
-			_embyClientMock.Verify(x => x.GetLocalDrivesAsync(), Times.Once);
-
-            _embyRepository.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
-			    y => y.Count == 2 &&
-			         y.First().Name == _plugins.First().Name)));
-            _embyRepository.Verify(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
-		}
-
-	    [Fact]
 	    public void GetServerInfoFromDatabase()
 	    {
 		    var serverInfo = _subject.GetServerInfo();
