@@ -177,7 +177,6 @@ namespace EmbyStat.Common
             public static string Sessions => "Sessions";
             public static string Plays => "Plays";
             public static string PlayStates => "PlayStates";
-            public static string TranscodingInfos => "TranscodingInfos";
         }
     }
 }

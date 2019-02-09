@@ -43,7 +43,6 @@ namespace EmbyStat.Repositories
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Play> Plays { get; set; }
         public DbSet<PlayState> PlayStates { get; set; }
-        public DbSet<TranscodingInfo> TranscodingInfos { get; set; }
 
 
         public ApplicationDbContext() : base()
@@ -145,10 +144,8 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<Play>().Property(x => x.Id).IsRequired();
             modelBuilder.Entity<Play>().HasMany(x => x.PlayStates).WithOne(x => x.Play).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Play>().HasMany(x => x.TranscodingInfos).WithOne(x => x.Play).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayState>().Property(x => x.Id).IsRequired();
-            modelBuilder.Entity<TranscodingInfo>().Property(x => x.Id).IsRequired();
 
 
             var stringListConverter = new ValueConverter<List<string>, string>(
@@ -172,8 +169,7 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<User>().Property(x => x.LastLoginDate).HasConversion(dateTimeOffsetConverter);
             modelBuilder.Entity<User>().Property(x => x.LastActivityDate).HasConversion(dateTimeOffsetConverter);
 
-            modelBuilder.Entity<Session>().Property(x => x.PlayableMediaTypes).HasConversion(stringListConverter);
-            modelBuilder.Entity<TranscodingInfo>().Property(x => x.TranscodeReasons).HasConversion(transcodeReasonEnumListConverter);
+            modelBuilder.Entity<PlayState>().Property(x => x.TranscodeReasons).HasConversion(transcodeReasonEnumListConverter);
         }
     }
 }

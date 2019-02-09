@@ -19,49 +19,44 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("ApplicationVersion").AsString().NotNullable()
                 .WithColumn("Client").AsString().NotNullable()
                 .WithColumn("DeviceId").AsString().NotNullable()
-                .WithColumn("AppIconUrl").AsString();
+                .WithColumn("AppIconUrl").AsString().Nullable();
 
             Create.Table(Constants.Tables.Plays)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Plays")
                 .WithColumn("Type").AsString().NotNullable()
                 .WithColumn("MediaId").AsString().NotNullable()
-                .WithColumn("SessionId").AsString()
-                    .ForeignKey("FK_Plays_Sessions_SessionId", Constants.Tables.Sessions, "Id").OnDelete(Rule.Cascade)
-                .WithColumn("IsFinished").AsBoolean().NotNullable().WithDefaultValue(false);
+                .WithColumn("SessionId").AsString().NotNullable()
+                .ForeignKey("FK_Plays_Sessions_SessionId", Constants.Tables.Sessions, "Id").OnDelete(Rule.Cascade)
+                .WithColumn("SubtitleCodec").AsString().Nullable()
+                .WithColumn("SubtitleLanguage").AsString().Nullable()
+                .WithColumn("SubtitleDisplayTitle").AsString().Nullable()
+                .WithColumn("AudioCodec").AsString().Nullable()
+                .WithColumn("AudioLanguage").AsString().Nullable()
+                .WithColumn("AudioChannelLayout").AsString().Nullable()
+                .WithColumn("VideoCodec").AsString().Nullable()
+                .WithColumn("VideoHeight").AsInt32().Nullable()
+                .WithColumn("VideoWidth").AsInt32().Nullable()
+                .WithColumn("VideoAverageFrameRate").AsDouble().Nullable()
+                .WithColumn("VideoRealFrameRate").AsDouble().Nullable()
+                .WithColumn("VideoAspectRatio").AsString().Nullable();
 
             Create.Table(Constants.Tables.PlayStates)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_PlayStates")
-                .WithColumn("PositionTicks").AsInt64().Nullable()
-                .WithColumn("CanSeek").AsBoolean().NotNullable().WithDefaultValue(false)
-                .WithColumn("IsPaused").AsBoolean().NotNullable().WithDefaultValue(false)
-                .WithColumn("IsMuted").AsBoolean().NotNullable().WithDefaultValue(false)
-                .WithColumn("VolumeLevel").AsInt32().Nullable()
-                .WithColumn("AudioStreamIndex").AsInt32().Nullable()
-                .WithColumn("SubtitleStreamIndex").AsInt32().Nullable()
+                .WithColumn("PositionTicks").AsInt64()
+                .WithColumn("VolumeLevel").AsInt32()
                 .WithColumn("MediaSourceId").AsString().NotNullable()
+                .WithColumn("IsPaused").AsBoolean().NotNullable().WithDefaultValue(false)
                 .WithColumn("PlayMethod").AsInt16().Nullable()
                 .WithColumn("RepeatMode").AsInt16().NotNullable()
+                .WithColumn("Framerate").AsFloat().Nullable()
+                .WithColumn("IsTranscoding").AsBoolean().NotNullable().WithDefaultValue(false)
+                .WithColumn("AudioCodec").AsString().Nullable()
+                .WithColumn("VideoCodec").AsString().Nullable()
+                .WithColumn("TranscodeReasons").AsString().Nullable()
+                .WithColumn("TimeLogged").AsDateTime().NotNullable()
                 .WithColumn("PlayId").AsString().NotNullable()
                     .ForeignKey("FK_PlayStates_Plays_PlayId", Constants.Tables.Plays, "Id").OnDelete(Rule.Cascade);
 
-            Create.Table(Constants.Tables.TranscodingInfos)
-                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_TranscodingInfos")
-                .WithColumn("AudioCodec").AsString().NotNullable()
-                .WithColumn("VideoCodec").AsString().NotNullable()
-                .WithColumn("Container").AsString().NotNullable()
-                .WithColumn("IsVideoDirect").AsBoolean().NotNullable().WithDefaultValue(false)
-                .WithColumn("IsAudioDirect").AsBoolean().NotNullable().WithDefaultValue(false)
-                .WithColumn("Bitrate").AsInt32().Nullable()
-                .WithColumn("Framerate").AsFloat().Nullable()
-                .WithColumn("CompletionPercentage").AsDouble().Nullable()
-                .WithColumn("Width").AsInt32().Nullable()
-                .WithColumn("Height").AsInt32().Nullable()
-                .WithColumn("AudioChannels").AsInt32().Nullable()
-                .WithColumn("TranscodeReasons").AsString()
-                .WithColumn("PlayId").AsString().NotNullable()
-                    .ForeignKey("FK_TranscodeingInfos_Plays_PlayId", Constants.Tables.Plays, "Id").OnDelete(Rule.Cascade);
-
-            Create.Index("IX_TranscodingInfos_PlayId").OnTable(Constants.Tables.TranscodingInfos).OnColumn("PlayId");
             Create.Index("IX_PlayStates_PlayId").OnTable(Constants.Tables.PlayStates).OnColumn("PlayId");
             Create.Index("IX_Plays_SessionId").OnTable(Constants.Tables.Plays).OnColumn("SessionId");
         }
