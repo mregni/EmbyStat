@@ -167,20 +167,6 @@ namespace EmbyStat.Services
             await _embyRepository.MarkDeviceAsDeleted(removedDevices);
         }
 
-        public async void FireSmallSyncEmbyServerInfo()
-	    {
-		    var settings = _configurationRepository.GetConfiguration();
-
-			_embyClient.SetAddressAndUrl(settings.FullEmbyServerAddress, settings.AccessToken);
-		    var systemInfoResponse = await _embyClient.GetServerInfoAsync();
-			var plugins = await _embyClient.GetInstalledPluginsAsync();
-		    var drives = await _embyClient.GetLocalDrivesAsync();
-
-            _embyRepository.AddOrUpdateServerInfo(systemInfoResponse);
-            _embyRepository.RemoveAllAndInsertPluginRange(_mapper.Map<IList<PluginInfo>>(plugins));
-            _embyRepository.RemoveAllAndInsertDriveRange(_mapper.Map<IList<Drive>>(drives));
-		}
-
         public EmbyStatus GetEmbyStatus()
         {
             return _embyRepository.GetEmbyStatus();

@@ -34,15 +34,6 @@ namespace EmbyStat.Controllers
 			return Ok(_mapper.Map<EmbyTokenViewModel>(result));
 		}
 
-		[HttpPost]
-		[Route("firesmallembysync")]
-		public IActionResult FireSmallEmbySync()
-		{
-		    Log.Information($"{Constants.LogPrefix.ServerApi}\tSync basic Emby server info.");
-			_embyService.FireSmallSyncEmbyServerInfo();
-			return Ok();
-		}
-
 		[HttpGet]
 		[Route("getserverinfo")]
 		public async Task<IActionResult> GetServerInfo()

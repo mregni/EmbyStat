@@ -13,7 +13,6 @@ namespace EmbyStat.Services.Interfaces
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
         Task<ServerInfo> GetServerInfo();
 		List<Drive> GetLocalDrives();
-		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();
 	    Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken);
         Task GetAndProcessServerInfo(string embyAddress, string accessToken);
