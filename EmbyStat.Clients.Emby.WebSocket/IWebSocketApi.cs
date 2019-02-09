@@ -9,13 +9,13 @@ namespace EmbyStat.Clients.Emby.WebSocket
 {
     public interface IWebSocketApi
     {
-        event EventHandler WebSocketClosed;
+        event EventHandler OnWebSocketClosed;
+        event EventHandler OnWebSocketConnected;
         event EventHandler<GenericEventArgs<JArray>> UserDataChanged;
         event EventHandler<GenericEventArgs<string>> UserDeleted;
         event EventHandler<GenericEventArgs<JObject>> UserUpdated;
         event EventHandler<EventArgs> ServerRestarting;
         event EventHandler<EventArgs> ServerShuttingDown;
-        event EventHandler<EventArgs> WebSocketConnected;
         event EventHandler<GenericEventArgs<JArray>> SessionsUpdated;
         event EventHandler<EventArgs> RestartRequired;
 

@@ -16,13 +16,13 @@ namespace EmbyStat.Clients.Emby.WebSocket
 {
     public class WebSocketApi : IWebSocketApi, IDisposable
     {
-        public event EventHandler WebSocketClosed;
+        public event EventHandler OnWebSocketClosed;
         public event EventHandler<GenericEventArgs<JArray>> UserDataChanged;
         public event EventHandler<GenericEventArgs<string>> UserDeleted;
         public event EventHandler<GenericEventArgs<JObject>> UserUpdated;
         public event EventHandler<EventArgs> ServerRestarting;
         public event EventHandler<EventArgs> ServerShuttingDown;
-        public event EventHandler<EventArgs> WebSocketConnected;
+        public event EventHandler OnWebSocketConnected;
         public event EventHandler<GenericEventArgs<JArray>> SessionsUpdated;
         public event EventHandler<EventArgs> RestartRequired;
 
@@ -72,7 +72,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
                     _clientWebSocket.OnReceive = OnMessageReceived;
                     _clientWebSocket.Closed += _clientWebSocket_Closed;
 
-                    OnConnected();
+                    OnWebSocketConnected?.Invoke(this, EventArgs.Empty);
                 }
                 catch (Exception e)
                 {
@@ -85,7 +85,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         {
             Log.Warning("Web socket connection closed.");
 
-            WebSocketClosed?.Invoke(this, EventArgs.Empty);
+            OnWebSocketClosed?.Invoke(this, EventArgs.Empty);
         }
 
         private Task SendWebSocketMessage<T>(string messageName, T data)
@@ -220,11 +220,6 @@ namespace EmbyStat.Clients.Emby.WebSocket
         {
             var message = JsonConvert.DeserializeObject<WebSocketMessage<object>>(json);
             return message.MessageType;
-        }
-
-        private void OnConnected()
-        {
-            FireEvent(WebSocketConnected, this, EventArgs.Empty);
         }
 
         private void FireEvent<T>(EventHandler<T> handler, object sender, T args)  where T : EventArgs

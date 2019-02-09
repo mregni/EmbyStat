@@ -18,6 +18,8 @@ namespace EmbyStat.Services
         private readonly IEventService _eventService;
         private readonly IWebSocketApi _webSocketApi;
 
+        private Timer _timer;
+
         public WebSocketService(IConfigurationService configurationService, IEventService eventService, IWebSocketApi webSocketApi)
         {
             _configurationService = configurationService;
@@ -27,24 +29,48 @@ namespace EmbyStat.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                var settings = _configurationService.GetServerSettings();
-                try
-                {
-                    _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.AccessToken, Constants.Emby.DeviceId);
-                    _webSocketApi.WebSocketConnected += _client_WebSocketConnected;
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Failed to open socket connection to Emby");
-                    throw;
-                }
-            }, cancellationToken);
+            _timer = new Timer(TryToConnect, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+
+            return Task.CompletedTask;
         }
 
-        private async void _client_WebSocketConnected(object sender, EventArgs e)
+        private void TryToConnect(object state)
         {
+            if (!_webSocketApi.IsWebSocketOpenOrConnecting)
+            {
+                var settings = _configurationService.GetServerSettings();
+                if (!string.IsNullOrWhiteSpace(settings.AccessToken))
+                {
+                    try
+                    {
+                        _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.AccessToken, Constants.Emby.DeviceId);
+                        _webSocketApi.OnWebSocketConnected += _client_OnWebSocketConnected;
+                        _webSocketApi.OnWebSocketClosed += _webSocketApi_OnWebSocketClosed;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "Failed to open socket connection to Emby");
+                        throw;
+                    }
+                }
+            }
+            else
+            {
+                _timer.Change(60000, 60000);
+            }
+        }
+
+        private void _webSocketApi_OnWebSocketClosed(object sender, EventArgs e)
+        {
+            _webSocketApi.SessionsUpdated -= _webSocketApi_SessionsUpdated;
+            _webSocketApi.UserDataChanged -= _webSocketApi_UserDataChanged;
+
+            _timer.Change(5000, 5000);
+        }
+
+        private async void _client_OnWebSocketConnected(object sender, EventArgs e)
+        {
+            await _webSocketApi.StopReceivingSessionUpdates();
             await _webSocketApi.StartReceivingSessionUpdates(10000);
 
             _webSocketApi.SessionsUpdated += _webSocketApi_SessionsUpdated;
@@ -58,10 +84,7 @@ namespace EmbyStat.Services
 
         private async void _webSocketApi_SessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
         {
-            Log.Information("SESSION UPDATE");
-            Log.Information(JsonConvert.SerializeObject(e.Argument));
             var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
-
             await _eventService.ProcessSessions(sessions);
         }
 
