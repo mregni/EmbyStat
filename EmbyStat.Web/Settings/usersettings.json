@@ -1,0 +1,35 @@
+{
+  "AppName": "EmbyStat",
+  "Id": null,
+  "WizardFinished": false,
+  "Username": "",
+  "Language": "en-US",
+  "ToShortMovie": 10,
+  "KeepLogsCount": 10,
+  "MovieCollectionTypes": [
+    0,
+    1,
+    6
+  ],
+  "ShowCollectionTypes": [
+    0,
+    2
+  ],
+  "AutoUpdate": true,
+  "UpdateTrain": 1,
+  "UpdateInProgress": false,
+  "Emby": {
+    "UserId": "",
+    "UserName": "",
+    "ServerName": "",
+    "AccessToken": "",
+    "ServerAddress": "",
+    "ServerPort": 8096,
+    "AuthorizationScheme": "MediaBrowser",
+    "ServerProtocol": 0
+  },
+  "Tvdb": {
+    "LastUpdate": null,
+    "ApiKey": "BWLRSNRC0AQUIEYX"
+  }
+}
