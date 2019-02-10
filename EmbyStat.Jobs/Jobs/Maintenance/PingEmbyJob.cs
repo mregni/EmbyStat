@@ -16,8 +16,8 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     {
         private readonly IEmbyService _embyService;
 
-        public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
-            IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
+        public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+            IEmbyService embyService) : base(hubHelper, jobRepository, settingsService)
         {
             _embyService = embyService;
             Title = jobRepository.GetById(Id).Title;
@@ -29,7 +29,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJob()
         {
-            var result = await _embyService.PingEmbyAsync(Settings.FullEmbyServerAddress, Settings.AccessToken, new CancellationToken(false));
+            var result = await _embyService.PingEmbyAsync(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken, new CancellationToken(false));
             LogProgress(50);
             if (result == "Emby Server")
             {

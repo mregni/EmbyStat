@@ -5,6 +5,7 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
@@ -18,18 +19,18 @@ namespace EmbyStat.Jobs
     public abstract class BaseJob : IBaseJob
     {
         protected readonly IJobHubHelper HubHelper;
-        protected readonly IConfigurationService ConfigurationService;
+        protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
-        protected Configuration Settings { get; set; }
+        protected UserSettings Settings { get; set; }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService)
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService)
         {
             HubHelper = hubHelper;
             _jobRepository = jobRepository;
-            Settings = configurationService.GetServerSettings();
-            ConfigurationService = configurationService;
+            Settings = settingsService.GetUserSettings();
+            SettingsService = settingsService;
         }
 
         public abstract Guid Id { get; }

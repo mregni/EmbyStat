@@ -43,15 +43,6 @@ namespace EmbyStat.Common
             public static string ShowStatusGraph => "SHOWS.SHOWSTATUSGRAPH";
         }
 
-        public static class Emby
-        {
-            public static string DeviceName => "EmbyStats server";
-            public static string DeviceId => "6d5082f6-dffd-4ce9-8301-03eb339e05d4";
-            public static string AppName => "EmbyStats";
-            public static string AppVersion => "1.0.0";
-            public static string AuthorizationScheme => "MediaBrowser";
-        }
-
         public static class Tvdb
         {
             public static string BaseUrl => "https://api.thetvdb.com";
@@ -66,29 +57,6 @@ namespace EmbyStat.Common
             public static string Boxset => "BoxSet";
         }
 
-        public static class Configuration
-        {
-            public static string AccessToken => "ACCESSTOKEN";
-            public static string EmbyServerAddress => "EMBYSERVERADDRESS";
-            public static string EmbyServerPort => "EMBYSERVERPORT";
-            public static string EmbyServerProtocol => "EMBYSERVERPROTOCOL";
-            public static string EmbyUserId => "EMBYUSERID";
-            public static string EmbyUserName => "EMBYUSERNAME";
-            public static string Language => "LANGUAGE";
-            public static string LastTvdbUpdate => "LASTTVDBUPDATE";
-            public static string ServerName => "SERVERNAME";
-            public static string ToShortMovie => "TOSHORTMOVIE";
-            public static string UserName => "USERNAME";
-            public static string WizardFinished => "WIZARDFINISHED";
-            public static string TvdbApiKey => "TVDBAPICLIENT";
-            public static string KeepLogsCount => "KEEPLOGSCOUNT";
-            public static string MovieCollectionTypes => "MOVIECOLLECTIONTYPES";
-            public static string ShowCollectionTypes => "SHOWCOLLECTIONTYPES";
-            public static string AutoUpdate => "AUTOUPDATE";
-            public static string UpdateTrain => "UPDATETRAIN";
-            public static string UpdateInProgress => "UPDATEINPROGRESS";
-        }
-
         public static class EmbyStatus
         {
             public static string MissedPings => "MISSEDPINGS";
@@ -97,8 +65,6 @@ namespace EmbyStat.Common
         public static class LogPrefix
         {
             public static string ServerApi => "SERVER-API";
-            public static string TaskManager => "TASK-MANAGER";
-            public static string TaskWorker => "TASK-WORKER";
             public static string DatabaseSeeder => "DATABASE-SEEDER";
             public static string MediaSyncJob => "MEDIASYNC-JOB";
             public static string CheckUpdateJob => "CHECKUDPATE-JOB";

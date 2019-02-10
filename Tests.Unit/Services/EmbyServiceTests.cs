@@ -8,10 +8,13 @@ using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
+using FluentAssertions.Common;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
@@ -26,22 +29,20 @@ namespace Tests.Unit.Services
     {
 	    private readonly EmbyService _subject;
 	    private readonly Mock<IEmbyClient> _embyClientMock;
-        private readonly Mock<IEmbyRepository> _embyRepository;
-        private readonly List<PluginInfo> _plugins;
         private readonly ServerInfo _serverInfo;
 
 		public EmbyServiceTests()
 	    {
-	        _plugins = new List<PluginInfo>
-		    {
-			    new PluginInfo { Name = "EmbyStat plugin" },
-			    new PluginInfo { Name = "Trakt plugin" }
-		    };
-
-            var embyPlugins = new List<MediaBrowser.Model.Plugins.PluginInfo>()
+            var plugins = new List<PluginInfo>
             {
-                new MediaBrowser.Model.Plugins.PluginInfo() {Name = "EmbyStat plugin"},
-                new MediaBrowser.Model.Plugins.PluginInfo() {Name = "Trakt plugin"}
+                new PluginInfo { Name = "EmbyStat plugin" },
+                new PluginInfo { Name = "Trakt plugin" }
+            };
+
+            var embyPlugins = new List<MediaBrowser.Model.Plugins.PluginInfo>
+            {
+                new MediaBrowser.Model.Plugins.PluginInfo {Name = "EmbyStat plugin"},
+                new MediaBrowser.Model.Plugins.PluginInfo {Name = "Trakt plugin"}
             };
 
 			_serverInfo = new ServerInfo
@@ -57,21 +58,6 @@ namespace Tests.Unit.Services
 		        new Drive {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
 		    };
 
-	        var configuration = new List<ConfigurationKeyValue>
-	        {
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "localhost" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerPort, Value = "80" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" }
-            };
-
             var embyDrives = new List<FileSystemEntryInfo>
 		    {
 			    new FileSystemEntryInfo()
@@ -85,30 +71,30 @@ namespace Tests.Unit.Services
 		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
 		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
 
-            _embyRepository = new Mock<IEmbyRepository>();
-            _embyRepository.Setup(x => x.GetAllPlugins()).Returns(_plugins);
-            _embyRepository.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
-            _embyRepository.Setup(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
-            _embyRepository.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
-            _embyRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
-            _embyRepository.Setup(x => x.GetAllDrives()).Returns(drives);
+            var embyRepository = new Mock<IEmbyRepository>();
+            embyRepository.Setup(x => x.GetAllPlugins()).Returns(plugins);
+            embyRepository.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
+            embyRepository.Setup(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
+            embyRepository.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
+            embyRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
+            embyRepository.Setup(x => x.GetAllDrives()).Returns(drives);
 
-            var configurationRepositoryMock = new Mock<IConfigurationRepository>();
-	        configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
+            var settingsServiceMock = new Mock<ISettingsService>();
+	        settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings());
 
-	        var _mapperMock = new Mock<IMapper>();
-	        _mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
-	        _mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<FileSystemEntryInfo>>())).Returns(new List<Drive> {new Drive()});
-	        _mapperMock.Setup(x => x.Map<IList<PluginInfo>>(It.IsAny<List<MediaBrowser.Model.Plugins.PluginInfo>>())).Returns(_plugins);
+	        var mapperMock = new Mock<IMapper>();
+	        mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
+	        mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<FileSystemEntryInfo>>())).Returns(new List<Drive> {new Drive()});
+	        mapperMock.Setup(x => x.Map<IList<PluginInfo>>(It.IsAny<List<MediaBrowser.Model.Plugins.PluginInfo>>())).Returns(plugins);
 
-            _subject = new EmbyService(_embyClientMock.Object, configurationRepositoryMock.Object, _embyRepository.Object, _mapperMock.Object);
+            _subject = new EmbyService(_embyClientMock.Object, settingsServiceMock.Object, embyRepository.Object, mapperMock.Object);
 	    }
 
 
 	    [Fact]
 		public async void GetEmbyTokenWithNoLoginInfo()
 	    {
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
@@ -122,7 +108,7 @@ namespace Tests.Unit.Services
 				UserName = "Admin",
 				Address = "http://localhost"
 			};
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
@@ -136,7 +122,7 @@ namespace Tests.Unit.Services
 			    Password = "AdminPass",
 			    Address = "http://localhost"
 		    };
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
@@ -153,7 +139,7 @@ namespace Tests.Unit.Services
 			    Address = "http://localhost",
 				UserName = "Admin"
 		    };
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);

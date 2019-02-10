@@ -37,10 +37,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
+        public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository, IGenreRepository genreRepository, 
             IPersonRepository personRepository, ICollectionRepository collectionRepository, ITvdbClient tvdbClient, 
-            IStatisticsRepository statisticsRepository): base(hubHelper, jobRepository, configurationService)
+            IStatisticsRepository statisticsRepository): base(hubHelper, jobRepository, settingsService)
         {
             _embyClient = embyClient;
             _movieRepository = movieRepository;
@@ -67,7 +67,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            _embyClient.SetAddressAndUrl(Settings.FullEmbyServerAddress, Settings.AccessToken);
+            _embyClient.SetAddressAndUrl(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
 
             if (!await IsEmbyAlive(cancellationToken))
             {
@@ -79,13 +79,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
             CleanUpDatabase();
             LogProgress(3);
 
-            var rootItems = await GetRootItems(Settings.EmbyUserId, cancellationToken);
+            var rootItems = await GetRootItems(Settings.Emby.UserId, cancellationToken);
             _collectionRepository.AddOrUpdateRange(rootItems);
             LogInformation($"Found {rootItems.Count} root items, getting ready for processing");
 
             await ProcessMovies(rootItems, cancellationToken);
             await ProcessShows(rootItems, cancellationToken);
-            await SyncMissingEpisodes(Settings.LastTvdbUpdate, Settings.TvdbApiKey, cancellationToken);
+            await SyncMissingEpisodes(Settings.Tvdb.LastUpdate, Settings.Tvdb.ApiKey, cancellationToken);
 
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
@@ -163,7 +163,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = Settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
                 {
@@ -290,8 +290,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var now = DateTime.Now;
             await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
 
-            Settings.LastTvdbUpdate = now;
-            ConfigurationService.SaveServerSettings(Settings);
+            Settings.Tvdb.LastUpdate = now;
+            await SettingsService.SaveUserSettings(Settings);
         }
 
         private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
@@ -384,7 +384,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = Settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { "Series" },
                 Fields = new[]
                 {
@@ -414,7 +414,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = Settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Season) },
                 Fields = new[]
                 {
@@ -435,7 +435,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = Settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Episode) },
                 Fields = new[]
                 {

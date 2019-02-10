@@ -3,6 +3,7 @@ using AutoMapper;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.ViewModels.About;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
@@ -35,7 +36,7 @@ namespace EmbyStat.Controllers
             CreateMap<FileSystemEntryInfo, Drive>();
 
             //Controllers
-            CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.Version, x => x.Ignore());
+            CreateMap<UserSettings, FullSettingsViewModel>().ForMember(x => x.Version, x => x.Ignore()).ReverseMap();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();

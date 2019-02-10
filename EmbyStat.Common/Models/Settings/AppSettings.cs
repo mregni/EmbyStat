@@ -1,4 +1,6 @@
-﻿namespace EmbyStat.Common.Models.Settings
+﻿using System;
+
+namespace EmbyStat.Common.Models.Settings
 {
     public class AppSettings
     {
@@ -8,6 +10,10 @@
         public Dirs Dirs { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
         public int Port { get; set; }
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string EmbyAuthorizationScheme { get; set; }
+
     }
 
     public class Updater
@@ -24,6 +30,7 @@
         public string TempUpdateDir { get; set; }
         public string Updater { get; set; }
         public string Logs { get; set; }
+        public string Settings { get; set; }
     }
 
     public class ConnectionStrings

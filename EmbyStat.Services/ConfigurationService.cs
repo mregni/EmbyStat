@@ -9,41 +9,16 @@ namespace EmbyStat.Services
 {
     public class ConfigurationService : IConfigurationService
     {
-		private readonly IConfigurationRepository _configurationRepository;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly AppSettings _appSettings;
 
-        public ConfigurationService(IConfigurationRepository configurationRepository, IStatisticsRepository statisticsRepository, IOptions<AppSettings> appSettings)
+        public ConfigurationService(IStatisticsRepository statisticsRepository, IOptions<AppSettings> appSettings)
         {
-            _configurationRepository = configurationRepository;
             _statisticsRepository = statisticsRepository;
             _appSettings = appSettings.Value;
         }
 
-		public void SaveServerSettings(Configuration configuration)
-		{
-		    var oldConfig = _configurationRepository.GetConfiguration();
-		    MarkMovieStatisticsAsInvalidIfNeeded(configuration, oldConfig);
-            MarkShowStatisticsAsInvalidIfNeeded(configuration, oldConfig);
-
-            _configurationRepository.Update(configuration);
-        }
-
-		public Configuration GetServerSettings()
-		{
-            var config = _configurationRepository.GetConfiguration();
-            config.Version = _appSettings.Version;
-            return config;
-        }
-
-        public void SetUpdateInProgressSetting(bool value)
-        {
-            var config = _configurationRepository.GetConfiguration();
-            config.UpdateInProgress = value;
-            _configurationRepository.Update(config);
-        }
-
-        private void MarkMovieStatisticsAsInvalidIfNeeded(Configuration configuration, Configuration oldConfig)
+        private void MarkMovieStatisticsAsInvalidIfNeeded(UserSettings configuration, UserSettings oldConfig)
         {
             if (!(oldConfig.MovieCollectionTypes.All(configuration.MovieCollectionTypes.Contains) &&
                   oldConfig.MovieCollectionTypes.Count == configuration.MovieCollectionTypes.Count))
@@ -52,7 +27,7 @@ namespace EmbyStat.Services
             }
         }
 
-        private void MarkShowStatisticsAsInvalidIfNeeded(Configuration configuration, Configuration oldConfig)
+        private void MarkShowStatisticsAsInvalidIfNeeded(UserSettings configuration, UserSettings oldConfig)
         {
             if (!(oldConfig.ShowCollectionTypes.All(configuration.ShowCollectionTypes.Contains) &&
                   oldConfig.ShowCollectionTypes.Count == configuration.ShowCollectionTypes.Count))

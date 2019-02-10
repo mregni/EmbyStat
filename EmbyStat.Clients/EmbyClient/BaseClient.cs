@@ -10,8 +10,11 @@ using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Settings;
 using MediaBrowser.Model.Querying;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace EmbyStat.Clients.EmbyClient
@@ -27,23 +30,26 @@ namespace EmbyStat.Clients.EmbyClient
 		protected string AccessToken { get; private set; }
 		protected Guid? CurrentUserId { get; private set; }
 		protected string ApiUrl => ServerAddress + "/emby";
-		protected string AuthorizationScheme => Constants.Emby.AuthorizationScheme;
+		protected string AuthorizationScheme { get; private set; }
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
 		protected readonly ICryptographyProvider CryptographyProvider;
 		protected readonly IAsyncHttpClient HttpClient;
 
-		protected BaseClient(ICryptographyProvider cryptographyProvider, IAsyncHttpClient httpClient)
+		protected BaseClient(ICryptographyProvider cryptographyProvider, IAsyncHttpClient httpClient, IOptions<AppSettings> options)
 		{
 			CryptographyProvider = cryptographyProvider;
 			HttpClient = httpClient;
+            var settings = options.Value;
 
-			ClientName = Constants.Emby.AppName;
-			ApplicationVersion = "1.0.0";
+			ClientName = settings.Name;
+            AuthorizationScheme = settings.EmbyAuthorizationScheme;
+            ApplicationVersion = settings.Version.ToCleanVersionString();
+
 			Device = new Device
 			{
-				DeviceId = Constants.Emby.DeviceId,
-				DeviceName = Constants.Emby.DeviceName
-			};
+				DeviceId = settings.Id,
+				DeviceName = settings.Name
+            };
 
 			ResetHttpHeaders();
 		}

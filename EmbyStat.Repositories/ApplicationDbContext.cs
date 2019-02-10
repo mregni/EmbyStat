@@ -14,7 +14,6 @@ namespace EmbyStat.Repositories
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<ConfigurationKeyValue> Configuration { get; set; }
         public DbSet<PluginInfo> Plugins { get; set; }
         public DbSet<ServerInfo> ServerInfo { get; set; }
         public DbSet<Drive> Drives { get; set; }
@@ -64,8 +63,6 @@ namespace EmbyStat.Repositories
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<ConfigurationKeyValue>().Property(s => s.Id).IsRequired();
 
             modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
 

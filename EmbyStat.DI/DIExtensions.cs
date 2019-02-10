@@ -21,7 +21,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace EmbyStat.DI
 {
-    public static class DIExtentions
+    public static class DIExtensions
     {
         public static void RegisterApplicationDependencies(this IServiceCollection services)
         {
@@ -35,7 +35,6 @@ namespace EmbyStat.DI
 
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.TryAddTransient<IConfigurationService, ConfigurationService>();
             services.TryAddTransient<IEmbyService, EmbyService>();
             services.TryAddTransient<IEmbyService, EmbyService>();
             services.TryAddTransient<IMovieService, MovieService>();
@@ -48,6 +47,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IUpdateService, UpdateService>();
             services.TryAddTransient<IJobService, JobService>();
             services.TryAddTransient<IEventService, EventService>();
+            services.TryAddSingleton<ISettingsService, SettingsService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -55,7 +55,6 @@ namespace EmbyStat.DI
             services.TryAddTransient<IDatabaseInitializer, DatabaseInitializer>();
 
             services.TryAddTransient<IMovieRepository, MovieRepository>();
-            services.TryAddTransient<IConfigurationRepository, ConfigurationRepository>();
             services.TryAddTransient<IEmbyRepository, EmbyRepository>();
             services.TryAddTransient<IGenreRepository, GenreRepository>();
             services.TryAddTransient<IPersonRepository, PersonRepository>();

@@ -17,9 +17,9 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         private readonly IPersonRepository _personRepository;
         private readonly IGenreRepository _genreRepository;
 
-        public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
+        public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IStatisticsRepository statisticsRepository, IPersonRepository personRepository, IGenreRepository genreRepository) 
-            : base(hubHelper, jobRepository, configurationService)
+            : base(hubHelper, jobRepository, settingsService)
         {
             _statisticsRepository = statisticsRepository;
             _personRepository = personRepository;

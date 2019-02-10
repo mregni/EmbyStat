@@ -23,14 +23,14 @@ namespace EmbyStat.Services
     public class EmbyService : IEmbyService
     {
 	    private readonly IEmbyClient _embyClient;
-		private readonly IConfigurationRepository _configurationRepository;
         private readonly IEmbyRepository _embyRepository;
+        private readonly ISettingsService _settingsService;
         private readonly IMapper _mapper;
 
-        public EmbyService(IEmbyClient embyClient, IConfigurationRepository configurationRepository, IEmbyRepository embyRepository, IMapper mapper)
+        public EmbyService(IEmbyClient embyClient, ISettingsService settingsService, IEmbyRepository embyRepository, IMapper mapper)
         {
             _embyClient = embyClient;
-            _configurationRepository = configurationRepository;
+            _settingsService = settingsService;
             _embyRepository = embyRepository;
             _mapper = mapper;
         }
@@ -57,9 +57,9 @@ namespace EmbyStat.Services
 					    var serverResponse = Encoding.ASCII.GetString(receivedData);
 						var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
 
-					    var configuration = _configurationRepository.GetConfiguration();
-					    configuration.ServerName = udpBroadcastResult.Name;
-						_configurationRepository.Update(configuration);
+                        var settings = _settingsService.GetUserSettings();
+					    settings.Emby.ServerName = udpBroadcastResult.Name;
+						_settingsService.SaveUserSettings(settings);
 
 					    return udpBroadcastResult;
 
@@ -106,8 +106,8 @@ namespace EmbyStat.Services
 		    var server = _embyRepository.GetServerInfo();
             if (server == null)
             {
-                var settings = _configurationRepository.GetConfiguration();
-                await GetAndProcessServerInfo(settings.FullEmbyServerAddress, settings.AccessToken);
+                var settings = _settingsService.GetUserSettings();
+                await GetAndProcessServerInfo(settings.FullEmbyServerAddress, settings.Emby.AccessToken);
             }
 
             return server;

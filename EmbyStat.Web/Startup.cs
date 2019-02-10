@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using AutoMapper;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
@@ -26,6 +29,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -89,6 +93,7 @@ namespace EmbyStat.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, IApplicationLifetime lifetime)
         {
             ApplicationBuilder = app;
+            AddDeviceIdToConfig();
 
             lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
             lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
@@ -203,8 +208,20 @@ namespace EmbyStat.Web
 
         private void ResetConfiguration()
         {
-            var configurationService = ApplicationBuilder.ApplicationServices.GetService<IConfigurationService>();
+            var configurationService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
             configurationService.SetUpdateInProgressSetting(false);
+        }
+
+        private void AddDeviceIdToConfig()
+        {
+            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
+            var userSettings = settingsService.GetUserSettings();
+
+            if (userSettings.Id == null)
+            {
+                userSettings.Id = Guid.NewGuid();
+                settingsService.SaveUserSettings(userSettings);
+            }
         }
     }
 }

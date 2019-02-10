@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Joins;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
@@ -54,7 +55,7 @@ namespace Tests.Unit.Services
                 DateCreated = new DateTime(2017, 1, 1, 0, 0, 0),
                 OfficialRating = "R",
                 RunTimeTicks = 6000000000000,
-                Primary = "primarImage",
+                Primary = "primaryImage",
                 MediaGenres = new List<MediaGenre>
                 {
                     new MediaGenre {GenreId = "id2"}
@@ -69,19 +70,19 @@ namespace Tests.Unit.Services
 
             var genreRepositoryMock = new Mock<IGenreRepository>();
             var personServiceMock = new Mock<IPersonService>();
-            var configurationServiceMock = new Mock<IConfigurationRepository>();
-            configurationServiceMock.Setup(x => x.GetConfiguration())
-                .Returns(new Configuration(new List<ConfigurationKeyValue>()) {ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType>{CollectionType.Movies}});
+            var settingsServiceMock = new Mock<ISettingsService>();
+            settingsServiceMock.Setup(x => x.GetUserSettings())
+                .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var taskRepositoryMock = new Mock<IJobRepository>();
-            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object, 
-                personServiceMock.Object, configurationServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
+            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, genreRepositoryMock.Object,
+                personServiceMock.Object, settingsServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
         }
 
         [Fact]
         public void GetCollectionsFromDatabase()
         {
-            var collections = _subject.GetMovieCollections();
+            var collections = _subject.GetMovieCollections().ToList();
 
             collections.Should().NotBeNull();
             collections.Count().Should().Be(2);

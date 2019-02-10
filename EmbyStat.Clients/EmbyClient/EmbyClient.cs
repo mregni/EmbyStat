@@ -9,11 +9,13 @@ using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Settings;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Users;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
@@ -22,8 +24,8 @@ namespace EmbyStat.Clients.EmbyClient
 {
 	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient)
-		: base(cryptographyProvider, httpClient)
+        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient, IOptions<AppSettings> options)
+		: base(cryptographyProvider, httpClient, options)
 		{
 			
 		}

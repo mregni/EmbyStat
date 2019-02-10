@@ -6,6 +6,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
@@ -34,7 +35,7 @@ namespace Tests.Unit.Services
 		    _embyRepositoryMock.Setup(x => x.GetAllPlugins()).Returns(_plugins);
 
             var _mapperMock = new Mock<IMapper>();
-            _subject = new EmbyService(new Mock<IEmbyClient>().Object, new Mock<IConfigurationRepository>().Object, _embyRepositoryMock.Object, _mapperMock.Object);
+            _subject = new EmbyService(new Mock<IEmbyClient>().Object, new Mock<ISettingsService>().Object, _embyRepositoryMock.Object, _mapperMock.Object);
 		}
 
 	    [Fact]

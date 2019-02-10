@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -14,17 +16,19 @@ namespace EmbyStat.Services
 {
     public class WebSocketService : IWebSocketService
     {
-        private readonly IConfigurationService _configurationService;
+        private readonly ISettingsService _settingsService;
         private readonly IEventService _eventService;
         private readonly IWebSocketApi _webSocketApi;
 
         private Timer _timer;
+        private IOptions<AppSettings> _options;
 
-        public WebSocketService(IConfigurationService configurationService, IEventService eventService, IWebSocketApi webSocketApi)
+        public WebSocketService(IOptions<AppSettings> options, ISettingsService settingsService, IEventService eventService, IWebSocketApi webSocketApi)
         {
-            _configurationService = configurationService;
+            _settingsService = settingsService;
             _eventService = eventService;
             _webSocketApi = webSocketApi;
+            _options = options;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -38,12 +42,13 @@ namespace EmbyStat.Services
         {
             if (!_webSocketApi.IsWebSocketOpenOrConnecting)
             {
-                var settings = _configurationService.GetServerSettings();
-                if (!string.IsNullOrWhiteSpace(settings.AccessToken))
+                var settings = _settingsService.GetUserSettings();
+                if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
                 {
                     try
                     {
-                        _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.AccessToken, Constants.Emby.DeviceId);
+                        var deviceId = _options.Value.Id;
+                        _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
                         _webSocketApi.OnWebSocketConnected += _client_OnWebSocketConnected;
                         _webSocketApi.OnWebSocketClosed += _webSocketApi_OnWebSocketClosed;
                     }

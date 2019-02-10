@@ -21,58 +21,9 @@ namespace EmbyStat.Repositories
 
         public async Task SeedAsync()
         {
-            await SeedConfiguration();
             await SeedLanguages();
             await SeedEmbyStatus();
             await SeedJobs();
-
-            await _context.SaveChangesAsync();
-        }
-
-        private async Task SeedConfiguration()
-        {
-            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding configuration");
-
-            var configuration = _context.Configuration.ToList();
-
-            if (configuration.All(x => x.Id != Constants.Configuration.Language))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.Language, Value = "en-US" });
-            if (configuration.All(x => x.Id != Constants.Configuration.ToShortMovie))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ToShortMovie, Value = "10" });
-            if (configuration.All(x => x.Id != Constants.Configuration.WizardFinished))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.WizardFinished, Value = "False" });
-            if (configuration.All(x => x.Id != Constants.Configuration.UserName))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UserName, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerAddress))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerAddress, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.EmbyUserId))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserId, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.ServerName))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ServerName, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.EmbyUserName))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyUserName, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.AccessToken))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AccessToken, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.LastTvdbUpdate))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.LastTvdbUpdate, Value = string.Empty });
-            if (configuration.All(x => x.Id != Constants.Configuration.TvdbApiKey))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.TvdbApiKey, Value = "BWLRSNRC0AQUIEYX" });
-            if (configuration.All(x => x.Id != Constants.Configuration.KeepLogsCount))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.KeepLogsCount, Value = "10" });
-            if (configuration.All(x => x.Id != Constants.Configuration.MovieCollectionTypes))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.MovieCollectionTypes, Value = "[0, 1, 6]" });
-            if (configuration.All(x => x.Id != Constants.Configuration.ShowCollectionTypes))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.ShowCollectionTypes, Value = "[0, 2]" });
-            if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerPort))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerPort, Value = "8096" });
-            if (configuration.All(x => x.Id != Constants.Configuration.EmbyServerProtocol))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.EmbyServerProtocol, Value = "0" });
-            if (configuration.All(x => x.Id != Constants.Configuration.AutoUpdate))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.AutoUpdate, Value = "True" });
-            if (configuration.All(x => x.Id != Constants.Configuration.UpdateTrain))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateTrain, Value = "1" });
-            if (configuration.All(x => x.Id != Constants.Configuration.UpdateInProgress))
-                _context.Configuration.Add(new ConfigurationKeyValue { Id = Constants.Configuration.UpdateInProgress, Value = "False" });
 
             await _context.SaveChangesAsync();
         }
