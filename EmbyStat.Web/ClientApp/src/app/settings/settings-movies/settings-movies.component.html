@@ -1,0 +1,27 @@
+<div class="settings-left">
+  <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
+    <mat-card-content>
+      <form class="form-container" [formGroup]="formToShort">
+        <p>{{'SETTINGS.MOVIE.TOSHORTTEXT' | translate }}</p>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.DURATIONINMINUTES' | translate}}" formControlName="toShortMovie" required>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveFormToShort()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="settings-left">
+  <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
+    <mat-card-content>
+      <p>{{ 'SETTINGS.MOVIE.COLLECTIONTYPES' | translate }}</p>
+      <app-collection-selector [list]="settings.movieCollectionTypes" (newList)="onCollectionListChanged($event)"></app-collection-selector>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveFormCollectionTypes()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

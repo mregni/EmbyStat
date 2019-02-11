@@ -1,8 +1,8 @@
 {
   "AppName": "EmbyStat",
-  "Id": null,
-  "WizardFinished": false,
-  "Username": "",
+  "Id": "f2e756ca-fecf-4116-90fd-5b64f6895e00",
+  "WizardFinished": true,
+  "Username": "reggi",
   "Language": "en-US",
   "ToShortMovie": 10,
   "KeepLogsCount": 10,
@@ -19,17 +19,17 @@
   "UpdateTrain": 1,
   "UpdateInProgress": false,
   "Emby": {
-    "UserId": "",
-    "UserName": "",
+    "UserId": "test",
+    "UserName": "reggi",
     "ServerName": "",
-    "AccessToken": "",
-    "ServerAddress": "",
-    "ServerPort": 8096,
+    "AccessToken": "7d17ae16f8d24e3e800479c6d4234410",
+    "ServerAddress": "reggi.ddns.net",
+    "ServerPort": 8097,
     "AuthorizationScheme": "MediaBrowser",
-    "ServerProtocol": 0
+    "ServerProtocol": 1
   },
   "Tvdb": {
-    "LastUpdate": null,
+    "LastUpdate": "2019-02-09T13:23:14+01:00",
     "ApiKey": "BWLRSNRC0AQUIEYX"
   }
 }
