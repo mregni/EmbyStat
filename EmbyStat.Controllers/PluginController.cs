@@ -10,19 +10,19 @@ namespace EmbyStat.Controllers
 	[Route("api/[controller]")]
 	public class PluginController : Controller
 	{
-		private readonly IPluginService _pluginService;
+		private readonly IEmbyService _embyService;
 	    private readonly IMapper _mapper;
 
-	    public PluginController(IPluginService pluginService, IMapper mapper)
+	    public PluginController(IEmbyService embyService, IMapper mapper)
 	    {
-	        _pluginService = pluginService;
+            _embyService = embyService;
 	        _mapper = mapper;
 	    }
 
 		[HttpGet]
 		public IActionResult Get()
 		{
-			var result = _pluginService.GetInstalledPlugins();
+			var result = _embyService.GetAllPlugins();
 			return Ok(_mapper.Map<IList<EmbyPluginViewModel>>(result));
 		}
     }

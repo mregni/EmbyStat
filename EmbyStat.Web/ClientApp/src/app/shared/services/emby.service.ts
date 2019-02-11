@@ -14,7 +14,6 @@ export class EmbyService {
   private searchEmbyUrl = this.baseUrl + 'searchemby';
   private getEmbyTokenUrl = this.baseUrl + 'generatetoken';
   private getServerInfoUrl = this.baseUrl + 'getserverinfo';
-  private fireSmallEmbyUpdateUrl = this.baseUrl + 'firesmallembysync';
   private getEmbyStatusUrl = this.baseUrl + 'getembystatus';
 
   constructor(private http: HttpClient) { }

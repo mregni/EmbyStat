@@ -27,32 +27,28 @@ namespace EmbyStat.Services
     public class UpdateService : IUpdateService
     {
         private readonly IGithubClient _githubClient;
-        private readonly IJsonSerializer _jsonSerializer;
-        private readonly IConfigurationRepository _configurationRepository;
+        private readonly ISettingsService _settingsService;
         private readonly IApplicationLifetime _applicationLifetime;
-        private readonly AppSettings _appSettings;
 
-        public UpdateService(IGithubClient githubClient, IOptions<AppSettings> appSettings, 
-            IJsonSerializer jsonSerializer, IConfigurationRepository configurationRepository, IApplicationLifetime appLifetime)
+        public UpdateService(IGithubClient githubClient, ISettingsService settingsService, IApplicationLifetime appLifetime)
         {
             _githubClient = githubClient;
-            _jsonSerializer = jsonSerializer;
-            _appSettings = appSettings.Value;
-            _configurationRepository = configurationRepository;
+            _settingsService = settingsService;
             _applicationLifetime = appLifetime;
         }
 
         public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
         {
-            var settings = _configurationRepository.GetConfiguration();
+            var settings = _settingsService.GetUserSettings();
             return await CheckForUpdate(settings, cancellationToken);
         }
 
 
-        public async Task<UpdateResult> CheckForUpdate(Configuration settings, CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckForUpdate(UserSettings settings, CancellationToken cancellationToken)
         {
-            var currentVersion = new Version(_appSettings.Version.ToCleanVersionString());
-            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, _appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
+            var appSettings = _settingsService.GetAppSettings();
+            var currentVersion = new Version(appSettings.Version.ToCleanVersionString());
+            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
 
             if (result.IsUpdateAvailable)
             {
@@ -71,7 +67,7 @@ namespace EmbyStat.Services
         private void CreateUpdateFile(PackageInfo package)
         {
             var fileName = $"{package.versionStr}.ver";
-            var obj = _jsonSerializer.SerializeToString(package);
+            var obj = JsonSerializerExtentions.SerializeToString(package);
 
             foreach (var file in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ver"))
             {
@@ -83,11 +79,12 @@ namespace EmbyStat.Services
 
         public async Task DownloadZip(UpdateResult result)
         {
-            if (Directory.Exists(_appSettings.Dirs.TempUpdateDir))
+            var appSettings = _settingsService.GetAppSettings();
+            if (Directory.Exists(appSettings.Dirs.TempUpdateDir))
             {
-                Directory.Delete(_appSettings.Dirs.TempUpdateDir, true);
+                Directory.Delete(appSettings.Dirs.TempUpdateDir, true);
             }
-            Directory.CreateDirectory(_appSettings.Dirs.TempUpdateDir);
+            Directory.CreateDirectory(appSettings.Dirs.TempUpdateDir);
 
             try
             {
@@ -118,7 +115,8 @@ namespace EmbyStat.Services
 
             try
             {
-                ZipFile.ExtractToDirectory(result.Package.name, _appSettings.Dirs.TempUpdateDir, true);
+                var appSettings = _settingsService.GetAppSettings();
+                ZipFile.ExtractToDirectory(result.Package.name, appSettings.Dirs.TempUpdateDir, true);
             }
             catch (Exception e)
             {
@@ -136,18 +134,18 @@ namespace EmbyStat.Services
                 var updateFile = CheckForUpdateFiles();
                 if (updateFile != null)
                 {
-                    var package = ReadUpdateFile(updateFile);
+                    var appSettings = _settingsService.GetAppSettings();
                     Log.Information(Directory.GetCurrentDirectory());
                     var updaterExtension = string.Empty;
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
                         updaterExtension = ".exe";
                     }
-                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir, _appSettings.Dirs.Updater, $"Updater{updaterExtension}");
-                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), _appSettings.Dirs.TempUpdateDir);
+                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), appSettings.Dirs.TempUpdateDir, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
+                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), appSettings.Dirs.TempUpdateDir);
 
                     Log.Information($"StartJob tool located at {updaterTool}");
-                    Log.Information($"Arguments passed are {GetArgs()}");
+                    Log.Information($"Arguments passed are {GetArgs(appSettings)}");
                     Log.Information($"Working directory is {workingDirectory}");
 
                     var start = new ProcessStartInfo
@@ -155,7 +153,7 @@ namespace EmbyStat.Services
                         UseShellExecute = false,
                         CreateNoWindow = true,
                         FileName = updaterTool,
-                        Arguments = GetArgs(),
+                        Arguments = GetArgs(appSettings),
                         WorkingDirectory = workingDirectory
                     };
 
@@ -168,15 +166,15 @@ namespace EmbyStat.Services
             });
         }
 
-        private string GetArgs()
+        private string GetArgs(AppSettings appSettings)
         {
             var currentLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             var sb = new StringBuilder();
             sb.Append($"--applicationPath \"{currentLocation}\"");
             sb.Append($" --processId {Process.GetCurrentProcess().Id}");
-            sb.Append($" --processName {_appSettings.ProcessName}");
-            sb.Append($" --port {_appSettings.Port}");
+            sb.Append($" --processName {appSettings.ProcessName}");
+            sb.Append($" --port {appSettings.Port}");
 
             return sb.ToString();
         }
@@ -184,7 +182,7 @@ namespace EmbyStat.Services
         private PackageInfo ReadUpdateFile(FileInfo file)
         {
             var json = File.ReadAllText(file.Name);
-            return _jsonSerializer.DeserializeFromString<PackageInfo>(json);
+            return JsonSerializerExtentions.DeserializeFromString<PackageInfo>(json);
         }
     }
 }

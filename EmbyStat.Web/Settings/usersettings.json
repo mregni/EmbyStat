@@ -1,0 +1,35 @@
+{
+  "AppName": "EmbyStat",
+  "Id": "f2e756ca-fecf-4116-90fd-5b64f6895e00",
+  "WizardFinished": true,
+  "Username": "reggi",
+  "Language": "en-US",
+  "ToShortMovie": 10,
+  "KeepLogsCount": 10,
+  "MovieCollectionTypes": [
+    0,
+    1,
+    6
+  ],
+  "ShowCollectionTypes": [
+    0,
+    2
+  ],
+  "AutoUpdate": true,
+  "UpdateTrain": 1,
+  "UpdateInProgress": false,
+  "Emby": {
+    "UserId": "test",
+    "UserName": "reggi",
+    "ServerName": "",
+    "AccessToken": "7d17ae16f8d24e3e800479c6d4234410",
+    "ServerAddress": "reggi.ddns.net",
+    "ServerPort": 8097,
+    "AuthorizationScheme": "MediaBrowser",
+    "ServerProtocol": 1
+  },
+  "Tvdb": {
+    "LastUpdate": "2019-02-09T13:23:14+01:00",
+    "ApiKey": "BWLRSNRC0AQUIEYX"
+  }
+}

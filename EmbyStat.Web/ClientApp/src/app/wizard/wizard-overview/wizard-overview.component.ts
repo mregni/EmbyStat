@@ -6,9 +6,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
+import { SettingsFacade } from '../../settings/state/facade.settings';
 import { EmbyUdpBroadcast } from '../../shared/models/emby/emby-udp-broadcast';
-import { Configuration } from '../../configuration/models/configuration';
+import { Settings } from '../../settings/models/settings';
 import { EmbyToken } from '../../shared/models/emby/emby-token';
 import { Language } from '../../shared/components/language/models/language';
 import { LanguageFacade } from '../../shared/components/language/state/facade.language';
@@ -40,7 +40,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
   private languageChangedSub: Subscription;
   private searchEmbySub: Subscription;
-  private configurationSub: Subscription;
+  private settingsSub: Subscription;
   private fireSyncSub: Subscription;
   private checkUrlNeeded = true;
 
@@ -53,12 +53,11 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   username: string;
   selectedProtocol: number;
 
-  private configuration: Configuration;
+  private settings: Settings;
   languages$: Observable<Language[]>;
 
-
   constructor(private translate: TranslateService,
-    private configurationFacade: ConfigurationFacade,
+    private settingsFacade: SettingsFacade,
     private pluginService: PluginService,
     private languageFacade: LanguageFacade,
     private sideBarService: SideBarService,
@@ -78,8 +77,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
-    this.configurationSub = this.configurationFacade.configuration$.subscribe(config => {
-      this.configuration = config;
+    this.settingsSub = this.settingsFacade.settings$.subscribe(config => {
+      this.settings = config;
       if (config.wizardFinished && this.checkUrlNeeded) {
         this.router.navigate(['']);
       }
@@ -93,7 +92,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.languages$ = this.languageFacade.getLanguages();
 
-    this.configurationFacade.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
+    this.settingsFacade.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
       if (!!data.address) {
         this.embyFound = true;
         this.embyAddressControl.setValue(data.address);
@@ -117,22 +116,22 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       const protocol = this.embyProtocolControl.value;
 
       const url = (protocol === 0 ? 'http://' : 'https://') + address + ':' + port;
-      this.configurationFacade.getToken(this.username, password, url)
+      this.settingsFacade.getToken(this.username, password, url)
         .subscribe((token: EmbyToken) => {
           this.embyOnline = true;
           this.isAdmin = token.isAdmin;
           if (token.isAdmin) {
-            const config = { ...this.configuration };
-            config.language = this.languageControl.value;
-            config.embyUserName = this.username;
-            config.username = this.nameControl.value;
-            config.embyServerAddress = address;
-            config.accessToken = token.token;
-            config.wizardFinished = true;
-            config.embyUserId = token.id;
-            config.embyServerPort = port;
-            config.embyServerProtocol = protocol;
-            this.configurationFacade.updateConfiguration(config);
+            const settings = { ...this.settings };
+            settings.language = this.languageControl.value;
+            settings.emby.userName = this.username;
+            settings.username = this.nameControl.value;
+            settings.emby.serverAddress = address;
+            settings.emby.accessToken = token.token;
+            settings.wizardFinished = true;
+            settings.emby.userId = token.id;
+            settings.emby.serverPort = port;
+            settings.emby.serverProtocol = protocol;
+            this.settingsFacade.updateSettings(settings);
           }
         }, (err) => {
         });
@@ -161,8 +160,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       this.searchEmbySub.unsubscribe();
     }
 
-    if (this.configurationSub !== undefined) {
-      this.configurationSub.unsubscribe();
+    if (this.settingsSub !== undefined) {
+      this.settingsSub.unsubscribe();
     }
 
     if (this.fireSyncSub !== undefined) {

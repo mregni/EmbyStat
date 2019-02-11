@@ -12,7 +12,6 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { ConfigurationModule } from './configuration/configuration.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { WizardModule } from './wizard/wizard.module';
 import { ServerModule } from './server/server.module';
@@ -22,13 +21,14 @@ import { MovieModule } from './movie/movie.module';
 import { ShowModule } from './show/show.module';
 import { LogsModule } from './logs/logs.module';
 import { AboutModule } from './about/about.module';
+import { SettingsModule } from './settings/settings.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
-import { ConfigurationEffects } from './configuration/state/effects.configuration';
+import { SettingsEffects } from './settings/state/effects.settings';
 import { ServerEffects } from './server/state/effects.server';
 import { AboutEffects } from './about/state/effects.about';
 
@@ -52,7 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
     FlexLayoutModule,
     HttpClientModule,
     SharedModule,
-    ConfigurationModule,
+    SettingsModule,
     DashboardModule,
     WizardModule,
     ServerModule,
@@ -74,7 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, ServerEffects, AboutEffects]),
+    EffectsModule.forRoot([SettingsEffects, ServerEffects, AboutEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [

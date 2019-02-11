@@ -1,0 +1,38 @@
+<div class="settings-left">
+  <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
+    <mat-card-content>
+      <form [formGroup]="form" class="form-container">
+        <div class="emby-address-container">
+          <mat-form-field required class="emby-protocol">
+            <mat-select formControlName="embyProtocol">
+              <mat-option [value]="0">Http://</mat-option>
+              <mat-option [value]="1">Https://</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="emby-address">
+            <input matInput placeholder="{{'FORM_LABELS.EMBYADDRESS' | translate}}" formControlName="embyAddress" required>
+            <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
+          </mat-form-field>
+
+          <mat-form-field class="emby-port">
+            <input matInput placeholder="Port" formControlName="embyPort" required>
+            <!--<mat-error *ngIf="embyAddressControl.hasError('required')">{{'FORM_ERRORS.EMBYADDRESS_REQUIRED' | translate}}</mat-error>-->
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.EMBYUSERNAME' | translate}}" formControlName="embyUsername" required>
+          <!--<mat-error *ngIf="embyUsernameControl.hasError('required')">{{'FORM_ERRORS.EMBYUSERNAME_REQUIRED' | translate}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="{{'FORM_LABELS.EMBYPASSWORD' | translate}}" formControlName="embyPassword" required [type]="hidePassword ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <!--<mat-error *ngIf="embyPasswordControl.hasError('required')">{{'FORM_ERRORS.EMBYPASSWORD_REQUIRED' | translate}}</mat-error>-->
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as signalR from '@aspnet/signalr';
 
-import { ConfigurationFacade } from './configuration/state/facade.configuration';
+import { SettingsFacade } from './settings/state/facade.settings';
 import { JobSocketService } from './shared/services/job-socket.service';
 import { UpdateService } from './shared/services/update.service';
 import { SideBarService } from './shared/services/side-bar.service';
 import { Job } from './jobs/models/job';
 import { JobLog } from './jobs/models/job-log';
-import { Configuration } from './configuration/models/configuration';
+import { Settings } from './settings/models/settings';
 
 const SMALL_WIDTH_BREAKPOINT = 768;
 
@@ -21,19 +21,19 @@ const SMALL_WIDTH_BREAKPOINT = 768;
 })
 export class AppComponent implements OnInit, OnDestroy {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
-  private configLoadSub: Subscription;
-  configuration: Configuration;
+  private settingLoadSub: Subscription;
+  settings: Settings;
   openMenu = true;
 
 
   constructor(
-    private zone: NgZone,
-    private configurationFacade: ConfigurationFacade,
-    private translate: TranslateService,
-    private router: Router,
-    private jobSocketService: JobSocketService,
-    private sideBarService: SideBarService,
-    private updateService: UpdateService) {
+    private readonly zone: NgZone,
+    private readonly settingsFacade: SettingsFacade,
+    private readonly translate: TranslateService,
+    private readonly router: Router,
+    private readonly jobSocketService: JobSocketService,
+    private readonly sideBarService: SideBarService,
+    private readonly updateService: UpdateService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     translate.setDefaultLang('en-US');
@@ -46,7 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
     hubConnection.start().catch(err => document.write(err));
 
     hubConnection.on('job-report-progress', (data: Job) => {
-      console.log(data);
       jobSocketService.updateJobsInfo(data);
     });
 
@@ -59,27 +58,26 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     hubConnection.on('update-state', (state: boolean) => {
-      console.log("update-state triggered");
-      if (this.configuration !== undefined) {
-        console.log("config updated");
-        const copy = { ...this.configuration };
+      if (this.settings !== undefined) {
+        const copy = { ...this.settings };
         copy.updateInProgress = state;
-        this.configurationFacade.updateConfiguration(copy);
+        this.settingsFacade.updateSettings(copy);
       }
     });
 
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
       this.openMenu = state;
     });
-    this.configuration = undefined;
-    this.configLoadSub = this.configurationFacade.getConfiguration().subscribe(config => {
-      if (!config.wizardFinished) {
+    this.settings = undefined;
+    this.settingLoadSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
+      console.log(settings);
+      if (!settings.wizardFinished) {
         this.router.navigate(['/wizard']);
       }
 
-      this.configuration = config;
-      this.translate.use(config.language);
-      this.updateService.setUiToUpdateState(config.updateInProgress);
+      this.settings = settings;
+      this.translate.use(settings.language);
+      this.updateService.setUiToUpdateState(settings.updateInProgress);
     });
   }
 
@@ -88,8 +86,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.configLoadSub !== undefined) {
-      this.configLoadSub.unsubscribe();
+    if (this.settingLoadSub !== undefined) {
+      this.settingLoadSub.unsubscribe();
     }
   }
 

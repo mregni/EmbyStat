@@ -11,17 +11,17 @@ namespace EmbyStat.Services
     public class LogService : ILogService
     {
         private readonly IOptions<AppSettings> _logSettings;
-        private readonly IConfigurationService _configurationService;
+        private readonly ISettingsService _settingsService;
 
-        public LogService(IOptions<AppSettings> logSettings, IConfigurationService configurationService)
+        public LogService(IOptions<AppSettings> logSettings, ISettingsService settingsService)
         {
             _logSettings = logSettings;
-            _configurationService = configurationService;
+            _settingsService = settingsService;
         }
 
         public List<LogFile> GetLogFileList()
         {
-            var configration = _configurationService.GetServerSettings();
+            var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
             var logDir = _logSettings.Value.Dirs.Logs;
             foreach (var filePath in Directory.EnumerateFiles(logDir))
@@ -34,7 +34,7 @@ namespace EmbyStat.Services
                     Size = file.Length
                 });
             }
-            return list.OrderByDescending(x => x.CreatedDate).Take(configration.KeepLogsCount).ToList();
+            return list.OrderByDescending(x => x.CreatedDate).Take(settings.KeepLogsCount).ToList();
         }
 
         public Stream GetLogStream(string fileName, bool anonymous)
@@ -51,13 +51,13 @@ namespace EmbyStat.Services
             using (var reader = new StreamReader(logStream))
             {
                 var writer = new StreamWriter(newLogStream);
-                var configuration = _configurationService.GetServerSettings();
+                var configuration = _settingsService.GetUserSettings();
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    line = line.Replace(configuration.GetFullEmbyServerAddress(), "http://xxx.xxx.xxx.xxx:xxxx");
-                    line = line.Replace(configuration.TvdbApiKey, "xxxxxxxxxxxxxx");
-                    line = line.Replace(configuration.EmbyUserName, "{EMBY ADMIN USER}");
+                    line = line.Replace(configuration.FullEmbyServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
+                    line = line.Replace(configuration.Tvdb.ApiKey, "xxxxxxxxxxxxxx");
+                    line = line.Replace(configuration.Emby.UserName, "{EMBY ADMIN USER}");
                     writer.WriteLine(line);
                 }
 

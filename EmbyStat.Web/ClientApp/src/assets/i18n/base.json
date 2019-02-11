@@ -138,8 +138,8 @@
     "CONTINUING": "continuing",
     "ENDED": "ended"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Settings",
+  "SETTINGS": {
+    "TITLE": "Settings",
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
       "EMBY": "Emby settings saved!",

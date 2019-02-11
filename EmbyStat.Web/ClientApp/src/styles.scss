@@ -134,8 +134,10 @@ body {
 
 .text__accent {
   color: mat-color($mat-orange, A400);
+  font-weight: bold;
 }
 
 .text__warn {
   color: mat-color($mat-red, A700);
+  font-weight: bold;
 }

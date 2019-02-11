@@ -3,6 +3,7 @@ using AutoMapper;
 using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.ViewModels.About;
 using EmbyStat.Controllers.ViewModels.Configuration;
 using EmbyStat.Controllers.ViewModels.Emby;
@@ -20,8 +21,9 @@ using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Plugins;
+using MediaBrowser.Model.IO;
 using MediaBrowser.Model.System;
+using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace EmbyStat.Controllers
 {
@@ -29,8 +31,12 @@ namespace EmbyStat.Controllers
     {
 	    public MapProfiles()
 	    { 
-			//Controllers
-		    CreateMap<Configuration, ConfigurationViewModel>().ReverseMap().ForMember(x => x.Version, x => x.Ignore());
+            //EmbyHttpResponses
+            CreateMap<MediaBrowser.Model.Plugins.PluginInfo, PluginInfo>();
+            CreateMap<FileSystemEntryInfo, Drive>();
+
+            //Controllers
+            CreateMap<UserSettings, FullSettingsViewModel>().ForMember(x => x.Version, x => x.Ignore()).ReverseMap();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();

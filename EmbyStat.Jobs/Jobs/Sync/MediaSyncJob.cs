@@ -29,7 +29,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
     public class MediaSyncJob : BaseJob, IMediaSyncJob
     {
         private readonly IEmbyClient _embyClient;
-        private readonly IConfigurationService _configurationService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly IGenreRepository _genreRepository;
@@ -37,15 +36,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly ICollectionRepository _collectionRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
-        private Configuration _settings;
 
-        public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
+        public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository, IGenreRepository genreRepository, 
             IPersonRepository personRepository, ICollectionRepository collectionRepository, ITvdbClient tvdbClient, 
-            IStatisticsRepository statisticsRepository): base(hubHelper, jobRepository, configurationService)
+            IStatisticsRepository statisticsRepository): base(hubHelper, jobRepository, settingsService)
         {
             _embyClient = embyClient;
-            _configurationService = configurationService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _genreRepository = genreRepository;
@@ -64,18 +61,17 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             var cancellationToken = new CancellationToken(false);
 
-            _settings = _configurationService.GetServerSettings();
-            if (!_settings.WizardFinished)
+            if (!Settings.WizardFinished)
             {
                 LogWarning("Media sync task not running because wizard is not yet finished!");
                 return;
             }
 
-            _embyClient.SetAddressAndUrl(_settings.GetFullEmbyServerAddress(), _settings.AccessToken);
+            _embyClient.SetAddressAndUrl(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
 
             if (!await IsEmbyAlive(cancellationToken))
             {
-                LogWarning($"Halting task because we can't contact the Emby server on {_settings.GetFullEmbyServerAddress()}, please check the connection and try again.");
+                LogWarning($"Halting task because we can't contact the Emby server on {Settings.FullEmbyServerAddress}, please check the connection and try again.");
                 return;
             }
 
@@ -83,13 +79,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
             CleanUpDatabase();
             LogProgress(3);
 
-            var rootItems = await GetRootItems(_settings.EmbyUserId, cancellationToken);
+            var rootItems = await GetRootItems(Settings.Emby.UserId, cancellationToken);
             _collectionRepository.AddOrUpdateRange(rootItems);
             LogInformation($"Found {rootItems.Count} root items, getting ready for processing");
 
             await ProcessMovies(rootItems, cancellationToken);
             await ProcessShows(rootItems, cancellationToken);
-            await SyncMissingEpisodes(_settings.LastTvdbUpdate, _settings.TvdbApiKey, cancellationToken);
+            await SyncMissingEpisodes(Settings.Tvdb.LastUpdate, Settings.Tvdb.ApiKey, cancellationToken);
 
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
@@ -124,7 +120,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 var rootItem = rootItems[i];
 
-                if (!_settings.MovieCollectionTypes.Contains(rootItem.Type))
+                if (!Settings.MovieCollectionTypes.Contains(rootItem.Type))
                 {
                     LogInformation($"Skipping collection {rootItem.Name} ({rootItem.Type.ToString()}) because it's not a wanted movie collection type.");
                     continue;;
@@ -167,7 +163,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
                 {
@@ -179,7 +175,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             };
 
             var embyMovies = await _embyClient.GetItemsAsync(query, cancellationToken);
-            var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieHelper.ConvertToMovie).ToList();
+            var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(MovieConverter.ConvertToMovie).ToList();
 
             var recursiveMovies = new List<Movie>();
             if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
@@ -210,7 +206,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 var rootItem = rootItems[i];
 
-                if (!_settings.ShowCollectionTypes.Contains(rootItem.Type))
+                if (!Settings.ShowCollectionTypes.Contains(rootItem.Type))
                 {
                     LogInformation($"Skipping collection {rootItem.Name} ({rootItem.Type.ToString()}) because it's not a wanted show collection type.");
                     continue; ;
@@ -265,7 +261,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             _showRepository.AddRange(groupedEpisodes.Select(x => x.Episode).ToList());
 
-            var seasons = rawSeasons.Select(x => ShowHelper.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
+            var seasons = rawSeasons.Select(x => ShowConverter.ConvertToSeason(x, seasonLinks.Where(y => y.Item1 == x.Id))).ToList();
             seasons.ForEach(x => x.Collections.Add(new MediaCollection { CollectionId = rootItem.Id }));
             _showRepository.AddRange(seasons);
 
@@ -294,8 +290,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var now = DateTime.Now;
             await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
 
-            _settings.LastTvdbUpdate = now;
-            _configurationService.SaveServerSettings(_settings);
+            Settings.Tvdb.LastUpdate = now;
+            await SettingsService.SaveUserSettings(Settings);
         }
 
         private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
@@ -388,7 +384,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { "Series" },
                 Fields = new[]
                 {
@@ -406,7 +402,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 ? "No TV shows found in this collection. Moving on to the next collection."
                 : $"Ready to add shows to database. We found {embyShows.TotalRecordCount} shows");
 
-            return embyShows.Items.Select(ShowHelper.ConvertToShow).ToList();
+            return embyShows.Items.Select(ShowConverter.ConvertToShow).ToList();
         }
 
         private async Task<List<BaseItemDto>> GetSeasonsFromEmby(string parentId, CancellationToken cancellationToken)
@@ -418,7 +414,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Season) },
                 Fields = new[]
                 {
@@ -439,7 +435,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
-                UserId = _settings.EmbyUserId,
+                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Episode) },
                 Fields = new[]
                 {
@@ -450,7 +446,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             };
 
             var embyEpisodes = await _embyClient.GetItemsAsync(query, cancellationToken);
-            return embyEpisodes.Items.Select(ShowHelper.ConvertToEpisode).ToList();
+            return embyEpisodes.Items.Select(ShowConverter.ConvertToEpisode).ToList();
         }
 
         #endregion
@@ -479,7 +475,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             if (newGenres.Any())
             {
                 LogInformation($"Need to add {newGenres.Count} genres first ({string.Join(", ", newGenres.Select(x => x.Name))})");
-                var genres = newGenres.DistinctBy(x => x.Id).Select(GenreHelper.ConvertToGenre);
+                var genres = newGenres.DistinctBy(x => x.Id).Select(GenreConverter.ConvertToGenre);
                 _genreRepository.AddRangeIfMissing(genres);
             }
             else
@@ -510,7 +506,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 var extraLogText = newPeople.Count > 100 ? ", this can take some time." : "";
                 LogInformation($"Need to add {newPeople.Count} people first{extraLogText}");
-                var people = newPeople.DistinctBy(x => x.Id).Select(PersonHelper.ConvertToSmallPerson);
+                var people = newPeople.DistinctBy(x => x.Id).Select(PersonConverter.ConvertToSmallPerson);
                 _personRepository.AddRangeIfMissing(people);
             }
             else

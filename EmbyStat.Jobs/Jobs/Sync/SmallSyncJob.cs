@@ -15,7 +15,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
     {
         private readonly IEmbyService _embyService;
 
-        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
+        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, IEmbyService embyService) : base(hubHelper, jobRepository, settingsService)
         {
             _embyService = embyService;
             Title = jobRepository.GetById(Id).Title;
@@ -27,25 +27,24 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public override async Task RunJob()
         {
-            var server = await _embyService.GetLiveServerInfo();
-            LogInformation("Server info found");
+            await _embyService.GetAndProcessServerInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            LogInformation("Server info downloaded");
             LogProgress(35);
 
-            var pluginsResponse = await _embyService.GetLivePluginInfo();
-            LogInformation("Server plugins found");
+            await _embyService.GetAndProcessPluginInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            LogInformation("Server plugins downloaded");
             LogProgress(55);
 
-            var drives = await _embyService.GetLiveEmbyDriveInfo();
-            LogInformation("Server drives found");
-            LogProgress(75);
+            await _embyService.GetAndProcessEmbyDriveInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            LogInformation("Server drives downloaded");
+            LogProgress(65);
 
-            _embyService.UpdateOrAddServerInfo(server);
-            LogProgress(85);
+            await _embyService.GetAndProcessEmbyUsers(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            LogInformation("Server users downloaded");
+            LogProgress(80);
 
-            _embyService.RemoveAllAndInsertPluginRange(pluginsResponse);
-            LogProgress(95);
-
-            _embyService.RemoveAllAndInsertDriveRange(drives);
+            await _embyService.GetAndProcessDevices(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            LogInformation("Server devices downloaded");
         }
 
         public override void OnFail()

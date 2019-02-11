@@ -8,10 +8,10 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveMovies();
         void AddOrUpdate(Movie movie);
-        int GetTotalPersonByType(List<string> collections, PersonType type);
-        string GetMostFeaturedPerson(List<string> collections, PersonType type);
+        int GetTotalPersonByType(IEnumerable<string> collections, string type);
+        string GetMostFeaturedPerson(IEnumerable<string> collections, string type);
         List<Movie> GetAll(IEnumerable<string> collections, bool includeSubs = false);
-        List<string> GetGenres(List<string> collections);
+        List<string> GetGenres(IEnumerable<string> collections);
         bool Any();
         int GetMovieCountForPerson(string personId);
     }

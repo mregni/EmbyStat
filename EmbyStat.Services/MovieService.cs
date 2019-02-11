@@ -24,25 +24,25 @@ namespace EmbyStat.Services
         private readonly ICollectionRepository _collectionRepository;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
-        private readonly IConfigurationRepository _configurationRepository;
+        private readonly ISettingsService _settingsService;
         private readonly IStatisticsRepository _statisticsRepository;
 
         public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, 
-            IGenreRepository genreRepository, IPersonService personService, IConfigurationRepository configurationRepository, 
+            IGenreRepository genreRepository, IPersonService personService, ISettingsService settingsService, 
             IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(jobRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
-            _configurationRepository = configurationRepository;
+            _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
         }
 
         public IEnumerable<Collection> GetMovieCollections()
         {
-            var config = _configurationRepository.GetConfiguration();
-            return _collectionRepository.GetCollectionByTypes(config.MovieCollectionTypes);
+            var settings = _settingsService.GetUserSettings();
+            return _collectionRepository.GetCollectionByTypes(settings.MovieCollectionTypes);
         }
 
         public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
@@ -168,10 +168,10 @@ namespace EmbyStat.Services
 
         private List<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
         {
-            var configuration = _configurationRepository.GetConfiguration();
+            var settings = _settingsService.GetUserSettings();
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
-                .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < configuration.ToShortMovie)
+                .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < settings.ToShortMovie)
                 .OrderBy(x => x.SortName)
                 .Select((t, i) => new ShortMovie
                 {
@@ -233,8 +233,8 @@ namespace EmbyStat.Services
                     Number = i,
                     Title = itemOne.Name,
                     Reason = Constants.ByImdb,
-                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = String.Join(",", itemOne.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width))) },
-                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = String.Join(",", itemTwo.VideoStreams.Select(x => QualityHelper.ConvertToQualityString(x.Width))) }
+                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = String.Join(",", itemOne.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) },
+                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = String.Join(",", itemTwo.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) }
                 });
             }
 
@@ -326,8 +326,8 @@ namespace EmbyStat.Services
 
         private MoviePoster ShortestMovie(IEnumerable<Movie> movies)
         {
-            var configuration = _configurationRepository.GetConfiguration();
-            var movie = movies.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= configuration.ToShortMovie)
+            var settings = _settingsService.GetUserSettings();
+            var movie = movies.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= settings.ToShortMovie)
                               .OrderBy(x => x.RunTimeTicks)
                               .ThenBy(x => x.SortName)
                               .FirstOrDefault();
@@ -382,7 +382,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalTypeCount(List<string> collectionsIds, PersonType type, string title)
+        private Card TotalTypeCount(IEnumerable<string> collectionsIds, string type, string title)
         {
             return new Card
             {
@@ -391,7 +391,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(List<string> collectionIds, PersonType type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
         {
             var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -427,7 +427,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private Graph<SimpleGraphValue> CalculateGenreGraph(List<Movie> movies)
+        private Graph<SimpleGraphValue> CalculateGenreGraph(IEnumerable<Movie> movies)
         {
             var genres = _genreRepository.GetAll();
             var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
@@ -443,7 +443,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(List<Movie> movies)
+        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(IEnumerable<Movie> movies)
         {
             var ratingData = movies
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))

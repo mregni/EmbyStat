@@ -15,14 +15,14 @@ namespace EmbyStat.Jobs.Jobs.Updater
     public class CheckUpdateJob : BaseJob, ICheckUpdateJob
     {
         private readonly IUpdateService _updateService;
-        private readonly IConfigurationService _configurationService;
+        private readonly ISettingsService _settingsService;
 
-        public CheckUpdateJob(IJobHubHelper hubHelper, IJobRepository jobRepository, 
-            IConfigurationService configurationService, IUpdateService updateService) 
-            : base(hubHelper, jobRepository, configurationService)
+        public CheckUpdateJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
+            ISettingsService settingsService, IUpdateService updateService) 
+            : base(hubHelper, jobRepository, settingsService)
         {
             _updateService = updateService;
-            _configurationService = configurationService;
+            _settingsService = settingsService;
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -32,16 +32,15 @@ namespace EmbyStat.Jobs.Jobs.Updater
 
         public override async Task RunJob()
         {
-            var settings = _configurationService.GetServerSettings();
             LogInformation("Contacting Github now to see if new version is available.");
-            var update = await _updateService.CheckForUpdate(settings, new CancellationToken(false));
+            var update = await _updateService.CheckForUpdate(Settings, new CancellationToken(false));
             LogProgress(20);
-            if (update.IsUpdateAvailable && settings.AutoUpdate)
+            if (update.IsUpdateAvailable && Settings.AutoUpdate)
             {
                 LogInformation($"New version found: v{update.AvailableVersion}");
                 LogInformation($"Auto update is enabled so going to update the server now!");
-                _configurationService.SetUpdateInProgressSetting(true);
-                await _hubHelper.BroadcastUpdateState(true);
+                await _settingsService.SetUpdateInProgressSetting(true);
+                await HubHelper.BroadcastUpdateState(true);
                 Task.WaitAll(_updateService.DownloadZip(update));
                 LogProgress(50);
                 await _updateService.UpdateServer();
@@ -59,8 +58,8 @@ namespace EmbyStat.Jobs.Jobs.Updater
 
         public override async void OnFail()
         {
-            _configurationService.SetUpdateInProgressSetting(false);
-            await _hubHelper.BroadcastUpdateState(false);
+            await _settingsService.SetUpdateInProgressSetting(false);
+            await HubHelper.BroadcastUpdateState(false);
         }
 
         public override void Dispose()

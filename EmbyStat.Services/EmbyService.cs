@@ -6,15 +6,15 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Clients.EmbyClient;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
-using MediaBrowser.Model.Plugins;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -23,20 +23,16 @@ namespace EmbyStat.Services
     public class EmbyService : IEmbyService
     {
 	    private readonly IEmbyClient _embyClient;
-	    private readonly IPluginRepository _embyPluginRepository;
-	    private readonly IServerInfoRepository _embyServerInfoRepository;
-		private readonly IConfigurationRepository _configurationRepository;
-		private readonly IDriveRepository _embyDriveRepository;
-        private readonly IEmbyStatusRepository _embyStatusRepository;
+        private readonly IEmbyRepository _embyRepository;
+        private readonly ISettingsService _settingsService;
+        private readonly IMapper _mapper;
 
-        public EmbyService(IEmbyClient embyClient, IPluginRepository embyPluginRepository, IServerInfoRepository embyServerInfoRepository, IConfigurationRepository configurationRepository, IDriveRepository embyDriveRepository, IEmbyStatusRepository embyStatusRepository)
+        public EmbyService(IEmbyClient embyClient, ISettingsService settingsService, IEmbyRepository embyRepository, IMapper mapper)
         {
             _embyClient = embyClient;
-            _embyPluginRepository = embyPluginRepository;
-            _embyServerInfoRepository = embyServerInfoRepository;
-            _configurationRepository = configurationRepository;
-            _embyDriveRepository = embyDriveRepository;
-            _embyStatusRepository = embyStatusRepository;
+            _settingsService = settingsService;
+            _embyRepository = embyRepository;
+            _mapper = mapper;
         }
 
 	    public EmbyUdpBroadcast SearchEmby()
@@ -61,9 +57,9 @@ namespace EmbyStat.Services
 					    var serverResponse = Encoding.ASCII.GetString(receivedData);
 						var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
 
-					    var configuration = _configurationRepository.GetConfiguration();
-					    configuration.ServerName = udpBroadcastResult.Name;
-						_configurationRepository.Update(configuration);
+                        var settings = _settingsService.GetUserSettings();
+					    settings.Emby.ServerName = udpBroadcastResult.Name;
+						_settingsService.SaveUserSettings(settings);
 
 					    return udpBroadcastResult;
 
@@ -91,7 +87,7 @@ namespace EmbyStat.Services
 						Token = token.AccessToken,
 						Username = token.User.ConnectUserName,
 						IsAdmin = token.User.Policy.IsAdministrator,
-                        Id = token.User.Id
+                        Id = new Guid(token.User.Id)
 					};
 				}
 				catch (Exception e)
@@ -107,86 +103,94 @@ namespace EmbyStat.Services
 
 	    public async Task<ServerInfo> GetServerInfo()
 	    {
-		    var server = _embyServerInfoRepository.GetSingleOrDefault();
+		    var server = _embyRepository.GetServerInfo();
             if (server == null)
             {
-                server = await GetLiveServerInfo();
-                _embyServerInfoRepository.UpdateOrAdd(server);
+                var settings = _settingsService.GetUserSettings();
+                await GetAndProcessServerInfo(settings.FullEmbyServerAddress, settings.Emby.AccessToken);
             }
 
             return server;
         }
 
-        public Task<ServerInfo> GetLiveServerInfo()
-        {
-            var settings = _configurationRepository.GetConfiguration();
-            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
-            return _embyClient.GetServerInfoAsync();
-        }
-
-        public Task<List<PluginInfo>> GetLivePluginInfo()
-        {
-            var settings = _configurationRepository.GetConfiguration();
-            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
-            return _embyClient.GetInstalledPluginsAsync();
-        }
-
         public List<Drive> GetLocalDrives()
-	    {
-            var settings = _configurationRepository.GetConfiguration();
-            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
-            return _embyDriveRepository.GetAll();
-	    }
-
-        public Task<List<Drive>> GetLiveEmbyDriveInfo()
         {
-            return _embyClient.GetLocalDrivesAsync();
+            return _embyRepository.GetAllDrives();
         }
 
-        public void UpdateOrAddServerInfo(ServerInfo server)
+        public async Task GetAndProcessServerInfo(string embyAddress, string accessToken)
         {
-            _embyServerInfoRepository.UpdateOrAdd(server);
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
+            var server = await _embyClient.GetServerInfoAsync();
+
+            _embyRepository.AddOrUpdateServerInfo(server);
         }
 
-        public void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins)
+        public async Task GetAndProcessPluginInfo(string embyAddress, string accessToken)
         {
-            _embyPluginRepository.RemoveAllAndInsertPluginRange(plugins);
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
+            var plugins = await _embyClient.GetInstalledPluginsAsync();
+
+            _embyRepository.RemoveAllAndInsertPluginRange(_mapper.Map<IList<PluginInfo>>(plugins));
         }
 
-        public void RemoveAllAndInsertDriveRange(List<Drive> drives)
+        public async Task GetAndProcessEmbyDriveInfo(string embyAddress, string accessToken)
         {
-            _embyDriveRepository.RemoveAllAndInsertDriveRange(drives);
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
+            var drives = await _embyClient.GetLocalDrivesAsync();
+            
+            _embyRepository.RemoveAllAndInsertDriveRange(_mapper.Map<IList<Drive>>(drives));
         }
 
-        public async void FireSmallSyncEmbyServerInfo()
-	    {
-		    var settings = _configurationRepository.GetConfiguration();
+        public async Task GetAndProcessEmbyUsers(string embyAddress, string accessToken)
+        {
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
 
-			_embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
-		    var systemInfoReponse = await _embyClient.GetServerInfoAsync();
-			var pluginsResponse = await _embyClient.GetInstalledPluginsAsync();
-		    var drives = await _embyClient.GetLocalDrivesAsync();
+            var usersJson = await _embyClient.GetEmbyUsers();
+            var users = UserConverter.ConvertToUserList(usersJson).ToList();
+            await _embyRepository.AddOrUpdateUsers(users);
 
-		    _embyServerInfoRepository.UpdateOrAdd(systemInfoReponse);
-			_embyPluginRepository.RemoveAllAndInsertPluginRange(pluginsResponse);
-			_embyDriveRepository.RemoveAllAndInsertDriveRange(drives.ToList());
-		}
+            var localUsers = _embyRepository.GetAllUsers();
+            var removedUsers = localUsers.Where(u => users.All(u2 => u2.Id != u.Id));
+            await _embyRepository.MarkUserAsDeleted(removedUsers);
+        }
+
+        public async Task GetAndProcessDevices(string embyAddress, string accessToken)
+        {
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
+            var devicesJson = await _embyClient.GetEmbyDevices();
+            var devices = DeviceConverter.ConvertToDeviceList(devicesJson).ToList();
+            await _embyRepository.AddOrUpdateDevices(devices);
+
+            var localDevices = _embyRepository.GetAllDevices();
+            var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
+            await _embyRepository.MarkDeviceAsDeleted(removedDevices);
+        }
 
         public EmbyStatus GetEmbyStatus()
         {
-            return _embyStatusRepository.GetEmbyStatus();
+            return _embyRepository.GetEmbyStatus();
         }
 
-        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
         {
-		    var settings = _configurationRepository.GetConfiguration();
-            _embyClient.SetAddressAndUrl(settings.GetFullEmbyServerAddress(), settings.AccessToken);
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
             return await _embyClient.PingEmbyAsync(cancellationToken);
         }
 
-        public void SetEmbyClientAddressAndUrl(string url, string token)
+        public List<PluginInfo> GetAllPlugins()
         {
-            _embyClient.SetAddressAndUrl(url, token);
+            return _embyRepository.GetAllPlugins();
+        }
+
+        public void ResetMissedPings()
+        {
+             _embyRepository.ResetMissedPings();
+        }
+
+        public void IncreaseMissedPings()
+        {
+            _embyRepository.IncreaseMissedPings();
         }
 
         public void Dispose()

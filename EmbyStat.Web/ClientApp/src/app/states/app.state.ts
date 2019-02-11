@@ -3,8 +3,8 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '../../environments/environment';
 
-import { configurationReducer } from '../configuration/state/reducer.configuration';
-import { Configuration } from '../configuration/models/configuration';
+import { settingsReducer } from '../settings/state/reducer.settings';
+import { Settings } from '../settings/models/settings';
 
 import { serverInfoReducer } from '../server/state/reducer.server';
 import { ServerInfoStore } from '../server/models/server-info-store';
@@ -13,13 +13,13 @@ import { About } from '../about/models/about';
 import { AboutReducer } from '../about/state/reducer.about';
 
 export interface ApplicationState {
-  configuration: Configuration;
+  settings: Settings;
   about: About;
   serverInfo: ServerInfoStore;
 }
 
 export const ROOT_REDUCER: ActionReducerMap<ApplicationState> = {
-  configuration: configurationReducer,
+  settings: settingsReducer,
   serverInfo: serverInfoReducer,
   about: AboutReducer
 };

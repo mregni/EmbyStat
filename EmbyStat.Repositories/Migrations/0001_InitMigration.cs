@@ -23,7 +23,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("PrimaryImage").AsString().Nullable()
                 .WithColumn("Type").AsInt32().NotNullable();
 
-            Create.Table(Constants.Tables.Configuration)
+            Create.Table("Configuration")
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Configuration")
                 .WithColumn("Value").AsString().Nullable();
 

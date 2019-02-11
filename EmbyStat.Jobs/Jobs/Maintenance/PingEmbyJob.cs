@@ -14,13 +14,11 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     [DisableConcurrentExecution(30)]
     public class PingEmbyJob : BaseJob, IPingEmbyJob
     {
-        private readonly IEmbyStatusRepository _embyStatusRepository;
         private readonly IEmbyService _embyService;
 
-        public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
-            IEmbyStatusRepository embyStatusRepository, IEmbyService embyService) : base(hubHelper, jobRepository, configurationService)
+        public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+            IEmbyService embyService) : base(hubHelper, jobRepository, settingsService)
         {
-            _embyStatusRepository = embyStatusRepository;
             _embyService = embyService;
             Title = jobRepository.GetById(Id).Title;
         }
@@ -31,21 +29,21 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJob()
         {
-            var result = await _embyService.PingEmbyAsync(new CancellationToken(false));
+            var result = await _embyService.PingEmbyAsync(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken, new CancellationToken(false));
             LogProgress(50);
             if (result == "Emby Server")
             {
                 LogInformation("We found your Emby server");
-                _embyStatusRepository.ResetMissedPings();
+                _embyService.ResetMissedPings();
             }
             else
             {
                 LogInformation("We could not ping your Emby server. Might be because it's turned off or dns is wrong");
-                _embyStatusRepository.IncreaseMissedPings();
+                _embyService.IncreaseMissedPings();
             }
 
-            var status = _embyStatusRepository.GetEmbyStatus();
-            await _hubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
+            var status = _embyService.GetEmbyStatus();
+            await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
         }
 

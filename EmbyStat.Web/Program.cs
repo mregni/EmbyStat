@@ -66,7 +66,7 @@ namespace EmbyStat.Web
         public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.json", false, false)
                 .AddInMemoryCollection(configArgs)
                 .AddEnvironmentVariables()
                 .Build();

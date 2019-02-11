@@ -25,31 +25,26 @@ namespace EmbyStat.Services
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IConfigurationRepository _configurationRepository;
+        private readonly ISettingsService _settingsService;
 
-        public ShowService(IShowRepository showRepository, 
-            ICollectionRepository collectionRepository, 
-            IGenreRepository genreRepository, 
-            IPersonService personService, 
-            IJobRepository jobRepository, 
-            IStatisticsRepository statisticsRepository,
-            IConfigurationRepository configurationRepository)
+        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, 
+            IPersonService personService, IJobRepository jobRepository, IStatisticsRepository statisticsRepository, ISettingsService settingsService)
         : base(jobRepository){
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
             _statisticsRepository = statisticsRepository;
-            _configurationRepository = configurationRepository;
+            _settingsService = settingsService;
         }
 
         public IEnumerable<Collection> GetShowCollections()
         {
-            var config = _configurationRepository.GetConfiguration();
-            return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
+            var settings = _settingsService.GetUserSettings();
+            return _collectionRepository.GetCollectionByTypes(settings.ShowCollectionTypes);
         }
 
-        public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
+        public ShowStat GetGeneralStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
@@ -82,7 +77,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public ShowGraphs GetGraphs(IEnumerable<string> collectionIds)
+        public ShowGraphs GetGraphs(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
@@ -110,7 +105,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public PersonStats GetPeopleStats(IEnumerable<string> collectionIds)
+        public PersonStats GetPeopleStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
@@ -136,7 +131,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds)
+        public List<ShowCollectionRow> GetCollectionRows(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
@@ -214,7 +209,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, PersonType type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -222,7 +217,7 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionIds, PersonType type, string title)
+        private Card TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
         {
             return new Card
             {

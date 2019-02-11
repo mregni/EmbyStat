@@ -5,6 +5,7 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
@@ -17,17 +18,19 @@ namespace EmbyStat.Jobs
     [Queue("main")]
     public abstract class BaseJob : IBaseJob
     {
-        protected readonly IJobHubHelper _hubHelper;
+        protected readonly IJobHubHelper HubHelper;
+        protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
-        private readonly IConfigurationService _configurationService;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
+        protected UserSettings Settings { get; set; }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService)
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService)
         {
-            _hubHelper = hubHelper;
+            HubHelper = hubHelper;
             _jobRepository = jobRepository;
-            _configurationService = configurationService;
+            Settings = settingsService.GetUserSettings();
+            SettingsService = settingsService;
         }
 
         public abstract Guid Id { get; }
@@ -53,14 +56,14 @@ namespace EmbyStat.Jobs
             {
                 Log.Error(e, "Error while running job");
                 OnFail();
-                FailExecution(string.Empty);
+                FailExecution("Job failed, check logs for more info.");
                 throw;
             }
         }
 
         private void PreJobExecution()
         {
-            if (!_configurationService.GetServerSettings().WizardFinished)
+            if (!Settings.WizardFinished)
             {
                 throw new WizardNotFinishedException("Job not running because wizard is not finished");
             }
@@ -89,13 +92,14 @@ namespace EmbyStat.Jobs
 
         private void FailExecution(string message)
         {
+            var now = DateTime.UtcNow;
             State = JobState.Failed;
-            _jobRepository.EndJob(Id, DateTime.UtcNow, State);
+            _jobRepository.EndJob(Id, now, State);
             if (!string.IsNullOrWhiteSpace(message))
             {
                 LogError(message);
             }
-            SendLogProgressToFront(100);
+            SendLogProgressToFront(100, now);
         }
         
         public void LogProgress(double progress)
@@ -123,7 +127,7 @@ namespace EmbyStat.Jobs
 
         private async void SendLogUpdateToFront(string message, ProgressLogType type)
         {
-            await _hubHelper.BroadCastJobLog(JobPrefix, message, type);
+            await HubHelper.BroadCastJobLog(JobPrefix, message, type);
         }
 
         private async void SendLogProgressToFront(double progress, DateTime? EndTimeUtc = null)
@@ -137,7 +141,7 @@ namespace EmbyStat.Jobs
                 EndTimeUtc = EndTimeUtc,
                 Title = Title
             };
-            await _hubHelper.BroadcastJobProgress(info);
+            await HubHelper.BroadcastJobProgress(info);
         }
     }
 }

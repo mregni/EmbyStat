@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PluginService } from '../service/plugin.service';
-import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
+import { SettingsFacade } from '../../settings/state/facade.settings';
 import { EmbyPlugin } from '../../shared/models/emby/emby-plugin';
-import { Configuration } from '../../configuration/models/configuration';
+import { Settings } from '../../settings/models/settings';
 import { ConfigHelper } from '../../shared/helpers/configHelper';
 
 @Component({
@@ -13,17 +13,19 @@ import { ConfigHelper } from '../../shared/helpers/configHelper';
 })
 export class PluginOverviewComponent implements OnInit {
   plugins$: Observable<EmbyPlugin[]>;
-  configuration$: Observable<Configuration>;
+  settings$: Observable<Settings>;
 
-  constructor(private pluginService: PluginService, private configurationFacade: ConfigurationFacade) {
+  constructor(
+    private readonly pluginService: PluginService,
+    private readonly settingsFacade: SettingsFacade) {
     this.plugins$ = pluginService.getPlugins();
-    this.configuration$ = configurationFacade.getConfiguration();
+    this.settings$ = settingsFacade.getSettings();
   }
 
   ngOnInit() {
   }
 
-  getFullAddress(config: Configuration): string {
-    return ConfigHelper.getFullEmbyAddress(config);
+  getFullAddress(settings: Settings): string {
+    return ConfigHelper.getFullEmbyAddress(settings);
   }
 }

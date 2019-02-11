@@ -9,19 +9,23 @@ using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Controller.Authentication;
+using EmbyStat.Common.Models.Settings;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
+using MediaBrowser.Model.Users;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using Serilog;
+using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
 namespace EmbyStat.Clients.EmbyClient
 {
 	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer,  IAsyncHttpClient httpClient)
-		: base(cryptographyProvider, jsonSerializer, httpClient)
+        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient, IOptions<AppSettings> options)
+		: base(cryptographyProvider, httpClient, options)
 		{
 			
 		}
@@ -57,7 +61,7 @@ namespace EmbyStat.Clients.EmbyClient
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
 			var result = await PostAsync<AuthenticationResult>(url, args, CancellationToken.None);
 
-			SetAuthenticationInfo(result.AccessToken, result.User.Id);
+			SetAuthenticationInfo(result.AccessToken, new Guid(result.User.Id));
 
 			return result;
 		}
@@ -77,25 +81,43 @@ namespace EmbyStat.Clients.EmbyClient
 		{
 			var url = GetApiUrl("System/Info");
 
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for server info");
             using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<ServerInfo>(stream);
 			}
 		}
 
-		public async Task<List<Drive>> GetLocalDrivesAsync()
+		public async Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync()
 		{
 			var url = GetApiUrl("Environment/Drives");
 
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for local drives");
 			using (var stream = await GetSerializedStreamAsync(url))
             {
-				return DeserializeFromStream<List<Drive>>(stream);
+				return DeserializeFromStream<List<FileSystemEntryInfo>>(stream);
 			}
 		}
 
-		public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        public async Task<JArray> GetEmbyUsers()
+        {
+            var url = GetApiUrl("Users");
+
+            using (var stream = await GetSerializedStreamAsync(url))
+            {
+                return DeserializeFromStream<JArray>(stream);
+            }
+        }
+
+        public async Task<JObject> GetEmbyDevices()
+        {
+            var url = GetApiUrl("Devices");
+
+            using (var stream = await GetSerializedStreamAsync(url))
+            {
+                return DeserializeFromStream<JObject>(stream);
+            }
+        }
+
+        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
 		{
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();

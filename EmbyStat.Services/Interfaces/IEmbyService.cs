@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Emby;
-using MediaBrowser.Model.Plugins;
 
 namespace EmbyStat.Services.Interfaces
 {
@@ -15,15 +13,15 @@ namespace EmbyStat.Services.Interfaces
 	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
         Task<ServerInfo> GetServerInfo();
 		List<Drive> GetLocalDrives();
-		void FireSmallSyncEmbyServerInfo();
 	    EmbyStatus GetEmbyStatus();
-	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);
-        void SetEmbyClientAddressAndUrl(string url, string token);
-        Task<ServerInfo> GetLiveServerInfo();
-        Task<List<PluginInfo>> GetLivePluginInfo();
-        Task<List<Drive>> GetLiveEmbyDriveInfo();
-        void UpdateOrAddServerInfo(ServerInfo server);
-        void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins);
-        void RemoveAllAndInsertDriveRange(List<Drive> drives);
+	    Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken);
+        Task GetAndProcessServerInfo(string embyAddress, string accessToken);
+        Task GetAndProcessPluginInfo(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessEmbyDriveInfo(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessEmbyUsers(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessDevices(string embyAddress, string settingsAccessToken);
+        List<PluginInfo> GetAllPlugins();
+        void ResetMissedPings();
+        void IncreaseMissedPings();
     }
 }
