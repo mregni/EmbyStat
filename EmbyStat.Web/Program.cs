@@ -25,6 +25,7 @@ namespace EmbyStat.Web
             try
 			{
                 CreateLogger();
+                CheckForUserSettingsFile();
 
                 var result = Parser.Default.ParseArguments<StartupOptions>(args);
                 StartupOptions options = null;
@@ -91,7 +92,7 @@ namespace EmbyStat.Web
 				.CreateLogger();
 		}
 
-		public static void SetupDatabase(IWebHost host)
+		private static void SetupDatabase(IWebHost host)
 		{
 			using (var scope = host.Services.CreateScope())
 			{
@@ -106,7 +107,8 @@ namespace EmbyStat.Web
 				{
 					Log.Fatal($"{Constants.LogPrefix.System}\tDatabase seed or update failed");
 					Log.Fatal($"{Constants.LogPrefix.System}\t{ex.Message}\n{ex.StackTrace}");
-				}
+                    throw;
+                }
 			}
 		}
 
@@ -123,6 +125,16 @@ namespace EmbyStat.Web
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 	        runner.MigrateUp();
 	    }
+
+        private static void CheckForUserSettingsFile()
+        {
+            if (!File.Exists(Path.Combine("Settings", "usersettings.json")))
+            {
+                var e = new FileNotFoundException("usersettings.json file not found in Settings folder. Exiting program now!");;
+                Log.Error(e, "Can't start server!");
+                throw e;
+            }
+        }
     }
 }
 
