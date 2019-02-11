@@ -66,7 +66,7 @@ namespace EmbyStat.Web
         public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, false)
+                .AddJsonFile(Path.Combine("Settings", "appsettings.json"), false, false)
                 .AddInMemoryCollection(configArgs)
                 .AddEnvironmentVariables()
                 .Build();
@@ -87,7 +87,7 @@ namespace EmbyStat.Web
 				.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder().WithDefaultDestructurers().WithRootName("Exception"))
 				.Enrich.FromLogContext()
-				.WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+				.WriteTo.File(Path.Combine("Logs", "log.txt"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
 				.CreateLogger();
 		}
 
