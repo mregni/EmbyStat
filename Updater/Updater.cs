@@ -74,9 +74,13 @@ namespace Updater
 
             foreach (string currentPath in Directory.GetFiles(updatedLocation, "*.*", SearchOption.AllDirectories))
             {
-                var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
-                File.Copy(currentPath, newFile, true);
-                Log.Debug($"Replaced file {newFile}");
+                var fileName = Path.GetFileName(currentPath);
+                if (fileName != "data.db" || fileName != "usersettings.json")
+                {
+                    var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
+                    File.Copy(currentPath, newFile, true);
+                    Log.Debug($"Replaced file {newFile}");
+                }
             }
         }
 
