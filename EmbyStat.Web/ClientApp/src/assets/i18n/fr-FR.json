@@ -138,33 +138,33 @@
     "CONTINUING": "en cours",
     "ENDED": "terminé"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Paramètres",
+  "SETTINGS": {
+    "TITLE": "Paramètres",
     "SAVED": {
-      "GENERAL": "Paramètres généraux de Embystat enregistrés!",
-      "EMBY": "Paramètres Emby sauvegardés !",
-      "MOVIES": "Paramètres du film sauvegardé!",
-      "SHOWS": "Paramètres de la série sauvegardé!",
-      "UPDATES": "Paramètres sauvegardés!"
+      "GENERAL": "General Embystat settings saved!",
+      "EMBY": "Emby settings saved!",
+      "MOVIES": "Movie settings saved!",
+      "SHOWS": "Show settings saved!",
+      "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "Si vous le souhaitez, vous pouvez utiliser EmbyStat avec votre propre clé API TheTVDB ici.",
-      "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera."
+      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "Pour trouver les films qui sont susceptibles d'être étrangement courts, nous devons savoir combien il faut de minutes pour chercher ces films. Par défaut, ce paramètre est défini sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
-      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans le menu déroulant de la collection sur la page des statistiques de film."
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans la liste déroulante de la collection sur la page Afficher les statistiques."
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
-      "NOPASSWORD": "N’oubliez pas d’entrer votre mot de passe Emby lorsque vous souhaitez modifier les paramètres d’url Emby."
+      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
-      "AUTO": "Activer la mise à jour automatique",
-      "CHECK": "Vérifier et mettre à jour le serveur maintenant",
-      "TRAIN": "Changez le canal de mise à jour si vous voulez avoir des mises à jour bêta.",
+      "AUTO": "Enable auto updates",
+      "CHECK": "Check and update server now",
+      "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
