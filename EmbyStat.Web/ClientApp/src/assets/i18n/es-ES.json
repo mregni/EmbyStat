@@ -138,25 +138,25 @@
     "CONTINUING": "continuando",
     "ENDED": "terminado"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Configuración",
+  "SETTINGS": {
+    "TITLE": "Configuración",
     "SAVED": {
-      "GENERAL": "¡Configuraciones generales de Embystat guardadas!",
-      "EMBY": "Configuraciones Emby guardadas!",
-      "MOVIES": "Configuraciones de película guardadas!",
-      "SHOWS": "¡Configuraciones guardadas!",
+      "GENERAL": "General Embystat settings saved!",
+      "EMBY": "Emby settings saved!",
+      "MOVIES": "Movie settings saved!",
+      "SHOWS": "Show settings saved!",
       "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "Si lo desea, puede suministrar a EmbyStat su propia clave API TheTVDB aquí.",
+      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Seleccione todos los tipos de colecciones Emby que desee que puedan seleccionar en el menú desplegable de colecciones en la página de estadísticas de la película."
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Seleccione todos los tipos de colecciones Emby que desee que puedan seleccionar en el menú desplegable de colecciones en la página de estadísticas de la película."
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
