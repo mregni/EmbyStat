@@ -138,14 +138,14 @@
     "CONTINUING": "continuing",
     "ENDED": "ended"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Settings",
+  "SETTINGS": {
+    "TITLE": "Settings",
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
       "EMBY": "Emby settings saved!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!",
-      "UPDATES": "Settings saved!"
+      "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
@@ -162,7 +162,7 @@
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
-      "AUTO": "Enable Auto-Update",
+      "AUTO": "Enable auto updates",
       "CHECK": "Check and update server now",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",

@@ -138,14 +138,14 @@
     "CONTINUING": "voortzetten",
     "ENDED": "geëindigd"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Instellingen",
+  "SETTINGS": {
+    "TITLE": "Instellingen",
     "SAVED": {
-      "GENERAL": "Algemene Embystat-instellingen opgeslagen!",
-      "EMBY": "Emby instellingen opgeslagen!",
-      "MOVIES": "Filminstellingen opgeslagen!",
-      "SHOWS": "Show instellingen opgeslagen!",
-      "UPDATES": "Update instellingen opgeslagen!"
+      "GENERAL": "General Embystat settings saved!",
+      "EMBY": "Emby settings saved!",
+      "MOVIES": "Movie settings saved!",
+      "SHOWS": "Show settings saved!",
+      "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
@@ -162,9 +162,9 @@
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
-      "AUTO": "Automatisch bijwerken inschakelen",
-      "CHECK": "Controleer en update de server nu",
-      "TRAIN": "Wijzig de updatetrein als u bèta-updates wilt ontvangen.",
+      "AUTO": "Enable auto updates",
+      "CHECK": "Check and update server now",
+      "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
