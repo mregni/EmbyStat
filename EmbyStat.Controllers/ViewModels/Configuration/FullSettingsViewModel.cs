@@ -5,8 +5,8 @@ namespace EmbyStat.Controllers.ViewModels.Configuration
 {
     public class FullSettingsViewModel
     {
-        public string AppName { get; set; }
         public Guid? Id { get; set; }
+        public string AppName { get; set; }
         public bool WizardFinished { get; set; }
         public string Username { get; set; }
         public string Language { get; set; }
