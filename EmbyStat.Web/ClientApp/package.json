@@ -27,7 +27,7 @@
     "@ngrx/effects": "^5.2.0",
     "@ngrx/store": "^5.2.0",
     "@ngrx/store-devtools": "^5.2.0",
-    "@ngx-progressbar/core": "^4.1.1",
+    "@ngx-progressbar/core": "^4.3.0",
     "@ngx-progressbar/http": "^4.1.1",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
