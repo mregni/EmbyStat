@@ -45,7 +45,7 @@
     "ngx-moment": "^2.0.0",
     "npm": "^6.7.0",
     "rxjs": "^5.5.12",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
     "@angular/cli": "1.7.4",
