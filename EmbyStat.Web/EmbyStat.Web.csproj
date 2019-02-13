@@ -37,14 +37,18 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\dist\**" />
     <Compile Remove="ClientApp\src\app\components\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
     <Content Remove="ClientApp\src\app\components\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\dist\**" />
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
+    <None Remove="ClientApp\dist\**" />
     <None Remove="ClientApp\src\app\components\**" />
   </ItemGroup>
 
