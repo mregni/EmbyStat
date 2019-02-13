@@ -19,4 +19,16 @@ export class UserOverviewComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  existingUsers(list: EmbyUser[]): EmbyUser[] {
+    return list
+      .filter(x => !x.deleted)
+      .sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+  }
+
+  deletedUsers(list: EmbyUser[]): EmbyUser[] {
+    return list
+      .filter(x => x.deleted)
+      .sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+  }
 }

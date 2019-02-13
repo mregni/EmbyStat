@@ -1,8 +1,12 @@
 <div class="title_bar">
-  <h2>Users</h2>
+  <h2>{{ 'MENU.USERS' | translate }}</h2>
 </div>
 <div *ngIf="users$ | async as users" class="content">
   <div class="user-flex-container">
-    <app-card-user *ngFor="let user of users" [user]="user"></app-card-user>
+    <app-card-user *ngFor="let user of existingUsers(users)" [user]="user"></app-card-user>
+  </div>
+  <h2>{{ 'USERS.DELETED' | translate }}</h2>
+  <div class="user-flex-container">
+    <app-card-user *ngFor="let user of deletedUsers(users)" [user]="user"></app-card-user>
   </div>
 </div>
