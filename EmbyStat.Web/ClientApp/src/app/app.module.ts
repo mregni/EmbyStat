@@ -9,6 +9,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUserTie, faUserLock, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -22,6 +24,7 @@ import { ShowModule } from './show/show.module';
 import { LogsModule } from './logs/logs.module';
 import { AboutModule } from './about/about.module';
 import { SettingsModule } from './settings/settings.module';
+import { UserModule } from './user/user.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -42,6 +45,8 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
+library.add(faUserTie, faUserLock, faEyeSlash);
+
 @NgModule({
   declarations: [
     AppComponent
@@ -60,6 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
     JobsModule,
     ShowModule,
     MovieModule,
+    UserModule,
     LogsModule,
     TooltipModule,
     AboutModule,

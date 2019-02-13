@@ -56,7 +56,6 @@
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
-    <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <None Remove="ClientApp\src\app\settings\state\actions.settings.ts" />
     <None Remove="ClientApp\src\app\settings\state\facade.settings.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
@@ -106,7 +105,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\settings\state\facade.settings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />

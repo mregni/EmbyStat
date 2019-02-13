@@ -2,19 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
+
 import { EmbyService } from '../shared/services/emby.service';
-import { PluginOverviewComponent } from './plugin-overview/plugin-overview.component';
+import { UserOverviewComponent } from './user-overview/user-overview.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    TranslateModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ],
   providers: [
     EmbyService
   ],
   declarations: [
-    PluginOverviewComponent]
+    UserOverviewComponent
+  ]
 })
-export class PluginModule { }
+export class UserModule { }

@@ -1,0 +1,8 @@
+<div class="title_bar">
+  <h2>Users</h2>
+</div>
+<div *ngIf="users$ | async as users" class="content">
+  <div class="user-flex-container">
+    <app-card-user *ngFor="let user of users" [user]="user"></app-card-user>
+  </div>
+</div>

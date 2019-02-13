@@ -8,6 +8,7 @@ import { EmbyToken } from '../models/emby/emby-token';
 import { EmbyStatus } from '../models/emby/emby-status';
 import { ServerInfo } from '../models/emby/server-info';
 import { EmbyPlugin } from '../models/emby/emby-plugin';
+import { EmbyUser } from '../models/emby/emby-user';
 
 @Injectable()
 export class EmbyService {
@@ -17,7 +18,7 @@ export class EmbyService {
   private getServerInfoUrl = this.baseUrl + '/server/info';
   private getEmbyStatusUrl = this.baseUrl + '/server/status';
   private getPluginsUrl = this.baseUrl + '/plugins';
-
+  private getEmbyUsersUrl = this.baseUrl + '/users';
   constructor(private http: HttpClient) { }
 
   getEmbyToken(login: EmbyLogin): Observable<EmbyToken> {
@@ -38,5 +39,9 @@ export class EmbyService {
 
   getPlugins(): Observable<EmbyPlugin[]> {
     return this.http.get<EmbyPlugin[]>(this.getPluginsUrl);
+  }
+
+  getUsers(): Observable<EmbyUser[]> {
+    return this.http.get<EmbyUser[]>(this.getEmbyUsersUrl);
   }
 }

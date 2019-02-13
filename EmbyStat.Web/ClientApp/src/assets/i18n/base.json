@@ -80,7 +80,8 @@
     "JOBS": "Jobs",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About"
+    "ABOUT": "About",
+    "USERS": "Users" 
   },
   "WIZARD": {
     "INTROLABEL": "Intro",

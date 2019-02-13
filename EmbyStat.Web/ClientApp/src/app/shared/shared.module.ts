@@ -9,6 +9,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular-highcharts';
 import { LanguageModule } from './components/language/language.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { CardComponent } from './components/card/card.component';
 import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
@@ -21,6 +22,7 @@ import { CollectionSelectorComponent } from './components/collection-selector/co
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UpdateOverlayComponent } from './components/update-overlay/update-overlay.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
+import { CardUserComponent } from '../shared/components/card-user/card-user.component';
 
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
@@ -50,6 +52,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     ChartModule,
     LanguageModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
     TranslateModule.forChild()
   ],
   exports: [
@@ -58,6 +61,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     MomentModule,
     NgxChartsModule,
     ChartModule,
+    FontAwesomeModule,
     LanguageModule,
     CardComponent,
     CardTimespanComponent,
@@ -72,7 +76,8 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     CapitalizeFirstPipe,
     ToShorterStringPipe,
     DisableControlDirective,
-    SideNavigationComponent
+    SideNavigationComponent,
+    CardUserComponent
   ],
   declarations: [
     ToolbarComponent,
@@ -90,7 +95,8 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     ToShorterStringPipe,
     DisableControlDirective,
     UpdateOverlayComponent,
-    SideNavigationComponent
+    SideNavigationComponent,
+    CardUserComponent
   ],
   providers: [
     ToastService,

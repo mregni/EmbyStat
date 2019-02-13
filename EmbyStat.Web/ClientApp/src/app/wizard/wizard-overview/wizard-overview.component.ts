@@ -13,7 +13,6 @@ import { EmbyToken } from '../../shared/models/emby/emby-token';
 import { Language } from '../../shared/components/language/models/language';
 import { LanguageFacade } from '../../shared/components/language/state/facade.language';
 
-import { PluginService } from '../../plugin/service/plugin.service';
 import { SideBarService } from '../../shared/services/side-bar.service';
 
 import { JobService } from '../../jobs/service/job.service';
@@ -58,7 +57,6 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
   constructor(private translate: TranslateService,
     private settingsFacade: SettingsFacade,
-    private pluginService: PluginService,
     private languageFacade: LanguageFacade,
     private sideBarService: SideBarService,
     private jobService: JobService,

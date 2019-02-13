@@ -1,0 +1,23 @@
+<mat-card *ngIf="user !== undefined" (click)="openUser()">
+  <mat-card-content>
+    <div class="card-flex-row">
+      <div>
+        <img class="profile" *ngIf="user.primaryImageTag !== ''; else noImage" src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
+        <ng-template #noImage>
+          <img class="profile" src="../../../../assets/images/emby.png"/>
+        </ng-template>
+      </div>
+      <div class="card-flex-column user-card-margin">
+        <div class="name">{{user.name}}</div>
+        <div *ngIf="user.lastActivityDate">Last active: {{user.lastActivityDate | amLocal | amDateFormat:'DD/MM/YY HH:mm'}}</div>
+        <div *ngIf="user.lastActivityDate == undefined">Last active: never</div>
+        <div class="icon-container">
+          <fa-icon *ngIf="user.isAdministrator" icon="user-tie"></fa-icon>
+          <fa-icon *ngIf="user.isDisabled" icon="user-lock"></fa-icon>
+          <fa-icon *ngIf="user.isHidden" icon="eye-slash"></fa-icon>
+        </div>
+        <div>{{user.deleted}}</div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
