@@ -72,7 +72,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedJobs()
         {
-            Log.Debug("${Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
 
             var jobs = _context.Jobs.ToList();
 
