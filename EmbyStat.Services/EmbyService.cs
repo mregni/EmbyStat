@@ -35,7 +35,8 @@ namespace EmbyStat.Services
             _mapper = mapper;
         }
 
-	    public EmbyUdpBroadcast SearchEmby()
+        #region Server
+        public EmbyUdpBroadcast SearchEmby()
 	    {
 		    using (var client = new UdpClient())
 		    {
@@ -118,6 +119,49 @@ namespace EmbyStat.Services
             return _embyRepository.GetAllDrives();
         }
 
+        public EmbyStatus GetEmbyStatus()
+        {
+            return _embyRepository.GetEmbyStatus();
+        }
+
+        public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
+        {
+            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
+            return await _embyClient.PingEmbyAsync(cancellationToken);
+        }
+
+        public void ResetMissedPings()
+        {
+             _embyRepository.ResetMissedPings();
+        }
+
+        public void IncreaseMissedPings()
+        {
+            _embyRepository.IncreaseMissedPings();
+        }
+
+        #endregion
+
+        #region Plugin
+
+        public List<PluginInfo> GetAllPlugins()
+        {
+            return _embyRepository.GetAllPlugins();
+        }
+
+        #endregion
+
+        #region Users
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _embyRepository.GetAllUsers();
+        }
+
+        #endregion
+
+        #region JobHelpers
+
         public async Task GetAndProcessServerInfo(string embyAddress, string accessToken)
         {
             _embyClient.SetAddressAndUrl(embyAddress, accessToken);
@@ -138,7 +182,7 @@ namespace EmbyStat.Services
         {
             _embyClient.SetAddressAndUrl(embyAddress, accessToken);
             var drives = await _embyClient.GetLocalDrivesAsync();
-            
+
             _embyRepository.RemoveAllAndInsertDriveRange(_mapper.Map<IList<Drive>>(drives));
         }
 
@@ -167,31 +211,8 @@ namespace EmbyStat.Services
             await _embyRepository.MarkDeviceAsDeleted(removedDevices);
         }
 
-        public EmbyStatus GetEmbyStatus()
-        {
-            return _embyRepository.GetEmbyStatus();
-        }
 
-        public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
-        {
-            _embyClient.SetAddressAndUrl(embyAddress, accessToken);
-            return await _embyClient.PingEmbyAsync(cancellationToken);
-        }
-
-        public List<PluginInfo> GetAllPlugins()
-        {
-            return _embyRepository.GetAllPlugins();
-        }
-
-        public void ResetMissedPings()
-        {
-             _embyRepository.ResetMissedPings();
-        }
-
-        public void IncreaseMissedPings()
-        {
-            _embyRepository.IncreaseMissedPings();
-        }
+        #endregion
 
         public void Dispose()
         {

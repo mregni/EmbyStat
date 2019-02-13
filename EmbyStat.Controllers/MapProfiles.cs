@@ -1,6 +1,7 @@
-﻿using System;
+﻿
+
+using System;
 using AutoMapper;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
@@ -14,7 +15,6 @@ using EmbyStat.Controllers.Plugin;
 using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
-using EmbyStat.Services.Models.About;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
@@ -22,7 +22,6 @@ using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.System;
-using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace EmbyStat.Controllers
 {
@@ -44,7 +43,7 @@ namespace EmbyStat.Controllers
 		    CreateMap<Drive, DriveViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 
-	        CreateMap<Job, JobViewModel>();
+	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap<Card, CardViewModel>();
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
@@ -64,8 +63,9 @@ namespace EmbyStat.Controllers
 	        CreateMap<ShowStat, ShowStatViewModel>();
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 	        CreateMap<LogFile, LogFileViewModel>();
-	        CreateMap<About, AboutViewModel>();
+	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
+            CreateMap<User, EmbyUserOverviewViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

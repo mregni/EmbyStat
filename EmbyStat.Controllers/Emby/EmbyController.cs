@@ -70,6 +70,7 @@ namespace EmbyStat.Controllers.Emby
         }
 
 #endregion
+
         #region Plugins
 
         [HttpGet]
@@ -78,6 +79,18 @@ namespace EmbyStat.Controllers.Emby
         {
             var result = _embyService.GetAllPlugins();
             return Ok(_mapper.Map<IList<EmbyPluginViewModel>>(result));
+        }
+
+        #endregion
+
+        #region Users
+
+        [HttpGet]
+        [Route("users")]
+        public IActionResult GetUsers()
+        {
+            var result = _embyService.GetAllUsers();
+            return Ok(_mapper.Map<IList<EmbyUserOverviewViewModel>>(result));
         }
 
         #endregion
