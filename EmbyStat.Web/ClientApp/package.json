@@ -48,7 +48,7 @@
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.4",
+    "@angular/cli": "7.3.1",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
     "@types/highcharts": "^5.0.36",
