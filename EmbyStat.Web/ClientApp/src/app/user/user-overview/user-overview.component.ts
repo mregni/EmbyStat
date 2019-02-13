@@ -21,7 +21,6 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
     private readonly embyService: EmbyService) {
     this.usersSub = this.embyService.getUsers().subscribe((users: EmbyUser[]) => {
       this.users = _.orderBy(users.filter(x => !x.deleted), ["name"], 'asc');
-      console.log(this.users);
       this.deletedUsers = _.orderBy(users.filter(x => x.deleted), ["name"], 'asc');
     });
   }

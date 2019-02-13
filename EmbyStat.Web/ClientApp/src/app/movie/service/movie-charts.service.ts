@@ -11,7 +11,6 @@ export class MovieChartsService {
   constructor() { }
 
   changeOpened(open) {
-    console.log(open);
     this.opened.next(open);
   }
 }

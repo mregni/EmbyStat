@@ -27,7 +27,6 @@ export class TriggerDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<TriggerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private jobService: JobService) {
-    console.log(data);
     this.title = data.title;
     this.description = data.description;
     this.id = data.id;
