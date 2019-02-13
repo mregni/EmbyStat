@@ -11,11 +11,11 @@ import { ShowService } from '../service/show.service';
   styleUrls: ['./show-collection.component.scss']
 })
 export class ShowCollectionComponent implements OnInit, OnDestroy {
-  private _selectedCollections: string[];
+  private collections: string[];
   isLoading: boolean;
 
   get selectedCollections(): string[] {
-    return this._selectedCollections;
+    return this.collections;
   }
 
   @Input()
@@ -25,7 +25,7 @@ export class ShowCollectionComponent implements OnInit, OnDestroy {
       collection = [];
     }
 
-    this._selectedCollections = collection;
+    this.collections = collection;
     this.rowsSub = this.showService.getCollectedList(collection).subscribe(data => {
       this.isLoading = false;
       this.rows = data;

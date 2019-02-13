@@ -7,9 +7,8 @@ import { CountUpModule } from 'countup.js-angular2';
 import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LanguageModule } from './components/language/language.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 import { CardComponent } from './components/card/card.component';
 import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
 import { CardNumberComponent } from './components/card-number/card-number.component';
@@ -59,6 +58,8 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     MomentModule,
     NgxChartsModule,
     FontAwesomeModule,
+    ReactiveFormsModule,
+    FormsModule,
     LanguageModule,
     CardComponent,
     CardTimespanComponent,
