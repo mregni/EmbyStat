@@ -17,6 +17,7 @@
     "TITLE": "titel",
     "ADDEDON": "toegevoegd op",
     "QUALITY": "kwaliteit",
+    "NEVER": "never",
     "LINK": "koppeling",
     "REASON": "reden",
     "BYIMDB": "dezelfde imdb id",
@@ -80,7 +81,8 @@
     "JOBS": "Taken",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "Over"
+    "ABOUT": "Over",
+    "USERS": "Users"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -169,6 +171,13 @@
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
   },
+  "USERS": {
+    "ISADMIN": "Is administrator",
+    "ISHIDDEN": "Is hidden from login screen",
+    "ISDISABLED": "Is disabled",
+    "DELETED": "Deleted users",
+    "LASTACTIVE": "Last active"
+  },
   "JOB": {
     "LASTRUNNOW": "Laatste run: zojuist",
     "LASTRUN": "Laatst uitgevoerd",
@@ -181,6 +190,7 @@
     "BUTFAILED": "maar is gefaald na",
     "NORUN": "Not ran yet",
     "MOMENT_AGO": "een moment",
+    "JOBLOGS": "Job logs",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
