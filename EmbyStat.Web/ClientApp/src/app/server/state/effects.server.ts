@@ -1,10 +1,9 @@
+import { throwError, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/observable/throw';
+
 
 import { ServerInfo } from '../../shared/models//emby/server-info';
 import { EmbyService } from '../../shared/services/emby.service';
@@ -26,8 +25,8 @@ export class ServerEffects {
 
   @Effect()
   getServerInfo$ = this.actions$
-    .ofType(ServerActionTypes.LOAD_SERVERINFO)
     .pipe(
+      ofType(ServerActionTypes.LOAD_SERVERINFO),
       map((data: LoadServerInfoAction) => data.payload),
       withLatestFrom(this.loaded$),
       switchMap(([_, loaded]) => {
@@ -40,6 +39,6 @@ export class ServerEffects {
           ? new LoadServerInfoSuccessAction(serverInfo)
           : new NoNeedServerInfoAction();
       }),
-      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
+      catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
     );
 }

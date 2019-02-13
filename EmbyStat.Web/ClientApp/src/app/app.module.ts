@@ -77,7 +77,7 @@ library.add(faUserTie, faUserLock, faEyeSlash);
         deps: [HttpClient]
       }
     }),
-    NgProgressModule.forRoot(),
+    NgProgressModule,
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
     EffectsModule.forRoot([SettingsEffects, ServerEffects, AboutEffects]),

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { Settings } from '../../settings/models/settings';
 import { ConfigHelper } from '../../shared/helpers/configHelper';

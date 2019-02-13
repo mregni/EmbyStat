@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MatDialog } from '@angular/material';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { SyncIsRunningDialog } from '../dialogs/sync-is-running/sync-is-running.component';
 import { JobService } from '../../jobs/service/job.service';
+import { Job } from '../../jobs/models/job';
 
 @Injectable()
 export class SyncGuard implements CanActivate {
@@ -13,8 +16,9 @@ export class SyncGuard implements CanActivate {
     private dialog: MatDialog) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.jobService.getMediaSyncJob().map(job => {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return this.jobService.getMediaSyncJob().pipe(
+      map((job: Job) => {
       if (job.state === 1) {
         this.dialog.open(SyncIsRunningDialog,
           {
@@ -24,6 +28,6 @@ export class SyncGuard implements CanActivate {
       }
 
       return true;
-    });
+    }));
   }
 }

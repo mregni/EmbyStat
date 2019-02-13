@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EmbyService } from '../../shared/services/emby.service';
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { EmbyPlugin } from '../../shared/models/emby/emby-plugin';

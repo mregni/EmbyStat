@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 import { ConfigHelper } from '../../helpers/configHelper';
 
 import { SettingsFacade } from '../../../settings/state/facade.settings';

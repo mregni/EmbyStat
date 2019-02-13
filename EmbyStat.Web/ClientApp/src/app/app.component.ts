@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import * as signalR from '@aspnet/signalr';
 
 import { SettingsFacade } from './settings/state/facade.settings';
@@ -34,8 +34,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly jobSocketService: JobSocketService,
     private readonly sideBarService: SideBarService,
     private readonly updateService: UpdateService) {
-    this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
-
     translate.setDefaultLang('en-US');
     translate.addLangs(['en-US', 'nl-NL', 'de-DE', 'da-DK', 'el-GR', 'es-ES',
       'fi-FI', 'fr-FR', 'hu-HU', 'it-IT', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'sv-SE']);

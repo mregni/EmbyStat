@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CountUpModule } from 'countup.js-angular2';
 import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ChartModule } from 'angular-highcharts';
 import { LanguageModule } from './components/language/language.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -49,7 +48,6 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     CountUpModule,
     MomentModule,
     NgxChartsModule,
-    ChartModule,
     LanguageModule,
     ReactiveFormsModule,
     FontAwesomeModule,
@@ -60,7 +58,6 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     MaterialModule,
     MomentModule,
     NgxChartsModule,
-    ChartModule,
     FontAwesomeModule,
     LanguageModule,
     CardComponent,
