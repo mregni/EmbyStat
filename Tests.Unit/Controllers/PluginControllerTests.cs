@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
+using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
@@ -15,7 +16,7 @@ namespace Tests.Unit.Controllers
 	[Collection("Mapper collection")]
 	public class PluginControllerTests : IDisposable
 	{
-		private readonly PluginController _subject;
+		private readonly EmbyController _subject;
 		private readonly Mock<IEmbyService> _embyServiceMock;
 		private readonly List<PluginInfo> _plugins;
 
@@ -32,7 +33,7 @@ namespace Tests.Unit.Controllers
 
 		    var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<IList<EmbyPluginViewModel>>(It.IsAny<List<PluginInfo>>())).Returns(new List<EmbyPluginViewModel>{ new EmbyPluginViewModel { Name = "Trakt plugin" }, new EmbyPluginViewModel { Name = "EmbyStat plugin" } });
-            _subject = new PluginController(_embyServiceMock.Object, _mapperMock.Object);
+            _subject = new EmbyController(_embyServiceMock.Object, _mapperMock.Object);
 		}
 
 		public void Dispose()
@@ -42,8 +43,8 @@ namespace Tests.Unit.Controllers
 
 		[Fact]
 		public void ArePluginsReturned()
-		{
-			var result = _subject.Get();
+        {
+            var result = _subject.GetPlugins();
 			var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 			var list = resultObject.Should().BeOfType<List<EmbyPluginViewModel>>().Subject;
 
