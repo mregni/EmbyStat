@@ -243,25 +243,24 @@ namespace EmbyStat.Services
 
         #region StatCreators
 
-        private Card TotalMovieCount(IEnumerable<Movie> movies)
+        private Card<int> TotalMovieCount(IEnumerable<Movie> movies)
         {
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Movies.TotalMovies,
-                Value = movies.Count().ToString()
+                Value = movies.Count()
             };
         }
 
-        private Card TotalMovieGenres(IEnumerable<Movie> movies)
+        private Card<int> TotalMovieGenres(IEnumerable<Movie> movies)
         {
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Movies.TotalGenres,
                 Value = movies.SelectMany(x => x.MediaGenres)
                               .Select(x => x.GenreId)
                               .Distinct()
                               .Count()
-                              .ToString()
             };
         }
 
@@ -382,11 +381,11 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionsIds, string type, string title)
+        private Card<int> TotalTypeCount(IEnumerable<string> collectionsIds, string type, string title)
         {
-            return new Card
+            return new Card<int>
             {
-                Value = _movieRepository.GetTotalPersonByType(collectionsIds, type).ToString(),
+                Value = _movieRepository.GetTotalPersonByType(collectionsIds, type),
                 Title = title
             };
         }

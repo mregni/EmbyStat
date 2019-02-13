@@ -1,8 +1,8 @@
 ﻿namespace EmbyStat.Services.Models.Stat
 {
-    public class Card
+    public class Card<T>
     {
         public string Title { get; set; }
-        public string Value { get; set; }
+        public T Value { get; set; }
     }
 }

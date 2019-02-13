@@ -217,11 +217,11 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
+        private Card<int> TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
         {
-            return new Card
+            return new Card<int>
             {
-                Value = _showRepository.GetTotalPersonByType(collectionIds, type).ToString(),
+                Value = _showRepository.GetTotalPersonByType(collectionIds, type),
                 Title = title
             };
         }
@@ -420,33 +420,33 @@ namespace EmbyStat.Services
             return new ShowPoster();
         }
 
-        private Card TotalShowCount(IEnumerable<string> collectionIds)
+        private Card<int> TotalShowCount(IEnumerable<string> collectionIds)
         {
             var count = _showRepository.CountShows(collectionIds);
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Shows.TotalShows,
-                Value = count.ToString()
+                Value = count
             };
         }
 
-        private Card TotalEpisodeCount(IEnumerable<string> collectionIds)
+        private Card<int> TotalEpisodeCount(IEnumerable<string> collectionIds)
         {
             var count = _showRepository.CountEpisodes(collectionIds);
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Shows.TotalEpisodes,
-                Value = count.ToString()
+                Value = count
             };
         }
 
-        private Card TotalMissingEpisodeCount(IEnumerable<Show> shows)
+        private Card<int> TotalMissingEpisodeCount(IEnumerable<Show> shows)
         {
             var count = shows.Sum(x => x.MissingEpisodesCount);
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Shows.TotalMissingEpisodes,
-                Value = count.ToString()
+                Value = count
             };
         }
 

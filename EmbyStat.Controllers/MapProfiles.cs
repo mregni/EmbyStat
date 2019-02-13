@@ -45,7 +45,7 @@ namespace EmbyStat.Controllers
 
 	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
-	        CreateMap<Card, CardViewModel>();
+	        CreateMap( typeof(Card<>), typeof(CardViewModel<>));
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
 	        CreateMap<ShowPoster, ShowPosterViewModel>();
             CreateMap<PersonPoster, PersonPosterViewModel>();

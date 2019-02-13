@@ -1,4 +1,4 @@
-export class Card {
-  public title: string;
-  public value: string;
+export class Card<T> {
+  title: string;
+  value: T;
 }

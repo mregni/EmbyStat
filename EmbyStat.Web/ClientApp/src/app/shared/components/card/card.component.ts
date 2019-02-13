@@ -8,6 +8,5 @@ import { Card } from '../../models/card';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
-
-  @Input() card: Card;
+  @Input() card: Card<string>;
 }
