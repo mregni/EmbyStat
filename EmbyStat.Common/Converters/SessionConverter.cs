@@ -48,7 +48,7 @@ namespace EmbyStat.Common.Converters
                     }
 
                     var subtitleIndex = session["PlayState"]["SubtitleStreamIndex"]?.Value<int?>();
-                    if (subtitleIndex != null)
+                    if (subtitleIndex != null && subtitleIndex != -1)
                     {
                         var subtitleStream = session["NowPlayingItem"]["MediaStreams"][subtitleIndex];
                         play.SubtitleCodec = subtitleStream["Codec"]?.Value<string>();
@@ -57,7 +57,7 @@ namespace EmbyStat.Common.Converters
                     }
 
                     var audioIndex = session["PlayState"]["AudioStreamIndex"]?.Value<int?>();
-                    if (audioIndex != null)
+                    if (audioIndex != null && audioIndex != -1)
                     {
                         var audioStream = session["NowPlayingItem"]["MediaStreams"][audioIndex];
                         play.AudioChannelLayout = audioStream["ChannelLayout"]?.Value<string>();
