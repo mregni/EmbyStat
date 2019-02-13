@@ -1,0 +1,33 @@
+@import "./vars.scss";
+
+.title-bar {
+  display: flex;
+  flex: 1 1 auto;
+  height: 50px;
+  padding: 10px 20px;
+  background: #fff;
+  align-items: center;
+  box-shadow: $normal-box-shadow;
+
+  h2 {
+    padding: 0;
+    margin: 15px 0px;
+  }
+}
+
+.title-bar-align-start {
+  justify-content: flex-start;
+}
+
+.title-bar-flex-row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.title-bar-left-content {
+  flex: 1 1 auto;
+}
+
+.title-bar-right-content {
+  flex: 0 0 250px;
+}

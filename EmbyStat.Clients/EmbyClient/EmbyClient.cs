@@ -135,7 +135,7 @@ namespace EmbyStat.Clients.EmbyClient
 
 	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))
 	    {
-	        var url = GetItemListUrl($"Users/{query.UserId}/Items", query);
+	        var url = GetItemListUrl("Items", query);
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
@@ -143,23 +143,13 @@ namespace EmbyStat.Clients.EmbyClient
 	        }
 	    }
 
-        public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken)
+        public async Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken)
 	    {
-	        var url = GetItemListUrl($"Users/{personQuery.UserId}/Items/{personId}", personQuery);
+	        var url = GetItemListUrl($"persons/{personName}", new ItemQuery());
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
 	            return DeserializeFromStream<BaseItemDto>(stream);
-	        }
-	    }
-
-        public async Task<Folder> GetRootFolderAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
-	    {
-	        var url = GetApiUrl($"/Users/{userId}/Items/Root");
-
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
-	        {
-	            return DeserializeFromStream<Folder>(stream);
 	        }
 	    }
 

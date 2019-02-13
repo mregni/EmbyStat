@@ -7,7 +7,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers;
-using EmbyStat.Controllers.ViewModels.Configuration;
+using EmbyStat.Controllers.Settings;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ServerFacade } from '../state/facade.server';
 import { ServerInfo } from '../../shared/models/emby/server-info';

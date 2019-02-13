@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { JobService } from '../service/job.service';
 
@@ -27,7 +27,6 @@ export class TriggerDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<TriggerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private jobService: JobService) {
-    console.log(data);
     this.title = data.title;
     this.description = data.description;
     this.id = data.id;

@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MoviePoster } from '../../models/movie-poster';
 import { SettingsFacade } from '../../../settings/state/facade.settings';
-import {Settings } from '../../../settings/models/settings';
+import { Settings } from '../../../settings/models/settings';
 import { ConfigHelper } from '../../helpers/configHelper';
 
 @Component({
@@ -16,7 +16,9 @@ export class MoviePosterComponent implements OnDestroy {
   settings: Settings;
   @Input() poster: MoviePoster;
 
-  constructor(private settingsFacade: SettingsFacade, private _sanitizer: DomSanitizer) {
+  constructor(
+    private readonly settingsFacade: SettingsFacade,
+    private readonly sanitizer: DomSanitizer) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
   }
 
@@ -25,7 +27,7 @@ export class MoviePosterComponent implements OnDestroy {
       return '';
     }
     const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openMovie(): void {

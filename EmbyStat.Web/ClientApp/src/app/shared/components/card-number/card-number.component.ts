@@ -8,6 +8,13 @@ import { Card } from '../../models/card';
   styleUrls: ['./card-number.component.scss']
 })
 export class CardNumberComponent {
-  @Input() card: Card;
+  @Input() card: Card<number>;
+  options = {
+    useEasing: true,
+    separator: '',
+    decimal: ',',
+  }
 
+  constructor() {
+  }
 }

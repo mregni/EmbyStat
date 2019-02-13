@@ -1,21 +1,20 @@
-﻿using System;
+﻿
+
+using System;
 using AutoMapper;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Controllers.ViewModels.About;
-using EmbyStat.Controllers.ViewModels.Configuration;
-using EmbyStat.Controllers.ViewModels.Emby;
-using EmbyStat.Controllers.ViewModels.Graph;
-using EmbyStat.Controllers.ViewModels.Logs;
-using EmbyStat.Controllers.ViewModels.Movie;
-using EmbyStat.Controllers.ViewModels.Server;
-using EmbyStat.Controllers.ViewModels.Show;
-using EmbyStat.Controllers.ViewModels.Stat;
-using EmbyStat.Controllers.ViewModels.Task;
-using EmbyStat.Controllers.ViewModels.Update;
-using EmbyStat.Services.Models.About;
+using EmbyStat.Controllers.About;
+using EmbyStat.Controllers.Emby;
+using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Controllers.Job;
+using EmbyStat.Controllers.Log;
+using EmbyStat.Controllers.Movie;
+using EmbyStat.Controllers.Plugin;
+using EmbyStat.Controllers.Settings;
+using EmbyStat.Controllers.Show;
+using EmbyStat.Controllers.System;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
@@ -23,7 +22,6 @@ using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.System;
-using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace EmbyStat.Controllers
 {
@@ -45,9 +43,9 @@ namespace EmbyStat.Controllers
 		    CreateMap<Drive, DriveViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 
-	        CreateMap<Job, JobViewModel>();
+	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
-	        CreateMap<Card, CardViewModel>();
+	        CreateMap( typeof(Card<>), typeof(CardViewModel<>));
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
 	        CreateMap<ShowPoster, ShowPosterViewModel>();
             CreateMap<PersonPoster, PersonPosterViewModel>();
@@ -65,8 +63,9 @@ namespace EmbyStat.Controllers
 	        CreateMap<ShowStat, ShowStatViewModel>();
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 	        CreateMap<LogFile, LogFileViewModel>();
-	        CreateMap<About, AboutViewModel>();
+	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
+            CreateMap<User, EmbyUserOverviewViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

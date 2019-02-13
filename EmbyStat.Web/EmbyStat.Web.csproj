@@ -37,14 +37,18 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\dist\**" />
     <Compile Remove="ClientApp\src\app\components\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
     <Content Remove="ClientApp\src\app\components\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\dist\**" />
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
+    <None Remove="ClientApp\dist\**" />
     <None Remove="ClientApp\src\app\components\**" />
   </ItemGroup>
 
@@ -56,7 +60,6 @@
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
-    <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <None Remove="ClientApp\src\app\settings\state\actions.settings.ts" />
     <None Remove="ClientApp\src\app\settings\state\facade.settings.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
@@ -106,7 +109,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\settings\state\facade.settings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 
 import { JobSocketService } from '../../shared/services/job-socket.service';
 import { JobService } from '../service/job.service';
@@ -49,7 +48,7 @@ export class JobsOverviewComponent implements OnInit, OnDestroy {
   fireSmallSync() {
     this.fireJobSub = this.jobService.fireSmallSyncJob().subscribe();
   }
-
+  
   fireDatabaseCleanup() {
     this.fireJobSub = this.jobService.fireDatabaseCleanupJob().subscribe();
   }

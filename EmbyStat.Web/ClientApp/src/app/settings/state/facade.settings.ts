@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import 'rxjs/add/observable/throw';
+
 
 import { Settings } from '../models/settings';
 import { EmbyUdpBroadcast } from '../../shared/models/emby/emby-udp-broadcast';

@@ -25,6 +25,12 @@ import { ShowCollectionComponent } from './show-collection/show-collection.compo
     ShowService,
     ShowChartsService
   ],
-  declarations: [ShowOverviewComponent, ShowGeneralComponent, ShowChartsComponent, ShowPeopleComponent, ShowCollectionComponent]
+  declarations: [
+    ShowOverviewComponent,
+    ShowGeneralComponent,
+    ShowChartsComponent,
+    ShowPeopleComponent,
+    ShowCollectionComponent
+  ]
 })
 export class ShowModule { }

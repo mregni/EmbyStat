@@ -1,0 +1,24 @@
+<div class="title-bar title-bar-flex-row">
+  <div class="title-bar-left-content">
+    <h2>{{ 'MENU.USERS' | translate }}</h2>
+  </div>
+  <div class="title-bar-right-content">
+    <mat-form-field class="full-width">
+      <mat-select placeholder="Sort by" (selectionChange)="filterChanged($event)" [(ngModel)]="defaultValue">
+        <mat-option value="name">Username (A - Z)</mat-option>
+        <mat-option value="nameDesc">Username (Z - A)</mat-option>
+        <mat-option value="lastActivityDate">Last active date (asc)</mat-option>
+        <mat-option value="lastActivityDateDesc">Last active date (desc)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div *ngIf="users !== undefined" class="content">
+  <div class="user-flex-container">
+    <app-card-user *ngFor="let user of users" [user]="user"></app-card-user>
+  </div>
+  <h2>{{ 'USERS.DELETED' | translate }}</h2>
+  <div class="user-flex-container">
+    <app-card-user *ngFor="let user of deletedUsers" [user]="user"></app-card-user>
+  </div>
+</div>

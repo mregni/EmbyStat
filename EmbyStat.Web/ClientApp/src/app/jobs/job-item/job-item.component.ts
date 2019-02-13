@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input, OnDestroy, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { TriggerDialogComponent } from '../trigger-dialog/trigger-dialog.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 import { JobSocketService } from '../../shared/services/job-socket.service';
@@ -129,9 +129,9 @@ export class JobItemComponent implements OnInit, OnDestroy {
       !this.hasSeconds(job.endTimeUtc);
   }
 
-  private convertToMoment(value: any) {
+  private convertToMoment(value: any): moment.Moment {
     if (value instanceof moment) {
-      return value;
+      return moment(value);
     } else {
       return moment.utc(value);
     }

@@ -1,8 +1,9 @@
  <mat-card *ngIf="card !== undefined">
   <mat-card-content>
     <div class="card-flex-column">
-      <span class="card-value" countUp [endVal]="card.value" startVal="0"></span>
-      <span class="card-title">{{card.title | translate}}</span>
+      <span class="card-value" countUp [endVal]="card.value" startVal="0" [countUp]="options" duration="4"></span>
+      <span class="card-title">{{card.title | translate}}
+      </span>
     </div>
   </mat-card-content>
 </mat-card>

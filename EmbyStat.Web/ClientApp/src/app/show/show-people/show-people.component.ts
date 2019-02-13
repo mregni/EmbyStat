@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ShowService } from '../service/show.service';
 import { PersonStats } from '../../shared/models/person-stats';

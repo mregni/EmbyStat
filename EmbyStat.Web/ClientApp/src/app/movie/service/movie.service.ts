@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ListToQueryParam } from '../../shared/helpers/listToQueryParam';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MovieStats } from '../models/movie-stats';
 import { PersonStats } from '../../shared/models/person-stats';
 import { Collection } from '../../shared/models/collection';

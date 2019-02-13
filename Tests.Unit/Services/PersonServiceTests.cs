@@ -60,7 +60,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { Emby = embySettings });
 
             _embyClientMock = new Mock<IEmbyClient>();
-            _embyClientMock.Setup(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None))
+            _embyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None))
                 .Returns(Task.FromResult(basePerson));
 
             _subject = new PersonService(_personRepositoryMock.Object, _settingsServiceMock.Object, _embyClientMock.Object);
@@ -93,7 +93,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Once);
 
-            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
+            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Once);
 
-            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
+            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Never);
 
-            _embyClientMock.Verify(x => x.GetItemAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Never);
+            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Never);
         }
     }
 }

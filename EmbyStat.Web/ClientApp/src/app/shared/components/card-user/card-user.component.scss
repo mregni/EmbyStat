@@ -1,0 +1,40 @@
+@import "../card/card.component";
+
+.mat-card {
+  padding: 0;
+  width: 320px;
+  height: 100px;
+  cursor: pointer;
+
+  .user-card-margin{
+    margin: 10px;
+  }
+}
+
+.card-flex-row {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+img.profile {
+  width: 100px;
+  height: 100px;
+}
+
+.card-flex-column {
+  .name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .icon-container {
+    display: flex;
+    flex-direction: row;
+
+    fa-icon:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+}

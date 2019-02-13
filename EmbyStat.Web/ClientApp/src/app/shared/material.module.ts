@@ -19,6 +19,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { MatTooltipModule } from '@angular/material';
     MatSnackBarModule,
     MatCardModule,
     MatStepperModule,
+    MatRippleModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -56,6 +58,7 @@ import { MatTooltipModule } from '@angular/material';
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatRippleModule,
     MatMenuModule,
     MatDialogModule,
     MatChipsModule,

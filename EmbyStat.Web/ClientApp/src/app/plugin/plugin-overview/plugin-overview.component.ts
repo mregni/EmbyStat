@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { PluginService } from '../service/plugin.service';
+import { Observable } from 'rxjs';
+import { EmbyService } from '../../shared/services/emby.service';
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { EmbyPlugin } from '../../shared/models/emby/emby-plugin';
 import { Settings } from '../../settings/models/settings';
@@ -16,9 +16,9 @@ export class PluginOverviewComponent implements OnInit {
   settings$: Observable<Settings>;
 
   constructor(
-    private readonly pluginService: PluginService,
+    private readonly embyService: EmbyService,
     private readonly settingsFacade: SettingsFacade) {
-    this.plugins$ = pluginService.getPlugins();
+    this.plugins$ = embyService.getPlugins();
     this.settings$ = settingsFacade.getSettings();
   }
 

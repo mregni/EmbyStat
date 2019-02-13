@@ -10,6 +10,7 @@ import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.co
 import { ShowOverviewComponent } from './show/show-overview/show-overview.component';
 import { LogsOverviewComponent } from './logs/logs-overview/logs-overview.component';
 import { AboutOverviewComponent } from './about/about-overview/about-overview.component';
+import { UserOverviewComponent } from './user/user-overview/user-overview.component';
 
 import { SyncGuard } from './shared/guards/sync.guard';
 
@@ -26,6 +27,7 @@ const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
   { path: 'shows/:tab', component: ShowOverviewComponent, canActivate: [SyncGuard] },
   { path: 'logs', component: LogsOverviewComponent },
   { path: 'about', component: AboutOverviewComponent },
+  { path: 'users', component: UserOverviewComponent },
   { path: '**', redirectTo: '' }];
 
 @NgModule({

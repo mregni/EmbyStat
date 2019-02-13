@@ -1,11 +1,10 @@
+import { throwError, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
-import 'rxjs/add/observable/throw';
+
 
 import { Settings } from '../models/settings';
 import { SettingsService } from '../settings.service';
@@ -39,8 +38,8 @@ export class SettingsEffects {
 
   @Effect()
   getConfiguration$ = this.actions$
-    .ofType(SettingsActionTypes.LOAD_SETTINGS)
     .pipe(
+      ofType(SettingsActionTypes.LOAD_SETTINGS),
       map((data: LoadSettingsAction) => data.payload),
       withLatestFrom(this.loaded$),
       switchMap(([_, loaded]) => {
@@ -53,21 +52,21 @@ export class SettingsEffects {
           ? new LoadSettingsSuccessAction(settings)
           : new NoNeedSettingsAction();
       }),
-      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-  );
+      catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
+    );
 
   @Effect()
   updateConfiguration = this.actions$
-    .ofType(SettingsActionTypes.UPDATE_SETTINGS)
     .pipe(
+      ofType(SettingsActionTypes.UPDATE_SETTINGS),
       map((data: UpdateSettingsAction) => data.payload),
       switchMap((settings: Settings) => {
         return this.settingsService.updateSettings(settings);
       }),
       switchMap((settings: Settings | null) => {
         return [new UpdateSettingsSuccessAction(settings),
-          new ResetServerInfoLoadedState()];
+        new ResetServerInfoLoadedState()];
       }),
-      catchError((err: any, caught: Observable<Object>) => Observable.throw(new EffectError(err)))
-  );
+      catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
+    );
 }
