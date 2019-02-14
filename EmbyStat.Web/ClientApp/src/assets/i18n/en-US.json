@@ -17,6 +17,7 @@
     "TITLE": "title",
     "ADDEDON": "added on",
     "QUALITY": "quality",
+    "NEVER": "never",
     "LINK": "link",
     "REASON": "reason",
     "BYIMDB": "same imdb id",
@@ -80,7 +81,8 @@
     "JOBS": "Jobs",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About"
+    "ABOUT": "About",
+    "USERS": "Users"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -169,6 +171,13 @@
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
     }
   },
+  "USERS": {
+    "ISADMIN": "Is administrator",
+    "ISHIDDEN": "Is hidden from login screen",
+    "ISDISABLED": "Is disabled",
+    "DELETED": "Deleted users",
+    "LASTACTIVE": "Last active"
+  },
   "JOB": {
     "LASTRUNNOW": "Last run: just now",
     "LASTRUN": "Last run",
@@ -181,6 +190,7 @@
     "BUTFAILED": "but failed after",
     "NORUN": "Not ran yet",
     "MOMENT_AGO": "a moment",
+    "JOBLOGS": "Job logs",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
