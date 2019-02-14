@@ -60,40 +60,10 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { Emby = embySettings });
 
             _embyClientMock = new Mock<IEmbyClient>();
-            _embyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None))
+            _embyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None))
                 .Returns(Task.FromResult(basePerson));
 
             _subject = new PersonService(_personRepositoryMock.Object, _settingsServiceMock.Object, _embyClientMock.Object);
-        }
-
-        [Fact]
-        public async void GetPersonByIdShouldGoToEmby()
-        {
-            returnedPerson = null;
-            _personRepositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(returnedPerson);
-
-            var person = await _subject.GetPersonById(string.Empty);
-
-            person.Should().NotBeNull();
-            person.Id.Should().Be(basePerson.Id);
-            person.Name.Should().Be(basePerson.Name);
-            person.Primary.Should().Be(basePerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
-            person.MovieCount.Should().Be(basePerson.MovieCount);
-            person.BirthDate.Should().Be(basePerson.PremiereDate);
-            person.Etag.Should().Be(basePerson.Etag);
-            person.IMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
-            person.TMDB.Should().Be(basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
-            person.OverView.Should().Be(basePerson.Overview);
-            person.SeriesCount.Should().Be(basePerson.SeriesCount);
-            person.SortName.Should().Be(basePerson.SortName);
-            person.Synced.Should().BeTrue();
-
-            _personRepositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
-            _personRepositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
-
-            _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Once);
-
-            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -128,7 +98,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Once);
 
-            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Once);
+            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -174,7 +144,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Never);
 
-            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<ItemQuery>(), It.IsAny<string>(), CancellationToken.None), Times.Never);
+            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Never);
         }
     }
 }

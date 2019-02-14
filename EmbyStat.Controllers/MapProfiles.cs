@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using AutoMapper;
 using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;

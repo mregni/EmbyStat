@@ -96,7 +96,7 @@ namespace Tests.Unit.Services
             stat.Should().NotBeNull();
             stat.MovieCount.Should().NotBeNull();
             stat.MovieCount.Title.Should().Be(Constants.Movies.TotalMovies);
-            stat.MovieCount.Value.Should().Be("2");
+            stat.MovieCount.Value.Should().Be(2);
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace Tests.Unit.Services
             stat.Should().NotBeNull();
             stat.GenreCount.Should().NotBeNull();
             stat.GenreCount.Title.Should().Be(Constants.Movies.TotalGenres);
-            stat.GenreCount.Value.Should().Be("2");
+            stat.GenreCount.Value.Should().Be(2);
         }
 
         [Fact]
