@@ -17,7 +17,7 @@
     "TITLE": "Titel",
     "ADDEDON": "Hinzugefügt am",
     "QUALITY": "Qualität",
-    "NEVER": "never",
+    "NEVER": "nie",
     "LINK": "Link",
     "REASON": "Grund",
     "BYIMDB": "Gleiche IMDB ID",
@@ -82,7 +82,7 @@
     "SERVER": "Emby Server",
     "LOGS": "Logs",
     "ABOUT": "About",
-    "USERS": "Users"
+    "USERS": "Benutzer"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -143,11 +143,11 @@
   "SETTINGS": {
     "TITLE": "Einstellungen",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
+      "EMBY": "Emby-Einstellungen wurden gespeichert!",
+      "MOVIES": "Film-Einstellungen wurden gespeichert!",
+      "SHOWS": "Serien-Einstellungen wurden gespeichert!",
+      "UPDATES": "Update-Einstellungen wurden gespeichert!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
