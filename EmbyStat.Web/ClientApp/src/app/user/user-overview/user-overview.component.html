@@ -15,10 +15,10 @@
 </div>
 <div *ngIf="users !== undefined" class="content">
   <div class="user-flex-container">
-    <app-card-user *ngFor="let user of users" [user]="user"></app-card-user>
+    <app-card-user *ngFor="let user of users" [user]="user" (clicked)="navigateToUser($event)"></app-card-user>
   </div>
   <h2>{{ 'USERS.DELETED' | translate }}</h2>
   <div class="user-flex-container">
-    <app-card-user *ngFor="let user of deletedUsers" [user]="user"></app-card-user>
+    <app-card-user *ngFor="let user of deletedUsers" [user]="user" (clicked)="navigateToUser($event)"></app-card-user>
   </div>
 </div>

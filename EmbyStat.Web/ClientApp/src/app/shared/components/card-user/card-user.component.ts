@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { EmbyUser } from '../../models/emby/emby-user';
@@ -14,7 +14,9 @@ import { ConfigHelper } from '../../helpers/configHelper';
 export class CardUserComponent implements OnDestroy {
   private settingsSub: Subscription;
   private settings: Settings;
+
   @Input() user: EmbyUser;
+  @Output() clicked = new EventEmitter<string>();
 
   constructor(private readonly settingsFacade: SettingsFacade) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
@@ -31,6 +33,6 @@ export class CardUserComponent implements OnDestroy {
   }
 
   openUser(): void {
-    console.log("open user with id:" + this.user.id);
+    this.clicked.emit(this.user.id);
   }
 }

@@ -44,4 +44,8 @@ export class EmbyService {
   getUsers(): Observable<EmbyUser[]> {
     return this.http.get<EmbyUser[]>(this.getEmbyUsersUrl);
   }
+
+  getUserById(id: string): Observable<EmbyUser> {
+    return this.http.get<EmbyUser>(this.getEmbyUsersUrl + '/' + id);
+  }
 }

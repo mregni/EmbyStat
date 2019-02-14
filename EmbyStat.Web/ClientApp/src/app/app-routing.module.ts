@@ -11,6 +11,7 @@ import { ShowOverviewComponent } from './show/show-overview/show-overview.compon
 import { LogsOverviewComponent } from './logs/logs-overview/logs-overview.component';
 import { AboutOverviewComponent } from './about/about-overview/about-overview.component';
 import { UserOverviewComponent } from './user/user-overview/user-overview.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
 
 import { SyncGuard } from './shared/guards/sync.guard';
 
@@ -28,6 +29,7 @@ const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
   { path: 'logs', component: LogsOverviewComponent },
   { path: 'about', component: AboutOverviewComponent },
   { path: 'users', component: UserOverviewComponent },
+  { path: 'users/:id', component: UserDetailComponent },
   { path: '**', redirectTo: '' }];
 
 @NgModule({

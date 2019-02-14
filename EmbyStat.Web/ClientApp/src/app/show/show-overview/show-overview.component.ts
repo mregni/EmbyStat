@@ -26,8 +26,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   typeIsPresent: boolean;
 
   constructor(
-    private showService: ShowService,
-    private showChartsService: ShowChartsService,
+    private readonly showService: ShowService,
+    private readonly showChartsService: ShowChartsService,
     public dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute) {
     this.collections$ = this.showService.getCollections();
