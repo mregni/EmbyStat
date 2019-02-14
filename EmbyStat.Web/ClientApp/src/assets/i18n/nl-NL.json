@@ -176,7 +176,13 @@
     "ISHIDDEN": "Is hidden from login screen",
     "ISDISABLED": "Is disabled",
     "DELETED": "Deleted users",
-    "LASTACTIVE": "Last active"
+    "LASTACTIVE": "Last active",
+    "SORTING": {
+      "USERNAMEASC": "Username (A - Z)",
+      "USERNAMEDESC": "Username (Z - A)",
+      "LASTACTIVEASC": "Last active date (asc)",
+      "LASTACTIVEDESC": "Last active date (desc)"
+    }
   },
   "JOB": {
     "LASTRUNNOW": "Laatste run: zojuist",
