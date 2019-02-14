@@ -181,7 +181,7 @@
       "USERNAMEASC": "Benutzername (A - Z)",
       "USERNAMEDESC": "Benutzername (Z - A)",
       "LASTACTIVEASC": "Letzter aktiver Tag (aufsteigend)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "LASTACTIVEDESC": "Letzter aktiver Tag (absteigend)"
     }
   },
   "JOB": {
@@ -196,7 +196,7 @@
     "BUTFAILED": "aber fehlgeschlagen nach",
     "NORUN": "Noch nicht druchgeführt",
     "MOMENT_AGO": "gerade eben",
-    "JOBLOGS": "Job logs",
+    "JOBLOGS": "Job Logs",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Emby Verbindung prüfen",
       "PINGEMBYSERVERDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
