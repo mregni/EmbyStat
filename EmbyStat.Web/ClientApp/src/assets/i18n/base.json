@@ -182,6 +182,9 @@
       "USERNAMEDESC": "Username (Z - A)",
       "LASTACTIVEASC": "Last active date (asc)",
       "LASTACTIVEDESC": "Last active date (desc)"
+    },
+    "DETAILS": {
+      "TITLE": "Details for {name}" 
     } 
   },
   "JOB": {

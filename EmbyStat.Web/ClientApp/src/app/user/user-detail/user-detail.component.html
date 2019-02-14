@@ -1,0 +1,8 @@
+<div *ngIf="user$ | async as user" class="title-bar title-bar-flex-row">
+  <div class="title-bar-left-content">
+    <h2>{{ 'USERS.DETAILS.TITLE' | translate: { name: user.name } }}</h2>
+  </div>
+</div>
+<div *ngIf="user$ | async as user" class="content">
+  {{user.name}}<br/> {{user.id}}
+</div>

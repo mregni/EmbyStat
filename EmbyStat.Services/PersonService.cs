@@ -25,7 +25,7 @@ namespace EmbyStat.Services
         public async Task<Person> GetPersonById(string id)
         {
             var person = _personRepository.GetPersonById(id);
-            if (person == null || !person.Synced)
+            if (!person.Synced)
             {
                 var settings = _settingsService.GetUserSettings();
                 var query = new ItemQuery { UserId = settings.Emby.UserId };

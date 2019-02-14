@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { EmbyService } from '../shared/services/emby.service';
 import { UserOverviewComponent } from './user-overview/user-overview.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { UserOverviewComponent } from './user-overview/user-overview.component';
     EmbyService
   ],
   declarations: [
-    UserOverviewComponent
+    UserOverviewComponent,
+    UserDetailComponent
   ]
 })
 export class UserModule { }

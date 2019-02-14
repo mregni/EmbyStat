@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
 import { EmbyService } from '../../shared/services/emby.service';
@@ -18,7 +19,8 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
   defaultValue = "name";
 
   constructor(
-    private readonly embyService: EmbyService) {
+    private readonly embyService: EmbyService,
+    private readonly router: Router) {
     this.usersSub = this.embyService.getUsers().subscribe((users: EmbyUser[]) => {
       this.users = _.orderBy(users.filter(x => !x.deleted), ["name"], 'asc');
       this.deletedUsers = _.orderBy(users.filter(x => x.deleted), ["name"], 'asc');
@@ -37,6 +39,10 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
     }
     this.users = _.orderBy(this.users, [prop], order);
     this.deletedUsers = _.orderBy(this.deletedUsers, [prop], order);
+  }
+
+  navigateToUser(id: any) {
+    this.router.navigate(['users/' + id]);
   }
 
   ngOnDestroy() {

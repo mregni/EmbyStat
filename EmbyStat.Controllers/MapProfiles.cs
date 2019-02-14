@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using AutoMapper;
 using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Models.Entities;
@@ -66,6 +64,7 @@ namespace EmbyStat.Controllers
 	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
             CreateMap<User, EmbyUserOverviewViewModel>();
+            CreateMap<User, EmbyUserFullViewModel>();
 
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()

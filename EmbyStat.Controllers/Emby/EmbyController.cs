@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
@@ -27,7 +29,7 @@ namespace EmbyStat.Controllers.Emby
 
         [HttpPost]
         [Route("server/token")]
-        public async Task<IActionResult> GenerateToken([FromBody]EmbyLoginViewModel login)
+        public async Task<IActionResult> GenerateToken([FromBody] EmbyLoginViewModel login)
         {
             Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tGet emby token for certain login credentials.");
             var result = await _embyService.GetEmbyToken(_mapper.Map<EmbyLogin>(login));
@@ -52,12 +54,14 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/search")]
         public IActionResult SearchEmby()
         {
-            Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tSearching for an Emby server in the network and returning the IP address.");
+            Serilog.Log.Information(
+                $"{Constants.LogPrefix.ServerApi}\tSearching for an Emby server in the network and returning the IP address.");
             var result = _embyService.SearchEmby();
             if (!string.IsNullOrWhiteSpace(result.Address))
             {
                 Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + result.Address);
             }
+
             return Ok(_mapper.Map<EmbyUdpBroadcastViewModel>(result));
         }
 
@@ -69,7 +73,7 @@ namespace EmbyStat.Controllers.Emby
             return Ok(_mapper.Map<EmbyStatusViewModel>(result));
         }
 
-#endregion
+        #endregion
 
         #region Plugins
 
@@ -91,6 +95,24 @@ namespace EmbyStat.Controllers.Emby
         {
             var result = _embyService.GetAllUsers();
             return Ok(_mapper.Map<IList<EmbyUserOverviewViewModel>>(result));
+        }
+
+        [HttpGet]
+        [Route("users/{id}")]
+        public IActionResult GetUserById(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return NotFound();
+            }
+
+            var user = _embyService.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<EmbyUserFullViewModel>(user));
         }
 
         #endregion
