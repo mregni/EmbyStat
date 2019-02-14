@@ -41,7 +41,6 @@
     "countup.js-angular2": "6.1.1",
     "d3": "5.9.1",
     "hammerjs": "^2.0.8",
-    "highcharts": "^6.1.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "ng2-tooltip-directive": "^2.1.6",
