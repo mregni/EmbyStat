@@ -35,6 +35,7 @@ namespace EmbyStat.Repositories.Interfaces
         Task AddOrUpdateUsers(IEnumerable<User> users);
         IEnumerable<User> GetAllUsers();
         Task MarkUserAsDeleted(IEnumerable<User> users);
+        User GetUserById(string id);
 
         #endregion
 

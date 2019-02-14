@@ -31,7 +31,8 @@ namespace EmbyStat.Services.Interfaces
         #region Users
 
         IEnumerable<User> GetAllUsers();
-        
+        User GetUserById(string id);
+
         #endregion
 
         #region JobHelpers
@@ -43,5 +44,6 @@ namespace EmbyStat.Services.Interfaces
         Task GetAndProcessDevices(string embyAddress, string settingsAccessToken);
 
         #endregion
+
     }
 }

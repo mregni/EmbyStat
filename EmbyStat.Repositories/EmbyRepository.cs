@@ -172,6 +172,16 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public User GetUserById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Users
+                    .Include(x => x.AccessSchedules)
+                    .SingleOrDefault(x => x.Id == id);
+            }
+        }
+
         #endregion
 
 

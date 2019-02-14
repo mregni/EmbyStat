@@ -158,6 +158,11 @@ namespace EmbyStat.Services
             return _embyRepository.GetAllUsers();
         }
 
+        public User GetUserById(string id)
+        {
+            return _embyRepository.GetUserById(id);
+        }
+
         #endregion
 
         #region JobHelpers
