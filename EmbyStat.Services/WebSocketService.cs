@@ -21,14 +21,12 @@ namespace EmbyStat.Services
         private readonly IWebSocketApi _webSocketApi;
 
         private Timer _timer;
-        private IOptions<AppSettings> _options;
 
-        public WebSocketService(IOptions<AppSettings> options, ISettingsService settingsService, IEventService eventService, IWebSocketApi webSocketApi)
+        public WebSocketService(ISettingsService settingsService, IEventService eventService, IWebSocketApi webSocketApi)
         {
             _settingsService = settingsService;
             _eventService = eventService;
             _webSocketApi = webSocketApi;
-            _options = options;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -47,7 +45,7 @@ namespace EmbyStat.Services
                 {
                     try
                     {
-                        var deviceId = _options.Value.Id;
+                        var deviceId = _settingsService.GetUserSettings().Id.ToString();
                         _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
                         _webSocketApi.OnWebSocketConnected += _client_OnWebSocketConnected;
                         _webSocketApi.OnWebSocketClosed += _webSocketApi_OnWebSocketClosed;

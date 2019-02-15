@@ -67,8 +67,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            _embyClient.SetAddressAndUrl(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
-
             if (!await IsEmbyAlive(cancellationToken))
             {
                 LogWarning($"Halting task because we can't contact the Emby server on {Settings.FullEmbyServerAddress}, please check the connection and try again.");

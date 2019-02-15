@@ -36,7 +36,6 @@ namespace EmbyStat.DI
         public static void RegisterServices(this IServiceCollection services)
         {
             services.TryAddTransient<IEmbyService, EmbyService>();
-            services.TryAddTransient<IEmbyService, EmbyService>();
             services.TryAddTransient<IMovieService, MovieService>();
             services.TryAddTransient<IPersonService, PersonService>();
             services.TryAddTransient<IShowService, ShowService>();
@@ -80,7 +79,7 @@ namespace EmbyStat.DI
 
         public static void RegisterClients(this IServiceCollection services)
         {
-            services.TryAddTransient<IEmbyClient, EmbyClient>();
+            services.TryAddSingleton<IEmbyClient, EmbyClient>();
             services.TryAddTransient<ITvdbClient, TvdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
 

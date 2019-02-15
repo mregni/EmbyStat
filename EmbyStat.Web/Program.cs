@@ -25,7 +25,6 @@ namespace EmbyStat.Web
             try
 			{
                 CreateLogger();
-                CheckForUserSettingsFile();
 
                 var result = Parser.Default.ParseArguments<StartupOptions>(args);
                 StartupOptions options = null;
@@ -39,7 +38,9 @@ namespace EmbyStat.Web
                 var host = BuildWebHost(args, listeningUrl, config);
 
 				SetupDatabase(host);
-				host.Run(); 
+                CheckForUserSettingsFile();
+
+                host.Run(); 
             }
 			catch (Exception ex)
 			{
