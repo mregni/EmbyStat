@@ -57,7 +57,7 @@
     "@angular/compiler-cli": "7.2.4",
     "@angular/language-service": "7.2.4",
     "@types/highcharts": "^5.0.36",
-    "@types/jasmine": "~2.8.3",
+    "@types/jasmine": "~3.3.9",
     "@types/jasminewd2": "~2.0.6",
     "@types/node": "~6.0.118",
     "codelyzer": "^4.5.0",
