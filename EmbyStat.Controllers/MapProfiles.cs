@@ -65,7 +65,8 @@ namespace EmbyStat.Controllers
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
             CreateMap<User, EmbyUserOverviewViewModel>();
             CreateMap<User, EmbyUserFullViewModel>();
-
+            CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
+            CreateMap<UserMediaView, UserMediaViewViewModel>();
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())

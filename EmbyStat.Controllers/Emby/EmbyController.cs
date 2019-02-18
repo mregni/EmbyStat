@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
@@ -112,7 +113,12 @@ namespace EmbyStat.Controllers.Emby
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<EmbyUserFullViewModel>(user));
+            var mappedUser = _mapper.Map<EmbyUserFullViewModel>(user);
+            mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(_embyService.GetViewedEpisodeCountByUserId(id));
+            mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(_embyService.GetViewedMovieCountByUserId(id));
+            mappedUser.LastWatchedMedia = _mapper.Map<IList<UserMediaViewViewModel>>(_embyService.GetLastWatchedMediaByUserId(id, 10));
+
+            return Ok(mappedUser);
         }
 
         #endregion

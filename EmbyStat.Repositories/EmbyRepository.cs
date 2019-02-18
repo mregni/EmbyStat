@@ -195,6 +195,14 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public Device GetDeviceById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Devices.SingleOrDefault(x => x.Id == id);
+            }
+        }
+
         public async Task MarkDeviceAsDeleted(IEnumerable<Device> devices)
         {
             using (var context = new ApplicationDbContext())

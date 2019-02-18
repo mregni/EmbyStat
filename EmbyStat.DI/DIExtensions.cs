@@ -14,8 +14,10 @@ using EmbyStat.Jobs.Jobs.Updater;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -47,6 +49,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IJobService, JobService>();
             services.TryAddTransient<IEventService, EventService>();
             services.TryAddSingleton<ISettingsService, SettingsService>();
+            services.TryAddTransient<ISessionService, SessionService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -63,6 +66,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IJobRepository, JobRepository>();
             services.TryAddTransient<IEventRepository, EventRepository>();
+            services.TryAddTransient<ISessionRepository, SessionRepository>();
         }
 
         public static void RegisterJobs(this IServiceCollection services)

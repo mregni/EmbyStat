@@ -41,6 +41,7 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region Devices
         IEnumerable<Device> GetAllDevices();
+        Device GetDeviceById(string id);
         Task MarkDeviceAsDeleted(IEnumerable<Device> devices);
         Task AddOrUpdateDevices(IEnumerable<Device> devices);
 

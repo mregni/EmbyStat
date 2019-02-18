@@ -26,5 +26,6 @@ namespace EmbyStat.Repositories.Interfaces
         int GetEpisodeCountForShow(string showId, bool includeSpecials = false);
         int GetSeasonCountForShow(string showId, bool includeSpecials = false);
         bool Any();
+        Episode GetEpisodeById(string id);
     }
 }
