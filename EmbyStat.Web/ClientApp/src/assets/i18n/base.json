@@ -187,10 +187,17 @@
     "DETAILS": {
       "TITLE": "Details for {{name}}"
     },
+    "WATCHEDTABLE": {
+      "TITLE": "Title",
+      "TIME": "Time",
+      "WATCHED": "Watched",
+      "START": "Start",
+      "ACTION": "Action"
+    },
     "STATS": {
       "TOTALWATCHEDMOVIES": "Movies watched",
-      "TOTALWATCHEDEPISODES": "Episodes watched" 
-    } 
+      "TOTALWATCHEDEPISODES": "Episodes watched"
+    }
   },
   "JOB": {
     "LASTRUNNOW": "Last run: just now",
