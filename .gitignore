@@ -298,4 +298,4 @@ __pycache__/
 **/*.ver
 **/updateFiles/**
 
-**/Settings/usersettings.json
+usersettings.json
