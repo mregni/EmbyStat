@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Common.Models.Entities.Events
 {
@@ -9,7 +10,7 @@ namespace EmbyStat.Common.Models.Entities.Events
     {
         [Key]
         public Guid Id { get; set; }
-        public string Type { get; set; }
+        public PlayType Type { get; set; }
         public string MediaId { get; set; }
         public ICollection<PlayState> PlayStates { get; set; }
         public string SubtitleCodec { get; set; }
@@ -26,6 +27,7 @@ namespace EmbyStat.Common.Models.Entities.Events
         public string VideoAspectRatio { get; set; }
         public string SessionId { get; set; }
         public Session Session { get; set; }
+        public string ParentId { get; set; }
 
         public Play()
         {
