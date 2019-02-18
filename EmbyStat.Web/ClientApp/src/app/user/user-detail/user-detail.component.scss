@@ -1,0 +1,110 @@
+@import "../../../styles";
+
+.content {
+  margin: 0;
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+mat-card {
+  padding: 0;
+  display: flex;
+  flex: 0 0 calc(50% - 38px);
+  margin: 25px 0px 0px 25px;
+}
+
+mat-card-content {
+  flex: 0 0 100%;
+
+  h3 {
+    margin: 10px 0 0 10px;
+  }
+}
+
+mat-table {
+  flex: 0 0 100%;
+  margin-top: 25px;
+
+  .action-cell {
+    flex: 0 0 100px;
+    justify-content: flex-end;
+  }
+
+  mat-cell fa-icon {
+    margin-left: 5px;
+  }
+
+  mat-cell:first-child, mat-header-cell:first-child {
+    flex: 0 0 30px;
+    justify-content: flex-start;
+    margin-right: 10px;
+
+    img {
+      width: 30px;
+      height: 30px
+    }
+  }
+
+  mat-cell:nth-child(3), mat-cell:nth-child(4), mat-cell:nth-child(5),
+  mat-header-cell:nth-child(3), mat-header-cell:nth-child(4), mat-header-cell:nth-child(5) {
+    flex: 0 0 100px;
+    justify-content: flex-start;
+  }
+}
+
+.card-flex-column {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-flex-row {
+  flex: 0 0 100%;
+  display: flex;
+}
+
+.card-margin {
+  padding: 10px;
+}
+
+img.profile {
+  width: 100px;
+  height: 100px;
+  border-top-left-radius: 4px;
+}
+
+.card-flex-column {
+  .name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .icon-container {
+    display: flex;
+    flex-direction: row;
+
+    fa-icon:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+}
+
+@media only screen and (max-width: $large-size) {
+  .content {
+    flex-direction: column;
+  }
+
+  mat-card {
+    margin-right: 25px;
+    margin-top: 25px;
+
+    mat-table {
+      flex: 0 0 100%;
+      margin-top: 25px;
+    }
+  }
+}
