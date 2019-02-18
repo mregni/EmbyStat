@@ -17,7 +17,8 @@
     "TITLE": "title",
     "ADDEDON": "added on",
     "QUALITY": "quality",
-    "NEVER":  "never",
+    "NEVER": "never",
+    "OPEN": "Open",
     "LINK": "link",
     "REASON": "reason",
     "BYIMDB": "same imdb id",
@@ -184,7 +185,11 @@
       "LASTACTIVEDESC": "Last active date (desc)"
     },
     "DETAILS": {
-      "TITLE": "Details for {name}" 
+      "TITLE": "Details for {{name}}"
+    },
+    "STATS": {
+      "TOTALWATCHEDMOVIES": "Movies watched",
+      "TOTALWATCHEDEPISODES": "Episodes watched" 
     } 
   },
   "JOB": {
