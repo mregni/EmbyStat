@@ -52,7 +52,7 @@ namespace EmbyStat.Repositories
                 new Language { Id = Guid.NewGuid().ToString(), Name = "Português", Code = "pt-PT" },
                 new Language { Id = Guid.NewGuid().ToString(), Name = "Românesc", Code = "ro-RO" },
                 new Language { Id = Guid.NewGuid().ToString(), Name = "Svenska", Code = "sv-SE" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Chinees", Code = "cs-CZ"}
+                new Language { Id = Guid.NewGuid().ToString(), Name = "简体中文", Code = "cs-CZ"}
             };
 
             _context.Languages.AddRange(languages);
