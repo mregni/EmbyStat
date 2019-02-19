@@ -132,41 +132,41 @@
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATEDSHOW": "评分最高的节目",
     "LOWESTRATEDSHOW": "评分最低的节目",
-    "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Youngest premiered show",
+    "OLDESTPREMIERED": "首映最老的节目",
+    "YOUNGESTPREMIERED": "首映最新的节目",
     "YOUNGESTADDED": "最近添加的",
-    "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses",
-    "SEASONS": "seasons",
-    "CONTINUING": "continuing",
-    "ENDED": "ended"
+    "WITHMOESTEPISODES": "剧集最多",
+    "SHOWSTATUSGRAPH": "节目状态",
+    "SEASONS": "季",
+    "CONTINUING": "持续中",
+    "ENDED": "已完结"
   },
   "SETTINGS": {
-    "TITLE": "Settings",
+    "TITLE": "设置",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "GENERAL": "Embystat 常规设置已保存!",
+      "EMBY": "Emby 设置已保存！",
+      "MOVIES": "电影设置已保存！",
+      "SHOWS": "节目设置已保存！",
+      "UPDATES": "更新设置已保存！"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
+      "TVDBAPIKEY": "如果您愿意，可以在此处为EmbyStat提供您自己的TheTVDB API密钥。",
+      "TVDBAPIKEYWARNING": "确保提供有效的API密钥！如果密钥不正确，则同步任务将失败。"
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "要查找可疑短片，我们需要知道您为短电影的分钟数。默认设置为10分钟，但您可以根据需要进行更改。",
+      "COLLECTIONTYPES": "选择您希望能够在电影统计页面的集合下拉列表中选择的所有Emby集合类型。"
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+      "NOPASSWORD": "当您想要更改Emby网址设置时，请不要忘记输入您的Emby密码。"
     },
     "UPDATE": {
-      "AUTO": "Enable auto updates",
-      "CHECK": "Check and update server now",
+      "AUTO": "启用自动更新",
+      "CHECK": "立即检查并更新服务器",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
