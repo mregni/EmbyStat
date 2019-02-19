@@ -1,11 +1,11 @@
 {
   "COMMON": {
-    "DOWNLOAD": "download",
-    "ANONYMISEDDOWNLOAD": "Anonymised download",
-    "HIDE": "Hide",
-    "NEXT": "next",
-    "BACK": "back",
-    "FINISH": "finish",
+    "DOWNLOAD": "下载",
+    "ANONYMISEDDOWNLOAD": "匿名下载",
+    "HIDE": "隐藏",
+    "NEXT": "下一个",
+    "BACK": "返回",
+    "FINISH": "完成",
     "SAVE": "save",
     "DISCARD": "discard",
     "CANCEL": "cancel",
