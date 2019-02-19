@@ -36,7 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly updateService: UpdateService) {
     translate.setDefaultLang('en-US');
     translate.addLangs(['en-US', 'nl-NL', 'de-DE', 'da-DK', 'el-GR', 'es-ES',
-      'fi-FI', 'fr-FR', 'hu-HU', 'it-IT', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'sv-SE']);
+      'fi-FI', 'fr-FR', 'hu-HU', 'it-IT', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO',
+      'sv-SE', 'cs-CZ']);
 
     const hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('/jobs-socket')
