@@ -1,18 +1,18 @@
 @import "../../../styles";
 
 .content {
-  margin: 0;
   display: flex;
   flex: 0 0 100%;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 0;
 }
 
 mat-card {
-  padding: 0;
   display: flex;
   flex: 0 0 calc(50% - 38px);
-  margin: 25px 0px 0px 25px;
+  margin: 25px 0 0 25px;
+  padding: 0;
 }
 
 mat-card-content {
@@ -36,60 +36,63 @@ mat-table {
     margin-left: 5px;
   }
 
-  mat-cell:first-child, mat-header-cell:first-child {
+  mat-cell:first-child,
+  mat-header-cell:first-child {
     flex: 0 0 30px;
     justify-content: flex-start;
     margin-right: 10px;
-
-    img {
-      width: 30px;
-      height: 30px
-    }
   }
 
-  mat-cell:nth-child(3), mat-cell:nth-child(4), mat-cell:nth-child(5),
-  mat-header-cell:nth-child(3), mat-header-cell:nth-child(4), mat-header-cell:nth-child(5) {
+  mat-cell:nth-child(3),
+  mat-cell:nth-child(4),
+  mat-cell:nth-child(5),
+  mat-header-cell:nth-child(3),
+  mat-header-cell:nth-child(4),
+  mat-header-cell:nth-child(5) {
     flex: 0 0 100px;
     justify-content: flex-start;
   }
 }
 
-.card-flex-column {
-  flex: 1 1 auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.device-logo {
+  height: 30px;
+  width: 30px;
 }
 
 .card-flex-row {
-  flex: 0 0 100%;
   display: flex;
+  flex: 0 0 100%;
 }
 
 .card-margin {
   padding: 10px;
 }
 
-img.profile {
-  width: 100px;
-  height: 100px;
+.profile-image {
   border-top-left-radius: 4px;
+  height: 100px;
+  width: 100px;
 }
 
 .card-flex-column {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+
   .name {
     font-size: 1.2em;
     font-weight: bold;
     margin-bottom: 10px;
   }
+}
 
-  .icon-container {
-    display: flex;
-    flex-direction: row;
+.icon-container {
+  display: flex;
+  flex-direction: row;
 
-    fa-icon:not(:first-child) {
-      margin-left: 10px;
-    }
+  fa-icon:not(:first-child) {
+    margin-left: 10px;
   }
 }
 

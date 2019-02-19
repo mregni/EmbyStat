@@ -11,7 +11,7 @@
           <div>
             <img class="profile" *ngIf="user.primaryImageTag !== ''; else noImage" src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
             <ng-template #noImage>
-              <img class="profile" src="../../../../assets/images/no-profile.png" />
+              <img class="profile-image" src="../../../../assets/images/no-profile.png" />
             </ng-template>
           </div>
           <div class="card-flex-column card-margin">
@@ -38,7 +38,7 @@
           <ng-container matColumnDef="logo">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <img src="{{element.deviceLogo}}"/>
+              <img class="device-logo" src="{{element.deviceLogo}}"/>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="name">
