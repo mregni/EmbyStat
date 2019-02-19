@@ -15,10 +15,12 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
+using Hangfire;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -32,9 +34,9 @@ namespace EmbyStat.Services
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
-        private readonly IMapper _mapper;
 
-        public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService, ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, IMapper mapper)
+        public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService, 
+            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
         {
             _embyClient = embyClient;
             _embyRepository = embyRepository;
@@ -42,7 +44,6 @@ namespace EmbyStat.Services
             _settingsService = settingsService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
-            _mapper = mapper;
         }
 
         #region Server
@@ -200,6 +201,7 @@ namespace EmbyStat.Services
                 switch (play.Type)
                 {
                     case PlayType.Movie:
+                        yield return CreateUserMediaViewFromMovie(play);
                         break;
                     case PlayType.Episode:
                         yield return CreateUserMediaViewFromEpisode(play);
@@ -225,14 +227,14 @@ namespace EmbyStat.Services
         {
             var plugins = await _embyClient.GetInstalledPluginsAsync();
 
-            _embyRepository.RemoveAllAndInsertPluginRange(_mapper.Map<IList<PluginInfo>>(plugins));
+            _embyRepository.RemoveAllAndInsertPluginRange(PluginConverter.ConvertToPluginList(plugins));
         }
 
         public async Task GetAndProcessEmbyDriveInfo(string embyAddress, string accessToken)
         {
             var drives = await _embyClient.GetLocalDrivesAsync();
 
-            _embyRepository.RemoveAllAndInsertDriveRange(_mapper.Map<IList<Drive>>(drives));
+            _embyRepository.RemoveAllAndInsertDriveRange(DriveConverter.ConvertToDeviceList(drives));
         }
 
         public async Task GetAndProcessEmbyUsers(string embyAddress, string accessToken)
@@ -256,30 +258,54 @@ namespace EmbyStat.Services
             var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
             await _embyRepository.MarkDeviceAsDeleted(removedDevices);
         }
-
-
+        
         #endregion
+
+        private UserMediaView CreateUserMediaViewFromMovie(Play play)
+        {
+            var movie = _movieRepository.GetMovieById(play.MediaId);
+            if (movie == null)
+            {
+                Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString()); });
+                throw new BusinessException("Movie not found, starting media sync job to fix this.");
+            }
+            var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
+            var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
+            var watchedTime = endedPlaying - startedPlaying;
+
+            var device = _embyRepository.GetDeviceById(play.Session.DeviceId);
+            return new UserMediaView
+            {
+                Id = movie.Id,
+                Name = movie.Name,
+                ParentId = movie.ParentId,
+                Primary = movie.Primary,
+                StartedWatching = startedPlaying,
+                EndedWatching = endedPlaying,
+                WatchedTime = Math.Round(watchedTime.TotalSeconds),
+                WatchedPercentage = CalculateWatchedPercentage(play, movie),
+                DeviceId = play.Session.DeviceId,
+                DeviceLogo = device?.IconUrl ?? ""
+            };
+        }
 
         private UserMediaView CreateUserMediaViewFromEpisode(Play play)
         {
             var episode = _showRepository.GetEpisodeById(play.MediaId);
+            if (episode == null)
+            {
+                Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString()); });
+                throw new BusinessException("Episode not found, starting media sync job to fix this.");
+            }
             var season = episode.SeasonEpisodes.First(x => x.SeasonId == play.ParentId).Season;
             var showName = season.Show.Name;
             var seasonNumber = season.IndexNumber;
             var name = $"{showName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 
-
             var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
             var watchedTime = endedPlaying - startedPlaying;
-            decimal? watchedPercentage = null;
-            if (episode.RunTimeTicks.HasValue)
-            {
-                var watchedTicks = play.PlayStates.Max(x => x.PositionTicks) -
-                                   play.PlayStates.Min(x => x.PositionTicks);
-                watchedPercentage = Math.Round((watchedTicks / (decimal) episode.RunTimeTicks.Value) * 1000) / 10;
-            }
-
+            
             var device = _embyRepository.GetDeviceById(play.Session.DeviceId);
 
             return new UserMediaView
@@ -291,10 +317,24 @@ namespace EmbyStat.Services
                 StartedWatching = startedPlaying,
                 EndedWatching = endedPlaying,
                 WatchedTime = Math.Round(watchedTime.TotalSeconds),
-                WatchedPercentage = watchedPercentage,
+                WatchedPercentage = CalculateWatchedPercentage(play, episode),
                 DeviceId = play.Session.DeviceId,
                 DeviceLogo = device?.IconUrl ?? ""
             };
+        }
+
+        private decimal? CalculateWatchedPercentage(Play play, Extra media)
+        {
+            decimal? watchedPercentage = null;
+            if (media.RunTimeTicks.HasValue)
+            {
+                var playStates = play.PlayStates.Where(x => x.PositionTicks.HasValue).ToList();
+                var watchedTicks = playStates.Max(x => x.PositionTicks) -
+                                   playStates.Min(x => x.PositionTicks);
+                watchedPercentage = Math.Round((watchedTicks.Value / (decimal)media.RunTimeTicks.Value) * 1000) / 10;
+            }
+
+            return watchedPercentage;
         }
 
         public void Dispose()

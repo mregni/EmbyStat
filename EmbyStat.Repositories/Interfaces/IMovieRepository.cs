@@ -14,5 +14,6 @@ namespace EmbyStat.Repositories.Interfaces
         List<string> GetGenres(IEnumerable<string> collections);
         bool Any();
         int GetMovieCountForPerson(string personId);
+        Movie GetMovieById(string id);
     }
 }
