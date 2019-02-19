@@ -18,7 +18,7 @@
     "ADDEDON": "Hinzugefügt am",
     "QUALITY": "Qualität",
     "NEVER": "nie",
-    "OPEN": "Open",
+    "OPEN": "Öffnen",
     "LINK": "Link",
     "REASON": "Grund",
     "BYIMDB": "Gleiche IMDB ID",
@@ -185,18 +185,18 @@
       "LASTACTIVEDESC": "Letzter aktiver Tag (absteigend)"
     },
     "DETAILS": {
-      "TITLE": "Details for {{name}}"
+      "TITLE": "Details für {{name}}"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
+      "TITLE": "Titel",
+      "TIME": "Zeit",
+      "WATCHED": "Gesehen",
       "START": "Start",
-      "ACTION": "Action"
+      "ACTION": "Aktion"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies watched",
-      "TOTALWATCHEDEPISODES": "Episodes watched"
+      "TOTALWATCHEDMOVIES": "Gesehene Filme",
+      "TOTALWATCHEDEPISODES": "Gesehene Episoden"
     }
   },
   "JOB": {
