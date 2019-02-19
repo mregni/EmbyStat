@@ -168,6 +168,14 @@ namespace EmbyStat.Repositories
             }
         }
 
+        public Movie GetMovieById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies.SingleOrDefault(x => x.Id == id);
+            }
+        }
+
         public void RemoveMovies()
         {
             using (var context = new ApplicationDbContext())

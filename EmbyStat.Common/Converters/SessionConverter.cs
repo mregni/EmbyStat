@@ -69,10 +69,10 @@ namespace EmbyStat.Common.Converters
                     play.PlayStates.Add(new PlayState
                     {
                         MediaSourceId = session["PlayState"]["MediaSourceId"].Value<string>(),
-                        PositionTicks = session["PlayState"]["PositionTicks"].Value<long>(),
+                        PositionTicks = session["PlayState"]["PositionTicks"]?.Value<long>(),
                         IsPaused = session["PlayState"]["IsPaused"].Value<bool>(),
                         TimeLogged = now,
-                        VolumeLevel = session["PlayState"]["VolumeLevel"].Value<int>(),
+                        VolumeLevel = session["PlayState"]["VolumeLevel"]?.Value<int>(),
                         IsTranscoding = session["TranscodingInfo"] != null,
                         AudioCodec = session["TranscodingInfo"]?["AudioCodec"].Value<string>(),
                         TranscodeReasons = session["TranscodingInfo"]?["TranscodeReasons"]
