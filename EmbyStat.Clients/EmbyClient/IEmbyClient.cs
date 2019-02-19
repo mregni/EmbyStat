@@ -15,7 +15,8 @@ namespace EmbyStat.Clients.EmbyClient
 {
     public interface IEmbyClient : IDisposable
     {
-	    void SetAddressAndUrl(string url, string token);
+        void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId);
+        void SetAddressAndUser(string url, string token, string userId);
 		Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address);
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();

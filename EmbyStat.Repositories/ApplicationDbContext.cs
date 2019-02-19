@@ -18,6 +18,7 @@ namespace EmbyStat.Repositories
         public DbSet<ServerInfo> ServerInfo { get; set; }
         public DbSet<Drive> Drives { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Media> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Show> Shows { get; set; }
         public DbSet<Season> Seasons { get; set; }
@@ -102,6 +103,7 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<Show>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Show>().Property(m => m.ParentId).IsRequired();
+            modelBuilder.Entity<Show>().HasMany(x => x.Seasons).WithOne(x => x.Show).HasForeignKey(x => x.ParentId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<User>().Property(m => m.Name).IsRequired().HasMaxLength(100);
@@ -159,10 +161,6 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<User>().HasMany(x => x.AccessSchedules).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>().Property(x => x.BlockedTags).HasConversion(stringListConverter);
             modelBuilder.Entity<User>().Property(x => x.BlockUnratedItems).HasConversion(stringListConverter);
-            modelBuilder.Entity<User>().Property(x => x.EnabledDevices).HasConversion(stringListConverter);
-            modelBuilder.Entity<User>().Property(x => x.EnabledChannels).HasConversion(stringListConverter);
-            modelBuilder.Entity<User>().Property(x => x.EnabledFolders).HasConversion(stringListConverter);
-            modelBuilder.Entity<User>().Property(x => x.ExcludedSubFolders).HasConversion(stringListConverter);
             modelBuilder.Entity<User>().Property(x => x.LastLoginDate).HasConversion(dateTimeOffsetConverter);
             modelBuilder.Entity<User>().Property(x => x.LastActivityDate).HasConversion(dateTimeOffsetConverter);
 

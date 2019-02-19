@@ -67,7 +67,7 @@ namespace Tests.Unit.Services
 
 			_embyClientMock = new Mock<IEmbyClient>();
 		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(embyPlugins));
-		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
+		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
 		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
 
@@ -87,7 +87,13 @@ namespace Tests.Unit.Services
 	        mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<FileSystemEntryInfo>>())).Returns(new List<Drive> {new Drive()});
 	        mapperMock.Setup(x => x.Map<IList<PluginInfo>>(It.IsAny<List<MediaBrowser.Model.Plugins.PluginInfo>>())).Returns(plugins);
 
-            _subject = new EmbyService(_embyClientMock.Object, settingsServiceMock.Object, embyRepository.Object, mapperMock.Object);
+            var movieRepositoryMock = new Mock<IMovieRepository>();
+            var showRepositoryMock = new Mock<IShowRepository>();
+            var embyRepositoryMock = new Mock<IEmbyRepository>();
+            var sessionServiceMock = new Mock<ISessionService>();
+
+            _subject = new EmbyService(_embyClientMock.Object, embyRepositoryMock.Object, sessionServiceMock.Object,
+                settingsServiceMock.Object, movieRepositoryMock.Object, showRepositoryMock.Object, mapperMock.Object);
 	    }
 
 
@@ -143,26 +149,6 @@ namespace Tests.Unit.Services
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
-	    }
-
-	    [Fact]
-	    public void GetServerInfoFromDatabase()
-	    {
-		    var serverInfo = _subject.GetServerInfo();
-
-		    serverInfo.Should().NotBeNull();
-		    serverInfo.Result.Id.Should().Be(_serverInfo.Id);
-		    serverInfo.Result.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
-		    serverInfo.Result.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
-	    }
-
-	    [Fact]
-	    public void GetDrivesFromDatabase()
-	    {
-		    var drives = _subject.GetLocalDrives();
-
-		    drives.Should().NotBeNull();
-		    drives.Count.Should().Be(2);
 	    }
 	}
 }

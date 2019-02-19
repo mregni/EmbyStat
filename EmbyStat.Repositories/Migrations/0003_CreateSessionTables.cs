@@ -24,6 +24,7 @@ namespace EmbyStat.Repositories.Migrations
             Create.Table(Constants.Tables.Plays)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Plays")
                 .WithColumn("Type").AsString().NotNullable()
+                .WithColumn("ParentId").AsString().NotNullable()
                 .WithColumn("MediaId").AsString().NotNullable()
                 .WithColumn("SessionId").AsString().NotNullable()
                 .ForeignKey("FK_Plays_Sessions_SessionId", Constants.Tables.Sessions, "Id").OnDelete(Rule.Cascade)

@@ -6,8 +6,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using AutoMapper;
+using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
@@ -185,6 +187,7 @@ namespace EmbyStat.Web
             RemoveVersionFiles();
             ResetAllJobs();
             ResetConfiguration();
+            SetEmbyClientConfiguration();
         }
 
         private void PerformPreShutdownFunctions()
@@ -222,6 +225,20 @@ namespace EmbyStat.Web
                 userSettings.Id = Guid.NewGuid();
                 settingsService.SaveUserSettings(userSettings);
             }
+        }
+
+        private void SetEmbyClientConfiguration()
+        {
+            var embyClient = ApplicationBuilder.ApplicationServices.GetService<IEmbyClient>();
+            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
+            var settings = settingsService.GetUserSettings();
+
+            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+            if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+            {
+                embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
+            }
+
         }
     }
 }

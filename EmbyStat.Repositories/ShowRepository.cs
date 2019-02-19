@@ -353,5 +353,17 @@ namespace EmbyStat.Repositories
                 return context.Shows.Any();
             }
         }
+
+        public Episode GetEpisodeById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Episodes
+                    .Include(x => x.SeasonEpisodes)
+                    .ThenInclude(x => x.Season)
+                    .ThenInclude(x => x.Show)
+                    .SingleOrDefault(x => x.Id == id);
+            }
+        }
     }
 }

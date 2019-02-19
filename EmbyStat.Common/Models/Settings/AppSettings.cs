@@ -9,11 +9,10 @@ namespace EmbyStat.Common.Models.Settings
         public Updater Updater { get; set; }
         public Dirs Dirs { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
+        /// <summary>
+        /// Port number, is set dynamically when server is starting
+        /// </summary>
         public int Port { get; set; }
-        public string Name { get; set; }
-        public string Id { get; set; }
-        public string EmbyAuthorizationScheme { get; set; }
-
     }
 
     public class Updater

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces
 {
@@ -32,6 +34,9 @@ namespace EmbyStat.Services.Interfaces
 
         IEnumerable<User> GetAllUsers();
         User GetUserById(string id);
+        Card<int> GetViewedEpisodeCountByUserId(string id);
+        Card<int> GetViewedMovieCountByUserId(string id);
+        IEnumerable<UserMediaView> GetLastWatchedMediaByUserId(string id, int count);
 
         #endregion
 

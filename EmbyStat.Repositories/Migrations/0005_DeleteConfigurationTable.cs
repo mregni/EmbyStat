@@ -77,9 +77,11 @@ namespace EmbyStat.Repositories.Migrations
                 }
             };
             var dir = Path.Combine("Settings", "usersettings.json");
-            var userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
-
-            settings.Id = userSettings.Id;
+            if (File.Exists(dir))
+            {
+                var userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
+                settings.Id = userSettings.Id;
+            }
 
             var strJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(dir, strJson);

@@ -1,7 +1,10 @@
  <mat-card *ngIf="card !== undefined">
   <mat-card-content>
     <div class="card-flex-column">
-      <span class="card-value" countUp [endVal]="card.value" startVal="0" [countUp]="options" duration="4"></span>
+      <span *ngIf="card.value != 0; else zeroSpan" class="card-value" countUp [endVal]="card.value" startVal="0" [countUp]="options" duration="4"></span>
+      <ng-template #zeroSpan>
+        <span class="card-value">0</span>
+      </ng-template>
       <span class="card-title">{{card.title | translate}}
       </span>
     </div>

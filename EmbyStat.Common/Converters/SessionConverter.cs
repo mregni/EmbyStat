@@ -33,7 +33,8 @@ namespace EmbyStat.Common.Converters
                     {
                         MediaId = session["NowPlayingItem"]["Id"].Value<string>(),
                         SessionId = session["Id"].Value<string>(),
-                        Type = session["NowPlayingItem"]["Type"].Value<string>()
+                        Type = session["NowPlayingItem"]["Type"].ToObject<PlayType>(),
+                        ParentId = session["NowPlayingItem"]["ParentId"].Value<string>()
                     };
                     
                     var videoStream = session["NowPlayingItem"]["MediaStreams"]?.FirstOrDefault(x => x["Type"].Value<string>() == "Video");

@@ -22,13 +22,27 @@ using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
 namespace EmbyStat.Clients.EmbyClient
 {
-	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
+	public class EmbyClient : BaseClient, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient, IOptions<AppSettings> options)
-		: base(cryptographyProvider, httpClient, options)
+        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient)
+		: base(cryptographyProvider, httpClient)
 		{
 			
 		}
+
+        public void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId)
+        {
+            ClientName = clientName;
+            AuthorizationScheme = authorizationScheme;
+            ApplicationVersion = applicationVersion;
+
+            Device = new Device
+            {
+                DeviceId = deviceId,
+                DeviceName = clientName
+            };
+            ResetHttpHeaders();
+        }
 
 		public async Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
 		{
@@ -53,15 +67,14 @@ namespace EmbyStat.Clients.EmbyClient
 			{
 				["username"] = Uri.EscapeDataString(username),
 				["pw"] = password,
-				["password"] = BitConverter.ToString(CryptographyProvider.CreateSha1(bytes)).Replace("-", string.Empty),
-				["passwordMD5"] = GetConnectPasswordMd5(password)
+				["password"] = BitConverter.ToString(CryptographyProvider.CreateSha1(bytes)).Replace("-", string.Empty)
 			};
 
 			var url = GetApiUrl("Users/AuthenticateByName");
             Log.Information($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
 			var result = await PostAsync<AuthenticationResult>(url, args, CancellationToken.None);
 
-			SetAuthenticationInfo(result.AccessToken, new Guid(result.User.Id));
+			SetAuthenticationInfo(result.AccessToken, result.User.Id);
 
 			return result;
 		}

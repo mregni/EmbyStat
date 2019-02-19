@@ -119,15 +119,17 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
           this.isAdmin = token.isAdmin;
           if (token.isAdmin) {
             const settings = { ...this.settings };
+            const emby = { ...this.settings.emby };
             settings.language = this.languageControl.value;
-            settings.emby.userName = this.username;
             settings.username = this.nameControl.value;
-            settings.emby.serverAddress = address;
-            settings.emby.accessToken = token.token;
             settings.wizardFinished = true;
-            settings.emby.userId = token.id;
-            settings.emby.serverPort = port;
-            settings.emby.serverProtocol = protocol;
+            emby.serverAddress = address;
+            emby.userName = this.username;
+            emby.accessToken = token.token;
+            emby.userId = token.id;
+            emby.serverPort = port;
+            emby.serverProtocol = protocol;
+            settings.emby = emby;
             this.settingsFacade.updateSettings(settings);
           }
         }, (err) => {

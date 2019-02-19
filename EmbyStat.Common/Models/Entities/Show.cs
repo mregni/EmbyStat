@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Models.Entities.Helpers;
+﻿using System.Collections.Generic;
+using EmbyStat.Common.Models.Entities.Helpers;
 
 namespace EmbyStat.Common.Models.Entities
 {
@@ -9,5 +10,6 @@ namespace EmbyStat.Common.Models.Entities
         public bool TvdbSynced { get; set; }
         public int MissingEpisodesCount { get; set; }
         public bool TvdbFailed { get; set; }
+        public ICollection<Season> Seasons { get; set; }
     }
 }

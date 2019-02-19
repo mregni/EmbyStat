@@ -43,6 +43,12 @@ namespace EmbyStat.Common
             public static string ShowStatusGraph => "SHOWS.SHOWSTATUSGRAPH";
         }
 
+        public static class Users
+        {
+            public static string TotalWatchedMovies => "USERS.STATS.TOTALWATCHEDMOVIES";
+            public static string TotalWatchedEpisodes => "USERS.STATS.TOTALWATCHEDEPISODES";
+        }
+
         public static class Tvdb
         {
             public static string BaseUrl => "https://api.thetvdb.com";

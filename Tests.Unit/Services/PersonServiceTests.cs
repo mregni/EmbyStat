@@ -95,9 +95,7 @@ namespace Tests.Unit.Services
 
             _personRepositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
             _personRepositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
-
-            _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Once);
-
+            
             _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
 
