@@ -82,18 +82,13 @@ namespace Tests.Unit.Services
             var settingsServiceMock = new Mock<ISettingsService>();
 	        settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings());
 
-	        var mapperMock = new Mock<IMapper>();
-	        mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
-	        mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<FileSystemEntryInfo>>())).Returns(new List<Drive> {new Drive()});
-	        mapperMock.Setup(x => x.Map<IList<PluginInfo>>(It.IsAny<List<MediaBrowser.Model.Plugins.PluginInfo>>())).Returns(plugins);
-
             var movieRepositoryMock = new Mock<IMovieRepository>();
             var showRepositoryMock = new Mock<IShowRepository>();
             var embyRepositoryMock = new Mock<IEmbyRepository>();
             var sessionServiceMock = new Mock<ISessionService>();
 
             _subject = new EmbyService(_embyClientMock.Object, embyRepositoryMock.Object, sessionServiceMock.Object,
-                settingsServiceMock.Object, movieRepositoryMock.Object, showRepositoryMock.Object, mapperMock.Object);
+                settingsServiceMock.Object, movieRepositoryMock.Object, showRepositoryMock.Object);
 	    }
 
 

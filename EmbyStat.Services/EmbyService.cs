@@ -269,6 +269,7 @@ namespace EmbyStat.Services
                 Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString()); });
                 throw new BusinessException("Movie not found, starting media sync job to fix this.");
             }
+
             var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
             var watchedTime = endedPlaying - startedPlaying;
@@ -297,6 +298,7 @@ namespace EmbyStat.Services
                 Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString()); });
                 throw new BusinessException("Episode not found, starting media sync job to fix this.");
             }
+
             var season = episode.SeasonEpisodes.First(x => x.SeasonId == play.ParentId).Season;
             var showName = season.Show.Name;
             var seasonNumber = season.IndexNumber;
