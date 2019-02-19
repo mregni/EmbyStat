@@ -169,18 +169,18 @@
       "CHECK": "立即检查并更新服务器",
       "TRAIN": "如果要选择测试版更新, 请更改更新计划。",
       "ONBETA": "你已经不在用稳定版上了, 所以你不能再退回去了。如果您想返回稳定版, 请重新安装服务器。",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
+      "TRAINWARNING": "您可以在此从稳定版变更到测试版。如果您不知道您正在做什么事情，请先使用稳定版。如果您想要切换到测试版，请在这里修改设定。但之后想返回稳定版则您必须重新安装服务器。"
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
-    "ISHIDDEN": "Is hidden from login screen",
-    "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "LASTACTIVE": "Last active",
+    "ISADMIN": "是管理员",
+    "ISHIDDEN": "从登录界面隐藏",
+    "ISDISABLED": "已禁用",
+    "DELETED": "已删除的用户",
+    "LASTACTIVE": "上次登录:",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
+      "USERNAMEASC": "用户名 (A-Z)",
+      "USERNAMEDESC": "用户名 (Z-A)",
       "LASTACTIVEASC": "Last active date (asc)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
@@ -256,25 +256,25 @@
     "MUSICVIDEOS": "Music videos",
     "TRAILERS": "Trailers",
     "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "BOXSETS": "盒装套装",
+    "BOOKS": "图书",
+    "PHOTOS": "图片",
+    "GAMES": "游戏",
+    "LIVETV": "电视直播",
+    "PLAYLISTS": "播放列表",
+    "FOLDERS": "文件夹"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "GOTOEMBY": "转到Emby",
+    "JOBISRUNNING": "{{job}} 作业正在运行",
+    "NOMISSEDPINGS": "Emby 服务器处于活跃状态",
+    "ONEMISSEDPING": "在最后一次检查时无法连接到Emby！",
+    "MOREMISSEDPINGS": "多次尝试后无法连接到Emby！"
   },
   "ABOUT": {
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "谢谢",
+      "TEXT": "非常感谢感谢以下人翻译本应用程序为本地语言："
     }
   }
 }
