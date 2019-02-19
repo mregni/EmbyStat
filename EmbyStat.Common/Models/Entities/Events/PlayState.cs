@@ -10,8 +10,8 @@ namespace EmbyStat.Common.Models.Entities.Events
     {
         [Key]
         public Guid Id { get; set; }
-        public long PositionTicks { get; set; }
-        public int VolumeLevel { get; set; }
+        public long? PositionTicks { get; set; }
+        public int? VolumeLevel { get; set; }
         public string MediaSourceId { get; set; }
         public PlayMethod? PlayMethod { get; set; }
         public RepeatMode RepeatMode { get; set; }

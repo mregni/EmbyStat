@@ -43,8 +43,8 @@ namespace EmbyStat.Repositories.Migrations
 
             Create.Table(Constants.Tables.PlayStates)
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_PlayStates")
-                .WithColumn("PositionTicks").AsInt64()
-                .WithColumn("VolumeLevel").AsInt32()
+                .WithColumn("PositionTicks").AsInt64().Nullable()
+                .WithColumn("VolumeLevel").AsInt32().Nullable()
                 .WithColumn("MediaSourceId").AsString().NotNullable()
                 .WithColumn("IsPaused").AsBoolean().NotNullable().WithDefaultValue(false)
                 .WithColumn("PlayMethod").AsInt16().Nullable()

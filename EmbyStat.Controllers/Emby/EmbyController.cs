@@ -114,9 +114,14 @@ namespace EmbyStat.Controllers.Emby
             }
 
             var mappedUser = _mapper.Map<EmbyUserFullViewModel>(user);
-            mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(_embyService.GetViewedEpisodeCountByUserId(id));
-            mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(_embyService.GetViewedMovieCountByUserId(id));
-            mappedUser.LastWatchedMedia = _mapper.Map<IList<UserMediaViewViewModel>>(_embyService.GetLastWatchedMediaByUserId(id, 10));
+
+            var viewedEpisodeCount = _embyService.GetViewedEpisodeCountByUserId(id);
+            var viewedMovieCount = _embyService.GetViewedMovieCountByUserId(id);
+            var lastWatchedMedia = _embyService.GetLastWatchedMediaByUserId(id, 10).ToList();
+
+            mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
+            mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);
+            mappedUser.LastWatchedMedia = _mapper.Map<IList<UserMediaViewViewModel>>(lastWatchedMedia);
 
             return Ok(mappedUser);
         }
