@@ -77,7 +77,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             CleanUpDatabase();
             await LogProgress(3);
 
-            var rootItems = await GetRootItems(Settings.Emby.UserId, cancellationToken);
+            var rootItems = await GetRootItems(cancellationToken);
             _collectionRepository.AddOrUpdateRange(rootItems);
             await LogInformation($"Found {rootItems.Count} root items, getting ready for processing");
 
@@ -512,7 +512,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task<List<Collection>> GetRootItems(string id, CancellationToken cancellationToken)
+        private async Task<List<Collection>> GetRootItems(CancellationToken cancellationToken)
         {
             await LogInformation("Asking Emby for all root folders");
             var rootItems = await _embyClient.GetMediaFolders(cancellationToken);
