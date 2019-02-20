@@ -10,10 +10,5 @@ namespace EmbyStat.Common.Exceptions
 		{
 			StatusCode = statusCode;
 		}
-
-		public BusinessException(Exception ex, int statusCode = 500, Exception e = null) : base(ex.Message, e)
-		{
-			StatusCode = statusCode;
-		}
 	}
 }

@@ -7,11 +7,11 @@
 	    public string Detail { get; set; }
 		public string Stack { get; set; }
 
-	    public ApiError(string message, string stack)
+	    public ApiError(string message, string stack, bool isError)
 	    {
 		    Message = message;
 		    Stack = stack;
-		    IsError = true;
+		    IsError = isError;
 	    }
 	}
 }

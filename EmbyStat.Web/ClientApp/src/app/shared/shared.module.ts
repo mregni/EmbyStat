@@ -35,6 +35,7 @@ import { UpdateService } from './services/update.service';
 
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
+import { NoUsersFoundDialogComponent } from './dialogs/no-users-found-dialog/no-users-found-dialog.component';
 
 import { DisableControlDirective } from './directives/disable-control/disable-control.directive';
 
@@ -71,6 +72,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     CollectionSelectorComponent,
     NoTypeFoundDialog,
     SyncIsRunningDialog,
+    NoUsersFoundDialogComponent,
     CapitalizeFirstPipe,
     ToShorterStringPipe,
     DisableControlDirective,
@@ -94,7 +96,8 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     DisableControlDirective,
     UpdateOverlayComponent,
     SideNavigationComponent,
-    CardUserComponent
+    CardUserComponent,
+    NoUsersFoundDialogComponent
   ],
   providers: [
     ToastService,
@@ -108,6 +111,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
   entryComponents: [
     NoTypeFoundDialog,
     SyncIsRunningDialog,
+    NoUsersFoundDialogComponent,
     UpdateOverlayComponent]
 })
 export class SharedModule { }

@@ -2,10 +2,17 @@
   <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
     <mat-card-content>
       <div *ngIf="(updateResult$ | async) as result; else loading">
-        <h3 *ngIf="result.isUpdateAvailable; else noUpdate">Version {{result.availableVersion}} available for download!</h3>
-        <ng-template #noUpdate><p>No update available</p></ng-template>
+        <h3 *ngIf="result.isUpdateAvailable; else noUpdate">{{ 'SETTINGS.UPDATE.NEWVERSION' | translate: { version: result.availableVersion} }}</h3>
+        <ng-template #noUpdate>
+          <div *ngIf="!updateCheckFailed; else failedCheck">
+            <p>{{ 'SETTINGS.UPDATE.NOUPDATE' | translate }}</p>
+          </div>
+          <ng-template #failedCheck>
+            <p>{{ 'SETTINGS.UPDATE.CANTCHECK' | translate }}</p>
+          </ng-template>
+        </ng-template>
       </div>
-      <p class="subtext-grey">Current version: {{settings.version}}</p>
+      <p class="subtext-grey">{{ 'SETTINGS.UPDATE.CURRENTVERSION' | translate: { version: settings.version} }}</p>
       <ng-template #loading>
         <div class="la-ball-scale-ripple-multiple la-dark">
           <div></div>
@@ -22,8 +29,7 @@
         </ng-template>
         <mat-form-field>
           <mat-select formControlName="train" [disableControl]="!onMaster">
-            <mat-option [value]="2">Master</mat-option>
-            <mat-option [value]="1">Beta</mat-option>
+            <mat-option [value]="option.value" *ngFor="let option of trainOptions">{{option.key}}</mat-option>
           </mat-select>
           <mat-placeholder>{{ 'SETTINGS.UPDATE.TRAIN' | translate }}</mat-placeholder>
         </mat-form-field>
