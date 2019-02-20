@@ -59,7 +59,8 @@
     "MOVIENOTFOUND": "Film nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
     "EPISODENOTFOUND": "Episode nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
     "CANTCONNECTTOGITHUB": "Keine Verbindung zu GitHub zum Überprüfen von Updates möglich. Versuche es später erneut.",
-    "NOUPDATEFILE": "Die Update-Anwendung kann nicht gefunden werden. Es wurde kein Update durchgeführt"
+    "NOUPDATEFILE": "Die Update-Anwendung kann nicht gefunden werden. Es wurde kein Update durchgeführt",
+    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
   },
   "FORM_LABELS": {
     "NAME": "Geben Sie Ihren Namen ein",
