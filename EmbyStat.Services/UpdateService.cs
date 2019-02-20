@@ -153,6 +153,11 @@ namespace EmbyStat.Services
                     var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), appSettings.Dirs.TempUpdateDir, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
                     var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), appSettings.Dirs.TempUpdateDir);
 
+                    if (!File.Exists(updaterTool))
+                    {
+                        throw new BusinessException("NOUPDATEFILE");
+                    }
+
                     Log.Information($"StartJob tool located at {updaterTool}");
                     Log.Information($"Arguments passed are {GetArgs(appSettings)}");
                     Log.Information($"Working directory is {workingDirectory}");
