@@ -76,7 +76,8 @@ body {
   flex-direction: row;
   justify-content: flex-end;
 
-  > button:last-child, > a:last-child {
+  > button:last-child,
+  > a:last-child {
     margin-left: 10px;
   }
 }
