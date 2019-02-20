@@ -1,4 +1,4 @@
-@import '../../../../styles';
+@import "../../../../styles";
 
 .card-value {
   font-size: 2.4em;
@@ -17,8 +17,8 @@
 }
 
 mat-card {
-  margin: 0 20px 20px 0;
   background-color: mat-color($app-primary) !important;
   color: $white !important;
+  margin: 0 20px 20px 0;
   width: 200px;
 }

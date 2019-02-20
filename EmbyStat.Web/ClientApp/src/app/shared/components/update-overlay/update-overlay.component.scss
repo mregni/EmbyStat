@@ -1,13 +1,13 @@
 @import "../../../../styles";
 
 .spinner-container {
+  align-items: center;
   color: $white;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
   flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
 
   > div:last-child {
     margin-top: 10px;
