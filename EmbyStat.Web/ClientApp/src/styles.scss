@@ -1,9 +1,9 @@
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "theme.scss";
-@import "app/styles/vars.scss";
-@import "app/styles/ball-scale-ripple-multiple.min.scss";
-@import "app/styles/ball-clip-rotate.min.scss";
-@import "app/styles//title-bar.scss";
+@import 'theme';
+@import 'app/styles/vars';
+@import 'app/styles/ball-scale-ripple-multiple.min';
+@import 'app/styles/ball-clip-rotate.min';
+@import 'app/styles//title-bar';
 
 html,
 body {

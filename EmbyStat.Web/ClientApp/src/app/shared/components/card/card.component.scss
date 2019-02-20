@@ -1,8 +1,8 @@
 @import "../../../../theme.scss";
 
 .card-value {
-  font-weight: bold;
   font-size: 2.4em;
+  font-weight: bold;
 }
 
 .card-title {
@@ -20,5 +20,5 @@ mat-card {
   margin: 0px 20px 20px 0px;
   background-color: mat-color($app-primary) !important;
   color: #ffffff !important;
-  width:200px;
+  width: 200px;
 }
