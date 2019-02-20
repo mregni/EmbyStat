@@ -44,7 +44,7 @@ namespace EmbyStat.Clients.Tvdb
         public async Task<IEnumerable<VirtualEpisode>> GetEpisodes(string seriesId, CancellationToken cancellationToken)
         {
             var tvdbEpisodes = new List<VirtualEpisode>();
-            var page = new TvdbEpisodes();
+            TvdbEpisodes page;
             var i = 0;
             do
             {
