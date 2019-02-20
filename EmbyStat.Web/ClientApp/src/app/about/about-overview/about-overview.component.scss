@@ -1,7 +1,7 @@
 .about-button-container {
   margin-top: 10px;
-}
 
-.about-button-container > a:not(:first-child) {
-  margin-left: 10px;
+  > a:not(:first-child) {
+    margin-left: 10px;
+  }
 }

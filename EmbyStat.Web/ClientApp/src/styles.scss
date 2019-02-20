@@ -74,15 +74,11 @@ body {
 .button-container {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end
-}
+  justify-content: flex-end;
 
-.button-container > button:last-child {
-  margin-left: 10px;
-}
-
-.button-container > a:last-child {
-  margin-left: 10px;
+  > button:last-child, > a:last-child {
+    margin-left: 10px;
+  }
 }
 
 .toast__success {
