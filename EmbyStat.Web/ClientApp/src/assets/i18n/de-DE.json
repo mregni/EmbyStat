@@ -177,9 +177,9 @@
       "ONBETA": "Sie befinden sich nicht mehr im Master-Kanal und können nicht wieder darauf umsteigen. Wenn Sie mit dem Master-Kanal fortfahren möchten, installieren Sie den Server erneut.",
       "TRAINWARNING": "Hier können Sie den Updatekanal von Master auf Beta umstellen. Wenn Sie nicht wissen, was Sie tun, lassen Sie diese Einstellung auf Master. Wenn Sie die Beta-Updates erhalten möchten, ändern Sie es hier. Beachten Sie, dass Sie später nicht mehr zu Master wechseln können. Sie müssen den Server neu installieren.",
       "CURRENTVERSION": "Aktuelle Version: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!"
+      "CANTCHECK": "Ich kann jetzt nicht nach Updates suchen, es konnte keine Verbindung zu GitHub hergestellt werden.",
+      "NOUPDATE": "Kein Update verfügbar",
+      "NEWVERSION": "Version {{version}} zum Download verfügbar!"
     }
   },
   "USERS": {
@@ -227,7 +227,7 @@
       "PINGEMBYSERVERDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
       "SMALLEMBYSYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
       "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
+      "STARTSMALLEMBYSYNC": "Kleine Synchronisierung starten",
       "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
       "MEDIASYNCTITLE": "Medien-Synchronisierung",
       "STARTMEDIASYNC": "Mediensynchronisation starten",
@@ -256,8 +256,8 @@
       "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Formatieren eines CRON-Strings. Nur Zahlen, *, / und - sind erlaubt."
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "TITLE": "Keine Benutzer gefunden",
+      "BODY": "In der lokalen Datenbank wurden keine Benutzer gefunden. Dies bedeutet, dass kein kleiner Synchronisierungsjob ausgeführt wurde. Du willst ihn jetzt ausführen?"
     }
   },
   "LOADER": {
