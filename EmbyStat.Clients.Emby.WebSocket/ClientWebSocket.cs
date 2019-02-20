@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.WebSockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MediaBrowser.Model.Logging;
 using Serilog;
 using WebSocket4Net;
 using WebSocketState = WebSocket4Net.WebSocketState;

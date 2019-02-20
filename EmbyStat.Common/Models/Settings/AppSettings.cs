@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Common.Models.Settings
+﻿namespace EmbyStat.Common.Models.Settings
 {
     public class AppSettings
     {

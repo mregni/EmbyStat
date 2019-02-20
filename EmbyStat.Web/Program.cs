@@ -7,7 +7,6 @@ using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Repositories.Migrations;
 using FluentMigrator.Runner;
-using FluentMigrator.Runner.Initialization;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -135,7 +134,7 @@ namespace EmbyStat.Web
         {
             if (!File.Exists(Path.Combine("Settings", "usersettings.json")))
             {
-                var e = new FileNotFoundException("usersettings.json file not found in Settings folder. Exiting program now!"); ;
+                var e = new FileNotFoundException("usersettings.json file not found in Settings folder. Exiting program now!");
                 Log.Error(e, "Can't start server!");
                 throw e;
             }

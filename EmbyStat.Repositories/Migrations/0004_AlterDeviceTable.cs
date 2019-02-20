@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using System.Data;
 using EmbyStat.Common;
 using FluentMigrator;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories.Migrations
 {

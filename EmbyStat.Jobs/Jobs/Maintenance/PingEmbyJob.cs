@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;

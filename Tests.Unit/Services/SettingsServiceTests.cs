@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Castle.Components.DictionaryAdapter;
-using EmbyStat.Common;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;

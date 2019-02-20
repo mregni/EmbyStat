@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using EmbyStat.Common.Models.Entities.Helpers;
-using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Common.Models.Entities.Joins
 {

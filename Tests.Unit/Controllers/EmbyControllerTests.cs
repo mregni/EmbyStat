@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Controllers;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;

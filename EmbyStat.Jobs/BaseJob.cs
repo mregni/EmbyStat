@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper.Mappers;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {

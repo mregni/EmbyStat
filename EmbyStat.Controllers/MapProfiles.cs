@@ -18,7 +18,6 @@ using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.IO;
 using MediaBrowser.Model.System;
 
 namespace EmbyStat.Controllers
