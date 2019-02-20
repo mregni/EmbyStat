@@ -20,7 +20,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
-using Hangfire;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -266,9 +265,9 @@ namespace EmbyStat.Services
             var movie = _movieRepository.GetMovieById(play.MediaId);
             if (movie == null)
             {
-                Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString()); });
-                throw new BusinessException("Movie not found, starting media sync job to fix this.");
+                throw new BusinessException("MOVIENOTFOUND");
             }
+
             var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
             var watchedTime = endedPlaying - startedPlaying;
@@ -294,9 +293,9 @@ namespace EmbyStat.Services
             var episode = _showRepository.GetEpisodeById(play.MediaId);
             if (episode == null)
             {
-                Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString()); });
-                throw new BusinessException("Episode not found, starting media sync job to fix this.");
+                throw new BusinessException("EPISODENOTFOUND");
             }
+
             var season = episode.SeasonEpisodes.First(x => x.SeasonId == play.ParentId).Season;
             var showName = season.Show.Name;
             var seasonNumber = season.IndexNumber;

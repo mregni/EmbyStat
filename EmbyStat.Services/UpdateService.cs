@@ -12,12 +12,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Github;
 using EmbyStat.Clients.Github.Models;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using MediaBrowser.Model.Net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -39,8 +41,15 @@ namespace EmbyStat.Services
 
         public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
         {
-            var settings = _settingsService.GetUserSettings();
-            return await CheckForUpdate(settings, cancellationToken);
+            try
+            {
+                var settings = _settingsService.GetUserSettings();
+                return await CheckForUpdate(settings, cancellationToken);
+            }
+            catch (HttpException e)
+            {
+                throw new BusinessException("CANTCONNECTTOGITHUB", 500, e);
+            }
         }
 
 
