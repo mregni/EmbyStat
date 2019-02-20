@@ -56,10 +56,10 @@
     "TOKEN_FAILED": "Abrufen des Emby Token ist fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen und Adresse.",
     "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind.",
     "UNHANDLED": "Unhandled backend exception",
-    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
-    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
-    "NOUPDATEFILE": "Can't locate the update application, no update performed"
+    "MOVIENOTFOUND": "Film nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
+    "EPISODENOTFOUND": "Episode nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
+    "CANTCONNECTTOGITHUB": "Keine Verbindung zu GitHub zum Überprüfen von Updates möglich. Versuche es später erneut.",
+    "NOUPDATEFILE": "Die Update-Anwendung kann nicht gefunden werden. Es wurde kein Update durchgeführt"
   },
   "FORM_LABELS": {
     "NAME": "Geben Sie Ihren Namen ein",
@@ -176,7 +176,7 @@
       "TRAIN": "Ändern Sie den Updatekanal, wenn Sie Beta-Updates erhalten möchten.",
       "ONBETA": "Sie befinden sich nicht mehr im Master-Kanal und können nicht wieder darauf umsteigen. Wenn Sie mit dem Master-Kanal fortfahren möchten, installieren Sie den Server erneut.",
       "TRAINWARNING": "Hier können Sie den Updatekanal von Master auf Beta umstellen. Wenn Sie nicht wissen, was Sie tun, lassen Sie diese Einstellung auf Master. Wenn Sie die Beta-Updates erhalten möchten, ändern Sie es hier. Beachten Sie, dass Sie später nicht mehr zu Master wechseln können. Sie müssen den Server neu installieren.",
-      "CURRENTVERSION": "Current version: {{version}}",
+      "CURRENTVERSION": "Aktuelle Version: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "No update available",
       "NEWVERSION": "Version {{version}} available for download!"
