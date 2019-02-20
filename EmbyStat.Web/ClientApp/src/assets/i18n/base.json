@@ -217,6 +217,7 @@
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "STARTSMALLEMBYSYNC": "Start small sync", 
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIASYNCTITLE": "Media synchronization",
       "STARTMEDIASYNC": "Start media sync",
@@ -243,7 +244,11 @@
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
       "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
-    }
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "No users found",
+      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?" 
+    } 
   },
   "LOADER": {
     "FETCHING": "Fetching statistics",
