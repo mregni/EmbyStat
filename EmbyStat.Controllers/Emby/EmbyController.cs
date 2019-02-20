@@ -43,11 +43,8 @@ namespace EmbyStat.Controllers.Emby
         {
             Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tGet Emby server info.");
             var result = await _embyService.GetServerInfo();
-            var drives = _embyService.GetLocalDrives();
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
-            serverInfo.Drives = _mapper.Map<IList<DriveViewModel>>(drives).ToList();
-
             return Ok(serverInfo);
         }
 

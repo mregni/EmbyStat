@@ -31,6 +31,5 @@ namespace EmbyStat.Controllers.Emby
         public string ServerName { get; set; }
         public string Version { get; set; }
         public string OperatingSystem { get; set; }
-        public List<DriveViewModel> Drives { get; set; }
 	}
 }

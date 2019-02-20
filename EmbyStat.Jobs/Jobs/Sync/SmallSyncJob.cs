@@ -35,10 +35,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             LogInformation("Server plugins downloaded");
             LogProgress(55);
 
-            await _embyService.GetAndProcessEmbyDriveInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
-            LogInformation("Server drives downloaded");
-            LogProgress(65);
-
             await _embyService.GetAndProcessEmbyUsers(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
             LogInformation("Server users downloaded");
             LogProgress(80);

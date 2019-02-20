@@ -52,12 +52,6 @@ namespace Tests.Unit.Services
 				HttpsPortNumber = 8097
 			};
 
-		    var drives = new List<Drive>
-		    {
-		        new Drive {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
-		        new Drive {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
-		    };
-
             var embyDrives = new List<FileSystemEntryInfo>
 		    {
 			    new FileSystemEntryInfo()
@@ -76,8 +70,6 @@ namespace Tests.Unit.Services
             embyRepository.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
             embyRepository.Setup(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
             embyRepository.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
-            embyRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
-            embyRepository.Setup(x => x.GetAllDrives()).Returns(drives);
 
             var settingsServiceMock = new Mock<ISettingsService>();
 	        settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings());

@@ -124,11 +124,6 @@ namespace EmbyStat.Services
             return server;
         }
 
-        public List<Drive> GetLocalDrives()
-        {
-            return _embyRepository.GetAllDrives();
-        }
-
         public EmbyStatus GetEmbyStatus()
         {
             return _embyRepository.GetEmbyStatus();
@@ -227,13 +222,6 @@ namespace EmbyStat.Services
             var plugins = await _embyClient.GetInstalledPluginsAsync();
 
             _embyRepository.RemoveAllAndInsertPluginRange(PluginConverter.ConvertToPluginList(plugins));
-        }
-
-        public async Task GetAndProcessEmbyDriveInfo(string embyAddress, string accessToken)
-        {
-            var drives = await _embyClient.GetLocalDrivesAsync();
-
-            _embyRepository.RemoveAllAndInsertDriveRange(DriveConverter.ConvertToDeviceList(drives));
         }
 
         public async Task GetAndProcessEmbyUsers(string embyAddress, string accessToken)

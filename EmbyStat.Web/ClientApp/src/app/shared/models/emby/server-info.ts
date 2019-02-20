@@ -1,5 +1,3 @@
-import { Drive } from './drive';
-
 export class ServerInfo {
   systemUpdateLevel: number;
   operatingSystemDisplayName: string;
@@ -27,5 +25,4 @@ export class ServerInfo {
   serverName: string;
   version: string;
   operatingSystem: string;
-  drives: Drive[];
 }
