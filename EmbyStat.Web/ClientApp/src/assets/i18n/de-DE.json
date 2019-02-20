@@ -55,7 +55,10 @@
     "NOT_FOUND": "Hoppla, wir konnten nicht finden wonach Sie suchen.",
     "TOKEN_FAILED": "Abrufen des Emby Token ist fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen und Adresse.",
     "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind.",
-    "UNHANDLED": "Unhandled backend exception"
+    "UNHANDLED": "Unhandled backend exception",
+    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
+    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
+    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later."
   },
   "FORM_LABELS": {
     "NAME": "Geben Sie Ihren Namen ein",
@@ -165,11 +168,17 @@
       "NOPASSWORD": "Vergessen Sie nicht, Ihr Emby-Passwort einzugeben, wenn Sie die Emby-URL-Einstellungen ändern möchten."
     },
     "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
       "AUTO": "Automatische Updates aktivieren",
       "CHECK": "Server auf Updates überprüfen und aktualisieren",
       "TRAIN": "Ändern Sie den Updatekanal, wenn Sie Beta-Updates erhalten möchten.",
       "ONBETA": "Sie befinden sich nicht mehr im Master-Kanal und können nicht wieder darauf umsteigen. Wenn Sie mit dem Master-Kanal fortfahren möchten, installieren Sie den Server erneut.",
-      "TRAINWARNING": "Hier können Sie den Updatekanal von Master auf Beta umstellen. Wenn Sie nicht wissen, was Sie tun, lassen Sie diese Einstellung auf Master. Wenn Sie die Beta-Updates erhalten möchten, ändern Sie es hier. Beachten Sie, dass Sie später nicht mehr zu Master wechseln können. Sie müssen den Server neu installieren."
+      "TRAINWARNING": "Hier können Sie den Updatekanal von Master auf Beta umstellen. Wenn Sie nicht wissen, was Sie tun, lassen Sie diese Einstellung auf Master. Wenn Sie die Beta-Updates erhalten möchten, ändern Sie es hier. Beachten Sie, dass Sie später nicht mehr zu Master wechseln können. Sie müssen den Server neu installieren.",
+      "CURRENTVERSION": "Current version: {{version}}",
+      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "NOUPDATE": "No update available",
+      "NEWVERSION": "Version {{version}} available for download!"
     }
   },
   "USERS": {
@@ -217,6 +226,7 @@
       "PINGEMBYSERVERDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
       "SMALLEMBYSYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
       "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
+      "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
       "MEDIASYNCTITLE": "Medien-Synchronisierung",
       "STARTMEDIASYNC": "Mediensynchronisation starten",
@@ -243,6 +253,10 @@
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Der angegebene cron-String hat ein falsches Format. Schauen Sie auf <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig.",
       "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Formatieren eines CRON-Strings. Nur Zahlen, *, / und - sind erlaubt."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "No users found",
+      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
     }
   },
   "LOADER": {

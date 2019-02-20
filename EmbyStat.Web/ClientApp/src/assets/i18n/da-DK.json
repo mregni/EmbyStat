@@ -55,7 +55,10 @@
     "NOT_FOUND": "Undskyld, vi kan ikke finde det, som du leder efter.",
     "TOKEN_FAILED": "Det lykkes ikke at få Emby token. Kontroller venligst dine legitimationsoplysninger og adresse.",
     "EMBY_CALL_FAILED": "Opkald til Emby-server mislykkedes. Kontroller, om Emby kører, og hvis legitimationsoplysningerne stadig er korrekte.",
-    "UNHANDLED": "Ubegrænset backend-undtagelse"
+    "UNHANDLED": "Ubegrænset backend-undtagelse",
+    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
+    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
+    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later."
   },
   "FORM_LABELS": {
     "NAME": "Angiv dit navn",
@@ -165,11 +168,17 @@
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
       "AUTO": "Enable auto updates",
       "CHECK": "Check and update server now",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
+      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
+      "CURRENTVERSION": "Current version: {{version}}",
+      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "NOUPDATE": "No update available",
+      "NEWVERSION": "Version {{version}} available for download!"
     }
   },
   "USERS": {
@@ -217,6 +226,7 @@
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIASYNCTITLE": "Media synchronization",
       "STARTMEDIASYNC": "Start media sync",
@@ -243,6 +253,10 @@
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
       "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "No users found",
+      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
     }
   },
   "LOADER": {

@@ -55,7 +55,10 @@
     "NOT_FOUND": "Oops, didn't find what you are looking for.",
     "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
-    "UNHANDLED": "Unhandled backend exception"
+    "UNHANDLED": "Unhandled backend exception",
+    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
+    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
+    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later."
   },
   "FORM_LABELS": {
     "NAME": "Enter your name",
@@ -165,11 +168,17 @@
       "NOPASSWORD": "当您想要更改Emby网址设置时，请不要忘记输入您的Emby密码。"
     },
     "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
       "AUTO": "启用自动更新",
       "CHECK": "立即检查并更新服务器",
       "TRAIN": "如果要选择测试版更新, 请更改更新计划。",
       "ONBETA": "你已经不在用稳定版上了, 所以你不能再退回去了。如果您想返回稳定版, 请重新安装服务器。",
-      "TRAINWARNING": "您可以在此从稳定版变更到测试版。如果您不知道您正在做什么事情，请先使用稳定版。如果您想要切换到测试版，请在这里修改设定。但之后想返回稳定版则您必须重新安装服务器。"
+      "TRAINWARNING": "您可以在此从稳定版变更到测试版。如果您不知道您正在做什么事情，请先使用稳定版。如果您想要切换到测试版，请在这里修改设定。但之后想返回稳定版则您必须重新安装服务器。",
+      "CURRENTVERSION": "Current version: {{version}}",
+      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "NOUPDATE": "No update available",
+      "NEWVERSION": "Version {{version}} available for download!"
     }
   },
   "USERS": {
@@ -217,6 +226,7 @@
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIASYNCTITLE": "Media synchronization",
       "STARTMEDIASYNC": "Start media sync",
@@ -243,6 +253,10 @@
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
       "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "No users found",
+      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
     }
   },
   "LOADER": {
