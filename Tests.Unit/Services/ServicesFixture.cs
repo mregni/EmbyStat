@@ -1,17 +1,7 @@
-﻿using System;
-
-namespace Tests.Unit.Services
+﻿namespace Tests.Unit.Services
 {
-    public class ServicesFixture : IDisposable
+    public class ServicesFixture
     {
-	    public ServicesFixture()
-	    {
-			
-		}
-
-	    public void Dispose()
-	    {
-			
-	    }
+	    
     }
 }

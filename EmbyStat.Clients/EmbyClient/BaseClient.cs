@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.EmbyClient.Cryptography;
@@ -10,11 +9,8 @@ using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Settings;
 using MediaBrowser.Model.Querying;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace EmbyStat.Clients.EmbyClient

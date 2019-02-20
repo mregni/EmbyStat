@@ -1,12 +1,12 @@
 @import "../card/card.component";
 
 .mat-card {
+  cursor: pointer;
+  height: 100px;
   padding: 0;
   width: 320px;
-  height: 100px;
-  cursor: pointer;
 
-  .user-card-margin{
+  .user-card-margin {
     margin: 10px;
   }
 }

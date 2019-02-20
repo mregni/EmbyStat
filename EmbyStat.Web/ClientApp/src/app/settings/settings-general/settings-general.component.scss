@@ -1,9 +1,9 @@
 @import "../../../styles";
 
 .settings-left {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: flex-start;
 }
 

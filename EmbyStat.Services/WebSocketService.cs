@@ -3,12 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.WebSocket;
-using EmbyStat.Common;
 using EmbyStat.Common.Converters;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
 

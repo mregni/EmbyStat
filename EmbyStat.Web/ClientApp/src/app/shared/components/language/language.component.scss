@@ -1,15 +1,15 @@
 .language-flexcontainer {
   display: flex;
   flex: 1 1 auto;
-  flex-direction:row;
+  flex-direction: row;
   width: 100%;
-  align-items:center;
+  align-items: center;
 }
 
 .language-left-content {
   flex: 0 0 auto;
-  width:60px;
   height: 50px;
+  width: 60px;
 
   img {
     width: 40px;

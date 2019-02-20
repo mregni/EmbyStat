@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Common.Models.Entities
+﻿namespace EmbyStat.Common.Models.Entities
 {
     public class PluginInfo
     {

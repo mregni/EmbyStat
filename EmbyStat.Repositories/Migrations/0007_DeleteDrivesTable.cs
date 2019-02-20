@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentMigrator;
+﻿using FluentMigrator;
 
 namespace EmbyStat.Repositories.Migrations
 {

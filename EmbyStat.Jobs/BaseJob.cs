@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper.Mappers;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
@@ -44,24 +42,24 @@ namespace EmbyStat.Jobs
         {
             try
             {
-                PreJobExecution();
+                await PreJobExecution();
                 await RunJob();
-                PostJobExecution();
+                await PostJobExecution();
             }
             catch (WizardNotFinishedException e)
             {
-                LogWarning(e.Message);
+                await LogWarning(e.Message);
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error while running job");
                 OnFail();
-                FailExecution("Job failed, check logs for more info.");
+                await FailExecution("Job failed, check logs for more info.");
                 throw;
             }
         }
 
-        private void PreJobExecution()
+        private async Task PreJobExecution()
         {
             if (!Settings.WizardFinished)
             {
@@ -73,64 +71,64 @@ namespace EmbyStat.Jobs
             var job = new Job{CurrentProgressPercentage = 0, Id = Id, State = State, StartTimeUtc = StartTimeUtc, EndTimeUtc = null};
 
             _jobRepository.StartJob(job);
-            SendLogProgressToFront(0);
-            LogInformation("Starting job");
+            await SendLogProgressToFront(0);
+            await LogInformation("Starting job");
         }
 
-        private void PostJobExecution()
+        private async Task PostJobExecution()
         {
             var now = DateTime.UtcNow;
             State = JobState.Completed;
             _jobRepository.EndJob(Id, now , State);
-            SendLogProgressToFront(100, now);
+            await SendLogProgressToFront(100, now);
 
             var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
-            LogInformation(Math.Ceiling(runTime) == 1
+            await LogInformation(Math.Ceiling(runTime) == 1
                 ? "Job finished after 1 minute."
                 : $"Job finished after {Math.Ceiling(runTime)} minutes.");
         }
 
-        private void FailExecution(string message)
+        private async Task FailExecution(string message)
         {
             var now = DateTime.UtcNow;
             State = JobState.Failed;
             _jobRepository.EndJob(Id, now, State);
             if (!string.IsNullOrWhiteSpace(message))
             {
-                LogError(message);
+                await LogError(message);
             }
-            SendLogProgressToFront(100, now);
+            await SendLogProgressToFront(100, now);
         }
         
-        public void LogProgress(double progress)
+        public async Task LogProgress(double progress)
         {
-            SendLogProgressToFront(progress);
+            await SendLogProgressToFront(progress);
         }
 
-        public void LogInformation(string message)
+        public async Task LogInformation(string message)
         {
             Log.Information($"{JobPrefix}\t{message}");
-            SendLogUpdateToFront(message, ProgressLogType.Information);
+            await SendLogUpdateToFront(message, ProgressLogType.Information);
         }
 
-        public void LogWarning(string message)
+        public async Task LogWarning(string message)
         {
             Log.Warning($"{JobPrefix}\t{message}");
-            SendLogUpdateToFront(message, ProgressLogType.Warning);
+            await SendLogUpdateToFront(message, ProgressLogType.Warning);
         }
 
-        public void LogError(string message)
+        public async Task LogError(string message)
         {
             Log.Error($"{JobPrefix}\t{message}");
-            SendLogUpdateToFront(message, ProgressLogType.Error);
+            await SendLogUpdateToFront(message, ProgressLogType.Error);
         }
 
-        private async void SendLogUpdateToFront(string message, ProgressLogType type)
+        private async Task SendLogUpdateToFront(string message, ProgressLogType type)
         {
             await HubHelper.BroadCastJobLog(JobPrefix, message, type);
         }
 
-        private async void SendLogProgressToFront(double progress, DateTime? EndTimeUtc = null)
+        private async Task SendLogProgressToFront(double progress, DateTime? EndTimeUtc = null)
         {
             var info = new JobProgress
             {

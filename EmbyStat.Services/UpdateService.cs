@@ -15,13 +15,10 @@ using EmbyStat.Clients.Github.Models;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Net;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace EmbyStat.Services

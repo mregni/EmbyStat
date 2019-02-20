@@ -2,7 +2,6 @@
 using System.Linq;
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Controllers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Movie;
 using EmbyStat.Services.Interfaces;

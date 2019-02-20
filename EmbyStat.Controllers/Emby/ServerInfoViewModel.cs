@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EmbyStat.Controllers.Emby
+﻿namespace EmbyStat.Controllers.Emby
 {
     public class ServerInfoViewModel
     {

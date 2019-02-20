@@ -14,10 +14,8 @@ using EmbyStat.Jobs.Jobs.Updater;
 using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
-using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
