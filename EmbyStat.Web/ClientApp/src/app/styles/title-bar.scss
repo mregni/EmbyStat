@@ -1,17 +1,17 @@
-@import "./vars.scss";
+@import './vars';
 
 .title-bar {
+  align-items: center;
+  background: $white;
+  box-shadow: $normal-box-shadow;
   display: flex;
   flex: 1 1 auto;
   height: 50px;
   padding: 10px 20px;
-  background: #fff;
-  align-items: center;
-  box-shadow: $normal-box-shadow;
 
   h2 {
-    padding: 0;
     margin: 15px 0px;
+    padding: 0;
   }
 }
 

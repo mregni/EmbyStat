@@ -1,11 +1,11 @@
 @import "../../../../styles";
-$iconWidth: 56px;
+$icon-width: 56px;
 
 .sidenav-toggle {
   display: none;
   padding: 0;
   margin: 8px;
-  min-width: $iconWidth;
+  min-width: $icon-width;
 
   @media (max-width: $small-size) {
     display: flex;
@@ -15,10 +15,10 @@ $iconWidth: 56px;
 
   mat-icon {
     font-size: 30px;
-    height: $iconWidth;
-    width: $iconWidth;
-    line-height: $iconWidth;
-    color: $white-color;
+    height: $icon-width;
+    width: $icon-width;
+    line-height: $icon-width;
+    color: $white;
   }
 }
 

@@ -9,11 +9,11 @@
 }
 
 .server-flex-row {
-  flex: 1 1 auto;
-  width: 100%;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: row;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .server-left-content {

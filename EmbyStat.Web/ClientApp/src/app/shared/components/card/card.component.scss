@@ -1,4 +1,4 @@
-@import "../../../../theme.scss";
+@import '../../../../styles';
 
 .card-value {
   font-size: 2.4em;
@@ -11,14 +11,14 @@
 
 .card-flex-column {
   flex: 1 1 auto;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 mat-card {
-  margin: 0px 20px 20px 0px;
+  margin: 0 20px 20px 0;
   background-color: mat-color($app-primary) !important;
-  color: #ffffff !important;
+  color: $white !important;
   width: 200px;
 }

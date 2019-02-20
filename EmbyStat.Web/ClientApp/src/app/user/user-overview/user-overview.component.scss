@@ -3,21 +3,3 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
-
-.overlay {
-  position: relative;
-}
-
-.overlay::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  background-color: red;
-}
-
-.overlay:hover::after {
-  opacity: 0.5;
-}

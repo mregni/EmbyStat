@@ -1,5 +1,5 @@
 <div *ngIf="graphs$ | async as graphs; else loading">
-  <div class="show-graph-flexcontainer flex_column">
+  <div class="show-graph-flexcontainer flex-column">
     <div class="graph-container-full" *ngFor="let graph of graphs.barGraphs">
       <mat-card>
         <mat-card-header>
@@ -19,7 +19,7 @@
       </mat-card>
     </div>
   </div>
-  <div class="show-graph-flexcontainer flex_row">
+  <div class="show-graph-flexcontainer flex-row">
     <div class="graph-container-half" *ngFor="let graph of graphs.pieGraphs">
       <mat-card>
         <mat-card-header>

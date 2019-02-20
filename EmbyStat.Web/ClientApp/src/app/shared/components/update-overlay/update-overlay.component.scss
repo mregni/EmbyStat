@@ -1,7 +1,7 @@
 @import '../../../../styles';
 
 .spinner-container {
-  color: $white-color;
+  color: $white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,6 +23,6 @@
   align-items: center;
   top: 0;
   left: 0;
-  background-color: $gray-color;
+  background-color: $dark-grey;
   z-index: 1000;
 }
