@@ -1,5 +1,7 @@
+@import '../../../../styles';
+
 .spinner-container {
-  color: #ffffff;
+  color: $white-color;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,6 +23,6 @@
   align-items: center;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: $gray-color;
   z-index: 1000;
 }

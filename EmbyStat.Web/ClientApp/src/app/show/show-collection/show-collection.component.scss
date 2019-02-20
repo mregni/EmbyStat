@@ -2,14 +2,14 @@
   flex: 1;
   flex-direction: row;
   padding: 0 10px;
-  display:flex;
-  align-content:center;
+  display: flex;
+  align-content: center;
 }
 
 .collection_headers {
-  font-weight:bold;
-  text-decoration:underline;
-  cursor:pointer;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .column {
@@ -34,7 +34,7 @@
   padding: 10px;
 }
 
-//TODO: not working 
+//TODO: not working
 @media only screen and (max-width: 1200px) {
   .hide-small-screen {
     display: none;

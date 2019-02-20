@@ -1,4 +1,4 @@
-@import "../../../styles.scss";
+@import '../../../styles';
 
 .plugin-flexcontainer {
   display: flex;
@@ -7,7 +7,7 @@
   min-height: 50px;
   padding: 10px;
   border-radius: 2px;
-  background: #fff;
+  background: $white-color;
   align-items: center;
   box-shadow: $normal-box-shadow;
 }
@@ -25,14 +25,14 @@
 }
 
 .plugin-subtitle {
+  color: $grey-font-color;
   font-style: italic;
   padding: 3px;
-  color: $grey-font-color;
 }
 
 .plugin-title {
-  padding: 3px;
   font-weight: bold;
+  padding: 3px;
 }
 
 .plugin-avatar {
