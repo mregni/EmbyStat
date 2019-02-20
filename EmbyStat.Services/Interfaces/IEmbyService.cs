@@ -16,7 +16,6 @@ namespace EmbyStat.Services.Interfaces
         EmbyUdpBroadcast SearchEmby();
         Task<EmbyToken> GetEmbyToken(EmbyLogin login);
         Task<ServerInfo> GetServerInfo();
-        List<Drive> GetLocalDrives();
         EmbyStatus GetEmbyStatus();
         Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken);
         void ResetMissedPings();
@@ -44,7 +43,6 @@ namespace EmbyStat.Services.Interfaces
 
         Task GetAndProcessServerInfo(string embyAddress, string accessToken);
         Task GetAndProcessPluginInfo(string embyAddress, string settingsAccessToken);
-        Task GetAndProcessEmbyDriveInfo(string embyAddress, string settingsAccessToken);
         Task GetAndProcessEmbyUsers(string embyAddress, string settingsAccessToken);
         Task GetAndProcessDevices(string embyAddress, string settingsAccessToken);
 

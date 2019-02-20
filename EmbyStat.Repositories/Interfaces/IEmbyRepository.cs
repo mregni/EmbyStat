@@ -26,11 +26,6 @@ namespace EmbyStat.Repositories.Interfaces
         void AddOrUpdateServerInfo(ServerInfo entity);
         #endregion
 
-        #region Emby Drives
-        List<Drive> GetAllDrives();
-        void RemoveAllAndInsertDriveRange(IEnumerable<Drive> drives);
-        #endregion
-
         #region Emby Users
         Task AddOrUpdateUsers(IEnumerable<User> users);
         IEnumerable<User> GetAllUsers();

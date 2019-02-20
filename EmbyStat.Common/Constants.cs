@@ -123,7 +123,6 @@ namespace EmbyStat.Common
             public static string BoxSets => "BoxSets";
             public static string Collections => "Collections";
             public static string Devices => "Devices";
-            public static string Drives => "Drives";
             public static string EmbyStatus => "EmbyStatus";
             public static string Genres => "Genres";
             public static string Languages => "Languages";

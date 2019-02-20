@@ -34,7 +34,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("LastUserName").AsString().Nullable();
 
-            Create.Table(Constants.Tables.Drives)
+            Create.Table("Drives")
                 .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Drives")
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("Path").AsString().NotNullable()

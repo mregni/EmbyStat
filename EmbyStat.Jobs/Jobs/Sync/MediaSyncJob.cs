@@ -300,7 +300,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 i++;
                 LogProgress(Math.Floor(66 + 33 / (showCount / i)));
-                LogInformation($"Processing {show.Name}");
 
                 var seasons = _showRepository.GetAllSeasonsForShow(show.Id).ToList();
                 var episodes = _showRepository.GetAllEpisodesForShow(show.Id, true).ToList();

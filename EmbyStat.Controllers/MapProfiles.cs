@@ -29,7 +29,6 @@ namespace EmbyStat.Controllers
 	    { 
             //EmbyHttpResponses
             CreateMap<MediaBrowser.Model.Plugins.PluginInfo, PluginInfo>();
-            CreateMap<FileSystemEntryInfo, Drive>();
 
             //Controllers
             CreateMap<UserSettings, FullSettingsViewModel>().ForMember(x => x.Version, x => x.Ignore()).ReverseMap();
@@ -38,7 +37,6 @@ namespace EmbyStat.Controllers
 		    CreateMap<EmbyToken, EmbyTokenViewModel>().ReverseMap();
 		    CreateMap<PluginInfo, EmbyPluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
-		    CreateMap<Drive, DriveViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 
 	        CreateMap<Common.Models.Entities.Job, JobViewModel>();

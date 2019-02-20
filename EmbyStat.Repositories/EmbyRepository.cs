@@ -98,29 +98,6 @@ namespace EmbyStat.Repositories
 
         #endregion
 
-        #region Emby Drives
-        public List<Drive> GetAllDrives()
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Drives.ToList();
-            }
-        }
-
-        public void RemoveAllAndInsertDriveRange(IEnumerable<Drive> drives)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                context.RemoveRange(context.Drives.ToList());
-                context.SaveChanges();
-
-                context.AddRange(drives);
-                context.SaveChanges();
-            }
-        }
-
-        #endregion
-
         #region Emby Users
 
         public async Task AddOrUpdateUsers(IEnumerable<User> users)
