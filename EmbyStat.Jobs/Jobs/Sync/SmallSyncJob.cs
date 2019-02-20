@@ -28,19 +28,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
         public override async Task RunJob()
         {
             await _embyService.GetAndProcessServerInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
-            LogInformation("Server info downloaded");
-            LogProgress(35);
+            await LogInformation("Server info downloaded");
+            await LogProgress(35);
 
             await _embyService.GetAndProcessPluginInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
-            LogInformation("Server plugins downloaded");
-            LogProgress(55);
+            await LogInformation("Server plugins downloaded");
+            await LogProgress(55);
 
             await _embyService.GetAndProcessEmbyUsers(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
-            LogInformation("Server users downloaded");
-            LogProgress(80);
+            await LogInformation("Server users downloaded");
+            await LogProgress(80);
 
             await _embyService.GetAndProcessDevices(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
-            LogInformation("Server devices downloaded");
+            await LogInformation("Server devices downloaded");
         }
 
         public override void OnFail()

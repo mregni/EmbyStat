@@ -30,15 +30,15 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override async Task RunJob()
         {
             var result = await _embyService.PingEmbyAsync(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken, new CancellationToken(false));
-            LogProgress(50);
+            await LogProgress(50);
             if (result == "Emby Server")
             {
-                LogInformation("We found your Emby server");
+                await LogInformation("We found your Emby server");
                 _embyService.ResetMissedPings();
             }
             else
             {
-                LogInformation("We could not ping your Emby server. Might be because it's turned off or dns is wrong");
+                await LogInformation("We could not ping your Emby server. Might be because it's turned off or dns is wrong");
                 _embyService.IncreaseMissedPings();
             }
 

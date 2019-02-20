@@ -34,15 +34,15 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override async Task RunJob()
         {
             await _statisticsRepository.CleanupStatistics();
-            LogProgress(33);
-            LogInformation("Removed old statistic results.");
+            await LogProgress(33);
+            await LogInformation("Removed old statistic results.");
 
             await _personRepository.CleanupPersons();
-            LogProgress(66);
-            LogInformation("Removed unused people.");
+            await LogProgress(66);
+            await LogInformation("Removed unused people.");
 
             await _genreRepository.CleanupGenres();
-            LogInformation("Removed unused genres.");
+            await LogInformation("Removed unused genres.");
         }
 
         public override void OnFail()
