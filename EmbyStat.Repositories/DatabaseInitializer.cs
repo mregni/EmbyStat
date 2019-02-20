@@ -78,15 +78,54 @@ namespace EmbyStat.Repositories
             var jobs = _context.Jobs.ToList();
 
             if (!jobs.Exists(x => x.Id == Constants.JobIds.CheckUpdateId))
-                _context.Jobs.Add(new Job { Id = Constants.JobIds.CheckUpdateId, State = JobState.Idle, Description = "CHECKUPDATEDESCRIPTION", Title = "CHECKUPDATETITLE", Trigger = "0 */12 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            {
+                _context.Jobs.Add(new Job
+                {
+                    Id = Constants.JobIds.CheckUpdateId, State = JobState.Idle, Description = "CHECKUPDATEDESCRIPTION",
+                    Title = "CHECKUPDATETITLE", Trigger = "0 */12 * * *", CurrentProgressPercentage = 0,
+                    EndTimeUtc = null, StartTimeUtc = null
+                });
+            }
+
             if (!jobs.Exists(x => x.Id == Constants.JobIds.SmallSyncId))
-                _context.Jobs.Add(new Job { Id = Constants.JobIds.SmallSyncId, State = JobState.Idle, Description = "SMALLEMBYSYNCDESCRIPTION", Title = "SMALLEMBYSYNCTITLE", Trigger = "0 2 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            {
+                _context.Jobs.Add(new Job
+                {
+                    Id = Constants.JobIds.SmallSyncId, State = JobState.Idle, Description = "SMALLEMBYSYNCDESCRIPTION",
+                    Title = "SMALLEMBYSYNCTITLE", Trigger = "0 2 * * *", CurrentProgressPercentage = 0,
+                    EndTimeUtc = null, StartTimeUtc = null
+                });
+            }
+
             if (!jobs.Exists(x => x.Id == Constants.JobIds.MediaSyncId))
-                _context.Jobs.Add(new Job { Id = Constants.JobIds.MediaSyncId, State = JobState.Idle, Description = "MEDIASYNCDESCRIPTION", Title = "MEDIASYNCTITLE", Trigger = "0 3 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            {
+                _context.Jobs.Add(new Job
+                {
+                    Id = Constants.JobIds.MediaSyncId, State = JobState.Idle, Description = "MEDIASYNCDESCRIPTION",
+                    Title = "MEDIASYNCTITLE", Trigger = "0 3 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null,
+                    StartTimeUtc = null
+                });
+            }
+
             if (!jobs.Exists(x => x.Id == Constants.JobIds.PingEmbyId))
-                _context.Jobs.Add(new Job { Id = Constants.JobIds.PingEmbyId, State = JobState.Idle, Description = "PINGEMBYSERVERDESCRIPTION", Title = "PINGEMBYSERVERTITLE", Trigger = "*/5 * * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            {
+                _context.Jobs.Add(new Job
+                {
+                    Id = Constants.JobIds.PingEmbyId, State = JobState.Idle, Description = "PINGEMBYSERVERDESCRIPTION",
+                    Title = "PINGEMBYSERVERTITLE", Trigger = "*/5 * * * *", CurrentProgressPercentage = 0,
+                    EndTimeUtc = null, StartTimeUtc = null
+                });
+            }
+
             if (!jobs.Exists(x => x.Id == Constants.JobIds.DatabaseCleanupId))
-                _context.Jobs.Add(new Job { Id = Constants.JobIds.DatabaseCleanupId, State = JobState.Idle, Description = "DATABASECLEANUPDESCRIPTION", Title = "DATABASECLEANUPTITLE", Trigger = "0 4 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null });
+            {
+                _context.Jobs.Add(new Job
+                {
+                    Id = Constants.JobIds.DatabaseCleanupId, State = JobState.Idle,
+                    Description = "DATABASECLEANUPDESCRIPTION", Title = "DATABASECLEANUPTITLE", Trigger = "0 4 * * *",
+                    CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null
+                });
+            }
 
             await _context.SaveChangesAsync();
         }
