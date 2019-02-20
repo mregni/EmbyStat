@@ -5,10 +5,7 @@
   <div class="title-bar-right-content">
     <mat-form-field class="full-width">
       <mat-select placeholder="Sort by" (selectionChange)="filterChanged($event)" [(ngModel)]="defaultValue">
-        <mat-option value="name">{{ 'USERS.SORTING.USERNAMEASC' | translate }}</mat-option>
-        <mat-option value="nameDesc">{{ 'USERS.SORTING.USERNAMEDESC' | translate }}</mat-option>
-        <mat-option value="lastActivityDate">{{ 'USERS.SORTING.LASTACTIVEASC' | translate }}</mat-option>
-        <mat-option value="lastActivityDateDesc">{{ 'USERS.SORTING.LASTACTIVEDESC' | translate }}</mat-option>
+        <mat-option [value]="option.value" *ngFor="let option of orderOptions">{{option.key}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
