@@ -58,7 +58,8 @@
     "UNHANDLED": "Unhandled backend exception",
     "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
     "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later."
+    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
+    "NOUPDATEFILE": "Can't locate the update application, no update performed"
   },
   "FORM_LABELS": {
     "NAME": "Entrez votre nom",
