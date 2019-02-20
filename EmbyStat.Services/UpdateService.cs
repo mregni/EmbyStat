@@ -130,9 +130,12 @@ namespace EmbyStat.Services
             catch (Exception e)
             {
                 Log.Error("Unpack error", e);
+                throw new BusinessException("UPDATEUNPACKERROR");
             }
-
-            File.Delete(result.Package.name);
+            finally
+            {
+                File.Delete(result.Package.name);
+            }
         }
 
         public async Task UpdateServer()
