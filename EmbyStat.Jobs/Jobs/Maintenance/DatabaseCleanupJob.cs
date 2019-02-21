@@ -43,14 +43,5 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
             await _genreRepository.CleanupGenres();
             await LogInformation("Removed unused genres.");
         }
-
-        public override void OnFail()
-        {
-            
-        }
-
-        public override void Dispose()
-        {
-        }
     }
 }

@@ -84,13 +84,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await ProcessShows(rootItems, cancellationToken);
             await SyncMissingEpisodes(Settings.Tvdb.LastUpdate, Settings.Tvdb.ApiKey, cancellationToken);
 
-            _statisticsRepository.MarkShowTypesAsInvalid();
-            _statisticsRepository.MarkMovieTypesAsInvalid();
-        }
-
-        public override void OnFail()
-        {
-            
+            await _statisticsRepository.MarkShowTypesAsInvalid();
+            await _statisticsRepository.MarkMovieTypesAsInvalid();
         }
 
         private void CleanUpDatabase()
@@ -527,7 +522,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #endregion
 
-        public override void Dispose()
+        public void Dispose()
         {
             _embyClient?.Dispose();
         }

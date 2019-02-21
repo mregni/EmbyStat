@@ -31,39 +31,37 @@ namespace EmbyStat.Jobs.Jobs.Updater
 
         public override async Task RunJob()
         {
-            await LogInformation("Contacting Github now to see if new version is available.");
-            var update = await _updateService.CheckForUpdate(Settings, new CancellationToken(false));
-            await LogProgress(20);
-            if (update.IsUpdateAvailable && Settings.AutoUpdate)
+            try
             {
-                await LogInformation($"New version found: v{update.AvailableVersion}");
-                await LogInformation($"Auto update is enabled so going to update the server now!");
-                await _settingsService.SetUpdateInProgressSetting(true);
-                await HubHelper.BroadcastUpdateState(true);
-                Task.WaitAll(_updateService.DownloadZip(update));
-                await LogProgress(50);
-                await _updateService.UpdateServer();
+                await LogInformation("Contacting Github now to see if new version is available.");
+                var update = await _updateService.CheckForUpdate(Settings, new CancellationToken(false));
+                await LogProgress(20);
+                if (update.IsUpdateAvailable && Settings.AutoUpdate)
+                {
+                    await LogInformation($"New version found: v{update.AvailableVersion}");
+                    await LogInformation($"Auto update is enabled so going to update the server now!");
+                    await _settingsService.SetUpdateInProgressSetting(true);
+                    await HubHelper.BroadcastUpdateState(true);
+                    Task.WaitAll(_updateService.DownloadZip(update));
+                    await LogProgress(50);
+                    await _updateService.UpdateServer();
+                }
+                else if (update.IsUpdateAvailable)
+                {
+                    await LogInformation($"New version found: v{update.AvailableVersion}");
+                    await LogInformation("Auto updater is disabled, so going to end the job now.");
+                }
+                else
+                {
+                    await LogInformation("No new version available");
+                }
             }
-            else if (update.IsUpdateAvailable)
+            catch (Exception)
             {
-                await LogInformation($"New version found: v{update.AvailableVersion}");
-                await LogInformation("Auto updater is disabled, so going to end task now.");
+                await _settingsService.SetUpdateInProgressSetting(false);
+                await HubHelper.BroadcastUpdateState(false);
+                throw;
             }
-            else
-            {
-                await LogInformation("No new version available");
-            }
-        }
-
-        public override async void OnFail()
-        {
-            await _settingsService.SetUpdateInProgressSetting(false);
-            await HubHelper.BroadcastUpdateState(false);
-        }
-
-        public override void Dispose()
-        {
-
         }
     }
 }

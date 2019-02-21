@@ -35,8 +35,6 @@ namespace EmbyStat.Jobs
         public abstract string JobPrefix { get; }
         public abstract string Title { get; }
         public abstract Task RunJob();
-        public abstract void OnFail();
-        public abstract void Dispose();
 
         public async Task Execute()
         {
@@ -53,7 +51,6 @@ namespace EmbyStat.Jobs
             catch (Exception e)
             {
                 Log.Error(e, "Error while running job");
-                OnFail();
                 await FailExecution("Job failed, check logs for more info.");
                 throw;
             }

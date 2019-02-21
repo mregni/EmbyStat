@@ -79,11 +79,9 @@ namespace EmbyStat.Jobs
 
         public void Dispose()
         {
-            _databaseCleanupJob.Dispose();
             _pingEmbyJob.Dispose();
             _mediaSyncJob.Dispose();
             _smallSyncJob.Dispose();
-            _checkUpdateJob.Dispose();
             GC.SuppressFinalize(this);
         }
     }

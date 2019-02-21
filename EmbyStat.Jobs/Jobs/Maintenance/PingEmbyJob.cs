@@ -46,13 +46,9 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         }
 
-        public override void OnFail()
+        public void Dispose()
         {
-            
-        }
-
-        public override void Dispose()
-        {
+            _embyService.Dispose();
         }
     }
 }

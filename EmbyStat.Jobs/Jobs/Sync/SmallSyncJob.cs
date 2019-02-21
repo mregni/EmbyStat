@@ -42,12 +42,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Server devices downloaded");
         }
 
-        public override void OnFail()
-        {
-            
-        }
-
-        public override void Dispose()
+        public void Dispose()
         {
             _embyService.Dispose();
         }
