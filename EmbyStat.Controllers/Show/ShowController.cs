@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
@@ -29,18 +30,18 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("generalstats")]
-        public IActionResult GetGeneralStats(List<string> collectionIds)
+        public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
         {
-            var result = _showService.GetGeneralStats(collectionIds);
+            var result = await _showService.GetGeneralStats(collectionIds);
             var convert = _mapper.Map<ShowStatViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
         [Route("graphs")]
-        public IActionResult GetGraphs(List<string> collectionIds)
+        public async Task<IActionResult> GetGraphs(List<string> collectionIds)
         {
-            var result = _showService.GetGraphs(collectionIds);
+            var result = await _showService.GetGraphs(collectionIds);
             var convert = _mapper.Map<ShowGraphsViewModel>(result);
             return Ok(convert);
 
@@ -48,17 +49,17 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("personstats")]
-        public IActionResult GetPersonStats(List<string> collectionIds)
+        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
         {
-            var result = _showService.GetPeopleStats(collectionIds);
+            var result = await _showService.GetPeopleStats(collectionIds);
             return Ok(_mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]
         [Route("collectedlist")]
-        public IActionResult GetCollection(List<string> collectionIds)
+        public async Task<IActionResult> GetCollection(List<string> collectionIds)
         {
-            var result = _showService.GetCollectionRows(collectionIds);
+            var result = await _showService.GetCollectionRows(collectionIds);
             return Ok(_mapper.Map<IList<ShowCollectionRowViewModel>>(result));
         }
 

@@ -45,7 +45,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.MovieCollectionTypes);
         }
 
-        public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
+        public async Task<MovieStats>  GetGeneralStatsForCollections(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
 
@@ -73,7 +73,7 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGeneral, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGeneral, collectionIds);
             }
 
             return stats;
@@ -102,13 +102,13 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionIds);
             }
 
             return stats;
         }
 
-        public MovieGraphs GetGraphs(List<string> collectionIds)
+        public async Task<MovieGraphs> GetGraphs(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
 
@@ -128,13 +128,13 @@ namespace EmbyStat.Services
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGraphs, collectionIds);
+               await  _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGraphs, collectionIds);
             }
 
             return stats;
         }
 
-        public SuspiciousTables GetSuspiciousMovies(List<string> collectionIds)
+        public async Task<SuspiciousTables> GetSuspiciousMovies(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
@@ -155,7 +155,7 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionIds);
             }
 
             return stats;

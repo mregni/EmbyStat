@@ -27,9 +27,10 @@ namespace EmbyStat.Services
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly ISettingsService _settingsService;
 
-        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, 
+        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository,
             IPersonService personService, IJobRepository jobRepository, IStatisticsRepository statisticsRepository, ISettingsService settingsService)
-        : base(jobRepository){
+        : base(jobRepository)
+        {
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
@@ -44,7 +45,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.ShowCollectionTypes);
         }
 
-        public ShowStat GetGeneralStats(List<string> collectionIds)
+        public async Task<ShowStat> GetGeneralStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
@@ -71,13 +72,13 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGeneral, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGeneral, collectionIds);
             }
 
             return stats;
         }
 
-        public ShowGraphs GetGraphs(List<string> collectionIds)
+        public async Task<ShowGraphs> GetGraphs(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
@@ -97,15 +98,15 @@ namespace EmbyStat.Services
                 stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
                 stats.PieGraphs.Add(CalculateShowStateGraph(shows));
-                
+
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
             }
 
             return stats;
         }
 
-        public PersonStats GetPeopleStats(List<string> collectionIds)
+        public async Task<PersonStats> GetPeopleStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
@@ -125,13 +126,13 @@ namespace EmbyStat.Services
 
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowPeople, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowPeople, collectionIds);
             }
 
             return stats;
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(List<string> collectionIds)
+        public async Task<List<ShowCollectionRow>> GetCollectionRows(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
@@ -147,7 +148,7 @@ namespace EmbyStat.Services
                 stats = shows.Select(CreateShowCollectionRow).ToList();
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollected, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollected, collectionIds);
             }
 
             return stats;
@@ -269,7 +270,7 @@ namespace EmbyStat.Services
                 }
                 else
                 {
-                    percentageList.Add((double) episodeCount / (episodeCount + show.MissingEpisodesCount));
+                    percentageList.Add((double)episodeCount / (episodeCount + show.MissingEpisodesCount));
                 }
             }
 
@@ -285,7 +286,7 @@ namespace EmbyStat.Services
                 {
                     if (groupedList[j].Key != i * 5)
                     {
-                        groupedList.Add(new GraphGrouping<int?, double> {Key = i * 5, Capacity = 0});
+                        groupedList.Add(new GraphGrouping<int?, double> { Key = i * 5, Capacity = 0 });
                     }
                     else
                     {
@@ -366,7 +367,7 @@ namespace EmbyStat.Services
                     resultShow = show;
                 }
             }
-          
+
             if (resultShow != null)
             {
                 return PosterHelper.ConvertToShowPoster(resultShow, Constants.Shows.MostEpisodes);

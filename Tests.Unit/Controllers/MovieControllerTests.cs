@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.HelperClasses;
@@ -38,7 +39,7 @@ namespace Tests.Unit.Controllers
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieCollections()).Returns(_collections);
             _movieServiceMock.Setup(x => x.GetGeneralStatsForCollections(It.IsAny<List<string>>()))
-                .Returns(_movieStats);
+                .Returns(Task.FromResult(_movieStats));
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatsViewModel>(It.IsAny<MovieStats>())).Returns(new MovieStatsViewModel {LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } });
@@ -80,9 +81,9 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
-        public void AreMovieStatsReturned()
+        public async void AreMovieStatsReturned()
         {
-            var result = _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
+            var result = await _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
             var stat = resultObject.Should().BeOfType<MovieStatsViewModel>().Subject;
 

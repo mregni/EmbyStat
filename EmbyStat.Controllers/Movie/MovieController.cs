@@ -30,9 +30,9 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("generalstats")]
-        public IActionResult GetGeneralStats(List<string> collectionIds)
+        public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
         {
-            var result = _movieService.GetGeneralStatsForCollections(collectionIds);
+            var result = await _movieService.GetGeneralStatsForCollections(collectionIds);
             var convert = _mapper.Map<MovieStatsViewModel>(result);
             return Ok(convert);
         }
@@ -47,17 +47,17 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("suspicious")]
-        public IActionResult GetDuplicates(List<string> collectionIds)
+        public async Task<IActionResult> GetDuplicates(List<string> collectionIds)
         {
-            var result = _movieService.GetSuspiciousMovies(collectionIds);
+            var result = await _movieService.GetSuspiciousMovies(collectionIds);
             return Ok(_mapper.Map<SuspiciousTablesViewModel>(result));
         }
 
         [HttpGet]
         [Route("graphs")]
-        public IActionResult GetGraphs(List<string> collectionIds)
+        public async Task<IActionResult> GetGraphs(List<string> collectionIds)
         {
-            var graphs = _movieService.GetGraphs(collectionIds);
+            var graphs = await _movieService.GetGraphs(collectionIds);
             return Ok(_mapper.Map<MovieGraphsViewModel>(graphs));
         }
 

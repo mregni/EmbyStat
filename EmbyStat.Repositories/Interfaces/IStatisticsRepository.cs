@@ -9,9 +9,9 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IStatisticsRepository
     {
         Statistic GetLastResultByType(StatisticType type);
-        void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections);
+        Task AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections);
         Task CleanupStatistics();
-        void MarkMovieTypesAsInvalid();
-        void MarkShowTypesAsInvalid();
+        Task MarkMovieTypesAsInvalid();
+        Task MarkShowTypesAsInvalid();
     }
 }
