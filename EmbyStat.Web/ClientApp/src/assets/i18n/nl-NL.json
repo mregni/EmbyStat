@@ -70,7 +70,8 @@
     "EMBYPASSWORD": "Emby administrator wachtwoord",
     "DURATIONINMINUTES": "Duur in minuten",
     "TVDBAPI": "De api-sleutel van TheTVDB",
-    "CRON": "Cron-tekenreeks"
+    "CRON": "Cron-tekenreeks",
+    "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
@@ -157,7 +158,9 @@
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
+      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",

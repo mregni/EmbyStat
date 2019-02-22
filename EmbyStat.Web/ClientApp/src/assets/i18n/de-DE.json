@@ -70,7 +70,8 @@
     "EMBYPASSWORD": "Emby Admin Passwort",
     "DURATIONINMINUTES": "Dauer in Minuten",
     "TVDBAPI": "TheTVDB API key",
-    "CRON": "Cron Intervall"
+    "CRON": "Cron Intervall",
+    "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
@@ -157,7 +158,9 @@
     },
     "GENERAL": {
       "TVDBAPIKEY": "Wenn Sie möchten, können Sie hier für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
-      "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen."
+      "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen.",
+      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
+      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
     },
     "MOVIE": {
       "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
