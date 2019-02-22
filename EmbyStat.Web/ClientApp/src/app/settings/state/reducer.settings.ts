@@ -40,6 +40,7 @@ const INITIAL_STATE: Settings = {
   version: "0.0.0.0",
   emby: embySettings,
   tvdb: tvdbSettings,
+  enableRollbarLogging: false,
   isLoaded: false
 };
 
@@ -63,7 +64,8 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         autoUpdate: action.payload.autoUpdate,
         updateTrain: action.payload.updateTrain,
         updateInProgress: action.payload.updateInProgress,
-        version: action.payload.version
+        version: action.payload.version,
+        enableRollbarLogging: action.payload.enableRollbarLogging
       };
     case SettingsActionTypes.UPDATE_SETTINGS_SUCCESS:
       return {
@@ -83,7 +85,8 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         autoUpdate: action.payload.autoUpdate,
         updateTrain: action.payload.updateTrain,
         updateInProgress: action.payload.updateInProgress,
-        version: action.payload.version
+        version: action.payload.version,
+        enableRollbarLogging: action.payload.enableRollbarLogging
       };
     default:
       return state;

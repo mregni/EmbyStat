@@ -65,12 +65,14 @@ export class SettingsEmbyComponent implements OnInit, OnDestroy {
         .subscribe((token: EmbyToken) => {
           if (token.isAdmin) {
             const settings = { ...this.settings };
-            settings.emby.userName = username;
-            settings.emby.serverAddress = address;
-            settings.emby.accessToken = token.token;
-            settings.emby.userId = token.id;
-            settings.emby.serverPort = port;
-            settings.emby.serverProtocol = protocol;
+            const emby = { ...this.settings.emby };
+            emby.userName = username;
+            emby.serverAddress = address;
+            emby.accessToken = token.token;
+            emby.userId = token.id;
+            emby.serverPort = port;
+            emby.serverProtocol = protocol;
+            settings.emby = emby;
             this.settingsFacade.updateSettings(settings);
             this.toaster.pushSuccess('SETTINGS.SAVED.EMBY');
           }
