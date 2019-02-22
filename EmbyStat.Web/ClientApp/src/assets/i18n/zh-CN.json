@@ -70,7 +70,8 @@
     "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes",
     "TVDBAPI": "TheTVDB api key",
-    "CRON": "Cron string"
+    "CRON": "Cron string",
+    "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Fill in your name or nickname.",
@@ -157,7 +158,9 @@
     },
     "GENERAL": {
       "TVDBAPIKEY": "如果您愿意，可以在此处为EmbyStat提供您自己的TheTVDB API密钥。",
-      "TVDBAPIKEYWARNING": "确保提供有效的API密钥！如果密钥不正确，则同步任务将失败。"
+      "TVDBAPIKEYWARNING": "确保提供有效的API密钥！如果密钥不正确，则同步任务将失败。",
+      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
+      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
     },
     "MOVIE": {
       "TOSHORTTEXT": "要查找可疑短片，我们需要知道您为短电影的分钟数。默认设置为10分钟，但您可以根据需要进行更改。",
