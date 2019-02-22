@@ -71,8 +71,10 @@ namespace EmbyStat.Repositories.Migrations
                 {
                     ApiKey = tvdbApiKey,
                     LastUpdate = string.IsNullOrWhiteSpace(tvdbLastUpdate) ? (DateTime?)null : Convert.ToDateTime(tvdbLastUpdate)
-                }
+                },
+                EnableRollbarLogging = false
             };
+
             var dir = Path.Combine("Settings", "usersettings.json");
             if (File.Exists(dir))
             {

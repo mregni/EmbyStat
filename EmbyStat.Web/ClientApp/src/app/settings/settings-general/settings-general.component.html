@@ -26,6 +26,22 @@
 <div class="settings-left">
   <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
     <mat-card-content>
+      <form class="form-container" [formGroup]="exceptionLoggingForm">
+        <p>{{ 'SETTINGS.GENERAL.EXCEPTIONLOGGING' | translate }}</p>
+        <mat-checkbox formControlName="exceptionLogging">{{ 'FORM_LABELS.EXCEPTIONLOGGING' | translate | capitalizeFirst }}</mat-checkbox>
+        <div class="hint">{{ 'SETTINGS.GENERAL.EXCEPTIONLOGGINGWARNING' | translate }}</div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="saveExceptionLoggingForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+<div class="settings-left">
+  <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
+    <mat-card-content>
       <form class="form-container" [formGroup]="tvdbForm">
         <p>{{ 'SETTINGS.GENERAL.TVDBAPIKEY' | translate }}</p>
         <mat-form-field>

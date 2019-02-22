@@ -41,8 +41,10 @@ namespace EmbyStat.Services
             MarkMovieStatisticsAsInvalidIfNeeded(userSettings);
             MarkShowStatisticsAsInvalidIfNeeded(userSettings);
             _userSettings = userSettings;
+
             var strJson = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
+
             await File.WriteAllTextAsync(dir, strJson);
             OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
 

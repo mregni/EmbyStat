@@ -22,6 +22,7 @@ namespace EmbyStat.Common.Models.Settings
         public bool UpdateInProgress { get; set; }
         public EmbySettings Emby { get; set; }
         public TvdbSettings Tvdb { get; set; }
+        public bool EnableRollbarLogging { get; set; }
 
         [JsonIgnore]
         public string FullEmbyServerAddress

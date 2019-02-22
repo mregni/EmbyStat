@@ -23,9 +23,12 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   tvdbForm: FormGroup;
+  exceptionLoggingForm: FormGroup;
+
   nameControl = new FormControl('', [Validators.required]);
   languageControl = new FormControl('en-US', [Validators.required]);
   tvdbApiKeyControl = new FormControl('', [Validators.required]);
+  exceptionLoggingControl = new FormControl(false);
 
   constructor(
     private settingsFacade: SettingsFacade,
@@ -44,6 +47,10 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
       tvdbApiKey: this.tvdbApiKeyControl
     });
 
+    this.exceptionLoggingForm = new FormGroup({
+      exceptionLogging: this.exceptionLoggingControl
+  });
+
     this.settingsChangedSub = this.settings$.subscribe((settings: Settings) => {
       this.settings = settings;
       this.nameControl.setValue(settings.username);
@@ -55,17 +62,26 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
       .subscribe((value => this.languageChanged(value)));
   }
 
-  public saveForm() {
+  saveForm() {
     const settings = { ...this.settings };
-    settings.language = this.form.get('language').value;
-    settings.username = this.form.get('name').value;
+    settings.language = this.languageControl.value;
+    settings.username = this.nameControl.value;
     this.settingsFacade.updateSettings(settings);
     this.toaster.pushSuccess('SETTINGS.SAVED.GENERAL');
   }
 
-  public saveTvdbForm() {
+  saveTvdbForm() {
     const settings = { ...this.settings };
-    settings.tvdb.apiKey = this.tvdbForm.get('tvdbApiKey').value;
+    const tvdb = { ...this.settings.tvdb };
+    tvdb.apiKey = this.tvdbApiKeyControl.value;
+    settings.tvdb = tvdb;
+    this.settingsFacade.updateSettings(settings);
+    this.toaster.pushSuccess('SETTINGS.SAVED.GENERAL');
+  }
+
+  saveExceptionLoggingForm() {
+    const settings = { ...this.settings };
+    settings.enableRollbarLogging = this.exceptionLoggingControl.value;
     this.settingsFacade.updateSettings(settings);
     this.toaster.pushSuccess('SETTINGS.SAVED.GENERAL');
   }

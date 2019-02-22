@@ -17,5 +17,6 @@ export class Settings {
   version: string;
   emby: EmbySettings;
   tvdb: TvdbSettings;
+  enableRollbarLogging: boolean ;
   isLoaded: boolean;
 }
