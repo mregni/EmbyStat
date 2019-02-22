@@ -192,11 +192,5 @@ namespace EmbyStat.Services
 
             return sb.ToString();
         }
-
-        private PackageInfo ReadUpdateFile(FileInfo file)
-        {
-            var json = File.ReadAllText(file.Name);
-            return JsonSerializerExtentions.DeserializeFromString<PackageInfo>(json);
-        }
     }
 }

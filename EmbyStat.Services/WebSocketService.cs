@@ -43,8 +43,8 @@ namespace EmbyStat.Services
                     {
                         var deviceId = _settingsService.GetUserSettings().Id.ToString();
                         await _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
-                        _webSocketApi.OnWebSocketConnected += _client_OnWebSocketConnected;
-                        _webSocketApi.OnWebSocketClosed += _webSocketApi_OnWebSocketClosed;
+                        _webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
+                        _webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
                     }
                     catch (Exception e)
                     {
@@ -59,7 +59,7 @@ namespace EmbyStat.Services
             }
         }
 
-        private void _webSocketApi_OnWebSocketClosed(object sender, EventArgs e)
+        private void WebSocketApiOnWebSocketClosed(object sender, EventArgs e)
         {
             _webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
             _webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
@@ -67,7 +67,7 @@ namespace EmbyStat.Services
             _timer.Change(5000, 5000);
         }
 
-        private async void _client_OnWebSocketConnected(object sender, EventArgs e)
+        private async void ClientOnWebSocketConnected(object sender, EventArgs e)
         {
             await _webSocketApi.StopReceivingSessionUpdates();
             await _webSocketApi.StartReceivingSessionUpdates(10000);

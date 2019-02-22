@@ -28,7 +28,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
                 _socket.Open();
 
                 _socket.Opened += (sender, args) => taskCompletionSource.TrySetResult(true);
-                _socket.Closed += _socket_Closed;
+                _socket.Closed += SocketClosed;
             }
             catch (Exception ex)
             {
@@ -44,11 +44,11 @@ namespace EmbyStat.Clients.Emby.WebSocket
         {
             if (_socket?.State == WebSocketState.Open || _socket?.State == WebSocketState.Connecting)
             {
-                await _socket.CloseAsync();
+                await _socket?.CloseAsync();
             }
         }
 
-        void _socket_Closed(object sender, EventArgs e)
+        void SocketClosed(object sender, EventArgs e)
         {
             Closed?.Invoke(this, EventArgs.Empty);
         }
@@ -58,7 +58,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             OnReceive?.Invoke(e.Message);
         }
 
-        public Task SendAsync(byte[] bytes, WebSocketMessageType type, bool endOfMessage, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SendAsync(byte[] bytes, WebSocketMessageType type, bool endOfMessage, CancellationToken cancellationToken)
         {
             return Task.Run(() => _socket.Send(bytes, 0, bytes.Length), cancellationToken);
         }

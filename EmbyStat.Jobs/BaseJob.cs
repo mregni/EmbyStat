@@ -80,7 +80,7 @@ namespace EmbyStat.Jobs
             await SendLogProgressToFront(100, now);
 
             var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
-            await LogInformation(Math.Ceiling(runTime) == 1
+            await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
                 ? "Job finished after 1 minute."
                 : $"Job finished after {Math.Ceiling(runTime)} minutes.");
         }

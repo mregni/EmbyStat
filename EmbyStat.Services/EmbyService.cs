@@ -190,16 +190,15 @@ namespace EmbyStat.Services
             var plays = _sessionService.GetLastWatchedMediaForUser(id, count);
             foreach (var play in plays)
             {
-                switch (play.Type)
+                if (play.Type == PlayType.Movie)
                 {
-                    case PlayType.Movie:
-                        yield return CreateUserMediaViewFromMovie(play);
-                        break;
-                    case PlayType.Episode:
-                        yield return CreateUserMediaViewFromEpisode(play);
-                        break;
-                    default: break;
+                    yield return CreateUserMediaViewFromMovie(play);
                 }
+                else if (play.Type == PlayType.Episode)
+                {
+                    yield return CreateUserMediaViewFromEpisode(play);
+                }
+
                 //if media is null this means a user has watched something that is not yet in our DB
                 //TODO: try starting a sync here
             }
