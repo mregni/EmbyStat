@@ -9,7 +9,7 @@
     "SAVE": "sauvegarder",
     "DISCARD": "annuler",
     "CANCEL": "annuler",
-    "CLOSE": "close",
+    "CLOSE": "fermer",
     "DAYS": "jours",
     "HOURS": "heures",
     "MINUTES": "minutes",
@@ -17,6 +17,8 @@
     "TITLE": "titre",
     "ADDEDON": "ajouté le",
     "QUALITY": "qualité",
+    "NEVER": "never",
+    "OPEN": "Open",
     "LINK": "lien",
     "REASON": "raison",
     "BYIMDB": "même id imdb",
@@ -45,15 +47,20 @@
     "STATUS": "statut",
     "PERCENTAGE": "pourcentage",
     "COLLECTED": "collecté",
-    "UPDATES": "Updates"
+    "UPDATES": "Mises à jour"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
     "NO_CONFIGURATION_FOUND": "Aucune configuration n'a été trouvée.",
-    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "NOT_FOUND": "Désolé, nous ne trouvons pas ce que vous recherchez.",
     "TOKEN_FAILED": "L'obtention du jeton Emby a échoué. Veuillez vérifier vos informations d'identification et votre adresse.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
-    "UNHANDLED": "Unhandled backend exception"
+    "EMBY_CALL_FAILED": "Échec de connexion au serveur Emby. Vérifiez si Emby est en cours d'exécution et si les informations d'identification sont toujours correctes.",
+    "UNHANDLED": "Unhandled backend exception",
+    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
+    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
+    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
+    "NOUPDATEFILE": "Can't locate the update application, no update performed",
+    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
   },
   "FORM_LABELS": {
     "NAME": "Entrez votre nom",
@@ -63,7 +70,8 @@
     "EMBYPASSWORD": "Mot de passe l'administrateur Emby",
     "DURATIONINMINUTES": "Durée en minutes",
     "TVDBAPI": "Clé API TheTVDB",
-    "CRON": "Cron string"
+    "CRON": "Cron string",
+    "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Remplissez votre nom ou pseudo.",
@@ -77,20 +85,21 @@
     "SHOWS": "Séries",
     "SETTINGS": "Paramètres",
     "PLUGINS": "Extensions",
-    "JOBS": "Jobs",
+    "JOBS": "Tâches planifiées",
     "SERVER": "Serveur Emby",
     "LOGS": "Journaux",
-    "ABOUT": "À propos"
+    "ABOUT": "À propos",
+    "USERS": "Users"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
     "EMBYLABEL": "Paramètres Emby",
     "SAVINGLABEL": "Première synchronisation au serveur Emby",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "Si votre langue n'est pas mentionné ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "CHECKINGSTATUS": "Vérification du serveur Emby ...",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "EMBYNOTFOUNDTEXT": "Nous allons maintenant configurer votre connexion Emby. Nous avons essayé de détecter automatiquement votre serveur Emby sur le réseau, mais nous avons échoué. Remplissez tous les champs pour qu'EmbyStat puisse trouver votre serveur Emby.",
     "EMBYFOUNDTEXT": "Nous avons trouvé un serveur Emby dans votre réseau et entré automatiquement l'URL dans le formulaire. N'hésitez pas à l'ajuster et à remplir le reste du formulaire.",
     "EMBYRUNNING": "Le serveur Emby est en cours d'exécution",
     "ISADMIN": "{{ user }} est un administrateur Emby",
@@ -98,9 +107,9 @@
     "SAVINGINSTRUCTIONS": "Si quelque chose échoue, vous ne pourrez pas commencer à utiliser EmbyStat. Dans ce cas, corrigez les erreurs, appuyez sur précédent et suivant.",
     "SAVING": "Enregistrement des données",
     "RESCAN": "Re-scanner",
-    "FINISHWITHSYNC": "Start synchronization",
+    "FINISHWITHSYNC": "Démarrer la synchronisation",
     "FINISHED": "Tous les paramètres sont enregistrés. Vous pouvez commencer à utiliser le serveur Emby maintenant. Profitez de vos nouvelles statistiques!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "La meilleure chose à faire est de démarrer une tâche de synchronisation multimédia. EmbyStat commencera à télécharger toutes les données de votre serveur Emby. Gardez à l'esprit que cette tâche peut prendre du temps en fonction de la taille de votre collection. Si vous ne voulez pas commencer la synchronisation maintenant, cliquez simplement sur Terminer. Vous pourez le démarrer manuellement plus tard en accédant à la page Tâches."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -117,10 +126,10 @@
     "LONGEST": "Le plus long",
     "YOUNGESTADDED": "Récemment ajouté",
     "MOSTFEATUREDPERGENRE": "L'acteur le plus en vue par genre",
-    "DUPLICATEMOVIES": "Duplicate movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "DUPLICATEMOVIES": "Films en double",
+    "TOSHORTMOVIES": "Court-métrage",
+    "NOPOSTER": "Films sans affiche",
+    "NOIMDB": "Films sans id d’IMDB"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total des séries",
@@ -130,69 +139,106 @@
     "HIGHESTRATEDSHOW": "Le mieux noté",
     "LOWESTRATEDSHOW": "Les mal notés",
     "OLDESTPREMIERED": "La plus ancienne série",
-    "YOUNGESTPREMIERED": "Youngest premiered show",
+    "YOUNGESTPREMIERED": "La série la plus récente",
     "YOUNGESTADDED": "Ajout récent",
     "WITHMOESTEPISODES": "Avec le plus épisodes",
     "SHOWSTATUSGRAPH": "Voir le statut",
     "SEASONS": "saisons",
-    "CONTINUING": "continuing",
+    "CONTINUING": "en cours",
     "ENDED": "terminé"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Paramètres",
+  "SETTINGS": {
+    "TITLE": "Paramètres",
     "SAVED": {
-      "GENERAL": "Paramètres généraux de Embystat enregistrés!",
-      "EMBY": "Paramètres Emby sauvegardés !",
-      "MOVIES": "Paramètres du film sauvegardé!",
-      "SHOWS": "Paramètres de la série sauvegardé!",
+      "GENERAL": "General Embystat settings saved!",
+      "EMBY": "Emby settings saved!",
+      "MOVIES": "Movie settings saved!",
+      "SHOWS": "Show settings saved!",
       "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
+      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans le menu déroulant de la collection sur la page des statistiques de film."
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez sélectionner dans la liste déroulante de la collection sur la page Afficher les statistiques."
+      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
       "AUTO": "Enable auto updates",
       "CHECK": "Check and update server now",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
+      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
+      "CURRENTVERSION": "Current version: {{version}}",
+      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "NOUPDATE": "No update available",
+      "NEWVERSION": "Version {{version}} available for download!"
+    }
+  },
+  "USERS": {
+    "ISADMIN": "Is administrator",
+    "ISHIDDEN": "Is hidden from login screen",
+    "ISDISABLED": "Is disabled",
+    "DELETED": "Deleted users",
+    "LASTACTIVE": "Last active",
+    "SORTING": {
+      "USERNAMEASC": "Username (A - Z)",
+      "USERNAMEDESC": "Username (Z - A)",
+      "LASTACTIVEASC": "Last active date (asc)",
+      "LASTACTIVEDESC": "Last active date (desc)"
+    },
+    "DETAILS": {
+      "TITLE": "Details for {{name}}"
+    },
+    "WATCHEDTABLE": {
+      "TITLE": "Title",
+      "TIME": "Time",
+      "WATCHED": "Watched",
+      "START": "Start",
+      "ACTION": "Action"
+    },
+    "STATS": {
+      "TOTALWATCHEDMOVIES": "Movies watched",
+      "TOTALWATCHEDEPISODES": "Episodes watched"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
+    "LASTRUNNOW": "Dernier lancement : il y a peu",
+    "LASTRUN": "Dernière exécution",
+    "HOURS": "{{hours}} heure(s)",
     "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
+    "SECONDS": "{{seconds}} seconde(s)",
+    "AND": "et",
+    "AGO": "il y a",
+    "FOR": "pour",
+    "BUTFAILED": "a échoué après",
+    "NORUN": "Pas encore exécuté",
+    "MOMENT_AGO": "un instant",
+    "JOBLOGS": "Job logs",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
-      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
+      "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
+      "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
+      "SMALLEMBYSYNCDESCRIPTION": "Effectuer une synchronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
+      "SMALLEMBYSYNCTITLE": "Synchronisation rapide avec Emby",
+      "STARTSMALLEMBYSYNC": "Start small sync",
+      "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
+      "MEDIASYNCTITLE": "Synchronisation des médias",
+      "STARTMEDIASYNC": "Débuter une synchronisation des médias",
+      "DATABASECLEANUPTITLE": "Nettoyage de la base de données",
+      "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
+      "OPENJOBPAGE": "Allez à la page des tâches",
+      "CHECKUPDATETITLE": "Rechercher des mises à jour",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
@@ -206,18 +252,22 @@
       "BODY": "Nous n'avons trouvé aucun film dans la base de données EmbyStat. Si vous avez des films dans Emby, vous essayez de démarrer une nouvelle tâche de synchronisation multimédia."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "La tâche de synchronisation multimédia est en cours d'exécution",
+      "BODY": "La tâche de synchronisation des médias s'exécute en arrière-plan. Pour cette raison, toutes les pages de statistiques sont bloquées, car les calculs seraient complètement faux tant que la synchronisation est en cours d'exécution."
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Ici</a> vous pouvez trouver plus d'informations sur la façon de formater une chaîne CRON. Seuls les nombres *, / et - sont autorisés."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "No users found",
+      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
     }
   },
   "LOADER": {
     "FETCHING": "Récupération des statistiques",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Refresh page when update is done. (auto refresh not yet working, sorry)"
+    "UPDATING": "Mise à jour d'EmbyStat",
+    "UPDATINGSUB": "La page s'actualisera une fois la mise à jour terminée."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixte / Autre",
@@ -235,10 +285,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Aller à Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "JOBISRUNNING": "{{job}} est en cours d'exécution",
+    "NOMISSEDPINGS": "Le serveur Emby est en cours d'exécution",
+    "ONEMISSEDPING": "Impossible de se connecter à Emby lors du dernier contrôle!",
+    "MOREMISSEDPINGS": "Impossible de se connecter à Emby après plusieurs tentatives!"
   },
   "ABOUT": {
     "THANKS": {

@@ -1,10 +1,10 @@
-<div class="title_bar">
+<div class="title-bar">
   <h2>Plugins</h2>
 </div>
 <div class="content">
   <div class="plugin-flexcontainer" *ngFor="let plugin of plugins$ | async">
     <div class="plugin-left-content">
-      <img class="plugin-avatar" *ngIf="configuration$ | async as config" src="{{getFullAddress(config)}}/emby/Plugins/{{plugin.id}}/Thumb" />
+      <img class="plugin-avatar" *ngIf="settings$ | async as config" src="{{getFullAddress(config)}}/emby/Plugins/{{plugin.id}}/Thumb" />
     </div>
     <div class="plugin-right-content">
       <div class="plugin-title">{{plugin.name}}</div>

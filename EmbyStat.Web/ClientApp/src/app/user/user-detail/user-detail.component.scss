@@ -1,0 +1,113 @@
+@import "../../../styles";
+
+.content {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+mat-card {
+  display: flex;
+  flex: 0 0 calc(50% - 38px);
+  margin: 25px 0 0 25px;
+  padding: 0;
+}
+
+mat-card-content {
+  flex: 0 0 100%;
+
+  h3 {
+    margin: 10px 0 0 10px;
+  }
+}
+
+mat-table {
+  flex: 0 0 100%;
+  margin-top: 25px;
+
+  .action-cell {
+    flex: 0 0 100px;
+    justify-content: flex-end;
+  }
+
+  mat-cell fa-icon {
+    margin-left: 5px;
+  }
+
+  mat-cell:first-child,
+  mat-header-cell:first-child {
+    flex: 0 0 30px;
+    justify-content: flex-start;
+    margin-right: 10px;
+  }
+
+  mat-cell:nth-child(3),
+  mat-cell:nth-child(4),
+  mat-cell:nth-child(5),
+  mat-header-cell:nth-child(3),
+  mat-header-cell:nth-child(4),
+  mat-header-cell:nth-child(5) {
+    flex: 0 0 100px;
+    justify-content: flex-start;
+  }
+}
+
+.device-logo {
+  height: 30px;
+  width: 30px;
+}
+
+.card-flex-row {
+  display: flex;
+  flex: 0 0 100%;
+}
+
+.card-margin {
+  padding: 10px;
+}
+
+.profile-image {
+  border-top-left-radius: 4px;
+  height: 100px;
+  width: 100px;
+}
+
+.card-flex-column {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+
+  .name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row;
+
+  fa-icon:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (max-width: $large-size) {
+  .content {
+    flex-direction: column;
+  }
+
+  mat-card {
+    margin-right: 25px;
+    margin-top: 25px;
+
+    mat-table {
+      flex: 0 0 100%;
+      margin-top: 25px;
+    }
+  }
+}

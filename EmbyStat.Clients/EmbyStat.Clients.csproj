@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediaBrowser.Common" Version="4.0.0.2" />
-    <PackageReference Include="MediaBrowser.Server.Core" Version="4.0.0.2" />
+    <PackageReference Include="MediaBrowser.Common" Version="3.3.10" />
   </ItemGroup>
 
   <ItemGroup>

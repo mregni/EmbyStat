@@ -9,10 +9,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUserTie, faUserLock, faEyeSlash, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { ConfigurationModule } from './configuration/configuration.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { WizardModule } from './wizard/wizard.module';
 import { ServerModule } from './server/server.module';
@@ -22,13 +23,15 @@ import { MovieModule } from './movie/movie.module';
 import { ShowModule } from './show/show.module';
 import { LogsModule } from './logs/logs.module';
 import { AboutModule } from './about/about.module';
+import { SettingsModule } from './settings/settings.module';
+import { UserModule } from './user/user.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
-import { ConfigurationEffects } from './configuration/state/effects.configuration';
+import { SettingsEffects } from './settings/state/effects.settings';
 import { ServerEffects } from './server/state/effects.server';
 import { AboutEffects } from './about/state/effects.about';
 
@@ -42,6 +45,8 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
+library.add(faUserTie, faUserLock, faEyeSlash, faPlay);
+
 @NgModule({
   declarations: [
     AppComponent
@@ -52,7 +57,7 @@ export function createTranslateLoader(http: HttpClient) {
     FlexLayoutModule,
     HttpClientModule,
     SharedModule,
-    ConfigurationModule,
+    SettingsModule,
     DashboardModule,
     WizardModule,
     ServerModule,
@@ -60,6 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
     JobsModule,
     ShowModule,
     MovieModule,
+    UserModule,
     LogsModule,
     TooltipModule,
     AboutModule,
@@ -71,10 +77,10 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NgProgressModule.forRoot(),
+    NgProgressModule,
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([ConfigurationEffects, ServerEffects, AboutEffects]),
+    EffectsModule.forRoot([SettingsEffects, ServerEffects, AboutEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   providers: [

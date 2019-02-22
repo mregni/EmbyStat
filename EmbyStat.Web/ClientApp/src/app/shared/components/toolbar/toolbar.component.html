@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" *ngIf="settings$ | async as settings">
   <button mat-button (click)="toggleSideNav.emit()" class="sidenav-toggle">
     <mat-icon>menu</mat-icon>
   </button>
@@ -10,12 +10,12 @@
     </div>
     {{ 'TOOLBAR.JOBISRUNNING' | translate: { job: 'JOB.INFO.' + runningJob.title | translate | capitalizeFirst } }}
   </div>
-  <div class="toolbar-emby-ping-statusbox" *ngIf="configuration$ | async as config">
-    <img *ngIf="missedPings === 0 && config.embyServerAddress" matTooltip="{{ 'TOOLBAR.NOMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/green_circle.png"/>
-    <img *ngIf="missedPings === 1 && config.embyServerAddress" matTooltip="{{ 'TOOLBAR.ONEMISSEDPING' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/orange_circle.png" />
-    <img *ngIf="missedPings >= 2 && config.embyServerAddress" matTooltip="{{ 'TOOLBAR.MOREMISSEDPINGS' | translate }}" matTooltipHideDelay="2000"position="below" src="../../../assets/images/icons/red_circle.png" />
+  <div class="toolbar-emby-ping-statusbox">
+    <img *ngIf="missedPings === 0 && settings.emby.serverAddress" matTooltip="{{ 'TOOLBAR.NOMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/green_circle.png"/>
+    <img *ngIf="missedPings === 1 && settings.emby.serverAddress" matTooltip="{{ 'TOOLBAR.ONEMISSEDPING' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/orange_circle.png" />
+    <img *ngIf="missedPings >= 2 && settings.emby.serverAddress" matTooltip="{{ 'TOOLBAR.MOREMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/red_circle.png" />
   </div>
-  <div *ngIf="configuration$ | async as config" class="button-container">
-    <a mat-raised-button href="{{getFullAddress(config)}}" target="_blank" *ngIf="config.embyServerAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
+  <div class="button-container">
+    <a mat-raised-button href="{{getFullAddress(settings)}}" target="_blank" *ngIf="settings.emby.serverAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
   </div>
 </mat-toolbar>

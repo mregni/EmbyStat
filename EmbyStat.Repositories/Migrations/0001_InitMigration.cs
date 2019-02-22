@@ -23,7 +23,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("PrimaryImage").AsString().Nullable()
                 .WithColumn("Type").AsInt32().NotNullable();
 
-            Create.Table(Constants.Tables.Configuration)
+            Create.Table("Configuration")
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey("PK_Configuration")
                 .WithColumn("Value").AsString().Nullable();
 
@@ -34,7 +34,7 @@ namespace EmbyStat.Repositories.Migrations
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("LastUserName").AsString().Nullable();
 
-            Create.Table(Constants.Tables.Drives)
+            Create.Table("Drives")
                 .WithColumn("Id").AsString().NotNullable().PrimaryKey("PK_Drives")
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("Path").AsString().NotNullable()
@@ -263,6 +263,26 @@ namespace EmbyStat.Repositories.Migrations
             Create.Index("IX_VideoStreams_VideoId").OnTable(Constants.Tables.VideoStreams).OnColumn("VideoId");
             Create.Index("IX_ExtraPersons_ExtraId").OnTable(Constants.Tables.ExtraPersons).OnColumn("ExtraId");
             Create.Index("IX_SeasonEpisodes_EpisodeId").OnTable(Constants.Tables.SeasonEpisodes).OnColumn("EpisodeId");
+
+            Insert.IntoTable("Configuration").Row(new { Id = "AUTOUPDATE", Value = "True" });
+            Insert.IntoTable("Configuration").Row(new { Id = "KEEPLOGSCOUNT", Value = "10" });
+            Insert.IntoTable("Configuration").Row(new { Id = "LANGUAGE", Value = "en-US" });
+            Insert.IntoTable("Configuration").Row(new { Id = "MOVIECOLLECTIONTYPES", Value = "[0, 1, 6]" });
+            Insert.IntoTable("Configuration").Row(new { Id = "SHOWCOLLECTIONTYPES", Value = "[0, 2]" });
+            Insert.IntoTable("Configuration").Row(new { Id = "TOSHORTMOVIE", Value = "10" });
+            Insert.IntoTable("Configuration").Row(new { Id = "UPDATEINPROGRESS", Value = "False" });
+            Insert.IntoTable("Configuration").Row(new { Id = "UPDATETRAIN", Value = "1" });
+            Insert.IntoTable("Configuration").Row(new { Id = "USERNAME", Value = string.Empty });
+            Insert.IntoTable("Configuration").Row(new { Id = "WIZARDFINISHED", Value = "False" });
+            Insert.IntoTable("Configuration").Row(new { Id = "EMBYUSERID", Value = string.Empty });
+            Insert.IntoTable("Configuration").Row(new { Id = "ACCESSTOKEN", Value = string.Empty });
+            Insert.IntoTable("Configuration").Row(new { Id = "SERVERNAME", Value = string.Empty });
+            Insert.IntoTable("Configuration").Row(new { Id = "EMBYSERVERADDRESS", Value = string.Empty });
+            Insert.IntoTable("Configuration").Row(new { Id = "EMBYSERVERPORT", Value = "8096" });
+            Insert.IntoTable("Configuration").Row(new { Id = "EMBYSERVERPROTOCOL", Value = "0" });
+            Insert.IntoTable("Configuration").Row(new { Id = "EMBYUSERNAME", Value = string.Empty });
+            Insert.IntoTable("Configuration").Row(new { Id = "TVDBAPICLIENT", Value = "BWLRSNRC0AQUIEYX" });
+            Insert.IntoTable("Configuration").Row(new { Id = "LASTTVDBUPDATE", Value = string.Empty });
         }
     }
 }

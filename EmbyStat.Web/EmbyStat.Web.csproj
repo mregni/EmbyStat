@@ -1,8 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-	  <SonarQubeExclude>true</SonarQubeExclude>
-  </PropertyGroup>
-  <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
@@ -13,9 +10,9 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <Version>0.0.0.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <AssemblyName>EmbyStat</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,15 +20,16 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="CommandLineParser" Version="2.4.3" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.1.3" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.21" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.22" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
+    <PackageReference Include="Rollbar" Version="2.2.3" />
+    <PackageReference Include="Rollbar.PlugIns.Serilog" Version="1.0.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
@@ -41,14 +39,18 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\dist\**" />
     <Compile Remove="ClientApp\src\app\components\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
     <Content Remove="ClientApp\src\app\components\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\dist\**" />
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
+    <None Remove="ClientApp\dist\**" />
     <None Remove="ClientApp\src\app\components\**" />
   </ItemGroup>
 
@@ -58,13 +60,10 @@
     <None Remove="ClientApp\src\app\activity\models\activity.ts" />
     <None Remove="ClientApp\src\app\activity\state\facade.activity.ts" />
     <None Remove="ClientApp\src\app\app-material.module.ts" />
-    <None Remove="ClientApp\src\app\configuration\models\embyPlugin.ts" />
-    <None Remove="ClientApp\src\app\configuration\models\embyUdpBroadcast.ts" />
-    <None Remove="ClientApp\src\app\configuration\models\serverInfo.ts" />
-    <None Remove="ClientApp\src\app\configuration\service\configuration.service.ts" />
     <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
-    <None Remove="ClientApp\src\app\plugin\service\plugin.service.ts" />
+    <None Remove="ClientApp\src\app\settings\state\actions.settings.ts" />
+    <None Remove="ClientApp\src\app\settings\state\facade.settings.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
@@ -80,6 +79,7 @@
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\side-bar.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\system.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\update-overlay.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\update.service.ts" />
@@ -107,18 +107,19 @@
     <TypeScriptCompile Include="ClientApp\src\app\activity\state\facade.activity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\settings\state\actions.settings.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\settings\state\facade.settings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\configuration\service\configuration.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\plugin\service\plugin.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\system.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
@@ -126,8 +127,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\actions.configuration.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\configuration\state\facade.configuration.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -138,10 +137,6 @@
 
   <ItemGroup>
     <None Include="ClientApp\src\app\show\show-overview\show-overview.component.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Nerdbank.GitVersioning" Version="2.3.38" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

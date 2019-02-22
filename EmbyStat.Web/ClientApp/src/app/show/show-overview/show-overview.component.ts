@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -27,8 +26,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   typeIsPresent: boolean;
 
   constructor(
-    private showService: ShowService,
-    private showChartsService: ShowChartsService,
+    private readonly showService: ShowService,
+    private readonly showChartsService: ShowChartsService,
     public dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute) {
     this.collections$ = this.showService.getCollections();

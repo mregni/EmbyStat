@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmbyStat.Clients.EmbyClient;
-using EmbyStat.Clients.EmbyClient.Model;
-using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
-using MediaBrowser.Model.Plugins;
-using MediaBrowser.Model.System;
+using MediaBrowser.Model.IO;
 using Moq;
 using Xunit;
+using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace Tests.Unit.Services
 {
@@ -24,18 +22,21 @@ namespace Tests.Unit.Services
     {
 	    private readonly EmbyService _subject;
 	    private readonly Mock<IEmbyClient> _embyClientMock;
-	    private readonly Mock<IPluginRepository> _embyPluginRepositoryMock;
-	    private readonly Mock<IServerInfoRepository> _embyServerInfoRepository;
-        private readonly List<PluginInfo> _plugins;
         private readonly ServerInfo _serverInfo;
 
 		public EmbyServiceTests()
 	    {
-	        _plugins = new List<PluginInfo>
-		    {
-			    new PluginInfo { Name = "EmbyStat plugin" },
-			    new PluginInfo { Name = "Trakt plugin" }
-		    };
+            var plugins = new List<PluginInfo>
+            {
+                new PluginInfo { Name = "EmbyStat plugin" },
+                new PluginInfo { Name = "Trakt plugin" }
+            };
+
+            var embyPlugins = new List<MediaBrowser.Model.Plugins.PluginInfo>
+            {
+                new MediaBrowser.Model.Plugins.PluginInfo {Name = "EmbyStat plugin"},
+                new MediaBrowser.Model.Plugins.PluginInfo {Name = "Trakt plugin"}
+            };
 
 			_serverInfo = new ServerInfo
 			{
@@ -44,93 +45,42 @@ namespace Tests.Unit.Services
 				HttpsPortNumber = 8097
 			};
 
-		    var drives = new List<Drive>
+            var embyDrives = new List<FileSystemEntryInfo>
 		    {
-		        new Drive {Id = Guid.NewGuid().ToString(), Name = "C:\\" },
-		        new Drive {Id = Guid.NewGuid().ToString(), Name = "D:\\" }
-		    };
-
-	        var configuration = new List<ConfigurationKeyValue>
-	        {
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserId, Value = "EmbyUserId" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.Language, Value = "en-US" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.UserName, Value = "admin" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.WizardFinished, Value = "true" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerAddress, Value = "localhost" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.AccessToken, Value = "1234567980" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyUserName, Value = "reggi" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.ToShortMovie, Value = "10" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.ServerName, Value = "ServerName" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerPort, Value = "80" },
-	            new ConfigurationKeyValue{ Id = Constants.Configuration.EmbyServerProtocol, Value = "0" }
-            };
-
-            var embyDrives = new List<Drive>
-		    {
-			    new Drive()
+			    new FileSystemEntryInfo()
 		    };
 
 			var systemInfo = new ServerInfo();
 
 			_embyClientMock = new Mock<IEmbyClient>();
-		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(_plugins));
-		    _embyClientMock.Setup(x => x.SetAddressAndUrl(It.IsAny<string>(), It.IsAny<string>()));
+		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(embyPlugins));
+		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
 		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
 
-			_embyPluginRepositoryMock = new Mock<IPluginRepository>();
-		    _embyPluginRepositoryMock.Setup(x => x.GetPlugins()).Returns(_plugins);
-		    _embyPluginRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
+            var embyRepository = new Mock<IEmbyRepository>();
+            embyRepository.Setup(x => x.GetAllPlugins()).Returns(plugins);
+            embyRepository.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
+            embyRepository.Setup(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
+            embyRepository.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
 
-		    var configurationRepositoryMock = new Mock<IConfigurationRepository>();
-	        configurationRepositoryMock.Setup(x => x.GetConfiguration()).Returns(new Configuration(configuration));
+            var settingsServiceMock = new Mock<ISettingsService>();
+	        settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings());
 
-            _embyServerInfoRepository = new Mock<IServerInfoRepository>();
-		    _embyServerInfoRepository.Setup(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
-		    _embyServerInfoRepository.Setup(x => x.GetSingleOrDefault()).Returns(_serverInfo);
+            var movieRepositoryMock = new Mock<IMovieRepository>();
+            var showRepositoryMock = new Mock<IShowRepository>();
+            var embyRepositoryMock = new Mock<IEmbyRepository>();
+            var sessionServiceMock = new Mock<ISessionService>();
 
-		    var embyDriveRepository = new Mock<IDriveRepository>();
-		    embyDriveRepository.Setup(x => x.RemoveAllAndInsertDriveRange(It.IsAny<List<Drive>>()));
-		    embyDriveRepository.Setup(x => x.GetAll()).Returns(drives);
-
-	        var embyStatusRepositoryMock = new Mock<IEmbyStatusRepository>();
-
-	        var _mapperMock = new Mock<IMapper>();
-	        _mapperMock.Setup(x => x.Map<ServerInfo>(It.IsAny<SystemInfo>())).Returns(new ServerInfo());
-	        _mapperMock.Setup(x => x.Map<IList<Drive>>(It.IsAny<List<Drive>>())).Returns(new List<Drive> {new Drive()});
-
-			_subject = new EmbyService(_embyClientMock.Object, _embyPluginRepositoryMock.Object, _embyServerInfoRepository.Object, configurationRepositoryMock.Object, embyDriveRepository.Object, embyStatusRepositoryMock.Object);
+            _subject = new EmbyService(_embyClientMock.Object, embyRepositoryMock.Object, sessionServiceMock.Object,
+                settingsServiceMock.Object, movieRepositoryMock.Object, showRepositoryMock.Object);
 	    }
 
-	    //[Fact]
-	    //public async void GetEmbyToken()
-	    //{
-		   // _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-			  //  .Returns(Task.FromResult(_authResult));
-
-		   // var login = new EmbyLogin
-		   // {
-			  //  Address = "http://localhost",
-			  //  UserName = "admin",
-			  //  Password = "adminpass"
-		   // };
-
-		   // var token = await _subject.GetEmbyToken(login);
-
-		   // token.Username.Should().Be(_authResult.User.ConnectUserName);
-		   // token.Token.Should().Be(_authResult.AccessToken);
-		   // token.IsAdmin.Should().Be(_authResult.User.Policy.IsAdministrator);
-
-		   // _embyClientMock.Verify(x => x.AuthenticateUserAsync(
-			  //  It.Is<string>(y => y == login.UserName ),
-			  //  It.Is<string>(y => y == login.Password),
-			  //  It.Is<string>(y => y == login.Address)));
-	    //}
 
 	    [Fact]
 		public async void GetEmbyTokenWithNoLoginInfo()
 	    {
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
@@ -144,7 +94,7 @@ namespace Tests.Unit.Services
 				UserName = "Admin",
 				Address = "http://localhost"
 			};
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
@@ -158,7 +108,7 @@ namespace Tests.Unit.Services
 			    Password = "AdminPass",
 			    Address = "http://localhost"
 		    };
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
@@ -175,45 +125,10 @@ namespace Tests.Unit.Services
 			    Address = "http://localhost",
 				UserName = "Admin"
 		    };
-		    BusinessException ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
-	    }
-
-	    [Fact]
-	    public void UpdateServerInfo()
-	    {
-		    _subject.FireSmallSyncEmbyServerInfo();
-
-		    _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
-			_embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
-			_embyClientMock.Verify(x => x.GetLocalDrivesAsync(), Times.Once);
-
-            _embyPluginRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(It.Is<List<PluginInfo>>(
-			    y => y.Count == 2 &&
-			         y.First().Name == _plugins.First().Name)));
-			_embyServerInfoRepository.Verify(x => x.UpdateOrAdd(It.IsAny<ServerInfo>()));
-		}
-
-	    [Fact]
-	    public void GetServerInfoFromDatabase()
-	    {
-		    var serverInfo = _subject.GetServerInfo();
-
-		    serverInfo.Should().NotBeNull();
-		    serverInfo.Result.Id.Should().Be(_serverInfo.Id);
-		    serverInfo.Result.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
-		    serverInfo.Result.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
-	    }
-
-	    [Fact]
-	    public void GetDrivesFromDatabase()
-	    {
-		    var drives = _subject.GetLocalDrives();
-
-		    drives.Should().NotBeNull();
-		    drives.Count.Should().Be(2);
 	    }
 	}
 }

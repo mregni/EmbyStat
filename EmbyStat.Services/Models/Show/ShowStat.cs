@@ -4,9 +4,9 @@ namespace EmbyStat.Services.Models.Show
 {
     public class ShowStat
     {
-        public Card ShowCount { get; set; }
-        public Card EpisodeCount { get; set; }
-        public Card MissingEpisodeCount { get; set; }
+        public Card<int> ShowCount { get; set; }
+        public Card<int> EpisodeCount { get; set; }
+        public Card<int> MissingEpisodeCount { get; set; }
         public TimeSpanCard TotalPlayableTime { get; set; }
         public ShowPoster HighestRatedShow { get; set; }
         public ShowPoster LowestRatedShow { get; set; }

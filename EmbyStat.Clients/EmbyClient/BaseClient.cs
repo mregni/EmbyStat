@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.EmbyClient.Cryptography;
@@ -11,45 +10,37 @@ using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
+using MediaBrowser.Model.Querying;
 using Serilog;
 
 namespace EmbyStat.Clients.EmbyClient
 {
-	public abstract class BaseClient<T> where T : class
+	public abstract class BaseClient
 	{
-		protected Device Device { get; }
+		protected Device Device { get; set; }
         protected string ServerAddress { get; set; }
 		protected string ClientName { get; set; }
 		protected string DeviceName => Device.DeviceName;
 		protected string ApplicationVersion { get; set; }
 		protected string DeviceId => Device.DeviceId;
 		protected string AccessToken { get; private set; }
-		protected Guid? CurrentUserId { get; private set; }
+		protected string CurrentUserId { get; private set; }
 		protected string ApiUrl => ServerAddress + "/emby";
-		protected string AuthorizationScheme => Constants.Emby.AuthorizationScheme;
+		protected string AuthorizationScheme { get; set; }
+
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
 		protected readonly ICryptographyProvider CryptographyProvider;
-		protected readonly IJsonSerializer JsonSerializer;
 		protected readonly IAsyncHttpClient HttpClient;
 
-		protected BaseClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer, IAsyncHttpClient httpClient)
+		protected BaseClient(ICryptographyProvider cryptographyProvider, IAsyncHttpClient httpClient)
 		{
 			CryptographyProvider = cryptographyProvider;
-			JsonSerializer = jsonSerializer;
 			HttpClient = httpClient;
 
-			ClientName = Constants.Emby.AppName;
-			ApplicationVersion = "1.0.0";
-			Device = new Device
-			{
-				DeviceId = Constants.Emby.DeviceId,
-				DeviceName = Constants.Emby.DeviceName
-			};
-
-			ResetHttpHeaders();
+            Device = new Device();
 		}
 
-		public void SetAddressAndUrl(string url, string token)
+		public void SetAddressAndUser(string url, string token, string userId)
 		{
 			if (string.IsNullOrWhiteSpace(url))
 			{
@@ -61,38 +52,15 @@ namespace EmbyStat.Clients.EmbyClient
 				throw new ArgumentNullException(nameof(token));
 			}
 
-			ServerAddress = url;
+            ServerAddress = url;
 			AccessToken = token;
+            CurrentUserId = userId;
 			ResetHttpHeaders();
 		}
 
-		protected void ChangeServerLocation(string address, bool keepExistingAuth = false)
-		{
-			ServerAddress = address;
-
-			if (!keepExistingAuth)
-			{
-				SetAuthenticationInfo(null, Guid.NewGuid());
-			}
-		}
-
-		protected void SetAuthenticationInfo(string accessToken, Guid userId)
+		protected void SetAuthenticationInfo(string accessToken, string userId)
 		{
 			CurrentUserId = userId;
-			AccessToken = accessToken;
-			ResetHttpHeaders();
-		}
-
-		protected void ClearAuthenticationInfo()
-		{
-			CurrentUserId = null;
-			AccessToken = null;
-			ResetHttpHeaders();
-		}
-
-		protected void SetAuthenticationInfo(string accessToken)
-		{
-			CurrentUserId = null;
 			AccessToken = accessToken;
 			ResetHttpHeaders();
 		}
@@ -134,11 +102,11 @@ namespace EmbyStat.Clients.EmbyClient
 					return string.Empty;
 				}
 
-				var header = $"Client=\"{ClientName}\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+				var header = $"Client=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
 
-				if (CurrentUserId.HasValue)
+                if (!string.IsNullOrWhiteSpace(CurrentUserId))
 				{
-					header += string.Format(", UserId=\"{0}\"", CurrentUserId);
+					header += $", Emby UserId=\"{CurrentUserId}\"";
 				}
 
 				return header;
@@ -171,15 +139,6 @@ namespace EmbyStat.Clients.EmbyClient
 		protected Task<Stream> GetSerializedStreamAsync(string url)
 		{
 			return GetSerializedStreamAsync(url, CancellationToken.None);
-		}
-
-		protected string GetConnectPasswordMd5(string password)
-		{
-			var bytes = Encoding.UTF8.GetBytes(password);
-			bytes = CryptographyProvider.CreateMD5(bytes);
-
-			var hash = BitConverter.ToString(bytes, 0, bytes.Length).Replace("-", string.Empty);
-			return hash;
 		}
 
 		protected string GetApiUrl(string handler)
@@ -295,7 +254,7 @@ namespace EmbyStat.Clients.EmbyClient
 
 		protected object DeserializeFromStream(Stream stream, Type type)
 		{
-			return JsonSerializer.DeserializeFromStream(stream, type);
+			return JsonSerializerExtentions.DeserializeFromStream(stream, type);
 		}
 
 		protected async Task<Stream> SendAsync(HttpRequest request)

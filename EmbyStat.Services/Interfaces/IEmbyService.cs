@@ -2,28 +2,50 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Emby;
-using MediaBrowser.Model.Plugins;
+using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces
 {
     public interface IEmbyService : IDisposable
     {
-	    EmbyUdpBroadcast SearchEmby();
-	    Task<EmbyToken> GetEmbyToken(EmbyLogin login);
+        #region Server
+
+        EmbyUdpBroadcast SearchEmby();
+        Task<EmbyToken> GetEmbyToken(EmbyLogin login);
         Task<ServerInfo> GetServerInfo();
-		List<Drive> GetLocalDrives();
-		void FireSmallSyncEmbyServerInfo();
-	    EmbyStatus GetEmbyStatus();
-	    Task<string> PingEmbyAsync(CancellationToken cancellationToken);
-        void SetEmbyClientAddressAndUrl(string url, string token);
-        Task<ServerInfo> GetLiveServerInfo();
-        Task<List<PluginInfo>> GetLivePluginInfo();
-        Task<List<Drive>> GetLiveEmbyDriveInfo();
-        void UpdateOrAddServerInfo(ServerInfo server);
-        void RemoveAllAndInsertPluginRange(List<PluginInfo> plugins);
-        void RemoveAllAndInsertDriveRange(List<Drive> drives);
+        EmbyStatus GetEmbyStatus();
+        Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken);
+        void ResetMissedPings();
+        void IncreaseMissedPings();
+
+        #endregion
+
+        #region Plugins
+
+        List<PluginInfo> GetAllPlugins();
+
+        #endregion
+
+        #region Users
+
+        IEnumerable<User> GetAllUsers();
+        User GetUserById(string id);
+        Card<int> GetViewedEpisodeCountByUserId(string id);
+        Card<int> GetViewedMovieCountByUserId(string id);
+        IEnumerable<UserMediaView> GetLastWatchedMediaByUserId(string id, int count);
+
+        #endregion
+
+        #region JobHelpers
+
+        Task GetAndProcessServerInfo(string embyAddress, string accessToken);
+        Task GetAndProcessPluginInfo(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessEmbyUsers(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessDevices(string embyAddress, string settingsAccessToken);
+
+        #endregion
+
     }
 }

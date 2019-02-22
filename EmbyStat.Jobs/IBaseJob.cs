@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace EmbyStat.Jobs
 {
-    public interface IBaseJob : IDisposable
+    public interface IBaseJob
     {
         Task Execute();
     }

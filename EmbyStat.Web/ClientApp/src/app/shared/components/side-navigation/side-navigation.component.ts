@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
 
-import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
-import { Configuration } from '../../../configuration/models/configuration';
+import { SettingsFacade } from '../../../settings/state/facade.settings';
+import {Settings } from '../../../settings/models/settings';
 
 @Component({
   selector: 'app-side-navigation',
@@ -13,9 +13,9 @@ export class SideNavigationComponent implements OnInit, OnDestroy {
   private configSub: Subscription;
   version: string;
 
-  constructor(private configurationFacade: ConfigurationFacade) {
-    this.configSub = this.configurationFacade.configuration$.subscribe((config: Configuration) => {
-      this.version = config.version;
+  constructor(private settingsFacade: SettingsFacade) {
+    this.configSub = this.settingsFacade.settings$.subscribe((settings: Settings) => {
+      this.version = settings.version;
     });
   }
 

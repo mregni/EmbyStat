@@ -1,8 +1,8 @@
 <div class="job-flexcontainer" *ngIf="job !== undefined">
   <div class="job-left-content ">
-    <a mat-mini-fab (click)="fireJob()" [disabled]="disableStart()">
+    <button mat-mini-fab (click)="fireJob()" [disabled]="startingJob || disableStart()">
       <mat-icon>play_circle_outline</mat-icon>
-    </a>
+    </button>
   </div>
   <div class="job-center">
     <div class="job-jobtitle">{{ 'JOB.INFO.' + job.title | translate}}</div>

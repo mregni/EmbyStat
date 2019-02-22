@@ -1,73 +1,100 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using EmbyStat.Clients.WebSocketClient;
-using EmbyStat.Common.Enums;
+using EmbyStat.Clients.Emby.WebSocket;
+using EmbyStat.Common.Converters;
 using EmbyStat.Services.Interfaces;
-using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Linq;
+using Serilog;
 
 namespace EmbyStat.Services
 {
-    public class WebSocketService : IWebSocketService, IHostedService
+    public class WebSocketService : IWebSocketService, IDisposable
     {
-        private System.Timers.Timer checkForEmbyCredentialsTimer;
-        private readonly IWebSocketClient _webSocketClient;
-        private readonly IConfigurationService _configurationService;
+        private readonly ISettingsService _settingsService;
+        private readonly IEventService _eventService;
+        private readonly IWebSocketApi _webSocketApi;
 
-        public WebSocketService(IWebSocketClient webSocketClient, IConfigurationService configurationService)
+        private Timer _timer;
+
+        public WebSocketService(ISettingsService settingsService, IEventService eventService, IWebSocketApi webSocketApi)
         {
-            _webSocketClient = webSocketClient;
-            _configurationService = configurationService;
+            _settingsService = settingsService;
+            _eventService = eventService;
+            _webSocketApi = webSocketApi;
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {       
-            if (IsEmbyConnected())
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _timer = new Timer(TryToConnect, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+
+            return Task.CompletedTask;
+        }
+
+        private async void TryToConnect(object state)
+        {
+            if (!_webSocketApi.IsWebSocketOpenOrConnecting)
             {
-                await OpenWebSocketConnection(cancellationToken);
+                var settings = _settingsService.GetUserSettings();
+                if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+                {
+                    try
+                    {
+                        var deviceId = _settingsService.GetUserSettings().Id.ToString();
+                        await _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
+                        _webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
+                        _webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "Failed to open socket connection to Emby");
+                        throw;
+                    }
+                }
             }
             else
             {
-                checkForEmbyCredentialsTimer = new System.Timers.Timer(5000);
-                checkForEmbyCredentialsTimer.Elapsed += CheckForEmbyCredentialsTimer_Elapsed;
-                checkForEmbyCredentialsTimer.AutoReset = true;
-                checkForEmbyCredentialsTimer.Start();
+                _timer.Change(60000, 60000);
             }
+        }
+
+        private void WebSocketApiOnWebSocketClosed(object sender, EventArgs e)
+        {
+            _webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
+            _webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
+
+            _timer.Change(5000, 5000);
+        }
+
+        private async void ClientOnWebSocketConnected(object sender, EventArgs e)
+        {
+            await _webSocketApi.StopReceivingSessionUpdates();
+            await _webSocketApi.StartReceivingSessionUpdates(10000);
+
+            _webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
+            _webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
+        }
+
+        private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
+        {
+            Log.Information("User data changed");
+        }
+
+        private async void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
+        {
+            var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
+            await _eventService.ProcessSessions(sessions);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await _webSocketClient.Close(cancellationToken);
+            await _webSocketApi.CloseWebSocket();
         }
 
-        private bool IsEmbyConnected()
+        public void Dispose()
         {
-            var settings = _configurationService.GetServerSettings();
-            return settings.AccessToken != "";
-        }
-
-        private async void CheckForEmbyCredentialsTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (IsEmbyConnected())
-            {
-                checkForEmbyCredentialsTimer.Stop();
-                await OpenWebSocketConnection(new CancellationToken(false));
-            }
-        }
-
-        private async Task OpenWebSocketConnection(CancellationToken cancellationToken)
-        {
-            var settings = _configurationService.GetServerSettings();
-            var protocol = settings.EmbyServerProtocol == ConnectionProtocol.Http ? "ws" : "wss";
-            var socketUrl = $"{protocol}://{settings.EmbyServerAddress}:{settings.EmbyServerPort}?api_key={settings.AccessToken}&deviceId={Guid.NewGuid().ToString()}";
-
-            await _webSocketClient.Connect(socketUrl, cancellationToken);
-        }
-
-        public bool IsWebSocketConnectionOpen()
-        {
-            return _webSocketClient.IsWebSocketConnectionOpen();
+            _timer?.Dispose();
         }
     }
 }

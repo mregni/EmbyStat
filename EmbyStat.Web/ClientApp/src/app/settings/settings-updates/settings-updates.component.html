@@ -1,0 +1,44 @@
+<div class="settings-left">
+  <mat-card class="half-width margin-bottom" *ngIf="settings$ | async as settings">
+    <mat-card-content>
+      <div *ngIf="(updateResult$ | async) as result; else loading">
+        <h3 *ngIf="result.isUpdateAvailable; else noUpdate">{{ 'SETTINGS.UPDATE.NEWVERSION' | translate: { version: result.availableVersion} }}</h3>
+        <ng-template #noUpdate>
+          <div *ngIf="!updateCheckFailed; else failedCheck">
+            <p>{{ 'SETTINGS.UPDATE.NOUPDATE' | translate }}</p>
+          </div>
+          <ng-template #failedCheck>
+            <p>{{ 'SETTINGS.UPDATE.CANTCHECK' | translate }}</p>
+          </ng-template>
+        </ng-template>
+      </div>
+      <p class="subtext-grey">{{ 'SETTINGS.UPDATE.CURRENTVERSION' | translate: { version: settings.version} }}</p>
+      <ng-template #loading>
+        <div class="la-ball-scale-ripple-multiple la-dark">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </ng-template>
+      <button [disabled]="settings.updateInProgress" class="margin-bottom" mat-raised-button (click)="startUpdate()" color="accent">{{ 'SETTINGS.UPDATE.CHECK' | translate }}</button>
+      <form class="form-container" [formGroup]="form">
+        <mat-checkbox class="margin-bottom" (change)="onChange($event)" formControlName="autoUpdate">{{ 'SETTINGS.UPDATE.AUTO' | translate | capitalizeFirst }}</mat-checkbox>
+        <p *ngIf="onMaster; else notMasterTrain">{{ 'SETTINGS.UPDATE.TRAINWARNING' | translate }}</p>
+        <ng-template #notMasterTrain>
+          <p>{{ 'SETTINGS.UPDATE.ONBETA' | translate }}</p>
+        </ng-template>
+        <mat-form-field>
+          <mat-select formControlName="train" [disableControl]="!onMaster">
+            <mat-option [value]="option.value" *ngFor="let option of trainOptions">{{option.key}}</mat-option>
+          </mat-select>
+          <mat-placeholder>{{ 'SETTINGS.UPDATE.TRAIN' | translate }}</mat-placeholder>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="settings.updateInProgress">{{ 'COMMON.SAVE' | translate | capitalizeFirst }}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+

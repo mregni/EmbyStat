@@ -25,7 +25,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public async void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections)
+        public async Task AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -61,7 +61,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public async void MarkMovieTypesAsInvalid()
+        public async Task MarkMovieTypesAsInvalid()
         {
             using (var context = new ApplicationDbContext())
             {
@@ -74,7 +74,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public async void MarkShowTypesAsInvalid()
+        public async Task MarkShowTypesAsInvalid()
         {
             using (var context = new ApplicationDbContext())
             {

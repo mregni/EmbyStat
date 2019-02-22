@@ -1,20 +1,23 @@
-﻿using EmbyStat.Clients.EmbyClient.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Joins;
-using MediaBrowser.Model.Plugins;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Device = EmbyStat.Common.Models.Entities.Device;
 
 namespace EmbyStat.Repositories
 {
     public class ApplicationDbContext : DbContext
     {
-	    public DbSet<ConfigurationKeyValue> Configuration { get; set; }
-		public DbSet<PluginInfo> Plugins { get; set; }
-		public DbSet<ServerInfo> ServerInfo { get; set; }
-		public DbSet<Drive> Drives { get; set; }
+        public DbSet<PluginInfo> Plugins { get; set; }
+        public DbSet<ServerInfo> ServerInfo { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Media> Media { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Show> Shows { get; set; }
         public DbSet<Season> Seasons { get; set; }
@@ -34,32 +37,36 @@ namespace EmbyStat.Repositories
         public DbSet<Statistic> Statistics { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<EmbyStatusKeyValue> EmbyStatus { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserAccessSchedule> UserAccessSchedules { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Play> Plays { get; set; }
+        public DbSet<PlayState> PlayStates { get; set; }
+
 
         public ApplicationDbContext() : base()
-	    {
+        {
 
-	    }
+        }
 
-	    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-	    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
 
-	    }
+        }
 
-	    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	    {
-		    base.OnConfiguring(optionsBuilder);
-		    optionsBuilder.UseSqlite("Data Source=data.db");
-	    }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlite("Data Source=data.db");
+        }
 
-	    protected override void OnModelCreating(ModelBuilder modelBuilder)
-	    {
-		    base.OnModelCreating(modelBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-		    modelBuilder.Entity<ConfigurationKeyValue>().Property(s => s.Id).IsRequired();
+            modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
 
-		    modelBuilder.Entity<PluginInfo>().Property(s => s.Id).IsRequired();
-
-		    modelBuilder.Entity<ServerInfo>().Property(s => s.Id).IsRequired();
+            modelBuilder.Entity<ServerInfo>().Property(s => s.Id).IsRequired();
 
             modelBuilder.Entity<MediaGenre>().HasKey(mg => mg.Id);
             modelBuilder.Entity<MediaGenre>().HasOne(mg => mg.Media).WithMany(m => m.MediaGenres).HasForeignKey(mg => mg.MediaId);
@@ -69,9 +76,9 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<ExtraPerson>().HasOne(ep => ep.Extra).WithMany(e => e.ExtraPersons).HasForeignKey(ep => ep.ExtraId);
             modelBuilder.Entity<ExtraPerson>().HasOne(ep => ep.Person).WithMany(p => p.ExtraPersons).HasForeignKey(ep => ep.PersonId);
 
-	        modelBuilder.Entity<SeasonEpisode>().HasKey(ep => ep.Id);
+            modelBuilder.Entity<SeasonEpisode>().HasKey(ep => ep.Id);
             modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Episode).WithMany(e => e.SeasonEpisodes).HasForeignKey(s => s.EpisodeId);
-	        modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Season).WithMany(s => s.SeasonEpisodes).HasForeignKey(s => s.SeasonId);
+            modelBuilder.Entity<SeasonEpisode>().HasOne(s => s.Season).WithMany(s => s.SeasonEpisodes).HasForeignKey(s => s.SeasonId);
 
             modelBuilder.Entity<Video>().HasMany(v => v.AudioStreams).WithOne(s => s.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Video>().HasMany(v => v.VideoStreams).WithOne(ms => ms.Video).HasForeignKey(s => s.VideoId).OnDelete(DeleteBehavior.Cascade);
@@ -81,10 +88,10 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<Movie>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Movie>().Property(m => m.ParentId).IsRequired();
 
-	        modelBuilder.Entity<Extra>().HasMany(v => v.ExtraPersons).WithOne(s => s.Extra).HasForeignKey(s => s.ExtraId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Extra>().HasMany(v => v.ExtraPersons).WithOne(s => s.Extra).HasForeignKey(s => s.ExtraId).OnDelete(DeleteBehavior.Cascade);
 
-	        modelBuilder.Entity<Media>().HasMany(v => v.MediaGenres).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
-	        modelBuilder.Entity<Media>().HasMany(v => v.Collections).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Media>().HasMany(v => v.MediaGenres).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Media>().HasMany(v => v.Collections).WithOne(s => s.Media).HasForeignKey(s => s.MediaId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Episode>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Episode>().Property(m => m.ParentId).IsRequired(false);
@@ -95,6 +102,7 @@ namespace EmbyStat.Repositories
 
             modelBuilder.Entity<Show>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Show>().Property(m => m.ParentId).IsRequired();
+            modelBuilder.Entity<Show>().HasMany(x => x.Seasons).WithOne(x => x.Show).HasForeignKey(x => x.ParentId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<User>().Property(m => m.Name).IsRequired().HasMaxLength(100);
@@ -110,21 +118,52 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<Boxset>().Property(m => m.Id).IsRequired();
             modelBuilder.Entity<Boxset>().Property(m => m.ParentId).IsRequired();
 
-	        modelBuilder.Entity<Collection>().Property(s => s.Id).IsRequired();
+            modelBuilder.Entity<Collection>().Property(s => s.Id).IsRequired();
 
-	        modelBuilder.Entity<Statistic>().Property(s => s.Id).IsRequired();
-	        modelBuilder.Entity<Statistic>().Property(s => s.CalculationDateTime).IsRequired();
-	        modelBuilder.Entity<Statistic>().Property(s => s.JsonResult).IsRequired();
-	        modelBuilder.Entity<Statistic>().HasMany(v => v.Collections).WithOne(s => s.Statistic).HasForeignKey(s => s.StatisticId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Statistic>().Property(s => s.Id).IsRequired();
+            modelBuilder.Entity<Statistic>().Property(s => s.CalculationDateTime).IsRequired();
+            modelBuilder.Entity<Statistic>().Property(s => s.JsonResult).IsRequired();
+            modelBuilder.Entity<Statistic>().HasMany(v => v.Collections).WithOne(s => s.Statistic).HasForeignKey(s => s.StatisticId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Language>().Property(m => m.Id).IsRequired();
 
-	        modelBuilder.Entity<EmbyStatusKeyValue>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<EmbyStatusKeyValue>().Property(x => x.Id).IsRequired();
 
-	        modelBuilder.Entity<StatisticCollection>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<StatisticCollection>().Property(x => x.Id).IsRequired();
 
-	        modelBuilder.Entity<MediaCollection>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<MediaCollection>().Property(x => x.Id).IsRequired();
 
+            modelBuilder.Entity<UserAccessSchedule>().Property(x => x.Id).IsRequired();
+
+            modelBuilder.Entity<Job>().Property(x => x.Id).IsRequired();
+
+            modelBuilder.Entity<Session>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<Session>().HasMany(x => x.Plays).WithOne(x => x.Session).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Play>().Property(x => x.Id).IsRequired();
+            modelBuilder.Entity<Play>().HasMany(x => x.PlayStates).WithOne(x => x.Play).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayState>().Property(x => x.Id).IsRequired();
+
+
+            var stringListConverter = new ValueConverter<List<string>, string>(
+                v => string.Join(";", v),
+                v => v.Split(";", StringSplitOptions.RemoveEmptyEntries).ToList());
+            var transcodeReasonEnumListConverter = new ValueConverter<List<TranscodeReason>, string>(
+                v => string.Join(";", v),
+                v => v.Split(";", StringSplitOptions.RemoveEmptyEntries).ToList()
+                    .Select(x => (TranscodeReason)Enum.Parse(typeof(TranscodeReason), x)).ToList());
+            var dateTimeOffsetConverter = new ValueConverter<DateTimeOffset, string>(
+                v => v.ToString(), 
+                v => DateTimeOffset.Parse(v));
+
+            modelBuilder.Entity<User>().HasMany(x => x.AccessSchedules).WithOne(x => x.User).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>().Property(x => x.BlockedTags).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.BlockUnratedItems).HasConversion(stringListConverter);
+            modelBuilder.Entity<User>().Property(x => x.LastLoginDate).HasConversion(dateTimeOffsetConverter);
+            modelBuilder.Entity<User>().Property(x => x.LastActivityDate).HasConversion(dateTimeOffsetConverter);
+
+            modelBuilder.Entity<PlayState>().Property(x => x.TranscodeReasons).HasConversion(transcodeReasonEnumListConverter);
         }
     }
 }

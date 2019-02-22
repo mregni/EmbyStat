@@ -8,23 +8,38 @@ using EmbyStat.Clients.EmbyClient.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Controller.Authentication;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
+using MediaBrowser.Model.Users;
+using Newtonsoft.Json.Linq;
 using Serilog;
+using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
 namespace EmbyStat.Clients.EmbyClient
 {
-	public class EmbyClient : BaseClient<EmbyClient>, IEmbyClient
+	public class EmbyClient : BaseClient, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider, IJsonSerializer jsonSerializer,  IAsyncHttpClient httpClient)
-		: base(cryptographyProvider, jsonSerializer, httpClient)
+        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient)
+		: base(cryptographyProvider, httpClient)
 		{
 			
 		}
+
+        public void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId)
+        {
+            ClientName = clientName;
+            AuthorizationScheme = authorizationScheme;
+            ApplicationVersion = applicationVersion;
+
+            Device = new Device
+            {
+                DeviceId = deviceId,
+                DeviceName = clientName
+            };
+            ResetHttpHeaders();
+        }
 
 		public async Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
 		{
@@ -49,8 +64,7 @@ namespace EmbyStat.Clients.EmbyClient
 			{
 				["username"] = Uri.EscapeDataString(username),
 				["pw"] = password,
-				["password"] = BitConverter.ToString(CryptographyProvider.CreateSha1(bytes)).Replace("-", string.Empty),
-				["passwordMD5"] = GetConnectPasswordMd5(password)
+				["password"] = BitConverter.ToString(CryptographyProvider.CreateSha1(bytes)).Replace("-", string.Empty)
 			};
 
 			var url = GetApiUrl("Users/AuthenticateByName");
@@ -77,25 +91,43 @@ namespace EmbyStat.Clients.EmbyClient
 		{
 			var url = GetApiUrl("System/Info");
 
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for server info");
             using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<ServerInfo>(stream);
 			}
 		}
 
-		public async Task<List<Drive>> GetLocalDrivesAsync()
+		public async Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync()
 		{
 			var url = GetApiUrl("Environment/Drives");
 
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for local drives");
 			using (var stream = await GetSerializedStreamAsync(url))
             {
-				return DeserializeFromStream<List<Drive>>(stream);
+				return DeserializeFromStream<List<FileSystemEntryInfo>>(stream);
 			}
 		}
 
-		public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        public async Task<JArray> GetEmbyUsers()
+        {
+            var url = GetApiUrl("Users");
+
+            using (var stream = await GetSerializedStreamAsync(url))
+            {
+                return DeserializeFromStream<JArray>(stream);
+            }
+        }
+
+        public async Task<JObject> GetEmbyDevices()
+        {
+            var url = GetApiUrl("Devices");
+
+            using (var stream = await GetSerializedStreamAsync(url))
+            {
+                return DeserializeFromStream<JObject>(stream);
+            }
+        }
+
+        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
 		{
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
@@ -113,7 +145,7 @@ namespace EmbyStat.Clients.EmbyClient
 
 	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))
 	    {
-	        var url = GetItemListUrl($"Users/{query.UserId}/Items", query);
+	        var url = GetItemListUrl("Items", query);
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
@@ -121,23 +153,13 @@ namespace EmbyStat.Clients.EmbyClient
 	        }
 	    }
 
-        public async Task<BaseItemDto> GetItemAsync(ItemQuery personQuery, string personId, CancellationToken cancellationToken)
+        public async Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken)
 	    {
-	        var url = GetItemListUrl($"Users/{personQuery.UserId}/Items/{personId}", personQuery);
+	        var url = GetItemListUrl($"persons/{personName}", new ItemQuery());
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
 	            return DeserializeFromStream<BaseItemDto>(stream);
-	        }
-	    }
-
-        public async Task<Folder> GetRootFolderAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
-	    {
-	        var url = GetApiUrl($"/Users/{userId}/Items/Root");
-
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
-	        {
-	            return DeserializeFromStream<Folder>(stream);
 	        }
 	    }
 

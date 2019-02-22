@@ -16,13 +16,11 @@ namespace EmbyStat.Clients.Github
     public class GithubClient : IGithubClient
     {
         private readonly IAsyncHttpClient _httpClient;
-        private readonly IJsonSerializer _jsonSerializer;
         private readonly AppSettings _appSettings;
 
-        public GithubClient(IAsyncHttpClient httpClient, IJsonSerializer jsonSerializer, IOptions<AppSettings> appSettings)
+        public GithubClient(IAsyncHttpClient httpClient, IOptions<AppSettings> appSettings)
         {
             _httpClient = httpClient;
-            _jsonSerializer = jsonSerializer;
             _appSettings = appSettings.Value;
         }
 
@@ -39,7 +37,7 @@ namespace EmbyStat.Clients.Github
 
             using (var stream = await _httpClient.SendAsync(options))
             {
-                var obj = _jsonSerializer.DeserializeFromStream<ReleaseObject[]>(stream);
+                var obj = JsonSerializerExtentions.DeserializeFromStream<ReleaseObject[]>(stream);
                 return CheckForUpdateResult(obj, minVersion, updateTrain, assetFileName);
             }
         }

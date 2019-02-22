@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PersonPoster } from '../../models/person-poster';
-import { ConfigurationFacade } from '../../../configuration/state/facade.configuration';
-import { Configuration } from '../../../configuration/models/configuration';
+import { SettingsFacade } from '../../../settings/state/facade.settings';
+import {Settings } from '../../../settings/models/settings';
 import { ConfigHelper } from '../../helpers/configHelper';
 
 @Component({
@@ -12,16 +12,16 @@ import { ConfigHelper } from '../../helpers/configHelper';
   styleUrls: ['./person-poster.component.scss']
 })
 export class PersonPosterComponent implements OnDestroy {
-  configurationSub: Subscription;
-  configuration: Configuration;
+  settingsSub: Subscription;
+  settings: Settings;
   @Input() poster: PersonPoster;
 
-  constructor(private configurationFacade: ConfigurationFacade, private _sanitizer: DomSanitizer) {
-    this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
+  constructor(private settingsFacade: SettingsFacade, private _sanitizer: DomSanitizer) {
+    this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
   }
 
   getBackground() {
-    if (this.configuration === undefined) {
+    if (this.settings === undefined) {
       return '';
     }
 
@@ -29,12 +29,12 @@ export class PersonPosterComponent implements OnDestroy {
       return this._sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
     }
 
-    const fullAddress = ConfigHelper.getFullEmbyAddress(this.configuration);
+    const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
     return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
   }
 
   openPerson(): void {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.configuration)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {
@@ -46,8 +46,8 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.configurationSub !== undefined) {
-      this.configurationSub.unsubscribe();
+    if (this.settingsSub !== undefined) {
+      this.settingsSub.unsubscribe();
     }
   }
 }

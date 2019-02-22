@@ -3,9 +3,9 @@ import { TimespanCard } from '../../shared/models/timespan-card';
 import { ShowPoster } from '../../shared/models/show-poster';
 
 export class ShowStats {
-  showCount: Card;
-  episodeCount: Card;
-  missingEpisodeCount: Card;
+  showCount: Card<number>;
+  episodeCount: Card<number>;
+  missingEpisodeCount: Card<number>;
   totalPlayableTime: TimespanCard;
   highestRatedShow: ShowPoster;
   lowestRatedShow: ShowPoster;

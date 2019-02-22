@@ -2,7 +2,6 @@
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -250,7 +249,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public int GetTotalPersonByType(IEnumerable<string> collections, PersonType type)
+        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -267,7 +266,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(IEnumerable<string> collections, PersonType type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -351,6 +350,18 @@ namespace EmbyStat.Repositories
             using (var context = new ApplicationDbContext())
             {
                 return context.Shows.Any();
+            }
+        }
+
+        public Episode GetEpisodeById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Episodes
+                    .Include(x => x.SeasonEpisodes)
+                    .ThenInclude(x => x.Season)
+                    .ThenInclude(x => x.Show)
+                    .SingleOrDefault(x => x.Id == id);
             }
         }
     }

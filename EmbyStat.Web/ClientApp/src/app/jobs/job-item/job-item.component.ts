@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input, OnDestroy, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { TriggerDialogComponent } from '../trigger-dialog/trigger-dialog.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 import { JobSocketService } from '../../shared/services/job-socket.service';
@@ -24,8 +24,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
   private jobSub: Subscription;
 
   job: Job;
-
-  private startingJob = false;
+  startingJob = false;
 
   constructor(
     public dialog: MatDialog,
@@ -34,6 +33,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     this.jobSocketSub = jobSocketService.infoSubject.subscribe((job: Job) => {
       if (job != null && job.id === this.id) {
         this.job = job;
+        this.startingJob = false;
       }
     });
   }
@@ -73,6 +73,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
   }
 
   fireJob() {
+    this.startingJob = true;
     this.fireAction.emit(true);
   }
 
@@ -128,9 +129,9 @@ export class JobItemComponent implements OnInit, OnDestroy {
       !this.hasSeconds(job.endTimeUtc);
   }
 
-  private convertToMoment(value: any) {
+  private convertToMoment(value: any): moment.Moment {
     if (value instanceof moment) {
-      return value;
+      return moment(value);
     } else {
       return moment.utc(value);
     }

@@ -25,31 +25,27 @@ namespace EmbyStat.Services
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IConfigurationRepository _configurationRepository;
+        private readonly ISettingsService _settingsService;
 
-        public ShowService(IShowRepository showRepository, 
-            ICollectionRepository collectionRepository, 
-            IGenreRepository genreRepository, 
-            IPersonService personService, 
-            IJobRepository jobRepository, 
-            IStatisticsRepository statisticsRepository,
-            IConfigurationRepository configurationRepository)
-        : base(jobRepository){
+        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository,
+            IPersonService personService, IJobRepository jobRepository, IStatisticsRepository statisticsRepository, ISettingsService settingsService)
+        : base(jobRepository)
+        {
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
             _genreRepository = genreRepository;
             _personService = personService;
             _statisticsRepository = statisticsRepository;
-            _configurationRepository = configurationRepository;
+            _settingsService = settingsService;
         }
 
         public IEnumerable<Collection> GetShowCollections()
         {
-            var config = _configurationRepository.GetConfiguration();
-            return _collectionRepository.GetCollectionByTypes(config.ShowCollectionTypes);
+            var settings = _settingsService.GetUserSettings();
+            return _collectionRepository.GetCollectionByTypes(settings.ShowCollectionTypes);
         }
 
-        public ShowStat GetGeneralStats(IEnumerable<string> collectionIds)
+        public async Task<ShowStat> GetGeneralStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGeneral);
 
@@ -76,13 +72,13 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGeneral, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGeneral, collectionIds);
             }
 
             return stats;
         }
 
-        public ShowGraphs GetGraphs(IEnumerable<string> collectionIds)
+        public async Task<ShowGraphs> GetGraphs(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
 
@@ -102,15 +98,15 @@ namespace EmbyStat.Services
                 stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
                 stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
                 stats.PieGraphs.Add(CalculateShowStateGraph(shows));
-                
+
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
             }
 
             return stats;
         }
 
-        public PersonStats GetPeopleStats(IEnumerable<string> collectionIds)
+        public async Task<PersonStats> GetPeopleStats(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowPeople);
 
@@ -130,13 +126,13 @@ namespace EmbyStat.Services
 
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowPeople, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowPeople, collectionIds);
             }
 
             return stats;
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(IEnumerable<string> collectionIds)
+        public async Task<List<ShowCollectionRow>> GetCollectionRows(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollected);
 
@@ -152,7 +148,7 @@ namespace EmbyStat.Services
                 stats = shows.Select(CreateShowCollectionRow).ToList();
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollected, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollected, collectionIds);
             }
 
             return stats;
@@ -214,7 +210,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, PersonType type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
 
@@ -222,11 +218,11 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private Card TotalTypeCount(IEnumerable<string> collectionIds, PersonType type, string title)
+        private Card<int> TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
         {
-            return new Card
+            return new Card<int>
             {
-                Value = _showRepository.GetTotalPersonByType(collectionIds, type).ToString(),
+                Value = _showRepository.GetTotalPersonByType(collectionIds, type),
                 Title = title
             };
         }
@@ -274,7 +270,7 @@ namespace EmbyStat.Services
                 }
                 else
                 {
-                    percentageList.Add((double) episodeCount / (episodeCount + show.MissingEpisodesCount));
+                    percentageList.Add((double)episodeCount / (episodeCount + show.MissingEpisodesCount));
                 }
             }
 
@@ -290,7 +286,7 @@ namespace EmbyStat.Services
                 {
                     if (groupedList[j].Key != i * 5)
                     {
-                        groupedList.Add(new GraphGrouping<int?, double> {Key = i * 5, Capacity = 0});
+                        groupedList.Add(new GraphGrouping<int?, double> { Key = i * 5, Capacity = 0 });
                     }
                     else
                     {
@@ -371,7 +367,7 @@ namespace EmbyStat.Services
                     resultShow = show;
                 }
             }
-          
+
             if (resultShow != null)
             {
                 return PosterHelper.ConvertToShowPoster(resultShow, Constants.Shows.MostEpisodes);
@@ -425,33 +421,33 @@ namespace EmbyStat.Services
             return new ShowPoster();
         }
 
-        private Card TotalShowCount(IEnumerable<string> collectionIds)
+        private Card<int> TotalShowCount(IEnumerable<string> collectionIds)
         {
             var count = _showRepository.CountShows(collectionIds);
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Shows.TotalShows,
-                Value = count.ToString()
+                Value = count
             };
         }
 
-        private Card TotalEpisodeCount(IEnumerable<string> collectionIds)
+        private Card<int> TotalEpisodeCount(IEnumerable<string> collectionIds)
         {
             var count = _showRepository.CountEpisodes(collectionIds);
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Shows.TotalEpisodes,
-                Value = count.ToString()
+                Value = count
             };
         }
 
-        private Card TotalMissingEpisodeCount(IEnumerable<Show> shows)
+        private Card<int> TotalMissingEpisodeCount(IEnumerable<Show> shows)
         {
             var count = shows.Sum(x => x.MissingEpisodesCount);
-            return new Card
+            return new Card<int>
             {
                 Title = Constants.Shows.TotalMissingEpisodes,
-                Value = count.ToString()
+                Value = count
             };
         }
 

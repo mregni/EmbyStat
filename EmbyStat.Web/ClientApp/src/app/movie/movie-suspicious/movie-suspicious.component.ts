@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
-import { ConfigurationFacade } from '../../configuration/state/facade.configuration';
-import { Configuration } from '../../configuration/models/configuration';
+import { Subscription } from 'rxjs';
+import { SettingsFacade } from '../../settings/state/facade.settings';
+import { Settings } from '../../settings/models/settings';
+import { ConfigHelper } from '../../shared/helpers/configHelper';
 
 import { MovieService } from '../service/movie.service';
 
@@ -26,8 +27,8 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
   noPrimaryDataSource = new MatTableDataSource();
 
   private duplicatesSub: Subscription;
-  private configurationSub: Subscription;
-  private configuration: Configuration;
+  private settingsSub: Subscription;
+  private settings: Settings;
 
   private selectedCollectionsPriv: string[];
   get selectedCollections(): string[] {
@@ -49,8 +50,10 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
     });
   }
 
-  constructor(private movieService: MovieService, private configurationFacade: ConfigurationFacade) {
-    this.configurationSub = configurationFacade.getConfiguration().subscribe(data => this.configuration = data);
+  constructor(
+    private readonly movieService: MovieService,
+    private readonly settingsFacade: SettingsFacade) {
+    this.settingsSub = settingsFacade.getSettings().subscribe((settings: Settings) => this.settings = (settings));
   }
 
   ngOnInit() {
@@ -58,7 +61,8 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
   }
 
   openMovie(id: string): void {
-    window.open(`${this.configuration.embyServerAddress}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
+    const embyUrl = ConfigHelper.getFullEmbyAddress(this.settings);
+    window.open(`${embyUrl}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
   }
 
   ngOnDestroy(): void {
@@ -66,8 +70,8 @@ export class MovieSuspiciousComponent implements OnInit, OnDestroy {
       this.duplicatesSub.unsubscribe();
     }
 
-    if (this.configurationSub !== undefined) {
-      this.configurationSub.unsubscribe();
+    if (this.settingsSub !== undefined) {
+      this.settingsSub.unsubscribe();
     }
   }
 }

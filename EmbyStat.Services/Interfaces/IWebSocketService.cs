@@ -1,7 +1,9 @@
-﻿namespace EmbyStat.Services.Interfaces
+﻿using Microsoft.Extensions.Hosting;
+
+namespace EmbyStat.Services.Interfaces
 {
-    public interface IWebSocketService
+    public interface IWebSocketService : IHostedService
     {
-        bool IsWebSocketConnectionOpen();
+        
     }
 }

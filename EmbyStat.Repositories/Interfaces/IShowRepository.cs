@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -20,11 +19,12 @@ namespace EmbyStat.Repositories.Interfaces
         int CountEpisodes(string showId);
         int CountEpisodes(IEnumerable<string> collectionIds);
         long GetPlayLength(IEnumerable<string> collectionIds);
-        int GetTotalPersonByType(IEnumerable<string> collections, PersonType type);
-        string GetMostFeaturedPerson(IEnumerable<string> collections, PersonType type);
+        int GetTotalPersonByType(IEnumerable<string> collections, string type);
+        string GetMostFeaturedPerson(IEnumerable<string> collections, string type);
         List<string> GetGenres(IEnumerable<string> collections);
         int GetEpisodeCountForShow(string showId, bool includeSpecials = false);
         int GetSeasonCountForShow(string showId, bool includeSpecials = false);
         bool Any();
+        Episode GetEpisodeById(string id);
     }
 }

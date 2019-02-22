@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -16,9 +16,9 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         private readonly IPersonRepository _personRepository;
         private readonly IGenreRepository _genreRepository;
 
-        public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
+        public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IStatisticsRepository statisticsRepository, IPersonRepository personRepository, IGenreRepository genreRepository) 
-            : base(hubHelper, jobRepository, configurationService)
+            : base(hubHelper, jobRepository, settingsService)
         {
             _statisticsRepository = statisticsRepository;
             _personRepository = personRepository;
@@ -33,19 +33,15 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override async Task RunJob()
         {
             await _statisticsRepository.CleanupStatistics();
-            LogProgress(33);
-            LogInformation("Removed old statistic results.");
+            await LogProgress(33);
+            await LogInformation("Removed old statistic results.");
 
             await _personRepository.CleanupPersons();
-            LogProgress(66);
-            LogInformation("Removed unused people.");
+            await LogProgress(66);
+            await LogInformation("Removed unused people.");
 
             await _genreRepository.CleanupGenres();
-            LogInformation("Removed unused genres.");
-        }
-
-        public override void Dispose()
-        {
+            await LogInformation("Removed unused genres.");
         }
     }
 }

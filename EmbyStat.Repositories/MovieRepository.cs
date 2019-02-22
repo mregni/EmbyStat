@@ -3,7 +3,6 @@ using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -67,7 +66,7 @@ namespace EmbyStat.Repositories
             genresToDelete.ForEach(x => movie.MediaGenres.Remove(movie.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
         }
 
-        public int GetTotalPersonByType(List<string> collections, PersonType type)
+        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -84,7 +83,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public string GetMostFeaturedPerson(List<string> collections, PersonType type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -130,7 +129,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        public List<string> GetGenres(List<string> collections)
+        public List<string> GetGenres(IEnumerable<string> collections)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -165,6 +164,14 @@ namespace EmbyStat.Repositories
                 return context.Movies
                     .Include(x => x.ExtraPersons)
                     .Count(x => x.ExtraPersons.Any(y => y.PersonId == personId));
+            }
+        }
+
+        public Movie GetMovieById(string id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Movies.SingleOrDefault(x => x.Id == id);
             }
         }
 

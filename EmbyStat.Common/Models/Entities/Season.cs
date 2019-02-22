@@ -9,6 +9,7 @@ namespace EmbyStat.Common.Models.Entities
         public int? IndexNumber { get; set; }
         public int? IndexNumberEnd { get; set; }
         public ICollection<SeasonEpisode> SeasonEpisodes { get; set; }
+        public Show Show { get; set; }
 
         public Season()
         {

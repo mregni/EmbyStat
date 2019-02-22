@@ -9,7 +9,7 @@
     "SAVE": "opslaan",
     "DISCARD": "negeren",
     "CANCEL": "annuleren",
-    "CLOSE": "close",
+    "CLOSE": "sluiten",
     "DAYS": "dagen",
     "HOURS": "uren",
     "MINUTES": "minuten",
@@ -17,6 +17,8 @@
     "TITLE": "titel",
     "ADDEDON": "toegevoegd op",
     "QUALITY": "kwaliteit",
+    "NEVER": "never",
+    "OPEN": "Open",
     "LINK": "koppeling",
     "REASON": "reden",
     "BYIMDB": "dezelfde imdb id",
@@ -53,7 +55,12 @@
     "NOT_FOUND": "Oops, didn't find what you are looking for.",
     "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en Emby url na te zien.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
-    "UNHANDLED": "Unhandled backend exception"
+    "UNHANDLED": "Unhandled backend exception",
+    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
+    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
+    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
+    "NOUPDATEFILE": "Can't locate the update application, no update performed",
+    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
   },
   "FORM_LABELS": {
     "NAME": "Voer uw naam in",
@@ -62,8 +69,9 @@
     "EMBYUSERNAME": "Emby admin gebruikersnaam",
     "EMBYPASSWORD": "Emby administrator wachtwoord",
     "DURATIONINMINUTES": "Duur in minuten",
-    "TVDBAPI": "TheTVDB api key",
-    "CRON": "Cron string"
+    "TVDBAPI": "De api-sleutel van TheTVDB",
+    "CRON": "Cron-tekenreeks",
+    "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op.",
@@ -77,10 +85,11 @@
     "SHOWS": "Series",
     "SETTINGS": "Instellingen",
     "PLUGINS": "Plugins",
-    "JOBS": "Jobs",
+    "JOBS": "Taken",
     "SERVER": "Emby server",
     "LOGS": "Logs",
-    "ABOUT": "About"
+    "ABOUT": "Over",
+    "USERS": "Users"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -118,9 +127,9 @@
     "YOUNGESTADDED": "Jongste toegevoegd",
     "MOSTFEATUREDPERGENRE": "Meest aanbevolen acteur per genre",
     "DUPLICATEMOVIES": "Dubbele films",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "TOSHORTMOVIES": "Zeer korte films",
+    "NOPOSTER": "Films zonder een poster",
+    "NOIMDB": "Films zonder een IMDB-ID"
   },
   "SHOWS": {
     "TOTALSHOWS": "Totaal series",
@@ -138,18 +147,20 @@
     "CONTINUING": "voortzetten",
     "ENDED": "geëindigd"
   },
-  "CONFIGURATION": {
-    "SETTINGS": "Instellingen",
+  "SETTINGS": {
+    "TITLE": "Instellingen",
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby instellingen opgeslagen!",
+      "EMBY": "Emby settings saved!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!",
       "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail."
+      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
+      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
@@ -162,36 +173,71 @@
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
     },
     "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
       "AUTO": "Enable auto updates",
       "CHECK": "Check and update server now",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server."
+      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
+      "CURRENTVERSION": "Current version: {{version}}",
+      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "NOUPDATE": "No update available",
+      "NEWVERSION": "Version {{version}} available for download!"
+    }
+  },
+  "USERS": {
+    "ISADMIN": "Is administrator",
+    "ISHIDDEN": "Is hidden from login screen",
+    "ISDISABLED": "Is disabled",
+    "DELETED": "Deleted users",
+    "LASTACTIVE": "Last active",
+    "SORTING": {
+      "USERNAMEASC": "Username (A - Z)",
+      "USERNAMEDESC": "Username (Z - A)",
+      "LASTACTIVEASC": "Last active date (asc)",
+      "LASTACTIVEDESC": "Last active date (desc)"
+    },
+    "DETAILS": {
+      "TITLE": "Details for {{name}}"
+    },
+    "WATCHEDTABLE": {
+      "TITLE": "Title",
+      "TIME": "Time",
+      "WATCHED": "Watched",
+      "START": "Start",
+      "ACTION": "Action"
+    },
+    "STATS": {
+      "TOTALWATCHEDMOVIES": "Movies watched",
+      "TOTALWATCHEDEPISODES": "Episodes watched"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
+    "LASTRUNNOW": "Laatste run: zojuist",
+    "LASTRUN": "Laatst uitgevoerd",
+    "HOURS": "{{hours}} u(u)r(en)",
+    "MINUTES": "{{minutes}} minute(n)",
+    "SECONDS": "{{seconds}} seconde(n)",
+    "AND": "en",
+    "AGO": "geleden",
+    "FOR": "voor",
+    "BUTFAILED": "maar is gefaald na",
     "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
+    "MOMENT_AGO": "een moment",
+    "JOBLOGS": "Job logs",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
+      "STARTMEDIASYNC": "Start mediasynchronisatie",
+      "DATABASECLEANUPTITLE": "Database opruimen",
       "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
+      "OPENJOBPAGE": "Ga naar Taken pagina",
       "CHECKUPDATETITLE": "Check for new updates",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
     }
@@ -212,19 +258,23 @@
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
       "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "No users found",
+      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
     }
   },
   "LOADER": {
     "FETCHING": "Fetching statistics",
     "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Refresh page when update is done. (auto refresh not yet working, sorry)"
+    "UPDATINGSUB": "Page will refresh when the update is finished."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
     "MUSIC": "Muziek",
     "MUSICVIDEOS": "Muziekvideo 's",
     "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
+    "HOMEVIDEOS": "Home Video 's",
     "BOXSETS": "Boxsets",
     "BOOKS": "Boeken",
     "PHOTOS": "Foto’s",
@@ -235,10 +285,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Ga naar Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "JOBISRUNNING": "{{job}} taak wordt uitgevoerd",
+    "NOMISSEDPINGS": "Emby server is actief",
+    "ONEMISSEDPING": "Kon bij de laatste controle geen verbinding maken met Emby!",
+    "MOREMISSEDPINGS": "Kon geen verbinding maken met Emby na meerdere pogingen!"
   },
   "ABOUT": {
     "THANKS": {

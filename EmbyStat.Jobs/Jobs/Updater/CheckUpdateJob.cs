@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -14,14 +14,14 @@ namespace EmbyStat.Jobs.Jobs.Updater
     public class CheckUpdateJob : BaseJob, ICheckUpdateJob
     {
         private readonly IUpdateService _updateService;
-        private readonly IConfigurationRepository _configurationRepository;
+        private readonly ISettingsService _settingsService;
 
-        public CheckUpdateJob(IJobHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
-            IUpdateService updateService, IConfigurationRepository configurationRepository) 
-            : base(hubHelper, jobRepository, configurationService)
+        public CheckUpdateJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
+            ISettingsService settingsService, IUpdateService updateService) 
+            : base(hubHelper, jobRepository, settingsService)
         {
             _updateService = updateService;
-            _configurationRepository = configurationRepository;
+            _settingsService = settingsService;
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -31,30 +31,37 @@ namespace EmbyStat.Jobs.Jobs.Updater
 
         public override async Task RunJob()
         {
-            var settings = _configurationRepository.GetConfiguration();
-            LogInformation("Contacting Github now to see if new version is available.");
-            var update = await _updateService.CheckForUpdate(settings, new CancellationToken(false));
-            LogProgress(50);
-            if (update.IsUpdateAvailable && settings.AutoUpdate)
+            try
             {
-                LogInformation($"New version found: v{update.AvailableVersion}");
-                LogInformation($"Auto update is enabled so going to update the server now!");
-                await _updateService.UpdateServer();
+                await LogInformation("Contacting Github now to see if new version is available.");
+                var update = await _updateService.CheckForUpdate(Settings, new CancellationToken(false));
+                await LogProgress(20);
+                if (update.IsUpdateAvailable && Settings.AutoUpdate)
+                {
+                    await LogInformation($"New version found: v{update.AvailableVersion}");
+                    await LogInformation($"Auto update is enabled so going to update the server now!");
+                    await _settingsService.SetUpdateInProgressSetting(true);
+                    await HubHelper.BroadcastUpdateState(true);
+                    Task.WaitAll(_updateService.DownloadZip(update));
+                    await LogProgress(50);
+                    await _updateService.UpdateServer();
+                }
+                else if (update.IsUpdateAvailable)
+                {
+                    await LogInformation($"New version found: v{update.AvailableVersion}");
+                    await LogInformation("Auto updater is disabled, so going to end the job now.");
+                }
+                else
+                {
+                    await LogInformation("No new version available");
+                }
             }
-            else if (update.IsUpdateAvailable)
+            catch (Exception)
             {
-                LogInformation($"New version found: v{update.AvailableVersion}");
-                LogInformation("Auto updater is disabled, so going to end task now.");
+                await _settingsService.SetUpdateInProgressSetting(false);
+                await HubHelper.BroadcastUpdateState(false);
+                throw;
             }
-            else
-            {
-                LogInformation("No new version available");
-            }
-        }
-
-        public override void Dispose()
-        {
-
         }
     }
 }

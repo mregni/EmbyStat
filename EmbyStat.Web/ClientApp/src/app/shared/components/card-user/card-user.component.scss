@@ -1,0 +1,42 @@
+@import "../card/card.component";
+
+.mat-card {
+  cursor: pointer;
+  height: 100px;
+  padding: 0;
+  width: 320px;
+
+  .user-card-margin {
+    margin: 10px;
+  }
+}
+
+.card-flex-row {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+}
+
+.profile-image {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  height: 100px;
+  width: 100px;
+}
+
+.card-flex-column {
+  .name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .icon-container {
+    display: flex;
+    flex-direction: row;
+
+    fa-icon:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+}

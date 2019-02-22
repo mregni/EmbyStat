@@ -7,6 +7,9 @@
         public Updater Updater { get; set; }
         public Dirs Dirs { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
+        /// <summary>
+        /// Port number, is set dynamically when server is starting
+        /// </summary>
         public int Port { get; set; }
     }
 
@@ -24,6 +27,7 @@
         public string TempUpdateDir { get; set; }
         public string Updater { get; set; }
         public string Logs { get; set; }
+        public string Settings { get; set; }
     }
 
     public class ConnectionStrings

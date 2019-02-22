@@ -1,17 +1,9 @@
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "theme.scss";
-@import "app/styles/ball-scale-ripple-multiple.min.scss";
-@import "app/styles/ball-clip-rotate.min.scss";
-
-$grey-font-color: #888;
-$white-color: #fff;
-$normal-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-
-$small-size: 768px;
-$medium-size: 960px;
-$large-size: 1899px;
-
-$menu-height: 64px;
+@import "theme";
+@import "app/styles/vars";
+@import "app/styles/ball-scale-ripple-multiple.min";
+@import "app/styles/ball-clip-rotate.min";
+@import "app/styles//title-bar";
 
 html,
 body {
@@ -20,7 +12,7 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .content {
@@ -40,7 +32,7 @@ body {
 }
 
 .mat-typography a {
-  color: white;
+  color: $white;
 }
 
 .mat-list-item-content i {
@@ -55,21 +47,6 @@ body {
   width: 100%;
 }
 
-.title_bar {
-  display: flex;
-  flex: 1 1 auto;
-  height: 50px;
-  padding: 10px 20px;
-  background: #fff;
-  align-items: center;
-  box-shadow: $normal-box-shadow;
-
-  h2 {
-    padding: 0;
-    margin: 15px 0px;
-  }
-}
-
 .subtext-grey {
   font-style: italic;
   padding: 3px 3px 3px;
@@ -79,7 +56,7 @@ body {
 .subtext-white {
   font-style: italic;
   padding: 3px;
-  color: $white-color;
+  color: $white;
 }
 
 .subtext-grey-small {
@@ -97,22 +74,19 @@ body {
 .button-container {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end
-}
+  justify-content: flex-end;
 
-.button-container > button:last-child {
-  margin-left: 10px;
-}
-
-.button-container > a:last-child {
-  margin-left: 10px;
+  > button:last-child,
+  > a:last-child {
+    margin-left: 10px;
+  }
 }
 
 .toast__success {
   padding: 14px 14px 14px 24px !important;
 
   .mat-simple-snackbar-action {
-    color: green !important;
+    color: $green !important;
   }
 }
 
@@ -120,7 +94,7 @@ body {
   padding: 14px 14px 14px 24px !important;
 
   .mat-simple-snackbar-action {
-    color: orange !important;
+    color: $orange !important;
   }
 }
 
@@ -128,14 +102,25 @@ body {
   padding: 14px 14px 14px 24px !important;
 
   .mat-simple-snackbar-action {
-    color: red !important;
+    color: $dark-red !important;
   }
 }
 
 .text__accent {
   color: mat-color($mat-orange, A400);
+  font-weight: bold;
 }
 
 .text__warn {
   color: mat-color($mat-red, A700);
+  font-weight: bold;
+}
+
+.round-border {
+  border-radius: 4px;
+}
+
+.hint {
+  color: $hint-grey;
+  font-size: 75%;
 }

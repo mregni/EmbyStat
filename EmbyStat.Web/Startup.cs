@@ -4,8 +4,10 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
+using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Extentions;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
@@ -57,7 +59,6 @@ namespace EmbyStat.Web
 
             var settings = Configuration.Get<AppSettings>();
             SetupDirectories(settings);
-            RemoveVersionFiles();
 
             services
                 .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
@@ -88,9 +89,10 @@ namespace EmbyStat.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, IApplicationLifetime lifetime)
         {
             ApplicationBuilder = app;
+            AddDeviceIdToConfig();
 
-            lifetime.ApplicationStarted.Register(ResetAllJobs);
-            lifetime.ApplicationStopped.Register(ResetAllJobs);
+            lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
+            lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
 
             if (env.IsDevelopment())
             {
@@ -113,7 +115,6 @@ namespace EmbyStat.Web
                 app.UseHangfireDashboard("/hangfire",
                     new DashboardOptions
                     {
-                        
                         Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
                     });
             }
@@ -175,6 +176,19 @@ namespace EmbyStat.Web
             }
         }
 
+        private void PerformPostStartupFunctions()
+        {
+            RemoveVersionFiles();
+            ResetAllJobs();
+            ResetConfiguration();
+            SetEmbyClientConfiguration();
+        }
+
+        private void PerformPreShutdownFunctions()
+        {
+            ResetAllJobs();
+        }
+
         private void RemoveVersionFiles()
         {
             foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
@@ -187,6 +201,38 @@ namespace EmbyStat.Web
         {
             var jobService = ApplicationBuilder.ApplicationServices.GetService<IJobService>();
             jobService.ResetAllJobs();
+        }
+
+        private void ResetConfiguration()
+        {
+            var configurationService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
+            configurationService.SetUpdateInProgressSetting(false);
+        }
+
+        private void AddDeviceIdToConfig()
+        {
+            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
+            var userSettings = settingsService.GetUserSettings();
+
+            if (userSettings.Id == null)
+            {
+                userSettings.Id = Guid.NewGuid();
+                settingsService.SaveUserSettings(userSettings);
+            }
+        }
+
+        private void SetEmbyClientConfiguration()
+        {
+            var embyClient = ApplicationBuilder.ApplicationServices.GetService<IEmbyClient>();
+            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
+            var settings = settingsService.GetUserSettings();
+
+            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+            if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+            {
+                embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
+            }
+
         }
     }
 }
