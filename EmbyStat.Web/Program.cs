@@ -98,7 +98,11 @@ namespace EmbyStat.Web
             if (IsOnlineExceptionLoggingEnabled())
             {
                 loggerConfiguration.WriteTo.Sink(new RollbarSink(
-                    new RollbarConfig("204e4b6617394a33bdde354094490b04") {LogLevel = ErrorLevel.Error}, null,
+                    new RollbarConfig("204e4b6617394a33bdde354094490b04")
+                    {
+                        LogLevel = ErrorLevel.Error,
+                        Environment = "rollbarENV"
+                    }, null,
                     new CultureInfo("en-US")));
             }
 
