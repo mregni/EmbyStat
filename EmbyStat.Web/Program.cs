@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using CommandLine;
 using EmbyStat.Common;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Repositories.Migrations;
 using FluentMigrator.Runner;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Rollbar;
 using Rollbar.PlugIns.Serilog;
 using Serilog;
@@ -82,7 +84,7 @@ namespace EmbyStat.Web
                 Directory.CreateDirectory("Logs");
             }
 
-            Log.Logger = new LoggerConfiguration()
+            var loggerConfiguration = new LoggerConfiguration()
 #if DEBUG
                 .MinimumLevel.Debug()
 #else
@@ -91,9 +93,16 @@ namespace EmbyStat.Web
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder().WithDefaultDestructurers().WithRootName("Exception"))
                 .Enrich.FromLogContext()
-                .WriteTo.File(Path.Combine("Logs", "log.txt"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                .WriteTo.Sink(new RollbarSink(new RollbarConfig("204e4b6617394a33bdde354094490b04") { LogLevel = ErrorLevel.Error }, null, new CultureInfo("en-US")))
-                .CreateLogger();
+                .WriteTo.File(Path.Combine("Logs", "log.txt"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
+
+            if (IsOnlineExceptionLoggingEnabled())
+            {
+                loggerConfiguration.WriteTo.Sink(new RollbarSink(
+                    new RollbarConfig("204e4b6617394a33bdde354094490b04") {LogLevel = ErrorLevel.Error}, null,
+                    new CultureInfo("en-US")));
+            }
+
+            Log.Logger = loggerConfiguration.CreateLogger();
         }
 
         private static void SetupDatabase(IWebHost host)
@@ -138,6 +147,18 @@ namespace EmbyStat.Web
                 Log.Error(e, "Can't start server!");
                 throw e;
             }
+        }
+
+        private static bool IsOnlineExceptionLoggingEnabled()
+        {
+            var dir = Path.Combine("Settings", "usersettings.json");
+            if (File.Exists(dir))
+            {
+                var settings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
+                return settings.EnableRollbarLogging;
+            }
+
+            return false;
         }
     }
 }
