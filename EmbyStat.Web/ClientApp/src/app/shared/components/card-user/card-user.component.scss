@@ -12,16 +12,16 @@
 }
 
 .card-flex-row {
-  flex: 0 0 100%;
   display: flex;
+  flex: 0 0 100%;
   flex-direction: row;
 }
 
-img.profile {
-  width: 100px;
-  height: 100px;
-  border-top-left-radius: 4px;
+.profile-image {
   border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  height: 100px;
+  width: 100px;
 }
 
 .card-flex-column {

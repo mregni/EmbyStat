@@ -39,10 +39,10 @@
 .form-container {
   display: flex;
   flex-direction: column;
-}
 
-.form-container > * {
-  width: 100%;
+  > * {
+    width: 100%;
+  }
 }
 
 .button-container {
@@ -50,8 +50,8 @@
   flex-direction: row;
   justify-content: flex-end;
   margin-bottom: -10px !important;
-}
 
-.button-container > button:last-child {
-  margin-right: 10px;
+  > button:last-child {
+    margin-right: 10px;
+  }
 }

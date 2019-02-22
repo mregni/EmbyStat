@@ -11,13 +11,11 @@ namespace EmbyStat.Services
     public class PersonService : IPersonService
     {
         private readonly IPersonRepository _personRepository;
-        private readonly ISettingsService _settingsService;
         private readonly IEmbyClient _embyClient;
 
-        public PersonService(IPersonRepository personRepository, ISettingsService settingsService, IEmbyClient embyClient)
+        public PersonService(IPersonRepository personRepository, IEmbyClient embyClient)
         {
             _personRepository = personRepository;
-            _settingsService = settingsService;
             _embyClient = embyClient;
         }
 

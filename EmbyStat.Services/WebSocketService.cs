@@ -10,7 +10,7 @@ using Serilog;
 
 namespace EmbyStat.Services
 {
-    public class WebSocketService : IWebSocketService
+    public class WebSocketService : IWebSocketService, IDisposable
     {
         private readonly ISettingsService _settingsService;
         private readonly IEventService _eventService;
@@ -32,7 +32,7 @@ namespace EmbyStat.Services
             return Task.CompletedTask;
         }
 
-        private void TryToConnect(object state)
+        private async void TryToConnect(object state)
         {
             if (!_webSocketApi.IsWebSocketOpenOrConnecting)
             {
@@ -42,7 +42,7 @@ namespace EmbyStat.Services
                     try
                     {
                         var deviceId = _settingsService.GetUserSettings().Id.ToString();
-                        _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
+                        await _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
                         _webSocketApi.OnWebSocketConnected += _client_OnWebSocketConnected;
                         _webSocketApi.OnWebSocketClosed += _webSocketApi_OnWebSocketClosed;
                     }
@@ -61,8 +61,8 @@ namespace EmbyStat.Services
 
         private void _webSocketApi_OnWebSocketClosed(object sender, EventArgs e)
         {
-            _webSocketApi.SessionsUpdated -= _webSocketApi_SessionsUpdated;
-            _webSocketApi.UserDataChanged -= _webSocketApi_UserDataChanged;
+            _webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
+            _webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
 
             _timer.Change(5000, 5000);
         }
@@ -72,16 +72,16 @@ namespace EmbyStat.Services
             await _webSocketApi.StopReceivingSessionUpdates();
             await _webSocketApi.StartReceivingSessionUpdates(10000);
 
-            _webSocketApi.SessionsUpdated += _webSocketApi_SessionsUpdated;
-            _webSocketApi.UserDataChanged += _webSocketApi_UserDataChanged;
+            _webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
+            _webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
         }
 
-        private void _webSocketApi_UserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
+        private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
         {
             Log.Information("User data changed");
         }
 
-        private async void _webSocketApi_SessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
+        private async void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
         {
             var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
             await _eventService.ProcessSessions(sessions);
@@ -90,6 +90,11 @@ namespace EmbyStat.Services
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             await _webSocketApi.CloseWebSocket();
+        }
+
+        public void Dispose()
+        {
+            _timer?.Dispose();
         }
     }
 }

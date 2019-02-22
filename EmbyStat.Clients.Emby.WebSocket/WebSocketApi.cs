@@ -37,7 +37,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             _clientWebSocket = clientWebSocket;
         }
 
-        public async void OpenWebSocket(string url, string accessToken, string deviceId)
+        public async Task OpenWebSocket(string url, string accessToken, string deviceId)
         {
             if (!IsWebSocketOpenOrConnecting)
             {
@@ -70,7 +70,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
 
                     _clientWebSocket.OnReceiveBytes = OnMessageReceived;
                     _clientWebSocket.OnReceive = OnMessageReceived;
-                    _clientWebSocket.Closed += _clientWebSocket_Closed;
+                    _clientWebSocket.Closed += ClientWebSocketClosed;
 
                     OnWebSocketConnected?.Invoke(this, EventArgs.Empty);
                 }
@@ -81,7 +81,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             }
         }
 
-        private void _clientWebSocket_Closed(object sender, EventArgs e)
+        private void ClientWebSocketClosed(object sender, EventArgs e)
         {
             Log.Warning("Web socket connection closed.");
 
@@ -107,23 +107,6 @@ namespace EmbyStat.Clients.Emby.WebSocket
 
                 throw;
             }
-        }
-
-        private Task SendContextMessageAsync(string itemType, string itemId, string itemName, string context, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var vals = new List<string>
-                {
-                    itemType ?? string.Empty, 
-                    itemId ?? string.Empty, 
-                    itemName ?? string.Empty
-                };
-
-            if (!string.IsNullOrEmpty(context))
-            {
-                vals.Add(context);
-            }
-
-            return SendWebSocketMessage("Context", string.Join("|", vals.ToArray()), cancellationToken);
         }
 
         public Task StartReceivingSessionUpdates(int intervalMs)

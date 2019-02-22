@@ -32,7 +32,7 @@ namespace EmbyStat.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
 
-        public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService, 
+        public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService,
             ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
         {
             _embyClient = embyClient;
@@ -198,6 +198,7 @@ namespace EmbyStat.Services
                     case PlayType.Episode:
                         yield return CreateUserMediaViewFromEpisode(play);
                         break;
+                    default: break;
                 }
                 //if media is null this means a user has watched something that is not yet in our DB
                 //TODO: try starting a sync here
@@ -243,7 +244,7 @@ namespace EmbyStat.Services
             var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
             await _embyRepository.MarkDeviceAsDeleted(removedDevices);
         }
-        
+
         #endregion
 
         private UserMediaView CreateUserMediaViewFromMovie(Play play)
@@ -290,7 +291,7 @@ namespace EmbyStat.Services
             var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
             var watchedTime = endedPlaying - startedPlaying;
-            
+
             var device = _embyRepository.GetDeviceById(play.Session.DeviceId);
 
             return new UserMediaView

@@ -17,7 +17,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         event EventHandler<GenericEventArgs<JArray>> SessionsUpdated;
         event EventHandler<EventArgs> RestartRequired;
 
-        void OpenWebSocket(string url, string accessToken, string deviceId);
+        Task OpenWebSocket(string url, string accessToken, string deviceId);
         Task CloseWebSocket();
         Task StartReceivingSessionUpdates(int intervalMs);
         Task StopReceivingSessionUpdates();

@@ -10,7 +10,11 @@ $dark-red: #ff0000;
 $orange: #ffa500;
 $green: #008000;
 
-$normal-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+$shadow-light: rgba(0,0,0,0.12);
+$shadow-medium: rgba(0,0,0,0.14);
+$shadow-dark: rgba(0,0,0,0.2);
+
+$normal-box-shadow: 0 3px 1px -2px $shadow-dark, 0 2px 2px 0 $shadow-medium, 0 1px 5px 0 $shadow-light;
 
 $small-size: 768px;
 $medium-size: 960px;
