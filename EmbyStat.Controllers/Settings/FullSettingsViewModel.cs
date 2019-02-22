@@ -20,7 +20,8 @@ namespace EmbyStat.Controllers.Settings
         public EmbySettingsViewModel Emby { get; set; }
         public TvdbSettingsViewModel Tvdb { get; set; }
         public string Version { get; set; }
-
+        public bool EnableRollbarLogging { get; set; }
+        
         public class EmbySettingsViewModel
         {
             public string UserId { get; set; }
