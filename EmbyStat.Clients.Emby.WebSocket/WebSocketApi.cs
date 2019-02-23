@@ -189,13 +189,13 @@ namespace EmbyStat.Clients.Emby.WebSocket
                     Argument = JsonConvert.DeserializeObject<Common.Models.WebSocketMessage<JArray>>(json).Data
                 });
             }
-            else if (string.Equals(messageType, "UserDataChanged"))
-            {
-                FireEvent(UserDataChanged, this, new GenericEventArgs<JArray>
-                {
-                    Argument = JsonConvert.DeserializeObject<Common.Models.WebSocketMessage<JArray>>(json).Data
-                });
-            }
+            //else if (string.Equals(messageType, "UserDataChanged"))
+            //{
+            //    FireEvent(UserDataChanged, this, new GenericEventArgs<JArray>
+            //    {
+            //        Argument = JsonConvert.DeserializeObject<Common.Models.WebSocketMessage<JArray>>(json).Data
+            //    });
+            //}
         }
         public bool IsWebSocketOpenOrConnecting => _clientWebSocket.State == WebSocketState.Open || _clientWebSocket.State == WebSocketState.Connecting;
 
