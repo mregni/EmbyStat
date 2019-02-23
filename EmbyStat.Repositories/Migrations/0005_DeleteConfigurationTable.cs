@@ -86,6 +86,16 @@ namespace EmbyStat.Repositories.Migrations
             File.WriteAllText(dir, strJson);
 
             Delete.Table("Configuration");
+
+            if (File.Exists("appsettings.json"))
+            {
+                File.Delete("appsettings.json");
+            }
+
+            if (File.Exists("appsettings.Development.json"))
+            {
+                File.Delete("appsettings.Development.json");
+            }
         }
 
         public override void Down()

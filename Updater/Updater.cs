@@ -85,8 +85,8 @@ namespace Updater
 
         private void StartEmbyStat()
         {
-            Log.Debug("Starting EmbyStat");
-            var processName = _options.ProcessName;
+            Log.Information("Starting EmbyStat");
+            var processName = _options.ProcessName.Replace(".Web", "");
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -106,9 +106,9 @@ namespace Updater
                 proc.Start();
             }
 
-            Log.Debug($"EmbyStat started, now exiting");
-            Log.Debug($"Working dir: {_options.ApplicationPath} (Application Path)");
-            Log.Debug($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
+            Log.Information($"EmbyStat started, now exiting");
+            Log.Information($"Working dir: {_options.ApplicationPath} (Application Path)");
+            Log.Information($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
 
             Environment.Exit(0);
         }
