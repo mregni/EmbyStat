@@ -1,5 +1,5 @@
 #installer env image
-FROM mcr.microsoft.com/windows/nanoserver:1809 AS installer-env
+FROM mcr.microsoft.com/windows/nanoserver:latest AS installer-env
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 ADD https://nodejs.org/dist/v8.9.4/node-v8.9.4-win-x64.zip nodejs.zip
