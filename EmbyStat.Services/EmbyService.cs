@@ -212,6 +212,11 @@ namespace EmbyStat.Services
         {
             var server = await _embyClient.GetServerInfoAsync();
 
+            if (string.IsNullOrEmpty(server.LocalAddress))
+            {
+                server.LocalAddress = string.Empty;
+            }
+
             _embyRepository.AddOrUpdateServerInfo(server);
         }
 
