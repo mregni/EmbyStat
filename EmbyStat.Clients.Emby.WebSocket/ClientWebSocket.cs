@@ -13,6 +13,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         private WebSocket4Net.WebSocket _socket;
         public WebSocketState State => _socket?.State ?? WebSocketState.Closed;
         public event EventHandler Closed;
+        public event EventHandler Connected;
         public Action<byte[]> OnReceiveBytes { get; set; }
         public Action<string> OnReceive { get; set; }
         
@@ -24,11 +25,15 @@ namespace EmbyStat.Clients.Emby.WebSocket
             {
                 _socket = new WebSocket4Net.WebSocket(url);
 
-                _socket.MessageReceived += websocket_MessageReceived;
-                _socket.Open();
-
-                _socket.Opened += (sender, args) => taskCompletionSource.TrySetResult(true);
+                _socket.MessageReceived += WebsocketMessageReceived;
+                _socket.Opened += (sender, args) =>
+                {
+                    Connected?.Invoke(this, EventArgs.Empty);
+                    taskCompletionSource.TrySetResult(true);
+                };
                 _socket.Closed += SocketClosed;
+
+                _socket.Open();
             }
             catch (Exception ex)
             {
@@ -53,7 +58,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             Closed?.Invoke(this, EventArgs.Empty);
         }
 
-        void websocket_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void WebsocketMessageReceived(object sender, MessageReceivedEventArgs e)
         {
             OnReceive?.Invoke(e.Message);
         }
