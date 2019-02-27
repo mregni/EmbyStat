@@ -64,15 +64,12 @@ namespace EmbyStat.Clients.Emby.WebSocket
                 try { 
                     Log.Information($"Connecting to {url}");
 
-                    await _clientWebSocket.ConnectAsync(url).ConfigureAwait(false);
-
-                    Log.Information("Connected to {0}", url);
-
                     _clientWebSocket.OnReceiveBytes = OnMessageReceived;
                     _clientWebSocket.OnReceive = OnMessageReceived;
                     _clientWebSocket.Closed += ClientWebSocketClosed;
+                    _clientWebSocket.Connected += ClientWebSocketConnected;
 
-                    OnWebSocketConnected?.Invoke(this, EventArgs.Empty);
+                    await _clientWebSocket.ConnectAsync(url);                
                 }
                 catch (Exception e)
                 {
@@ -81,11 +78,16 @@ namespace EmbyStat.Clients.Emby.WebSocket
             }
         }
 
+        private void ClientWebSocketConnected(object sender, EventArgs e)
+        {
+            OnWebSocketConnected?.Invoke(this, EventArgs.Empty);
+            Log.Information("Web socket connection opened.");
+        }
+
         private void ClientWebSocketClosed(object sender, EventArgs e)
         {
-            Log.Warning("Web socket connection closed.");
-
             OnWebSocketClosed?.Invoke(this, EventArgs.Empty);
+            Log.Warning("Web socket connection closed.");
         }
 
         private Task SendWebSocketMessage<T>(string messageName, T data)
@@ -96,7 +98,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         private async Task SendWebSocketMessage<T>(string messageName, T data, CancellationToken cancellationToken)
         {
             var bytes = GetMessageBytes(messageName, data);
-
+            Log.Information(messageName);
             try
             {
                 await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);

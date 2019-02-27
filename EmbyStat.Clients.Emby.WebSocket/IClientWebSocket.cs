@@ -9,6 +9,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
     public interface IClientWebSocket : IDisposable
     {
         event EventHandler Closed;
+        event EventHandler Connected;
         Action<byte[]> OnReceiveBytes { get; set; }
         Action<string> OnReceive { get; set; }
         WebSocketState State { get; }
