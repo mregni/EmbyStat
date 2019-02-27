@@ -256,8 +256,8 @@
       "BODY": "La tâche de synchronisation des médias s'exécute en arrière-plan. Pour cette raison, toutes les pages de statistiques sont bloquées, car les calculs seraient complètement faux tant que la synchronisation est en cours d'exécution."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Ici</a> vous pouvez trouver plus d'informations sur la façon de formater une chaîne CRON. Seuls les nombres *, / et - sont autorisés."
+      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
     },
     "NOUSERSFOUND": {
       "TITLE": "No users found",
