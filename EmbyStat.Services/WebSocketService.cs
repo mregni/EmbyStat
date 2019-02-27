@@ -28,7 +28,6 @@ namespace EmbyStat.Services
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(TryToConnect, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
-
             return Task.CompletedTask;
         }
 
@@ -42,9 +41,12 @@ namespace EmbyStat.Services
                     try
                     {
                         var deviceId = _settingsService.GetUserSettings().Id.ToString();
-                        await _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
+
                         _webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
                         _webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
+                        _webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
+                        _webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
+                        await _webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
                     }
                     catch (Exception e)
                     {
@@ -63,6 +65,8 @@ namespace EmbyStat.Services
         {
             _webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
             _webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
+            _webSocketApi.OnWebSocketConnected -= ClientOnWebSocketConnected;
+            _webSocketApi.OnWebSocketClosed -= WebSocketApiOnWebSocketClosed;
 
             _timer.Change(5000, 5000);
         }
@@ -71,9 +75,6 @@ namespace EmbyStat.Services
         {
             await _webSocketApi.StopReceivingSessionUpdates();
             await _webSocketApi.StartReceivingSessionUpdates(10000);
-
-            _webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
-            _webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
         }
 
         private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
