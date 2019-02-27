@@ -9,6 +9,7 @@ import { EmbyStatus } from '../models/emby/emby-status';
 import { ServerInfo } from '../models/emby/server-info';
 import { EmbyPlugin } from '../models/emby/emby-plugin';
 import { EmbyUser } from '../models/emby/emby-user';
+import { UserMediaView } from '../models/session/user-media-view';
 
 @Injectable()
 export class EmbyService {
@@ -47,5 +48,9 @@ export class EmbyService {
 
   getUserById(id: string): Observable<EmbyUser> {
     return this.http.get<EmbyUser>(this.getEmbyUsersUrl + '/' + id);
+  }
+
+  getUserViewsByUserId(id: string): Observable<UserMediaView[]> {
+    return this.http.get<UserMediaView[]>(this.getEmbyUsersUrl + '/' + id + "/views");
   }
 }

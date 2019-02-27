@@ -1,0 +1,53 @@
+<div class="title-bar title-bar-flex-row">
+  <div class="title-bar-left-content" *ngIf="username !== undefined">
+    <h2>{{ 'USERS.DETAILS.TITLE' | translate: { name: username } }}</h2>
+  </div>
+</div>
+<div class="content" *ngIf="views$ | async as views">
+  <mat-card class="white">
+    <mat-card-content>
+      <h3 class="card-title">Last watched items</h3>
+      <mat-table [dataSource]="views" class="round-border">
+        <ng-container matColumnDef="logo">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <img class="device-logo" src="{{element.deviceLogo}}" />
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TITLE' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.name}}
+            <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)"></fa-icon>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="duration">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TIME' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{getPlayedTime(element.watchedTime)}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="start">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.WATCHED' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.watchedPercentage}}%
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="percentage">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.START' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.startedWatching | amFromUtc | amLocal | amDateFormat: 'HH:mm DD/MM'}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef class="action-cell">{{ 'USERS.WATCHEDTABLE.ACTION' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="action-cell">
+            <a mat-raised-button href="{{getEmbyAddress()}}/web/index.html#!/itemdetails.html?id={{element.id}}" target="_blank" color="accent">{{ 'COMMON.OPEN' | translate }}</a>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
+</div>
