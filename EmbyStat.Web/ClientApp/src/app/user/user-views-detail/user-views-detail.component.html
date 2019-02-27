@@ -1,8 +1,3 @@
-<div class="title-bar title-bar-flex-row">
-  <div class="title-bar-left-content" *ngIf="username !== undefined">
-    <h2>{{ 'USERS.DETAILS.TITLE' | translate: { name: username } }}</h2>
-  </div>
-</div>
 <div class="content" *ngIf="views$ | async as views">
   <mat-card class="white">
     <mat-card-content>

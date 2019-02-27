@@ -1,0 +1,15 @@
+@import "../../../styles";
+
+.content {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+@media only screen and (max-width: $large-size) {
+  .content {
+    flex-direction: column;
+  }
+}

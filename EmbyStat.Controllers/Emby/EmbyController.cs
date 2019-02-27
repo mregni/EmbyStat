@@ -121,6 +121,14 @@ namespace EmbyStat.Controllers.Emby
             return Ok(mappedUser);
         }
 
+        [HttpGet]
+        [Route("users/ids")]
+        public IActionResult GetUserIdList()
+        {
+            var users = _embyService.GetAllUsers();
+            return Ok(_mapper.Map<IList<UserIdViewModel>>(users));
+        }
+        
         #endregion
     }
 }

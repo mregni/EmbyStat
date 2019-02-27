@@ -87,6 +87,8 @@
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\user\models\user-id.ts" />
+    <None Remove="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -127,11 +129,14 @@
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\server\models\" />
     <Folder Include="ClientApp\src\app\server\state\" />
+    <Folder Include="ClientApp\src\app\user\models\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
