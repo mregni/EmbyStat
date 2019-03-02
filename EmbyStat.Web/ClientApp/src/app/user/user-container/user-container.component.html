@@ -1,25 +1,17 @@
 <div>
   <div class="title-bar title-bar-flex-row">
     <div class="title-bar-left-content">
-      <!--<h2>{{ 'USERS.DETAILS.TITLE' | translate: { name: user.name } }}</h2>-->
-      <mat-select (selectionChange)="onUserSelectionChanged($event)" [(ngModel)]="selectedUser">
+      <mat-select (selectionChange)="onUserSelectionChanged($event)" [(ngModel)]="selectedUserId">
         <mat-option [value]="user.id" *ngFor="let user of userIds$ | async">{{user.name}}</mat-option>
       </mat-select>
-      /
-      <mat-select (selectionChange)="onPageSelectionChanged($event)">
-        <mat-option [value]="">Details</mat-option>
-        <mat-option [value]="views">User view details</mat-option>
+      <div class="separator">/</div>
+      <mat-select (selectionChange)="onPageSelectionChanged($event)" [(ngModel)]="selectedPage">
+        <mat-option value="">Details</mat-option>
+        <mat-option value="views">User view details</mat-option>
       </mat-select>
     </div>
   </div>
-  <div *ngIf="selectedUser != undefined">
+  <div *ngIf="selectedUserId != undefined">
     <router-outlet></router-outlet>
   </div>
 </div>
-
-<!--
-
-- Hoe navigeren tussen 2 child components zonder hard refresh
-- 'router-outlet' is not a known element
-
--->

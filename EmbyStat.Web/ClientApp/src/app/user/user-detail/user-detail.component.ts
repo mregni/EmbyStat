@@ -27,6 +27,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
     this.userService.user.subscribe((user: EmbyUser) => {
+      console.log(user);
       this.user = user;
     });
   }

@@ -8,6 +8,23 @@
   margin: 0;
 }
 
+.title-bar-left-content {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+
+  mat-select {
+    width: 150px;
+  }
+
+  .separator {
+    font-size: 2em;
+    line-height: 0.6em;
+    font-weight: bold;
+    margin: 0 8px;
+  }
+}
+
 @media only screen and (max-width: $large-size) {
   .content {
     flex-direction: column;
