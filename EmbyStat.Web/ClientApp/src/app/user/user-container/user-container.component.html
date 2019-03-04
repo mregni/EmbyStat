@@ -10,6 +10,9 @@
         <mat-option value="views">User view details</mat-option>
       </mat-select>
     </div>
+    <div class="title-bar-right-content">
+      <a mat-raised-button routerLink="/users" routerLinkActive="active" color="accent">{{ 'USERS.TOOVERVIEW' | translate }}</a>
+    </div>
   </div>
   <div *ngIf="selectedUserId != undefined">
     <router-outlet></router-outlet>
