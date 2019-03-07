@@ -32,7 +32,10 @@
         <ng-container matColumnDef="logo">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <img class="device-logo" src="{{element.deviceLogo}}" />
+            <img class="device-logo" src="{{element.deviceLogo}}" *ngIf="element.deviceLogo.length !== 0; else NoDevice" />
+            <ng-template #NoDevice>
+              <img class="device-logo" src="../../../../assets/images/no-device.png" />
+            </ng-template>
           </mat-cell>
         </ng-container>
         <ng-container matColumnDef="name">
