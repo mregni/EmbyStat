@@ -29,9 +29,8 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
     private readonly settingsFacade: SettingsFacade) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
-    this.paramSub = this.activatedRoute.params.subscribe(params => {
+    this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
       const id = params['id'];
-      this.username = params['username'];
       if (!!id) {
         this.views$ = this.embyService.getUserViewsByUserId(id);
       } else {

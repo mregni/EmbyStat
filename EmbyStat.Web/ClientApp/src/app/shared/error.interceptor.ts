@@ -14,9 +14,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(catchError((err, caught) => {
       const toaster = this.injector.get(ToastService);
-      const error = JSON.parse(err.error);
 
       if (err.status === 500) {
+        const error = JSON.parse(err.error);
+
         if (error.IsError) {
           toaster.pushError('EXCEPTIONS.' + error.Message);
         } else {
