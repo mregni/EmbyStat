@@ -10,11 +10,11 @@ import { EmbyUser } from '../../shared/models/emby/emby-user';
 import { NoUsersFoundDialogComponent } from '../../shared/dialogs/no-users-found-dialog/no-users-found-dialog.component'
 
 @Component({
-  selector: 'app-user-overview',
-  templateUrl: './user-overview.component.html',
-  styleUrls: ['./user-overview.component.scss']
+  selector: 'app-users-overview',
+  templateUrl: './users-overview.component.html',
+  styleUrls: ['./users-overview.component.scss']
 })
-export class UserOverviewComponent implements OnInit, OnDestroy {
+export class UsersOverviewComponent implements OnInit, OnDestroy {
   private usersSub: Subscription;
   private transSub: Subscription;
 
@@ -66,7 +66,7 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
   }
 
   navigateToUser(id: any) {
-    this.router.navigate(['users/' + id]);
+    this.router.navigate(['user/' + id]);
   }
 
   ngOnDestroy() {

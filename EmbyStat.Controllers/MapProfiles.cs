@@ -60,6 +60,7 @@ namespace EmbyStat.Controllers
 	        CreateMap<LogFile, LogFileViewModel>();
 	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
+            CreateMap<User, UserIdViewModel>();
             CreateMap<User, EmbyUserOverviewViewModel>();
             CreateMap<User, EmbyUserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();

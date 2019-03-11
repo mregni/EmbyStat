@@ -1,41 +1,12 @@
-<div class="content">
-  <mat-card class="white" *ngIf="user !== undefined">
-    <mat-card-content>
-      <div class="card-flex-row">
-        <div>
-          <img class="profile" *ngIf="user.primaryImageTag !== ''; else noImage" src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
-          <ng-template #noImage>
-            <img class="profile-image" src="../../../../assets/images/no-profile.png" />
-          </ng-template>
-        </div>
-        <div class="card-flex-column card-margin">
-          <div class="name">{{user.name}}</div>
-          <div *ngIf="user.lastActivityDate">{{ 'USERS.LASTACTIVE' | translate }}: {{user.lastActivityDate | amLocal | amDateFormat:'DD/MM/YY HH:mm'}}</div>
-          <div *ngIf="user.lastActivityDate == undefined">{{ 'USERS.LASTACTIVE' | translate }}: {{ 'COMMON.NEVER' | translate }}</div>
-          <div class="icon-container">
-            <fa-icon class="fa-lg" *ngIf="user.isAdministrator" icon="user-tie" matTooltip="{{ 'USERS.ISADMIN' | translate }}" position="below"></fa-icon>
-            <fa-icon class="fa-lg" *ngIf="user.isDisabled" icon="user-lock" matTooltip="{{ 'USERS.ISDISABLED' | translate }}" position="below"></fa-icon>
-            <fa-icon class="fa-lg" *ngIf="user.isHidden" icon="eye-slash" matTooltip="{{ 'USERS.ISHIDDEN' | translate }}" position="below"></fa-icon>
-          </div>
-        </div>
-      </div>
-      <div class="card-flex-row card-margin">
-        <app-card-number [card]="user.viewedMovieCount"></app-card-number>
-        <app-card-number [card]="user.viewedEpisodeCount"></app-card-number>
-      </div>
-    </mat-card-content>
-  </mat-card>
+<div class="content" *ngIf="views$ | async as views">
   <mat-card class="white">
     <mat-card-content>
       <h3 class="card-title">Last watched items</h3>
-      <mat-table [dataSource]="user.lastWatchedMedia" class="round-border">
+      <mat-table [dataSource]="views" class="round-border">
         <ng-container matColumnDef="logo">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <img class="device-logo" src="{{element.deviceLogo}}" *ngIf="element.deviceLogo.length !== 0; else NoDevice" />
-            <ng-template #NoDevice>
-              <img class="device-logo" src="../../../../assets/images/no-device.png" />
-            </ng-template>
+            <img class="device-logo" src="{{element.deviceLogo}}" />
           </mat-cell>
         </ng-container>
         <ng-container matColumnDef="name">

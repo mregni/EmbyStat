@@ -1,0 +1,32 @@
+﻿@import "../../../styles";
+
+.content {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.title-bar-left-content {
+  align-content: flex-start;
+  display: flex;
+  flex-direction: row;
+
+  mat-select {
+    width: 150px;
+  }
+
+  .separator {
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 0.6em;
+    margin: 0 8px;
+  }
+}
+
+@media only screen and (max-width: $large-size) {
+  .content {
+    flex-direction: column;
+  }
+}

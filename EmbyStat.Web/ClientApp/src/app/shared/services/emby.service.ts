@@ -9,6 +9,8 @@ import { EmbyStatus } from '../models/emby/emby-status';
 import { ServerInfo } from '../models/emby/server-info';
 import { EmbyPlugin } from '../models/emby/emby-plugin';
 import { EmbyUser } from '../models/emby/emby-user';
+import { UserMediaView } from '../models/session/user-media-view';
+import { UserId } from '../models/user-id';
 
 @Injectable()
 export class EmbyService {
@@ -19,6 +21,8 @@ export class EmbyService {
   private getEmbyStatusUrl = this.baseUrl + '/server/status';
   private getPluginsUrl = this.baseUrl + '/plugins';
   private getEmbyUsersUrl = this.baseUrl + '/users';
+  private getEmbyUserIdsUrl = this.getEmbyUsersUrl + '/ids';
+
   constructor(private http: HttpClient) { }
 
   getEmbyToken(login: EmbyLogin): Observable<EmbyToken> {
@@ -47,5 +51,13 @@ export class EmbyService {
 
   getUserById(id: string): Observable<EmbyUser> {
     return this.http.get<EmbyUser>(this.getEmbyUsersUrl + '/' + id);
+  }
+
+  getUserIdList(): Observable<UserId[]> {
+    return this.http.get<UserId[]>(this.getEmbyUserIdsUrl);
+  }
+
+  getUserViewsByUserId(id: string): Observable<UserMediaView[]> {
+    return this.http.get<UserMediaView[]>(this.getEmbyUsersUrl + '/' + id + "/views");
   }
 }

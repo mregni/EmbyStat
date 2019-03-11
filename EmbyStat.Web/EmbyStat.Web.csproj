@@ -40,25 +40,31 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\dist\**" />
+    <Compile Remove="ClientApp\src\app\activity\**" />
     <Compile Remove="ClientApp\src\app\components\**" />
+    <Compile Remove="ClientApp\src\app\user\models\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\dist\**" />
+    <Content Remove="ClientApp\src\app\activity\**" />
     <Content Remove="ClientApp\src\app\components\**" />
+    <Content Remove="ClientApp\src\app\user\models\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\activity\**" />
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\user\models\**" />
     <None Remove="ClientApp\dist\**" />
+    <None Remove="ClientApp\src\app\activity\**" />
     <None Remove="ClientApp\src\app\components\**" />
+    <None Remove="ClientApp\src\app\user\models\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\about\state\actions.about.ts" />
     <None Remove="ClientApp\src\app\about\state\facade.about.ts" />
-    <None Remove="ClientApp\src\app\activity\models\activity.ts" />
-    <None Remove="ClientApp\src\app\activity\state\facade.activity.ts" />
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
@@ -87,6 +93,7 @@
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,8 +110,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\about\state\actions.about.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\about\state\facade.about.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\activity\models\activity.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\activity\state\facade.activity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\settings\state\actions.settings.ts" />
@@ -127,6 +132,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -137,6 +144,12 @@
 
   <ItemGroup>
     <None Include="ClientApp\src\app\show\show-overview\show-overview.component.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Settings\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

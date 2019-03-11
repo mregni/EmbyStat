@@ -59,6 +59,7 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     MomentModule,
     NgxChartsModule,
     FontAwesomeModule,
+    RouterModule,
     ReactiveFormsModule,
     FormsModule,
     LanguageModule,

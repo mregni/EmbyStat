@@ -44,7 +44,6 @@ namespace EmbyStat.Repositories.Migrations
             dbConnection.Execute("COMMIT;");
 
             dbConnection.Close();
-
         }
 
         public override void Down()
