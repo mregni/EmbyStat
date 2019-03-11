@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -210,7 +210,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                 if (!shows.Any())
                 {
-                    await LogInformation("No shows found for this library. Moving on.");
+                    await LogInformation($"No shows found for library {rootItem.Name}.");
                     continue;
                 }
 

@@ -1,34 +1,41 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 
+import { EmbyService } from '../../shared/services/emby.service';
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { Settings } from '../../settings/models/settings';
 import { ConfigHelper } from '../../shared/helpers/configHelper';
-import { EmbyUser } from '../../shared/models/emby/emby-user';
-
-import { UserService } from '../services/user.service';
+import { UserMediaView } from '../../shared/models/session/user-media-view';
 
 @Component({
-  selector: 'user-detail',
-  templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss']
+  selector: 'user-views-detail',
+  templateUrl: './user-views-detail.component.html',
+  styleUrls: ['./user-views-detail.component.scss']
 })
-export class UserDetailComponent implements OnInit, OnDestroy {
+export class UserViewsDetailComponent implements OnInit, OnDestroy {
+  private paramSub: Subscription;
   private settingsSub: Subscription;
   private settings: Settings;
 
   displayedColumns: string[] = ['logo', 'name', 'duration', 'start', 'percentage', 'id'];
-  user: EmbyUser;
+  views$: Observable<UserMediaView[]>;
+  username: string;
 
-  constructor(
-    private readonly settingsFacade: SettingsFacade,
-    private readonly userService: UserService) {
+  constructor(private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly embyService: EmbyService,
+    private readonly settingsFacade: SettingsFacade) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
-    this.userService.user.subscribe((user: EmbyUser) => {
-      console.log(user);
-      this.user = user;
+    this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
+      const id = params['id'];
+      if (!!id) {
+        this.views$ = this.embyService.getUserViewsByUserId(id);
+      } else {
+        this.router.navigate(['/users']);
+      }
     });
   }
 
@@ -62,6 +69,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.paramSub !== undefined) {
+      this.paramSub.unsubscribe();
+    }
+
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
     }

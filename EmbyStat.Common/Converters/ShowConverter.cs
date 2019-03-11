@@ -96,6 +96,7 @@ namespace EmbyStat.Common.Converters
                 PremiereDate = episode.PremiereDate,
                 RunTimeTicks = episode.RunTimeTicks,
                 SortName = episode.SortName,
+                ShowName = episode.SeriesName,
                 Primary = episode.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = episode.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = episode.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,

@@ -1,12 +1,4 @@
-@import "../../../styles";
-
-.content {
-  display: flex;
-  flex: 0 0 100%;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0;
-}
+@import "../user-container/user-container.component";
 
 mat-card {
   display: flex;
@@ -97,10 +89,6 @@ mat-table {
 }
 
 @media only screen and (max-width: $large-size) {
-  .content {
-    flex-direction: column;
-  }
-
   mat-card {
     margin-right: 25px;
     margin-top: 25px;

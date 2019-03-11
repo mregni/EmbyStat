@@ -10,6 +10,7 @@ namespace EmbyStat.Common.Models.Entities
         public int? DvdSeasonNumber { get; set; }
 	    public int? IndexNumber { get; set; }
 	    public int? IndexNumberEnd { get; set; }
+        public string ShowName { get; set; }
         public ICollection<SeasonEpisode> SeasonEpisodes { get; set; }
     }
 }

@@ -305,7 +305,6 @@ namespace EmbyStat.Repositories
             return _context.Episodes
                 .Include(x => x.SeasonEpisodes)
                 .ThenInclude(x => x.Season)
-                .ThenInclude(x => x.Show)
                 .SingleOrDefault(x => x.Id == id);
         }
     }

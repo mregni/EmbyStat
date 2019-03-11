@@ -288,9 +288,8 @@ namespace EmbyStat.Services
             }
 
             var season = episode.SeasonEpisodes.First(x => x.SeasonId == play.ParentId).Season;
-            var showName = season.Show.Name;
             var seasonNumber = season.IndexNumber;
-            var name = $"{showName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
+            var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 
             var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);

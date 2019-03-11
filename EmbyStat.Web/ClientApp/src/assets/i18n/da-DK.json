@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "DOWNLOAD": "download",
+    "DOWNLOAD": "hent",
     "ANONYMISEDDOWNLOAD": "Anonymiseret download",
     "HIDE": "Skjul",
     "NEXT": "næste",
@@ -17,7 +17,7 @@
     "TITLE": "titel",
     "ADDEDON": "tilføjet",
     "QUALITY": "kvalitet",
-    "NEVER": "never",
+    "NEVER": "aldrig",
     "OPEN": "Open",
     "LINK": "link",
     "REASON": "grund",
@@ -47,7 +47,7 @@
     "STATUS": "status",
     "PERCENTAGE": "procent",
     "COLLECTED": "indsamlet",
-    "UPDATES": "Updates"
+    "UPDATES": "Opdateringer"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
@@ -56,11 +56,11 @@
     "TOKEN_FAILED": "Det lykkes ikke at få Emby token. Kontroller venligst dine legitimationsoplysninger og adresse.",
     "EMBY_CALL_FAILED": "Opkald til Emby-server mislykkedes. Kontroller, om Emby kører, og hvis legitimationsoplysningerne stadig er korrekte.",
     "UNHANDLED": "Ubegrænset backend-undtagelse",
-    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
-    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
-    "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
+    "MOVIENOTFOUND": "Film, der ikke blev fundet, Start eventuelt mediesynkroniseringsjob for at fikse dette.",
+    "EPISODENOTFOUND": "Afsnit ikke fundet, Starte eventuelt et mediesynkroniseringsjob for at rette dette.",
+    "CANTCONNECTTOGITHUB": "Kan ikke oprette forbindelse til GitHub for at se efter opdateringer. Prøv igen senere.",
+    "NOUPDATEFILE": "Kan ikke finde opdateringsprogrammet, ingen opdatering udført",
+    "UPDATEUNPACKERROR": "Noget gik galt under udpakning af opdateringspakken. Prøv igen."
   },
   "FORM_LABELS": {
     "NAME": "Angiv dit navn",
@@ -70,8 +70,8 @@
     "EMBYPASSWORD": "Emby admin adgangskode",
     "DURATIONINMINUTES": "Varighed: ~5 minutter",
     "TVDBAPI": "TheTVDB api nøglen",
-    "CRON": "Cron string",
-    "EXCEPTIONLOGGING": "Enable exception logging"
+    "CRON": "Cron-streng",
+    "EXCEPTIONLOGGING": "Aktivér undtagelseslogning"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Udfyld dit navn eller kaldenavn.",
@@ -89,14 +89,14 @@
     "SERVER": "Emby server",
     "LOGS": "Logfiler",
     "ABOUT": "Om",
-    "USERS": "Users"
+    "USERS": "Brugere"
   },
   "WIZARD": {
     "INTROLABEL": "Introduktion",
     "EMBYLABEL": "Emby indstillinger",
     "SAVINGLABEL": "Første Emby-server synkronisering",
     "FINALLABEL": "Sidste",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "Hvis dit sprog ikke er angivet eller ikke er komplet, kan du hjælpe mig med at oversætte appen i dit sprog på <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Kontrollerer Emby server ...",
     "INTROTEXT": "Velkommen til EmbyStat server guiden.<br/><br/>Med denne guide opretter vi de grundlæggende indstillinger, så du kan begynde at arbejde med EmbyStat uden for meget hovedpine. Når guiden er færdig, kan du nyde alle funktioner på serveren. Hvis du vil tilpasse serveren mere, kan du altid gå til indstillingssiden.<br/><br/>For nu skal vi bare vide, hvordan vi skal kalde dig og på hvilket sprog du vil se brugergrænsefladen.",
     "EMBYNOTFOUNDTEXT": "Nu vil vi opsætte din Emby-forbindelse. Vi har forsøgt at opdage din Emby-server automatisk i netværket, men fejlede. Udfyld alle felter, så EmbyStat kan finde din Emby-server.",
@@ -107,9 +107,9 @@
     "SAVINGINSTRUCTIONS": "Hvis noget fejler, kan du ikke begynde at bruge EmbyStat. I så fald skal du rette fejlene, trykke tilbage og næste.",
     "SAVING": "Gemmer data",
     "RESCAN": "Scan igen",
-    "FINISHWITHSYNC": "Start synchronization",
+    "FINISHWITHSYNC": "Start synkronisering",
     "FINISHED": "Alle indstillinger gemmes, og du kan nu begynde at bruge Emby-serveren. Nyd din nye statistik!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Det bedste er først at starte en medie-synkroniseringsopgave. EmbyStat vil begynde at downloade alle data fra din Emby server. Husk, at denne opgave kan tage lang tid afhængigt af din samlingsstørrelse. Hvis du ikke vil starte en synkronisering nu, kan du bare klikke på Færdig. Du kan starte det manuelt senere ved at navigere til siden Opgaver."
   },
   "PLUGINS": {
     "VERSION": "Version"
@@ -139,7 +139,7 @@
     "HIGHESTRATEDSHOW": "Højeste bedømmelse",
     "LOWESTRATEDSHOW": "Laveste bedømmelse",
     "OLDESTPREMIERED": "Ældste premieredato",
-    "YOUNGESTPREMIERED": "Youngest premiered show",
+    "YOUNGESTPREMIERED": "Nyeste premieredato",
     "YOUNGESTADDED": "Nyeste tilføjede",
     "WITHMOESTEPISODES": "Med de fleste episoder",
     "SHOWSTATUSGRAPH": "Vis status",
@@ -150,96 +150,96 @@
   "SETTINGS": {
     "TITLE": "Indstillinger",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "GENERAL": "Generelle Embystat indstillinger gemt!",
+      "EMBY": "Emby indstillinger gemt!",
+      "MOVIES": "Filmindstillinger gemt!",
+      "SHOWS": "Serieindstillinger gemt!",
+      "UPDATES": "Opdaterings indstillinger gemt!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
-      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
+      "TVDBAPIKEY": "Hvis du vil, kan du levere EmbyStat med din egen TheTVDB API nøgle her.",
+      "TVDBAPIKEYWARNING": "Sørg for, at du leverer en fungerende API-nøgle! Hvis nøglen er forkert, mislykkes synkroniseringsopgaven.",
+      "EXCEPTIONLOGGING": "Her kan du aktivere / deaktivere undtagelsesloggen til Rollbar. Med denne logning kan jeg fejle og reparere applikationen hurtigere. Ingen personlige data registreres nogensinde, kun din undtagelsesbesked, stacktrace og versionsnummer.",
+      "EXCEPTIONLOGGINGWARNING": "Server genstart er nødvendig for at ændre ændringen."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "For at finde de film, der er mistænkeligt korte, skal vi vide, hvor mange minutter du finder for korte til en film. Dette er standard indstillet til 10 minutter, men du kan ændre det, hvis det er nødvendigt.",
+      "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på filmstatistiksiden."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på seriestatistiksiden."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+      "NOPASSWORD": "Glem ikke at indtaste dit Emby-kodeord, når du vil ændre Emby-url-indstillingerne."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Enable auto updates",
-      "CHECK": "Check and update server now",
-      "TRAIN": "Change the update train if you want to have beta updates.",
-      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!"
+      "AUTO": "Aktivér automatisk opdateringer",
+      "CHECK": "Tjek og opdater server nu",
+      "TRAIN": "Skift opdateringsniveau hvis du vil have beta-opdateringer.",
+      "ONBETA": "Du er ikke på master niveau længere, så du ikke kan skifte tilbage til det. Hvis du vil gå tilbage på master toget, skal du geninstallere serveren igen.",
+      "TRAINWARNING": "Her kan du ændre opdateringsniveau fra master til beta. Hvis du ikke ved hvad du laver, skal du bare lade denne indstilling blive på Master. Hvis du vil modtage Beta-opdateringerne, skal du ændre det her, være opmærksom på, at du ikke kan gå tilbage til Master senere. Du skal geninstallere serveren.",
+      "CURRENTVERSION": "Nuværende version: {{version}}",
+      "CANTCHECK": "Kan ikke tjekke efter opdateringer nu, kunne ikke oprette forbindelse til GitHub.",
+      "NOUPDATE": "Ingen opdateringer er tilgængelige",
+      "NEWVERSION": "Version {{version}} er klar til download!"
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
-    "ISHIDDEN": "Is hidden from login screen",
-    "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "LASTACTIVE": "Last active",
+    "ISADMIN": "Er administrator",
+    "ISHIDDEN": "Er skjult fra login-skærmen",
+    "ISDISABLED": "Er deaktiveret",
+    "DELETED": "Slettede brugere",
+    "LASTACTIVE": "Sidst aktiv",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
-      "LASTACTIVEASC": "Last active date (asc)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "USERNAMEASC": "Brugernavn (A - Z)",
+      "USERNAMEDESC": "Brugernavn (A - Z)",
+      "LASTACTIVEASC": "Sidste aktiv dato (asc)",
+      "LASTACTIVEDESC": "Sidste aktiv dato (asc)"
     },
     "DETAILS": {
-      "TITLE": "Details for {{name}}"
+      "TITLE": "Detaljer for {{name}}"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
+      "TITLE": "Titel",
+      "TIME": "Tid",
+      "WATCHED": "Set",
       "START": "Start",
-      "ACTION": "Action"
+      "ACTION": "Handling"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies watched",
-      "TOTALWATCHEDEPISODES": "Episodes watched"
+      "TOTALWATCHEDMOVIES": "Film set",
+      "TOTALWATCHEDEPISODES": "Ikke sete episoder"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
-    "JOBLOGS": "Job logs",
+    "LASTRUNNOW": "Seneste kørsel: lige nu",
+    "LASTRUN": "Sidste kørsel",
+    "HOURS": "{hours} timer",
+    "MINUTES": "{{minutes}} minutter",
+    "SECONDS": "{{seconds}} sekund(er)",
+    "AND": "og",
+    "AGO": "siden",
+    "FOR": "til",
+    "BUTFAILED": "men mislykkedes efter",
+    "NORUN": "Ikke kørt endnu",
+    "MOMENT_AGO": "et øjeblik",
+    "JOBLOGS": "Joblogs",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
-      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "PINGEMBYSERVERTITLE": "Tjek din Emby forbindelse",
+      "PINGEMBYSERVERDESCRIPTION": "Ping Emby-serveren for at kontrollere, om den stadig er online.",
+      "SMALLEMBYSYNCDESCRIPTION": "Udfør en lille synkronisering med Emby-serveren. Dette er kun en hurtig og lille systemopdatering.",
+      "SMALLEMBYSYNCTITLE": "Lille synkronisering med Emby",
+      "STARTSMALLEMBYSYNC": "Start lille synkronisering",
+      "MEDIASYNCDESCRIPTION": "Udfør en trinvis synkronisering til din filmsamling. Det kan tage lidt tid at køre igennem!",
+      "MEDIASYNCTITLE": "Mediesynkronisering",
+      "STARTMEDIASYNC": "Start mediesynkronisering",
+      "DATABASECLEANUPTITLE": "Database oprydning",
+      "DATABASECLEANUPDESCRIPTION": "Oprydning af database med unødvendige data.",
+      "OPENJOBPAGE": "Gå til opgavesiden",
+      "CHECKUPDATETITLE": "Tjek for nye opdateringer",
+      "CHECKUPDATEDESCRIPTION": "Kontrollerer for nye opdateringer på dit valgte opdateringsniveau."
     }
   },
   "DIALOGS": {
@@ -253,21 +253,21 @@
     },
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media synkroniseringsopgave kører",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "BODY": "Media synkroniseringsopgaven kører i baggrunden. På grund af dette er alle statistiske sider blokeret, fordi beregningerne ville være fuldstændig forkerte, så længe synkroniseringen kører."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "FORMAT_ERROR": "Angivet cron-streng er i et forkert format. Tjek <a href=\"https://crontab.guru/\" target=\"_blank\">her</a> for formatering regler. Kun tal, mellemrum, *, / og - er tilladt.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Her</a> kan du finde flere oplysninger om, hvordan du formaterer en CRON-streng. Kun tal, *, / og - er tilladt."
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "TITLE": "Ingen brugere fundet",
+      "BODY": "Ingen brugere findes i den lokale database. Det betyder, at der ikke er noget lille synkroniseringsjob som kører. Vil du køre det nu?"
     }
   },
   "LOADER": {
     "FETCHING": "Henter statistikker",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Page will refresh when the update is finished."
+    "UPDATING": "Opdatering af EmbyStat",
+    "UPDATINGSUB": "Siden opdateres, når opdateringen er færdig."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Blandet / Andet",
@@ -285,10 +285,10 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Gå til Emby",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "JOBISRUNNING": "{{job}} opgaven kører",
+    "NOMISSEDPINGS": "Emby server er i live",
+    "ONEMISSEDPING": "Kunne ikke oprette forbindelse til Emby på sidste check!",
+    "MOREMISSEDPINGS": "Kunne ikke oprette forbindelse til Emby efter flere forsøg!"
   },
   "ABOUT": {
     "THANKS": {

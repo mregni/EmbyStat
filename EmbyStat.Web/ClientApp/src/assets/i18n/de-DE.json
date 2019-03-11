@@ -256,8 +256,8 @@
       "BODY": "Die Synchronisation der Medien wird im Hintergrund durchgeführt. Während dieser Zeit können keine korrekten Statistiken angezeigt werden."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Der angegebene cron-String hat ein falsches Format. Schauen Sie auf <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Formatieren eines CRON-Strings. Nur Zahlen, *, / und - sind erlaubt."
+      "FORMAT_ERROR": "Der angegebene Cron-String hat ein falsches Format. Schauen Sie <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Format eines Cron-Strings. Nur Zahlen, *, / und - sind erlaubt."
     },
     "NOUSERSFOUND": {
       "TITLE": "Keine Benutzer gefunden",
