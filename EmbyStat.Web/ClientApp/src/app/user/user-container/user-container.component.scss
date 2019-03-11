@@ -1,4 +1,4 @@
-@import "../../../styles";
+﻿@import "../../../styles";
 
 .content {
   display: flex;
@@ -9,9 +9,9 @@
 }
 
 .title-bar-left-content {
+  align-content: flex-start;
   display: flex;
   flex-direction: row;
-  align-content: flex-start;
 
   mat-select {
     width: 150px;
@@ -19,8 +19,8 @@
 
   .separator {
     font-size: 2em;
-    line-height: 0.6em;
     font-weight: bold;
+    line-height: 0.6em;
     margin: 0 8px;
   }
 }
