@@ -198,6 +198,7 @@
       "LASTACTIVEASC": "Letzter aktiver Tag (aufsteigend)",
       "LASTACTIVEDESC": "Letzter aktiver Tag (absteigend)"
     },
+    "TOOVERVIEW": "To overview",
     "DETAILS": {
       "TITLE": "Details für {{name}}"
     },
