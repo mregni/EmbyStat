@@ -198,6 +198,7 @@
       "LASTACTIVEASC": "Sidste aktiv dato (asc)",
       "LASTACTIVEDESC": "Sidste aktiv dato (asc)"
     },
+    "TOOVERVIEW": "To overview",
     "DETAILS": {
       "TITLE": "Detaljer for {{name}}"
     },
