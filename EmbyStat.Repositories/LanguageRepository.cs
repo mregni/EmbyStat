@@ -7,12 +7,16 @@ namespace EmbyStat.Repositories
 {
     public class LanguageRepository : ILanguageRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public LanguageRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<Language> GetLanguages()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Languages.OrderBy(x => x.Name).ToList();
-            }
+            return _context.Languages.OrderBy(x => x.Name).ToList();
         }
     }
 }

@@ -9,62 +9,54 @@ namespace EmbyStat.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public PersonRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public void AddRangeIfMissing(IEnumerable<Person> people)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var newPeople = people.Where(x => context.People.AsNoTracking().All(y => y.Name != x.Name)).ToList();
+            var newPeople = people.Where(x => _context.People.AsNoTracking().All(y => y.Name != x.Name)).ToList();
 
-                context.People.AddRange(newPeople);
-                context.SaveChanges();
-            }
+            _context.People.AddRange(newPeople);
+            _context.SaveChanges();
         }
 
         public List<string> GetIds()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.People.Select(x => x.Id).ToList();
-            }
+            return _context.People.Select(x => x.Id).ToList();
         }
 
         public Person GetPersonById(string id)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.People.SingleOrDefault(x => x.Id == id);
-            }
+            return _context.People.SingleOrDefault(x => x.Id == id);
         }
 
         public void AddOrUpdatePerson(Person person)
         {
-            using (var context = new ApplicationDbContext())
+            var localPerson = _context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.Id);
+            if (localPerson == null)
             {
-                var localPerson = context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.Id);
-                if (localPerson == null)
-                {
-                    context.People.Add(person);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    context.Entry(person).State = EntityState.Modified;
-                    context.SaveChanges();
-                }
+                _context.People.Add(person);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Entry(person).State = EntityState.Modified;
+                _context.SaveChanges();
             }
         }
 
         public async Task CleanupPersons()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var peopleToRemove = context.People
-                    .Include(x => x.ExtraPersons)
-                    .Where(x => x.ExtraPersons.Count == 0);
+            var peopleToRemove = _context.People
+                .Include(x => x.ExtraPersons)
+                .Where(x => x.ExtraPersons.Count == 0);
 
-                context.People.RemoveRange(peopleToRemove);
-                await context.SaveChangesAsync();
-            }
+            _context.People.RemoveRange(peopleToRemove);
+            await _context.SaveChangesAsync();
         }
     }
 }

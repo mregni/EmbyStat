@@ -198,6 +198,7 @@
       "LASTACTIVEASC": "Last active date (asc)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
+    "TOOVERVIEW": "To overview",
     "DETAILS": {
       "TITLE": "Details for {{name}}"
     },
