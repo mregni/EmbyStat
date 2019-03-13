@@ -9,88 +9,77 @@ namespace EmbyStat.Repositories
 {
     public class JobRepository : IJobRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public JobRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<Job> GetAll()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Jobs.ToList();
-            }
+            return _context.Jobs.ToList();
         }
 
         public Job GetById(Guid id)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Jobs.Single(x => x.Id == id);
-            }
+            return _context.Jobs.Single(x => x.Id == id);
         }
 
         public void StartJob(Job job)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var obj = context.Jobs.Single(x => x.Id == job.Id);
+            var obj = _context.Jobs.Single(x => x.Id == job.Id);
 
-                if (obj != null)
-                {
-                    obj.State = job.State;
-                    obj.StartTimeUtc = job.StartTimeUtc;
-                    obj.EndTimeUtc = job.EndTimeUtc;
-                    obj.CurrentProgressPercentage = job.CurrentProgressPercentage;
-                    context.SaveChanges();
-                }
+            if (obj != null)
+            {
+                obj.State = job.State;
+                obj.StartTimeUtc = job.StartTimeUtc;
+                obj.EndTimeUtc = job.EndTimeUtc;
+                obj.CurrentProgressPercentage = job.CurrentProgressPercentage;
+                _context.SaveChanges();
             }
         }
 
         public void EndJob(Guid id, DateTime endTime, JobState state)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var obj = context.Jobs.Single(x => x.Id == id);
+            var obj = _context.Jobs.Single(x => x.Id == id);
 
-                if (obj != null)
-                {
-                    obj.EndTimeUtc = endTime;
-                    obj.State = state;
-                    obj.CurrentProgressPercentage = 100;
-                    context.SaveChanges();
-                }
+            if (obj != null)
+            {
+                obj.EndTimeUtc = endTime;
+                obj.State = state;
+                obj.CurrentProgressPercentage = 100;
+                _context.SaveChanges();
             }
         }
 
         public bool UpdateTrigger(Guid id, string trigger)
         {
-            using (var context = new ApplicationDbContext())
+            var obj = _context.Jobs.Single(x => x.Id == id);
+
+            if (obj != null)
             {
-                var obj = context.Jobs.Single(x => x.Id == id);
-
-                if (obj != null)
-                {
-                    obj.Trigger = trigger;
-                    context.SaveChanges();
-                    return true;
-                }
-
-                return false;
+                obj.Trigger = trigger;
+                _context.SaveChanges();
+                return true;
             }
+
+            return false;
         }
 
         public void ResetAllJobs()
         {
-            using (var context = new ApplicationDbContext())
+            var jobs = _context.Jobs.ToList();
+            jobs.ForEach(x =>
             {
-                var jobs = context.Jobs.ToList();
-                jobs.ForEach(x =>
+                if (x.State == JobState.Running)
                 {
-                    if (x.State == JobState.Running)
-                    {
-                        x.State = JobState.Failed;
-                        x.EndTimeUtc = DateTime.Now;
-                    }
-                });
+                    x.State = JobState.Failed;
+                    x.EndTimeUtc = DateTime.Now;
+                }
+            });
 
-                context.SaveChanges();
-            }
+            _context.SaveChanges();
         }
     }
 }
