@@ -7,39 +7,36 @@ namespace EmbyStat.Repositories
 {
     public class EventRepository : IEventRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public EventRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public bool DoesSessionsWithIdExists(string sessionId)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Sessions.Any(x => x.Id == sessionId);
-            }
+            return _context.Sessions.Any(x => x.Id == sessionId);
         }
 
         public async Task CreateOrAppendPlayLogs(Play play)
         {
-            using (var context = new ApplicationDbContext())
+            var playObj = _context.Plays.SingleOrDefault(x => x.MediaId == play.MediaId);
+            if (playObj == null)
             {
-                var playObj = context.Plays.SingleOrDefault(x => x.MediaId == play.MediaId);
-                if (playObj == null)
-                {
-                    context.Plays.Add(play);
-                }
-                else
-                {
-                    playObj.PlayStates.Add(play.PlayStates.Single());
-                }
-
-                await context.SaveChangesAsync();
+                _context.Plays.Add(play);
             }
+            else
+            {
+                playObj.PlayStates.Add(play.PlayStates.Single());
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task CreateSession(Session session)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                context.Sessions.Add(session);
-                await context.SaveChangesAsync();
-            }
+            _context.Sessions.Add(session);
+            await _context.SaveChangesAsync();
         }
     }
 }
