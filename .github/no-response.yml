@@ -1,0 +1,7 @@
+daysUntilClose: 31
+responseRequiredLabel: question
+closeComment: >
+  This issue has been automatically closed because there has been no response
+  to our question from the original author. With no answer to the question, 
+  we don't have enough information to take action. Please reach out if you 
+  have or find the answers we need so that we can investigate further.
