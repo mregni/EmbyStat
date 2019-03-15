@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Clients.Emby.WebSocket\EmbyStat.Clients.Emby.WebSocket.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.GitHub\EmbyStat.Clients.GitHub.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Github\**" />
+    <EmbeddedResource Remove="Github\**" />
+    <None Remove="Github\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediaBrowser.Common" Version="3.3.10" />
   </ItemGroup>
 
@@ -14,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="EmbyClient\Net\" />
-    <Folder Include="Github\" />
   </ItemGroup>
 
 </Project>
