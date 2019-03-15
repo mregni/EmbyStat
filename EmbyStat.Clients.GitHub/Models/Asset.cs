@@ -1,18 +1,32 @@
-﻿namespace EmbyStat.Clients.Github.Models
+﻿using Newtonsoft.Json;
+
+namespace EmbyStat.Clients.Github.Models
 {
     public class Asset
     {
-        public string url { get; set; }
-        public int id { get; set; }
-        public string name { get; set; }
-        public object label { get; set; }
-        public Author uploader { get; set; }
-        public string content_type { get; set; }
-        public string state { get; set; }
-        public int size { get; set; }
-        public int download_count { get; set; }
-        public string created_at { get; set; }
-        public string updated_at { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("label")]
+        public object Label { get; set; }
+        [JsonProperty("uploader")]
+        public Author Uploader { get; set; }
+        [JsonProperty("content_type")]
+        public string ContentType { get; set; }
+        [JsonProperty("state")]
+        public string State { get; set; }
+        [JsonProperty("size")]
+        public int Size { get; set; }
+        [JsonProperty("download_count")]
+        public int DownloadCount { get; set; }
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
+        [JsonProperty("updated_at")]
+        public string UpdatedAt { get; set; }
+        [JsonProperty("BrowserDownloadUrl")]
         public string browser_download_url { get; set; }
     }
 }

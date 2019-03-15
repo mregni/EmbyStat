@@ -1,23 +1,42 @@
-﻿namespace EmbyStat.Clients.Github.Models
+﻿using Newtonsoft.Json;
+
+namespace EmbyStat.Clients.Github.Models
 {
     public class Author
     {
-        public string received_events_url { get; set; }
-        public string events_url { get; set; }
-        public string repos_url { get; set; }
-        public string organizations_url { get; set; }
-        public string subscriptions_url { get; set; }
-        public string starred_url { get; set; }
-        public string gists_url { get; set; }
-        public string following_url { get; set; }
-        public string followers_url { get; set; }
-        public string html_url { get; set; }
-        public string url { get; set; }
-        public string gravatar_id { get; set; }
-        public string avatar_url { get; set; }
-        public int id { get; set; }
-        public string login { get; set; }
-        public string type { get; set; }
-        public bool site_admin { get; set; }
+        [JsonProperty("received_events_url")]
+        public string ReceivedEventsUrl { get; set; }
+        [JsonProperty("events_url")]
+        public string EventsUrl { get; set; }
+        [JsonProperty("repos_url")]
+        public string ReposUrl { get; set; }
+        [JsonProperty("organizations_url")]
+        public string OrganizationsUrl { get; set; }
+        [JsonProperty("subscriptions_url")]
+        public string SubscriptionsUrl { get; set; }
+        [JsonProperty("starred_url")]
+        public string StarredUrl { get; set; }
+        [JsonProperty("gists_url")]
+        public string GistsUrl { get; set; }
+        [JsonProperty("following_url")]
+        public string FollowingUrl { get; set; }
+        [JsonProperty("followers_url")]
+        public string FollowersUrl { get; set; }
+        [JsonProperty("html_url")]
+        public string HtmlUrl { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
+        [JsonProperty("gravatar_id")]
+        public string GravatarId { get; set; }
+        [JsonProperty("avatar_url")]
+        public string AvatarUrl { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        [JsonProperty("login")]
+        public string Login { get; set; }
+        [JsonProperty("type")]
+        public string Type { get; set; }
+        [JsonProperty("site_admin")]
+        public bool SiteAdmin { get; set; }
     }
 }
