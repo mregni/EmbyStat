@@ -91,13 +91,13 @@ namespace EmbyStat.Clients.Github
                 IsUpdateAvailable = version > minVersion,
                 Package = new PackageInfo
                 {
-                    classification = obj.PreRelease
+                    Classification = obj.PreRelease
                         ? (obj.Name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
                         : UpdateTrain.Release,
-                    name = asset.name,
-                    sourceUrl = asset.browser_download_url,
-                    versionStr = version.ToString(),
-                    infoUrl = obj.HtmlUrl
+                    Name = asset.Name,
+                    SourceUrl = asset.browser_download_url,
+                    VersionStr = version.ToString(),
+                    InfoUrl = obj.HtmlUrl
                 }
             };
         }

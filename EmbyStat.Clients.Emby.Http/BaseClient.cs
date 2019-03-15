@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Cryptography;
-using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Emby.Http.Cryptography;
+using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
@@ -13,7 +13,7 @@ using EmbyStat.Common.Helpers;
 using MediaBrowser.Model.Querying;
 using Serilog;
 
-namespace EmbyStat.Clients.EmbyClient
+namespace EmbyStat.Clients.Emby.Http
 {
 	public abstract class BaseClient
 	{

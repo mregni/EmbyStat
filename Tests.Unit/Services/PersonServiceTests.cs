@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;

@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Clients.EmbyClient.Model
+﻿namespace EmbyStat.Clients.Emby.Http.Model
 {
     public class Device
     {

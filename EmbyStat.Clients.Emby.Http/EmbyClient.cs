@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Cryptography;
-using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Emby.Http.Cryptography;
+using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 using Serilog;
 using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
-namespace EmbyStat.Clients.EmbyClient
+namespace EmbyStat.Clients.Emby.Http
 {
 	public class EmbyClient : BaseClient, IEmbyClient
 	{
@@ -59,12 +59,10 @@ namespace EmbyStat.Clients.EmbyClient
 			}
 
 			ServerAddress = address;
-			var bytes = Encoding.UTF8.GetBytes(password);
 			var args = new Dictionary<string, string>
 			{
 				["username"] = Uri.EscapeDataString(username),
-				["pw"] = password,
-				["password"] = BitConverter.ToString(CryptographyProvider.CreateSha1(bytes)).Replace("-", string.Empty)
+				["pw"] = password
 			};
 
 			var url = GetApiUrl("Users/AuthenticateByName");

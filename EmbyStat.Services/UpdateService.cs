@@ -72,7 +72,7 @@ namespace EmbyStat.Services
 
         private void CreateUpdateFile(PackageInfo package)
         {
-            var fileName = $"{package.versionStr}.ver";
+            var fileName = $"{package.VersionStr}.ver";
             var obj = JsonSerializerExtentions.SerializeToString(package);
 
             foreach (var file in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ver"))
@@ -95,11 +95,11 @@ namespace EmbyStat.Services
             try
             {
                 Log.Information("---------------------------------");
-                Log.Information($"Downloading zip file {result.Package.name}");
+                Log.Information($"Downloading zip file {result.Package.Name}");
 
                 var webClient = new WebClient();
                 webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(sender, e, result); };
-                await webClient.DownloadFileTaskAsync(result.Package.sourceUrl, result.Package.name);
+                await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
             catch (Exception e)
             {
@@ -122,7 +122,7 @@ namespace EmbyStat.Services
             try
             {
                 var appSettings = _settingsService.GetAppSettings();
-                ZipFile.ExtractToDirectory(result.Package.name, appSettings.Dirs.TempUpdateDir, true);
+                ZipFile.ExtractToDirectory(result.Package.Name, appSettings.Dirs.TempUpdateDir, true);
             }
             catch (Exception e)
             {
@@ -131,7 +131,7 @@ namespace EmbyStat.Services
             }
             finally
             {
-                File.Delete(result.Package.name);
+                File.Delete(result.Package.Name);
             }
         }
 

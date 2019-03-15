@@ -1,6 +1,7 @@
-﻿using EmbyStat.Clients.Emby.WebSocket;
+﻿using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Emby.Http.Cryptography;
+using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.EmbyClient;
-using EmbyStat.Clients.EmbyClient.Cryptography;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Clients.Github;
 using EmbyStat.Clients.Tvdb;

@@ -14,7 +14,6 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
 
