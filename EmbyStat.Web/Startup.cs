@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using AutoMapper;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Hubs.Job;

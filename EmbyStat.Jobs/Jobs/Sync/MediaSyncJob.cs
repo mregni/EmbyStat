@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Emby.Http.Model;
-using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;

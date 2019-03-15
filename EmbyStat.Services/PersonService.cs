@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Clients.EmbyClient;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;

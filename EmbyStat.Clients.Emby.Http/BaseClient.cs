@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Emby.Http.Cryptography;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
@@ -29,12 +28,10 @@ namespace EmbyStat.Clients.Emby.Http
 		protected string AuthorizationScheme { get; set; }
 
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
-		protected readonly ICryptographyProvider CryptographyProvider;
 		protected readonly IAsyncHttpClient HttpClient;
 
-		protected BaseClient(ICryptographyProvider cryptographyProvider, IAsyncHttpClient httpClient)
+		protected BaseClient(IAsyncHttpClient httpClient)
 		{
-			CryptographyProvider = cryptographyProvider;
 			HttpClient = httpClient;
 
             Device = new Device();

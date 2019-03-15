@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Emby.Http.Cryptography;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
@@ -21,8 +19,8 @@ namespace EmbyStat.Clients.Emby.Http
 {
 	public class EmbyClient : BaseClient, IEmbyClient
 	{
-        public EmbyClient(ICryptographyProvider cryptographyProvider,  IAsyncHttpClient httpClient)
-		: base(cryptographyProvider, httpClient)
+        public EmbyClient(IAsyncHttpClient httpClient)
+		: base( httpClient)
 		{
 			
 		}
