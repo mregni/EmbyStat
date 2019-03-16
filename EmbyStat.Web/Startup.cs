@@ -49,7 +49,7 @@ namespace EmbyStat.Web
             services.Configure<AppSettings>(Configuration);
             var config = Configuration.Get<AppSettings>();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main), ServiceLifetime.Singleton);
 
             services.AddHangfire(x =>
             {
