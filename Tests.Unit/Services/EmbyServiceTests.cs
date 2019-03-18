@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;

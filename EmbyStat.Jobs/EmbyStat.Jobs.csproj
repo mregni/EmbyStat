@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Tvdb\EmbyStat.Clients.Tvdb.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />

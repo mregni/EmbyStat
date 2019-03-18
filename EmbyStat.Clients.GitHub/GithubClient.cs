@@ -46,15 +46,15 @@ namespace EmbyStat.Clients.Github
         {
             if (updateTrain == UpdateTrain.Release)
             {
-                obj = obj.Where(i => !i.prerelease).ToArray();
+                obj = obj.Where(i => !i.PreRelease).ToArray();
             }
             else if (updateTrain == UpdateTrain.Beta)
             {
-                obj = obj.Where(i => i.prerelease && i.name.Contains(_appSettings.Updater.BetaString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                obj = obj.Where(i => i.PreRelease && i.Name.Contains(_appSettings.Updater.BetaString, StringComparison.OrdinalIgnoreCase)).ToArray();
             }
             else if (updateTrain == UpdateTrain.Dev)
             {
-                obj = obj.Where(i => i.prerelease && i.name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                obj = obj.Where(i => i.PreRelease && i.Name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
             var availableUpdate = obj
@@ -67,7 +67,7 @@ namespace EmbyStat.Clients.Github
         }
         private UpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
         {
-            var versionString = CleanUpVersionString(obj.tag_name);
+            var versionString = CleanUpVersionString(obj.TagName);
             
             if (!Version.TryParse(versionString, out var version))
             {
@@ -79,7 +79,7 @@ namespace EmbyStat.Clients.Github
                 return null;
             }
 
-            var asset = (obj.assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, obj.tag_name));
+            var asset = (obj.Assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, obj.TagName));
             if (asset == null)
             {
                 return null;
@@ -91,13 +91,13 @@ namespace EmbyStat.Clients.Github
                 IsUpdateAvailable = version > minVersion,
                 Package = new PackageInfo
                 {
-                    classification = obj.prerelease
-                        ? (obj.name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
+                    Classification = obj.PreRelease
+                        ? (obj.Name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
                         : UpdateTrain.Release,
-                    name = asset.name,
-                    sourceUrl = asset.browser_download_url,
-                    versionStr = version.ToString(),
-                    infoUrl = obj.html_url
+                    Name = asset.Name,
+                    SourceUrl = asset.browser_download_url,
+                    VersionStr = version.ToString(),
+                    InfoUrl = obj.HtmlUrl
                 }
             };
         }

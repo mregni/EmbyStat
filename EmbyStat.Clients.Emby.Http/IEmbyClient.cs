@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Emby.Http.Model;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Plugins;
@@ -11,7 +11,7 @@ using MediaBrowser.Model.Users;
 using Newtonsoft.Json.Linq;
 using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
-namespace EmbyStat.Clients.EmbyClient
+namespace EmbyStat.Clients.Emby.Http
 {
     public interface IEmbyClient : IDisposable
     {

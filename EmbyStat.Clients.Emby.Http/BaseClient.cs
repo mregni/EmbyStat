@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Cryptography;
-using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
@@ -13,7 +12,7 @@ using EmbyStat.Common.Helpers;
 using MediaBrowser.Model.Querying;
 using Serilog;
 
-namespace EmbyStat.Clients.EmbyClient
+namespace EmbyStat.Clients.Emby.Http
 {
 	public abstract class BaseClient
 	{
@@ -29,12 +28,10 @@ namespace EmbyStat.Clients.EmbyClient
 		protected string AuthorizationScheme { get; set; }
 
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
-		protected readonly ICryptographyProvider CryptographyProvider;
 		protected readonly IAsyncHttpClient HttpClient;
 
-		protected BaseClient(ICryptographyProvider cryptographyProvider, IAsyncHttpClient httpClient)
+		protected BaseClient(IAsyncHttpClient httpClient)
 		{
-			CryptographyProvider = cryptographyProvider;
 			HttpClient = httpClient;
 
             Device = new Device();

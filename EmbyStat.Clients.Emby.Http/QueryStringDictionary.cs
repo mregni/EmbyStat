@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace EmbyStat.Clients.EmbyClient
+namespace EmbyStat.Clients.Emby.Http
 {
     /// <summary>
     /// Class QueryStringDictionary

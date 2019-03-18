@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Rollbar;
 using Serilog;
 
 namespace EmbyStat.Services
@@ -15,14 +15,12 @@ namespace EmbyStat.Services
     public class SettingsService : ISettingsService
     {
         private readonly AppSettings _appSettings;
-        private readonly IStatisticsRepository _statisticsRepository;
         private UserSettings _userSettings;
         public event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
 
-        public SettingsService(IOptions<AppSettings> appSettings, IStatisticsRepository statisticsRepository)
+        public SettingsService(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _statisticsRepository = statisticsRepository;
             LoadUserSettingsFromFile();
         }
 
@@ -38,8 +36,6 @@ namespace EmbyStat.Services
 
         public async Task<UserSettings> SaveUserSettings(UserSettings userSettings)
         {
-            MarkMovieStatisticsAsInvalidIfNeeded(userSettings);
-            MarkShowStatisticsAsInvalidIfNeeded(userSettings);
             _userSettings = userSettings;
 
             var strJson = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
@@ -69,24 +65,6 @@ namespace EmbyStat.Services
 
             _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
             OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
-        }
-
-        private void MarkMovieStatisticsAsInvalidIfNeeded(UserSettings configuration)
-        {
-            if (!(_userSettings.MovieCollectionTypes.All(configuration.MovieCollectionTypes.Contains) &&
-                  _userSettings.MovieCollectionTypes.Count == configuration.MovieCollectionTypes.Count))
-            {
-                _statisticsRepository.MarkMovieTypesAsInvalid();
-            }
-        }
-
-        private void MarkShowStatisticsAsInvalidIfNeeded(UserSettings configuration)
-        {
-            if (!(_userSettings.ShowCollectionTypes.All(configuration.ShowCollectionTypes.Contains) &&
-                  _userSettings.ShowCollectionTypes.Count == configuration.ShowCollectionTypes.Count))
-            {
-                _statisticsRepository.MarkShowTypesAsInvalid();
-            }
         }
     }
 }
