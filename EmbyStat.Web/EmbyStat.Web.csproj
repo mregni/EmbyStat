@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
-    <PackageReference Include="Rollbar" Version="2.2.3" />
+    <PackageReference Include="Rollbar" Version="3.0.2" />
     <PackageReference Include="Rollbar.PlugIns.Serilog" Version="1.0.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
