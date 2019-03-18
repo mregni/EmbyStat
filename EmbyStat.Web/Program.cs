@@ -98,7 +98,7 @@ namespace EmbyStat.Web
             if (IsOnlineExceptionLoggingEnabled())
             {
                 loggerConfiguration.WriteTo.Sink(new RollbarSink(
-                    new RollbarConfig("204e4b6617394a33bdde354094490b04")
+                    new RollbarConfig("1b5400a805f94eaca69c40ea0ad8cbde")
                     {
                         LogLevel = ErrorLevel.Error,
                         Environment = "rollbarENV"
