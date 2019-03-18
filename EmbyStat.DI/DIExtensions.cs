@@ -34,19 +34,18 @@ namespace EmbyStat.DI
 
         public static void RegisterServices(this IServiceCollection services)
         {
+            services.TryAddTransient<IAboutService, AboutService>();
             services.TryAddTransient<IEmbyService, EmbyService>();
+            services.TryAddTransient<IEventService, EventService>();
+            services.TryAddTransient<IJobService, JobService>();
+            services.TryAddTransient<ILanguageService, LanguageService>();
+            services.TryAddTransient<ILogService, LogService>();
             services.TryAddTransient<IMovieService, MovieService>();
             services.TryAddTransient<IPersonService, PersonService>();
-            services.TryAddTransient<IShowService, ShowService>();
-            services.TryAddTransient<ILogService, LogService>();
-            services.TryAddTransient<ILanguageService, LanguageService>();
-            services.TryAddTransient<IAboutService, AboutService>();
-            services.TryAddSingleton<IWebSocketService, WebSocketService>();
-            services.TryAddTransient<IUpdateService, UpdateService>();
-            services.TryAddTransient<IJobService, JobService>();
-            services.TryAddTransient<IEventService, EventService>();
-            services.TryAddSingleton<ISettingsService, SettingsService>();
             services.TryAddTransient<ISessionService, SessionService>();
+            services.TryAddSingleton<ISettingsService, SettingsService>();
+            services.TryAddTransient<IShowService, ShowService>();
+            services.TryAddTransient<IUpdateService, UpdateService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)

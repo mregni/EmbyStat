@@ -27,6 +27,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Rollbar;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EmbyStat.Web
@@ -49,7 +50,7 @@ namespace EmbyStat.Web
             services.Configure<AppSettings>(Configuration);
             var config = Configuration.Get<AppSettings>();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main), ServiceLifetime.Singleton);
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main));
 
             services.AddHangfire(x =>
             {
@@ -80,13 +81,11 @@ namespace EmbyStat.Web
             services.AddSignalR();
             services.AddCors();
 
-            services.AddHostedService<WebSocketService>();
-
             services.RegisterApplicationDependencies();
-            services.AddSingleton<IUpdateService, UpdateService>();
+            services.AddHostedService<WebSocketService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
             ApplicationBuilder = app;
             AddDeviceIdToConfig();
@@ -106,7 +105,7 @@ namespace EmbyStat.Web
                 ServerTimeout = TimeSpan.FromDays(1),
                 ShutdownTimeout = TimeSpan.FromDays(1),
                 ServerName = "Main server",
-                Queues = new[] { "main"}
+                Queues = new[] { "main" }
             });
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 
@@ -118,9 +117,6 @@ namespace EmbyStat.Web
                         Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
                     });
             }
-
-            var taskInitializer = serviceProvider.GetService<IJobInitializer>();
-            taskInitializer.Setup();
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseSignalR(routes =>
@@ -182,6 +178,7 @@ namespace EmbyStat.Web
             ResetAllJobs();
             ResetConfiguration();
             SetEmbyClientConfiguration();
+            InitializeTasks();
         }
 
         private void PerformPreShutdownFunctions()
@@ -199,40 +196,63 @@ namespace EmbyStat.Web
 
         private void ResetAllJobs()
         {
-            var jobService = ApplicationBuilder.ApplicationServices.GetService<IJobService>();
-            jobService.ResetAllJobs();
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
+            {
+                var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+                jobService.ResetAllJobs();
+            }
         }
 
         private void ResetConfiguration()
         {
-            var configurationService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
-            configurationService.SetUpdateInProgressSetting(false);
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
+            {
+                var configurationService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+                configurationService.SetUpdateInProgressSetting(false);
+            }
         }
 
         private void AddDeviceIdToConfig()
         {
-            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
-            var userSettings = settingsService.GetUserSettings();
-
-            if (userSettings.Id == null)
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
             {
-                userSettings.Id = Guid.NewGuid();
-                settingsService.SaveUserSettings(userSettings);
+                var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+                var userSettings = settingsService.GetUserSettings();
+
+                if (userSettings.Id == null)
+                {
+                    userSettings.Id = Guid.NewGuid();
+                    settingsService.SaveUserSettings(userSettings);
+                }
             }
         }
 
         private void SetEmbyClientConfiguration()
         {
-            var embyClient = ApplicationBuilder.ApplicationServices.GetService<IEmbyClient>();
-            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
-            var settings = settingsService.GetUserSettings();
-
-            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
-            if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
             {
-                embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
-            }
+                var configurationService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+                configurationService.SetUpdateInProgressSetting(false);
 
+                var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
+                var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+                var settings = settingsService.GetUserSettings();
+
+                embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+                if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+                {
+                    embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
+                }
+            }
+        }
+
+        private void InitializeTasks()
+        {
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
+            {
+                var taskInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
+                taskInitializer.Setup();
+            }
         }
     }
 }
