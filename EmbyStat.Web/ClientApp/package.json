@@ -56,7 +56,7 @@
     "@angular/cli": "7.3.6",
     "@angular/compiler-cli": "7.2.4",
     "@angular/language-service": "7.2.9",
-    "@types/highcharts": "^5.0.37",
+    "@types/highcharts": "^5.0.38",
     "@types/jasmine": "~3.3.10",
     "@types/jasminewd2": "~2.0.6",
     "@types/node": "~11.11.3",
