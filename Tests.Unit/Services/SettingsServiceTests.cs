@@ -27,11 +27,7 @@ namespace Tests.Unit.Services
             var appSettingsMock = new Mock<IOptions<AppSettings>>();
             appSettingsMock.Setup(x => x.Value).Returns(new AppSettings { Version = "0.0.0.0", Dirs = new Dirs() { Settings = "Settings" } });
 
-            var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
-            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
-
-            _subject = new SettingsService(appSettingsMock.Object, statisticsRepositoryMock.Object);
+            _subject = new SettingsService(appSettingsMock.Object);
         }
 
         private void SetupSettingsFile()

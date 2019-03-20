@@ -1,0 +1,95 @@
+2019-03-20 16:27:15.3357 Info Message Template Auto Format enabled
+2019-03-20 16:27:15.3540 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:27:15.5791 Info Adding target File Target[allfile]
+2019-03-20 16:27:15.5947 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:27:15.6430 Info Found 17 configuration items
+2019-03-20 16:30:58.4399 Info Message Template Auto Format enabled
+2019-03-20 16:30:58.4566 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:30:58.6766 Info Adding target File Target[allfile]
+2019-03-20 16:30:58.7146 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:30:58.7502 Info Found 17 configuration items
+2019-03-20 16:31:16.7199 Info Message Template Auto Format enabled
+2019-03-20 16:31:16.7199 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:31:16.7994 Info Adding target File Target[allfile]
+2019-03-20 16:31:16.7994 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:31:16.8364 Info Found 17 configuration items
+2019-03-20 16:31:17.7724 Info Logger closing down...
+2019-03-20 16:31:17.7724 Info Closing old configuration.
+2019-03-20 16:31:17.7836 Info Logger has been closed down.
+2019-03-20 16:31:17.7836 Info Shutting down logging...
+2019-03-20 16:31:17.7836 Info Logger has been shut down.
+2019-03-20 16:31:22.5996 Info Message Template Auto Format enabled
+2019-03-20 16:31:22.6122 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:31:22.6756 Info Adding target File Target[allfile]
+2019-03-20 16:31:22.6875 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:31:22.7140 Info Found 17 configuration items
+2019-03-20 16:31:23.6204 Info Logger closing down...
+2019-03-20 16:31:23.6204 Info Closing old configuration.
+2019-03-20 16:31:23.6326 Info Logger has been closed down.
+2019-03-20 16:31:23.6326 Info Shutting down logging...
+2019-03-20 16:31:23.6326 Info Logger has been shut down.
+2019-03-20 16:31:28.2682 Info Message Template Auto Format enabled
+2019-03-20 16:31:28.2682 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:31:28.3359 Info Adding target File Target[allfile]
+2019-03-20 16:31:28.3448 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:31:28.3664 Info Found 17 configuration items
+2019-03-20 16:31:29.1018 Info Logger closing down...
+2019-03-20 16:31:29.1018 Info Closing old configuration.
+2019-03-20 16:31:29.1127 Info Logger has been closed down.
+2019-03-20 16:31:29.1127 Info Shutting down logging...
+2019-03-20 16:31:29.1127 Info Logger has been shut down.
+2019-03-20 16:34:33.7204 Info Message Template Auto Format enabled
+2019-03-20 16:34:33.7370 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:34:33.9019 Info Adding target File Target[allfile]
+2019-03-20 16:34:33.9234 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:34:33.9607 Info Found 17 configuration items
+2019-03-20 16:38:42.3181 Info Message Template Auto Format enabled
+2019-03-20 16:38:42.3586 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:38:42.4813 Info Adding target File Target[allfile]
+2019-03-20 16:38:42.5225 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:38:42.5642 Info Found 17 configuration items
+2019-03-20 16:39:35.6215 Info Message Template Auto Format enabled
+2019-03-20 16:39:35.6376 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:39:35.8087 Info Adding target File Target[allfile]
+2019-03-20 16:39:35.8279 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:39:35.8752 Info Found 17 configuration items
+2019-03-20 16:41:38.7348 Info Message Template Auto Format enabled
+2019-03-20 16:41:38.7866 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:41:38.9349 Info Adding target File Target[allfile]
+2019-03-20 16:41:38.9502 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:41:38.9893 Info Found 17 configuration items
+2019-03-20 16:43:31.4975 Info Message Template Auto Format enabled
+2019-03-20 16:43:31.5094 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:43:31.6964 Info Adding target File Target[allfile]
+2019-03-20 16:43:31.7137 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:43:31.7522 Info Found 17 configuration items
+2019-03-20 16:45:15.2071 Info Message Template Auto Format enabled
+2019-03-20 16:45:15.2257 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:45:15.3751 Info Adding target File Target[allfile]
+2019-03-20 16:45:15.3949 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:45:15.4412 Info Found 17 configuration items
+2019-03-20 16:46:28.7164 Info Message Template Auto Format enabled
+2019-03-20 16:46:28.7326 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:46:28.9087 Info Adding target File Target[allfile]
+2019-03-20 16:46:28.9296 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:46:28.9769 Info Found 17 configuration items
+2019-03-20 16:48:50.6826 Info Message Template Auto Format enabled
+2019-03-20 16:48:50.6971 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:48:50.8199 Info Adding target File Target[allfile]
+2019-03-20 16:48:50.8373 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:48:50.9169 Info Found 17 configuration items
+2019-03-20 16:55:14.2831 Info Message Template Auto Format enabled
+2019-03-20 16:55:14.3004 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:55:14.4277 Info Adding target File Target[allfile]
+2019-03-20 16:55:14.4623 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:55:14.5131 Info Found 17 configuration items
+2019-03-20 16:57:51.7643 Info Message Template Auto Format enabled
+2019-03-20 16:57:51.7785 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 16:57:51.9304 Info Adding target File Target[allfile]
+2019-03-20 16:57:51.9436 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 16:57:51.9649 Info Found 17 configuration items
+2019-03-20 17:01:18.0428 Info Message Template Auto Format enabled
+2019-03-20 17:01:18.0608 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-20 17:01:18.2060 Info Adding target File Target[allfile]
+2019-03-20 17:01:18.2522 Info Configured from an XML element in C:\Users\mikha\Documents\EmbyStat\EmbyStat.Web\bin\Debug\netcoreapp2.2\Settings\nlog.config...
+2019-03-20 17:01:18.2805 Info Found 17 configuration items

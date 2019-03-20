@@ -27,6 +27,7 @@ namespace EmbyStat.Common.Converters
 
                 if (session["PlayState"]["MediaSourceId"] != null)
                 {
+                    session["NowPlayingItem"]["Type"] = "TvChannel";
                     var play = new Play
                     {
                         MediaId = session["NowPlayingItem"]["Id"].Value<string>(),

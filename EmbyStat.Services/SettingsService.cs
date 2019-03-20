@@ -7,7 +7,6 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Rollbar;
 using Serilog;
 
 namespace EmbyStat.Services

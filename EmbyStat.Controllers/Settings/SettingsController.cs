@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -5,7 +6,10 @@ using EmbyStat.Common;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using MediaBrowser.Model.Logging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Rollbar;
 
 namespace EmbyStat.Controllers.Settings
 {
@@ -26,7 +30,7 @@ namespace EmbyStat.Controllers.Settings
 
 	    [HttpGet]
 	    public IActionResult Get()
-	    {
+        {
 	        var settings = _settingsService.GetUserSettings();
 	        if (!settings.WizardFinished)
 	        {
