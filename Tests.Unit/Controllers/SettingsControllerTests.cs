@@ -72,8 +72,8 @@ namespace Tests.Unit.Controllers
                 .Returns(new UserSettings());
 
             var statisticsRepositoryMock = new Mock<StatisticsRepository>();
-            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
-            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
+            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid()).Returns(Task.CompletedTask);
+            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid()).Returns(Task.CompletedTask);
 
             _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, mapperMock.Object);
 		}
