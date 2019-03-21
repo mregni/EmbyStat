@@ -8,6 +8,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.Settings;
 using EmbyStat.Repositories;
+using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +72,7 @@ namespace Tests.Unit.Controllers
             mapperMock.Setup(x => x.Map<UserSettings>(It.IsAny<FullSettingsViewModel>()))
                 .Returns(new UserSettings());
 
-            var statisticsRepositoryMock = new Mock<StatisticsRepository>();
+            var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid()).Returns(Task.CompletedTask);
             statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid()).Returns(Task.CompletedTask);
 
