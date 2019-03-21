@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Rollbar;
 using Rollbar.NetCore.AspNet;
 using Swashbuckle.AspNetCore.Swagger;
@@ -32,7 +31,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
+using NLog;
 
 namespace EmbyStat.Web
 {
@@ -54,16 +55,8 @@ namespace EmbyStat.Web
             services.Configure<AppSettings>(Configuration);
             var appSettings = Configuration.Get<AppSettings>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            ConfigureRollbarSingleton(appSettings);
-            services.AddRollbarLogger(loggerOptions =>
-            {
-                loggerOptions.Filter = (loggerName, loglevel) => loglevel >= LogLevel.Trace;
-            });
-
             services
-                .AddMvcCore(/*options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); }*/)
+                .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
                 .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
                 .AddApiExplorer()
                 .AddJsonFormatters()
@@ -109,8 +102,6 @@ namespace EmbyStat.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRollbarMiddleware();
-            
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
                 WorkerCount = 1,
@@ -153,28 +144,6 @@ namespace EmbyStat.Web
                 }
             });
 
-        }
-
-        private void ConfigureRollbarSingleton(AppSettings appSettings)
-        {
-            const string rollbarAccessToken = "1b5400a805f94eaca69c40ea0ad8cbde";
-
-            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(rollbarAccessToken)
-            {
-                LogLevel = ErrorLevel.Critical,
-                Environment = "RollbarENV",
-                Enabled = true,
-                MaxReportsPerMinute = 10,
-                Transform = payload =>
-                {
-                    payload.Data.CodeVersion = appSettings.Version.ToCleanVersionString();
-                }
-            }).InternalEvent += Startup_InternalEvent;
-        }
-
-        private void Startup_InternalEvent(object sender, RollbarEventArgs e)
-        {
-            
         }
 
         private void SetupDirectories(AppSettings settings)

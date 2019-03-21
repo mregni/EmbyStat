@@ -7,6 +7,7 @@
         public Updater Updater { get; set; }
         public Dirs Dirs { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
+        public Rollbar Rollbar { get; set; }
         /// <summary>
         /// Port number, is set dynamically when server is starting
         /// </summary>
@@ -33,5 +34,15 @@
     public class ConnectionStrings
     {
         public string Main { get; set; }
+    }
+
+    public class Rollbar
+    {
+        public string AccessToken { get; set; }
+        public string Environment { get; set; }
+        public string LogLevel { get; set; }
+        public bool Enabled { get; set; }
+        public int MaxReportsPerMinute { get; set; }
+        public int ReportingQueueDepth { get; set; }
     }
 }

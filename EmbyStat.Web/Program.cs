@@ -23,24 +23,7 @@ namespace EmbyStat.Web
     {
         public static void Main(string[] args)
         {
-            const string rollbarAccessToken = "1b5400a805f94eaca69c40ea0ad8cbde";
-
-            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(rollbarAccessToken)
-            {
-                LogLevel = ErrorLevel.Error
-                ,
-                Environment = "RollbarENV",
-                Enabled = true,
-                MaxReportsPerMinute = 10,
-                Transform = payload =>
-                {
-                    payload.Data.CodeVersion = "0.0.0.0";
-                }
-            });
-
-            var logger = NLogBuilder.ConfigureNLog("Settings\\nlog.config").GetCurrentClassLogger();
-
-
+            var logger = NLogBuilder.ConfigureNLog(Path.Combine("Settings", "nlog.config")).GetCurrentClassLogger();
 
             try
             {
@@ -85,6 +68,7 @@ namespace EmbyStat.Web
                 {
                     logging.ClearProviders();
                     logging.SetMinimumLevel(LogLevel.Trace);
+                    logging.AddRollbar();
                 })
                 .UseNLog()
                 .Build();
@@ -92,7 +76,7 @@ namespace EmbyStat.Web
         public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(Path.Combine("Settings", "appsettings.json"), false, false)
+                .AddJsonFile("appsettings.json", false, false)
                 .AddInMemoryCollection(configArgs)
                 .Build();
 

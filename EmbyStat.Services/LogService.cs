@@ -23,7 +23,7 @@ namespace EmbyStat.Services
         {
             var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
-            var logDir = _logSettings.Value.Dirs.Logs;
+            var logDir =  Path.Combine(Directory.GetCurrentDirectory(), _logSettings.Value.Dirs.Logs);
             foreach (var filePath in Directory.EnumerateFiles(logDir))
             {
                 var file = new FileInfo(filePath);
