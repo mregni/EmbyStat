@@ -5,17 +5,21 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Fluent;
 
 namespace EmbyStat.Repositories
 {
     public class MovieRepository : IMovieRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly Logger _logger;
 
         public MovieRepository(ApplicationDbContext context)
         {
             _context = context;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public void AddOrUpdate(Movie movie)
@@ -48,7 +52,7 @@ namespace EmbyStat.Repositories
                 var temp = _context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
                 if (temp == null)
                 {
-                    Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
+                    _logger.Warn($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the person with Id {person.PersonId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the movie now.");
                     peopleToDelete.Add(person.PersonId);
                 }
             }
@@ -63,7 +67,7 @@ namespace EmbyStat.Repositories
                 var temp = _context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
                 if (temp == null)
                 {
-                    Log.Warning($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
+                    _logger.Warn($"{Constants.LogPrefix.MediaSyncJob}\tWe couldn't find the genre with Id {genre.GenreId} for movie ({movie.Id}) {movie.Name} in our database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the movie now.");
                     genresToDelete.Add(genre.GenreId);
                 }
             }

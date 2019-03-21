@@ -9,8 +9,9 @@ using EmbyStat.Clients.EmbyClient.Net;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
+using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Querying;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Clients.Emby.Http
 {
@@ -29,10 +30,12 @@ namespace EmbyStat.Clients.Emby.Http
 
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
 		protected readonly IAsyncHttpClient HttpClient;
+        protected readonly Logger Logger;
 
 		protected BaseClient(IAsyncHttpClient httpClient)
 		{
 			HttpClient = httpClient;
+            Logger = LogManager.GetCurrentClassLogger();
 
             Device = new Device();
 		}
@@ -184,7 +187,7 @@ namespace EmbyStat.Clients.Emby.Http
 			}
 			catch (Exception e)
 			{
-				Log.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
+                Logger.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
 				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
 			}
 
@@ -218,7 +221,7 @@ namespace EmbyStat.Clients.Emby.Http
 			}
 			catch (Exception e)
 			{
-			    Log.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
+                Logger.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
 				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
 			}
 
@@ -238,7 +241,7 @@ namespace EmbyStat.Clients.Emby.Http
 			}
 			catch (Exception e)
 			{
-			    Log.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
+                Logger.Error(e, $"{Constants.LogPrefix.EmbyClient}\tCall to Emby failed");
 				throw new BusinessException("EMBY_CALL_FAILED", 500, e);
 			}
 		}
@@ -256,7 +259,7 @@ namespace EmbyStat.Clients.Emby.Http
 
 		protected async Task<Stream> SendAsync(HttpRequest request)
 		{
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tSending {request.Method.ToUpper()}: {request.Url}");
+            Logger.Info($"{Constants.LogPrefix.EmbyClient}\tSending {request.Method.ToUpper()}: {request.Url}");
 			return await HttpClient.SendAsync(request);
 		}
 

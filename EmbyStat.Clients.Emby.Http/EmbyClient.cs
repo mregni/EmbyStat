@@ -12,18 +12,20 @@ using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Users;
 using Newtonsoft.Json.Linq;
-using Serilog;
+using NLog;
 using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
 namespace EmbyStat.Clients.Emby.Http
 {
 	public class EmbyClient : BaseClient, IEmbyClient
-	{
+    {
+        private readonly Logger _logger;
+
         public EmbyClient(IAsyncHttpClient httpClient)
 		: base( httpClient)
 		{
-			
-		}
+            _logger = LogManager.GetCurrentClassLogger();
+        }
 
         public void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId)
         {
@@ -64,7 +66,7 @@ namespace EmbyStat.Clients.Emby.Http
 			};
 
 			var url = GetApiUrl("Users/AuthenticateByName");
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
+            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
 			var result = await PostAsync<AuthenticationResult>(url, args, CancellationToken.None);
 
 			SetAuthenticationInfo(result.AccessToken, result.User.Id);
@@ -75,8 +77,8 @@ namespace EmbyStat.Clients.Emby.Http
 		public async Task<List<PluginInfo>> GetInstalledPluginsAsync()
 		{
 			var url = GetApiUrl("Plugins");
-            
-            Log.Information($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for plugins");
+
+            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAsking Emby for plugins");
 			using (var stream = await GetSerializedStreamAsync(url))
 			{
 				return DeserializeFromStream<List<PluginInfo>>(stream);
@@ -128,7 +130,7 @@ namespace EmbyStat.Clients.Emby.Http
 			var url = GetApiUrl("System/Ping");
 			var args = new Dictionary<string, string>();
 
-		    Log.Information($"{Constants.LogPrefix.EmbyClient}\tSending a ping to Emby");
+            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tSending a ping to Emby");
             try
             {
                 return await PostAsyncToString(url, args, 5000, cancellationToken);

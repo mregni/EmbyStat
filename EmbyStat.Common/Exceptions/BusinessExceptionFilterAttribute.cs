@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
-using NLog.Web;
-using Serilog;
 
 namespace EmbyStat.Common.Exceptions
 {
@@ -22,6 +20,11 @@ namespace EmbyStat.Common.Exceptions
 #endif
                 apiError = new ApiError(ex.Message, stack, true);
                 context.Exception = null;
+
+                if (ex.InnerException != null)
+                {
+                    logger.Error(ex.InnerException);
+                }
 
                 context.HttpContext.Response.StatusCode = ex.StatusCode;
                 logger.Warn($"{Constants.LogPrefix.ExceptionHandler}\tApplication thrown error: {ex.Message}", ex);

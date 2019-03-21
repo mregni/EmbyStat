@@ -9,7 +9,7 @@ using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Jobs
 {
@@ -19,6 +19,7 @@ namespace EmbyStat.Jobs
         protected readonly IJobHubHelper HubHelper;
         protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
+        private readonly Logger _logger;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
@@ -29,6 +30,7 @@ namespace EmbyStat.Jobs
             _jobRepository = jobRepository;
             Settings = settingsService.GetUserSettings();
             SettingsService = settingsService;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public abstract Guid Id { get; }
@@ -50,7 +52,7 @@ namespace EmbyStat.Jobs
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error while running job");
+                _logger.Error(e, "Error while running job");
                 await FailExecution("Job failed, check logs for more info.");
                 throw;
             }
@@ -104,19 +106,19 @@ namespace EmbyStat.Jobs
 
         public async Task LogInformation(string message)
         {
-            Log.Information($"{JobPrefix}\t{message}");
+            _logger.Info($"{JobPrefix}\t{message}");
             await SendLogUpdateToFront(message, ProgressLogType.Information);
         }
 
         public async Task LogWarning(string message)
         {
-            Log.Warning($"{JobPrefix}\t{message}");
+            _logger.Warn($"{JobPrefix}\t{message}");
             await SendLogUpdateToFront(message, ProgressLogType.Warning);
         }
 
         public async Task LogError(string message)
         {
-            Log.Error($"{JobPrefix}\t{message}");
+            _logger.Error($"{JobPrefix}\t{message}");
             await SendLogUpdateToFront(message, ProgressLogType.Error);
         }
 
