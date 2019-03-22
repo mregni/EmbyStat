@@ -70,7 +70,11 @@ namespace Tests.Unit.Controllers
             mapperMock.Setup(x => x.Map<FullSettingsViewModel>(It.IsAny<UserSettings>()))
                 .Returns(new FullSettingsViewModel());
             mapperMock.Setup(x => x.Map<UserSettings>(It.IsAny<FullSettingsViewModel>()))
-                .Returns(new UserSettings());
+                .Returns(new UserSettings()
+                {
+                    MovieCollectionTypes = new List<CollectionType>(),
+                    ShowCollectionTypes = new List<CollectionType>()
+                });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid()).Returns(Task.CompletedTask);
