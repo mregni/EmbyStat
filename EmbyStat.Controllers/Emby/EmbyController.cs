@@ -8,6 +8,7 @@ using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace EmbyStat.Controllers.Emby
 {
@@ -30,7 +31,6 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/token")]
         public async Task<IActionResult> GenerateToken([FromBody] EmbyLoginViewModel login)
         {
-            Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tGet emby token for certain login credentials.");
             var result = await _embyService.GetEmbyToken(_mapper.Map<EmbyLogin>(login));
             return Ok(_mapper.Map<EmbyTokenViewModel>(result));
         }
@@ -39,7 +39,6 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/info")]
         public async Task<IActionResult> GetServerInfo()
         {
-            Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tGet Emby server info.");
             var result = await _embyService.GetServerInfo();
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
@@ -50,14 +49,7 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/search")]
         public IActionResult SearchEmby()
         {
-            Serilog.Log.Information(
-                $"{Constants.LogPrefix.ServerApi}\tSearching for an Emby server in the network and returning the IP address.");
             var result = _embyService.SearchEmby();
-            if (!string.IsNullOrWhiteSpace(result.Address))
-            {
-                Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + result.Address);
-            }
-
             return Ok(_mapper.Map<EmbyUdpBroadcastViewModel>(result));
         }
 

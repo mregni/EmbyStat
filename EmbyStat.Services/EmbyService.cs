@@ -19,7 +19,8 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
-using Serilog;
+using NLog;
+using NLog.Fluent;
 
 namespace EmbyStat.Services
 {
@@ -31,6 +32,7 @@ namespace EmbyStat.Services
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
+        private readonly Logger _logger;
 
         public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService,
             ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
@@ -41,6 +43,7 @@ namespace EmbyStat.Services
             _settingsService = settingsService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         #region Server
@@ -69,6 +72,10 @@ namespace EmbyStat.Services
                         var settings = _settingsService.GetUserSettings();
                         settings.Emby.ServerName = udpBroadcastResult.Name;
                         _settingsService.SaveUserSettings(settings);
+
+                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address)) { 
+                            _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
+                        }
 
                         return udpBroadcastResult;
 
@@ -101,12 +108,12 @@ namespace EmbyStat.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Warning($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
-                    throw new BusinessException("TOKEN_FAILED");
+                    _logger.Warn($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
+                    throw new BusinessException("TOKEN_FAILED", 500, e);
                 }
             }
 
-            Log.Error("Username or password are empty, no use to try a login!");
+            _logger.Warn("Username or password are empty, no use to try a login!");
             throw new BusinessException("TOKEN_FAILED");
         }
 

@@ -6,17 +6,19 @@ using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Repositories
 {
     public class DatabaseInitializer : IDatabaseInitializer
     {
         private readonly ApplicationDbContext _context;
+        private readonly Logger _logger;
 
         public DatabaseInitializer(ApplicationDbContext context)
         {
             _context = context;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public async Task SeedAsync()
@@ -30,7 +32,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedLanguages()
         {
-            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
+            _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
 
             _context.Languages.RemoveRange(_context.Languages);
 
@@ -61,7 +63,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedEmbyStatus()
         {
-            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
+            _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
 
             var status = _context.EmbyStatus.ToList();
 
@@ -73,7 +75,7 @@ namespace EmbyStat.Repositories
 
         private async Task SeedJobs()
         {
-            Log.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+            _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
 
             var jobs = _context.Jobs.ToList();
 

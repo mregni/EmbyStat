@@ -2,7 +2,8 @@
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
+using NLog;
+using NLog.Fluent;
 using WebSocket4Net;
 using WebSocketState = WebSocket4Net.WebSocketState;
 
@@ -76,7 +77,8 @@ namespace EmbyStat.Clients.Emby.WebSocket
 
                 if (state == WebSocketState.Open || state == WebSocketState.Connecting)
                 {
-                    Log.Information("Sending web socket close message");
+                    var logger = LogManager.GetCurrentClassLogger();
+                    logger.Info("Sending web socket close message");
                     _socket.Close();
                 }
 

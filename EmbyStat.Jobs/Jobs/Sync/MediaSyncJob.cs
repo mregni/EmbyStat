@@ -20,7 +20,7 @@ using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Querying;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -35,6 +35,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly ICollectionRepository _collectionRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly Logger _logger;
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository, IGenreRepository genreRepository, 
@@ -50,6 +51,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
             Title = jobRepository.GetById(Id).Title;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public sealed override Guid Id => Constants.JobIds.MediaSyncId;
@@ -304,7 +306,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, $"{Constants.LogPrefix.MediaSyncJob}\tProcessing {show.Name} failed. Marking this show as failed");
+                    _logger.Error(e, $"{Constants.LogPrefix.MediaSyncJob}\tProcessing {show.Name} failed. Marking this show as failed");
                     show.TvdbFailed = true;
                     _showRepository.UpdateShow(show);
                 }

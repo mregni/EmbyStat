@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
-using Serilog;
 
 namespace EmbyStat.Common.Exceptions
 {
@@ -9,6 +8,8 @@ namespace EmbyStat.Common.Exceptions
     {
         public override void OnException(ExceptionContext context)
         {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+
             ApiError apiError;
             if (context.Exception is BusinessException ex)
             {
@@ -20,9 +21,14 @@ namespace EmbyStat.Common.Exceptions
                 apiError = new ApiError(ex.Message, stack, true);
                 context.Exception = null;
 
+                if (ex.InnerException != null)
+                {
+                    logger.Error(ex.InnerException);
+                }
+
                 context.HttpContext.Response.StatusCode = ex.StatusCode;
-                Log.Warning($"{Constants.LogPrefix.ExceptionHandler}\tApplication thrown error: {ex.Message}", ex);
-                Log.Warning($"{Constants.LogPrefix.ExceptionHandler}\tFrontend will know what to do with this!");
+                logger.Warn($"{Constants.LogPrefix.ExceptionHandler}\tApplication thrown error: {ex.Message}", ex);
+                logger.Warn($"{Constants.LogPrefix.ExceptionHandler}\tFrontend will know what to do with this!");
             }
             else
             {
@@ -33,12 +39,11 @@ namespace EmbyStat.Common.Exceptions
                 var msg = context.Exception.GetBaseException().Message;
                 var stack = context.Exception.StackTrace;
 #endif
-                Log.Error(context.Exception, $"{Constants.LogPrefix.ExceptionHandler}\tUnhandled backend exception");
-
                 apiError = new ApiError(msg, stack, false);
                 context.HttpContext.Response.StatusCode = 500;
 
-                Log.Error(context.Exception, msg);
+
+                logger.Error(context.Exception, msg);
             }
 
             context.Result = new JsonResult(JsonConvert.SerializeObject(apiError));

@@ -4,17 +4,19 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using MediaBrowser.Model.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Repositories
 {
     public class ShowRepository : IShowRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly Logger _logger;
 
         public ShowRepository(ApplicationDbContext context)
         {
             _context = context;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public void RemoveShows()
@@ -35,7 +37,7 @@ namespace EmbyStat.Repositories
                     var temp = _context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
                     if (temp == null)
                     {
-                        Log.Warning($"We couldn't find the person with Id {person.PersonId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the show now.");
+                        _logger.Warn($"We couldn't find the person with Id {person.PersonId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the show now.");
                         peopleToDelete.Add(person.PersonId);
                     }
                 }
@@ -47,7 +49,7 @@ namespace EmbyStat.Repositories
                     var temp = _context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
                     if (temp == null)
                     {
-                        Log.Warning($"We couldn't find the genre with Id {genre.GenreId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the show now.");
+                        _logger.Warn($"We couldn't find the genre with Id {genre.GenreId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the show now.");
                         genresToDelete.Add(genre.GenreId);
                     }
                 }

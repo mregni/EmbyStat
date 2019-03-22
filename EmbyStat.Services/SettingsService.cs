@@ -7,14 +7,14 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Rollbar;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Services
 {
     public class SettingsService : ISettingsService
     {
         private readonly AppSettings _appSettings;
+        private readonly Logger _logger;
         private UserSettings _userSettings;
         public event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
 
@@ -22,6 +22,7 @@ namespace EmbyStat.Services
         {
             _appSettings = appSettings.Value;
             LoadUserSettingsFromFile();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public AppSettings GetAppSettings()
@@ -59,7 +60,7 @@ namespace EmbyStat.Services
             if (!File.Exists(dir))
             {
                 var e = new FileNotFoundException("usersettings.json could not be found. Place it in the correct folder and restart the server (default folder: Settings)");
-                Log.Error(e, "usersettings.json file not found");
+                _logger.Error(e, "usersettings.json file not found");
                 throw e;
             }
 

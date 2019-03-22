@@ -1,10 +1,7 @@
 ﻿using System;
 using System.IO;
 using CommandLine;
-using Serilog;
-using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Exceptions.Core;
+using NLog.Web;
 using Updater.Models;
 
 namespace Updater
@@ -35,13 +32,7 @@ namespace Updater
                 Directory.CreateDirectory("Logs");
             }
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder().WithDefaultDestructurers().WithRootName("Exception"))
-                .Enrich.FromLogContext()
-                .WriteTo.File("Logs/updater.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                .CreateLogger();
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
         }
     }
 }

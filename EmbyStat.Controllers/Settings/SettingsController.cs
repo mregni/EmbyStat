@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,6 +7,7 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace EmbyStat.Controllers.Settings
 {
@@ -16,21 +18,23 @@ namespace EmbyStat.Controllers.Settings
         private readonly ISettingsService _settingsService;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMapper _mapper;
+        private readonly Logger _logger;
 
         public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, IMapper mapper)
         {
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
             _mapper = mapper;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
 	    [HttpGet]
 	    public IActionResult Get()
-	    {
+        {
 	        var settings = _settingsService.GetUserSettings();
 	        if (!settings.WizardFinished)
 	        {
-                Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tStarting wizard for user.");
+                _logger.Info($"{Constants.LogPrefix.ServerApi}\tStarting wizard for user.");
 	        }
 
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);

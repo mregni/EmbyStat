@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Emby.WebSo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.GitHub", "EmbyStat.Clients.GitHub\EmbyStat.Clients.GitHub.csproj", "{42459A16-8716-49BF-9316-A982051E5F01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Clients.Tvdb", "EmbyStat.Clients.Tvdb\EmbyStat.Clients.Tvdb.csproj", "{24AC4C4D-D0D0-4F35-8637-0A40E93D96B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Tvdb", "EmbyStat.Clients.Tvdb\EmbyStat.Clients.Tvdb.csproj", "{24AC4C4D-D0D0-4F35-8637-0A40E93D96B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Clients.Emby.Http", "EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj", "{3F5C02D5-43D3-447D-B901-2237B124C8E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Emby.Http", "EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj", "{3F5C02D5-43D3-447D-B901-2237B124C8E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

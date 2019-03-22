@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Serilog;
+using NLog;
 using Updater.Models;
 
 namespace Updater
@@ -12,19 +12,21 @@ namespace Updater
     public class Updater
     {
         private readonly StartupOptions _options;
+        private readonly Logger _logger;
 
         public Updater(StartupOptions options)
         {
             _options = options;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public void Start()
         {
-            Log.Information("Start killing EmbyStat now");
+            _logger.Info("Start killing EmbyStat now");
             var state = KillProcess();
             if (!state)
             {
-                Log.Warning("Couldn't kill the EmbyStat process");
+                _logger.Warn("Couldn't kill the EmbyStat process");
                 return;
             }
 
@@ -37,16 +39,16 @@ namespace Updater
             var process = Process.GetProcesses().FirstOrDefault(p => p.Id == _options.ProcessId);
             if (process == null)
             {
-                Log.Information($"Cannot find process with name: {_options.ProcessName}");
+                _logger.Info($"Cannot find process with name: {_options.ProcessName}");
                 return true;
             }
 
             if (process.Id > 0)
             {
-                Log.Information($"{process.Id}: Killing process");
+                _logger.Info($"{process.Id}: Killing process");
                 process.Kill();
                 process.WaitForExit();
-                Log.Information($"{process.Id}: Process terminated successfully");
+                _logger.Info($"{process.Id}: Process terminated successfully");
 
                 return true;
             }
@@ -68,7 +70,7 @@ namespace Updater
             {
                 var newDir = dirPath.Replace(updatedLocation, _options.ApplicationPath);
                 Directory.CreateDirectory(newDir);
-                Log.Debug($"Created dir {newDir}");
+                _logger.Debug($"Created dir {newDir}");
             }
 
             foreach (string currentPath in Directory.GetFiles(updatedLocation, "*.*", SearchOption.AllDirectories))
@@ -78,14 +80,14 @@ namespace Updater
                 {
                     var newFile = currentPath.Replace(updatedLocation, _options.ApplicationPath);
                     File.Copy(currentPath, newFile, true);
-                    Log.Debug($"Replaced file {newFile}");
+                    _logger.Debug($"Replaced file {newFile}");
                 }
             }
         }
 
         private void StartEmbyStat()
         {
-            Log.Information("Starting EmbyStat");
+            _logger.Info("Starting EmbyStat");
             var processName = _options.ProcessName.Replace(".Web", "");
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -106,9 +108,9 @@ namespace Updater
                 proc.Start();
             }
 
-            Log.Information($"EmbyStat started, now exiting");
-            Log.Information($"Working dir: {_options.ApplicationPath} (Application Path)");
-            Log.Information($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
+            _logger.Info($"EmbyStat started, now exiting");
+            _logger.Info($"Working dir: {_options.ApplicationPath} (Application Path)");
+            _logger.Info($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
 
             Environment.Exit(0);
         }

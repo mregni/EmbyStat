@@ -7,19 +7,21 @@ using EmbyStat.Common.Converters;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Services
 {
     public class WebSocketService : IWebSocketService, IDisposable
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly Logger _logger;
 
         private Timer _timer;
 
         public WebSocketService(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -52,7 +54,7 @@ namespace EmbyStat.Services
                         }
                         catch (Exception e)
                         {
-                            Log.Error(e, "Failed to open socket connection to Emby");
+                            _logger.Error(e, "Failed to open socket connection to Emby");
                             throw;
                         }
                     }
@@ -90,7 +92,7 @@ namespace EmbyStat.Services
 
         private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
         {
-            Log.Information("User data changed");
+            _logger.Info("User data changed");
         }
 
         private async void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
