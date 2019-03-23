@@ -82,7 +82,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _collectionRepository.AddOrUpdateRange(rootItems);
             await LogInformation($"Found {rootItems.Count} root items, getting ready for processing");
 
-            await ProcessMovies(rootItems, cancellationToken);
+            //await ProcessMovies(rootItems, cancellationToken);
             await ProcessShows(rootItems, cancellationToken);
             await SyncMissingEpisodes(Settings.Tvdb.LastUpdate, Settings.Tvdb.ApiKey, cancellationToken);
 
@@ -278,20 +278,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB), lastUpdateFromTvdb.Value, cancellationToken);
                 showsWithMissingEpisodes.AddRange(shows.Where(x => showsThatNeedAnUpdate.Any(y => y == x.TVDB)));
-                showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
             }
 
             var now = DateTime.Now;
-            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
+            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList(), cancellationToken);
 
             Settings.Tvdb.LastUpdate = now;
             await SettingsService.SaveUserSettings(Settings);
         }
 
-        private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
+        private async Task GetMissingEpisodesFromTvdb(List<Show> shows, CancellationToken cancellationToken)
         {
             double i = 0;
-            var showCount = shows.Count();
+
+            var showCount = shows.Count;
             foreach (var show in shows)
             {
                 i++;
