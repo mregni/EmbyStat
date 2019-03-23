@@ -62,7 +62,10 @@ namespace EmbyStat.Web
                 .AddJsonFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(appSettings.ConnectionStrings.Main));
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlite(appSettings.ConnectionStrings.Main, builder => builder.CommandTimeout(30));
+            });
 
             services.AddHangfire(x =>
             {

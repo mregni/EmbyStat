@@ -62,12 +62,8 @@ namespace EmbyStat.Repositories
 
         public void UpdateShow(Show show)
         {
-            var data = _context.Shows.AsNoTracking().SingleOrDefault(x => x.Id == show.Id);
-            if (data != null)
-            {
-                _context.Entry(show).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
+            _context.Update(show);
+            _context.SaveChanges();
         }
 
         public void AddRange(IEnumerable<Season> list)
@@ -84,7 +80,7 @@ namespace EmbyStat.Repositories
 
         public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool includeSubs = false)
         {
-            var query = _context.Shows.AsNoTracking().AsQueryable();
+            var query = _context.Shows.AsQueryable();
 
             if (includeSubs)
             {
@@ -98,7 +94,7 @@ namespace EmbyStat.Repositories
                 query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
             }
 
-            return query.ToList();
+            return query;
         }
 
         public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool includeSubs = false)
@@ -113,7 +109,7 @@ namespace EmbyStat.Repositories
             }
 
             query = query.Where(x => x.ParentId == showId);
-            return query.ToList();
+            return query.AsNoTracking();
         }
 
         public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool includeSubs = false)
@@ -139,7 +135,7 @@ namespace EmbyStat.Repositories
             }
 
             query = query.Where(x => episodeIds.Any(y => y == x.Id));
-            return query.ToList();
+            return query.AsNoTracking();
         }
 
         public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool includeSubs = false)

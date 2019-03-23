@@ -27,11 +27,12 @@ namespace EmbyStat.Common.Converters
 
                 if (session["PlayState"]["MediaSourceId"] != null)
                 {
+                    Enum.TryParse(session["NowPlayingItem"]["Type"].Value<string>(), true, out PlayType playType);
                     var play = new Play
                     {
                         MediaId = session["NowPlayingItem"]["Id"].Value<string>(),
                         SessionId = session["Id"].Value<string>(),
-                        Type = session["NowPlayingItem"]["Type"].ToObject<PlayType>(),
+                        Type = playType,
                         ParentId = session["NowPlayingItem"]["ParentId"].Value<string>()
                     };
                     
@@ -64,6 +65,8 @@ namespace EmbyStat.Common.Converters
                         play.AudioLanguage = audioStream["Language"]?.Value<string>();
                     }
 
+                    Enum.TryParse(session["PlayState"]["RepeatMode"].Value<string>(), true, out RepeatMode repeatMode);
+                    Enum.TryParse(session["PlayState"]["PlayMethod"]?.Value<string>(), true, out PlayMethod playMethod);
                     play.PlayStates.Add(new PlayState
                     {
                         MediaSourceId = session["PlayState"]["MediaSourceId"].Value<string>(),
@@ -76,8 +79,8 @@ namespace EmbyStat.Common.Converters
                         TranscodeReasons = session["TranscodingInfo"]?["TranscodeReasons"]
                             ?.ToObject<List<TranscodeReason>>(),
                         VideoCodec = session["TranscodingInfo"]?["VideoCodec"]?.Value<string>(),
-                        RepeatMode = session["PlayState"]["RepeatMode"].ToObject<RepeatMode>(),
-                        PlayMethod = session["PlayState"]["PlayMethod"]?.ToObject<PlayMethod>()
+                        RepeatMode = repeatMode,
+                        PlayMethod = playMethod
                     });
 
                     ses.Plays.Add(play);
