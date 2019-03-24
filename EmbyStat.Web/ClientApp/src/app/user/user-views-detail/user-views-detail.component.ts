@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 import { EmbyService } from '../../shared/services/emby.service';
+import { PageService } from '../services/page.service';
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { Settings } from '../../settings/models/settings';
 import { ConfigHelper } from '../../shared/helpers/configHelper';
@@ -26,8 +27,10 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly embyService: EmbyService,
-    private readonly settingsFacade: SettingsFacade) {
+    private readonly settingsFacade: SettingsFacade,
+    private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
+    this.pageService.pageChanged('views');
 
     this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
       const id = params['id'];

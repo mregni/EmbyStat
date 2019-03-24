@@ -19,6 +19,7 @@
     "QUALITY": "quality",
     "NEVER": "never",
     "OPEN": "Open",
+    "VIEWALL": "View all", 
     "LINK": "link",
     "REASON": "reason",
     "BYIMDB": "same imdb id",
