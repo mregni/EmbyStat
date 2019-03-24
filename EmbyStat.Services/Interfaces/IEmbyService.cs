@@ -34,7 +34,7 @@ namespace EmbyStat.Services.Interfaces
         User GetUserById(string id);
         Card<int> GetViewedEpisodeCountByUserId(string id);
         Card<int> GetViewedMovieCountByUserId(string id);
-        IEnumerable<UserMediaView> GetLastWatchedMediaByUserId(string id, int count);
+        IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
 
         #endregion
 
@@ -46,6 +46,5 @@ namespace EmbyStat.Services.Interfaces
         Task GetAndProcessDevices(string embyAddress, string settingsAccessToken);
 
         #endregion
-
     }
 }

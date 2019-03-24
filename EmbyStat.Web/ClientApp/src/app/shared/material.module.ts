@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material';
 import { MatRippleModule } from '@angular/material/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { MatRippleModule } from '@angular/material/core';
     MatTabsModule,
     MatTableModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ],
   exports: [
     MatToolbarModule,
@@ -66,7 +68,8 @@ import { MatRippleModule } from '@angular/material/core';
     MatTabsModule,
     MatTableModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ],
 })
 

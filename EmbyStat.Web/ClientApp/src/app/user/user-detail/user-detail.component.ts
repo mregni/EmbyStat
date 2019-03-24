@@ -27,7 +27,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private readonly userService: UserService,
     private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
-    this.pageService.pageChanged('');
 
     this.userService.user.subscribe((user: EmbyUser) => {
       this.user = user;
@@ -35,6 +34,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.pageService.pageChanged('details');
   }
 
   getEmbyAddress(): string {

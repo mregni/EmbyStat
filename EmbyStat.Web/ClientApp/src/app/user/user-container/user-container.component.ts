@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { EmbyService } from '../../shared/services/emby.service';
 import { PageService } from '../services/page.service';
@@ -22,15 +23,15 @@ export class UserContainerComponent implements OnInit, OnDestroy {
 
   userIds$: Observable<UserId[]>;
   selectedUserId: string;
-  selectedPage: string;
+  selectedPage = "details";
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly embyService: EmbyService,
     private readonly userService: UserService,
-    private readonly pageService: PageService) {
+    private readonly pageService: PageService,
+    private readonly cdRef: ChangeDetectorRef) {
     this.userIds$ = this.embyService.getUserIdList();
-    this.selectedPage = "";
 
     this.paramSub = this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
@@ -43,10 +44,6 @@ export class UserContainerComponent implements OnInit, OnDestroy {
         this.router.navigate(['/users']);
       }
     });
-
-    this.pageSub = this.pageService.page.subscribe((page: string) => {
-      this.selectedPage = page;
-    });
   }
 
   onUserSelectionChanged(event: any) {
@@ -57,11 +54,14 @@ export class UserContainerComponent implements OnInit, OnDestroy {
   }
 
   onPageSelectionChanged(event: any) {
-    this.selectedPage = event.value;
     this.router.navigate(['user/' + this.selectedUserId + '/' + event.value]);
   }
 
   ngOnInit() {
+    this.pageSub = this.pageService.page.subscribe((page: string) => {
+      this.selectedPage = page;
+      this.cdRef.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {

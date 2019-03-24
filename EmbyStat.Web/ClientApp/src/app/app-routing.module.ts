@@ -35,7 +35,7 @@ const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
 { path: 'users', component: UsersOverviewComponent },
 {
   path: 'user/:id', component: UserContainerComponent, children: [
-    { path: '', component: UserDetailComponent },
+    { path: 'details', component: UserDetailComponent },
     { path: 'views', component: UserViewsDetailComponent }
   ]
 },
