@@ -1,4 +1,4 @@
-﻿@import "../../../styles";
+@import "../../../styles";
 
 .content {
   display: flex;
@@ -23,6 +23,14 @@
     line-height: 0.6em;
     margin: 0 8px;
   }
+}
+
+.card-header-bar {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
 }
 
 @media only screen and (max-width: $large-size) {
