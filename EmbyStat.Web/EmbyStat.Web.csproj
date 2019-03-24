@@ -90,6 +90,7 @@
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\user\services\page.service.ts" />
     <None Remove="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
@@ -130,6 +131,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user\services\page.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 

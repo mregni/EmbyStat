@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 
 import { EmbyService } from '../../shared/services/emby.service';
+import { PageService } from '../services/page.service';
+
 import { EmbyUser } from '../../shared/models/emby/emby-user';
 import { UserId } from '../../shared/models/user-id';
 
@@ -16,6 +18,7 @@ import { UserService } from '../services/user.service';
 export class UserContainerComponent implements OnInit, OnDestroy {
   private paramSub: Subscription;
   private userSub: Subscription;
+  private pageSub: Subscription;
 
   userIds$: Observable<UserId[]>;
   selectedUserId: string;
@@ -24,7 +27,8 @@ export class UserContainerComponent implements OnInit, OnDestroy {
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly embyService: EmbyService,
-    private readonly userService: UserService) {
+    private readonly userService: UserService,
+    private readonly pageService: PageService) {
     this.userIds$ = this.embyService.getUserIdList();
     this.selectedPage = "";
 
@@ -39,13 +43,16 @@ export class UserContainerComponent implements OnInit, OnDestroy {
         this.router.navigate(['/users']);
       }
     });
+
+    this.pageSub = this.pageService.page.subscribe((page: string) => {
+      this.selectedPage = page;
+    });
   }
 
   onUserSelectionChanged(event: any) {
     this.embyService.getUserById(event.value).subscribe((user: EmbyUser) => {
       this.userService.userChanged(user);
       this.selectedUserId = user.id;
-      console.log(user);
     });
   }
 
@@ -64,6 +71,10 @@ export class UserContainerComponent implements OnInit, OnDestroy {
 
     if (this.userSub !== undefined) {
       this.userSub.unsubscribe();
+    }
+
+    if (this.pageSub !== undefined) {
+      this.pageSub.unsubscribe();
     }
   }
 }

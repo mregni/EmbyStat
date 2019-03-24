@@ -30,7 +30,7 @@
       <div class="card-header-bar">
         <h3>{{ 'USERS.DETAILS.WATCHEDTITLE' | translate }}</h3>
         <div>
-          <button mat-raised-button color="accent" routerLink="/user/{{user.id}}/views" routerLinkActive="active">{{ 'COMMON.OPEN' | translate }}</button>
+          <button mat-raised-button color="accent" routerLink="/user/{{user.id}}/views" routerLinkActive="active">{{ 'COMMON.VIEWALL' | translate }}</button>
         </div>
       </div>
       <mat-table [dataSource]="user.lastWatchedMedia" class="round-border">
