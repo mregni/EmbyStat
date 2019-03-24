@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -15,14 +15,13 @@ import { UserMediaView } from '../../shared/models/session/user-media-view';
   templateUrl: './user-views-detail.component.html',
   styleUrls: ['./user-views-detail.component.scss']
 })
-export class UserViewsDetailComponent implements OnInit, OnDestroy {
+export class UserViewsDetailComponent implements OnDestroy {
   private paramSub: Subscription;
   private settingsSub: Subscription;
   private settings: Settings;
 
+  dataSource: UserMediaView[];
   displayedColumns: string[] = ['logo', 'name', 'duration', 'start', 'percentage', 'id'];
-  views$: Observable<UserMediaView[]>;
-  username: string;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
@@ -35,14 +34,14 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
     this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
       const id = params['id'];
       if (!!id) {
-        this.views$ = this.embyService.getUserViewsByUserId(id);
+        this.embyService.getUserViewsByUserId(id, 0, 10).subscribe((list: UserMediaView[]) => {
+          this.dataSource = list;
+          console.log(list);
+        });
       } else {
         this.router.navigate(['/users']);
       }
     });
-  }
-
-  ngOnInit() {
   }
 
   getEmbyAddress(): string {

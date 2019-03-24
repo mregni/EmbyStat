@@ -192,9 +192,9 @@ namespace EmbyStat.Services
             };
         }
 
-        public IEnumerable<UserMediaView> GetLastWatchedMediaByUserId(string id, int count)
+        public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
         {
-            var plays = _sessionService.GetLastWatchedMediaForUser(id, count);
+            var plays = _sessionService.GetPlaysPageForUser(id, page, size);
             foreach (var play in plays)
             {
                 if (play.Type == PlayType.Movie)

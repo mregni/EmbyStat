@@ -21,17 +21,17 @@ namespace EmbyStat.Services
             return _sessionRepository.GetMediaIdsForUser(id, type);
         }
 
-        public List<Play> GetLastWatchedMediaForUser(string id, int count)
+        public IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size)
         {
-            var plays = _sessionRepository.GetPlaysForUser(id);
+            var plays = _sessionRepository.GetPlaysPageForUser(id);
             var cleanedPlays = CleanPlayList(plays);
 
             return cleanedPlays
+                .Skip(page * size)
+                .Take(size)
                 .Select(x => x.PlayStates.First())
                 .OrderByDescending(x => x.TimeLogged)
-                .Take(count)
-                .Select(x => x.Play)
-                .ToList();
+                .Select(x => x.Play);
         }
 
         /// <summary>

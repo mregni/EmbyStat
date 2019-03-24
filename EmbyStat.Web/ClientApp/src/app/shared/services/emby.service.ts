@@ -57,7 +57,7 @@ export class EmbyService {
     return this.http.get<UserId[]>(this.getEmbyUserIdsUrl);
   }
 
-  getUserViewsByUserId(id: string): Observable<UserMediaView[]> {
-    return this.http.get<UserMediaView[]>(this.getEmbyUsersUrl + '/' + id + "/views");
+  getUserViewsByUserId(id: string, page: number, size: number): Observable<UserMediaView[]> {
+    return this.http.get<UserMediaView[]>(this.getEmbyUsersUrl + '/' + id + "/views/" + page + "/" + size);
   }
 }
