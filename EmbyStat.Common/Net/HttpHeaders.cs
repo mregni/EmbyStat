@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EmbyStat.Clients.EmbyClient.Net
+namespace EmbyStat.Common.Net
 {
     public class HttpHeaders : Dictionary<string,string>
     {

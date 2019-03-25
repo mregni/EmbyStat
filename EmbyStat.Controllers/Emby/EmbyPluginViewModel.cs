@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EmbyStat.Controllers.Plugin
+namespace EmbyStat.Controllers.Emby
 {
     public class EmbyPluginViewModel
     {

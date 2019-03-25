@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Model.Net;
 
-namespace EmbyStat.Clients.EmbyClient.Net
+namespace EmbyStat.Common.Net
 {
 	public class HttpWebRequestClient : IAsyncHttpClient
 	{

@@ -1,10 +1,10 @@
 ﻿using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Emby.WebSocket;
-using EmbyStat.Clients.EmbyClient.Net;
-using EmbyStat.Clients.Github;
+using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Net;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Maintenance;

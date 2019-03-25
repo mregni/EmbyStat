@@ -1,7 +1,7 @@
 ﻿using EmbyStat.Common.Enums;
 using Newtonsoft.Json;
 
-namespace EmbyStat.Clients.Github.Models
+namespace EmbyStat.Clients.GitHub.Models
 {
     public class PackageInfo
     {

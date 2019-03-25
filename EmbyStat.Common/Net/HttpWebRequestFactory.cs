@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmbyStat.Clients.EmbyClient.Net
+namespace EmbyStat.Common.Net
 {
     public class HttpWebRequestFactory : IHttpWebRequestFactory
     {
