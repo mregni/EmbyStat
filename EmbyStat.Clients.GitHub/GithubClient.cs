@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient.Net;
-using EmbyStat.Clients.Github.Models;
+using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Common.Net;
 using Microsoft.Extensions.Options;
 
-namespace EmbyStat.Clients.Github
+namespace EmbyStat.Clients.GitHub
 {
     public class GithubClient : IGithubClient
     {

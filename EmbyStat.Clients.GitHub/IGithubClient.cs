@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Github.Models;
+using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
 
-namespace EmbyStat.Clients.Github
+namespace EmbyStat.Clients.GitHub
 {
     public interface IGithubClient
     {

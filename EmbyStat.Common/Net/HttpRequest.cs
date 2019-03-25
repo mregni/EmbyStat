@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace EmbyStat.Clients.EmbyClient.Net
+namespace EmbyStat.Common.Net
 {
     public class HttpRequest
     {
