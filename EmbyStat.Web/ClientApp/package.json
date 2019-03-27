@@ -25,7 +25,7 @@
     "@angular/router": "7.2.4",
     "@aspnet/signalr": "1.1.2",
     "@fortawesome/angular-fontawesome": "^0.3.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@ngrx/effects": "7.1.0",
     "@ngrx/store": "7.1.0",
