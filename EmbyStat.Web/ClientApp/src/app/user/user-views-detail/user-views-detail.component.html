@@ -17,7 +17,7 @@
               <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TITLE' | translate }}</mat-header-cell>
               <mat-cell *matCellDef="let element">
                 {{element.name}}
-                <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)"></fa-icon>
+                <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)" class="margin-right"></fa-icon>
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="duration">

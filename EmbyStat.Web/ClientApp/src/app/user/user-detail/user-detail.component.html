@@ -36,51 +36,65 @@
             <button mat-raised-button color="accent" routerLink="/user/{{user.id}}/views" routerLinkActive="active">{{ 'COMMON.VIEWALL' | translate }}</button>
           </div>
         </div>
-        <mat-table [dataSource]="user.lastWatchedMedia" class="round-border">
-          <ng-container matColumnDef="logo">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              <img class="device-logo" src="{{element.deviceLogo}}" *ngIf="element.deviceLogo.length !== 0; else NoDevice" />
-              <ng-template #NoDevice>
-                <img class="device-logo" src="../../../../assets/images/no-device.png" />
-              </ng-template>
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TITLE' | translate }}</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              {{element.name}}
-              <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)"></fa-icon>
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="duration">
-            <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TIME' | translate }}</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              {{getPlayedTime(element.watchedTime)}}
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="start">
-            <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.WATCHED' | translate }}</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              {{element.watchedPercentage}}%
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="percentage">
-            <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.START' | translate }}</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              {{element.startedWatching | amFromUtc | amLocal | amDateFormat: 'HH:mm DD/MM'}}
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef class="action-cell">{{ 'USERS.WATCHEDTABLE.ACTION' | translate }}</mat-header-cell>
-            <mat-cell *matCellDef="let element" class="action-cell">
-              <a mat-raised-button href="{{getEmbyAddress()}}/web/index.html#!/itemdetails.html?id={{element.id}}" target="_blank" color="accent">{{ 'COMMON.OPEN' | translate }}</a>
-            </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      </div>
+      <div class="card-flex-row card-margin">
+        <app-card-number [card]="user.viewedMovieCount"></app-card-number>
+        <app-card-number [card]="user.viewedEpisodeCount"></app-card-number>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="white">
+    <mat-card-content>
+      <div class="card-header-bar">
+        <h3>{{ 'USERS.DETAILS.WATCHEDTITLE' | translate }}</h3>
+        <div>
+          <button mat-raised-button color="accent" routerLink="/user/{{user.id}}/views" routerLinkActive="active">{{ 'COMMON.VIEWALL' | translate }}</button>
+        </div>
+      </div>
+      <mat-table [dataSource]="user.lastWatchedMedia" class="round-border">
+        <ng-container matColumnDef="logo">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <img class="device-logo" src="{{element.deviceLogo}}" *ngIf="element.deviceLogo.length !== 0; else NoDevice"/>
+            <ng-template #NoDevice>
+              <img class="device-logo" src="../../../../assets/images/no-device.png"/>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TITLE' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.name}}
+            <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)" class="margin-right"></fa-icon>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="duration">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TIME' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{getPlayedTime(element.watchedTime)}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="start">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.WATCHED' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.watchedPercentage}}%
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="percentage">
+          <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.START' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.startedWatching | amFromUtc | amLocal | amDateFormat: 'HH:mm DD/MM'}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef class="action-cell">{{ 'USERS.WATCHEDTABLE.ACTION' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="action-cell">
+            <a mat-raised-button href="{{getEmbyAddress()}}/web/index.html#!/itemdetails.html?id={{element.id}}" target="_blank" color="accent">{{ 'COMMON.OPEN' | translate }}</a>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
 </div>
