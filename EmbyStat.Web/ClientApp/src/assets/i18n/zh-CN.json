@@ -19,6 +19,7 @@
     "QUALITY": "画质",
     "NEVER": "从未",
     "OPEN": "打开",
+    "VIEWALL": "View all",
     "LINK": "链接",
     "REASON": "原因",
     "BYIMDB": "相同的imdb id",
@@ -200,7 +201,8 @@
     },
     "TOOVERVIEW": "To overview",
     "DETAILS": {
-      "TITLE": "Details for {{name}}"
+      "TITLE": "Details for {{name}}",
+      "WATCHEDTITLE": "Last watched items"
     },
     "WATCHEDTABLE": {
       "TITLE": "Title",

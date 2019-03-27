@@ -19,6 +19,7 @@
     "QUALITY": "Qualität",
     "NEVER": "nie",
     "OPEN": "Öffnen",
+    "VIEWALL": "View all",
     "LINK": "Link",
     "REASON": "Grund",
     "BYIMDB": "Gleiche IMDB ID",
@@ -200,7 +201,8 @@
     },
     "TOOVERVIEW": "Zur Übersicht",
     "DETAILS": {
-      "TITLE": "Details für {{name}}"
+      "TITLE": "Details für {{name}}",
+      "WATCHEDTITLE": "Last watched items"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
