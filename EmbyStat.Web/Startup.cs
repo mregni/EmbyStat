@@ -185,7 +185,7 @@ namespace EmbyStat.Web
             }
         }
 
-        private void RemoveVersionFiles()
+        private void RemoveVersionFiles()   
         {
             foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
             {

@@ -5,7 +5,6 @@
   flex: 0 0 100%;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 0;
 }
 
 .title-bar-left-content {
@@ -33,11 +32,15 @@
   padding: 20px;
 }
 
-mat-card {
+.user-detail-column {
   display: flex;
-  flex: 0 0 calc(50% - 38px);
-  margin: 25px 0 0 25px;
+  flex: 0 0 calc(50% - 15px);
+  flex-direction: column;
   padding: 0;
+}
+
+.user-detail-column:not(:first-child) {
+  margin-left: 25px;
 }
 
 mat-card-content {
@@ -122,10 +125,19 @@ mat-table {
 }
 
 @media only screen and (max-width: $large-size) {
-  mat-card {
-    margin-right: 25px;
-    margin-top: 25px;
+  .user-detail-column {
+    display: flex;
+    flex: 0 0 100%;
+    flex-direction: column;
+    padding: 0;
+  }
 
+  .user-detail-column:not(:first-child) {
+    margin-top: 25px;
+    margin-left: 0;
+  }
+
+  mat-card {
     mat-table {
       flex: 0 0 100%;
       margin-top: 25px;

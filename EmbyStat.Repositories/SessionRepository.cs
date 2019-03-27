@@ -27,7 +27,7 @@ namespace EmbyStat.Repositories
                 .ToList();
         }
 
-        public IEnumerable<Play> GetPlaysPageForUser(string id)
+        public IEnumerable<Play> GetPlaysForUser(string id)
         {
             return _context.Sessions
                 .Where(x => x.UserId == id)

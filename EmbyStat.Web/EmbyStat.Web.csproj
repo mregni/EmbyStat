@@ -73,6 +73,7 @@
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
     <None Remove="ClientApp\src\app\shared\models\collection.ts" />
+    <None Remove="ClientApp\src\app\shared\models\list-container.ts" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
@@ -118,6 +119,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />

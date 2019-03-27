@@ -211,6 +211,11 @@ namespace EmbyStat.Services
             }
         }
 
+        public int GetUserViewCount(string id)
+        {
+            return _sessionService.GetPlayCountForUser(id);
+        }
+
         #endregion
 
         #region JobHelpers

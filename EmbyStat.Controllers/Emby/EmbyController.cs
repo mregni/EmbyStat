@@ -122,7 +122,15 @@ namespace EmbyStat.Controllers.Emby
             }
 
             var views = _embyService.GetUserViewPageByUserId(id, page, size);
-            return Ok(_mapper.Map<IList<UserMediaViewViewModel>>(views));
+            var list = _mapper.Map<IList<UserMediaViewViewModel>>(views);
+
+            var count = _embyService.GetUserViewCount(id);
+            var container = new ListContainer<UserMediaViewViewModel>
+            {
+                Data = list.ToList(),
+                TotalCount = count
+            };
+            return Ok(container);
         }
 
         [HttpGet]
