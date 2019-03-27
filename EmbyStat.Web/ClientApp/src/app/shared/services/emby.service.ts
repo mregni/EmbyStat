@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { ListContainer } from '../models/list-container';
+
 import { EmbyUdpBroadcast } from '../models/emby/emby-udp-broadcast';
 import { EmbyLogin } from '../models/emby//emby-login';
 import { EmbyToken } from '../models/emby/emby-token';
@@ -57,7 +59,7 @@ export class EmbyService {
     return this.http.get<UserId[]>(this.getEmbyUserIdsUrl);
   }
 
-  getUserViewsByUserId(id: string, page: number, size: number): Observable<UserMediaView[]> {
-    return this.http.get<UserMediaView[]>(this.getEmbyUsersUrl + '/' + id + "/views/" + page + "/" + size);
+  getUserViewsByUserId(id: string, page: number, size: number): Observable<ListContainer<UserMediaView>> {
+    return this.http.get<ListContainer<UserMediaView>>(this.getEmbyUsersUrl + '/' + id + "/views/" + page + "/" + size);
   }
 }

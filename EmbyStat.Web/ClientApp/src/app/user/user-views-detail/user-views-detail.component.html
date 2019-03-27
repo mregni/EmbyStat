@@ -44,10 +44,13 @@
             </mat-cell>
           </ng-container>
 
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
-      </div>
-    </mat-card-content>
-  </mat-card>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+
+          <mat-paginator [length]="resultsLength" [pageSize]="10"></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

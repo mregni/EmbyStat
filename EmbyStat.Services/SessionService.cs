@@ -23,15 +23,21 @@ namespace EmbyStat.Services
 
         public IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size)
         {
-            var plays = _sessionRepository.GetPlaysPageForUser(id);
+            var plays = _sessionRepository.GetPlaysForUser(id);
             var cleanedPlays = CleanPlayList(plays);
 
             return cleanedPlays
-                .Skip(page * size)
-                .Take(size)
                 .Select(x => x.PlayStates.First())
                 .OrderByDescending(x => x.TimeLogged)
-                .Select(x => x.Play);
+                .Select(x => x.Play)
+                .Skip(page * size)
+                .Take(size);
+        }
+
+        public int GetPlayCountForUser(string id)
+        {
+            var plays = _sessionRepository.GetPlaysForUser(id);
+            return CleanPlayList(plays).Count();
         }
 
         /// <summary>

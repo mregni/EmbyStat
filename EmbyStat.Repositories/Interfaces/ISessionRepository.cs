@@ -7,6 +7,6 @@ namespace EmbyStat.Repositories.Interfaces
     public interface ISessionRepository
     {
         List<string> GetMediaIdsForUser(string id, PlayType type);
-        IEnumerable<Play> GetPlaysPageForUser(string id);
+        IEnumerable<Play> GetPlaysForUser(string id);
     }
 }
