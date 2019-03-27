@@ -19,6 +19,7 @@
     "QUALITY": "quality",
     "NEVER": "never",
     "OPEN": "Open",
+    "VIEWALL": "View all", 
     "LINK": "link",
     "REASON": "reason",
     "BYIMDB": "same imdb id",
@@ -198,9 +199,10 @@
       "LASTACTIVEASC": "Last active date (asc)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
-    "TOOVERVIEW": "To overview", 
+    "TOOVERVIEW": "To overview",
     "DETAILS": {
-      "TITLE": "Details for {{name}}"
+      "TITLE": "Details for {{name}}",
+      "WATCHEDTITLE": "Last watched items"
     },
     "WATCHEDTABLE": {
       "TITLE": "Title",

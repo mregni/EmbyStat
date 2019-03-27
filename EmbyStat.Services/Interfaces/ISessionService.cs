@@ -7,6 +7,7 @@ namespace EmbyStat.Services.Interfaces
     public interface ISessionService
     {
         List<string> GetMediaIdsForUser(string id, PlayType type);
-        List<Play> GetLastWatchedMediaForUser(string id, int count);
+        IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size);
+        int GetPlayCountForUser(string id);
     }
 }

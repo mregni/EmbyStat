@@ -73,6 +73,7 @@
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
     <None Remove="ClientApp\src\app\shared\models\collection.ts" />
+    <None Remove="ClientApp\src\app\shared\models\list-container.ts" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
@@ -90,6 +91,7 @@
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\user\services\page.service.ts" />
     <None Remove="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
@@ -117,6 +119,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
@@ -130,6 +133,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user\services\page.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 

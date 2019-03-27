@@ -27,15 +27,14 @@ namespace EmbyStat.Repositories
                 .ToList();
         }
 
-        public List<Play> GetPlaysForUser(string id)
+        public IEnumerable<Play> GetPlaysForUser(string id)
         {
             return _context.Sessions
                 .Where(x => x.UserId == id)
                 .Include(x => x.Plays)
                 .SelectMany(x => x.Plays)
                 .Include(x => x.PlayStates)
-                .Include(x => x.Session)
-                .ToList();
+                .Include(x => x.Session);
         }
     }
 }

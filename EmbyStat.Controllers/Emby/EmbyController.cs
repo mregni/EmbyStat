@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
@@ -104,7 +103,7 @@ namespace EmbyStat.Controllers.Emby
 
             var viewedEpisodeCount = _embyService.GetViewedEpisodeCountByUserId(id);
             var viewedMovieCount = _embyService.GetViewedMovieCountByUserId(id);
-            var lastWatchedMedia = _embyService.GetLastWatchedMediaByUserId(id, 10).ToList();
+            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0,10);
 
             mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
             mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);
@@ -114,13 +113,33 @@ namespace EmbyStat.Controllers.Emby
         }
 
         [HttpGet]
+        [Route("users/{id}/views/{page}/{size}")]
+        public IActionResult GetUserViews(string id, int page, int size)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return NotFound();
+            }
+
+            var views = _embyService.GetUserViewPageByUserId(id, page, size);
+            var list = _mapper.Map<IList<UserMediaViewViewModel>>(views);
+
+            var count = _embyService.GetUserViewCount(id);
+            var container = new ListContainer<UserMediaViewViewModel>
+            {
+                Data = list.ToList(),
+                TotalCount = count
+            };
+            return Ok(container);
+        }
+
+        [HttpGet]
         [Route("users/ids")]
         public IActionResult GetUserIdList()
         {
             var users = _embyService.GetAllUsers();
             return Ok(_mapper.Map<IList<UserIdViewModel>>(users));
         }
-        
         #endregion
     }
 }

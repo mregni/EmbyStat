@@ -21,7 +21,7 @@ namespace EmbyStat.Services
             return _sessionRepository.GetMediaIdsForUser(id, type);
         }
 
-        public List<Play> GetLastWatchedMediaForUser(string id, int count)
+        public IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size)
         {
             var plays = _sessionRepository.GetPlaysForUser(id);
             var cleanedPlays = CleanPlayList(plays);
@@ -29,9 +29,15 @@ namespace EmbyStat.Services
             return cleanedPlays
                 .Select(x => x.PlayStates.First())
                 .OrderByDescending(x => x.TimeLogged)
-                .Take(count)
                 .Select(x => x.Play)
-                .ToList();
+                .Skip(page * size)
+                .Take(size);
+        }
+
+        public int GetPlayCountForUser(string id)
+        {
+            var plays = _sessionRepository.GetPlaysForUser(id);
+            return CleanPlayList(plays).Count();
         }
 
         /// <summary>

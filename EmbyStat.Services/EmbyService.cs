@@ -192,9 +192,9 @@ namespace EmbyStat.Services
             };
         }
 
-        public IEnumerable<UserMediaView> GetLastWatchedMediaByUserId(string id, int count)
+        public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
         {
-            var plays = _sessionService.GetLastWatchedMediaForUser(id, count);
+            var plays = _sessionService.GetPlaysPageForUser(id, page, size);
             foreach (var play in plays)
             {
                 if (play.Type == PlayType.Movie)
@@ -209,6 +209,11 @@ namespace EmbyStat.Services
                 //if media is null this means a user has watched something that is not yet in our DB
                 //TODO: try starting a sync here
             }
+        }
+
+        public int GetUserViewCount(string id)
+        {
+            return _sessionService.GetPlayCountForUser(id);
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Clients.Github.Models
+﻿namespace EmbyStat.Clients.GitHub.Models
 {
     public class UpdateResult
     {

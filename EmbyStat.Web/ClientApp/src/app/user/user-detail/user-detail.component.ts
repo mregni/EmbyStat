@@ -8,6 +8,7 @@ import { ConfigHelper } from '../../shared/helpers/configHelper';
 import { EmbyUser } from '../../shared/models/emby/emby-user';
 
 import { UserService } from '../services/user.service';
+import { PageService } from '../services/page.service';
 
 @Component({
   selector: 'user-detail',
@@ -23,16 +24,17 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly settingsFacade: SettingsFacade,
-    private readonly userService: UserService) {
+    private readonly userService: UserService,
+    private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
     this.userService.user.subscribe((user: EmbyUser) => {
-      console.log(user);
       this.user = user;
     });
   }
 
   ngOnInit() {
+    this.pageService.pageChanged('details');
   }
 
   getEmbyAddress(): string {
