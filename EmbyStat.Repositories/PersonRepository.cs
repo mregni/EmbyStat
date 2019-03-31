@@ -44,7 +44,6 @@ namespace EmbyStat.Repositories
             }
             else
             {
-                _context.Entry(person).State = EntityState.Modified;
                 _context.SaveChanges();
             }
         }

@@ -103,7 +103,7 @@ namespace EmbyStat.Controllers.Emby
 
             var viewedEpisodeCount = _embyService.GetViewedEpisodeCountByUserId(id);
             var viewedMovieCount = _embyService.GetViewedMovieCountByUserId(id);
-            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0,10);
+            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0,10).ToList();
 
             mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
             mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);

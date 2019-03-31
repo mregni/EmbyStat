@@ -82,7 +82,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _collectionRepository.AddOrUpdateRange(rootItems);
             await LogInformation($"Found {rootItems.Count} root items, getting ready for processing");
 
-            //await ProcessMovies(rootItems, cancellationToken);
+            await ProcessMovies(rootItems, cancellationToken);
             await ProcessShows(rootItems, cancellationToken);
             await SyncMissingEpisodes(Settings.Tvdb.LastUpdate, Settings.Tvdb.ApiKey, cancellationToken);
 

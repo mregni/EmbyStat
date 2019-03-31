@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NLog;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace EmbyStat.Services
 {
@@ -41,11 +48,32 @@ namespace EmbyStat.Services
 
             var strJson = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
-
             await File.WriteAllTextAsync(dir, strJson);
-            OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
 
+            UpdateNlogSettings(userSettings);
+
+            OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
             return _userSettings;
+        }
+
+        private void UpdateNlogSettings(UserSettings userSettings)
+        {
+            var doc = new XmlDocument();
+            doc.Load(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
+            var navigator = doc.CreateNavigator();
+
+            var manager = new XmlNamespaceManager(navigator.NameTable);
+            manager.AddNamespace("nlog", "http://www.nlog-project.org/schemas/NLog.xsd");
+
+            foreach (XPathNavigator nav in navigator.Select("//nlog:logger[@writeTo='rollbar']", manager))
+            {
+                if (nav.MoveToAttribute("enabled", ""))
+                {
+                    nav.SetValue(userSettings.EnableRollbarLogging.ToString().ToLower());
+                }
+            }
+
+            doc.Save(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
         }
 
         public async Task SetUpdateInProgressSetting(bool value)
@@ -59,9 +87,26 @@ namespace EmbyStat.Services
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
             if (!File.Exists(dir))
             {
-                var e = new FileNotFoundException("usersettings.json could not be found. Place it in the correct folder and restart the server (default folder: Settings)");
-                _logger.Error(e, "usersettings.json file not found");
-                throw e;
+                var settings = new UserSettings
+                {
+                    AppName = "EmbyStat",
+                    AutoUpdate = true,
+                    KeepLogsCount = 10,
+                    Language = "en-US",
+                    MovieCollectionTypes = new List<CollectionType> { CollectionType.Other, CollectionType.Movies, CollectionType.HomeVideos },
+                    ShowCollectionTypes = new List<CollectionType> { CollectionType.Other, CollectionType.TvShow },
+                    ToShortMovie = 10,
+                    UpdateInProgress = false,
+                    UpdateTrain = UpdateTrain.Beta,
+                    Username = string.Empty,
+                    WizardFinished = false,
+                    Emby = new EmbySettings(),
+                    Tvdb = new TvdbSettings(),
+                    EnableRollbarLogging = false
+                };
+
+                var strJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
+                File.WriteAllText(dir, strJson);
             }
 
             _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
