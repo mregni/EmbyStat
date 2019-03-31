@@ -35,6 +35,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   embyProtocolControl = new FormControl('', [Validators.required]);
   embyUsernameControl = new FormControl('', [Validators.required]);
   embyPasswordControl = new FormControl('', [Validators.required]);
+  exceptionLoggingControl = new FormControl(false);
 
   private languageChangedSub: Subscription;
   private searchEmbySub: Subscription;
@@ -62,8 +63,9 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     private router: Router) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
-      language: this.languageControl
-    });
+      language: this.languageControl,
+      exceptionLogging: this.exceptionLoggingControl
+  });
 
     this.embyFormGroup = new FormGroup({
       embyAddress: this.embyAddressControl,
@@ -123,6 +125,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
             settings.language = this.languageControl.value;
             settings.username = this.nameControl.value;
             settings.wizardFinished = true;
+            settings.enableRollbarLogging = this.exceptionLoggingControl.value;
             emby.serverAddress = address;
             emby.userName = this.username;
             emby.accessToken = token.token;

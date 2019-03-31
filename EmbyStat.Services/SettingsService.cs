@@ -49,35 +49,31 @@ namespace EmbyStat.Services
             var strJson = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
             await File.WriteAllTextAsync(dir, strJson);
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
-                var navigator = doc.CreateNavigator();
 
-                var manager = new XmlNamespaceManager(navigator.NameTable);
-                manager.AddNamespace("nlog", "http://www.nlog-project.org/schemas/NLog.xsd");
-
-                foreach (XPathNavigator nav in navigator.Select("//nlog:logger[@writeTo='rollbar']", manager))
-                {
-                    if (nav.MoveToAttribute("enabled", ""))
-                    {
-                        nav.SetValue(userSettings.EnableRollbarLogging.ToString().ToLower());
-                    }
-                }
-
-                doc.Save(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
+            UpdateNlogSettings(userSettings);
 
             OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
-
             return _userSettings;
+        }
+
+        private void UpdateNlogSettings(UserSettings userSettings)
+        {
+            var doc = new XmlDocument();
+            doc.Load(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
+            var navigator = doc.CreateNavigator();
+
+            var manager = new XmlNamespaceManager(navigator.NameTable);
+            manager.AddNamespace("nlog", "http://www.nlog-project.org/schemas/NLog.xsd");
+
+            foreach (XPathNavigator nav in navigator.Select("//nlog:logger[@writeTo='rollbar']", manager))
+            {
+                if (nav.MoveToAttribute("enabled", ""))
+                {
+                    nav.SetValue(userSettings.EnableRollbarLogging.ToString().ToLower());
+                }
+            }
+
+            doc.Save(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
         }
 
         public async Task SetUpdateInProgressSetting(bool value)

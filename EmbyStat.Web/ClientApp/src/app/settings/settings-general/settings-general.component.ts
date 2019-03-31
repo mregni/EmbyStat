@@ -56,6 +56,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy {
       this.nameControl.setValue(settings.username);
       this.languageControl.setValue(settings.language);
       this.tvdbApiKeyControl.setValue(settings.tvdb.apiKey);
+      this.exceptionLoggingControl.setValue(settings.enableRollbarLogging);
     });
 
     this.languageChangedSub = this.languageControl.valueChanges
