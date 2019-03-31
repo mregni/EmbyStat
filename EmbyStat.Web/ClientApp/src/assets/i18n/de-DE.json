@@ -160,8 +160,7 @@
     "GENERAL": {
       "TVDBAPIKEY": "Wenn Sie möchten, können Sie hier für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
       "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen.",
-      "EXCEPTIONLOGGING": "Hier können Sie die Protokollierung in Rollbar aktivieren / deaktivieren. Mit diesen Protokollen kann ich die Anwendung schneller debuggen. Es werden niemals persönliche Daten erfasst, nur Ihre Fehlermeldungen, Stacktrace und Versionsnummer.",
-      "EXCEPTIONLOGGINGWARNING": "Der Server muss neu gestartet werden, damit die Änderung wirksam wird."
+      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
     },
     "MOVIE": {
       "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
