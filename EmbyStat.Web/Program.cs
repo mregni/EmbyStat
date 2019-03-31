@@ -39,7 +39,6 @@ namespace EmbyStat.Web
                 var host = BuildWebHost(args, listeningUrl, config);
 
                 SetupDatabase(host);
-                CheckForUserSettingsFile(logger);
 
                 host.Run();
             }
@@ -112,16 +111,6 @@ namespace EmbyStat.Web
 
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
             runner.MigrateUp();
-        }
-
-        private static void CheckForUserSettingsFile(NLog.ILogger logger)
-        {
-            if (!File.Exists(Path.Combine("Settings", "usersettings.json")))
-            {
-                var e = new FileNotFoundException("usersettings.json file not found in Settings folder. Exiting program now!");
-                logger.Log(NLog.LogLevel.Error, e, "Can't start server!");
-                throw e;
-            }
         }
     }
 }

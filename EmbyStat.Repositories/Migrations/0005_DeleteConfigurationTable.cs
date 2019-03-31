@@ -79,23 +79,13 @@ namespace EmbyStat.Repositories.Migrations
             if (File.Exists(dir))
             {
                 var userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
-                settings.Id = userSettings.Id;
+                settings.Id = userSettings != null ? userSettings.Id : new Guid();
             }
 
             var strJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(dir, strJson);
 
             Delete.Table("Configuration");
-
-            if (File.Exists("appsettings.json"))
-            {
-                File.Delete("appsettings.json");
-            }
-
-            if (File.Exists("appsettings.Development.json"))
-            {
-                File.Delete("appsettings.Development.json");
-            }
         }
 
         public override void Down()
