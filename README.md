@@ -7,6 +7,7 @@
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
 ![Codacy](https://api.codacy.com/project/badge/Grade/92431e9931574cf2a663242fde86c47f)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 # Intro
 
@@ -49,3 +50,15 @@ This project is build from scratch with the following technologies:
 ## Roadmap
 
 A lot of things need to be done before I can go life with this and publish my first 1.0 release. This will happen when all features from the Emby statistics plugin are implemented in EmbyStat.
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="http://uping.be"><img src="https://avatars3.githubusercontent.com/u/22617019?v=4" width="100px;" alt="Mikhaël Regni"/><br /><sub><b>Mikhaël Regni</b></sub></a><br /><a href="#projectManagement-mregni" title="Project Management">📆</a> <a href="https://github.com/mregni/EmbyStat/commits?author=mregni" title="Code">💻</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
