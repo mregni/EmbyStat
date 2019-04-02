@@ -56,12 +56,12 @@
     "NOT_FOUND": "Vaya, no encontraste lo que buscabas.",
     "TOKEN_FAILED": "Error al obtener Emby Token. Por favor verifique sus credenciales y dirección.",
     "EMBY_CALL_FAILED": "Llamada a Emby Server fallida, por favor chequea si Emby esta funcionando y si las credenciales son correctas.",
-    "UNHANDLED": "Unhandled backend exception",
-    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
-    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
-    "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
+    "UNHANDLED": "Excepción backend no controlada",
+    "MOVIENOTFOUND": "Película no encontrada, iniciar la sincronización de medios podría solucionar este problema.",
+    "EPISODENOTFOUND": "Episodio no encontrado, iniciar la sincronizacion podría solucionar este problema.",
+    "CANTCONNECTTOGITHUB": "No se puede conectar a GitHub para buscar actualizaciones. Inténtalo de nuevo más tarde.",
+    "NOUPDATEFILE": "No se puede localizar la aplicación de actualización, no se realiza ninguna actualización",
+    "UPDATEUNPACKERROR": "Algo falló cuando se descomprimía el paquete de actualización. Por favor inténtalo de nuevo."
   },
   "FORM_LABELS": {
     "NAME": "Ingresa tu nombre",
@@ -71,7 +71,7 @@
     "EMBYPASSWORD": "Contraseña de administrador Emby",
     "DURATIONINMINUTES": "Duración en minutos",
     "TVDBAPI": "La clave api de TVDB",
-    "CRON": "Cron string",
+    "CRON": "Parámetro de Cron",
     "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
@@ -86,7 +86,7 @@
     "SHOWS": "Series",
     "SETTINGS": "Configuración",
     "PLUGINS": "Extensiones",
-    "JOBS": "Jobs",
+    "JOBS": "Trabajos",
     "SERVER": "Servidor Emby",
     "LOGS": "Registros",
     "ABOUT": "Acerca de",
