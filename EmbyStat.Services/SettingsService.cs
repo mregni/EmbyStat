@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -14,6 +15,7 @@ using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NLog;
+using Rollbar;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace EmbyStat.Services
@@ -28,8 +30,9 @@ namespace EmbyStat.Services
         public SettingsService(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            LoadUserSettingsFromFile();
             _logger = LogManager.GetCurrentClassLogger();
+            LoadUserSettingsFromFile();
+            CreateRollbarLogger();
         }
 
         public AppSettings GetAppSettings()
@@ -50,30 +53,31 @@ namespace EmbyStat.Services
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
             await File.WriteAllTextAsync(dir, strJson);
 
-            UpdateNlogSettings(userSettings);
+            CreateRollbarLogger();
 
             OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
             return _userSettings;
         }
 
-        private void UpdateNlogSettings(UserSettings userSettings)
+        private void CreateRollbarLogger()
         {
-            var doc = new XmlDocument();
-            doc.Load(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
-            var navigator = doc.CreateNavigator();
-
-            var manager = new XmlNamespaceManager(navigator.NameTable);
-            manager.AddNamespace("nlog", "http://www.nlog-project.org/schemas/NLog.xsd");
-
-            foreach (XPathNavigator nav in navigator.Select("//nlog:logger[@writeTo='rollbar']", manager))
+            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(_appSettings.Rollbar.AccessToken)
             {
-                if (nav.MoveToAttribute("enabled", ""))
+                Environment = _appSettings.Rollbar.Environment,
+                MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute,
+                ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth,
+                Enabled = _userSettings.EnableRollbarLogging,
+                Transform = payload =>
                 {
-                    nav.SetValue(userSettings.EnableRollbarLogging.ToString().ToLower());
+                    payload.Data.CodeVersion = _appSettings.Version;
+                    payload.Data.Custom = new Dictionary<string, object>()
+                    {
+                        { "Framework", RuntimeInformation.FrameworkDescription },
+                        { "OS", RuntimeInformation.OSDescription}
+                    };
                 }
-            }
 
-            doc.Save(Path.Combine(_appSettings.Dirs.Settings, "nlog.config"));
+            });
         }
 
         public async Task SetUpdateInProgressSetting(bool value)

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmbyStat.Common.Models.Settings;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using Rollbar;
 
 namespace EmbyStat.Common.Exceptions
 {
@@ -21,8 +23,14 @@ namespace EmbyStat.Common.Exceptions
                 apiError = new ApiError(ex.Message, stack, true);
                 context.Exception = null;
 
-                if (ex.InnerException != null)
+                if (ex.InnerException?.InnerException != null)
                 {
+                    RollbarLocator.RollbarInstance.Error(ex.InnerException.InnerException);
+                    logger.Error(ex.InnerException.InnerException);
+                }
+                else if (ex.InnerException != null)
+                {
+                    RollbarLocator.RollbarInstance.Error(ex.InnerException);
                     logger.Error(ex.InnerException);
                 }
 
@@ -42,7 +50,7 @@ namespace EmbyStat.Common.Exceptions
                 apiError = new ApiError(msg, stack, false);
                 context.HttpContext.Response.StatusCode = 500;
 
-
+                RollbarLocator.RollbarInstance.Error(context.Exception);
                 logger.Error(context.Exception, msg);
             }
 
