@@ -160,8 +160,7 @@
     "GENERAL": {
       "TVDBAPIKEY": "Hvis du vil, kan du levere EmbyStat med din egen TheTVDB API nøgle her.",
       "TVDBAPIKEYWARNING": "Sørg for, at du leverer en fungerende API-nøgle! Hvis nøglen er forkert, mislykkes synkroniseringsopgaven.",
-      "EXCEPTIONLOGGING": "Her kan du aktivere / deaktivere undtagelsesloggen til Rollbar. Med denne logning kan jeg fejle og reparere applikationen hurtigere. Ingen personlige data registreres nogensinde, kun din undtagelsesbesked, stacktrace og versionsnummer.",
-      "EXCEPTIONLOGGINGWARNING": "Server genstart er nødvendig for at ændre ændringen."
+      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
     },
     "MOVIE": {
       "TOSHORTTEXT": "For at finde de film, der er mistænkeligt korte, skal vi vide, hvor mange minutter du finder for korte til en film. Dette er standard indstillet til 10 minutter, men du kan ændre det, hvis det er nødvendigt.",
