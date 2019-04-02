@@ -5,17 +5,16 @@ using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rollbar;
 using Rollbar.NetCore.AspNet;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Reflection;
-using System.Text;
+using System.Runtime.InteropServices;
 using AutoMapper;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
@@ -27,13 +26,11 @@ using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Newtonsoft.Json;
-using NLog;
+using Microsoft.Extensions.Logging;
+using Rollbar.DTOs;
 
 namespace EmbyStat.Web
 {
@@ -54,6 +51,13 @@ namespace EmbyStat.Web
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             var appSettings = Configuration.Get<AppSettings>();
+
+            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
+
+            services.AddRollbarLogger(loggerOptions =>
+            {
+                loggerOptions.Filter = (loggerName, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
+            });
 
             services
                 .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
@@ -104,6 +108,8 @@ namespace EmbyStat.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseRollbarMiddleware();
 
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
@@ -185,7 +191,7 @@ namespace EmbyStat.Web
             }
         }
 
-        private void RemoveVersionFiles()   
+        private void RemoveVersionFiles()
         {
             foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
             {

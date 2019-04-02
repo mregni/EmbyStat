@@ -41,7 +41,6 @@
         public string AccessToken { get; set; }
         public string Environment { get; set; }
         public string LogLevel { get; set; }
-        public bool Enabled { get; set; }
         public int MaxReportsPerMinute { get; set; }
         public int ReportingQueueDepth { get; set; }
     }

@@ -66,8 +66,7 @@ namespace EmbyStat.Web
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                    logging.AddRollbar();
+                    logging.SetMinimumLevel(LogLevel.Information);
                 })
                 .UseNLog()
                 .Build();
