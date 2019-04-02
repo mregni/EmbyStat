@@ -49,6 +49,3 @@ This project is build from scratch with the following technologies:
 ## Roadmap
 
 A lot of things need to be done before I can go life with this and publish my first 1.0 release. This will happen when all features from the Emby statistics plugin are implemented in EmbyStat.
-
-## Contributors
-
