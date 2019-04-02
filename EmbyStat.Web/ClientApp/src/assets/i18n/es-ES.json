@@ -90,17 +90,17 @@
     "SERVER": "Servidor Emby",
     "LOGS": "Registros",
     "ABOUT": "Acerca de",
-    "USERS": "Users"
+    "USERS": "Usuarios"
   },
   "WIZARD": {
     "INTROLABEL": "Introducción",
     "EMBYLABEL": "Configuración de Emby",
     "SAVINGLABEL": "Primera sincronización del servidor Emby",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "Si su idioma no está mencionado o no está completo, siéntase libre de ayudarme a traducir la aplicación en su idioma en <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Comprobando el servidor Emby ...",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "EMBYNOTFOUNDTEXT": "Ahora vamos a configurar su conexión Emby. Intentamos detectar automáticamente su servidor Emby en la red, pero fallamos. Rellene todos los campos para que EmbyStat pueda encontrar su servidor Emby.",
     "EMBYFOUNDTEXT": "Encontramos un servidor Emby en su red y ya ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
     "EMBYRUNNING": "El servidor Emby se está ejecutando",
     "ISADMIN": "{{ user }} es un administrador de Emby",
@@ -108,9 +108,9 @@
     "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, arregle los errores, presione atrás y siguiente.",
     "SAVING": "Guardando datos",
     "RESCAN": "Volver a escanear",
-    "FINISHWITHSYNC": "Start synchronization",
+    "FINISHWITHSYNC": "Iniciar la sincronización",
     "FINISHED": "Se guardan todas las configuraciones y puede comenzar a usar el servidor Emby ahora. ¡Disfruta de tus nuevas estadísticas!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Lo mejor que puede hacer primero es comenzar una tarea de sincronización de medios. EmbyStat comenzará a descargar todos los datos de su servidor Emby. Tenga en cuenta que esta tarea puede llevar mucho tiempo según el tamaño de su colección. Si no desea iniciar la sincronización ahora simplemente haga clic en finalizar. Puede iniciarlo manualmente más tarde navegando a la página de Tareas."
   },
   "PLUGINS": {
     "VERSION": "Versión"
@@ -127,9 +127,9 @@
     "LONGEST": "El más largo",
     "YOUNGESTADDED": "Añadido más nuevo",
     "MOSTFEATUREDPERGENRE": "El actor más destacado por género",
-    "DUPLICATEMOVIES": "Duplicate movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
+    "DUPLICATEMOVIES": "Películas duplicados",
+    "TOSHORTMOVIES": "Películas que son muy cortas",
+    "NOPOSTER": "Películas sin cartel",
     "NOIMDB": "Movies without a IMDB id"
   },
   "SHOWS": {
