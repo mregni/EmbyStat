@@ -38,6 +38,5 @@ namespace EmbyStat.Repositories.Interfaces
         Task AddOrUpdateDevices(IEnumerable<Device> devices);
 
         #endregion
-
     }
 }

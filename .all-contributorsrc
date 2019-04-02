@@ -1,0 +1,33 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mregni",
+      "name": "Mikhaël Regni",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/22617019?v=4",
+      "profile": "http://uping.be",
+      "contributions": [
+        "projectManagement",
+        "code"
+      ]
+    },
+    {
+      "login": "jaketame",
+      "name": "Jake Tamé",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1787973?v=4",
+      "profile": "https://github.com/jaketame",
+      "contributions": [
+        "question"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "EmbyStat",
+  "projectOwner": "mregni",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}

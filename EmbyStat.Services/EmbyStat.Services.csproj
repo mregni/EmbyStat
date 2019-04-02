@@ -6,14 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.22" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0" />
     <PackageReference Include="MediaBrowser.Common" Version="3.3.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Emby.WebSocket\EmbyStat.Clients.Emby.WebSocket.csproj" />
-    <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.GitHub\EmbyStat.Clients.GitHub.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
   </ItemGroup>

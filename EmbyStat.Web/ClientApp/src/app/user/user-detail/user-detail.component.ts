@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
-import { EmbyService } from '../../shared/services/emby.service';
-import { EmbyUser } from '../../shared/models/emby/emby-user';
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { Settings } from '../../settings/models/settings';
 import { ConfigHelper } from '../../shared/helpers/configHelper';
+import { EmbyUser } from '../../shared/models/emby/emby-user';
+
+import { UserService } from '../services/user.service';
+import { PageService } from '../services/page.service';
 
 @Component({
   selector: 'user-detail',
@@ -15,32 +16,25 @@ import { ConfigHelper } from '../../shared/helpers/configHelper';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
-  private paramSub: Subscription;
   private settingsSub: Subscription;
   private settings: Settings;
 
   displayedColumns: string[] = ['logo', 'name', 'duration', 'start', 'percentage', 'id'];
-  user$: Observable<EmbyUser>;
+  user: EmbyUser;
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly embyService: EmbyService,
-    private readonly settingsFacade: SettingsFacade) {
+    private readonly settingsFacade: SettingsFacade,
+    private readonly userService: UserService,
+    private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
-    this.paramSub = this.activatedRoute.params.subscribe(params => {
-      console.log("opening params");
-      const id = params['id'];
-      if (!!id) {
-        this.user$ = this.embyService.getUserById(id);
-      } else {
-        this.router.navigate(['/users']);
-      }
+    this.userService.user.subscribe((user: EmbyUser) => {
+      this.user = user;
     });
   }
 
   ngOnInit() {
+    this.pageService.pageChanged('details');
   }
 
   getEmbyAddress(): string {
@@ -70,10 +64,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.paramSub !== undefined) {
-      this.paramSub.unsubscribe();
-    }
-
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
     }

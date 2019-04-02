@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.Emby;
-using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;

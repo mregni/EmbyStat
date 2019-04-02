@@ -9,7 +9,7 @@
     "SAVE": "guardar",
     "DISCARD": "descartar",
     "CANCEL": "cancelar",
-    "CLOSE": "close",
+    "CLOSE": "cerrar",
     "DAYS": "días",
     "HOURS": "horas",
     "MINUTES": "minutos",
@@ -17,8 +17,9 @@
     "TITLE": "título",
     "ADDEDON": "añadido",
     "QUALITY": "calidad",
-    "NEVER": "never",
-    "OPEN": "Open",
+    "NEVER": "nunca",
+    "OPEN": "Abrir",
+    "VIEWALL": "Ver todo",
     "LINK": "enlace",
     "REASON": "razón",
     "BYIMDB": "mismo id de imdb",
@@ -47,20 +48,20 @@
     "STATUS": "estado",
     "PERCENTAGE": "porcentaje",
     "COLLECTED": "recogido",
-    "UPDATES": "Updates"
+    "UPDATES": "Actualizaciones"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, tenemos un error en el backend, por favor intente de nuevo. Si sigue fallando, verifique los registros para más detalles.",
     "NO_CONFIGURATION_FOUND": "No se pudo encontrar ninguna configuración.",
-    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "NOT_FOUND": "Vaya, no encontraste lo que buscabas.",
     "TOKEN_FAILED": "Error al obtener Emby Token. Por favor verifique sus credenciales y dirección.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
-    "UNHANDLED": "Unhandled backend exception",
-    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
-    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
-    "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
+    "EMBY_CALL_FAILED": "Llamada a Emby Server fallida, por favor chequea si Emby esta funcionando y si las credenciales son correctas.",
+    "UNHANDLED": "Excepción backend no controlada",
+    "MOVIENOTFOUND": "Película no encontrada, iniciar la sincronización de medios podría solucionar este problema.",
+    "EPISODENOTFOUND": "Episodio no encontrado, iniciar la sincronizacion podría solucionar este problema.",
+    "CANTCONNECTTOGITHUB": "No se puede conectar a GitHub para buscar actualizaciones. Inténtalo de nuevo más tarde.",
+    "NOUPDATEFILE": "No se puede localizar la aplicación de actualización, no se realiza ninguna actualización",
+    "UPDATEUNPACKERROR": "Algo falló cuando se descomprimía el paquete de actualización. Por favor inténtalo de nuevo."
   },
   "FORM_LABELS": {
     "NAME": "Ingresa tu nombre",
@@ -70,7 +71,7 @@
     "EMBYPASSWORD": "Contraseña de administrador Emby",
     "DURATIONINMINUTES": "Duración en minutos",
     "TVDBAPI": "La clave api de TVDB",
-    "CRON": "Cron string",
+    "CRON": "Parámetro de Cron",
     "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORM_ERRORS": {
@@ -85,21 +86,21 @@
     "SHOWS": "Series",
     "SETTINGS": "Configuración",
     "PLUGINS": "Extensiones",
-    "JOBS": "Jobs",
+    "JOBS": "Trabajos",
     "SERVER": "Servidor Emby",
     "LOGS": "Registros",
     "ABOUT": "Acerca de",
-    "USERS": "Users"
+    "USERS": "Usuarios"
   },
   "WIZARD": {
     "INTROLABEL": "Introducción",
     "EMBYLABEL": "Configuración de Emby",
     "SAVINGLABEL": "Primera sincronización del servidor Emby",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "Si su idioma no está mencionado o no está completo, siéntase libre de ayudarme a traducir la aplicación en su idioma en <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Comprobando el servidor Emby ...",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "EMBYNOTFOUNDTEXT": "Ahora vamos a configurar su conexión Emby. Intentamos detectar automáticamente su servidor Emby en la red, pero fallamos. Rellene todos los campos para que EmbyStat pueda encontrar su servidor Emby.",
     "EMBYFOUNDTEXT": "Encontramos un servidor Emby en su red y ya ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
     "EMBYRUNNING": "El servidor Emby se está ejecutando",
     "ISADMIN": "{{ user }} es un administrador de Emby",
@@ -107,9 +108,9 @@
     "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, arregle los errores, presione atrás y siguiente.",
     "SAVING": "Guardando datos",
     "RESCAN": "Volver a escanear",
-    "FINISHWITHSYNC": "Start synchronization",
+    "FINISHWITHSYNC": "Iniciar la sincronización",
     "FINISHED": "Se guardan todas las configuraciones y puede comenzar a usar el servidor Emby ahora. ¡Disfruta de tus nuevas estadísticas!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Lo mejor que puede hacer primero es comenzar una tarea de sincronización de medios. EmbyStat comenzará a descargar todos los datos de su servidor Emby. Tenga en cuenta que esta tarea puede llevar mucho tiempo según el tamaño de su colección. Si no desea iniciar la sincronización ahora simplemente haga clic en finalizar. Puede iniciarlo manualmente más tarde navegando a la página de Tareas."
   },
   "PLUGINS": {
     "VERSION": "Versión"
@@ -126,10 +127,10 @@
     "LONGEST": "El más largo",
     "YOUNGESTADDED": "Añadido más nuevo",
     "MOSTFEATUREDPERGENRE": "El actor más destacado por género",
-    "DUPLICATEMOVIES": "Duplicate movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "DUPLICATEMOVIES": "Películas duplicados",
+    "TOSHORTMOVIES": "Películas que son muy cortas",
+    "NOPOSTER": "Películas sin cartel",
+    "NOIMDB": "Películas sin una id de IMDB"
   },
   "SHOWS": {
     "TOTALSHOWS": "Muestra total",
@@ -159,8 +160,7 @@
     "GENERAL": {
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "EXCEPTIONLOGGING": "Here you can enable/disable the exception logging to Rollbar. With this logging I can debug and fix the application faster. No personal data is ever recorded, only your exception message, stacktrace and version number.",
-      "EXCEPTIONLOGGINGWARNING": "Server reboot is required to take the change into effect."
+      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
     },
     "MOVIE": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
@@ -198,8 +198,10 @@
       "LASTACTIVEASC": "Last active date (asc)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
+    "TOOVERVIEW": "To overview",
     "DETAILS": {
-      "TITLE": "Details for {{name}}"
+      "TITLE": "Details for {{name}}",
+      "WATCHEDTITLE": "Last watched items"
     },
     "WATCHEDTABLE": {
       "TITLE": "Title",
@@ -256,8 +258,8 @@
       "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
     },
     "NOUSERSFOUND": {
       "TITLE": "No users found",

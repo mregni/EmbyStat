@@ -4,8 +4,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 
 import { EmbyService } from '../shared/services/emby.service';
-import { UserOverviewComponent } from './user-overview/user-overview.component';
+import { UserService } from './services/user.service';
+import { PageService } from './services/page.service';
+
+import { UsersOverviewComponent } from './users-overview/users-overview.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UserViewsDetailComponent } from './user-views-detail/user-views-detail.component';
+import { UserContainerComponent } from './user-container/user-container.component';
 
 @NgModule({
   imports: [
@@ -14,11 +19,15 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     TranslateModule
   ],
   providers: [
-    EmbyService
+    EmbyService,
+    UserService,
+    PageService
   ],
   declarations: [
-    UserOverviewComponent,
-    UserDetailComponent
+    UsersOverviewComponent,
+    UserDetailComponent,
+    UserViewsDetailComponent,
+    UserContainerComponent
   ]
 })
 export class UserModule { }

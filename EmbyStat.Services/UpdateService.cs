@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Github;
-using EmbyStat.Clients.Github.Models;
+using EmbyStat.Clients.GitHub;
+using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Helpers;
@@ -19,7 +19,7 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Net;
 using Microsoft.AspNetCore.Hosting;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Services
 {
@@ -28,12 +28,14 @@ namespace EmbyStat.Services
         private readonly IGithubClient _githubClient;
         private readonly ISettingsService _settingsService;
         private readonly IApplicationLifetime _applicationLifetime;
+        private readonly Logger _logger;
 
         public UpdateService(IGithubClient githubClient, ISettingsService settingsService, IApplicationLifetime appLifetime)
         {
             _githubClient = githubClient;
             _settingsService = settingsService;
             _applicationLifetime = appLifetime;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
@@ -72,7 +74,7 @@ namespace EmbyStat.Services
 
         private void CreateUpdateFile(PackageInfo package)
         {
-            var fileName = $"{package.versionStr}.ver";
+            var fileName = $"{package.VersionStr}.ver";
             var obj = JsonSerializerExtentions.SerializeToString(package);
 
             foreach (var file in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ver"))
@@ -94,44 +96,44 @@ namespace EmbyStat.Services
 
             try
             {
-                Log.Information("---------------------------------");
-                Log.Information($"Downloading zip file {result.Package.name}");
+                _logger.Info("---------------------------------");
+                _logger.Info($"Downloading zip file {result.Package.Name}");
 
                 var webClient = new WebClient();
                 webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(sender, e, result); };
-                await webClient.DownloadFileTaskAsync(result.Package.sourceUrl, result.Package.name);
+                await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
             catch (Exception e)
             {
-                Log.Error(e, "Downloading update zip failed!");
+                _logger.Error(e, "Downloading update zip failed!");
             }
         }
 
         private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e, UpdateResult result)
         {
-            Log.Information("Downloading finished");
+            _logger.Info("Downloading finished");
             UnPackZip(result);
             CreateUpdateFile(result.Package);
         }
 
         private void UnPackZip(UpdateResult result)
         {
-            Log.Information("---------------------------------");
-            Log.Information("Starting to unpack new version");
+            _logger.Info("---------------------------------");
+            _logger.Info("Starting to unpack new version");
 
             try
             {
                 var appSettings = _settingsService.GetAppSettings();
-                ZipFile.ExtractToDirectory(result.Package.name, appSettings.Dirs.TempUpdateDir, true);
+                ZipFile.ExtractToDirectory(result.Package.Name, appSettings.Dirs.TempUpdateDir, true);
             }
             catch (Exception e)
             {
-                Log.Error("Unpack error", e);
+                _logger.Error("Unpack error", e);
                 throw new BusinessException("UPDATEUNPACKERROR");
             }
             finally
             {
-                File.Delete(result.Package.name);
+                File.Delete(result.Package.Name);
             }
         }
 
@@ -139,12 +141,12 @@ namespace EmbyStat.Services
         {
             await Task.Run(() =>
             {
-                Log.Information("Starting updater process.");
+                _logger.Info("Starting updater process.");
                 var updateFile = CheckForUpdateFiles();
                 if (updateFile != null)
                 {
                     var appSettings = _settingsService.GetAppSettings();
-                    Log.Information(Directory.GetCurrentDirectory());
+                    _logger.Info(Directory.GetCurrentDirectory());
                     var updaterExtension = string.Empty;
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
@@ -158,9 +160,9 @@ namespace EmbyStat.Services
                         throw new BusinessException("NOUPDATEFILE");
                     }
 
-                    Log.Information($"StartJob tool located at {updaterTool}");
-                    Log.Information($"Arguments passed are {GetArgs(appSettings)}");
-                    Log.Information($"Working directory is {workingDirectory}");
+                    _logger.Info($"StartJob tool located at {updaterTool}");
+                    _logger.Info($"Arguments passed are {GetArgs(appSettings)}");
+                    _logger.Info($"Working directory is {workingDirectory}");
 
                     var start = new ProcessStartInfo
                     {

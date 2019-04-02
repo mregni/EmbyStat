@@ -19,6 +19,7 @@
     "QUALITY": "Qualität",
     "NEVER": "nie",
     "OPEN": "Öffnen",
+    "VIEWALL": "View all",
     "LINK": "Link",
     "REASON": "Grund",
     "BYIMDB": "Gleiche IMDB ID",
@@ -159,8 +160,7 @@
     "GENERAL": {
       "TVDBAPIKEY": "Wenn Sie möchten, können Sie hier für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
       "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen.",
-      "EXCEPTIONLOGGING": "Hier können Sie die Protokollierung in Rollbar aktivieren / deaktivieren. Mit diesen Protokollen kann ich die Anwendung schneller debuggen. Es werden niemals persönliche Daten erfasst, nur Ihre Fehlermeldungen, Stacktrace und Versionsnummer.",
-      "EXCEPTIONLOGGINGWARNING": "Der Server muss neu gestartet werden, damit die Änderung wirksam wird."
+      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
     },
     "MOVIE": {
       "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
@@ -198,8 +198,10 @@
       "LASTACTIVEASC": "Letzter aktiver Tag (aufsteigend)",
       "LASTACTIVEDESC": "Letzter aktiver Tag (absteigend)"
     },
+    "TOOVERVIEW": "Zur Übersicht",
     "DETAILS": {
-      "TITLE": "Details für {{name}}"
+      "TITLE": "Details für {{name}}",
+      "WATCHEDTITLE": "Last watched items"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
@@ -256,8 +258,8 @@
       "BODY": "Die Synchronisation der Medien wird im Hintergrund durchgeführt. Während dieser Zeit können keine korrekten Statistiken angezeigt werden."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Der angegebene cron-String hat ein falsches Format. Schauen Sie auf <a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig.",
-      "CRON_HELPER": "<a href=\"https://stackoverflow.com/a/43066497\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Formatieren eines CRON-Strings. Nur Zahlen, *, / und - sind erlaubt."
+      "FORMAT_ERROR": "Der angegebene Cron-String hat ein falsches Format. Schauen Sie <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Format eines Cron-Strings. Nur Zahlen, *, / und - sind erlaubt."
     },
     "NOUSERSFOUND": {
       "TITLE": "Keine Benutzer gefunden",

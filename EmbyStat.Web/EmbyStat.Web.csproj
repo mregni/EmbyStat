@@ -20,45 +20,48 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="CommandLineParser" Version="2.4.3" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.1.3" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.22" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
-    <PackageReference Include="Rollbar" Version="2.2.3" />
-    <PackageReference Include="Rollbar.PlugIns.Serilog" Version="1.0.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
-    <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.0.2" />
+    <PackageReference Include="Rollbar.PlugIns.NLog" Version="3.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\dist\**" />
+    <Compile Remove="ClientApp\src\app\activity\**" />
     <Compile Remove="ClientApp\src\app\components\**" />
+    <Compile Remove="ClientApp\src\app\user\models\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\dist\**" />
+    <Content Remove="ClientApp\src\app\activity\**" />
     <Content Remove="ClientApp\src\app\components\**" />
+    <Content Remove="ClientApp\src\app\user\models\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\activity\**" />
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\user\models\**" />
     <None Remove="ClientApp\dist\**" />
+    <None Remove="ClientApp\src\app\activity\**" />
     <None Remove="ClientApp\src\app\components\**" />
+    <None Remove="ClientApp\src\app\user\models\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\about\state\actions.about.ts" />
     <None Remove="ClientApp\src\app\about\state\facade.about.ts" />
-    <None Remove="ClientApp\src\app\activity\models\activity.ts" />
-    <None Remove="ClientApp\src\app\activity\state\facade.activity.ts" />
     <None Remove="ClientApp\src\app\app-material.module.ts" />
     <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
     <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
@@ -70,6 +73,7 @@
     <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <None Remove="ClientApp\src\app\shared\models\bar.ts" />
     <None Remove="ClientApp\src\app\shared\models\collection.ts" />
+    <None Remove="ClientApp\src\app\shared\models\list-container.ts" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js" />
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
@@ -87,6 +91,8 @@
     <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
+    <None Remove="ClientApp\src\app\user\services\page.service.ts" />
+    <None Remove="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,8 +109,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\about\state\actions.about.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\about\state\facade.about.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\activity\models\activity.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\activity\state\facade.activity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\settings\state\actions.settings.ts" />
@@ -115,6 +119,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
@@ -127,6 +132,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user\services\page.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -137,6 +145,24 @@
 
   <ItemGroup>
     <None Include="ClientApp\src\app\show\show-overview\show-overview.component.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore">
+      <HintPath>..\..\..\.nuget\packages\microsoft.aspnetcore\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Rollbar">
+      <HintPath>..\..\..\Desktop\Rollbar.NET-master\Rollbar\bin\Debug\netcoreapp2.1\Rollbar.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Settings\nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

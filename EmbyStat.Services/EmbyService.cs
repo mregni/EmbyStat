@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
@@ -19,7 +19,8 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
-using Serilog;
+using NLog;
+using NLog.Fluent;
 
 namespace EmbyStat.Services
 {
@@ -31,6 +32,7 @@ namespace EmbyStat.Services
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
+        private readonly Logger _logger;
 
         public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService,
             ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
@@ -41,6 +43,7 @@ namespace EmbyStat.Services
             _settingsService = settingsService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         #region Server
@@ -69,6 +72,10 @@ namespace EmbyStat.Services
                         var settings = _settingsService.GetUserSettings();
                         settings.Emby.ServerName = udpBroadcastResult.Name;
                         _settingsService.SaveUserSettings(settings);
+
+                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address)) { 
+                            _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
+                        }
 
                         return udpBroadcastResult;
 
@@ -101,12 +108,12 @@ namespace EmbyStat.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Warning($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
-                    throw new BusinessException("TOKEN_FAILED");
+                    _logger.Warn($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
+                    throw new BusinessException("TOKEN_FAILED", 500, e);
                 }
             }
 
-            Log.Error("Username or password are empty, no use to try a login!");
+            _logger.Warn("Username or password are empty, no use to try a login!");
             throw new BusinessException("TOKEN_FAILED");
         }
 
@@ -185,9 +192,9 @@ namespace EmbyStat.Services
             };
         }
 
-        public IEnumerable<UserMediaView> GetLastWatchedMediaByUserId(string id, int count)
+        public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
         {
-            var plays = _sessionService.GetLastWatchedMediaForUser(id, count);
+            var plays = _sessionService.GetPlaysPageForUser(id, page, size);
             foreach (var play in plays)
             {
                 if (play.Type == PlayType.Movie)
@@ -202,6 +209,11 @@ namespace EmbyStat.Services
                 //if media is null this means a user has watched something that is not yet in our DB
                 //TODO: try starting a sync here
             }
+        }
+
+        public int GetUserViewCount(string id)
+        {
+            return _sessionService.GetPlayCountForUser(id);
         }
 
         #endregion
@@ -288,9 +300,8 @@ namespace EmbyStat.Services
             }
 
             var season = episode.SeasonEpisodes.First(x => x.SeasonId == play.ParentId).Season;
-            var showName = season.Show.Name;
             var seasonNumber = season.IndexNumber;
-            var name = $"{showName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
+            var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 
             var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);

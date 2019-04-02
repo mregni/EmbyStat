@@ -1,33 +1,36 @@
-using System;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using AutoMapper;
-using EmbyStat.Clients.EmbyClient;
-using EmbyStat.Common.Exceptions;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Extentions;
-using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Jobs;
+using EmbyStat.Services.Interfaces;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Rollbar;
+using Rollbar.NetCore.AspNet;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using AutoMapper;
+using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
-using EmbyStat.Jobs;
 using EmbyStat.Repositories;
 using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.Logging;
+using Rollbar.DTOs;
 
 namespace EmbyStat.Web
 {
@@ -37,9 +40,9 @@ namespace EmbyStat.Web
         public IHostingEnvironment HostingEnvironment { get; }
         public IApplicationBuilder ApplicationBuilder { get; set; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
-            HostingEnvironment = env;
+            HostingEnvironment = hostingEnvironment;
             Configuration = configuration;
         }
 
@@ -47,9 +50,26 @@ namespace EmbyStat.Web
         {
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
-            var config = Configuration.Get<AppSettings>();
+            var appSettings = Configuration.Get<AppSettings>();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(config.ConnectionStrings.Main));
+            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
+
+            services.AddRollbarLogger(loggerOptions =>
+            {
+                loggerOptions.Filter = (loggerName, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
+            });
+
+            services
+                .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
+                .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
+                .AddApiExplorer()
+                .AddJsonFormatters()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlite(appSettings.ConnectionStrings.Main, builder => builder.CommandTimeout(30));
+            });
 
             services.AddHangfire(x =>
             {
@@ -57,14 +77,7 @@ namespace EmbyStat.Web
                 x.UseRecurringJob();
             });
 
-            var settings = Configuration.Get<AppSettings>();
-            SetupDirectories(settings);
-
-            services
-                .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
-                .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
-                .AddApiExplorer()
-                .AddJsonFormatters();
+            SetupDirectories(appSettings);
 
             services.AddAutoMapper(typeof(MapProfiles));
             services.AddSwaggerGen(c =>
@@ -80,16 +93,13 @@ namespace EmbyStat.Web
             services.AddSignalR();
             services.AddCors();
 
-            services.AddHostedService<WebSocketService>();
-
             services.RegisterApplicationDependencies();
-            services.AddSingleton<IUpdateService, UpdateService>();
+            services.AddHostedService<WebSocketService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
             ApplicationBuilder = app;
-            AddDeviceIdToConfig();
 
             lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
             lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
@@ -99,6 +109,8 @@ namespace EmbyStat.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRollbarMiddleware();
+
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
                 WorkerCount = 1,
@@ -106,8 +118,9 @@ namespace EmbyStat.Web
                 ServerTimeout = TimeSpan.FromDays(1),
                 ShutdownTimeout = TimeSpan.FromDays(1),
                 ServerName = "Main server",
-                Queues = new[] { "main"}
+                Queues = new[] { "main" }
             });
+
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 
             if (env.IsDevelopment())
@@ -119,43 +132,16 @@ namespace EmbyStat.Web
                     });
             }
 
-            var taskInitializer = serviceProvider.GetService<IJobInitializer>();
-            taskInitializer.Setup();
-
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<JobHub>("/jobs-socket");
-            });
+            app.UseSignalR(routes => { routes.MapHub<JobHub>("/jobs-socket"); });
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseMvc();
-
-            app.UseExceptionHandler(
-                builder =>
-                {
-                    builder.Run(
-                        async context =>
-                        {
-                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                            context.Response.ContentType = "application/json";
-                            var ex = context.Features.Get<IExceptionHandlerFeature>();
-                            if (ex != null)
-                            {
-                                var err = JsonConvert.SerializeObject(new { ex.Error.Message });
-                                await context.Response.Body.WriteAsync(Encoding.ASCII.GetBytes(err), 0, err.Length).ConfigureAwait(false);
-                            }
-                        });
-                }
-            );
 
             app.UseSpa(spa =>
             {
@@ -166,6 +152,7 @@ namespace EmbyStat.Web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
         }
 
         private void SetupDirectories(AppSettings settings)
@@ -178,15 +165,30 @@ namespace EmbyStat.Web
 
         private void PerformPostStartupFunctions()
         {
-            RemoveVersionFiles();
-            ResetAllJobs();
-            ResetConfiguration();
-            SetEmbyClientConfiguration();
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
+            {
+                var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+                var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+                var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
+                var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
+
+                AddDeviceIdToConfig(settingsService);
+                RemoveVersionFiles();
+                ResetAllJobs(jobService);
+                ResetConfiguration(settingsService);
+                SetEmbyClientConfiguration(settingsService, embyClient);
+                InitializeTasks(jobInitializer);
+            }
         }
 
         private void PerformPreShutdownFunctions()
         {
-            ResetAllJobs();
+            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
+            {
+                var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+
+                ResetAllJobs(jobService);
+            }
         }
 
         private void RemoveVersionFiles()
@@ -197,21 +199,18 @@ namespace EmbyStat.Web
             }
         }
 
-        private void ResetAllJobs()
+        private void ResetAllJobs(IJobService jobService)
         {
-            var jobService = ApplicationBuilder.ApplicationServices.GetService<IJobService>();
             jobService.ResetAllJobs();
         }
 
-        private void ResetConfiguration()
+        private void ResetConfiguration(ISettingsService settingsService)
         {
-            var configurationService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
-            configurationService.SetUpdateInProgressSetting(false);
+            settingsService.SetUpdateInProgressSetting(false);
         }
 
-        private void AddDeviceIdToConfig()
+        private void AddDeviceIdToConfig(ISettingsService settingsService)
         {
-            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
             var userSettings = settingsService.GetUserSettings();
 
             if (userSettings.Id == null)
@@ -221,10 +220,9 @@ namespace EmbyStat.Web
             }
         }
 
-        private void SetEmbyClientConfiguration()
+        private void SetEmbyClientConfiguration(ISettingsService settingsService, IEmbyClient embyClient)
         {
-            var embyClient = ApplicationBuilder.ApplicationServices.GetService<IEmbyClient>();
-            var settingsService = ApplicationBuilder.ApplicationServices.GetService<ISettingsService>();
+            settingsService.SetUpdateInProgressSetting(false);
             var settings = settingsService.GetUserSettings();
 
             embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
@@ -232,7 +230,11 @@ namespace EmbyStat.Web
             {
                 embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
             }
+        }
 
+        private void InitializeTasks(IJobInitializer jobInitializer)
+        {
+            jobInitializer.Setup();
         }
     }
 }

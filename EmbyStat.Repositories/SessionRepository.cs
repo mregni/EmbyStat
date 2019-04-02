@@ -9,32 +9,32 @@ namespace EmbyStat.Repositories
 {
     public class SessionRepository : ISessionRepository
     {
-        public List<string> GetMediaIdsForUser(string id, PlayType type)
+        private readonly ApplicationDbContext _context;
+
+        public SessionRepository(ApplicationDbContext context)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Sessions
-                    .Where(x => x.UserId == id)
-                    .Include(x => x.Plays)
-                    .SelectMany(x => x.Plays)
-                    .Where(x => x.Type == type)
-                    .Select(x => x.MediaId)
-                    .ToList();
-            }
+            _context = context;
         }
 
-        public List<Play> GetPlaysForUser(string id)
+        public List<string> GetMediaIdsForUser(string id, PlayType type)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Sessions
-                    .Where(x => x.UserId == id)
-                    .Include(x => x.Plays)
-                    .SelectMany(x => x.Plays)
-                    .Include(x => x.PlayStates)
-                    .Include(x => x.Session)
-                    .ToList();
-            }
+            return _context.Sessions
+                .Where(x => x.UserId == id)
+                .Include(x => x.Plays)
+                .SelectMany(x => x.Plays)
+                .Where(x => x.Type == type)
+                .Select(x => x.MediaId)
+                .ToList();
+        }
+
+        public IEnumerable<Play> GetPlaysForUser(string id)
+        {
+            return _context.Sessions
+                .Where(x => x.UserId == id)
+                .Include(x => x.Plays)
+                .SelectMany(x => x.Plays)
+                .Include(x => x.PlayStates)
+                .Include(x => x.Session);
         }
     }
 }

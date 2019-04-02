@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.WebSockets;
 using System.Text;
@@ -9,7 +8,7 @@ using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Serilog;
+using NLog;
 using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Emby.WebSocket
@@ -27,6 +26,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         public event EventHandler<EventArgs> RestartRequired;
 
         private readonly IClientWebSocket _clientWebSocket;
+        private readonly Logger _logger;
 
         private string ApiUrl { get; set; }
         public string AccessToken { get; set; }
@@ -35,6 +35,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         public WebSocketApi(IClientWebSocket clientWebSocket)
         {
             _clientWebSocket = clientWebSocket;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public async Task OpenWebSocket(string url, string accessToken, string deviceId)
@@ -61,8 +62,8 @@ namespace EmbyStat.Clients.Emby.WebSocket
             {
                 var url = GetWebSocketUrl(ApiUrl);
 
-                try { 
-                    Log.Information($"Connecting to {url}");
+                try {
+                    _logger.Info($"Connecting to {url}");
 
                     _clientWebSocket.OnReceiveBytes = OnMessageReceived;
                     _clientWebSocket.OnReceive = OnMessageReceived;
@@ -73,7 +74,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, $"Error connecting to {url}");
+                    _logger.Error(e, $"Error connecting to {url}");
                 }
             }
         }
@@ -81,13 +82,13 @@ namespace EmbyStat.Clients.Emby.WebSocket
         private void ClientWebSocketConnected(object sender, EventArgs e)
         {
             OnWebSocketConnected?.Invoke(this, EventArgs.Empty);
-            Log.Information("Web socket connection opened.");
+            _logger.Info("Web socket connection opened.");
         }
 
         private void ClientWebSocketClosed(object sender, EventArgs e)
         {
             OnWebSocketClosed?.Invoke(this, EventArgs.Empty);
-            Log.Warning("Web socket connection closed.");
+            _logger.Warn("Web socket connection closed.");
         }
 
         private Task SendWebSocketMessage<T>(string messageName, T data)
@@ -98,15 +99,13 @@ namespace EmbyStat.Clients.Emby.WebSocket
         private async Task SendWebSocketMessage<T>(string messageName, T data, CancellationToken cancellationToken)
         {
             var bytes = GetMessageBytes(messageName, data);
-            Log.Information(messageName);
             try
             {
                 await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error sending web socket message");
-
+                _logger.Error(e, "Error sending web socket message");
                 throw;
             }
         }
@@ -146,7 +145,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error in OnMessageReceivedInternal");
+                _logger.Error(e, "Error in OnMessageReceivedInternal");
             }
         }
 
@@ -154,7 +153,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         {
             var messageType = GetMessageType(json);
 
-            Log.Information($"Received web socket message: {messageType}");
+            _logger.Info($"Received web socket message: {messageType}");
 
             if (string.Equals(messageType, "RestartRequired"))
             {
@@ -217,7 +216,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Error in event handler");
+                    _logger.Error(e, "Error in event handler");
                 }
             }
         }

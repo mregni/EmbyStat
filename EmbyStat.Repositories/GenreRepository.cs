@@ -9,52 +9,44 @@ namespace EmbyStat.Repositories
 {
     public class GenreRepository : IGenreRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public GenreRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public void AddRangeIfMissing(IEnumerable<Genre> genres)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var newGenres = genres.Where(x => context.Genres.All(y => y.Name != x.Name)).ToList();
+            var newGenres = genres.Where(x => _context.Genres.All(y => y.Name != x.Name)).ToList();
 
-                context.Genres.AddRange(newGenres);
-                context.SaveChanges();
-            }
+            _context.Genres.AddRange(newGenres);
+            _context.SaveChanges();
         }
 
         public List<Genre> GetAll()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Genres.ToList();
-            }
+            return _context.Genres.ToList();
         }
 
         public List<string> GetIds()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Genres.Select(x => x.Id).ToList();
-            }
+            return _context.Genres.Select(x => x.Id).ToList();
         }
 
         public List<Genre> GetListByIds(List<string> ids)
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Genres.Where(x => ids.Any(y => y == x.Id)).ToList();
-            }
+            return _context.Genres.Where(x => ids.Any(y => y == x.Id)).ToList();
         }
 
         public async Task CleanupGenres()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var genresToRemove = context.Genres
-                    .Include(x => x.MediaGenres)
-                    .Where(x => x.MediaGenres.Count == 0);
+            var genresToRemove = _context.Genres
+                .Include(x => x.MediaGenres)
+                .Where(x => x.MediaGenres.Count == 0);
 
-                context.Genres.RemoveRange(genresToRemove);
-                await context.SaveChangesAsync();
-            }
+            _context.Genres.RemoveRange(genresToRemove);
+            await _context.SaveChangesAsync();
         }
     }
 }

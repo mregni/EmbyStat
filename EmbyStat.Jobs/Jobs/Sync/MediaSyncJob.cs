@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.EmbyClient;
-using EmbyStat.Clients.EmbyClient.Model;
+using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
@@ -20,7 +20,7 @@ using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Querying;
-using Serilog;
+using NLog;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -35,6 +35,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly ICollectionRepository _collectionRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly Logger _logger;
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository, IGenreRepository genreRepository, 
@@ -50,6 +51,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
             Title = jobRepository.GetById(Id).Title;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public sealed override Guid Id => Constants.JobIds.MediaSyncId;
@@ -210,7 +212,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                 if (!shows.Any())
                 {
-                    await LogInformation("No shows found for this library. Moving on.");
+                    await LogInformation($"No shows found for library {rootItem.Name}.");
                     continue;
                 }
 
@@ -276,20 +278,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB), lastUpdateFromTvdb.Value, cancellationToken);
                 showsWithMissingEpisodes.AddRange(shows.Where(x => showsThatNeedAnUpdate.Any(y => y == x.TVDB)));
-                showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
             }
 
             var now = DateTime.Now;
-            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes, cancellationToken);
+            await GetMissingEpisodesFromTvdb(showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList(), cancellationToken);
 
             Settings.Tvdb.LastUpdate = now;
             await SettingsService.SaveUserSettings(Settings);
         }
 
-        private async Task GetMissingEpisodesFromTvdb(IEnumerable<Show> shows, CancellationToken cancellationToken)
+        private async Task GetMissingEpisodesFromTvdb(List<Show> shows, CancellationToken cancellationToken)
         {
             double i = 0;
-            var showCount = shows.Count();
+
+            var showCount = shows.Count;
             foreach (var show in shows)
             {
                 i++;
@@ -304,7 +306,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, $"{Constants.LogPrefix.MediaSyncJob}\tProcessing {show.Name} failed. Marking this show as failed");
+                    _logger.Error(e, $"{Constants.LogPrefix.MediaSyncJob}\tProcessing {show.Name} failed. Marking this show as failed");
                     show.TvdbFailed = true;
                     _showRepository.UpdateShow(show);
                 }

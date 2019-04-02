@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.22" />
-    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Clients\EmbyStat.Clients.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Tvdb\EmbyStat.Clients.Tvdb.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />

@@ -17,6 +17,8 @@
             <mat-placeholder>{{'FORM_LABELS.LANGUAGE' | translate}}</mat-placeholder>
             <mat-hint align="start" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></mat-hint>
           </mat-form-field>
+          <p>{{ 'SETTINGS.GENERAL.EXCEPTIONLOGGING' | translate }}</p>
+          <mat-checkbox formControlName="exceptionLogging">{{ 'FORM_LABELS.EXCEPTIONLOGGING' | translate | capitalizeFirst }}</mat-checkbox>
           <div class="button-container">
             <button mat-raised-button color="primary" matStepperNext type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
           </div>

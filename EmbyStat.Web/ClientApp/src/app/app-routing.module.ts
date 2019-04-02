@@ -10,27 +10,37 @@ import { MovieOverviewComponent } from './movie/movie-overview/movie-overview.co
 import { ShowOverviewComponent } from './show/show-overview/show-overview.component';
 import { LogsOverviewComponent } from './logs/logs-overview/logs-overview.component';
 import { AboutOverviewComponent } from './about/about-overview/about-overview.component';
-import { UserOverviewComponent } from './user/user-overview/user-overview.component';
+
+import { UsersOverviewComponent } from './user/users-overview/users-overview.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { UserViewsDetailComponent } from './user/user-views-detail/user-views-detail.component';
+import { UserContainerComponent } from './user/user-container/user-container.component';
 
 import { SyncGuard } from './shared/guards/sync.guard';
 
 const routes: Routes = [{ path: '', component: DashboardOverviewComponent },
-  { path: 'settings', component: SettingsOverviewComponent },
-  { path: 'settings/:tab', component: SettingsOverviewComponent },
-  { path: 'plugin', component: PluginOverviewComponent },
-  { path: 'server', component: ServerOverviewComponent },
-  { path: 'wizard', component: WizardOverviewComponent },
-  { path: 'jobs', component: JobsOverviewComponent },
-  { path: 'movies', component: MovieOverviewComponent, canActivate: [SyncGuard] },
-  { path: 'movies/:tab', component: MovieOverviewComponent, canActivate: [SyncGuard] },
-  { path: 'shows', component: ShowOverviewComponent, canActivate: [SyncGuard] },
-  { path: 'shows/:tab', component: ShowOverviewComponent, canActivate: [SyncGuard] },
-  { path: 'logs', component: LogsOverviewComponent },
-  { path: 'about', component: AboutOverviewComponent },
-  { path: 'users', component: UserOverviewComponent },
-  { path: 'users/:id', component: UserDetailComponent },
-  { path: '**', redirectTo: '' }];
+{ path: 'settings', component: SettingsOverviewComponent },
+{ path: 'settings/:tab', component: SettingsOverviewComponent },
+{ path: 'plugin', component: PluginOverviewComponent },
+{ path: 'server', component: ServerOverviewComponent },
+{ path: 'wizard', component: WizardOverviewComponent },
+{ path: 'jobs', component: JobsOverviewComponent },
+{ path: 'movies', component: MovieOverviewComponent, canActivate: [SyncGuard] },
+{ path: 'movies/:tab', component: MovieOverviewComponent, canActivate: [SyncGuard] },
+{ path: 'shows', component: ShowOverviewComponent, canActivate: [SyncGuard] },
+{ path: 'shows/:tab', component: ShowOverviewComponent, canActivate: [SyncGuard] },
+{ path: 'logs', component: LogsOverviewComponent },
+{ path: 'about', component: AboutOverviewComponent },
+
+{ path: 'users', component: UsersOverviewComponent },
+{
+  path: 'user/:id', component: UserContainerComponent, children: [
+    { path: 'details', component: UserDetailComponent },
+    { path: 'views', component: UserViewsDetailComponent }
+  ]
+},
+
+{ path: '**', redirectTo: '' }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

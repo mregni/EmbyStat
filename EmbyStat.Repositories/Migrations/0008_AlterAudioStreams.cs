@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
+﻿using System.Data.SQLite;
 using Dapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Models.Entities.Helpers;
 using FluentMigrator;
 
 namespace EmbyStat.Repositories.Migrations
@@ -44,7 +38,6 @@ namespace EmbyStat.Repositories.Migrations
             dbConnection.Execute("COMMIT;");
 
             dbConnection.Close();
-
         }
 
         public override void Down()

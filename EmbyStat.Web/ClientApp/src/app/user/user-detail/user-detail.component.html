@@ -1,11 +1,6 @@
-<div *ngIf="user$ | async as user">
-  <div class="title-bar title-bar-flex-row">
-    <div class="title-bar-left-content">
-      <h2>{{ 'USERS.DETAILS.TITLE' | translate: { name: user.name } }}</h2>
-    </div>
-  </div>
-  <div class="content">
-    <mat-card class="white">
+<div class="content">
+  <div class="user-detail-column">
+    <mat-card class="white" *ngIf="user !== undefined">
       <mat-card-content>
         <div class="card-flex-row">
           <div>
@@ -31,21 +26,31 @@
         </div>
       </mat-card-content>
     </mat-card>
+  </div>
+  <div class="user-detail-column">
     <mat-card class="white">
       <mat-card-content>
-        <h3 class="card-title">Last watched items</h3>
+        <div class="card-header-bar">
+          <h3>{{ 'USERS.DETAILS.WATCHEDTITLE' | translate }}</h3>
+          <div>
+            <button mat-raised-button color="accent" routerLink="/user/{{user.id}}/views" routerLinkActive="active">{{ 'COMMON.VIEWALL' | translate }}</button>
+          </div>
+        </div>
         <mat-table [dataSource]="user.lastWatchedMedia" class="round-border">
           <ng-container matColumnDef="logo">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <img class="device-logo" src="{{element.deviceLogo}}"/>
+              <img class="device-logo" src="{{element.deviceLogo}}" *ngIf="element.deviceLogo.length !== 0; else NoDevice" />
+              <ng-template #NoDevice>
+                <img class="device-logo" src="../../../../assets/images/no-device.png" />
+              </ng-template>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TITLE' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let element">
               {{element.name}}
-              <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)"></fa-icon>
+              <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)" class="margin-right"></fa-icon>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="duration">

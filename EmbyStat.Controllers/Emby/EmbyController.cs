@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Controllers.Plugin;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace EmbyStat.Controllers.Emby
 {
@@ -30,7 +30,6 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/token")]
         public async Task<IActionResult> GenerateToken([FromBody] EmbyLoginViewModel login)
         {
-            Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tGet emby token for certain login credentials.");
             var result = await _embyService.GetEmbyToken(_mapper.Map<EmbyLogin>(login));
             return Ok(_mapper.Map<EmbyTokenViewModel>(result));
         }
@@ -39,7 +38,6 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/info")]
         public async Task<IActionResult> GetServerInfo()
         {
-            Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tGet Emby server info.");
             var result = await _embyService.GetServerInfo();
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
@@ -50,14 +48,7 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/search")]
         public IActionResult SearchEmby()
         {
-            Serilog.Log.Information(
-                $"{Constants.LogPrefix.ServerApi}\tSearching for an Emby server in the network and returning the IP address.");
             var result = _embyService.SearchEmby();
-            if (!string.IsNullOrWhiteSpace(result.Address))
-            {
-                Serilog.Log.Information($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + result.Address);
-            }
-
             return Ok(_mapper.Map<EmbyUdpBroadcastViewModel>(result));
         }
 
@@ -112,7 +103,7 @@ namespace EmbyStat.Controllers.Emby
 
             var viewedEpisodeCount = _embyService.GetViewedEpisodeCountByUserId(id);
             var viewedMovieCount = _embyService.GetViewedMovieCountByUserId(id);
-            var lastWatchedMedia = _embyService.GetLastWatchedMediaByUserId(id, 10).ToList();
+            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0,10).ToList();
 
             mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
             mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);
@@ -121,6 +112,34 @@ namespace EmbyStat.Controllers.Emby
             return Ok(mappedUser);
         }
 
+        [HttpGet]
+        [Route("users/{id}/views/{page}/{size}")]
+        public IActionResult GetUserViews(string id, int page, int size)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return NotFound();
+            }
+
+            var views = _embyService.GetUserViewPageByUserId(id, page, size);
+            var list = _mapper.Map<IList<UserMediaViewViewModel>>(views);
+
+            var count = _embyService.GetUserViewCount(id);
+            var container = new ListContainer<UserMediaViewViewModel>
+            {
+                Data = list.ToList(),
+                TotalCount = count
+            };
+            return Ok(container);
+        }
+
+        [HttpGet]
+        [Route("users/ids")]
+        public IActionResult GetUserIdList()
+        {
+            var users = _embyService.GetAllUsers();
+            return Ok(_mapper.Map<IList<UserIdViewModel>>(users));
+        }
         #endregion
     }
 }

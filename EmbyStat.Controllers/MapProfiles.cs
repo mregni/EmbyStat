@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using EmbyStat.Clients.Github.Models;
+using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.About;
@@ -9,7 +9,6 @@ using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Controllers.Log;
 using EmbyStat.Controllers.Movie;
-using EmbyStat.Controllers.Plugin;
 using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
@@ -60,6 +59,7 @@ namespace EmbyStat.Controllers
 	        CreateMap<LogFile, LogFileViewModel>();
 	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
+            CreateMap<User, UserIdViewModel>();
             CreateMap<User, EmbyUserOverviewViewModel>();
             CreateMap<User, EmbyUserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();

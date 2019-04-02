@@ -12,13 +12,10 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using NLog.Fluent;
+using NLog.Web;
 using Rollbar;
-using Rollbar.PlugIns.Serilog;
-using Serilog;
-using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Exceptions.Core;
 
 namespace EmbyStat.Web
 {
@@ -26,36 +23,36 @@ namespace EmbyStat.Web
     {
         public static void Main(string[] args)
         {
+            var logger = NLogBuilder.ConfigureNLog(Path.Combine("Settings", "nlog.config")).GetCurrentClassLogger();
+
             try
             {
-                CreateLogger();
-
                 var result = Parser.Default.ParseArguments<StartupOptions>(args);
                 StartupOptions options = null;
                 result.WithParsed(opts => options = opts);
 
                 var listeningUrl = $"http://*:{options.Port}";
 
-                Log.Information($"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
+                logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
                 var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() } };
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
 
                 SetupDatabase(host);
-                CheckForUserSettingsFile();
 
                 host.Run();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Log.Fatal(ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
+                logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
             }
             finally
             {
                 Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
-                Log.Information($"{Constants.LogPrefix.System}\tServer shutdown");
-                Log.CloseAndFlush();
+                logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
+                NLog.LogManager.Flush();
+                NLog.LogManager.Shutdown();
             }
         }
 
@@ -66,48 +63,20 @@ namespace EmbyStat.Web
                 .UseUrls(listeningUrl)
                 .UseConfiguration(config)
                 .UseStartup<Startup>()
-                .UseSerilog()
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Information);
+                })
+                .UseNLog()
                 .Build();
 
         public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(Path.Combine("Settings", "appsettings.json"), false, false)
+                .AddJsonFile("appsettings.json", false, false)
                 .AddInMemoryCollection(configArgs)
-                .AddEnvironmentVariables()
                 .Build();
-
-        public static void CreateLogger()
-        {
-            if (!Directory.Exists("Logs"))
-            {
-                Directory.CreateDirectory("Logs");
-            }
-
-            var loggerConfiguration = new LoggerConfiguration()
-#if DEBUG
-                .MinimumLevel.Debug()
-#else
-				.MinimumLevel.Information()
-#endif
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder().WithDefaultDestructurers().WithRootName("Exception"))
-                .Enrich.FromLogContext()
-                .WriteTo.File(Path.Combine("Logs", "log.txt"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
-
-            if (IsOnlineExceptionLoggingEnabled())
-            {
-                loggerConfiguration.WriteTo.Sink(new RollbarSink(
-                    new RollbarConfig("204e4b6617394a33bdde354094490b04")
-                    {
-                        LogLevel = ErrorLevel.Error,
-                        Environment = "rollbarENV"
-                    }, null,
-                    new CultureInfo("en-US")));
-            }
-
-            Log.Logger = loggerConfiguration.CreateLogger();
-        }
 
         private static void SetupDatabase(IWebHost host)
         {
@@ -141,28 +110,6 @@ namespace EmbyStat.Web
 
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
             runner.MigrateUp();
-        }
-
-        private static void CheckForUserSettingsFile()
-        {
-            if (!File.Exists(Path.Combine("Settings", "usersettings.json")))
-            {
-                var e = new FileNotFoundException("usersettings.json file not found in Settings folder. Exiting program now!");
-                Log.Error(e, "Can't start server!");
-                throw e;
-            }
-        }
-
-        private static bool IsOnlineExceptionLoggingEnabled()
-        {
-            var dir = Path.Combine("Settings", "usersettings.json");
-            if (File.Exists(dir))
-            {
-                var settings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
-                return settings.EnableRollbarLogging;
-            }
-
-            return false;
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿using EmbyStat.Clients.Emby.WebSocket;
-using EmbyStat.Clients.EmbyClient;
-using EmbyStat.Clients.EmbyClient.Cryptography;
-using EmbyStat.Clients.EmbyClient.Net;
-using EmbyStat.Clients.Github;
+﻿using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Emby.WebSocket;
+using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Net;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Maintenance;
@@ -35,19 +34,18 @@ namespace EmbyStat.DI
 
         public static void RegisterServices(this IServiceCollection services)
         {
+            services.TryAddTransient<IAboutService, AboutService>();
             services.TryAddTransient<IEmbyService, EmbyService>();
+            services.TryAddTransient<IEventService, EventService>();
+            services.TryAddTransient<IJobService, JobService>();
+            services.TryAddTransient<ILanguageService, LanguageService>();
+            services.TryAddTransient<ILogService, LogService>();
             services.TryAddTransient<IMovieService, MovieService>();
             services.TryAddTransient<IPersonService, PersonService>();
-            services.TryAddTransient<IShowService, ShowService>();
-            services.TryAddTransient<ILogService, LogService>();
-            services.TryAddTransient<ILanguageService, LanguageService>();
-            services.TryAddTransient<IAboutService, AboutService>();
-            services.TryAddSingleton<IWebSocketService, WebSocketService>();
-            services.TryAddTransient<IUpdateService, UpdateService>();
-            services.TryAddTransient<IJobService, JobService>();
-            services.TryAddTransient<IEventService, EventService>();
-            services.TryAddSingleton<ISettingsService, SettingsService>();
             services.TryAddTransient<ISessionService, SessionService>();
+            services.TryAddSingleton<ISettingsService, SettingsService>();
+            services.TryAddTransient<IShowService, ShowService>();
+            services.TryAddTransient<IUpdateService, UpdateService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -91,7 +89,6 @@ namespace EmbyStat.DI
 
         public static void RegisterHttp(this IServiceCollection services)
         {
-            services.TryAddTransient<ICryptographyProvider, CryptographyProvider>();
             services.TryAddTransient<IAsyncHttpClient, HttpWebRequestClient>();
             services.TryAddTransient<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.TryAddTransient<BusinessExceptionFilterAttribute>();

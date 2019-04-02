@@ -29,5 +29,7 @@
 }
 
 .title-bar-right-content {
+  display: flex;
   flex: 0 0 250px;
+  justify-content: flex-end;
 }
