@@ -9,5 +9,6 @@ namespace EmbyStat.Services.Interfaces
         List<string> GetMediaIdsForUser(string id, PlayType type);
         IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size);
         int GetPlayCountForUser(string id);
+        IEnumerable<PlayState> GetPlayStatesForUser(string id);
     }
 }

@@ -117,7 +117,7 @@ namespace EmbyStat.Services
             throw new BusinessException("TOKEN_FAILED");
         }
 
-        public async Task<ServerInfo> GetServerInfo()
+        public async Task<ServerInfo> GetServerInfoAsync()
         {
             var server = _embyRepository.GetServerInfo();
             if (server == null)
@@ -134,9 +134,9 @@ namespace EmbyStat.Services
             return _embyRepository.GetEmbyStatus();
         }
 
-        public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
+        public Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
         {
-            return await _embyClient.PingEmbyAsync(cancellationToken);
+            return _embyClient.PingEmbyAsync(cancellationToken);
         }
 
         public void ResetMissedPings()
@@ -209,6 +209,14 @@ namespace EmbyStat.Services
                 //if media is null this means a user has watched something that is not yet in our DB
                 //TODO: try starting a sync here
             }
+        }
+
+        public IEnumerable<HourOfDay> GenerateHourOfDayGraph(string id)
+        {
+            return _sessionService.GetPlayStatesForUser(id)
+                .GroupBy(x => ResetAllButHourValue(x.TimeLogged))
+                .Select(x => new HourOfDay(x.Key.Hour.ToString(), x.Count()));
+
         }
 
         public int GetUserViewCount(string id)
@@ -336,6 +344,11 @@ namespace EmbyStat.Services
             }
 
             return watchedPercentage;
+        }
+
+        private DateTime ResetAllButHourValue(DateTime value)
+        {
+            return DateTime.MinValue.AddHours(value.Hour);
         }
 
         public void Dispose()

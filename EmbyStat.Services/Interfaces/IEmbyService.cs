@@ -14,7 +14,7 @@ namespace EmbyStat.Services.Interfaces
 
         EmbyUdpBroadcast SearchEmby();
         Task<EmbyToken> GetEmbyToken(EmbyLogin login);
-        Task<ServerInfo> GetServerInfo();
+        Task<ServerInfo> GetServerInfoAsync();
         EmbyStatus GetEmbyStatus();
         Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken);
         void ResetMissedPings();
@@ -36,7 +36,8 @@ namespace EmbyStat.Services.Interfaces
         Card<int> GetViewedMovieCountByUserId(string id);
         IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
         int GetUserViewCount(string id);
-        
+        IEnumerable<HourOfDay> GenerateHourOfDayGraph(string id);
+
         #endregion
 
         #region JobHelpers

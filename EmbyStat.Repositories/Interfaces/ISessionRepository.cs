@@ -8,5 +8,6 @@ namespace EmbyStat.Repositories.Interfaces
     {
         List<string> GetMediaIdsForUser(string id, PlayType type);
         IEnumerable<Play> GetPlaysForUser(string id);
+        IEnumerable<PlayState> GetPlayStatesForUser(string id);
     }
 }
