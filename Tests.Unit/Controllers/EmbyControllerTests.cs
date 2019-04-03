@@ -49,7 +49,7 @@ namespace Tests.Unit.Controllers
 			_embyServiceMock = new Mock<IEmbyService>();
 		    _embyServiceMock.Setup(x => x.GetEmbyToken(It.IsAny<EmbyLogin>())).Returns(Task.FromResult(_token));
 		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
-		    _embyServiceMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(_serverInfo));
+		    _embyServiceMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(_serverInfo));
 
 	        var _mapperMock = new Mock<IMapper>();
 	        _mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });

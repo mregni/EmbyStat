@@ -36,5 +36,15 @@ namespace EmbyStat.Repositories
                 .Include(x => x.PlayStates)
                 .Include(x => x.Session);
         }
+
+        public IEnumerable<PlayState> GetPlayStatesForUser(string id)
+        {
+            return _context.Sessions
+                .Where(x => x.UserId == id)
+                .Include(x => x.Plays)
+                .ThenInclude(x => x.PlayStates)
+                .SelectMany(x => x.Plays)
+                .SelectMany(x => x.PlayStates);
+        }
     }
 }

@@ -4,6 +4,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using SQLitePCL;
 
 namespace EmbyStat.Services
 {
@@ -32,6 +33,11 @@ namespace EmbyStat.Services
                 .Select(x => x.Play)
                 .Skip(page * size)
                 .Take(size);
+        }
+
+        public IEnumerable<PlayState> GetPlayStatesForUser(string id)
+        {
+            return _sessionRepository.GetPlayStatesForUser(id);
         }
 
         public int GetPlayCountForUser(string id)

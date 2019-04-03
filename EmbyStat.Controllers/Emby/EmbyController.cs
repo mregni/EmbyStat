@@ -38,7 +38,7 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/info")]
         public async Task<IActionResult> GetServerInfo()
         {
-            var result = await _embyService.GetServerInfo();
+            var result = await _embyService.GetServerInfoAsync();
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
             return Ok(serverInfo);
