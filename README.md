@@ -36,6 +36,11 @@ For full installation guides please see the [Wiki](https://github.com/mregni/Emb
 
 Translations are managed with the Crowdin web service. Feel free to help us translate the application in your own language here: [https://crowdin.com/project/embystat](https://crowdin.com/project/embystat). If your language is not listed just create a new feature request or ping me.
 
+## Feature request
+
+If you have some crazy idea you want to see implemented in EmbyStat you can create a feature request  on [https://embystat.featureupvote.com/](https://embystat.featureupvote.com/)
+Or just go and upvote your favorite features so I have a better idea about what I should build next.
+
 ## Technology
 
 This project is build from scratch with the following technologies:
