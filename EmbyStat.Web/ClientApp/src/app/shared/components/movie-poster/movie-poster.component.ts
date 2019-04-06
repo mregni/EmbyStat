@@ -27,7 +27,7 @@ export class MoviePosterComponent implements OnDestroy {
       return '';
     }
     const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
-    return this.sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90&enableimageenhancers=false)`);
   }
 
   openMovie(): void {
