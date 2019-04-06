@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -17,7 +17,9 @@ using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Stat;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using NLog;
 using NLog.Fluent;
@@ -212,12 +214,35 @@ namespace EmbyStat.Services
             }
         }
 
-        public IEnumerable<HourOfDay> GenerateHourOfDayGraph(string id)
+        public BarGraph<int> GenerateHourOfDayGraph(List<string> userIds)
         {
-            return _sessionService.GetPlayStatesForUser(id)
-                .GroupBy(x => ResetAllButHourValue(x.TimeLogged))
-                .Select(x => new HourOfDay(x.Key.Hour.ToString(), x.Count()));
+            var graph = new BarGraph<int>().InitiateForHourOfDayGraph("GRAPH.TITLE");
 
+            foreach (var userId in userIds)
+            {
+                var user = _embyRepository.GetUserById(userId);
+                var dataSet = new DataSet<int>(graph.GetLength(), user.Name);
+
+                var values = _sessionService
+                    .GetPlayStatesForUser(userId)
+                    .GroupBy(x => ResetAllButHourValue(x.TimeLogged))
+                    .OrderBy(x => x.Key)
+                    .Select(x => new { Key = x.Key.ToString("HH:mm"), Count = x.Count() })
+                    .ToArray();
+
+                foreach (var value in values)
+                {
+                    var labelIndex = graph.Labels.IndexOf(value.Key);
+                    if (labelIndex > -1)
+                    {
+                        dataSet.Data[labelIndex] = value.Count;
+                    }
+                }
+
+                graph.DataSets.Add(dataSet);
+            }
+
+            return graph;
         }
 
         public int GetUserViewCount(string id)

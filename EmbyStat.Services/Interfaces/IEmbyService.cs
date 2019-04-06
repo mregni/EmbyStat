@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.Graph;
 using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces
@@ -36,7 +37,7 @@ namespace EmbyStat.Services.Interfaces
         Card<int> GetViewedMovieCountByUserId(string id);
         IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
         int GetUserViewCount(string id);
-        IEnumerable<HourOfDay> GenerateHourOfDayGraph(string id);
+        BarGraph<int> GenerateHourOfDayGraph(List<string> userIds);
 
         #endregion
 
