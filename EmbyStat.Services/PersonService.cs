@@ -25,7 +25,7 @@ namespace EmbyStat.Services
             if (!person?.Synced ?? false)
             {
                 var rawPerson = await _embyClient.GetPersonByNameAsync(person.Name, CancellationToken.None);
-                person = PersonConverter.ConvertToPerson(rawPerson);
+                person = PersonConverter.UpdatePerson(person, rawPerson);
                 _personRepository.AddOrUpdatePerson(person);
             }
 
