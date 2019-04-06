@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -73,7 +73,8 @@ namespace EmbyStat.Services
                         settings.Emby.ServerName = udpBroadcastResult.Name;
                         _settingsService.SaveUserSettings(settings);
 
-                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address)) { 
+                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address))
+                        {
                             _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
                         }
 
