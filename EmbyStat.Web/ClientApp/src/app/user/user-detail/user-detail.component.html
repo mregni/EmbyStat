@@ -4,7 +4,7 @@
       <mat-card-content>
         <div class="card-flex-row">
           <div>
-            <img class="profile" *ngIf="user.primaryImageTag !== ''; else noImage" src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
+            <img class="profile-image" *ngIf="user.primaryImageTag !== ''; else noImage" src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
             <ng-template #noImage>
               <img class="profile-image" src="../../../../assets/images/no-profile.png" />
             </ng-template>
