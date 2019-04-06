@@ -19,10 +19,10 @@ namespace EmbyStat.Services
             _embyClient = embyClient;
         }
 
-        public async Task<Person> GetPersonById(string id)
+        public async Task<Person> GetPersonByIdAsync(string id)
         {
             var person = _personRepository.GetPersonById(id);
-            if (!person.Synced)
+            if (!person?.Synced ?? false)
             {
                 var rawPerson = await _embyClient.GetPersonByNameAsync(person.Name, CancellationToken.None);
                 person = PersonConverter.ConvertToPerson(rawPerson);
