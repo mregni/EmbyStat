@@ -19,7 +19,7 @@
     "QUALITY": "Qualität",
     "NEVER": "nie",
     "OPEN": "Öffnen",
-    "VIEWALL": "View all",
+    "VIEWALL": "Alle anzeigen",
     "LINK": "Link",
     "REASON": "Grund",
     "BYIMDB": "Gleiche IMDB ID",
@@ -160,7 +160,7 @@
     "GENERAL": {
       "TVDBAPIKEY": "Wenn Sie möchten, können Sie hier für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
       "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen.",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
+      "EXCEPTIONLOGGING": "Aktivieren / deaktivieren Sie die Protokollierung von Fehlern bei Rollbar (Online Dienst). Mit dieser Protokollierung kann ich die Anwendung schneller debuggen und beheben. Es werden niemals persönliche Daten aufgezeichnet, sondern nur Ausnahmemeldungen, Stacktrace, Betriebssystemname und Versionsnummer."
     },
     "MOVIE": {
       "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
@@ -201,7 +201,7 @@
     "TOOVERVIEW": "Zur Übersicht",
     "DETAILS": {
       "TITLE": "Details für {{name}}",
-      "WATCHEDTITLE": "Last watched items"
+      "WATCHEDTITLE": "Zuletzt angesehene Medien"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
