@@ -30,7 +30,7 @@ export class PersonPosterComponent implements OnDestroy {
     }
 
     const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90)`);
+    return this._sanitizer.bypassSecurityTrustStyle(`url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90&enableimageenhancers=false)`);
   }
 
   openPerson(): void {

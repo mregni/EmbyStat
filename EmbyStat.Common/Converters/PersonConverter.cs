@@ -7,24 +7,22 @@ namespace EmbyStat.Common.Converters
 {
     public static class PersonConverter
     {
-        public static Person ConvertToPerson(BaseItemDto person)
+        public static Person UpdatePerson(Person person, BaseItemDto newPerson)
         {
-            return new Person
-            {
-                Id = person.Id,
-                Name = person.Name,
-                Primary = person.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
-                MovieCount = person.MovieCount ?? 0,
-                BirthDate = person.PremiereDate,
-                seriesCount = person.SeriesCount ?? 0,
-                Etag = person.Etag,
-                IMDB = person.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value,
-                TMDB = person.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value,
-                OverView = person.Overview,
-                SeriesCount = person.SeriesCount ?? 0,
-                SortName = person.SortName,
-                Synced = true
-            };
+            person.Name = newPerson.Name;
+            person.Primary = newPerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value;
+            person.MovieCount = newPerson.MovieCount ?? 0;
+            person.BirthDate = newPerson.PremiereDate;
+            person.seriesCount = newPerson.SeriesCount ?? 0;
+            person.Etag = newPerson.Etag;
+            person.IMDB = newPerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value;
+            person.TMDB = newPerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value;
+            person.OverView = newPerson.Overview;
+            person.SeriesCount = newPerson.SeriesCount ?? 0;
+            person.SortName = newPerson.SortName;
+            person.Synced = true;
+
+            return person;
         }
 
         public static Person ConvertToSmallPerson(BaseItemDto person)
