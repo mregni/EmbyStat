@@ -60,7 +60,7 @@ namespace Tests.Unit.Services
             };
             _personRepositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(_returnedPerson);
 
-            var person = await _subject.GetPersonById(string.Empty);
+            var person = await _subject.GetPersonByIdAsync(string.Empty);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(_basePerson.Id);
@@ -104,7 +104,7 @@ namespace Tests.Unit.Services
             };
             _personRepositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(_returnedPerson);
 
-            var person = await _subject.GetPersonById(_returnedPerson.Id);
+            var person = await _subject.GetPersonByIdAsync(_returnedPerson.Id);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(_basePerson.Id);

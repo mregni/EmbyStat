@@ -179,7 +179,7 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenre(List<string> collectionIds)
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(List<string> collectionIds)
         {
             var shows = _showRepository.GetAllShows(collectionIds);
             var genreIds = _showRepository.GetGenres(collectionIds);
@@ -203,19 +203,21 @@ namespace EmbyStat.Services
                     .FirstOrDefault();
                 //Compleet buggy dit! Er moet gekeken worden naar het aantal episodes ipv shows
                 //Misschien ExtraPerson weer toevoegen aan Episode type in sync!
-                var person = await _personService.GetPersonById(personId);
-                list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
+                var person = await _personService.GetPersonByIdAsync(personId);
+                if(person != null){
+                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
+                }
             }
 
             return list;
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<string> collectionIds, string type, string title)
         {
             var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
+            var person = await _personService.GetPersonByIdAsync(personId);
 
-            var person = await _personService.GetPersonById(personId);
-            return PosterHelper.ConvertToPersonPoster(person, title);
+            return person == null ? new PersonPoster() : PosterHelper.ConvertToPersonPoster(person, title);
         }
 
         private Card<int> TotalTypeCount(IEnumerable<string> collectionIds, string type, string title)
