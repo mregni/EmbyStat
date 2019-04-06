@@ -446,7 +446,7 @@ namespace EmbyStat.Services
         {
             var ratingData = movies
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
-                .GroupBy(x => x.OfficialRating.ToUpper())
+                .GroupBy(x => x.OfficialRating.ToLower())
                 .Select(x => new { Name = x.Key, Count = x.Count() })
                 .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
