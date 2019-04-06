@@ -24,8 +24,8 @@ namespace EmbyStat.Repositories
 
         public void AddOrUpdate(Movie movie)
         {
-            RemovePeopleWithoutLink(_context, movie);
-            RemoveGenreWithoutLink(_context, movie);
+            RemovePeopleWithoutLink(movie);
+            RemoveGenreWithoutLink(movie);
 
             var dbMovie = _context.Movies.Include(x => x.Collections).SingleOrDefault(x => x.Id == movie.Id);
             if (dbMovie == null)
@@ -44,7 +44,7 @@ namespace EmbyStat.Repositories
             }
         }
 
-        private void RemovePeopleWithoutLink(ApplicationDbContext _context, Movie movie)
+        private void RemovePeopleWithoutLink(Movie movie)
         {
             var peopleToDelete = new List<string>();
             foreach (var person in movie.ExtraPersons)
@@ -59,7 +59,7 @@ namespace EmbyStat.Repositories
             peopleToDelete.ForEach(x => movie.ExtraPersons.Remove(movie.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
         }
 
-        public void RemoveGenreWithoutLink(ApplicationDbContext _context, Movie movie)
+        public void RemoveGenreWithoutLink(Movie movie)
         {
             var genresToDelete = new List<string>();
             foreach (var genre in movie.MediaGenres)
