@@ -214,14 +214,20 @@ namespace EmbyStat.Services
             }
         }
 
-        public BarGraph<int> GenerateHourOfDayGraph(List<string> userIds)
+        public BarGraph<double> GenerateHourOfDayGraph(string userId)
         {
-            var graph = new BarGraph<int>().InitiateForHourOfDayGraph("GRAPH.TITLE");
+            return GenerateHourOfDayGraph(new[] {userId});
+        }
+
+        public BarGraph<double> GenerateHourOfDayGraph(IEnumerable<string> userIds)
+        {
+            var graph = new BarGraph<double>().InitiateForHourOfDayGraph("GRAPH.TITLE");
+            var random = new Random(1000);
 
             foreach (var userId in userIds)
             {
                 var user = _embyRepository.GetUserById(userId);
-                var dataSet = new DataSet<int>(graph.GetLength(), user.Name);
+                var dataSet = new DataSet<double>(graph.GetLength(), user.Name, random);
 
                 var values = _sessionService
                     .GetPlayStatesForUser(userId)
@@ -230,12 +236,13 @@ namespace EmbyStat.Services
                     .Select(x => new { Key = x.Key.ToString("HH:mm"), Count = x.Count() })
                     .ToArray();
 
+                var total = values.Sum(x => x.Count);
                 foreach (var value in values)
                 {
                     var labelIndex = graph.Labels.IndexOf(value.Key);
                     if (labelIndex > -1)
                     {
-                        dataSet.Data[labelIndex] = value.Count;
+                        dataSet.Data[labelIndex] = Math.Round((value.Count / (double)total) * 1000) / 10;
                     }
                 }
 

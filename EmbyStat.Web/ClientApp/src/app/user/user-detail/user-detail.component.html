@@ -26,6 +26,14 @@
         </div>
       </mat-card-content>
     </mat-card>
+
+    <mat-card class="white" *ngIf="user !== undefined">
+      <mat-card-content>
+        <h1>Chart</h1>
+        <canvas #hoursPerDayGraphRef >{{ hoursPerDayGraph }}</canvas>
+
+      </mat-card-content>
+    </mat-card>
   </div>
   <div class="user-detail-column">
     <mat-card class="white">

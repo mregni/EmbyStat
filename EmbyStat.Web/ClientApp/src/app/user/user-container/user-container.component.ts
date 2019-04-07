@@ -37,6 +37,7 @@ export class UserContainerComponent implements OnInit, OnDestroy {
       const id = params['id'];
       if (!!id) {
         this.embyService.getUserById(id).subscribe((user: EmbyUser) => {
+          console.log(user);
           this.userService.userChanged(user);
           this.selectedUserId = user.id;
         });

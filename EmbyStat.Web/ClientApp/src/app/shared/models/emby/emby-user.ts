@@ -1,6 +1,7 @@
 import { EmbyUserAccessSchedule } from './emby-user-access-schedule';
 import { Card } from '../card';
 import { UserMediaView } from '../session/user-media-view';
+import { BarGraph } from '../graph/bar-graph';
 
 export class EmbyUser {
   id: string;
@@ -21,4 +22,5 @@ export class EmbyUser {
   viewedMovieCount: Card<number>;
   viewedEpisodeCount: Card<number>;
   lastWatchedMedia: UserMediaView[];
+  hoursPerDayGraph: BarGraph<number>;
 }

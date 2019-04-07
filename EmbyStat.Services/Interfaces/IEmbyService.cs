@@ -37,7 +37,8 @@ namespace EmbyStat.Services.Interfaces
         Card<int> GetViewedMovieCountByUserId(string id);
         IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
         int GetUserViewCount(string id);
-        BarGraph<int> GenerateHourOfDayGraph(List<string> userIds);
+        BarGraph<double> GenerateHourOfDayGraph(IEnumerable<string> userIds);
+        BarGraph<double> GenerateHourOfDayGraph(string userId);
 
         #endregion
 

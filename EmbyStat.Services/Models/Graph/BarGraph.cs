@@ -31,16 +31,4 @@ namespace EmbyStat.Services.Models.Graph
             return Length;
         }
     }
-
-    public class DataSet<T>
-    {
-        public string Label { get; set; }
-        public T[] Data { get; set; }
-
-        public DataSet(int length, string label)
-        {
-            Label = label;
-            Data = new T[length];
-        }
-    }
 }

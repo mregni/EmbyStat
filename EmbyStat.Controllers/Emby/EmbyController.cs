@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Controllers.HelperClasses.Graphs;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
@@ -103,11 +104,13 @@ namespace EmbyStat.Controllers.Emby
 
             var viewedEpisodeCount = _embyService.GetViewedEpisodeCountByUserId(id);
             var viewedMovieCount = _embyService.GetViewedMovieCountByUserId(id);
-            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0,10).ToList();
+            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0, 10).ToList();
+            var hoursPerDayGraph = _embyService.GenerateHourOfDayGraph(id);
 
             mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
             mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);
             mappedUser.LastWatchedMedia = _mapper.Map<IList<UserMediaViewViewModel>>(lastWatchedMedia);
+            mappedUser.HoursPerDayGraph = _mapper.Map<BarGraphViewModel<double>>(hoursPerDayGraph);
 
             return Ok(mappedUser);
         }

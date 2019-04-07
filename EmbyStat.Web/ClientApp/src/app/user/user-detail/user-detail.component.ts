@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
+import { Chart } from 'chart.js';
 
 import { SettingsFacade } from '../../settings/state/facade.settings';
 import { Settings } from '../../settings/models/settings';
@@ -15,12 +16,14 @@ import { PageService } from '../services/page.service';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
 })
-export class UserDetailComponent implements OnInit, OnDestroy {
+export class UserDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   private settingsSub: Subscription;
   private settings: Settings;
 
   displayedColumns: string[] = ['logo', 'name', 'duration', 'start', 'percentage', 'id'];
   user: EmbyUser;
+  hoursPerDayGraph = [];
+  @ViewChild('hoursPerDayGraphRef') hoursPerDayGraphRef: ElementRef;
 
   constructor(
     private readonly settingsFacade: SettingsFacade,
@@ -35,6 +38,48 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.pageService.pageChanged('details');
+  }
+
+  ngAfterViewInit() {
+    console.log(this.user.hoursPerDayGraph);
+    this.hoursPerDayGraph = new Chart(this.hoursPerDayGraphRef.nativeElement.getContext('2d')
+      , {
+        type: 'bar',
+        data: this.user.hoursPerDayGraph,
+        options: {
+          responsive: true,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true
+            }],
+            yAxes: [{
+              display: true,
+              ticks: {
+                callback: (value, index, values) => value + ' %'
+              }
+            }],
+          },
+          title: {
+            display: false
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(tooltipItem.yLabel * 100) / 100 + ' %';
+                return label;
+              }
+            }
+          }
+        }
+      });
   }
 
   getEmbyAddress(): string {

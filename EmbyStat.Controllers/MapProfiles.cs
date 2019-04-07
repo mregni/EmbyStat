@@ -6,6 +6,7 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.About;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Controllers.HelperClasses.Graphs;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Controllers.Log;
 using EmbyStat.Controllers.Movie;
@@ -64,6 +65,12 @@ namespace EmbyStat.Controllers
             CreateMap<User, EmbyUserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
+
+            //Graphs
+            CreateMap(typeof(DataSet<>), typeof(DataSetViewModel<>));
+            CreateMap( typeof(BarGraph<>), typeof(BarGraphViewModel<>));
+
+
             //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())

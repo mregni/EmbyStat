@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Controllers.HelperClasses.Graphs;
 
 namespace EmbyStat.Controllers.Emby
 {
@@ -24,6 +25,7 @@ namespace EmbyStat.Controllers.Emby
         public CardViewModel<int> ViewedMovieCount { get; set; }
         public CardViewModel<int> ViewedEpisodeCount { get; set; }
         public IList<UserMediaViewViewModel> LastWatchedMedia { get; set; }
+        public BarGraphViewModel<double> HoursPerDayGraph { get; set; } 
     }
 
     public class UserAccessScheduleViewModel
