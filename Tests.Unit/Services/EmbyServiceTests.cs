@@ -161,15 +161,15 @@ namespace Tests.Unit.Services
             graph.DataSets[0].Label.Should().Be("admin");
             graph.DataSets[0].Data.Length.Should().Be(24);
             graph.DataSets[0].Data[9].Should().Be(0);
-            graph.DataSets[0].Data[10].Should().Be(2);
-            graph.DataSets[0].Data[11].Should().Be(1);
+            graph.DataSets[0].Data[10].Should().Be(33.3);
+            graph.DataSets[0].Data[11].Should().Be(16.7);
             graph.DataSets[0].Data[12].Should().Be(0);
             graph.DataSets[1].Label.Should().Be("reggi");
             graph.DataSets[1].Data.Length.Should().Be(24);
             graph.DataSets[1].Data[9].Should().Be(0);
             graph.DataSets[1].Data[10].Should().Be(0);
-            graph.DataSets[1].Data[11].Should().Be(2);
-            graph.DataSets[1].Data[12].Should().Be(1);
+            graph.DataSets[1].Data[11].Should().Be(33.3);
+            graph.DataSets[1].Data[12].Should().Be(16.7);
             graph.DataSets[1].Data[13].Should().Be(0);
         }
     }

@@ -236,17 +236,25 @@ namespace EmbyStat.Services
                     .Select(x => new { Key = x.Key.ToString("HH:mm"), Count = x.Count() })
                     .ToArray();
 
-                var total = values.Sum(x => x.Count);
                 foreach (var value in values)
                 {
                     var labelIndex = graph.Labels.IndexOf(value.Key);
                     if (labelIndex > -1)
                     {
-                        dataSet.Data[labelIndex] = Math.Round((value.Count / (double)total) * 1000) / 10;
+                        dataSet.Data[labelIndex] = value.Count;
                     }
                 }
 
                 graph.DataSets.Add(dataSet);
+            }
+
+            var totalSum = graph.DataSets.SelectMany(x => x.Data).Sum();
+            foreach (var dataSet in graph.DataSets)
+            {
+                for (var i = 0; i < dataSet.Data.Length; i++)
+                {
+                    dataSet.Data[i] = Math.Round((dataSet.Data[i] / totalSum) * 1000) / 10;
+                }
             }
 
             return graph;
