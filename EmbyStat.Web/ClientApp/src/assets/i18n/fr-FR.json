@@ -97,7 +97,7 @@
     "EMBYLABEL": "Paramètres Emby",
     "SAVINGLABEL": "Première synchronisation au serveur Emby",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "Si votre langue n'est pas mentionné ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "CROWNDINHELP": "Si votre langue n'est pas mentionnée ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "CHECKINGSTATUS": "Vérification du serveur Emby ...",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
     "EMBYNOTFOUNDTEXT": "Nous allons maintenant configurer votre connexion Emby. Nous avons essayé de détecter automatiquement votre serveur Emby sur le réseau, mais nous avons échoué. Remplissez tous les champs pour qu'EmbyStat puisse trouver votre serveur Emby.",
@@ -207,12 +207,12 @@
       "TITLE": "Titre",
       "TIME": "Heure",
       "WATCHED": "Vu",
-      "START": "Start",
+      "START": "Démarrer",
       "ACTION": "Action"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies watched",
-      "TOTALWATCHEDEPISODES": "Episodes watched"
+      "TOTALWATCHEDMOVIES": "Films vus",
+      "TOTALWATCHEDEPISODES": "Épisodes vus"
     }
   },
   "JOB": {
@@ -227,13 +227,13 @@
     "BUTFAILED": "a échoué après",
     "NORUN": "Pas encore exécuté",
     "MOMENT_AGO": "un instant",
-    "JOBLOGS": "Job logs",
+    "JOBLOGS": "Logs d'activités",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
       "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
       "SMALLEMBYSYNCDESCRIPTION": "Effectuer une synchronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
       "SMALLEMBYSYNCTITLE": "Synchronisation rapide avec Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
+      "STARTSMALLEMBYSYNC": "Démarrer une petite synchronisation",
       "MEDIASYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle pour votre collection de films. Cela peut prendre du temps!",
       "MEDIASYNCTITLE": "Synchronisation des médias",
       "STARTMEDIASYNC": "Débuter une synchronisation des médias",
@@ -241,7 +241,7 @@
       "DATABASECLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
       "OPENJOBPAGE": "Allez à la page des tâches",
       "CHECKUPDATETITLE": "Rechercher des mises à jour",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "CHECKUPDATEDESCRIPTION": "Vérifie les nouvelles mises à jour sur votre channel de mise à jour sélectionné."
     }
   },
   "DIALOGS": {
@@ -259,11 +259,11 @@
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "La chaîne de cron donnée est dans un mauvais format. Vérifiez <a href=\"https://crontab.guru/\" target=\"_blank\">ici</a> pour les règles de formatage. Seuls les nombres, les espaces, *, / et - sont autorisés.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Ici</a> vous pouvez trouver plus d'informations sur la façon de formater une chaîne CRON. Seuls les nombres *, / et - sont autorisés."
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "TITLE": "Aucun utilisateur trouvé",
+      "BODY": "Aucun utilisateur ne se trouve dans la base de données locale. Cela signifie qu'aucune petite tâche de synchronisation n'a été exécutée. Vous voulez l'exécuter maintenant?"
     }
   },
   "LOADER": {
