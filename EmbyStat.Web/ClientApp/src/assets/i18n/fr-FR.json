@@ -258,7 +258,7 @@
       "BODY": "La tâche de synchronisation des médias s'exécute en arrière-plan. Pour cette raison, toutes les pages de statistiques sont bloquées, car les calculs seraient complètement faux tant que la synchronisation est en cours d'exécution."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "FORMAT_ERROR": "La chaîne de cron donnée est dans un mauvais format. Vérifiez <a href=\"https://crontab.guru/\" target=\"_blank\">ici</a> pour les règles de formatage. Seuls les nombres, les espaces, *, / et - sont autorisés.",
       "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
     },
     "NOUSERSFOUND": {
