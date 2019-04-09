@@ -19,7 +19,7 @@
     "QUALITY": "qualité",
     "NEVER": "jamais",
     "OPEN": "Ouvrir",
-    "VIEWALL": "View all",
+    "VIEWALL": "Tout afficher",
     "LINK": "lien",
     "REASON": "raison",
     "BYIMDB": "même id imdb",
@@ -56,12 +56,12 @@
     "NOT_FOUND": "Désolé, nous ne trouvons pas ce que vous recherchez.",
     "TOKEN_FAILED": "L'obtention du jeton Emby a échoué. Veuillez vérifier vos informations d'identification et votre adresse.",
     "EMBY_CALL_FAILED": "Échec de connexion au serveur Emby. Vérifiez si Emby est en cours d'exécution et si les informations d'identification sont toujours correctes.",
-    "UNHANDLED": "Unhandled backend exception",
-    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
-    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
-    "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
+    "UNHANDLED": "Exception non gérée dans l'interface",
+    "MOVIENOTFOUND": "Film introuvable, lancer une synchronisation des médias pourrait résoudre ce problème.",
+    "EPISODENOTFOUND": "Épisode introuvable, lancer une synchronisation des médias pourrait résoudre ce problème.",
+    "CANTCONNECTTOGITHUB": "Impossible de se connecter à GitHub pour vérifier les mises à jour. Réessayez plus tard.",
+    "NOUPDATEFILE": "Impossible de localiser l’application mise à jour, aucune mise à jour effectuée",
+    "UPDATEUNPACKERROR": "L'extraction de l'archive de la mise à jour à échouée. Veuillez réessayer."
   },
   "FORM_LABELS": {
     "NAME": "Entrez votre nom",
@@ -71,8 +71,8 @@
     "EMBYPASSWORD": "Mot de passe l'administrateur Emby",
     "DURATIONINMINUTES": "Durée en minutes",
     "TVDBAPI": "Clé API TheTVDB",
-    "CRON": "Cron string",
-    "EXCEPTIONLOGGING": "Enable exception logging"
+    "CRON": "Ligne de Cron",
+    "EXCEPTIONLOGGING": "Enregistrer les exceptions dans les logs"
   },
   "FORM_ERRORS": {
     "NAME_REQUIRED": "Remplissez votre nom ou pseudo.",
@@ -90,7 +90,7 @@
     "SERVER": "Serveur Emby",
     "LOGS": "Journaux",
     "ABOUT": "À propos",
-    "USERS": "Users"
+    "USERS": "Utilisateurs"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -151,23 +151,23 @@
   "SETTINGS": {
     "TITLE": "Paramètres",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "GENERAL": "Paramètres généraux d'Embystat enregistrés !",
+      "EMBY": "Paramètres sauvegardés!",
+      "MOVIES": "Paramètres des films enregistrés !",
+      "SHOWS": "Paramètres des séries enregistrés !",
+      "UPDATES": "Mise à jour des paramètres enregistrés !"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
+      "TVDBAPIKEY": "Si vous le souhaitez, vous pouvez utiliser EmbyStat avec votre propre clé API de TheTVDB ici.",
+      "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera.",
+      "EXCEPTIONLOGGING": "Activer / désactiver la sauvegarde des exceptions sur le service Rollbar en ligne. Avec cette journalisation, je peux déboguer et réparer l'application plus rapidement. Aucune donnée personnelle n'est jamais enregistrée, seuls les messages d'exception, la stacktrace, le nom du système d'exploitation et le numéro de version."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "Pour trouver les films qui sont étrangement courts, nous devons savoir combien de minutes vous trouvez pour un film. Par défaut, ce paramètre est défini sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
+      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "EMBY": {
       "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
