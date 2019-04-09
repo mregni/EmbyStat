@@ -42,7 +42,7 @@
     "TOTALWRITERS": "Nombre d'écrivains",
     "MOSTFEATUREDACTOR": "Acteur vedette",
     "MOSTFEATUREDDIRECTOR": "Directeur vedette",
-    "MOSTFEATUREDWRITER": "Écrivain vedette",
+    "MOSTFEATUREDWRITER": "Scénariste vedette",
     "COLLECTION": "collection",
     "PREMIEREDATE": "date de sortie",
     "STATUS": "statut",
@@ -170,43 +170,43 @@
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+      "NOPASSWORD": "N’oubliez pas d’entrer votre mot de passe Emby lorsque vous souhaitez modifier les paramètres d’url d'Emby."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Enable auto updates",
-      "CHECK": "Check and update server now",
-      "TRAIN": "Change the update train if you want to have beta updates.",
-      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!"
+      "AUTO": "Activer les mises à jour automatiques",
+      "CHECK": "Vérifier et mettre à jour le serveur maintenant",
+      "TRAIN": "Changez le canal de mise à jour si vous voulez avoir des mises à jour bêta.",
+      "ONBETA": "Vous n'êtes plus sur le channel Master, vous ne pouvez donc plus revenir dessus. Si vous voulez revenir sur le channel Master, veuillez réinstaller le serveur.",
+      "TRAINWARNING": "Ici, vous pouvez changer le channel de mise à jour de Master à Beta. Si vous ne savez pas ce que vous faites, laissez ce paramètre sur Master. Si vous souhaitez recevoir les mises à jour Beta, changez-le ici, sachez que vous ne pourrez pas revenir à Master ultérieurement. Vous devrez réinstaller le serveur.",
+      "CURRENTVERSION": "Version actuelle: {{version}}",
+      "CANTCHECK": "Impossible de vérifier les mises à jour maintenant, aucune connexion à GitHub n'a pu être créée.",
+      "NOUPDATE": "Aucune mise à jour disponible",
+      "NEWVERSION": "La version {{version}} est disponible pour le téléchargement!"
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
-    "ISHIDDEN": "Is hidden from login screen",
-    "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "LASTACTIVE": "Last active",
+    "ISADMIN": "Est administrateur",
+    "ISHIDDEN": "Est caché de l'écran de connexion",
+    "ISDISABLED": "Est désactivé",
+    "DELETED": "Utilisateurs supprimés",
+    "LASTACTIVE": "Dernière activité",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
-      "LASTACTIVEASC": "Last active date (asc)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "USERNAMEASC": "Nom d'utilisateur (A - Z)",
+      "USERNAMEDESC": "Nom d'utilisateur (Z - A)",
+      "LASTACTIVEASC": "Dernière activité (asc)",
+      "LASTACTIVEDESC": "Dernière activité (desc)"
     },
-    "TOOVERVIEW": "To overview",
+    "TOOVERVIEW": "Vue d'ensemble",
     "DETAILS": {
-      "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Last watched items"
+      "TITLE": "Détails pour {{name}}",
+      "WATCHEDTITLE": "Derniers éléments regardés"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
+      "TITLE": "Titre",
+      "TIME": "Heure",
+      "WATCHED": "Vu",
       "START": "Start",
       "ACTION": "Action"
     },
