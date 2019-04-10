@@ -21,13 +21,13 @@ namespace EmbyStat.Clients.Emby.Http
 		Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();
 	    Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync();
-        Task<JArray> GetEmbyUsers();
-        Task<JObject> GetEmbyDevices();
+        Task<JArray> GetEmbyUsersAsync();
+        Task<JObject> GetEmbyDevicesAsync();
         Task<string> PingEmbyAsync(CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<QueryResult<BaseItemDto>> GetGenresAsync(ItemsByNameQuery query, CancellationToken cancellationToken = default(CancellationToken));
-        Task<QueryResult<BaseItemDto>> GetMediaFolders(CancellationToken cancellationToken = default(CancellationToken));
+        Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

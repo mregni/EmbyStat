@@ -241,7 +241,7 @@ namespace EmbyStat.Services
 
         public async Task GetAndProcessEmbyUsers(string embyAddress, string accessToken)
         {
-            var usersJson = await _embyClient.GetEmbyUsers();
+            var usersJson = await _embyClient.GetEmbyUsersAsync();
             var users = UserConverter.ConvertToUserList(usersJson).ToList();
             await _embyRepository.AddOrUpdateUsers(users);
 
@@ -252,7 +252,7 @@ namespace EmbyStat.Services
 
         public async Task GetAndProcessDevices(string embyAddress, string accessToken)
         {
-            var devicesJson = await _embyClient.GetEmbyDevices();
+            var devicesJson = await _embyClient.GetEmbyDevicesAsync();
             var devices = DeviceConverter.ConvertToDeviceList(devicesJson).ToList();
             await _embyRepository.AddOrUpdateDevices(devices);
 
