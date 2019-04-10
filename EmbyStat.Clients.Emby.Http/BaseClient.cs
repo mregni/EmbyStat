@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
@@ -360,6 +361,7 @@ namespace EmbyStat.Clients.Emby.Http
             dict.AddIfNotNull("IsVirtualUnaired", query.IsVirtualUnaired);
             dict.AddIfNotNull("AiredDuringSeason", query.AiredDuringSeason);
 
+            url = HttpUtility.UrlEncode(url);
             return GetApiUrl(url, dict);
         }
 
