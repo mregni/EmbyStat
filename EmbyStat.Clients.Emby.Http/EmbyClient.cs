@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
@@ -61,9 +62,9 @@ namespace EmbyStat.Clients.Emby.Http
 			ServerAddress = address;
 			var args = new Dictionary<string, string>
 			{
-				["username"] = Uri.EscapeDataString(username),
-				["pw"] = password
-			};
+				["username"] = HttpUtility.UrlEncode(username),
+				["pw"] = HttpUtility.UrlEncode(password)
+            };
 
 			var url = GetApiUrl("Users/AuthenticateByName");
             _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
