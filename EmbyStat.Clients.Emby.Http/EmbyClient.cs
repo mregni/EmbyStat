@@ -106,7 +106,7 @@ namespace EmbyStat.Clients.Emby.Http
 			}
 		}
 
-        public async Task<JArray> GetEmbyUsers()
+        public async Task<JArray> GetEmbyUsersAsync()
         {
             var url = GetApiUrl("Users");
 
@@ -116,7 +116,7 @@ namespace EmbyStat.Clients.Emby.Http
             }
         }
 
-        public async Task<JObject> GetEmbyDevices()
+        public async Task<JObject> GetEmbyDevicesAsync()
         {
             var url = GetApiUrl("Devices");
 
@@ -153,7 +153,7 @@ namespace EmbyStat.Clients.Emby.Http
 	    }
 
         public async Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken)
-	    {
+        {
 	        var url = GetItemListUrl($"persons/{personName}", new ItemQuery());
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
@@ -162,7 +162,7 @@ namespace EmbyStat.Clients.Emby.Http
 	        }
 	    }
 
-	    public async Task<QueryResult<BaseItemDto>> GetMediaFolders(CancellationToken cancellationToken = default(CancellationToken))
+	    public async Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync(CancellationToken cancellationToken = default(CancellationToken))
 	    {
 	        var url = GetApiUrl("/Library/MediaFolders");
 
