@@ -361,8 +361,8 @@ namespace EmbyStat.Clients.Emby.Http
             dict.AddIfNotNull("IsVirtualUnaired", query.IsVirtualUnaired);
             dict.AddIfNotNull("AiredDuringSeason", query.AiredDuringSeason);
 
-            url = HttpUtility.UrlEncode(url);
-            return GetApiUrl(url, dict);
+            var encodedUrl = HttpUtility.UrlEncode(url);
+            return GetApiUrl(encodedUrl, dict);
         }
 
 	    protected string GetItemByNameListUrl(string type, ItemsByNameQuery query)

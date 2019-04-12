@@ -142,7 +142,7 @@ namespace EmbyStat.Clients.Emby.Http
             }
 		}
 
-	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken))
+	    public async Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken)
 	    {
 	        var url = GetItemListUrl("Items", query);
 
@@ -162,7 +162,7 @@ namespace EmbyStat.Clients.Emby.Http
 	        }
 	    }
 
-	    public async Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync(CancellationToken cancellationToken)
 	    {
 	        var url = GetApiUrl("/Library/MediaFolders");
 
@@ -172,7 +172,7 @@ namespace EmbyStat.Clients.Emby.Http
 	        }
         }
 
-	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken = default(CancellationToken))
+	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken)
 	    {
 	        var url = GetItemByNameListUrl("Persons", query);
 
@@ -187,7 +187,7 @@ namespace EmbyStat.Clients.Emby.Http
 	        }
 	    }
 
-	    public async Task<QueryResult<BaseItemDto>> GetGenresAsync(ItemsByNameQuery query, CancellationToken cancellationToken = default(CancellationToken))
+	    public async Task<QueryResult<BaseItemDto>> GetGenresAsync(ItemsByNameQuery query, CancellationToken cancellationToken)
 	    {
 	        var url = GetItemByNameListUrl("Genres", query);
 
