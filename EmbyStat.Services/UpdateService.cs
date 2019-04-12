@@ -128,7 +128,7 @@ namespace EmbyStat.Services
             }
             catch (Exception e)
             {
-                _logger.Error("Unpack error", e);
+                _logger.Error(e, "Unpack error");
                 throw new BusinessException("UPDATEUNPACKERROR");
             }
             finally

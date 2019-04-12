@@ -511,7 +511,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task<List<Collection>> GetRootItems(CancellationToken cancellationToken)
         {
             await LogInformation("Asking Emby for all root folders");
-            var rootItems = await _embyClient.GetMediaFolders(cancellationToken);
+            var rootItems = await _embyClient.GetMediaFoldersAsync(cancellationToken);
 
             return rootItems.Items.Select(x => new Collection
             {
