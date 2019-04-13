@@ -24,7 +24,7 @@ namespace EmbyStat.Clients.GitHub
             _appSettings = appSettings.Value;
         }
 
-        public async Task<UpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckIfUpdateAvailableAsync(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken)
         {
             var options = new HttpRequest
             {
@@ -95,24 +95,19 @@ namespace EmbyStat.Clients.GitHub
                         ? (obj.Name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
                         : UpdateTrain.Release,
                     Name = asset.Name,
-                    SourceUrl = asset.browser_download_url,
+                    SourceUrl = asset.BrowserDownloadUrl,
                     VersionStr = version.ToString(),
                     InfoUrl = obj.HtmlUrl
                 }
             };
         }
 
-        private bool IsAsset(Asset asset, string assetFilename, string version)
+        private static bool IsAsset(Asset asset, string assetFilename, string version)
         {
-            var downloadFilename = Path.GetFileName(asset.browser_download_url) ?? string.Empty;
-            assetFilename = assetFilename.Replace("{version}", version);
+            var downloadFilename = Path.GetFileName(asset.Name) ?? string.Empty;
+            var fullAssetFilename = assetFilename.Replace("{version}", version);
 
-            if (downloadFilename.IndexOf(assetFilename, StringComparison.OrdinalIgnoreCase) != -1)
-            {
-                return true;
-            }
-
-            return string.Equals(assetFilename, downloadFilename, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(fullAssetFilename, downloadFilename, StringComparison.OrdinalIgnoreCase);
         }
 
         private string CleanUpVersionString(string version)
