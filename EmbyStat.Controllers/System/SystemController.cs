@@ -23,7 +23,7 @@ namespace EmbyStat.Controllers.System
         [Route("checkforupdate")]
         public async Task<ActionResult> CheckForUpdate()
         {
-            var result = await _updateService.CheckForUpdate(new CancellationToken());
+            var result = await _updateService.CheckForUpdateAsync(new CancellationToken());
             return Ok(_mapper.Map<UpdateResultViewModel>(result));
         }
 
@@ -31,11 +31,11 @@ namespace EmbyStat.Controllers.System
         [Route("startupdate")]
         public async Task<IActionResult> StartUpdate()
         {
-            var result = await _updateService.CheckForUpdate(new CancellationToken());
+            var result = await _updateService.CheckForUpdateAsync(new CancellationToken());
             if (result.IsUpdateAvailable)
             {
-                await _updateService.DownloadZip(result);
-                await _updateService.UpdateServer();
+                await _updateService.DownloadZipAsync(result);
+                await _updateService.UpdateServerAsync();
                 return Ok(true);
             }
 

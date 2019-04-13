@@ -26,7 +26,7 @@ namespace EmbyStat.Clients.GitHub.Models
         public string CreatedAt { get; set; }
         [JsonProperty("updated_at")]
         public string UpdatedAt { get; set; }
-        [JsonProperty("BrowserDownloadUrl")]
-        public string browser_download_url { get; set; }
+        [JsonProperty("browser_download_url")]
+        public string BrowserDownloadUrl { get; set; }
     }
 }
