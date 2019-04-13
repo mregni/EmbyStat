@@ -7,9 +7,9 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IUpdateService
     {
-        Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken);
-        Task<UpdateResult> CheckForUpdate(UserSettings settings, CancellationToken cancellationToken);
-        Task DownloadZip(UpdateResult result);
-        Task UpdateServer();
+        Task<UpdateResult> CheckForUpdateAsync(CancellationToken cancellationToken);
+        Task<UpdateResult> CheckForUpdateAsync(UserSettings settings, CancellationToken cancellationToken);
+        Task DownloadZipAsync(UpdateResult result);
+        Task UpdateServerAsync();
     }
 }
