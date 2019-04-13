@@ -38,12 +38,12 @@ namespace EmbyStat.Services
             _logger = LogManager.GetCurrentClassLogger();
         }
 
-        public async Task<UpdateResult> CheckForUpdate(CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckForUpdateAsync(CancellationToken cancellationToken)
         {
             try
             {
                 var settings = _settingsService.GetUserSettings();
-                return await CheckForUpdate(settings, cancellationToken);
+                return await CheckForUpdateAsync(settings, cancellationToken);
             }
             catch (HttpException e)
             {
@@ -52,11 +52,11 @@ namespace EmbyStat.Services
         }
 
 
-        public async Task<UpdateResult> CheckForUpdate(UserSettings settings, CancellationToken cancellationToken)
+        public async Task<UpdateResult> CheckForUpdateAsync(UserSettings settings, CancellationToken cancellationToken)
         {
             var appSettings = _settingsService.GetAppSettings();
             var currentVersion = new Version(appSettings.Version.ToCleanVersionString());
-            var result = await _githubClient.CheckIfUpdateAvailable(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
+            var result = await _githubClient.CheckIfUpdateAvailableAsync(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
 
             if (result.IsUpdateAvailable)
             {
@@ -85,7 +85,7 @@ namespace EmbyStat.Services
             File.WriteAllText($"{fileName}", obj);
         }
 
-        public async Task DownloadZip(UpdateResult result)
+        public async Task DownloadZipAsync(UpdateResult result)
         {
             var appSettings = _settingsService.GetAppSettings();
             if (Directory.Exists(appSettings.Dirs.TempUpdateDir))
@@ -137,9 +137,9 @@ namespace EmbyStat.Services
             }
         }
 
-        public async Task UpdateServer()
+        public Task UpdateServerAsync()
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 _logger.Info("Starting updater process.");
                 var updateFile = CheckForUpdateFiles();

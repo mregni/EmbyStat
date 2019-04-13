@@ -8,6 +8,6 @@ namespace EmbyStat.Clients.GitHub
 {
     public interface IGithubClient
     {
-        Task<UpdateResult> CheckIfUpdateAvailable(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken);
+        Task<UpdateResult> CheckIfUpdateAvailableAsync(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken);
     }
 }
