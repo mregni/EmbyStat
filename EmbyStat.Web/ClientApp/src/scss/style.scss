@@ -1,11 +1,37 @@
-//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "theme";
-@import "app/styles/vars";
-@import "app/styles/ball-scale-ripple-multiple.min";
-@import "app/styles/ball-clip-rotate.min";
-@import "app/styles//title-bar";
+@import '~bootstrap/scss/bootstrap';
+@import "~ng2-toasty/style-bootstrap.css";
 
-html,
+@import "partials/variables";
+@import "partials/mixins";
+@import "partials/general";
+@import "partials/generic";
+
+// Menu
+@import "partials/menu/menu";
+
+// Important Theme elements
+@import "partials/theme-elements/button";
+@import "partials/theme-elements/form-elements";
+
+// Theme elements
+@import "partials/theme-elements/label-badges";
+
+// Tables
+@import "partials/tables/tables";
+
+// Other
+@import "partials/other/progress-bar";
+
+// Responsive css
+@import "partials/responsive/responsive";
+
+@import "partials/dark";
+
+//angular custom
+@import "partials/custom";
+
+
+/*html,
 body {
   height: 100%;
 }
@@ -127,4 +153,4 @@ body {
 .hint {
   color: $hint-grey;
   font-size: 75%;
-}
+}*/

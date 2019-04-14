@@ -8,7 +8,6 @@ import { MomentModule } from 'ngx-moment';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LanguageModule } from './components/language/language.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { CardComponent } from './components/card/card.component';
 import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
@@ -51,7 +50,6 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     NgxChartsModule,
     LanguageModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     TranslateModule.forChild()
   ],
   exports: [
@@ -59,7 +57,6 @@ import { DisableControlDirective } from './directives/disable-control/disable-co
     MaterialModule,
     MomentModule,
     NgxChartsModule,
-    FontAwesomeModule,
     RouterModule,
     ReactiveFormsModule,
     FormsModule,

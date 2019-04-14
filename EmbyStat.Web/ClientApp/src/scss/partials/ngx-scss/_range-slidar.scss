@@ -1,0 +1,55 @@
+// range-slider
+
+.ag-slider .noUi-horizontal {
+  height: 16px;
+  background: transparent;
+  border-radius: 0px;
+  border: none;
+  border-top: 1px solid #D3D3D3;
+  box-shadow: none;
+  cursor: pointer;
+  .noUi-handle {
+    width: 20px;
+    height: 20px;
+    top: -10px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    background-color: #4680ff;
+    box-shadow: none;
+    &:after, &:before {
+      background: transparent;
+    }
+  }
+  .noUi-connects {
+    padding: 10px;
+    top: -10px;
+    .noUi-connect {
+      background: #4680ff;
+      height: 3px;
+      top: 8px;
+    }
+  }
+
+  .noUi-pips-horizontal {
+    top: 0;
+    padding: 0;
+  }
+  .noUi-tooltip {
+    border: 1px solid $inverse-color;
+    border-radius: 5px;
+    background: $inverse-color;
+    color: #fff;
+    padding: 5px 15px;
+    transform: translate(-50%,-15px);
+    &:after{
+      content: "";
+      position: absolute;
+      border:6px solid transparent;
+      border-bottom-color: $inverse-color;
+      border-right-color: $inverse-color;
+      bottom: -10px;
+      left: 50%;
+      transform: rotate(45deg) translate(-50%,0);
+    }
+  }
+}

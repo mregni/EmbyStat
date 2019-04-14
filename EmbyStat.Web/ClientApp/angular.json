@@ -21,10 +21,13 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.scss",
-              "src/theme.scss"
+              "node_modules/font-awesome-scss/scss/font-awesome.scss",
+              "src/scss/style.scss",
+              "src/scss/widget.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js"
+            ]
           },
           "configurations": {
             "production": {
