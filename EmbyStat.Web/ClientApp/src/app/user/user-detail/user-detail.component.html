@@ -14,9 +14,9 @@
             <div *ngIf="user.lastActivityDate">{{ 'USERS.LASTACTIVE' | translate }}: {{user.lastActivityDate | amLocal | amDateFormat:'DD/MM/YY HH:mm'}}</div>
             <div *ngIf="user.lastActivityDate == undefined">{{ 'USERS.LASTACTIVE' | translate }}: {{ 'COMMON.NEVER' | translate }}</div>
             <div class="icon-container">
-              <fa-icon class="fa-lg" *ngIf="user.isAdministrator" icon="user-tie" matTooltip="{{ 'USERS.ISADMIN' | translate }}" position="below"></fa-icon>
+              <!--<fa-icon class="fa-lg" *ngIf="user.isAdministrator" icon="user-tie" matTooltip="{{ 'USERS.ISADMIN' | translate }}" position="below"></fa-icon>
               <fa-icon class="fa-lg" *ngIf="user.isDisabled" icon="user-lock" matTooltip="{{ 'USERS.ISDISABLED' | translate }}" position="below"></fa-icon>
-              <fa-icon class="fa-lg" *ngIf="user.isHidden" icon="eye-slash" matTooltip="{{ 'USERS.ISHIDDEN' | translate }}" position="below"></fa-icon>
+              <fa-icon class="fa-lg" *ngIf="user.isHidden" icon="eye-slash" matTooltip="{{ 'USERS.ISHIDDEN' | translate }}" position="below"></fa-icon>-->
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@
             <mat-header-cell *matHeaderCellDef>{{ 'USERS.WATCHEDTABLE.TITLE' | translate }}</mat-header-cell>
             <mat-cell *matCellDef="let element">
               {{element.name}}
-              <fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)" class="margin-right"></fa-icon>
+              <!--<fa-icon icon="play" *ngIf="isNowPlaying(element.endedWatching)" class="margin-right"></fa-icon>-->
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="duration">

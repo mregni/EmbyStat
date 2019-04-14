@@ -39,30 +39,30 @@ export class AppComponent implements OnInit, OnDestroy {
       'fi-FI', 'fr-FR', 'hu-HU', 'it-IT', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO',
       'sv-SE', 'cs-CZ']);
 
-    const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/jobs-socket')
-      .build();
-    hubConnection.start().catch(err => document.write(err));
+    //const hubConnection = new signalR.HubConnectionBuilder()
+    //  .withUrl('/jobs-socket')
+    //  .build();
+    //hubConnection.start().catch(err => document.write(err));
 
-    hubConnection.on('job-report-progress', (data: Job) => {
-      jobSocketService.updateJobsInfo(data);
-    });
+    //hubConnection.on('job-report-progress', (data: Job) => {
+    //  jobSocketService.updateJobsInfo(data);
+    //});
 
-    hubConnection.on('job-report-log', (data: JobLog) => {
-      jobSocketService.updateJobLogs(data.value, data.type);
-    });
+    //hubConnection.on('job-report-log', (data: JobLog) => {
+    //  jobSocketService.updateJobLogs(data.value, data.type);
+    //});
 
-    hubConnection.on('emby-connection-state', (data: number) => {
-      jobSocketService.updateMissedPings(data);
-    });
+    //hubConnection.on('emby-connection-state', (data: number) => {
+    //  jobSocketService.updateMissedPings(data);
+    //});
 
-    hubConnection.on('update-state', (state: boolean) => {
-      if (this.settings !== undefined) {
-        const copy = { ...this.settings };
-        copy.updateInProgress = state;
-        this.settingsFacade.updateSettings(copy);
-      }
-    });
+    //hubConnection.on('update-state', (state: boolean) => {
+    //  if (this.settings !== undefined) {
+    //    const copy = { ...this.settings };
+    //    copy.updateInProgress = state;
+    //    this.settingsFacade.updateSettings(copy);
+    //  }
+    //});
 
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
       this.openMenu = state;
