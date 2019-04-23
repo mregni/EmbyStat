@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-md-12 col-lg-6" *ngIf="about$ | async as about">
+    <div class="card statustic-card">
+      <div class="card-header borderless">
+        <h4>Server info</h4>
+      </div>
+      <div class="card-block">
+        <p class="m-b-0">EmbyStat version: {{ about.version }}</p>
+        <p class="m-b-0">Operating system: {{ about.operatingSystem }} {{about.architecture}}
+          {{ about.operatingSystemVersion }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 col-lg-6" *ngIf="about$ | async as about">
+    <div class="card statustic-card">
+      <div class="card-header borderless">
+        <h4>{{ 'ABOUT.THANKS.TITLE' | translate }}</h4>
+      </div>
+      <div class="card-block">
+        <p>{{ 'ABOUT.THANKS.TEXT' | translate }}</p>
+        <div class="m-b-20 row no-gutters">
+          <div class="m-b-5">
+            <label class="label label-primary label-md">alz41</label>
+          </div>
+          <div class="m-b-5">
+            <label class="label label-primary label-md">ben-nl</label>
+          </div>
+          <div class="m-b-5">
+            <label class="label label-primary label-md">Floflobel</label>
+          </div>
+          <div class="m-b-5">
+            <label class="label label-primary label-md">jeankadang</label>
+          </div>
+          <div class="m-b-5">
+            <label class="label label-primary label-md">jm199905</label>
+          </div>
+          <div class="m-b-5">
+            <label class="label label-primary label-md">Nickbert7</label>
+          </div>
+          <div class="m-b-5">
+            <label class="label label-primary label-md">Sebastián Fenoglio</label>
+          </div>
+        </div>
+        <div class="about-button-container">
+          <div class="row no-gutters">
+            <div class="m-b-5">
+              <a class="btn waves-effect waves-light btn-primary btn-square m-r-5" target="_blank"
+                href="https://embystat.featureupvote.com/">Request feature</a>
+            </div>
+            <div class="m-b-5">
+              <a class="btn waves-effect waves-light btn-primary btn-square m-r-5" target="_blank"
+                href="https://github.com/mregni/EmbyStat/issues/new?template=Bug_report.md">Log bug on Github</a>
+            </div>
+            <div class="m-b-5">
+              <a class="btn waves-effect waves-light btn-primary btn-square" target="_blank"
+                href="https://crowdin.com/project/embystat">Start translating the app</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

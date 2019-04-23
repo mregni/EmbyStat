@@ -1,116 +1,49 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ClickOutsideModule } from 'ng-click-outside';
+import {
+    PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule
+} from 'ngx-perfect-scrollbar';
+
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from './material.module';
-import { TranslateModule } from '@ngx-translate/core';
-import { CountUpModule } from 'countup.js-angular2';
-import { MomentModule } from 'ngx-moment';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { LanguageModule } from './components/language/language.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ModuleWithProviders, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { CardComponent } from './components/card/card.component';
-import { CardTimespanComponent } from './components/card-timespan/card-timespan.component';
-import { CardNumberComponent } from './components/card-number/card-number.component';
-import { MoviePosterComponent } from './components/movie-poster/movie-poster.component';
-import { PersonPosterComponent } from './components/person-poster/person-poster.component';
-import { ShowPosterComponent } from './components/show-poster/show-poster.component';
-import { LoaderComponent } from './components/loader/loader.component';
-import { CollectionSelectorComponent } from './components/collection-selector/collection-selector.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { UpdateOverlayComponent } from './components/update-overlay/update-overlay.component';
-import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
-import { CardUserComponent } from '../shared/components/card-user/card-user.component';
+import { TitleService } from './services/title.service';
 
-import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
-import { ToShorterStringPipe } from './pipes/shorten-string.pipe';
-
-import { ToastService } from './services/toast.service';
-import { JobSocketService } from './services/job-socket.service';
-import { EmbyService } from './services/emby.service';
-import { SystemService } from './services/system.service';
-import { UpdateOverlayService } from './services/update-overlay.service';
-import { SideBarService } from './services/side-bar.service';
-import { UpdateService } from './services/update.service';
-
-import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
-import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
-import { NoUsersFoundDialogComponent } from './dialogs/no-users-found-dialog/no-users-found-dialog.component';
-
-import { DisableControlDirective } from './directives/disable-control/disable-control.directive';
-
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
-    RouterModule,
-    CountUpModule,
-    MomentModule,
-    NgxChartsModule,
-    LanguageModule,
-    ReactiveFormsModule,
-    TranslateModule.forChild()
+    NgbModule.forRoot(),
+    HttpClientModule,
+    PerfectScrollbarModule,
+    ClickOutsideModule,
+    RouterModule
   ],
   exports: [
-    ToolbarComponent,
-    MaterialModule,
-    MomentModule,
-    NgxChartsModule,
+    NgbModule,
     RouterModule,
-    ReactiveFormsModule,
-    FormsModule,
-    LanguageModule,
-    CardComponent,
-    CardTimespanComponent,
-    CardNumberComponent,
-    MoviePosterComponent,
-    PersonPosterComponent,
-    ShowPosterComponent,
-    LoaderComponent,
-    CollectionSelectorComponent,
-    NoTypeFoundDialog,
-    SyncIsRunningDialog,
-    NoUsersFoundDialogComponent,
-    CapitalizeFirstPipe,
-    ToShorterStringPipe,
-    DisableControlDirective,
-    SideNavigationComponent,
-    CardUserComponent
-  ],
-  declarations: [
-    ToolbarComponent,
-    CardComponent,
-    CardTimespanComponent,
-    CardNumberComponent,
-    MoviePosterComponent,
-    PersonPosterComponent,
-    ShowPosterComponent,
-    LoaderComponent,
-    CollectionSelectorComponent,
-    NoTypeFoundDialog,
-    SyncIsRunningDialog,
-    CapitalizeFirstPipe,
-    ToShorterStringPipe,
-    DisableControlDirective,
-    UpdateOverlayComponent,
-    SideNavigationComponent,
-    CardUserComponent,
-    NoUsersFoundDialogComponent
+    HttpClientModule,
+    PerfectScrollbarModule,
+    ClickOutsideModule
   ],
   providers: [
-    ToastService,
-    EmbyService,
-    JobSocketService,
-    SystemService,
-    UpdateOverlayService,
-    SideBarService,
-    UpdateService
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
   ],
-  entryComponents: [
-    NoTypeFoundDialog,
-    SyncIsRunningDialog,
-    NoUsersFoundDialogComponent,
-    UpdateOverlayComponent]
+  schemas: [NO_ERRORS_SCHEMA]
 })
-export class SharedModule { }
+export class SharedModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [ TitleService ]
+    };
+  }
+}

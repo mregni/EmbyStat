@@ -1,16 +1,87 @@
-<div *ngIf="!settings?.updateInProgress">
-  <ng-progress [spinner]="false" [color]="'#bc012a'"></ng-progress>
-  <app-toolbar (toggleSideNav)="sidenav.toggle()"></app-toolbar>
+<div id="pcoded" class="pcoded" [ngClass]="animateSidebar" nav-type="st2" theme-layout="vertical"
+  vertical-placement="left" vertical-layout="wide" [attr.pcoded-device-type]="pcodedDeviceType"
+  [attr.vertical-nav-type]="verticalNavType" [attr.vertical-effect]="verticalEffect" vnavigation-view="view1"
+  fream-type="theme1" sidebar-img="false" [attr.layout-type]="layoutType" (window:resize)="onResize($event)">
 
-  <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav mode="side" class="app-sidenav mat-elevation-z1"
-                 [opened]="!isScreenSmall() && openMenu" #sidenav
-                 [mode]="isScreenSmall() ? 'over' : 'side'" position="start">
-      <app-side-navigation></app-side-navigation>
-    </mat-sidenav>
+  <div class="pcoded-overlay-box"></div>
+  <div class="pcoded-container navbar-wrapper">
+    <nav class="navbar header-navbar pcoded-header" header-theme="theme1" pcoded-header-position="fixed">
+      <div class="navbar-wrapper">
+        <div class="navbar-logo">
+          <a class="mobile-menu ripple light" id="mobile-collapse" href="javascript:" (click)="toggleOpened($event)"
+            (clickOutside)="onClickedOutsideSidebar($event)">
+            <i class="feather" [ngClass]="toggleIcon"></i>
+          </a>
+          <a routerLink="/" class="ripple light">
+            <img src="assets/images/logo_white.png" height="30px" alt="EmbyStat" />
+          </a>
+          <a href="javascript:" class="mobile-options ripple light" (click)="toggleHeaderNavRight()">
+            <i class="feather icon-more-horizontal"></i>
+          </a>
+        </div>
+        <div class="navbar-container container-fluid">
+          <ul class="nav-left">
+            <li class="ripple light">
+              <div class="sidebar_toggle"><a href="javascript:"><i class="icon-menu"></i></a></div>
+            </li>
+          </ul>
+          <ul [@mobileHeaderNavRight]="navRight" [ngClass]="navRight" class="nav-right">
+            <li class="header-notification ripple light">
+              <a href="javascript:">
+                <i class="feather icon-bell"></i>
+                <span class="badge bg-c-red">5</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="pcoded-main-container" [style.margin-top]="headerFixedMargin">
+      <div class="pcoded-wrapper">
+        <nav id="main_navbar" class="pcoded-navbar" (clickOutside)="onClickedOutsideSidebar($event)"
+          [exclude]="'#mobile-collapse'" [attr.navbar-theme]="navBarTheme" active-item-theme="theme1"
+          sub-item-theme="theme2" active-item-style="style0" [attr.pcoded-header-position]="pcodedHeaderPosition"
+          [attr.pcoded-navbar-position]="pcodedSidebarPosition" [style.top]="headerFixedTop"
+          [style.height]="sidebarFixedNavHeight" (mouseleave)="hoverOutsideSidebar()">
 
-    <mat-sidenav-content class="app-sidenav-content">
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+          <perfect-scrollbar [style.max-width]="'235px'" [style.max-height]="sidebarFixedHeight"
+            [ngClass]="perfectDisable">
+            <div *ngFor="let menu of menuItems.getAll()" class="pcoded-inner-navbar main-menu">
+              <div class="pcoded-navigation-label" [attr.menu-title-theme]="menuTitleTheme">{{menu.label}}</div>
+              <ul class="pcoded-item pcoded-left-item" item-border="true" item-border-style="none">
+                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of menu.items">
+                  <a class="ripple" routerLink="{{item.route}}">
+                    <span class="pcoded-micon"><i class="feather {{item.icon}}"></i><b>D</b></span>
+                    <span class="pcoded-mtext">{{item.name}}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="text-center"> v7.4 </div>
+          </perfect-scrollbar>
+        </nav>
+        <div class="pcoded-content">
+          <div class="page-header">
+            <div class="page-block">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="page-header-title">
+                    <h4>{{pageTitle}}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pcoded-inner-content">
+            <div class="main-body">
+              <div class="page-wrapper">
+                <div class="page-body">
+                  <router-outlet></router-outlet>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
