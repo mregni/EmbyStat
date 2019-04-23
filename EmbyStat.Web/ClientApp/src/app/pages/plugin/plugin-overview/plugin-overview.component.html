@@ -1,0 +1,16 @@
+<div class="row">
+  <div class=" col-xs-12 col-md-6 col-xl-3" *ngFor="let plugin of plugins$ | async">
+    <div class="card statustic-card">
+      <div class="card-block">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <img class="plugin-avatar" src="{{ getFullAddress() }}/emby/plugins/{{ plugin.id }}/thumb" />
+          </div>
+          <div class="col">
+            <div class="plugin-title">{{ plugin.name }}</div>
+            <div class="plugin-subtitle">{{ 'PLUGINS.VERSION' | translate }}: {{ plugin.version }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

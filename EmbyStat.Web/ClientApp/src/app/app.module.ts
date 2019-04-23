@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AboutModule } from './pages/about/about.module';
 import { DashboardModule } from './pages/dashboard/dashboard.module';
 import { MovieModule } from './pages/movie/movie.module';
+import { PluginModule } from './pages/plugin/plugin.module';
 import { SettingsModule } from './pages/settings/settings.module';
 import { MenuItems } from './shared/injectables/menu-items';
 import { SharedModule } from './shared/shared.module';
@@ -30,6 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
     DashboardModule,
     SettingsModule,
     MovieModule,
+    PluginModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

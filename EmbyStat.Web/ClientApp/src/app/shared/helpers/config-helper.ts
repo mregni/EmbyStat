@@ -1,4 +1,4 @@
-import { Settings } from '../../settings/models/settings';
+import { Settings } from '../models/settings/settings';
 
 export module ConfigHelper {
   export function getFullEmbyAddress(settings: Settings): string {

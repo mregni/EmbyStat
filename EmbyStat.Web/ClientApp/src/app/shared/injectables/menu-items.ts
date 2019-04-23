@@ -27,12 +27,17 @@ const MENUITEMS = [
         name: 'Movies',
         icon: 'feather icon-film',
         route: '/movie/overview'
-      },
+      }
+    ]
+  },
+  {
+    label: 'Emby',
+    items: [
       {
-        shortLabel: 'M',
-        name: 'Movies conainer',
-        icon: 'feather icon-film',
-        route: '/movie'
+        shortLabel: 'P',
+        name: 'Plugins',
+        icon: 'feather icon-home',
+        route: '/plugin'
       }
     ]
   },

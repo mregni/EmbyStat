@@ -7,6 +7,7 @@ import {
 } from './pages/dashboard/dashboard-overview/dashboard-overview.component';
 import { MovieContainerComponent } from './pages/movie/movie-container/movie-container.component';
 import { MovieOverviewComponent } from './pages/movie/movie-overview/movie-overview.component';
+import { PluginOverviewComponent } from './pages/plugin/plugin-overview/plugin-overview.component';
 import {
     SettingsContainerComponent
 } from './pages/settings/settings-container/settings-container.component';
@@ -17,6 +18,7 @@ import {
 const routes: Routes = [
   { path: '', component: DashboardOverviewComponent },
   { path: 'about', component: AboutOverviewComponent },
+  { path: 'plugin', component: PluginOverviewComponent },
   {
     path: 'movie', component: MovieContainerComponent, children: [
       { path: 'overview', component: MovieOverviewComponent }

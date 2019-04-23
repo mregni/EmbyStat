@@ -9,6 +9,8 @@ import { ModuleWithProviders, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { EmbyService } from './services/emby.service';
+import { SettingsService } from './services/settings.service';
 import { TitleService } from './services/title.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -43,7 +45,11 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [ TitleService ]
+      providers: [
+        TitleService,
+        SettingsService,
+        EmbyService
+       ]
     };
   }
 }
