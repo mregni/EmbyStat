@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { EmbyService } from './services/emby.service';
@@ -28,8 +27,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     ClickOutsideModule,
     RouterModule,
-    MomentModule,
-    TranslateModule
+    MomentModule
   ],
   declarations: [
     CapitalizeFirstPipe
@@ -41,8 +39,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     ClickOutsideModule,
     MomentModule,
-    CapitalizeFirstPipe,
-    TranslateModule
+    CapitalizeFirstPipe
   ],
   providers: [
     {

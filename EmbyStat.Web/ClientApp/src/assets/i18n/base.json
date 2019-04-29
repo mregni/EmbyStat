@@ -48,7 +48,9 @@
     "STATUS": "status",
     "PERCENTAGE": "percentage",
     "COLLECTED": "collected",
-    "UPDATES": "Updates"
+    "UPDATES": "Updates",
+    "VERSION": "Version",
+    "INFORMATION": "Information"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -111,9 +113,6 @@
     "FINISHWITHSYNC": "Start synchronization",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
-  },
-  "PLUGINS": {
-    "VERSION": "Version"
   },
   "MOVIES": {
     "TOTALMOVIES": "Total movies",
@@ -297,5 +296,14 @@
       "TITLE": "Thanks",
       "TEXT": "A big thanks to the following people for translating the app in their native language:"
     }
+  },
+  "EMBYSERVER": {
+    "HOSTOS": "Host OS",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "CACHEPATH": "Cache path",
+    "LOGPATH": "Log path",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port"
   }
 }

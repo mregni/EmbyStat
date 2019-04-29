@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card user-card-full" *ngIf="serverInfo$ | async as serverInfo">
+      <div class="row m-l-0 m-r-0">
+        <div class="col-sm-4 col-md-2 bg-c-blue user-profile">
+          <div class="card-block text-center text-white">
+            <div class="m-b-25">
+              <img src="../../assets/images/emby.png" class="img-radius img-80" alt="Emby logo">
+            </div>
+            <h6 class="f-w-600">{{serverInfo.serverName}}</h6>
+          </div>
+        </div>
+        <div class="col-sm-8 col-md-10">
+          <div class="card-block">
+            <h6 class="m-b-20 p-b-5 b-b-default f-w-600">{{ 'COMMON.INFORMATION' | translate }}</h6>
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="m-b-10 f-w-600">{{ 'COMMON.VERSION' | translate }}</p>
+                <h6 class="text-muted f-w-400">{{serverInfo.version}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.HOSTOS' | translate }}</p>
+                <h6 class="text-muted f-w-400">{{serverInfo.operatingSystem}} {{serverInfo.systemArchitecture}}</h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.HTTPPORT' | translate }}</p>
+                <h6 class="text-muted f-w-400">{{serverInfo.httpServerPortNumber}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.HTTPSPORT' | translate }}</p>
+                <h6 class="text-muted f-w-400">{{serverInfo.httpsPortNumber}}</h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.CACHEPATH' | translate }}</p>
+                <h6 class="text-muted f-w-400">{{serverInfo.cachePath}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.LOGPATH' | translate }}</p>
+                <h6 class="text-muted f-w-400">{{serverInfo.logPath}}</h6>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                  <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.LANADDRESS' | translate }}</p>
+                  <h6 class="text-muted f-w-400">
+                    <a target="_blank" href="{{serverInfo.localAddress}}">{{serverInfo.localAddress}}</a>
+                  </h6>
+                </div>
+                <div class="col-sm-6">
+                  <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.WANADDRESS' | translate }}</p>
+                  <h6 class="text-muted f-w-400">
+                    <a target="_blank" href="{{serverInfo.wanAddress}}">{{serverInfo.wanAddress}}</a>
+                  </h6>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<h3>Paths</h3>
+  programDataPath: {{serverInfo.programDataPath}}<br />
+  itemsByNamePath: {{serverInfo.itemsByNamePath}}<br />
+  internalMetadataPath: {{serverInfo.internalMetadataPath}}<br />
+  transcodingTempPath: {{serverInfo.transcodingTempPath}}<br /><br /><br /><br />
+  encoderLocationType: {{serverInfo.encoderLocationType}}<br />
+
+
+  operatingSystemDisplayName: {{serverInfo.operatingSystemDisplayName}}<br />
+  webSocketPortNumber: {{serverInfo.webSocketPortNumber}}<br />
+  <br /><br />
+
+  hasPendingRestart: {{serverInfo.hasPendingRestart}}<br />
+  supportsLibraryMonitor: {{serverInfo.supportsLibraryMonitor}}<br />
+  canSelfRestart: {{serverInfo.canSelfRestart}}<br />
+  canSelfUpdate: {{serverInfo.canSelfUpdate}}<br />
+  canLaunchWebBrowser: {{serverInfo.canLaunchWebBrowser}}<br />
+  supportsHttps: {{serverInfo.supportsHttps}}<br />
+  hasUpdateAvailable: {{serverInfo.hasUpdateAvailable}}<br />
+  supportsAutoRunAtStartup: {{serverInfo.supportsAutoRunAtStartup}}-->

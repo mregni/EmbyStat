@@ -9,6 +9,7 @@ import { LogsOverviewComponent } from './pages/logs/logs-overview/logs-overview.
 import { MovieContainerComponent } from './pages/movie/movie-container/movie-container.component';
 import { MovieOverviewComponent } from './pages/movie/movie-overview/movie-overview.component';
 import { PluginOverviewComponent } from './pages/plugin/plugin-overview/plugin-overview.component';
+import { ServerOverviewComponent } from './pages/server/server-overview/server-overview.component';
 import {
     SettingsContainerComponent
 } from './pages/settings/settings-container/settings-container.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'about', component: AboutOverviewComponent },
   { path: 'log', component: LogsOverviewComponent },
   { path: 'plugin', component: PluginOverviewComponent },
+  { path: 'server', component: ServerOverviewComponent },
   {
     path: 'movie', component: MovieContainerComponent, children: [
       { path: 'overview', component: MovieOverviewComponent }
