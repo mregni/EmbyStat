@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class TitleService {
   titleSubject = new BehaviorSubject<string>('');
 
-  updateTitle(title: string){
+  updateTitle(title: string) {
     this.titleSubject.next(title);
   }
 }

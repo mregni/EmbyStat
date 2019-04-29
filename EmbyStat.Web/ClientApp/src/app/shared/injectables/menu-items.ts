@@ -51,6 +51,12 @@ const MENUITEMS = [
         route: '/settings/general'
       },
       {
+        shortLabel: 'L',
+        name: 'Logs',
+        icon: 'feather icon-file-text',
+        route: '/log'
+      },
+      {
         shortLabel: 'A',
         name: 'About',
         icon: 'feather icon-help-circle',

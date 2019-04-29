@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Models.Entities;
+﻿using System.IO;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Common.Extentions
 {
@@ -32,6 +33,11 @@ namespace EmbyStat.Common.Extentions
         public static string ToCleanVersionString(this string version)
         {
             return version.Replace("-dev", string.Empty).Replace("-beta", string.Empty);
+        }
+
+        public static string GetLocalPath(this string path)
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(), path);
         }
     }
 }

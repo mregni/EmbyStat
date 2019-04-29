@@ -58,6 +58,7 @@
     "ngx-carousel": "^1.3.5",
     "ngx-chips": "^1.8.2",
     "ngx-color-picker": "^5.3.8",
+    "ngx-moment": "^3.4.0",
     "ngx-perfect-scrollbar": "^5.3.5",
     "ngx-quill-editor": "^2.2.2",
     "ngx-tour-ng-bootstrap": "^2.0.1",

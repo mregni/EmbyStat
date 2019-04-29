@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutModule } from './pages/about/about.module';
 import { DashboardModule } from './pages/dashboard/dashboard.module';
+import { LogsModule } from './pages/logs/logs.module';
 import { MovieModule } from './pages/movie/movie.module';
 import { PluginModule } from './pages/plugin/plugin.module';
 import { SettingsModule } from './pages/settings/settings.module';
@@ -32,6 +33,7 @@ export function createTranslateLoader(http: HttpClient) {
     SettingsModule,
     MovieModule,
     PluginModule,
+    LogsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

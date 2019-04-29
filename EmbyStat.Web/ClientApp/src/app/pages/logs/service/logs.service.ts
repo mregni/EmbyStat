@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
-import { LogFile } from '../models/logFile';
+
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { LogFile } from '../../../shared/models/logs/log-file';
 
 @Injectable()
 export class LogService {

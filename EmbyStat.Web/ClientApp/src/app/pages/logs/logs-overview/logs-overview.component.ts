@@ -1,0 +1,45 @@
+import { Observable } from 'rxjs';
+
+import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import { LogFile } from '../../../shared/models/logs/log-file';
+import { TitleService } from '../../../shared/services/title.service';
+import { LogService } from '../service/logs.service';
+
+@Component({
+  selector: 'app-logs-overview',
+  templateUrl: './logs-overview.component.html',
+  styleUrls: ['./logs-overview.component.scss']
+})
+export class LogsOverviewComponent implements OnInit {
+  logs$: Observable<LogFile[]>;
+
+  constructor(
+    private readonly logService: LogService,
+    private readonly titleService: TitleService,
+    private readonly translate: TranslateService) {
+    this.translate.get('MENU.LOGS').subscribe((translation: string) => {
+      console.log(translation);
+      this.titleService.updateTitle(translation);
+    });
+    this.logs$ = this.logService.getLogFiles();
+  }
+
+  downloadLog(fileName: string, anonymous: boolean): string {
+    return '/api/log/download/' + fileName + '.log?anonymous=' + anonymous;
+  }
+
+  convertToSize(value: number): string {
+    if (value < 1024) {
+      return value + ' b';
+    } else if (value < 1024 * 1024) {
+      return Math.floor(value / 1024) + ' Kb';
+    } else {
+      return Math.floor(value / (1024 * 1024)) + 'Mb';
+    }
+  }
+
+  ngOnInit() {
+  }
+}

@@ -5,6 +5,7 @@ import { AboutOverviewComponent } from './pages/about/about-overview/about-overv
 import {
     DashboardOverviewComponent
 } from './pages/dashboard/dashboard-overview/dashboard-overview.component';
+import { LogsOverviewComponent } from './pages/logs/logs-overview/logs-overview.component';
 import { MovieContainerComponent } from './pages/movie/movie-container/movie-container.component';
 import { MovieOverviewComponent } from './pages/movie/movie-overview/movie-overview.component';
 import { PluginOverviewComponent } from './pages/plugin/plugin-overview/plugin-overview.component';
@@ -18,6 +19,7 @@ import {
 const routes: Routes = [
   { path: '', component: DashboardOverviewComponent },
   { path: 'about', component: AboutOverviewComponent },
+  { path: 'log', component: LogsOverviewComponent },
   { path: 'plugin', component: PluginOverviewComponent },
   {
     path: 'movie', component: MovieContainerComponent, children: [

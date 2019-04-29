@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;
@@ -23,12 +24,12 @@ namespace EmbyStat.Services
         {
             var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
-            foreach (var filePath in Directory.EnumerateFiles(_logSettings.Value.Dirs.Logs))
+            foreach (var filePath in Directory.EnumerateFiles(_logSettings.Value.Dirs.Logs.GetLocalPath()))
             {
                 var file = new FileInfo(filePath);
                 list.Add(new LogFile
                 {
-                    FileName = file.Name,
+                    FileName = Path.GetFileNameWithoutExtension(file.Name),
                     CreatedDate = file.CreationTime,
                     Size = file.Length
                 });
