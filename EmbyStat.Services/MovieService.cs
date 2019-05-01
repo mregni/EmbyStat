@@ -10,7 +10,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Graph;
+using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
@@ -108,27 +108,27 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public async Task<MovieGraphs> GetGraphs(List<string> collectionIds)
+        public async Task<MovieCharts> GetCharts(List<string> collectionIds)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieCharts);
 
-            MovieGraphs stats;
+            MovieCharts stats;
             if (StatisticsAreValid(statistic, collectionIds))
             {
-                stats = JsonConvert.DeserializeObject<MovieGraphs>(statistic.JsonResult);
+                stats = JsonConvert.DeserializeObject<MovieCharts>(statistic.JsonResult);
             }
             else
             {
                 var movies = _movieRepository.GetAll(collectionIds, true);
 
-                stats = new MovieGraphs();
-                stats.BarGraphs.Add(CalculateGenreGraph(movies));
-                stats.BarGraphs.Add(CalculateRatingGraph(movies.Select(x => x.CommunityRating)));
-                stats.BarGraphs.Add(CalculatePremiereYearGraph(movies.Select(x => x.PremiereDate)));
-                stats.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
+                stats = new MovieCharts();
+                stats.BarCharts.Add(CalculateGenreChart(movies));
+                stats.BarCharts.Add(CalculateRatingChart(movies.Select(x => x.CommunityRating)));
+                stats.BarCharts.Add(CalculatePremiereYearChart(movies.Select(x => x.PremiereDate)));
+                stats.BarCharts.Add(CalculateOfficialRatingChart(movies));
 
                 var json = JsonConvert.SerializeObject(stats);
-               await  _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGraphs, collectionIds);
+               await  _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieCharts, collectionIds);
             }
 
             return stats;
@@ -434,36 +434,36 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private Graph<SimpleGraphValue> CalculateGenreGraph(IEnumerable<Movie> movies)
+        private Chart CalculateGenreChart(IEnumerable<Movie> movies)
         {
             var genres = _genreRepository.GetAll();
             var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
                 .Select(x => new { Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerGenre,
-                Data = genresData
+                Labels = genresData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { genresData.Select(x => x.Count) }
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(IEnumerable<Movie> movies)
+        private Chart CalculateOfficialRatingChart(IEnumerable<Movie> movies)
         {
             var ratingData = movies
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
                 .GroupBy(x => x.OfficialRating.ToUpper())
                 .Select(x => new { Name = x.Key, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerOfficialRating,
-                Data = ratingData
+                Labels = ratingData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
             };
         }
 

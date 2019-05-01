@@ -10,7 +10,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Graph;
+using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
@@ -78,29 +78,29 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public async Task<ShowGraphs> GetGraphs(List<string> collectionIds)
+        public async Task<ShowCharts> GetCharts(List<string> collectionIds)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowGraphs);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCharts);
 
-            ShowGraphs stats;
+            ShowCharts stats;
             if (StatisticsAreValid(statistic, collectionIds))
             {
-                stats = JsonConvert.DeserializeObject<ShowGraphs>(statistic.JsonResult);
+                stats = JsonConvert.DeserializeObject<ShowCharts>(statistic.JsonResult);
             }
             else
             {
                 var shows = _showRepository.GetAllShows(collectionIds, true).ToList();
 
-                stats = new ShowGraphs();
-                stats.BarGraphs.Add(CalculateGenreGraph(shows));
-                stats.BarGraphs.Add(CalculateRatingGraph(shows.Select(x => x.CommunityRating)));
-                stats.BarGraphs.Add(CalculatePremiereYearGraph(shows.Select(x => x.PremiereDate)));
-                stats.BarGraphs.Add(CalculateCollectedRateGraph(shows));
-                stats.BarGraphs.Add(CalculateOfficialRatingGraph(shows));
-                stats.PieGraphs.Add(CalculateShowStateGraph(shows));
+                stats = new ShowCharts();
+                stats.BarCharts.Add(CalculateGenreChart(shows));
+                stats.BarCharts.Add(CalculateRatingChart(shows.Select(x => x.CommunityRating)));
+                stats.BarCharts.Add(CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)));
+                stats.BarCharts.Add(CalculateCollectedRateChart(shows));
+                stats.BarCharts.Add(CalculateOfficialRatingChart(shows));
+                stats.PieCharts.Add(CalculateShowStateChart(shows));
 
                 var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowGraphs, collectionIds);
+                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCharts, collectionIds);
             }
 
             return stats;
@@ -229,38 +229,41 @@ namespace EmbyStat.Services
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateShowStateGraph(IEnumerable<Show> shows)
+        private Chart CalculateShowStateChart(IEnumerable<Show> shows)
         {
             var list = shows
                 .GroupBy(x => x.Status)
-                .Select(x => new SimpleGraphValue { Name = x.Key, Value = x.Count() })
+                .Select(x => new { Name = x.Key, Count = x.Count() })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
-                Data = list,
-                Title = Constants.Shows.ShowStatusGraph
+                Title = Constants.Shows.ShowStatusChart,
+                Labels = list.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { list.Select(x => x.Count)}
+
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(IEnumerable<Show> shows)
+        private Chart CalculateOfficialRatingChart(IEnumerable<Show> shows)
         {
             var ratingData = shows
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
                 .GroupBy(x => x.OfficialRating.ToUpper())
-                .Select(x => new SimpleGraphValue { Name = x.Key, Value = x.Count() })
+                .Select(x => new { Name = x.Key, Count = x.Count() })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerOfficialRating,
-                Data = ratingData
+                Labels = ratingData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateCollectedRateGraph(IEnumerable<Show> shows)
+        private Chart CalculateCollectedRateChart(IEnumerable<Show> shows)
         {
             var percentageList = new List<double>();
             foreach (var show in shows)
@@ -288,7 +291,7 @@ namespace EmbyStat.Services
                 {
                     if (groupedList[j].Key != i * 5)
                     {
-                        groupedList.Add(new GraphGrouping<int?, double> { Key = i * 5, Capacity = 0 });
+                        groupedList.Add(new ChartGrouping<int?, double> { Key = i * 5, Capacity = 0 });
                     }
                     else
                     {
@@ -300,29 +303,31 @@ namespace EmbyStat.Services
             var rates = groupedList
                 .OrderBy(x => x.Key)
                 .Select(x => new { Name = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .Select(x => new { Name = x.Name, Count = x.Count })
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerCollectedRate,
-                Data = rates
+                Labels = rates.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { rates.Select(x => x.Count) }
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateGenreGraph(IEnumerable<Show> shows)
+        private Chart CalculateGenreChart(IEnumerable<Show> shows)
         {
             var genres = _genreRepository.GetAll();
             var genresData = shows.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
                 .Select(x => new { Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+                .Select(x => new { Name = x.Name, Count = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerGenre,
-                Data = genresData
+                Labels = genresData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { genresData.Select(x => x.Count) }
             };
         }
 

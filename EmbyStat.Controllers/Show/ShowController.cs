@@ -38,11 +38,11 @@ namespace EmbyStat.Controllers.Show
         }
 
         [HttpGet]
-        [Route("graphs")]
-        public async Task<IActionResult> GetGraphs(List<string> collectionIds)
+        [Route("charts")]
+        public async Task<IActionResult> GetCharts(List<string> collectionIds)
         {
-            var result = await _showService.GetGraphs(collectionIds);
-            var convert = _mapper.Map<ShowGraphsViewModel>(result);
+            var result = await _showService.GetCharts(collectionIds);
+            var convert = _mapper.Map<ShowChartsViewModel>(result);
             return Ok(convert);
 
         }

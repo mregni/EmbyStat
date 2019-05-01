@@ -3,8 +3,8 @@ using EmbyStat.Controllers.HelperClasses;
 
 namespace EmbyStat.Controllers.Movie
 {
-    public class MovieGraphsViewModel
+    public class MovieChartsViewModel
     {
-        public List<GraphViewModel<SimpleGraphValueViewModel>> BarGraphs { get; set; }
+        public List<ChartViewModel> BarCharts { get; set; }
     }
 }

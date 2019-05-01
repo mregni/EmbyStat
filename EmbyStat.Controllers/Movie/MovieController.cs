@@ -54,11 +54,11 @@ namespace EmbyStat.Controllers.Movie
         }
 
         [HttpGet]
-        [Route("graphs")]
-        public async Task<IActionResult> GetGraphs(List<string> collectionIds)
+        [Route("charts")]
+        public async Task<IActionResult> GetCharts(List<string> collectionIds)
         {
-            var graphs = await _movieService.GetGraphs(collectionIds);
-            return Ok(_mapper.Map<MovieGraphsViewModel>(graphs));
+            var graphs = await _movieService.GetCharts(collectionIds);
+            return Ok(_mapper.Map<MovieChartsViewModel>(graphs));
         }
 
         [HttpGet]

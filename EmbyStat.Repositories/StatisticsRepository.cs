@@ -62,7 +62,7 @@ namespace EmbyStat.Repositories
 
         public async Task MarkMovieTypesAsInvalid()
         {
-            var types = new List<StatisticType> { StatisticType.MovieGeneral, StatisticType.MovieGraphs, StatisticType.MoviePeople, StatisticType.MovieSuspicious };
+            var types = new List<StatisticType> { StatisticType.MovieGeneral, StatisticType.MovieCharts, StatisticType.MoviePeople, StatisticType.MovieSuspicious };
             await _context.Statistics
                 .Where(x => x.IsValid)
                 .Where(x => types.Any(y => x.Type == y))
@@ -72,7 +72,7 @@ namespace EmbyStat.Repositories
 
         public async Task MarkShowTypesAsInvalid()
         {
-            var types = new List<StatisticType> { StatisticType.ShowCollected, StatisticType.ShowGeneral, StatisticType.ShowGraphs, StatisticType.ShowPeople };
+            var types = new List<StatisticType> { StatisticType.ShowCollected, StatisticType.ShowGeneral, StatisticType.ShowCharts, StatisticType.ShowPeople };
             await _context.Statistics
                 .Where(x => x.IsValid)
                 .Where(x => types.Any(y => x.Type == y))

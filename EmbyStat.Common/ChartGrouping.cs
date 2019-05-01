@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace EmbyStat.Common
 {
-    public class GraphGrouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
+    public class ChartGrouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
     {
         public TKey Key
         {

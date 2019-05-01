@@ -10,7 +10,7 @@ namespace EmbyStat.Services.Interfaces
     {
         IEnumerable<Collection> GetShowCollections();
         Task<ShowStat> GetGeneralStats(List<string> collectionIds);
-        Task<ShowGraphs> GetGraphs(List<string> collectionIds);
+        Task<ShowCharts> GetCharts(List<string> collectionIds);
         Task<PersonStats> GetPeopleStats(List<string> collectionsIds);
         Task<List<ShowCollectionRow>> GetCollectionRows(List<string> collectionIds);
         bool ShowTypeIsPresent();

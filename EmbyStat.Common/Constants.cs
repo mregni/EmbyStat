@@ -40,7 +40,7 @@ namespace EmbyStat.Common
             public static string YoungestPremiered => "SHOWS.YOUNGESTPREMIERED";
             public static string YoungestAdded => "SHOWS.YOUNGESTADDED";
             public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
-            public static string ShowStatusGraph => "SHOWS.SHOWSTATUSGRAPH";
+            public static string ShowStatusChart => "SHOWS.SHOWSTATUSGRAPH";
         }
 
         public static class Users
