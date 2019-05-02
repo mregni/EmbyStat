@@ -145,11 +145,11 @@
     "WITHMOESTEPISODES": "Com a maioria dos episódios",
     "SHOWSTATUSGRAPH": "Mostrar status",
     "SEASONS": "Temporadas",
-    "CONTINUING": "continuing",
-    "ENDED": "ended"
+    "CONTINUING": "continuando",
+    "ENDED": "Finalizado"
   },
   "SETTINGS": {
-    "TITLE": "Settings",
+    "TITLE": "Configurações",
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
       "EMBY": "Emby settings saved!",
