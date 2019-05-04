@@ -115,6 +115,7 @@
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "MOVIES": {
+    "COLLECTIONPLACEHOLDER": "Filter movie collections",
     "TOTALMOVIES": "Total movies",
     "TOTALGENRES": "Total genres",
     "TOTALPLAYLENGTH": "Total watchable time",

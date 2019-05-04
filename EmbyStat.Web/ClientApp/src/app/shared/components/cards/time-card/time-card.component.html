@@ -1,0 +1,10 @@
+<div class="card text-center order-visitor-card" *ngIf="card !== undefined">
+  <div class="card-block">
+    <h6 class="m-b-0">{{card.title | translate}}</h6>
+    <h4 class="m-t-15 m-b-15" [options]="options">
+      <span [countUp]="card.days"></span> {{'COMMON.DAYS' | translate}} /
+      <span [countUp]="card.hours"></span> {{'COMMON.HOURS' | translate}} /
+      <span [countUp]="card.minutes"></span> {{'COMMON.MINUTES' | translate}}
+    </h4>
+  </div>
+</div>

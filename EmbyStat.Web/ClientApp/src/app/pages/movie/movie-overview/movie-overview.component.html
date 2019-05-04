@@ -1,3 +1,189 @@
-<p>
-  movie-overview works!
-</p>
+<div *ngIf="generalStats$ | async as stats; else loading">
+  <div class="row">
+    <div class="col-xl-3 col-md-6 col-12">
+      <app-number-card [card]="stats.movieCount"></app-number-card>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12">
+      <app-number-card [card]="stats.genreCount"></app-number-card>
+    </div>
+    <div class="col-xl-6 col-12">
+      <app-time-card [card]="stats.totalPlayableTime"></app-time-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 m-b-20">
+      <ng-scrollbar [shown]='native' [trackX]='true'>
+        <div class="flex-row">
+          <app-movie-poster [poster]="stats.highestRatedMovie"></app-movie-poster>
+          <app-movie-poster [poster]="stats.lowestRatedMovie"></app-movie-poster>
+          <app-movie-poster [poster]="stats.oldestPremieredMovie"></app-movie-poster>
+          <app-movie-poster [poster]="stats.youngestPremieredMovie"></app-movie-poster>
+          <app-movie-poster [poster]="stats.shortestMovie"></app-movie-poster>
+          <app-movie-poster [poster]="stats.longestMovie"></app-movie-poster>
+          <app-movie-poster [poster]="stats.youngestAddedMovie"></app-movie-poster>
+        </div>
+      </ng-scrollbar>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="charts$ | async as charts; else loading">
+  <div class="row">
+    <div class="col-12 col-xl-6" *ngFor="let chart of charts.barCharts">
+      <app-simple-bar-chart [chart]="chart"></app-simple-bar-chart>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="people$ | async as people; else loading">
+  <div class="row">
+    <div class="col-md-4 col-12">
+      <app-number-card [card]="people.totalActorCount"></app-number-card>
+    </div>
+    <div class="col-md-4 col-12">
+      <app-number-card [card]="people.totalDirectorCount"></app-number-card>
+    </div>
+    <div class="col-md-4 col-12">
+      <app-number-card [card]="people.totalWriterCount"></app-number-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      <div class="row">
+        <div class="col-12 m-b-20">
+          <ng-scrollbar [shown]='native' [trackX]='true'>
+            <div class="flex-row">
+              <app-person-poster [poster]="people.mostFeaturedActor"></app-person-poster>
+              <app-person-poster [poster]="people.mostFeaturedDirector"></app-person-poster>
+              <app-person-poster [poster]="people.mostFeaturedWriter"></app-person-poster>
+            </div>
+          </ng-scrollbar>
+        </div>
+        <div class="col-12">
+          <div class="card card-block user-card p-10">
+            <app-person-list [posters]="people.mostFeaturedActorsPerGenre"></app-person-list>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-6"  *ngIf="suspicious$ | async as suspicious; else loading">
+        <div *ngIf="suspicious.duplicates.length > 0" class="card">
+          <div class="card-header">
+            <h5>{{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}</h5>
+          </div>
+          <div>
+              <table class="table table-xs">
+                  <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.REASON' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.LINK' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.ADDEDON' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.LINK' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</th>
+                          <th>{{ 'COMMON.ADDEDON' | translate | capitalizeFirst }}</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let duplicate of suspicious.duplicates">
+                          <th scope="row">{{ duplicate.number }}</th>
+                          <td>{{ duplicate.title }}</td>
+                          <td>{{ 'COMMON.' + duplicate.reason | translate }}</td>
+                          <td><a (click)="openMovie(duplicate.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></td>
+                          <td>{{ duplicate.itemOne.quality }}</td>
+                          <td>{{ duplicate.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</td>
+                          <td><a (click)="openMovie(duplicate.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></td>
+                          <td>{{ duplicate.itemTwo.quality }}</td>
+                          <td>{{ duplicate.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="col-xl-2 col-md-4 col-sm-6">
+    Loading
+  </div>
+</ng-template>
+
+<!--   
+  <div *ngIf="shortDataSource !== undefined && shortDataSource.data.length > 0">
+    <h2>{{'MOVIES.TOSHORTMOVIES' | translate | capitalizeFirst}}</h2>
+    <mat-table [dataSource]="shortDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+      <ng-container matColumnDef="number">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="duration">
+        <mat-header-cell *matHeaderCellDef>{{ 'COMMON.DURATION' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.duration }} {{ 'COMMON.MINUTES' | translate }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="link">
+        <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="shortDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: shortDisplayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+  
+  <div *ngIf="noPrimaryDataSource !== undefined && noPrimaryDataSource.data.length > 0">
+    <h2>{{ 'MOVIES.NOPOSTER' | translate | capitalizeFirst }}</h2>
+    <mat-table [dataSource]="noPrimaryDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+      <ng-container matColumnDef="number">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="link">
+        <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="noPrimaryDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: noPrimaryDisplayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+  
+  <div *ngIf="noImdbDataSource !== undefined && noImdbDataSource.data.length > 0">
+    <h2>{{ 'MOVIES.NOIMDB' | translate | capitalizeFirst }}</h2>
+    <mat-table [dataSource]="noImdbDataSource" matSortActive="created" matSortDisableClear matSortDirection="asc">
+      <ng-container matColumnDef="number">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="link">
+        <mat-header-cell *matHeaderCellDef>{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
+        <mat-cell *matCellDef="let row"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="noImdbDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: noImdbDisplayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+   -->

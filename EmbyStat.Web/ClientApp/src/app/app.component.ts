@@ -6,6 +6,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 import { MenuItems } from './shared/injectables/menu-items';
+import { Collection } from './shared/models/collection';
 import { TitleService } from './shared/services/title.service';
 
 @Component({

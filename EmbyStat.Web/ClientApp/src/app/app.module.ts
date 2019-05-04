@@ -23,7 +23,8 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent,  ],
+    AppComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -45,7 +46,8 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   schemas: [],
-  providers: [MenuItems],
+  providers: [
+    MenuItems],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,18 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedModule } from '../../shared/shared.module';
-import { MovieContainerComponent } from './movie-container/movie-container.component';
 import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
+import { MovieService } from './service/movie.service';
 
 @NgModule({
   declarations: [
-    MovieContainerComponent,
     MovieOverviewComponent
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
+  ],
+  providers: [
+    MovieService
   ]
 })
 export class MovieModule { }

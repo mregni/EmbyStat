@@ -31,7 +31,8 @@
               "node_modules/font-awesome-scss/scss/font-awesome.scss",
               "src/scss/style.scss",
               "src/scss/widget.scss",
-              "src/assets/icon/feather/css/feather.css"
+              "src/assets/icon/feather/css/feather.css",
+              "node_modules/@ng-select/ng-select/themes/material.theme.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js"

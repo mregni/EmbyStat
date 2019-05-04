@@ -602,3 +602,12 @@ ngb-popover-window{
   display: block;
 }
 
+.ng-select.custom-ng-select .ng-placeholder,
+.ng-select.custom-ng-select .ng-arrow,
+.ng-select.custom-ng-select .ng-clear-wrapper {
+  color: $light-color-text !important;
+}
+
+.ng-select.custom-ng-select .ng-select-container::after {
+  border-bottom: 1px solid rgba(255,255,255,0.42);
+}

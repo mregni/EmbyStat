@@ -1,0 +1,9 @@
+<div *ngIf="visible$ | async">
+  <ng-select class="custom-ng-select" [items]="collections$ | async" [multiple]="true" bindLabel="name"
+    [hideSelected]="true" placeholder="{{placeholder$ | async | translate}}" [closeOnSelect]="false" bindValue="id"
+    (change)="selectedCollectionsChanged($event)" (blur)="fireBlurEvent($event)">
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+      <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.name}}
+    </ng-template>
+  </ng-select>
+</div>
