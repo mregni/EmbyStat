@@ -1,8 +1,8 @@
-import { Card } from '../../shared/models/card';
-import { TimespanCard } from '../../shared/models/timespan-card';
-import { MoviePoster } from '../../shared/models/movie-poster';
+import { Card } from '../common/card';
+import { TimespanCard } from '../common/timespan-card';
+import { MoviePoster } from './movie-poster';
 
-export class MovieStats {
+export class GeneralMovieStatistics {
   movieCount: Card<number>;
   genreCount: Card<number>;
   boxsetCount: Card<number>;
