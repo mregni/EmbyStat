@@ -151,79 +151,79 @@
   "SETTINGS": {
     "TITLE": "Configurações",
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "GENERAL": "Configurações gerais do Embystat salvas!",
+      "EMBY": "Configurações salvas!",
+      "MOVIES": "Configurações do filme salvas!",
+      "SHOWS": "Mostrar configurações salvas!",
+      "UPDATES": "Configurações do filme salvas!"
     },
     "GENERAL": {
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
+      "TVDBAPIKEY": "Se você quiser, pode fornecer à EmbyStat sua própria chave de API TheTVDB aqui.",
+      "TVDBAPIKEYWARNING": "Certifique-se de fornecer uma chave de API de trabalho! Se a chave estiver incorreta, a tarefa de sincronização falhará.",
+      "EXCEPTIONLOGGING": "Ativar / desativar o log de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "Para encontrar os filmes que são suspeitosamente curtos, precisamos saber qual é a quantidade de minutos que você acha curto para um filme. Por padrão, isso é definido como 10 minutos, mas você pode alterá-lo, se necessário.",
+      "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+      "NOPASSWORD": "Não se esqueça de digitar sua senha do Emby quando quiser alterar as configurações de url do Emby."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Enable auto updates",
-      "CHECK": "Check and update server now",
-      "TRAIN": "Change the update train if you want to have beta updates.",
-      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!"
+      "AUTO": "Ativar atualizações automáticas",
+      "CHECK": "Verifique e atualize o servidor agora",
+      "TRAIN": "Altere o trem de atualização se você quiser ter atualizações beta.",
+      "ONBETA": "Você não está mais no trem Master, então você não pode voltar para ele. Se você quiser voltar no trem mestre, reinstale o servidor.",
+      "TRAINWARNING": "Aqui você pode alterar o trem de atualização do mestre para o beta. Se você não sabe o que está fazendo, deixe essa configuração no mestre. Se você deseja receber as atualizações da versão beta, altere-a aqui, esteja ciente de que não será possível voltar ao mestre mais tarde. Você terá que reinstalar o servidor.",
+      "CURRENTVERSION": "Versão atual: {{version}}",
+      "CANTCHECK": "Não é possível verificar atualizações agora, nenhuma conexão com o GitHub foi criada por mim.",
+      "NOUPDATE": "Atualização está disponível",
+      "NEWVERSION": "Versão {{version}} disponível para download!"
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
-    "ISHIDDEN": "Is hidden from login screen",
-    "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "LASTACTIVE": "Last active",
+    "ISADMIN": "Administrator",
+    "ISHIDDEN": "Está oculto da tela de login",
+    "ISDISABLED": "está desabilitado",
+    "DELETED": "Os usuários excluídos",
+    "LASTACTIVE": "Ativo pela última vez",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
-      "LASTACTIVEASC": "Last active date (asc)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "USERNAMEASC": "Nome de usuário (A - Z)",
+      "USERNAMEDESC": "Nome de usuário (Z - A)",
+      "LASTACTIVEASC": "Última data ativa (asc)",
+      "LASTACTIVEDESC": "Última data ativa (desc)"
     },
-    "TOOVERVIEW": "To overview",
+    "TOOVERVIEW": "Para visão geral",
     "DETAILS": {
-      "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Last watched items"
+      "TITLE": "Detalhes para {{name}}",
+      "WATCHEDTITLE": "Últimos itens assistidos"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
-      "START": "Start",
-      "ACTION": "Action"
+      "TITLE": "Título",
+      "TIME": "Tempo",
+      "WATCHED": "Assistido",
+      "START": "Início",
+      "ACTION": "Ação"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies watched",
-      "TOTALWATCHEDEPISODES": "Episodes watched"
+      "TOTALWATCHEDMOVIES": "Filmes assistidos",
+      "TOTALWATCHEDEPISODES": "Todos os episódios assistidos"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
+    "LASTRUNNOW": "Última execução: agora",
+    "LASTRUN": "Última execução",
+    "HOURS": "{{hours}} hora (s)",
+    "MINUTES": "{{minutes}} minuto (s)",
+    "SECONDS": "{{seconds}} segundo (s)",
+    "AND": "e",
+    "AGO": "atrás",
+    "FOR": "para",
     "BUTFAILED": "mas falhou depois",
     "NORUN": "Ainda não correu",
     "MOMENT_AGO": "Dentro de instantes",
