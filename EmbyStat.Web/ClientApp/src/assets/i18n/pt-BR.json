@@ -224,38 +224,38 @@
     "AND": "and",
     "AGO": "ago",
     "FOR": "for",
-    "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
-    "JOBLOGS": "Job logs",
+    "BUTFAILED": "mas falhou depois",
+    "NORUN": "Ainda não correu",
+    "MOMENT_AGO": "Dentro de instantes",
+    "JOBLOGS": "Registros de trabalho",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
-      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "PINGEMBYSERVERTITLE": "Verifique a conexão",
+      "PINGEMBYSERVERDESCRIPTION": "Ping no servidor Emby para verificar se ele ainda está online.",
+      "SMALLEMBYSYNCDESCRIPTION": "Execute uma pequena sincronização com o servidor Emby. Esta é apenas uma atualização rápida e pequena do sistema.",
+      "SMALLEMBYSYNCTITLE": "Pequena sincronização com Emby",
+      "STARTSMALLEMBYSYNC": "Inicie uma pequena sincronização",
+      "MEDIASYNCDESCRIPTION": "Execute uma sincronização incremental para sua coleção de filmes. Isso pode levar algum tempo para ser executado!",
+      "MEDIASYNCTITLE": "Sincronização de mídia",
+      "STARTMEDIASYNC": "Iniciar sincronização de mídia",
+      "DATABASECLEANUPTITLE": "Limpeza de banco de dados",
+      "DATABASECLEANUPDESCRIPTION": "Limpar banco de dados com dados desnecessários.",
+      "OPENJOBPAGE": "Ir para Página Principal",
+      "CHECKUPDATETITLE": "Verificar novas atualizações",
+      "CHECKUPDATEDESCRIPTION": "Verifica se há novas atualizações no seu trem de atualização selecionado."
     }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Nenhum dispositivo foi encontrado",
+      "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Nenhum grupo encontrado",
+      "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "A sincronização de mídia está em execução",
+      "BODY": "A tarefa de sincronização da mídia está sendo executada em segundo plano. Por causa disso, todas as páginas de estatísticas são bloqueadas porque os cálculos estariam completamente errados, desde que a sincronização esteja em execução."
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
