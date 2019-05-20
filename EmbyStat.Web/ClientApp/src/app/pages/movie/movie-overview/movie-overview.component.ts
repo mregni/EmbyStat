@@ -4,8 +4,8 @@ import { MoviePeopleStatistics } from 'src/app/shared/models/movie/movie-people-
 import { MovieSuspiciousContainer } from 'src/app/shared/models/movie/movie-suspicious-container';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
-import { CollectionService } from '../../../shared/behaviors/collection.service';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
 import { Collection } from '../../../shared/models/collection';
 import { GeneralMovieStatistics } from '../../../shared/models/movie/general-movie-statistics';
@@ -35,16 +35,13 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly settingsService: SettingsService,
-    private readonly movieService: MovieService,
-    private readonly collectionBehaviorService: CollectionService) {
+    private readonly movieService: MovieService) {
     this.settingsSub = this.settingsService.getSettings().subscribe((settings: Settings) => {
       this.settings = settings;
     });
 
     this.collectionSub = this.movieService.getCollections().subscribe((list: Collection[]) => {
-      this.collectionBehaviorService.setCollections(list);
-      this.collectionBehaviorService.setPlaceholderSubject('MOVIES.COLLECTIONPLACEHOLDER');
-      this.collectionBehaviorService.setVisibility(true);
+
     });
 
     this.generalStats$ = this.movieService.getGeneral([]);
@@ -52,18 +49,18 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
     this.people$ = this.movieService.getPeople([]);
     this.suspicious$ = this.movieService.getSuspicious([]);
 
-    this.selectedCollectionSub = this.collectionBehaviorService.selectedCollectionsSubject.subscribe((list: string[]) => {
-      this.selectedCollections = list;
-    });
+    // this.selectedCollectionSub = this.collectionBehaviorService.selectedCollectionsSubject.subscribe((list: string[]) => {
+    //   this.selectedCollections = list;
+    // });
 
-    this.dropdownBlurredSub = this.collectionBehaviorService.dropdownBlurredSubject.subscribe((value: boolean) => {
-      if (!!value) {
-        this.generalStats$ = this.movieService.getGeneral(this.selectedCollections);
-        this.charts$ = this.movieService.getCharts(this.selectedCollections);
-        this.people$ = this.movieService.getPeople(this.selectedCollections);
-        this.suspicious$ = this.movieService.getSuspicious(this.selectedCollections);
-      }
-    });
+    // this.dropdownBlurredSub = this.collectionBehaviorService.dropdownBlurredSubject.subscribe((value: boolean) => {
+    //   if (!!value) {
+    //     this.generalStats$ = this.movieService.getGeneral(this.selectedCollections);
+    //     this.charts$ = this.movieService.getCharts(this.selectedCollections);
+    //     this.people$ = this.movieService.getPeople(this.selectedCollections);
+    //     this.suspicious$ = this.movieService.getSuspicious(this.selectedCollections);
+    //   }
+    // });
   }
 
   ngOnInit() {
@@ -75,8 +72,6 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.collectionBehaviorService.resetDropdownValues();
-
     if (this.selectedCollectionSub !== undefined) {
       this.selectedCollectionSub.unsubscribe();
     }

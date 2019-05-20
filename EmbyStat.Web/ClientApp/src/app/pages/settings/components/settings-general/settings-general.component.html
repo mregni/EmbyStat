@@ -1,0 +1,54 @@
+<div class="row" *ngIf="settings !== undefined">
+  <div class="col-12 col-lg-6 pb-1">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="generalForm" class="d-flex flex-column">
+          <mat-form-field class="mb-1">
+            <input matInput placeholder="{{'FORMLABELS.NAME' | translate}}" formControlName="name" [disableControl]="isSaving">
+            <mat-error *ngIf="nameControl.hasError('required')">{{'SETTINGS.GENERAL.NOUSERNAME' | translate}}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select formControlName="language">
+              <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
+                <app-language [language]="language"></app-language>
+              </mat-option>
+            </mat-select>
+            <mat-placeholder>{{'FORMLABELS.LANGUAGE' | translate}}</mat-placeholder>
+            <mat-hint align="start" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></mat-hint>
+          </mat-form-field>
+
+          <p class="mt-3">{{ 'SETTINGS.GENERAL.EXCEPTIONLOGGING' | translate }}</p>
+          <mat-checkbox formControlName="exceptionLogging">
+            {{ 'FORMLABELS.EXCEPTIONLOGGING' | translate | capitalizeFirst }}</mat-checkbox>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="button-container d-flex justify-content-end">
+        <button mat-raised-button color="primary" [disabled]="isSaving"
+          (click)="saveGeneralForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<div class="row mt-2" *ngIf="settings !== undefined">
+  <div class="col-12 col-lg-6 pb-1">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="tvdbForm" class="d-flex flex-column">
+          <p>{{ 'SETTINGS.GENERAL.TVDBAPIKEY' | translate }}</p>
+          <mat-form-field>
+            <input matInput placeholder="{{'FORMLABELS.TVDBAPI' | translate}}" formControlName="tvdbKey" [disableControl]="isSaving">
+            <mat-error *ngIf="tvdbKeyControl.hasError('required')">{{'SETTINGS.GENERAL.TVDBAPIKEYWARNING' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="button-container d-flex justify-content-end">
+        <button mat-raised-button color="primary" [disabled]="isSaving"
+          (click)="saveTvdbForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

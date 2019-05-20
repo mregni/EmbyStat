@@ -1,0 +1,15 @@
+<div class="row" *ngIf="settings !== undefined">
+  <div class="col-12 col-lg-6 pb-1">
+    <mat-card>
+      <mat-card-content>
+        <p>{{ 'SETTINGS.SHOW.COLLECTIONTYPES' | translate }}</p>
+        <app-collection-selector [list]="settings.showCollectionTypes" (newList)="onCollectionListChanged($event)">
+        </app-collection-selector>
+      </mat-card-content>
+      <mat-card-actions class="d-flex justify-content-end">
+        <button mat-raised-button color="primary"
+          (click)="saveFormCollectionTypes()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

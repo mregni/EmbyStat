@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { LogFile } from '../../../shared/models/logs/log-file';
-import { TitleService } from '../../../shared/services/title.service';
 import { LogService } from '../service/logs.service';
 
 @Component({
@@ -15,14 +14,7 @@ import { LogService } from '../service/logs.service';
 export class LogsOverviewComponent implements OnInit {
   logs$: Observable<LogFile[]>;
 
-  constructor(
-    private readonly logService: LogService,
-    private readonly titleService: TitleService,
-    private readonly translate: TranslateService) {
-    this.translate.get('MENU.LOGS').subscribe((translation: string) => {
-      console.log(translation);
-      this.titleService.updateTitle(translation);
-    });
+  constructor(private readonly logService: LogService) {
     this.logs$ = this.logService.getLogFiles();
   }
 

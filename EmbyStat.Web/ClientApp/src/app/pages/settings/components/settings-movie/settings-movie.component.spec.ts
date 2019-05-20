@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsContainerComponent } from './settings-container.component';
+import { SettingsMovieComponent } from './settings-movie.component';
 
-describe('SettingsContainerComponent', () => {
-  let component: SettingsContainerComponent;
-  let fixture: ComponentFixture<SettingsContainerComponent>;
+describe('SettingsMovieComponent', () => {
+  let component: SettingsMovieComponent;
+  let fixture: ComponentFixture<SettingsMovieComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsContainerComponent ]
+      declarations: [ SettingsMovieComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsContainerComponent);
+    fixture = TestBed.createComponent(SettingsMovieComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

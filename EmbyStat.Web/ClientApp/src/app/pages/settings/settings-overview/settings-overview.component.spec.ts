@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CollectionDropdownComponent } from './collection-dropdown.component';
+import { SettingsOverviewComponent } from './settings-overview.component';
 
-describe('CollectionDropdownComponent', () => {
-  let component: CollectionDropdownComponent;
-  let fixture: ComponentFixture<CollectionDropdownComponent>;
+describe('SettingsOverviewComponent', () => {
+  let component: SettingsOverviewComponent;
+  let fixture: ComponentFixture<SettingsOverviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionDropdownComponent ]
+      declarations: [ SettingsOverviewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CollectionDropdownComponent);
+    fixture = TestBed.createComponent(SettingsOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

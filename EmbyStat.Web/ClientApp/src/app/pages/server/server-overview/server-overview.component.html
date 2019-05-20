@@ -1,65 +1,65 @@
-<div class="row">
-  <div class="col-12">
-    <div class="card user-card-full" *ngIf="serverInfo$ | async as serverInfo">
-      <div class="row m-l-0 m-r-0">
-        <div class="col-sm-4 col-md-2 bg-c-blue user-profile">
-          <div class="card-block text-center text-white">
-            <div class="m-b-25">
-              <img src="../../assets/images/emby.png" class="img-radius img-80" alt="Emby logo">
+<div class="title-bar">
+  {{ 'MENU.SERVER' | translate }}
+</div>
+<div class="content">
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <mat-card *ngIf="serverInfo$ | async as serverInfo">
+        <mat-card-content>
+          <div class="row">
+            <div class="col-sm-4 col-md-2 d-flex flex-column justify-content-start align-items-center">
+              <img src="../../assets/images/emby.png" class="img-radius img-80 mb-4" alt="Emby logo">
             </div>
-            <h6 class="f-w-600">{{serverInfo.serverName}}</h6>
-          </div>
-        </div>
-        <div class="col-sm-8 col-md-10">
-          <div class="card-block">
-            <h6 class="m-b-20 p-b-5 b-b-default f-w-600">{{ 'COMMON.INFORMATION' | translate }}</h6>
-            <div class="row">
-              <div class="col-sm-6">
-                <p class="m-b-10 f-w-600">{{ 'COMMON.VERSION' | translate }}</p>
-                <h6 class="text-muted f-w-400">{{serverInfo.version}}</h6>
-              </div>
-              <div class="col-sm-6">
-                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.HOSTOS' | translate }}</p>
-                <h6 class="text-muted f-w-400">{{serverInfo.operatingSystem}} {{serverInfo.systemArchitecture}}</h6>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.HTTPPORT' | translate }}</p>
-                <h6 class="text-muted f-w-400">{{serverInfo.httpServerPortNumber}}</h6>
-              </div>
-              <div class="col-sm-6">
-                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.HTTPSPORT' | translate }}</p>
-                <h6 class="text-muted f-w-400">{{serverInfo.httpsPortNumber}}</h6>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.CACHEPATH' | translate }}</p>
-                <h6 class="text-muted f-w-400">{{serverInfo.cachePath}}</h6>
-              </div>
-              <div class="col-sm-6">
-                <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.LOGPATH' | translate }}</p>
-                <h6 class="text-muted f-w-400">{{serverInfo.logPath}}</h6>
-              </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                  <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.LANADDRESS' | translate }}</p>
-                  <h6 class="text-muted f-w-400">
-                    <a target="_blank" href="{{serverInfo.localAddress}}">{{serverInfo.localAddress}}</a>
-                  </h6>
+            <div class="col-sm-8 col-md-10">
+                <h3 class="mb-2">{{ serverInfo.serverName }}</h3>
+                <div class="row">
+                  <div class="col-sm-6">
+                    {{ 'COMMON.VERSION' | translate }}
+                    <h4 class="text-muted mb-3">{{serverInfo.version}}</h4>
+                  </div>
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.HOSTOS' | translate }}
+                    <h4 class="text-muted mb-3">{{serverInfo.operatingSystem}} {{serverInfo.systemArchitecture}}</h4>
+                  </div>
                 </div>
-                <div class="col-sm-6">
-                  <p class="m-b-10 f-w-600">{{ 'EMBYSERVER.WANADDRESS' | translate }}</p>
-                  <h6 class="text-muted f-w-400">
-                    <a target="_blank" href="{{serverInfo.wanAddress}}">{{serverInfo.wanAddress}}</a>
-                  </h6>
+                <div class="row">
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.HTTPPORT' | translate }}
+                    <h4 class="text-muted mb-3">{{serverInfo.httpServerPortNumber}}</h4>
+                  </div>
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.HTTPSPORT' | translate }}
+                    <h4 class="text-muted mb-3">{{serverInfo.httpsPortNumber}}</h4>
+                  </div>
                 </div>
-              </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.CACHEPATH' | translate }}
+                    <h4 class="text-muted mb-3">{{serverInfo.cachePath}}</h4>
+                  </div>
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.LOGPATH' | translate }}
+                    <h4 class="text-muted mb-3">{{serverInfo.logPath}}</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.LANADDRESS' | translate }}
+                    <h4 class="text-muted mb-3">
+                      <a target="_blank" href="{{serverInfo.localAddress}}">{{serverInfo.localAddress}}</a>
+                    </h4>
+                  </div>
+                  <div class="col-sm-6">
+                    {{ 'EMBYSERVER.WANADDRESS' | translate }}
+                    <h4 class="text-muted mb-3">
+                      <a target="_blank" href="{{serverInfo.wanAddress}}">{{serverInfo.wanAddress}}</a>
+                    </h4>
+                  </div>
+                </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

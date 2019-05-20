@@ -1,65 +1,65 @@
-<div class="row">
-  <div class="col-md-12 col-lg-6" *ngIf="about$ | async as about">
-    <div class="card statustic-card">
-      <div class="card-header borderless">
-        <h4>Server info</h4>
-      </div>
-      <div class="card-block">
-        <p class="m-b-0">EmbyStat version: {{ about.version }}</p>
-        <p class="m-b-0">Operating system: {{ about.operatingSystem }} {{about.architecture}}
-          {{ about.operatingSystemVersion }}</p>
-      </div>
+<div class="title-bar">
+  {{ 'MENU.ABOUT' | translate }}
+</div>
+<div class="content" *ngIf="about$ | async as about">
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ 'ABOUT.SERVERINFO' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="m-b-0">EmbyStat version: {{ about.version }}</p>
+          <p class="m-b-0">Operating system: {{ about.operatingSystem }} {{about.architecture}}
+            {{ about.operatingSystemVersion }}</p>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12 col-lg-6" *ngIf="about$ | async as about">
-    <div class="card statustic-card">
-      <div class="card-header borderless">
-        <h4>{{ 'ABOUT.THANKS.TITLE' | translate }}</h4>
-      </div>
-      <div class="card-block">
-        <p>{{ 'ABOUT.THANKS.TEXT' | translate }}</p>
-        <div class="m-b-20 row no-gutters">
-          <div class="m-b-5">
-            <label class="label label-primary label-md">alz41</label>
-          </div>
-          <div class="m-b-5">
-            <label class="label label-primary label-md">ben-nl</label>
-          </div>
-          <div class="m-b-5">
-            <label class="label label-primary label-md">Floflobel</label>
-          </div>
-          <div class="m-b-5">
-            <label class="label label-primary label-md">jeankadang</label>
-          </div>
-          <div class="m-b-5">
-            <label class="label label-primary label-md">jm199905</label>
-          </div>
-          <div class="m-b-5">
-            <label class="label label-primary label-md">Nickbert7</label>
-          </div>
-          <div class="m-b-5">
-            <label class="label label-primary label-md">Sebastián Fenoglio</label>
-          </div>
-        </div>
-        <div class="about-button-container">
-          <div class="row no-gutters">
-            <div class="m-b-5">
-              <a class="btn waves-effect waves-light btn-primary btn-square m-r-5" target="_blank"
-                href="https://embystat.featureupvote.com/">Request feature</a>
-            </div>
-            <div class="m-b-5">
-              <a class="btn waves-effect waves-light btn-primary btn-square m-r-5" target="_blank"
-                href="https://github.com/mregni/EmbyStat/issues/new?template=Bug_report.md">Log bug on Github</a>
-            </div>
-            <div class="m-b-5">
-              <a class="btn waves-effect waves-light btn-primary btn-square" target="_blank"
-                href="https://crowdin.com/project/embystat">Start translating the app</a>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <mat-card class="mt-3">
+        <mat-card-header>
+          <mat-card-title>{{ 'ABOUT.THANKS.TITLE' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ 'ABOUT.THANKS.TEXT' | translate }}</p>
+          <mat-chip-list>
+            <mat-chip color="primary" selected>alz41</mat-chip>
+            <mat-chip color="primary" selected>ben-nl</mat-chip>
+            <mat-chip color="primary" selected>Floflobel</mat-chip>
+            <mat-chip color="primary" selected>jeankadang</mat-chip>
+            <mat-chip color="primary" selected>jm199905</mat-chip>
+            <mat-chip color="primary" selected>Nickbert7</mat-chip>
+            <mat-chip color="primary" selected>Sebastián Fenoglio</mat-chip>
+          </mat-chip-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <mat-card class="mt-3">
+        <mat-card-header>
+          <mat-card-title>{{ 'ABOUT.ACTIONS.TITLE' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item>
+              <a href="{{ environment.urls.featureupvote }}" mat-raised-button color="primary"
+                target="_blank">{{ 'ABOUT.REQUESTFEATURE' | translate }}</a>
+            </mat-list-item>
+            <mat-list-item>
+              <a href="{{ environment.urls.github }}" mat-raised-button color="primary"
+                target="_black">{{ 'ABOUT.LOGBUG' | translate }}</a>
+            </mat-list-item>
+            <mat-list-item>
+              <a href="{{ environment.urls.crowdin }}" mat-raised-button color="primary"
+                target="_blank">{{ 'ABOUT.STARTTRANSLATE' | translate }}</a>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

@@ -1,6 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+
+import { Settings } from '../../../shared/models/settings/settings';
+import { SettingsService } from '../../../shared/services/settings.service';
 
 @Component({
   selector: 'app-settings-overview',
@@ -10,9 +14,13 @@ import { Subscription } from 'rxjs';
 export class SettingsOverviewComponent implements OnInit, OnDestroy {
   private readonly paramSub: Subscription;
 
+  settings$: Observable<Settings>;
   selected = 0;
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly settingsService: SettingsService) {
+    this.settings$ = this.settingsService.getSettings();
     this.paramSub = this.activatedRoute.params.subscribe(params => {
       const tab = params['tab'];
       switch (tab) {

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EmbyService } from '../../../shared/services/emby.service';
-import { TitleService } from '../../../shared/services/title.service';
+import { SettingsService } from '../../../shared/services/settings.service';
 
 @Component({
   selector: 'app-server-overview',
@@ -16,17 +16,11 @@ export class ServerOverviewComponent implements OnInit {
   serverInfo$: Observable<ServerInfo>;
 
   constructor(
-    private readonly translate: TranslateService,
     private readonly embyService: EmbyService,
-    private readonly titleService: TitleService) {
-    this.translate.get('MENU.SERVER').subscribe((translation: string) => {
-      console.log(translation);
-      this.titleService.updateTitle(translation);
-    });
+    private readonly settingsService: SettingsService) {
     this.serverInfo$ = this.embyService.getEmbyServerInfo();
   }
 
   ngOnInit() {
   }
-
 }

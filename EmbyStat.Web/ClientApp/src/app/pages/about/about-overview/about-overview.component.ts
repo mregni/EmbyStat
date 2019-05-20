@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
-import { TitleService } from '../../../shared/services/title.service';
+import { environment } from '../../../../environments/environment';
 import { About } from '../models/about';
 import { AboutService } from '../services/about.service';
 
@@ -14,17 +13,11 @@ import { AboutService } from '../services/about.service';
 })
 export class AboutOverviewComponent implements OnInit {
   about$: Observable<About>;
+  environment;
 
-  constructor(
-    private readonly translate: TranslateService,
-    private readonly titleService: TitleService,
-    private readonly aboutService: AboutService) {
-      this.translate.get('MENU.ABOUT').subscribe((translation: string) => {
-        console.log(translation);
-        this.titleService.updateTitle(translation);
-    });
-
+  constructor(private readonly aboutService: AboutService) {
     this.about$ = this.aboutService.getAbout();
+    this.environment = environment;
   }
 
   ngOnInit() {
