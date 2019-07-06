@@ -5,9 +5,9 @@ import { Injectable } from '@angular/core';
 
 import { ListToQueryParam } from '../../../shared/helpers/list-to-query-param';
 import { Collection } from '../../../shared/models/collection';
+import { PersonStatistics } from '../../../shared/models/common/person-statistics';
 import { GeneralMovieStatistics } from '../../../shared/models/movie/general-movie-statistics';
 import { MovieCharts } from '../../../shared/models/movie/movie-charts';
-import { MoviePeopleStatistics } from '../../../shared/models/movie/movie-people-statistics';
 import { MovieSuspiciousContainer } from '../../../shared/models/movie/movie-suspicious-container';
 
 @Injectable()
@@ -18,6 +18,7 @@ export class MovieService {
   private getChartsUrl = this.baseUrl + 'charts';
   private getPersonUrl = this.baseUrl + 'peoplestats';
   private getSuspiciousUrl = this.baseUrl + 'suspicious';
+  private isTypePresentUrl = this.baseUrl + 'typepresent';
 
   constructor(private http: HttpClient) {
 
@@ -37,13 +38,17 @@ export class MovieService {
     return this.http.get<MovieCharts>(this.getChartsUrl + params);
   }
 
-  getPeople(list: string[]): Observable<MoviePeopleStatistics> {
+  getPeople(list: string[]): Observable<PersonStatistics> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<MoviePeopleStatistics>(this.getPersonUrl + params);
+    return this.http.get<PersonStatistics>(this.getPersonUrl + params);
   }
 
   getSuspicious(list: string[]): Observable<MovieSuspiciousContainer> {
     const params = ListToQueryParam.convert('collectionIds', list);
     return this.http.get<MovieSuspiciousContainer>(this.getSuspiciousUrl + params);
+  }
+
+  isTypePresent(): Observable<boolean> {
+    return this.http.get<boolean>(this.isTypePresentUrl);
   }
 }

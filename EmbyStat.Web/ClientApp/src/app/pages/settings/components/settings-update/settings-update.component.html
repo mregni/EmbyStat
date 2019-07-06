@@ -19,7 +19,7 @@
             </ng-template>
           </ng-template>
         </div>
-        <p class="mt-4  ">
+        <p class="mt-4">
           {{ 'SETTINGS.UPDATE.CURRENTVERSION' | translate: { version: settings.version} }}
         </p>
         <button *ngIf="!result.isUpdateAvailable;" [disabled]="settings.updateInProgress" class="margin-bottom"

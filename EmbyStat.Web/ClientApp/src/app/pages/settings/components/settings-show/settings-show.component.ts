@@ -1,9 +1,9 @@
 import { Subscription } from 'rxjs';
+import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { Settings } from '../../../../shared/models/settings/settings';
-import { SettingsService } from '../../../../shared/services/settings.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
@@ -13,13 +13,12 @@ import { ToastService } from '../../../../shared/services/toast.service';
 })
 export class SettingsShowComponent implements OnInit, OnDestroy {
   @Input() settings: Settings;
-  updateSub: Subscription;
 
   newCollectionList: number[];
 
   isSaving = false;
   constructor(
-    private readonly settingsService: SettingsService,
+    private readonly settingsFacade: SettingsFacade,
     private readonly toastService: ToastService) { }
 
   ngOnInit() {
@@ -27,14 +26,13 @@ export class SettingsShowComponent implements OnInit, OnDestroy {
 
   saveFormCollectionTypes() {
     this.isSaving = true;
-    this.settings.showCollectionTypes = this.newCollectionList;
-    this.updateSub = this.settingsService.updateSettings(this.settings).subscribe((settings: Settings) => {
-      this.toastService.showSuccess('SETTINGS.SAVED.SHOWS');
-    });
 
-    this.updateSub.add(() => {
-      this.isSaving = false;
-    });
+    const settings = {...this.settings};
+    settings.showCollectionTypes = this.newCollectionList;
+    this.settingsFacade.updateSettings(settings);
+    this.toastService.showSuccess('SETTINGS.SAVED.SHOWS');
+    this.isSaving = false;
+
   }
 
   onCollectionListChanged(event: number[]) {
@@ -42,8 +40,6 @@ export class SettingsShowComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.updateSub !== undefined) {
-      this.updateSub.unsubscribe();
-    }
+
   }
 }

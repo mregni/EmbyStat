@@ -1,0 +1,27 @@
+@import "./variables";
+
+.title-bar {
+  @extend .mat-drawer;
+  align-items: center;
+  box-shadow: $normal-box-shadow;
+  display: flex;
+  flex: 1 1 auto;
+  padding: 10px 20px;
+  flex-direction: row;
+
+  h2 {
+    margin: 15px 0;
+    padding: 0;
+  }
+}
+
+.title-bar-left-content {
+  flex: 1 1 auto;
+}
+
+.title-bar-right-content {
+  display: flex;
+  flex: 0 0 250px;
+  justify-content: flex-end;
+  flex-direction: column;
+}

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -7,27 +7,26 @@ import { TranslateService } from '@ngx-translate/core';
 export class ToastService {
   private hideTranslation: string;
 
-  constructor(private http: HttpClient,
-              private snackBar: MatSnackBar,
-              private translate: TranslateService) {
+  constructor(private snackBar: MatSnackBar,
+    private translate: TranslateService) {
     this.translate.get('COMMON.HIDE').subscribe(translation => this.hideTranslation = translation);
   }
 
-  pushError(error: string) {
+  showError(error: string) {
     this.translate.get(error).subscribe(translation => {
-      this.snackBar.open(translation, this.hideTranslation, { duration: 10000, horizontalPosition: 'right', panelClass: 'toast__fail' });
+      this.snackBar.open(translation, this.hideTranslation, { duration: 10000, horizontalPosition: 'right', panelClass: 'toast-fail' });
     });
   }
 
-  pushWarning(message: string) {
+  showWarning(message: string) {
     this.translate.get(message).subscribe(translation => {
-      this.snackBar.open(translation, this.hideTranslation, { duration: 10000, horizontalPosition: 'right', panelClass: 'toast__warning' });
+      this.snackBar.open(translation, this.hideTranslation, { duration: 10000, horizontalPosition: 'right', panelClass: 'toast-warning' });
     });
   }
 
-  pushSuccess(message: string) {
+  showSuccess(message: string) {
     this.translate.get(message).subscribe(translation => {
-      this.snackBar.open(translation, this.hideTranslation, { duration: 5000, horizontalPosition: 'right', panelClass: 'toast__success' });
+      this.snackBar.open(translation, this.hideTranslation, { duration: 5000, horizontalPosition: 'right', panelClass: 'toast-success' });
     });
   }
 }

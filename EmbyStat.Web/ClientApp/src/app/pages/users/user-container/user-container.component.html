@@ -1,0 +1,20 @@
+<div class="title-bar">
+  <div class="title-bar-left-content">
+    <mat-select (selectionChange)="onUserSelectionChanged($event)" [(ngModel)]="selectedUserId">
+      <mat-option [value]="user.id" *ngFor="let user of userIds$ | async">{{user.name}}</mat-option>
+    </mat-select>
+    <div class="separator">/</div>
+    <mat-select (selectionChange)="onPageSelectionChanged($event)" [(ngModel)]="selectedPage">
+      <mat-option value="detail">details</mat-option>
+      <mat-option value="views">views</mat-option>
+    </mat-select>
+  </div>
+  <div class="title-bar-right-content">
+    <a mat-raised-button routerLink="/users" routerLinkActive="active"
+      color="accent">{{ 'USERS.TOOVERVIEW' | translate }}</a>
+  </div>
+</div>
+
+<div *ngIf="selectedUserId != undefined" class="content">
+  <router-outlet></router-outlet>
+</div>

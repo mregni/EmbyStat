@@ -173,7 +173,7 @@ namespace EmbyStat.Services
             };
         }
 
-        public bool ShowTypeIsPresent()
+        public bool TypeIsPresent()
         {
             return _showRepository.Any();
         }

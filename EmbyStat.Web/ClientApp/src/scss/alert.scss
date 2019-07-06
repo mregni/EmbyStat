@@ -1,0 +1,30 @@
+$green-border: #c3e6cb;
+$green-background: #d4edda;
+$green-font: #155724;
+
+$red-border: #f5c6cb;
+$red-background: #f8d7da;
+$red-font: #721c24;
+
+.alert {
+  @extend .mat-elevation-z1 !optional;
+  border-radius: 4px;
+  padding: 10px;
+  border-width: 2px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.alert-success {
+  background-color: $green-background;
+  border-color: $green-border;
+  color: $green-font;
+}
+
+.alert-failed {
+  color: $red-font;
+  background-color: $red-background;
+  border-color: $red-border;
+}

@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs';
+import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -6,7 +7,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigHelper } from '../../../helpers/config-helper';
 import { PersonPoster } from '../../../models/common/person-poster';
 import { Settings } from '../../../models/settings/settings';
-import { SettingsService } from '../../../services/settings.service';
 
 @Component({
   selector: 'app-person-poster',
@@ -18,8 +18,8 @@ export class PersonPosterComponent implements OnDestroy {
   settings: Settings;
   @Input() poster: PersonPoster;
 
-  constructor(private settingsService: SettingsService, private _sanitizer: DomSanitizer) {
-    this.settingsSub = settingsService.getSettings().subscribe(data => this.settings = data);
+  constructor(private settingsFacade: SettingsFacade, private _sanitizer: DomSanitizer) {
+    this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
   }
 
   getPoster() {
@@ -41,11 +41,19 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   needsBarAndTranslation(title: string): boolean {
-    return title.length > 0 && title.startsWith('MOVIES');
+    if (title.length !== undefined) {
+      return title.length > 0 && title.startsWith('MOVIES');
+    }
+
+    return false;
   }
 
   needsBarButNoTranslation(title: string): boolean {
-    return title.length > 0 && !title.startsWith('MOVIES');
+    if (title.length !== undefined) {
+      return title.length > 0 && !title.startsWith('MOVIES');
+    }
+
+    return false;
   }
 
   ngOnDestroy(): void {

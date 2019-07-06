@@ -5,9 +5,9 @@ import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
+import { SettingsFacade } from '../../../../shared/facades/settings.facade';
 import { Settings } from '../../../../shared/models/settings/settings';
 import { UpdateResult } from '../../../../shared/models/settings/update-result';
-import { SettingsService } from '../../../../shared/services/settings.service';
 import { SystemService } from '../../../../shared/services/system.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
@@ -18,7 +18,6 @@ import { ToastService } from '../../../../shared/services/toast.service';
 })
 export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
   @Input() settings: Settings;
-  updateSub: Subscription;
   updatingSub: Subscription;
 
   updateResult$: Observable<UpdateResult>;
@@ -33,7 +32,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
   isSaving = false;
 
   constructor(
-    private readonly settingsService: SettingsService,
+    private readonly settingsFacade: SettingsFacade,
     private readonly toastService: ToastService,
     private readonly systemService: SystemService,
     private readonly translateService: TranslateService
@@ -64,23 +63,19 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
 
   save() {
     this.isSaving = true;
-    this.settings.updateTrain = this.trainControl.value;
-    this.settings.autoUpdate = this.autoUpdateControl.value;
-    console.log(this.settings);
-    this.updateSub = this.settingsService.updateSettings(this.settings).subscribe((settings: Settings) => {
-      this.toastService.showSuccess('SETTINGS.SAVED.UPDATES');
-    });
 
-    this.updateSub.add(() => {
-      this.isSaving = false;
-    });
+    const settings = {...this.settings};
+    settings.updateTrain = this.trainControl.value;
+    settings.autoUpdate = this.autoUpdateControl.value;
+    this.settingsFacade.updateSettings(settings);
+    this.toastService.showSuccess('SETTINGS.SAVED.UPDATES');
+    this.isSaving = false;
   }
 
   private setUpdateState(state: boolean) {
-    this.settings.updateInProgress = state;
-    this.updateSub = this.settingsService.updateSettings(this.settings).subscribe((settings: Settings) => {
-
-    });
+    const settings = {...this.settings};
+    settings.updateInProgress = state;
+    this.settingsFacade.updateSettings(settings);
   }
 
   checkUpdate() {
@@ -108,10 +103,6 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    if (this.updateSub !== undefined) {
-      this.updateSub.unsubscribe();
-    }
-
     if (this.updatingSub !== undefined) {
       this.updatingSub.unsubscribe();
     }

@@ -1,0 +1,46 @@
+$link-color: #3f51b5;
+$link-hover-color: currentColor;
+$link-hover-decoration: none;
+$label-margin-bottom: 0;
+$grey-font-color: #999999;
+
+$xs: 0;
+$sm: 600px;
+$md: 960px;
+$lg: 1280px;
+$xl: 1600px;
+
+$grid-breakpoints: (
+  xs: $xs, // handset portrait (small, medium, large) | handset landscape (small)
+  sm: $sm, // handset landscape (medium, large) | tablet portrait(small, large)
+  md: $md, //  tablet landscape (small, large)
+  lg: $lg, // laptops and desktops
+  xl: $xl // large desktops
+);
+
+$container-max-widths: (
+  sm: $sm,
+  md: $md,
+  lg: $lg,
+  xl: $xl
+);
+
+$grey-font-color: #888;
+
+$white: #fff;
+$dark-grey: rgba(0, 0, 0, 0.8);
+$light-grey: rgba(0, 0, 0, 0.65);
+$hint-grey: rgba(0, 0, 0, 0.54);
+
+$light-red: #f27474;
+$dark-red: #ff0000;
+$orange: #ffa500;
+$green: #008000;
+
+$shadow-light: rgba(0, 0, 0, 0.12);
+$shadow-medium: rgba(0, 0, 0, 0.14);
+$shadow-dark: rgba(0, 0, 0, 0.2);
+
+$normal-box-shadow: 0 3px 1px -2px $shadow-dark, 0 2px 2px 0 $shadow-medium, 0 1px 5px 0 $shadow-light;
+
+$menu-height: 64px;

@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Observable ,  Subscription } from 'rxjs';
-import { ConfigHelper } from '../../helpers/configHelper';
+import { Observable, Subscription } from 'rxjs';
 
-import { SettingsFacade } from '../../../settings/state/facade.settings';
-import {Settings } from '../../../settings/models/settings';
-import { EmbyStatus } from '../../models/emby/emby-status';
-import { JobSocketService } from '../../services/job-socket.service';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+
+import { SettingsFacade } from '../../facades/settings.facade';
+import { ConfigHelper } from '../../helpers/config-helper';
+import { Job } from '../../models/jobs/job';
+import { Settings } from '../../models/settings/settings';
 import { EmbyService } from '../../services/emby.service';
-import { Job } from '../../../jobs/models/job';
+//import { EmbyStatus } from '../../models/emby/emby-status';
+import { JobSocketService } from '../../services/job-socket.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -30,7 +31,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private settingsFacade: SettingsFacade,
     private jobSocketService: JobSocketService,
     private embyService: EmbyService) {
-    this.settings$ = settingsFacade.settings$;
+    this.settings$ = settingsFacade.getSettings();
 
     this.missedPings = 0;
     this.jobSocketSub = jobSocketService.infoSubject.subscribe((job: Job) => {

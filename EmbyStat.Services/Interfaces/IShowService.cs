@@ -13,6 +13,6 @@ namespace EmbyStat.Services.Interfaces
         Task<ShowCharts> GetCharts(List<string> collectionIds);
         Task<PersonStats> GetPeopleStats(List<string> collectionsIds);
         Task<List<ShowCollectionRow>> GetCollectionRows(List<string> collectionIds);
-        bool ShowTypeIsPresent();
+        bool TypeIsPresent();
     }
 }

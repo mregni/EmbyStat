@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
-import { MatToolbarModule } from '@angular/material';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
+import {
+    MatInputModule, MatSortModule, MatToolbarModule, MatTooltipModule
+} from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTooltipModule } from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatRippleModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -45,7 +45,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ],
   exports: [
     MatToolbarModule,
@@ -69,7 +70,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ],
 })
 

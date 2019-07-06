@@ -13,6 +13,6 @@ namespace EmbyStat.Services.Interfaces
         Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
         Task<MovieCharts> GetCharts(List<string> collectionIds);
         Task<SuspiciousTables> GetSuspiciousMovies(List<string> collectionIds);
-        bool MovieTypeIsPresent();
+        bool TypeIsPresent();
     }
 }

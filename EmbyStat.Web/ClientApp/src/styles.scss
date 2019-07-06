@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@import "scss/variables";
+
+// Imports functions, variables, and mixins that are needed by other Bootstrap files
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/progress";
+
+@import "scss/reset";
+@import "scss/theme";
+@import "scss/image";
+@import "scss/height";
+@import "scss/loader";
+
+//App styles
+@import "scss/main.scss";
+@import "scss/title-bar.scss";
+@import "scss/toast.scss";
+@import "scss/alert.scss";

@@ -161,7 +161,7 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public bool MovieTypeIsPresent()
+        public bool TypeIsPresent()
         {
             return _movieRepository.Any();
         }

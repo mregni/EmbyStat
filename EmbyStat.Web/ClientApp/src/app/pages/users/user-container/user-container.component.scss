@@ -1,0 +1,103 @@
+@import "../../../../scss/variables";
+
+.title-bar-left-content {
+  align-content: flex-start;
+  display: flex;
+  flex-direction: row;
+
+  mat-select {
+    width: 150px;
+  }
+
+  .separator {
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 0.6em;
+    margin: 0 8px;
+  }
+}
+
+.user-detail-column:not(:first-child) {
+  margin-left: 25px;
+}
+
+mat-card-content {
+  h3 {
+    margin: 0;
+  }
+}
+
+mat-table {
+  flex: 0 0 100%;
+  margin-top: 25px;
+
+  mat-cell fa-icon {
+    margin-left: 5px;
+  }
+
+  mat-cell:first-child,
+  mat-header-cell:first-child {
+    flex: 0 0 30px;
+    justify-content: flex-start;
+    margin-right: 10px;
+    padding-left: 0;
+  }
+
+  mat-cell:last-child,
+  mat-header-cell:last-child {
+    padding-right: 0;
+    flex: 0 0 100px;
+    justify-content: flex-end;
+  }
+
+  mat-cell:nth-child(3),
+  mat-cell:nth-child(4),
+  mat-cell:nth-child(5),
+  mat-header-cell:nth-child(3),
+  mat-header-cell:nth-child(4),
+  mat-header-cell:nth-child(5) {
+    display: flex;
+    flex: 0 0 100px;
+    justify-content: flex-start;
+  }
+}
+
+.device-logo {
+  height: 30px;
+  width: 30px;
+}
+
+.profile-image {
+  border-top-left-radius: 4px;
+  height: 100px;
+  width: 100px;
+}
+
+.name {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row;
+
+  fa-icon:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (max-width: $lg) {
+  .user-detail-column:not(:first-child) {
+    margin-left: 0;
+    margin-top: 25px;
+  }
+
+  mat-card {
+    mat-table {
+      flex: 0 0 100%;
+      margin-top: 25px;
+    }
+  }
+}

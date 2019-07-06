@@ -64,10 +64,10 @@ namespace EmbyStat.Controllers.Show
         }
 
         [HttpGet]
-        [Route("showtypepresent")]
-        public IActionResult MovieTypeIsPresent()
+        [Route("typepresent")]
+        public IActionResult ShowTypeIsPresent()
         {
-            return Ok(_showService.ShowTypeIsPresent());
+            return Ok(_showService.TypeIsPresent());
         }
     }
 }

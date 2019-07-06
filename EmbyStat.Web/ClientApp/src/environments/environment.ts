@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  urls: {
+    featureupvote: 'https://embystat.featureupvote.com/',
+    github: 'https://github.com/mregni/EmbyStat/issues/new?template=Bug_report.md',
+    crowdin: 'https://crowdin.com/project/embystat'
+  }
 };
 
 /*

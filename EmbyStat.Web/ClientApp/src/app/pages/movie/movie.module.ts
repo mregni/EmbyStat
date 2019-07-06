@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
 import { MovieService } from './service/movie.service';
 
+
 @NgModule({
   declarations: [
     MovieOverviewComponent

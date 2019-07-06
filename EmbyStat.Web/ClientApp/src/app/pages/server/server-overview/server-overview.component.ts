@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EmbyService } from '../../../shared/services/emby.service';
-import { SettingsService } from '../../../shared/services/settings.service';
 
 @Component({
   selector: 'app-server-overview',
@@ -15,9 +14,7 @@ import { SettingsService } from '../../../shared/services/settings.service';
 export class ServerOverviewComponent implements OnInit {
   serverInfo$: Observable<ServerInfo>;
 
-  constructor(
-    private readonly embyService: EmbyService,
-    private readonly settingsService: SettingsService) {
+  constructor(private readonly embyService: EmbyService) {
     this.serverInfo$ = this.embyService.getEmbyServerInfo();
   }
 

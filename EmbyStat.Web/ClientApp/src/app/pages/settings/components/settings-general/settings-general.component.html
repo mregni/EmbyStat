@@ -39,7 +39,7 @@
         <form [formGroup]="tvdbForm" class="d-flex flex-column">
           <p>{{ 'SETTINGS.GENERAL.TVDBAPIKEY' | translate }}</p>
           <mat-form-field>
-            <input matInput placeholder="{{'FORMLABELS.TVDBAPI' | translate}}" formControlName="tvdbKey" [disableControl]="isSaving">
+            <input matInput type="password" placeholder="{{'FORMLABELS.TVDBAPI' | translate}}" formControlName="tvdbKey" [disableControl]="isSaving">
             <mat-error *ngIf="tvdbKeyControl.hasError('required')">{{'SETTINGS.GENERAL.TVDBAPIKEYWARNING' | translate}}
             </mat-error>
           </mat-form-field>

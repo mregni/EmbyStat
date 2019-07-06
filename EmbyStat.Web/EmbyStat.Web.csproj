@@ -23,7 +23,7 @@
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
@@ -93,6 +93,7 @@
     <None Remove="ClientApp\src\app\states\app.state.ts" />
     <None Remove="ClientApp\src\app\user\services\page.service.ts" />
     <None Remove="ClientApp\src\app\user\services\user.service.ts" />
+    <None Remove="win10-x64-v0.1.0-beta.37.zip" />
   </ItemGroup>
 
   <ItemGroup>

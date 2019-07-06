@@ -3,9 +3,9 @@ import { Observable, Subscription } from 'rxjs';
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { SettingsFacade } from '../../../../shared/facades/settings.facade';
 import { Language } from '../../../../shared/models/language';
 import { Settings } from '../../../../shared/models/settings/settings';
-import { SettingsService } from '../../../../shared/services/settings.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
@@ -16,7 +16,6 @@ import { ToastService } from '../../../../shared/services/toast.service';
 export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() settings: Settings;
 
-  updateSub: Subscription;
   languages$: Observable<Language[]>;
 
   generalForm: FormGroup;
@@ -30,9 +29,9 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   isSaving = false;
 
   constructor(
-    private readonly settingsService: SettingsService,
+    private readonly settingsFacade: SettingsFacade,
     private readonly toastService: ToastService) {
-    this.languages$ = this.settingsService.getLanguages();
+    this.languages$ = this.settingsFacade.getLanguages();
 
     this.generalForm = new FormGroup({
       name: this.nameControl,
@@ -50,6 +49,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       this.nameControl.setValue(this.settings.username);
       this.languageControl.setValue(this.settings.language);
       this.exceptionLoggingControl.setValue(this.settings.enableRollbarLogging);
+      this.tvdbKeyControl.setValue(this.settings.tvdb.apiKey);
     }
   }
 
@@ -57,36 +57,36 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   saveGeneralForm() {
-    if(this.checkForm(this.generalForm)) {
+    if (this.checkForm(this.generalForm)) {
       this.isSaving = true;
       this.markFormAsUntouched(this.tvdbForm);
 
-      this.settings.language = this.languageControl.value;
-      this.settings.username = this.nameControl.value;
-      this.settings.enableRollbarLogging = this.exceptionLoggingControl.value;
-  
-      this.saveSettings('SETTINGS.SAVED.GENERAL');
+      const settings = { ...this.settings };
+      settings.language = this.languageControl.value;
+      settings.username = this.nameControl.value;
+      settings.enableRollbarLogging = this.exceptionLoggingControl.value;
+
+      this.saveSettings(settings, 'SETTINGS.SAVED.GENERAL');
     }
   }
 
   saveTvdbForm() {
-    if(this.checkForm(this.tvdbForm)) {
+    if (this.checkForm(this.tvdbForm)) {
       this.isSaving = true;
       this.markFormAsUntouched(this.generalForm);
 
-      this.settings.tvdb.apiKey = this.tvdbKeyControl.value;
-      this.saveSettings('SETTINGS.SAVED.TVDB');
+      const settings = { ...this.settings };
+      const tvdb = { ...this.settings.tvdb };
+      tvdb.apiKey = this.tvdbKeyControl.value;
+      settings.tvdb = tvdb;
+      this.saveSettings(settings, 'SETTINGS.SAVED.TVDB');
     }
   }
 
-  private saveSettings(confirmMessage: string) {
-    this.updateSub = this.settingsService.updateSettings(this.settings).subscribe((settings: Settings) => {
-      this.toastService.showSuccess(confirmMessage);
-    });
-
-    this.updateSub.add(() => {
-      this.isSaving = false;
-    });
+  private saveSettings(settings: Settings, confirmMessage: string) {
+    this.settingsFacade.updateSettings(settings);
+    this.toastService.showSuccess(confirmMessage);
+    this.isSaving = false;
   }
 
   private checkForm(form: FormGroup): boolean {
@@ -105,8 +105,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    if (this.updateSub !== undefined) {
-      this.updateSub.unsubscribe();
-    }
+
   }
 }

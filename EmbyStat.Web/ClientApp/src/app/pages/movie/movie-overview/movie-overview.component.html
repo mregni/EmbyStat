@@ -1,117 +1,153 @@
-<div *ngIf="generalStats$ | async as stats; else loading">
-  <div class="row">
-    <div class="col-xl-3 col-md-6 col-12">
-      <app-number-card [card]="stats.movieCount"></app-number-card>
-    </div>
-    <div class="col-xl-3 col-md-6 col-12">
-      <app-number-card [card]="stats.genreCount"></app-number-card>
-    </div>
-    <div class="col-xl-6 col-12">
-      <app-time-card [card]="stats.totalPlayableTime"></app-time-card>
-    </div>
+<div class="title-bar">
+  <div class="title-bar-left-content">
+    {{ 'MENU.MOVIES' | translate }}
   </div>
-  <div class="row">
-    <div class="col-12 m-b-20">
-      <ng-scrollbar [shown]='native' [trackX]='true'>
-        <div class="flex-row">
-          <app-movie-poster [poster]="stats.highestRatedMovie"></app-movie-poster>
-          <app-movie-poster [poster]="stats.lowestRatedMovie"></app-movie-poster>
-          <app-movie-poster [poster]="stats.oldestPremieredMovie"></app-movie-poster>
-          <app-movie-poster [poster]="stats.youngestPremieredMovie"></app-movie-poster>
-          <app-movie-poster [poster]="stats.shortestMovie"></app-movie-poster>
-          <app-movie-poster [poster]="stats.longestMovie"></app-movie-poster>
-          <app-movie-poster [poster]="stats.youngestAddedMovie"></app-movie-poster>
-        </div>
-      </ng-scrollbar>
-    </div>
+  <div class="title-bar-right-content">
+    <mat-form-field class="full-width">
+      <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
+        <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 </div>
-
-<div *ngIf="charts$ | async as charts; else loading">
-  <div class="row">
-    <div class="col-12 col-xl-6" *ngFor="let chart of charts.barCharts">
-      <app-simple-bar-chart [chart]="chart"></app-simple-bar-chart>
+<div class="content" *ngIf="typeIsPresent">
+  <div *ngIf="generalStats$ | async as stats; else loading">
+    <div class="row">
+      <div class="col-xl-3 col-md-6 col-12 mb-3">
+        <app-number-card [card]="stats.movieCount"></app-number-card>
+      </div>
+      <div class="col-xl-3 col-md-6 col-12 mb-3">
+        <app-number-card [card]="stats.genreCount"></app-number-card>
+      </div>
+      <div class="col-xl-6 col-12 mb-3">
+        <app-time-card [card]="stats.totalPlayableTime"></app-time-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <ng-scrollbar [shown]='native' [trackX]='true'>
+          <div class="d-flex flex-row justify-content-start">
+            <app-movie-poster [poster]="stats.highestRatedMovie"></app-movie-poster>
+            <app-movie-poster [poster]="stats.lowestRatedMovie"></app-movie-poster>
+            <app-movie-poster [poster]="stats.oldestPremieredMovie"></app-movie-poster>
+            <app-movie-poster [poster]="stats.youngestPremieredMovie"></app-movie-poster>
+            <app-movie-poster [poster]="stats.shortestMovie"></app-movie-poster>
+            <app-movie-poster [poster]="stats.longestMovie"></app-movie-poster>
+            <app-movie-poster [poster]="stats.youngestAddedMovie"></app-movie-poster>
+          </div>
+        </ng-scrollbar>
+      </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="people$ | async as people; else loading">
-  <div class="row">
-    <div class="col-md-4 col-12">
-      <app-number-card [card]="people.totalActorCount"></app-number-card>
-    </div>
-    <div class="col-md-4 col-12">
-      <app-number-card [card]="people.totalDirectorCount"></app-number-card>
-    </div>
-    <div class="col-md-4 col-12">
-      <app-number-card [card]="people.totalWriterCount"></app-number-card>
+  <div *ngIf="charts$ | async as charts; else loading">
+    <div class="row" *ngIf="charts$ | async as charts">
+      <div class="col-12 col-xl-6 mb-3" *ngFor="let chart of charts.barCharts">
+        <app-simple-chart [chart]="chart" [options]="barOptions"></app-simple-chart>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12 col-xl-6">
-      <div class="row">
-        <div class="col-12 m-b-20">
-          <ng-scrollbar [shown]='native' [trackX]='true'>
-            <div class="flex-row">
-              <app-person-poster [poster]="people.mostFeaturedActor"></app-person-poster>
-              <app-person-poster [poster]="people.mostFeaturedDirector"></app-person-poster>
-              <app-person-poster [poster]="people.mostFeaturedWriter"></app-person-poster>
-            </div>
-          </ng-scrollbar>
-        </div>
-        <div class="col-12">
-          <div class="card card-block user-card p-10">
-            <app-person-list [posters]="people.mostFeaturedActorsPerGenre"></app-person-list>
+
+  <div *ngIf="people$ | async as people; else loading">
+    <div class="row">
+      <div class="col-md-4 col-12 mb-3">
+        <app-number-card [card]="people.totalActorCount"></app-number-card>
+      </div>
+      <div class="col-md-4 col-12 mb-3">
+        <app-number-card [card]="people.totalDirectorCount"></app-number-card>
+      </div>
+      <div class="col-md-4 col-12 mb-3">
+        <app-number-card [card]="people.totalWriterCount"></app-number-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-xl-6 mb-3">
+        <div class="row">
+          <div class="col-12 m-b-20">
+            <ng-scrollbar [shown]='native' [trackX]='true'>
+              <div class="d-flex flex-row justify-content-start">
+                <app-person-poster [poster]="people.mostFeaturedActor"></app-person-poster>
+                <app-person-poster [poster]="people.mostFeaturedDirector"></app-person-poster>
+                <app-person-poster [poster]="people.mostFeaturedWriter"></app-person-poster>
+              </div>
+            </ng-scrollbar>
+          </div>
+          <div class="col-12">
+            <mat-card>
+              <mat-card-content>
+                <app-person-list [posters]="people.mostFeaturedActorsPerGenre"></app-person-list>
+              </mat-card-content>
+            </mat-card>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-12 col-xl-6"  *ngIf="suspicious$ | async as suspicious; else loading">
-        <div *ngIf="suspicious.duplicates.length > 0" class="card">
-          <div class="card-header">
-            <h5>{{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}</h5>
-          </div>
-          <div>
-              <table class="table table-xs">
-                  <thead>
-                      <tr>
-                          <th>#</th>
-                          <th>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.REASON' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.LINK' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.ADDEDON' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.LINK' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.QUALITY' | translate | capitalizeFirst }}</th>
-                          <th>{{ 'COMMON.ADDEDON' | translate | capitalizeFirst }}</th>
-                        </tr>
-                  </thead>
-                  <tbody>
-                      <tr *ngFor="let duplicate of suspicious.duplicates">
-                          <th scope="row">{{ duplicate.number }}</th>
-                          <td>{{ duplicate.title }}</td>
-                          <td>{{ 'COMMON.' + duplicate.reason | translate }}</td>
-                          <td><a (click)="openMovie(duplicate.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></td>
-                          <td>{{ duplicate.itemOne.quality }}</td>
-                          <td>{{ duplicate.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</td>
-                          <td><a (click)="openMovie(duplicate.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></td>
-                          <td>{{ duplicate.itemTwo.quality }}</td>
-                          <td>{{ duplicate.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-        </div>
+      <div class="col-12 col-xl-6" *ngIf="suspicious$ | async as suspicious; else loading">
+        <mat-card *ngIf="suspicious.duplicates.length > 0">
+          <mat-card-title>
+            {{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}
+          </mat-card-title>
+          <mat-card-content>
+            <table mat-table [dataSource]="suspicious.duplicates">
+              <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element"> {{ element.number }} </td>
+              </ng-container>
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.TITLE' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+              </ng-container>
+              <ng-container matColumnDef="reason">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.REASON' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> {{ 'COMMON.' + element.reason | translate }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="linkOne">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.LINK' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> <a
+                    (click)="openMovie(element.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a> </td>
+              </ng-container>
+              <ng-container matColumnDef="qualityOne">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.QUALITY' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> {{ element.itemOne.quality }} </td>
+              </ng-container>
+              <ng-container matColumnDef="addedOnOne">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.ADDEDON' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> {{ element.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="linkTwo">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.LINK' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> <a
+                    (click)="openMovie(element.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a> </td>
+              </ng-container>
+              <ng-container matColumnDef="qualityTwo">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.QUALITY' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> {{ element.itemTwo.quality }} </td>
+              </ng-container>
+              <ng-container matColumnDef="addedOnTwo">
+                <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.ADDEDON' | translate | capitalizeFirst }} </th>
+                <td mat-cell *matCellDef="let element"> {{ element.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
+
+  <ng-template #loading>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+      Loading
+    </div>
+  </ng-template>
+
 </div>
-
-<ng-template #loading>
-  <div class="col-xl-2 col-md-4 col-sm-6">
-    Loading
-  </div>
-</ng-template>
-
 <!--   
   <div *ngIf="shortDataSource !== undefined && shortDataSource.data.length > 0">
     <h2>{{'MOVIES.TOSHORTMOVIES' | translate | capitalizeFirst}}</h2>

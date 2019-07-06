@@ -1,0 +1,8 @@
+.collectionselector-container {
+  display: flex;
+  flex-direction: column;
+
+  mat-checkbox {
+    margin-top: 3px;
+  }
+}

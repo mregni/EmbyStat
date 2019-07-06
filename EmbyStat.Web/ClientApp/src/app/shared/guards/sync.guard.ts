@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+
 import { SyncIsRunningDialog } from '../dialogs/sync-is-running/sync-is-running.component';
-import { JobService } from '../../jobs/service/job.service';
-import { Job } from '../../jobs/models/job';
+import { Job } from '../models/jobs/job';
+import { JobService } from '../services/job.service';
 
 @Injectable()
 export class SyncGuard implements CanActivate {

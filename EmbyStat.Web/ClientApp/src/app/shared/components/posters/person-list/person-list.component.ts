@@ -3,9 +3,9 @@ import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
+import { SettingsFacade } from '../../../facades/settings.facade';
 import { PersonPoster } from '../../../models/common/person-poster';
 import { Settings } from '../../../models/settings/settings';
-import { SettingsService } from '../../../services/settings.service';
 
 @Component({
   selector: 'app-person-list',
@@ -22,8 +22,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
     alwaysVisible: true
   };
 
-  constructor(private settingsService: SettingsService) {
-    this.settingsSub = settingsService.getSettings().subscribe(data => this.settings = data);
+  constructor(private settingsFacade: SettingsFacade) {
+    this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
   }
 
   ngOnInit() {

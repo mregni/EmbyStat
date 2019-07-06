@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" *ngIf="settings$ | async as settings">
   <button mat-button (click)="toggleSideNav.emit()" class="sidenav-toggle">
-    <mat-icon>menu</mat-icon>
+    <fa-icon icon="bars"></fa-icon>
   </button>
   <img src="../../../assets/images/logo_white.png" class="toolbar-logo" />
   <span class="bar-spacer"></span>
@@ -16,6 +16,6 @@
     <img *ngIf="missedPings >= 2 && settings.emby.serverAddress" matTooltip="{{ 'TOOLBAR.MOREMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/red_circle.png" />
   </div>
   <div class="button-container">
-    <a mat-raised-button href="{{getFullAddress(settings)}}" target="_blank" *ngIf="settings.emby.serverAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
+    <a mat-raised-button href="{{ getFullAddress(settings) }}" target="_blank" *ngIf="settings.emby.serverAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
   </div>
 </mat-toolbar>

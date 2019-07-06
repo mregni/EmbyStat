@@ -2,11 +2,11 @@ import { Observable, Subscription } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
+import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
 import { EmbyPlugin } from '../../../shared/models/emby/emby-plugin';
 import { Settings } from '../../../shared/models/settings/settings';
 import { EmbyService } from '../../../shared/services/emby.service';
-import { SettingsService } from '../../../shared/services/settings.service';
 
 @Component({
   selector: 'app-plugin-overview',
@@ -21,9 +21,9 @@ export class PluginOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly embyService: EmbyService,
-    private readonly settingsService: SettingsService) {
+    private readonly settingsFacade: SettingsFacade) {
     this.plugins$ = this.embyService.getPlugins();
-    this.settingsSub = this.settingsService.getSettings().subscribe((settings: Settings) => {
+    this.settingsSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
       this.settings = settings;
     });
   }

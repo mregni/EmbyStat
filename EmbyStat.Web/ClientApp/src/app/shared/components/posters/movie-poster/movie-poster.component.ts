@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs';
+import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -6,7 +7,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigHelper } from '../../../helpers/config-helper';
 import { MoviePoster } from '../../../models/movie/movie-poster';
 import { Settings } from '../../../models/settings/settings';
-import { SettingsService } from '../../../services/settings.service';
 
 @Component({
   selector: 'app-movie-poster',
@@ -19,9 +19,9 @@ export class MoviePosterComponent implements OnInit {
   @Input() poster: MoviePoster;
 
   constructor(
-    private readonly settingsService: SettingsService,
+    private readonly settingsFacade: SettingsFacade,
     private readonly sanitizer: DomSanitizer) {
-    this.settingsSub = this.settingsService.getSettings().subscribe(data => this.settings = data);
+    this.settingsSub = this.settingsFacade.getSettings().subscribe(data => this.settings = data);
   }
 
   ngOnInit() {

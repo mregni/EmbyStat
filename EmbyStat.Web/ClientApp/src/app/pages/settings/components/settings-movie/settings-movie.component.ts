@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { SettingsFacade } from '../../../../shared/facades/settings.facade';
 import { Settings } from '../../../../shared/models/settings/settings';
-import { SettingsService } from '../../../../shared/services/settings.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
@@ -14,7 +14,6 @@ import { ToastService } from '../../../../shared/services/toast.service';
 })
 export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   @Input() settings: Settings;
-  updateSub: Subscription;
 
   formToShort: FormGroup;
   toShortMovieControl = new FormControl('', [Validators.required]);
@@ -23,7 +22,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   isSaving = false;
 
   constructor(
-    private readonly settingsService: SettingsService,
+    private readonly settingsFacade: SettingsFacade,
     private readonly toastService: ToastService) {
     this.formToShort = new FormGroup({
       toShortMovie: this.toShortMovieControl
@@ -43,27 +42,23 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   saveToShortForm() {
     if (this.checkForm(this.formToShort)) {
       this.isSaving = true;
-      this.settings.toShortMovie = this.toShortMovieControl.value;
-      this.updateSub = this.settingsService.updateSettings(this.settings).subscribe((settings: Settings) => {
-        this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
-      });
 
-      this.updateSub.add(() => {
-        this.isSaving = false;
-      });
+      const settings = { ...this.settings };
+      settings.toShortMovie = this.toShortMovieControl.value;
+      this.settingsFacade.updateSettings(settings);
+      this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
+      this.isSaving = false;
     }
   }
 
   saveCollectionTypesForm() {
     this.isSaving = true;
-    this.settings.movieCollectionTypes = this.newCollectionList;
-    this.updateSub = this.settingsService.updateSettings(this.settings).subscribe((settings: Settings) => {
-      this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
-    });
 
-    this.updateSub.add(() => {
-      this.isSaving = false;
-    });
+    const settings = { ...this.settings };
+    settings.movieCollectionTypes = this.newCollectionList;
+    this.settingsFacade.updateSettings(settings);
+    this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
+    this.isSaving = false;
   }
 
   onCollectionListChanged(event: number[]) {
@@ -80,8 +75,6 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    if (this.updateSub !== undefined) {
-      this.updateSub.unsubscribe();
-    }
+
   }
 }
