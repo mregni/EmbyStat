@@ -142,12 +142,17 @@ namespace EmbyStat.Clients.Emby.Http
 			return GetSerializedStreamAsync(url, CancellationToken.None);
 		}
 
-		protected string GetApiUrl(string handler)
-		{
-			return GetApiUrl(handler, new QueryStringDictionary());
-		}
+        protected string GetApiUrl(string handler, QueryStringDictionary queryString = null)
+        {
+            return GetApiUrl(ApiUrl, handler, queryString ?? new QueryStringDictionary());
+        }
 
-		protected string GetApiUrl(string handler, QueryStringDictionary queryString)
+        protected string GetApiUrl(string apiUrl, string handler)
+        {
+            return GetApiUrl(apiUrl, handler, new QueryStringDictionary());
+        }
+
+		protected string GetApiUrl(string apiUrl, string handler, QueryStringDictionary queryString)
 		{
 			if (string.IsNullOrEmpty(handler))
 			{
@@ -159,14 +164,14 @@ namespace EmbyStat.Clients.Emby.Http
 				throw new ArgumentNullException(nameof(queryString));
 			}
 
-			return queryString.GetUrl(ApiUrl + "/" + handler);
+			return queryString.GetUrl(apiUrl + "/" + handler);
 		}
 
 		protected async Task<T> PostAsync<T>(string url, Dictionary<string, string> args, CancellationToken cancellationToken = default(CancellationToken)) where T : class
 		{
 			url = AddDataFormat(url);
 
-			var strings = args.Keys.Select(key => string.Format("{0}={1}", key, args[key]));
+			var strings = args.Keys.Select(key => $"{key}={args[key]}");
 			var postContent = string.Join("&", strings.ToArray());
 
 			const string contentType = "application/x-www-form-urlencoded";

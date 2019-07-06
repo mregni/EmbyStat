@@ -29,7 +29,7 @@ namespace EmbyStat.Common.Models.Settings
         {
             get
             {
-                var protocol = Emby.ServerProtocol == ConnectionProtocol.Http ? "http" : "https";
+                var protocol = Emby.ServerProtocol == ConnectionProtocol.Https ? "https" : "http";
                 return $"{protocol}://{Emby.ServerAddress}:{Emby.ServerPort}";
             }
         }

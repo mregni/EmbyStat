@@ -38,7 +38,7 @@ namespace EmbyStat.Controllers.Movie
         }
 
         [HttpGet]
-        [Route("personstats")]
+        [Route("peoplestats")]
         public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
         {
             var result = await _movieService.GetPeopleStatsForCollections(collectionIds);

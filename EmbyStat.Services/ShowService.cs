@@ -27,9 +27,8 @@ namespace EmbyStat.Services
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly ISettingsService _settingsService;
 
-        public ShowService(IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository,
-            IPersonService personService, IJobRepository jobRepository, IStatisticsRepository statisticsRepository, ISettingsService settingsService)
-        : base(jobRepository)
+        public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ICollectionRepository collectionRepository, IGenreRepository genreRepository, 
+            IPersonService personService, IStatisticsRepository statisticsRepository, ISettingsService settingsService) : base(jobRepository)
         {
             _showRepository = showRepository;
             _collectionRepository = collectionRepository;
@@ -96,7 +95,7 @@ namespace EmbyStat.Services
                 stats.BarCharts.Add(CalculateRatingChart(shows.Select(x => x.CommunityRating)));
                 stats.BarCharts.Add(CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)));
                 stats.BarCharts.Add(CalculateCollectedRateChart(shows));
-                stats.BarCharts.Add(CalculateOfficialRatingChart(shows));
+                stats.PieCharts.Add(CalculateOfficialRatingChart(shows));
                 stats.PieCharts.Add(CalculateShowStateChart(shows));
 
                 var json = JsonConvert.SerializeObject(stats);

@@ -82,7 +82,7 @@ namespace EmbyStat.Services
                     }
                     catch (Exception)
                     {
-                        // No data recieved, swallow exception and return empty object
+                        // No data received, swallow exception and return empty object
                     }
                 }
 
@@ -136,7 +136,7 @@ namespace EmbyStat.Services
 
         public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
         {
-            return await _embyClient.PingEmbyAsync(cancellationToken);
+            return await _embyClient.PingEmbyAsync(embyAddress, cancellationToken);
         }
 
         public void ResetMissedPings()

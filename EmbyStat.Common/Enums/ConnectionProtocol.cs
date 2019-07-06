@@ -2,7 +2,7 @@
 {
     public enum ConnectionProtocol
     {
-        Http = 0,
-        Https = 1
+        Https = 0,
+        Http = 1
     }
 }

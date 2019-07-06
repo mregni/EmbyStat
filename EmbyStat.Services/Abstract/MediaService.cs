@@ -76,7 +76,7 @@ namespace EmbyStat.Services.Abstract
             if (yearDataList.Any())
             {
                 var lowestYearRaw = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
-                var lowestYear = Convert.ToInt32(Math.Floor(lowestYearRaw.Value / (double)10));
+                var lowestYear = Convert.ToInt32(Math.Floor(lowestYearRaw.Value / (double)10)) * 10;
                 var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
 
                 var j = 0;

@@ -48,7 +48,7 @@ namespace EmbyStat.Controllers.Show
         }
 
         [HttpGet]
-        [Route("personstats")]
+        [Route("peoplestats")]
         public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
         {
             var result = await _showService.GetPeopleStats(collectionIds);

@@ -49,6 +49,7 @@ namespace EmbyStat.Jobs
             catch (WizardNotFinishedException e)
             {
                 await LogWarning(e.Message);
+                await FailExecution();
             }
             catch (Exception e)
             {
@@ -60,18 +61,19 @@ namespace EmbyStat.Jobs
 
         private async Task PreJobExecution()
         {
+            await SendLogProgressToFront(0);
+            await LogInformation("Starting job");
+
+            State = JobState.Running;
+            StartTimeUtc = DateTime.UtcNow;
+            var job = new Job { CurrentProgressPercentage = 0, Id = Id, State = State, StartTimeUtc = StartTimeUtc, EndTimeUtc = null };
+
+            _jobRepository.StartJob(job);
+
             if (!Settings.WizardFinished)
             {
                 throw new WizardNotFinishedException("Job not running because wizard is not finished");
             }
-
-            State = JobState.Running;
-            StartTimeUtc = DateTime.UtcNow;
-            var job = new Job{CurrentProgressPercentage = 0, Id = Id, State = State, StartTimeUtc = StartTimeUtc, EndTimeUtc = null};
-
-            _jobRepository.StartJob(job);
-            await SendLogProgressToFront(0);
-            await LogInformation("Starting job");
         }
 
         private async Task PostJobExecution()
@@ -85,6 +87,11 @@ namespace EmbyStat.Jobs
             await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
                 ? "Job finished after 1 minute."
                 : $"Job finished after {Math.Ceiling(runTime)} minutes.");
+        }
+
+        private async Task FailExecution()
+        {
+            await FailExecution(string.Empty);
         }
 
         private async Task FailExecution(string message)

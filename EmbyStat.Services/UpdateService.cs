@@ -152,8 +152,8 @@ namespace EmbyStat.Services
                     {
                         updaterExtension = ".exe";
                     }
-                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), appSettings.Dirs.TempUpdateDir, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
-                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), appSettings.Dirs.TempUpdateDir);
+                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdateDir, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
+                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdateDir);
 
                     if (!File.Exists(updaterTool))
                     {

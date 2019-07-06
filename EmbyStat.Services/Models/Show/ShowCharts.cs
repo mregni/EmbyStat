@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Services.Models.Charts;
-using EmbyStat.Services.Models.Charts;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace EmbyStat.Services.Models.Show

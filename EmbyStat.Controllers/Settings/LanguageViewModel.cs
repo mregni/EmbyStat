@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Controllers.Language
+﻿namespace EmbyStat.Controllers.Settings
 {
     public class LanguageViewModel
     {

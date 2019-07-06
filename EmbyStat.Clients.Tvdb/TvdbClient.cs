@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Tvdb.Converter;
 using EmbyStat.Clients.Tvdb.Models;
 using EmbyStat.Common;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Net;
+using MediaBrowser.Model.Net;
 using NLog;
 
 namespace EmbyStat.Clients.Tvdb
@@ -37,9 +40,20 @@ namespace EmbyStat.Clients.Tvdb
                 RequestContentType = "application/json"
             };
 
-            using (var stream = await _httpClient.SendAsync(httpRequest))
+            try
             {
-                JWtoken = JsonSerializerExtentions.DeserializeFromStream<TvdbToken>(stream);
+                using (var stream = await _httpClient.SendAsync(httpRequest))
+                {
+                    JWtoken = JsonSerializerExtentions.DeserializeFromStream<TvdbToken>(stream);
+                }
+            }
+            catch (HttpException e)
+            {
+                if (e.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new BusinessException("TVDB_LOGIN_FAILED", 500, e);
+                }
+                throw;
             }
         }
 

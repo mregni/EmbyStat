@@ -98,7 +98,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task<bool> IsEmbyAlive(CancellationToken cancellationToken)
         {
-            var result = await _embyClient.PingEmbyAsync(cancellationToken);
+            var result = await _embyClient.PingEmbyAsync(Settings.FullEmbyServerAddress, cancellationToken);
             return result == "Emby Server";
         }
 
