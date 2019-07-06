@@ -1,5 +1,4 @@
-export class ListContainer<T>
-{
+export class ListContainer<T> {
   totalCount: number;
   data: T[];
 }

@@ -7,7 +7,6 @@ import { ConfigHelper } from '../../helpers/config-helper';
 import { Job } from '../../models/jobs/job';
 import { Settings } from '../../models/settings/settings';
 import { EmbyService } from '../../services/emby.service';
-//import { EmbyStatus } from '../../models/emby/emby-status';
 import { JobSocketService } from '../../services/job-socket.service';
 
 @Component({

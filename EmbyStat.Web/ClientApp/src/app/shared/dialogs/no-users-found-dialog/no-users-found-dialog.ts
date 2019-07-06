@@ -7,10 +7,12 @@ import { Router } from '@angular/router';
 import { JobService } from '../../services/job.service';
 
 @Component({
+// tslint:disable-next-line: component-selector
   selector: 'no-users-found-dialog',
   templateUrl: './no-users-found-dialog.html',
   styleUrls: ['./no-users-found-dialog.scss']
 })
+// tslint:disable-next-line: component-class-suffix
 export class NoUsersFoundDialog implements OnInit, OnDestroy {
   private jobSub: Subscription;
 

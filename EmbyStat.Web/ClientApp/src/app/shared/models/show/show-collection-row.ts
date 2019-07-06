@@ -10,4 +10,3 @@ export class ShowCollectionRow {
     specials: number;
     percentage: number;
   }
-  

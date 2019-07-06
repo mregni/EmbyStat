@@ -13,12 +13,12 @@ const embySettings: EmbySettings = {
   serverProtocol: 0,
   userId: '',
   userName: ''
-}
+};
 
 const tvdbSettings: TvdbSettings = {
   apiKey: '',
   lastUpdate: undefined
-}
+};
 
 const INITIAL_STATE: Settings = {
   id: '',

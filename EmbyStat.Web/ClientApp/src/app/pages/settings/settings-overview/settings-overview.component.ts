@@ -24,16 +24,16 @@ export class SettingsOverviewComponent implements OnInit, OnDestroy {
     this.paramSub = this.activatedRoute.params.subscribe(params => {
       const tab = params['tab'];
       switch (tab) {
-      case "emby":
+      case 'emby':
         this.selected = 1;
         break;
-      case "movies":
+      case 'movies':
         this.selected = 2;
         break;
-      case "shows":
+      case 'shows':
         this.selected = 3;
         break;
-      case "updates":
+      case 'updates':
         this.selected = 4;
         break;
       default:

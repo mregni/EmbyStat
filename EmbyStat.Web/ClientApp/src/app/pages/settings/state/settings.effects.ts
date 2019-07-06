@@ -10,7 +10,6 @@ import { EmbyService } from '../../../shared/services/emby.service';
 import { SettingsService } from '../../../shared/services/settings.service';
 import { EffectError } from '../../../states/app.actions';
 import { ApplicationState } from '../../../states/app.state';
-//import { ResetServerInfoLoadedState } from '../../server/state/actions.server';
 import {
     LoadSettingsAction, LoadSettingsSuccessAction, NoNeedSettingsAction, SettingsActionTypes,
     UpdateSettingsAction, UpdateSettingsSuccessAction
@@ -58,9 +57,7 @@ export class SettingsEffects {
       }),
       switchMap((settings: Settings | null) => {
         console.log(settings);
-        return [new UpdateSettingsSuccessAction(settings)]
-        //     ,
-        // new ResetServerInfoLoadedState();
+        return [new UpdateSettingsSuccessAction(settings)];
       }),
       catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
     );

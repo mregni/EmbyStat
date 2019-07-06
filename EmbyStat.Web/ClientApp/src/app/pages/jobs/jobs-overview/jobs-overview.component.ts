@@ -17,7 +17,7 @@ export class JobsOverviewComponent implements OnInit, OnDestroy {
   private jobLogsSignalSub: Subscription;
 
   lines: SafeHtml[] = [];
-  
+
   constructor(
     private readonly jobService: JobService,
     private readonly jobSocketService: JobSocketService) {
