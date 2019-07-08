@@ -11,16 +11,13 @@ using Rollbar;
 using Rollbar.NetCore.AspNet;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using AutoMapper;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
-using EmbyStat.Repositories;
 using EmbyStat.Services;
 using Hangfire;
 using Hangfire.Dashboard;
@@ -28,9 +25,7 @@ using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Rollbar.DTOs;
 
 namespace EmbyStat.Web
 {
@@ -65,11 +60,6 @@ namespace EmbyStat.Web
                 .AddApiExplorer()
                 .AddJsonFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlite(appSettings.ConnectionStrings.Main, builder => builder.CommandTimeout(30));
-            });
 
             services.AddHangfire(x =>
             {

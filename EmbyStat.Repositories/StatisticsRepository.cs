@@ -1,83 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Joins;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using LiteDB;
 
 namespace EmbyStat.Repositories
 {
 
     public class StatisticsRepository : IStatisticsRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<Statistic> _statisticCollection;
 
-        public StatisticsRepository(ApplicationDbContext context)
+        public StatisticsRepository(IDbContext context)
         {
-            _context = context;
+            _statisticCollection = context.GetContext().GetCollection<Statistic>();
         }
 
         public Statistic GetLastResultByType(StatisticType type)
         {
-            return _context.Statistics
-                .Include(x => x.Collections)
-                .Where(x => x.Type == type)
-                .Where(x => x.IsValid)
+            return _statisticCollection.Find(Query.And(Query.EQ("Type", (int)type), Query.EQ("IsValid", true)))
                 .OrderByDescending(x => x.CalculationDateTime)
                 .FirstOrDefault();
         }
 
-        public async Task AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collections)
+        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collectionIds)
         {
-            await _context.Statistics.Where(x => x.Type == type).ForEachAsync(x => x.IsValid = false);
-            var collectionList = collections.Select(x => new StatisticCollection
-            {
-                Id = Guid.NewGuid(),
-                CollectionId = x
-            }).ToList();
+            var statisticObjs = _statisticCollection.Find(x => x.Type == type).ToList();
+            statisticObjs.ForEach(x => x.IsValid = false);
+            _statisticCollection.Update(statisticObjs);
 
-            var result = new Statistic
+            var statistic = new Statistic
             {
                 CalculationDateTime = calculationDateTime,
-                Collections = collectionList,
-                Id = Guid.NewGuid(),
+                CollectionIds = collectionIds,
                 Type = type,
                 JsonResult = json,
                 IsValid = true
             };
 
-            _context.Statistics.Add(result);
-            _context.SaveChanges();
+            _statisticCollection.Insert(statistic);
         }
 
-        public async Task CleanupStatistics()
+        public void CleanupStatistics()
         {
-            var listToRemove = _context.Statistics.Where(x => !x.IsValid);
-            _context.RemoveRange(listToRemove);
-            await _context.SaveChangesAsync();
+           throw new NotImplementedException();
         }
 
-        public async Task MarkMovieTypesAsInvalid()
+        public void MarkMovieTypesAsInvalid()
         {
-            var types = new List<StatisticType> { StatisticType.MovieGeneral, StatisticType.MovieCharts, StatisticType.MoviePeople, StatisticType.MovieSuspicious };
-            await _context.Statistics
-                .Where(x => x.IsValid)
-                .Where(x => types.Any(y => x.Type == y))
-                .ForEachAsync(x => x.IsValid = false);
-            await _context.SaveChangesAsync();
+            var bArray = new BsonArray
+            {
+                (int) StatisticType.MovieGeneral,
+                (int) StatisticType.MovieCharts,
+                (int) StatisticType.MoviePeople,
+                (int) StatisticType.MovieSuspicious
+            };
+
+            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.In("Type", bArray))).ToList();
+            statistics.ForEach(x => x.IsValid = false);
+            _statisticCollection.Update(statistics);
         }
 
-        public async Task MarkShowTypesAsInvalid()
+        public void MarkShowTypesAsInvalid()
         {
             var types = new List<StatisticType> { StatisticType.ShowCollected, StatisticType.ShowGeneral, StatisticType.ShowCharts, StatisticType.ShowPeople };
-            await _context.Statistics
-                .Where(x => x.IsValid)
-                .Where(x => types.Any(y => x.Type == y))
-                .ForEachAsync(x => x.IsValid = false);
-            await _context.SaveChangesAsync();
+            var bArray = new BsonArray
+            {
+                (int) StatisticType.ShowCollected,
+                (int) StatisticType.ShowGeneral,
+                (int) StatisticType.ShowCharts,
+                (int) StatisticType.ShowPeople
+            };
+
+            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.In("Type", bArray))).ToList();
+            statistics.ForEach(x => x.IsValid = false);
+            _statisticCollection.Update(statistics);
         }
     }
 }

@@ -2,308 +2,195 @@
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
+using LiteDB;
 using MediaBrowser.Model.Extensions;
-using Microsoft.EntityFrameworkCore;
 using NLog;
+using Logger = NLog.Logger;
 
 namespace EmbyStat.Repositories
 {
     public class ShowRepository : IShowRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<Show> _showCollection;
+        private readonly LiteCollection<Season> _seasonCollection;
+        private readonly LiteCollection<Episode> _episodeCollection;
         private readonly Logger _logger;
 
-        public ShowRepository(ApplicationDbContext context)
+        public ShowRepository(IDbContext context)
         {
-            _context = context;
+            _showCollection = context.GetContext().GetCollection<Show>();
+            _seasonCollection = context.GetContext().GetCollection<Season>();
+            _episodeCollection = context.GetContext().GetCollection<Episode>();
             _logger = LogManager.GetCurrentClassLogger();
         }
 
         public void RemoveShows()
         {
-            _context.Episodes.RemoveRange(_context.Episodes.Include(x => x.SeasonEpisodes));
-            _context.Seasons.RemoveRange(_context.Seasons);
-            _context.Shows.RemoveRange(_context.Shows.Include(x => x.MediaGenres).Include(x => x.ExtraPersons));
-            _context.SaveChanges();
+            _showCollection.Delete(Query.All());
         }
 
-        public void AddRange(IEnumerable<Show> list)
+        public void UpsertShows(IEnumerable<Show> list)
         {
-            foreach (var show in list)
-            {
-                var peopleToDelete = new List<string>();
-                foreach (var person in show.ExtraPersons)
-                {
-                    var temp = _context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
-                    if (temp == null)
-                    {
-                        _logger.Warn($"We couldn't find the person with Id {person.PersonId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the show now.");
-                        peopleToDelete.Add(person.PersonId);
-                    }
-                }
-                peopleToDelete.ForEach(x => show.ExtraPersons.Remove(show.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
+            _showCollection.Upsert(list);
+        }
 
-                var genresToDelete = new List<string>();
-                foreach (var genre in show.MediaGenres)
-                {
-                    var temp = _context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
-                    if (temp == null)
-                    {
-                        _logger.Warn($"We couldn't find the genre with Id {genre.GenreId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the show now.");
-                        genresToDelete.Add(genre.GenreId);
-                    }
-                }
-                genresToDelete.ForEach(x => show.MediaGenres.Remove(show.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
+        public void UpsertSeasons(IEnumerable<Season> seasons)
+        {
+            _seasonCollection.Upsert(seasons);
+        }
 
-                _context.Shows.Add(show);
-                _context.SaveChanges();
-            }
+        public void UpsertEpisodes(IEnumerable<Episode> episodes)
+        {
+            _episodeCollection.Upsert(episodes);
         }
 
         public void UpdateShow(Show show)
         {
-            _context.Update(show);
-            _context.SaveChanges();
+            _showCollection.Update(show);
         }
 
-        public void AddRange(IEnumerable<Season> list)
+        public IEnumerable<Show> GetAllShows(IEnumerable<string> collectionIds)
         {
-            _context.Seasons.AddRange(list);
-            _context.SaveChanges();
+            return collectionIds.Any() ?
+                _showCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
+                _showCollection.FindAll();
         }
 
-        public void AddRange(IEnumerable<Episode> list)
+        public Season GetSeasonById(string id)
         {
-            _context.Episodes.AddRange(list);
-            _context.SaveChanges();
+            return _showCollection
+                .Find(Query.EQ("Seasons[*].Id", id), 0, 1)
+                .SingleOrDefault()
+                ?.Seasons
+                .SingleOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool includeSubs = false)
+        public IEnumerable<Show> GetAllShowsWithTvdbId()
         {
-            var query = _context.Shows.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.ExtraPersons)
-                    .Include(x => x.MediaGenres);
-            }
-
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            return query;
+            return _showCollection.Find(x => !string.IsNullOrWhiteSpace(x.TVDB));
         }
 
-        public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool includeSubs = false)
+        public IEnumerable<Season> GetAllSeasonsForShow(string showId)
         {
-            var query = _context.Seasons.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.SeasonEpisodes)
-                    .Include(x => x.MediaGenres);
-            }
-
-            query = query.Where(x => x.ParentId == showId);
-            return query.AsNoTracking();
+            return _showCollection.FindById(showId).Seasons;
         }
 
-        public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool includeSubs = false)
+        public IEnumerable<Episode> GetAllEpisodesForShow(string showId)
         {
-            var episodeIds = _context.Seasons
-                .Where(x => x.ParentId == showId)
-                .Include(x => x.SeasonEpisodes)
-                .SelectMany(x => x.SeasonEpisodes)
-                .Select(x => x.EpisodeId);
-
-            var query = _context.Episodes.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.SeasonEpisodes)
-                    .Include(x => x.AudioStreams)
-                    .Include(x => x.ExtraPersons)
-                    .Include(x => x.MediaSources)
-                    .Include(x => x.SubtitleStreams)
-                    .Include(x => x.VideoStreams)
-                    .Include(x => x.MediaGenres);
-            }
-
-            query = query.Where(x => episodeIds.Any(y => y == x.Id));
-            return query.AsNoTracking();
+            return _showCollection.FindById(showId).Episodes;
         }
 
-        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool includeSubs = false)
+        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds)
         {
-            var episodeIds = _context.Seasons
-                .Where(x => showIds.Any(y => y == x.ParentId))
-                .Include(x => x.SeasonEpisodes)
-                .SelectMany(x => x.SeasonEpisodes)
-                .Select(x => x.EpisodeId);
-
-            var query = _context.Episodes.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.ExtraPersons);
-            }
-
-            query = query.Where(x => episodeIds.Any(y => y == x.Id));
-            return query.ToList();
-        }
-
-        public void SetTvdbSynced(string showId)
-        {
-            var show = _context.Shows.Single(x => x.Id == showId);
-            show.TvdbSynced = true;
-
-            _context.SaveChanges();
+            return _showCollection.Find(x => showIds.Any(y => y == x.Id)).SelectMany(x => x.Episodes);
         }
 
         public int CountShows(IEnumerable<string> collectionIds)
         {
-            var query = _context.Shows.AsQueryable();
-
             if (collectionIds.Any())
             {
-                query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
+                return _showCollection.Count(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y)));
             }
 
-            return query.Count();
+            return _showCollection.Count(Query.All());
         }
 
         public int CountEpisodes(IEnumerable<string> collectionIds)
         {
-            var query = _context.Episodes.AsQueryable();
-
             if (collectionIds.Any())
             {
-                query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-
+                return _showCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))).Sum(x => x.Episodes.Count());
             }
 
-            return query.Count();
+            return _showCollection.FindAll().Sum(x => x.Episodes.Count());
         }
 
         public int CountEpisodes(string showId)
         {
-            return _context.Seasons
-                .Where(x => x.ParentId == showId)
-                .Include(x => x.SeasonEpisodes)
-                .SelectMany(x => x.SeasonEpisodes)
-                .Count();
+            return _showCollection.Find(x => x.Id == showId).Sum(x => x.Episodes.Count());
         }
 
         public long GetPlayLength(IEnumerable<string> collectionIds)
         {
-            var query = _context.Episodes.AsQueryable();
-
             if (collectionIds.Any())
             {
-                query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
+                return _showCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))).Sum(x => x.RunTimeTicks ?? 0);
             }
 
-            return query.Sum(x => x.RunTimeTicks ?? 0);
+            return _showCollection.FindAll().Sum(x => x.RunTimeTicks ?? 0);
         }
 
-        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
+        public int GetTotalPeopleByType(IEnumerable<string> collectionIds, string type)
         {
-            var query = _context.Shows.Include(x => x.ExtraPersons).AsQueryable();
+            var shows = collectionIds.Any() ?
+                _showCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
+                _showCollection.FindAll();
 
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
-            var people = extraPerson.DistinctBy(x => x.PersonId);
-            return people.Count(x => x.Type == type);
+            return shows
+                .SelectMany(x => x.People)
+                .DistinctBy(x => x.Id)
+                .Count(x => x.Type == type);
         }
 
-        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
+        public string GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type)
         {
-            var query = _context.Shows.Include(x => x.ExtraPersons).AsQueryable();
+            var shows = collectionIds.Any() ? 
+                _showCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) : 
+                _showCollection.FindAll();
 
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            var person = query
-                .SelectMany(x => x.ExtraPersons)
-                .AsEnumerable()
+            return shows
+                .SelectMany(x => x.People)
                 .Where(x => x.Type == type)
-                .GroupBy(x => x.PersonId)
-                .Select(group => new { Id = group.Key, Count = group.Count() })
+                .GroupBy(x => x.Id, x => x.Name, (id, name) => new { Key = id, Count = name.Count() })
                 .OrderByDescending(x => x.Count)
-                .Select(x => x.Id);
-            return person.FirstOrDefault();
+                .Select(x => x.Key)
+                .FirstOrDefault();
         }
 
-        public List<string> GetGenres(IEnumerable<string> collections)
+        public IEnumerable<string> GetGenres(IEnumerable<string> collectionIds)
         {
-            var query = _context.Shows.Include(x => x.MediaGenres).AsQueryable();
+            var shows = collectionIds.Any() ?
+                _showCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
+                _showCollection.FindAll();
 
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            var genres = query
-                .SelectMany(x => x.MediaGenres)
-                .Select(x => x.GenreId)
+            return shows
+                .SelectMany(x => x.GenresIds)
                 .Distinct();
-
-            return genres.ToList();
         }
 
         public int GetEpisodeCountForShow(string showId, bool includeSpecials = false)
         {
-            var query = _context.Seasons.AsQueryable();
-            query = query.Where(x => x.ParentId == showId);
+            var show = _showCollection.FindById(showId);
 
             if (!includeSpecials)
             {
-                query = query.Where(x => x.IndexNumber != 0);
+                return show.Episodes.Count(x => x.IndexNumber != 0);
             }
 
-            var count = query.Include(x => x.SeasonEpisodes)
-                 .SelectMany(x => x.SeasonEpisodes)
-                 .Count();
-
-            return count;
+            return show.Episodes.Count();
         }
 
         public int GetSeasonCountForShow(string showId, bool includeSpecials = false)
         {
-            var query = _context.Seasons.AsQueryable();
-            query = query.Where(x => x.ParentId == showId);
+            var show = _showCollection.FindById(showId);
 
             if (!includeSpecials)
             {
-                query = query.Where(x => x.IndexNumber != 0);
+                return show.Seasons.Count(x => x.IndexNumber != 0);
             }
-
-            return query.Count();
+            
+            return show.Seasons.Count();
         }
 
         public bool Any()
         {
-            return _context.Shows.Any();
+            return _showCollection.Exists(Query.All());
         }
 
         public Episode GetEpisodeById(string id)
         {
-            return _context.Episodes
-                .Include(x => x.SeasonEpisodes)
-                .ThenInclude(x => x.Season)
-                .SingleOrDefault(x => x.Id == id);
+            var show = _showCollection.Find(Query.EQ("Episodes[*].Id", id));
+            return show.Single().Episodes.Single(x => x.Id == id);
         }
     }
 }

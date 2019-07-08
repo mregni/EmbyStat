@@ -3,38 +3,64 @@ using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using LiteDB;
+using MediaBrowser.Model.Extensions;
 
 namespace EmbyStat.Repositories
 {
     public class SessionRepository : ISessionRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<Session> _sessionCollection;
+        private readonly LiteCollection<Play> _playCollection;
 
-        public SessionRepository(ApplicationDbContext context)
+        public SessionRepository(IDbContext context)
         {
-            _context = context;
+            _sessionCollection = context.GetContext().GetCollection<Session>();
+            _playCollection = context.GetContext().GetCollection<Play>();
         }
 
-        public List<string> GetMediaIdsForUser(string id, PlayType type)
+        public bool DoesSessionExists(string sessionId)
         {
-            return _context.Sessions
-                .Where(x => x.UserId == id)
-                .Include(x => x.Plays)
-                .SelectMany(x => x.Plays)
-                .Where(x => x.Type == type)
-                .Select(x => x.MediaId)
-                .ToList();
+            return _sessionCollection.Exists(Query.EQ("_id", sessionId));
         }
 
-        public IEnumerable<Play> GetPlaysForUser(string id)
+        public void UpsertPlayLogs(Session session)
         {
-            return _context.Sessions
-                .Where(x => x.UserId == id)
-                .Include(x => x.Plays)
-                .SelectMany(x => x.Plays)
-                .Include(x => x.PlayStates)
-                .Include(x => x.Session);
+            var dbSession = _sessionCollection.FindById(session.Id);
+            var dbPlay = _playCollection.FindById(session.Plays.Single().Id);
+
+            if (dbPlay == null)
+            {
+                dbSession.Plays.Add(session.Plays.Single());
+            }
+            else
+            {
+                dbPlay.PlayStates.Add(session.Plays.Single().PlayStates.Single());
+            }
+
+            _sessionCollection.Update(dbSession);
+        }
+
+        public void CreateSession(Session session)
+        {
+            _sessionCollection.Insert(session);
+        }
+
+        public IEnumerable<string> GetMediaIdsForUser(string userId, PlayType type)
+        {
+            return _playCollection.Find(Query.And(Query.EQ("UserId", userId), Query.EQ("Type", (int)type)))
+                .DistinctBy(x => x.MediaId)
+                .Select(x => x.MediaId);
+        }
+
+        public IEnumerable<Session> GetSessionsForUser(string userId)
+        {
+            return _sessionCollection.Find(Query.EQ("UserId", userId));
+        }
+
+        public int GetPlayCountForUser(string userId)
+        {
+            return _playCollection.Count(Query.EQ("UserId", userId));
         }
     }
 }

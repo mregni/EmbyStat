@@ -20,7 +20,6 @@ using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
 using NLog;
-using NLog.Fluent;
 
 namespace EmbyStat.Services
 {
@@ -73,7 +72,8 @@ namespace EmbyStat.Services
                         settings.Emby.ServerName = udpBroadcastResult.Name;
                         _settingsService.SaveUserSettings(settings);
 
-                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address)) { 
+                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address))
+                        {
                             _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
                         }
 
@@ -162,12 +162,12 @@ namespace EmbyStat.Services
 
         #region Users
 
-        public IEnumerable<User> GetAllUsers()
+        public IEnumerable<EmbyUser> GetAllUsers()
         {
             return _embyRepository.GetAllUsers();
         }
 
-        public User GetUserById(string id)
+        public EmbyUser GetUserById(string id)
         {
             return _embyRepository.GetUserById(id);
         }
@@ -178,7 +178,7 @@ namespace EmbyStat.Services
             return new Card<int>
             {
                 Title = Constants.Users.TotalWatchedEpisodes,
-                Value = episodeIds.Count
+                Value = episodeIds.Count()
             };
         }
 
@@ -188,22 +188,31 @@ namespace EmbyStat.Services
             return new Card<int>
             {
                 Title = Constants.Users.TotalWatchedMovies,
-                Value = movieIds.Count
+                Value = movieIds.Count()
             };
         }
 
         public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
         {
-            var plays = _sessionService.GetPlaysPageForUser(id, page, size);
+            var skip = page * size;
+            var sessions = _sessionService.GetSessionsForUser(id).ToList();
+            var plays = sessions.SelectMany(x => x.Plays).Skip(skip).Take(size).ToList();
+            var deviceIds = sessions.Where(x => plays.Any(y => x.Plays.Any(z => z.Id == y.Id))).Select(x => x.DeviceId);
+
+            var devices = _embyRepository.GetDeviceById(deviceIds).ToList();
+
             foreach (var play in plays)
             {
+                var currentSession = sessions.Single(x => Enumerable.Any<Play>(x.Plays, y => y.Id == play.Id));
+                var device = devices.Single(x => x.Id == currentSession.DeviceId);
+
                 if (play.Type == PlayType.Movie)
                 {
-                    yield return CreateUserMediaViewFromMovie(play);
+                    yield return CreateUserMediaViewFromMovie(play, device);
                 }
                 else if (play.Type == PlayType.Episode)
                 {
-                    yield return CreateUserMediaViewFromEpisode(play);
+                    yield return CreateUserMediaViewFromEpisode(play, device);
                 }
 
                 //if media is null this means a user has watched something that is not yet in our DB
@@ -229,7 +238,7 @@ namespace EmbyStat.Services
                 server.LocalAddress = string.Empty;
             }
 
-            _embyRepository.AddOrUpdateServerInfo(server);
+            _embyRepository.UpsertServerInfo(server);
         }
 
         public async Task GetAndProcessPluginInfo(string embyAddress, string accessToken)
@@ -243,27 +252,27 @@ namespace EmbyStat.Services
         {
             var usersJson = await _embyClient.GetEmbyUsersAsync();
             var users = UserConverter.ConvertToUserList(usersJson).ToList();
-            await _embyRepository.AddOrUpdateUsers(users);
+            _embyRepository.UpsertUsers(users);
 
             var localUsers = _embyRepository.GetAllUsers();
             var removedUsers = localUsers.Where(u => users.All(u2 => u2.Id != u.Id));
-            await _embyRepository.MarkUserAsDeleted(removedUsers);
+            _embyRepository.MarkUsersAsDeleted(removedUsers);
         }
 
         public async Task GetAndProcessDevices(string embyAddress, string accessToken)
         {
             var devicesJson = await _embyClient.GetEmbyDevicesAsync();
             var devices = DeviceConverter.ConvertToDeviceList(devicesJson).ToList();
-            await _embyRepository.AddOrUpdateDevices(devices);
+            _embyRepository.UpsertDevices(devices);
 
             var localDevices = _embyRepository.GetAllDevices();
             var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
-            await _embyRepository.MarkDeviceAsDeleted(removedDevices);
+            _embyRepository.MarkDevicesAsDeleted(removedDevices);
         }
 
         #endregion
 
-        private UserMediaView CreateUserMediaViewFromMovie(Play play)
+        private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
         {
             var movie = _movieRepository.GetMovieById(play.MediaId);
             if (movie == null)
@@ -275,7 +284,6 @@ namespace EmbyStat.Services
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
             var watchedTime = endedPlaying - startedPlaying;
 
-            var device = _embyRepository.GetDeviceById(play.Session.DeviceId);
             return new UserMediaView
             {
                 Id = movie.Id,
@@ -286,12 +294,12 @@ namespace EmbyStat.Services
                 EndedWatching = endedPlaying,
                 WatchedTime = Math.Round(watchedTime.TotalSeconds),
                 WatchedPercentage = CalculateWatchedPercentage(play, movie),
-                DeviceId = play.Session.DeviceId,
+                DeviceId = device.Id,
                 DeviceLogo = device?.IconUrl ?? ""
             };
         }
 
-        private UserMediaView CreateUserMediaViewFromEpisode(Play play)
+        private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
         {
             var episode = _showRepository.GetEpisodeById(play.MediaId);
             if (episode == null)
@@ -299,7 +307,7 @@ namespace EmbyStat.Services
                 throw new BusinessException("EPISODENOTFOUND");
             }
 
-            var season = episode.SeasonEpisodes.First(x => x.SeasonId == play.ParentId).Season;
+            var season = _showRepository.GetSeasonById(play.ParentId);
             var seasonNumber = season.IndexNumber;
             var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 
@@ -307,7 +315,6 @@ namespace EmbyStat.Services
             var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
             var watchedTime = endedPlaying - startedPlaying;
 
-            var device = _embyRepository.GetDeviceById(play.Session.DeviceId);
 
             return new UserMediaView
             {
@@ -319,7 +326,7 @@ namespace EmbyStat.Services
                 EndedWatching = endedPlaying,
                 WatchedTime = Math.Round(watchedTime.TotalSeconds),
                 WatchedPercentage = CalculateWatchedPercentage(play, episode),
-                DeviceId = play.Session.DeviceId,
+                DeviceId = device.Id,
                 DeviceLogo = device?.IconUrl ?? ""
             };
         }

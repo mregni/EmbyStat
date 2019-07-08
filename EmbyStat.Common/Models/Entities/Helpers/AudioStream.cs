@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class AudioStream
     {
-        [Key]
+        [BsonId]
         public string Id { get; set; }
         public long? BitRate { get; set; }
         public string ChannelLayout { get; set; }
@@ -12,7 +12,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public string Codec { get; set; }
         public string Language { get; set; }
         public int? SampleRate { get; set; }
-        public Video Video { get; set; }
         public string VideoId { get; set; }
     }
 }

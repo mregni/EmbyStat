@@ -32,15 +32,15 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJob()
         {
-            await _statisticsRepository.CleanupStatistics();
+            _statisticsRepository.CleanupStatistics();
             await LogProgress(33);
             await LogInformation("Removed old statistic results.");
 
-            await _personRepository.CleanupPersons();
+            _personRepository.CleanupPersons();
             await LogProgress(66);
             await LogInformation("Removed unused people.");
 
-            await _genreRepository.CleanupGenres();
+            _genreRepository.CleanupGenres();
             await LogInformation("Removed unused genres.");
         }
     }

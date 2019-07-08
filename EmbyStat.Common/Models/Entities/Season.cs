@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Entities.Joins;
+﻿using EmbyStat.Common.Models.Entities.Helpers;
 
 namespace EmbyStat.Common.Models.Entities
 {
@@ -8,12 +6,5 @@ namespace EmbyStat.Common.Models.Entities
     {
         public int? IndexNumber { get; set; }
         public int? IndexNumberEnd { get; set; }
-        public ICollection<SeasonEpisode> SeasonEpisodes { get; set; }
-        public Show Show { get; set; }
-
-        public Season()
-        {
-            SeasonEpisodes = new List<SeasonEpisode>();
-        }
     }
 }

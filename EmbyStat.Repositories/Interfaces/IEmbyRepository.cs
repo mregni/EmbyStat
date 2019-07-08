@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using Device = EmbyStat.Common.Models.Entities.Device;
 
@@ -20,22 +19,22 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region Emby Server Info
         ServerInfo GetServerInfo();
-        void AddOrUpdateServerInfo(ServerInfo entity);
+        void UpsertServerInfo(ServerInfo entity);
         #endregion
 
         #region Emby Users
-        Task AddOrUpdateUsers(IEnumerable<User> users);
-        IEnumerable<User> GetAllUsers();
-        Task MarkUserAsDeleted(IEnumerable<User> users);
-        User GetUserById(string id);
+        void UpsertUsers(IEnumerable<EmbyUser> users);
+        IEnumerable<EmbyUser> GetAllUsers();
+        void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);
+        EmbyUser GetUserById(string id);
 
         #endregion
 
         #region Devices
         IEnumerable<Device> GetAllDevices();
-        Device GetDeviceById(string id);
-        Task MarkDeviceAsDeleted(IEnumerable<Device> devices);
-        Task AddOrUpdateDevices(IEnumerable<Device> devices);
+        IEnumerable<Device> GetDeviceById(IEnumerable<string> ids);
+        void MarkDevicesAsDeleted(IEnumerable<Device> devices);
+        void UpsertDevices(IEnumerable<Device> devices);
 
         #endregion
     }

@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using CommandLine;
 using EmbyStat.Common;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Repositories.Migrations;
-using FluentMigrator.Runner;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Fluent;
 using NLog.Web;
-using Rollbar;
 
 namespace EmbyStat.Web
 {
@@ -87,7 +82,8 @@ namespace EmbyStat.Web
                 {
                     UpdateDatabase();
                     var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
-                    databaseInitializer.SeedAsync().Wait();
+                    databaseInitializer.CreateIndexes();
+                    databaseInitializer.SeedAsync();
                 }
                 catch (Exception ex)
                 {
@@ -100,16 +96,16 @@ namespace EmbyStat.Web
 
         private static void UpdateDatabase()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddFluentMigratorCore()
-                .ConfigureRunner(rb => rb
-                    .AddSQLite()
-                    .WithGlobalConnectionString("Data Source=data.db")
-                    .ScanIn(typeof(InitMigration).Assembly).For.Migrations())
-                .BuildServiceProvider(false);
+            //var serviceProvider = new ServiceCollection()
+            //    .AddFluentMigratorCore()
+            //    .ConfigureRunner(rb => rb
+            //        .AddSQLite()
+            //        .WithGlobalConnectionString("Data Source=data.db")
+            //        .ScanIn(typeof(InitMigration).Assembly).For.Migrations())
+            //    .BuildServiceProvider(false);
 
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp();
+            //var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+            //runner.MigrateUp();
         }
     }
 }

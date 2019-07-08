@@ -63,11 +63,6 @@ namespace EmbyStat.Common
             public static string Boxset => "BoxSet";
         }
 
-        public static class EmbyStatus
-        {
-            public static string MissedPings => "MISSEDPINGS";
-        }
-
         public static class LogPrefix
         {
             public static string ServerApi => "SERVER-API";
@@ -127,7 +122,7 @@ namespace EmbyStat.Common
             public static string Genres => "Genres";
             public static string Languages => "Languages";
             public static string Media => "Media";
-            public static string People => "People";
+            public static string People => "PeopleIds";
             public static string Plugins => "Plugins";
             public static string ServerInfo => "ServerInfo";
             public static string Statistics => "Statistics";

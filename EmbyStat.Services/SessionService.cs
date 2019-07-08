@@ -16,49 +16,38 @@ namespace EmbyStat.Services
             _sessionRepository = sessionRepository;
         }
 
-        public List<string> GetMediaIdsForUser(string id, PlayType type)
+        public IEnumerable<string> GetMediaIdsForUser(string id, PlayType type)
         {
             return _sessionRepository.GetMediaIdsForUser(id, type);
         }
 
-        public IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size)
+        public IEnumerable<Session> GetSessionsForUser(string id)
         {
-            var plays = _sessionRepository.GetPlaysForUser(id);
-            var cleanedPlays = CleanPlayList(plays);
-
-            return cleanedPlays
-                .Select(x => x.PlayStates.First())
-                .OrderByDescending(x => x.TimeLogged)
-                .Select(x => x.Play)
-                .Skip(page * size)
-                .Take(size);
+            return _sessionRepository.GetSessionsForUser(id);
         }
 
         public int GetPlayCountForUser(string id)
         {
-            var plays = _sessionRepository.GetPlaysForUser(id);
-            return CleanPlayList(plays).Count();
+            return _sessionRepository.GetPlayCountForUser(id);
         }
 
-        /// <summary>
-        /// When 2 states in the same play are logged more then 1 hour time in between we calculate this as a new play entry.
-        /// If not, we will presume that the previous state is connected with the current one.
-        /// </summary>
-        /// <param name="plays">List of Play that needs to be cleaned</param>
-        /// <returns>Clean Play list</returns>
-        private IEnumerable<Play> CleanPlayList(IEnumerable<Play> plays)
+        public void ProcessSessions(List<Session> sessions)
         {
-            foreach (var play in plays)
+            foreach (var session in sessions)
             {
-                PlayState prevState = null;
-                foreach (var state in play.PlayStates)
-                {
-                    if (prevState == null || state.TimeLogged > prevState.TimeLogged.AddHours(1))
-                    {
-                        yield return play;
-                    }
+                var sessionExists = _sessionRepository.DoesSessionExists(session.Id);
 
-                    prevState = state;
+                if (sessionExists && session.Plays.Count == 1)
+                {
+                    _sessionRepository.UpsertPlayLogs(session);
+                }
+                else if (!sessionExists)
+                {
+                    _sessionRepository.CreateSession(session);
+                }
+                else
+                {
+                    //Not playing anything but session is alive
                 }
             }
         }

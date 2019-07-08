@@ -45,7 +45,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.MovieCollectionTypes);
         }
 
-        public async Task<MovieStats>  GetGeneralStatsForCollections(List<string> collectionIds)
+        public MovieStats GetGeneralStatsForCollections(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
 
@@ -56,7 +56,7 @@ namespace EmbyStat.Services
             }
             else
             {
-                var movies = _movieRepository.GetAll(collectionIds, true);
+                var movies = _movieRepository.GetAll(collectionIds).ToList();
 
                 stats = new MovieStats
                 {
@@ -73,7 +73,7 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGeneral, collectionIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGeneral, collectionIds);
             }
 
             return stats;
@@ -102,13 +102,13 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionIds);
             }
 
             return stats;
         }
 
-        public async Task<MovieCharts> GetCharts(List<string> collectionIds)
+        public MovieCharts GetCharts(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieCharts);
 
@@ -119,7 +119,7 @@ namespace EmbyStat.Services
             }
             else
             {
-                var movies = _movieRepository.GetAll(collectionIds, true);
+                var movies = _movieRepository.GetAll(collectionIds).ToList();
 
                 stats = new MovieCharts();
                 stats.BarCharts.Add(CalculateGenreChart(movies));
@@ -128,13 +128,13 @@ namespace EmbyStat.Services
                 stats.BarCharts.Add(CalculateOfficialRatingChart(movies));
 
                 var json = JsonConvert.SerializeObject(stats);
-               await  _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieCharts, collectionIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieCharts, collectionIds);
             }
 
             return stats;
         }
 
-        public async Task<SuspiciousTables> GetSuspiciousMovies(List<string> collectionIds)
+        public SuspiciousTables GetSuspiciousMovies(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
 
@@ -145,7 +145,7 @@ namespace EmbyStat.Services
             }
             else
             {
-                var movies = _movieRepository.GetAll(collectionIds, true);
+                var movies = _movieRepository.GetAll(collectionIds).ToList();
                 stats = new SuspiciousTables
                 {
                     Duplicates = GetDuplicates(movies),
@@ -155,7 +155,7 @@ namespace EmbyStat.Services
                 };
 
                 var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionIds);
             }
 
             return stats;
@@ -217,7 +217,7 @@ namespace EmbyStat.Services
             return noPrimaryImageMovies;
         }
 
-        private List<MovieDuplicate> GetDuplicates(IReadOnlyCollection<Movie> movies)
+        private List<MovieDuplicate> GetDuplicates(List<Movie> movies)
         {
             var list = new List<MovieDuplicate>();
 
@@ -257,8 +257,7 @@ namespace EmbyStat.Services
             return new Card<int>
             {
                 Title = Constants.Movies.TotalGenres,
-                Value = movies.SelectMany(x => x.MediaGenres)
-                              .Select(x => x.GenreId)
+                Value = movies.Select(x => x.GenresIds)
                               .Distinct()
                               .Count()
             };
@@ -385,7 +384,7 @@ namespace EmbyStat.Services
         {
             return new Card<int>
             {
-                Value = _movieRepository.GetTotalPersonByType(collectionsIds, type),
+                Value = _movieRepository.GetTotalPeopleByType(collectionsIds, type),
                 Title = title
             };
         }
@@ -406,18 +405,18 @@ namespace EmbyStat.Services
 
         private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(List<string> collectionIds)
         {
-            var movies = _movieRepository.GetAll(collectionIds, true);
+            var movies = _movieRepository.GetAll(collectionIds);
             var genreIds = _movieRepository.GetGenres(collectionIds);
-            var genres = _genreRepository.GetListByIds(genreIds);
+            var genres = _genreRepository.GetGenres(genreIds);
 
             var list = new List<PersonPoster>();
             foreach (var genre in genres.OrderBy(x => x.Name))
             {
-                var selectedMovies = movies.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
+                var selectedMovies = movies.Where(x => x.GenresIds.Any(y => y == genre.Id));
                 var personId = selectedMovies
-                    .SelectMany(x => x.ExtraPersons)
+                    .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.PersonId)
+                    .GroupBy(x => x.Id)
                     .Select(group => new { Id = group.Key, Count = group.Count() })
                     .OrderByDescending(x => x.Count)
                     .Select(x => x.Id)
@@ -437,7 +436,7 @@ namespace EmbyStat.Services
         private Chart CalculateGenreChart(IEnumerable<Movie> movies)
         {
             var genres = _genreRepository.GetAll();
-            var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
+            var genresData = movies.SelectMany(x => x.GenresIds).GroupBy(x => x)
                 .Select(x => new { Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count() })
                 .OrderBy(x => x.Name)
                 .ToList();
@@ -466,8 +465,6 @@ namespace EmbyStat.Services
                 DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
             };
         }
-
-
         #endregion
     }
 }

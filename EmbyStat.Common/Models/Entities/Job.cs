@@ -1,12 +1,12 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using EmbyStat.Common.Models.Tasks.Enum;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
     public class Job
     {
-        [Key]
+        [BsonId]
         public Guid Id { get; set; }
         public JobState State { get; set; }
         public double? CurrentProgressPercentage { get; set; }

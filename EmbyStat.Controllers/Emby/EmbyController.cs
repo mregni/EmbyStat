@@ -3,12 +3,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 
 namespace EmbyStat.Controllers.Emby
 {

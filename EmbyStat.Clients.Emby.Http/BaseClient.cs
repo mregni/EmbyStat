@@ -10,7 +10,6 @@ using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Net;
-using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Querying;
 using NLog;
 

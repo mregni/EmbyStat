@@ -4,14 +4,12 @@ using System.IO;
 using Castle.Components.DictionaryAdapter;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
-using Rollbar = EmbyStat.Common.Models.Settings.Rollbar;
 
 namespace Tests.Unit.Services
 {

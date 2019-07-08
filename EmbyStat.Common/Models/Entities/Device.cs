@@ -1,11 +1,11 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
     public class Device
     {
-        [Key]
+        [BsonId]
 		public string Id { get; set; }
         public string Name { get; set; }
 		public string AppName { get; set; }

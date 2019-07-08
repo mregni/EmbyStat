@@ -141,6 +141,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\server\models\" />
     <Folder Include="ClientApp\src\app\server\state\" />
+    <Folder Include="Database\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

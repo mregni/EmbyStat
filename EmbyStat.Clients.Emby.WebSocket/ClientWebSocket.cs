@@ -3,7 +3,6 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
-using NLog.Fluent;
 using WebSocket4Net;
 using WebSocketState = WebSocket4Net.WebSocketState;
 

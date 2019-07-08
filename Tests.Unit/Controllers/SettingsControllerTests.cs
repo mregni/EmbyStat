@@ -7,7 +7,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.Settings;
-using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
@@ -77,10 +76,12 @@ namespace Tests.Unit.Controllers
                 });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid()).Returns(Task.CompletedTask);
-            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid()).Returns(Task.CompletedTask);
+            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
+            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
 
-            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, mapperMock.Object);
+            var languageServiceMock = new Mock<ILanguageService>();
+
+            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object);
 		}
 
 	    public void Dispose()

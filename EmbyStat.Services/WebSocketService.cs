@@ -92,16 +92,16 @@ namespace EmbyStat.Services
 
         private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
         {
-            _logger.Info("User data changed");
+            _logger.Info("EmbyUser data changed");
         }
 
-        private async void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
+        private void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
-                var eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
+                var sessionService = scope.ServiceProvider.GetRequiredService<ISessionService>();
                 var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
-                await eventService.ProcessSessions(sessions);
+                sessionService.ProcessSessions(sessions);
             }
         }
 

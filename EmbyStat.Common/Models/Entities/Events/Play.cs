@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using EmbyStat.Common.Enums;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Events
 {
     public class Play
     {
-        [Key]
+        [BsonId]
         public Guid Id { get; set; }
+        public string SessionId { get; set; }
+        public string UserId { get; set; }
         public PlayType Type { get; set; }
         public string MediaId { get; set; }
         public ICollection<PlayState> PlayStates { get; set; }
@@ -24,8 +26,6 @@ namespace EmbyStat.Common.Models.Entities.Events
         public double? VideoAverageFrameRate { get; set; }
         public double? VideoRealFrameRate { get; set; }
         public string VideoAspectRatio { get; set; }
-        public string SessionId { get; set; }
-        public Session Session { get; set; }
         public string ParentId { get; set; }
 
         public Play()

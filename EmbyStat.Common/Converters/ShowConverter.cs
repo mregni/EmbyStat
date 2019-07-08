@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Entities.Joins;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
@@ -30,27 +28,25 @@ namespace EmbyStat.Common.Converters
                 TMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value,
                 TVDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value,
                 OfficialRating = show.OfficialRating,
-                Overview = show.Overview,
                 PremiereDate = show.PremiereDate,
                 ProductionYear = show.ProductionYear,
                 RunTimeTicks = show.RunTimeTicks,
                 SortName = show.SortName,
                 Status = show.Status,
-                MediaGenres = show.GenreItems.Select(y => new MediaGenre
-                {
-                    GenreId = y.Id.ToString(),
-                    MediaId = show.Id
-                }).ToList(),
-                ExtraPersons = show.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson
-                {
-                    ExtraId = show.Id,
-                    PersonId = y.Id,
-                    Type = y.Type
-                }).ToList()
+                GenresIds = show.Genres,
+                People = show.People
+                    .GroupBy(y => y.Id)
+                    .Select(y => y.First())
+                    .Select(y => new ExtraPerson
+                    {
+                        Id = y.Id,
+                        Name = y.Name,
+                        Type = y.Type
+                    }).ToList()
             };
         }
 
-        public static Season ConvertToSeason(BaseItemDto season, IEnumerable<Tuple<string, string>> episodes)
+        public static Season ConvertToSeason(BaseItemDto season)
         {
             return new Season
             {
@@ -67,12 +63,7 @@ namespace EmbyStat.Common.Converters
                 Primary = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,
-                Banner = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value,
-                SeasonEpisodes = episodes.Select(x => new SeasonEpisode
-                {
-                    EpisodeId = x.Item2,
-                    SeasonId = season.Id
-                }).ToList()
+                Banner = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value
             };
         }
 
@@ -83,7 +74,7 @@ namespace EmbyStat.Common.Converters
                 Id = episode.Id,
                 Name = episode.Name,
                 Path = episode.Path,
-                ParentId = string.Empty,
+                ParentId = episode.ParentId,
                 CommunityRating = episode.CommunityRating,
                 Container = episode.Container,
                 DateCreated = episode.DateCreated,
@@ -91,7 +82,6 @@ namespace EmbyStat.Common.Converters
                 IndexNumber = episode.IndexNumber,
                 IndexNumberEnd = episode.IndexNumberEnd,
                 MediaType = episode.Type,
-                Overview = episode.Overview,
                 ProductionYear = episode.ProductionYear,
                 PremiereDate = episode.PremiereDate,
                 RunTimeTicks = episode.RunTimeTicks,
@@ -107,7 +97,6 @@ namespace EmbyStat.Common.Converters
                 AudioStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Audio).Select(y => new AudioStream
                 {
                     Id = Guid.NewGuid().ToString(),
-                    VideoId = episode.Id,
                     BitRate = y.BitRate,
                     ChannelLayout = y.ChannelLayout,
                     Channels = y.Channels,
@@ -121,13 +110,11 @@ namespace EmbyStat.Common.Converters
                     Language = y.Language,
                     Codec = y.Codec,
                     DisplayTitle = y.DisplayTitle,
-                    IsDefault = y.IsDefault,
-                    VideoId = episode.Id
+                    IsDefault = y.IsDefault
                 }).ToList(),
                 VideoStreams = episode.MediaStreams.Where(y => y.Type == MediaStreamType.Video).Select(y => new VideoStream
                 {
                     Id = Guid.NewGuid().ToString(),
-                    VideoId = episode.Id,
                     Language = y.Language,
                     BitRate = y.BitRate,
                     AspectRatio = y.AspectRatio,
@@ -143,8 +130,7 @@ namespace EmbyStat.Common.Converters
                     BitRate = y.Bitrate,
                     Container = y.Container,
                     Protocol = y.Protocol.ToString(),
-                    RunTimeTicks = y.RunTimeTicks,
-                    VideoId = episode.Id
+                    RunTimeTicks = y.RunTimeTicks
                 }).ToList()
             };
         }

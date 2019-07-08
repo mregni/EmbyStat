@@ -1,135 +1,204 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
+using LiteDB;
 using NLog;
+using Logger = NLog.Logger;
 
 namespace EmbyStat.Repositories
 {
     public class DatabaseInitializer : IDatabaseInitializer
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbContext _context;
         private readonly Logger _logger;
 
-        public DatabaseInitializer(ApplicationDbContext context)
+        public DatabaseInitializer(IDbContext context)
         {
             _context = context;
             _logger = LogManager.GetCurrentClassLogger();
         }
 
-        public async Task SeedAsync()
+        public void CreateIndexes()
         {
-            await SeedLanguages();
-            await SeedEmbyStatus();
-            await SeedJobs();
+            var collectionCollection = _context.GetContext().GetCollection<Collection>();
+            collectionCollection.EnsureIndex(x => x.Id, true);
 
-            await _context.SaveChangesAsync();
+            var deviceCollection = _context.GetContext().GetCollection<Device>();
+            deviceCollection.EnsureIndex(x => x.Id, true);
+
+            var embyStatusCollection = _context.GetContext().GetCollection<EmbyStatus>();
+            embyStatusCollection.EnsureIndex(x => x.Id, true);
+
+            var embyUserCollection = _context.GetContext().GetCollection<EmbyUser>();
+            embyUserCollection.EnsureIndex(x => x.Id, true);
+
+            var episodeCollection = _context.GetContext().GetCollection<Episode>();
+            episodeCollection.EnsureIndex(x => x.Id, true);
+            episodeCollection.EnsureIndex(x => x.ParentId);
+
+            var genreCollection = _context.GetContext().GetCollection<Genre>();
+            genreCollection.EnsureIndex(x => x.Id, true);
+
+            var jobsCollection = _context.GetContext().GetCollection<Job>();
+            jobsCollection.EnsureIndex(x => x.Id, true);
+
+            var languageCollection = _context.GetContext().GetCollection<Language>();
+            languageCollection.EnsureIndex(x => x.Id, true);
+
+            var playCollection = _context.GetContext().GetCollection<Play>();
+            playCollection.EnsureIndex(x => x.Id, true);
+            playCollection.EnsureIndex(x => x.UserId);
+
+            var movieCollection = _context.GetContext().GetCollection<Movie>();
+            movieCollection.EnsureIndex(x => x.Id, true);
+
+            var personCollection = _context.GetContext().GetCollection<Person>();
+            personCollection.EnsureIndex(x => x.Id, true);
+
+            var pluginInfoCollection = _context.GetContext().GetCollection<PluginInfo>();
+            pluginInfoCollection.EnsureIndex(x => x.Id, true);
+
+            var seasonCollection = _context.GetContext().GetCollection<Season>();
+            seasonCollection.EnsureIndex(x => x.Id, true);
+            seasonCollection.EnsureIndex(x => x.ParentId);
+
+            var serverInfoCollection = _context.GetContext().GetCollection<ServerInfo>();
+            serverInfoCollection.EnsureIndex(x => x.Id, true);
+
+            var sessionCollection = _context.GetContext().GetCollection<Session>();
+            sessionCollection.EnsureIndex(x => x.Id, true);
+            sessionCollection.EnsureIndex(x => x.UserId);
+
+            var showCollection = _context.GetContext().GetCollection<Show>();
+            showCollection.EnsureIndex(x => x.Id, true);
+
+            var statisticsCollection = _context.GetContext().GetCollection<Statistic>();
+            statisticsCollection.EnsureIndex(x => x.Id, true);
         }
 
-        private async Task SeedLanguages()
+        public void SeedAsync()
+        {
+            SeedLanguages();
+            SeedEmbyStatus();
+            SeedJobs();
+        }
+
+        private void SeedLanguages()
         {
             _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
+            var collection = _context.GetContext().GetCollection<Language>();
 
-            _context.Languages.RemoveRange(_context.Languages);
-
-            var languages = new List<Language>
+            if (!collection.Exists(Query.All()))
             {
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Nederlands", Code = "nl-NL" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "English", Code = "en-US" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Deutsche", Code = "de-DE" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Dansk", Code = "da-DK" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Ελληνικά", Code = "el-GR" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Español", Code = "es-ES" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Suomi", Code = "fi-FI" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Français", Code = "fr-FR" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Magyar", Code = "hu-HU" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Italiano", Code = "it-IT" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Norsk", Code = "no-NO" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Polski", Code = "pl-PL" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Brasileiro", Code = "pt-BR" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Português", Code = "pt-PT" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Românesc", Code = "ro-RO" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "Svenska", Code = "sv-SE" },
-                new Language { Id = Guid.NewGuid().ToString(), Name = "简体中文", Code = "cs-CZ"}
-            };
+                var languages = new List<Language>
+                {
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Nederlands", Code = "nl-NL"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "English", Code = "en-US"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Deutsche", Code = "de-DE"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Dansk", Code = "da-DK"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Ελληνικά", Code = "el-GR"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Español", Code = "es-ES"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Suomi", Code = "fi-FI"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Français", Code = "fr-FR"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Magyar", Code = "hu-HU"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Italiano", Code = "it-IT"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Norsk", Code = "no-NO"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Polski", Code = "pl-PL"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Brasileiro", Code = "pt-BR"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Português", Code = "pt-PT"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Românesc", Code = "ro-RO"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Svenska", Code = "sv-SE"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "简体中文", Code = "cs-CZ"}
+                };
 
-            _context.Languages.AddRange(languages);
-            await _context.SaveChangesAsync();
+                collection.InsertBulk(languages);
+            }
         }
 
-        private async Task SeedEmbyStatus()
+        private void SeedEmbyStatus()
         {
             _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
+            var collection = _context.GetContext().GetCollection<EmbyStatus>();
 
-            var status = _context.EmbyStatus.ToList();
-
-            if (status.All(x => x.Id != Constants.EmbyStatus.MissedPings))
-                _context.EmbyStatus.Add(new EmbyStatusKeyValue { Id = Constants.EmbyStatus.MissedPings, Value = "0" });
-
-            await _context.SaveChangesAsync();
+            if (!collection.Exists(Query.All()))
+            {
+                var status = new EmbyStatus { MissedPings = 0 };
+                collection.Insert(status);
+            }
         }
 
-        private async Task SeedJobs()
+        private void SeedJobs()
         {
             _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+            var collection = _context.GetContext().GetCollection<Job>();
 
-            var jobs = _context.Jobs.ToList();
-
-            if (!jobs.Exists(x => x.Id == Constants.JobIds.CheckUpdateId))
+            if (!collection.Exists(Query.All()))
             {
-                _context.Jobs.Add(new Job
+                var jobs = new List<Job>
                 {
-                    Id = Constants.JobIds.CheckUpdateId, State = JobState.Idle, Description = "CHECKUPDATEDESCRIPTION",
-                    Title = "CHECKUPDATETITLE", Trigger = "0 */12 * * *", CurrentProgressPercentage = 0,
-                    EndTimeUtc = null, StartTimeUtc = null
-                });
-            }
+                    new Job
+                    {
+                        Id = Constants.JobIds.CheckUpdateId,
+                        State = JobState.Idle,
+                        Description = "CHECKUPDATEDESCRIPTION",
+                        Title = "CHECKUPDATETITLE",
+                        Trigger = "0 */12 * * *",
+                        CurrentProgressPercentage = 0,
+                        EndTimeUtc = null,
+                        StartTimeUtc = null
+                    },
+                    new Job
+                    {
+                        Id = Constants.JobIds.SmallSyncId,
+                        State = JobState.Idle,
+                        Description = "SMALLEMBYSYNCDESCRIPTION",
+                        Title = "SMALLEMBYSYNCTITLE",
+                        Trigger = "0 2 * * *",
+                        CurrentProgressPercentage = 0,
+                        EndTimeUtc = null,
+                        StartTimeUtc = null
+                    },
+                    new Job
+                    {
+                        Id = Constants.JobIds.MediaSyncId,
+                        State = JobState.Idle,
+                        Description = "MEDIASYNCDESCRIPTION",
+                        Title = "MEDIASYNCTITLE",
+                        Trigger = "0 3 * * *",
+                        CurrentProgressPercentage = 0,
+                        EndTimeUtc = null,
+                        StartTimeUtc = null
+                    },
+                    new Job
+                    {
+                        Id = Constants.JobIds.PingEmbyId,
+                        State = JobState.Idle,
+                        Description = "PINGEMBYSERVERDESCRIPTION",
+                        Title = "PINGEMBYSERVERTITLE",
+                        Trigger = "*/5 * * * *",
+                        CurrentProgressPercentage = 0,
+                        EndTimeUtc = null,
+                        StartTimeUtc = null
+                    },
+                    new Job
+                    {
+                        Id = Constants.JobIds.DatabaseCleanupId,
+                        State = JobState.Idle,
+                        Description = "DATABASECLEANUPDESCRIPTION",
+                        Title = "DATABASECLEANUPTITLE",
+                        Trigger = "0 4 * * *",
+                        CurrentProgressPercentage = 0,
+                        EndTimeUtc = null,
+                        StartTimeUtc = null
+                    }
+                };
 
-            if (!jobs.Exists(x => x.Id == Constants.JobIds.SmallSyncId))
-            {
-                _context.Jobs.Add(new Job
-                {
-                    Id = Constants.JobIds.SmallSyncId, State = JobState.Idle, Description = "SMALLEMBYSYNCDESCRIPTION",
-                    Title = "SMALLEMBYSYNCTITLE", Trigger = "0 2 * * *", CurrentProgressPercentage = 0,
-                    EndTimeUtc = null, StartTimeUtc = null
-                });
+                collection.InsertBulk(jobs);
             }
-
-            if (!jobs.Exists(x => x.Id == Constants.JobIds.MediaSyncId))
-            {
-                _context.Jobs.Add(new Job
-                {
-                    Id = Constants.JobIds.MediaSyncId, State = JobState.Idle, Description = "MEDIASYNCDESCRIPTION",
-                    Title = "MEDIASYNCTITLE", Trigger = "0 3 * * *", CurrentProgressPercentage = 0, EndTimeUtc = null,
-                    StartTimeUtc = null
-                });
-            }
-
-            if (!jobs.Exists(x => x.Id == Constants.JobIds.PingEmbyId))
-            {
-                _context.Jobs.Add(new Job
-                {
-                    Id = Constants.JobIds.PingEmbyId, State = JobState.Idle, Description = "PINGEMBYSERVERDESCRIPTION",
-                    Title = "PINGEMBYSERVERTITLE", Trigger = "*/5 * * * *", CurrentProgressPercentage = 0,
-                    EndTimeUtc = null, StartTimeUtc = null
-                });
-            }
-
-            if (!jobs.Exists(x => x.Id == Constants.JobIds.DatabaseCleanupId))
-            {
-                _context.Jobs.Add(new Job
-                {
-                    Id = Constants.JobIds.DatabaseCleanupId, State = JobState.Idle,
-                    Description = "DATABASECLEANUPDESCRIPTION", Title = "DATABASECLEANUPTITLE", Trigger = "0 4 * * *",
-                    CurrentProgressPercentage = 0, EndTimeUtc = null, StartTimeUtc = null
-                });
-            }
-
-            await _context.SaveChangesAsync();
         }
     }
 }

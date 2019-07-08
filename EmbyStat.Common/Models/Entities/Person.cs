@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using EmbyStat.Common.Models.Entities.Joins;
+using EmbyStat.Common.Models.Entities.Helpers;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
     public class Person
     {
-        [Key]
+        [BsonId]
         public string Id { get; set; }
         public string Name { get; set; }
         public bool Synced { get; set; }

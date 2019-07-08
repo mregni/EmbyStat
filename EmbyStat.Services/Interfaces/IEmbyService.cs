@@ -30,8 +30,8 @@ namespace EmbyStat.Services.Interfaces
 
         #region Users
 
-        IEnumerable<User> GetAllUsers();
-        User GetUserById(string id);
+        IEnumerable<EmbyUser> GetAllUsers();
+        EmbyUser GetUserById(string id);
         Card<int> GetViewedEpisodeCountByUserId(string id);
         Card<int> GetViewedMovieCountByUserId(string id);
         IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);

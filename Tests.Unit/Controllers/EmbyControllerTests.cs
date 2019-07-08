@@ -53,7 +53,7 @@ namespace Tests.Unit.Controllers
 
 	        var _mapperMock = new Mock<IMapper>();
 	        _mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
-            _mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = true, Token = "azerty", Username = "admin" });
+            _mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = 2, Token = "azerty", Username = "admin" });
 	        _mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "localhost", Name = "emby", Protocol = 0, Port = 80});
 
 		    _subject = new EmbyController(_embyServiceMock.Object, _mapperMock.Object);
@@ -79,7 +79,7 @@ namespace Tests.Unit.Controllers
 		    var tokenObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var token = tokenObject.Should().BeOfType<EmbyTokenViewModel>().Subject;
 
-		    token.IsAdmin.Should().Be(_token.IsAdmin);
+		    token.IsAdmin.Should().Be(2);
 		    token.Token.Should().Be(_token.Token);
 		    token.Username.Should().Be(_token.Username);
 	    }

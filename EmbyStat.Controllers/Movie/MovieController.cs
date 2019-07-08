@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
@@ -30,34 +29,34 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("generalstats")]
-        public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
+        public IActionResult GetGeneralStats(List<string> collectionIds)
         {
-            var result = await _movieService.GetGeneralStatsForCollections(collectionIds);
+            var result = _movieService.GetGeneralStatsForCollections(collectionIds);
             var convert = _mapper.Map<MovieStatsViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
         [Route("peoplestats")]
-        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
+        public IActionResult GetPersonStats(List<string> collectionIds)
         {
-            var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
+            var result = _movieService.GetPeopleStatsForCollections(collectionIds);
             return Ok(_mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]
         [Route("suspicious")]
-        public async Task<IActionResult> GetDuplicates(List<string> collectionIds)
+        public IActionResult GetDuplicates(List<string> collectionIds)
         {
-            var result = await _movieService.GetSuspiciousMovies(collectionIds);
+            var result = _movieService.GetSuspiciousMovies(collectionIds);
             return Ok(_mapper.Map<SuspiciousTablesViewModel>(result));
         }
 
         [HttpGet]
         [Route("charts")]
-        public async Task<IActionResult> GetCharts(List<string> collectionIds)
+        public IActionResult GetCharts(List<string> collectionIds)
         {
-            var graphs = await _movieService.GetCharts(collectionIds);
+            var graphs = _movieService.GetCharts(collectionIds);
             return Ok(_mapper.Map<MovieChartsViewModel>(graphs));
         }
 

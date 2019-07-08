@@ -1,52 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using LiteDB;
 
 namespace EmbyStat.Repositories
 {
     public class GenreRepository : IGenreRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<Genre> _genreCollection;
 
-        public GenreRepository(ApplicationDbContext context)
+        public GenreRepository(IDbContext context)
         {
-            _context = context;
+            _genreCollection = context.GetContext().GetCollection<Genre>();
         }
 
-        public void AddRangeIfMissing(IEnumerable<Genre> genres)
+        public void UpsertRange(IEnumerable<Genre> genres)
         {
-            var newGenres = genres.Where(x => _context.Genres.All(y => y.Name != x.Name)).ToList();
-
-            _context.Genres.AddRange(newGenres);
-            _context.SaveChanges();
+            _genreCollection.Upsert(genres);
         }
 
-        public List<Genre> GetAll()
+        public IEnumerable<Genre> GetAll()
         {
-            return _context.Genres.ToList();
+            return _genreCollection.FindAll();
         }
 
-        public List<string> GetIds()
+        public IEnumerable<string> GetIds()
         {
-            return _context.Genres.Select(x => x.Id).ToList();
+            return _genreCollection.FindAll().Select(x => x.Id);
         }
 
-        public List<Genre> GetListByIds(List<string> ids)
+        public IEnumerable<Genre> GetGenres(IEnumerable<string> ids)
         {
-            return _context.Genres.Where(x => ids.Any(y => y == x.Id)).ToList();
+            var bArray = new BsonArray();
+            foreach (var id in ids)
+            {
+                bArray.Add(id);
+            }
+
+            return _genreCollection.Find(Query.In("Id", bArray));
         }
 
-        public async Task CleanupGenres()
+        public void CleanupGenres()
         {
-            var genresToRemove = _context.Genres
-                .Include(x => x.MediaGenres)
-                .Where(x => x.MediaGenres.Count == 0);
-
-            _context.Genres.RemoveRange(genresToRemove);
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }

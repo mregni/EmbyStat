@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class VideoStream
     {
-        [Key]
+        [BsonId]
         public string Id { get; set; }
         public string AspectRatio { get; set; }
         public float? AverageFrameRate { get; set; }
@@ -13,7 +13,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public int? Height { get; set; }
         public string Language { get; set; }
         public int? Width { get; set; }
-        public Video Video { get; set; }
         public string VideoId { get; set; }
     }
 }

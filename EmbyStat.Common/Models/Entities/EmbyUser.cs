@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace EmbyStat.Common.Models.Entities
 {
-    public class User
+    public class EmbyUser
     {
-        [Key]
+        [BsonId]
         public string Id { get; set; }
         public string Name { get; set; }
         public string ServerId { get; set; }
@@ -34,12 +34,8 @@ namespace EmbyStat.Common.Models.Entities
 
     public class UserAccessSchedule
     {
-        [Key]
-        public Guid Id { get; set; }
         public string DayOfWeek { get; set; }
         public long StartHour { get; set; }
         public long EndHour { get; set; }
-        public string UserId { get; set; }
-        public User User { get; set; }
     }
 }
