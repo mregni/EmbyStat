@@ -3,6 +3,10 @@ continuous-delivery-fallback-tag: ''
 mode: ContinuousDeployment
 branches:
   release:
-    tag: ''  
+    regex: release-[0-9-.]*$
+    tag: 'beta'  
+  develop:
+    regex: dev(elop)?(ment)?$
+    tag: 'dev'
 ignore:
   sha: []
