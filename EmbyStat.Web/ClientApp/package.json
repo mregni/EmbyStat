@@ -41,7 +41,7 @@
     "countup.js-angular2": "6.1.1",
     "d3": "5.9.2",
     "hammerjs": "^2.0.8",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "ng2-tooltip-directive": "^2.1.9",
     "ngrx-store-freeze": "0.2.4",
