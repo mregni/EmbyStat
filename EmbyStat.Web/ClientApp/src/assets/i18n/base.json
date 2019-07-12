@@ -308,7 +308,7 @@
     "SERVERINFO": "Server info",
     "REQUESTFEATURE": "Request feature",
     "LOGBUG": "Log bug on Github",
-    "STARTTRANSLATE": "Start translating the app",
+    "HELPTRANSLATE": "Help translate the app",
     "THANKS": {
       "TITLE": "Thanks",
       "TEXT": "A big thanks to the following people for translating the app in their native language:"
