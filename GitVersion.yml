@@ -1,12 +1,6 @@
-assembly-versioning-scheme: MajorMinorPatch
 continuous-delivery-fallback-tag: ''
-mode: ContinuousDeployment
 branches:
-  release:
-    regex: release-[0-9-.]*$
-    tag: 'beta'  
   develop:
-    regex: dev(elop)?(ment)?$
     tag: 'dev'
 ignore:
   sha: []
