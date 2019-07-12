@@ -9,10 +9,7 @@ namespace EmbyStat.Services.Interfaces
     public interface IMovieService
     {
         IEnumerable<Collection> GetMovieCollections();
-        MovieStats GetGeneralStatsForCollections(List<string> collectionIds);
-        Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionsIds);
-        MovieCharts GetCharts(List<string> collectionIds);
-        SuspiciousTables GetSuspiciousMovies(List<string> collectionIds);
+        Task<MovieStatistics> GetMovieStatistics(List<string> collectionIds);
         bool TypeIsPresent();
     }
 }

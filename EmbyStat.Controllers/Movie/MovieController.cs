@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
@@ -28,36 +29,12 @@ namespace EmbyStat.Controllers.Movie
         }
 
         [HttpGet]
-        [Route("generalstats")]
-        public IActionResult GetGeneralStats(List<string> collectionIds)
+        [Route("statistics")]
+        public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
         {
-            var result = _movieService.GetGeneralStatsForCollections(collectionIds);
-            var convert = _mapper.Map<MovieStatsViewModel>(result);
+            var result = await _movieService.GetMovieStatistics(collectionIds);
+            var convert = _mapper.Map<MovieStatisticsViewModel>(result);
             return Ok(convert);
-        }
-
-        [HttpGet]
-        [Route("peoplestats")]
-        public IActionResult GetPersonStats(List<string> collectionIds)
-        {
-            var result = _movieService.GetPeopleStatsForCollections(collectionIds);
-            return Ok(_mapper.Map<PersonStatsViewModel>(result));
-        }
-
-        [HttpGet]
-        [Route("suspicious")]
-        public IActionResult GetDuplicates(List<string> collectionIds)
-        {
-            var result = _movieService.GetSuspiciousMovies(collectionIds);
-            return Ok(_mapper.Map<SuspiciousTablesViewModel>(result));
-        }
-
-        [HttpGet]
-        [Route("charts")]
-        public IActionResult GetCharts(List<string> collectionIds)
-        {
-            var graphs = _movieService.GetCharts(collectionIds);
-            return Ok(_mapper.Map<MovieChartsViewModel>(graphs));
         }
 
         [HttpGet]

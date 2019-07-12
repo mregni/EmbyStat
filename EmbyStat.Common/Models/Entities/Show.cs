@@ -12,8 +12,8 @@ namespace EmbyStat.Common.Models.Entities
         public int MissingEpisodesCount { get; set; }
         public bool TvdbFailed { get; set; }
         [BsonRef(nameof(Season))]
-        public IEnumerable<Season> Seasons { get; set; }
+        public List<Season> Seasons { get; set; }
         [BsonRef(nameof(Episode))]
-        public IEnumerable<Episode> Episodes { get; set; }
+        public List<Episode> Episodes { get; set; }
     }
 }

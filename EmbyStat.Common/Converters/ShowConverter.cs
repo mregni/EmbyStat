@@ -9,11 +9,12 @@ namespace EmbyStat.Common.Converters
 {
     public static class ShowConverter
     {
-        public static Show ConvertToShow(BaseItemDto show)
+        public static Show ConvertToShow(BaseItemDto show, string collectionId)
         {
             return new Show
             {
-                Id = show.Id,
+                Id = Convert.ToInt32(show.Id),
+                CollectionId = collectionId,
                 Primary = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,
@@ -33,7 +34,7 @@ namespace EmbyStat.Common.Converters
                 RunTimeTicks = show.RunTimeTicks,
                 SortName = show.SortName,
                 Status = show.Status,
-                GenresIds = show.Genres,
+                Genres = show.Genres,
                 People = show.People
                     .GroupBy(y => y.Id)
                     .Select(y => y.First())
@@ -50,7 +51,7 @@ namespace EmbyStat.Common.Converters
         {
             return new Season
             {
-                Id = season.Id,
+                Id = Convert.ToInt32(season.Id),
                 Name = season.Name,
                 ParentId = season.ParentId,
                 Path = season.Path,
@@ -67,11 +68,12 @@ namespace EmbyStat.Common.Converters
             };
         }
 
-        public static Episode ConvertToEpisode(BaseItemDto episode)
+        public static Episode ConvertToEpisode(BaseItemDto episode, Show show)
         {
             return new Episode
             {
-                Id = episode.Id,
+                Id = Convert.ToInt32(episode.Id),
+                ShowId = Convert.ToInt32(show.Id),
                 Name = episode.Name,
                 Path = episode.Path,
                 ParentId = episode.ParentId,

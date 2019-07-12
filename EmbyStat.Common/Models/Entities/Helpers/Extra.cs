@@ -11,7 +11,7 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public long? RunTimeTicks { get; set; }
         public string OfficialRating { get; set; }
         public List<ExtraPerson> People { get; set; }
-        public List<string> GenresIds { get; set; }
+        public List<string> Genres { get; set; }
 
     }
 }

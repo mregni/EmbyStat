@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Services.Models.Show
 {
-    public class ShowStat
+    public class ShowGeneral
     {
         public Card<int> ShowCount { get; set; }
         public Card<int> EpisodeCount { get; set; }

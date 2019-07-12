@@ -7,7 +7,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IStatisticsRepository
     {
-        Statistic GetLastResultByType(StatisticType type);
+        Statistic GetLastResultByType(StatisticType type, IReadOnlyList<string> collectionIds);
         void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collectionIds);
         void CleanupStatistics();
         void MarkMovieTypesAsInvalid();

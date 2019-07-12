@@ -58,9 +58,9 @@ namespace EmbyStat.Common.Net
         {
             var taskCompletion = new TaskCompletionSource<WebResponse>();
 
-            Task<WebResponse> asyncTask = Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null);
+            var asyncTask = Task.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
 
-            ThreadPool.RegisterWaitForSingleObject((asyncTask as IAsyncResult).AsyncWaitHandle, TimeoutCallback, request, timeout, true);
+            ThreadPool.RegisterWaitForSingleObject(((IAsyncResult) asyncTask).AsyncWaitHandle, TimeoutCallback, request, timeout, true);
             asyncTask.ContinueWith(task =>
             {
                 taskCompletion.TrySetResult(task.Result);

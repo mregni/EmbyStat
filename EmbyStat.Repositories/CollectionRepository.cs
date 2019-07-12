@@ -16,7 +16,12 @@ namespace EmbyStat.Repositories
         }
         public IEnumerable<Collection> GetCollectionByTypes(IEnumerable<CollectionType> types)
         {
-            return _collectionCollection.Find(x => types.Any(y => y == x.Type));
+            var bArray = new BsonArray();
+            foreach (var type in types)
+            {
+                bArray.Add(type.ToString()); 
+            }
+            return _collectionCollection.Find(Query.In("Type", bArray));
         }
 
         public void AddOrUpdateRange(IEnumerable<Collection> collections)

@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Common.Models.Entities.Helpers;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
@@ -18,16 +19,21 @@ namespace EmbyStat.Repositories
             _statisticCollection = context.GetContext().GetCollection<Statistic>();
         }
 
-        public Statistic GetLastResultByType(StatisticType type)
+        public Statistic GetLastResultByType(StatisticType type, IReadOnlyList<string> collectionIds)
         {
-            return _statisticCollection.Find(Query.And(Query.EQ("Type", (int)type), Query.EQ("IsValid", true)))
+            return _statisticCollection.Find(Query.And(Query.EQ("Type", type.ToString()), Query.EQ("IsValid", true)))
+                .GetStatisticsWithCollectionIds(collectionIds)
                 .OrderByDescending(x => x.CalculationDateTime)
                 .FirstOrDefault();
         }
 
         public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collectionIds)
         {
-            var statisticObjs = _statisticCollection.Find(x => x.Type == type).ToList();
+            var statisticObjs = _statisticCollection
+                .Find(x => x.Type == type)
+                .Where(x => x.CollectionIds.All(collectionIds.Contains))
+                .Where(x => x.CollectionIds.Count() == collectionIds.Count()).ToList();
+
             statisticObjs.ForEach(x => x.IsValid = false);
             _statisticCollection.Update(statisticObjs);
 
@@ -50,31 +56,14 @@ namespace EmbyStat.Repositories
 
         public void MarkMovieTypesAsInvalid()
         {
-            var bArray = new BsonArray
-            {
-                (int) StatisticType.MovieGeneral,
-                (int) StatisticType.MovieCharts,
-                (int) StatisticType.MoviePeople,
-                (int) StatisticType.MovieSuspicious
-            };
-
-            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.In("Type", bArray))).ToList();
+            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Movie.ToString()))).ToList();
             statistics.ForEach(x => x.IsValid = false);
             _statisticCollection.Update(statistics);
         }
 
         public void MarkShowTypesAsInvalid()
         {
-            var types = new List<StatisticType> { StatisticType.ShowCollected, StatisticType.ShowGeneral, StatisticType.ShowCharts, StatisticType.ShowPeople };
-            var bArray = new BsonArray
-            {
-                (int) StatisticType.ShowCollected,
-                (int) StatisticType.ShowGeneral,
-                (int) StatisticType.ShowCharts,
-                (int) StatisticType.ShowPeople
-            };
-
-            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.In("Type", bArray))).ToList();
+            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Show.ToString()))).ToList();
             statistics.ForEach(x => x.IsValid = false);
             _statisticCollection.Update(statistics);
         }

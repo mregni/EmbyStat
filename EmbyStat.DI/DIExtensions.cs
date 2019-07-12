@@ -54,7 +54,6 @@ namespace EmbyStat.DI
 
             services.TryAddTransient<IMovieRepository, MovieRepository>();
             services.TryAddTransient<IEmbyRepository, EmbyRepository>();
-            services.TryAddTransient<IGenreRepository, GenreRepository>();
             services.TryAddTransient<IPersonRepository, PersonRepository>();
             services.TryAddTransient<IShowRepository, ShowRepository>();
             services.TryAddTransient<ICollectionRepository, CollectionRepository>();

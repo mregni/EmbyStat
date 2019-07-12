@@ -28,30 +28,12 @@ namespace EmbyStat.Controllers.Show
         }
 
         [HttpGet]
-        [Route("generalstats")]
-        public IActionResult GetGeneralStats(List<string> collectionIds)
+        [Route("statistics")]
+        public IActionResult GetStatistics(List<string> collectionIds)
         {
-            var result = _showService.GetGeneralStats(collectionIds);
-            var convert = _mapper.Map<ShowStatViewModel>(result);
+            var result = _showService.GetStatistics(collectionIds);
+            var convert = _mapper.Map<ShowStatisticsViewModel>(result);
             return Ok(convert);
-        }
-
-        [HttpGet]
-        [Route("charts")]
-        public IActionResult GetCharts(List<string> collectionIds)
-        {
-            var result = _showService.GetCharts(collectionIds);
-            var convert = _mapper.Map<ShowChartsViewModel>(result);
-            return Ok(convert);
-
-        }
-
-        [HttpGet]
-        [Route("peoplestats")]
-        public IActionResult GetPersonStats(List<string> collectionIds)
-        {
-            var result = _showService.GetPeopleStats(collectionIds);
-            return Ok(_mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]

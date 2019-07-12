@@ -26,6 +26,7 @@ import { PersonPosterComponent } from './components/posters/person-poster/person
 import { ShowPosterComponent } from './components/posters/show-poster/show-poster.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { UpdateOverlayComponent } from './components/update-overlay/update-overlay.component';
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 import { NoUsersFoundDialog } from './dialogs/no-users-found-dialog/no-users-found-dialog';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
@@ -87,6 +88,7 @@ import { UserService } from './services/user.service';
     MoviePosterComponent,
     ShowPosterComponent,
     UserCardComponent,
+    UpdateOverlayComponent,
     NoTypeFoundDialog,
     SyncIsRunningDialog,
     NoUsersFoundDialog
@@ -125,7 +127,8 @@ import { UserService } from './services/user.service';
   entryComponents: [
     NoTypeFoundDialog,
     SyncIsRunningDialog,
-    NoUsersFoundDialog
+    NoUsersFoundDialog,
+    UpdateOverlayComponent
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })

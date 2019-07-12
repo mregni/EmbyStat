@@ -7,7 +7,7 @@ namespace EmbyStat.Common.Models.Entities.Helpers
     public class Media
     {
         [BsonId]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public DateTimeOffset? DateCreated { get; set; }
         public string Banner { get; set; }
         public string Logo { get; set; }
@@ -19,6 +19,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public DateTimeOffset? PremiereDate { get; set; }
         public int? ProductionYear { get; set; }
         public string SortName { get; set; }
-        public List<string> CollectionIds { get; set; }
+        public string CollectionId { get; set; }
     }
 }

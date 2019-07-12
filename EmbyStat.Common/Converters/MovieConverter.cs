@@ -14,8 +14,8 @@ namespace EmbyStat.Common.Converters
         {
             return new Movie
             {
-                Id = x.Id,
-                CollectionIds = new List<string> { collectionId },
+                Id = Convert.ToInt32(x.Id),
+                CollectionId = collectionId,
                 Name = x.Name,
                 ParentId = x.ParentId,
                 OriginalTitle = x.OriginalTitle,
@@ -79,7 +79,7 @@ namespace EmbyStat.Common.Converters
                     Height = y.Height,
                     Width = y.Width
                 }).ToList(),
-                GenresIds = x.GenreItems.Select(y => y.Id).ToList(),
+                Genres = x.Genres,
                 People = x.People.Select(y => new ExtraPerson
                 {
                     Id = y.Id,

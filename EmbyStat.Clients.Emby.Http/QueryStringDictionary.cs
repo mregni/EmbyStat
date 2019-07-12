@@ -146,7 +146,7 @@ namespace EmbyStat.Clients.Emby.Http
         /// <param name="value">The value.</param>
         public void AddIfNotNull(string name, IEnumerable<int> value)
         {
-            if (value != null)
+            if (value != null && value.Any())
             {
                 Add(name, value);
             }

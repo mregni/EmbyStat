@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Controllers.Show
 {
-    public class ShowStatViewModel
+    public class ShowGeneralViewModel
     {
         public Card<int> ShowCount { get; set; }
         public Card<int> EpisodeCount { get; set; }
