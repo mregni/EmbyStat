@@ -1,5 +1,4 @@
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
@@ -15,6 +14,7 @@ using System.IO;
 using System.Reflection;
 using AutoMapper;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
@@ -147,9 +147,14 @@ namespace EmbyStat.Web
 
         private void SetupDirectories(AppSettings settings)
         {
-            if (Directory.Exists(settings.Dirs.TempUpdateDir))
+            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.TempUpdateDir)))
             {
-                Directory.Delete(settings.Dirs.TempUpdateDir, true);
+                Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.TempUpdateDir), true);
+            }
+
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.Database)))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.Database));
             }
         }
 
@@ -215,7 +220,7 @@ namespace EmbyStat.Web
             settingsService.SetUpdateInProgressSetting(false);
             var settings = settingsService.GetUserSettings();
 
-            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version, settings.Id.ToString());
             if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
             {
                 embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);

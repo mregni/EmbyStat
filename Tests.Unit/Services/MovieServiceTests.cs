@@ -39,7 +39,7 @@ namespace Tests.Unit.Services
                 OfficialRating = "R",
                 RunTimeTicks = 120000000000,
                 Primary = "primaryImage",
-                GenresIds = new List<string> { "id1" }
+                Genres = new List<string> { "id1" }
             };
 
             _movieTwo = new Movie
@@ -52,7 +52,7 @@ namespace Tests.Unit.Services
                 OfficialRating = "R",
                 RunTimeTicks = 6000000000000,
                 Primary = "primaryImage",
-                GenresIds = new List<string> { "id2" }
+                Genres = new List<string> { "id2" }
             };
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
@@ -84,7 +84,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetMovieCountStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.MovieCount.Should().NotBeNull();
@@ -95,7 +95,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetGenreCountStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.GenreCount.Should().NotBeNull();
@@ -106,7 +106,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetLowestRatedStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.LowestRatedMovie.Should().NotBeNull();
@@ -123,7 +123,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetHighestRatedStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.HighestRatedMovie.Should().NotBeNull();
@@ -140,7 +140,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetOldestPremieredStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.OldestPremieredMovie.Should().NotBeNull();
@@ -157,7 +157,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetYoungestPremieredStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.YoungestPremieredMovie.Should().NotBeNull();
@@ -174,7 +174,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetShortestStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.ShortestMovie.Should().NotBeNull();
@@ -191,7 +191,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetLongestStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.LongestMovie.Should().NotBeNull();
@@ -208,7 +208,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetYoungestAddedStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.YoungestAddedMovie.Should().NotBeNull();
@@ -225,7 +225,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetTotalPlayLengthStat()
         {
-            var stat = _subject.GetGeneralStatsForCollections(_collections.Select(x => x.Id).ToList());
+            var stat = _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.TotalPlayableTime.Should().NotBeNull();

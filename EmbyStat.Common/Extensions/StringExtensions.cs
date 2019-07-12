@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using EmbyStat.Common.Models.Entities;
 
-namespace EmbyStat.Common.Extentions
+namespace EmbyStat.Common.Extensions
 {
-    public static class StringExtentions
+    public static class StringExtensions
     {
         public static bool ToBoolean(this string value)
         {
@@ -28,11 +28,6 @@ namespace EmbyStat.Common.Extentions
                 case "folders": return CollectionType.Folders;
                 default: return CollectionType.Other;
             }
-        }
-
-        public static string ToCleanVersionString(this string version)
-        {
-            return version.Replace("-dev", string.Empty).Replace("-beta", string.Empty);
         }
 
         public static string GetLocalPath(this string path)

@@ -17,6 +17,7 @@ import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
 import { Collection } from '../../../shared/models/collection';
 import { GeneralMovieStatistics } from '../../../shared/models/movie/general-movie-statistics';
+import { MovieStatistics } from '../../../shared/models/movie/movie-statistics';
 import { Settings } from '../../../shared/models/settings/settings';
 import { MovieService } from '../service/movie.service';
 
@@ -26,10 +27,7 @@ import { MovieService } from '../service/movie.service';
   styleUrls: ['./movie-overview.component.scss']
 })
 export class MovieOverviewComponent implements OnInit, OnDestroy {
-  generalStats$: Observable<GeneralMovieStatistics>;
-  charts$: Observable<MovieCharts>;
-  people$: Observable<PersonStatistics>;
-  suspicious$: Observable<MovieSuspiciousContainer>;
+  statistics$: Observable<MovieStatistics>;
 
   @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
@@ -72,16 +70,10 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
     this.collections$ = this.movieService.getCollections();
     this.barOptions = this.optionsService.getBarOptions();
 
-    this.generalStats$ = this.movieService.getGeneral([]);
-    this.charts$ = this.movieService.getCharts([]);
-    this.people$ = this.movieService.getPeople([]);
-    this.suspicious$ = this.movieService.getSuspicious([]);
+    this.statistics$ = this.movieService.getStatistics([]);
 
     this.collectionsFormControl.valueChanges.subscribe((collectionList: string[]) => {
-      this.generalStats$ = this.movieService.getGeneral(collectionList);
-      this.charts$ = this.movieService.getCharts(collectionList);
-      this.people$ = this.movieService.getPeople(collectionList);
-      this.suspicious$ = this.movieService.getSuspicious(collectionList);
+      this.statistics$ = this.movieService.getStatistics(collectionList);
     });
   }
 
@@ -90,7 +82,7 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.generalStats$.subscribe(() => {
+    this.statistics$.subscribe(() => {
       this.textAreaScrollbar.update();
     });
   }

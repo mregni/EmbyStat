@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Entities\Joins\**" />
+    <EmbeddedResource Remove="Models\Entities\Joins\**" />
+    <None Remove="Models\Entities\Joins\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="MediaBrowser.Common" Version="3.3.10" />
@@ -19,10 +25,6 @@
     <Reference Include="Microsoft.AspNetCore.SignalR.Core">
       <HintPath>..\EmbyStat.Repositories\bin\x64\Debug\netcoreapp2.0\Microsoft.AspNetCore.SignalR.Core.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Entities\Joins\" />
   </ItemGroup>
 
 </Project>

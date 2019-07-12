@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EmbyStat.Common.Extentions
+namespace EmbyStat.Common.Extensions
 {
-    public static class RoundExtention
+    public static class RoundExtension
     {
         public static int? RoundToFiveYear(this DateTimeOffset? date)
         {

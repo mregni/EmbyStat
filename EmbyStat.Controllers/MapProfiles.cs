@@ -44,7 +44,8 @@ namespace EmbyStat.Controllers
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
 	        CreateMap<ShowPoster, ShowPosterViewModel>();
             CreateMap<PersonPoster, PersonPosterViewModel>();
-            CreateMap<MovieStats, MovieStatsViewModel>();
+            CreateMap<MovieStatistics, MovieStatisticsViewModel>();
+            CreateMap<MovieGeneral, MovieGeneralViewModel>();
 	        CreateMap<PersonStats, PersonStatsViewModel>();
             CreateMap<Collection, CollectionViewModel>();
 	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
@@ -54,7 +55,7 @@ namespace EmbyStat.Controllers
 	        CreateMap<ShowCharts, ShowChartsViewModel>();
             CreateMap<ShortMovie, ShortMovieViewModel>();
 	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
-	        CreateMap<ShowStat, ShowStatViewModel>();
+	        CreateMap<ShowGeneral, ShowGeneralViewModel>();
 	        CreateMap<ShowCollectionRow, ShowCollectionRowViewModel>();
 	        CreateMap<LogFile, LogFileViewModel>();
 	        CreateMap<Services.Models.About.About, AboutViewModel>();

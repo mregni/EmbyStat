@@ -14,6 +14,7 @@ import { Collection } from '../../../shared/models/collection';
 import { Settings } from '../../../shared/models/settings/settings';
 import { ShowCharts } from '../../../shared/models/show/show-charts';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
+import { ShowStatistics } from '../../../shared/models/show/show-statistics';
 import { ShowService } from '../service/show.service';
 
 @Component({
@@ -22,9 +23,7 @@ import { ShowService } from '../service/show.service';
   styleUrls: ['./show-overview.component.scss']
 })
 export class ShowOverviewComponent implements OnInit, OnDestroy {
-  generalStatistics$: Observable<GeneralShowStatistics>;
-  charts$: Observable<ShowCharts>;
-
+  statistics$: Observable<ShowStatistics>;
   rows: ShowCollectionRow[];
   sortedRowsDataSource: MatTableDataSource<ShowCollectionRow>;
 
@@ -67,16 +66,17 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     });
 
     this.collections$ = this.showService.getCollections();
-
-    this.generalStatistics$ = this.showService.getGeneralStats([]);
-    this.charts$ = this.showService.getCharts([]);
+    this.statistics$ = this.showService.getStatistics([]);
 
     this.pieOptions = this.optionsService.getPieOptions();
     this.barOptions = this.optionsService.getBarOptions();
 
     this.collectionsFormControl.valueChanges.subscribe((collectionList: string[]) => {
-      this.generalStatistics$ = this.showService.getGeneralStats(collectionList);
-      this.charts$ = this.showService.getCharts(collectionList);
+      this.statistics$ = this.showService.getStatistics(collectionList);
+      this.collectedDataSub = this.showService.getCollectedList([]).subscribe((data: ShowCollectionRow[]) => {
+        this.rows = data;
+        this.sortedRowsDataSource = new MatTableDataSource(data);
+      });
     });
   }
 
@@ -140,7 +140,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.resizeSub = this.generalStatistics$.subscribe(() => {
+    this.resizeSub = this.statistics$.subscribe(() => {
       this.textAreaScrollbar.update();
     });
   }

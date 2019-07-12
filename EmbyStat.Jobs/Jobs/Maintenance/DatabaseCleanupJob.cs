@@ -14,15 +14,13 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     {
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IPersonRepository _personRepository;
-        private readonly IGenreRepository _genreRepository;
 
         public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IStatisticsRepository statisticsRepository, IPersonRepository personRepository, IGenreRepository genreRepository) 
+            IStatisticsRepository statisticsRepository, IPersonRepository personRepository) 
             : base(hubHelper, jobRepository, settingsService)
         {
             _statisticsRepository = statisticsRepository;
             _personRepository = personRepository;
-            _genreRepository = genreRepository;
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -39,9 +37,6 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
             _personRepository.CleanupPersons();
             await LogProgress(66);
             await LogInformation("Removed unused people.");
-
-            _genreRepository.CleanupGenres();
-            await LogInformation("Removed unused genres.");
         }
     }
 }

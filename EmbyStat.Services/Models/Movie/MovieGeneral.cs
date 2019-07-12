@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Services.Models.Movie
 {
-    public class MovieStats
+    public class MovieGeneral
     {
         public Card<int> MovieCount { get; set; }
         public Card<int> GenreCount { get; set; }

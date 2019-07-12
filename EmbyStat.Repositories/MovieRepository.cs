@@ -27,50 +27,18 @@ namespace EmbyStat.Repositories
             _movieCollection.Upsert(movies);
         }
 
-        public int GetTotalPeopleByType(IEnumerable<string> collectionIds, string type)
-        {
-            var movies = collectionIds.Any() ?
-                _movieCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
-                _movieCollection.FindAll();
-
-            return movies
-                .SelectMany(x => x.People)
-                .DistinctBy(x => x.Id)
-                .Count(x => x.Type == type);
-        }
-
-        public string GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type)
-        {
-            var shows = collectionIds.Any() ?
-                _movieCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
-                _movieCollection.FindAll();
-
-            return shows
-                .SelectMany(x => x.People)
-                .Where(x => x.Type == type)
-                .GroupBy(x => x.Id, x => x.Name, (id, name) => new { Key = id, Count = name.Count() })
-                .OrderByDescending(x => x.Count)
-                .Select(x => x.Key)
-                .FirstOrDefault();
-        }
-
         public IEnumerable<Movie> GetAll(IEnumerable<string> collectionIds)
         {
+            var bArray = new BsonArray();
+            foreach (var collectionId in collectionIds)
+            {
+                bArray.Add(collectionId);
+            }
             return collectionIds.Any() ?
-                _movieCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
+                _movieCollection.Find(Query.In("CollectionId", bArray)) :
                 _movieCollection.FindAll();
         }
 
-        public IEnumerable<string> GetGenres(IEnumerable<string> collectionIds)
-        {
-            var movies = collectionIds.Any() ?
-                _movieCollection.Find(x => collectionIds.Any(y => x.CollectionIds.Any(z => z == y))) :
-                _movieCollection.FindAll();
-
-            return movies
-                .SelectMany(x => x.GenresIds)
-                .Distinct();
-        }
 
         public bool Any()
         {

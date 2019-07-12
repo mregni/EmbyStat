@@ -2,7 +2,7 @@
 {
     public class MoviePoster
     {
-        public string MediaId { get; set; }
+        public int MediaId { get; set; }
         public string Name { get; set; }
         public string CommunityRating { get; set; }
         public string OfficialRating { get; set; }

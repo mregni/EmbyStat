@@ -4,7 +4,7 @@ namespace EmbyStat.Controllers.HelperClasses
 {
     public class UserMediaViewViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Primary { get; set; }
         public string Name { get; set; }
         public string ParentId { get; set; }

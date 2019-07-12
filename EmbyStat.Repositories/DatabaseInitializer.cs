@@ -38,7 +38,7 @@ namespace EmbyStat.Repositories
 
             var episodeCollection = _context.GetContext().GetCollection<Episode>();
             episodeCollection.EnsureIndex(x => x.Id, true);
-            episodeCollection.EnsureIndex(x => x.ParentId);
+            episodeCollection.EnsureIndex(x => x.ShowId);
 
             var genreCollection = _context.GetContext().GetCollection<Genre>();
             genreCollection.EnsureIndex(x => x.Id, true);

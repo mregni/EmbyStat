@@ -20,7 +20,7 @@ namespace Tests.Unit.Controllers
         private readonly MovieController _subject;
         private readonly Mock<IMovieService> _movieServiceMock;
         private readonly List<Collection> _collections;
-        private readonly  MovieStats _movieStats;
+        private readonly  MovieGeneral _movieGeneral;
 
         public MovieControllerTests()
         {
@@ -30,18 +30,18 @@ namespace Tests.Unit.Controllers
                 new Collection{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
-            _movieStats = new MovieStats
+            _movieGeneral = new MovieGeneral
             {
                 LongestMovie = new MoviePoster { Name = "The lord of the rings"}
             };
 
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieCollections()).Returns(_collections);
-            _movieServiceMock.Setup(x => x.GetGeneralStatsForCollections(It.IsAny<List<string>>()))
-                .Returns(_movieStats);
+            _movieServiceMock.Setup(x => x.GetMovieStatistics(It.IsAny<List<string>>()))
+                .Returns(_movieGeneral);
 
             var _mapperMock = new Mock<IMapper>();
-            _mapperMock.Setup(x => x.Map<MovieStatsViewModel>(It.IsAny<MovieStats>())).Returns(new MovieStatsViewModel {LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } });
+            _mapperMock.Setup(x => x.Map<MovieGeneralViewModel>(It.IsAny<MovieGeneral>())).Returns(new MovieGeneralViewModel {LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } });
             _mapperMock.Setup(x => x.Map<IList<CollectionViewModel>>(It.IsAny<List<Collection>>())).Returns(
                 new List<CollectionViewModel>
                 {
@@ -84,11 +84,11 @@ namespace Tests.Unit.Controllers
         {
             var result = _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var stat = resultObject.Should().BeOfType<MovieStatsViewModel>().Subject;
+            var stat = resultObject.Should().BeOfType<MovieGeneralViewModel>().Subject;
 
             stat.Should().NotBeNull();
-            stat.LongestMovie.Name.Should().Be(_movieStats.LongestMovie.Name);
-            _movieServiceMock.Verify(x => x.GetGeneralStatsForCollections(It.Is<List<string>>(
+            stat.LongestMovie.Name.Should().Be(_movieGeneral.LongestMovie.Name);
+            _movieServiceMock.Verify(x => x.GetMovieStatistics(It.Is<List<string>>(
                 y => y[0] == _collections[0].Id &&
                      y[1] == _collections[1].Id)), Times.Once);
         }

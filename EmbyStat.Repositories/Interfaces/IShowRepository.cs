@@ -7,25 +7,17 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveShows();
         void UpdateShow(Show show);
-        void UpsertShows(IEnumerable<Show> list);
-        void UpsertSeasons(IEnumerable<Season> seasons);
-        void UpsertEpisodes(IEnumerable<Episode> episodes);
+        void InsertShowsBulk(IEnumerable<Show> list);
+        void InsertSeasonsBulk(IEnumerable<Season> seasons);
+        void InsertEpisodesBulk(IEnumerable<Episode> episodes);
         IEnumerable<Show> GetAllShowsWithTvdbId();
-        IEnumerable<Season> GetAllSeasonsForShow(string showId);
-        IEnumerable<Episode> GetAllEpisodesForShow(string showId);
-        IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds);
-        int CountShows(IEnumerable<string> collectionIds);
-        int CountEpisodes(string showId);
-        int CountEpisodes(IEnumerable<string> collectionIds);
-        long GetPlayLength(IEnumerable<string> collectionIds);
-        int GetTotalPeopleByType(IEnumerable<string> collectionIds, string type);
-        string GetMostFeaturedPerson(IEnumerable<string> collectionIds, string type);
-        IEnumerable<string> GetGenres(IEnumerable<string> collectionIds);
-        int GetEpisodeCountForShow(string showId, bool includeSpecials = false);
-        int GetSeasonCountForShow(string showId, bool includeSpecials = false);
-        bool Any();
+        IEnumerable<Episode> GetAllEpisodesForShow(int showId);
+        int CountEpisodes(int showId);
+        int GetEpisodeCountForShow(int showId, bool includeSpecials = false);
+        int GetSeasonCountForShow(int showId, bool includeSpecials = false);
+        bool AnyShows();
         Episode GetEpisodeById(string id);
-        IEnumerable<Show> GetAllShows(IEnumerable<string> collectionIds);
+        IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons = false, bool includeEpisodes = false);
         Season GetSeasonById(string id);
     }
 }

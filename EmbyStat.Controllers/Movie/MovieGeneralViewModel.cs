@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Controllers.Movie
 {
-    public class MovieStatsViewModel
+    public class MovieGeneralViewModel
     {
         public CardViewModel<int> MovieCount { get; set; }
         public CardViewModel<int> GenreCount { get; set; }
