@@ -1,21 +1,2 @@
 assembly-versioning-scheme: MajorMinorPatch
 mode:  ContinuousDelivery
-branches:
-  master:
-    tag: ''
-    increment: Minor
-  features?[/-]:
-    tag: 'ES'
-    increment: Inherit
-  hotfix(es)?[/-]:
-    tag: beta
-    increment: Inherit
-  beta:
-    tag: beta
-    increment: Patch
-  dev(elop)?(ment)?$:
-    tag: dev
-    increment: Patch
-    mode: ContinuousDeployment
-ignore:
-  sha: []
