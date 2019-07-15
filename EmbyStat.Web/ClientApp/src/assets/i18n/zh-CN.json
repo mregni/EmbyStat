@@ -10,9 +10,9 @@
     "DISCARD": "放弃",
     "CANCEL": "取消",
     "CLOSE": "关闭",
-    "DAYS": "天",
-    "HOURS": "小时",
-    "MINUTES": "分钟",
+    "DAYSABBR": "d",
+    "HOURSABBR": "h",
+    "MINUTESABBR": "m",
     "MIN": "分",
     "TITLE": "标题",
     "ADDEDON": "添加时间",
@@ -48,7 +48,8 @@
     "STATUS": "状态",
     "PERCENTAGE": "百分比",
     "COLLECTED": "已收藏",
-    "UPDATES": "更新"
+    "UPDATES": "更新",
+    "VERSION": "Version"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "呃。。。后台出错了，请再试一次。如果它一直不行，请查看日志以获取更多详细信息。",
@@ -61,24 +62,19 @@
     "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
     "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
     "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
+    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again.",
+    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
-  "FORM_LABELS": {
-    "NAME": "Enter your name",
+  "FORMLABELS": {
+    "NAME": "Username",
     "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby ip address",
-    "EMBYUSERNAME": "Emby admin username",
-    "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes",
-    "TVDBAPI": "TheTVDB api key",
+    "TVDBAPI": "TheTVDB API key",
     "CRON": "Cron string",
     "EXCEPTIONLOGGING": "Enable exception logging"
   },
-  "FORM_ERRORS": {
-    "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby address ip.",
-    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
-    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+  "FORMERRORS": {
+    "NAME_REQUIRED": "Fill in your name or nickname."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -112,10 +108,8 @@
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
-  "PLUGINS": {
-    "VERSION": "Version"
-  },
   "MOVIES": {
+    "COLLECTIONPLACEHOLDER": "Filter movie collections",
     "TOTALMOVIES": "Total movies",
     "TOTALGENRES": "Total genres",
     "TOTALPLAYLENGTH": "Total watchable time",
@@ -149,15 +143,21 @@
     "ENDED": "已完结"
   },
   "SETTINGS": {
-    "TITLE": "设置",
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "The TVDB",
+      "EMBY": "Emby"
+    },
     "SAVED": {
       "GENERAL": "Embystat 常规设置已保存!",
+      "TVDB": "Tvdb key saved!",
       "EMBY": "Emby 设置已保存！",
       "MOVIES": "电影设置已保存！",
       "SHOWS": "节目设置已保存！",
       "UPDATES": "更新设置已保存！"
     },
     "GENERAL": {
+      "NOUSERNAME": "Username can't be blank",
       "TVDBAPIKEY": "如果您愿意，可以在此处为EmbyStat提供您自己的TheTVDB API密钥。",
       "TVDBAPIKEYWARNING": "确保提供有效的API密钥！如果密钥不正确，则同步任务将失败。",
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
@@ -170,13 +170,23 @@
       "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
     },
     "EMBY": {
-      "NOPASSWORD": "当您想要更改Emby网址设置时，请不要忘记输入您的Emby密码。"
+      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYUSERNAME": "Emby admin username",
+      "EMBYPASSWORD": "Emby admin password",
+      "EMBYPORT": "Emby port",
+      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
+      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
+      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
+      "EMBYPORTREQUIRED": "Emby port required.",
+      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
+      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "启用自动更新",
       "CHECK": "立即检查并更新服务器",
+      "UPDATE:": "Update server now",
       "TRAIN": "如果要选择测试版更新, 请更改更新计划。",
       "ONBETA": "你已经不在用稳定版上了, 所以你不能再退回去了。如果您想返回稳定版, 请重新安装服务器。",
       "TRAINWARNING": "您可以在此从稳定版变更到测试版。如果您不知道您正在做什么事情，请先使用稳定版。如果您想要切换到测试版，请在这里修改设定。但之后想返回稳定版则您必须重新安装服务器。",
@@ -191,6 +201,7 @@
     "ISHIDDEN": "从登录界面隐藏",
     "ISDISABLED": "已禁用",
     "DELETED": "已删除的用户",
+    "ACTIVE": "Active users",
     "LASTACTIVE": "上次登录:",
     "SORTING": {
       "USERNAMEASC": "用户名 (A-Z)",
@@ -228,6 +239,7 @@
     "NORUN": "Not ran yet",
     "MOMENT_AGO": "a moment",
     "JOBLOGS": "Job logs",
+    "CRONUPDATED": "Cron value updated",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
@@ -293,9 +305,25 @@
     "MOREMISSEDPINGS": "多次尝试后无法连接到Emby！"
   },
   "ABOUT": {
+    "SERVERINFO": "Server info",
+    "REQUESTFEATURE": "Request feature",
+    "LOGBUG": "Log bug on Github",
+    "HELPTRANSLATE": "Help translate the app",
     "THANKS": {
       "TITLE": "谢谢",
       "TEXT": "非常感谢感谢以下人翻译本应用程序为本地语言："
+    },
+    "ACTIONS": {
+      "TITLE": "Actions"
     }
+  },
+  "EMBYSERVER": {
+    "HOSTOS": "Host OS",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "CACHEPATH": "Cache path",
+    "LOGPATH": "Log path",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port"
   }
 }
