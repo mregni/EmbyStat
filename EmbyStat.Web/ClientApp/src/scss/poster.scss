@@ -1,15 +1,15 @@
 @import "variables";
 
 .poster {
-  width: 200px;
-  height: 300px;
-  margin-right: 20px;
-  border-radius: 0.25rem;
   background-size: cover;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
+  border-radius: 0.25rem;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: flex-end;
+  margin-right: 20px;
+  width: 200px;
 }
 
 .poster-content {
