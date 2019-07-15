@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 
-import { Job } from '../../jobs/models/job';
+import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import * as moment from 'moment';
+import { Job } from '../models/jobs/job';
 
 @Injectable()
 
@@ -23,9 +23,9 @@ export class JobSocketService {
     const line = now + ' ' + value;
 
     if (type === 1) {
-      this.lines.push(this.sanitizer.bypassSecurityTrustHtml('<span class="text__accent">' + line + '</span>'));
+      this.lines.push(this.sanitizer.bypassSecurityTrustHtml('<span class="text-accent">' + line + '</span>'));
     } else if (type === 2) {
-      this.lines.push(this.sanitizer.bypassSecurityTrustHtml('<span class="text__warn">' + line + '</span>'));
+      this.lines.push(this.sanitizer.bypassSecurityTrustHtml('<span class="text-warn">' + line + '</span>'));
     } else {
       this.lines.push(line);
     }

@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EmbyStat.Common.Enums;
+﻿using EmbyStat.Common.Enums;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
     public class ServerInfo
     {
-        [Key] public string Id { get; set; }
+        [BsonId]
+        public string Id { get; set; }
         public UpdateLevel SystemUpdateLevel { get; set; }
         public string OperatingSystemDisplayName { get; set; }
         public bool HasPendingRestart { get; set; }

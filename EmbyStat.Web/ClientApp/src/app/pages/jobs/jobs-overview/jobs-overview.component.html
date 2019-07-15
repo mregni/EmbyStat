@@ -1,0 +1,20 @@
+<div class="title-bar">
+  {{ 'MENU.JOBS' | translate }}
+</div>
+<div class="content">
+  <div class="row">
+    <div class="col-12 col-md-6 d-flex flex-column">
+      <app-job-item *ngFor="let job of jobs$ | async" [job]="job"></app-job-item>
+    </div>
+    <div class="col-12 col-md-6">
+      <mat-card>
+        <mat-card-content class="d-flex flex-column-reverse">
+          <div *ngFor="let line of lines">
+            <div [innerHtml]="line"></div>
+          </div>
+          <h3>{{'JOB.JOBLOGS' | translate}}</h3>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

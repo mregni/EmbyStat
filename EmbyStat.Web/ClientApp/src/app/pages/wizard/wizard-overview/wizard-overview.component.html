@@ -1,0 +1,131 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <mat-card class="mt-3">
+      <mat-card-content>
+        <mat-horizontal-stepper #stepper linear [selectedIndex]="wizardIndex"
+          (selectionChange)="stepperPageChanged($event)">
+          <mat-step label="{{'WIZARD.INTROLABEL' | translate}}" [stepControl]="introFormGroup">
+            <div>
+              <form [formGroup]="introFormGroup" class="form-container">
+                <p [innerHTML]="'WIZARD.INTROTEXT' | translate"></p>
+                <mat-form-field>
+                  <input matInput placeholder="{{'FORMLABELS.NAME' | translate}}" formControlName="name" required>
+                  <!-- <mat-error *ngIf="nameControl.hasError('required')">{{'FORM_ERRORS.NAME_REQUIRED' | translate}}</mat-error>-->
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select formControlName="language">
+                    <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
+                      <app-language [language]="language"></app-language>
+                    </mat-option>
+                  </mat-select>
+                  <mat-placeholder>{{'FORMLABELS.LANGUAGE' | translate}}</mat-placeholder>
+                  <mat-hint align="start" [innerHtml]="'WIZARD.CROWNDINHELP' | translate"></mat-hint>
+                </mat-form-field>
+                <p class="mt-5">{{ 'SETTINGS.GENERAL.EXCEPTIONLOGGING' | translate }}</p>
+                <mat-checkbox formControlName="exceptionLogging">
+                  {{ 'FORMLABELS.EXCEPTIONLOGGING' | translate | capitalizeFirst }}</mat-checkbox>
+                <div class="button-container">
+                  <button mat-raised-button color="primary" matStepperNext
+                    type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step label="{{'WIZARD.EMBYLABEL' | translate}}" [stepControl]="embyForm">
+            <div>
+              <p *ngIf="embyFound == 3" [innerHTML]="'WIZARD.EMBYNOTFOUNDTEXT' | translate"></p>
+              <p *ngIf="embyFound == 2" [innerHTML]="'WIZARD.EMBYFOUNDTEXT' | translate"></p>
+              <form [formGroup]="embyForm" class="d-flex flex-column">
+                <div class="d-flex flex-row">
+                  <mat-form-field class="emby-protocol mr-3">
+                    <mat-select formControlName="embyProtocol">
+                      <mat-option [value]="0">https://</mat-option>
+                      <mat-option [value]="1">http://</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="emby-address mr-3">
+                    <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate}}"
+                      formControlName="embyAddress">
+                    <mat-error *ngIf="embyAddressControl.hasError('required')">
+                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}</mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="emby-port">
+                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}" formControlName="embyPort" required>
+                    <mat-error *ngIf="embyPortControl.hasError('required')">
+                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-form-field>
+                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYUSERNAME' | translate}}"
+                    formControlName="embyUsername">
+                  <mat-error *ngIf="embyUsernameControl.hasError('required')">
+                    {{'SETTINGS.EMBY.EMBYUSERNAMEREQUIRED' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYPASSWORD' | translate}}"
+                    formControlName="embyPassword" [type]="hidePassword ? 'password' : 'text'">
+                  <fa-icon icon="{{hidePassword ? 'eye' : 'eye-slash'}}" matSuffix
+                    (click)="hidePassword = !hidePassword">
+                  </fa-icon>
+                  <mat-error *ngIf="embyPasswordControl.hasError('required')">
+                    {{'SETTINGS.EMBY.EMBYPASSWORDREQUIRED' | translate}}</mat-error>
+                </mat-form-field>
+                <div class="button-container">
+                  <button mat-stroked-button color="primary" matStepperPrevious
+                    type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+                  <button mat-raised-button color="primary" matStepperNext
+                    type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step label="{{'WIZARD.SAVINGLABEL' | translate }}">
+            <h3>
+              {{'WIZARD.CHECKINGSTATUS' | translate }}
+            </h3>
+
+            <div>
+              <mat-list>
+                <mat-list-item>
+                  <mat-icon mat-list-icon *ngIf="embyOnline == 3" color="warn">error</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="embyOnline == 2">check</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="embyOnline == 1">hourglass_empty</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="embyOnline == 0">hourglass_empty</mat-icon>
+                  <p mat-line>{{ 'WIZARD.EMBYRUNNING' | translate }}</p>
+                </mat-list-item>
+                <mat-list-item *ngIf="embyOnline == 2">
+                  <mat-icon mat-list-icon *ngIf="isAdmin == 3" color="warn">error</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="isAdmin == 2">check</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="isAdmin == 1">hourglass_empty</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="isAdmin == 0">hourglass_empty</mat-icon>
+                  <p mat-line>{{ 'WIZARD.ISADMIN' | translate: { user: username } }}</p>
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <p *ngIf="!(embyOnline && isAdmin)">
+              {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
+            </p>
+            <div class="button-container">
+              <button mat-stroked-button color="primary" matStepperPrevious [disabled]="embyOnline == 1 && isAdmin == 1"
+                type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+              <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline == 2 && isAdmin == 2)"
+                type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
+            </div>
+          </mat-step>
+          <mat-step label="{{'WIZARD.FINALLABEL' | translate }}">
+            <div>
+              <p>{{ 'WIZARD.FINISHED' | translate }}</p>
+              <p>{{ 'WIZARD.FINISHEXPLANATION' | translate }}</p>
+            </div>
+            <div class="button-container">
+              <button mat-raised-button color="primary" (click)="finishWizard()"
+                type="button">{{ 'COMMON.FINISH' | translate | capitalizeFirst }}</button>
+              <button mat-raised-button color="accent" (click)="finishWizardAndStartSync()"
+                type="button">{{ 'WIZARD.FINISHWITHSYNC' | translate | capitalizeFirst }}</button>
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

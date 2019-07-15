@@ -14,15 +14,13 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     {
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IPersonRepository _personRepository;
-        private readonly IGenreRepository _genreRepository;
 
         public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IStatisticsRepository statisticsRepository, IPersonRepository personRepository, IGenreRepository genreRepository) 
+            IStatisticsRepository statisticsRepository, IPersonRepository personRepository) 
             : base(hubHelper, jobRepository, settingsService)
         {
             _statisticsRepository = statisticsRepository;
             _personRepository = personRepository;
-            _genreRepository = genreRepository;
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -30,18 +28,15 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override string JobPrefix => Constants.LogPrefix.DatabaseCleanupJob;
         public override string Title { get; }
 
-        public override async Task RunJob()
+        public override async Task RunJobAsync()
         {
-            await _statisticsRepository.CleanupStatistics();
+            _statisticsRepository.CleanupStatistics();
             await LogProgress(33);
             await LogInformation("Removed old statistic results.");
 
-            await _personRepository.CleanupPersons();
+            _personRepository.CleanupPersons();
             await LogProgress(66);
             await LogInformation("Removed unused people.");
-
-            await _genreRepository.CleanupGenres();
-            await LogInformation("Removed unused genres.");
         }
     }
 }

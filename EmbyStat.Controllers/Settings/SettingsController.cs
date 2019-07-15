@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -16,12 +16,14 @@ namespace EmbyStat.Controllers.Settings
 	public class SettingsController : Controller
 	{
         private readonly ISettingsService _settingsService;
+        private readonly ILanguageService _languageService;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMapper _mapper;
         private readonly Logger _logger;
 
-        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, IMapper mapper)
+        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper)
         {
+            _languageService = languageService;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
             _mapper = mapper;
@@ -48,11 +50,19 @@ namespace EmbyStat.Controllers.Settings
 	    {
 	        var settings = _mapper.Map<UserSettings>(userSettings);
             MarkStatisticsAsInvalidIfNeeded(settings);
-            settings = await _settingsService.SaveUserSettings(settings);
+            settings = await _settingsService.SaveUserSettingsAsync(settings);
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
 
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
             return Ok(settingsViewModel);
+        }
+
+        [HttpGet]
+        [Route("languages")]
+        public IActionResult GetList()
+        {
+            var result = _languageService.GetLanguages();
+            return Ok(_mapper.Map<IList<LanguageViewModel>>(result));
         }
 
         private void MarkStatisticsAsInvalidIfNeeded(UserSettings configuration)

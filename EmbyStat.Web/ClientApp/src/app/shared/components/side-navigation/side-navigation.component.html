@@ -1,15 +1,15 @@
-<div class="toolbar-flexcontainer">
+<div class="d-flex flex-column justify-content-space-between">
   <mat-nav-list class="mat-list-no-padding">
-    <a mat-list-item routerLink="/" routerLinkActive="active"><i class="material-icons">dashboard</i> {{ 'MENU.DASHBOARD' | translate }}</a>
-    <a mat-list-item routerLink="/movies" routerLinkActive="active"><i class="material-icons">local_movies</i> {{ 'MENU.MOVIES' | translate }}</a>
-    <a mat-list-item routerLink="/shows" routerLinkActive="active"><i class="material-icons">tv</i> {{ 'MENU.SHOWS' | translate }}</a>
-    <a mat-list-item routerLink="/users" routerLinkActive="active"><i class="material-icons">person</i> {{ 'MENU.USERS' | translate }}</a>
-    <a mat-list-item routerLink="/plugin" routerLinkActive="active"><i class="material-icons">archive</i> {{ 'MENU.PLUGINS' | translate }}</a>
-    <a mat-list-item routerLink="/server" routerLinkActive="active"><i class="material-icons">computer</i> {{ 'MENU.SERVER' | translate }}</a>
-    <a mat-list-item routerLink="/jobs" routerLinkActive="active"><i class="material-icons">content_paste</i> {{ 'MENU.JOBS' | translate }}</a>
-    <a mat-list-item routerLink="/settings" routerLinkActive="active"><i class="material-icons">settings_applications</i> {{ 'MENU.SETTINGS' | translate }}</a>
-    <a mat-list-item routerLink="/logs" routerLinkActive="active"><i class="material-icons">collections_bookmark</i> {{ 'MENU.LOGS' | translate }}</a>
-    <a mat-list-item routerLink="/about" routerLinkActive="active"><i class="material-icons">info</i> {{ 'MENU.ABOUT' | translate }}</a>
+    <a mat-list-item routerLink="/" routerLinkActive="active"><fa-icon icon="home"></fa-icon> {{ 'MENU.DASHBOARD' | translate }}</a>
+    <a mat-list-item routerLink="/movies" routerLinkActive="active"><fa-icon icon="film"></fa-icon> {{ 'MENU.MOVIES' | translate }}</a>
+    <a mat-list-item routerLink="/shows" routerLinkActive="active"><fa-icon icon="tv"></fa-icon> {{ 'MENU.SHOWS' | translate }}</a>
+    <a mat-list-item routerLink="/users" routerLinkActive="active"><fa-icon icon="users"></fa-icon> {{ 'MENU.USERS' | translate }}</a>
+    <a mat-list-item routerLink="/plugins" routerLinkActive="active"><fa-icon icon="puzzle-piece"></fa-icon> {{ 'MENU.PLUGINS' | translate }}</a>
+    <a mat-list-item routerLink="/server" routerLinkActive="active"><fa-icon icon="server"></fa-icon> {{ 'MENU.SERVER' | translate }}</a>
+    <a mat-list-item routerLink="/jobs" routerLinkActive="active"><fa-icon icon="stopwatch"></fa-icon> {{ 'MENU.JOBS' | translate }}</a>
+    <a mat-list-item routerLink="/settings" routerLinkActive="active"><fa-icon icon="cogs"></fa-icon> {{ 'MENU.SETTINGS' | translate }}</a>
+    <a mat-list-item routerLink="/logs" routerLinkActive="active"><fa-icon icon="file"></fa-icon> {{ 'MENU.LOGS' | translate }}</a>
+    <a mat-list-item routerLink="/about" routerLinkActive="active"><fa-icon icon="info"></fa-icon> {{ 'MENU.ABOUT' | translate }}</a>
   </mat-nav-list>
   <div class="version-string">
     v{{version}}

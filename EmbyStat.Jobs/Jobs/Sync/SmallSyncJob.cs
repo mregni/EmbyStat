@@ -24,7 +24,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         public override string JobPrefix => Constants.LogPrefix.SmallEmbySyncJob;
         public override string Title { get; }
 
-        public override async Task RunJob()
+        public override async Task RunJobAsync()
         {
             await _embyService.GetAndProcessServerInfo(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken);
             await LogInformation("Server info downloaded");

@@ -1,0 +1,17 @@
+<h1 class="mat-dialog-title">{{ 'JOB.INFO.' + title | translate }}</h1>
+<div class="mat-dialog-content h-150">
+  <p>{{ 'JOB.INFO.' + description | translate }}</p>
+  <form [formGroup]="form" class="form-container">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="{{ 'FORMLABELS.CRON' | translate }}" formControlName="cron" required>
+      <mat-error *ngIf="cronControl.hasError('pattern')" [innerHtml]="'DIALOGS.EDIT_TRIGGER.FORMAT_ERROR' | translate"></mat-error>
+      <mat-hint align="start" [innerHtml]="'DIALOGS.EDIT_TRIGGER.CRON_HELPER' | translate"></mat-hint>
+    </mat-form-field>
+  </form>
+</div>
+<hr/>
+<div class="mat-dialog-actions d-flex justify-content-end pb-4">
+  <button mat-raised-button color="primary" (click)="saveCron()" [disabled]="disableButtons">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+  <button mat-raised-button color="warn" *ngIf="madeChanges" (click)="cancel()" [disabled]="disableButtons">{{'COMMON.DISCARD' | translate | capitalizeFirst}}</button>
+  <button mat-raised-button color="warn" *ngIf="!madeChanges" (click)="cancel()" [disabled]="disableButtons">{{'COMMON.CANCEL' | translate | capitalizeFirst}}</button>
+</div>

@@ -4,31 +4,32 @@ using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
+using LiteDB;
 
 namespace EmbyStat.Repositories
 {
     public class JobRepository : IJobRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<Job> _jobCollection;
 
-        public JobRepository(ApplicationDbContext context)
+        public JobRepository(IDbContext context)
         {
-            _context = context;
+            _jobCollection = context.GetContext().GetCollection<Job>();
         }
 
         public IEnumerable<Job> GetAll()
         {
-            return _context.Jobs.ToList();
+            return _jobCollection.FindAll();
         }
 
         public Job GetById(Guid id)
         {
-            return _context.Jobs.Single(x => x.Id == id);
+            return _jobCollection.FindById(id);
         }
 
         public void StartJob(Job job)
         {
-            var obj = _context.Jobs.Single(x => x.Id == job.Id);
+            var obj = _jobCollection.FindById(job.Id);
 
             if (obj != null)
             {
@@ -36,31 +37,31 @@ namespace EmbyStat.Repositories
                 obj.StartTimeUtc = job.StartTimeUtc;
                 obj.EndTimeUtc = job.EndTimeUtc;
                 obj.CurrentProgressPercentage = job.CurrentProgressPercentage;
-                _context.SaveChanges();
+                _jobCollection.Update(obj);
             }
         }
 
         public void EndJob(Guid id, DateTime endTime, JobState state)
         {
-            var obj = _context.Jobs.Single(x => x.Id == id);
+            var obj = _jobCollection.FindById(id);
 
             if (obj != null)
             {
                 obj.EndTimeUtc = endTime;
                 obj.State = state;
                 obj.CurrentProgressPercentage = 100;
-                _context.SaveChanges();
+                _jobCollection.Update(obj);
             }
         }
 
         public bool UpdateTrigger(Guid id, string trigger)
         {
-            var obj = _context.Jobs.Single(x => x.Id == id);
+            var obj = _jobCollection.FindById(id);
 
             if (obj != null)
             {
                 obj.Trigger = trigger;
-                _context.SaveChanges();
+                _jobCollection.Update(obj);
                 return true;
             }
 
@@ -69,7 +70,7 @@ namespace EmbyStat.Repositories
 
         public void ResetAllJobs()
         {
-            var jobs = _context.Jobs.ToList();
+            var jobs = _jobCollection.FindAll().ToList();
             jobs.ForEach(x =>
             {
                 if (x.State == JobState.Running)
@@ -79,7 +80,7 @@ namespace EmbyStat.Repositories
                 }
             });
 
-            _context.SaveChanges();
+            _jobCollection.Update(jobs);
         }
     }
 }

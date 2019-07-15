@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Entities.Joins;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
@@ -10,18 +10,18 @@ namespace EmbyStat.Common.Converters
 {
     public static class MovieConverter
     {
-        public static Movie ConvertToMovie(BaseItemDto x)
+        public static Movie ConvertToMovie(BaseItemDto x, string collectionId)
         {
             return new Movie
             {
-                Id = x.Id,
+                Id = Convert.ToInt32(x.Id),
+                CollectionId = collectionId,
                 Name = x.Name,
                 ParentId = x.ParentId,
                 OriginalTitle = x.OriginalTitle,
                 DateCreated = x.DateCreated,
                 Path = x.Path,
                 SortName = x.SortName,
-                Overview = x.Overview,
                 MediaSources = x.MediaSources.Select(y => new MediaSource
                 {
                     Id = y.Id,
@@ -79,15 +79,11 @@ namespace EmbyStat.Common.Converters
                     Height = y.Height,
                     Width = y.Width
                 }).ToList(),
-                MediaGenres = x.GenreItems.Select(y => new MediaGenre
+                Genres = x.Genres,
+                People = x.People.Select(y => new ExtraPerson
                 {
-                    GenreId = y.Id.ToString(),
-                    MediaId = x.Id
-                }).ToList(),
-                ExtraPersons = x.People.GroupBy(y => y.Id).Select(y => y.First()).Select(y => new ExtraPerson
-                {
-                    ExtraId = x.Id,
-                    PersonId = y.Id,
+                    Id = y.Id,
+                    Name = y.Name,
                     Type = y.Type
                 }).ToList()
             };

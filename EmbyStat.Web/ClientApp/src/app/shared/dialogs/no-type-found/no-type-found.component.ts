@@ -1,10 +1,11 @@
+import { Subscription } from 'rxjs';
+
 /* tslint:disable:component-class-suffix */
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Subscription } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { JobService } from '../../../jobs/service/job.service';
+import { JobService } from '../../services/job.service';
 
 @Component({
   selector: 'app-no-type-found',
@@ -13,6 +14,8 @@ import { JobService } from '../../../jobs/service/job.service';
 })
 export class NoTypeFoundDialog implements OnDestroy {
   private jobSub: Subscription;
+
+  disableButtons = false;
 
   constructor(
     public dialogRef: MatDialogRef<string>,
@@ -26,10 +29,11 @@ export class NoTypeFoundDialog implements OnDestroy {
   }
 
   startMediaSync(): void {
-    this.jobSub = this.jobService.fireMediaSyncJob().subscribe();
-    this.router.navigate(['/jobs']);
-    this.dialogRef.close();
-
+    this.disableButtons = true;
+    this.jobSub = this.jobService.fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e').subscribe(() => {
+      this.router.navigate(['/jobs']);
+      this.dialogRef.close();
+    });
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
-import { EmbyUserAccessSchedule } from './emby-user-access-schedule';
-import { Card } from '../card';
+import { Card } from '../common/card';
 import { UserMediaView } from '../session/user-media-view';
+import { EmbyUserAccessSchedule } from './emby-user-access-schedule';
 
 export class EmbyUser {
   id: string;

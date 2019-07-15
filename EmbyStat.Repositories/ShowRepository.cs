@@ -2,308 +2,151 @@
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
+using LiteDB;
 using MediaBrowser.Model.Extensions;
-using Microsoft.EntityFrameworkCore;
 using NLog;
+using Logger = NLog.Logger;
 
 namespace EmbyStat.Repositories
 {
     public class ShowRepository : IShowRepository
     {
-        private readonly ApplicationDbContext _context;
-        private readonly Logger _logger;
+        private readonly LiteCollection<Show> _showCollection;
+        private readonly LiteCollection<Season> _seasonCollection;
+        private readonly LiteCollection<Episode> _episodeCollection;
 
-        public ShowRepository(ApplicationDbContext context)
+        public ShowRepository(IDbContext context)
         {
-            _context = context;
-            _logger = LogManager.GetCurrentClassLogger();
+            _showCollection = context.GetContext().GetCollection<Show>();
+            _seasonCollection = context.GetContext().GetCollection<Season>();
+            _episodeCollection = context.GetContext().GetCollection<Episode>();
         }
 
         public void RemoveShows()
         {
-            _context.Episodes.RemoveRange(_context.Episodes.Include(x => x.SeasonEpisodes));
-            _context.Seasons.RemoveRange(_context.Seasons);
-            _context.Shows.RemoveRange(_context.Shows.Include(x => x.MediaGenres).Include(x => x.ExtraPersons));
-            _context.SaveChanges();
+            _seasonCollection.Delete(Query.All());
+            _episodeCollection.Delete(Query.All());
+            _showCollection.Delete(Query.All());
         }
 
-        public void AddRange(IEnumerable<Show> list)
+        public void InsertShowsBulk(IEnumerable<Show> list)
         {
-            foreach (var show in list)
-            {
-                var peopleToDelete = new List<string>();
-                foreach (var person in show.ExtraPersons)
-                {
-                    var temp = _context.People.AsNoTracking().SingleOrDefault(x => x.Id == person.PersonId);
-                    if (temp == null)
-                    {
-                        _logger.Warn($"We couldn't find the person with Id {person.PersonId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the actor when we queried the people for the parent id. As a fix we will remove the person from the show now.");
-                        peopleToDelete.Add(person.PersonId);
-                    }
-                }
-                peopleToDelete.ForEach(x => show.ExtraPersons.Remove(show.ExtraPersons.SingleOrDefault(y => y.PersonId == x)));
+            _showCollection.InsertBulk(list);
+        }
 
-                var genresToDelete = new List<string>();
-                foreach (var genre in show.MediaGenres)
-                {
-                    var temp = _context.Genres.AsNoTracking().SingleOrDefault(x => x.Id == genre.GenreId);
-                    if (temp == null)
-                    {
-                        _logger.Warn($"We couldn't find the genre with Id {genre.GenreId} for show ({show.Id}) {show.Name} in the database. This is because Emby didn't return the genre when we queried the genres for the parent id. As a fix we will remove the genre from the show now.");
-                        genresToDelete.Add(genre.GenreId);
-                    }
-                }
-                genresToDelete.ForEach(x => show.MediaGenres.Remove(show.MediaGenres.SingleOrDefault(y => y.GenreId == x)));
+        public void InsertSeasonsBulk(IEnumerable<Season> seasons)
+        {
+            _seasonCollection.InsertBulk(seasons);
+        }
 
-                _context.Shows.Add(show);
-                _context.SaveChanges();
-            }
+        public void InsertEpisodesBulk(IEnumerable<Episode> episodes)
+        {
+            _episodeCollection.InsertBulk(episodes);
         }
 
         public void UpdateShow(Show show)
         {
-            _context.Update(show);
-            _context.SaveChanges();
+            _showCollection.Update(show);
         }
 
-        public void AddRange(IEnumerable<Season> list)
+        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds)
         {
-            _context.Seasons.AddRange(list);
-            _context.SaveChanges();
+            return GetAllShows(collectionIds, false, false);
         }
 
-        public void AddRange(IEnumerable<Episode> list)
+        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes)
         {
-            _context.Episodes.AddRange(list);
-            _context.SaveChanges();
-        }
+            var query = _showCollection;
 
-        public IEnumerable<Show> GetAllShows(IEnumerable<string> collections, bool includeSubs = false)
-        {
-            var query = _context.Shows.AsQueryable();
-
-            if (includeSubs)
+            if (includeSeasons)
             {
-                query = query
-                    .Include(x => x.ExtraPersons)
-                    .Include(x => x.MediaGenres);
+                query = query.Include(x => x.Seasons);
             }
 
-            if (collections.Any())
+            if (includeEpisodes)
             {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
+                query = query.Include(x => x.Episodes);
             }
-
-            return query;
-        }
-
-        public IEnumerable<Season> GetAllSeasonsForShow(string showId, bool includeSubs = false)
-        {
-            var query = _context.Seasons.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.SeasonEpisodes)
-                    .Include(x => x.MediaGenres);
-            }
-
-            query = query.Where(x => x.ParentId == showId);
-            return query.AsNoTracking();
-        }
-
-        public IEnumerable<Episode> GetAllEpisodesForShow(string showId, bool includeSubs = false)
-        {
-            var episodeIds = _context.Seasons
-                .Where(x => x.ParentId == showId)
-                .Include(x => x.SeasonEpisodes)
-                .SelectMany(x => x.SeasonEpisodes)
-                .Select(x => x.EpisodeId);
-
-            var query = _context.Episodes.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.SeasonEpisodes)
-                    .Include(x => x.AudioStreams)
-                    .Include(x => x.ExtraPersons)
-                    .Include(x => x.MediaSources)
-                    .Include(x => x.SubtitleStreams)
-                    .Include(x => x.VideoStreams)
-                    .Include(x => x.MediaGenres);
-            }
-
-            query = query.Where(x => episodeIds.Any(y => y == x.Id));
-            return query.AsNoTracking();
-        }
-
-        public IEnumerable<Episode> GetAllEpisodesForShows(IEnumerable<string> showIds, bool includeSubs = false)
-        {
-            var episodeIds = _context.Seasons
-                .Where(x => showIds.Any(y => y == x.ParentId))
-                .Include(x => x.SeasonEpisodes)
-                .SelectMany(x => x.SeasonEpisodes)
-                .Select(x => x.EpisodeId);
-
-            var query = _context.Episodes.AsQueryable();
-
-            if (includeSubs)
-            {
-                query = query
-                    .Include(x => x.ExtraPersons);
-            }
-
-            query = query.Where(x => episodeIds.Any(y => y == x.Id));
-            return query.ToList();
-        }
-
-        public void SetTvdbSynced(string showId)
-        {
-            var show = _context.Shows.Single(x => x.Id == showId);
-            show.TvdbSynced = true;
-
-            _context.SaveChanges();
-        }
-
-        public int CountShows(IEnumerable<string> collectionIds)
-        {
-            var query = _context.Shows.AsQueryable();
 
             if (collectionIds.Any())
             {
-                query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
+                var bArray = new BsonArray();
+                foreach (var collectionId in collectionIds)
+                {
+                    bArray.Add(collectionId);
+                }
+
+                //TODO: klopt niet!
+                return query.Find(Query.In("CollectionId", bArray));
             }
 
-            return query.Count();
+            return query.FindAll();
         }
 
-        public int CountEpisodes(IEnumerable<string> collectionIds)
+        public Season GetSeasonById(string id)
         {
-            var query = _context.Episodes.AsQueryable();
-
-            if (collectionIds.Any())
-            {
-                query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-
-            }
-
-            return query.Count();
+            return _seasonCollection.FindById(id);
         }
 
-        public int CountEpisodes(string showId)
+        public IEnumerable<Show> GetAllShowsWithTvdbId()
         {
-            return _context.Seasons
-                .Where(x => x.ParentId == showId)
-                .Include(x => x.SeasonEpisodes)
-                .SelectMany(x => x.SeasonEpisodes)
-                .Count();
+            return _showCollection
+                .IncludeAll(1)
+                .Find(x => !string.IsNullOrWhiteSpace(x.TVDB));
         }
 
-        public long GetPlayLength(IEnumerable<string> collectionIds)
+        public IEnumerable<Episode> GetAllEpisodesForShow(int showId)
         {
-            var query = _context.Episodes.AsQueryable();
-
-            if (collectionIds.Any())
-            {
-                query = query.Where(x => collectionIds.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            return query.Sum(x => x.RunTimeTicks ?? 0);
+            return _episodeCollection.Find(Query.EQ("ShowId", showId));
         }
 
-        public int GetTotalPersonByType(IEnumerable<string> collections, string type)
+        public int CountEpisodes(int showId)
         {
-            var query = _context.Shows.Include(x => x.ExtraPersons).AsQueryable();
-
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            var extraPerson = query.SelectMany(x => x.ExtraPersons).AsEnumerable();
-            var people = extraPerson.DistinctBy(x => x.PersonId);
-            return people.Count(x => x.Type == type);
+            return _episodeCollection.Count(Query.EQ("ShowId", showId));
         }
 
-        public string GetMostFeaturedPerson(IEnumerable<string> collections, string type)
+        public int GetEpisodeCountForShow(int showId)
         {
-            var query = _context.Shows.Include(x => x.ExtraPersons).AsQueryable();
-
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            var person = query
-                .SelectMany(x => x.ExtraPersons)
-                .AsEnumerable()
-                .Where(x => x.Type == type)
-                .GroupBy(x => x.PersonId)
-                .Select(group => new { Id = group.Key, Count = group.Count() })
-                .OrderByDescending(x => x.Count)
-                .Select(x => x.Id);
-            return person.FirstOrDefault();
+            return GetEpisodeCountForShow(showId, false);
         }
 
-        public List<string> GetGenres(IEnumerable<string> collections)
+        public int GetEpisodeCountForShow(int showId, bool includeSpecials)
         {
-            var query = _context.Shows.Include(x => x.MediaGenres).AsQueryable();
-
-            if (collections.Any())
-            {
-                query = query.Where(x => collections.Any(y => x.Collections.Any(z => z.CollectionId == y)));
-            }
-
-            var genres = query
-                .SelectMany(x => x.MediaGenres)
-                .Select(x => x.GenreId)
-                .Distinct();
-
-            return genres.ToList();
-        }
-
-        public int GetEpisodeCountForShow(string showId, bool includeSpecials = false)
-        {
-            var query = _context.Seasons.AsQueryable();
-            query = query.Where(x => x.ParentId == showId);
+            var show = _showCollection.FindById(showId);
 
             if (!includeSpecials)
             {
-                query = query.Where(x => x.IndexNumber != 0);
+                return show.Episodes.Count(x => x.IndexNumber != 0);
             }
 
-            var count = query.Include(x => x.SeasonEpisodes)
-                 .SelectMany(x => x.SeasonEpisodes)
-                 .Count();
-
-            return count;
+            return show.Episodes.Count();
         }
 
-        public int GetSeasonCountForShow(string showId, bool includeSpecials = false)
+        public int GetSeasonCountForShow(int showId)
         {
-            var query = _context.Seasons.AsQueryable();
-            query = query.Where(x => x.ParentId == showId);
+            return GetSeasonCountForShow(showId, false);
+        }
+
+        public int GetSeasonCountForShow(int showId, bool includeSpecials)
+        {
+            var show = _showCollection.FindById(showId);
 
             if (!includeSpecials)
             {
-                query = query.Where(x => x.IndexNumber != 0);
+                return show.Seasons.Count(x => x.IndexNumber != 0);
             }
-
-            return query.Count();
+            
+            return show.Seasons.Count();
         }
 
-        public bool Any()
+        public bool AnyShows()
         {
-            return _context.Shows.Any();
+            return _showCollection.Exists(Query.All());
         }
 
         public Episode GetEpisodeById(string id)
         {
-            return _context.Episodes
-                .Include(x => x.SeasonEpisodes)
-                .ThenInclude(x => x.Season)
-                .SingleOrDefault(x => x.Id == id);
+            return _episodeCollection.FindById(id);
         }
     }
 }

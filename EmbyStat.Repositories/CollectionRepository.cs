@@ -2,45 +2,31 @@
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using LiteDB;
 
 namespace EmbyStat.Repositories
 {
     public class CollectionRepository : ICollectionRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<Collection> _collectionCollection;
 
-        public CollectionRepository(ApplicationDbContext context)
+        public CollectionRepository(IDbContext context)
         {
-            _context = context;
+            _collectionCollection = context.GetContext().GetCollection<Collection>();
         }
         public IEnumerable<Collection> GetCollectionByTypes(IEnumerable<CollectionType> types)
         {
-            return _context.Collections.Where(x => types.Any(y => y == x.Type)).ToList();
-        }
-
-        public void AddCollectionRange(IEnumerable<Collection> collections)
-        {
-            _context.Collections.AddRange(collections);
-            _context.SaveChanges();
+            var bArray = new BsonArray();
+            foreach (var type in types)
+            {
+                bArray.Add(type.ToString()); 
+            }
+            return _collectionCollection.Find(Query.In("Type", bArray));
         }
 
         public void AddOrUpdateRange(IEnumerable<Collection> collections)
         {
-            foreach (var collection in collections)
-            {
-                var dbCollection = _context.Collections.AsNoTracking().FirstOrDefault(x => x.Id == collection.Id);
-
-                if (dbCollection == null)
-                {
-                    _context.Add(collection);
-                }
-                else
-                {
-                    _context.Entry(collection).State = EntityState.Modified;
-                }
-            }
-            _context.SaveChanges();
+            _collectionCollection.Upsert(collections);
         }
     }
 }

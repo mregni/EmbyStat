@@ -1,0 +1,13 @@
+@import "../../../../../scss/theme";
+
+.mat-card {
+  background-color: mat-color($app-primary);
+
+  .title {
+    font-size: 1.4em;
+  }
+
+  .value {
+    font-size: 1.7em;
+  }
+}

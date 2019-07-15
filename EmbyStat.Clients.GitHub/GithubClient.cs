@@ -24,7 +24,7 @@ namespace EmbyStat.Clients.GitHub
             _appSettings = appSettings.Value;
         }
 
-        public async Task<UpdateResult> CheckIfUpdateAvailableAsync(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken)
+        public async Task<ReleaseObject[]> GetGithubVersionsAsync(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken)
         {
             var options = new HttpRequest
             {
@@ -37,82 +37,8 @@ namespace EmbyStat.Clients.GitHub
 
             using (var stream = await _httpClient.SendAsync(options))
             {
-                var obj = JsonSerializerExtentions.DeserializeFromStream<ReleaseObject[]>(stream);
-                return CheckForUpdateResult(obj, minVersion, updateTrain, assetFileName);
+                return JsonSerializerExtentions.DeserializeFromStream<ReleaseObject[]>(stream);
             }
-        }
-
-        private UpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
-        {
-            if (updateTrain == UpdateTrain.Release)
-            {
-                obj = obj.Where(i => !i.PreRelease).ToArray();
-            }
-            else if (updateTrain == UpdateTrain.Beta)
-            {
-                obj = obj.Where(i => i.PreRelease && i.Name.Contains(_appSettings.Updater.BetaString, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
-            else if (updateTrain == UpdateTrain.Dev)
-            {
-                obj = obj.Where(i => i.PreRelease && i.Name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
-
-            var availableUpdate = obj
-                .Select(i => CheckForUpdateResult(i, minVersion, assetFilename))
-                .Where(i => i != null)
-                .OrderByDescending(i => Version.Parse(i.AvailableVersion))
-                .FirstOrDefault();
-
-            return availableUpdate ?? new UpdateResult();
-        }
-        private UpdateResult CheckForUpdateResult(ReleaseObject obj, Version minVersion, string assetFilename)
-        {
-            var versionString = CleanUpVersionString(obj.TagName);
-            
-            if (!Version.TryParse(versionString, out var version))
-            {
-                return null;
-            }
-
-            if (version < minVersion)
-            {
-                return null;
-            }
-
-            var asset = (obj.Assets ?? new List<Asset>()).FirstOrDefault(i => IsAsset(i, assetFilename, obj.TagName));
-            if (asset == null)
-            {
-                return null;
-            }
-
-            return new UpdateResult
-            {
-                AvailableVersion = version.ToString(),
-                IsUpdateAvailable = version > minVersion,
-                Package = new PackageInfo
-                {
-                    Classification = obj.PreRelease
-                        ? (obj.Name.Contains(_appSettings.Updater.DevString, StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
-                        : UpdateTrain.Release,
-                    Name = asset.Name,
-                    SourceUrl = asset.BrowserDownloadUrl,
-                    VersionStr = version.ToString(),
-                    InfoUrl = obj.HtmlUrl
-                }
-            };
-        }
-
-        private static bool IsAsset(Asset asset, string assetFilename, string version)
-        {
-            var downloadFilename = Path.GetFileName(asset.Name) ?? string.Empty;
-            var fullAssetFilename = assetFilename.Replace("{version}", version);
-
-            return string.Equals(fullAssetFilename, downloadFilename, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private string CleanUpVersionString(string version)
-        {
-            return version.Replace(_appSettings.Updater.BetaString, "").Replace(_appSettings.Updater.DevString, "");
         }
     }
 }

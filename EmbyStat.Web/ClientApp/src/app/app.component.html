@@ -3,9 +3,8 @@
   <app-toolbar (toggleSideNav)="sidenav.toggle()"></app-toolbar>
 
   <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav mode="side" class="app-sidenav mat-elevation-z1"
-                 [opened]="!isScreenSmall() && openMenu" #sidenav
-                 [mode]="isScreenSmall() ? 'over' : 'side'" position="start">
+    <mat-sidenav mode="side" class="app-sidenav mat-elevation-z1" [opened]="!isScreenSmall() && openMenu" #sidenav
+      [mode]="isScreenSmall() ? 'over' : 'side'" position="start">
       <app-side-navigation></app-side-navigation>
     </mat-sidenav>
 

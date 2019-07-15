@@ -8,6 +8,7 @@
         public Dirs Dirs { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
         public Rollbar Rollbar { get; set; }
+        public string DatabaseFile { get; set; }
         /// <summary>
         /// Port number, is set dynamically when server is starting
         /// </summary>
@@ -29,6 +30,7 @@
         public string Updater { get; set; }
         public string Logs { get; set; }
         public string Settings { get; set; }
+        public string Database { get; set; }
     }
 
     public class ConnectionStrings

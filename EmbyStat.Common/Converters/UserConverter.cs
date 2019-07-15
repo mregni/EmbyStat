@@ -8,11 +8,11 @@ namespace EmbyStat.Common.Converters
 {
     public static class UserConverter
     {
-        public static IEnumerable<User> ConvertToUserList(JArray model)
+        public static IEnumerable<EmbyUser> ConvertToUserList(JArray model)
         {
             foreach (var user in model.Children())
             {
-                yield return new User
+                yield return new EmbyUser
                 {
                     DisablePremiumFeatures = user["Policy"]["DisablePremiumFeatures"].Value<bool>(),
                     EnableLocalPassword = user["Configuration"]["EnableLocalPassword"].Value<bool>(),

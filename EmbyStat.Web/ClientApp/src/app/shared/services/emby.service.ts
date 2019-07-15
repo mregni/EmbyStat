@@ -1,31 +1,50 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { ListContainer } from '../models/list-container';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-import { EmbyUdpBroadcast } from '../models/emby/emby-udp-broadcast';
-import { EmbyLogin } from '../models/emby//emby-login';
-import { EmbyToken } from '../models/emby/emby-token';
-import { EmbyStatus } from '../models/emby/emby-status';
-import { ServerInfo } from '../models/emby/server-info';
+import { EmbyLogin } from '../models/emby/emby-login';
 import { EmbyPlugin } from '../models/emby/emby-plugin';
+import { EmbyStatus } from '../models/emby/emby-status';
+import { EmbyToken } from '../models/emby/emby-token';
+import { EmbyUdpBroadcast } from '../models/emby/emby-udp-broadcast';
 import { EmbyUser } from '../models/emby/emby-user';
+import { ServerInfo } from '../models/emby/server-info';
+import { UserId } from '../models/emby/user-id';
+import { ListContainer } from '../models/list-container';
 import { UserMediaView } from '../models/session/user-media-view';
-import { UserId } from '../models/user-id';
 
-@Injectable()
+class UrlObject {
+  url: string;
+
+  constructor(url: string) {
+    this.url = url;
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class EmbyService {
   private readonly baseUrl = '/api/emby';
   private searchEmbyUrl = this.baseUrl + '/server/search';
   private getEmbyTokenUrl = this.baseUrl + '/server/token';
-  private getServerInfoUrl = this.baseUrl + '/server/info';
+  private getEmbyServerInfoUrl = this.baseUrl + '/server/info';
   private getEmbyStatusUrl = this.baseUrl + '/server/status';
+  private pingEmbyurl = this.baseUrl + '/server/ping';
   private getPluginsUrl = this.baseUrl + '/plugins';
   private getEmbyUsersUrl = this.baseUrl + '/users';
   private getEmbyUserIdsUrl = this.getEmbyUsersUrl + '/ids';
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
+
+  getPlugins(): Observable<EmbyPlugin[]> {
+    return this.http.get<EmbyPlugin[]>(this.getPluginsUrl);
+  }
+
+  getEmbyServerInfo(): Observable<ServerInfo> {
+    return this.http.get<ServerInfo>(this.getEmbyServerInfoUrl);
+  }
 
   getEmbyToken(login: EmbyLogin): Observable<EmbyToken> {
     return this.http.post<EmbyToken>(this.getEmbyTokenUrl, login);
@@ -37,14 +56,6 @@ export class EmbyService {
 
   getEmbyStatus(): Observable<EmbyStatus> {
     return this.http.get<EmbyStatus>(this.getEmbyStatusUrl);
-  }
-
-  getServerInfo(): Observable<ServerInfo> {
-    return this.http.get<ServerInfo>(this.getServerInfoUrl);
-  }
-
-  getPlugins(): Observable<EmbyPlugin[]> {
-    return this.http.get<EmbyPlugin[]>(this.getPluginsUrl);
   }
 
   getUsers(): Observable<EmbyUser[]> {
@@ -60,6 +71,11 @@ export class EmbyService {
   }
 
   getUserViewsByUserId(id: string, page: number, size: number): Observable<ListContainer<UserMediaView>> {
-    return this.http.get<ListContainer<UserMediaView>>(this.getEmbyUsersUrl + '/' + id + "/views/" + page + "/" + size);
+    return this.http.get<ListContainer<UserMediaView>>(this.getEmbyUsersUrl + '/' + id + '/views/' + page + '/' + size);
+  }
+
+  pingEmby(url: string): Observable<boolean> {
+    const urlObj = new UrlObject(url);
+    return this.http.post<boolean>(this.pingEmbyurl, urlObj);
   }
 }

@@ -1,13 +1,13 @@
-@import "../../../../styles";
+@import "../../../../scss/variables";
+
 $icon-width: 56px;
 
 .sidenav-toggle {
   display: none;
   padding: 0;
-  margin: 8px;
   min-width: $icon-width;
 
-  @media (max-width: $small-size) {
+  @media (max-width: $xl) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,10 +47,9 @@ $icon-width: 56px;
 }
 
 .toolbar-emby-ping-statusbox {
-  display: flex;
-
   img {
     width: 25px;
     height: 25px;
+    margin-right: 10px;
   }
 }

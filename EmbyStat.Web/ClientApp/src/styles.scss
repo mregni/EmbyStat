@@ -1,130 +1,22 @@
-//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "theme";
-@import "app/styles/vars";
-@import "app/styles/ball-scale-ripple-multiple.min";
-@import "app/styles/ball-clip-rotate.min";
-@import "app/styles//title-bar";
+@import "scss/variables";
 
-html,
-body {
-  height: 100%;
-}
+// Imports functions, variables, and mixins that are needed by other Bootstrap files
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/progress";
 
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
+@import "scss/reset";
+@import "scss/theme";
+@import "scss/image";
+@import "scss/height";
+@import "scss/loader";
 
-.content {
-  margin: 25px;
-}
-
-.margin-top {
-  margin-top: 10px;
-}
-
-.margin-bottom {
-  margin-bottom: 10px;
-}
-
-.margin-right {
-  margin-right: 10px;
-}
-
-.text-italic {
-  font-style: italic;
-}
-
-.mat-typography a {
-  color: $white;
-}
-
-.mat-list-item-content i {
-  padding-right: 15px;
-}
-
-.mat-list-item-content {
-  font-size: 0.8em;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.subtext-grey {
-  font-style: italic;
-  padding: 3px 3px 3px;
-  color: $grey-font-color;
-}
-
-.subtext-white {
-  font-style: italic;
-  padding: 3px;
-  color: $white;
-}
-
-.subtext-grey-small {
-  font-size: 11px;
-  font-style: italic;
-  padding: 3px;
-  color: $grey-font-color;
-}
-
-
-.no-top-margin {
-  margin-top: 0 !important;
-}
-
-.button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-
-  > button:last-child,
-  > a:last-child {
-    margin-left: 10px;
-  }
-}
-
-.toast__success {
-  padding: 14px 14px 14px 24px !important;
-
-  .mat-simple-snackbar-action {
-    color: $green !important;
-  }
-}
-
-.toast__warning {
-  padding: 14px 14px 14px 24px !important;
-
-  .mat-simple-snackbar-action {
-    color: $orange !important;
-  }
-}
-
-.toast__fail {
-  padding: 14px 14px 14px 24px !important;
-
-  .mat-simple-snackbar-action {
-    color: $dark-red !important;
-  }
-}
-
-.text__accent {
-  color: mat-color($mat-orange, A400);
-  font-weight: bold;
-}
-
-.text__warn {
-  color: mat-color($mat-red, A700);
-  font-weight: bold;
-}
-
-.round-border {
-  border-radius: 4px;
-}
-
-.hint {
-  color: $hint-grey;
-  font-size: 75%;
-}
+//App styles
+@import "scss/main";
+@import "scss/title-bar";
+@import "scss/toast";
+@import "scss/alert";

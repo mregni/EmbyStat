@@ -40,7 +40,7 @@ namespace EmbyStat.Common
             public static string YoungestPremiered => "SHOWS.YOUNGESTPREMIERED";
             public static string YoungestAdded => "SHOWS.YOUNGESTADDED";
             public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
-            public static string ShowStatusGraph => "SHOWS.SHOWSTATUSGRAPH";
+            public static string ShowStatusChart => "SHOWS.SHOWSTATUSGRAPH";
         }
 
         public static class Users
@@ -61,11 +61,6 @@ namespace EmbyStat.Common
         {
             public static string Movie => "Movie";
             public static string Boxset => "BoxSet";
-        }
-
-        public static class EmbyStatus
-        {
-            public static string MissedPings => "MISSEDPINGS";
         }
 
         public static class LogPrefix
@@ -127,7 +122,7 @@ namespace EmbyStat.Common
             public static string Genres => "Genres";
             public static string Languages => "Languages";
             public static string Media => "Media";
-            public static string People => "People";
+            public static string People => "PeopleIds";
             public static string Plugins => "Plugins";
             public static string ServerInfo => "ServerInfo";
             public static string Statistics => "Statistics";

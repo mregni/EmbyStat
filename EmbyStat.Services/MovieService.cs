@@ -10,10 +10,11 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Graph;
+using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Extensions;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services
@@ -22,18 +23,16 @@ namespace EmbyStat.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly ICollectionRepository _collectionRepository;
-        private readonly IGenreRepository _genreRepository;
         private readonly IPersonService _personService;
         private readonly ISettingsService _settingsService;
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, 
-            IGenreRepository genreRepository, IPersonService personService, ISettingsService settingsService, 
-            IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(jobRepository)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository,
+            IPersonService personService, ISettingsService settingsService,
+            IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(jobRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
-            _genreRepository = genreRepository;
             _personService = personService;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
@@ -45,147 +44,109 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.MovieCollectionTypes);
         }
 
-        public async Task<MovieStats>  GetGeneralStatsForCollections(List<string> collectionIds)
+        public async Task<MovieStatistics> GetMovieStatisticsAsync(List<string> collectionIds)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGeneral);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, collectionIds);
 
-            MovieStats stats;
+            MovieStatistics general;
             if (StatisticsAreValid(statistic, collectionIds))
             {
-                stats = JsonConvert.DeserializeObject<MovieStats>(statistic.JsonResult);
+                general = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
             }
             else
             {
-                var movies = _movieRepository.GetAll(collectionIds, true);
+                var movies = _movieRepository.GetAll(collectionIds).ToList();
 
-                stats = new MovieStats
+                general = new MovieStatistics
                 {
-                    MovieCount = TotalMovieCount(movies),
-                    GenreCount = TotalMovieGenres(movies),
-                    TotalPlayableTime = TotalPlayLength(movies),
-                    HighestRatedMovie = HighestRatedMovie(movies),
-                    LowestRatedMovie = LowestRatedMovie(movies),
-                    OldestPremieredMovie = OldestPremieredMovie(movies),
-                    YoungestPremieredMovie = YoungestPremieredMovie(movies),
-                    ShortestMovie = ShortestMovie(movies),
-                    LongestMovie = LongestMovie(movies),
-                    YoungestAddedMovie = YoungestAddedMovie(movies)
+                    General = CalculateGeneralStatistics(movies),
+                    Charts = CalculateCharts(movies),
+                    People = await CalculatePeopleStatistics(movies),
+                    Suspicious = CalculateSuspiciousMovies(movies)
                 };
 
-                var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGeneral, collectionIds);
+                var json = JsonConvert.SerializeObject(general);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Movie, collectionIds);
             }
 
-            return stats;
+            return general;
         }
 
-        public async Task<PersonStats> GetPeopleStatsForCollections(List<string> collectionIds)
+        private MovieGeneral CalculateGeneralStatistics(IReadOnlyCollection<Movie> movies)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MoviePeople);
-
-            PersonStats stats;
-            if (StatisticsAreValid(statistic, collectionIds))
+            return new MovieGeneral
             {
-                stats = JsonConvert.DeserializeObject<PersonStats>(statistic.JsonResult);
-            }
-            else
-            {
-                stats = new PersonStats
-                {
-                    TotalActorCount = TotalTypeCount(collectionIds, PersonType.Actor, Constants.Common.TotalActors),
-                    TotalDirectorCount = TotalTypeCount(collectionIds, PersonType.Director, Constants.Common.TotalDirectors),
-                    TotalWriterCount = TotalTypeCount(collectionIds, PersonType.Writer, Constants.Common.TotalWriters),
-                    MostFeaturedActor = await GetMostFeaturedPersonAsync(collectionIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
-                    MostFeaturedDirector = await GetMostFeaturedPersonAsync(collectionIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
-                    MostFeaturedWriter = await GetMostFeaturedPersonAsync(collectionIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
-                    MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(collectionIds)
-                };
-
-                var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MoviePeople, collectionIds);
-            }
-
-            return stats;
+                MovieCount = TotalMovieCount(movies),
+                GenreCount = TotalMovieGenres(movies),
+                TotalPlayableTime = TotalPlayLength(movies),
+                HighestRatedMovie = HighestRatedMovie(movies),
+                LowestRatedMovie = LowestRatedMovie(movies),
+                OldestPremieredMovie = OldestPremieredMovie(movies),
+                YoungestPremieredMovie = YoungestPremieredMovie(movies),
+                ShortestMovie = ShortestMovie(movies),
+                LongestMovie = LongestMovie(movies),
+                YoungestAddedMovie = YoungestAddedMovie(movies)
+            };
         }
 
-        public async Task<MovieGraphs> GetGraphs(List<string> collectionIds)
+        public async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyCollection<Movie> movies)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieGraphs);
-
-            MovieGraphs stats;
-            if (StatisticsAreValid(statistic, collectionIds))
+            return new PersonStats
             {
-                stats = JsonConvert.DeserializeObject<MovieGraphs>(statistic.JsonResult);
-            }
-            else
-            {
-                var movies = _movieRepository.GetAll(collectionIds, true);
-
-                stats = new MovieGraphs();
-                stats.BarGraphs.Add(CalculateGenreGraph(movies));
-                stats.BarGraphs.Add(CalculateRatingGraph(movies.Select(x => x.CommunityRating)));
-                stats.BarGraphs.Add(CalculatePremiereYearGraph(movies.Select(x => x.PremiereDate)));
-                stats.BarGraphs.Add(CalculateOfficialRatingGraph(movies));
-
-                var json = JsonConvert.SerializeObject(stats);
-               await  _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieGraphs, collectionIds);
-            }
-
-            return stats;
+                TotalActorCount = TotalTypeCount(movies, PersonType.Actor, Constants.Common.TotalActors),
+                TotalDirectorCount = TotalTypeCount(movies, PersonType.Director, Constants.Common.TotalDirectors),
+                TotalWriterCount = TotalTypeCount(movies, PersonType.Writer, Constants.Common.TotalWriters),
+                MostFeaturedActor = await GetMostFeaturedPersonAsync(movies, PersonType.Actor, Constants.Common.MostFeaturedActor),
+                MostFeaturedDirector = await GetMostFeaturedPersonAsync(movies, PersonType.Director, Constants.Common.MostFeaturedDirector),
+                MostFeaturedWriter = await GetMostFeaturedPersonAsync(movies, PersonType.Writer, Constants.Common.MostFeaturedWriter),
+                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(movies)
+            };
         }
 
-        public async Task<SuspiciousTables> GetSuspiciousMovies(List<string> collectionIds)
+        private MovieCharts CalculateCharts(IReadOnlyCollection<Movie> movies)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.MovieSuspicious);
-
-            SuspiciousTables stats;
-            if (StatisticsAreValid(statistic, collectionIds))
-            {
-                stats = JsonConvert.DeserializeObject<SuspiciousTables>(statistic.JsonResult);
-            }
-            else
-            {
-                var movies = _movieRepository.GetAll(collectionIds, true);
-                stats = new SuspiciousTables
-                {
-                    Duplicates = GetDuplicates(movies),
-                    Shorts = GetShortMovies(movies),
-                    NoImdb = GetMoviesWithoutImdbLink(movies),
-                    NoPrimary = GetMoviesWithoutPrimaryImage(movies)
-                };
-
-                var json = JsonConvert.SerializeObject(stats);
-                await _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.MovieSuspicious, collectionIds);
-            }
+            var stats = new MovieCharts();
+            stats.BarCharts.Add(CalculateGenreChart(movies));
+            stats.BarCharts.Add(CalculateRatingChart(movies.Select(x => x.CommunityRating)));
+            stats.BarCharts.Add(CalculatePremiereYearChart(movies.Select(x => x.PremiereDate)));
+            stats.BarCharts.Add(CalculateOfficialRatingChart(movies));
 
             return stats;
         }
 
-        public bool MovieTypeIsPresent()
+        public SuspiciousTables CalculateSuspiciousMovies(IReadOnlyCollection<Movie> movies)
+        {
+            return new SuspiciousTables
+            {
+                Duplicates = GetDuplicates(movies),
+                Shorts = GetShortMovies(movies),
+                NoImdb = GetMoviesWithoutImdbLink(movies),
+                NoPrimary = GetMoviesWithoutPrimaryImage(movies)
+            };
+        }
+
+        public bool TypeIsPresent()
         {
             return _movieRepository.Any();
         }
 
-        private List<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
+        private IEnumerable<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
         {
             var settings = _settingsService.GetUserSettings();
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
                 .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < settings.ToShortMovie)
-                .OrderBy(x => x.SortName)
-                .Select((t, i) => new ShortMovie
-                {
-                    Number = i++,
-                    Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
-                    Title = t.Name,
-                    MediaId = t.Id
-                })
-                .ToList();
-
-            return shortMovies;
+                .OrderBy(x => x.SortName);
+            return shortMovies.Select((t, i) => new ShortMovie
+            {
+                Number = i++,
+                Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
+                Title = t.Name,
+                MediaId = t.Id
+            }).ToList();
         }
 
-        private List<SuspiciousMovie> GetMoviesWithoutImdbLink(IEnumerable<Movie> movies)
+        private IEnumerable<SuspiciousMovie> GetMoviesWithoutImdbLink(IEnumerable<Movie> movies)
         {
             var noImdbMovies = movies
                 .Where(x => string.IsNullOrWhiteSpace(x.IMDB))
@@ -195,13 +156,12 @@ namespace EmbyStat.Services
                     Number = i++,
                     Title = t.Name,
                     MediaId = t.Id
-                })
-                .ToList();
+                });
 
             return noImdbMovies;
         }
 
-        private List<SuspiciousMovie> GetMoviesWithoutPrimaryImage(IEnumerable<Movie> movies)
+        private IEnumerable<SuspiciousMovie> GetMoviesWithoutPrimaryImage(IEnumerable<Movie> movies)
         {
             var noPrimaryImageMovies = movies
                 .Where(x => string.IsNullOrWhiteSpace(x.Primary))
@@ -217,7 +177,7 @@ namespace EmbyStat.Services
             return noPrimaryImageMovies;
         }
 
-        private List<MovieDuplicate> GetDuplicates(IReadOnlyCollection<Movie> movies)
+        private IEnumerable<MovieDuplicate> GetDuplicates(IReadOnlyCollection<Movie> movies)
         {
             var list = new List<MovieDuplicate>();
 
@@ -233,8 +193,8 @@ namespace EmbyStat.Services
                     Number = i,
                     Title = itemOne.Name,
                     Reason = Constants.ByImdb,
-                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = String.Join(",", itemOne.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) },
-                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = String.Join(",", itemTwo.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) }
+                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = string.Join(",", itemOne.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) },
+                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = string.Join(",", itemTwo.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) }
                 });
             }
 
@@ -257,8 +217,7 @@ namespace EmbyStat.Services
             return new Card<int>
             {
                 Title = Constants.Movies.TotalGenres,
-                Value = movies.SelectMany(x => x.MediaGenres)
-                              .Select(x => x.GenreId)
+                Value = movies.SelectMany(x => x.Genres)
                               .Distinct()
                               .Count()
             };
@@ -381,18 +340,26 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card<int> TotalTypeCount(IEnumerable<string> collectionsIds, string type, string title)
+        private Card<int> TotalTypeCount(IEnumerable<Movie> movies, string type, string title)
         {
+            var value = movies.SelectMany(x => x.People)
+                .DistinctBy(x => x.Id)
+                .Count(x => x.Type == type);
             return new Card<int>
             {
-                Value = _movieRepository.GetTotalPersonByType(collectionsIds, type),
+                Value = value,
                 Title = title
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<string> collectionIds, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<Movie> movies, string type, string title)
         {
-            var personId = _movieRepository.GetMostFeaturedPerson(collectionIds, type);
+            var personId = movies.SelectMany(x => x.People)
+                .Where(x => x.Type == type)
+                .GroupBy(x => x.Id, x => x.Name, (id, name) => new { Key = id, Count = name.Count() })
+                .OrderByDescending(x => x.Count)
+                .Select(x => x.Key)
+                .FirstOrDefault();
 
             var person = await _personService.GetPersonByIdAsync(personId);
             if (person == null)
@@ -404,20 +371,16 @@ namespace EmbyStat.Services
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(List<string> collectionIds)
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyCollection<Movie> movies)
         {
-            var movies = _movieRepository.GetAll(collectionIds, true);
-            var genreIds = _movieRepository.GetGenres(collectionIds);
-            var genres = _genreRepository.GetListByIds(genreIds);
-
             var list = new List<PersonPoster>();
-            foreach (var genre in genres.OrderBy(x => x.Name))
+            foreach (var genre in movies.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
             {
-                var selectedMovies = movies.Where(x => x.MediaGenres.Any(y => y.GenreId == genre.Id));
+                var selectedMovies = movies.Where(x => x.Genres.Any(y => y == genre));
                 var personId = selectedMovies
-                    .SelectMany(x => x.ExtraPersons)
+                    .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.PersonId)
+                    .GroupBy(x => x.Id)
                     .Select(group => new { Id = group.Key, Count = group.Count() })
                     .OrderByDescending(x => x.Count)
                     .Select(x => x.Id)
@@ -427,47 +390,46 @@ namespace EmbyStat.Services
                 if (person != null)
                 {
                     person.MovieCount = _movieRepository.GetMovieCountForPerson(personId);
-                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
+                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
                 }
             }
 
             return list;
         }
 
-        private Graph<SimpleGraphValue> CalculateGenreGraph(IEnumerable<Movie> movies)
+        private Chart CalculateGenreChart(IEnumerable<Movie> movies)
         {
-            var genres = _genreRepository.GetAll();
-            var genresData = movies.SelectMany(x => x.MediaGenres).GroupBy(x => x.GenreId)
-                .Select(x => new { Name = genres.Single(y => y.Id == x.Key).Name, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
+            var genresData = movies
+                .SelectMany(x => x.Genres)
+                .GroupBy(x => x)
+                .Select(x => new { Name = x.Key, Count = x.Count() })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerGenre,
-                Data = genresData
+                Labels = genresData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { genresData.Select(x => x.Count) }
             };
         }
 
-        private Graph<SimpleGraphValue> CalculateOfficialRatingGraph(IEnumerable<Movie> movies)
+        private Chart CalculateOfficialRatingChart(IEnumerable<Movie> movies)
         {
             var ratingData = movies
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
                 .GroupBy(x => x.OfficialRating.ToUpper())
                 .Select(x => new { Name = x.Key, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerOfficialRating,
-                Data = ratingData
+                Labels = ratingData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
             };
         }
-
-
         #endregion
     }
 }

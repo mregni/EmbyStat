@@ -1,0 +1,18 @@
+<div class="poster" *ngIf="poster !== undefined" [style.background-image]="getPoster()" (click)="openPerson()">
+  <div class="poster-content">
+    <div class="poster-row">
+      <div>{{poster.name | toShorterString:18 }}</div>
+      <div>{{poster.movieCount}} <span class="feather icon-film"></span></div>
+    </div>
+    <div class="poster-row">
+      <div>{{poster.birthDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+      <div>{{poster.episodeCount}} <span class="feather icon-tv"></span></div>
+    </div>
+    <div class="poster-sub-content" *ngIf="needsBarAndTranslation(poster.title)">
+      <span>{{ poster.title | translate }}</span>
+    </div>
+    <div class="poster-sub-content" *ngIf="needsBarButNoTranslation(poster.title)">
+      <span>{{ poster.title | translate }}</span>
+    </div>
+  </div>
+</div>

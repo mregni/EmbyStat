@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -45,7 +41,7 @@ namespace EmbyStat.Services
             return _userSettings;
         }
 
-        public async Task<UserSettings> SaveUserSettings(UserSettings userSettings)
+        public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
         {
             _userSettings = userSettings;
 
@@ -80,10 +76,10 @@ namespace EmbyStat.Services
             });
         }
 
-        public async Task SetUpdateInProgressSetting(bool value)
+        public Task SetUpdateInProgressSettingAsync(bool value)
         {
             _userSettings.UpdateInProgress = value;
-            await SaveUserSettings(_userSettings);
+            return SaveUserSettingsAsync(_userSettings);
         }
 
         private void LoadUserSettingsFromFile()

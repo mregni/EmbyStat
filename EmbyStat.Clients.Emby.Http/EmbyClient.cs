@@ -126,9 +126,9 @@ namespace EmbyStat.Clients.Emby.Http
             }
         }
 
-        public async Task<string> PingEmbyAsync(CancellationToken cancellationToken)
+        public async Task<string> PingEmbyAsync(string embyAddress, CancellationToken cancellationToken)
 		{
-			var url = GetApiUrl("System/Ping");
+			var url = GetApiUrl(embyAddress, "System/Ping");
 			var args = new Dictionary<string, string>();
 
             _logger.Info($"{Constants.LogPrefix.EmbyClient}\tSending a ping to Emby");

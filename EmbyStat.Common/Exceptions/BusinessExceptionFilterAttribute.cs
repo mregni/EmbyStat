@@ -1,5 +1,4 @@
-﻿using EmbyStat.Common.Models.Settings;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using Rollbar;

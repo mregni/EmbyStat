@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-12 col-lg-6 pb-1">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="embyForm" class="d-flex flex-column">
+          <div class="d-flex flex-row">
+            <mat-form-field class="emby-protocol mr-3">
+              <mat-select formControlName="embyProtocol" [disableControl]="isSaving">
+                <mat-option [value]="0">https://</mat-option>
+                <mat-option [value]="1">http://</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="emby-address mr-3">
+              <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate}}" formControlName="embyAddress"
+                [disableControl]="isSaving">
+              <mat-error *ngIf="embyAddressControl.hasError('required')">{{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="emby-port">
+              <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}" formControlName="embyPort" required [disableControl]="isSaving">
+              <mat-error *ngIf="embyPortControl.hasError('required')">{{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}</mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field>
+            <input matInput placeholder="{{'SETTINGS.EMBY.EMBYUSERNAME' | translate}}" formControlName="embyUsername"
+              [disableControl]="isSaving">
+            <mat-error *ngIf="embyUsernameControl.hasError('required')">{{'SETTINGS.EMBY.EMBYUSERNAMEREQUIRED' | translate}}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="{{'SETTINGS.EMBY.EMBYPASSWORD' | translate}}" formControlName="embyPassword" [disableControl]="isSaving"
+              [type]="hidePassword ? 'password' : 'text'">
+            <fa-icon icon="{{hidePassword ? 'eye' : 'eye-slash'}}" matSuffix (click)="hidePassword = !hidePassword">
+            </fa-icon>
+            <mat-error *ngIf="embyPasswordControl.hasError('required')">
+              {{'SETTINGS.EMBY.EMBYPASSWORDREQUIRED' | translate}}</mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="button-container d-flex justify-content-end">
+        <button mat-raised-button color="primary" [disabled]="isSaving"
+          (click)="saveEmbyForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

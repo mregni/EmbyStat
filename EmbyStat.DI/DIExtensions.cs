@@ -36,7 +36,6 @@ namespace EmbyStat.DI
         {
             services.TryAddTransient<IAboutService, AboutService>();
             services.TryAddTransient<IEmbyService, EmbyService>();
-            services.TryAddTransient<IEventService, EventService>();
             services.TryAddTransient<IJobService, JobService>();
             services.TryAddTransient<ILanguageService, LanguageService>();
             services.TryAddTransient<ILogService, LogService>();
@@ -50,18 +49,17 @@ namespace EmbyStat.DI
 
         public static void RegisterRepositories(this IServiceCollection services)
         {
+            services.TryAddTransient<IDbContext, DbContext>();
             services.TryAddTransient<IDatabaseInitializer, DatabaseInitializer>();
 
             services.TryAddTransient<IMovieRepository, MovieRepository>();
             services.TryAddTransient<IEmbyRepository, EmbyRepository>();
-            services.TryAddTransient<IGenreRepository, GenreRepository>();
             services.TryAddTransient<IPersonRepository, PersonRepository>();
             services.TryAddTransient<IShowRepository, ShowRepository>();
             services.TryAddTransient<ICollectionRepository, CollectionRepository>();
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IJobRepository, JobRepository>();
-            services.TryAddTransient<IEventRepository, EventRepository>();
             services.TryAddTransient<ISessionRepository, SessionRepository>();
         }
 

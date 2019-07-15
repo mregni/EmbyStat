@@ -1,51 +1,48 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
+
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+    faBars, faBirthdayCake, faCogs, faEye, faEyeSlash, faFile, faFilm, faHome, faInfo, faPlayCircle,
+    faPuzzlePiece, faServer, faStopwatch, faTv, faUserLock, faUsers, faUserTie
+} from '@fortawesome/free-solid-svg-icons';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TooltipModule } from 'ng2-tooltip-directive';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUserTie, faUserLock, faEyeSlash, faPlay } from '@fortawesome/free-solid-svg-icons';
 
-import { AppComponent } from './app.component';
-import { SharedModule } from './shared/shared.module';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { WizardModule } from './wizard/wizard.module';
-import { ServerModule } from './server/server.module';
-import { PluginModule } from './plugin/plugin.module';
-import { JobsModule } from './jobs/jobs.module';
-import { MovieModule } from './movie/movie.module';
-import { ShowModule } from './show/show.module';
-import { LogsModule } from './logs/logs.module';
-import { AboutModule } from './about/about.module';
-import { SettingsModule } from './settings/settings.module';
-import { UserModule } from './user/user.module';
-
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-import { ROOT_REDUCER, META_REDUCERS } from './states/app.state';
-import { SettingsEffects } from './settings/state/effects.settings';
-import { ServerEffects } from './server/state/effects.server';
-import { AboutEffects } from './about/state/effects.about';
-
-import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-import { ErrorInterceptor } from './shared/error.interceptor';
-
-import { SyncGuard } from './shared/guards/sync.guard';
+import { AppComponent } from './app.component';
+import { AboutModule } from './pages/about/about.module';
+import { DashboardModule } from './pages/dashboard/dashboard.module';
+import { JobsModule } from './pages/jobs/jobs.module';
+import { LogsModule } from './pages/logs/logs.module';
+import { MovieModule } from './pages/movie/movie.module';
+import { PluginModule } from './pages/plugin/plugin.module';
+import { ServerModule } from './pages/server/server.module';
+import { SettingsModule } from './pages/settings/settings.module';
+import { SettingsEffects } from './pages/settings/state/settings.effects';
+import { ShowModule } from './pages/show/show.module';
+import { UsersModule } from './pages/users/users.module';
+import { WizardModule } from './pages/wizard/wizard.module';
+import { OptionsService } from './shared/components/charts/options/options';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { SharedModule } from './shared/shared.module';
+import { META_REDUCERS, ROOT_REDUCER } from './states/app.state';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
-library.add(faUserTie, faUserLock, faEyeSlash, faPlay);
+library.add(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
+  faTv, faUsers, faPuzzlePiece, faServer, faCogs, faStopwatch, faFile, faInfo,
+  faBars, faEye, faEyeSlash);
 
 @NgModule({
   declarations: [
@@ -54,22 +51,19 @@ library.add(faUserTie, faUserLock, faEyeSlash, faPlay);
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FlexLayoutModule,
-    HttpClientModule,
-    SharedModule,
-    SettingsModule,
-    DashboardModule,
-    WizardModule,
-    ServerModule,
-    PluginModule,
-    JobsModule,
-    ShowModule,
-    MovieModule,
-    UserModule,
-    LogsModule,
-    TooltipModule,
-    AboutModule,
     AppRoutingModule,
+    SharedModule.forRoot(),
+    AboutModule,
+    DashboardModule,
+    SettingsModule,
+    MovieModule,
+    PluginModule,
+    LogsModule,
+    ServerModule,
+    ShowModule,
+    JobsModule,
+    UsersModule,
+    WizardModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -80,16 +74,17 @@ library.add(faUserTie, faUserLock, faEyeSlash, faPlay);
     NgProgressModule,
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([SettingsEffects, ServerEffects, AboutEffects]),
+    EffectsModule.forRoot([SettingsEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
+  schemas: [],
   providers: [
-    SyncGuard,
-    {
+    OptionsService, {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }],
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

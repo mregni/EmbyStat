@@ -1,0 +1,14 @@
+<ng-scrollbar shown='always'>
+  <div style="height: 300px;" *ngIf="posters !== undefined">
+    <div class="d-flex flex-row mb-2 pointer" (click)="openPerson(poster.mediaId)" *ngFor="let poster of posters">
+      <img mat-list-icon [src]="getPoster(poster.tag, poster.mediaId)" alt="actor image" class="img-radius img-40 mr-2">
+      <div class="d-flex flex-column">
+        <h4 class="mb-0">{{poster.title}}</h4>
+        <p class="text-muted mb-0">
+          {{poster.name | toShorterString:18}} | <fa-icon icon="birthday-cake"></fa-icon> {{poster.birthDate | amDateFormat: 'DD/MM/YYYY'}} |
+          {{poster.movieCount}} <fa-icon icon="film"></fa-icon> | {{poster.episodeCount}} <fa-icon icon="tv"></fa-icon>
+        </p>
+      </div>
+    </div>
+  </div>
+</ng-scrollbar>

@@ -1,4 +1,4 @@
-@import "../../../../styles";
+@import "../../../../scss/variables";
 
 .toolbar-flexcontainer {
   display: flex;
@@ -9,6 +9,10 @@
 
 .mat-list-no-padding {
   padding: 0;
+
+  a fa-icon {
+    width: 30px;
+  }
 }
 
 .version-string {

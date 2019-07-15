@@ -1,0 +1,31 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  margin: 0;
+}
+
+.content {
+  padding: 15px;
+}
+
+.icon-link {
+  cursor: pointer;
+}
+
+.text-accent {
+  color: mat-color($mat-orange, A400);
+  font-weight: bold;
+}
+
+.text-warn {
+  color: mat-color($mat-red, A700);
+  font-weight: bold;
+}
+
+.pointer {
+  cursor: pointer;
+}

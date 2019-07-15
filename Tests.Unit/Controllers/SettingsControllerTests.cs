@@ -7,7 +7,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.Settings;
-using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
@@ -63,7 +62,7 @@ namespace Tests.Unit.Controllers
             _settingsServiceMock = new Mock<ISettingsService>();
 		    _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings { Version = "0.0.0.0" });
 		    _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(settings);
-            _settingsServiceMock.Setup(x => x.SaveUserSettings(It.IsAny<UserSettings>()))
+            _settingsServiceMock.Setup(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()))
                 .Returns(Task.FromResult(settings));
 
 	        var mapperMock = new Mock<IMapper>();
@@ -77,10 +76,12 @@ namespace Tests.Unit.Controllers
                 });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid()).Returns(Task.CompletedTask);
-            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid()).Returns(Task.CompletedTask);
+            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
+            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
 
-            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, mapperMock.Object);
+            var languageServiceMock = new Mock<ILanguageService>();
+
+            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object);
 		}
 
 	    public void Dispose()
@@ -134,7 +135,7 @@ namespace Tests.Unit.Controllers
 
 		    await _subject.Update(settings);
 
-		    _settingsServiceMock.Verify(x => x.SaveUserSettings(It.IsAny<UserSettings>()), Times.Once);
+		    _settingsServiceMock.Verify(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()), Times.Once);
 	    }
 	}
 }

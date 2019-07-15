@@ -1,5 +1,4 @@
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Common.Extentions;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
@@ -11,16 +10,14 @@ using Rollbar;
 using Rollbar.NetCore.AspNet;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using AutoMapper;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
-using EmbyStat.Repositories;
 using EmbyStat.Services;
 using Hangfire;
 using Hangfire.Dashboard;
@@ -28,9 +25,7 @@ using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Rollbar.DTOs;
 
 namespace EmbyStat.Web
 {
@@ -65,11 +60,6 @@ namespace EmbyStat.Web
                 .AddApiExplorer()
                 .AddJsonFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlite(appSettings.ConnectionStrings.Main, builder => builder.CommandTimeout(30));
-            });
 
             services.AddHangfire(x =>
             {
@@ -157,9 +147,14 @@ namespace EmbyStat.Web
 
         private void SetupDirectories(AppSettings settings)
         {
-            if (Directory.Exists(settings.Dirs.TempUpdateDir))
+            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.TempUpdateDir)))
             {
-                Directory.Delete(settings.Dirs.TempUpdateDir, true);
+                Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.TempUpdateDir), true);
+            }
+
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.Database)))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.Database));
             }
         }
 
@@ -206,7 +201,7 @@ namespace EmbyStat.Web
 
         private void ResetConfiguration(ISettingsService settingsService)
         {
-            settingsService.SetUpdateInProgressSetting(false);
+            settingsService.SetUpdateInProgressSettingAsync(false);
         }
 
         private void AddDeviceIdToConfig(ISettingsService settingsService)
@@ -216,16 +211,16 @@ namespace EmbyStat.Web
             if (userSettings.Id == null)
             {
                 userSettings.Id = Guid.NewGuid();
-                settingsService.SaveUserSettings(userSettings);
+                settingsService.SaveUserSettingsAsync(userSettings);
             }
         }
 
         private void SetEmbyClientConfiguration(ISettingsService settingsService, IEmbyClient embyClient)
         {
-            settingsService.SetUpdateInProgressSetting(false);
+            settingsService.SetUpdateInProgressSettingAsync(false);
             var settings = settingsService.GetUserSettings();
 
-            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version, settings.Id.ToString());
             if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
             {
                 embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);

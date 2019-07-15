@@ -1,7 +1,8 @@
+import { Subscription } from 'rxjs';
+
 /* tslint:disable:component-class-suffix */
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Subscription } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,8 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./sync-is-running.component.scss']
 })
 export class SyncIsRunningDialog {
-  private getTaskInfuSub: Subscription;
-
   constructor(
     public dialogRef: MatDialogRef<string>,
     @Inject(MAT_DIALOG_DATA) public data: string,

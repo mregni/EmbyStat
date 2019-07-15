@@ -1,0 +1,62 @@
+<div class="row" *ngIf="settings !== undefined">
+  <div class="col-12 col-lg-6 pb-1">
+    <mat-card *ngIf="(updateResult$ | async) as result; else loading">
+      <mat-card-content class="d-flex flex-column">
+        <div>
+          <div *ngIf="result.isUpdateAvailable; else noUpdate" class="alert alert-success">
+            <p>
+              {{ 'SETTINGS.UPDATE.NEWVERSION' | translate: { version: result.availableVersion} }}
+            </p>
+          </div>
+          <ng-template #noUpdate>
+            <div *ngIf="!updateCheckFailed; else failedCheck">
+              <p>{{ 'SETTINGS.UPDATE.NOUPDATE' | translate }}</p>
+            </div>
+            <ng-template #failedCheck>
+              <div class="alert alert-failed">
+                <p>{{ 'SETTINGS.UPDATE.CANTCHECK' | translate }}</p>
+              </div>
+            </ng-template>
+          </ng-template>
+        </div>
+        <p class="mt-4">
+          {{ 'SETTINGS.UPDATE.CURRENTVERSION' | translate: { version: settings.version} }}
+        </p>
+        <button *ngIf="!result.isUpdateAvailable;" [disabled]="settings.updateInProgress" class="margin-bottom"
+          mat-raised-button (click)="checkUpdate()" color="accent">{{ 'SETTINGS.UPDATE.CHECK' | translate }}</button>
+        <button *ngIf="result.isUpdateAvailable;" [disabled]="settings.updateInProgress" class="margin-bottom"
+          mat-raised-button (click)="startUpdate()" color="accent">{{ 'SETTINGS.UPDATE.UPDATE' | translate }}</button>
+        <form class="mt-4 d-flex flex-column" [formGroup]="form">
+          <mat-checkbox class="margin-bottom" (change)="onChange($event)" formControlName="autoUpdate">
+            {{ 'SETTINGS.UPDATE.AUTO' | translate | capitalizeFirst }}</mat-checkbox>
+          <p class="mb-0 mt-2" *ngIf="onMaster; else notMasterTrain">{{ 'SETTINGS.UPDATE.TRAINWARNING' | translate }}
+          </p>
+          <ng-template #notMasterTrain>
+            <p class="mb-0 mt-2">{{ 'SETTINGS.UPDATE.ONBETA' | translate }}</p>
+          </ng-template>
+          <mat-form-field class="mt-2">
+            <mat-select formControlName="train" [disableControl]="!onMaster">
+              <mat-option [value]="option.value" *ngFor="let option of trainOptions">{{option.key}}</mat-option>
+            </mat-select>
+            <mat-placeholder>{{ 'SETTINGS.UPDATE.TRAIN' | translate }}</mat-placeholder>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="d-flex justify-content-end">
+        <button mat-raised-button color="primary" (click)="save()"
+          [disabled]="settings.updateInProgress">{{ 'COMMON.SAVE' | translate | capitalizeFirst }}</button>
+      </mat-card-actions>
+    </mat-card>
+    <ng-template #loading class="mh-150">
+      <mat-card>
+        <mat-card-content class="d-flex justify-content-center">
+            <mat-progress-spinner
+            class="example-margin"
+            color="primary"
+            mode="indeterminate">
+        </mat-progress-spinner>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+</div>

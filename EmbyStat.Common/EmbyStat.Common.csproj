@@ -8,7 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <Compile Remove="Models\Entities\Joins\**" />
+    <EmbeddedResource Remove="Models\Entities\Joins\**" />
+    <None Remove="Models\Entities\Joins\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="MediaBrowser.Common" Version="3.3.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />

@@ -1,18 +1,19 @@
-import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as signalR from '@aspnet/signalr';
+import { TranslateService } from '@ngx-translate/core';
 
-import { SettingsFacade } from './settings/state/facade.settings';
+import { SettingsFacade } from './shared/facades/settings.facade';
+import { Job } from './shared/models/jobs/job';
+import { JobLog } from './shared/models/jobs/job-log';
+import { Settings } from './shared/models/settings/settings';
 import { JobSocketService } from './shared/services/job-socket.service';
-import { UpdateService } from './shared/services/update.service';
 import { SideBarService } from './shared/services/side-bar.service';
-import { Job } from './jobs/models/job';
-import { JobLog } from './jobs/models/job-log';
-import { Settings } from './settings/models/settings';
+import { UpdateService } from './shared/services/update.service';
 
-const SMALL_WIDTH_BREAKPOINT = 768;
+const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private settingLoadSub: Subscription;
   settings: Settings;
   openMenu = true;
-
 
   constructor(
     private readonly zone: NgZone,
@@ -40,28 +40,27 @@ export class AppComponent implements OnInit, OnDestroy {
       'sv-SE', 'cs-CZ']);
 
     const hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/jobs-socket')
-      .build();
+     .withUrl('/jobs-socket')
+     .build();
     hubConnection.start().catch(err => document.write(err));
 
     hubConnection.on('job-report-progress', (data: Job) => {
-      jobSocketService.updateJobsInfo(data);
+     jobSocketService.updateJobsInfo(data);
     });
 
     hubConnection.on('job-report-log', (data: JobLog) => {
-      jobSocketService.updateJobLogs(data.value, data.type);
+    jobSocketService.updateJobLogs(data.value, data.type);
     });
 
     hubConnection.on('emby-connection-state', (data: number) => {
-      jobSocketService.updateMissedPings(data);
+     jobSocketService.updateMissedPings(data);
     });
 
     hubConnection.on('update-state', (state: boolean) => {
-      if (this.settings !== undefined) {
-        const copy = { ...this.settings };
-        copy.updateInProgress = state;
-        this.settingsFacade.updateSettings(copy);
-      }
+     if (this.settings !== undefined) {
+       this.settings.updateInProgress = state;
+       this.settingsFacade.updateSettings(this.settings);
+     }
     });
 
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
@@ -80,7 +79,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   ngOnDestroy() {

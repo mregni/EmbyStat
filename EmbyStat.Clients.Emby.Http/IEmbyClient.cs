@@ -23,7 +23,7 @@ namespace EmbyStat.Clients.Emby.Http
 	    Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync();
         Task<JArray> GetEmbyUsersAsync();
         Task<JObject> GetEmbyDevicesAsync();
-        Task<string> PingEmbyAsync(CancellationToken cancellationToken);
+        Task<string> PingEmbyAsync(string embyAddress, CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken = default(CancellationToken));

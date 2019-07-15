@@ -39,36 +39,54 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\dist\**" />
+    <Compile Remove="ClientApp\src\app\about\**" />
     <Compile Remove="ClientApp\src\app\activity\**" />
     <Compile Remove="ClientApp\src\app\components\**" />
-    <Compile Remove="ClientApp\src\app\user\models\**" />
+    <Compile Remove="ClientApp\src\app\logs\**" />
+    <Compile Remove="ClientApp\src\app\movie\**" />
+    <Compile Remove="ClientApp\src\app\server\**" />
+    <Compile Remove="ClientApp\src\app\settings\**" />
+    <Compile Remove="ClientApp\src\app\show\**" />
+    <Compile Remove="ClientApp\src\app\user\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\dist\**" />
+    <Content Remove="ClientApp\src\app\about\**" />
     <Content Remove="ClientApp\src\app\activity\**" />
     <Content Remove="ClientApp\src\app\components\**" />
-    <Content Remove="ClientApp\src\app\user\models\**" />
+    <Content Remove="ClientApp\src\app\logs\**" />
+    <Content Remove="ClientApp\src\app\movie\**" />
+    <Content Remove="ClientApp\src\app\server\**" />
+    <Content Remove="ClientApp\src\app\settings\**" />
+    <Content Remove="ClientApp\src\app\show\**" />
+    <Content Remove="ClientApp\src\app\user\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\about\**" />
     <EmbeddedResource Remove="ClientApp\src\app\activity\**" />
     <EmbeddedResource Remove="ClientApp\src\app\components\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\user\models\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\logs\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\movie\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\server\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\settings\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\show\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\user\**" />
     <None Remove="ClientApp\dist\**" />
+    <None Remove="ClientApp\src\app\about\**" />
     <None Remove="ClientApp\src\app\activity\**" />
     <None Remove="ClientApp\src\app\components\**" />
-    <None Remove="ClientApp\src\app\user\models\**" />
+    <None Remove="ClientApp\src\app\logs\**" />
+    <None Remove="ClientApp\src\app\movie\**" />
+    <None Remove="ClientApp\src\app\server\**" />
+    <None Remove="ClientApp\src\app\settings\**" />
+    <None Remove="ClientApp\src\app\show\**" />
+    <None Remove="ClientApp\src\app\user\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\app\about\state\actions.about.ts" />
-    <None Remove="ClientApp\src\app\about\state\facade.about.ts" />
     <None Remove="ClientApp\src\app\app-material.module.ts" />
-    <None Remove="ClientApp\src\app\logs\models\logFile.ts" />
-    <None Remove="ClientApp\src\app\movie\models\personStats.ts" />
-    <None Remove="ClientApp\src\app\settings\state\actions.settings.ts" />
-    <None Remove="ClientApp\src\app\settings\state\facade.settings.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
@@ -89,12 +107,9 @@
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\update-overlay.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\update.service.ts" />
-    <None Remove="ClientApp\src\app\show\service\show-charts.service.ts" />
-    <None Remove="ClientApp\src\app\show\service\show.service.ts" />
     <None Remove="ClientApp\src\app\states\app.actions.ts" />
     <None Remove="ClientApp\src\app\states\app.state.ts" />
-    <None Remove="ClientApp\src\app\user\services\page.service.ts" />
-    <None Remove="ClientApp\src\app\user\services\user.service.ts" />
+    <None Remove="win10-x64-v0.1.0-beta.37.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,15 +124,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\about\state\actions.about.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\about\state\facade.about.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\logs\models\logFile.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\movie\models\duplicate.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\settings\state\actions.settings.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\settings\state\facade.settings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
@@ -130,23 +138,14 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\service\show-charts.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\show\service\show.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\user\services\page.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\user\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\server\models\" />
-    <Folder Include="ClientApp\src\app\server\state\" />
+    <Folder Include="Database\" />
     <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ClientApp\src\app\show\show-overview\show-overview.component.html" />
   </ItemGroup>
 
   <ItemGroup>

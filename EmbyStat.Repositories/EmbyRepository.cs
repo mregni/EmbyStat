@@ -1,60 +1,61 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using LiteDB;
 
 namespace EmbyStat.Repositories
 {
     public class EmbyRepository : IEmbyRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LiteCollection<EmbyStatus> _embyStatusCollection;
+        private readonly LiteCollection<PluginInfo> _pluginCollection;
+        private readonly LiteCollection<ServerInfo> _serverInfoCollection;
+        private readonly LiteCollection<EmbyUser> _embyUserCollection;
+        private readonly LiteCollection<Device> _deviceCollection;
 
-        public EmbyRepository(ApplicationDbContext context)
+        public EmbyRepository(IDbContext context)
         {
-            _context = context;
+            _embyStatusCollection = context.GetContext().GetCollection<EmbyStatus>();
+            _pluginCollection = context.GetContext().GetCollection<PluginInfo>();
+            _serverInfoCollection = context.GetContext().GetCollection<ServerInfo>();
+            _embyUserCollection = context.GetContext().GetCollection<EmbyUser>();
+            _deviceCollection = context.GetContext().GetCollection<Device>();
         }
 
         #region Emby Status
         public EmbyStatus GetEmbyStatus()
         {
-            return new EmbyStatus(_context.EmbyStatus.AsNoTracking());
+            return _embyStatusCollection.FindOne(Query.All());
         }
 
         public void IncreaseMissedPings()
         {
-            var missingPings = _context.EmbyStatus.Single(x => x.Id == Constants.EmbyStatus.MissedPings);
-            var value = Convert.ToInt32(missingPings.Value);
-            value++;
+            var state = _embyStatusCollection.FindOne(Query.All());
+            state.MissedPings++;
 
-            missingPings.Value = value.ToString();
-            _context.SaveChanges();
+            _embyStatusCollection.Update(state);
         }
 
         public void ResetMissedPings()
         {
-            var missingPings = _context.EmbyStatus.Single(x => x.Id == Constants.EmbyStatus.MissedPings);
-            missingPings.Value = "0";
-            _context.SaveChanges();
+            var state = _embyStatusCollection.FindOne(Query.All());
+            state.MissedPings = 0;
+
+            _embyStatusCollection.Update(state);
         }
         #endregion
 
         #region Emby Plugins
         public List<PluginInfo> GetAllPlugins()
         {
-            return _context.Plugins.OrderBy(x => x.Name).ToList();
+            return _pluginCollection.FindAll().OrderBy(x => x.Name).ToList();
         }
 
         public void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins)
         {
-            _context.RemoveRange(_context.Plugins.ToList());
-            _context.SaveChanges();
-
-            _context.Plugins.AddRange(plugins);
-            _context.SaveChanges();
+            _pluginCollection.Delete(Query.All());
+            _pluginCollection.InsertBulk(plugins);
         }
 
         #endregion
@@ -62,125 +63,76 @@ namespace EmbyStat.Repositories
         #region Emby Server Info
         public ServerInfo GetServerInfo()
         {
-            return _context.ServerInfo.SingleOrDefault();
+            return _serverInfoCollection.FindOne(Query.All());
         }
 
-        public void AddOrUpdateServerInfo(ServerInfo entity)
+        public void UpsertServerInfo(ServerInfo entity)
         {
-            var settings = _context.ServerInfo.AsNoTracking().SingleOrDefault();
-
-            if (settings != null)
-            {
-                entity.Id = settings.Id;
-                _context.Entry(entity).State = EntityState.Modified;
-            }
-            else
-            {
-                _context.ServerInfo.Add(entity);
-            }
-
-            _context.SaveChanges();
+            _serverInfoCollection.Upsert(entity);
         }
 
         #endregion
 
         #region Emby Users
 
-        public async Task AddOrUpdateUsers(IEnumerable<User> users)
+        public void UpsertUsers(IEnumerable<EmbyUser> users)
         {
-            foreach (var entity in users)
+            _embyUserCollection.Upsert(users);
+        }
+
+        public IEnumerable<EmbyUser> GetAllUsers()
+        {
+            return _embyUserCollection.FindAll();
+        }
+
+        public void MarkUsersAsDeleted(IEnumerable<EmbyUser> users)
+        {
+            foreach (var user in users)
             {
-                var user = _context.Users.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
-
-                if (user != null)
-                {
-                    _context.Entry(entity).State = EntityState.Modified;
-                }
-                else
-                {
-                    _context.Users.Add(entity);
-                }
+                var obj = _embyUserCollection.FindById(user.Id);
+                obj.Deleted = true;
+                _embyUserCollection.Update(obj);
             }
-
-            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public EmbyUser GetUserById(string id)
         {
-            return _context.Users.ToList();
-        }
-
-        public async Task MarkUserAsDeleted(IEnumerable<User> users)
-        {
-            foreach (var entity in users)
-            {
-                var user = _context.Users.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
-
-                if (user != null)
-                {
-                    entity.Deleted = true;
-                    _context.Entry(entity).State = EntityState.Modified;
-                }
-            }
-
-            await _context.SaveChangesAsync();
-        }
-
-        public User GetUserById(string id)
-        {
-            return _context.Users
-                .Include(x => x.AccessSchedules)
-                .SingleOrDefault(x => x.Id == id);
+            return _embyUserCollection.FindById(id);
         }
 
         #endregion
-
 
         #region Devices
 
         public IEnumerable<Device> GetAllDevices()
         {
-            return _context.Devices.ToList();
+            return _deviceCollection.FindAll();
         }
 
-        public Device GetDeviceById(string id)
+        public IEnumerable<Device> GetDeviceById(IEnumerable<string> ids)
         {
-            return _context.Devices.SingleOrDefault(x => x.Id == id);
-        }
-
-        public async Task MarkDeviceAsDeleted(IEnumerable<Device> devices)
-        {
-            foreach (var entity in devices)
+            var bArray = new BsonArray();
+            foreach (var id in ids)
             {
-                var device = _context.Users.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
-
-                if (device != null)
-                {
-                    entity.Deleted = true;
-                    _context.Entry(entity).State = EntityState.Modified;
-                }
+                bArray.Add(id);
             }
 
-            await _context.SaveChangesAsync();
+            return _deviceCollection.Find(Query.In("Id", bArray));
         }
 
-        public async Task AddOrUpdateDevices(IEnumerable<Device> devices)
+        public void MarkDevicesAsDeleted(IEnumerable<Device> devices)
         {
-            foreach (var entity in devices)
+            foreach (var device in devices)
             {
-                var device = _context.Devices.AsNoTracking().SingleOrDefault(x => x.Id == entity.Id);
-
-                if (device != null)
-                {
-                    _context.Entry(entity).State = EntityState.Modified;
-                }
-                else
-                {
-                    _context.Devices.Add(entity);
-                }
+                var obj = _deviceCollection.FindById(device.Id);
+                obj.Deleted = true;
+                _deviceCollection.Update(obj);
             }
+        }
 
-            await _context.SaveChangesAsync();
+        public void UpsertDevices(IEnumerable<Device> devices)
+        {
+            _deviceCollection.Upsert(devices);
         }
 
         #endregion

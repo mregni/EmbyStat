@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { UpdateResult } from '../models/update-result';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { UpdateResult } from '../models/settings/update-result';
 
 @Injectable()
 export class SystemService {
@@ -17,7 +18,7 @@ export class SystemService {
     return this.http.get<UpdateResult>(this.checkForUpdateUrl);
   }
 
-  checkAndStartUpdate(): Observable<boolean> {
+  startUpdate(): Observable<boolean> {
     return this.http.post<boolean>(this.startUpdateUrl, {});
   }
 

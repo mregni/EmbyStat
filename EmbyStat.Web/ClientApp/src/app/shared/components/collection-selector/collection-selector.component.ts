@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-collection-selector',
@@ -8,7 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./collection-selector.component.scss']
 })
 export class CollectionSelectorComponent implements OnInit {
-  private prvList: number[];
+  private privateList: number[];
   public form: FormGroup;
 
   public movieTypeControl = new FormControl(false, []);
@@ -29,8 +28,8 @@ export class CollectionSelectorComponent implements OnInit {
   @Output() newList = new EventEmitter<number[]>();
   @Input() set list(value: number[]) {
     this.newList.emit(value);
-    this.prvList = [];
-    value.forEach(x => this.prvList.push(x));
+    this.privateList = [];
+    value.forEach(x => this.privateList.push(x));
 
     this.mixedTypeControl.setValue(value.some(x => x === 0));
     this.movieTypeControl.setValue(value.some(x => x === 1));
@@ -67,22 +66,21 @@ export class CollectionSelectorComponent implements OnInit {
 
   onChange(event) {
     const checkbox = event.source.value;
-    const index = this.prvList.indexOf(+checkbox, 0);
+    const index = this.privateList.indexOf(+checkbox, 0);
 
 
     if (event.checked) {
       if (index === -1) {
-        this.prvList.push(+checkbox);
+        this.privateList.push(+checkbox);
       }
     } else {
       if (index > -1) {
-        this.prvList.splice(index, 1);
+        this.privateList.splice(index, 1);
       }
     }
-    this.newList.emit(this.prvList);
+    this.newList.emit(this.privateList);
   }
 
   ngOnInit() {
   }
-
 }

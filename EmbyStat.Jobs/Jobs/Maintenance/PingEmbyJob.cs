@@ -26,7 +26,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override string JobPrefix => Constants.LogPrefix.PingEmbyJob;
         public override string Title { get; }
 
-        public override async Task RunJob()
+        public override async Task RunJobAsync()
         {
             var result = await _embyService.PingEmbyAsync(Settings.FullEmbyServerAddress, Settings.Emby.AccessToken, new CancellationToken(false));
             await LogProgress(50);

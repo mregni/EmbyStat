@@ -29,43 +29,19 @@ namespace EmbyStat.Controllers.Movie
         }
 
         [HttpGet]
-        [Route("generalstats")]
+        [Route("statistics")]
         public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
         {
-            var result = await _movieService.GetGeneralStatsForCollections(collectionIds);
-            var convert = _mapper.Map<MovieStatsViewModel>(result);
+            var result = await _movieService.GetMovieStatisticsAsync(collectionIds);
+            var convert = _mapper.Map<MovieStatisticsViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
-        [Route("personstats")]
-        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
-        {
-            var result = await _movieService.GetPeopleStatsForCollections(collectionIds);
-            return Ok(_mapper.Map<PersonStatsViewModel>(result));
-        }
-
-        [HttpGet]
-        [Route("suspicious")]
-        public async Task<IActionResult> GetDuplicates(List<string> collectionIds)
-        {
-            var result = await _movieService.GetSuspiciousMovies(collectionIds);
-            return Ok(_mapper.Map<SuspiciousTablesViewModel>(result));
-        }
-
-        [HttpGet]
-        [Route("graphs")]
-        public async Task<IActionResult> GetGraphs(List<string> collectionIds)
-        {
-            var graphs = await _movieService.GetGraphs(collectionIds);
-            return Ok(_mapper.Map<MovieGraphsViewModel>(graphs));
-        }
-
-        [HttpGet]
-        [Route("movietypepresent")]
+        [Route("typepresent")]
         public IActionResult MovieTypeIsPresent()
         {
-            return Ok(_movieService.MovieTypeIsPresent());
+            return Ok(_movieService.TypeIsPresent());
         }
     }
 }

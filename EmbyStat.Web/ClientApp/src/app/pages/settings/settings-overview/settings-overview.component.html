@@ -1,0 +1,36 @@
+<div class="title-bar">
+  {{ 'MENU.SETTINGS' | translate }}
+</div>
+<div class="content">
+  <div class="row">
+    <div class="col-12">
+      <mat-tab-group [selectedIndex]="selected" *ngIf="settings$ | async as settings">
+        <mat-tab label="{{'COMMON.GENERAL' | translate | capitalizeFirst}}">
+          <div class="mt-2 pl-0 container-fluid">
+            <app-settings-general [settings]="settings"></app-settings-general>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'COMMON.EMBY' | translate | capitalizeFirst}}">
+          <div class="mt-2 pl-0 container-fluid">
+            <app-settings-emby [settings]="settings"></app-settings-emby>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'COMMON.MOVIES' | translate | capitalizeFirst}}">
+          <div class="mt-2 pl-0 container-fluid">
+            <app-settings-movie [settings]="settings"></app-settings-movie>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'COMMON.SHOWS' | translate | capitalizeFirst}}">
+          <div class="mt-2 pl-0 container-fluid">
+            <app-settings-show [settings]="settings"></app-settings-show>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'COMMON.UPDATES' | translate | capitalizeFirst}}">
+          <div class="mt-2 pl-0 container-fluid">
+            <app-settings-update [settings]="settings"></app-settings-update>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

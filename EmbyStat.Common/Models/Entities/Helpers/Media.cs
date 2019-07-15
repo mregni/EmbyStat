@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using EmbyStat.Common.Models.Entities.Joins;
+using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class Media
     {
-        [Key]
-        public string Id { get; set; }
+        [BsonId]
+        public int Id { get; set; }
         public DateTimeOffset? DateCreated { get; set; }
         public string Banner { get; set; }
         public string Logo { get; set; }
@@ -20,13 +19,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public DateTimeOffset? PremiereDate { get; set; }
         public int? ProductionYear { get; set; }
         public string SortName { get; set; }
-        public ICollection<MediaGenre> MediaGenres { get; set; }
-        public ICollection<MediaCollection> Collections { get; set; }
-
-        public Media()
-        {
-            Collections = new List<MediaCollection>();
-        }
-
+        public string CollectionId { get; set; }
     }
 }

@@ -6,7 +6,13 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface ISessionRepository
     {
-        List<string> GetMediaIdsForUser(string id, PlayType type);
-        IEnumerable<Play> GetPlaysForUser(string id);
+        bool DoesSessionExists(string sessionId);
+        void UpdateSession(Session session);
+        void CreateSession(Session session);
+        void InsertPlays(List<Play> sessionPlays);
+        IEnumerable<string> GetMediaIdsForUser(string userId, PlayType type);
+        IEnumerable<Session> GetSessionsForUser(string userId);
+        int GetPlayCountForUser(string UserId);
+        Session GetSessionById(string sessionId);
     }
 }

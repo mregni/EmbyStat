@@ -6,8 +6,9 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface ISessionService
     {
-        List<string> GetMediaIdsForUser(string id, PlayType type);
-        IEnumerable<Play> GetPlaysPageForUser(string id, int page, int size);
+        IEnumerable<string> GetMediaIdsForUser(string id, PlayType type);
+        IEnumerable<Session> GetSessionsForUser(string id);
         int GetPlayCountForUser(string id);
+        void ProcessSessions(List<Session> sessions);
     }
 }

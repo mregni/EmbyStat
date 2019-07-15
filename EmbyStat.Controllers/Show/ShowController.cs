@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
@@ -29,45 +28,27 @@ namespace EmbyStat.Controllers.Show
         }
 
         [HttpGet]
-        [Route("generalstats")]
-        public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
+        [Route("statistics")]
+        public IActionResult GetStatistics(List<string> collectionIds)
         {
-            var result = await _showService.GetGeneralStats(collectionIds);
-            var convert = _mapper.Map<ShowStatViewModel>(result);
+            var result = _showService.GetStatistics(collectionIds);
+            var convert = _mapper.Map<ShowStatisticsViewModel>(result);
             return Ok(convert);
-        }
-
-        [HttpGet]
-        [Route("graphs")]
-        public async Task<IActionResult> GetGraphs(List<string> collectionIds)
-        {
-            var result = await _showService.GetGraphs(collectionIds);
-            var convert = _mapper.Map<ShowGraphsViewModel>(result);
-            return Ok(convert);
-
-        }
-
-        [HttpGet]
-        [Route("personstats")]
-        public async Task<IActionResult> GetPersonStats(List<string> collectionIds)
-        {
-            var result = await _showService.GetPeopleStats(collectionIds);
-            return Ok(_mapper.Map<PersonStatsViewModel>(result));
         }
 
         [HttpGet]
         [Route("collectedlist")]
-        public async Task<IActionResult> GetCollection(List<string> collectionIds)
+        public IActionResult GetCollection(List<string> collectionIds)
         {
-            var result = await _showService.GetCollectionRows(collectionIds);
+            var result = _showService.GetCollectionRows(collectionIds);
             return Ok(_mapper.Map<IList<ShowCollectionRowViewModel>>(result));
         }
 
         [HttpGet]
-        [Route("showtypepresent")]
-        public IActionResult MovieTypeIsPresent()
+        [Route("typepresent")]
+        public IActionResult ShowTypeIsPresent()
         {
-            return Ok(_showService.ShowTypeIsPresent());
+            return Ok(_showService.TypeIsPresent());
         }
     }
 }

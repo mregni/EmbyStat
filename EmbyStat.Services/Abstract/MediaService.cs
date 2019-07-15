@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
-using EmbyStat.Common.Extentions;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Models.Graph;
+using EmbyStat.Services.Models.Charts;
 
 namespace EmbyStat.Services.Abstract
 {
@@ -25,10 +25,10 @@ namespace EmbyStat.Services.Abstract
             return statistic != null
                    && lastMediaSync != null
                    && statistic.CalculationDateTime > lastMediaSync.EndTimeUtc
-                   && collectionIds.AreListEqual(statistic.Collections.Select(x => x.StatisticId.ToString()).ToList());
+                   && collectionIds.AreListEqual(statistic.CollectionIds);
         }
 
-        public Graph<SimpleGraphValue> CalculateRatingGraph(IEnumerable<float?> list)
+        public Chart CalculateRatingChart(IEnumerable<float?> list)
         {
             var ratingDataList = list
                 .GroupBy(x => x.RoundToHalf())
@@ -43,7 +43,7 @@ namespace EmbyStat.Services.Abstract
                     var key = ratingDataList[j].Key;
                     if (key != null && key != i)
                     {
-                        ratingDataList.Add(new GraphGrouping<double?, float?> {Key = i, Capacity = 0});
+                        ratingDataList.Add(new ChartGrouping<double?, float?> {Key = i, Capacity = 0});
                     }
                     else
                     {
@@ -54,35 +54,37 @@ namespace EmbyStat.Services.Abstract
 
             var ratingData = ratingDataList
                 .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerCommunityRating,
-                Data = ratingData
+                Labels = ratingData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
             };
         }
 
-        protected Graph<SimpleGraphValue> CalculatePremiereYearGraph(IEnumerable<DateTimeOffset?> list)
+        protected Chart CalculatePremiereYearChart(IEnumerable<DateTimeOffset?> list)
         {
             var yearDataList = list
                 .GroupBy(x => x.RoundToFiveYear())
+                .Where(x => x.Key != null)
                 .OrderBy(x => x.Key)
                 .ToList();
 
             if (yearDataList.Any())
             {
-                var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
+                var lowestYearRaw = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
+                var lowestYear = Convert.ToInt32(Math.Floor(lowestYearRaw.Value / (double)10)) * 10;
                 var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
 
                 var j = 0;
-                for (var i = lowestYear.Value; i < highestYear; i += 5)
+                for (var i = lowestYear; i < highestYear; i += 5)
                 {
-                    if (yearDataList[j].Key != i)
+                    if (yearDataList[j].Key != null && yearDataList[j].Key != i)
                     {
-                        yearDataList.Add(new GraphGrouping<int?, DateTimeOffset?> {Key = i, Capacity = 0});
+                        yearDataList.Add(new ChartGrouping<int?, DateTimeOffset?> {Key = i, Capacity = 0});
                     }
                     else
                     {
@@ -93,14 +95,14 @@ namespace EmbyStat.Services.Abstract
 
             var yearData = yearDataList
                 .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
-                .Select(x => new SimpleGraphValue { Name = x.Name, Value = x.Count })
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            return new Graph<SimpleGraphValue>
+            return new Chart
             {
                 Title = Constants.CountPerPremiereYear,
-                Data = yearData
+                Labels = yearData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { yearData.Select(x => x.Count) }
             };
         }
     }

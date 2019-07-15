@@ -61,7 +61,7 @@ namespace Tests.Unit.Services
             var embyRepository = new Mock<IEmbyRepository>();
             embyRepository.Setup(x => x.GetAllPlugins()).Returns(plugins);
             embyRepository.Setup(x => x.RemoveAllAndInsertPluginRange(It.IsAny<List<PluginInfo>>()));
-            embyRepository.Setup(x => x.AddOrUpdateServerInfo(It.IsAny<ServerInfo>()));
+            embyRepository.Setup(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()));
             embyRepository.Setup(x => x.GetServerInfo()).Returns(_serverInfo);
 
             var settingsServiceMock = new Mock<ISettingsService>();

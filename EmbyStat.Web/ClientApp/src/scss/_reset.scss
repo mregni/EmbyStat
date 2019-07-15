@@ -1,0 +1,12 @@
+@import "variables";
+
+* {
+  &:active,
+  :focus {
+    outline: none !important;
+  }
+}
+
+a:not(.mat-button):not(.mat-raised-button):not(.mat-fab):not(.mat-mini-fab):not([mat-list-item]) {
+  color: $link-color;
+}
