@@ -40,7 +40,7 @@ namespace EmbyStat.Services
         public Stream GetLogStream(string fileName, bool anonymous)
         {
             var logDir = _logSettings.Value.Dirs.Logs;
-            var logStream = new FileStream($"{logDir}/{fileName}", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var logStream = new FileStream(Path.Combine(logDir, fileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
             if (!anonymous)
             {
