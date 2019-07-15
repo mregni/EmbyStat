@@ -1,3 +1,5 @@
+@import "variables";
+
 .poster {
   width: 200px;
   height: 300px;
@@ -11,15 +13,16 @@
 }
 
 .poster-content {
-  background-color: rgba($color: #000000, $alpha: 0.6);
+  background-color: $light-grey;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  color: $white;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: flex-end;
-  color: #fff;
   max-height: 73px;
-  border-bottom-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
+  
 
   .poster-row {
     display: flex;
@@ -34,7 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #222;
+  background-color: $dark-grey;
   border-bottom-left-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
 }

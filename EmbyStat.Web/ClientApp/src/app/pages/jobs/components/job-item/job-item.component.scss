@@ -27,8 +27,8 @@
 
 .job-center {
   display: flex;
-  flex-direction: column;
   flex: 1 1 auto;
+  flex-direction: column;
   margin-left: 10px;
 }
 
@@ -53,7 +53,7 @@
   }
 
   fa-icon {
-    margin-top: -3px;
     margin-right: -10px;
+    margin-top: -3px;
   }
 }

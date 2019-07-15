@@ -31,7 +31,7 @@ export class ShowService {
 
   getCollectedList(list: string[]): Observable<ShowCollectionRow[]> {
     const params = ListToQueryParam.convert('collectionIds', list);
-    return this.http.get<ShowCollectionRow[]>(this.getCollectionRows + params)
+    return this.http.get<ShowCollectionRow[]>(this.getCollectionRows + params);
   }
 
   isTypePresent(): Observable<boolean> {
