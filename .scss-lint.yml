@@ -1,6 +1,10 @@
 # Default application configuration that all configurations inherit from.
 
 scss_files: "**/*.scss"
+
+exclude:
+  - "EmbyStat.Web/ClientApp/src/scss/_loader.scss"
+  
 plugin_directories: ['.scss-linters']
 
 # List of gem names to load custom linters from (make sure they are already
@@ -82,7 +86,7 @@ linters:
     enabled: true
 
   ImportantRule:
-    enabled: true
+    enabled: false
 
   ImportPath:
     enabled: true
