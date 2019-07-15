@@ -10,9 +10,9 @@
     "DISCARD": "kassér",
     "CANCEL": "annuller",
     "CLOSE": "luk",
-    "DAYS": "dage",
-    "HOURS": "timer",
-    "MINUTES": "minutter",
+    "DAYSABBR": "d",
+    "HOURSABBR": "h",
+    "MINUTESABBR": "m",
     "MIN": "min",
     "TITLE": "titel",
     "ADDEDON": "tilføjet",
@@ -48,7 +48,8 @@
     "STATUS": "status",
     "PERCENTAGE": "procent",
     "COLLECTED": "indsamlet",
-    "UPDATES": "Opdateringer"
+    "UPDATES": "Opdateringer",
+    "VERSION": "Version"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
@@ -61,24 +62,19 @@
     "EPISODENOTFOUND": "Afsnit ikke fundet, Starte eventuelt et mediesynkroniseringsjob for at rette dette.",
     "CANTCONNECTTOGITHUB": "Kan ikke oprette forbindelse til GitHub for at se efter opdateringer. Prøv igen senere.",
     "NOUPDATEFILE": "Kan ikke finde opdateringsprogrammet, ingen opdatering udført",
-    "UPDATEUNPACKERROR": "Noget gik galt under udpakning af opdateringspakken. Prøv igen."
+    "UPDATEUNPACKERROR": "Noget gik galt under udpakning af opdateringspakken. Prøv igen.",
+    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
-  "FORM_LABELS": {
-    "NAME": "Angiv dit navn",
+  "FORMLABELS": {
+    "NAME": "Username",
     "LANGUAGE": "Vælg dit sprog",
-    "EMBYADDRESS": "Emby Ip adresse",
-    "EMBYUSERNAME": "Emby admin brugernavn",
-    "EMBYPASSWORD": "Emby admin adgangskode",
     "DURATIONINMINUTES": "Varighed: ~5 minutter",
-    "TVDBAPI": "TheTVDB api nøglen",
+    "TVDBAPI": "TheTVDB API key",
     "CRON": "Cron-streng",
     "EXCEPTIONLOGGING": "Aktivér undtagelseslogning"
   },
-  "FORM_ERRORS": {
-    "NAME_REQUIRED": "Udfyld dit navn eller kaldenavn.",
-    "EMBYADDRESS_REQUIRED": "Udfyld din Emby-adresse ip.",
-    "EMBYUSERNAME_REQUIRED": "Udfyld dit Emby admin brugernavn.",
-    "EMBYPASSWORD_REQUIRED": "Udfyld dit Emby admin brugernavn."
+  "FORMERRORS": {
+    "NAME_REQUIRED": "Udfyld dit navn eller kaldenavn."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -112,10 +108,8 @@
     "FINISHED": "Alle indstillinger gemmes, og du kan nu begynde at bruge Emby-serveren. Nyd din nye statistik!",
     "FINISHEXPLANATION": "Det bedste er først at starte en medie-synkroniseringsopgave. EmbyStat vil begynde at downloade alle data fra din Emby server. Husk, at denne opgave kan tage lang tid afhængigt af din samlingsstørrelse. Hvis du ikke vil starte en synkronisering nu, kan du bare klikke på Færdig. Du kan starte det manuelt senere ved at navigere til siden Opgaver."
   },
-  "PLUGINS": {
-    "VERSION": "Version"
-  },
   "MOVIES": {
+    "COLLECTIONPLACEHOLDER": "Filter movie collections",
     "TOTALMOVIES": "Samlet antal film",
     "TOTALGENRES": "Samlet antal genrer",
     "TOTALPLAYLENGTH": "Samlet status tid",
@@ -149,15 +143,21 @@
     "ENDED": "afsluttet"
   },
   "SETTINGS": {
-    "TITLE": "Indstillinger",
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "The TVDB",
+      "EMBY": "Emby"
+    },
     "SAVED": {
       "GENERAL": "Generelle Embystat indstillinger gemt!",
+      "TVDB": "Tvdb key saved!",
       "EMBY": "Emby indstillinger gemt!",
       "MOVIES": "Filmindstillinger gemt!",
       "SHOWS": "Serieindstillinger gemt!",
       "UPDATES": "Opdaterings indstillinger gemt!"
     },
     "GENERAL": {
+      "NOUSERNAME": "Username can't be blank",
       "TVDBAPIKEY": "Hvis du vil, kan du levere EmbyStat med din egen TheTVDB API nøgle her.",
       "TVDBAPIKEYWARNING": "Sørg for, at du leverer en fungerende API-nøgle! Hvis nøglen er forkert, mislykkes synkroniseringsopgaven.",
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
@@ -170,13 +170,23 @@
       "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på seriestatistiksiden."
     },
     "EMBY": {
-      "NOPASSWORD": "Glem ikke at indtaste dit Emby-kodeord, når du vil ændre Emby-url-indstillingerne."
+      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYUSERNAME": "Emby admin brugernavn",
+      "EMBYPASSWORD": "Emby admin adgangskode",
+      "EMBYPORT": "Emby port",
+      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
+      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
+      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
+      "EMBYPORTREQUIRED": "Emby port required.",
+      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
+      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Aktivér automatisk opdateringer",
       "CHECK": "Tjek og opdater server nu",
+      "UPDATE:": "Update server now",
       "TRAIN": "Skift opdateringsniveau hvis du vil have beta-opdateringer.",
       "ONBETA": "Du er ikke på master niveau længere, så du ikke kan skifte tilbage til det. Hvis du vil gå tilbage på master toget, skal du geninstallere serveren igen.",
       "TRAINWARNING": "Her kan du ændre opdateringsniveau fra master til beta. Hvis du ikke ved hvad du laver, skal du bare lade denne indstilling blive på Master. Hvis du vil modtage Beta-opdateringerne, skal du ændre det her, være opmærksom på, at du ikke kan gå tilbage til Master senere. Du skal geninstallere serveren.",
@@ -191,6 +201,7 @@
     "ISHIDDEN": "Er skjult fra login-skærmen",
     "ISDISABLED": "Er deaktiveret",
     "DELETED": "Slettede brugere",
+    "ACTIVE": "Active users",
     "LASTACTIVE": "Sidst aktiv",
     "SORTING": {
       "USERNAMEASC": "Brugernavn (A - Z)",
@@ -228,6 +239,7 @@
     "NORUN": "Ikke kørt endnu",
     "MOMENT_AGO": "et øjeblik",
     "JOBLOGS": "Joblogs",
+    "CRONUPDATED": "Cron value updated",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Tjek din Emby forbindelse",
       "PINGEMBYSERVERDESCRIPTION": "Ping Emby-serveren for at kontrollere, om den stadig er online.",
@@ -293,9 +305,25 @@
     "MOREMISSEDPINGS": "Kunne ikke oprette forbindelse til Emby efter flere forsøg!"
   },
   "ABOUT": {
+    "SERVERINFO": "Server info",
+    "REQUESTFEATURE": "Request feature",
+    "LOGBUG": "Log bug on Github",
+    "HELPTRANSLATE": "Help translate the app",
     "THANKS": {
       "TITLE": "Tak",
       "TEXT": "En stor tak til følgende personer til oversættelse af appen på deres modersmål:"
+    },
+    "ACTIONS": {
+      "TITLE": "Actions"
     }
+  },
+  "EMBYSERVER": {
+    "HOSTOS": "Host OS",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "CACHEPATH": "Cache path",
+    "LOGPATH": "Log path",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port"
   }
 }
