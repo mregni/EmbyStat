@@ -1,4 +1,4 @@
-<ng-scrollbar [shown]='always'>
+<ng-scrollbar shown='always'>
   <div style="height: 300px;" *ngIf="posters !== undefined">
     <div class="d-flex flex-row mb-2 pointer" (click)="openPerson(poster.mediaId)" *ngFor="let poster of posters">
       <img mat-list-icon [src]="getPoster(poster.tag, poster.mediaId)" alt="actor image" class="img-radius img-40 mr-2">
