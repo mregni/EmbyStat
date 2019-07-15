@@ -57,23 +57,21 @@ namespace EmbyStat.Services
 
         private void CreateRollbarLogger()
         {
-            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(_appSettings.Rollbar.AccessToken)
-            {
-                Environment = _appSettings.Rollbar.Environment,
-                MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute,
-                ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth,
-                Enabled = _userSettings.EnableRollbarLogging,
-                Transform = payload =>
+            var rollbarConfig = new RollbarConfig(_appSettings.Rollbar.AccessToken);
+            rollbarConfig.Environment = _appSettings.Rollbar.Environment;
+            rollbarConfig.MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute;
+            rollbarConfig.ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth;
+            rollbarConfig.Enabled = _userSettings.EnableRollbarLogging;
+            rollbarConfig.Transform = payload => {
+                payload.Data.CodeVersion = _appSettings.Version;
+                payload.Data.Custom = new Dictionary<string, object>()
                 {
-                    payload.Data.CodeVersion = _appSettings.Version;
-                    payload.Data.Custom = new Dictionary<string, object>()
-                    {
-                        { "Framework", RuntimeInformation.FrameworkDescription },
-                        { "OS", RuntimeInformation.OSDescription}
-                    };
-                }
+                    {"Framework", RuntimeInformation.FrameworkDescription},
+                    {"OS", RuntimeInformation.OSDescription}
+                };
+            };
 
-            });
+            RollbarLocator.RollbarInstance.Configure(rollbarConfig);
         }
 
         public Task SetUpdateInProgressSettingAsync(bool value)

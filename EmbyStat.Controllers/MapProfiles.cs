@@ -44,6 +44,7 @@ namespace EmbyStat.Controllers
 	        CreateMap<ShowPoster, ShowPosterViewModel>();
             CreateMap<PersonPoster, PersonPosterViewModel>();
             CreateMap<MovieStatistics, MovieStatisticsViewModel>();
+            CreateMap<ShowStatistics, ShowStatisticsViewModel>();
             CreateMap<MovieGeneral, MovieGeneralViewModel>();
 	        CreateMap<PersonStats, PersonStatsViewModel>();
             CreateMap<Collection, CollectionViewModel>();
