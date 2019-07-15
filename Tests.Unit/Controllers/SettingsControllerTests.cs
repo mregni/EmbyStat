@@ -62,7 +62,7 @@ namespace Tests.Unit.Controllers
             _settingsServiceMock = new Mock<ISettingsService>();
 		    _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings { Version = "0.0.0.0" });
 		    _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(settings);
-            _settingsServiceMock.Setup(x => x.SaveUserSettings(It.IsAny<UserSettings>()))
+            _settingsServiceMock.Setup(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()))
                 .Returns(Task.FromResult(settings));
 
 	        var mapperMock = new Mock<IMapper>();
@@ -135,7 +135,7 @@ namespace Tests.Unit.Controllers
 
 		    await _subject.Update(settings);
 
-		    _settingsServiceMock.Verify(x => x.SaveUserSettings(It.IsAny<UserSettings>()), Times.Once);
+		    _settingsServiceMock.Verify(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()), Times.Once);
 	    }
 	}
 }

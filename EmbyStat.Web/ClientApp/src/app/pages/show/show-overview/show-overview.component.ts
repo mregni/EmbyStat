@@ -1,18 +1,16 @@
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
-import { GeneralShowStatistics } from 'src/app/shared/models/show/general-show-statistics';
 
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatSort, MatTableDataSource, Sort } from '@angular/material';
+import { MatDialog, MatTableDataSource, Sort } from '@angular/material';
 
 import { Options, OptionsService } from '../../../shared/components/charts/options/options';
 import { NoTypeFoundDialog } from '../../../shared/dialogs/no-type-found/no-type-found.component';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Collection } from '../../../shared/models/collection';
 import { Settings } from '../../../shared/models/settings/settings';
-import { ShowCharts } from '../../../shared/models/show/show-charts';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 import { ShowStatistics } from '../../../shared/models/show/show-statistics';
 import { ShowService } from '../service/show.service';

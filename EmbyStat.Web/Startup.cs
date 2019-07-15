@@ -201,7 +201,7 @@ namespace EmbyStat.Web
 
         private void ResetConfiguration(ISettingsService settingsService)
         {
-            settingsService.SetUpdateInProgressSetting(false);
+            settingsService.SetUpdateInProgressSettingAsync(false);
         }
 
         private void AddDeviceIdToConfig(ISettingsService settingsService)
@@ -211,13 +211,13 @@ namespace EmbyStat.Web
             if (userSettings.Id == null)
             {
                 userSettings.Id = Guid.NewGuid();
-                settingsService.SaveUserSettings(userSettings);
+                settingsService.SaveUserSettingsAsync(userSettings);
             }
         }
 
         private void SetEmbyClientConfiguration(ISettingsService settingsService, IEmbyClient embyClient)
         {
-            settingsService.SetUpdateInProgressSetting(false);
+            settingsService.SetUpdateInProgressSettingAsync(false);
             var settings = settingsService.GetUserSettings();
 
             embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version, settings.Id.ToString());

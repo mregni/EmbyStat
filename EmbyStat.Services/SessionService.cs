@@ -37,9 +37,13 @@ namespace EmbyStat.Services
             {
                 var sessionExists = _sessionRepository.DoesSessionExists(session.Id);
 
-                if (sessionExists && session.Plays.Count == 1)
+                if (sessionExists && session.Plays.Any())
                 {
-                    _sessionRepository.UpsertPlayLogs(session);
+                    var dbSession = _sessionRepository.GetSessionById(session.Id);
+                    dbSession.Plays.AddRange(session.Plays);
+
+                    _sessionRepository.UpdateSession(dbSession);
+                    _sessionRepository.InsertPlays(session.Plays);
                 }
                 else if (!sessionExists)
                 {

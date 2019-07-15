@@ -27,9 +27,9 @@ namespace EmbyStat.Services
         private readonly ISettingsService _settingsService;
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository, 
-            IPersonService personService, ISettingsService settingsService, 
-            IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(jobRepository)
+        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository,
+            IPersonService personService, ISettingsService settingsService,
+            IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(jobRepository)
         {
             _movieRepository = movieRepository;
             _collectionRepository = collectionRepository;
@@ -44,7 +44,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.MovieCollectionTypes);
         }
 
-        public async Task<MovieStatistics> GetMovieStatistics(List<string> collectionIds)
+        public async Task<MovieStatistics> GetMovieStatisticsAsync(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, collectionIds);
 
@@ -62,7 +62,7 @@ namespace EmbyStat.Services
                     General = CalculateGeneralStatistics(movies),
                     Charts = CalculateCharts(movies),
                     People = await CalculatePeopleStatistics(movies),
-                    Suspicious = CalculateSuspisiousMovies(movies)
+                    Suspicious = CalculateSuspiciousMovies(movies)
                 };
 
                 var json = JsonConvert.SerializeObject(general);
@@ -114,15 +114,15 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public SuspiciousTables CalculateSuspisiousMovies(IReadOnlyCollection<Movie> movies)
+        public SuspiciousTables CalculateSuspiciousMovies(IReadOnlyCollection<Movie> movies)
         {
-             return new SuspiciousTables
-             {
-                 Duplicates = GetDuplicates(movies),
-                 Shorts = GetShortMovies(movies),
-                 NoImdb = GetMoviesWithoutImdbLink(movies),
-                 NoPrimary = GetMoviesWithoutPrimaryImage(movies)
-             };
+            return new SuspiciousTables
+            {
+                Duplicates = GetDuplicates(movies),
+                Shorts = GetShortMovies(movies),
+                NoImdb = GetMoviesWithoutImdbLink(movies),
+                NoPrimary = GetMoviesWithoutPrimaryImage(movies)
+            };
         }
 
         public bool TypeIsPresent()
@@ -130,26 +130,23 @@ namespace EmbyStat.Services
             return _movieRepository.Any();
         }
 
-        private List<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
+        private IEnumerable<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
         {
             var settings = _settingsService.GetUserSettings();
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
                 .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < settings.ToShortMovie)
-                .OrderBy(x => x.SortName)
-                .Select((t, i) => new ShortMovie
-                {
-                    Number = i++,
-                    Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
-                    Title = t.Name,
-                    MediaId = t.Id
-                })
-                .ToList();
-
-            return shortMovies;
+                .OrderBy(x => x.SortName);
+            return shortMovies.Select((t, i) => new ShortMovie
+            {
+                Number = i++,
+                Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
+                Title = t.Name,
+                MediaId = t.Id
+            }).ToList();
         }
 
-        private List<SuspiciousMovie> GetMoviesWithoutImdbLink(IEnumerable<Movie> movies)
+        private IEnumerable<SuspiciousMovie> GetMoviesWithoutImdbLink(IEnumerable<Movie> movies)
         {
             var noImdbMovies = movies
                 .Where(x => string.IsNullOrWhiteSpace(x.IMDB))
@@ -159,13 +156,12 @@ namespace EmbyStat.Services
                     Number = i++,
                     Title = t.Name,
                     MediaId = t.Id
-                })
-                .ToList();
+                });
 
             return noImdbMovies;
         }
 
-        private List<SuspiciousMovie> GetMoviesWithoutPrimaryImage(IEnumerable<Movie> movies)
+        private IEnumerable<SuspiciousMovie> GetMoviesWithoutPrimaryImage(IEnumerable<Movie> movies)
         {
             var noPrimaryImageMovies = movies
                 .Where(x => string.IsNullOrWhiteSpace(x.Primary))
@@ -181,7 +177,7 @@ namespace EmbyStat.Services
             return noPrimaryImageMovies;
         }
 
-        private List<MovieDuplicate> GetDuplicates(IReadOnlyCollection<Movie> movies)
+        private IEnumerable<MovieDuplicate> GetDuplicates(IReadOnlyCollection<Movie> movies)
         {
             var list = new List<MovieDuplicate>();
 

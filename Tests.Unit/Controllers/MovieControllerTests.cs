@@ -44,12 +44,12 @@ namespace Tests.Unit.Controllers
 
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieCollections()).Returns(_collections);
-            _movieServiceMock.Setup(x => x.GetMovieStatistics(It.IsAny<List<string>>()))
+            _movieServiceMock.Setup(x => x.GetMovieStatisticsAsync(It.IsAny<List<string>>()))
                 .Returns(Task.FromResult(_movieStatistics));
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
-                .Returns(new MovieStatisticsViewModel { General = new MovieGeneralViewModel { LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" }}});
+                .Returns(new MovieStatisticsViewModel { General = new MovieGeneralViewModel { LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } } });
             _mapperMock.Setup(x => x.Map<IList<CollectionViewModel>>(It.IsAny<List<Collection>>())).Returns(
                 new List<CollectionViewModel>
                 {
@@ -70,35 +70,35 @@ namespace Tests.Unit.Controllers
         }
 
         public void Dispose()
-{
-    _subject?.Dispose();
-}
+        {
+            _subject?.Dispose();
+        }
 
-[Fact]
-public void AreMovieCollectionsReturned()
-{
-    var result = _subject.GetCollections();
-    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-    var list = resultObject.Should().BeOfType<List<CollectionViewModel>>().Subject;
+        [Fact]
+        public void AreMovieCollectionsReturned()
+        {
+            var result = _subject.GetCollections();
+            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+            var list = resultObject.Should().BeOfType<List<CollectionViewModel>>().Subject;
 
-    list.Count.Should().Be(2);
-    list[0].Name.Should().Be(_collections[0].Name);
-    list[1].Name.Should().Be(_collections[1].Name);
-    _movieServiceMock.Verify(x => x.GetMovieCollections(), Times.Once);
-}
+            list.Count.Should().Be(2);
+            list[0].Name.Should().Be(_collections[0].Name);
+            list[1].Name.Should().Be(_collections[1].Name);
+            _movieServiceMock.Verify(x => x.GetMovieCollections(), Times.Once);
+        }
 
-[Fact]
-public async void AreMovieStatsReturned()
-{
-    var result = await _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
-    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-    var stat = resultObject.Should().BeOfType<MovieStatisticsViewModel>().Subject;
+        [Fact]
+        public async void AreMovieStatsReturned()
+        {
+            var result = await _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
+            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+            var stat = resultObject.Should().BeOfType<MovieStatisticsViewModel>().Subject;
 
-    stat.Should().NotBeNull();
-    stat.General.LongestMovie.Name.Should().Be(_movieGeneral.LongestMovie.Name);
-    _movieServiceMock.Verify(x => x.GetMovieStatistics(It.Is<List<string>>(
-        y => y[0] == _collections[0].Id &&
-             y[1] == _collections[1].Id)), Times.Once);
-}
+            stat.Should().NotBeNull();
+            stat.General.LongestMovie.Name.Should().Be(_movieGeneral.LongestMovie.Name);
+            _movieServiceMock.Verify(x => x.GetMovieStatisticsAsync(It.Is<List<string>>(
+                y => y[0] == _collections[0].Id &&
+                     y[1] == _collections[1].Id)), Times.Once);
+        }
     }
 }

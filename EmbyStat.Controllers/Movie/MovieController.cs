@@ -32,7 +32,7 @@ namespace EmbyStat.Controllers.Movie
         [Route("statistics")]
         public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
         {
-            var result = await _movieService.GetMovieStatistics(collectionIds);
+            var result = await _movieService.GetMovieStatisticsAsync(collectionIds);
             var convert = _mapper.Map<MovieStatisticsViewModel>(result);
             return Ok(convert);
         }

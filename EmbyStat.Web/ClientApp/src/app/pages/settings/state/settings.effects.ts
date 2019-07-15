@@ -52,11 +52,9 @@ export class SettingsEffects {
       ofType(SettingsActionTypes.UPDATE_SETTINGS),
       map((data: UpdateSettingsAction) => data.payload),
       switchMap((settings: Settings) => {
-        console.log(settings);
         return this.settingsService.updateSettings(settings);
       }),
       switchMap((settings: Settings | null) => {
-        console.log(settings);
         return [new UpdateSettingsSuccessAction(settings)];
       }),
       catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))

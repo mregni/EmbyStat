@@ -70,7 +70,7 @@ namespace EmbyStat.Services
 
                         var settings = _settingsService.GetUserSettings();
                         settings.Emby.ServerName = udpBroadcastResult.Name;
-                        _settingsService.SaveUserSettings(settings);
+                        _settingsService.SaveUserSettingsAsync(settings);
 
                         if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address))
                         {
@@ -203,8 +203,8 @@ namespace EmbyStat.Services
 
             foreach (var play in plays)
             {
-                var currentSession = sessions.Single(x => Enumerable.Any<Play>(x.Plays, y => y.Id == play.Id));
-                var device = devices.Single(x => x.Id == currentSession.DeviceId);
+                var currentSession = sessions.Single(x => x.Plays.Any(y => y.Id == play.Id));
+                var device = devices.SingleOrDefault(x => x.Id == currentSession.DeviceId);
 
                 if (play.Type == PlayType.Movie)
                 {
@@ -294,8 +294,8 @@ namespace EmbyStat.Services
                 EndedWatching = endedPlaying,
                 WatchedTime = Math.Round(watchedTime.TotalSeconds),
                 WatchedPercentage = CalculateWatchedPercentage(play, movie),
-                DeviceId = device.Id,
-                DeviceLogo = device?.IconUrl ?? ""
+                DeviceId = device?.Id ?? string.Empty,
+                DeviceLogo = device?.IconUrl ?? string.Empty
             };
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
@@ -132,10 +132,11 @@ namespace EmbyStat.Services
 
         private ShowCollectionRow CreateShowCollectionRow(Show show)
         {
-            var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
-            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
+            //TODO: gewoon in show nazien ipv naar DB gaat! indexnr is ook fout, moet naar season gaan
+            var episodeCount = _showRepository.GetEpisodeCountForShow(Convert.ToInt32(show.Id));
+            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(Convert.ToInt32(show.Id), true);
             var specialCount = totalEpisodeCount - episodeCount;
-            var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
+            var seasonCount = _showRepository.GetSeasonCountForShow(Convert.ToInt32(show.Id));
 
             return new ShowCollectionRow
             {

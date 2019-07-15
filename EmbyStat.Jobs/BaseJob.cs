@@ -36,14 +36,14 @@ namespace EmbyStat.Jobs
         public abstract Guid Id { get; }
         public abstract string JobPrefix { get; }
         public abstract string Title { get; }
-        public abstract Task RunJob();
+        public abstract Task RunJobAsync();
 
         public async Task Execute()
         {
             try
             {
                 await PreJobExecution();
-                await RunJob();
+                await RunJobAsync();
                 await PostJobExecution();
             }
             catch (WizardNotFinishedException e)

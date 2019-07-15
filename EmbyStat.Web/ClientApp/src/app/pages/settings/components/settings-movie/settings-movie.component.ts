@@ -33,7 +33,6 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(): void {
-    console.log(this.settings);
     if (this.settings !== undefined) {
       this.toShortMovieControl.setValue(this.settings.toShortMovie);
     }

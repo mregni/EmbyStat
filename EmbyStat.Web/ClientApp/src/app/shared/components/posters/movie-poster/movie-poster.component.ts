@@ -31,9 +31,14 @@ export class MoviePosterComponent implements OnInit {
     if (this.settings === undefined) {
       return '';
     }
-    const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
-    const url = `url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90&enableimageenhancers=false)`;
-    return this.sanitizer.bypassSecurityTrustStyle(url);
+
+    if (this.poster.mediaId !== '0') {
+      const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
+      const url =
+        `url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag
+        }&quality=90&enableimageenhancers=false)`;
+      return this.sanitizer.bypassSecurityTrustStyle(url);
+    }
   }
 
   openMovie() {

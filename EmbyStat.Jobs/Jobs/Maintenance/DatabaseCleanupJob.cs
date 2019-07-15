@@ -28,7 +28,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override string JobPrefix => Constants.LogPrefix.DatabaseCleanupJob;
         public override string Title { get; }
 
-        public override async Task RunJob()
+        public override async Task RunJobAsync()
         {
             _statisticsRepository.CleanupStatistics();
             await LogProgress(33);

@@ -67,7 +67,7 @@ namespace Tests.Unit.Services
                 ShowCollectionTypes = new List<CollectionType>()
             };
 
-            await _subject.SaveUserSettings(settings);
+            await _subject.SaveUserSettingsAsync(settings);
 
             var settingsFilePath = Path.Combine("Settings", "usersettings.json");
             File.Exists(settingsFilePath).Should().BeTrue();

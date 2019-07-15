@@ -10,7 +10,7 @@ namespace EmbyStat.Services.Interfaces
         event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
         AppSettings GetAppSettings();
         UserSettings GetUserSettings();
-        Task<UserSettings> SaveUserSettings(UserSettings userSettings);
-        Task SetUpdateInProgressSetting(bool value);
+        Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings);
+        Task SetUpdateInProgressSettingAsync(bool value);
     }
 }

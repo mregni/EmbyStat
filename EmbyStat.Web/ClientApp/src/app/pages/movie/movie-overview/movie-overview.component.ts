@@ -1,12 +1,9 @@
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
 import { OptionsService } from 'src/app/shared/components/charts/options/options';
-import { PersonStatistics } from 'src/app/shared/models/common/person-statistics';
-import { MovieCharts } from 'src/app/shared/models/movie/movie-charts';
-import { MovieSuspiciousContainer } from 'src/app/shared/models/movie/movie-suspicious-container';
 
 import {
-    AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild
+  Component, HostListener, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
@@ -16,7 +13,6 @@ import { NoTypeFoundDialog } from '../../../shared/dialogs/no-type-found/no-type
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
 import { Collection } from '../../../shared/models/collection';
-import { GeneralMovieStatistics } from '../../../shared/models/movie/general-movie-statistics';
 import { MovieStatistics } from '../../../shared/models/movie/movie-statistics';
 import { Settings } from '../../../shared/models/settings/settings';
 import { MovieService } from '../service/movie.service';
@@ -29,7 +25,8 @@ import { MovieService } from '../service/movie.service';
 export class MovieOverviewComponent implements OnInit, OnDestroy {
   statistics$: Observable<MovieStatistics>;
 
-  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
+  @ViewChild(NgScrollbar)
+  textAreaScrollbar: NgScrollbar;
 
   selectedCollectionSub: Subscription;
   dropdownBlurredSub: Subscription;
@@ -41,11 +38,17 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
   settings: Settings;
 
-  displayedColumns = ['position', 'title', 'reason', 'linkOne', 'qualityOne', 'addedOnOne', 'linkTwo', 'qualityTwo', 'addedOnTwo'];
+  suspiciousDisplayedWideColumns = [
+    'position', 'title', 'reason', 'linkOne', 'qualityOne', 'addedOnOne', 'linkTwo', 'qualityTwo', 'addedOnTwo'
+  ];
+  suspiciousDisplayedSmallColumns = [
+    'position', 'title', 'reason', 'linkOne', 'linkTwo'
+  ];
+  shortDisplayedColumns = ['number', 'title', 'duration', 'link'];
+  noImdbDisplayedColumns = ['number', 'title', 'link'];
+  noPrimaryDisplayedColumns = ['number', 'title', 'link'];
 
   barOptions: Options;
-
-  private selectedCollections: string[];
 
   constructor(
     private readonly settingsFacade: SettingsFacade,
@@ -78,6 +81,10 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+  }
+
+  getSuspiciousColumns(): string[] {
+    return window.window.innerWidth > 720 ? this.suspiciousDisplayedWideColumns : this.suspiciousDisplayedSmallColumns;
   }
 
   @HostListener('window:resize', ['$event'])

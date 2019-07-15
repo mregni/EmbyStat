@@ -68,7 +68,6 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     this.settings = undefined;
     this.settingLoadSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
-      console.log(settings);
       if (!settings.wizardFinished) {
         this.router.navigate(['/wizard']);
       }

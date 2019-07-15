@@ -25,11 +25,11 @@ namespace EmbyStat.Controllers
     {
 	    public MapProfiles()
 	    { 
-            //EmbyHttpResponses
             CreateMap<MediaBrowser.Model.Plugins.PluginInfo, PluginInfo>();
-
-            //Controllers
             CreateMap<UserSettings, FullSettingsViewModel>().ForMember(x => x.Version, x => x.Ignore()).ReverseMap();
+            CreateMap<EmbySettings, FullSettingsViewModel.EmbySettingsViewModel>();
+            CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>();
+            CreateMap<Language, LanguageViewModel>();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
             CreateMap<EmbyToken, EmbyTokenViewModel>()
@@ -37,7 +37,6 @@ namespace EmbyStat.Controllers
 		    CreateMap<PluginInfo, EmbyPluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
-
 	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
 	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
 	        CreateMap( typeof(Card<>), typeof(CardViewModel<>));
@@ -65,7 +64,6 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyUser, EmbyUserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
-            //EmbyResponses
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()

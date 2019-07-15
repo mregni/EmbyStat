@@ -24,26 +24,24 @@ namespace EmbyStat.Repositories
             return _sessionCollection.Exists(Query.EQ("_id", sessionId));
         }
 
-        public void UpsertPlayLogs(Session session)
+        public void UpdateSession(Session session)
         {
-            var dbSession = _sessionCollection.FindById(session.Id);
-            var dbPlay = _playCollection.FindById(session.Plays.Single().Id);
+            _sessionCollection.Update(session);
+        }
 
-            if (dbPlay == null)
-            {
-                dbSession.Plays.Add(session.Plays.Single());
-            }
-            else
-            {
-                dbPlay.PlayStates.Add(session.Plays.Single().PlayStates.Single());
-            }
-
-            _sessionCollection.Update(dbSession);
+        public Session GetSessionById(string sessionId)
+        {
+            return _sessionCollection.Include(x => x.Plays).FindById(sessionId);
         }
 
         public void CreateSession(Session session)
         {
             _sessionCollection.Insert(session);
+        }
+
+        public void InsertPlays(List<Play> sessionPlays)
+        {
+            _playCollection.InsertBulk(sessionPlays);
         }
 
         public IEnumerable<string> GetMediaIdsForUser(string userId, PlayType type)

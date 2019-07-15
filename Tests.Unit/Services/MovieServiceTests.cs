@@ -85,7 +85,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetMovieCountStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -97,7 +97,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetGenreCountStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -109,7 +109,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetLowestRatedStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -127,7 +127,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetHighestRatedStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -145,7 +145,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetOldestPremieredStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -163,7 +163,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetYoungestPremieredStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -181,7 +181,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetShortestStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -199,7 +199,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetLongestStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -217,7 +217,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetYoungestAddedStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -235,7 +235,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetTotalPlayLengthStat()
         {
-            var stat = await _subject.GetMovieStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();

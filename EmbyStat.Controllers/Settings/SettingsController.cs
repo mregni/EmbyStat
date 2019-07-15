@@ -50,7 +50,7 @@ namespace EmbyStat.Controllers.Settings
 	    {
 	        var settings = _mapper.Map<UserSettings>(userSettings);
             MarkStatisticsAsInvalidIfNeeded(settings);
-            settings = await _settingsService.SaveUserSettings(settings);
+            settings = await _settingsService.SaveUserSettingsAsync(settings);
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
 
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;

@@ -10,9 +10,9 @@
     "DISCARD": "discard",
     "CANCEL": "cancel",
     "CLOSE": "close",
-    "DAYS": "days",
-    "HOURS": "hours",
-    "MINUTES": "minutes",
+    "DAYSABBR": "d",
+    "HOURSABBR": "h",
+    "MINUTESABBR": "m",
     "MIN": "min",
     "TITLE": "title",
     "ADDEDON": "added on",
@@ -29,7 +29,7 @@
     "COUNTPERCOMMUNITYRATING": "count / rating",
     "COUNTPERPREMIEREDATE": "count / year",
     "COUNTPEROFFICIALRATING": "count / official rating",
-    "COUNTPERCOLLECTEDRATE": "count / percentage collected",
+    "COUNTPERCOLLECTEDRATE": "count / collected percentage",
     "EMBY": "Emby",
     "GENERAL": "general",
     "DURATION": "duration",
@@ -48,37 +48,33 @@
     "STATUS": "status",
     "PERCENTAGE": "percentage",
     "COLLECTED": "collected",
-    "UPDATES": "Updates"
+    "UPDATES": "Updates",
+    "VERSION": "Version"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
-    "NO_CONFIGURATION_FOUND": "Configuration Not found.",
-    "NOT_FOUND": "We couldn't find what you are looking for.",
-    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and domain/ip address.",
+    "NO_CONFIGURATION_FOUND": "No configuration could be found.",
+    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "TOKEN_FAILED": "Getting Emby token failed. Please check your credentials and address.",
     "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
     "UNHANDLED": "Unhandled backend exception",
     "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
     "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
     "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
     "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again."
+    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again.",
+    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
-  "FORM_LABELS": {
-    "NAME": "Enter your name",
+  "FORMLABELS": {
+    "NAME": "Username",
     "LANGUAGE": "Please select your language",
-    "EMBYADDRESS": "Emby domain/ip address",
-    "EMBYUSERNAME": "Emby admin username",
-    "EMBYPASSWORD": "Emby admin password",
     "DURATIONINMINUTES": "Duration in minutes",
-    "TVDBAPI": "TheTVDB api key",
+    "TVDBAPI": "TheTVDB API key",
     "CRON": "Cron string",
     "EXCEPTIONLOGGING": "Enable exception logging"
   },
-  "FORM_ERRORS": {
-    "NAME_REQUIRED": "Fill in your name or nickname.",
-    "EMBYADDRESS_REQUIRED": "Fill in your Emby domain/ip address.",
-    "EMBYUSERNAME_REQUIRED": "Fill in your Emby admin username.",
-    "EMBYPASSWORD_REQUIRED": "Fill in your Emby admin password."
+  "FORMERRORS": {
+    "NAME_REQUIRED": "Fill in your name or nickname."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -95,12 +91,12 @@
   "WIZARD": {
     "INTROLABEL": "Intro",
     "EMBYLABEL": "Emby settings",
-    "SAVINGLABEL": "First Emby server sync",
+    "SAVINGLABEL": "Emby sync",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking Emby server ...",
-    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will set the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know what we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server on the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
+    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "EMBYRUNNING": "Emby server is running",
     "ISADMIN": "{{ user }} is an Emby administrator",
@@ -109,13 +105,11 @@
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
     "FINISHWITHSYNC": "Start synchronization",
-    "FINISHED": "All settings have been saved and you can start using EmbyStat now. Enjoy your new statistics!",
+    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
-  "PLUGINS": {
-    "VERSION": "Version"
-  },
   "MOVIES": {
+    "COLLECTIONPLACEHOLDER": "Filter movie collections",
     "TOTALMOVIES": "Total movies",
     "TOTALGENRES": "Total genres",
     "TOTALPLAYLENGTH": "Total watchable time",
@@ -140,7 +134,7 @@
     "HIGHESTRATEDSHOW": "Highest rated show",
     "LOWESTRATEDSHOW": "Lowest rated show",
     "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Most recent premiered show",
+    "YOUNGESTPREMIERED": "Youngest premiered show",
     "YOUNGESTADDED": "Youngest added",
     "WITHMOESTEPISODES": "With most episodes",
     "SHOWSTATUSGRAPH": "Show statuses",
@@ -149,15 +143,21 @@
     "ENDED": "ended"
   },
   "SETTINGS": {
-    "TITLE": "Settings",
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "The TVDB",
+      "EMBY": "Emby"
+    },
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
+      "TVDB": "Tvdb key saved!",
       "EMBY": "Emby settings saved!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!",
       "UPDATES": "Update settings saved!"
     },
     "GENERAL": {
+      "NOUSERNAME": "Username can't be blank",
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
@@ -170,18 +170,28 @@
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
-      "NOPASSWORD": "Don't forget to enter your Emby password when you want to change the Emby url settings."
+      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYUSERNAME": "Emby admin username",
+      "EMBYPASSWORD": "Emby admin password",
+      "EMBYPORT": "Emby port",
+      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
+      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
+      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
+      "EMBYPORTREQUIRED": "Emby port required.",
+      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
+      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Enable auto updates",
-      "CHECK": "Check and update server now",
-      "TRAIN": "Change the update train if you want to have beta updates.",
+      "CHECK": "Check for updates now",
+      "UPDATE:": "Update server now",
+      "TRAIN": "Update train",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
       "CURRENTVERSION": "Current version: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "CANTCHECK": "Can't check for updates now, unable to connect to GitHub.",
       "NOUPDATE": "No update available",
       "NEWVERSION": "Version {{version}} available for download!"
     }
@@ -191,6 +201,7 @@
     "ISHIDDEN": "Is hidden from login screen",
     "ISDISABLED": "Is disabled",
     "DELETED": "Deleted users",
+    "ACTIVE": "Active users",
     "LASTACTIVE": "Last active",
     "SORTING": {
       "USERNAMEASC": "Username (A - Z)",
@@ -228,6 +239,7 @@
     "NORUN": "Not ran yet",
     "MOMENT_AGO": "a moment",
     "JOBLOGS": "Job logs",
+    "CRONUPDATED": "Cron value updated",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
@@ -235,10 +247,10 @@
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
       "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronisation",
+      "MEDIASYNCTITLE": "Media synchronization",
       "STARTMEDIASYNC": "Start media sync",
       "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database, remove unnecessary data.",
+      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
       "OPENJOBPAGE": "Go to job page",
       "CHECKUPDATETITLE": "Check for new updates",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
@@ -255,7 +267,7 @@
     },
     "MEDIASYNCTASKRUNNING": {
       "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completly wrong as long as the sync is running."
+      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
@@ -267,19 +279,19 @@
     }
   },
   "LOADER": {
-    "FETCHING": "Generating statistics",
+    "FETCHING": "Fetching statistics",
     "UPDATING": "Updating EmbyStat",
     "UPDATINGSUB": "Page will refresh when the update is finished."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
     "MUSIC": "Music",
-    "MUSICVIDEOS": "Music Video's",
+    "MUSICVIDEOS": "Music videos",
     "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home Video's",
-    "BOXSETS": "BoxSets",
+    "HOMEVIDEOS": "Home videos",
+    "BOXSETS": "Boxsets",
     "BOOKS": "Books",
-    "PHOTOS": "Photo's",
+    "PHOTOS": "Photos",
     "GAMES": "Games",
     "LIVETV": "Live TV",
     "PLAYLISTS": "Playlists",
@@ -287,15 +299,31 @@
   },
   "TOOLBAR": {
     "GOTOEMBY": "Go to Emby",
-    "JOBISRUNNING": "{{job}} task is running",
-    "NOMISSEDPINGS": "Emby server is running",
+    "JOBISRUNNING": "{{job}} job is running",
+    "NOMISSEDPINGS": "Emby server is alive",
     "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
     "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
   },
   "ABOUT": {
+    "SERVERINFO": "Server info",
+    "REQUESTFEATURE": "Request feature",
+    "LOGBUG": "Log bug on Github",
+    "HELPTRANSLATE": "Help translate the app",
     "THANKS": {
       "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating EmbyStat into their native language:"
+      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+    },
+    "ACTIONS": {
+      "TITLE": "Actions"
     }
+  },
+  "EMBYSERVER": {
+    "HOSTOS": "Host OS",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "CACHEPATH": "Cache path",
+    "LOGPATH": "Log path",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port"
   }
 }

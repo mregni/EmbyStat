@@ -52,7 +52,6 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
                 return this.embyService.getUserViewsByUserId(id, this.paginator.pageIndex, this.paginator.pageSize);
               }),
               map((data: ListContainer<UserMediaView>) => {
-                console.log(data);
                 this.paginator.length = data.totalCount;
                 return data.data;
               }),

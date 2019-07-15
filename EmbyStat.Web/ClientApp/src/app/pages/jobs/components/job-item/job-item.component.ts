@@ -59,7 +59,6 @@ export class JobItemComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
-      console.log(result);
       if (result) {
         this.toastService.showSuccess('JOB.CRONUPDATED');
         this.jobSub = this.jobService.getById(this._job.id).subscribe((job: Job) => {

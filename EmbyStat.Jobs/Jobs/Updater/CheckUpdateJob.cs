@@ -29,7 +29,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
         public override string JobPrefix => Constants.LogPrefix.CheckUpdateJob;
         public override string Title { get; }
 
-        public override async Task RunJob()
+        public override async Task RunJobAsync()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
                 {
                     await LogInformation($"New version found: v{update.AvailableVersion}");
                     await LogInformation($"Auto update is enabled so going to update the server now!");
-                    await _settingsService.SetUpdateInProgressSetting(true);
+                    await _settingsService.SetUpdateInProgressSettingAsync(true);
                     await HubHelper.BroadcastUpdateState(true);
                     Task.WaitAll(_updateService.DownloadZipAsync(update));
                     await LogProgress(50);
@@ -58,7 +58,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
             }
             catch (Exception)
             {
-                await _settingsService.SetUpdateInProgressSetting(false);
+                await _settingsService.SetUpdateInProgressSettingAsync(false);
                 await HubHelper.BroadcastUpdateState(false);
                 throw;
             }
