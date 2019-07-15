@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
@@ -33,12 +33,6 @@
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Private.Xml">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\2.0.9\System.Private.Xml.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
