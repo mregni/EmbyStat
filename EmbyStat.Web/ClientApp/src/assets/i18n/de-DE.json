@@ -61,11 +61,11 @@
     "EPISODENOTFOUND": "Episode nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
     "CANTCONNECTTOGITHUB": "Keine Verbindung zu GitHub zum Überprüfen von Updates möglich. Versuche es später erneut.",
     "NOUPDATEFILE": "Die Update-Anwendung kann nicht gefunden werden. Es wurde kein Update durchgeführt",
-    "UPDATEUNPACKERROR": "Etwas ist beim Entpacken des Updates schiefgegangen. Bitte versuchen Sie es erneut."
+    "UPDATEUNPACKERROR": "Beim Entpacken des Updates ist etwas schiefgelaufen. Bitte versuchen Sie es erneut."
   },
   "FORM_LABELS": {
     "NAME": "Geben Sie Ihren Namen ein",
-    "LANGUAGE": "Bitte wählen Sie Ihre Sprache",
+    "LANGUAGE": "Sprache auswählen",
     "EMBYADDRESS": "Emby IP-Adresse",
     "EMBYUSERNAME": "Emby Admin Benutzername",
     "EMBYPASSWORD": "Emby Admin Passwort",
@@ -75,7 +75,7 @@
     "EXCEPTIONLOGGING": "Ausnahmeprotokollierung aktivieren"
   },
   "FORM_ERRORS": {
-    "NAME_REQUIRED": "Tragen Sie Ihren Namen oder Spitznamen ein.",
+    "NAME_REQUIRED": "Namen oder Spitznamen eintragen.",
     "EMBYADDRESS_REQUIRED": "Tragen Sie Ihre Emby IP-Adresse ein.",
     "EMBYUSERNAME_REQUIRED": "Tragen Sie den Benutzernamen des Emby Administrators ein.",
     "EMBYPASSWORD_REQUIRED": "Tragen Sie das Passwort des Emby Administrators ein."
@@ -89,7 +89,7 @@
     "JOBS": "Aufgaben",
     "SERVER": "Emby Server",
     "LOGS": "Logs",
-    "ABOUT": "About",
+    "ABOUT": "Über",
     "USERS": "Benutzer"
   },
   "WIZARD": {
@@ -106,11 +106,11 @@
     "ISADMIN": "{{ user }} ist ein Emby Administrator",
     "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
     "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
-    "SAVING": "Speichere Daten",
+    "SAVING": "Speichern",
     "RESCAN": "Erneut scannen",
     "FINISHWITHSYNC": "Synchronisation starten",
-    "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
-    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren."
+    "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Viel Spaß mit Ihre neuen Statistiken!",
+    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell bei den Aufgaben starten."
   },
   "PLUGINS": {
     "VERSION": "Version"
