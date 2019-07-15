@@ -88,8 +88,6 @@ namespace EmbyStat.Clients.Emby.WebSocket
         private void ClientWebSocketClosed(object sender, EventArgs e)
         {
             OnWebSocketClosed?.Invoke(this, EventArgs.Empty);
-            //TODO: log here will flood the log file! Find some other way to only log it ones
-            //_logger.Warn("Web socket connection closed.");
         }
 
         private Task SendWebSocketMessage<T>(string messageName, T data)

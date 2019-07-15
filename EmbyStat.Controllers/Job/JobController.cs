@@ -89,37 +89,11 @@ namespace EmbyStat.Controllers.Job
                 case "SMALLEMBYSYNCTITLE": return Constants.LogPrefix.SmallEmbySyncJob;
                 case "MEDIASYNCTITLE": return Constants.LogPrefix.MediaSyncJob;
                 case "PINGEMBYSERVERTITLE": return Constants.LogPrefix.PingEmbyJob;
+                default: break;
             }
 
             return string.Empty;
         }
-
-        //[HttpPost]
-        //[Route("ping/fire")]
-        //public async Task<IActionResult> FireTask()
-        //{
-        //    await Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.PingEmbyId.ToString()); });
-        //    await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.PingEmbyJob} job queued", ProgressLogType.Information);
-        //    return Ok();
-        //}
-
-        //[HttpPost]
-        //[Route("checkupdate/fire")]
-        //public async Task<IActionResult> FireCheckUpdate()
-        //{
-        //    RecurringJob.Trigger(Constants.JobIds.CheckUpdateId.ToString());
-        //    await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.CheckUpdateJob} job queued", ProgressLogType.Information);
-        //    return Ok();
-        //}
-
-        //[HttpPost]
-        //[Route("mediasync/fire")]
-        //public async Task<IActionResult> FireMediaSync()
-        //{
-        //    RecurringJob.Trigger(Constants.JobIds.MediaSyncId.ToString());
-        //    await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.MediaSyncJob} job queued", ProgressLogType.Information);
-        //    return Ok();
-        //}
 
         [HttpGet]
         [Route("mediasync")]
@@ -128,23 +102,5 @@ namespace EmbyStat.Controllers.Job
             var job = _jobService.GetById(Constants.JobIds.MediaSyncId);
             return Ok(_mapper.Map<JobViewModel>(job));
         }
-
-        //[HttpPost]
-        //[Route("smallsync/fire")]
-        //public async Task<IActionResult> FireSmallSync()
-        //{
-        //    RecurringJob.Trigger(Constants.JobIds.SmallSyncId.ToString());
-        //    await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.SmallEmbySyncJob} job queued", ProgressLogType.Information);
-        //    return Ok();
-        //}
-
-        //[HttpPost]
-        //[Route("databasecleanup/fire")]
-        //public async Task<IActionResult> FireDatabaseCleanup()
-        //{
-        //    await Task.Run(() => { RecurringJob.Trigger(Constants.JobIds.DatabaseCleanupId.ToString()); });
-        //    await _jobHubHelper.BroadCastJobLog(LogPrefix, $"New {Constants.LogPrefix.DatabaseCleanupJob} job queued", ProgressLogType.Information);
-        //    return Ok();
-        //}
     }
 }

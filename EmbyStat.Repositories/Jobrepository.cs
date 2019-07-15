@@ -20,7 +20,7 @@ namespace EmbyStat.Repositories
         public IEnumerable<Job> GetAll()
         {
             return _jobCollection.FindAll();
-;        }
+        }
 
         public Job GetById(Guid id)
         {
