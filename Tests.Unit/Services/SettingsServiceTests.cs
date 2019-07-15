@@ -25,7 +25,8 @@ namespace Tests.Unit.Services
 
             var rollbar = new EmbyStat.Common.Models.Settings.Rollbar()
             {
-                AccessToken = "aaaaaaa"
+                AccessToken = "aaaaaaa",
+                Environment = "dev"
             };
 
             var appSettingsMock = new Mock<IOptions<AppSettings>>();
