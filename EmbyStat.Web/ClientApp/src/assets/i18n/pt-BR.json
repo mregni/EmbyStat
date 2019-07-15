@@ -10,9 +10,9 @@
     "DISCARD": "Descartar",
     "CANCEL": "Cancelar",
     "CLOSE": "Perto",
-    "DAYS": "dias",
-    "HOURS": "horas",
-    "MINUTES": "Minutos",
+    "DAYSABBR": "d",
+    "HOURSABBR": "h",
+    "MINUTESABBR": "m",
     "MIN": "mínimo",
     "TITLE": "Título",
     "ADDEDON": "Adicionado em",
@@ -48,7 +48,8 @@
     "STATUS": "Status",
     "PERCENTAGE": "Porcentagem",
     "COLLECTED": "Coletado",
-    "UPDATES": "Atualização"
+    "UPDATES": "Atualização",
+    "VERSION": "Versão"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Opa, recebemos um erro no backend, por favor, tente novamente. Se continuar a falhar, por favor, verifique os logs para mais detalhes.",
@@ -61,24 +62,19 @@
     "EPISODENOTFOUND": "Episódio não encontrado, iniciar um trabalho de sincronização de mídia pode corrigir isso.",
     "CANTCONNECTTOGITHUB": "Não é possível conectar-se ao GitHub para verificar se há atualizações. Tente mais tarde.",
     "NOUPDATEFILE": "Não é possível localizar o aplicativo de atualização, nenhuma atualização executada",
-    "UPDATEUNPACKERROR": "Algo deu errado ao adicionar seu prêmio. Por favor, tente novamente."
+    "UPDATEUNPACKERROR": "Algo deu errado ao adicionar seu prêmio. Por favor, tente novamente.",
+    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
-  "FORM_LABELS": {
-    "NAME": "Digite seu nome",
+  "FORMLABELS": {
+    "NAME": "Username",
     "LANGUAGE": "Por favor, selecione seu idioma",
-    "EMBYADDRESS": "Endereço IP Emby",
-    "EMBYUSERNAME": "Nome de usuário do Emby (admin)",
-    "EMBYPASSWORD": "Inserir senha de administrador",
     "DURATIONINMINUTES": "Duração em minutos",
-    "TVDBAPI": "Chave TheTVDB api",
+    "TVDBAPI": "TheTVDB API key",
     "CRON": "Corda Cron",
     "EXCEPTIONLOGGING": "Ativar log de exceções"
   },
-  "FORM_ERRORS": {
-    "NAME_REQUIRED": "Preencha seu nome ou apelido.",
-    "EMBYADDRESS_REQUIRED": "Preencha o seu endereço Emby ip.",
-    "EMBYUSERNAME_REQUIRED": "Preencha seu nome de usuário admin do Emby.",
-    "EMBYPASSWORD_REQUIRED": "Preencha sua senha de administrador do Emby."
+  "FORMERRORS": {
+    "NAME_REQUIRED": "Preencha seu nome ou apelido."
   },
   "MENU": {
     "DASHBOARD": "Painel de controle",
@@ -112,10 +108,8 @@
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor Emby agora. Aproveite suas novas estatísticas!",
     "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar uma tarefa de sincronização de mídia. EmbyStat irá iniciar o download de todos os dados do seu servidor Emby. Tenha em mente que essa tarefa pode levar muito tempo dependendo do tamanho da sua coleção. Se você não quiser iniciar um passeio de sincronização agora basta clicar em Concluir. Você pode iniciá-lo manualmente mais tarde, navegando até a página Tarefas."
   },
-  "PLUGINS": {
-    "VERSION": "Versão"
-  },
   "MOVIES": {
+    "COLLECTIONPLACEHOLDER": "Filter movie collections",
     "TOTALMOVIES": "Filmes totais",
     "TOTALGENRES": "Gêneros totais",
     "TOTALPLAYLENGTH": "Tempo total assistível",
@@ -149,15 +143,21 @@
     "ENDED": "Finalizado"
   },
   "SETTINGS": {
-    "TITLE": "Configurações",
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "The TVDB",
+      "EMBY": "Emby"
+    },
     "SAVED": {
       "GENERAL": "Configurações gerais do Embystat salvas!",
+      "TVDB": "Tvdb key saved!",
       "EMBY": "Configurações salvas!",
       "MOVIES": "Configurações do filme salvas!",
       "SHOWS": "Mostrar configurações salvas!",
       "UPDATES": "Configurações do filme salvas!"
     },
     "GENERAL": {
+      "NOUSERNAME": "Username can't be blank",
       "TVDBAPIKEY": "Se você quiser, pode fornecer à EmbyStat sua própria chave de API TheTVDB aqui.",
       "TVDBAPIKEYWARNING": "Certifique-se de fornecer uma chave de API de trabalho! Se a chave estiver incorreta, a tarefa de sincronização falhará.",
       "EXCEPTIONLOGGING": "Ativar / desativar o log de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão."
@@ -170,13 +170,23 @@
       "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "EMBY": {
-      "NOPASSWORD": "Não se esqueça de digitar sua senha do Emby quando quiser alterar as configurações de url do Emby."
+      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYUSERNAME": "Nome de usuário do Emby (admin)",
+      "EMBYPASSWORD": "Inserir senha de administrador",
+      "EMBYPORT": "Emby port",
+      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
+      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
+      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
+      "EMBYPORTREQUIRED": "Emby port required.",
+      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
+      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Ativar atualizações automáticas",
       "CHECK": "Verifique e atualize o servidor agora",
+      "UPDATE:": "Update server now",
       "TRAIN": "Altere o trem de atualização se você quiser ter atualizações beta.",
       "ONBETA": "Você não está mais no trem Master, então você não pode voltar para ele. Se você quiser voltar no trem mestre, reinstale o servidor.",
       "TRAINWARNING": "Aqui você pode alterar o trem de atualização do mestre para o beta. Se você não sabe o que está fazendo, deixe essa configuração no mestre. Se você deseja receber as atualizações da versão beta, altere-a aqui, esteja ciente de que não será possível voltar ao mestre mais tarde. Você terá que reinstalar o servidor.",
@@ -191,6 +201,7 @@
     "ISHIDDEN": "Está oculto da tela de login",
     "ISDISABLED": "está desabilitado",
     "DELETED": "Os usuários excluídos",
+    "ACTIVE": "Active users",
     "LASTACTIVE": "Ativo pela última vez",
     "SORTING": {
       "USERNAMEASC": "Nome de usuário (A - Z)",
@@ -228,6 +239,7 @@
     "NORUN": "Ainda não correu",
     "MOMENT_AGO": "Dentro de instantes",
     "JOBLOGS": "Registros de trabalho",
+    "CRONUPDATED": "Cron value updated",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Verifique a conexão",
       "PINGEMBYSERVERDESCRIPTION": "Ping no servidor Emby para verificar se ele ainda está online.",
@@ -293,9 +305,25 @@
     "MOREMISSEDPINGS": "Não foi possível conectar-se ao Emby após várias tentativas!"
   },
   "ABOUT": {
+    "SERVERINFO": "Server info",
+    "REQUESTFEATURE": "Request feature",
+    "LOGBUG": "Log bug on Github",
+    "HELPTRANSLATE": "Help translate the app",
     "THANKS": {
       "TITLE": "Obrigado",
       "TEXT": "Um grande obrigado às seguintes pessoas por traduzir o aplicativo em sua língua nativa:"
+    },
+    "ACTIONS": {
+      "TITLE": "Actions"
     }
+  },
+  "EMBYSERVER": {
+    "HOSTOS": "Host OS",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "CACHEPATH": "Cache path",
+    "LOGPATH": "Log path",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port"
   }
 }
