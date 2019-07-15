@@ -72,20 +72,21 @@ namespace EmbyStat.Services
 
         public UpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
         {
+            ReleaseObject[] correctTrainReleases = new ReleaseObject[0];
             if (updateTrain == UpdateTrain.Release)
             {
-                obj = obj.Where(i => !i.PreRelease).ToArray();
+                correctTrainReleases = obj.Where(i => !i.PreRelease).ToArray();
             }
             else if (updateTrain == UpdateTrain.Beta)
             {
-                obj = obj.Where(i => i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                correctTrainReleases = obj.Where(i => i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString, StringComparison.OrdinalIgnoreCase)).ToArray();
             }
             else if (updateTrain == UpdateTrain.Dev)
             {
-                obj = obj.Where(i => i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.DevString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                correctTrainReleases = obj.Where(i => i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.DevString, StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
-            var availableUpdate = obj
+            var availableUpdate = correctTrainReleases
                 .Select(i => CheckForUpdateResult(i, minVersion, assetFilename))
                 .Where(i => i != null)
                 .OrderByDescending(i => Version.Parse(i.AvailableVersion))

@@ -14,14 +14,12 @@ namespace EmbyStat.Repositories
         private readonly LiteCollection<Show> _showCollection;
         private readonly LiteCollection<Season> _seasonCollection;
         private readonly LiteCollection<Episode> _episodeCollection;
-        private readonly Logger _logger;
 
         public ShowRepository(IDbContext context)
         {
             _showCollection = context.GetContext().GetCollection<Show>();
             _seasonCollection = context.GetContext().GetCollection<Season>();
             _episodeCollection = context.GetContext().GetCollection<Episode>();
-            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public void RemoveShows()
@@ -51,7 +49,12 @@ namespace EmbyStat.Repositories
             _showCollection.Update(show);
         }
 
-        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons = false, bool includeEpisodes = false)
+        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds)
+        {
+            return GetAllShows(collectionIds, false, false);
+        }
+
+        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes)
         {
             var query = _showCollection;
 
@@ -102,7 +105,12 @@ namespace EmbyStat.Repositories
             return _episodeCollection.Count(Query.EQ("ShowId", showId));
         }
 
-        public int GetEpisodeCountForShow(int showId, bool includeSpecials = false)
+        public int GetEpisodeCountForShow(int showId)
+        {
+            return GetEpisodeCountForShow(showId, false);
+        }
+
+        public int GetEpisodeCountForShow(int showId, bool includeSpecials)
         {
             var show = _showCollection.FindById(showId);
 
@@ -114,7 +122,12 @@ namespace EmbyStat.Repositories
             return show.Episodes.Count();
         }
 
-        public int GetSeasonCountForShow(int showId, bool includeSpecials = false)
+        public int GetSeasonCountForShow(int showId)
+        {
+            return GetSeasonCountForShow(showId, false);
+        }
+
+        public int GetSeasonCountForShow(int showId, bool includeSpecials)
         {
             var show = _showCollection.FindById(showId);
 

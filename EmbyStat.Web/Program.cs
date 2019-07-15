@@ -80,7 +80,6 @@ namespace EmbyStat.Web
                 var services = scope.ServiceProvider;
                 try
                 {
-                    UpdateDatabase();
                     var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
                     databaseInitializer.CreateIndexes();
                     databaseInitializer.SeedAsync();
@@ -92,20 +91,6 @@ namespace EmbyStat.Web
                     throw;
                 }
             }
-        }
-
-        private static void UpdateDatabase()
-        {
-            //var serviceProvider = new ServiceCollection()
-            //    .AddFluentMigratorCore()
-            //    .ConfigureRunner(rb => rb
-            //        .AddSQLite()
-            //        .WithGlobalConnectionString("Data Source=data.db")
-            //        .ScanIn(typeof(InitMigration).Assembly).For.Migrations())
-            //    .BuildServiceProvider(false);
-
-            //var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            //runner.MigrateUp();
         }
     }
 }

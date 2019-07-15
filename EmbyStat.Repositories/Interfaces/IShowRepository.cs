@@ -13,11 +13,14 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<Show> GetAllShowsWithTvdbId();
         IEnumerable<Episode> GetAllEpisodesForShow(int showId);
         int CountEpisodes(int showId);
-        int GetEpisodeCountForShow(int showId, bool includeSpecials = false);
-        int GetSeasonCountForShow(int showId, bool includeSpecials = false);
+        int GetEpisodeCountForShow(int showId);
+        int GetEpisodeCountForShow(int showId, bool includeSpecials);
+        int GetSeasonCountForShow(int showId);
+        int GetSeasonCountForShow(int showId, bool includeSpecials);
         bool AnyShows();
         Episode GetEpisodeById(string id);
-        IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons = false, bool includeEpisodes = false);
+        IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds);
+        IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes);
         Season GetSeasonById(string id);
     }
 }

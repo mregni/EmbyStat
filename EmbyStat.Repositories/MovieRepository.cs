@@ -13,12 +13,8 @@ namespace EmbyStat.Repositories
     {
         private readonly LiteCollection<Movie> _movieCollection;
 
-        private readonly Logger _logger;
-
         public MovieRepository(IDbContext context)
         {
-            _logger = LogManager.GetCurrentClassLogger();
-
             _movieCollection = context.GetContext().GetCollection<Movie>();
         }
 

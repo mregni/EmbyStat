@@ -6,8 +6,8 @@
   box-shadow: $normal-box-shadow;
   display: flex;
   flex: 1 1 auto;
-  padding: 10px 20px;
   flex-direction: row;
+  padding: 10px 20px;
 
   h2 {
     margin: 15px 0;
@@ -22,6 +22,6 @@
 .title-bar-right-content {
   display: flex;
   flex: 0 0 250px;
-  justify-content: flex-end;
   flex-direction: column;
+  justify-content: flex-end;
 }

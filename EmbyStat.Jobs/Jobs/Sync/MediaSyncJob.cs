@@ -34,7 +34,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly ICollectionRepository _collectionRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly Logger _logger;
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository,
@@ -49,7 +48,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
             Title = jobRepository.GetById(Id).Title;
-            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public sealed override Guid Id => Constants.JobIds.MediaSyncId;
@@ -253,7 +251,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             });
 
             _showRepository.InsertShowsBulk(shows);
-            shows = null;
         }
 
         private async Task SyncMissingEpisodesAsync(IReadOnlyList<Show> oldShows, CancellationToken cancellationToken)

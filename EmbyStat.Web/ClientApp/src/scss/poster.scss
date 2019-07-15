@@ -33,10 +33,10 @@
 }
 
 .poster-sub-content {
-  display: flex;
   align-items: center;
-  justify-content: center;
   background-color: $dark-grey;
   border-bottom-left-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
+  display: flex;
+  justify-content: center;
 }
