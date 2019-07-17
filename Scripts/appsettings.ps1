@@ -6,7 +6,6 @@ $version = "$($env:GitVersion_SemVer)"
 Write-Host "Updating version to $version";
 (GC $appSettings).Replace("0.0.0.0", "$version") | Set-Content $appSettings
 
-
 Write-Host "Updating RollbarENV to dev";
 (GC $appSettings).Replace("RollbarENV", "dev") | Set-Content $appSettings
 
@@ -14,4 +13,4 @@ Write-Host "Updating Rollbar key to $($env:rollbarkey)";
 (GC $appSettings).Replace("XXXXXXXXXX", "$($env:rollbarkey)") | Set-Content $appSettings
 
 Write-Host "Updating update package name to $updatePackage"
-(GC $filePath).Replace("win10-x86-v", "$updatePackage") | Set-Content $filePath
+(GC $appSettings).Replace("win10-x86", "$updatePackage") | Set-Content $appSettings
