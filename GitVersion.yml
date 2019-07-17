@@ -1,4 +1,3 @@
-next-version: 0.2
 continuous-delivery-fallback-tag: ''
 branches:
   develop:
