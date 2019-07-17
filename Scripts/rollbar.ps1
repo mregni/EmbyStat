@@ -1,4 +1,4 @@
-$version = "$($env:BuildVersion_SemVer)";
+$version = "$($env:GitVersion_SemVer)";
 Write-Host "$version";
 Write-Host "$($env:RollbarKey)"
 if($version -like '*dev*'){
