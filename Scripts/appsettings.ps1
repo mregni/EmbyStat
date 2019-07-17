@@ -8,5 +8,5 @@ Write-Host "Updating version to $version";
 Write-Host "Updating RollbarENV to dev";
 (GC $appSettings).Replace("RollbarENV", "dev") | Set-Content $appSettings
 
-Write-Host "Updating Rollbar key to $($env:webapp-rollbar-key)";
-(GC $appSettings).Replace("XXXXXXXXXX", "$($env:webapp-rollbar-key)") | Set-Content $appSettings
+Write-Host "Updating Rollbar key to $(webapp-rollbar-key)";
+(GC $appSettings).Replace("XXXXXXXXXX", "$(webapp-rollbar-key)") | Set-Content $appSettings
