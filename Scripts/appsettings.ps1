@@ -1,4 +1,4 @@
-param($updatePackage)
+param($updatePackage, $rollbarKey)
 
 $appSettings = "EmbyStat.Web\appsettings.json"
 $version = "$($env:GitVersion_SemVer)"
