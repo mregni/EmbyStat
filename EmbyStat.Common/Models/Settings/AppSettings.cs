@@ -6,7 +6,6 @@
         public string ProcessName { get; set; }
         public Updater Updater { get; set; }
         public Dirs Dirs { get; set; }
-        public ConnectionStrings ConnectionStrings { get; set; }
         public Rollbar Rollbar { get; set; }
         public string DatabaseFile { get; set; }
         /// <summary>
@@ -31,11 +30,6 @@
         public string Logs { get; set; }
         public string Settings { get; set; }
         public string Database { get; set; }
-    }
-
-    public class ConnectionStrings
-    {
-        public string Main { get; set; }
     }
 
     public class Rollbar
