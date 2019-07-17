@@ -1,7 +1,7 @@
-$version = "$(BuildVersion.SemVer)";
+$version = "$($env:BuildVersion.SemVer)";
 if($version -like '*dev*'){
   $postParams = @{
-    access_token="$(RollbarKey)";
+    access_token="$($env:RollbarKey)";
     environment="dev";
     revision=$version;
     local_username="Mikhaël Regni";
