@@ -1,4 +1,5 @@
-$version = "$($env:BuildVersion.SemVer)";
+$version = "$($env:BuildVersion_SemVer)";
+Write-Host "$version";
 if($version -like '*dev*'){
   $postParams = @{
     access_token="$($env:RollbarKey)";
