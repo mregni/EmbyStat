@@ -1,3 +1,5 @@
+param($updatePackage)
+
 $appSettings = "EmbyStat.Web\appsettings.json"
 $version = "$($env:GitVersion_SemVer)"
 
@@ -10,3 +12,6 @@ Write-Host "Updating RollbarENV to dev";
 
 Write-Host "Updating Rollbar key to $($env:rollbarkey)";
 (GC $appSettings).Replace("XXXXXXXXXX", "$($env:rollbarkey)") | Set-Content $appSettings
+
+Write-Host "Updating update package name to $updatePackage"
+(GC $filePath).Replace("win10-x86-v", "$updatePackage") | Set-Content $filePath
