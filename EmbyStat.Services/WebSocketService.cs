@@ -80,7 +80,7 @@ namespace EmbyStat.Services
 
                     _timer.Change(5000, 5000);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     _logger.Info("Application is closing, socket is closed!");
                 }
