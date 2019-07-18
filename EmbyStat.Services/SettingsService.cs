@@ -100,8 +100,14 @@ namespace EmbyStat.Services
                     UpdateTrain = UpdateTrain.Beta,
                     Username = string.Empty,
                     WizardFinished = false,
-                    Emby = new EmbySettings(),
-                    Tvdb = new TvdbSettings(),
+                    Emby = new EmbySettings
+                    {
+                        AuthorizationScheme = "MediaBrowser"
+                    },
+                    Tvdb = new TvdbSettings
+                    {
+                        ApiKey = "BWLRSNRC0AQUIEYX"
+                    },
                     EnableRollbarLogging = false
                 };
 
