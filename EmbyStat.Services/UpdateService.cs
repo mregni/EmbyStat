@@ -58,7 +58,7 @@ namespace EmbyStat.Services
         public async Task<UpdateResult> CheckForUpdateAsync(UserSettings settings, CancellationToken cancellationToken)
         {
             var appSettings = _settingsService.GetAppSettings();
-            var currentVersion = new Version(appSettings.Version);
+            var currentVersion = new Version(appSettings.Version.ToCleanVersionString());
             var result = await _githubClient.GetGithubVersionsAsync(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
             var update = CheckForUpdateResult(result, currentVersion, settings.UpdateTrain, appSettings.Updater.UpdateAsset);
 

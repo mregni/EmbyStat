@@ -28,7 +28,6 @@ namespace EmbyStat.Services
             _appSettings = appSettings.Value;
             _logger = LogManager.GetCurrentClassLogger();
             LoadUserSettingsFromFile();
-            CreateRollbarLogger();
         }
 
         public AppSettings GetAppSettings()
@@ -55,20 +54,23 @@ namespace EmbyStat.Services
             return _userSettings;
         }
 
-        private void CreateRollbarLogger()
+        public void CreateRollbarLogger()
         {
-            var rollbarConfig = new RollbarConfig(_appSettings.Rollbar.AccessToken);
-            rollbarConfig.Environment = _appSettings.Rollbar.Environment;
-            rollbarConfig.MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute;
-            rollbarConfig.ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth;
-            rollbarConfig.Enabled = _userSettings.EnableRollbarLogging;
-            rollbarConfig.Transform = payload => {
-                payload.Data.CodeVersion = _appSettings.Version;
-                payload.Data.Custom = new Dictionary<string, object>()
+            var rollbarConfig = new RollbarConfig(_appSettings.Rollbar.AccessToken)
+            {
+                Environment = _appSettings.Rollbar.Environment,
+                MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute,
+                ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth,
+                Enabled = _userSettings.EnableRollbarLogging,
+                Transform = payload =>
                 {
-                    {"Framework", RuntimeInformation.FrameworkDescription},
-                    {"OS", RuntimeInformation.OSDescription}
-                };
+                    payload.Data.CodeVersion = _appSettings.Version;
+                    payload.Data.Custom = new Dictionary<string, object>()
+                    {
+                        {"Framework", RuntimeInformation.FrameworkDescription},
+                        {"OS", RuntimeInformation.OSDescription}
+                    };
+                }
             };
 
             RollbarLocator.RollbarInstance.Configure(rollbarConfig);

@@ -4,7 +4,7 @@ param(
 )
 
 $appSettings = "EmbyStat.Web\appsettings.json"
-$version = "$($env:GitVersion_SemVer)"
+$version = "$($env:Build_BuildNumber)"
 
 Write-Host "Updating version to $version";
 (GC $appSettings).Replace("0.0.0.0", "$version") | Set-Content $appSettings
