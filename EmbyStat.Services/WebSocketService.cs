@@ -70,13 +70,20 @@ namespace EmbyStat.Services
         {
             using (var scope = _scopeFactory.CreateScope())
             {
-                var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
-                webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
-                webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
-                webSocketApi.OnWebSocketConnected -= ClientOnWebSocketConnected;
-                webSocketApi.OnWebSocketClosed -= WebSocketApiOnWebSocketClosed;
+                try
+                {
+                    var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
+                    webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
+                    webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
+                    webSocketApi.OnWebSocketConnected -= ClientOnWebSocketConnected;
+                    webSocketApi.OnWebSocketClosed -= WebSocketApiOnWebSocketClosed;
 
-                _timer.Change(5000, 5000);
+                    _timer.Change(5000, 5000);
+                }
+                catch (Exception e)
+                {
+                    _logger.Info("Application is closing, socket is closed!");
+                }
             }
         }
 

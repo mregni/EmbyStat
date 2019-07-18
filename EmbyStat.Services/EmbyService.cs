@@ -96,7 +96,6 @@ namespace EmbyStat.Services
             {
                 try
                 {
-                    //TODO, fix this code
                     var token = await _embyClient.AuthenticateUserAsync(login.UserName, login.Password, login.Address);
                     return new EmbyToken
                     {
@@ -108,6 +107,7 @@ namespace EmbyStat.Services
                 }
                 catch (Exception e)
                 {
+                    _logger.Error(e);
                     _logger.Warn($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
                     throw new BusinessException("TOKEN_FAILED", 500, e);
                 }
