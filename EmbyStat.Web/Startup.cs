@@ -167,6 +167,7 @@ namespace EmbyStat.Web
                 var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
                 var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
+                CreateRollbarLogger(settingsService);
                 AddDeviceIdToConfig(settingsService);
                 RemoveVersionFiles();
                 ResetAllJobs(jobService);
@@ -174,6 +175,11 @@ namespace EmbyStat.Web
                 SetEmbyClientConfiguration(settingsService, embyClient);
                 InitializeTasks(jobInitializer);
             }
+        }
+
+        private void CreateRollbarLogger(ISettingsService settingsService)
+        {
+            settingsService.CreateRollbarLogger();
         }
 
         private void PerformPreShutdownFunctions()
@@ -220,7 +226,7 @@ namespace EmbyStat.Web
             settingsService.SetUpdateInProgressSettingAsync(false);
             var settings = settingsService.GetUserSettings();
 
-            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version, settings.Id.ToString());
+            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
             if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
             {
                 embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);

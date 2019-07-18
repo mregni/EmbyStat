@@ -1,12 +1,25 @@
-$version = "$($env:GitVersion_SemVer)";
-Write-Host "$version";
-Write-Host "$($env:RollbarKey)"
-if($version -like '*dev*'){
-  $postParams = @{
-    access_token="$($env:RollbarKey)";
-    environment="dev";
-    revision=$version;
+param( 
+	[string]$rollbarKey,
+	[string]$buildNumber
+)
+
+$environment = "production"
+
+if($buildNumber -like '*dev*'){
+  $environment = "dev"
+}
+
+if($buildNumber -like '*beta*'){
+  $environment = "beta"
+}
+
+
+
+$postParams = @{
+    access_token="$rollbarKey";
+    environment="$environment";
+    revision="$buildNumber";
     local_username="Mikhaël Regni";
+	status="succeeded"
   }
   Invoke-WebRequest -Uri https://api.rollbar.com/api/1/deploy -Method POST -UseBasicParsing -Body $postParams
-}

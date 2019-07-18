@@ -5,9 +5,9 @@ namespace EmbyStat.Common.Extensions
 {
     public static class StringExtensions
     {
-        public static bool ToBoolean(this string value)
+        public static string ToCleanVersionString(this string version)
         {
-            return value == "True";
+            return version.Replace("-dev", string.Empty).Replace("-beta", string.Empty);
         }
 
         public static CollectionType ToCollectionType(this string value)
