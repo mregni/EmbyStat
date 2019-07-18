@@ -1,8 +1,8 @@
 param( 
-	[string]$rollbarKey
+	[string]$rollbarKey,
+	[string]$buildNumber
 )
 
-$buildNumber = "$($env:Build.BuildNumber)";
 $environment = "production"
 
 if($buildNumber -like '*dev*'){
@@ -12,6 +12,7 @@ if($buildNumber -like '*dev*'){
 if($buildNumber -like '*beta*'){
   $environment = "beta"
 }
+
 
 
 $postParams = @{
