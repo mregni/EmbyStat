@@ -63,13 +63,13 @@
     "CANTCONNECTTOGITHUB": "Impossible de se connecter à GitHub pour vérifier les mises à jour. Réessayez plus tard.",
     "NOUPDATEFILE": "Impossible de localiser l’application mise à jour, aucune mise à jour effectuée",
     "UPDATEUNPACKERROR": "L'extraction de l'archive de la mise à jour à échouée. Veuillez réessayer.",
-    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
+    "TVDBLOGINFAILED": "La connexion TVDB a échoué, vérifiez la clé API."
   },
   "FORMLABELS": {
-    "NAME": "Username",
+    "NAME": "Nom d'utilisateur",
     "LANGUAGE": "Sélectionnez votre langue",
     "DURATIONINMINUTES": "Durée en minutes",
-    "TVDBAPI": "TheTVDB API key",
+    "TVDBAPI": "Clé de l'API TheTVDB",
     "CRON": "Ligne de Cron",
     "EXCEPTIONLOGGING": "Enregistrer les exceptions dans les logs"
   },
@@ -150,14 +150,14 @@
     },
     "SAVED": {
       "GENERAL": "Paramètres généraux d'Embystat enregistrés !",
-      "TVDB": "Tvdb key saved!",
+      "TVDB": "Clé Tvdb sauvegardée!",
       "EMBY": "Paramètres sauvegardés!",
       "MOVIES": "Paramètres des films enregistrés !",
       "SHOWS": "Paramètres des séries enregistrés !",
       "UPDATES": "Mise à jour des paramètres enregistrés !"
     },
     "GENERAL": {
-      "NOUSERNAME": "Username can't be blank",
+      "NOUSERNAME": "Le nom d'utilisateur ne peut pas être vide",
       "TVDBAPIKEY": "Si vous le souhaitez, vous pouvez utiliser EmbyStat avec votre propre clé API de TheTVDB ici.",
       "TVDBAPIKEYWARNING": "Assurez-vous de fournir une clé API fonctionnelle! Si la clé est incorrecte, la tâche de synchronisation échouera.",
       "EXCEPTIONLOGGING": "Activer / désactiver la sauvegarde des exceptions sur le service Rollbar en ligne. Avec cette journalisation, je peux déboguer et réparer l'application plus rapidement. Aucune donnée personnelle n'est jamais enregistrée, seuls les messages d'exception, la stacktrace, le nom du système d'exploitation et le numéro de version."
@@ -308,7 +308,7 @@
     "SERVERINFO": "Server info",
     "REQUESTFEATURE": "Request feature",
     "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "HELPTRANSLATE": "Aidez à traduire cette application",
     "THANKS": {
       "TITLE": "Merci",
       "TEXT": "Un grand merci aux personnes suivantes pour avoir traduit l'application dans leur langue maternelle :"
