@@ -15,9 +15,10 @@ if($buildNumber -like '*beta*'){
 
 
 $postParams = @{
-    access_token=$rollbarKey;
-    environment=$environment;
-    revision=$buildNumber;
+    access_token="$rollbarKey";
+    environment="$environment";
+    revision="$buildNumber";
     local_username="Mikhaël Regni";
+	status="succeeded"
   }
   Invoke-WebRequest -Uri https://api.rollbar.com/api/1/deploy -Method POST -UseBasicParsing -Body $postParams
