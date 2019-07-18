@@ -27,8 +27,8 @@ namespace EmbyStat.Controllers
 	    { 
             CreateMap<MediaBrowser.Model.Plugins.PluginInfo, PluginInfo>();
             CreateMap<UserSettings, FullSettingsViewModel>().ForMember(x => x.Version, x => x.Ignore()).ReverseMap();
-            CreateMap<EmbySettings, FullSettingsViewModel.EmbySettingsViewModel>();
-            CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>();
+            CreateMap<EmbySettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
+            CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
 		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
