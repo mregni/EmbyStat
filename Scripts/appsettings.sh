@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "Updating version to $(GitVersion.SemVer)"
-sed -i 's/0.0.0.0/$(GitVersion.SemVer)/g' EmbyStat.Web/appsettings.json
+echo "Updating version to" $3
+sed -i s/0.0.0.0/$3/g EmbyStat.Web/appsettings.json
 
 echo "Updating RollbarENV to dev"
-sed -i 's/RollbarENV/dev/g' EmbyStat.Web/appsettings.json
+sed -i s/RollbarENV/dev/g EmbyStat.Web/appsettings.json
 
 echo "Updating Rollbar key to" $2
 sed -i s/XXXXXXXXXX/$2/g EmbyStat.Web/appsettings.json
