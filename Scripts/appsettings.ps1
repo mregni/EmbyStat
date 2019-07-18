@@ -1,10 +1,10 @@
 param(
 	[string]$updatePackage, 
-	[string]$rollbarKey
+	[string]$rollbarKey,
+	[string]$version
 )
 
 $appSettings = "EmbyStat.Web\appsettings.json"
-$version = "$($env:Build_BuildNumber)"
 
 Write-Host "Updating version to $version";
 (GC $appSettings).Replace("0.0.0.0", "$version") | Set-Content $appSettings
