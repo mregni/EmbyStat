@@ -15,6 +15,16 @@ EmbyStat is a personal web server that can calculate all kinds of statistics fro
 
 This project is still in Alpha fase, but feel free to pull in on your computer and test it out yourself. When the time is right I will host a full informational website/release for common platforms and Wiki pages.
 
+## Build state
+
+| Environment  | Build  | Deploys |
+|---|---|---|
+| Nightly  | [![Build status](https://dev.azure.com/uping-be/EmbyStat/_apis/build/status/DEV)](https://dev.azure.com/uping-be/EmbyStat/_build/latest?definitionId=2)  | DOCKER win10-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/1/1) |
+| | |DOCKER ubuntu-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/1/2) |
+| Beta | [![Build status](https://dev.azure.com/uping-be/EmbyStat/_apis/build/status/BETA)](https://dev.azure.com/uping-be/EmbyStat/_build/latest?definitionId=6) | DOCKER win10-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/3)
+| | | DOCKER ubuntu-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/4) |
+| | | Github packages ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/5)
+
 ## Installation
 
 Supported platforms as the moment are:
@@ -23,7 +33,9 @@ Supported platforms as the moment are:
 * Windows x86 (IIS and Kestrel)
 * Docker Windows [latest-win](https://hub.docker.com/r/uping/embystat/)
 * Docker Linux [latest-linux](https://hub.docker.com/r/uping/embystat/)
-* Debian package (coming soon)
+* Debian package
+* Ubuntu package
+* Fedora package
 
 I will try to support as many platforms as possible. More and more will come in the future!
 If you have knowledge about building unix packages please feel free to contact me so I can support as many platforms as possible.
