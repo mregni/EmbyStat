@@ -35,23 +35,14 @@ namespace EmbyStat.Services.Abstract
                 .OrderBy(x => x.Key)
                 .ToList();
 
-            if (ratingDataList.Any())
+            for (double i = 0; i < 10; i += 0.5)
             {
-                var j = 0;
-                for (double i = 0; i < 10; i += 0.5)
+                if (!ratingDataList.Any(x => x.Key == i))
                 {
-                    var key = ratingDataList[j].Key;
-                    if (key != null && key != i)
-                    {
-                        ratingDataList.Add(new ChartGrouping<double?, float?> {Key = i, Capacity = 0});
-                    }
-                    else
-                    {
-                        j++;
-                    }
+                    ratingDataList.Add(new ChartGrouping<double?, float?> { Key = i, Capacity = 0 });
                 }
             }
-
+            
             var ratingData = ratingDataList
                 .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
                 .OrderBy(x => x.Name)
@@ -75,20 +66,15 @@ namespace EmbyStat.Services.Abstract
 
             if (yearDataList.Any())
             {
-                var lowestYearRaw = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
-                var lowestYear = Convert.ToInt32(Math.Floor(lowestYearRaw.Value / (double)10)) * 10;
+                var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
                 var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
 
                 var j = 0;
                 for (var i = lowestYear; i < highestYear; i += 5)
                 {
-                    if (yearDataList[j].Key != null && yearDataList[j].Key != i)
+                    if (yearDataList.All(x => x.Key != i))
                     {
-                        yearDataList.Add(new ChartGrouping<int?, DateTimeOffset?> {Key = i, Capacity = 0});
-                    }
-                    else
-                    {
-                        j++;
+                        yearDataList.Add(new ChartGrouping<int?, DateTimeOffset?> { Key = i, Capacity = 0 });
                     }
                 }
             }
