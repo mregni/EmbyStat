@@ -11,7 +11,7 @@ namespace EmbyStat.Services.Models.Emby
             get => _address;
             set
             {
-                Protocol = value.ToLowerInvariant().StartsWith("https") ? 1 : 0;
+                Protocol = value.ToLowerInvariant().StartsWith("https") ? 0 : 1;
 
                 var list = value.Split(':');
                 if (int.TryParse(list[list.Length - 1], out var portNumber))
