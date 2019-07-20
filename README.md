@@ -31,8 +31,8 @@ Supported platforms as the moment are:
 
 * Windows x64 (IIS and Kestrel)
 * Windows x86 (IIS and Kestrel)
-* Docker Windows [latest-win](https://hub.docker.com/r/uping/embystat/)
-* Docker Linux [latest-linux](https://hub.docker.com/r/uping/embystat/)
+* Docker Windows [beta-win10-x64](https://hub.docker.com/r/uping/embystat/)
+* Docker Linux [beta-ubuntu-x64](https://hub.docker.com/r/uping/embystat/)
 * Debian package
 * Ubuntu package
 * Fedora package
@@ -57,12 +57,12 @@ Or just go and upvote your favorite features so I have a better idea about what 
 
 This project is build from scratch with the following technologies:
 
-* .NET CORE 2.0
-* Sqlite
+* .NET CORE 2.2
+* LiteDB
 * SignalR
-* Serilog
+* NLog
 * Angular 5
-* SCSS styling
+* Rollbar
 
 ## Roadmap
 
