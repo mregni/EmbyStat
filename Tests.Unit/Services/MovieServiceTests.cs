@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Settings;
@@ -9,6 +10,7 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Moq;
+using Tests.Unit.Builders;
 using Xunit;
 using Constants = EmbyStat.Common.Constants;
 
@@ -21,6 +23,7 @@ namespace Tests.Unit.Services
         private readonly List<Collection> _collections;
         private readonly Movie _movieOne;
         private readonly Movie _movieTwo;
+        private readonly Movie _movieThree;
 
         public MovieServiceTests()
         {
@@ -30,37 +33,47 @@ namespace Tests.Unit.Services
                 new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
-            _movieOne = new Movie
-            {
-                CommunityRating = (float)1.7,
-                Id = 0,
-                Name = "The lord of the rings",
-                PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
-                DateCreated = new DateTime(2018, 1, 1, 0, 0, 0),
-                OfficialRating = "R",
-                RunTimeTicks = 120000000000,
-                Primary = "primaryImage",
-                Genres = new List<string> { "id1" },
-                People = new List<ExtraPerson> {  new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Batman", Type = "Actor"} }
-            };
+            _movieOne = new MovieBuilder()
+                .AddCommunityRating((float) 1.7)
+                .AddId(0)
+                .AddOfficialRating("R")
+                .AddPremiereDate(new DateTime(2002, 4, 2, 0, 0, 0))
+                .AddRunTimeTicks(2, 10, 0)
+                .AddName("The lord of the rings")
+                .AddGenres("Action", "Drama")
+                .Build();
 
-            _movieTwo = new Movie
-            {
-                CommunityRating = (float)1.7,
-                Id = 0,
-                Name = "The lord of the rings, two towers",
-                PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
-                DateCreated = new DateTime(2017, 1, 1, 0, 0, 0),
-                OfficialRating = "R",
-                RunTimeTicks = 6000000000000,
-                Primary = "primaryImage",
-                Genres = new List<string> { "id2" },
-                People = new List<ExtraPerson> { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Batman", Type = "Actor" } }
-            };
+            _movieTwo = new MovieBuilder()
+                .AddCommunityRating((float)2.8)
+                .AddId(1)
+                .AddOfficialRating("R")
+                .AddPremiereDate(new DateTime(2003, 4, 2, 0, 0, 0))
+                .AddRunTimeTicks(3, 30, 0)
+                .AddName("The lord of the rings, two towers")
+                .AddPerson(new ExtraPerson { Type = "Director", Name = "Frodo", Id = Guid.NewGuid().ToString() })
+                .AddGenres("Action")
+                .Build();
 
+            _movieThree = new MovieBuilder()
+                .AddCommunityRating((float)3.2)
+                .AddId(2)
+                .AddOfficialRating("B")
+                .AddPremiereDate(new DateTime(2004, 4, 2, 0, 0, 0))
+                .AddRunTimeTicks(3, 50, 0)
+                .AddName("The lord of the rings, return of the king")
+                .AddGenres("Comedy")
+                .AddPerson(new ExtraPerson{Type = "Actor",Name = "Frodo", Id = Guid.NewGuid().ToString()})
+                .AddPerson(new ExtraPerson{Type = "Director", Name = "Frodo", Id = Guid.NewGuid().ToString()})
+                .AddPerson(new ExtraPerson{Type = "Writer", Name = "Frodo", Id = Guid.NewGuid().ToString()})
+                .Build();
+
+            _subject = CreateMovieService(_movieOne, _movieTwo, _movieThree);
+        }
+
+        private MovieService CreateMovieService(params Movie[] movies)
+        {
             var movieRepositoryMock = new Mock<IMovieRepository>();
-            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>()))
-                .Returns(new List<Movie> { _movieOne, _movieTwo });
+            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>())).Returns(movies);
             var collectionRepositoryMock = new Mock<ICollectionRepository>();
             collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
 
@@ -70,8 +83,10 @@ namespace Tests.Unit.Services
                 .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var taskRepositoryMock = new Mock<IJobRepository>();
-            _subject = new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, settingsServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
+            return new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, settingsServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
         }
+
+        #region General
 
         [Fact]
         public void GetCollectionsFromDatabase()
@@ -91,7 +106,7 @@ namespace Tests.Unit.Services
             stat.General.Should().NotBeNull();
             stat.General.MovieCount.Should().NotBeNull();
             stat.General.MovieCount.Title.Should().Be(Constants.Movies.TotalMovies);
-            stat.General.MovieCount.Value.Should().Be(2);
+            stat.General.MovieCount.Value.Should().Be(3);
         }
 
         [Fact]
@@ -103,7 +118,7 @@ namespace Tests.Unit.Services
             stat.General.Should().NotBeNull();
             stat.General.GenreCount.Should().NotBeNull();
             stat.General.GenreCount.Title.Should().Be(Constants.Movies.TotalGenres);
-            stat.General.GenreCount.Value.Should().Be(2);
+            stat.General.GenreCount.Value.Should().Be(3);
         }
 
         [Fact]
@@ -117,7 +132,7 @@ namespace Tests.Unit.Services
             stat.General.LowestRatedMovie.Title.Should().Be(Constants.Movies.LowestRated);
             stat.General.LowestRatedMovie.Name.Should().Be(_movieOne.Name);
             stat.General.LowestRatedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.LowestRatedMovie.DurationMinutes.Should().Be(200);
+            stat.General.LowestRatedMovie.DurationMinutes.Should().Be(130);
             stat.General.LowestRatedMovie.MediaId.Should().Be(_movieOne.Id);
             stat.General.LowestRatedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.General.LowestRatedMovie.Tag.Should().Be(_movieOne.Primary);
@@ -133,13 +148,13 @@ namespace Tests.Unit.Services
             stat.General.Should().NotBeNull();
             stat.General.HighestRatedMovie.Should().NotBeNull();
             stat.General.HighestRatedMovie.Title.Should().Be(Constants.Movies.HighestRated);
-            stat.General.HighestRatedMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.HighestRatedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.HighestRatedMovie.DurationMinutes.Should().Be(200);
-            stat.General.HighestRatedMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.HighestRatedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.HighestRatedMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.HighestRatedMovie.Year.Should().Be(2002);
+            stat.General.HighestRatedMovie.Name.Should().Be(_movieThree.Name);
+            stat.General.HighestRatedMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
+            stat.General.HighestRatedMovie.DurationMinutes.Should().Be(230);
+            stat.General.HighestRatedMovie.MediaId.Should().Be(_movieThree.Id);
+            stat.General.HighestRatedMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
+            stat.General.HighestRatedMovie.Tag.Should().Be(_movieThree.Primary);
+            stat.General.HighestRatedMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
         }
 
         [Fact]
@@ -153,7 +168,7 @@ namespace Tests.Unit.Services
             stat.General.OldestPremieredMovie.Title.Should().Be(Constants.Movies.OldestPremiered);
             stat.General.OldestPremieredMovie.Name.Should().Be(_movieOne.Name);
             stat.General.OldestPremieredMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.OldestPremieredMovie.DurationMinutes.Should().Be(200);
+            stat.General.OldestPremieredMovie.DurationMinutes.Should().Be(130);
             stat.General.OldestPremieredMovie.MediaId.Should().Be(_movieOne.Id);
             stat.General.OldestPremieredMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.General.OldestPremieredMovie.Tag.Should().Be(_movieOne.Primary);
@@ -169,13 +184,13 @@ namespace Tests.Unit.Services
             stat.General.Should().NotBeNull();
             stat.General.YoungestPremieredMovie.Should().NotBeNull();
             stat.General.YoungestPremieredMovie.Title.Should().Be(Constants.Movies.YoungestPremiered);
-            stat.General.YoungestPremieredMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.YoungestPremieredMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.YoungestPremieredMovie.DurationMinutes.Should().Be(200);
-            stat.General.YoungestPremieredMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.YoungestPremieredMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.YoungestPremieredMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.YoungestPremieredMovie.Year.Should().Be(2002);
+            stat.General.YoungestPremieredMovie.Name.Should().Be(_movieThree.Name);
+            stat.General.YoungestPremieredMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
+            stat.General.YoungestPremieredMovie.DurationMinutes.Should().Be(230);
+            stat.General.YoungestPremieredMovie.MediaId.Should().Be(_movieThree.Id);
+            stat.General.YoungestPremieredMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
+            stat.General.YoungestPremieredMovie.Tag.Should().Be(_movieThree.Primary);
+            stat.General.YoungestPremieredMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
         }
 
         [Fact]
@@ -189,11 +204,11 @@ namespace Tests.Unit.Services
             stat.General.ShortestMovie.Title.Should().Be(Constants.Movies.Shortest);
             stat.General.ShortestMovie.Name.Should().Be(_movieOne.Name);
             stat.General.ShortestMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.ShortestMovie.DurationMinutes.Should().Be(200);
+            stat.General.ShortestMovie.DurationMinutes.Should().Be(130);
             stat.General.ShortestMovie.MediaId.Should().Be(_movieOne.Id);
             stat.General.ShortestMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.General.ShortestMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.ShortestMovie.Year.Should().Be(2002);
+            stat.General.ShortestMovie.Year.Should().Be(_movieOne.PremiereDate.Value.Year);
         }
 
         [Fact]
@@ -205,13 +220,13 @@ namespace Tests.Unit.Services
             stat.General.Should().NotBeNull();
             stat.General.LongestMovie.Should().NotBeNull();
             stat.General.LongestMovie.Title.Should().Be(Constants.Movies.Longest);
-            stat.General.LongestMovie.Name.Should().Be(_movieTwo.Name);
-            stat.General.LongestMovie.CommunityRating.Should().Be(_movieTwo.CommunityRating.ToString());
-            stat.General.LongestMovie.DurationMinutes.Should().Be(10000);
-            stat.General.LongestMovie.MediaId.Should().Be(_movieTwo.Id);
-            stat.General.LongestMovie.OfficialRating.Should().Be(_movieTwo.OfficialRating);
-            stat.General.LongestMovie.Tag.Should().Be(_movieTwo.Primary);
-            stat.General.LongestMovie.Year.Should().Be(2002);
+            stat.General.LongestMovie.Name.Should().Be(_movieThree.Name);
+            stat.General.LongestMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
+            stat.General.LongestMovie.DurationMinutes.Should().Be(230);
+            stat.General.LongestMovie.MediaId.Should().Be(_movieThree.Id);
+            stat.General.LongestMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
+            stat.General.LongestMovie.Tag.Should().Be(_movieThree.Primary);
+            stat.General.LongestMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
         }
 
         [Fact]
@@ -225,25 +240,310 @@ namespace Tests.Unit.Services
             stat.General.YoungestAddedMovie.Title.Should().Be(Constants.Movies.YoungestAdded);
             stat.General.YoungestAddedMovie.Name.Should().Be(_movieOne.Name);
             stat.General.YoungestAddedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.YoungestAddedMovie.DurationMinutes.Should().Be(200);
+            stat.General.YoungestAddedMovie.DurationMinutes.Should().Be(130);
             stat.General.YoungestAddedMovie.MediaId.Should().Be(_movieOne.Id);
             stat.General.YoungestAddedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
             stat.General.YoungestAddedMovie.Tag.Should().Be(_movieOne.Primary);
             stat.General.YoungestAddedMovie.Year.Should().Be(2002);
         }
 
+        #endregion
+
+        #region Charts
+
         [Fact]
         public async void GetTotalPlayLengthStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var movieFour = new MovieBuilder().AddRunTimeTicks(56, 34, 1).Build();
+            var service = CreateMovieService(_movieOne, _movieTwo, _movieThree, movieFour);
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
             stat.General.TotalPlayableTime.Should().NotBeNull();
             stat.General.TotalPlayableTime.Title.Should().Be(Constants.Movies.TotalPlayLength);
-            stat.General.TotalPlayableTime.Days.Should().Be(7);
-            stat.General.TotalPlayableTime.Hours.Should().Be(2);
-            stat.General.TotalPlayableTime.Minutes.Should().Be(0);
+            stat.General.TotalPlayableTime.Days.Should().Be(2);
+            stat.General.TotalPlayableTime.Hours.Should().Be(18);
+            stat.General.TotalPlayableTime.Minutes.Should().Be(4);
         }
+
+        [Fact]
+        public async void CalculateGenreChart()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerGenre);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(3);
+            graph.DataSets.Count.Should().Be(1);
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(3);
+            dataset[0].Should().Be(2);
+            dataset[1].Should().Be(1);
+            dataset[2].Should().Be(1);
+        }
+
+        [Fact]
+        public async void CalculateOfficialRatingChart()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerOfficialRating);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(2);
+            graph.Labels.ToList()[0].Should().Be("B");
+            graph.Labels.ToList()[1].Should().Be("R");
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(2);
+            dataset[0].Should().Be(1);
+            dataset[1].Should().Be(2);
+        }
+
+        [Fact]
+        public async void CalculateOfficialRatingChartWithoutMovies()
+        {
+            var service = CreateMovieService();
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerOfficialRating);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(0);
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(0);
+        }
+
+        [Fact]
+        public async void CalculateRatingChart()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerCommunityRating);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(20);
+            for (var i = 0; i < 20; i++)
+            {
+                graph.Labels.ToArray()[i].Should().Be((i * (float)0.5).ToString());
+            }
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(20);
+            dataset[0].Should().Be(0);
+            dataset[1].Should().Be(0);
+            dataset[2].Should().Be(0);
+            dataset[3].Should().Be(1);
+            dataset[4].Should().Be(0);
+            dataset[5].Should().Be(0);
+            dataset[6].Should().Be(2);
+            dataset[7].Should().Be(0);
+            for (var i = 8; i < 20; i++)
+            {
+                dataset[i].Should().Be(0);
+            }
+        }
+
+        [Fact]
+        public async void CalculateRatingChartWithoutMovies()
+        {
+            var service = CreateMovieService();
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerCommunityRating);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(20);
+            for (var i = 0; i < 20; i++)
+            {
+                graph.Labels.ToArray()[i].Should().Be((i * (float)0.5).ToString());
+            }
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(20);
+            for (var i = 0; i < 20; i++)
+            {
+                dataset[i].Should().Be(0);
+            }
+        }
+
+        [Fact]
+        public async void CalculatePremiereYearChart()
+        {
+            var movieFour = new MovieBuilder().AddPremiereDate(new DateTime(1991, 3, 12)).Build();
+            var movieFive = new MovieBuilder().AddPremiereDate(new DateTime(1992, 3, 12)).Build();
+            var movieSix = new MovieBuilder().AddPremiereDate(new DateTime(1989, 3, 12)).Build();
+            var service = CreateMovieService(_movieOne, _movieTwo, _movieThree, movieFour, movieFive, movieSix);
+
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerPremiereYear);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(4);
+            graph.Labels.ToArray()[0].Should().Be("1985 - 1989");
+            graph.Labels.ToArray()[1].Should().Be("1990 - 1994");
+            graph.Labels.ToArray()[2].Should().Be("1995 - 1999");
+            graph.Labels.ToArray()[3].Should().Be("2000 - 2004");
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(4);
+            dataset[0].Should().Be(1);
+            dataset[1].Should().Be(2);
+            dataset[2].Should().Be(0);
+            dataset[3].Should().Be(3);
+        }
+
+        [Fact]
+        public async void CalculatePremiereYearChartWithoutMovies()
+        {
+            var service = CreateMovieService();
+
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            stat.Should().NotBeNull();
+            stat.Charts.BarCharts.Count.Should().Be(4);
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
+
+            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerPremiereYear);
+            graph.Should().NotBeNull();
+            graph.Labels.Count().Should().Be(0);
+
+            var dataset = graph.DataSets.Single().ToList();
+            dataset.Count.Should().Be(0);
+        }
+
+        #endregion
+
+        #region People
+
+        [Fact]
+        public async void TotalTypeCountForActors()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.People.Should().NotBeNull();
+            stat.People.TotalActorCount.Should().NotBeNull();
+            stat.People.TotalActorCount.Value.Should().Be(4);
+            stat.People.TotalActorCount.Title.Should().Be(Constants.Common.TotalActors);
+        }
+
+        [Fact]
+        public async void TotalTypeCountForDirectors()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.People.Should().NotBeNull();
+            stat.People.TotalDirectorCount.Should().NotBeNull();
+            stat.People.TotalDirectorCount.Value.Should().Be(2);
+            stat.People.TotalDirectorCount.Title.Should().Be(Constants.Common.TotalDirectors);
+        }
+
+        [Fact]
+        public async void TotalTypeCountForWriters()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.People.Should().NotBeNull();
+            stat.People.TotalWriterCount.Should().NotBeNull();
+            stat.People.TotalWriterCount.Value.Should().Be(1);
+            stat.People.TotalWriterCount.Title.Should().Be(Constants.Common.TotalWriters);
+        }
+
+        #endregion
+
+        #region Suspicious
+
+        [Fact]
+        public async void DuplicateMovies()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Suspicious.Should().NotBeNull();
+            stat.Suspicious.Duplicates.Should().NotBeNull();
+            stat.Suspicious.Duplicates.Count().Should().Be(1);
+            var duplicate = stat.Suspicious.Duplicates.Single();
+
+            duplicate.ItemOne.Id.Should().Be(0);
+            duplicate.ItemTwo.Id.Should().Be(1);
+
+            duplicate.Number.Should().Be(0);
+            duplicate.Title.Should().Be(_movieOne.Name);
+            duplicate.Reason.Should().Be(Constants.ByImdb);
+        }
+
+        [Fact]
+        public async void ShortMovies()
+        {
+            var movieFour = new MovieBuilder().AddRunTimeTicks(0, 1, 0).Build();
+            var service = CreateMovieService(_movieOne, _movieTwo, _movieThree, movieFour);
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Suspicious.Should().NotBeNull();
+            stat.Suspicious.Shorts.Should().NotBeNull();
+            stat.Suspicious.Shorts.Count().Should().Be(1);
+            var shortMovie = stat.Suspicious.Shorts.Single();
+
+            shortMovie.Title = movieFour.Name;
+            shortMovie.MediaId = movieFour.Id;
+            shortMovie.Number = 0;
+            shortMovie.Duration = 60;
+        }
+
+        [Fact]
+        public async void MoviesWithoutImdb()
+        {
+            var movieFour = new MovieBuilder().AddImdb(string.Empty).Build();
+            var service = CreateMovieService(_movieOne, _movieTwo, _movieThree, movieFour);
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Suspicious.Should().NotBeNull();
+            stat.Suspicious.NoImdb.Should().NotBeNull();
+            stat.Suspicious.NoImdb.Count().Should().Be(1);
+            var noImdbIdMovie = stat.Suspicious.NoImdb.Single();
+
+            noImdbIdMovie.Title = movieFour.Name;
+            noImdbIdMovie.MediaId = movieFour.Id;
+            noImdbIdMovie.Number = 0;
+        }
+
+        [Fact]
+        public async void MoviesWithoutPrimaryImage()
+        {
+            var movieFour = new MovieBuilder().AddPrimaryImage(string.Empty).Build();
+            var service = CreateMovieService(_movieOne, _movieTwo, _movieThree, movieFour);
+            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Suspicious.Should().NotBeNull();
+            stat.Suspicious.NoPrimary.Should().NotBeNull();
+            stat.Suspicious.NoPrimary.Count().Should().Be(1);
+            var noPrimaryImageMovie = stat.Suspicious.NoPrimary.Single();
+
+            noPrimaryImageMovie.Title = movieFour.Name;
+            noPrimaryImageMovie.MediaId = movieFour.Id;
+            noPrimaryImageMovie.Number = 0;
+        }
+
+        #endregion
     }
 }
