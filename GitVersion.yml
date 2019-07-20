@@ -2,5 +2,6 @@ continuous-delivery-fallback-tag: ''
 branches:
   develop:
     tag: 'dev'
+    increment: Patch
 ignore:
   sha: []
