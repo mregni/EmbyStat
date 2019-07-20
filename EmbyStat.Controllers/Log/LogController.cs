@@ -20,7 +20,7 @@ namespace EmbyStat.Controllers.Log
         [HttpGet]
         [Produces("application/json")]
         [Route("list")]
-        public IActionResult GetLogFileLIst()
+        public IActionResult GetLogFileList()
         {
             var files = _logService.GetLogFileList();
             return Ok(_mapper.Map<IList<LogFileViewModel>>(files));
