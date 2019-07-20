@@ -1,6 +1,7 @@
 continuous-delivery-fallback-tag: ''
 branches:
   develop:
+    regex: develop
     tag: 'dev'
     increment: Patch
 ignore:
