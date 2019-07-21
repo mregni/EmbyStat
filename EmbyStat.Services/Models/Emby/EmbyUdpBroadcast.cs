@@ -19,13 +19,17 @@ namespace EmbyStat.Services.Models.Emby
                     Port = portNumber;
                 }
 
-                if (Protocol == 0)
+                if (Protocol == 1)
                 {
-                    _address = value.ToLowerInvariant().Replace("http://", "").Replace($":{Port}", "");
+                    _address = value.ToLowerInvariant()
+                        .Replace("http://", string.Empty)
+                        .Replace($":{portNumber}", string.Empty);
                 }
                 else
                 {
-                    _address = value.ToLowerInvariant().Replace("https://", "").Replace($":{Port}", "");
+                    _address = value.ToLowerInvariant()
+                        .Replace("https://", string.Empty)
+                        .Replace($":{portNumber}", string.Empty);
                 }
             }
         }
