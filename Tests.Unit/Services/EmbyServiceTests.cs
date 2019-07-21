@@ -10,7 +10,10 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
+using MediaBrowser.Model.Session;
+using MediaBrowser.Model.Users;
 using Moq;
 using Xunit;
 using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
@@ -76,8 +79,35 @@ namespace Tests.Unit.Services
                 settingsServiceMock.Object, movieRepositoryMock.Object, showRepositoryMock.Object);
 	    }
 
+        [Fact]
+        public async void GetEmbyToken()
+        {
+            var authResult = new AuthenticationResult
+            {
+                AccessToken = "00000000",
+                ServerId = "1111",
+                User = new UserDto {ConnectUserName = "reggi", Policy = new UserPolicy {IsAdministrator = false}, Id = Guid.NewGuid().ToString()},
+                SessionInfo = new SessionInfoDto()
+            };
 
-	    [Fact]
+            _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(authResult));
+            var login = new EmbyLogin
+            {
+                Password = "AdminPass",
+                Address = "http://localhost",
+                UserName = "reggi"
+            };
+            var result = await _subject.GetEmbyToken(login);
+
+            result.Should().NotBeNull();
+            result.Id = new Guid(authResult.User.Id);
+            result.IsAdmin = authResult.User.Policy.IsAdministrator;
+            result.Username = authResult.User.ConnectUserName;
+            result.Token = authResult.AccessToken;
+        }
+
+        [Fact]
 		public async void GetEmbyTokenWithNoLoginInfo()
 	    {
 		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
