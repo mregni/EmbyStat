@@ -11,12 +11,10 @@ namespace EmbyStat.Services
 {
     public class LogService : ILogService
     {
-        private readonly IOptions<AppSettings> _logSettings;
         private readonly ISettingsService _settingsService;
 
-        public LogService(IOptions<AppSettings> logSettings, ISettingsService settingsService)
+        public LogService(ISettingsService settingsService)
         {
-            _logSettings = logSettings;
             _settingsService = settingsService;
         }
 
@@ -24,7 +22,7 @@ namespace EmbyStat.Services
         {
             var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
-            foreach (var filePath in Directory.EnumerateFiles(_logSettings.Value.Dirs.Logs.GetLocalPath()))
+            foreach (var filePath in Directory.EnumerateFiles(_settingsService.GetAppSettings().Dirs.Logs.GetLocalPath()))
             {
                 var file = new FileInfo(filePath);
                 list.Add(new LogFile
@@ -39,8 +37,8 @@ namespace EmbyStat.Services
 
         public Stream GetLogStream(string fileName, bool anonymous)
         {
-            var logDir = _logSettings.Value.Dirs.Logs;
-            var logStream = new FileStream(Path.Combine(logDir, fileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var logDir = _settingsService.GetAppSettings().Dirs.Logs;
+            var logStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), logDir, fileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
             if (!anonymous)
             {
@@ -61,9 +59,11 @@ namespace EmbyStat.Services
                     writer.WriteLine(line);
                 }
 
-                newLogStream.Seek(0, SeekOrigin.Begin);
-                return newLogStream;
+                writer.Flush();
             }
+
+            newLogStream.Seek(0, SeekOrigin.Begin);
+            return newLogStream;
         }
     }
 }

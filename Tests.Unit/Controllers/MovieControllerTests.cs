@@ -22,7 +22,6 @@ namespace Tests.Unit.Controllers
         private readonly Mock<IMovieService> _movieServiceMock;
         private readonly List<Collection> _collections;
         private readonly MovieGeneral _movieGeneral;
-        private readonly MovieStatistics _movieStatistics;
 
         public MovieControllerTests()
         {
@@ -37,7 +36,7 @@ namespace Tests.Unit.Controllers
                 LongestMovie = new MoviePoster { Name = "The lord of the rings" }
             };
 
-            _movieStatistics = new MovieStatistics
+            var movieStatistics = new MovieStatistics
             {
                 General = _movieGeneral
             };
@@ -45,7 +44,7 @@ namespace Tests.Unit.Controllers
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieCollections()).Returns(_collections);
             _movieServiceMock.Setup(x => x.GetMovieStatisticsAsync(It.IsAny<List<string>>()))
-                .Returns(Task.FromResult(_movieStatistics));
+                .Returns(Task.FromResult(movieStatistics));
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
@@ -67,11 +66,6 @@ namespace Tests.Unit.Controllers
                     }
                 });
             _subject = new MovieController(_movieServiceMock.Object, _mapperMock.Object);
-        }
-
-        public void Dispose()
-        {
-            _subject?.Dispose();
         }
 
         [Fact]
