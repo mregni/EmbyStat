@@ -59,9 +59,11 @@ namespace EmbyStat.Services
                     writer.WriteLine(line);
                 }
 
-                newLogStream.Seek(0, SeekOrigin.Begin);
-                return newLogStream;
+                writer.Flush();
             }
+
+            newLogStream.Seek(0, SeekOrigin.Begin);
+            return newLogStream;
         }
     }
 }
