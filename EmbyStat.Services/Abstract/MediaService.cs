@@ -69,7 +69,6 @@ namespace EmbyStat.Services.Abstract
                 var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
                 var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
 
-                var j = 0;
                 for (var i = lowestYear; i < highestYear; i += 5)
                 {
                     if (yearDataList.All(x => x.Key != i))

@@ -18,6 +18,7 @@ using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.System;
+using LogFile = EmbyStat.Services.Models.Logs.LogFile;
 
 namespace EmbyStat.Controllers
 {
