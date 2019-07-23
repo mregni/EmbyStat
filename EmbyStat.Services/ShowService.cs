@@ -106,7 +106,10 @@ namespace EmbyStat.Services
                 TotalActorCount = TotalTypeCount(shows, PersonType.Actor, Constants.Common.TotalActors),
                 TotalDirectorCount = TotalTypeCount(shows, PersonType.Director, Constants.Common.TotalDirectors),
                 TotalWriterCount = TotalTypeCount(shows, PersonType.Writer, Constants.Common.TotalWriters),
-                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(shows)
+                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(shows),
+                MostFeaturedActor = await GetMostFeaturedPersonAsync(shows, PersonType.Actor, Constants.Common.MostFeaturedActor),
+                MostFeaturedDirector = await GetMostFeaturedPersonAsync(shows, PersonType.Director, Constants.Common.MostFeaturedDirector),
+                MostFeaturedWriter = await GetMostFeaturedPersonAsync(shows, PersonType.Writer, Constants.Common.MostFeaturedWriter)
             };
         }
 
@@ -190,20 +193,20 @@ namespace EmbyStat.Services
 
         private async Task<PersonPoster> GetMostFeaturedPersonAsync(IReadOnlyList<Show> shows, string type, string title)
         {
-            var grouping = shows
+            var personGrouping = shows
                 .SelectMany(x => x.People)
+                .Where(x => x.Type == type)
                 .GroupBy(x => x.Id)
-                .Select(x => new {Key = x.Key, Count = x.Count()})
-                .OrderByDescending(x => x.Count)
-                .FirstOrDefault();
-            if (grouping != null)
-            {
-                var person = await _personService.GetPersonByIdAsync(grouping.Key);
+                .Select(x => new { x.Key, Count = x.Count()})
+                .OrderByDescending(x => x.Count);
 
-                return person == null ? new PersonPoster() : PosterHelper.ConvertToPersonPoster(person, title);
+            if (personGrouping.FirstOrDefault() != null)
+            {
+                var person = await _personService.GetPersonByIdAsync(personGrouping.FirstOrDefault().Key);
+                return person == null ? new PersonPoster(title) : PosterHelper.ConvertToPersonPoster(person, title);
             }
 
-            return new PersonPoster();
+            return new PersonPoster(title);
         }
 
         private Card<int> TotalTypeCount(IReadOnlyList<Show> shows, string type, string title)

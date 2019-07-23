@@ -72,7 +72,7 @@ namespace Tests.Unit.Services
             person.IMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(_basePerson.Overview);
-            person.SeriesCount.Should().Be(_basePerson.SeriesCount);
+            person.ShowCount.Should().Be(_basePerson.SeriesCount);
             person.SortName.Should().Be(_basePerson.SortName);
             person.Synced.Should().BeTrue();
 
@@ -98,7 +98,7 @@ namespace Tests.Unit.Services
                 IMDB = "12345",
                 TMDB = "12345",
                 OverView = "Lots of text",
-                SeriesCount = 1,
+                ShowCount = 1,
                 SortName = "name",
                 Synced = true
             };
@@ -116,7 +116,7 @@ namespace Tests.Unit.Services
             person.IMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(_basePerson.Overview);
-            person.SeriesCount.Should().Be(_basePerson.SeriesCount);
+            person.ShowCount.Should().Be(_basePerson.SeriesCount);
             person.SortName.Should().Be(_basePerson.SortName);
             person.Synced.Should().BeTrue();
 

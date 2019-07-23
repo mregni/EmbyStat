@@ -5,8 +5,8 @@
       <div class="d-flex flex-column">
         <h4 class="mb-0">{{poster.title}}</h4>
         <p class="text-muted mb-0">
-          {{poster.name | toShorterString:18}} | <fa-icon icon="birthday-cake"></fa-icon> {{poster.birthDate | amDateFormat: 'DD/MM/YYYY'}} |
-          {{poster.movieCount}} <fa-icon icon="film"></fa-icon> | {{poster.episodeCount}} <fa-icon icon="tv"></fa-icon>
+          {{poster.name | toShorterString:18}} <span *ngIf="poster.birthDate !== null">| <fa-icon icon="birthday-cake"></fa-icon> {{poster.birthDate | amDateFormat: 'DD/MM/YYYY'}} </span>|
+          {{poster.movieCount}} <fa-icon icon="film"></fa-icon> | {{poster.showCount}} <fa-icon icon="tv"></fa-icon>
         </p>
       </div>
     </div>

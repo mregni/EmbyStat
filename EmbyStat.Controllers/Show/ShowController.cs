@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
@@ -29,9 +30,9 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("statistics")]
-        public IActionResult GetStatistics(List<string> collectionIds)
+        public async Task<IActionResult> GetStatistics(List<string> collectionIds)
         {
-            var result = _showService.GetStatistics(collectionIds);
+            var result = await _showService.GetStatistics(collectionIds);
             var convert = _mapper.Map<ShowStatisticsViewModel>(result);
             return Ok(convert);
         }
@@ -48,7 +49,8 @@ namespace EmbyStat.Controllers.Show
         [Route("typepresent")]
         public IActionResult ShowTypeIsPresent()
         {
-            return Ok(_showService.TypeIsPresent());
+            var result = _showService.TypeIsPresent();
+            return Ok(result);
         }
     }
 }

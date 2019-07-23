@@ -88,6 +88,11 @@ namespace EmbyStat.Repositories
             return _seasonCollection.FindById(id);
         }
 
+        public int GetShowCountForPerson(string personId)
+        {
+            return _showCollection.Count(Query.EQ("People[*]._id", personId));
+        }
+
         public IEnumerable<Show> GetAllShowsWithTvdbId()
         {
             return _showCollection

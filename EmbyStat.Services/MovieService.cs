@@ -364,10 +364,9 @@ namespace EmbyStat.Services
             var person = await _personService.GetPersonByIdAsync(personId);
             if (person == null)
             {
-                return new PersonPoster();
+                return new PersonPoster(title);
             }
 
-            person.MovieCount = _movieRepository.GetMovieCountForPerson(personId);
             return PosterHelper.ConvertToPersonPoster(person, title);
         }
 
