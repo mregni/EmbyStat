@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
@@ -42,7 +43,7 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.ShowCollectionTypes);
         }
 
-        public ShowStatistics GetStatistics(List<string> collectionIds)
+        public async Task<ShowStatistics> GetStatistics(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, collectionIds);
 
@@ -58,7 +59,7 @@ namespace EmbyStat.Services
                 {
                     General = CalculateGeneralStatistics(shows),
                     Charts = CalculateCharts(shows),
-                    People = CalculatePeopleStatistics(shows)
+                    People = await CalculatePeopleStatistics(shows)
                 };
 
                 var json = JsonConvert.SerializeObject(generals);
@@ -98,13 +99,14 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public PersonStats CalculatePeopleStatistics(IReadOnlyList<Show> shows)
+        public async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyList<Show> shows)
         {
             return new PersonStats
             {
                 TotalActorCount = TotalTypeCount(shows, PersonType.Actor, Constants.Common.TotalActors),
                 TotalDirectorCount = TotalTypeCount(shows, PersonType.Director, Constants.Common.TotalDirectors),
-                TotalWriterCount = TotalTypeCount(shows, PersonType.Writer, Constants.Common.TotalWriters)
+                TotalWriterCount = TotalTypeCount(shows, PersonType.Writer, Constants.Common.TotalWriters),
+                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(shows)
             };
         }
 
@@ -156,46 +158,53 @@ namespace EmbyStat.Services
             return _showRepository.AnyShows();
         }
 
-        //private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> collectionIds)
-        //{
-        //    var shows = _showRepository.GetAllShows(collectionIds).ToList();
-        //    var genreIds = _showRepository.GetGenres(collectionIds);
-        //    var genres = _genreRepository.GetGenres(genreIds);
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<Show> shows)
+        {
+            var list = new List<PersonPoster>();
+            var genres = shows.SelectMany(x => x.Genres).Distinct();
 
-        //    var list = new List<PersonPoster>();
-        //    foreach (var genre in genres.OrderBy(x => x.Name))
-        //    {
-        //        var selectedShows = shows.Where(x => x.Genres.AnyShows(y => y == genre.Id));
-        //        var episodes = _showRepository.GetAllEpisodesForShows(selectedShows.Select(x => x.Id));
+            foreach (var genre in genres.OrderBy(x => x))
+            {
+                var selectedShows = shows.Where(x => x.Genres.Any(y => y == genre));
 
-        //        var grouping = episodes
-        //            .SelectMany(x => x.People)
-        //            .Where(x => x.Type == PersonType.Actor)
-        //            .GroupBy(x => x.PersonId)
-        //            .Select(group => new { Id = group.Key, Count = group.Count() })
-        //            .OrderByDescending(x => x.Count);
+                var grouping = selectedShows
+                    .SelectMany(x => x.People)
+                    .Where(x => x.Type == PersonType.Actor)
+                    .GroupBy(x => x.Id)
+                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .OrderByDescending(x => x.Count);
 
-        //        var personId = grouping
-        //            .Select(x => x.Id)
-        //            .FirstOrDefault();
-        //        //Compleet buggy dit! Er moet gekeken worden naar het aantal episodes ipv shows
-        //        //Misschien ExtraPerson weer toevoegen aan Episode type in sync!
-        //        var person = await _personService.GetPersonByIdAsync(personId);
-        //        if(person != null){
-        //            list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
-        //        }
-        //    }
+                var personId = grouping
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
 
-        //    return list;
-        //}
+                var person = await _personService.GetPersonByIdAsync(personId);
+                if (person != null)
+                {
+                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                }
+            }
 
-        //private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<string> collectionIds, string type, string title)
-        //{
-        //    var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
-        //    var person = await _personService.GetPersonByIdAsync(personId);
+            return list;
+        }
 
-        //    return person == null ? new PersonPoster() : PosterHelper.ConvertToPersonPoster(person, title);
-        //}
+        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IReadOnlyList<Show> shows, string type, string title)
+        {
+            var grouping = shows
+                .SelectMany(x => x.People)
+                .GroupBy(x => x.Id)
+                .Select(x => new {Key = x.Key, Count = x.Count()})
+                .OrderByDescending(x => x.Count)
+                .FirstOrDefault();
+            if (grouping != null)
+            {
+                var person = await _personService.GetPersonByIdAsync(grouping.Key);
+
+                return person == null ? new PersonPoster() : PosterHelper.ConvertToPersonPoster(person, title);
+            }
+
+            return new PersonPoster();
+        }
 
         private Card<int> TotalTypeCount(IReadOnlyList<Show> shows, string type, string title)
         {
