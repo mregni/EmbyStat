@@ -42,7 +42,7 @@ export class PersonPosterComponent implements OnDestroy {
 
   needsBarAndTranslation(title: string): boolean {
     if (title !== null && title.length !== undefined) {
-      return title.length > 0 && title.startsWith('MOVIES');
+      return title.length > 0 && title.startsWith('COMMON');
     }
 
     return false;
@@ -50,7 +50,7 @@ export class PersonPosterComponent implements OnDestroy {
 
   needsBarButNoTranslation(title: string): boolean {
     if (title != null && title.length !== undefined) {
-      return title.length > 0 && !title.startsWith('MOVIES');
+      return title.length > 0 && !title.startsWith('COMMON');
     }
 
     return false;

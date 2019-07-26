@@ -125,7 +125,7 @@ namespace EmbyStat.Clients.Tvdb
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"{Constants.LogPrefix.TheTVDBCLient}Could not receive show list from TVDB");
+                _logger.Error(e, $"{Constants.LogPrefix.TheTVDBCLient} Could not receive show list from TVDB");
                 return new List<string>();
             }
         }

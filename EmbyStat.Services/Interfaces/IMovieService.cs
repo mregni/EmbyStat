@@ -10,6 +10,7 @@ namespace EmbyStat.Services.Interfaces
     {
         IEnumerable<Collection> GetMovieCollections();
         Task<MovieStatistics> GetMovieStatisticsAsync(List<string> collectionIds);
+        Task<MovieStatistics> CalculateMovieStatistics(List<string> collectionIds);
         bool TypeIsPresent();
     }
 }

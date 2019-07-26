@@ -5,7 +5,8 @@
   <div class="title-bar-right-content">
     <mat-form-field class="full-width">
       <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
-        <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">{{collection.name}}
+        <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">
+          {{collection.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -51,9 +52,16 @@
                 <div class="col-12 col-xl-6 mb-3" *ngFor="let chart of stats.charts.barCharts">
                   <app-simple-chart [chart]="chart" [options]="barOptions"></app-simple-chart>
                 </div>
-                <div class="col-6 col-xl-3 mb-3" *ngFor="let chart of stats.charts.pieCharts">
+                <div class="col-12 col-md-6 col-xl-3 mb-3" *ngFor="let chart of stats.charts.pieCharts">
                   <app-simple-chart [chart]="chart" type="doughnut" height="175" [options]="pieOptions">
                   </app-simple-chart>
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-card>
+                    <mat-card-content>
+                      <app-person-list [posters]="stats.people.mostFeaturedActorsPerGenre"></app-person-list>
+                    </mat-card-content>
+                  </mat-card>
                 </div>
               </div>
             </div>
@@ -67,22 +75,25 @@
               <mat-card *ngIf="sortedRowsDataSource !== undefined; else loading">
                 <mat-card-content>
                   <table mat-table [dataSource]="sortedRowsDataSource" matSort (matSortChange)="sortData($event)"
-                    matSortActive="title" matSortDirection="asc" matSortDisableClear>
+                         matSortActive="title" matSortDirection="asc" matSortDisableClear>
                     <ng-container matColumnDef="title">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                        {{'COMMON.TITLE' | translate | capitalizeFirst }}</th>
+                        {{'COMMON.TITLE' | translate | capitalizeFirst }}
+                      </th>
                       <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
                     </ng-container>
                     <ng-container matColumnDef="premiereDate">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                        {{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}</th>
+                        {{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}
+                      </th>
                       <td mat-cell *matCellDef="let element">
                         {{ element.premiereDate | amLocal | amDateFormat:'DD/MM/YYYY' }}
                       </td>
                     </ng-container>
                     <ng-container matColumnDef="status">
                       <th mat-header-cell *matHeaderCellDef>
-                        {{ 'COMMON.STATUS' | translate | capitalizeFirst }}</th>
+                        {{ 'COMMON.STATUS' | translate | capitalizeFirst }}
+                      </th>
                       <td mat-cell *matCellDef="let element">
                         <span *ngIf="element.status">{{ 'SHOWS.CONTINUING' | translate | capitalizeFirst }}</span>
                         <span *ngIf="!element.status">{{ 'SHOWS.ENDED' | translate | capitalizeFirst }}</span>
@@ -90,22 +101,25 @@
                     </ng-container>
                     <ng-container matColumnDef="seasons">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                        {{ 'SHOWS.SEASONS' | translate | capitalizeFirst }}</th>
+                        {{ 'SHOWS.SEASONS' | translate | capitalizeFirst }}
+                      </th>
                       <td mat-cell *matCellDef="let element"> {{ element.seasons }} </td>
                     </ng-container>
                     <ng-container matColumnDef="precentage">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                        {{ 'COMMON.PERCENTAGE' | translate | capitalizeFirst }}</th>
+                        {{ 'COMMON.PERCENTAGE' | translate | capitalizeFirst }}
+                      </th>
                       <td mat-cell *matCellDef="let element">
                         <div class="progress position-relative">
                           <div class="progress-bar" role="progressbar"
-                            [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
-                            [style.background-color]="getColor(element)">
+                               [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
+                               [style.background-color]="getColor(element)">
                             <span class="justify-content-center d-flex position-absolute w-100 font-weight-bold">
                               {{ element.episodes }} /
-                              {{ element.episodes + element.missingEpisodes }} <span
-                                *ngIf="element.specials > 0">&nbsp;+
-                                {{element.specials}}</span>
+                              {{ element.episodes + element.missingEpisodes }} <span *ngIf="element.specials > 0">
+                                &nbsp;+
+                                {{element.specials}}
+                              </span>
                             </span>
                           </div>
                         </div>
