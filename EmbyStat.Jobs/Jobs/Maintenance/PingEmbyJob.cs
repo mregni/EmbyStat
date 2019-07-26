@@ -16,7 +16,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         private readonly IEmbyService _embyService;
 
         public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-            IEmbyService embyService) : base(hubHelper, jobRepository, settingsService)
+            IEmbyService embyService) : base(hubHelper, jobRepository, settingsService, false)
         {
             _embyService = embyService;
             Title = jobRepository.GetById(Id).Title;
