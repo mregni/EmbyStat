@@ -11,6 +11,7 @@ namespace EmbyStat.Services.Interfaces
         IEnumerable<Collection> GetShowCollections();
         Task<ShowStatistics> GetStatistics(List<string> collectionIds);
         List<ShowCollectionRow> GetCollectionRows(List<string> collectionIds);
+        Task<ShowStatistics> CalculateShowStatistics(List<string> collectionIds);
         bool TypeIsPresent();
     }
 }

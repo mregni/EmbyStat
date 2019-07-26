@@ -47,26 +47,33 @@ namespace EmbyStat.Services
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, collectionIds);
 
-            ShowStatistics generals;
+            ShowStatistics statistics;
             if (StatisticsAreValid(statistic, collectionIds))
             {
-                generals = JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
+                statistics = JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
             else
             {
-                var shows = _showRepository.GetAllShows(collectionIds).ToList();
-                generals = new ShowStatistics
-                {
-                    General = CalculateGeneralStatistics(shows),
-                    Charts = CalculateCharts(shows),
-                    People = await CalculatePeopleStatistics(shows)
-                };
-
-                var json = JsonConvert.SerializeObject(generals);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, collectionIds);
+                statistics = await CalculateShowStatistics(collectionIds);
             }
 
-            return generals;
+            return statistics;
+        }
+
+        public async Task<ShowStatistics> CalculateShowStatistics(List<string> collectionIds)
+        {
+            var shows = _showRepository.GetAllShows(collectionIds).ToList();
+            var statistics = new ShowStatistics
+            {
+                General = CalculateGeneralStatistics(shows),
+                Charts = CalculateCharts(shows),
+                People = await CalculatePeopleStatistics(shows)
+            };
+
+            var json = JsonConvert.SerializeObject(statistics);
+            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, collectionIds);
+
+            return statistics;
         }
 
         public ShowGeneral CalculateGeneralStatistics(IReadOnlyList<Show> shows)
