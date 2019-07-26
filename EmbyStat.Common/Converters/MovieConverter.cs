@@ -30,7 +30,6 @@ namespace EmbyStat.Common.Converters
                     Container = y.Container,
                     Protocol = y.Protocol.ToString(),
                     RunTimeTicks = y.RunTimeTicks,
-                    VideoId = x.Id
                 }).ToList(),
                 RunTimeTicks = x.RunTimeTicks,
                 Container = x.Container,
@@ -50,7 +49,6 @@ namespace EmbyStat.Common.Converters
                 AudioStreams = x.MediaStreams.Where(y => y.Type == MediaStreamType.Audio).Select(y => new AudioStream
                 {
                     Id = Guid.NewGuid().ToString(),
-                    VideoId = x.Id,
                     BitRate = y.BitRate,
                     ChannelLayout = y.ChannelLayout,
                     Channels = y.Channels,
@@ -64,13 +62,11 @@ namespace EmbyStat.Common.Converters
                     Language = y.Language,
                     Codec = y.Codec,
                     DisplayTitle = y.DisplayTitle,
-                    IsDefault = y.IsDefault,
-                    VideoId = x.Id
+                    IsDefault = y.IsDefault
                 }).ToList(),
                 VideoStreams = x.MediaStreams.Where(y => y.Type == MediaStreamType.Video).Select(y => new VideoStream
                 {
                     Id = Guid.NewGuid().ToString(),
-                    VideoId = x.Id,
                     Language = y.Language,
                     BitRate = y.BitRate,
                     AspectRatio = y.AspectRatio,
