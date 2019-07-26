@@ -398,7 +398,6 @@ namespace EmbyStat.Services
                 var person = await _personService.GetPersonByIdAsync(personId);
                 if (person != null)
                 {
-                    person.MovieCount = _movieRepository.GetMovieCountForPerson(personId);
                     list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
                 }
             }
