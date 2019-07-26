@@ -43,7 +43,7 @@ namespace EmbyStat.Repositories
 
         public int GetMovieCountForPerson(string personId)
         {
-            return _movieCollection.Count(Query.EQ("People[*].Id", personId));
+            return _movieCollection.Count(Query.EQ("People[*]._id", personId));
         }
 
         public Movie GetMovieById(string id)

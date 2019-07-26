@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Settings;
@@ -33,6 +34,8 @@ namespace Tests.Unit.Services
                 new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
+            var actorIdOne = Guid.NewGuid();
+
             _movieOne = new MovieBuilder()
                 .AddCommunityRating((float) 1.7)
                 .AddId(0)
@@ -51,7 +54,8 @@ namespace Tests.Unit.Services
                 .AddRunTimeTicks(3, 30, 0)
                 .AddName("The lord of the rings, two towers")
                 .AddPerson(new ExtraPerson { Type = "Director", Name = "Frodo", Id = Guid.NewGuid().ToString() })
-                .AddGenres("Action")
+                .AddPerson(new ExtraPerson { Type = "Actor", Name = "Frodo", Id = actorIdOne.ToString() })
+                .AddGenres("Action", "Comedy")
                 .Build();
 
             _movieThree = new MovieBuilder()
@@ -62,7 +66,7 @@ namespace Tests.Unit.Services
                 .AddRunTimeTicks(3, 50, 0)
                 .AddName("The lord of the rings, return of the king")
                 .AddGenres("Comedy")
-                .AddPerson(new ExtraPerson{Type = "Actor",Name = "Frodo", Id = Guid.NewGuid().ToString()})
+                .AddPerson(new ExtraPerson{Type = "Actor",Name = "Frodo", Id = actorIdOne.ToString()})
                 .AddPerson(new ExtraPerson{Type = "Director", Name = "Frodo", Id = Guid.NewGuid().ToString()})
                 .AddPerson(new ExtraPerson{Type = "Writer", Name = "Frodo", Id = Guid.NewGuid().ToString()})
                 .Build();
@@ -78,12 +82,25 @@ namespace Tests.Unit.Services
             collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
+            foreach (var person in movies.SelectMany(x => x.People))
+            {
+                personServiceMock.Setup(x => x.GetPersonByIdAsync(person.Id)).Returns(
+                    Task.FromResult(new Person
+                    {
+                        Id = person.Id,
+                        Name = person.Name,
+                        BirthDate = new DateTime(2000, 1, 1),
+                        Primary = "primary.jpg",
+                        MovieCount = 0,
+                        ShowCount = 0
+                    }));
+            }
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
                 .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            var taskRepositoryMock = new Mock<IJobRepository>();
-            return new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, settingsServiceMock.Object, statisticsRepositoryMock.Object, taskRepositoryMock.Object);
+            var jobRepositoryMock = new Mock<IJobRepository>();
+            return new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, settingsServiceMock.Object, statisticsRepositoryMock.Object, jobRepositoryMock.Object);
         }
 
         #region General
@@ -279,12 +296,18 @@ namespace Tests.Unit.Services
             var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerGenre);
             graph.Should().NotBeNull();
             graph.Labels.Count().Should().Be(3);
+            var labels = graph.Labels.ToArray();
+
+            labels[0].Should().Be("Action");
+            labels[1].Should().Be("Comedy");
+            labels[2].Should().Be("Drama");
+
             graph.DataSets.Count.Should().Be(1);
 
             var dataset = graph.DataSets.Single().ToList();
             dataset.Count.Should().Be(3);
             dataset[0].Should().Be(2);
-            dataset[1].Should().Be(1);
+            dataset[1].Should().Be(2);
             dataset[2].Should().Be(1);
         }
 
@@ -344,19 +367,19 @@ namespace Tests.Unit.Services
                 graph.Labels.ToArray()[i].Should().Be((i * (float)0.5).ToString());
             }
 
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(20);
-            dataset[0].Should().Be(0);
-            dataset[1].Should().Be(0);
-            dataset[2].Should().Be(0);
-            dataset[3].Should().Be(1);
-            dataset[4].Should().Be(0);
-            dataset[5].Should().Be(0);
-            dataset[6].Should().Be(2);
-            dataset[7].Should().Be(0);
+            var dataSet = graph.DataSets.Single().ToList();
+            dataSet.Count.Should().Be(20);
+            dataSet[0].Should().Be(0);
+            dataSet[1].Should().Be(0);
+            dataSet[2].Should().Be(0);
+            dataSet[3].Should().Be(1);
+            dataSet[4].Should().Be(0);
+            dataSet[5].Should().Be(0);
+            dataSet[6].Should().Be(2);
+            dataSet[7].Should().Be(0);
             for (var i = 8; i < 20; i++)
             {
-                dataset[i].Should().Be(0);
+                dataSet[i].Should().Be(0);
             }
         }
 
@@ -468,6 +491,22 @@ namespace Tests.Unit.Services
             stat.People.TotalWriterCount.Should().NotBeNull();
             stat.People.TotalWriterCount.Value.Should().Be(1);
             stat.People.TotalWriterCount.Title.Should().Be(Constants.Common.TotalWriters);
+        }
+
+        [Fact]
+        public async void MostFeaturedActorsPerGenre()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.People.Should().NotBeNull();
+            stat.People.MostFeaturedActorsPerGenre.Should().NotBeNull();
+            stat.People.MostFeaturedActorsPerGenre.Count.Should().Be(3);
+            stat.People.MostFeaturedActorsPerGenre[0].Title.Should().Be("Action");
+            stat.People.MostFeaturedActorsPerGenre[0].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenre[1].Title.Should().Be("Comedy");
+            stat.People.MostFeaturedActorsPerGenre[1].Name.Should().Be("Frodo");
+            stat.People.MostFeaturedActorsPerGenre[2].Title.Should().Be("Drama");
+            stat.People.MostFeaturedActorsPerGenre[2].Name.Should().Be("Gimli");
         }
 
         #endregion
