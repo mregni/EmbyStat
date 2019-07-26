@@ -105,11 +105,6 @@ namespace EmbyStat.Repositories
             return _episodeCollection.Find(Query.EQ("ShowId", showId));
         }
 
-        public int CountEpisodes(int showId)
-        {
-            return _episodeCollection.Count(Query.EQ("ShowId", showId));
-        }
-
         public int GetEpisodeCountForShow(int showId)
         {
             return GetEpisodeCountForShow(showId, false);
@@ -124,7 +119,7 @@ namespace EmbyStat.Repositories
                 return show.Episodes.Count(x => x.IndexNumber != 0);
             }
 
-            return show.Episodes.Count();
+            return show.Episodes.Count;
         }
 
         public int GetSeasonCountForShow(int showId)

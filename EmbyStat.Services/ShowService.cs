@@ -76,7 +76,7 @@ namespace EmbyStat.Services
             return statistics;
         }
 
-        public ShowGeneral CalculateGeneralStatistics(IReadOnlyList<Show> shows)
+        private ShowGeneral CalculateGeneralStatistics(IReadOnlyList<Show> shows)
         {
            return new ShowGeneral
             {
@@ -93,7 +93,7 @@ namespace EmbyStat.Services
             };
         }
 
-        public ShowCharts CalculateCharts(IReadOnlyList<Show> shows)
+        private ShowCharts CalculateCharts(IReadOnlyList<Show> shows)
         {
             var stats = new ShowCharts();
             stats.BarCharts.Add(CalculateGenreChart(shows));
@@ -106,13 +106,10 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyList<Show> shows)
+        private async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyList<Show> shows)
         {
             return new PersonStats
             {
-                TotalActorCount = TotalTypeCount(shows, PersonType.Actor, Constants.Common.TotalActors),
-                TotalDirectorCount = TotalTypeCount(shows, PersonType.Director, Constants.Common.TotalDirectors),
-                TotalWriterCount = TotalTypeCount(shows, PersonType.Writer, Constants.Common.TotalWriters),
                 MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(shows)
             };
         }
@@ -142,10 +139,10 @@ namespace EmbyStat.Services
         private ShowCollectionRow CreateShowCollectionRow(Show show)
         {
             //TODO: gewoon in show nazien ipv naar DB gaat! indexnr is ook fout, moet naar season gaan
-            var episodeCount = _showRepository.GetEpisodeCountForShow(Convert.ToInt32(show.Id));
-            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(Convert.ToInt32(show.Id), true);
+            var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
             var specialCount = totalEpisodeCount - episodeCount;
-            var seasonCount = _showRepository.GetSeasonCountForShow(Convert.ToInt32(show.Id));
+            var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
 
             return new ShowCollectionRow
             {
@@ -195,19 +192,6 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private Card<int> TotalTypeCount(IReadOnlyList<Show> shows, string type, string title)
-        {
-            var value = shows.SelectMany(x => x.People)
-                .DistinctBy(x => x.Id)
-                .Count(x => x.Type == type);
-
-            return new Card<int>
-            {
-                Value = value,
-                Title = title
-            };
-        }
-
         private Chart CalculateShowStateChart(IReadOnlyList<Show> shows)
         {
             var list = shows
@@ -247,7 +231,7 @@ namespace EmbyStat.Services
             var percentageList = new List<double>();
             foreach (var show in shows)
             {
-                var episodeCount = _showRepository.CountEpisodes(show.Id);
+                var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
                 if (episodeCount + show.MissingEpisodesCount == 0)
                 {
                     percentageList.Add(0);
@@ -282,7 +266,7 @@ namespace EmbyStat.Services
             var rates = groupedList
                 .OrderBy(x => x.Key)
                 .Select(x => new { Name = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Count = x.Count() })
-                .Select(x => new { Name = x.Name, Count = x.Count })
+                .Select(x => new { x.Name, x.Count })
                 .ToList();
 
             return new Chart
