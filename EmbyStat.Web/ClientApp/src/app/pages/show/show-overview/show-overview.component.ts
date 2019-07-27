@@ -87,7 +87,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
 
   openShow(id: string): void {
     const embyUrl = ConfigHelper.getFullEmbyAddress(this.settings);
-    window.open(`${embyUrl}/web/index.html#!/itemdetails.html?id=${id}`, '_blank');
+    window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}`, '_blank');
   }
 
   sortData(sort: Sort) {
