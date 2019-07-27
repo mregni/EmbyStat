@@ -95,6 +95,7 @@ namespace EmbyStat.Services
                     Language = "en-US",
                     MovieCollectionTypes = new List<CollectionType> { CollectionType.Other, CollectionType.Movies, CollectionType.HomeVideos },
                     ShowCollectionTypes = new List<CollectionType> { CollectionType.Other, CollectionType.TvShow },
+                    ToShortMovieEnabled = true,
                     ToShortMovie = 10,
                     UpdateInProgress = false,
                     UpdateTrain = UpdateTrain.Beta,

@@ -13,6 +13,7 @@ namespace EmbyStat.Common.Models.Settings
         public bool WizardFinished { get; set; }
         public string Username { get; set; }
         public string Language { get; set; }
+        public bool ToShortMovieEnabled { get; set; }
         public int ToShortMovie { get; set; }
         public int KeepLogsCount { get; set; }
         public List<CollectionType> MovieCollectionTypes { get; set; }
