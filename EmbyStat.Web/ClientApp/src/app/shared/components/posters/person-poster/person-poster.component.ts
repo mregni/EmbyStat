@@ -37,7 +37,7 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   openPerson(): void {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {
