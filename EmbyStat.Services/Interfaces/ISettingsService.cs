@@ -11,6 +11,7 @@ namespace EmbyStat.Services.Interfaces
         AppSettings GetAppSettings();
         UserSettings GetUserSettings();
         Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings);
+        Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings, long version);
         Task SetUpdateInProgressSettingAsync(bool value);
         void CreateRollbarLogger();
         long GetUserSettingsVersion();

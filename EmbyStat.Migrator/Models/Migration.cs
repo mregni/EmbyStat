@@ -19,8 +19,7 @@ namespace EmbyStat.Migrator.Models
             AppSettings = settingsService.GetAppSettings();
             Up();
 
-            UserSettings.Version = version;
-            settingsService.SaveUserSettingsAsync(UserSettings).Wait();
+            settingsService.SaveUserSettingsAsync(UserSettings, version).Wait();
         }
 
         public abstract void Up();

@@ -19,14 +19,12 @@ namespace EmbyStat.Services
     public class SettingsService : ISettingsService
     {
         private readonly AppSettings _appSettings;
-        private readonly Logger _logger;
         private UserSettings _userSettings;
         public event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
 
         public SettingsService(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public AppSettings GetAppSettings()
@@ -39,11 +37,19 @@ namespace EmbyStat.Services
             return _userSettings;
         }
 
-        public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
+        public Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
+        {
+            return SaveUserSettingsAsync(userSettings, _userSettings.Version);
+        }
+
+        public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings, long version)
         {
             _userSettings = userSettings;
+            _userSettings.Version = version;
 
-            await UpdateUserSettingsFile();
+            var strJson = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
+            var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
+            await File.WriteAllTextAsync(dir, strJson);
 
             CreateRollbarLogger();
 
@@ -94,13 +100,6 @@ namespace EmbyStat.Services
 
             _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
             OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
-        }
-
-        private Task UpdateUserSettingsFile()
-        {
-            var strJson = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
-            var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
-            return File.WriteAllTextAsync(dir, strJson);
         }
     }
 }
