@@ -18,6 +18,9 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
+using EmbyStat.Migrator;
+using EmbyStat.Migrator.Interfaces;
+using EmbyStat.Migrator.Migrations;
 using EmbyStat.Services;
 using Hangfire;
 using Hangfire.Dashboard;
@@ -85,6 +88,7 @@ namespace EmbyStat.Web
 
             services.RegisterApplicationDependencies();
             services.AddHostedService<WebSocketService>();
+            services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)
@@ -166,20 +170,18 @@ namespace EmbyStat.Web
                 var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
                 var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
                 var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
+                var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
 
-                CreateRollbarLogger(settingsService);
+                migrationRunner.Migrate();
+                settingsService.LoadUserSettingsFromFile();
+                settingsService.CreateRollbarLogger();
                 AddDeviceIdToConfig(settingsService);
                 RemoveVersionFiles();
-                ResetAllJobs(jobService);
-                ResetConfiguration(settingsService);
+                jobService.ResetAllJobs();
+                settingsService.SetUpdateInProgressSettingAsync(false);
                 SetEmbyClientConfiguration(settingsService, embyClient);
-                InitializeTasks(jobInitializer);
+                jobInitializer.Setup();
             }
-        }
-
-        private void CreateRollbarLogger(ISettingsService settingsService)
-        {
-            settingsService.CreateRollbarLogger();
         }
 
         private void PerformPreShutdownFunctions()
@@ -187,8 +189,7 @@ namespace EmbyStat.Web
             using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
             {
                 var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-
-                ResetAllJobs(jobService);
+                jobService.ResetAllJobs();
             }
         }
 
@@ -198,16 +199,6 @@ namespace EmbyStat.Web
             {
                 File.Delete(file);
             }
-        }
-
-        private void ResetAllJobs(IJobService jobService)
-        {
-            jobService.ResetAllJobs();
-        }
-
-        private void ResetConfiguration(ISettingsService settingsService)
-        {
-            settingsService.SetUpdateInProgressSettingAsync(false);
         }
 
         private void AddDeviceIdToConfig(ISettingsService settingsService)
@@ -231,11 +222,6 @@ namespace EmbyStat.Web
             {
                 embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
             }
-        }
-
-        private void InitializeTasks(IJobInitializer jobInitializer)
-        {
-            jobInitializer.Setup();
         }
     }
 }
