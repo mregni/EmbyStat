@@ -43,7 +43,7 @@ namespace EmbyStat.Common.Converters
                         Id = y.Id,
                         Name = y.Name,
                         Type = y.Type
-                    }).ToList()
+                    }).ToArray()
             };
         }
 
@@ -80,7 +80,6 @@ namespace EmbyStat.Common.Converters
                 CommunityRating = episode.CommunityRating,
                 Container = episode.Container,
                 DateCreated = episode.DateCreated,
-                HasSubtitles = episode.HasSubtitles,
                 IndexNumber = episode.IndexNumber,
                 IndexNumberEnd = episode.IndexNumberEnd,
                 MediaType = episode.Type,

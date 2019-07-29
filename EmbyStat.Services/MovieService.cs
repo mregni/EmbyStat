@@ -347,7 +347,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card<int> TotalTypeCount(IEnumerable<Movie> movies, string type, string title)
+        private Card<int> TotalTypeCount(IEnumerable<Movie> movies, PersonType type, string title)
         {
             var value = movies.SelectMany(x => x.People)
                 .DistinctBy(x => x.Id)
@@ -359,7 +359,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<Movie> movies, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<Movie> movies, PersonType type, string title)
         {
             var personId = movies.SelectMany(x => x.People)
                 .Where(x => x.Type == type)

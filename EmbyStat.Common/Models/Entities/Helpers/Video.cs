@@ -5,7 +5,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
     public class Video : Extra
     {
         public string Container { get; set; }
-        public bool? HasSubtitles { get; set; }
         public string MediaType { get; set; }
         public List<MediaSource> MediaSources { get; set; }
         public List<VideoStream> VideoStreams { get; set; }

@@ -102,7 +102,7 @@ namespace EmbyStat.Services
                         Token = token.AccessToken,
                         Username = token.User.ConnectUserName,
                         IsAdmin = token.User.Policy.IsAdministrator,
-                        Id = new Guid(token.User.Id)
+                        Id = token.User.Id
                     };
                 }
                 catch (Exception e)

@@ -34,7 +34,6 @@ namespace EmbyStat.Common.Converters
                 RunTimeTicks = x.RunTimeTicks,
                 Container = x.Container,
                 CommunityRating = x.CommunityRating,
-                HasSubtitles = x.HasSubtitles,
                 MediaType = x.MediaType,
                 OfficialRating = x.OfficialRating,
                 PremiereDate = x.PremiereDate,
@@ -81,7 +80,7 @@ namespace EmbyStat.Common.Converters
                     Id = y.Id,
                     Name = y.Name,
                     Type = y.Type
-                }).ToList()
+                }).ToArray()
             };
         }
     }

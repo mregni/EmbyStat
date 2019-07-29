@@ -83,19 +83,14 @@ namespace EmbyStat.Common.Net
 
 		private HttpResponse GetResponse(HttpWebResponse httpResponse, Dictionary<string, string> headers)
 		{
-			return new HttpResponse(httpResponse)
+			return new HttpResponse
 			{
 				Content = httpResponse.GetResponseStream(),
-
-				StatusCode = httpResponse.StatusCode,
-
-				ContentType = httpResponse.ContentType,
-
-				Headers = headers,
-
-				ContentLength = GetContentLength(httpResponse),
-
-				ResponseUrl = httpResponse.ResponseUri.ToString()
+                StatusCode = httpResponse.StatusCode,
+                ContentType = httpResponse.ContentType,
+                Headers = headers,
+                ContentLength = GetContentLength(httpResponse),
+                ResponseUrl = httpResponse.ResponseUri.ToString()
 			};
 		}
 
