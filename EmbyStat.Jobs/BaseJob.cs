@@ -32,7 +32,7 @@ namespace EmbyStat.Jobs
             Settings = settingsService.GetUserSettings();
             SettingsService = settingsService;
             _logger = LogManager.GetCurrentClassLogger();
-            EnableUiLogging = EnableUiLogging;
+            EnableUiLogging = enableUiLogging;
         }
 
         protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService)
