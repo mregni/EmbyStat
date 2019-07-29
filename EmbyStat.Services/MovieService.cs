@@ -52,6 +52,11 @@ namespace EmbyStat.Services
             if (StatisticsAreValid(statistic, collectionIds))
             {
                 statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
+
+                if (!_settingsService.GetUserSettings().ToShortMovieEnabled && statistics.Suspicious.Shorts.Any())
+                {
+                    statistics.Suspicious.Shorts = new List<ShortMovie>();
+                }
             }
             else
             {
@@ -140,6 +145,11 @@ namespace EmbyStat.Services
         private IEnumerable<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
         {
             var settings = _settingsService.GetUserSettings();
+            if (!settings.ToShortMovieEnabled)
+            {
+                return new List<ShortMovie>(0);
+            }
+
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
                 .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < settings.ToShortMovie)
