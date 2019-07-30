@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using MediaBrowser.Model.Entities;
 
 namespace Tests.Unit.Builders
 {
     public class MovieBuilder
     {
-        private Movie movie { get; set; }
+        private readonly Movie _movie;
 
-        public MovieBuilder()
+        public MovieBuilder(int id)
         {
-            movie = new Movie
+            _movie = new Movie
             {
                 CommunityRating = (float) 1.7,
-                Id = 0,
+                Id = id,
                 Name = "The lord of the rings",
                 PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
                 DateCreated = new DateTime(2018, 1, 1, 0, 0, 0),
@@ -24,76 +25,78 @@ namespace Tests.Unit.Builders
                 RunTimeTicks = 120000000000,
                 Primary = "primaryImage",
                 IMDB = "0001",
-                Genres = new List<string> {"id1"},
-                People = new List<ExtraPerson>
-                    {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = "Actor"}}
+                Video3DFormat = null,
+                Genres = new[] {"id1"},
+                People = new[] {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor}}
             };
         }
 
         public MovieBuilder AddName(string title)
         {
-            movie.Name = title;
-            return this;
-        }
-
-        public MovieBuilder AddId(int id)
-        {
-            movie.Id = id;
+            _movie.Name = title;
             return this;
         }
 
         public MovieBuilder AddImdb(string id)
         {
-            movie.IMDB = id;
+            _movie.IMDB = id;
             return this;
         }
 
         public MovieBuilder AddPrimaryImage(string image)
         {
-            movie.Primary = image;
+            _movie.Primary = image;
             return this;
         }
 
         public MovieBuilder AddOfficialRating(string rating)
         {
-            movie.OfficialRating = rating;
+            _movie.OfficialRating = rating;
             return this;
         }
 
         public MovieBuilder AddCommunityRating(float rating)
         {
-            movie.CommunityRating = rating;
+            _movie.CommunityRating = rating;
             return this;
         }
 
         public MovieBuilder AddPremiereDate(DateTime date)
         {
-            movie.PremiereDate = date;
+            _movie.PremiereDate = date;
             return this;
         }
 
         public MovieBuilder AddGenres(params string[] genres)
         {
-            movie.Genres = genres.ToList();
+            _movie.Genres = genres;
             return this;
         }
 
         public MovieBuilder AddRunTimeTicks(int hours, int minute, int seconds)
         {
             var ticks = new TimeSpan(hours, minute, seconds);
-            movie.RunTimeTicks = ticks.Ticks;
+            _movie.RunTimeTicks = ticks.Ticks;
             return this;
         }
 
         public MovieBuilder AddPerson(ExtraPerson person)
         {
-            movie.People.Add(person);
+            var list = _movie.People.ToList();
+            list.Add(person);
+            _movie.People = list.ToArray();
+            return this;
+        }
+
+        public MovieBuilder AddVideo3DFormat(Video3DFormat format)
+        {
+            _movie.Video3DFormat = format;
             return this;
         }
 
         public Movie Build()
         {
-            return movie;
+            return _movie;
         }
     }
 }

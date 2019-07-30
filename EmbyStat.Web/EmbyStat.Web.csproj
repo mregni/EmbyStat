@@ -48,6 +48,7 @@
     <Compile Remove="ClientApp\src\app\settings\**" />
     <Compile Remove="ClientApp\src\app\show\**" />
     <Compile Remove="ClientApp\src\app\user\**" />
+    <Compile Remove="wwwroot\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\dist\**" />
     <Content Remove="ClientApp\src\app\about\**" />
@@ -59,6 +60,7 @@
     <Content Remove="ClientApp\src\app\settings\**" />
     <Content Remove="ClientApp\src\app\show\**" />
     <Content Remove="ClientApp\src\app\user\**" />
+    <Content Remove="wwwroot\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -73,6 +75,7 @@
     <EmbeddedResource Remove="ClientApp\src\app\settings\**" />
     <EmbeddedResource Remove="ClientApp\src\app\show\**" />
     <EmbeddedResource Remove="ClientApp\src\app\user\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="ClientApp\dist\**" />
     <None Remove="ClientApp\src\app\about\**" />
     <None Remove="ClientApp\src\app\activity\**" />
@@ -83,6 +86,7 @@
     <None Remove="ClientApp\src\app\settings\**" />
     <None Remove="ClientApp\src\app\show\**" />
     <None Remove="ClientApp\src\app\user\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -119,6 +123,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
+    <ProjectReference Include="..\EmbyStat.Migrator\EmbyStat.Migrator.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
@@ -145,7 +150,6 @@
 
   <ItemGroup>
     <Folder Include="Database\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

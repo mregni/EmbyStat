@@ -23,14 +23,22 @@ namespace EmbyStat.Jobs
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
+        protected bool EnableUiLogging { get; set; }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService)
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, bool enableUiLogging)
         {
             HubHelper = hubHelper;
             _jobRepository = jobRepository;
             Settings = settingsService.GetUserSettings();
             SettingsService = settingsService;
             _logger = LogManager.GetCurrentClassLogger();
+            EnableUiLogging = enableUiLogging;
+        }
+
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService)
+            :this(hubHelper, jobRepository, settingsService, true)
+        {
+            
         }
 
         public abstract Guid Id { get; }
@@ -80,7 +88,7 @@ namespace EmbyStat.Jobs
         {
             var now = DateTime.UtcNow;
             State = JobState.Completed;
-            _jobRepository.EndJob(Id, now , State);
+            _jobRepository.EndJob(Id, now, State);
             await SendLogProgressToFront(100, now);
 
             var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
@@ -105,7 +113,7 @@ namespace EmbyStat.Jobs
             }
             await SendLogProgressToFront(100, now);
         }
-        
+
         public async Task LogProgress(double progress)
         {
             await SendLogProgressToFront(progress);
@@ -113,8 +121,11 @@ namespace EmbyStat.Jobs
 
         public async Task LogInformation(string message)
         {
-            _logger.Info($"{JobPrefix}\t{message}");
-            await SendLogUpdateToFront(message, ProgressLogType.Information);
+            if (EnableUiLogging)
+            {
+                _logger.Info($"{JobPrefix}\t{message}");
+                await SendLogUpdateToFront(message, ProgressLogType.Information);
+            }
         }
 
         public async Task LogWarning(string message)

@@ -3,8 +3,7 @@ export class PersonPoster {
     name: string;
     birthDate: Date;
     movieCount: number;
-    episodeCount: number;
-    hasTitle: boolean;
+    showCount: number;
     title: string;
     tag: string;
 }

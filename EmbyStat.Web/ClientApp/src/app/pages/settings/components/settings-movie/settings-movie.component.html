@@ -4,9 +4,11 @@
       <mat-card-content>
         <form [formGroup]="formToShort" class="d-flex flex-column">
           <p>{{'SETTINGS.MOVIE.TOSHORTTEXT' | translate }}</p>
+          <p>
+            <mat-checkbox formControlName="toShortMovieEnabled">{{ 'FORMLABELS.ENABLETOSHORTMOVIES' | translate | capitalizeFirst }}</mat-checkbox>
+          </p>
           <mat-form-field>
-            <input matInput placeholder="{{'FORMLABELS.DURATIONINMINUTES' | translate}}" formControlName="toShortMovie"
-              [disableControl]="isSaving">
+            <input matInput placeholder="{{'FORMLABELS.DURATIONINMINUTES' | translate}}" formControlName="toShortMovie" [disableControl]="isSaving || !toShortMovieEnabledControl.value">
           </mat-form-field>
         </form>
       </mat-card-content>

@@ -37,12 +37,12 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   openPerson(): void {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {
     if (title !== null && title.length !== undefined) {
-      return title.length > 0 && title.startsWith('MOVIES');
+      return title.length > 0 && title.startsWith('COMMON');
     }
 
     return false;
@@ -50,7 +50,7 @@ export class PersonPosterComponent implements OnDestroy {
 
   needsBarButNoTranslation(title: string): boolean {
     if (title != null && title.length !== undefined) {
-      return title.length > 0 && !title.startsWith('MOVIES');
+      return title.length > 0 && !title.startsWith('COMMON');
     }
 
     return false;

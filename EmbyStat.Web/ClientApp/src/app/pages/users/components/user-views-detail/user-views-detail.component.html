@@ -42,7 +42,7 @@
               <mat-header-cell *matHeaderCellDef class="action-cell">{{ 'USERS.WATCHEDTABLE.ACTION' | translate }}
               </mat-header-cell>
               <mat-cell *matCellDef="let element" class="action-cell">
-                <a mat-raised-button href="{{getEmbyAddress()}}/web/index.html#!/itemdetails.html?id={{element.id}}"
+                <a mat-raised-button href="{{getEmbyAddress()}}/web/index.html#!/item/item.html?id={{element.id}}"
                   target="_blank" color="accent">{{ 'COMMON.OPEN' | translate }}</a>
               </mat-cell>
             </ng-container>

@@ -19,15 +19,12 @@ namespace EmbyStat.Services
     public class SettingsService : ISettingsService
     {
         private readonly AppSettings _appSettings;
-        private readonly Logger _logger;
         private UserSettings _userSettings;
         public event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
 
         public SettingsService(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _logger = LogManager.GetCurrentClassLogger();
-            LoadUserSettingsFromFile();
         }
 
         public AppSettings GetAppSettings()
@@ -40,11 +37,17 @@ namespace EmbyStat.Services
             return _userSettings;
         }
 
-        public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
+        public Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
+        {
+            return SaveUserSettingsAsync(userSettings, _userSettings.Version);
+        }
+
+        public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings, long version)
         {
             _userSettings = userSettings;
+            _userSettings.Version = version;
 
-            var strJson = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
+            var strJson = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
             await File.WriteAllTextAsync(dir, strJson);
 
@@ -76,43 +79,23 @@ namespace EmbyStat.Services
             RollbarLocator.RollbarInstance.Configure(rollbarConfig);
         }
 
+        public long GetUserSettingsVersion()
+        {
+            return _userSettings?.Version ?? 0;
+        }
+
         public Task SetUpdateInProgressSettingAsync(bool value)
         {
             _userSettings.UpdateInProgress = value;
             return SaveUserSettingsAsync(_userSettings);
         }
 
-        private void LoadUserSettingsFromFile()
+        public void LoadUserSettingsFromFile()
         {
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
             if (!File.Exists(dir))
             {
-                var settings = new UserSettings
-                {
-                    AppName = "EmbyStat",
-                    AutoUpdate = true,
-                    KeepLogsCount = 10,
-                    Language = "en-US",
-                    MovieCollectionTypes = new List<CollectionType> { CollectionType.Other, CollectionType.Movies, CollectionType.HomeVideos },
-                    ShowCollectionTypes = new List<CollectionType> { CollectionType.Other, CollectionType.TvShow },
-                    ToShortMovie = 10,
-                    UpdateInProgress = false,
-                    UpdateTrain = UpdateTrain.Beta,
-                    Username = string.Empty,
-                    WizardFinished = false,
-                    Emby = new EmbySettings
-                    {
-                        AuthorizationScheme = "MediaBrowser"
-                    },
-                    Tvdb = new TvdbSettings
-                    {
-                        ApiKey = "BWLRSNRC0AQUIEYX"
-                    },
-                    EnableRollbarLogging = false
-                };
-
-                var strJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
-                File.WriteAllText(dir, strJson);
+                throw new FileNotFoundException("usersettings.json not found, check if migration ran");
             }
 
             _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));

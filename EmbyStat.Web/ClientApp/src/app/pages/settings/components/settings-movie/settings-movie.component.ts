@@ -17,6 +17,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
 
   formToShort: FormGroup;
   toShortMovieControl = new FormControl('', [Validators.required]);
+  toShortMovieEnabledControl = new FormControl('', [Validators.required]);
 
   newCollectionList: number[];
   isSaving = false;
@@ -25,7 +26,8 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     private readonly settingsFacade: SettingsFacade,
     private readonly toastService: ToastService) {
     this.formToShort = new FormGroup({
-      toShortMovie: this.toShortMovieControl
+      toShortMovie: this.toShortMovieControl,
+      toShortMovieEnabled: this.toShortMovieEnabledControl
     });
   }
 
@@ -35,6 +37,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(): void {
     if (this.settings !== undefined) {
       this.toShortMovieControl.setValue(this.settings.toShortMovie);
+      this.toShortMovieEnabledControl.setValue(this.settings.toShortMovieEnabled);
     }
   }
 
@@ -44,6 +47,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
 
       const settings = { ...this.settings };
       settings.toShortMovie = this.toShortMovieControl.value;
+      settings.toShortMovieEnabled = this.toShortMovieEnabledControl.value;
       this.settingsFacade.updateSettings(settings);
       this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
       this.isSaving = false;

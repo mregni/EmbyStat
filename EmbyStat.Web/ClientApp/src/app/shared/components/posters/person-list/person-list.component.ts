@@ -44,7 +44,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
   }
 
   openPerson(mediaId: string): void {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/itemdetails.html?id=${mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${mediaId}`, '_blank');
   }
 
   ngOnDestroy(): void {

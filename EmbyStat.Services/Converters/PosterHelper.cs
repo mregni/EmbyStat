@@ -12,7 +12,7 @@ namespace EmbyStat.Services.Converters
             {
                 Title = title,
                 Name = movie.Name,
-                CommunityRating = String.Format("{0:0.0}", movie.CommunityRating ?? 0),
+                CommunityRating = $"{movie.CommunityRating ?? 0:0.0}",
                 MediaId = movie.Id,
                 OfficialRating = movie.OfficialRating,
                 Tag = movie.Primary,
@@ -27,7 +27,7 @@ namespace EmbyStat.Services.Converters
             {
                 Title = title,
                 Name = show.Name,
-                CommunityRating = String.Format("{0:0.0}", show.CommunityRating ?? 0),
+                CommunityRating = $"{show.CommunityRating ?? 0:0.0}",
                 MediaId = show.Id,
                 OfficialRating = show.OfficialRating,
                 Tag = show.Primary,
@@ -37,15 +37,13 @@ namespace EmbyStat.Services.Converters
 
         public static PersonPoster ConvertToPersonPoster(Person person, string title)
         {
-            return new PersonPoster
+            return new PersonPoster(title)
             {
                 MediaId = person.Id,
                 Name = person.Name,
                 BirthDate = person.BirthDate,
                 MovieCount = person.MovieCount,
-                EpisodeCount = person.seriesCount,
-                Title = title,
-                HasTitle = true,
+                ShowCount = person.ShowCount,
                 Tag = person.Primary
             };
         }

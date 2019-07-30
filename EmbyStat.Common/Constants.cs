@@ -97,10 +97,7 @@ namespace EmbyStat.Common
 
         //COMMON
         public static string Unknown => "UNKNOWN";
-
-        //SERVER
-        public static string TempFolder => "temp";
-
+        
         //QUALITIES
         public static string FOURK => "4K";
         public static string THOUSANDFOURFOURP => "1440P";
@@ -111,37 +108,12 @@ namespace EmbyStat.Common
 
         //DUPLICATE REASONS
         public static string ByImdb => "BYIMDB";
-        public static string ByTitle => "BYTITLE";
 
-        public static class Tables
+        public static class PersonType
         {
-            public static string BoxSets => "BoxSets";
-            public static string Collections => "Collections";
-            public static string Devices => "Devices";
-            public static string EmbyStatus => "EmbyStatus";
-            public static string Genres => "Genres";
-            public static string Languages => "Languages";
-            public static string Media => "Media";
-            public static string People => "PeopleIds";
-            public static string Plugins => "Plugins";
-            public static string ServerInfo => "ServerInfo";
-            public static string Statistics => "Statistics";
-            public static string Jobs => "Jobs";
-            public static string User => "Users";
-            public static string AudioStreams => "AudioStreams";
-            public static string MediaCollection => "MediaCollection";
-            public static string MediaGenres => "MediaGenres";
-            public static string MediaSources => "MediaSources";
-            public static string SeasonEpisodes => "SeasonEpisodes";
-            public static string SubtitleStreams => "SubtitleStreams";
-            public static string VideoStreams => "VideoStreams";
-            public static string ExtraPersons => "ExtraPersons";
-            public static string StatisticCollection => "StatisticCollection";
-            public static string Events => "Events";
-            public static string UserAccessSchedules => "UserAccessSchedules";
-            public static string Sessions => "Sessions";
-            public static string Plays => "Plays";
-            public static string PlayStates => "PlayStates";
+            public static string Actor = "Actor";
+            public static string Director = "Director";
+            public static string Writer = "Writer";
         }
     }
 }

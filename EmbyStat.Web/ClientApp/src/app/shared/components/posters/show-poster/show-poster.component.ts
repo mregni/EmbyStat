@@ -37,6 +37,6 @@ export class ShowPosterComponent implements OnInit {
   }
 
   openShow() {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/itemdetails.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}`, '_blank');
   }
 }

@@ -152,8 +152,6 @@ namespace EmbyStat.Clients.Emby.WebSocket
         {
             var messageType = GetMessageType(json);
 
-            _logger.Info($"Received web socket message: {messageType}");
-
             if (string.Equals(messageType, "RestartRequired"))
             {
                 FireEvent(RestartRequired, this, EventArgs.Empty);

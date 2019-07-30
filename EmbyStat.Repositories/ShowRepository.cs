@@ -88,6 +88,11 @@ namespace EmbyStat.Repositories
             return _seasonCollection.FindById(id);
         }
 
+        public int GetShowCountForPerson(string personId)
+        {
+            return _showCollection.Count(Query.EQ("People[*]._id", personId));
+        }
+
         public IEnumerable<Show> GetAllShowsWithTvdbId()
         {
             return _showCollection
@@ -98,11 +103,6 @@ namespace EmbyStat.Repositories
         public IEnumerable<Episode> GetAllEpisodesForShow(int showId)
         {
             return _episodeCollection.Find(Query.EQ("ShowId", showId));
-        }
-
-        public int CountEpisodes(int showId)
-        {
-            return _episodeCollection.Count(Query.EQ("ShowId", showId));
         }
 
         public int GetEpisodeCountForShow(int showId)
@@ -119,7 +119,7 @@ namespace EmbyStat.Repositories
                 return show.Episodes.Count(x => x.IndexNumber != 0);
             }
 
-            return show.Episodes.Count();
+            return show.Episodes.Count;
         }
 
         public int GetSeasonCountForShow(int showId)

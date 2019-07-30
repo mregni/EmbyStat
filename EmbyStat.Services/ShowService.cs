@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
@@ -42,33 +43,40 @@ namespace EmbyStat.Services
             return _collectionRepository.GetCollectionByTypes(settings.ShowCollectionTypes);
         }
 
-        public ShowStatistics GetStatistics(List<string> collectionIds)
+        public async Task<ShowStatistics> GetStatistics(List<string> collectionIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, collectionIds);
 
-            ShowStatistics generals;
+            ShowStatistics statistics;
             if (StatisticsAreValid(statistic, collectionIds))
             {
-                generals = JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
+                statistics = JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
             else
             {
-                var shows = _showRepository.GetAllShows(collectionIds).ToList();
-                generals = new ShowStatistics
-                {
-                    General = CalculateGeneralStatistics(shows),
-                    Charts = CalculateCharts(shows),
-                    People = CalculatePeopleStatistics(shows)
-                };
-
-                var json = JsonConvert.SerializeObject(generals);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, collectionIds);
+                statistics = await CalculateShowStatistics(collectionIds);
             }
 
-            return generals;
+            return statistics;
         }
 
-        public ShowGeneral CalculateGeneralStatistics(IReadOnlyList<Show> shows)
+        public async Task<ShowStatistics> CalculateShowStatistics(List<string> collectionIds)
+        {
+            var shows = _showRepository.GetAllShows(collectionIds).ToList();
+            var statistics = new ShowStatistics
+            {
+                General = CalculateGeneralStatistics(shows),
+                Charts = CalculateCharts(shows),
+                People = await CalculatePeopleStatistics(shows)
+            };
+
+            var json = JsonConvert.SerializeObject(statistics);
+            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, collectionIds);
+
+            return statistics;
+        }
+
+        private ShowGeneral CalculateGeneralStatistics(IReadOnlyList<Show> shows)
         {
            return new ShowGeneral
             {
@@ -85,7 +93,7 @@ namespace EmbyStat.Services
             };
         }
 
-        public ShowCharts CalculateCharts(IReadOnlyList<Show> shows)
+        private ShowCharts CalculateCharts(IReadOnlyList<Show> shows)
         {
             var stats = new ShowCharts();
             stats.BarCharts.Add(CalculateGenreChart(shows));
@@ -98,13 +106,11 @@ namespace EmbyStat.Services
             return stats;
         }
 
-        public PersonStats CalculatePeopleStatistics(IReadOnlyList<Show> shows)
+        private async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyList<Show> shows)
         {
             return new PersonStats
             {
-                TotalActorCount = TotalTypeCount(shows, PersonType.Actor, Constants.Common.TotalActors),
-                TotalDirectorCount = TotalTypeCount(shows, PersonType.Director, Constants.Common.TotalDirectors),
-                TotalWriterCount = TotalTypeCount(shows, PersonType.Writer, Constants.Common.TotalWriters)
+                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(shows)
             };
         }
 
@@ -133,10 +139,10 @@ namespace EmbyStat.Services
         private ShowCollectionRow CreateShowCollectionRow(Show show)
         {
             //TODO: gewoon in show nazien ipv naar DB gaat! indexnr is ook fout, moet naar season gaan
-            var episodeCount = _showRepository.GetEpisodeCountForShow(Convert.ToInt32(show.Id));
-            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(Convert.ToInt32(show.Id), true);
+            var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
             var specialCount = totalEpisodeCount - episodeCount;
-            var seasonCount = _showRepository.GetSeasonCountForShow(Convert.ToInt32(show.Id));
+            var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
 
             return new ShowCollectionRow
             {
@@ -156,58 +162,34 @@ namespace EmbyStat.Services
             return _showRepository.AnyShows();
         }
 
-        //private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> collectionIds)
-        //{
-        //    var shows = _showRepository.GetAllShows(collectionIds).ToList();
-        //    var genreIds = _showRepository.GetGenres(collectionIds);
-        //    var genres = _genreRepository.GetGenres(genreIds);
-
-        //    var list = new List<PersonPoster>();
-        //    foreach (var genre in genres.OrderBy(x => x.Name))
-        //    {
-        //        var selectedShows = shows.Where(x => x.Genres.AnyShows(y => y == genre.Id));
-        //        var episodes = _showRepository.GetAllEpisodesForShows(selectedShows.Select(x => x.Id));
-
-        //        var grouping = episodes
-        //            .SelectMany(x => x.People)
-        //            .Where(x => x.Type == PersonType.Actor)
-        //            .GroupBy(x => x.PersonId)
-        //            .Select(group => new { Id = group.Key, Count = group.Count() })
-        //            .OrderByDescending(x => x.Count);
-
-        //        var personId = grouping
-        //            .Select(x => x.Id)
-        //            .FirstOrDefault();
-        //        //Compleet buggy dit! Er moet gekeken worden naar het aantal episodes ipv shows
-        //        //Misschien ExtraPerson weer toevoegen aan Episode type in sync!
-        //        var person = await _personService.GetPersonByIdAsync(personId);
-        //        if(person != null){
-        //            list.Add(PosterHelper.ConvertToPersonPoster(person, genre.Name));
-        //        }
-        //    }
-
-        //    return list;
-        //}
-
-        //private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<string> collectionIds, string type, string title)
-        //{
-        //    var personId = _showRepository.GetMostFeaturedPerson(collectionIds, type);
-        //    var person = await _personService.GetPersonByIdAsync(personId);
-
-        //    return person == null ? new PersonPoster() : PosterHelper.ConvertToPersonPoster(person, title);
-        //}
-
-        private Card<int> TotalTypeCount(IReadOnlyList<Show> shows, string type, string title)
+        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<Show> shows)
         {
-            var value = shows.SelectMany(x => x.People)
-                .DistinctBy(x => x.Id)
-                .Count(x => x.Type == type);
+            var list = new List<PersonPoster>();
+            var genres = shows.SelectMany(x => x.Genres).Distinct();
 
-            return new Card<int>
+            foreach (var genre in genres.OrderBy(x => x))
             {
-                Value = value,
-                Title = title
-            };
+                var selectedShows = shows.Where(x => x.Genres.Any(y => y == genre));
+
+                var grouping = selectedShows
+                    .SelectMany(x => x.People)
+                    .Where(x => x.Type == PersonType.Actor)
+                    .GroupBy(x => x.Id)
+                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .OrderByDescending(x => x.Count);
+
+                var personId = grouping
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                var person = await _personService.GetPersonByIdAsync(personId);
+                if (person != null)
+                {
+                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                }
+            }
+
+            return list;
         }
 
         private Chart CalculateShowStateChart(IReadOnlyList<Show> shows)
@@ -249,7 +231,7 @@ namespace EmbyStat.Services
             var percentageList = new List<double>();
             foreach (var show in shows)
             {
-                var episodeCount = _showRepository.CountEpisodes(show.Id);
+                var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
                 if (episodeCount + show.MissingEpisodesCount == 0)
                 {
                     percentageList.Add(0);
@@ -284,7 +266,7 @@ namespace EmbyStat.Services
             var rates = groupedList
                 .OrderBy(x => x.Key)
                 .Select(x => new { Name = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Count = x.Count() })
-                .Select(x => new { Name = x.Name, Count = x.Count })
+                .Select(x => new { x.Name, x.Count })
                 .ToList();
 
             return new Chart
