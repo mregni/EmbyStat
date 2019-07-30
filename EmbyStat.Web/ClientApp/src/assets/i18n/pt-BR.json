@@ -69,6 +69,7 @@
     "NAME": "Username",
     "LANGUAGE": "Por favor, selecione seu idioma",
     "DURATIONINMINUTES": "Duração em minutos",
+    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
     "TVDBAPI": "TheTVDB API key",
     "CRON": "Corda Cron",
     "EXCEPTIONLOGGING": "Ativar log de exceções"
