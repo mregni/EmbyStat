@@ -8,6 +8,7 @@ export class Settings {
   username: string;
   language: string;
   toShortMovie: number;
+  toShortMovieEnabled: boolean;
   keepLogsCount: number;
   movieCollectionTypes: number[];
   showCollectionTypes: number[];

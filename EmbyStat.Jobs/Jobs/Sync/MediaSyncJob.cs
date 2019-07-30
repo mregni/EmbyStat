@@ -142,7 +142,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task ProcessPeopleAsync(CancellationToken cancellationToken)
         {
-            var embyPeople = await _embyClient.GetPeopleAsync(new PersonsQuery(), cancellationToken);
+            var embyPeople = await _embyClient.GetPeopleAsync(new ItemQuery(), cancellationToken);
             await LogInformation($"Need to add/update {embyPeople.TotalRecordCount} people first.");
 
             var people = embyPeople.Items.DistinctBy(x => x.Id).Select(PersonConverter.ConvertToSmallPerson);
@@ -181,7 +181,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                         ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
                         ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
                         ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
-                        ItemFields.People
+                        ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
+                        ItemFields.ProductionYear
                     }
             };
 
@@ -241,8 +242,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                     ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                     ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People,
-                    ItemFields.MediaSources, ItemFields.MediaStreams
+                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
+                    ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
+                    ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status
                 }
             };
             var embyShows = await _embyClient.GetItemsAsync(query);

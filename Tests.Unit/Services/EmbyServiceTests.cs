@@ -5,6 +5,7 @@ using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Common.Net;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
@@ -86,7 +87,7 @@ namespace Tests.Unit.Services
             {
                 AccessToken = "00000000",
                 ServerId = "1111",
-                User = new UserDto {ConnectUserName = "reggi", Policy = new UserPolicy {IsAdministrator = false}, Id = Guid.NewGuid().ToString()},
+                User = new UserDto {ConnectUserName = "reggi", Policy = new UserPolicy {IsAdministrator = false}, Id = Guid.NewGuid()},
                 SessionInfo = new SessionInfoDto()
             };
 
@@ -101,7 +102,7 @@ namespace Tests.Unit.Services
             var result = await _subject.GetEmbyToken(login);
 
             result.Should().NotBeNull();
-            result.Id = new Guid(authResult.User.Id);
+            result.Id = authResult.User.Id;
             result.IsAdmin = authResult.User.Policy.IsAdministrator;
             result.Username = authResult.User.ConnectUserName;
             result.Token = authResult.AccessToken;

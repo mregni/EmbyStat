@@ -52,6 +52,11 @@ namespace EmbyStat.Services
             if (StatisticsAreValid(statistic, collectionIds))
             {
                 statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
+
+                if (!_settingsService.GetUserSettings().ToShortMovieEnabled && statistics.Suspicious.Shorts.Any())
+                {
+                    statistics.Suspicious.Shorts = new List<ShortMovie>();
+                }
             }
             else
             {
@@ -140,6 +145,11 @@ namespace EmbyStat.Services
         private IEnumerable<ShortMovie> GetShortMovies(IEnumerable<Movie> movies)
         {
             var settings = _settingsService.GetUserSettings();
+            if (!settings.ToShortMovieEnabled)
+            {
+                return new List<ShortMovie>(0);
+            }
+
             var shortMovies = movies
                 .Where(x => x.RunTimeTicks != null)
                 .Where(x => new TimeSpan(x.RunTimeTicks ?? 0).TotalMinutes < settings.ToShortMovie)
@@ -192,8 +202,13 @@ namespace EmbyStat.Services
             for (var i = 0; i < duplicatesByImdb.Count; i++)
             {
                 var duplicateMovies = movies.Where(x => x.IMDB == duplicatesByImdb[i].Key).OrderBy(x => x.Id).ToList();
-                var itemOne = duplicateMovies.First();
-                var itemTwo = duplicateMovies.ElementAt(1);
+                var itemOne = duplicateMovies[0];
+                var itemTwo = duplicateMovies[1];
+
+                if (itemOne.Video3DFormat != itemTwo.Video3DFormat)
+                {
+                    continue;
+                }
 
                 list.Add(new MovieDuplicate
                 {
@@ -347,7 +362,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private Card<int> TotalTypeCount(IEnumerable<Movie> movies, string type, string title)
+        private Card<int> TotalTypeCount(IEnumerable<Movie> movies, PersonType type, string title)
         {
             var value = movies.SelectMany(x => x.People)
                 .DistinctBy(x => x.Id)
@@ -359,7 +374,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<Movie> movies, string type, string title)
+        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<Movie> movies, PersonType type, string title)
         {
             var personId = movies.SelectMany(x => x.People)
                 .Where(x => x.Type == type)

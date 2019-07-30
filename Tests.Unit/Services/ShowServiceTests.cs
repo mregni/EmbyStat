@@ -37,7 +37,7 @@ namespace Tests.Unit.Services
             _showOne = new ShowBuilder(1, _collections.First().Id)
                 .AddName("Chuck")
                 .AddCreateDate(new DateTime(1990, 4, 2))
-                .AddGenre("Comedy")
+                .AddGenre("Comedy", "Action")
                 .Build();
             _showTwo = new ShowBuilder(2, _collections.First().Id)
                 .AddName("The 100")
@@ -46,8 +46,7 @@ namespace Tests.Unit.Services
                 .AddPremiereDate(new DateTime(1992, 4, 1))
                 .AddEpisode(new EpisodeBuilder(3, 2, "1").Build())
                 .AddEpisode(new EpisodeBuilder(4, 2, "1").Build())
-                .AddGenre("Drama")
-                .AddGenre("Comedy")
+                .AddGenre("Drama", "Comedy", "Action")
                 .SetContinuing()
                 .AddOfficialRating("TV-16")
                 .AddActor(_showOne.People.First().Id)
@@ -59,7 +58,7 @@ namespace Tests.Unit.Services
                 .AddPremiereDate(new DateTime(2018, 4, 10))
                 .AddEpisode(new EpisodeBuilder(3, 3, "1").Build())
                 .AddCreateDate(new DateTime(2003, 4, 2))
-                .AddGenre("War")
+                .AddGenre("War", "Action")
                 .SetContinuing()
                 .Build();
 

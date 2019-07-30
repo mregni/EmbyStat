@@ -34,11 +34,11 @@ namespace EmbyStat.Common.Converters
                 RunTimeTicks = x.RunTimeTicks,
                 Container = x.Container,
                 CommunityRating = x.CommunityRating,
-                HasSubtitles = x.HasSubtitles,
                 MediaType = x.MediaType,
                 OfficialRating = x.OfficialRating,
                 PremiereDate = x.PremiereDate,
                 ProductionYear = x.ProductionYear,
+                Video3DFormat = x.Video3DFormat,
                 Primary = x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,
@@ -81,7 +81,7 @@ namespace EmbyStat.Common.Converters
                     Id = y.Id,
                     Name = y.Name,
                     Type = y.Type
-                }).ToList()
+                }).ToArray()
             };
         }
     }

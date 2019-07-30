@@ -68,6 +68,7 @@ namespace Tests.Unit.Services
                 ShowCollectionTypes = new List<CollectionType>()
             };
 
+            _subject.LoadUserSettingsFromFile();
             await _subject.SaveUserSettingsAsync(settings);
 
             var settingsFilePath = Path.Combine("Settings", "usersettings.json");
@@ -84,6 +85,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetUserSettings()
         {
+            _subject.LoadUserSettingsFromFile();
             var settings = _subject.GetUserSettings();
             settings.Id.Should().Be(DeviceId);
             settings.AppName.Should().Be("EmbyStat");

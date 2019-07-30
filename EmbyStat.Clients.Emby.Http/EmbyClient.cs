@@ -62,8 +62,8 @@ namespace EmbyStat.Clients.Emby.Http
 			ServerAddress = address;
 			var args = new Dictionary<string, string>
 			{
-				["username"] = HttpUtility.UrlEncode(username),
-				["pw"] = HttpUtility.UrlEncode(password)
+				["Username"] = HttpUtility.UrlEncode(username),
+				["Pw"] = HttpUtility.UrlEncode(password)
             };
 
 			var url = GetApiUrl("Users/AuthenticateByName");
@@ -172,24 +172,14 @@ namespace EmbyStat.Clients.Emby.Http
 	        }
         }
 
-	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(PersonsQuery query, CancellationToken cancellationToken)
+	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(ItemQuery query, CancellationToken cancellationToken)
 	    {
-	        var url = GetItemByNameListUrl("Persons", query);
+	        var url = GetItemListUrl("Persons", query);
 
 	        if (query.PersonTypes != null && query.PersonTypes.Length > 0)
 	        {
 	            url += "&PersonTypes=" + string.Join(",", query.PersonTypes);
 	        }
-
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
-	        {
-	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
-	        }
-	    }
-
-	    public async Task<QueryResult<BaseItemDto>> GetGenresAsync(ItemsByNameQuery query, CancellationToken cancellationToken)
-	    {
-	        var url = GetItemByNameListUrl("Genres", query);
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {
