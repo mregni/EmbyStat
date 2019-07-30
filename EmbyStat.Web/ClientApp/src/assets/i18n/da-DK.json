@@ -69,6 +69,7 @@
     "NAME": "Username",
     "LANGUAGE": "Vælg dit sprog",
     "DURATIONINMINUTES": "Varighed: ~5 minutter",
+    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
     "TVDBAPI": "TheTVDB API key",
     "CRON": "Cron-streng",
     "EXCEPTIONLOGGING": "Aktivér undtagelseslogning"
