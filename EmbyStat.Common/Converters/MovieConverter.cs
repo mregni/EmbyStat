@@ -38,6 +38,7 @@ namespace EmbyStat.Common.Converters
                 OfficialRating = x.OfficialRating,
                 PremiereDate = x.PremiereDate,
                 ProductionYear = x.ProductionYear,
+                Video3DFormat = x.Video3DFormat,
                 Primary = x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,

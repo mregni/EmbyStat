@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {
@@ -10,6 +11,7 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public List<VideoStream> VideoStreams { get; set; }
         public List<AudioStream> AudioStreams { get; set; }
         public List<SubtitleStream> SubtitleStreams { get; set; }
+        public Video3DFormat? Video3DFormat { get; set; }
 
         public Video()
         {
