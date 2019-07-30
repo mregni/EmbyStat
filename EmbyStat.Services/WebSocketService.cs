@@ -26,7 +26,7 @@ namespace EmbyStat.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(TryToConnect, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+            _timer = new Timer(TryToConnect, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(5));
             return Task.CompletedTask;
         }
 
@@ -40,11 +40,11 @@ namespace EmbyStat.Services
                 if (!webSocketApi.IsWebSocketOpenOrConnecting)
                 {
                     var settings = settingsService.GetUserSettings();
-                    if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+                    if (settings != null && !string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
                     {
                         try
                         {
-                            var deviceId = settingsService.GetUserSettings().Id.ToString();
+                            var deviceId = settings.Id.ToString();
 
                             webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
                             webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;

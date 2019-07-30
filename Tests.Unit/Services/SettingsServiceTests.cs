@@ -21,7 +21,6 @@ namespace Tests.Unit.Services
         public SettingsServiceTests()
         {
             DeviceId = Guid.NewGuid();
-            SetupSettingsFile();
 
             var rollbar = new EmbyStat.Common.Models.Settings.Rollbar()
             {
@@ -30,7 +29,7 @@ namespace Tests.Unit.Services
             };
 
             var appSettingsMock = new Mock<IOptions<AppSettings>>();
-            appSettingsMock.Setup(x => x.Value).Returns(new AppSettings { Version = "0.0.0.0", Dirs = new Dirs() { Settings = "Settings" }, Rollbar = rollbar });
+            appSettingsMock.Setup(x => x.Value).Returns(new AppSettings { Version = "0.0.0.0", Dirs = new Dirs { Settings = "Settings" }, Rollbar = rollbar });
 
             _subject = new SettingsService(appSettingsMock.Object);
         }
@@ -40,6 +39,7 @@ namespace Tests.Unit.Services
             var fileSettings = new UserSettings
             {
                 Id = DeviceId,
+                Version = 3,
                 AppName = "EmbyStat",
                 AutoUpdate = false,
                 KeepLogsCount = 10,
@@ -57,6 +57,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void SaveUserSettings()
         {
+            SetupSettingsFile();
             var settings = new UserSettings
             {
                 Id = DeviceId,
@@ -85,6 +86,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetUserSettings()
         {
+            SetupSettingsFile();
             _subject.LoadUserSettingsFromFile();
             var settings = _subject.GetUserSettings();
             settings.Id.Should().Be(DeviceId);
@@ -92,6 +94,22 @@ namespace Tests.Unit.Services
             settings.AutoUpdate.Should().BeFalse();
             settings.KeepLogsCount.Should().Be(10);
             settings.Language.Should().Be("en-US");
+        }
+
+        [Fact]
+        public void GetUserSettingsVersionWithSettingsFile()
+        {
+            SetupSettingsFile();
+            _subject.LoadUserSettingsFromFile();
+            var version = _subject.GetUserSettingsVersion();
+            version.Should().Be(3);
+        }
+
+        [Fact]
+        public void GetUserSettingsVersionWithoutSettingsFile()
+        {
+            var version = _subject.GetUserSettingsVersion();
+            version.Should().Be(0);
         }
     }
 }
