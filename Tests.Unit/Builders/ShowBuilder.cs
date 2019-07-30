@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using MediaBrowser.Model.Entities;
 
 namespace Tests.Unit.Builders
 {
@@ -38,9 +40,8 @@ namespace Tests.Unit.Builders
                 TvdbFailed = false,
                 TvdbSynced = false,
                 PremiereDate = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
-                People = new List<ExtraPerson>
-                    {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = "Actor"}},
-                Genres = new List<string> {"Action" },
+                People = new[] {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor}},
+                Genres = new[] { "Action" },
                 Episodes = new List<Episode>
                 {
                     new EpisodeBuilder(1, id, "1").Build(),
@@ -103,9 +104,9 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddGenre(string genre)
+        public ShowBuilder AddGenre(params string[] genres)
         {
-            _show.Genres.Add(genre);
+            _show.Genres = genres;
             return this;
         }
 
@@ -117,7 +118,9 @@ namespace Tests.Unit.Builders
 
         public ShowBuilder AddActor(string id)
         {
-            _show.People.Add(new ExtraPerson{Id = id, Name = "Gimli" , Type = "Actor"});
+            var list = _show.People.ToList();
+            list.Add(new ExtraPerson {Id = id, Name = "Gimli", Type = PersonType.Actor});
+            _show.People = list.ToArray();
             return this;
         }
 

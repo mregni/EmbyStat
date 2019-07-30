@@ -23,7 +23,6 @@ namespace Tests.Unit.Builders
                 CommunityRating = 0.7f,
                 Container = "mkv",
                 DateCreated = new DateTimeOffset(2001, 1, 1, 0, 0, 0, new TimeSpan(0)),
-                HasSubtitles = true,
                 IndexNumber = 0,
                 IndexNumberEnd = null,
                 MediaType = "Episode",
