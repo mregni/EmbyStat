@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,11 +40,11 @@ namespace EmbyStat.Services
                 if (!webSocketApi.IsWebSocketOpenOrConnecting)
                 {
                     var settings = settingsService.GetUserSettings();
-                    if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+                    if (settings != null && !string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
                     {
                         try
                         {
-                            var deviceId = settingsService.GetUserSettings().Id.ToString();
+                            var deviceId = settings.Id.ToString();
 
                             webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
                             webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
