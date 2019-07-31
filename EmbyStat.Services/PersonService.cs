@@ -23,18 +23,17 @@ namespace EmbyStat.Services
             _embyClient = embyClient;
         }
 
-        public async Task<Person> GetPersonByIdAsync(string id)
+        public async Task<Person> GetPersonByNameAsync(string name)
         {
-            var person = _personRepository.GetPersonById(id);
+             var person = _personRepository.GetPersonByName(name);
+            if (person == null)
+            {
+                var rawPerson = await _embyClient.GetPersonByNameAsync(name, CancellationToken.None);
+                person = PersonConverter.Convert(rawPerson);
+            }
+
             person.MovieCount = _movieRepository.GetMovieCountForPerson(person.Id);
             person.ShowCount = _showRepository.GetShowCountForPerson(person.Id);
-
-            if (!person?.Synced ?? false)
-            {
-                var rawPerson = await _embyClient.GetPersonByNameAsync(person.Name, CancellationToken.None);
-                person = PersonConverter.UpdatePerson(person, rawPerson);
-                _personRepository.AddOrUpdatePerson(person);
-            }
 
             return person;
         }

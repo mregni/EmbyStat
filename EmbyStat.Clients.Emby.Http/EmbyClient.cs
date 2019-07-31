@@ -172,21 +172,6 @@ namespace EmbyStat.Clients.Emby.Http
 	        }
         }
 
-	    public async Task<QueryResult<BaseItemDto>> GetPeopleAsync(ItemQuery query, CancellationToken cancellationToken)
-	    {
-	        var url = GetItemListUrl("Persons", query);
-
-	        if (query.PersonTypes != null && query.PersonTypes.Length > 0)
-	        {
-	            url += "&PersonTypes=" + string.Join(",", query.PersonTypes);
-	        }
-
-	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
-	        {
-	            return DeserializeFromStream<QueryResult<BaseItemDto>>(stream);
-	        }
-	    }
-
 	    public void Dispose()
 		{
 

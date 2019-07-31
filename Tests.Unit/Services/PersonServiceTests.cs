@@ -7,6 +7,7 @@ using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -18,32 +19,32 @@ namespace Tests.Unit.Services
     [Collection("Services collection")]
     public class PersonServiceTests
     {
-        private readonly PersonService _subject;
-        private readonly Mock<IPersonRepository> _personRepositoryMock;
-        private readonly Mock<IEmbyClient> _embyClientMock;
-        private Person _returnedPerson;
         private readonly BaseItemDto _basePerson;
+
+        private Mock<IEmbyClient> EmbyClientMock { get; set; }
+        private Mock<IPersonRepository> PersonRepositoryMock { get; set; }
         public PersonServiceTests()
         {
             _basePerson = new BaseItemDto
             {
-                Id = string.Empty,
+                Id = "1",
                 Name = "name",
                 ImageTags = new Dictionary<ImageType, string> { { ImageType.Primary, "" } },
-                MovieCount = 10,
                 PremiereDate = new DateTime(2000, 1, 1),
                 Etag = "etag",
                 ProviderIds = new Dictionary<string, string> { { "Imdb", "12345" }, { "Tmdb", "12345" } },
                 Overview = "Lots of text",
-                SeriesCount = 2,
                 SortName = "name"
             };
+        }
 
-            _personRepositoryMock = new Mock<IPersonRepository>();
-            _personRepositoryMock.Setup(x => x.AddOrUpdatePerson(It.IsAny<Person>()));
+        private PersonService CreatePersonService(Person person)
+        {
+            PersonRepositoryMock = new Mock<IPersonRepository>();
+            PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns(person);
 
-            _embyClientMock = new Mock<IEmbyClient>();
-            _embyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None))
+            EmbyClientMock = new Mock<IEmbyClient>();
+            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None))
                 .Returns(Task.FromResult(_basePerson));
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
@@ -51,83 +52,69 @@ namespace Tests.Unit.Services
             var showRepositoryMock = new Mock<IShowRepository>();
             showRepositoryMock.Setup(x => x.GetShowCountForPerson(It.IsAny<string>())).Returns(2);
 
-            _subject = new PersonService(_personRepositoryMock.Object,  showRepositoryMock.Object, movieRepositoryMock.Object, _embyClientMock.Object);
+            return new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, EmbyClientMock.Object);
         }
 
         [Fact]
-        public async void GetPersonByIdNotSyncedPerson()
+        public async void GetPersonByNameNotInDatabase()
         {
-            _returnedPerson = new Person
-            {
-                Id = string.Empty,
-                Name = "name",
-                Synced = false
-            };
-            _personRepositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(_returnedPerson);
-
-            var person = await _subject.GetPersonByIdAsync(string.Empty);
+            var subject = CreatePersonService(null);
+            var person = await subject.GetPersonByNameAsync("name");
 
             person.Should().NotBeNull();
             person.Id.Should().Be(_basePerson.Id);
             person.Name.Should().Be(_basePerson.Name);
             person.Primary.Should().Be(_basePerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
-            person.MovieCount.Should().Be(_basePerson.MovieCount);
+            person.MovieCount.Should().Be(10);
             person.BirthDate.Should().Be(_basePerson.PremiereDate);
             person.Etag.Should().Be(_basePerson.Etag);
             person.IMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
             person.TMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
             person.OverView.Should().Be(_basePerson.Overview);
-            person.ShowCount.Should().Be(_basePerson.SeriesCount);
+            person.ShowCount.Should().Be(2);
             person.SortName.Should().Be(_basePerson.SortName);
-            person.Synced.Should().BeTrue();
 
-            _personRepositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
-            _personRepositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Once);
-            
-            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Once);
+            PersonRepositoryMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
+
+            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
-        public async void GetPersonByIdShouldNotGoToEmby()
+        public async void GetPersonByNameInDatabase()
         {
-            _returnedPerson = new Person
+            var databasePerson = new Person
             {
                 Id = _basePerson.Id,
                 Name = "name",
                 Primary = "",
-                MovieCount = 10,
                 BirthDate = new DateTime(2000, 1, 1),
                 Etag = "etag",
                 HomePageUrl = "localhost.be",
                 IMDB = "12345",
                 TMDB = "12345",
                 OverView = "Lots of text",
-                ShowCount = 10,
-                SortName = "name",
-                Synced = true
+                SortName = "name"
             };
-            _personRepositoryMock.Setup(x => x.GetPersonById(It.IsAny<string>())).Returns(_returnedPerson);
 
-            var person = await _subject.GetPersonByIdAsync(_returnedPerson.Id);
+            var subject = CreatePersonService(databasePerson);
+            var person = await subject.GetPersonByNameAsync(databasePerson.Id);
 
             person.Should().NotBeNull();
-            person.Id.Should().Be(_returnedPerson.Id);
-            person.Name.Should().Be(_returnedPerson.Name);
-            person.Primary.Should().Be(_returnedPerson.Primary);
-            person.MovieCount.Should().Be(_returnedPerson.MovieCount);
-            person.BirthDate.Should().Be(_returnedPerson.BirthDate);
-            person.Etag.Should().Be(_returnedPerson.Etag);
-            person.IMDB.Should().Be(_returnedPerson.IMDB);
-            person.TMDB.Should().Be(_returnedPerson.TMDB);
-            person.OverView.Should().Be(_returnedPerson.OverView);
-            person.ShowCount.Should().Be(_returnedPerson.ShowCount);
-            person.SortName.Should().Be(_returnedPerson.SortName);
-            person.Synced.Should().BeTrue();
+            person.Id.Should().Be(databasePerson.Id);
+            person.Name.Should().Be(databasePerson.Name);
+            person.Primary.Should().Be(databasePerson.Primary);
+            person.MovieCount.Should().Be(databasePerson.MovieCount);
+            person.BirthDate.Should().Be(databasePerson.BirthDate);
+            person.Etag.Should().Be(databasePerson.Etag);
+            person.IMDB.Should().Be(databasePerson.IMDB);
+            person.TMDB.Should().Be(databasePerson.TMDB);
+            person.OverView.Should().Be(databasePerson.OverView);
+            person.ShowCount.Should().Be(databasePerson.ShowCount);
+            person.SortName.Should().Be(databasePerson.SortName);
 
-            _personRepositoryMock.Verify(x => x.GetPersonById(It.IsAny<string>()), Times.Once);
-            _personRepositoryMock.Verify(x => x.AddOrUpdatePerson(It.IsAny<Person>()), Times.Never);
+            PersonRepositoryMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
 
-            _embyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Never);
+            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Never);
         }
     }
 }
