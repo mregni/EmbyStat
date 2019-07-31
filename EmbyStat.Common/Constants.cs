@@ -52,8 +52,8 @@ namespace EmbyStat.Common
         public static class Tvdb
         {
             public static string BaseUrl => "https://api.thetvdb.com";
-            public static string SerieEpisodesUrl => "/series/{0}/episodes?page=>{1}";
-            public static string UpdatesUrl => "/updated/query?fromTime=>{0}&toTime=>{1}";
+            public static string SerieEpisodesUrl => "/series/{0}/episodes?page={1}";
+            public static string UpdatesUrl => "/updated/query?fromTime={0}&toTime={1}";
             public static string LoginUrl => "/login";
         }
 
