@@ -26,7 +26,6 @@ namespace EmbyStat.Clients.Emby.Http
         Task<string> PingEmbyAsync(string embyAddress, CancellationToken cancellationToken);
         Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken);
-        Task<QueryResult<BaseItemDto>> GetPeopleAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
         Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

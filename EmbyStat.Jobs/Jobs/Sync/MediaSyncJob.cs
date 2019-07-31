@@ -82,8 +82,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var collections = await GetCollectionsAsync(cancellationToken);
             _collectionRepository.AddOrUpdateRange(collections);
             await LogInformation($"Found {collections.Count} root items, getting ready for processing");
-
-            await ProcessPeopleAsync(cancellationToken);
             await LogProgress(15);
 
             await ProcessMoviesAsync(collections, cancellationToken);
@@ -138,15 +136,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             var result = await _embyClient.PingEmbyAsync(Settings.FullEmbyServerAddress, cancellationToken);
             return result == "Emby Server";
-        }
-
-        private async Task ProcessPeopleAsync(CancellationToken cancellationToken)
-        {
-            var embyPeople = await _embyClient.GetPeopleAsync(new ItemQuery(), cancellationToken);
-            await LogInformation($"Need to add/update {embyPeople.TotalRecordCount} people first.");
-
-            var people = embyPeople.Items.DistinctBy(x => x.Id).Select(PersonConverter.ConvertToSmallPerson);
-            _personRepository.UpserRange(people);
         }
 
         #region Movies

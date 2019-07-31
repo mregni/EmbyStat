@@ -51,7 +51,7 @@ namespace EmbyStat.Repositories
 
         public void CleanupStatistics()
         {
-           throw new NotImplementedException();
+            _statisticCollection.Delete(Query.Where("isValid", x => x.AsBoolean == false));
         }
 
         public void MarkMovieTypesAsInvalid()

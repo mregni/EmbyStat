@@ -27,7 +27,7 @@ namespace EmbyStat.Services
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly ISettingsService _settingsService;
 
-        public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ICollectionRepository collectionRepository, 
+        public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ICollectionRepository collectionRepository,
             IPersonService personService, IStatisticsRepository statisticsRepository, ISettingsService settingsService) : base(jobRepository)
         {
             _showRepository = showRepository;
@@ -78,7 +78,7 @@ namespace EmbyStat.Services
 
         private ShowGeneral CalculateGeneralStatistics(IReadOnlyList<Show> shows)
         {
-           return new ShowGeneral
+            return new ShowGeneral
             {
                 ShowCount = TotalShowCount(shows),
                 EpisodeCount = TotalEpisodeCount(shows),
@@ -171,21 +171,21 @@ namespace EmbyStat.Services
             {
                 var selectedShows = shows.Where(x => x.Genres.Any(y => y == genre));
 
-                var grouping = selectedShows
+                var personName = selectedShows
                     .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Id)
-                    .Select(group => new { Id = group.Key, Count = group.Count() })
-                    .OrderByDescending(x => x.Count);
-
-                var personId = grouping
-                    .Select(x => x.Id)
+                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Name)
                     .FirstOrDefault();
 
-                var person = await _personService.GetPersonByIdAsync(personId);
-                if (person != null)
+                if (personName != null)
                 {
-                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                    var person = await _personService.GetPersonByNameAsync(personName);
+                    if (person != null)
+                    {
+                        list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                    }
                 }
             }
 
@@ -204,7 +204,7 @@ namespace EmbyStat.Services
             {
                 Title = Constants.Shows.ShowStatusChart,
                 Labels = list.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { list.Select(x => x.Count)}
+                DataSets = new List<IEnumerable<int>> { list.Select(x => x.Count) }
 
             };
         }

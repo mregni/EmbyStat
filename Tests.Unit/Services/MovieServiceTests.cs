@@ -89,7 +89,7 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByIdAsync(person.Id)).Returns(
+                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Id)).Returns(
                     Task.FromResult(new Person
                     {
                         Id = person.Id,
