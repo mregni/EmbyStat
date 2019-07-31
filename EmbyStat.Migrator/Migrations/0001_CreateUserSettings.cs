@@ -36,7 +36,7 @@ namespace EmbyStat.Migrator.Migrations
                     WizardFinished = false,
                     Emby = new EmbySettings
                     {
-                        AuthorizationScheme = "Authorization"
+                        AuthorizationScheme = "MediaBrowser"
                     },
                     Tvdb = new TvdbSettings
                     {
