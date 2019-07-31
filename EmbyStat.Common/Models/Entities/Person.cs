@@ -10,7 +10,6 @@ namespace EmbyStat.Common.Models.Entities
         [BsonId]
         public string Id { get; set; }
         public string Name { get; set; }
-        public bool Synced { get; set; }
         public string Etag { get; set; }
         public string HomePageUrl { get; set; }
         public int MovieCount { get; set; }

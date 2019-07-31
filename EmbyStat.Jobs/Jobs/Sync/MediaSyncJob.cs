@@ -19,6 +19,7 @@ using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
+using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
 using NLog;
 
@@ -82,8 +83,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var collections = await GetCollectionsAsync(cancellationToken);
             _collectionRepository.AddOrUpdateRange(collections);
             await LogInformation($"Found {collections.Count} root items, getting ready for processing");
-
-            await ProcessPeopleAsync(cancellationToken);
             await LogProgress(15);
 
             await ProcessMoviesAsync(collections, cancellationToken);
@@ -138,15 +137,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             var result = await _embyClient.PingEmbyAsync(Settings.FullEmbyServerAddress, cancellationToken);
             return result == "Emby Server";
-        }
-
-        private async Task ProcessPeopleAsync(CancellationToken cancellationToken)
-        {
-            var embyPeople = await _embyClient.GetPeopleAsync(new ItemQuery(), cancellationToken);
-            await LogInformation($"Need to add/update {embyPeople.TotalRecordCount} people first.");
-
-            var people = embyPeople.Items.DistinctBy(x => x.Id).Select(PersonConverter.ConvertToSmallPerson);
-            _personRepository.UpserRange(people);
         }
 
         #region Movies
@@ -321,9 +311,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 try
                 {
                     await ProgressMissingEpisodesAsync(shows[i], cancellationToken);
-                    await LogProgress(Math.Round(55 + 30 * (i + 1) / (double)shows.Count, 1));
+                    await LogProgress(Math.Round(55 + 30 * (i + 1) / (double) shows.Count, 1));
                 }
-                catch (Exception)
+                catch (HttpException e)
+                {
+                    shows[i].TvdbFailed = true;
+                    _showRepository.UpdateShow(shows[i]);
+
+                    if (e.Message.Contains("(404) Not Found"))
+                    {
+                        await LogWarning($"Can't seem to find {shows[i].Name} on TVDB, skipping show for now");
+                    }
+                }
+                catch (Exception e)
                 {
                     shows[i].TvdbFailed = true;
                     _showRepository.UpdateShow(shows[i]);

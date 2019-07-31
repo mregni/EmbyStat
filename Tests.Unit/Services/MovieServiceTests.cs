@@ -89,7 +89,7 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByIdAsync(person.Id)).Returns(
+                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).Returns(
                     Task.FromResult(new Person
                     {
                         Id = person.Id,
@@ -507,7 +507,7 @@ namespace Tests.Unit.Services
             stat.People.MostFeaturedActorsPerGenre[0].Title.Should().Be("Action");
             stat.People.MostFeaturedActorsPerGenre[0].Name.Should().Be("Gimli");
             stat.People.MostFeaturedActorsPerGenre[1].Title.Should().Be("Comedy");
-            stat.People.MostFeaturedActorsPerGenre[1].Name.Should().Be("Frodo");
+            stat.People.MostFeaturedActorsPerGenre[1].Name.Should().Be("Gimli");
             stat.People.MostFeaturedActorsPerGenre[2].Title.Should().Be("Drama");
             stat.People.MostFeaturedActorsPerGenre[2].Name.Should().Be("Gimli");
         }

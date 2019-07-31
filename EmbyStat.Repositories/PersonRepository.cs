@@ -21,24 +21,9 @@ namespace EmbyStat.Repositories
             _personCollection.Upsert(people);
         }
 
-        public IEnumerable<string> GetIds()
-        {
-            return _personCollection.FindAll().Select(x => x.Id);
-        }
-
-        public Person GetPersonById(string id)
+        public Person GetPersonByName(string id)
         {
             return _personCollection.FindOne(x => x.Id == id);
-        }
-
-        public void AddOrUpdatePerson(Person person)
-        {
-            _personCollection.Upsert(person);
-        }
-
-        public void CleanupPersons()
-        {
-            throw new NotImplementedException();
         }
     }
 }

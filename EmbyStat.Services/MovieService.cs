@@ -307,7 +307,7 @@ namespace EmbyStat.Services
         private MoviePoster ShortestMovie(IEnumerable<Movie> movies)
         {
             var settings = _settingsService.GetUserSettings();
-            var movie = movies.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= settings.ToShortMovie)
+            var movie = movies.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= TimeSpan.FromMinutes(settings.ToShortMovie).Ticks)
                               .OrderBy(x => x.RunTimeTicks)
                               .ThenBy(x => x.SortName)
                               .FirstOrDefault();
@@ -376,15 +376,16 @@ namespace EmbyStat.Services
 
         private async Task<PersonPoster> GetMostFeaturedPersonAsync(IEnumerable<Movie> movies, PersonType type, string title)
         {
-            var personId = movies.SelectMany(x => x.People)
+            var personName = movies.SelectMany(x => x.People)
                 .Where(x => x.Type == type)
-                .GroupBy(x => x.Id, x => x.Name, (id, name) => new { Key = id, Count = name.Count() })
+                .GroupBy(x => x.Name, (Name, people) => new { Name, Count = people.Count() })
                 .OrderByDescending(x => x.Count)
-                .Select(x => x.Key)
+                .Select(x => x.Name)
                 .FirstOrDefault();
-            if (personId != null)
+
+            if (personName != null)
             {
-                var person = await _personService.GetPersonByIdAsync(personId);
+                var person = await _personService.GetPersonByNameAsync(personName);
                 if (person != null)
                 {
                     return PosterHelper.ConvertToPersonPoster(person, title);
@@ -401,19 +402,20 @@ namespace EmbyStat.Services
             foreach (var genre in movies.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
             {
                 var selectedMovies = movies.Where(x => x.Genres.Any(y => y == genre));
-                var personId = selectedMovies
+                var personName = selectedMovies
                     .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Id)
-                    .Select(group => new { Id = group.Key, Count = group.Count() })
+                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count()})
                     .OrderByDescending(x => x.Count)
-                    .Select(x => x.Id)
+                    .Select(x => x.Name)
                     .FirstOrDefault();
-
-                var person = await _personService.GetPersonByIdAsync(personId);
-                if (person != null)
+                if (personName != null)
                 {
-                    list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                    var person = await _personService.GetPersonByNameAsync(personName);
+                    if (person != null)
+                    {
+                        list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                    }
                 }
             }
 
