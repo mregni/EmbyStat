@@ -93,13 +93,11 @@ namespace EmbyStat.Services
         public void LoadUserSettingsFromFile()
         {
             var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
-            if (!File.Exists(dir))
+            if (File.Exists(dir))
             {
-                throw new FileNotFoundException("usersettings.json not found, check if migration ran");
+                _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
+                OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
             }
-
-            _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
-            OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
         }
     }
 }
