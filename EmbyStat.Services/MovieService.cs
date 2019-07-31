@@ -307,7 +307,7 @@ namespace EmbyStat.Services
         private MoviePoster ShortestMovie(IEnumerable<Movie> movies)
         {
             var settings = _settingsService.GetUserSettings();
-            var movie = movies.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= settings.ToShortMovie)
+            var movie = movies.Where(x => x.RunTimeTicks != null && x.RunTimeTicks >= TimeSpan.FromMinutes(settings.ToShortMovie).Ticks)
                               .OrderBy(x => x.RunTimeTicks)
                               .ThenBy(x => x.SortName)
                               .FirstOrDefault();
