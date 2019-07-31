@@ -19,6 +19,7 @@ using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
+using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
 using NLog;
 
@@ -310,9 +311,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 try
                 {
                     await ProgressMissingEpisodesAsync(shows[i], cancellationToken);
-                    await LogProgress(Math.Round(55 + 30 * (i + 1) / (double)shows.Count, 1));
+                    await LogProgress(Math.Round(55 + 30 * (i + 1) / (double) shows.Count, 1));
                 }
-                catch (Exception)
+                catch (HttpException e)
+                {
+                    shows[i].TvdbFailed = true;
+                    _showRepository.UpdateShow(shows[i]);
+
+                    if (e.Message.Contains("(404) Not Found"))
+                    {
+                        await LogWarning($"Can't seem to find {shows[i].Name} on TVDB, skipping show for now");
+                    }
+                }
+                catch (Exception e)
                 {
                     shows[i].TvdbFailed = true;
                     _showRepository.UpdateShow(shows[i]);
