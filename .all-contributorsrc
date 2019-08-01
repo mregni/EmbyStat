@@ -30,9 +30,18 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/6593614?v=4",
       "profile": "https://github.com/Darkassassin07",
       "contributions": [
-        "bug",
+        "userTesting",
         "test"
       ]
+    },
+    {
+      "login": "jaycedk",
+      "name": "jaycedk",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/17232146?v=4",
+      "profile": "https://github.com/jaycedk",
+      "contributions": [
+        "userTesting",
+        "bug"
     }
   ],
   "contributorsPerLine": 7,
