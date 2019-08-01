@@ -23,6 +23,16 @@
       "contributions": [
         "question"
       ]
+    },
+    {
+      "login": "jaycedk",
+      "name": "jaycedk",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/17232146?v=4",
+      "profile": "https://github.com/jaycedk",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
