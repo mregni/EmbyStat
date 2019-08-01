@@ -53,6 +53,16 @@
         "userTesting",
         "bug"
       ]
+    },
+    {
+      "login": "Diedrich",
+      "name": "Diedrich",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/638793?v=4",
+      "profile": "https://github.com/diedrich",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

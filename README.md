@@ -7,7 +7,7 @@
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
 ![Codacy](https://api.codacy.com/project/badge/Grade/92431e9931574cf2a663242fde86c47f)
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
 
 # Intro
 
@@ -81,6 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Darkassassin07"><img src="https://avatars3.githubusercontent.com/u/6593614?v=4" width="100px;" alt="Darkassassin07"/><br /><sub><b>Darkassassin07</b></sub></a><br /><a href="#userTesting-Darkassassin07" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/commits?author=Darkassassin07" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/jaycedk"><img src="https://avatars3.githubusercontent.com/u/17232146?v=4" width="100px;" alt="jaycedk"/><br /><sub><b>jaycedk</b></sub></a><br /><a href="#userTesting-jaycedk" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3Ajaycedk" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/Happy2Play"><img src="https://avatars1.githubusercontent.com/u/10268557?v=4" width="100px;" alt="Doug"/><br /><sub><b>Doug</b></sub></a><br /><a href="#userTesting-Happy2Play" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3AHappy2Play" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/diedrich"><img src="https://avatars2.githubusercontent.com/u/638793?v=4" width="100px;" alt="Diedrich"/><br /><sub><b>Diedrich</b></sub></a><br /><a href="#userTesting-Diedrich" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3ADiedrich" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
