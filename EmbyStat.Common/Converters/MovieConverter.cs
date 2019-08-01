@@ -76,12 +76,14 @@ namespace EmbyStat.Common.Converters
                     Width = y.Width
                 }).ToList(),
                 Genres = x.Genres,
-                People = x.People.Select(y => new ExtraPerson
-                {
-                    Id = y.Id,
-                    Name = y.Name,
-                    Type = y.Type
-                }).ToArray()
+                People = x.People
+                    .Where(y => y.Name.Length > 1)
+                    .Select(y => new ExtraPerson
+                    {
+                        Id = y.Id,
+                        Name = y.Name,
+                        Type = y.Type
+                    }).ToArray()
             };
         }
     }
