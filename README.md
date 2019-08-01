@@ -7,7 +7,7 @@
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
 ![Codacy](https://api.codacy.com/project/badge/Grade/92431e9931574cf2a663242fde86c47f)
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 
 # Intro
 
@@ -74,7 +74,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table><tr><td align="center"><a href="http://uping.be"><img src="https://avatars3.githubusercontent.com/u/22617019?v=4" width="100px;" alt="Mikhaël Regni"/><br /><sub><b>Mikhaël Regni</b></sub></a><br /><a href="#projectManagement-mregni" title="Project Management">📆</a> <a href="https://github.com/mregni/EmbyStat/commits?author=mregni" title="Code">💻</a></td><td align="center"><a href="https://github.com/jaketame"><img src="https://avatars0.githubusercontent.com/u/1787973?v=4" width="100px;" alt="Jake Tamé"/><br /><sub><b>Jake Tamé</b></sub></a><br /><a href="#question-jaketame" title="Answering Questions">💬</a></td></tr></table>
+<table>
+  <tr>
+    <td align="center"><a href="http://uping.be"><img src="https://avatars3.githubusercontent.com/u/22617019?v=4" width="100px;" alt="Mikhaël Regni"/><br /><sub><b>Mikhaël Regni</b></sub></a><br /><a href="#projectManagement-mregni" title="Project Management">📆</a> <a href="https://github.com/mregni/EmbyStat/commits?author=mregni" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jaketame"><img src="https://avatars0.githubusercontent.com/u/1787973?v=4" width="100px;" alt="Jake Tamé"/><br /><sub><b>Jake Tamé</b></sub></a><br /><a href="#question-jaketame" title="Answering Questions">💬</a></td>
+    <td align="center"><a href="https://github.com/Darkassassin07"><img src="https://avatars3.githubusercontent.com/u/6593614?v=4" width="100px;" alt="Darkassassin07"/><br /><sub><b>Darkassassin07</b></sub></a><br /><a href="https://github.com/mregni/EmbyStat/issues?q=author%3ADarkassassin07" title="Bug reports">🐛</a> <a href="https://github.com/mregni/EmbyStat/commits?author=Darkassassin07" title="Tests">⚠️</a></td>
+  </tr>
+</table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
