@@ -307,6 +307,7 @@
   },
   "ABOUT": {
     "SERVERINFO": "Server info",
+    "GITHUBRELEASE": "Releases on Github",
     "REQUESTFEATURE": "Request feature",
     "LOGBUG": "Log bug on Github",
     "HELPTRANSLATE": "Help translate the app",
