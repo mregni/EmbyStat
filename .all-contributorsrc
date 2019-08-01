@@ -25,6 +25,16 @@
       ]
     },
     {
+      "login": "Darkassassin07",
+      "name": "Darkassassin07",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6593614?v=4",
+      "profile": "https://github.com/Darkassassin07",
+      "contributions": [
+        "userTesting",
+        "test"
+      ]
+    },
+    {
       "login": "jaycedk",
       "name": "jaycedk",
       "avatar_url": "https://avatars3.githubusercontent.com/u/17232146?v=4",
@@ -32,7 +42,6 @@
       "contributions": [
         "userTesting",
         "bug"
-      ]
     }
   ],
   "contributorsPerLine": 7,
