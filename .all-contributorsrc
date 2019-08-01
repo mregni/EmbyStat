@@ -63,6 +63,16 @@
         "userTesting",
         "bug"
       ]
+    },
+    {
+      "login": "adrianwi",
+      "name": "adrianwi",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/15711539?v=4",
+      "profile": "https://github.com/adrianwi",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
