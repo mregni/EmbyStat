@@ -7,7 +7,7 @@
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
 ![Codacy](https://api.codacy.com/project/badge/Grade/92431e9931574cf2a663242fde86c47f)
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 
 # Intro
 
@@ -83,6 +83,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Happy2Play"><img src="https://avatars1.githubusercontent.com/u/10268557?v=4" width="100px;" alt="Doug"/><br /><sub><b>Doug</b></sub></a><br /><a href="#userTesting-Happy2Play" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3AHappy2Play" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/diedrich"><img src="https://avatars2.githubusercontent.com/u/638793?v=4" width="100px;" alt="Diedrich"/><br /><sub><b>Diedrich</b></sub></a><br /><a href="#userTesting-Diedrich" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3ADiedrich" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/adrianwi"><img src="https://avatars1.githubusercontent.com/u/15711539?v=4" width="100px;" alt="adrianwi"/><br /><sub><b>adrianwi</b></sub></a><br /><a href="#userTesting-adrianwi" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3Aadrianwi" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/wilhelmstroker"><img src="https://avatars1.githubusercontent.com/u/45869623?v=4" width="100px;" alt="WilhelmStroker"/><br /><sub><b>WilhelmStroker</b></sub></a><br /><a href="#userTesting-WilhelmStroker" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3AWilhelmStroker" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
