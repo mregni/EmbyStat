@@ -23,6 +23,76 @@
       "contributions": [
         "question"
       ]
+    },
+    {
+      "login": "Darkassassin07",
+      "name": "Darkassassin07",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6593614?v=4",
+      "profile": "https://github.com/Darkassassin07",
+      "contributions": [
+        "userTesting",
+        "test"
+      ]
+    },
+    {
+      "login": "jaycedk",
+      "name": "jaycedk",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/17232146?v=4",
+      "profile": "https://github.com/jaycedk",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
+    },
+    {
+      "login": "Happy2Play",
+      "name": "Doug",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10268557?v=4",
+      "profile": "https://github.com/Happy2Play",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
+    },
+    {
+      "login": "Diedrich",
+      "name": "Diedrich",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/638793?v=4",
+      "profile": "https://github.com/diedrich",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
+    },
+    {
+      "login": "adrianwi",
+      "name": "adrianwi",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/15711539?v=4",
+      "profile": "https://github.com/adrianwi",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
+    },
+    {
+      "login": "WilhelmStroker",
+      "name": "WilhelmStroker",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/45869623?v=4",
+      "profile": "https://github.com/wilhelmstroker",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
+    },
+    {
+      "login": "gerritv",
+      "name": "Gerrit Visser",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/8202594?v=4",
+      "profile": "https://github.com/gerritv",
+      "contributions": [
+        "userTesting",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
