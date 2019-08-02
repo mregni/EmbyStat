@@ -23,7 +23,6 @@ namespace EmbyStat.Common.Converters
                 ParentId = show.ParentId,
                 Path = show.Path,
                 CommunityRating = show.CommunityRating,
-                CumulativeRunTimeTicks = show.RunTimeTicks,
                 DateCreated = show.DateCreated,
                 IMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value,
                 TMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value,
