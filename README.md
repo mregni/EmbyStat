@@ -7,7 +7,7 @@
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
 ![Codacy](https://api.codacy.com/project/badge/Grade/92431e9931574cf2a663242fde86c47f)
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors)
 
 # Intro
 
@@ -86,6 +86,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/wilhelmstroker"><img src="https://avatars1.githubusercontent.com/u/45869623?v=4" width="100px;" alt="WilhelmStroker"/><br /><sub><b>WilhelmStroker</b></sub></a><br /><a href="#userTesting-WilhelmStroker" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3AWilhelmStroker" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/gerritv"><img src="https://avatars1.githubusercontent.com/u/8202594?v=4" width="100px;" alt="Gerrit Visser"/><br /><sub><b>Gerrit Visser</b></sub></a><br /><a href="#userTesting-gerritv" title="User Testing">📓</a> <a href="https://github.com/mregni/EmbyStat/issues?q=author%3Agerritv" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
