@@ -15,7 +15,7 @@ namespace EmbyStat.Repositories
         {
             try
             {
-                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), settings.Value.Dirs.Database, settings.Value.DatabaseFile);
+                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), settings.Value.Dirs.Config, settings.Value.DatabaseFile);
                 _context = new LiteDatabase(dbPath);
             }
             catch (Exception ex)

@@ -17,7 +17,7 @@ namespace EmbyStat.Migrator.Migrations
         {
             try
             {
-                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), AppSettings.Dirs.Database, AppSettings.DatabaseFile);
+                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), AppSettings.Dirs.Config, AppSettings.DatabaseFile);
                 var context = new LiteDatabase(dbPath);
 
                 var movieCollection = context.GetCollection("Movie");

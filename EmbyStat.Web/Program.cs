@@ -18,7 +18,7 @@ namespace EmbyStat.Web
     {
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog(Path.Combine("Settings", "nlog.config")).GetCurrentClassLogger();
+            var logger = NLogBuilder.ConfigureNLog(Path.Combine("config", "nlog.config")).GetCurrentClassLogger();
 
             try
             {

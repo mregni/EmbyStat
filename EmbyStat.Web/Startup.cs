@@ -155,11 +155,6 @@ namespace EmbyStat.Web
             {
                 Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.TempUpdateDir), true);
             }
-
-            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.Database)))
-            {
-                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), settings.Dirs.Database));
-            }
         }
 
         private void PerformPostStartupFunctions()
