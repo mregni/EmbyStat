@@ -7,6 +7,7 @@
     EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby server. Just install this on your server and let him calculate all kinds of fun stuff.[br][br]
     [b][span style='color: #E80000;']Directories:[/span][/b][br]
     [b]/config[/b] : this path is used to store EmbyStat's configuration.[br]
+    [b]/logs[/b] : this path is used to store all log files.[br]
     [b][span style='color: #E80000;']This is beta.[/span][/b][br]
   </Description>
   <Registry>https://registry.hub.docker.com/u/uping/embystat/</Registry>
