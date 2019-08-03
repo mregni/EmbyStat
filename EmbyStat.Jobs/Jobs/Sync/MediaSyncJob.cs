@@ -172,7 +172,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                         ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
                         ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
                         ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
-                        ItemFields.ProductionYear
+                        ItemFields.ProductionYear, ItemFields.RunTimeTicks
                     }
             };
 
@@ -234,7 +234,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
                     ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
                     ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
-                    ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status
+                    ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
                 }
             };
             var embyShows = await _embyClient.GetItemsAsync(query);
@@ -260,6 +260,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     .Select(x => ShowConverter.ConvertToEpisode(x, show))
                     .ToList();
 
+                show.CumulativeRunTimeTicks = episodes.Sum(x => x.RunTimeTicks ?? 0);
                 show.Seasons = seasons;
                 show.Episodes = episodes;
 
