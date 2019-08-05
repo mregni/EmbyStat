@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Migrator.Models;
 using LiteDB;
@@ -17,7 +18,7 @@ namespace EmbyStat.Migrator.Migrations
         {
             try
             {
-                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), AppSettings.Dirs.Config, AppSettings.DatabaseFile);
+                var dbPath = Path.Combine(AppSettings.Dirs.Config, AppSettings.DatabaseFile).GetLocalPath();
                 var context = new LiteDatabase(dbPath);
 
                 var movieCollection = context.GetCollection("Movie");
