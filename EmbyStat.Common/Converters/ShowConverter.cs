@@ -35,6 +35,7 @@ namespace EmbyStat.Common.Converters
                 Status = show.Status,
                 Genres = show.Genres,
                 People = show.People
+                    .Where(x => x.Name.Length > 1)
                     .GroupBy(y => y.Id)
                     .Select(y => y.First())
                     .Select(y => new ExtraPerson

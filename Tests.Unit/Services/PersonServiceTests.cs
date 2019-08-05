@@ -80,6 +80,24 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
+        public async void GetPersonByNameWithEmbyFail()
+        {
+            PersonRepositoryMock = new Mock<IPersonRepository>();
+            PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns((Person) null);
+
+            EmbyClientMock = new Mock<IEmbyClient>();
+            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None)).Throws(new Exception());
+
+            var movieRepositoryMock = new Mock<IMovieRepository>();
+            var showRepositoryMock = new Mock<IShowRepository>();
+
+            var subject = new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, EmbyClientMock.Object);
+            var person = await subject.GetPersonByNameAsync("testing name");
+
+            person.Should().BeNull();
+        }
+
+        [Fact]
         public async void GetPersonByNameInDatabase()
         {
             var databasePerson = new Person
