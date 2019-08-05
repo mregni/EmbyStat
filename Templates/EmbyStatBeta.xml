@@ -7,7 +7,6 @@
     EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby server. Just install this on your server and let him calculate all kinds of fun stuff.[br][br]
     [b][span style='color: #E80000;']Directories:[/span][/b][br]
     [b]/config[/b] : this path is used to store EmbyStat's configuration.[br]
-    [b]/logs[/b] : this path is used to store all log files.[br]
     [b][span style='color: #E80000;']This is beta.[/span][/b][br]
   </Description>
   <Registry>https://registry.hub.docker.com/u/uping/embystat/</Registry>
@@ -44,13 +43,8 @@
       <ContainerDir>/config</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
-    <Volume>
-      <HostDir>/mnt/cache/appdata/embystat/logs</HostDir>
-      <ContainerDir>/logs</ContainerDir>
-      <Mode>rw</Mode>
-    </Volume>
   </Data>
   <WebUI>http://[IP]:[PORT:6555]/</WebUI>
-  <Banner>https://raw.githubusercontent.com/MediaBrowser/Emby.Resources/master/images/Logos/logo.png</Banner>
-  <Icon>https://raw.githubusercontent.com/MediaBrowser/Emby.Resources/master/images/Logos/logoicon.png</Icon>
+  <Banner>https://raw.githubusercontent.com/mregni/EmbyStat/develop/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png</Banner>
+  <Icon>https://raw.githubusercontent.com/mregni/EmbyStat/develop/EmbyStat.Web/ClientApp/src/assets/images/favicon.ico</Icon>
 </Container>
