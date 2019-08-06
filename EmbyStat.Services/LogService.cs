@@ -22,7 +22,8 @@ namespace EmbyStat.Services
         {
             var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
-            foreach (var filePath in Directory.EnumerateFiles(_settingsService.GetAppSettings().Dirs.Logs.GetLocalPath()))
+            var dirs = _settingsService.GetAppSettings().Dirs;
+            foreach (var filePath in Directory.EnumerateFiles(Path.Combine(dirs.Config, dirs.Logs).GetLocalPath()))
             {
                 var file = new FileInfo(filePath);
                 list.Add(new LogFile
@@ -37,8 +38,8 @@ namespace EmbyStat.Services
 
         public Stream GetLogStream(string fileName, bool anonymous)
         {
-            var logDir = _settingsService.GetAppSettings().Dirs.Logs;
-            var logStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), logDir, fileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var dirs = _settingsService.GetAppSettings().Dirs;
+            var logStream = new FileStream(Path.Combine(dirs.Config, dirs.Logs, fileName).GetLocalPath(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
             if (!anonymous)
             {

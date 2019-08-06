@@ -48,7 +48,7 @@ namespace EmbyStat.Services
             _userSettings.Version = version;
 
             var strJson = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
-            var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
+            var dir = Path.Combine(_appSettings.Dirs.Config, "usersettings.json");
             await File.WriteAllTextAsync(dir, strJson);
 
             CreateRollbarLogger();
@@ -92,7 +92,7 @@ namespace EmbyStat.Services
 
         public void LoadUserSettingsFromFile()
         {
-            var dir = Path.Combine(_appSettings.Dirs.Settings, "usersettings.json");
+            var dir = Path.Combine(_appSettings.Dirs.Config, "usersettings.json");
             if (File.Exists(dir))
             {
                 _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
