@@ -49,7 +49,8 @@
     "PERCENTAGE": "pourcentage",
     "COLLECTED": "collecté",
     "UPDATES": "Mises à jour",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "L'acteur le plus en vue par genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
