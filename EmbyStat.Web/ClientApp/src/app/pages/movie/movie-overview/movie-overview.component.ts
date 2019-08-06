@@ -1,10 +1,10 @@
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
 import { OptionsService } from 'src/app/shared/components/charts/options/options';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
-import {
-  Component, HostListener, OnDestroy, OnInit, ViewChild
-} from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
@@ -38,6 +38,9 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
   settings: Settings;
 
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
   suspiciousDisplayedWideColumns = [
     'position', 'title', 'reason', 'linkOne', 'qualityOne', 'addedOnOne', 'linkTwo', 'qualityTwo', 'addedOnTwo'
   ];
@@ -53,6 +56,7 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private readonly settingsFacade: SettingsFacade,
     private readonly movieService: MovieService,
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     public dialog: MatDialog,
     private readonly optionsService: OptionsService) {
     this.settingsSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
@@ -78,6 +82,10 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
     this.collectionsFormControl.valueChanges.subscribe((collectionList: string[]) => {
       this.statistics$ = this.movieService.getStatistics(collectionList);
     });
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
+    });
   }
 
   ngOnInit() {
@@ -96,7 +104,7 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
   openMovie(id: string): void {
     const embyUrl = ConfigHelper.getFullEmbyAddress(this.settings);
-    window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}`, '_blank');
+    window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
   ngOnDestroy() {
@@ -114,6 +122,10 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
 
     if (this.isMovieTypePresentSub !== undefined) {
       this.isMovieTypePresentSub.unsubscribe();
+    }
+
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
     }
   }
 }

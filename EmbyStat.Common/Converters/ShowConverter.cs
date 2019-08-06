@@ -23,7 +23,6 @@ namespace EmbyStat.Common.Converters
                 ParentId = show.ParentId,
                 Path = show.Path,
                 CommunityRating = show.CommunityRating,
-                CumulativeRunTimeTicks = show.RunTimeTicks,
                 DateCreated = show.DateCreated,
                 IMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value,
                 TMDB = show.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value,
@@ -36,6 +35,7 @@ namespace EmbyStat.Common.Converters
                 Status = show.Status,
                 Genres = show.Genres,
                 People = show.People
+                    .Where(x => x.Name.Length > 1)
                     .GroupBy(y => y.Id)
                     .Select(y => y.First())
                     .Select(y => new ExtraPerson

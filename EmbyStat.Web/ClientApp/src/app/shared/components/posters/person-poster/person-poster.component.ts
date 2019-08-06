@@ -1,5 +1,7 @@
 import { Subscription } from 'rxjs';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -18,8 +20,18 @@ export class PersonPosterComponent implements OnDestroy {
   settings: Settings;
   @Input() poster: PersonPoster;
 
-  constructor(private settingsFacade: SettingsFacade, private _sanitizer: DomSanitizer) {
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
+  constructor(
+    private settingsFacade: SettingsFacade, 
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
+    private _sanitizer: DomSanitizer) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
+    });
   }
 
   getPoster() {
@@ -37,7 +49,7 @@ export class PersonPosterComponent implements OnDestroy {
   }
 
   openPerson(): void {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
   needsBarAndTranslation(title: string): boolean {
@@ -59,6 +71,10 @@ export class PersonPosterComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
+    }
+
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
     }
   }
 }

@@ -31,6 +31,7 @@ import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.compone
 import { NoUsersFoundDialog } from './dialogs/no-users-found-dialog/no-users-found-dialog';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
+import { EmbyServerInfoFacade } from './facades/emby-server.facade';
 import { SettingsFacade } from './facades/settings.facade';
 import { SyncGuard } from './guards/sync.guard';
 import { MaterialModule } from './material.module';
@@ -140,6 +141,7 @@ export class SharedModule {
         SettingsService,
         SettingsFacade,
         EmbyService,
+        EmbyServerInfoFacade,
         ToastService,
         JobSocketService,
         SideBarService,

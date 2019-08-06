@@ -49,7 +49,8 @@
     "PERCENTAGE": "prozentualer Anteil",
     "COLLECTED": "Gesammelt",
     "UPDATES": "Updates",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "Häufigster Schauspieler je Genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
@@ -63,14 +64,14 @@
     "CANTCONNECTTOGITHUB": "Keine Verbindung zu GitHub zum Überprüfen von Updates möglich. Versuche es später erneut.",
     "NOUPDATEFILE": "Die Update-Anwendung kann nicht gefunden werden. Es wurde kein Update durchgeführt",
     "UPDATEUNPACKERROR": "Etwas ist beim Entpacken des Updates schiefgegangen. Bitte versuchen Sie es erneut.",
-    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
+    "TVDBLOGINFAILED": "TheTVDB Login fehlgeschlagen, überprüfen Sie den API-Schlüssel."
   },
   "FORMLABELS": {
-    "NAME": "Username",
+    "NAME": "Benutzername",
     "LANGUAGE": "Sprache auswählen",
     "DURATIONINMINUTES": "Dauer in Minuten",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
-    "TVDBAPI": "TheTVDB API key",
+    "ENABLETOSHORTMOVIES": "Erkennung von zu kurzen Filmen aktivieren",
+    "TVDBAPI": "TheTVDB API-Schlüssel",
     "CRON": "Cron Intervall",
     "EXCEPTIONLOGGING": "Ausnahmeprotokollierung aktivieren"
   },
@@ -110,7 +111,7 @@
     "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren."
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
+    "COLLECTIONPLACEHOLDER": "Filmsammlungen filtern",
     "TOTALMOVIES": "Anzahl Filme",
     "TOTALGENRES": "Anzahl Genres",
     "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
@@ -151,14 +152,14 @@
     },
     "SAVED": {
       "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
-      "TVDB": "Tvdb key saved!",
+      "TVDB": "TVDB API-Schlüssel gespeichert!",
       "EMBY": "Emby-Einstellungen wurden gespeichert!",
       "MOVIES": "Film-Einstellungen wurden gespeichert!",
       "SHOWS": "Serien-Einstellungen wurden gespeichert!",
       "UPDATES": "Update-Einstellungen wurden gespeichert!"
     },
     "GENERAL": {
-      "NOUSERNAME": "Username can't be blank",
+      "NOUSERNAME": "Benutzername darf nicht leer sein",
       "TVDBAPIKEY": "Wenn Sie möchten, können Sie hier für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
       "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen.",
       "EXCEPTIONLOGGING": "Aktivieren / deaktivieren Sie die Protokollierung von Fehlern bei Rollbar (Online Dienst). Mit dieser Protokollierung kann ich die Anwendung schneller debuggen und beheben. Es werden niemals persönliche Daten aufgezeichnet, sondern nur Ausnahmemeldungen, Stacktrace, Betriebssystemname und Versionsnummer."
@@ -171,23 +172,23 @@
       "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYADDRESS": "Emby IP/Domain",
       "EMBYUSERNAME": "Emby Admin Benutzername",
       "EMBYPASSWORD": "Emby Admin Passwort",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
-      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
-      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
+      "EMBYPORT": "Emby Port",
+      "EMBYADDRESSREQUIRED": "Emby IP/Domain erforderlich.",
+      "EMBYUSERNAMEREQUIRED": "Emby Admin-Benutzername erforderlich.",
+      "EMBYPASSWORDREQUIRED": "Emby Admin-Passwort erforderlich.",
+      "EMBYPORTREQUIRED": "Emby Port erforderlich.",
+      "WRONGPASSWORD": "Falscher Benutzername und/oder Passwort. Bitte überprüfen Sie Ihre Anmeldeinformationen und versuchen Sie es erneut",
+      "NOADMINUSER": "Der angegebene Emby-Benutzer ist kein Administrator auf dem Server. Bitte geben Sie einen Admin-Account an."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Automatische Updates aktivieren",
       "CHECK": "Server auf Updates überprüfen und aktualisieren",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Server jetzt aktualisieren",
       "TRAIN": "Ändern Sie den Updatekanal, wenn Sie Beta-Updates erhalten möchten.",
       "ONBETA": "Sie befinden sich nicht mehr im Master-Kanal und können nicht wieder darauf umsteigen. Wenn Sie mit dem Master-Kanal fortfahren möchten, installieren Sie den Server erneut.",
       "TRAINWARNING": "Hier können Sie den Updatekanal von Master auf Beta umstellen. Wenn Sie nicht wissen, was Sie tun, lassen Sie diese Einstellung auf Master. Wenn Sie die Beta-Updates erhalten möchten, ändern Sie es hier. Beachten Sie, dass Sie später nicht mehr zu Master wechseln können. Sie müssen den Server neu installieren.",
@@ -202,7 +203,7 @@
     "ISHIDDEN": "Wird auf dem Anmeldebildschirm versteckt",
     "ISDISABLED": "Ist deaktiviert",
     "DELETED": "Gelöschter Benutzer",
-    "ACTIVE": "Active users",
+    "ACTIVE": "Aktive Benutzer",
     "LASTACTIVE": "Zuletzt aktiv",
     "SORTING": {
       "USERNAMEASC": "Benutzername (A - Z)",
@@ -240,7 +241,7 @@
     "NORUN": "Noch nicht druchgeführt",
     "MOMENT_AGO": "gerade eben",
     "JOBLOGS": "Job Logs",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Cron-Wert aktualisiert",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Emby Verbindung prüfen",
       "PINGEMBYSERVERDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
@@ -306,26 +307,26 @@
     "MOREMISSEDPINGS": "Konnte nach mehreren Versuchen keine Verbindung zu Emby hergestellt werden!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "SERVERINFO": "Serverinfo",
+    "GITHUBRELEASE": "Releases auf Github",
+    "REQUESTFEATURE": "Funktion anfordern",
+    "LOGBUG": "Fehler auf GitHub melden",
+    "HELPTRANSLATE": "Helfe diese App zu übersetzen",
     "THANKS": {
       "TITLE": "Vielen Dank",
       "TEXT": "Vielen Dank an die folgenden Personen für die Übersetzung der App in ihre Muttersprache:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Aktionen"
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HOSTOS": "Host-OS",
+    "WANADDRESS": "WAN-Adresse",
+    "LANADDRESS": "LAN-Adresse",
+    "CACHEPATH": "Cache-Pfad",
+    "LOGPATH": "Log-Pfad",
+    "HTTPPORT": "HTTP Port",
+    "HTTPSPORT": "HTTPS Port"
   }
 }

@@ -49,7 +49,8 @@
     "PERCENTAGE": "percentage",
     "COLLECTED": "verzameld",
     "UPDATES": "Updates",
-    "VERSION": "Versie"
+    "VERSION": "Versie",
+    "ACTORSPERGENRE": "Meest aanbevolen acteur per genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",

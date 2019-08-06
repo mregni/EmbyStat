@@ -98,7 +98,7 @@ namespace EmbyStat.Repositories
                 {
                     new Language {Id = Guid.NewGuid().ToString(), Name = "Nederlands", Code = "nl-NL"},
                     new Language {Id = Guid.NewGuid().ToString(), Name = "English", Code = "en-US"},
-                    new Language {Id = Guid.NewGuid().ToString(), Name = "Deutsche", Code = "de-DE"},
+                    new Language {Id = Guid.NewGuid().ToString(), Name = "Deutsch", Code = "de-DE"},
                     new Language {Id = Guid.NewGuid().ToString(), Name = "Dansk", Code = "da-DK"},
                     new Language {Id = Guid.NewGuid().ToString(), Name = "Ελληνικά", Code = "el-GR"},
                     new Language {Id = Guid.NewGuid().ToString(), Name = "Español", Code = "es-ES"},

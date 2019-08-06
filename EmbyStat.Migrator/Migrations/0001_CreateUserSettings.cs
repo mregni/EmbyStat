@@ -16,7 +16,7 @@ namespace EmbyStat.Migrator.Migrations
     {
         public override void Up()
         {
-            var dir = Path.Combine(AppSettings.Dirs.Settings, "usersettings.json");
+            var dir = Path.Combine(AppSettings.Dirs.Config, "usersettings.json");
             if (!File.Exists(dir))
             {
                 UserSettings = new UserSettings

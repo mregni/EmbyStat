@@ -1,7 +1,9 @@
 import { Subscription } from 'rxjs';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { ConfigHelper } from '../../../helpers/config-helper';
@@ -13,15 +15,23 @@ import { Settings } from '../../../models/settings/settings';
   templateUrl: './movie-poster.component.html',
   styleUrls: ['./movie-poster.component.scss']
 })
-export class MoviePosterComponent implements OnInit {
+export class MoviePosterComponent implements OnInit, OnDestroy {
   settingsSub: Subscription;
   settings: Settings;
   @Input() poster: MoviePoster;
 
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
   constructor(
     private readonly settingsFacade: SettingsFacade,
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     private readonly sanitizer: DomSanitizer) {
     this.settingsSub = this.settingsFacade.getSettings().subscribe(data => this.settings = data);
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
+    });
   }
 
   ngOnInit() {
@@ -42,6 +52,15 @@ export class MoviePosterComponent implements OnInit {
   }
 
   openMovie() {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}&serverId=${this.embyServerInfo.id}`, '_blank');
+  }
+
+  ngOnDestroy() {
+    if (this.settingsSub !== undefined) {
+      this.settingsSub.unsubscribe();
+    }
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
+    }
   }
 }

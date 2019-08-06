@@ -26,6 +26,7 @@ import { LogsModule } from './pages/logs/logs.module';
 import { MovieModule } from './pages/movie/movie.module';
 import { PluginModule } from './pages/plugin/plugin.module';
 import { ServerModule } from './pages/server/server.module';
+import { EmbyServerInfoEffects } from './pages/server/state/emby-server.effects';
 import { SettingsModule } from './pages/settings/settings.module';
 import { SettingsEffects } from './pages/settings/state/settings.effects';
 import { ShowModule } from './pages/show/show.module';
@@ -74,7 +75,7 @@ library.add(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
     NgProgressModule,
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
-    EffectsModule.forRoot([SettingsEffects]),
+    EffectsModule.forRoot([SettingsEffects, EmbyServerInfoEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
   ],
   schemas: [],
