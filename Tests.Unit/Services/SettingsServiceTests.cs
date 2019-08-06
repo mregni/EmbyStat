@@ -29,7 +29,7 @@ namespace Tests.Unit.Services
             };
 
             var appSettingsMock = new Mock<IOptions<AppSettings>>();
-            appSettingsMock.Setup(x => x.Value).Returns(new AppSettings { Version = "0.0.0.0", Dirs = new Dirs { Settings = "Settings" }, Rollbar = rollbar });
+            appSettingsMock.Setup(x => x.Value).Returns(new AppSettings { Version = "0.0.0.0", Dirs = new Dirs { Config = "config" }, Rollbar = rollbar });
 
             _subject = new SettingsService(appSettingsMock.Object);
         }
@@ -49,8 +49,8 @@ namespace Tests.Unit.Services
             };
 
             var strJson = JsonConvert.SerializeObject(fileSettings, Formatting.Indented);
-            Directory.CreateDirectory("Settings");
-            var dir = Path.Combine("Settings", "usersettings.json");
+            Directory.CreateDirectory("config");
+            var dir = Path.Combine("config", "usersettings.json");
             File.WriteAllText(dir, strJson);
         }
 
@@ -72,7 +72,7 @@ namespace Tests.Unit.Services
             _subject.LoadUserSettingsFromFile();
             await _subject.SaveUserSettingsAsync(settings);
 
-            var settingsFilePath = Path.Combine("Settings", "usersettings.json");
+            var settingsFilePath = Path.Combine("config", "usersettings.json");
             File.Exists(settingsFilePath).Should().BeTrue();
             var loadedSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(settingsFilePath));
 
