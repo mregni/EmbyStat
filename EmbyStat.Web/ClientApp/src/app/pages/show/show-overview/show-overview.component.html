@@ -56,8 +56,11 @@
                   <app-simple-chart [chart]="chart" type="doughnut" height="175" [options]="pieOptions">
                   </app-simple-chart>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-xl-6">
                   <mat-card>
+                    <mat-card-title>
+                      {{ 'COMMON.ACTORSPERGENRE' | translate | capitalizeFirst }}
+                    </mat-card-title>
                     <mat-card-content>
                       <app-person-list [posters]="stats.people.mostFeaturedActorsPerGenre"></app-person-list>
                     </mat-card-content>
@@ -75,7 +78,7 @@
               <mat-card *ngIf="sortedRowsDataSource !== undefined; else loading">
                 <mat-card-content>
                   <table mat-table [dataSource]="sortedRowsDataSource" matSort (matSortChange)="sortData($event)"
-                         matSortActive="title" matSortDirection="asc" matSortDisableClear>
+                    matSortActive="title" matSortDirection="asc" matSortDisableClear>
                     <ng-container matColumnDef="title">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef>
                         {{'COMMON.TITLE' | translate | capitalizeFirst }}
@@ -112,8 +115,8 @@
                       <td mat-cell *matCellDef="let element">
                         <div class="progress position-relative">
                           <div class="progress-bar" role="progressbar"
-                               [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
-                               [style.background-color]="getColor(element)">
+                            [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
+                            [style.background-color]="getColor(element)">
                             <span class="justify-content-center d-flex position-absolute w-100 font-weight-bold">
                               {{ element.episodes }} /
                               {{ element.episodes + element.missingEpisodes }} <span *ngIf="element.specials > 0">

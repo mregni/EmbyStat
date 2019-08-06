@@ -71,6 +71,9 @@
         </div>
         <div class="col-12">
           <mat-card>
+            <mat-card-title>
+                {{'COMMON.ACTORSPERGENRE' | translate | capitalizeFirst}}
+            </mat-card-title>
             <mat-card-content>
               <app-person-list [posters]="stats.people.mostFeaturedActorsPerGenre"></app-person-list>
             </mat-card-content>
