@@ -2,9 +2,8 @@ import { Observable } from 'rxjs';
 import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
-import { EmbyService } from '../../../shared/services/emby.service';
+import { EmbyServerInfoFacade } from '../../../shared/facades/emby-server.facade';
 
 @Component({
   selector: 'app-server-overview',
@@ -14,8 +13,8 @@ import { EmbyService } from '../../../shared/services/emby.service';
 export class ServerOverviewComponent implements OnInit {
   serverInfo$: Observable<ServerInfo>;
 
-  constructor(private readonly embyService: EmbyService) {
-    this.serverInfo$ = this.embyService.getEmbyServerInfo();
+  constructor(private readonly embyServerInfoFacade: EmbyServerInfoFacade) {
+    this.serverInfo$ = this.embyServerInfoFacade.getEmbyServerInfo();
   }
 
   ngOnInit() {

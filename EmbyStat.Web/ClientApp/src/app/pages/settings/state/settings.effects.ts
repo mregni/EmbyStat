@@ -6,7 +6,6 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { Settings } from '../../../shared/models/settings/settings';
-import { EmbyService } from '../../../shared/services/emby.service';
 import { SettingsService } from '../../../shared/services/settings.service';
 import { EffectError } from '../../../states/app.actions';
 import { ApplicationState } from '../../../states/app.state';
@@ -21,7 +20,6 @@ export class SettingsEffects {
   constructor(
     private actions$: Actions,
     private settingsService: SettingsService,
-    private embyService: EmbyService,
     private store: Store<ApplicationState>) {
   }
 

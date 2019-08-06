@@ -1,6 +1,8 @@
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -41,11 +43,15 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   displayedColumnsWide = ['title', 'premiereDate', 'status', 'seasons', 'precentage'];
   displayedColumnsSmall = ['title', 'status', 'precentage'];
 
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
   @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
   constructor(
     private readonly showService: ShowService,
     private readonly settingsFacade: SettingsFacade,
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     public dialog: MatDialog,
     private readonly optionsService: OptionsService) {
     this.settingsSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
@@ -76,6 +82,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
         this.sortedRowsDataSource = new MatTableDataSource(data);
       });
     });
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
+    });
   }
 
   ngOnInit() {
@@ -87,7 +97,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
 
   openShow(id: string): void {
     const embyUrl = ConfigHelper.getFullEmbyAddress(this.settings);
-    window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}`, '_blank');
+    window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
   sortData(sort: Sort) {
@@ -162,6 +172,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
 
     if (this.collectedDataSub !== undefined) {
       this.collectedDataSub.unsubscribe();
+    }
+
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
     }
   }
 }
