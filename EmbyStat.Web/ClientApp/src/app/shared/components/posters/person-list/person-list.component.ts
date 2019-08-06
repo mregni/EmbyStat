@@ -1,5 +1,7 @@
 import { Subscription } from 'rxjs';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
@@ -17,13 +19,22 @@ export class PersonListComponent implements OnInit, OnDestroy {
   settings: Settings;
   @Input() posters: PersonPoster[];
 
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
   opts = {
     position: 'right',
     alwaysVisible: true
   };
 
-  constructor(private settingsFacade: SettingsFacade) {
+  constructor(
+    private settingsFacade: SettingsFacade,
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
+    });
   }
 
   ngOnInit() {
@@ -44,12 +55,16 @@ export class PersonListComponent implements OnInit, OnDestroy {
   }
 
   openPerson(mediaId: string): void {
-    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${mediaId}`, '_blank');
+    window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${mediaId}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
   ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
+    }
+
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
     }
   }
 }

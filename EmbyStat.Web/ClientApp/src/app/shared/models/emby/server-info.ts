@@ -1,4 +1,5 @@
 export class ServerInfo {
+  id: string;
   systemUpdateLevel: number;
   operatingSystemDisplayName: string;
   hasPendingRestart: boolean;
@@ -25,4 +26,5 @@ export class ServerInfo {
   serverName: string;
   version: string;
   operatingSystem: string;
+  isLoaded: boolean;
 }

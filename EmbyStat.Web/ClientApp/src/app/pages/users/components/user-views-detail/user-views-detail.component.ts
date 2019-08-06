@@ -1,6 +1,8 @@
 import * as moment from 'moment';
 import { merge, Observable, of as observableOf, Subscription } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
@@ -28,15 +30,23 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
   displayedColumnsWide: string[] = ['logo', 'name', 'duration', 'start', 'percentage', 'id'];
   displayedColumnsSmall: string[] = ['logo', 'name', 'percentage', 'id'];
 
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly embyService: EmbyService,
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     private readonly settingsFacade: SettingsFacade,
     private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
     this.pageService.pageChanged('views');
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
+    });
 
     this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
       const id = params['id'];
@@ -108,6 +118,10 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
 
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
+    }
+
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
     }
   }
 }
