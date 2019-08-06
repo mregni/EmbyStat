@@ -49,7 +49,8 @@
     "PERCENTAGE": "percentuale",
     "COLLECTED": "collezionato",
     "UPDATES": "Aggiornamenti",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "Most featured actor per genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, abbiamo avuto un errore nel backend, riprova. Se continua a non funzionare, controlla i log per maggiori dettagli.",
