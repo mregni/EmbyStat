@@ -8,12 +8,8 @@ import {
 } from '../../pages/settings/state/settings.actions';
 import { SettingsQuery } from '../../pages/settings/state/settings.reducer';
 import { ApplicationState } from '../../states/app.state';
-import { EmbyLogin } from '../models/emby/emby-login';
-import { EmbyToken } from '../models/emby/emby-token';
 import { Language } from '../models/language';
-// import { EmbyUdpBroadcast } from '../../../shared/models/emby/emby-udp-broadcast';
 import { Settings } from '../models/settings/settings';
-import { EmbyService } from '../services/emby.service';
 import { SettingsService } from '../services/settings.service';
 
 @Injectable()

@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
+import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
@@ -23,14 +25,22 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   displayedColumnsSmall: string[] = ['logo', 'name', 'percentage', 'id'];
   user: EmbyUser;
 
+  embyServerInfo: ServerInfo;
+  embyServerInfoSub: Subscription;
+
   constructor(
     private readonly settingsFacade: SettingsFacade,
+    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     private readonly userService: UserService,
     private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
     this.userService.user.subscribe((user: EmbyUser) => {
       this.user = user;
+    });
+
+    this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
+      this.embyServerInfo = info;
     });
   }
 
@@ -71,6 +81,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
+    }
+
+    if (this.embyServerInfoSub !== undefined) {
+      this.embyServerInfoSub.unsubscribe();
     }
   }
 }

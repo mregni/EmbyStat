@@ -48,6 +48,7 @@
     <Compile Remove="ClientApp\src\app\settings\**" />
     <Compile Remove="ClientApp\src\app\show\**" />
     <Compile Remove="ClientApp\src\app\user\**" />
+    <Compile Remove="Database\**" />
     <Compile Remove="wwwroot\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\dist\**" />
@@ -60,6 +61,7 @@
     <Content Remove="ClientApp\src\app\settings\**" />
     <Content Remove="ClientApp\src\app\show\**" />
     <Content Remove="ClientApp\src\app\user\**" />
+    <Content Remove="Database\**" />
     <Content Remove="wwwroot\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
@@ -75,6 +77,7 @@
     <EmbeddedResource Remove="ClientApp\src\app\settings\**" />
     <EmbeddedResource Remove="ClientApp\src\app\show\**" />
     <EmbeddedResource Remove="ClientApp\src\app\user\**" />
+    <EmbeddedResource Remove="Database\**" />
     <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="ClientApp\dist\**" />
     <None Remove="ClientApp\src\app\about\**" />
@@ -86,6 +89,7 @@
     <None Remove="ClientApp\src\app\settings\**" />
     <None Remove="ClientApp\src\app\show\**" />
     <None Remove="ClientApp\src\app\user\**" />
+    <None Remove="Database\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
@@ -145,7 +149,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
   </ItemGroup>
 
   <ItemGroup>
