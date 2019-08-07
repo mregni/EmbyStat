@@ -49,7 +49,8 @@
     "PERCENTAGE": "Porcentagem",
     "COLLECTED": "Coletado",
     "UPDATES": "Atualização",
-    "VERSION": "Versão"
+    "VERSION": "Versão",
+    "ACTORSPERGENRE": "Ator mais destacado por gênero"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Opa, recebemos um erro no backend, por favor, tente novamente. Se continuar a falhar, por favor, verifique os logs para mais detalhes.",

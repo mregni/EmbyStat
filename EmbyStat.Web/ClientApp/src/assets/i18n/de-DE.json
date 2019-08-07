@@ -49,7 +49,8 @@
     "PERCENTAGE": "prozentualer Anteil",
     "COLLECTED": "Gesammelt",
     "UPDATES": "Updates",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "Häufigster Schauspieler je Genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",

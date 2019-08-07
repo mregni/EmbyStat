@@ -49,7 +49,8 @@
     "PERCENTAGE": "百分比",
     "COLLECTED": "已收藏",
     "UPDATES": "更新",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "每个类型的最具特色的演员"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "呃。。。后台出错了，请再试一次。如果它一直不行，请查看日志以获取更多详细信息。",

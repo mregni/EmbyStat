@@ -49,7 +49,8 @@
     "PERCENTAGE": "procent",
     "COLLECTED": "indsamlet",
     "UPDATES": "Opdateringer",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "Mest fremhævede skuespiller pr. Genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
