@@ -21,7 +21,7 @@ This project is still in Alpha fase, but feel free to pull in on your computer a
 |---|---|---|
 | Nightly  | [![Build status](https://dev.azure.com/uping-be/EmbyStat/_apis/build/status/DEV)](https://dev.azure.com/uping-be/EmbyStat/_build/latest?definitionId=2)  | DOCKER win10-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/1/1) |
 | | |DOCKER ubuntu-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/1/2) |
-| Beta | [![Build status](https://dev.azure.com/uping-be/EmbyStat/_apis/build/status/BETA)](https://dev.azure.com/uping-be/EmbyStat/_build/latest?definitionId=6) | DOCKER win10-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/3)
+| Beta | | DOCKER win10-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/3)
 | | | DOCKER ubuntu-x64 ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/4) |
 | | | Github packages ![Deploy status](https://vsrm.dev.azure.com/uping-be/_apis/public/Release/badge/60c279c7-80b3-445f-8d2e-45e07778a9e6/2/5)
 
