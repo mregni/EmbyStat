@@ -12,7 +12,7 @@ namespace EmbyStat.Services.Models.Show
         public ShowPoster LowestRatedShow { get; set; }
         public ShowPoster ShowWithMostEpisodes { get; set; }
         public ShowPoster OldestPremieredShow { get; set; }
-        public ShowPoster YoungestPremieredShow { get; set; }
-        public ShowPoster YoungestAddedShow{ get; set; }
+        public ShowPoster NewestPremieredShow { get; set; }
+        public ShowPoster LatestAddedShow{ get; set; }
     }
 }
