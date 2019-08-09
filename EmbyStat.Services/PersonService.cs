@@ -37,6 +37,7 @@ namespace EmbyStat.Services
                 {
                     var rawPerson = await _embyClient.GetPersonByNameAsync(name, CancellationToken.None);
                     person = PersonConverter.Convert(rawPerson);
+                    _personRepository.Insert(person);
                 }
 
                 person.MovieCount = _movieRepository.GetMovieCountForPerson(person.Id);
