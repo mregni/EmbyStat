@@ -40,9 +40,9 @@
     "TOTALACTORS": "Total actors",
     "TOTALDIRECTORS": "Total directors",
     "TOTALWRITERS": "Total writers",
-    "MOSTFEATUREDACTOR": "Most featured actor",
-    "MOSTFEATUREDDIRECTOR": "Most featured director",
-    "MOSTFEATUREDWRITER": "Most featured writer",
+    "MOSTFEATUREDACTOR": "Most Featured Actor",
+    "MOSTFEATUREDDIRECTOR": "Most Featured Director",
+    "MOSTFEATUREDWRITER": "Most Featured Writer",
     "COLLECTION": "collection",
     "PREMIEREDATE": "premiere date",
     "STATUS": "status",
@@ -50,7 +50,7 @@
     "COLLECTED": "collected",
     "UPDATES": "Updates",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Most featured actor per genre"
+    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -165,7 +165,7 @@
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
