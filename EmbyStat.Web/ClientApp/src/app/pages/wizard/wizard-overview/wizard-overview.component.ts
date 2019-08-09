@@ -161,14 +161,14 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   finishWizard() {
-    this.jobService.fireJob('41e0bf22-1e6b-4f5d-90be-ec966f746a2f');
+    this.jobService.fireJob('41e0bf22-1e6b-4f5d-90be-ec966f746a2f').subscribe().unsubscribe();
     this.sideBarService.openMenu();
     this.router.navigate(['']);
   }
 
   finishWizardAndStartSync() {
-    this.jobService.fireJob('41e0bf22-1e6b-4f5d-90be-ec966f746a2f');
-    this.jobService.fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e');
+    this.jobService.fireJob('41e0bf22-1e6b-4f5d-90be-ec966f746a2f').subscribe().unsubscribe();
+    this.jobService.fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e').subscribe().unsubscribe();
     this.sideBarService.openMenu();
     this.router.navigate(['/jobs']);
   }
