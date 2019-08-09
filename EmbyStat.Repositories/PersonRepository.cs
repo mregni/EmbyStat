@@ -16,14 +16,14 @@ namespace EmbyStat.Repositories
             _personCollection = context.GetContext().GetCollection<Person>();
         }
 
-        public void UpserRange(IEnumerable<Person> people)
+        public void Insert(Person person)
         {
-            _personCollection.Upsert(people);
+            _personCollection.Insert(person);
         }
 
-        public Person GetPersonByName(string id)
+        public Person GetPersonByName(string name)
         {
-            return _personCollection.FindOne(x => x.Id == id);
+            return _personCollection.FindOne(x => x.Name == name);
         }
     }
 }
