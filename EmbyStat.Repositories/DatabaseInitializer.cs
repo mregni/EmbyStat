@@ -24,7 +24,7 @@ namespace EmbyStat.Repositories
 
         public void CreateIndexes()
         {
-            var collectionCollection = _context.GetContext().GetCollection<Collection>();
+            var collectionCollection = _context.GetContext().GetCollection<Library>();
             collectionCollection.EnsureIndex(x => x.Id, true);
 
             var deviceCollection = _context.GetContext().GetCollection<Device>();

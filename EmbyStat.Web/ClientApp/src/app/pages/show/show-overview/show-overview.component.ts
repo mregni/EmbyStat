@@ -11,7 +11,7 @@ import { MatDialog, MatTableDataSource, Sort } from '@angular/material';
 import { Options, OptionsService } from '../../../shared/components/charts/options/options';
 import { NoTypeFoundDialog } from '../../../shared/dialogs/no-type-found/no-type-found.component';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
-import { Collection } from '../../../shared/models/collection';
+import { Library } from '../../../shared/models/library';
 import { Settings } from '../../../shared/models/settings/settings';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 import { ShowStatistics } from '../../../shared/models/show/show-statistics';
@@ -31,8 +31,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   resizeSub: Subscription;
   collectedDataSub: Subscription;
   isShowTypePresentSub: Subscription;
-  collections$: Observable<Collection[]>;
-  collectionsFormControl = new FormControl('', { updateOn: 'blur' });
+  libraries$: Observable<Library[]>;
+  librariesFormControl = new FormControl('', { updateOn: 'blur' });
 
   typeIsPresent = false;
   settings: Settings;
@@ -69,13 +69,13 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.collections$ = this.showService.getCollections();
+    this.libraries$ = this.showService.getLibraries();
     this.statistics$ = this.showService.getStatistics([]);
 
     this.pieOptions = this.optionsService.getPieOptions();
     this.barOptions = this.optionsService.getBarOptions();
 
-    this.collectionsFormControl.valueChanges.subscribe((collectionList: string[]) => {
+    this.librariesFormControl.valueChanges.subscribe((collectionList: string[]) => {
       this.statistics$ = this.showService.getStatistics(collectionList);
       this.collectedDataSub = this.showService.getCollectedList([]).subscribe((data: ShowCollectionRow[]) => {
         this.rows = data;
