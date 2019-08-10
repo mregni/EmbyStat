@@ -23,7 +23,7 @@ namespace Tests.Unit.Services
     public class MovieServiceTests
     {
         private readonly MovieService _subject;
-        private readonly List<Collection> _collections;
+        private readonly List<Library> _collections;
         private readonly Movie _movieOne;
         private readonly Movie _movieTwo;
         private readonly Movie _movieThree;
@@ -31,10 +31,10 @@ namespace Tests.Unit.Services
 
         public MovieServiceTests()
         {
-            _collections = new List<Collection>
+            _collections = new List<Library>
             {
-                new Collection{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
+                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
             var actorIdOne = Guid.NewGuid();
@@ -83,8 +83,8 @@ namespace Tests.Unit.Services
         {
             var movieRepositoryMock = new Mock<IMovieRepository>();
             movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>())).Returns(movies);
-            var collectionRepositoryMock = new Mock<ICollectionRepository>();
-            collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
+            var collectionRepositoryMock = new Mock<ILibraryRepository>();
+            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
@@ -111,7 +111,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetCollectionsFromDatabase()
         {
-            var collections = _subject.GetMovieCollections().ToList();
+            var collections = _subject.GetMovieLibraries().ToList();
 
             collections.Should().NotBeNull();
             collections.Count.Should().Be(2);

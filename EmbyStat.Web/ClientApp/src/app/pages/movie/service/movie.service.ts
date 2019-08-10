@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ListToQueryParam } from '../../../shared/helpers/list-to-query-param';
-import { Collection } from '../../../shared/models/collection';
+import { Library } from '../../../shared/models/library';
 import { MovieStatistics } from '../../../shared/models/movie/movie-statistics';
 
 @Injectable()
 export class MovieService {
   private readonly baseUrl = '/api/movie/';
-  private getCollectionsUrl = this.baseUrl + 'collections';
+  private getLibrariesUrl = this.baseUrl + 'libraries';
   private getStatisticsUrl = this.baseUrl + 'statistics';
   private isTypePresentUrl = this.baseUrl + 'typepresent';
 
@@ -18,12 +18,12 @@ export class MovieService {
 
   }
 
-  getCollections(): Observable<Collection[]> {
-    return this.http.get<Collection[]>(this.getCollectionsUrl);
+  getLibraries(): Observable<Library[]> {
+    return this.http.get<Library[]>(this.getLibrariesUrl);
   }
 
   getStatistics(list: string[]): Observable<MovieStatistics> {
-    const params = ListToQueryParam.convert('collectionIds', list);
+    const params = ListToQueryParam.convert('libraryIds', list);
     return this.http.get<MovieStatistics>(this.getStatisticsUrl + params);
   }
 

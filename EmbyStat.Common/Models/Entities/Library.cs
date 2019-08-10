@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Common.Models.Entities
 {
-    public class Collection
+    public class Library
     {
         [BsonId]
         public string Id { get; set; }

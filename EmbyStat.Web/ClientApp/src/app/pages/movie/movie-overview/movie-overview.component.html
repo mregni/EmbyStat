@@ -4,9 +4,9 @@
   </div>
   <div class="title-bar-right-content">
     <mat-form-field class="full-width">
-      <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
-        <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">
-          {{collection.name}}
+      <mat-select placeholder="{{ 'COMMON.LIBRARIES' | translate }}" [formControl]="librariesFormControl" multiple>
+        <mat-option *ngFor="let library of libraries$ | async" [value]="library.id">
+          {{library.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
