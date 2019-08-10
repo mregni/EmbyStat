@@ -1,6 +1,6 @@
 ﻿namespace EmbyStat.Controllers.HelperClasses
 {
-    public class CollectionViewModel
+    public class LibraryViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -32,7 +32,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly IPersonRepository _personRepository;
-        private readonly ICollectionRepository _collectionRepository;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMovieService _movieService;
@@ -40,14 +40,14 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository,
-            IPersonRepository personRepository, ICollectionRepository collectionRepository, ITvdbClient tvdbClient,
+            IPersonRepository personRepository, ILibraryRepository libraryRepository, ITvdbClient tvdbClient,
             IStatisticsRepository statisticsRepository, IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
         {
             _embyClient = embyClient;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _personRepository = personRepository;
-            _collectionRepository = collectionRepository;
+            _libraryRepository = libraryRepository;
             _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
             _movieService = movieService;
@@ -81,7 +81,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(3);
 
             var collections = await GetCollectionsAsync(cancellationToken);
-            _collectionRepository.AddOrUpdateRange(collections);
+            _libraryRepository.AddOrUpdateRange(collections);
             await LogInformation($"Found {collections.Count} root items, getting ready for processing");
             await LogProgress(15);
 
@@ -111,7 +111,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
 
-            var movieCollections = _movieService.GetMovieCollections().Select(x => x.Id).ToList();
+            var movieCollections = _movieService.GetMovieLibraries().Select(x => x.Id).ToList();
             var movieCollectionSets = movieCollections.PowerSets().ToList();
             var i = 0;
             foreach (var moviePowerSet in movieCollectionSets)
@@ -122,7 +122,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
 
             await LogInformation("Calculating show statistics");
-            var showCollections = _showService.GetShowCollections().Select(x => x.Id).ToList();
+            var showCollections = _showService.GetShowLibraries().Select(x => x.Id).ToList();
             var showCollectionSets = showCollections.PowerSets().ToList();
             i = 0;
             foreach (var showPowerSet in showCollectionSets)
@@ -140,7 +140,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         }
 
         #region Movies
-        private async Task ProcessMoviesAsync(IReadOnlyList<Collection> collections, CancellationToken cancellationToken)
+        private async Task ProcessMoviesAsync(IReadOnlyList<Library> collections, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing movies");
 
@@ -149,7 +149,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var movies = (await PerformMovieSyncAsync(neededCollections[i].Id)).ToList();
-                await LogInformation($"Found {movies.Count} movies for {neededCollections[i].Name} collection");
+                await LogInformation($"Found {movies.Count} movies for {neededCollections[i].Name} library");
                 _movieRepository.UpsertRange(movies);
                 await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededCollections.Count, 1));
             }
@@ -164,6 +164,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = collectionId,
                 Recursive = true,
+                LocationTypes = new [] { LocationType.FileSystem },
                 UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
@@ -179,7 +180,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             try
             {
                 var embyMovies = await _embyClient.GetItemsAsync(query, new CancellationToken(false));
-                var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(x => MovieConverter.ConvertToMovie(x, collectionId)).ToList();
+                var movies = embyMovies.Items
+                    .Where(x => x.Type == Constants.Type.Movie)
+                    .Select(x => MovieConverter.ConvertToMovie(x, collectionId))
+                    .ToList();
 
                 var recursiveMovies = new List<Movie>();
                 if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
@@ -203,7 +207,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         #endregion
 
         #region Shows
-        private async Task ProcessShowsAsync(List<Collection> collections, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
+        private async Task ProcessShowsAsync(List<Library> collections, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing shows");
 
@@ -216,14 +220,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task PerformShowSyncAsync(IReadOnlyList<Show> oldShows, Collection collection)
+        private async Task PerformShowSyncAsync(IReadOnlyList<Show> oldShows, Library library)
         {
             var query = new ItemQuery
             {
                 SortBy = new[] { "SortName" },
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = collection.Id,
+                ParentId = library.Id,
+                LocationTypes = new [] { LocationType.FileSystem },
                 Recursive = true,
                 UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { "Series", nameof(Season), nameof(Episode) },
@@ -241,10 +246,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             var shows = embyShows.Items
                 .Where(x => x.Type == "Series")
-                .Select(x => ShowConverter.ConvertToShow(x, collection.Id))
+                .Select(x => ShowConverter.ConvertToShow(x, library.Id))
                 .ToList();
 
-            await LogInformation($"Found {shows.Count} shows for {collection.Name} collection");
+            await LogInformation($"Found {shows.Count} shows for {library.Name} library");
 
             Parallel.ForEach(shows, show =>
             {
@@ -391,12 +396,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
-        private async Task<List<Collection>> GetCollectionsAsync(CancellationToken cancellationToken)
+        private async Task<List<Library>> GetCollectionsAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Asking Emby for all root folders");
             var rootItems = await _embyClient.GetMediaFoldersAsync(cancellationToken);
 
-            return rootItems.Items.Select(x => new Collection
+            return rootItems.Items.Select(x => new Library
             {
                 Id = x.Id,
                 Name = x.Name,

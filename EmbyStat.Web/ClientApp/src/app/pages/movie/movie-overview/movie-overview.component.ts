@@ -12,7 +12,7 @@ import { Options } from '../../../shared/components/charts/options/options';
 import { NoTypeFoundDialog } from '../../../shared/dialogs/no-type-found/no-type-found.component';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
-import { Collection } from '../../../shared/models/collection';
+import { Library } from '../../../shared/models/library';
 import { MovieStatistics } from '../../../shared/models/movie/movie-statistics';
 import { Settings } from '../../../shared/models/settings/settings';
 import { MovieService } from '../service/movie.service';
@@ -28,12 +28,12 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(NgScrollbar)
   textAreaScrollbar: NgScrollbar;
 
-  selectedCollectionSub: Subscription;
+  selectedLibrarySub: Subscription;
   dropdownBlurredSub: Subscription;
   settingsSub: Subscription;
   isMovieTypePresentSub: Subscription;
-  collections$: Observable<Collection[]>;
-  collectionsFormControl = new FormControl('', { updateOn: 'blur' });
+  libraries$: Observable<Library[]>;
+  librariesFormControl = new FormControl('', { updateOn: 'blur' });
   typeIsPresent: boolean;
 
   settings: Settings;
@@ -74,13 +74,13 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.collections$ = this.movieService.getCollections();
+    this.libraries$ = this.movieService.getLibraries();
     this.barOptions = this.optionsService.getBarOptions();
 
     this.statistics$ = this.movieService.getStatistics([]);
 
-    this.collectionsFormControl.valueChanges.subscribe((collectionList: string[]) => {
-      this.statistics$ = this.movieService.getStatistics(collectionList);
+    this.librariesFormControl.valueChanges.subscribe((libraryList: string[]) => {
+      this.statistics$ = this.movieService.getStatistics(libraryList);
     });
 
     this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
@@ -108,8 +108,8 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.selectedCollectionSub !== undefined) {
-      this.selectedCollectionSub.unsubscribe();
+    if (this.selectedLibrarySub !== undefined) {
+      this.selectedLibrarySub.unsubscribe();
     }
 
     if (this.dropdownBlurredSub !== undefined) {

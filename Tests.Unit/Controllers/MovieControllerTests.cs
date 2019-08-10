@@ -20,15 +20,15 @@ namespace Tests.Unit.Controllers
     {
         private readonly MovieController _subject;
         private readonly Mock<IMovieService> _movieServiceMock;
-        private readonly List<Collection> _collections;
+        private readonly List<Library> _collections;
         private readonly MovieGeneral _movieGeneral;
 
         public MovieControllerTests()
         {
-            _collections = new List<Collection>
+            _collections = new List<Library>
             {
-                new Collection{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Collection{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Library{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
+                new Library{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
             };
 
             _movieGeneral = new MovieGeneral
@@ -42,23 +42,23 @@ namespace Tests.Unit.Controllers
             };
 
             _movieServiceMock = new Mock<IMovieService>();
-            _movieServiceMock.Setup(x => x.GetMovieCollections()).Returns(_collections);
+            _movieServiceMock.Setup(x => x.GetMovieLibraries()).Returns(_collections);
             _movieServiceMock.Setup(x => x.GetMovieStatisticsAsync(It.IsAny<List<string>>()))
                 .Returns(Task.FromResult(movieStatistics));
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
                 .Returns(new MovieStatisticsViewModel { General = new MovieGeneralViewModel { LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } } });
-            _mapperMock.Setup(x => x.Map<IList<CollectionViewModel>>(It.IsAny<List<Collection>>())).Returns(
-                new List<CollectionViewModel>
+            _mapperMock.Setup(x => x.Map<IList<LibraryViewModel>>(It.IsAny<List<Library>>())).Returns(
+                new List<LibraryViewModel>
                 {
-                    new CollectionViewModel
+                    new LibraryViewModel
                     {
                         Name = "collection1",
                         PrimaryImage = "image1",
                         Type = (int) CollectionType.Movies
                     },
-                    new CollectionViewModel
+                    new LibraryViewModel
                     {
                         Name = "collection2",
                         PrimaryImage = "image2",
@@ -71,14 +71,14 @@ namespace Tests.Unit.Controllers
         [Fact]
         public void AreMovieCollectionsReturned()
         {
-            var result = _subject.GetCollections();
+            var result = _subject.GetLibraries();
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var list = resultObject.Should().BeOfType<List<CollectionViewModel>>().Subject;
+            var list = resultObject.Should().BeOfType<List<LibraryViewModel>>().Subject;
 
             list.Count.Should().Be(2);
             list[0].Name.Should().Be(_collections[0].Name);
             list[1].Name.Should().Be(_collections[1].Name);
-            _movieServiceMock.Verify(x => x.GetMovieCollections(), Times.Once);
+            _movieServiceMock.Verify(x => x.GetMovieLibraries(), Times.Once);
         }
 
         [Fact]

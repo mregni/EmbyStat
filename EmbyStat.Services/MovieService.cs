@@ -22,34 +22,34 @@ namespace EmbyStat.Services
     public class MovieService : MediaService, IMovieService
     {
         private readonly IMovieRepository _movieRepository;
-        private readonly ICollectionRepository _collectionRepository;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly IPersonService _personService;
         private readonly ISettingsService _settingsService;
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public MovieService(IMovieRepository movieRepository, ICollectionRepository collectionRepository,
+        public MovieService(IMovieRepository movieRepository, ILibraryRepository libraryRepository,
             IPersonService personService, ISettingsService settingsService,
             IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(jobRepository)
         {
             _movieRepository = movieRepository;
-            _collectionRepository = collectionRepository;
+            _libraryRepository = libraryRepository;
             _personService = personService;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
         }
 
-        public IEnumerable<Collection> GetMovieCollections()
+        public IEnumerable<Library> GetMovieLibraries()
         {
             var settings = _settingsService.GetUserSettings();
-            return _collectionRepository.GetCollectionByTypes(settings.MovieCollectionTypes);
+            return _libraryRepository.GetLibrariesByTypes(settings.MovieCollectionTypes);
         }
 
-        public async Task<MovieStatistics> GetMovieStatisticsAsync(List<string> collectionIds)
+        public async Task<MovieStatistics> GetMovieStatisticsAsync(List<string> libraryIds)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, collectionIds);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, libraryIds);
 
             MovieStatistics statistics;
-            if (StatisticsAreValid(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, libraryIds))
             {
                 statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
 
@@ -60,15 +60,15 @@ namespace EmbyStat.Services
             }
             else
             {
-                statistics = await CalculateMovieStatistics(collectionIds);
+                statistics = await CalculateMovieStatistics(libraryIds);
             }
 
             return statistics;
         }
 
-        public async Task<MovieStatistics> CalculateMovieStatistics(List<string> collectionIds)
+        public async Task<MovieStatistics> CalculateMovieStatistics(List<string> libraryIds)
         {
-            var movies = _movieRepository.GetAll(collectionIds).ToList();
+            var movies = _movieRepository.GetAll(libraryIds).ToList();
 
             var statistics = new MovieStatistics
             {
@@ -79,7 +79,7 @@ namespace EmbyStat.Services
             };
 
             var json = JsonConvert.SerializeObject(statistics);
-            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Movie, collectionIds);
+            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Movie, libraryIds);
 
             return statistics;
         }
@@ -94,10 +94,10 @@ namespace EmbyStat.Services
                 HighestRatedMovie = HighestRatedMovie(movies),
                 LowestRatedMovie = LowestRatedMovie(movies),
                 OldestPremieredMovie = OldestPremieredMovie(movies),
-                YoungestPremieredMovie = YoungestPremieredMovie(movies),
+                NewestPremieredMovie = NewestPremieredMovie(movies),
                 ShortestMovie = ShortestMovie(movies),
                 LongestMovie = LongestMovie(movies),
-                YoungestAddedMovie = YoungestAddedMovie(movies)
+                LatestAddedMovie = LatestAddedMovie(movies)
             };
         }
 
@@ -289,7 +289,7 @@ namespace EmbyStat.Services
             return new MoviePoster();
         }
 
-        private MoviePoster YoungestPremieredMovie(IEnumerable<Movie> movies)
+        private MoviePoster NewestPremieredMovie(IEnumerable<Movie> movies)
         {
             var movie = movies.Where(x => x.PremiereDate != null)
                               .OrderByDescending(x => x.PremiereDate)
@@ -298,7 +298,7 @@ namespace EmbyStat.Services
 
             if (movie != null)
             {
-                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestPremiered);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.NewestPremiered);
             }
 
             return new MoviePoster();
@@ -335,7 +335,7 @@ namespace EmbyStat.Services
             return new MoviePoster();
         }
 
-        private MoviePoster YoungestAddedMovie(IEnumerable<Movie> movies)
+        private MoviePoster LatestAddedMovie(IEnumerable<Movie> movies)
         {
             var movie = movies.Where(x => x.DateCreated != null)
                               .OrderByDescending(x => x.DateCreated)
@@ -344,7 +344,7 @@ namespace EmbyStat.Services
 
             if (movie != null)
             {
-                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestAdded);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.LatestAdded);
             }
 
             return new MoviePoster();

@@ -4,9 +4,9 @@
   </div>
   <div class="title-bar-right-content">
     <mat-form-field class="full-width">
-      <mat-select placeholder="Collections" [formControl]="collectionsFormControl" multiple>
-        <mat-option *ngFor="let collection of collections$ | async" [value]="collection.id">
-          {{collection.name}}
+      <mat-select placeholder="{{ 'COMMON.LIBRARIES' | translate }}" [formControl]="librariesFormControl" multiple>
+        <mat-option *ngFor="let library of libraries$ | async" [value]="library.id">
+          {{library.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -36,8 +36,8 @@
             <app-show-poster [poster]="stats.general.lowestRatedShow"></app-show-poster>
             <app-show-poster [poster]="stats.general.showWithMostEpisodes"></app-show-poster>
             <app-show-poster [poster]="stats.general.oldestPremieredShow"></app-show-poster>
-            <app-show-poster [poster]="stats.general.youngestPremieredShow"></app-show-poster>
-            <app-show-poster [poster]="stats.general.youngestAddedShow"></app-show-poster>
+            <app-show-poster [poster]="stats.general.newestPremieredShow"></app-show-poster>
+            <app-show-poster [poster]="stats.general.latestAddedShow"></app-show-poster>
           </div>
         </ng-scrollbar>
       </div>
@@ -71,7 +71,7 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="{{ 'COMMON.COLLECTION' | translate | capitalizeFirst}}">
+      <mat-tab label="{{ 'SHOWS.OVERVIEW' | translate | capitalizeFirst}}">
         <div class="mt-3 pl-0 container-fluid">
           <div class="row">
             <div class="col-12">
