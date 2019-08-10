@@ -232,37 +232,37 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetYoungestAddedShow()
+        public async void GetLatestAddedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
-            stat.General.YoungestAddedShow.Should().NotBeNull();
-            stat.General.YoungestAddedShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
-            stat.General.YoungestAddedShow.MediaId.Should().Be(_showThree.Id);
-            stat.General.YoungestAddedShow.Name.Should().Be(_showThree.Name);
-            stat.General.YoungestAddedShow.OfficialRating.Should().Be(_showThree.OfficialRating);
-            stat.General.YoungestAddedShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
-            stat.General.YoungestAddedShow.Tag.Should().Be(_showThree.Primary);
-            stat.General.YoungestAddedShow.Title.Should().Be(Constants.Shows.YoungestAdded);
+            stat.General.LatestAddedShow.Should().NotBeNull();
+            stat.General.LatestAddedShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
+            stat.General.LatestAddedShow.MediaId.Should().Be(_showThree.Id);
+            stat.General.LatestAddedShow.Name.Should().Be(_showThree.Name);
+            stat.General.LatestAddedShow.OfficialRating.Should().Be(_showThree.OfficialRating);
+            stat.General.LatestAddedShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
+            stat.General.LatestAddedShow.Tag.Should().Be(_showThree.Primary);
+            stat.General.LatestAddedShow.Title.Should().Be(Constants.Shows.LatestAdded);
         }
 
         [Fact]
-        public async void GetYoungestPremieredShow()
+        public async void GetNewestPremieredShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
-            stat.General.YoungestPremieredShow.Should().NotBeNull();
-            stat.General.YoungestPremieredShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
-            stat.General.YoungestPremieredShow.MediaId.Should().Be(_showThree.Id);
-            stat.General.YoungestPremieredShow.Name.Should().Be(_showThree.Name);
-            stat.General.YoungestPremieredShow.OfficialRating.Should().Be(_showThree.OfficialRating);
-            stat.General.YoungestPremieredShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
-            stat.General.YoungestPremieredShow.Tag.Should().Be(_showThree.Primary);
-            stat.General.YoungestPremieredShow.Title.Should().Be(Constants.Shows.YoungestPremiered);
+            stat.General.NewestPremieredShow.Should().NotBeNull();
+            stat.General.NewestPremieredShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
+            stat.General.NewestPremieredShow.MediaId.Should().Be(_showThree.Id);
+            stat.General.NewestPremieredShow.Name.Should().Be(_showThree.Name);
+            stat.General.NewestPremieredShow.OfficialRating.Should().Be(_showThree.OfficialRating);
+            stat.General.NewestPremieredShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
+            stat.General.NewestPremieredShow.Tag.Should().Be(_showThree.Primary);
+            stat.General.NewestPremieredShow.Title.Should().Be(Constants.Shows.NewestPremiered);
         }
 
         #endregion

@@ -11,10 +11,10 @@ namespace EmbyStat.Common
             public static string LowestRated => "MOVIES.LOWESTRATED";
             public static string HighestRated => "MOVIES.HIGHESTRATED";
             public static string OldestPremiered => "MOVIES.OLDESTPREMIERED";
-            public static string YoungestPremiered => "MOVIES.YOUNGESTPREMIERED";
+            public static string NewestPremiered => "MOVIES.NEWESTPREMIERED";
             public static string Shortest => "MOVIES.SHORTEST";
             public static string Longest => "MOVIES.LONGEST";
-            public static string YoungestAdded => "MOVIES.YOUNGESTADDED";
+            public static string LatestAdded => "MOVIES.LATESTADDED";
             public static string TotalPlayLength => "MOVIES.TOTALPLAYLENGTH";
         }
 
@@ -37,8 +37,8 @@ namespace EmbyStat.Common
             public static string HighestRatedShow => "SHOWS.HIGHESTRATEDSHOW";
             public static string LowestRatedShow => "SHOWS.LOWESTRATEDSHOW";
             public static string OldestPremiered => "SHOWS.OLDESTPREMIERED";
-            public static string YoungestPremiered => "SHOWS.YOUNGESTPREMIERED";
-            public static string YoungestAdded => "SHOWS.YOUNGESTADDED";
+            public static string NewestPremiered => "SHOWS.NEWESTPREMIERED";
+            public static string LatestAdded => "SHOWS.LATESTADDED";
             public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
             public static string ShowStatusChart => "SHOWS.SHOWSTATUSGRAPH";
         }

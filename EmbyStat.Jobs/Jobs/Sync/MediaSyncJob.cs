@@ -164,6 +164,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = collectionId,
                 Recursive = true,
+                LocationTypes = new [] { LocationType.FileSystem },
                 UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
@@ -179,7 +180,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             try
             {
                 var embyMovies = await _embyClient.GetItemsAsync(query, new CancellationToken(false));
-                var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(x => MovieConverter.ConvertToMovie(x, collectionId)).ToList();
+                var movies = embyMovies.Items
+                    .Where(x => x.Type == Constants.Type.Movie)
+                    .Select(x => MovieConverter.ConvertToMovie(x, collectionId))
+                    .ToList();
 
                 var recursiveMovies = new List<Movie>();
                 if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
@@ -224,6 +228,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = collection.Id,
+                LocationTypes = new [] { LocationType.FileSystem },
                 Recursive = true,
                 UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { "Series", nameof(Season), nameof(Episode) },

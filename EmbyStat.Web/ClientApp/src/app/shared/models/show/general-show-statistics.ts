@@ -11,6 +11,6 @@ export class GeneralShowStatistics {
   lowestRatedShow: ShowPoster;
   showWithMostEpisodes: ShowPoster;
   oldestPremieredShow: ShowPoster;
-  youngestPremieredShow: ShowPoster;
-  youngestAddedShow: ShowPoster;
+  newestPremieredShow: ShowPoster;
+  latestAddedShow: ShowPoster;
 }

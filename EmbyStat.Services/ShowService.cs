@@ -88,8 +88,8 @@ namespace EmbyStat.Services
                 LowestRatedShow = CalculateLowestRatedShow(shows),
                 OldestPremieredShow = CalculateOldestPremieredShow(shows),
                 ShowWithMostEpisodes = CalculateShowWithMostEpisodes(shows),
-                YoungestAddedShow = CalculateYoungestAddedShow(shows),
-                YoungestPremieredShow = CalculateYoungestPremieredShow(shows)
+                LatestAddedShow = CalculateLatestAddedShow(shows),
+                NewestPremieredShow = CalculateNewestPremieredShow(shows)
             };
         }
 
@@ -294,7 +294,7 @@ namespace EmbyStat.Services
             };
         }
 
-        private ShowPoster CalculateYoungestPremieredShow(IReadOnlyList<Show> shows)
+        private ShowPoster CalculateNewestPremieredShow(IReadOnlyList<Show> shows)
         {
             var yougest = shows
                 .Where(x => x.PremiereDate.HasValue)
@@ -303,13 +303,13 @@ namespace EmbyStat.Services
 
             if (yougest != null)
             {
-                return PosterHelper.ConvertToShowPoster(yougest, Constants.Shows.YoungestPremiered);
+                return PosterHelper.ConvertToShowPoster(yougest, Constants.Shows.NewestPremiered);
             }
 
             return new ShowPoster();
         }
 
-        private ShowPoster CalculateYoungestAddedShow(IReadOnlyList<Show> shows)
+        private ShowPoster CalculateLatestAddedShow(IReadOnlyList<Show> shows)
         {
             var yougest = shows
                 .Where(x => x.DateCreated.HasValue)
@@ -318,7 +318,7 @@ namespace EmbyStat.Services
 
             if (yougest != null)
             {
-                return PosterHelper.ConvertToShowPoster(yougest, Constants.Shows.YoungestAdded);
+                return PosterHelper.ConvertToShowPoster(yougest, Constants.Shows.LatestAdded);
             }
 
             return new ShowPoster();

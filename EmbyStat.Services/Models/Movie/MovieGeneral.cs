@@ -13,8 +13,8 @@ namespace EmbyStat.Services.Models.Movie
         public MoviePoster LongestMovie { get; set; }
         public MoviePoster ShortestMovie { get; set; }
         public MoviePoster OldestPremieredMovie { get; set; }
-        public MoviePoster YoungestPremieredMovie { get; set; }
-        public MoviePoster YoungestAddedMovie { get; set; }
+        public MoviePoster NewestPremieredMovie { get; set; }
+        public MoviePoster LatestAddedMovie { get; set; }
         public Card<string> MostFeaturedMovieActor { get; set; }
         public Card<string> MostFeaturedMovieDirector { get; set; }
         public Card<string> LastPlayedMovie { get; set; }

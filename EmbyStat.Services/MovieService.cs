@@ -94,10 +94,10 @@ namespace EmbyStat.Services
                 HighestRatedMovie = HighestRatedMovie(movies),
                 LowestRatedMovie = LowestRatedMovie(movies),
                 OldestPremieredMovie = OldestPremieredMovie(movies),
-                YoungestPremieredMovie = YoungestPremieredMovie(movies),
+                NewestPremieredMovie = NewestPremieredMovie(movies),
                 ShortestMovie = ShortestMovie(movies),
                 LongestMovie = LongestMovie(movies),
-                YoungestAddedMovie = YoungestAddedMovie(movies)
+                LatestAddedMovie = LatestAddedMovie(movies)
             };
         }
 
@@ -289,7 +289,7 @@ namespace EmbyStat.Services
             return new MoviePoster();
         }
 
-        private MoviePoster YoungestPremieredMovie(IEnumerable<Movie> movies)
+        private MoviePoster NewestPremieredMovie(IEnumerable<Movie> movies)
         {
             var movie = movies.Where(x => x.PremiereDate != null)
                               .OrderByDescending(x => x.PremiereDate)
@@ -298,7 +298,7 @@ namespace EmbyStat.Services
 
             if (movie != null)
             {
-                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestPremiered);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.NewestPremiered);
             }
 
             return new MoviePoster();
@@ -335,7 +335,7 @@ namespace EmbyStat.Services
             return new MoviePoster();
         }
 
-        private MoviePoster YoungestAddedMovie(IEnumerable<Movie> movies)
+        private MoviePoster LatestAddedMovie(IEnumerable<Movie> movies)
         {
             var movie = movies.Where(x => x.DateCreated != null)
                               .OrderByDescending(x => x.DateCreated)
@@ -344,7 +344,7 @@ namespace EmbyStat.Services
 
             if (movie != null)
             {
-                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.YoungestAdded);
+                return PosterHelper.ConvertToMoviePoster(movie, Constants.Movies.LatestAdded);
             }
 
             return new MoviePoster();
