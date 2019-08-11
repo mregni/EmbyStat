@@ -8,10 +8,10 @@ namespace EmbyStat.Common.Models.Entities
         public string Id { get; set; }
         public string Name { get; set; }
         public string PrimaryImage { get; set; }
-        public CollectionType Type { get; set; }
+        public LibraryType Type { get; set; }
     }
 
-    public enum CollectionType
+    public enum LibraryType
     {
         Other = 0,
         Movies = 1,
@@ -25,6 +25,7 @@ namespace EmbyStat.Common.Models.Entities
         Games = 10,
         LiveTv = 11,
         Playlists = 12,
-        Folders = 13
+        Folders = 13,
+        BoxSets = 14
     }
 }
