@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-collection-selector',
-  templateUrl: './collection-selector.component.html',
-  styleUrls: ['./collection-selector.component.scss']
+  selector: 'app-library-selector',
+  templateUrl: './library-selector.component.html',
+  styleUrls: ['./library-selector.component.scss']
 })
-export class CollectionSelectorComponent implements OnInit {
+export class LibrarySelectorComponent implements OnInit {
   private privateList: number[];
   public form: FormGroup;
 

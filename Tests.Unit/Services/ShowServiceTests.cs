@@ -30,8 +30,8 @@ namespace Tests.Unit.Services
         {
             _collections = new List<Library>
             {
-                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.TvShow},
-                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.TvShow}
+                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = LibraryType.TvShow},
+                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = LibraryType.TvShow}
             };
 
             _showOne = new ShowBuilder(1, _collections.First().Id)
@@ -76,7 +76,7 @@ namespace Tests.Unit.Services
             }
 
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
-            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
+            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in shows.SelectMany(x => x.People))
@@ -95,7 +95,7 @@ namespace Tests.Unit.Services
 
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ShowCollectionTypes = new List<CollectionType> { CollectionType.TvShow } });
+                .Returns(new UserSettings { ShowLibraryTypes = new List<LibraryType> { LibraryType.TvShow } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
             return new ShowService(jobRepositoryMock.Object, showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);

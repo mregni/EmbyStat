@@ -41,7 +41,7 @@ namespace EmbyStat.Services
         public IEnumerable<Library> GetMovieLibraries()
         {
             var settings = _settingsService.GetUserSettings();
-            return _libraryRepository.GetLibrariesByTypes(settings.MovieCollectionTypes);
+            return _libraryRepository.GetLibrariesByTypes(settings.MovieLibraryTypes);
         }
 
         public async Task<MovieStatistics> GetMovieStatisticsAsync(List<string> libraryIds)

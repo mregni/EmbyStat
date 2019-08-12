@@ -10,8 +10,8 @@ export class Settings {
   toShortMovie: number;
   toShortMovieEnabled: boolean;
   keepLogsCount: number;
-  movieCollectionTypes: number[];
-  showCollectionTypes: number[];
+  movieLibraryTypes: number[];
+  showLibraryTypes: number[];
   autoUpdate: boolean;
   updateTrain: number;
   updateInProgress: boolean;

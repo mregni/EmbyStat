@@ -14,7 +14,6 @@ using MediaBrowser.Model.Entities;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
-using CollectionType = EmbyStat.Common.Models.Entities.CollectionType;
 using Constants = EmbyStat.Common.Constants;
 
 namespace Tests.Unit.Services
@@ -33,8 +32,8 @@ namespace Tests.Unit.Services
         {
             _collections = new List<Library>
             {
-                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = LibraryType.Movies},
+                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = LibraryType.Movies}
             };
 
             var actorIdOne = Guid.NewGuid();
@@ -75,7 +74,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock = new Mock<ISettingsService>();
             _settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies }, ToShortMovieEnabled = true });
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = true });
             _subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree);
         }
 
@@ -84,7 +83,7 @@ namespace Tests.Unit.Services
             var movieRepositoryMock = new Mock<IMovieRepository>();
             movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>())).Returns(movies);
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
-            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
+            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
@@ -571,7 +570,7 @@ namespace Tests.Unit.Services
         {
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies }, ToShortMovieEnabled = false });
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = false });
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());

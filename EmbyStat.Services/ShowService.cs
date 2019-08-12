@@ -40,7 +40,7 @@ namespace EmbyStat.Services
         public IEnumerable<Library> GetShowLibraries()
         {
             var settings = _settingsService.GetUserSettings();
-            return _libraryRepository.GetLibrariesByTypes(settings.ShowCollectionTypes);
+            return _libraryRepository.GetLibrariesByTypes(settings.ShowLibraryTypes);
         }
 
         public async Task<ShowStatistics> GetStatistics(List<string> libraryIds)
