@@ -40,11 +40,11 @@
   <Data>
     <Volume>
       <HostDir>/mnt/cache/appdata/embystat/config</HostDir>
-      <ContainerDir>/config</ContainerDir>
+      <ContainerDir>/app/config</ContainerDir>
       <Mode>rw</Mode>
     </Volume>
   </Data>
   <WebUI>http://[IP]:[PORT:6555]/</WebUI>
   <Banner>https://raw.githubusercontent.com/mregni/EmbyStat/develop/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png</Banner>
-  <Icon>https://raw.githubusercontent.com/mregni/EmbyStat/develop/EmbyStat.Web/ClientApp/src/assets/images/favicon.ico</Icon>
+  <Icon>https://raw.githubusercontent.com/mregni/EmbyStat/develop/Templates/unraid/unraid-blue-48px.png</Icon>
 </Container>
