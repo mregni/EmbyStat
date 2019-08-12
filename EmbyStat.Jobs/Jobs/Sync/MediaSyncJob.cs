@@ -401,13 +401,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Asking Emby for all root folders");
             var rootItems = await _embyClient.GetMediaFoldersAsync(cancellationToken);
 
-            return rootItems.Items.Select(x => new Library
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Type = x.CollectionType.ToCollectionType(),
-                PrimaryImage = x.ImageTags.ContainsKey(ImageType.Primary) ? x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value : default(string)
-            }).ToList();
+            return rootItems.Items
+                .Select(x => new Library {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Type = x.CollectionType.ToCollectionType(),
+                    PrimaryImage = x.ImageTags.ContainsKey(ImageType.Primary) ? x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value : default(string)
+                })
+                .Where(x => x.Type != LibraryType.BoxSets)
+                .ToList();
         }
 
         #endregion
