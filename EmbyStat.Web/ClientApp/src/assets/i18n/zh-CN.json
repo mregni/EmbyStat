@@ -43,7 +43,7 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "COLLECTION": "合集",
+    "LIBRARIES": "Libraries",
     "PREMIEREDATE": "首播日期",
     "STATUS": "状态",
     "PERCENTAGE": "百分比",
@@ -142,7 +142,8 @@
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
     "CONTINUING": "Continuing",
-    "ENDED": "Ended"
+    "ENDED": "Ended",
+    "OVERVIEW": "Overview"
   },
   "SETTINGS": {
     "TITLES": {

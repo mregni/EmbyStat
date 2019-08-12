@@ -43,7 +43,7 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "COLLECTION": "collection",
+    "LIBRARIES": "Libraries",
     "PREMIEREDATE": "premiere date",
     "STATUS": "status",
     "PERCENTAGE": "percentage",
@@ -142,7 +142,8 @@
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
     "CONTINUING": "Continuing",
-    "ENDED": "Ended"
+    "ENDED": "Ended",
+    "OVERVIEW": "Overview"
   },
   "SETTINGS": {
     "TITLES": {
