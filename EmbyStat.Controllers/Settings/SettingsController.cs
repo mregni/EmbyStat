@@ -68,14 +68,14 @@ namespace EmbyStat.Controllers.Settings
         private void MarkStatisticsAsInvalidIfNeeded(UserSettings configuration)
         {
             var useSettings = _settingsService.GetUserSettings();
-            if (!(useSettings.MovieCollectionTypes.All(configuration.MovieCollectionTypes.Contains) &&
-                  useSettings.MovieCollectionTypes.Count == configuration.MovieCollectionTypes.Count))
+            if (!(useSettings.MovieLibraryTypes.All(configuration.MovieLibraryTypes.Contains) &&
+                  useSettings.MovieLibraryTypes.Count == configuration.MovieLibraryTypes.Count))
             {
                 _statisticsRepository.MarkMovieTypesAsInvalid();
             }
 
-            if (!(useSettings.ShowCollectionTypes.All(configuration.ShowCollectionTypes.Contains) &&
-                  useSettings.ShowCollectionTypes.Count == configuration.ShowCollectionTypes.Count))
+            if (!(useSettings.ShowLibraryTypes.All(configuration.ShowLibraryTypes.Contains) &&
+                  useSettings.ShowLibraryTypes.Count == configuration.ShowLibraryTypes.Count))
             {
                 _statisticsRepository.MarkShowTypesAsInvalid();
             }

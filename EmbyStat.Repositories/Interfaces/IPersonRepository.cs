@@ -5,7 +5,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IPersonRepository
     {
-        void UpserRange(IEnumerable<Person> people);
-        Person GetPersonByName(string id);
+        void Insert(Person person);
+        Person GetPersonByName(string name);
     }
 }

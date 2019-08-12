@@ -13,8 +13,8 @@ namespace EmbyStat.Controllers.Movie
         public MoviePosterViewModel LongestMovie { get; set; }
         public MoviePosterViewModel ShortestMovie { get; set; }
         public MoviePosterViewModel OldestPremieredMovie { get; set; }
-        public MoviePosterViewModel YoungestPremieredMovie { get; set; }
-        public MoviePosterViewModel YoungestAddedMovie { get; set; }
+        public MoviePosterViewModel NewestPremieredMovie { get; set; }
+        public MoviePosterViewModel LatestAddedMovie { get; set; }
         public CardViewModel<string> MostFeaturedMovieActor { get; set; }
         public CardViewModel<string> MostFeaturedMovieDirector { get; set; }
         public CardViewModel<string> LastPlayedMovie { get; set; }

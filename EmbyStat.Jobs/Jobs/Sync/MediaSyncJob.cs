@@ -32,7 +32,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly IPersonRepository _personRepository;
-        private readonly ICollectionRepository _collectionRepository;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMovieService _movieService;
@@ -40,14 +40,14 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository,
-            IPersonRepository personRepository, ICollectionRepository collectionRepository, ITvdbClient tvdbClient,
+            IPersonRepository personRepository, ILibraryRepository libraryRepository, ITvdbClient tvdbClient,
             IStatisticsRepository statisticsRepository, IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
         {
             _embyClient = embyClient;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _personRepository = personRepository;
-            _collectionRepository = collectionRepository;
+            _libraryRepository = libraryRepository;
             _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
             _movieService = movieService;
@@ -75,20 +75,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            await LogInformation("First delete all existing media and root media collections from database so we have a clean start.");
+            await LogInformation("First delete all existing media and root media libraries from database so we have a clean start.");
             var oldShows = _showRepository.GetAllShows(Array.Empty<string>(), false, true).ToList();
             CleanUpDatabase();
             await LogProgress(3);
 
-            var collections = await GetCollectionsAsync(cancellationToken);
-            _collectionRepository.AddOrUpdateRange(collections);
-            await LogInformation($"Found {collections.Count} root items, getting ready for processing");
+            var libraries = await GetLibrariesAsync(cancellationToken);
+            _libraryRepository.AddOrUpdateRange(libraries);
+            await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
             await LogProgress(15);
 
-            await ProcessMoviesAsync(collections, cancellationToken);
+            await ProcessMoviesAsync(libraries, cancellationToken);
             await LogProgress(35);
 
-            await ProcessShowsAsync(collections, oldShows, cancellationToken);
+            await ProcessShowsAsync(libraries, oldShows, cancellationToken);
             await LogProgress(55);
 
             await SyncMissingEpisodesAsync(oldShows, cancellationToken);
@@ -111,24 +111,24 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
 
-            var movieCollections = _movieService.GetMovieCollections().Select(x => x.Id).ToList();
-            var movieCollectionSets = movieCollections.PowerSets().ToList();
+            var movieLibraries = _movieService.GetMovieLibraries().Select(x => x.Id).ToList();
+            var movieLibrarySets = movieLibraries.PowerSets().ToList();
             var i = 0;
-            foreach (var moviePowerSet in movieCollectionSets)
+            foreach (var moviePowerSet in movieLibrarySets)
             {
                 await _movieService.CalculateMovieStatistics(moviePowerSet.ToList());
-                await LogProgress(Math.Round(85 + 8 * (i + 1) / (double)movieCollectionSets.Count, 1));
+                await LogProgress(Math.Round(85 + 8 * (i + 1) / (double)movieLibrarySets.Count, 1));
                 i++;
             }
 
             await LogInformation("Calculating show statistics");
-            var showCollections = _showService.GetShowCollections().Select(x => x.Id).ToList();
-            var showCollectionSets = showCollections.PowerSets().ToList();
+            var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
+            var showLibrarySets = showLibraries.PowerSets().ToList();
             i = 0;
-            foreach (var showPowerSet in showCollectionSets)
+            foreach (var showPowerSet in showLibrarySets)
             {
                 await _showService.CalculateShowStatistics(showPowerSet.ToList());
-                await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showCollectionSets.Count, 1));
+                await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
                 i++;
             }
         }
@@ -140,30 +140,31 @@ namespace EmbyStat.Jobs.Jobs.Sync
         }
 
         #region Movies
-        private async Task ProcessMoviesAsync(IReadOnlyList<Collection> collections, CancellationToken cancellationToken)
+        private async Task ProcessMoviesAsync(IReadOnlyList<Library> libraries, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing movies");
 
-            var neededCollections = collections.Where(x => Settings.MovieCollectionTypes.Any(y => y == x.Type)).ToList();
-            for (var i = 0; i < neededCollections.Count; i++)
+            var neededLibraries = libraries.Where(x => Settings.MovieLibraryTypes.Any(y => y == x.Type)).ToList();
+            for (var i = 0; i < neededLibraries.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var movies = (await PerformMovieSyncAsync(neededCollections[i].Id)).ToList();
-                await LogInformation($"Found {movies.Count} movies for {neededCollections[i].Name} collection");
+                var movies = (await PerformMovieSyncAsync(neededLibraries[i].Id)).ToList();
+                await LogInformation($"Found {movies.Count} movies for {neededLibraries[i].Name} library");
                 _movieRepository.UpsertRange(movies);
-                await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededCollections.Count, 1));
+                await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
             }
         }
 
-        private async Task<IEnumerable<Movie>> PerformMovieSyncAsync(string collectionId)
+        private async Task<IEnumerable<Movie>> PerformMovieSyncAsync(string libraryId)
         {
             var query = new ItemQuery
             {
                 SortBy = new[] { "SortName" },
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = collectionId,
+                ParentId = libraryId,
                 Recursive = true,
+                LocationTypes = new[] { LocationType.FileSystem },
                 UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie) },
                 Fields = new[]
@@ -179,7 +180,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             try
             {
                 var embyMovies = await _embyClient.GetItemsAsync(query, new CancellationToken(false));
-                var movies = embyMovies.Items.Where(x => x.Type == Constants.Type.Movie).Select(x => MovieConverter.ConvertToMovie(x, collectionId)).ToList();
+                var movies = embyMovies.Items
+                    .Where(x => x.Type == Constants.Type.Movie)
+                    .Select(x => MovieConverter.ConvertToMovie(x, libraryId))
+                    .ToList();
 
                 var recursiveMovies = new List<Movie>();
                 if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
@@ -203,27 +207,28 @@ namespace EmbyStat.Jobs.Jobs.Sync
         #endregion
 
         #region Shows
-        private async Task ProcessShowsAsync(List<Collection> collections, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
+        private async Task ProcessShowsAsync(List<Library> libraries, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing shows");
 
-            var neededCollections = collections.Where(x => Settings.ShowCollectionTypes.Any(y => y == x.Type)).ToList();
-            for (var i = 0; i < neededCollections.Count; i++)
+            var neededLibraries = libraries.Where(x => Settings.ShowLibraryTypes.Any(y => y == x.Type)).ToList();
+            for (var i = 0; i < neededLibraries.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                await PerformShowSyncAsync(oldSHows, neededCollections[i]);
-                await LogProgress(Math.Round(35 + 20 * (i + 1) / (double)neededCollections.Count, 1));
+                await PerformShowSyncAsync(oldSHows, neededLibraries[i]);
+                await LogProgress(Math.Round(35 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
             }
         }
 
-        private async Task PerformShowSyncAsync(IReadOnlyList<Show> oldShows, Collection collection)
+        private async Task PerformShowSyncAsync(IReadOnlyList<Show> oldShows, Library library)
         {
             var query = new ItemQuery
             {
                 SortBy = new[] { "SortName" },
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = collection.Id,
+                ParentId = library.Id,
+                LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
                 UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { "Series", nameof(Season), nameof(Episode) },
@@ -241,10 +246,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             var shows = embyShows.Items
                 .Where(x => x.Type == "Series")
-                .Select(x => ShowConverter.ConvertToShow(x, collection.Id))
+                .Select(x => ShowConverter.ConvertToShow(x, library.Id))
                 .ToList();
 
-            await LogInformation($"Found {shows.Count} shows for {collection.Name} collection");
+            await LogInformation($"Found {shows.Count} shows for {library.Name} library");
 
             Parallel.ForEach(shows, show =>
             {
@@ -312,7 +317,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 try
                 {
                     await ProgressMissingEpisodesAsync(shows[i], cancellationToken);
-                    await LogProgress(Math.Round(55 + 30 * (i + 1) / (double) shows.Count, 1));
+                    await LogProgress(Math.Round(55 + 30 * (i + 1) / (double)shows.Count, 1));
                 }
                 catch (HttpException e)
                 {
@@ -391,18 +396,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
-        private async Task<List<Collection>> GetCollectionsAsync(CancellationToken cancellationToken)
+        private async Task<List<Library>> GetLibrariesAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Asking Emby for all root folders");
             var rootItems = await _embyClient.GetMediaFoldersAsync(cancellationToken);
 
-            return rootItems.Items.Select(x => new Collection
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Type = x.CollectionType.ToCollectionType(),
-                PrimaryImage = x.ImageTags.ContainsKey(ImageType.Primary) ? x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value : default(string)
-            }).ToList();
+            return rootItems.Items
+                .Select(x => new Library {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Type = x.CollectionType.ToCollectionType(),
+                    PrimaryImage = x.ImageTags.ContainsKey(ImageType.Primary) ? x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value : default(string)
+                })
+                .Where(x => x.Type != LibraryType.BoxSets)
+                .ToList();
         }
 
         #endregion

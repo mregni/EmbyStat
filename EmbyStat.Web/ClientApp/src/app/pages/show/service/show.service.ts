@@ -5,13 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ListToQueryParam } from '../../../shared/helpers/list-to-query-param';
-import { Collection } from '../../../shared/models/collection';
+import { Library } from '../../../shared/models/library';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 
 @Injectable()
 export class ShowService {
   private readonly baseUrl = '/api/show';
-  private getCollectionsUrl = this.baseUrl + '/collections';
+  private getLibraryUrl = this.baseUrl + '/libraries';
   private getShowStatisticsUrl = this.baseUrl + '/statistics';
   private isTypePresentUrl = this.baseUrl + '/typepresent';
   private getCollectionRows = this.baseUrl + '/collectedlist';
@@ -20,17 +20,17 @@ export class ShowService {
 
   }
 
-  getCollections(): Observable<Collection[]> {
-    return this.http.get<Collection[]>(this.getCollectionsUrl);
+  getLibraries(): Observable<Library[]> {
+    return this.http.get<Library[]>(this.getLibraryUrl);
   }
 
   getStatistics(list: string[]): Observable<ShowStatistics> {
-    const params = ListToQueryParam.convert('collectionIds', list);
+    const params = ListToQueryParam.convert('libraryIds', list);
     return this.http.get<ShowStatistics>(this.getShowStatisticsUrl + params);
   }
 
   getCollectedList(list: string[]): Observable<ShowCollectionRow[]> {
-    const params = ListToQueryParam.convert('collectionIds', list);
+    const params = ListToQueryParam.convert('libraryIds', list);
     return this.http.get<ShowCollectionRow[]>(this.getCollectionRows + params);
   }
 

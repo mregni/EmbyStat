@@ -17,8 +17,8 @@ namespace EmbyStat.Common.Models.Settings
         public bool ToShortMovieEnabled { get; set; }
         public int ToShortMovie { get; set; }
         public int KeepLogsCount { get; set; }
-        public List<CollectionType> MovieCollectionTypes { get; set; }
-        public List<CollectionType> ShowCollectionTypes { get; set; }
+        public List<LibraryType> MovieLibraryTypes { get; set; }
+        public List<LibraryType> ShowLibraryTypes { get; set; }
         public bool AutoUpdate { get; set; }
         public UpdateTrain UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }

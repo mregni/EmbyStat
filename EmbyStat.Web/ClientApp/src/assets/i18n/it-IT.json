@@ -40,17 +40,17 @@
     "TOTALACTORS": "Totale attori",
     "TOTALDIRECTORS": "Totale registi",
     "TOTALWRITERS": "Totale sceneggiatori",
-    "MOSTFEATUREDACTOR": "Attori più in evidenza",
-    "MOSTFEATUREDDIRECTOR": "Registi più in evidenza",
-    "MOSTFEATUREDWRITER": "Sceneggiatori più in evidenza",
-    "COLLECTION": "collezione",
+    "MOSTFEATUREDACTOR": "Most Featured Actor",
+    "MOSTFEATUREDDIRECTOR": "Most Featured Director",
+    "MOSTFEATUREDWRITER": "Most Featured Writer",
+    "LIBRARIES": "Libraries",
     "PREMIEREDATE": "data della prima",
     "STATUS": "stato",
     "PERCENTAGE": "percentuale",
     "COLLECTED": "collezionato",
     "UPDATES": "Aggiornamenti",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Most featured actor per genre"
+    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, abbiamo avuto un errore nel backend, riprova. Se continua a non funzionare, controlla i log per maggiori dettagli.",
@@ -112,37 +112,38 @@
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Total movies",
-    "TOTALGENRES": "Total genres",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATED": "Highest rated",
-    "LOWESTRATED": "Lowest rated",
-    "OLDESTPREMIERED": "Oldest premiered",
-    "YOUNGESTPREMIERED": "Youngest premiered",
+    "TOTALMOVIES": "Total Movies",
+    "TOTALGENRES": "Total Genres",
+    "TOTALPLAYLENGTH": "Total Watchable Time",
+    "HIGHESTRATED": "Highest Rated",
+    "LOWESTRATED": "Lowest Rated",
+    "OLDESTPREMIERED": "Earliest Premiered",
+    "YOUNGESTPREMIERED": "Latest Premiered",
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
-    "YOUNGESTADDED": "Youngest added",
-    "MOSTFEATUREDPERGENRE": "Most featured actor per genre",
-    "DUPLICATEMOVIES": "Duplicate movies",
+    "YOUNGESTADDED": "Recently Added",
+    "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
+    "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Movies without a poster",
-    "NOIMDB": "Movies without a IMDB id"
+    "NOPOSTER": "Missing a poster",
+    "NOIMDB": "Missing an IMDB id"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total shows",
+    "TOTALSHOWS": "Total Shows",
     "TOTALEPISODES": "Total Episodes",
     "TOTALMISSINGEPISODES": "Total Missing Episodes",
-    "TOTALPLAYLENGTH": "Total watchable time",
-    "HIGHESTRATEDSHOW": "Highest rated show",
-    "LOWESTRATEDSHOW": "Lowest rated show",
-    "OLDESTPREMIERED": "Oldest premiered show",
-    "YOUNGESTPREMIERED": "Youngest premiered show",
-    "YOUNGESTADDED": "Youngest added",
-    "WITHMOESTEPISODES": "With most episodes",
-    "SHOWSTATUSGRAPH": "Show statuses",
-    "SEASONS": "seasons",
-    "CONTINUING": "continuing",
-    "ENDED": "ended"
+    "TOTALPLAYLENGTH": "Total Watchable Time",
+    "HIGHESTRATEDSHOW": "Highest Rated",
+    "LOWESTRATEDSHOW": "Lowest Rated",
+    "OLDESTPREMIERED": "Earliest Premiered",
+    "YOUNGESTPREMIERED": "Latest Premiered",
+    "YOUNGESTADDED": "Recently added",
+    "WITHMOESTEPISODES": "With Most Episodes",
+    "SHOWSTATUSGRAPH": "Show Status",
+    "SEASONS": "Seasons",
+    "CONTINUING": "Continuing",
+    "ENDED": "Ended",
+    "OVERVIEW": "Overview"
   },
   "SETTINGS": {
     "TITLES": {
@@ -152,7 +153,7 @@
     },
     "SAVED": {
       "GENERAL": "General Embystat settings saved!",
-      "TVDB": "Tvdb key saved!",
+      "TVDB": "TVDB key saved!",
       "EMBY": "Emby settings saved!",
       "MOVIES": "Movie settings saved!",
       "SHOWS": "Show settings saved!",
@@ -165,7 +166,7 @@
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find to short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
     "SHOW": {
@@ -214,7 +215,7 @@
     "TOOVERVIEW": "To overview",
     "DETAILS": {
       "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Last watched items"
+      "WATCHEDTITLE": "Last Watched Items"
     },
     "WATCHEDTABLE": {
       "TITLE": "Title",
@@ -224,8 +225,8 @@
       "ACTION": "Action"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies watched",
-      "TOTALWATCHEDEPISODES": "Episodes watched"
+      "TOTALWATCHEDMOVIES": "Movies Watched",
+      "TOTALWATCHEDEPISODES": "Episodes Watched"
     }
   },
   "JOB": {

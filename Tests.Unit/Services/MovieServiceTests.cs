@@ -14,7 +14,6 @@ using MediaBrowser.Model.Entities;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
-using CollectionType = EmbyStat.Common.Models.Entities.CollectionType;
 using Constants = EmbyStat.Common.Constants;
 
 namespace Tests.Unit.Services
@@ -23,7 +22,7 @@ namespace Tests.Unit.Services
     public class MovieServiceTests
     {
         private readonly MovieService _subject;
-        private readonly List<Collection> _collections;
+        private readonly List<Library> _collections;
         private readonly Movie _movieOne;
         private readonly Movie _movieTwo;
         private readonly Movie _movieThree;
@@ -31,10 +30,10 @@ namespace Tests.Unit.Services
 
         public MovieServiceTests()
         {
-            _collections = new List<Collection>
+            _collections = new List<Library>
             {
-                new Collection{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = LibraryType.Movies},
+                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = LibraryType.Movies}
             };
 
             var actorIdOne = Guid.NewGuid();
@@ -75,7 +74,7 @@ namespace Tests.Unit.Services
 
             _settingsServiceMock = new Mock<ISettingsService>();
             _settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies }, ToShortMovieEnabled = true });
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = true });
             _subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree);
         }
 
@@ -83,8 +82,8 @@ namespace Tests.Unit.Services
         {
             var movieRepositoryMock = new Mock<IMovieRepository>();
             movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>())).Returns(movies);
-            var collectionRepositoryMock = new Mock<ICollectionRepository>();
-            collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
+            var collectionRepositoryMock = new Mock<ILibraryRepository>();
+            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
@@ -111,7 +110,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetCollectionsFromDatabase()
         {
-            var collections = _subject.GetMovieCollections().ToList();
+            var collections = _subject.GetMovieLibraries().ToList();
 
             collections.Should().NotBeNull();
             collections.Count.Should().Be(2);
@@ -196,21 +195,21 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetYoungestPremieredStat()
+        public async void GetNewestPremieredStat()
         {
             var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
-            stat.General.YoungestPremieredMovie.Should().NotBeNull();
-            stat.General.YoungestPremieredMovie.Title.Should().Be(Constants.Movies.YoungestPremiered);
-            stat.General.YoungestPremieredMovie.Name.Should().Be(_movieThree.Name);
-            stat.General.YoungestPremieredMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
-            stat.General.YoungestPremieredMovie.DurationMinutes.Should().Be(230);
-            stat.General.YoungestPremieredMovie.MediaId.Should().Be(_movieThree.Id);
-            stat.General.YoungestPremieredMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
-            stat.General.YoungestPremieredMovie.Tag.Should().Be(_movieThree.Primary);
-            stat.General.YoungestPremieredMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
+            stat.General.NewestPremieredMovie.Should().NotBeNull();
+            stat.General.NewestPremieredMovie.Title.Should().Be(Constants.Movies.NewestPremiered);
+            stat.General.NewestPremieredMovie.Name.Should().Be(_movieThree.Name);
+            stat.General.NewestPremieredMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
+            stat.General.NewestPremieredMovie.DurationMinutes.Should().Be(230);
+            stat.General.NewestPremieredMovie.MediaId.Should().Be(_movieThree.Id);
+            stat.General.NewestPremieredMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
+            stat.General.NewestPremieredMovie.Tag.Should().Be(_movieThree.Primary);
+            stat.General.NewestPremieredMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
         }
 
         [Fact]
@@ -250,21 +249,21 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetYoungestAddedStat()
+        public async void GetLatestAddedStat()
         {
             var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
-            stat.General.YoungestAddedMovie.Should().NotBeNull();
-            stat.General.YoungestAddedMovie.Title.Should().Be(Constants.Movies.YoungestAdded);
-            stat.General.YoungestAddedMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.YoungestAddedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.YoungestAddedMovie.DurationMinutes.Should().Be(130);
-            stat.General.YoungestAddedMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.YoungestAddedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.YoungestAddedMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.YoungestAddedMovie.Year.Should().Be(2002);
+            stat.General.LatestAddedMovie.Should().NotBeNull();
+            stat.General.LatestAddedMovie.Title.Should().Be(Constants.Movies.LatestAdded);
+            stat.General.LatestAddedMovie.Name.Should().Be(_movieOne.Name);
+            stat.General.LatestAddedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
+            stat.General.LatestAddedMovie.DurationMinutes.Should().Be(130);
+            stat.General.LatestAddedMovie.MediaId.Should().Be(_movieOne.Id);
+            stat.General.LatestAddedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
+            stat.General.LatestAddedMovie.Tag.Should().Be(_movieOne.Primary);
+            stat.General.LatestAddedMovie.Year.Should().Be(2002);
         }
 
         #endregion
@@ -571,7 +570,7 @@ namespace Tests.Unit.Services
         {
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieCollectionTypes = new List<CollectionType> { CollectionType.Movies }, ToShortMovieEnabled = false });
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = false });
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());

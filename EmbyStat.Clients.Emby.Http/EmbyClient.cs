@@ -154,7 +154,7 @@ namespace EmbyStat.Clients.Emby.Http
 
         public async Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken)
         {
-	        var url = GetItemListUrl($"persons/{personName}", new ItemQuery());
+	        var url = GetItemListUrl($"persons/{personName}", new ItemQuery { Fields = new []{ ItemFields.PremiereDate }});
 
 	        using (var stream = await GetSerializedStreamAsync(url, cancellationToken))
 	        {

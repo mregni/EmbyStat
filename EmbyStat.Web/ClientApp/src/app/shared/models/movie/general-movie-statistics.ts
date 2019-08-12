@@ -12,8 +12,8 @@ export class GeneralMovieStatistics {
   longestMovie: Card<string>;
   shortestMovie: Card<string>;
   oldestPremieredMovie: Card<string>;
-  youngestPremieredMovie: Card<string>;
-  youngestAddedMovie: Card<string>;
+  newestPremieredMovie: Card<string>;
+  latestAddedMovie: Card<string>;
   mostFeaturedMovieActor: Card<string>;
   mostFeaturedMovieDirector: Card<string>;
   lastPlayedMovie: Card<string>;

@@ -21,18 +21,18 @@ namespace EmbyStat.Controllers.Movie
         }
         
         [HttpGet]
-        [Route("collections")]
-        public IActionResult GetCollections()
+        [Route("libraries")]
+        public IActionResult GetLibraries()
         {
-            var result = _movieService.GetMovieCollections();
-            return Ok(_mapper.Map<IList<CollectionViewModel>>(result));
+            var result = _movieService.GetMovieLibraries();
+            return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
         }
 
         [HttpGet]
         [Route("statistics")]
-        public async Task<IActionResult> GetGeneralStats(List<string> collectionIds)
+        public async Task<IActionResult> GetGeneralStats(List<string> libraryIds)
         {
-            var result = await _movieService.GetMovieStatisticsAsync(collectionIds);
+            var result = await _movieService.GetMovieStatisticsAsync(libraryIds);
             var convert = _mapper.Map<MovieStatisticsViewModel>(result);
             return Ok(convert);
         }
