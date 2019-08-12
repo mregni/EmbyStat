@@ -146,6 +146,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
                 emby.serverPort = port;
                 emby.serverProtocol = protocol;
                 settings.emby = emby;
+                console.log(settings);
                 this.settingsFacade.updateSettings(settings);
               }
             }, (err) => {

@@ -14,7 +14,7 @@ namespace EmbyStat.Repositories
         {
             _libraryCollection = context.GetContext().GetCollection<Library>();
         }
-        public IEnumerable<Library> GetLibrariesByTypes(IEnumerable<CollectionType> types)
+        public IEnumerable<Library> GetLibrariesByTypes(IEnumerable<LibraryType> types)
         {
             var bArray = new BsonArray();
             foreach (var type in types)

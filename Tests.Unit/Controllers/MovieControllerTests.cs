@@ -27,8 +27,8 @@ namespace Tests.Unit.Controllers
         {
             _collections = new List<Library>
             {
-                new Library{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = CollectionType.Movies},
-                new Library{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = CollectionType.Movies}
+                new Library{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = LibraryType.Movies},
+                new Library{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = LibraryType.Movies}
             };
 
             _movieGeneral = new MovieGeneral
@@ -56,13 +56,13 @@ namespace Tests.Unit.Controllers
                     {
                         Name = "collection1",
                         PrimaryImage = "image1",
-                        Type = (int) CollectionType.Movies
+                        Type = (int) LibraryType.Movies
                     },
                     new LibraryViewModel
                     {
                         Name = "collection2",
                         PrimaryImage = "image2",
-                        Type = (int) CollectionType.Movies
+                        Type = (int) LibraryType.Movies
                     }
                 });
             _subject = new MovieController(_movieServiceMock.Object, _mapperMock.Object);

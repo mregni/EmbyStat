@@ -3,12 +3,12 @@
     <mat-card>
       <mat-card-content>
         <p>{{ 'SETTINGS.SHOW.COLLECTIONTYPES' | translate }}</p>
-        <app-collection-selector [list]="settings.showCollectionTypes" (newList)="onCollectionListChanged($event)">
-        </app-collection-selector>
+        <app-library-selector [list]="settings.showLibraryTypes" (newList)="onLibraryListChanged($event)">
+        </app-library-selector>
       </mat-card-content>
       <mat-card-actions class="d-flex justify-content-end">
         <button mat-raised-button color="primary"
-          (click)="saveFormCollectionTypes()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
+          (click)="saveFormLibraryTypes()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
       </mat-card-actions>
     </mat-card>
   </div>

@@ -10,23 +10,24 @@ namespace EmbyStat.Common.Extensions
             return version.Replace("-dev", string.Empty).Replace("-beta", string.Empty);
         }
 
-        public static CollectionType ToCollectionType(this string value)
+        public static LibraryType ToCollectionType(this string value)
         {
             switch (value)
             {
-                case "movies": return CollectionType.Movies;
-                case "tvshows": return CollectionType.TvShow;
-                case "music": return CollectionType.Music;
-                case "musicvideos": return CollectionType.MusicVideos;
-                case "trailers": return CollectionType.Trailers;
-                case "homevideos": return CollectionType.HomeVideos;
-                case "books": return CollectionType.Books;
-                case "photos": return CollectionType.Photos;
-                case "games": return CollectionType.Games;
-                case "livetv": return CollectionType.LiveTv;
-                case "playlists": return CollectionType.Playlists;
-                case "folders": return CollectionType.Folders;
-                default: return CollectionType.Other;
+                case "movies": return LibraryType.Movies;
+                case "tvshows": return LibraryType.TvShow;
+                case "music": return LibraryType.Music;
+                case "musicvideos": return LibraryType.MusicVideos;
+                case "trailers": return LibraryType.Trailers;
+                case "homevideos": return LibraryType.HomeVideos;
+                case "books": return LibraryType.Books;
+                case "photos": return LibraryType.Photos;
+                case "games": return LibraryType.Games;
+                case "livetv": return LibraryType.LiveTv;
+                case "playlists": return LibraryType.Playlists;
+                case "folders": return LibraryType.Folders;
+                case "boxsets": return LibraryType.BoxSets;
+                default: return LibraryType.Other;
             }
         }
 

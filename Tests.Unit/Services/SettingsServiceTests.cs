@@ -44,8 +44,8 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieCollectionTypes = new EditableList<CollectionType>(),
-                ShowCollectionTypes = new List<CollectionType>()
+                MovieLibraryTypes = new EditableList<LibraryType>(),
+                ShowLibraryTypes = new List<LibraryType>()
             };
 
             var strJson = JsonConvert.SerializeObject(fileSettings, Formatting.Indented);
@@ -65,8 +65,8 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieCollectionTypes = new EditableList<CollectionType>(),
-                ShowCollectionTypes = new List<CollectionType>()
+                MovieLibraryTypes = new EditableList<LibraryType>(),
+                ShowLibraryTypes = new List<LibraryType>()
             };
 
             _subject.LoadUserSettingsFromFile();
