@@ -309,7 +309,7 @@
   },
   "ABOUT": {
     "SERVERINFO": "Infos sur le serveur",
-    "GITHUBRELEASE": "Releases on Github",
+    "GITHUBRELEASE": "Versions sur Github",
     "REQUESTFEATURE": "Demander une fonctionnalité",
     "LOGBUG": "Signaler un bug sur GitHub",
     "HELPTRANSLATE": "Aidez à traduire cette application",
