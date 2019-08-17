@@ -7,6 +7,6 @@ LABEL author="UPing"
 WORKDIR /app
 COPY . .
 
-VOLUME c:\\config
+VOLUME /app/config
 EXPOSE 6555/tcp
 ENTRYPOINT ["dotnet", "EmbyStat.dll"] 
