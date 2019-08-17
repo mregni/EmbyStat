@@ -299,3 +299,4 @@ __pycache__/
 **/updateFiles/**
 
 usersettings.json
+**/Embystat.Web/config/**
