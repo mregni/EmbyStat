@@ -50,7 +50,8 @@
     "COLLECTED": "collecté",
     "UPDATES": "Mises à jour",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Acteur le plus présent par genre"
+    "ACTORSPERGENRE": "Acteur le plus présent par genre",
+    "MINUTES": "minutes"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -118,10 +119,10 @@
     "HIGHESTRATED": "Les mieux notés",
     "LOWESTRATED": "Les moins bien notés",
     "OLDESTPREMIERED": "La plus ancienne sortie",
-    "YOUNGESTPREMIERED": "La plus récente sortie",
+    "NEWESTPREMIERED": "Latest Premiered",
     "SHORTEST": "Le plus court",
     "LONGEST": "Le plus long",
-    "YOUNGESTADDED": "Ajouts récents",
+    "LATESTADDED": "Recently Added",
     "MOSTFEATUREDPERGENRE": "Acteur le plus présent par genre",
     "DUPLICATEMOVIES": "Films en double",
     "TOSHORTMOVIES": "Films qui sont très courts",
@@ -136,8 +137,8 @@
     "HIGHESTRATEDSHOW": "Les mieux notés",
     "LOWESTRATEDSHOW": "Les moins bien notés",
     "OLDESTPREMIERED": "La plus ancienne sortie",
-    "YOUNGESTPREMIERED": "La plus récente sortie",
-    "YOUNGESTADDED": "Ajoutée récemment",
+    "NEWESTPREMIERED": "Latest Premiered",
+    "LATESTADDED": "Recently added",
     "WITHMOESTEPISODES": "Avec le plus épisodes",
     "SHOWSTATUSGRAPH": "Statut de la série",
     "SEASONS": "Saisons",
