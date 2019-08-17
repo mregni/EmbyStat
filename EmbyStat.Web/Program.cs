@@ -77,11 +77,11 @@ namespace EmbyStat.Web
 
         private static Logger SetupLogging()
         {
-            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")))
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")))
             {
                 var source = Path.Combine(Directory.GetCurrentDirectory(), "nlog.config");
                 var destination = Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config");
-                File.Move(source, destination);
+                File.Copy(source, destination);
             }
 
             var logger = NLogBuilder.ConfigureNLog(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")).GetCurrentClassLogger();
