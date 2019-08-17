@@ -34,23 +34,24 @@
     "GENERAL": "général",
     "DURATION": "temps",
     "GRAPHS": "graphiques",
-    "PEOPLE": "personnes",
-    "SUSPICIOUS": "suspect",
-    "SHOWS": "séries",
+    "PEOPLE": "Personnes",
+    "SUSPICIOUS": "Suspect",
+    "SHOWS": "Séries",
     "TOTALACTORS": "Nombre d'acteurs",
     "TOTALDIRECTORS": "Nombre de directeur",
     "TOTALWRITERS": "Nombre d'écrivains",
-    "MOSTFEATUREDACTOR": "Most Featured Actor",
-    "MOSTFEATUREDDIRECTOR": "Most Featured Director",
-    "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "LIBRARIES": "Libraries",
+    "MOSTFEATUREDACTOR": "Acteur le plus présent",
+    "MOSTFEATUREDDIRECTOR": "Réalisateur le plus présent",
+    "MOSTFEATUREDWRITER": "Scénariste le plus présent",
+    "LIBRARIES": "Librairies",
     "PREMIEREDATE": "date de sortie",
     "STATUS": "statut",
     "PERCENTAGE": "pourcentage",
     "COLLECTED": "collecté",
     "UPDATES": "Mises à jour",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
+    "ACTORSPERGENRE": "Acteur le plus présent par genre",
+    "MINUTES": "minutes"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -70,7 +71,7 @@
     "NAME": "Nom d'utilisateur",
     "LANGUAGE": "Sélectionnez votre langue",
     "DURATIONINMINUTES": "Durée en minutes",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
+    "ENABLETOSHORTMOVIES": "Activer la vérification des films trop court",
     "TVDBAPI": "Clé de l'API TheTVDB",
     "CRON": "Ligne de Cron",
     "EXCEPTIONLOGGING": "Enregistrer les exceptions dans les logs"
@@ -111,49 +112,49 @@
     "FINISHEXPLANATION": "La meilleure chose à faire est de démarrer une tâche de synchronisation multimédia. EmbyStat commencera à télécharger toutes les données de votre serveur Emby. Gardez à l'esprit que cette tâche peut prendre du temps en fonction de la taille de votre collection. Si vous ne voulez pas commencer la synchronisation maintenant, cliquez simplement sur Terminer. Vous pourez le démarrer manuellement plus tard en accédant à la page Tâches."
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Total Movies",
-    "TOTALGENRES": "Total Genres",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATED": "Highest Rated",
-    "LOWESTRATED": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
+    "COLLECTIONPLACEHOLDER": "Filtrer les collections de films",
+    "TOTALMOVIES": "Nombre total de films",
+    "TOTALGENRES": "Nombre total de genres",
+    "TOTALPLAYLENGTH": "Temps de visionnage total",
+    "HIGHESTRATED": "Les mieux notés",
+    "LOWESTRATED": "Les moins bien notés",
+    "OLDESTPREMIERED": "La plus ancienne sortie",
+    "NEWESTPREMIERED": "Latest Premiered",
     "SHORTEST": "Le plus court",
     "LONGEST": "Le plus long",
-    "YOUNGESTADDED": "Recently Added",
-    "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
-    "DUPLICATEMOVIES": "Duplicate Movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "LATESTADDED": "Recently Added",
+    "MOSTFEATUREDPERGENRE": "Acteur le plus présent par genre",
+    "DUPLICATEMOVIES": "Films en double",
+    "TOSHORTMOVIES": "Films qui sont très courts",
+    "NOPOSTER": "Manquer une affiche",
+    "NOIMDB": "Manquant un identifiant IMDB"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total Shows",
+    "TOTALSHOWS": "Nombre total de séries",
     "TOTALEPISODES": "Nombre d'épisodes",
     "TOTALMISSINGEPISODES": "Nombre d'épisodes manquants",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATEDSHOW": "Highest Rated",
-    "LOWESTRATEDSHOW": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
-    "YOUNGESTADDED": "Recently added",
-    "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview"
+    "TOTALPLAYLENGTH": "Temps de visionnage total",
+    "HIGHESTRATEDSHOW": "Les mieux notés",
+    "LOWESTRATEDSHOW": "Les moins bien notés",
+    "OLDESTPREMIERED": "La plus ancienne sortie",
+    "NEWESTPREMIERED": "Latest Premiered",
+    "LATESTADDED": "Recently added",
+    "WITHMOESTEPISODES": "Avec le plus épisodes",
+    "SHOWSTATUSGRAPH": "Statut de la série",
+    "SEASONS": "Saisons",
+    "CONTINUING": "En cours",
+    "ENDED": "Terminée",
+    "OVERVIEW": "Aperçu"
   },
   "SETTINGS": {
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TVDB": "TVDB",
       "EMBY": "Emby"
     },
     "SAVED": {
       "GENERAL": "Paramètres généraux d'Embystat enregistrés !",
-      "TVDB": "TVDB key saved!",
+      "TVDB": "Clé TVDB enregistrée !",
       "EMBY": "Paramètres sauvegardés!",
       "MOVIES": "Paramètres des films enregistrés !",
       "SHOWS": "Paramètres des séries enregistrés !",
@@ -166,30 +167,30 @@
       "EXCEPTIONLOGGING": "Activer / désactiver la sauvegarde des exceptions sur le service Rollbar en ligne. Avec cette journalisation, je peux déboguer et réparer l'application plus rapidement. Aucune donnée personnelle n'est jamais enregistrée, seuls les messages d'exception, la stacktrace, le nom du système d'exploitation et le numéro de version."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Pour trouver les films qui sont anormalement courts, nous devons savoir quelle est la durée minimum pour un film. Par défaut, ce paramètre est défini sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "SHOW": {
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYADDRESS": "Emby IP / domaine",
       "EMBYUSERNAME": "Nom d'utilisateur de l'administrateur Emby",
       "EMBYPASSWORD": "Mot de passe l'administrateur Emby",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
-      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
-      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
+      "EMBYPORT": "Port d'Emby",
+      "EMBYADDRESSREQUIRED": "Emby IP / domaine requis.",
+      "EMBYUSERNAMEREQUIRED": "Nom d'utilisateur de l'administrateur Emby requis.",
+      "EMBYPASSWORDREQUIRED": "Mot de passe de l'administrateur Emby requis.",
+      "EMBYPORTREQUIRED": "Port d'Emby requis.",
+      "WRONGPASSWORD": "Mauvaise combinaison nom d'utilisateur / mot de passe. Veuillez vérifier vos informations d'identification et réessayer",
+      "NOADMINUSER": "L'utilisateur d'Emby n'est pas un administrateur sur le serveur. Veuillez fournir un compte d'administrateur."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Activer les mises à jour automatiques",
       "CHECK": "Vérifier et mettre à jour le serveur maintenant",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Mettre à jour le serveur",
       "TRAIN": "Changez le canal de mise à jour si vous voulez avoir des mises à jour bêta.",
       "ONBETA": "Vous n'êtes plus sur le channel Master, vous ne pouvez donc plus revenir dessus. Si vous voulez revenir sur le channel Master, veuillez réinstaller le serveur.",
       "TRAINWARNING": "Ici, vous pouvez changer le channel de mise à jour de Master à Beta. Si vous ne savez pas ce que vous faites, laissez ce paramètre sur Master. Si vous souhaitez recevoir les mises à jour Beta, changez-le ici, sachez que vous ne pourrez pas revenir à Master ultérieurement. Vous devrez réinstaller le serveur.",
@@ -204,7 +205,7 @@
     "ISHIDDEN": "Est caché de l'écran de connexion",
     "ISDISABLED": "Est désactivé",
     "DELETED": "Utilisateurs supprimés",
-    "ACTIVE": "Active users",
+    "ACTIVE": "Utilisateurs actifs",
     "LASTACTIVE": "Dernière activité",
     "SORTING": {
       "USERNAMEASC": "Nom d'utilisateur (A - Z)",
@@ -215,7 +216,7 @@
     "TOOVERVIEW": "Vue d'ensemble",
     "DETAILS": {
       "TITLE": "Détails pour {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "WATCHEDTITLE": "Derniers éléments regardés"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titre",
@@ -225,8 +226,8 @@
       "ACTION": "Action"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Films vus",
+      "TOTALWATCHEDEPISODES": "Épisodes vus"
     }
   },
   "JOB": {
@@ -242,7 +243,7 @@
     "NORUN": "Pas encore exécuté",
     "MOMENT_AGO": "un instant",
     "JOBLOGS": "Logs d'activités",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Valeur du cron mise à jour",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Vérifier la connexion à Emby",
       "PINGEMBYSERVERDESCRIPTION": "Vérifier que le serveur Emby est toujours en ligne.",
@@ -308,10 +309,10 @@
     "MOREMISSEDPINGS": "Impossible de se connecter à Emby après plusieurs tentatives!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
+    "SERVERINFO": "Infos sur le serveur",
+    "GITHUBRELEASE": "Versions sur Github",
+    "REQUESTFEATURE": "Demander une fonctionnalité",
+    "LOGBUG": "Signaler un bug sur GitHub",
     "HELPTRANSLATE": "Aidez à traduire cette application",
     "THANKS": {
       "TITLE": "Merci",
@@ -322,12 +323,12 @@
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HOSTOS": "Hôte :",
+    "WANADDRESS": "Adresse WAN",
+    "LANADDRESS": "Adresse LAN",
+    "CACHEPATH": "Chemin du cache",
+    "LOGPATH": "Chemin des fichiers log",
+    "HTTPPORT": "Port HTTP",
+    "HTTPSPORT": "Port HTTPS"
   }
 }
