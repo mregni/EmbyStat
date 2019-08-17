@@ -50,7 +50,8 @@
     "COLLECTED": "collected",
     "UPDATES": "Updates",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
+    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
+    "MINUTES": "minutes"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -118,10 +119,10 @@
     "HIGHESTRATED": "Highest Rated",
     "LOWESTRATED": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
+    "NEWESTPREMIERED": "Latest Premiered",
     "SHORTEST": "Shortest",
     "LONGEST": "Longest",
-    "YOUNGESTADDED": "Recently Added",
+    "LATESTADDED": "Recently Added",
     "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
     "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
@@ -136,8 +137,8 @@
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
-    "YOUNGESTADDED": "Recently added",
+    "NEWESTPREMIERED": "Latest Premiered",
+    "LATESTADDED": "Recently added",
     "WITHMOESTEPISODES": "With Most Episodes",
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
