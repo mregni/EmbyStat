@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Fluent;
 using NLog.Web;
+using NLog;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace EmbyStat.Web
 {
@@ -18,7 +20,7 @@ namespace EmbyStat.Web
     {
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog(Path.Combine("config", "nlog.config")).GetCurrentClassLogger();
+            var logger = SetupLogging();
 
             try
             {
@@ -46,8 +48,8 @@ namespace EmbyStat.Web
             {
                 Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
                 logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
-                NLog.LogManager.Flush();
-                NLog.LogManager.Shutdown();
+                LogManager.Flush();
+                LogManager.Shutdown();
             }
         }
 
@@ -72,6 +74,19 @@ namespace EmbyStat.Web
                 .AddJsonFile("appsettings.json", false, false)
                 .AddInMemoryCollection(configArgs)
                 .Build();
+
+        private static Logger SetupLogging()
+        {
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")))
+            {
+                var source = Path.Combine(Directory.GetCurrentDirectory(), "nlog.config");
+                var destination = Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config");
+                File.Move(source, destination);
+            }
+
+            var logger = NLogBuilder.ConfigureNLog(Path.Combine("config", "nlog.config")).GetCurrentClassLogger();
+            return logger;
+        }
 
         private static void SetupDatabase(IWebHost host)
         {
