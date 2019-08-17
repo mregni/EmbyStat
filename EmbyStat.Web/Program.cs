@@ -84,7 +84,7 @@ namespace EmbyStat.Web
                 File.Move(source, destination);
             }
 
-            var logger = NLogBuilder.ConfigureNLog(Path.Combine("config", "nlog.config")).GetCurrentClassLogger();
+            var logger = NLogBuilder.ConfigureNLog(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")).GetCurrentClassLogger();
             return logger;
         }
 
