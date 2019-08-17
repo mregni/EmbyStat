@@ -5,6 +5,6 @@ LABEL maintainer="mikhael@uping.be"
 WORKDIR /app
 COPY . .
 
-VOLUME c:\\app\\config
-EXPOSE 6555/tcp
+VOLUME C:\\app\\config
+EXPOSE 6555
 ENTRYPOINT ["dotnet", "EmbyStat.dll"]
