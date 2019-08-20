@@ -1,4 +1,4 @@
-export class Collection {
+export class Library {
     id: string;
     name: string;
     primaryImage: string;

@@ -22,47 +22,47 @@ namespace EmbyStat.Services
     public class ShowService : MediaService, IShowService
     {
         private readonly IShowRepository _showRepository;
-        private readonly ICollectionRepository _collectionRepository;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly IPersonService _personService;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly ISettingsService _settingsService;
 
-        public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ICollectionRepository collectionRepository,
+        public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ILibraryRepository libraryRepository,
             IPersonService personService, IStatisticsRepository statisticsRepository, ISettingsService settingsService) : base(jobRepository)
         {
             _showRepository = showRepository;
-            _collectionRepository = collectionRepository;
+            _libraryRepository = libraryRepository;
             _personService = personService;
             _statisticsRepository = statisticsRepository;
             _settingsService = settingsService;
         }
 
-        public IEnumerable<Collection> GetShowCollections()
+        public IEnumerable<Library> GetShowLibraries()
         {
             var settings = _settingsService.GetUserSettings();
-            return _collectionRepository.GetCollectionByTypes(settings.ShowCollectionTypes);
+            return _libraryRepository.GetLibrariesByTypes(settings.ShowLibraryTypes);
         }
 
-        public async Task<ShowStatistics> GetStatistics(List<string> collectionIds)
+        public async Task<ShowStatistics> GetStatistics(List<string> libraryIds)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, collectionIds);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
 
             ShowStatistics statistics;
-            if (StatisticsAreValid(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, libraryIds))
             {
                 statistics = JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
             else
             {
-                statistics = await CalculateShowStatistics(collectionIds);
+                statistics = await CalculateShowStatistics(libraryIds);
             }
 
             return statistics;
         }
 
-        public async Task<ShowStatistics> CalculateShowStatistics(List<string> collectionIds)
+        public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(collectionIds).ToList();
+            var shows = _showRepository.GetAllShows(libraryIds).ToList();
             var statistics = new ShowStatistics
             {
                 General = CalculateGeneralStatistics(shows),
@@ -71,7 +71,7 @@ namespace EmbyStat.Services
             };
 
             var json = JsonConvert.SerializeObject(statistics);
-            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, collectionIds);
+            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, libraryIds);
 
             return statistics;
         }
@@ -114,29 +114,29 @@ namespace EmbyStat.Services
             };
         }
 
-        public List<ShowCollectionRow> GetCollectionRows(List<string> collectionIds)
+        public List<ShowCollectionRow> GetCollectedRows(List<string> libraryIds)
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, collectionIds);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
             List<ShowCollectionRow> stats;
-            if (StatisticsAreValid(statistic, collectionIds))
+            if (StatisticsAreValid(statistic, libraryIds))
             {
                 stats = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
             }
             else
             {
-                var shows = _showRepository.GetAllShows(collectionIds);
+                var shows = _showRepository.GetAllShows(libraryIds);
 
-                stats = shows.Select(CreateShowCollectionRow).ToList();
+                stats = shows.Select(CreateShowCollectedRow).ToList();
 
                 var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollectedRows, collectionIds);
+                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
             }
 
             return stats;
         }
 
-        private ShowCollectionRow CreateShowCollectionRow(Show show)
+        private ShowCollectionRow CreateShowCollectedRow(Show show)
         {
             //TODO: gewoon in show nazien ipv naar DB gaat! indexnr is ook fout, moet naar season gaan
             var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);

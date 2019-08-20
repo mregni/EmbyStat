@@ -34,8 +34,8 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieCollectionTypes = new List<CollectionType>() { CollectionType.Other, CollectionType.Movies, CollectionType.HomeVideos },
-                ShowCollectionTypes = new List<CollectionType>() { CollectionType.TvShow, CollectionType.Other },
+                MovieLibraryTypes = new List<LibraryType>() { LibraryType.Other, LibraryType.Movies, LibraryType.HomeVideos },
+                ShowLibraryTypes = new List<LibraryType>() { LibraryType.TvShow, LibraryType.Other },
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = UpdateTrain.Beta,
@@ -71,8 +71,8 @@ namespace Tests.Unit.Controllers
             mapperMock.Setup(x => x.Map<UserSettings>(It.IsAny<FullSettingsViewModel>()))
                 .Returns(new UserSettings()
                 {
-                    MovieCollectionTypes = new List<CollectionType>(),
-                    ShowCollectionTypes = new List<CollectionType>()
+                    MovieLibraryTypes = new List<LibraryType>(),
+                    ShowLibraryTypes = new List<LibraryType>()
                 });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
@@ -108,8 +108,8 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieCollectionTypes = new List<int> { 0, 2, 6 },
-                ShowCollectionTypes = new List<int> { 0, 2 },
+                MovieLibraryTypes = new List<int> { 0, 2, 6 },
+                ShowLibraryTypes = new List<int> { 0, 2 },
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = 0,

@@ -25,8 +25,8 @@
     <mat-card>
       <mat-card-content>
         <p>{{ 'SETTINGS.MOVIE.COLLECTIONTYPES' | translate }}</p>
-        <app-collection-selector [list]="settings.movieCollectionTypes" (newList)="onCollectionListChanged($event)">
-        </app-collection-selector>
+        <app-library-selector [list]="settings.movieLibraryTypes" (newList)="onCollectionListChanged($event)">
+        </app-library-selector>
       </mat-card-content>
       <mat-card-actions class="d-flex justify-content-end">
         <button mat-raised-button color="primary" [disabled]="isSaving"

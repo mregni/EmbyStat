@@ -14,7 +14,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 export class SettingsShowComponent implements OnInit, OnDestroy {
   @Input() settings: Settings;
 
-  newCollectionList: number[];
+  newLibraryList: number[];
 
   isSaving = false;
   constructor(
@@ -24,19 +24,19 @@ export class SettingsShowComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  saveFormCollectionTypes() {
+  saveFormLibraryTypes() {
     this.isSaving = true;
 
     const settings = {...this.settings};
-    settings.showCollectionTypes = this.newCollectionList;
+    settings.showLibraryTypes = this.newLibraryList;
     this.settingsFacade.updateSettings(settings);
     this.toastService.showSuccess('SETTINGS.SAVED.SHOWS');
     this.isSaving = false;
 
   }
 
-  onCollectionListChanged(event: number[]) {
-    this.newCollectionList = event;
+  onLibraryListChanged(event: number[]) {
+    this.newLibraryList = event;
   }
 
   ngOnDestroy() {

@@ -19,7 +19,7 @@ namespace Tests.Unit.Services
     [Collection("Mapper collection")]
     public class ShowServiceTests
     {
-        private readonly List<Collection> _collections;
+        private readonly List<Library> _collections;
         private readonly ShowService _subject;
 
         private readonly Show _showOne;
@@ -28,10 +28,10 @@ namespace Tests.Unit.Services
 
         public ShowServiceTests()
         {
-            _collections = new List<Collection>
+            _collections = new List<Library>
             {
-                new Collection{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = CollectionType.TvShow},
-                new Collection{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = CollectionType.TvShow}
+                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = LibraryType.TvShow},
+                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = LibraryType.TvShow}
             };
 
             _showOne = new ShowBuilder(1, _collections.First().Id)
@@ -75,8 +75,8 @@ namespace Tests.Unit.Services
                 showRepositoryMock.Setup(x => x.GetEpisodeCountForShow(show.Id)).Returns(show.Episodes.Count);
             }
 
-            var collectionRepositoryMock = new Mock<ICollectionRepository>();
-            collectionRepositoryMock.Setup(x => x.GetCollectionByTypes(It.IsAny<IEnumerable<CollectionType>>())).Returns(_collections);
+            var collectionRepositoryMock = new Mock<ILibraryRepository>();
+            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in shows.SelectMany(x => x.People))
@@ -95,7 +95,7 @@ namespace Tests.Unit.Services
 
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ShowCollectionTypes = new List<CollectionType> { CollectionType.TvShow } });
+                .Returns(new UserSettings { ShowLibraryTypes = new List<LibraryType> { LibraryType.TvShow } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
             return new ShowService(jobRepositoryMock.Object, showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);
@@ -106,7 +106,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetCollectionsFromDatabase()
         {
-            var collections = _subject.GetShowCollections().ToList();
+            var collections = _subject.GetShowLibraries().ToList();
 
             collections.Should().NotBeNull();
             collections.Count().Should().Be(2);

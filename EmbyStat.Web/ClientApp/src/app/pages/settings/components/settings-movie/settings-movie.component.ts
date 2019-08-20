@@ -36,6 +36,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(): void {
     if (this.settings !== undefined) {
+      console.log(this.settings);
       this.toShortMovieControl.setValue(this.settings.toShortMovie);
       this.toShortMovieEnabledControl.setValue(this.settings.toShortMovieEnabled);
     }
@@ -58,7 +59,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     this.isSaving = true;
 
     const settings = { ...this.settings };
-    settings.movieCollectionTypes = this.newCollectionList;
+    settings.movieLibraryTypes = this.newCollectionList;
     this.settingsFacade.updateSettings(settings);
     this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
     this.isSaving = false;

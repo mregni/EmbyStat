@@ -15,10 +15,8 @@ import { NumberCardComponent } from './components/cards/number-card/number-card.
 import { TimeCardComponent } from './components/cards/time-card/time-card.component';
 import { UserCardComponent } from './components/cards/user-card/user-card.component';
 import { SimpleChartComponent } from './components/charts/simple-chart/simple-chart.component';
-import {
-    CollectionSelectorComponent
-} from './components/collection-selector/collection-selector.component';
 import { LanguageComponent } from './components/language/language.component';
+import { LibrarySelectorComponent } from './components/library-selector/library-selector.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MoviePosterComponent } from './components/posters/movie-poster/movie-poster.component';
 import { PersonListComponent } from './components/posters/person-list/person-list.component';
@@ -83,7 +81,7 @@ import { UserService } from './services/user.service';
     PersonListComponent,
     ToolbarComponent,
     SideNavigationComponent,
-    CollectionSelectorComponent,
+    LibrarySelectorComponent,
     LanguageComponent,
     DisableControlDirective,
     MoviePosterComponent,
@@ -115,7 +113,7 @@ import { UserService } from './services/user.service';
     PersonListComponent,
     ToolbarComponent,
     SideNavigationComponent,
-    CollectionSelectorComponent,
+    LibrarySelectorComponent,
     UserCardComponent,
     CapitalizeFirstPipe,
     ToShorterStringPipe,

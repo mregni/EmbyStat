@@ -43,14 +43,15 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "COLLECTION": "合集",
+    "LIBRARIES": "Libraries",
     "PREMIEREDATE": "首播日期",
     "STATUS": "状态",
     "PERCENTAGE": "百分比",
     "COLLECTED": "已收藏",
     "UPDATES": "更新",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
+    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
+    "MINUTES": "minutes"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "呃。。。后台出错了，请再试一次。如果它一直不行，请查看日志以获取更多详细信息。",
@@ -118,10 +119,10 @@
     "HIGHESTRATED": "Highest Rated",
     "LOWESTRATED": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
+    "NEWESTPREMIERED": "Latest Premiered",
     "SHORTEST": "最短",
     "LONGEST": "最长的",
-    "YOUNGESTADDED": "Recently Added",
+    "LATESTADDED": "Recently Added",
     "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
     "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
@@ -136,13 +137,14 @@
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
-    "YOUNGESTADDED": "Recently added",
+    "NEWESTPREMIERED": "Latest Premiered",
+    "LATESTADDED": "Recently added",
     "WITHMOESTEPISODES": "With Most Episodes",
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
     "CONTINUING": "Continuing",
-    "ENDED": "Ended"
+    "ENDED": "Ended",
+    "OVERVIEW": "Overview"
   },
   "SETTINGS": {
     "TITLES": {

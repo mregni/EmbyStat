@@ -13,8 +13,8 @@ namespace EmbyStat.Controllers.Settings
         public int ToShortMovie { get; set; }
         public bool ToShortMovieEnabled { get; set; }
         public int KeepLogsCount { get; set; }
-        public List<int> MovieCollectionTypes { get; set; }
-        public List<int> ShowCollectionTypes { get; set; }
+        public List<int> MovieLibraryTypes { get; set; }
+        public List<int> ShowLibraryTypes { get; set; }
         public bool AutoUpdate { get; set; }
         public int UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }

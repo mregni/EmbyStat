@@ -43,14 +43,15 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "COLLECTION": "Coletâneas",
+    "LIBRARIES": "Libraries",
     "PREMIEREDATE": "Data de estreia",
     "STATUS": "Status",
     "PERCENTAGE": "Porcentagem",
     "COLLECTED": "Coletado",
     "UPDATES": "Atualização",
     "VERSION": "Versão",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
+    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
+    "MINUTES": "minutes"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Opa, recebemos um erro no backend, por favor, tente novamente. Se continuar a falhar, por favor, verifique os logs para mais detalhes.",
@@ -118,10 +119,10 @@
     "HIGHESTRATED": "Highest Rated",
     "LOWESTRATED": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
+    "NEWESTPREMIERED": "Latest Premiered",
     "SHORTEST": "Mais curto",
     "LONGEST": "Mais longo",
-    "YOUNGESTADDED": "Recently Added",
+    "LATESTADDED": "Recently Added",
     "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
     "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
@@ -136,13 +137,14 @@
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
-    "YOUNGESTADDED": "Recently added",
+    "NEWESTPREMIERED": "Latest Premiered",
+    "LATESTADDED": "Recently added",
     "WITHMOESTEPISODES": "With Most Episodes",
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
     "CONTINUING": "Continuing",
-    "ENDED": "Ended"
+    "ENDED": "Ended",
+    "OVERVIEW": "Overview"
   },
   "SETTINGS": {
     "TITLES": {

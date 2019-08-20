@@ -43,14 +43,15 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "COLLECTION": "verzameling",
+    "LIBRARIES": "Libraries",
     "PREMIEREDATE": "première datum",
     "STATUS": "status",
     "PERCENTAGE": "percentage",
     "COLLECTED": "verzameld",
     "UPDATES": "Updates",
     "VERSION": "Versie",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre"
+    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
+    "MINUTES": "minutes"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
@@ -118,10 +119,10 @@
     "HIGHESTRATED": "Highest Rated",
     "LOWESTRATED": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
+    "NEWESTPREMIERED": "Latest Premiered",
     "SHORTEST": "Kortste",
     "LONGEST": "Langste",
-    "YOUNGESTADDED": "Recently Added",
+    "LATESTADDED": "Recently Added",
     "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
     "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
@@ -136,13 +137,14 @@
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
     "OLDESTPREMIERED": "Earliest Premiered",
-    "YOUNGESTPREMIERED": "Latest Premiered",
-    "YOUNGESTADDED": "Recently added",
+    "NEWESTPREMIERED": "Latest Premiered",
+    "LATESTADDED": "Recently added",
     "WITHMOESTEPISODES": "With Most Episodes",
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
     "CONTINUING": "Continuing",
-    "ENDED": "Ended"
+    "ENDED": "Ended",
+    "OVERVIEW": "Overview"
   },
   "SETTINGS": {
     "TITLES": {
