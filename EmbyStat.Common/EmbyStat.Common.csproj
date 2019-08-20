@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.4" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.3.0" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup>
