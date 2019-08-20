@@ -26,6 +26,7 @@ using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Logging;
@@ -102,6 +103,11 @@ namespace EmbyStat.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseRollbarMiddleware();
 
