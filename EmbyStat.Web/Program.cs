@@ -20,6 +20,7 @@ namespace EmbyStat.Web
     {
         public static void Main(string[] args)
         {
+            CreateConfigFolder();
             var logger = SetupLogging();
 
             try
@@ -74,6 +75,14 @@ namespace EmbyStat.Web
                 .AddJsonFile("appsettings.json", false, false)
                 .AddInMemoryCollection(configArgs)
                 .Build();
+
+        private static void CreateConfigFolder()
+        {
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "config"));
+            }
+        }
 
         private static Logger SetupLogging()
         {
