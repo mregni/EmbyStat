@@ -71,7 +71,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             if (!await IsEmbyAliveAsync(cancellationToken))
             {
-                await LogWarning($"Halting task because we can't contact the Emby server on {Settings.FullEmbyServerAddress}, please check the connection and try again.");
+                await LogWarning($"Halting task because we can't contact the Emby server on {Settings.Emby.FullEmbyServerAddress}, please check the connection and try again.");
                 return;
             }
 
@@ -135,7 +135,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task<bool> IsEmbyAliveAsync(CancellationToken cancellationToken)
         {
-            var result = await _embyClient.PingEmbyAsync(Settings.FullEmbyServerAddress, cancellationToken);
+            var result = await _embyClient.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress, cancellationToken);
             return result == "Emby Server";
         }
 

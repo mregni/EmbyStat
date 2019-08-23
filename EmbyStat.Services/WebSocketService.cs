@@ -50,7 +50,7 @@ namespace EmbyStat.Services
                             webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
                             webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
                             webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
-                            await webSocketApi.OpenWebSocket(settings.FullEmbyServerAddress, settings.Emby.AccessToken, deviceId);
+                            await webSocketApi.OpenWebSocket(settings.Emby.FullSocketAddress, settings.Emby.AccessToken, deviceId);
                         }
                         catch (Exception e)
                         {

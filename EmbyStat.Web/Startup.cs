@@ -221,7 +221,7 @@ namespace EmbyStat.Web
             embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
             if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
             {
-                embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
+                embyClient.SetAddressAndUser(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
             }
         }
     }
