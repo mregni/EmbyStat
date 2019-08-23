@@ -69,6 +69,7 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyUser, EmbyUserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
+            CreateMap<Episode, EpisodeViewModel>();
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()

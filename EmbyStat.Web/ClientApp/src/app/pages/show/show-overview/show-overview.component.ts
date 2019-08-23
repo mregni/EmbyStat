@@ -139,10 +139,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   }
 
   calculatePercentage(row: ShowCollectionRow): number {
-    if (row.episodes + row.missingEpisodes === 0) {
+    if (row.episodes + row.missingEpisodes.length === 0) {
       return 0;
     } else {
-      return row.episodes / (row.episodes + row.missingEpisodes);
+      return row.episodes / (row.episodes + row.missingEpisodes.length);
     }
   }
 

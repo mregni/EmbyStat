@@ -150,7 +150,7 @@ namespace EmbyStat.Services
                 Episodes = episodeCount,
                 Seasons = seasonCount,
                 Specials = specialCount,
-                MissingEpisodes = show.MissingEpisodesCount,
+                MissingEpisodes = show.GetMissingEpisodes(),
                 PremiereDate = show.PremiereDate,
                 Status = show.Status == "Continuing"
             };

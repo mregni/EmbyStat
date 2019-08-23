@@ -36,5 +36,10 @@ namespace EmbyStat.Common.Extensions
                 ? show.Seasons.Count(x => x.Id != specialSeason.Id)
                 : show.Seasons.Count;
         }
+
+        public static IEnumerable<Episode> GetMissingEpisodes(this Show show)
+        {
+            return show.Episodes.Where(x => x.LocationType == LocationType.Virtual);
+        }
     }
 }

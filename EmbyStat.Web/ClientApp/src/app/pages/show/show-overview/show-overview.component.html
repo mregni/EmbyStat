@@ -119,7 +119,8 @@
                             [style.background-color]="getColor(element)">
                             <span class="justify-content-center d-flex position-absolute w-100 font-weight-bold">
                               {{ element.episodes }} /
-                              {{ element.episodes + element.missingEpisodes }} <span *ngIf="element.specials > 0">
+                              {{ element.episodes + element.missingEpisodes.length }}
+                              <span *ngIf="element.specials > 0">
                                 &nbsp;+
                                 {{element.specials}}
                               </span>
