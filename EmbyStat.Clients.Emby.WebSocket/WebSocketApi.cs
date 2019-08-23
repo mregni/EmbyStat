@@ -126,7 +126,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
                 throw new ArgumentException("Cannot open web socket without an access token.");
             }
 
-            return serverAddress.Replace("http:", "ws:").Replace("https:", "wss:") + "/embywebsocket?api_key=" + AccessToken + "&deviceId=" + DeviceId;
+            return serverAddress + "/embywebsocket?api_key=" + AccessToken + "&deviceId=" + DeviceId;
         }
 
         private void OnMessageReceived(byte[] bytes)

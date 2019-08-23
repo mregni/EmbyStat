@@ -26,6 +26,7 @@ using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Logging;
@@ -102,6 +103,11 @@ namespace EmbyStat.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseRollbarMiddleware();
 
@@ -215,7 +221,7 @@ namespace EmbyStat.Web
             embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
             if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
             {
-                embyClient.SetAddressAndUser(settings.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
+                embyClient.SetAddressAndUser(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
             }
         }
     }
