@@ -142,6 +142,7 @@ namespace EmbyStat.Common.Converters
         {
             return new Episode
             {
+                Id = episode.Id,
                 ShowId = show.Id,
                 ShowName = show.Name,
                 Name = episode.Name,
