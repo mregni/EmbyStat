@@ -72,7 +72,6 @@ namespace Tests.Unit.Services
             foreach (var show in shows)
             {
                 showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
-                showRepositoryMock.Setup(x => x.GetEpisodeCountForShow(show.Id)).Returns(show.Episodes.Count);
             }
 
             var collectionRepositoryMock = new Mock<ILibraryRepository>();

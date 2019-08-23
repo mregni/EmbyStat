@@ -6,13 +6,14 @@ namespace EmbyStat.Clients.Tvdb.Converter
 {
     public static class EpisodeHelper
     {
-        public static VirtualEpisode ConvertToEpisode(Data episode)
+        public static VirtualEpisode ConvertToVirtualEpisode(this Data episode)
         {
             return new VirtualEpisode
             {
                 EpisodeIndex = episode.AiredEpisodeNumber,
                 SeasonIndex = episode.AiredSeason,
-                FirstAired = Convert.ToDateTime(episode.FirstAired)
+                FirstAired = Convert.ToDateTime(episode.FirstAired),
+                Name = episode.EpisodeName
             };
         }
     }

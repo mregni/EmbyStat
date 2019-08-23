@@ -5,6 +5,7 @@ using System.Text;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using MediaBrowser.Model.Entities;
+using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace Tests.Unit.Builders
 {
@@ -25,7 +26,6 @@ namespace Tests.Unit.Builders
                 DateCreated = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
                 IMDB = "12345",
                 Logo = "logo.jpg",
-                MissingEpisodesCount = 0,
                 Name = "Chuck",
                 OfficialRating = "R",
                 ParentId = collectionId,
@@ -59,12 +59,6 @@ namespace Tests.Unit.Builders
             _show.Name = name;
             _show.SortName = "0001 - " + name;
             _show.Episodes.ForEach(x => x.ShowName = name);
-            return this;
-        }
-
-        public ShowBuilder AddMissingEpisodes(int count)
-        {
-            _show.MissingEpisodesCount = count;
             return this;
         }
 
@@ -121,6 +115,16 @@ namespace Tests.Unit.Builders
             var list = _show.People.ToList();
             list.Add(new ExtraPerson {Id = id, Name = "Gimli", Type = PersonType.Actor});
             _show.People = list.ToArray();
+            return this;
+        }
+
+        public ShowBuilder AddMissingEpisodes(int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                _show.Episodes.Add(new Episode { LocationType = LocationType.Virtual });
+            }
+
             return this;
         }
 

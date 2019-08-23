@@ -16,6 +16,7 @@ using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using Newtonsoft.Json;
+using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace EmbyStat.Services
 {
@@ -138,11 +139,9 @@ namespace EmbyStat.Services
 
         private ShowCollectionRow CreateShowCollectedRow(Show show)
         {
-            //TODO: gewoon in show nazien ipv naar DB gaat! indexnr is ook fout, moet naar season gaan
-            var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
-            var totalEpisodeCount = _showRepository.GetEpisodeCountForShow(show.Id, true);
-            var specialCount = totalEpisodeCount - episodeCount;
-            var seasonCount = _showRepository.GetSeasonCountForShow(show.Id);
+            var episodeCount = show.GetNonSpecialEpisodeCount(false);
+            var specialCount = show.GetSpecialEpisodeCount(false);
+            var seasonCount = show.GetNonSpecialSeasonCount();
 
             return new ShowCollectionRow
             {
@@ -231,7 +230,7 @@ namespace EmbyStat.Services
             var percentageList = new List<double>();
             foreach (var show in shows)
             {
-                var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+                var episodeCount = show.GetNonSpecialEpisodeCount(false);
                 if (episodeCount + show.MissingEpisodesCount == 0)
                 {
                     percentageList.Add(0);
@@ -330,10 +329,10 @@ namespace EmbyStat.Services
             Show resultShow = null;
             foreach (var show in shows)
             {
-                var episodes = _showRepository.GetAllEpisodesForShow(show.Id).ToArray();
-                if (episodes.Length > total)
+                var episodes = show.GetNonSpecialEpisodeCount(false);
+                if (episodes > total)
                 {
-                    total = episodes.Length;
+                    total = episodes;
                     resultShow = show;
                 }
             }
@@ -405,7 +404,7 @@ namespace EmbyStat.Services
             return new Card<int>
             {
                 Title = Constants.Shows.TotalEpisodes,
-                Value = shows.SelectMany(x => x.Episodes).Count()
+                Value = shows.Sum(x => x.GetNonSpecialEpisodeCount(false))
             };
         }
 
