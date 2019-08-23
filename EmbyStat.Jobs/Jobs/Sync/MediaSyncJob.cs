@@ -274,7 +274,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     show.TvdbFailed = oldShow.TvdbFailed;
                     show.TvdbSynced = oldShow.TvdbSynced;
-                    show.MissingEpisodesCount = oldShow.MissingEpisodesCount;
                 }
 
                 _showRepository.InsertSeasonsBulk(seasons);
@@ -339,7 +338,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task ProgressMissingEpisodesAsync(Show show, CancellationToken cancellationToken)
         {
-            var neededEpisodeCount = 0;
+            var missingEpisodes = new List<Episode>();
             var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB, cancellationToken);
 
             foreach (var episode in tvdbEpisodes)
@@ -347,13 +346,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 var season = show.Seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonIndex);
                 if (IsEpisodeMissing(show.Episodes, season, episode))
                 {
-                    neededEpisodeCount++;
+                    missingEpisodes.Add(episode.ConvertToEpisode(show, season));
                 }
             }
 
-            await LogInformation($"Found {neededEpisodeCount} missing episodes for show {show.Name}");
+            await LogInformation($"Found {missingEpisodes.Count} missing episodes for show {show.Name}");
             show.TvdbSynced = true;
-            show.MissingEpisodesCount = neededEpisodeCount;
+            show.Episodes.AddRange(missingEpisodes);
             _showRepository.UpdateShow(show);
         }
 
@@ -370,16 +369,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     if (!localEpisode.IndexNumberEnd.HasValue)
                     {
-
                         if (localEpisode.IndexNumber == tvdbEpisode.EpisodeIndex)
                         {
                             return false;
                         }
-
                     }
                     else
                     {
-
                         if (localEpisode.IndexNumber <= tvdbEpisode.EpisodeIndex &&
                             localEpisode.IndexNumberEnd >= tvdbEpisode.EpisodeIndex)
                         {

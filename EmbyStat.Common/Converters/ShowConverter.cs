@@ -4,6 +4,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace EmbyStat.Common.Converters
 {
@@ -74,6 +75,7 @@ namespace EmbyStat.Common.Converters
             {
                 Id = Convert.ToInt32(episode.Id),
                 ShowId = Convert.ToInt32(show.Id),
+                LocationType = LocationType.Disk,
                 Name = episode.Name,
                 Path = episode.Path,
                 ParentId = episode.ParentId,
@@ -133,6 +135,20 @@ namespace EmbyStat.Common.Converters
                     Protocol = y.Protocol.ToString(),
                     RunTimeTicks = y.RunTimeTicks
                 }).ToList()
+            };
+        }
+
+        public static Episode ConvertToEpisode(this VirtualEpisode episode, Show show, Season season)
+        {
+            return new Episode
+            {
+                ShowId = show.Id,
+                ShowName = show.Name,
+                Name = episode.Name,
+                LocationType = LocationType.Virtual,
+                IndexNumber = episode.EpisodeIndex,
+                ParentId = season.Id.ToString(),
+                PremiereDate = episode.FirstAired
             };
         }
     }
