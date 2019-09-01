@@ -18,7 +18,7 @@ namespace EmbyStat.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             CreateConfigFolder();
             var logger = SetupLogging();
@@ -39,11 +39,13 @@ namespace EmbyStat.Web
                 SetupDatabase(host);
 
                 host.Run();
+                return 0;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
+                return 1;
             }
             finally
             {
