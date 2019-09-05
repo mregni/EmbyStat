@@ -65,14 +65,14 @@
     "CANTCONNECTTOGITHUB": "Kan ikke oprette forbindelse til GitHub for at se efter opdateringer. Prøv igen senere.",
     "NOUPDATEFILE": "Kan ikke finde opdateringsprogrammet, ingen opdatering udført",
     "UPDATEUNPACKERROR": "Noget gik galt under udpakning af opdateringspakken. Prøv igen.",
-    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
+    "TVDBLOGINFAILED": "TVDB-login mislykkedes, kontroller API-nøglen."
   },
   "FORMLABELS": {
-    "NAME": "Username",
+    "NAME": "Brugernavn",
     "LANGUAGE": "Vælg dit sprog",
     "DURATIONINMINUTES": "Varighed: ~5 minutter",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
-    "TVDBAPI": "TheTVDB API key",
+    "ENABLETOSHORTMOVIES": "Aktivér kort beregning af film",
+    "TVDBAPI": "The TVDB API nøgle",
     "CRON": "Cron-streng",
     "EXCEPTIONLOGGING": "Aktivér undtagelseslogning"
   },
@@ -112,39 +112,39 @@
     "FINISHEXPLANATION": "Det bedste er først at starte en medie-synkroniseringsopgave. EmbyStat vil begynde at downloade alle data fra din Emby server. Husk, at denne opgave kan tage lang tid afhængigt af din samlingsstørrelse. Hvis du ikke vil starte en synkronisering nu, kan du bare klikke på Færdig. Du kan starte det manuelt senere ved at navigere til siden Opgaver."
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Total Movies",
-    "TOTALGENRES": "Total Genres",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATED": "Highest Rated",
-    "LOWESTRATED": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "COLLECTIONPLACEHOLDER": "Filtrer filmsamlinger",
+    "TOTALMOVIES": "Samlet antal film",
+    "TOTALGENRES": "Samlet antal genrer",
+    "TOTALPLAYLENGTH": "Samlet tid",
+    "HIGHESTRATED": "Højeste bedømmelse",
+    "LOWESTRATED": "Laveste bedømmelse",
+    "OLDESTPREMIERED": "Ældste premieredato",
+    "NEWESTPREMIERED": "Nyeste premieredato",
     "SHORTEST": "Korteste",
     "LONGEST": "Længste",
-    "LATESTADDED": "Recently Added",
+    "LATESTADDED": "Nyligt tilføjet",
     "MOSTFEATUREDPERGENRE": "Mest fremhævede skuespiller pr. Genre",
-    "DUPLICATEMOVIES": "Duplicate Movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "DUPLICATEMOVIES": "Dobbelgængere",
+    "TOSHORTMOVIES": "Film, der er meget korte",
+    "NOPOSTER": "Mangler en plakat",
+    "NOIMDB": "Mangler en IMDB-id"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total Shows",
+    "TOTALSHOWS": "Samlede visninger",
     "TOTALEPISODES": "Samlede episoder",
     "TOTALMISSINGEPISODES": "Samlet antal manglende episoder",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATEDSHOW": "Highest Rated",
-    "LOWESTRATEDSHOW": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
-    "LATESTADDED": "Recently added",
-    "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview"
+    "TOTALPLAYLENGTH": "Samlet tid",
+    "HIGHESTRATEDSHOW": "Højeste bedømmelse",
+    "LOWESTRATEDSHOW": "Laveste bedømmelse",
+    "OLDESTPREMIERED": "Ældste premieredato",
+    "NEWESTPREMIERED": "Nyeste premieredato",
+    "LATESTADDED": "Nylig tilføjet",
+    "WITHMOESTEPISODES": "Med de fleste episoder",
+    "SHOWSTATUSGRAPH": "Vis status",
+    "SEASONS": "Sæsoner",
+    "CONTINUING": "Fortsættes",
+    "ENDED": "Afsluttet",
+    "OVERVIEW": "Oversigt"
   },
   "SETTINGS": {
     "TITLES": {
@@ -154,43 +154,43 @@
     },
     "SAVED": {
       "GENERAL": "Generelle Embystat indstillinger gemt!",
-      "TVDB": "TVDB key saved!",
+      "TVDB": "TVDB-nøgle gemt!",
       "EMBY": "Emby indstillinger gemt!",
       "MOVIES": "Filmindstillinger gemt!",
       "SHOWS": "Serieindstillinger gemt!",
       "UPDATES": "Opdaterings indstillinger gemt!"
     },
     "GENERAL": {
-      "NOUSERNAME": "Username can't be blank",
+      "NOUSERNAME": "Brugernavn må ikke være tom",
       "TVDBAPIKEY": "Hvis du vil, kan du levere EmbyStat med din egen TheTVDB API nøgle her.",
       "TVDBAPIKEYWARNING": "Sørg for, at du leverer en fungerende API-nøgle! Hvis nøglen er forkert, mislykkes synkroniseringsopgaven.",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
+      "EXCEPTIONLOGGING": "Aktivér / deaktiver undtagelsesloggningen til online Rollbar-tjenesten. Med denne logging kan jeg fejlsøge og rette applikationen hurtigere. Der registreres aldrig personlige data, kun undtagelsesmeddelelser, stacktrace, OS-navn og version nummer."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "For at finde de film, der er mistænkeligt korte, er vi nødt til at vide, hvor mange minutter du finder for kort til en film. Standardindstillingen er indstillet til 10 minutter, men du kan ændre den om nødvendigt.",
       "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på filmstatistiksiden."
     },
     "SHOW": {
       "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på seriestatistiksiden."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYADDRESS": "Emby IP / domæne",
       "EMBYUSERNAME": "Emby admin brugernavn",
       "EMBYPASSWORD": "Emby admin adgangskode",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
-      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
-      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
+      "EMBYPORT": "Emby Port",
+      "EMBYADDRESSREQUIRED": "Emby IP / domæne krævet.",
+      "EMBYUSERNAMEREQUIRED": "Emby admin brugernavn kræves.",
+      "EMBYPASSWORDREQUIRED": "Emby admin brugernavn kræves.",
+      "EMBYPORTREQUIRED": "Emby port krævet.",
+      "WRONGPASSWORD": "Forkert brugernavn / adgangskode-kombination. Kontroller dine legitimationsoplysninger, og prøv igen",
+      "NOADMINUSER": "Givet Emby-bruger er ikke en administrator på serveren. Angiv en admin-konto."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Aktivér automatisk opdateringer",
       "CHECK": "Tjek og opdater server nu",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Opdater server nu",
       "TRAIN": "Skift opdateringsniveau hvis du vil have beta-opdateringer.",
       "ONBETA": "Du er ikke på master niveau længere, så du ikke kan skifte tilbage til det. Hvis du vil gå tilbage på master toget, skal du geninstallere serveren igen.",
       "TRAINWARNING": "Her kan du ændre opdateringsniveau fra master til beta. Hvis du ikke ved hvad du laver, skal du bare lade denne indstilling blive på Master. Hvis du vil modtage Beta-opdateringerne, skal du ændre det her, være opmærksom på, at du ikke kan gå tilbage til Master senere. Du skal geninstallere serveren.",
@@ -205,7 +205,7 @@
     "ISHIDDEN": "Er skjult fra login-skærmen",
     "ISDISABLED": "Er deaktiveret",
     "DELETED": "Slettede brugere",
-    "ACTIVE": "Active users",
+    "ACTIVE": "Aktive brugere",
     "LASTACTIVE": "Sidst aktiv",
     "SORTING": {
       "USERNAMEASC": "Brugernavn (A - Z)",
@@ -213,7 +213,7 @@
       "LASTACTIVEASC": "Sidste aktiv dato (asc)",
       "LASTACTIVEDESC": "Sidste aktiv dato (asc)"
     },
-    "TOOVERVIEW": "To overview",
+    "TOOVERVIEW": "Til oversigt",
     "DETAILS": {
       "TITLE": "Detaljer for {{name}}",
       "WATCHEDTITLE": "Last Watched Items"
