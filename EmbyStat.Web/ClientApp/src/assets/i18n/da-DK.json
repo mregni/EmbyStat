@@ -216,7 +216,7 @@
     "TOOVERVIEW": "Til oversigt",
     "DETAILS": {
       "TITLE": "Detaljer for {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "WATCHEDTITLE": "Sidste set title"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
@@ -226,8 +226,8 @@
       "ACTION": "Handling"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Film set",
+      "TOTALWATCHEDEPISODES": "Episoder set"
     }
   },
   "JOB": {
@@ -243,7 +243,7 @@
     "NORUN": "Ikke kørt endnu",
     "MOMENT_AGO": "et øjeblik",
     "JOBLOGS": "Joblogs",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Cron-værdi opdateret",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Tjek din Emby forbindelse",
       "PINGEMBYSERVERDESCRIPTION": "Ping Emby-serveren for at kontrollere, om den stadig er online.",
@@ -310,25 +310,25 @@
   },
   "ABOUT": {
     "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "GITHUBRELEASE": "Frigiver på Github",
+    "REQUESTFEATURE": "Anmod funktion",
+    "LOGBUG": "Log bug på Github",
+    "HELPTRANSLATE": "Hjælp med at oversætte denne app",
     "THANKS": {
       "TITLE": "Tak",
       "TEXT": "En stor tak til følgende personer til oversættelse af appen på deres modersmål:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Handlinger"
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HOSTOS": "Vært OS",
+    "WANADDRESS": "WAN-adresse",
+    "LANADDRESS": "LAN-adresse",
+    "CACHEPATH": "Cache-sti",
+    "LOGPATH": "Log sti",
+    "HTTPPORT": "HTTP-port",
+    "HTTPSPORT": "HTTPS-port"
   }
 }
