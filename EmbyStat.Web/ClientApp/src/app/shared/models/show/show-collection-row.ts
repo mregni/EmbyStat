@@ -5,7 +5,7 @@ export class ShowCollectionRow {
     title: string;
     seasons: number;
     episodes: number;
-    missingEpisodes[]: Episode;
+    missingEpisodes: Episode[];
     premiereDate: Date;
     status: boolean;
     sortName: string;
