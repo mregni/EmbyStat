@@ -211,12 +211,12 @@
       "USERNAMEASC": "Brugernavn (A - Z)",
       "USERNAMEDESC": "Brugernavn (Z - A)",
       "LASTACTIVEASC": "Senest aktiv (stigende)",
-      "LASTACTIVEDESC": "Sidste aktiv dato (asc)"
+      "LASTACTIVEDESC": "Senest aktiv (faldende)"
     },
-    "TOOVERVIEW": "Til oversigt",
+    "TOOVERVIEW": "Gå til oversigt",
     "DETAILS": {
       "TITLE": "Detaljer for {{name}}",
-      "WATCHEDTITLE": "Sidste set title"
+      "WATCHEDTITLE": "Seneste viste titler"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
@@ -226,15 +226,15 @@
       "ACTION": "Handling"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Film set",
-      "TOTALWATCHEDEPISODES": "Episoder set"
+      "TOTALWATCHEDMOVIES": "Antal film set",
+      "TOTALWATCHEDEPISODES": "Antal episoder set"
     }
   },
   "JOB": {
     "LASTRUNNOW": "Seneste kørsel: lige nu",
-    "LASTRUN": "Sidste kørsel",
-    "HOURS": "{hours} timer",
-    "MINUTES": "{{minutes}} minutter",
+    "LASTRUN": "Seneste kørsel",
+    "HOURS": "{{hours}} time(r)",
+    "MINUTES": "{{minutes}} minut(ter)",
     "SECONDS": "{{seconds}} sekund(er)",
     "AND": "og",
     "AGO": "siden",
