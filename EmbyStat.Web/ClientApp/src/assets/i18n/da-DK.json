@@ -182,20 +182,20 @@
       "EMBYUSERNAMEREQUIRED": "Emby admin-brugernavn er påkrævet.",
       "EMBYPASSWORDREQUIRED": "Emby admin-adgangskode er påkrævet.",
       "EMBYPORTREQUIRED": "Emby-port er påkrævet.",
-      "WRONGPASSWORD": "Forkert brugernavn / adgangskode-kombination. Kontroller dine legitimationsoplysninger, og prøv igen",
-      "NOADMINUSER": "Givet Emby-bruger er ikke en administrator på serveren. Angiv en admin-konto."
+      "WRONGPASSWORD": "Forkert kombination af brugernavn og adgangskode. Kontroller dine legitimationsoplysninger og prøv igen",
+      "NOADMINUSER": "Oplyste Emby-bruger er ikke en administrator på serveren. Angiv en administratorkonto."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Aktivér automatisk opdateringer",
-      "CHECK": "Tjek og opdater server nu",
+      "AUTO": "Aktiver automatiske opdateringer",
+      "CHECK": "Kontroller for opdateringer nu",
       "UPDATE:": "Opdater server nu",
-      "TRAIN": "Skift opdateringsniveau hvis du vil have beta-opdateringer.",
-      "ONBETA": "Du er ikke på master niveau længere, så du ikke kan skifte tilbage til det. Hvis du vil gå tilbage på master toget, skal du geninstallere serveren igen.",
-      "TRAINWARNING": "Her kan du ændre opdateringsniveau fra master til beta. Hvis du ikke ved hvad du laver, skal du bare lade denne indstilling blive på Master. Hvis du vil modtage Beta-opdateringerne, skal du ændre det her, være opmærksom på, at du ikke kan gå tilbage til Master senere. Du skal geninstallere serveren.",
+      "TRAIN": "Skift opdateringsniveau, hvis du vil have beta-opdateringer",
+      "ONBETA": "Du er ikke på masterniveau længere, så du ikke kan skifte tilbage til det. Hvis du vil gå tilbage til masterniveauet, skal du geninstallere serveren.",
+      "TRAINWARNING": "Her kan du ændre opdateringsniveau fra master til beta. Hvis du ikke ved, hvad du laver, skal du bare lade denne indstilling blive på Master. Hvis du vil modtage Beta-opdateringerne, skal du ændre det her. Vær opmærksom på, at du ikke kan gå tilbage til Master senere, da det kræver geninstallering af serveren.",
       "CURRENTVERSION": "Nuværende version: {{version}}",
-      "CANTCHECK": "Kan ikke tjekke efter opdateringer nu, kunne ikke oprette forbindelse til GitHub.",
+      "CANTCHECK": "Kan ikke tjekke efter opdateringer nu, da der ikke kunne oprettes forbindelse til GitHub.",
       "NOUPDATE": "Ingen opdateringer er tilgængelige",
       "NEWVERSION": "Version {{version}} er klar til download!"
     }
@@ -206,11 +206,11 @@
     "ISDISABLED": "Er deaktiveret",
     "DELETED": "Slettede brugere",
     "ACTIVE": "Aktive brugere",
-    "LASTACTIVE": "Sidst aktiv",
+    "LASTACTIVE": "Senest aktiv",
     "SORTING": {
       "USERNAMEASC": "Brugernavn (A - Z)",
-      "USERNAMEDESC": "Brugernavn (A - Z)",
-      "LASTACTIVEASC": "Sidste aktiv dato (asc)",
+      "USERNAMEDESC": "Brugernavn (Z - A)",
+      "LASTACTIVEASC": "Senest aktiv (stigende)",
       "LASTACTIVEDESC": "Sidste aktiv dato (asc)"
     },
     "TOOVERVIEW": "Til oversigt",
