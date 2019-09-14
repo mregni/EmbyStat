@@ -77,23 +77,23 @@
     "EXCEPTIONLOGGING": "Aktivér undtagelseslogning"
   },
   "FORMERRORS": {
-    "NAME_REQUIRED": "Udfyld dit navn eller kaldenavn."
+    "NAME_REQUIRED": "Udfyld dit navn eller brugernavn."
   },
   "MENU": {
-    "DASHBOARD": "Dashboard",
+    "DASHBOARD": "Instrumentpanel",
     "MOVIES": "Film",
     "SHOWS": "Serier",
     "SETTINGS": "Indstillinger",
     "PLUGINS": "Plugins",
-    "JOBS": "Jobs",
-    "SERVER": "Emby server",
+    "JOBS": "Job",
+    "SERVER": "Emby-server",
     "LOGS": "Logfiler",
     "ABOUT": "Om",
     "USERS": "Brugere"
   },
   "WIZARD": {
-    "INTROLABEL": "Introduktion",
-    "EMBYLABEL": "Emby indstillinger",
+    "INTROLABEL": "Intro",
+    "EMBYLABEL": "Emby-indstillinger",
     "SAVINGLABEL": "Første Emby-server synkronisering",
     "FINALLABEL": "Sidste",
     "CROWNDINHELP": "Hvis dit sprog ikke er angivet eller ikke er komplet, kan du hjælpe mig med at oversætte appen i dit sprog på <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
