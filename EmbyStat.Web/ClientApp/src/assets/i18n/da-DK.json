@@ -238,11 +238,11 @@
     "SECONDS": "{{seconds}} sekund(er)",
     "AND": "og",
     "AGO": "siden",
-    "FOR": "til",
+    "FOR": "på",
     "BUTFAILED": "men mislykkedes efter",
     "NORUN": "Ikke kørt endnu",
     "MOMENT_AGO": "et øjeblik",
-    "JOBLOGS": "Joblogs",
+    "JOBLOGS": "Joblog",
     "CRONUPDATED": "Cron-værdi opdateret",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Tjek din Emby forbindelse",
@@ -288,35 +288,35 @@
     "UPDATINGSUB": "Siden opdateres, når opdateringen er færdig."
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Blandet / Andet",
+    "MIXED": "Blandet/Andet",
     "MUSIC": "Musik",
     "MUSICVIDEOS": "Musikvideoer",
-    "TRAILERS": "Trailer",
+    "TRAILERS": "Trailere",
     "HOMEVIDEOS": "Hjemmevideoer",
-    "BOXSETS": "Bokssæt",
+    "BOXSETS": "Filmsamlinger",
     "BOOKS": "Bøger",
     "PHOTOS": "Billeder",
     "GAMES": "Spil",
-    "LIVETV": "Live TV",
+    "LIVETV": "Live-tv",
     "PLAYLISTS": "Afspilningslister",
     "FOLDERS": "Mapper"
   },
   "TOOLBAR": {
     "GOTOEMBY": "Gå til Emby",
     "JOBISRUNNING": "{{job}} opgaven kører",
-    "NOMISSEDPINGS": "Emby server er i live",
-    "ONEMISSEDPING": "Kunne ikke oprette forbindelse til Emby på sidste check!",
+    "NOMISSEDPINGS": "Emby-server er i live",
+    "ONEMISSEDPING": "Kunne ikke oprette forbindelse til Emby under sidste kontrol!",
     "MOREMISSEDPINGS": "Kunne ikke oprette forbindelse til Emby efter flere forsøg!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Frigiver på Github",
-    "REQUESTFEATURE": "Anmod funktion",
-    "LOGBUG": "Log bug på Github",
+    "SERVERINFO": "Serverinfo",
+    "GITHUBRELEASE": "Udgivelser på Github",
+    "REQUESTFEATURE": "Anmod om funktion",
+    "LOGBUG": "Rapporter fejl på Github",
     "HELPTRANSLATE": "Hjælp med at oversætte denne app",
     "THANKS": {
-      "TITLE": "Tak",
-      "TEXT": "En stor tak til følgende personer til oversættelse af appen på deres modersmål:"
+      "TITLE": "Tak til",
+      "TEXT": "En stor tak til følgende personer for oversættelse af appen til deres modersmål:"
     },
     "ACTIONS": {
       "TITLE": "Handlinger"
@@ -327,7 +327,7 @@
     "WANADDRESS": "WAN-adresse",
     "LANADDRESS": "LAN-adresse",
     "CACHEPATH": "Cache-sti",
-    "LOGPATH": "Log sti",
+    "LOGPATH": "Log-sti",
     "HTTPPORT": "HTTP-port",
     "HTTPSPORT": "HTTPS-port"
   }
