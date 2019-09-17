@@ -142,9 +142,9 @@
     "WITHMOESTEPISODES": "Met de meeste afleveringen",
     "SHOWSTATUSGRAPH": "Serie Status",
     "SEASONS": "Seizoenen",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview"
+    "CONTINUING": "Doorgaan",
+    "ENDED": "Geëindigd",
+    "OVERVIEW": "Overzicht"
   },
   "SETTINGS": {
     "TITLES": {
@@ -153,62 +153,62 @@
       "EMBY": "Emby"
     },
     "SAVED": {
-      "GENERAL": "General Embystat settings saved!",
-      "TVDB": "TVDB key saved!",
-      "EMBY": "Emby settings saved!",
-      "MOVIES": "Movie settings saved!",
-      "SHOWS": "Show settings saved!",
-      "UPDATES": "Update settings saved!"
+      "GENERAL": "Algemene Embystat instellingen opgeslagen!",
+      "TVDB": "TVDB sleutel opgeslagen!",
+      "EMBY": "Emby instellingen opgeslagen!",
+      "MOVIES": "Film instellingen opgeslagen!",
+      "SHOWS": "Serie instellingen opgeslagen!",
+      "UPDATES": "Update instellingen opgeslagen!"
     },
     "GENERAL": {
-      "NOUSERNAME": "Username can't be blank",
-      "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
-      "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
+      "NOUSERNAME": "Gebruikersnaam mag niet leeg zijn",
+      "TVDBAPIKEY": "Als u wilt, kunt u hier EmbyStat voorzien met uw eigen TheTVDB API sleutel.",
+      "TVDBAPIKEYWARNING": "Zorg ervoor dat u een werkende API-sleutel opgeeft! Als de sleutel onjuist is, mislukt de synchronisatie taak.",
+      "EXCEPTIONLOGGING": "Schakel de uitzonderingsregistratie naar de online Rollbar-service in / uit. Met deze logging kan ik de toepassing sneller opsporen en oplossen. Er worden nooit persoonlijke gegevens vastgelegd, alleen uitzonderingsberichten, stacktrace, OS-naam en versienummer."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
+      "TOSHORTTEXT": "Om de films te vinden die verdacht kort zijn, moeten we weten hoeveel minuten je te kort vindt voor een film. Standaard is dit ingesteld op 10 minuten, maar u kunt het indien nodig wijzigen.",
+      "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met filmstatistieken."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
+      "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met seriestatistieken."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYADDRESS": "Emby IP / domein",
       "EMBYUSERNAME": "Emby admin gebruikersnaam",
       "EMBYPASSWORD": "Emby administrator wachtwoord",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
-      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
-      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
+      "EMBYPORT": "Emby poort",
+      "EMBYADDRESSREQUIRED": "Emby IP / domein vereist.",
+      "EMBYUSERNAMEREQUIRED": "Emby admin gebruikersnaam vereist.",
+      "EMBYPASSWORDREQUIRED": "Emby admin wachtwoord vereist.",
+      "EMBYPORTREQUIRED": "Emby poort vereist.",
+      "WRONGPASSWORD": "Verkeerde gebruikersnaam/wachtwoord combinatie. Controleer uw inloggegevens en probeer het opnieuw",
+      "NOADMINUSER": "Gegeven Emby gebruiker is geen admin op de server. Geef een admin account."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Enable auto updates",
+      "AUTO": "Schakel automatische updates in",
       "CHECK": "Check and update server now",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Server nu bijwerken",
       "TRAIN": "Change the update train if you want to have beta updates.",
-      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
+      "ONBETA": "Je bent niet meer op de Master train, dus je kunt er niet naar kijken. Als je terug wilt gaan op de master trein, installeer dan de server opnieuw.",
+      "TRAINWARNING": "Hier kunt u de update trein veranderen van master naar beta. Als u niet weet wat u doet, laat deze instelling gewoon op Master. Als u de Beta updates wilt ontvangen, dan moet u ervan op aan dat u later niet terug kunt gaan naar de Master. U moet de server opnieuw installeren.",
+      "CURRENTVERSION": "Huidige versie: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!"
+      "NOUPDATE": "Geen update beschikbaar",
+      "NEWVERSION": "Versie {{version}} beschikbaar om te downloaden!"
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
-    "ISHIDDEN": "Is hidden from login screen",
-    "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "ACTIVE": "Active users",
-    "LASTACTIVE": "Last active",
+    "ISADMIN": "Is beheerder",
+    "ISHIDDEN": "Is verborgen voor het inlogscherm",
+    "ISDISABLED": "Is uitgeschakeld",
+    "DELETED": "Verwijderde gebruikers",
+    "ACTIVE": "Actieve gebruikers",
+    "LASTACTIVE": "Laatst actief",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
+      "USERNAMEASC": "Gebruikersnaam (A - Z)",
       "USERNAMEDESC": "Gebruikersnaam (Z - A)",
       "LASTACTIVEASC": "Datum Laatst Actief (oplopend)",
       "LASTACTIVEDESC": "Datum Laatst Actief (aflopend)"
