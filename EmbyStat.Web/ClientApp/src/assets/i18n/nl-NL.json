@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "DOWNLOAD": "download",
-    "ANONYMISEDDOWNLOAD": "Anonymised download",
+    "ANONYMISEDDOWNLOAD": "Geanonimiseerde download",
     "HIDE": "Verbergen",
     "NEXT": "volgende",
     "BACK": "vorige",
@@ -19,7 +19,7 @@
     "QUALITY": "kwaliteit",
     "NEVER": "nooit",
     "OPEN": "Open",
-    "VIEWALL": "View all",
+    "VIEWALL": "Bekijk alles",
     "LINK": "koppeling",
     "REASON": "reden",
     "BYIMDB": "dezelfde imdb id",
@@ -40,41 +40,41 @@
     "TOTALACTORS": "Totaal acteurs",
     "TOTALDIRECTORS": "Totaal regisseurs",
     "TOTALWRITERS": "Totale schrijvers",
-    "MOSTFEATUREDACTOR": "Most Featured Actor",
-    "MOSTFEATUREDDIRECTOR": "Most Featured Director",
-    "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "LIBRARIES": "Libraries",
+    "MOSTFEATUREDACTOR": "Meest Uitgelichte Acteur",
+    "MOSTFEATUREDDIRECTOR": "Meest Uitgelichte directeur",
+    "MOSTFEATUREDWRITER": "Meest Uitgelichte schrijver",
+    "LIBRARIES": "Bibliotheken",
     "PREMIEREDATE": "première datum",
     "STATUS": "status",
     "PERCENTAGE": "percentage",
     "COLLECTED": "verzameld",
     "UPDATES": "Updates",
     "VERSION": "Versie",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
-    "MINUTES": "minutes"
+    "ACTORSPERGENRE": "Meest Uitgelichte Acteur Per Genre",
+    "MINUTES": "minuten"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
     "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
-    "NOT_FOUND": "Oops, didn't find what you are looking for.",
+    "NOT_FOUND": "Oeps, niet gevonden waar je naar zoekt.",
     "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en Emby url na te zien.",
-    "EMBY_CALL_FAILED": "Call to Emby server failed, please check if Emby is running and if the credentials are still correct.",
-    "UNHANDLED": "Unhandled backend exception",
-    "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
-    "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
-    "NOUPDATEFILE": "Can't locate the update application, no update performed",
-    "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again.",
-    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
+    "EMBY_CALL_FAILED": "Oproep naar Emby server mislukt, controleer of Emby actief is en of de inloggegevens nog correct zijn.",
+    "UNHANDLED": "Niet-verwerkte backend-uitzondering",
+    "MOVIENOTFOUND": "Film niet gevonden, het starten van een media synchronisatie taak kan dit oplossen.",
+    "EPISODENOTFOUND": "Film niet gevonden, het starten van een media synchronisatie taak kan dit oplossen.",
+    "CANTCONNECTTOGITHUB": "Kan geen verbinding maken met GitHub om te controleren op updates. Probeer het later opnieuw.",
+    "NOUPDATEFILE": "Kan de update applicatie niet vinden, geen update uitgevoerd",
+    "UPDATEUNPACKERROR": "Er is iets misgegaan tijdens het uitpakken van het updatepakket. Probeer het opnieuw.",
+    "TVDBLOGINFAILED": "TheTVDB login mislukt, controleer de API-sleutel."
   },
   "FORMLABELS": {
-    "NAME": "Username",
+    "NAME": "Gebruikersnaam",
     "LANGUAGE": "Gelieve uw taal te kiezen",
     "DURATIONINMINUTES": "Duur in minuten",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
-    "TVDBAPI": "TheTVDB API key",
+    "ENABLETOSHORTMOVIES": "Inschakelen van te korte film berekening",
+    "TVDBAPI": "TheTVDB API-sleutel",
     "CRON": "Cron-tekenreeks",
-    "EXCEPTIONLOGGING": "Enable exception logging"
+    "EXCEPTIONLOGGING": "Schakel uitzonderingslog in"
   },
   "FORMERRORS": {
     "NAME_REQUIRED": "Geef uw naam of bijnaam op."
@@ -89,7 +89,7 @@
     "SERVER": "Emby server",
     "LOGS": "Logs",
     "ABOUT": "Over",
-    "USERS": "Users"
+    "USERS": "Gebruikers"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
@@ -99,17 +99,17 @@
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Emby server aan het controleren ...",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "EMBYNOTFOUNDTEXT": "Nu zullen we je Emby verbinding instellen. We hebben geprobeerd om je Emby server automatisch te detecteren in het netwerk maar dit is mislukt. Vul alle velden in zodat EmbyStat je Emby server kan vinden.",
+    "EMBYFOUNDTEXT": "We hebben een Emby server gevonden in uw netwerk en de url al in het formulier ingevoerd. Voel u vrij om dit aan te passen en de rest van het formulier in te vullen.",
     "EMBYRUNNING": "Emby server is actief",
     "ISADMIN": "{{ user }} is een Emby administrator",
     "PLUGININSTALLED": "EmbyStat plugin gevonden op de Emby server",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
+    "SAVINGINSTRUCTIONS": "Als er iets mislukt, kunt u EmbyStat niet gebruiken. Los in dat geval de fouten op, druk op terug en volgende.",
     "SAVING": "Gegevens aan het opslaan",
     "RESCAN": "Opnieuw scannen",
-    "FINISHWITHSYNC": "Start synchronization",
+    "FINISHWITHSYNC": "Start synchronisatie",
     "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Het beste is om eerst een mediasynchronisatietaak te starten. EmbyStat begint met het downloaden van alle gegevens van uw Emby-server. Houd er rekening mee dat deze taak lang kan duren, afhankelijk van uw collectiegrootte. Als u nu geen synchronisatie taak wilt starten, klikt u op Voltooien. U kunt het later handmatig starten door naar de pagina Taken te navigeren."
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter movie collections",
@@ -123,7 +123,7 @@
     "SHORTEST": "Kortste",
     "LONGEST": "Langste",
     "LATESTADDED": "Recently Added",
-    "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
+    "MOSTFEATUREDPERGENRE": "Meest Uitgelichte Acteur Per Genre",
     "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
     "NOPOSTER": "Missing a poster",
