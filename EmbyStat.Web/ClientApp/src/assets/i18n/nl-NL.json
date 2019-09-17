@@ -112,36 +112,36 @@
     "FINISHEXPLANATION": "Het beste is om eerst een mediasynchronisatietaak te starten. EmbyStat begint met het downloaden van alle gegevens van uw Emby-server. Houd er rekening mee dat deze taak lang kan duren, afhankelijk van uw collectiegrootte. Als u nu geen synchronisatie taak wilt starten, klikt u op Voltooien. U kunt het later handmatig starten door naar de pagina Taken te navigeren."
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Total Movies",
-    "TOTALGENRES": "Total Genres",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATED": "Highest Rated",
-    "LOWESTRATED": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "COLLECTIONPLACEHOLDER": "Filter films collecties",
+    "TOTALMOVIES": "Totale Films",
+    "TOTALGENRES": "Totale Genres",
+    "TOTALPLAYLENGTH": "Totale Kijk Duur",
+    "HIGHESTRATED": "Hoogste Score",
+    "LOWESTRATED": "Laagste Score",
+    "OLDESTPREMIERED": "Vroegste Première",
+    "NEWESTPREMIERED": "Nieuwste in Première",
     "SHORTEST": "Kortste",
     "LONGEST": "Langste",
-    "LATESTADDED": "Recently Added",
+    "LATESTADDED": "Onlangs Toegevoegd",
     "MOSTFEATUREDPERGENRE": "Meest Uitgelichte Acteur Per Genre",
-    "DUPLICATEMOVIES": "Duplicate Movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "DUPLICATEMOVIES": "Dubbele Films",
+    "TOSHORTMOVIES": "Films die zeer kort zijn",
+    "NOPOSTER": "Ontbrekende Poster",
+    "NOIMDB": "Ontbrekende IMDB-ID"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total Shows",
+    "TOTALSHOWS": "Totale Series",
     "TOTALEPISODES": "Totaal afleveringen",
     "TOTALMISSINGEPISODES": "Totaal ontbrekende afleveringen",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATEDSHOW": "Highest Rated",
-    "LOWESTRATEDSHOW": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
-    "LATESTADDED": "Recently added",
-    "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
+    "TOTALPLAYLENGTH": "Totale Kijk Duur",
+    "HIGHESTRATEDSHOW": "Hoogste Score",
+    "LOWESTRATEDSHOW": "Laagste Score",
+    "OLDESTPREMIERED": "Vroegste Première",
+    "NEWESTPREMIERED": "Nieuwste in Première",
+    "LATESTADDED": "Onlangs toegevoegd",
+    "WITHMOESTEPISODES": "Met de meeste afleveringen",
+    "SHOWSTATUSGRAPH": "Serie Status",
+    "SEASONS": "Seizoenen",
     "CONTINUING": "Continuing",
     "ENDED": "Ended",
     "OVERVIEW": "Overview"
@@ -209,25 +209,25 @@
     "LASTACTIVE": "Last active",
     "SORTING": {
       "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
-      "LASTACTIVEASC": "Last active date (asc)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "USERNAMEDESC": "Gebruikersnaam (Z - A)",
+      "LASTACTIVEASC": "Datum Laatst Actief (oplopend)",
+      "LASTACTIVEDESC": "Datum Laatst Actief (aflopend)"
     },
-    "TOOVERVIEW": "To overview",
+    "TOOVERVIEW": "Naar overzicht",
     "DETAILS": {
-      "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "TITLE": "Details voor {{name}}",
+      "WATCHEDTITLE": "Laatst Bekeken items"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
-      "START": "Start",
-      "ACTION": "Action"
+      "TITLE": "Titel",
+      "TIME": "Tijd",
+      "WATCHED": "Bekeken",
+      "START": "Begin",
+      "ACTION": "Actie"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Films bekeken",
+      "TOTALWATCHEDEPISODES": "Afleveringen bekeken"
     }
   },
   "JOB": {
@@ -240,55 +240,55 @@
     "AGO": "geleden",
     "FOR": "voor",
     "BUTFAILED": "maar is gefaald na",
-    "NORUN": "Not ran yet",
+    "NORUN": "Nog niet gestart",
     "MOMENT_AGO": "een moment",
-    "JOBLOGS": "Job logs",
-    "CRONUPDATED": "Cron value updated",
+    "JOBLOGS": "Taaklogboeken",
+    "CRONUPDATED": "Cron waarde bijgewerkt",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
-      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
+      "PINGEMBYSERVERTITLE": "Controleer Emby-verbinding",
+      "PINGEMBYSERVERDESCRIPTION": "Ping de Emby-server om te controleren of hij nog steeds online is.",
+      "SMALLEMBYSYNCDESCRIPTION": "Voer een kleine synchronisatie uit met de Emby-server. Dit is alleen een snelle en kleine systeemupdate.",
+      "SMALLEMBYSYNCTITLE": "Kleine Emby syncronisatie",
+      "STARTSMALLEMBYSYNC": "Start kleine synchronisatie",
+      "MEDIASYNCDESCRIPTION": "Voer een incrementele synchronisatie uit voor uw filmcollectie. Dit kan enige tijd duren!",
+      "MEDIASYNCTITLE": "Media synchronisatie",
       "STARTMEDIASYNC": "Start mediasynchronisatie",
       "DATABASECLEANUPTITLE": "Database opruimen",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "DATABASECLEANUPDESCRIPTION": "Opschonen van database met onnodige gegevens.",
       "OPENJOBPAGE": "Ga naar Taken pagina",
-      "CHECKUPDATETITLE": "Check for new updates",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "CHECKUPDATETITLE": "Controleer op nieuwe updates",
+      "CHECKUPDATEDESCRIPTION": "Controleert op nieuwe updates op uw geselecteerde update lijst."
     }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
       "TITLE": "Geen films gevonden",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "BODY": "We konden geen films vinden in de EmbyStat database. Als je films in Emby hebt, moet je proberen een nieuwe media synchronisatie taak te starten."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Geen series gevonden",
+      "BODY": "We konden geen series vinden in de EmbyStat database. Als je series hebt in Emby, probeer dan een nieuwe media synchronisatie taak te starten."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "Media synchronisatie taak wordt uitgevoerd",
+      "BODY": "De media synchronisatie taak wordt op de achtergrond uitgevoerd. Hierdoor worden alle statistiekenpagina's geblokkeerd omdat de berekeningen volledig fout zouden zijn zolang de synchronisatie actief is."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "FORMAT_ERROR": "De cron string is in een verkeerd formaat. Controleer <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> voor opmaakregels. Alleen cijfers, spaties, *, / en - zijn toegestaan.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Hier</a> vindt u meer informatie over het opmaken van een CRON-reeks. Alleen cijfers, *, / en - zijn toegestaan."
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "TITLE": "Geen gebruikers gevonden",
+      "BODY": "Er zijn geen gebruikers gevonden in de lokale database. Dit betekent dat er geen kleine synchronisatie taak is uitgevoerd. Wil je het nu uitvoeren?"
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Page will refresh when the update is finished."
+    "FETCHING": "Statistieken worden opgehaald",
+    "UPDATING": "EmbyStat bijwerken",
+    "UPDATINGSUB": "Pagina wordt vernieuwd wanneer de update is voltooid."
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
+    "MIXED": "Gemengd / Overige",
     "MUSIC": "Muziek",
     "MUSICVIDEOS": "Muziekvideo 's",
     "TRAILERS": "Trailers",
@@ -310,25 +310,25 @@
   },
   "ABOUT": {
     "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "GITHUBRELEASE": "Releases op Github",
+    "REQUESTFEATURE": "Functie aanvragen",
+    "LOGBUG": "Bug melden op GitHub",
+    "HELPTRANSLATE": "Help deze app te vertalen",
     "THANKS": {
       "TITLE": "Bedankt",
       "TEXT": "Grote dank aan de volgende personen voor het vertalen van de app in hun moedertaal:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Actie"
     }
   },
   "EMBYSERVER": {
     "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "WANADDRESS": "WAN adres",
+    "LANADDRESS": "LAN adres",
+    "CACHEPATH": "Cachepad",
+    "LOGPATH": "Logpad",
+    "HTTPPORT": "HTTP poort",
+    "HTTPSPORT": "HTTPS poort"
   }
 }
