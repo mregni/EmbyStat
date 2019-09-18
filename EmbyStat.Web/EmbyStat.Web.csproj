@@ -26,13 +26,13 @@
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.4" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.3.0" />
-    <PackageReference Include="Rollbar.PlugIns.NLog" Version="3.3.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.5" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.5.0" />
+    <PackageReference Include="Rollbar.PlugIns.NLog" Version="3.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
