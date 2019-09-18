@@ -133,7 +133,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\collection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
@@ -145,7 +144,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user-id.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -160,6 +158,9 @@
   <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="config\usersettings.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
