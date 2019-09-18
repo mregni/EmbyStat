@@ -123,7 +123,7 @@ namespace EmbyStat.Services
             if (server == null)
             {
                 var settings = _settingsService.GetUserSettings();
-                await GetAndProcessServerInfo(settings.FullEmbyServerAddress, settings.Emby.AccessToken);
+                await GetAndProcessServerInfo(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken);
             }
 
             return server;

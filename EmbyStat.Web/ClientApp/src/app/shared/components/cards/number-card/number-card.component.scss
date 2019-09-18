@@ -1,7 +1,7 @@
 @import "../../../../../scss/theme";
 
 .mat-card {
-  background-color: mat-color($app-primary);
+  background-color: mat-color($theme-primary);
 
   .title {
     font-size: 1.4em;

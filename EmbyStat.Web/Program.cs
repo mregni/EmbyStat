@@ -11,14 +11,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Fluent;
 using NLog.Web;
+using NLog;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace EmbyStat.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog(Path.Combine("config", "nlog.config")).GetCurrentClassLogger();
+            CreateConfigFolder();
+            var logger = SetupLogging();
 
             try
             {
@@ -36,18 +39,20 @@ namespace EmbyStat.Web
                 SetupDatabase(host);
 
                 host.Run();
+                return 0;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
+                return 1;
             }
             finally
             {
                 Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
                 logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
-                NLog.LogManager.Flush();
-                NLog.LogManager.Shutdown();
+                LogManager.Flush();
+                LogManager.Shutdown();
             }
         }
 
@@ -72,6 +77,27 @@ namespace EmbyStat.Web
                 .AddJsonFile("appsettings.json", false, false)
                 .AddInMemoryCollection(configArgs)
                 .Build();
+
+        private static void CreateConfigFolder()
+        {
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "config"));
+            }
+        }
+
+        private static Logger SetupLogging()
+        {
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")))
+            {
+                var source = Path.Combine(Directory.GetCurrentDirectory(), "nlog.config");
+                var destination = Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config");
+                File.Copy(source, destination);
+            }
+
+            var logger = NLogBuilder.ConfigureNLog(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")).GetCurrentClassLogger();
+            return logger;
+        }
 
         private static void SetupDatabase(IWebHost host)
         {

@@ -421,7 +421,7 @@ namespace EmbyStat.Services
 
         private TimeSpanCard CalculatePlayableTime(IReadOnlyList<Show> shows)
         {
-            var playLength = new TimeSpan(shows.Sum(x => x.RunTimeTicks ?? 0));
+            var playLength = new TimeSpan(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
             return new TimeSpanCard
             {
                 Title = Constants.Shows.TotalPlayLength,

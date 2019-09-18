@@ -25,16 +25,6 @@ namespace EmbyStat.Common.Models.Settings
         public EmbySettings Emby { get; set; }
         public TvdbSettings Tvdb { get; set; }
         public bool EnableRollbarLogging { get; set; }
-
-        [JsonIgnore]
-        public string FullEmbyServerAddress
-        {
-            get
-            {
-                var protocol = Emby.ServerProtocol == ConnectionProtocol.Https ? "https" : "http";
-                return $"{protocol}://{Emby.ServerAddress}:{Emby.ServerPort}";
-            }
-        }
     }
 
     public class EmbySettings
@@ -47,6 +37,26 @@ namespace EmbyStat.Common.Models.Settings
         public int ServerPort { get; set; }
         public string AuthorizationScheme { get; set; }
         public ConnectionProtocol ServerProtocol { get; set; }
+
+        [JsonIgnore]
+        public string FullEmbyServerAddress
+        {
+            get
+            {
+                var protocol = ServerProtocol == ConnectionProtocol.Https ? "https" : "http";
+                return $"{protocol}://{ServerAddress}:{ServerPort}";
+            }
+        }
+
+        [JsonIgnore]
+        public string FullSocketAddress
+        {
+            get
+            {
+                var protocol = ServerProtocol == ConnectionProtocol.Https ? "wss" : "ws";
+                return $"{protocol}://{ServerAddress}:{ServerPort}";
+            }
+        }
     }
 
     public class TvdbSettings
