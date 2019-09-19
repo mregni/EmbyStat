@@ -1,0 +1,12 @@
+image: uping/embystat:beta
+manifests:
+  -
+    image: uping/embystat:beta-win10-x64
+    platform:
+      architecture: amd64
+      os: windows
+  -
+    image: uping/embystat:beta-ubuntu-x64
+    platform:
+      architecture: amd64
+      os: linux
