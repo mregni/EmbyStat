@@ -8,11 +8,11 @@ namespace Tests.Unit.Controllers
     {
 	    public ControllerFixture()
 	    {
-			Mapper.Initialize(cfg => cfg.AddProfile<MapProfiles>());
+
 		}
 	    public void Dispose()
 	    {
-		    Mapper.Reset();
+		    
 		}
     }
 }

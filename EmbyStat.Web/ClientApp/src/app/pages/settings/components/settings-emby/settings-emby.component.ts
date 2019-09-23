@@ -73,6 +73,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
 
           emby.serverAddress = this.embyAddressControl.value;
           emby.serverPort = this.embyPortControl.value;
+          emby.serverName = "";
           emby.serverProtocol = this.embyProtocolControl.value;
           emby.userName = this.embyUsernameControl.value;
           emby.accessToken = token.token;
