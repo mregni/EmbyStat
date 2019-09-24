@@ -51,7 +51,8 @@
     "UPDATES": "Updates",
     "VERSION": "Version",
     "ACTORSPERGENRE": "Most Featured Actor Per Genre",
-    "MINUTES": "minutes"
+    "MINUTES": "minutes",
+    "DISKSIZE": "Disk size"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",
@@ -144,7 +145,8 @@
     "SEASONS": "Seasons",
     "CONTINUING": "Continuing",
     "ENDED": "Ended",
-    "OVERVIEW": "Overview"
+    "OVERVIEW": "Overview",
+    "MISSINGEPISODES": "Missing episodes"
   },
   "SETTINGS": {
     "TITLES": {

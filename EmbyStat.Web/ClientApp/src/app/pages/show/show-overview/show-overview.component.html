@@ -77,16 +77,15 @@
             <div class="col-12">
               <mat-card *ngIf="sortedRowsDataSource !== undefined; else loading">
                 <mat-card-content>
-                  <table mat-table [dataSource]="sortedRowsDataSource" matSort (matSortChange)="sortData($event)"
-                    matSortActive="title" matSortDirection="asc" matSortDisableClear>
+                  <table mat-table [dataSource]="sortedRowsDataSource" multiTemplateDataRows>
                     <ng-container matColumnDef="title">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                      <th mat-header-cell *matHeaderCellDef>
                         {{'COMMON.TITLE' | translate | capitalizeFirst }}
                       </th>
                       <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
                     </ng-container>
                     <ng-container matColumnDef="premiereDate">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                      <th mat-header-cell *matHeaderCellDef>
                         {{ 'COMMON.PREMIEREDATE' | translate | capitalizeFirst }}
                       </th>
                       <td mat-cell *matCellDef="let element">
@@ -103,13 +102,13 @@
                       </td>
                     </ng-container>
                     <ng-container matColumnDef="seasons">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                      <th mat-header-cell *matHeaderCellDef>
                         {{ 'SHOWS.SEASONS' | translate | capitalizeFirst }}
                       </th>
                       <td mat-cell *matCellDef="let element"> {{ element.seasons }} </td>
                     </ng-container>
                     <ng-container matColumnDef="precentage">
-                      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                      <th mat-header-cell *matHeaderCellDef>
                         {{ 'COMMON.PERCENTAGE' | translate | capitalizeFirst }}
                       </th>
                       <td mat-cell *matCellDef="let element">
@@ -119,7 +118,7 @@
                             [style.background-color]="getColor(element)">
                             <span class="justify-content-center d-flex position-absolute w-100 font-weight-bold">
                               {{ element.episodes }} /
-                              {{ element.episodes + element.missingEpisodes.length }}
+                              {{ element.episodes + element.missingEpisodeCount }}
                               <span *ngIf="element.specials > 0">
                                 &nbsp;+
                                 {{element.specials}}
@@ -130,8 +129,45 @@
                       </td>
                     </ng-container>
 
+                    <ng-container matColumnDef="expandedDetail">
+                      <td mat-cell *matCellDef="let element" [attr.colspan]="getcolumns().length">
+                        <div class="element-detail" [@detailExpand]="element == expandedRow ? 'expanded' : 'collapsed'">
+                          <div class="d-flex flex-row justify-content-start align-items-start mb-3">
+                            <img src="{{getShowBannerLink(element)}}" height="60" class="border-radius-small"/>
+                            <div class="d-flex flex-column align-items-center justify-content-center ml-2">
+                              <div>
+                              <img src="../../../../assets/images/imdb.png" height="15" class="mb-2" *ngIf="element.imdb !== undefined" (click)="openImdb(element.imdb)" />
+                                </div>
+                              <div>
+                                <img src="../../../../assets/images/tvdb.png" height="15" *ngIf="element.tvdb !== undefined" (click)="openTvdb(element.tvdb)" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            {{ 'COMMON.DISKSIZE' | translate }}: 
+                            <span *ngIf="element.size <= 999">{{element.size | number:'0.1-2':settings.language}} MB</span>
+                            <span *ngIf="element.size > 999">{{element.size / 1024 | number:'0.1-2':settings.language}} GB</span>
+                          </div>
+                          <div *ngIf="element.missingEpisodeCount > 0">
+                              <h4>{{ 'SHOWS.MISSINGEPISODES' | translate }}</h4>
+                              <div class="d-flex flex-row justify-content-start align-items-start align-self-stretch flex-wrap">
+                                <div *ngFor="let episodesBySeason of element.missingEpisodes" class="mr-3 mb-3">
+                                  <span *ngFor="let missingEpisode of episodesBySeason.episodes">
+                                      S{{episodesBySeason.seasonNumber}} - E{{missingEpisode.episodeNumber}} - {{missingEpisode.name}}<br/>
+                                  </span>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </td>
+                    </ng-container>
+
                     <tr mat-header-row *matHeaderRowDef="getcolumns()"></tr>
-                    <tr mat-row *matRowDef="let row; columns: getcolumns();"></tr>
+                    <tr mat-row *matRowDef="let row; columns: getcolumns();"
+                      class="element-row"
+                      [class.expanded-row]="expandedRow === row"
+                      (click)="expandedRow = expandedRow === row ? null : row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
                   </table>
                 </mat-card-content>
               </mat-card>

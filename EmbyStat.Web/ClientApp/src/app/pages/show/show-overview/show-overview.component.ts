@@ -1,18 +1,22 @@
+import * as _ from 'lodash';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatTableDataSource, Sort } from '@angular/material';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { Options, OptionsService } from '../../../shared/components/charts/options/options';
 import { NoTypeFoundDialog } from '../../../shared/dialogs/no-type-found/no-type-found.component';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Library } from '../../../shared/models/library';
 import { Settings } from '../../../shared/models/settings/settings';
+import { Episode } from '../../../shared/models/show/episode';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 import { ShowStatistics } from '../../../shared/models/show/show-statistics';
 import { ShowService } from '../service/show.service';
@@ -20,7 +24,14 @@ import { ShowService } from '../service/show.service';
 @Component({
   selector: 'app-show-overview',
   templateUrl: './show-overview.component.html',
-  styleUrls: ['./show-overview.component.scss']
+  styleUrls: ['./show-overview.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class ShowOverviewComponent implements OnInit, OnDestroy {
   statistics$: Observable<ShowStatistics>;
@@ -46,6 +57,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   embyServerInfo: ServerInfo;
   embyServerInfoSub: Subscription;
 
+  showDetails = [];
+
   @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
   constructor(
@@ -53,7 +66,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     private readonly settingsFacade: SettingsFacade,
     private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     public dialog: MatDialog,
-    private readonly optionsService: OptionsService) {
+    private readonly optionsService: OptionsService,
+    private readonly sanitizer: DomSanitizer) {
     this.settingsSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
       this.settings = settings;
     });
@@ -100,27 +114,21 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
-  sortData(sort: Sort) {
-    const data = this.rows;
-    if (!sort.active || sort.direction === '') {
-      this.sortedRowsDataSource.data = data;
-      return;
-    }
+  openImdb(id: string): void {
+    window.open('https://www.imdb.com/title/' + id);
+  }
 
-    this.sortedRowsDataSource.data = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'title': return this.compare(a.sortName, b.sortName, isAsc);
-        case 'premiereDate': return this.compare(a.premiereDate, b.premiereDate, isAsc);
-        case 'seasons': return this.compare(a.seasons, b.seasons, isAsc);
-        case 'precentage': return this.compare(this.calculatePercentage(a), this.calculatePercentage(b), isAsc);
-        default: return 0;
-      }
-    });
+  openTvdb(id: string): void {
+    window.open('https://thetvdb.com/?tab=series&id=' + id);
   }
 
   getcolumns(): string[] {
     return window.window.innerWidth > 720 ? this.displayedColumnsWide : this.displayedColumnsSmall;
+  }
+
+  getShowBannerLink(show: ShowCollectionRow): string {
+    const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
+    return `${fullAddress}/emby/Items/${show.id}/Images/Banner?maxHeight=60&tag=${show.banner}&quality=90&enableimageenhancers=false`;
   }
 
   getColor(row: ShowCollectionRow): string {
@@ -139,10 +147,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   }
 
   calculatePercentage(row: ShowCollectionRow): number {
-    if (row.episodes + row.missingEpisodes.length === 0) {
+    if (row.episodes + row.missingEpisodeCount === 0) {
       return 0;
     } else {
-      return row.episodes / (row.episodes + row.missingEpisodes.length);
+      return row.episodes / (row.episodes + row.missingEpisodeCount);
     }
   }
 
@@ -151,10 +159,6 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     this.resizeSub = this.statistics$.subscribe(() => {
       this.textAreaScrollbar.update();
     });
-  }
-
-  private compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   ngOnDestroy() {
