@@ -22,5 +22,17 @@ namespace EmbyStat.Common.Models.Entities
         {
             get { return Episodes?.Count(x => x.LocationType == LocationType.Virtual) ?? 0; }
         }
+
+        [BsonIgnore]
+        public int CollectedEpisodeCount
+        {
+            get { return Episodes?.Where(x => x.IndexNumber != 0).Count(x => x.LocationType == LocationType.Disk) ?? 0; }
+        }
+
+        [BsonIgnore]
+        public int SpecialEpisodeCount
+        {
+            get { return Episodes?.Where(x => x.IndexNumber == 0).Count(x => x.LocationType == LocationType.Disk) ?? 0; }
+        }
     }
 }

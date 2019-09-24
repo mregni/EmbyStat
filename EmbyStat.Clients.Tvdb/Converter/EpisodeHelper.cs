@@ -1,6 +1,7 @@
 ﻿using System;
 using EmbyStat.Clients.Tvdb.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Show;
 
 namespace EmbyStat.Clients.Tvdb.Converter
 {
@@ -11,8 +12,8 @@ namespace EmbyStat.Clients.Tvdb.Converter
             return new VirtualEpisode
             {
                 Id = episode.Id,
-                EpisodeIndex = episode.AiredEpisodeNumber,
-                SeasonIndex = episode.AiredSeason,
+                EpisodeNumber = episode.AiredEpisodeNumber,
+                SeasonNumber = episode.AiredSeason,
                 FirstAired = Convert.ToDateTime(episode.FirstAired),
                 Name = episode.EpisodeName
             };

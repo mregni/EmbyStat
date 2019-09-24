@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Show;
 
 namespace EmbyStat.Common.Extensions
 {
@@ -19,16 +21,6 @@ namespace EmbyStat.Common.Extensions
                 : list.Count();
         }
 
-        public static int GetSpecialEpisodeCount(this Show show, bool includeMissing)
-        {
-            var specialSeason = show.Seasons.SingleOrDefault(x => x.IndexNumber == 0);
-            var list = includeMissing ? show.Episodes : show.Episodes.Where(x => x.LocationType == LocationType.Disk);
-
-            return specialSeason != null
-                ? list.Count(x => x.ParentId == specialSeason.Id.ToString())
-                : 0;
-        }
-
         public static int GetNonSpecialSeasonCount(this Show show)
         {
             var specialSeason = show.Seasons.SingleOrDefault(x => x.IndexNumber == 0);
@@ -37,9 +29,23 @@ namespace EmbyStat.Common.Extensions
                 : show.Seasons.Count;
         }
 
-        public static IEnumerable<Episode> GetMissingEpisodes(this Show show)
+        public static int GetMissingEpisodeCount(this Show show)
         {
-            return show.Episodes.Where(x => x.LocationType == LocationType.Virtual);
+            return show.Episodes.Count(x => x.LocationType == LocationType.Virtual);
+        }
+
+        public static IEnumerable<VirtualEpisode> GetMissingEpisodes(this Show show)
+        {
+            return show.Episodes
+                .Where(x => x.LocationType == LocationType.Virtual)
+                .Select(x => new VirtualEpisode(x, show.Seasons.Single(y => y.Id.ToString() == x.ParentId)));
+        }
+
+        public static double GetShowSize(this Show show)
+        {
+            return show.Episodes
+                .Where(x => x.LocationType == LocationType.Disk)
+                .Sum(x => x.MediaSources.First().SizeInMb);
         }
     }
 }

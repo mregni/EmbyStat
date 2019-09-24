@@ -10,8 +10,9 @@ namespace EmbyStat.Services.Interfaces
     {
         IEnumerable<Library> GetShowLibraries();
         Task<ShowStatistics> GetStatistics(List<string> libraryIds);
-        List<ShowCollectionRow> GetCollectedRows(List<string> libraryIds);
         Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds);
+        IEnumerable<ShowCollectionRow> GetCollectedRows(List<string> libraryIds);
+        IEnumerable<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds);
         bool TypeIsPresent();
     }
 }

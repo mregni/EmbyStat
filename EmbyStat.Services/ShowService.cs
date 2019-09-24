@@ -6,6 +6,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Show;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -14,9 +15,7 @@ using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Extensions;
 using Newtonsoft.Json;
-using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace EmbyStat.Services
 {
@@ -48,22 +47,17 @@ namespace EmbyStat.Services
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
 
-            ShowStatistics statistics;
             if (StatisticsAreValid(statistic, libraryIds))
             {
-                statistics = JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
-            }
-            else
-            {
-                statistics = await CalculateShowStatistics(libraryIds);
+                return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
 
-            return statistics;
+            return await CalculateShowStatistics(libraryIds);
         }
 
         public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(libraryIds).ToList();
+            var shows = _showRepository.GetAllShows(libraryIds, false, true).ToList();
             var statistics = new ShowStatistics
             {
                 General = CalculateGeneralStatistics(shows),
@@ -115,44 +109,51 @@ namespace EmbyStat.Services
             };
         }
 
-        public List<ShowCollectionRow> GetCollectedRows(List<string> libraryIds)
+        public IEnumerable<ShowCollectionRow> GetCollectedRows(List<string> libraryIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
-            List<ShowCollectionRow> stats;
-            if (StatisticsAreValid(statistic, libraryIds))
-            {
-                stats = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
-            }
-            else
-            {
-                var shows = _showRepository.GetAllShows(libraryIds);
+            //if (StatisticsAreValid(statistic, libraryIds))
+            //{
+            //    return JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
+            //}
 
-                stats = shows.Select(CreateShowCollectedRow).ToList();
+            return CalculateCollectedRows(libraryIds);
+        }
 
-                var json = JsonConvert.SerializeObject(stats);
-                _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
-            }
+        public IEnumerable<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds)
+        {
+            var shows = _showRepository.GetAllShows(libraryIds, true, true);
+
+            var stats = shows
+                .Select(CreateShowCollectedRow)
+                .OrderBy(x => x.SortName);
+            var json = JsonConvert.SerializeObject(stats);
+            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
 
             return stats;
         }
 
         private ShowCollectionRow CreateShowCollectedRow(Show show)
         {
-            var episodeCount = show.GetNonSpecialEpisodeCount(false);
-            var specialCount = show.GetSpecialEpisodeCount(false);
             var seasonCount = show.GetNonSpecialSeasonCount();
 
             return new ShowCollectionRow
             {
                 Title = show.Name,
                 SortName = show.SortName,
-                Episodes = episodeCount,
+                Episodes = show.CollectedEpisodeCount,
                 Seasons = seasonCount,
-                Specials = specialCount,
-                MissingEpisodes = show.GetMissingEpisodes(),
+                Specials = show.SpecialEpisodeCount,
+                MissingEpisodeCount = show.GetMissingEpisodeCount(),
+                MissingEpisodes = show.GetMissingEpisodes().GroupBy(x => x.SeasonNumber, (index, episodes) => new VirtualSeason { Episodes = episodes, SeasonNumber = index}),
                 PremiereDate = show.PremiereDate,
-                Status = show.Status == "Continuing"
+                Status = show.Status == "Continuing",
+                Id = show.Id,
+                Banner = show.Banner,
+                IMDB = show.IMDB,
+                TVDB = show.TVDB,
+                Size = show.GetShowSize()
             };
         }
 

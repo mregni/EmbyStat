@@ -3,6 +3,7 @@ using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Common.Models.Show;
 using EmbyStat.Controllers.About;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.HelperClasses;
@@ -69,7 +70,8 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyUser, EmbyUserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
-            CreateMap<Episode, EpisodeViewModel>();
+            CreateMap<VirtualSeason, VirtualSeasonViewModel>();
+            CreateMap<VirtualEpisode, VirtualEpisodeViewModel>();
             CreateMap<SystemInfo, ServerInfo>()
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()
