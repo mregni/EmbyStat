@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +11,7 @@ using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Show;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -21,7 +20,6 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
-using NLog;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -31,7 +29,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IEmbyClient _embyClient;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
-        private readonly IPersonRepository _personRepository;
         private readonly ILibraryRepository _libraryRepository;
         private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
@@ -40,13 +37,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository,
-            IPersonRepository personRepository, ILibraryRepository libraryRepository, ITvdbClient tvdbClient,
-            IStatisticsRepository statisticsRepository, IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
+            ILibraryRepository libraryRepository, ITvdbClient tvdbClient, IStatisticsRepository statisticsRepository,
+            IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
         {
             _embyClient = embyClient;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
-            _personRepository = personRepository;
             _libraryRepository = libraryRepository;
             _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
@@ -102,41 +98,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             _movieRepository.RemoveMovies();
             _showRepository.RemoveShows();
-        }
-
-        private async Task CalculateStatistics()
-        {
-            await LogInformation("Calculating movie statistics");
-
-            _statisticsRepository.MarkShowTypesAsInvalid();
-            _statisticsRepository.MarkMovieTypesAsInvalid();
-
-            var movieLibraries = _movieService.GetMovieLibraries().Select(x => x.Id).ToList();
-            var movieLibrarySets = movieLibraries.PowerSets().ToList();
-            var i = 0;
-            foreach (var moviePowerSet in movieLibrarySets)
-            {
-                await _movieService.CalculateMovieStatistics(moviePowerSet.ToList());
-                await LogProgress(Math.Round(85 + 8 * (i + 1) / (double)movieLibrarySets.Count, 1));
-                i++;
-            }
-
-            await LogInformation("Calculating show statistics");
-            var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
-            var showLibrarySets = showLibraries.PowerSets().ToList();
-            i = 0;
-            foreach (var showPowerSet in showLibrarySets)
-            {
-                await _showService.CalculateShowStatistics(showPowerSet.ToList());
-                await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
-                i++;
-            }
-        }
-
-        private async Task<bool> IsEmbyAliveAsync(CancellationToken cancellationToken)
-        {
-            var result = await _embyClient.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress, cancellationToken);
-            return result == "Emby Server";
         }
 
         #region Movies
@@ -207,7 +168,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         #endregion
 
         #region Shows
-        private async Task ProcessShowsAsync(List<Library> libraries, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
+        private async Task ProcessShowsAsync(IEnumerable<Library> libraries, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing shows");
 
@@ -294,21 +255,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             if (Settings.Tvdb.LastUpdate.HasValue)
             {
-                var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB),
-                    Settings.Tvdb.LastUpdate.Value, cancellationToken);
+                var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(shows.Select(x => x.TVDB), Settings.Tvdb.LastUpdate.Value, cancellationToken);
                 showsWithMissingEpisodes.AddRange(shows.Where(x => showsThatNeedAnUpdate.Any(y => y == x.TVDB)));
             }
 
             showsWithMissingEpisodes = showsWithMissingEpisodes.DistinctBy(x => x.TVDB).ToList();
 
-            var now = DateTime.Now;
             await GetMissingEpisodesFromTvdbAsync(showsWithMissingEpisodes, cancellationToken);
 
-            Settings.Tvdb.LastUpdate = now;
+            Settings.Tvdb.LastUpdate = DateTime.Now;
             await SettingsService.SaveUserSettingsAsync(Settings);
         }
 
-        private async Task GetMissingEpisodesFromTvdbAsync(List<Show> shows, CancellationToken cancellationToken)
+        private async Task GetMissingEpisodesFromTvdbAsync(IReadOnlyList<Show> shows, CancellationToken cancellationToken)
         {
             await LogInformation($"We need to check {shows.Count} shows for missing episodes");
             for (var i = 0; i < shows.Count; i++)
@@ -330,6 +289,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
                 catch (Exception e)
                 {
+                    await LogError($"Can't seem to process show {shows[i].Name}, check the logs for more details!");
+                    _logger.Error(e);
                     shows[i].TvdbFailed = true;
                     _showRepository.UpdateShow(shows[i]);
                 }
@@ -343,7 +304,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             foreach (var episode in tvdbEpisodes)
             {
-                var season = show.Seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonIndex);
+                var season = show.Seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonNumber);
+
+                if (season == null)
+                {
+                    season = ShowConverter.ConvertToSeason(episode.SeasonNumber, show);
+                    _showRepository.InsertSeasonsBulk(new[] { season });
+                    show.Seasons.Add(season);
+                    _showRepository.UpdateShow(show);
+                }
+
                 if (IsEpisodeMissing(show.Episodes, season, episode))
                 {
                     missingEpisodes.Add(episode.ConvertToEpisode(show, season));
@@ -351,6 +321,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
 
             await LogInformation($"Found {missingEpisodes.Count} missing episodes for show {show.Name}");
+            _showRepository.InsertEpisodesBulk(missingEpisodes);
+
             show.TvdbSynced = true;
             show.Episodes.AddRange(missingEpisodes);
             _showRepository.UpdateShow(show);
@@ -369,15 +341,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     if (!localEpisode.IndexNumberEnd.HasValue)
                     {
-                        if (localEpisode.IndexNumber == tvdbEpisode.EpisodeIndex)
+                        if (localEpisode.IndexNumber == tvdbEpisode.EpisodeNumber)
                         {
                             return false;
                         }
                     }
                     else
                     {
-                        if (localEpisode.IndexNumber <= tvdbEpisode.EpisodeIndex &&
-                            localEpisode.IndexNumberEnd >= tvdbEpisode.EpisodeIndex)
+                        if (localEpisode.IndexNumber <= tvdbEpisode.EpisodeNumber &&
+                            localEpisode.IndexNumberEnd >= tvdbEpisode.EpisodeNumber)
                         {
                             return false;
                         }
@@ -392,13 +364,48 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
+        private async Task<bool> IsEmbyAliveAsync(CancellationToken cancellationToken)
+        {
+            var result = await _embyClient.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress, cancellationToken);
+            return result == "Emby Server";
+        }
+
+        private async Task CalculateStatistics()
+        {
+            await LogInformation("Calculating movie statistics");
+
+            _statisticsRepository.MarkShowTypesAsInvalid();
+            _statisticsRepository.MarkMovieTypesAsInvalid();
+
+            var movieLibraries = _movieService.GetMovieLibraries().Select(x => x.Id).ToList();
+            var movieLibrarySets = movieLibraries.PowerSets().ToList();
+            for (var i = 0; i < movieLibrarySets.Count; i++)
+            {
+                await _movieService.CalculateMovieStatistics(movieLibrarySets[i].ToList());
+                await LogProgress(Math.Round(85 + 8 * (i + 1) / (double)movieLibrarySets.Count, 1));
+            }
+
+            await LogInformation("Calculating show statistics");
+            var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
+            var showLibrarySets = showLibraries.PowerSets().ToList();
+            for (var i = 0; i < showLibrarySets.Count; i++)
+            {
+                var libraryList = showLibrarySets[i].ToList();
+                await _showService.CalculateShowStatistics(libraryList);
+                _showService.CalculateCollectedRows(libraryList);
+
+                await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
+            }
+        }
+
         private async Task<List<Library>> GetLibrariesAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Asking Emby for all root folders");
             var rootItems = await _embyClient.GetMediaFoldersAsync(cancellationToken);
 
             return rootItems.Items
-                .Select(x => new Library {
+                .Select(x => new Library
+                {
                     Id = x.Id,
                     Name = x.Name,
                     Type = x.CollectionType.ToCollectionType(),
