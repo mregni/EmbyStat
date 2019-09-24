@@ -97,7 +97,8 @@ namespace EmbyStat.Services
                 NewestPremieredMovie = NewestPremieredMovie(movies),
                 ShortestMovie = ShortestMovie(movies),
                 LongestMovie = LongestMovie(movies),
-                LatestAddedMovie = LatestAddedMovie(movies)
+                LatestAddedMovie = LatestAddedMovie(movies),
+                TotalDiskSize = CalculateTotalDiskSize(movies)
             };
         }
 
