@@ -15,16 +15,19 @@
 <div class="content" *ngIf="typeIsPresent">
   <div *ngIf="statistics$ | async as stats; else loading">
     <div class="row">
-      <div class="col-xl-3 col-md-6 col-12 mb-3">
+      <div class="col-xl-2 col-md-4 col-12 mb-3">
         <app-number-card [card]="stats.general.showCount"></app-number-card>
       </div>
-      <div class="col-xl-3 col-md-6 col-12 mb-3">
+      <div class="col-xl-2 col-md-4 col-12 mb-3">
         <app-number-card [card]="stats.general.episodeCount"></app-number-card>
       </div>
-      <div class="col-xl-3 col-md-6 col-12 mb-3">
+      <div class="col-xl-2 col-md-4 col-12 mb-3">
         <app-number-card [card]="stats.general.missingEpisodeCount"></app-number-card>
       </div>
-      <div class="col-xl-3 col-md-6 col-12 mb-3">
+      <div class="col-xl-2 col-md-4 col-12 mb-3">
+          <app-size-card [card]="stats.general.totalDiskSize"></app-size-card>
+        </div>
+      <div class="col-xl-3 col-md-4 col-12 mb-3">
         <app-time-card [card]="stats.general.totalPlayableTime"></app-time-card>
       </div>
     </div>

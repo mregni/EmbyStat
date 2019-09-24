@@ -84,7 +84,8 @@ namespace EmbyStat.Services
                 OldestPremieredShow = CalculateOldestPremieredShow(shows),
                 ShowWithMostEpisodes = CalculateShowWithMostEpisodes(shows),
                 LatestAddedShow = CalculateLatestAddedShow(shows),
-                NewestPremieredShow = CalculateNewestPremieredShow(shows)
+                NewestPremieredShow = CalculateNewestPremieredShow(shows),
+                TotalDiskSize = CalculateTotalDiskSize(shows.SelectMany(x => x.Episodes))
             };
         }
 

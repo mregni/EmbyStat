@@ -13,4 +13,5 @@ export class GeneralShowStatistics {
   oldestPremieredShow: ShowPoster;
   newestPremieredShow: ShowPoster;
   latestAddedShow: ShowPoster;
+  totalDiskSize: Card<number>;
 }
