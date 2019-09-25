@@ -51,7 +51,9 @@
     "UPDATES": "Opdateringer",
     "VERSION": "Version",
     "ACTORSPERGENRE": "Mest fremtrædende skuespiller per genre",
-    "MINUTES": "minutter"
+    "MINUTES": "minutter",
+    "DISKSIZE": "Disk size",
+    "TOTALDISKSIZE": "Total disk size"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
@@ -144,7 +146,8 @@
     "SEASONS": "Sæsoner",
     "CONTINUING": "Fortsættes",
     "ENDED": "Afsluttet",
-    "OVERVIEW": "Oversigt"
+    "OVERVIEW": "Oversigt",
+    "MISSINGEPISODES": "Missing episodes"
   },
   "SETTINGS": {
     "TITLES": {
