@@ -10,6 +10,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Show;
 using EmbyStat.Common.Net;
 using MediaBrowser.Model.Net;
 using NLog;
@@ -68,7 +69,7 @@ namespace EmbyStat.Clients.Tvdb
                 var url = string.Format(Constants.Tvdb.SerieEpisodesUrl, seriesId, i);
                 page = await GetEpisodePage(url, cancellationToken);
                 tvdbEpisodes.AddRange(page.Data
-                    .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired)).Select(EpisodeHelper.ConvertToEpisode));
+                    .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired)).Select(x => x.ConvertToVirtualEpisode()));
             } while (page.Links.Next != i && page.Links.Next != null);
 
             return tvdbEpisodes;
@@ -105,11 +106,13 @@ namespace EmbyStat.Clients.Tvdb
                     var epochTimeTo = offset.AddDays(7).ToUnixTimeSeconds();
 
                     var url = string.Format(Constants.Tvdb.UpdatesUrl, epochTimeFrom, epochTimeTo);
+                    var headers = new HttpHeaders { { "Authorization", $"Bearer {JWtoken.Token}" } };
                     var httpRequest = new HttpRequest
                     {
                         CancellationToken = cancellationToken,
                         Method = "GET",
-                        Url = $"{Constants.Tvdb.BaseUrl}{url}"
+                        Url = $"{Constants.Tvdb.BaseUrl}{url}",
+                        RequestHeaders = headers
                     };
 
                     _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");

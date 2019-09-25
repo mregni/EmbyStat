@@ -12,6 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { NumberCardComponent } from './components/cards/number-card/number-card.component';
+import { SizeCardComponent } from './components/cards/size-card/size-card.component';
 import { TimeCardComponent } from './components/cards/time-card/time-card.component';
 import { UserCardComponent } from './components/cards/user-card/user-card.component';
 import { SimpleChartComponent } from './components/charts/simple-chart/simple-chart.component';
@@ -90,7 +91,8 @@ import { UserService } from './services/user.service';
     UpdateOverlayComponent,
     NoTypeFoundDialog,
     SyncIsRunningDialog,
-    NoUsersFoundDialog
+    NoUsersFoundDialog,
+    SizeCardComponent
   ],
   exports: [
     RouterModule,
@@ -104,6 +106,7 @@ import { UserService } from './services/user.service';
     FontAwesomeModule,
     NumberCardComponent,
     TimeCardComponent,
+    SizeCardComponent,
     LoaderComponent,
     LanguageComponent,
     SimpleChartComponent,

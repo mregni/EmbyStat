@@ -4,8 +4,10 @@ using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Models.Charts;
+using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Abstract
 {
@@ -89,6 +91,16 @@ namespace EmbyStat.Services.Abstract
                 Title = Constants.CountPerPremiereYear,
                 Labels = yearData.Select(x => x.Name),
                 DataSets = new List<IEnumerable<int>> { yearData.Select(x => x.Count) }
+            };
+        }
+
+        protected Card<double> CalculateTotalDiskSize(IEnumerable<Video> videos)
+        {
+            var sum = videos.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
+            return new Card<double>
+            {
+                Value = sum,
+                Title = Constants.Common.TotalDiskSize
             };
         }
     }

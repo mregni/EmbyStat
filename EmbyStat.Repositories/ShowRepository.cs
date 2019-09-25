@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
@@ -47,11 +48,6 @@ namespace EmbyStat.Repositories
         public void UpdateShow(Show show)
         {
             _showCollection.Update(show);
-        }
-
-        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds)
-        {
-            return GetAllShows(collectionIds, false, false);
         }
 
         public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes)
@@ -103,40 +99,6 @@ namespace EmbyStat.Repositories
         public IEnumerable<Episode> GetAllEpisodesForShow(int showId)
         {
             return _episodeCollection.Find(Query.EQ("ShowId", showId));
-        }
-
-        public int GetEpisodeCountForShow(int showId)
-        {
-            return GetEpisodeCountForShow(showId, false);
-        }
-
-        public int GetEpisodeCountForShow(int showId, bool includeSpecials)
-        {
-            var show = _showCollection.FindById(showId);
-
-            if (!includeSpecials)
-            {
-                return show.Episodes.Count(x => x.IndexNumber != 0);
-            }
-
-            return show.Episodes.Count;
-        }
-
-        public int GetSeasonCountForShow(int showId)
-        {
-            return GetSeasonCountForShow(showId, false);
-        }
-
-        public int GetSeasonCountForShow(int showId, bool includeSpecials)
-        {
-            var show = _showCollection.FindById(showId);
-
-            if (!includeSpecials)
-            {
-                return show.Seasons.Count(x => x.IndexNumber != 0);
-            }
-            
-            return show.Seasons.Count();
         }
 
         public bool AnyShows()

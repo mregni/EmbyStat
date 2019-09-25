@@ -1,8 +1,9 @@
 @import "variables";
+@import "image";
 
 .poster {
+  @extend .border-radius-small;
   background-size: cover;
-  border-radius: 0.25rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;

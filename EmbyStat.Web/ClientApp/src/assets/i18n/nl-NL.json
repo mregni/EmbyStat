@@ -51,7 +51,9 @@
     "UPDATES": "Updates",
     "VERSION": "Versie",
     "ACTORSPERGENRE": "Meest Uitgelichte Acteur Per Genre",
-    "MINUTES": "minuten"
+    "MINUTES": "minuten",
+    "DISKSIZE": "Disk size",
+    "TOTALDISKSIZE": "Total disk size"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
@@ -144,7 +146,8 @@
     "SEASONS": "Seizoenen",
     "CONTINUING": "Doorgaan",
     "ENDED": "Geëindigd",
-    "OVERVIEW": "Overzicht"
+    "OVERVIEW": "Overzicht",
+    "MISSINGEPISODES": "Missing episodes"
   },
   "SETTINGS": {
     "TITLES": {

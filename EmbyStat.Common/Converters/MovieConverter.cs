@@ -30,6 +30,7 @@ namespace EmbyStat.Common.Converters
                     Container = y.Container,
                     Protocol = y.Protocol.ToString(),
                     RunTimeTicks = y.RunTimeTicks,
+                    SizeInMb = Math.Round(y.Size / (double)1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)
                 }).ToList(),
                 RunTimeTicks = x.RunTimeTicks,
                 Container = x.Container,
