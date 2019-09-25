@@ -232,14 +232,14 @@ namespace EmbyStat.Services
             var percentageList = new List<double>();
             foreach (var show in shows)
             {
-                var episodeCount = show.GetNonSpecialEpisodeCount(false);
-                if (episodeCount + show.MissingEpisodesCount == 0)
+                var episodeCount = _showRepository.GetEpisodeCountForShow(show.Id);
+                if (episodeCount == 0)
                 {
                     percentageList.Add(0);
                 }
                 else
                 {
-                    percentageList.Add((double)episodeCount / (episodeCount + show.MissingEpisodesCount));
+                    percentageList.Add((double)episodeCount / (episodeCount));
                 }
             }
 
