@@ -284,7 +284,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                     if (e.Message.Contains("(404) Not Found"))
                     {
-                        await LogWarning($"Can't seem to find {shows[i].Name} on TVDB, skipping show for now");
+                        await LogWarning($"Can't seem to find {shows[i].Name} on Tvdb, skipping show for now");
                     }
                 }
                 catch (Exception e)

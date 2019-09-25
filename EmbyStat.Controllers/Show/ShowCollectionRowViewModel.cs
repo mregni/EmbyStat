@@ -7,8 +7,8 @@ namespace EmbyStat.Controllers.Show
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string TVDB { get; set; }
-        public string IMDB { get; set; }
+        public string Tvdb { get; set; }
+        public string Imdb { get; set; }
         public double Size { get; set; }
         public string Banner { get; set; }
         public int Seasons { get; set; }

@@ -152,8 +152,8 @@ namespace EmbyStat.Services
                 Status = show.Status == "Continuing",
                 Id = show.Id,
                 Banner = show.Banner,
-                IMDB = show.IMDB,
-                TVDB = show.TVDB,
+                Imdb = show.IMDB,
+                Tvdb = show.TVDB,
                 Size = show.GetShowSize()
             };
         }
