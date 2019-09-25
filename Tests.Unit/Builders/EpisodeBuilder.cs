@@ -47,7 +47,7 @@ namespace Tests.Unit.Builders
                 },
                 MediaSources = new List<MediaSource>
                 {
-                    new MediaSource { Id = "12345", Path = "path/to/video", BitRate = 123456, Container = "mkv", Protocol = "File", RunTimeTicks = 1230498908 }
+                    new MediaSource { Id = "12345", Path = "path/to/video", BitRate = 123456, Container = "mkv", Protocol = "File", RunTimeTicks = 1230498908, SizeInMb = 101 }
                 }
             };
         }

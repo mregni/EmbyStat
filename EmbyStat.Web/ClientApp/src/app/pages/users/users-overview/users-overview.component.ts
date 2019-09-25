@@ -58,14 +58,16 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
   }
 
   filterChanged(event: any) {
-    let order = 'asc';
-    let prop = event.value;
+    console.log(event.value);
     if (event.value.endsWith('Desc')) {
-      order = 'desc';
-      prop = event.value.slice(0, -4);
+      const prop = event.value.slice(0, -4);
+      this.users = _.orderBy(this.users, [prop], ['desc']);
+      this.deletedUsers = _.orderBy(this.deletedUsers, [prop], ['desc']);
+  } else {
+      const prop = event.value;
+      this.users = _.orderBy(this.users, [prop], ['asc']);
+      this.deletedUsers = _.orderBy(this.deletedUsers, [prop], ['asc']);
     }
-    this.users = _.orderBy(this.users, [prop], order);
-    this.deletedUsers = _.orderBy(this.deletedUsers, [prop], order);
   }
 
   navigateToUser(id: any) {

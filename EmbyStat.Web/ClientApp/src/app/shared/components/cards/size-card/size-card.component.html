@@ -1,0 +1,8 @@
+<mat-card *ngIf="card !== undefined">
+    <mat-card-content class="d-flex align-items-center flex-column">
+        <h6 class="title">{{card.title | translate}}</h6>
+        <h4 class="value">
+            <span [countUp]="getFormattedValue(card.value)" [options]="options" [reanimateOnClick]="false"></span> {{getProperUnit(card.value)}}
+          </h4>
+    </mat-card-content>
+  </mat-card>

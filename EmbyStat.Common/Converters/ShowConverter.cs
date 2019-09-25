@@ -2,8 +2,10 @@
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Show;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace EmbyStat.Common.Converters
 {
@@ -64,7 +66,25 @@ namespace EmbyStat.Common.Converters
                 Primary = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,
-                Banner = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value
+                Banner = season.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value,
+                LocationType = LocationType.Disk
+            };
+        }
+
+        public static Season ConvertToSeason(int indexNumber, Show show)
+        {
+            return new Season
+            {
+                Name = indexNumber == 0 ? "Special" : $"Season {indexNumber + 1}",
+                ParentId = show.Id.ToString(),
+                Path = string.Empty,
+                DateCreated = null,
+                IndexNumber = indexNumber,
+                IndexNumberEnd = indexNumber,
+                PremiereDate = null,
+                ProductionYear = null,
+                SortName = indexNumber.ToString("0000"),
+                LocationType = LocationType.Virtual
             };
         }
 
@@ -74,6 +94,7 @@ namespace EmbyStat.Common.Converters
             {
                 Id = Convert.ToInt32(episode.Id),
                 ShowId = Convert.ToInt32(show.Id),
+                LocationType = LocationType.Disk,
                 Name = episode.Name,
                 Path = episode.Path,
                 ParentId = episode.ParentId,
@@ -131,8 +152,24 @@ namespace EmbyStat.Common.Converters
                     BitRate = y.Bitrate,
                     Container = y.Container,
                     Protocol = y.Protocol.ToString(),
-                    RunTimeTicks = y.RunTimeTicks
+                    RunTimeTicks = y.RunTimeTicks,
+                    SizeInMb = Math.Round(y.Size / (double)1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)
                 }).ToList()
+            };
+        }
+
+        public static Episode ConvertToEpisode(this VirtualEpisode episode, Show show, Season season)
+        {
+            return new Episode
+            {
+                Id = episode.Id,
+                ShowId = show.Id,
+                ShowName = show.Name,
+                Name = episode.Name,
+                LocationType = LocationType.Virtual,
+                IndexNumber = episode.EpisodeNumber,
+                ParentId = season.Id.ToString(),
+                PremiereDate = episode.FirstAired
             };
         }
     }

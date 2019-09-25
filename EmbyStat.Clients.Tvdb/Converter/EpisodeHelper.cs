@@ -1,18 +1,21 @@
 ﻿using System;
 using EmbyStat.Clients.Tvdb.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Show;
 
 namespace EmbyStat.Clients.Tvdb.Converter
 {
     public static class EpisodeHelper
     {
-        public static VirtualEpisode ConvertToEpisode(Data episode)
+        public static VirtualEpisode ConvertToVirtualEpisode(this Data episode)
         {
             return new VirtualEpisode
             {
-                EpisodeIndex = episode.AiredEpisodeNumber,
-                SeasonIndex = episode.AiredSeason,
-                FirstAired = Convert.ToDateTime(episode.FirstAired)
+                Id = episode.Id,
+                EpisodeNumber = episode.AiredEpisodeNumber,
+                SeasonNumber = episode.AiredSeason,
+                FirstAired = Convert.ToDateTime(episode.FirstAired),
+                Name = episode.EpisodeName
             };
         }
     }

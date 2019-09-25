@@ -1,12 +1,14 @@
-﻿using EmbyStat.Services.Models.Stat;
+﻿using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Controllers.Show
 {
     public class ShowGeneralViewModel
     {
-        public Card<int> ShowCount { get; set; }
-        public Card<int> EpisodeCount { get; set; }
-        public Card<int> MissingEpisodeCount { get; set; }
+        public CardViewModel<int> ShowCount { get; set; }
+        public CardViewModel<int> EpisodeCount { get; set; }
+        public CardViewModel<int> MissingEpisodeCount { get; set; }
+        public CardViewModel<double> TotalDiskSize { get; set; }
         public TimeSpanCard TotalPlayableTime { get; set; }
         public ShowPoster HighestRatedShow { get; set; }
         public ShowPoster LowestRatedShow { get; set; }

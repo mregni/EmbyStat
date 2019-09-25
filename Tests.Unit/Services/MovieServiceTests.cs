@@ -119,7 +119,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetMovieCountStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -131,7 +131,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetGenreCountStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -143,7 +143,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetLowestRatedStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -161,7 +161,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetHighestRatedStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -179,7 +179,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetOldestPremieredStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -197,7 +197,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetNewestPremieredStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -215,7 +215,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetShortestStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -233,7 +233,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetLongestStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -251,7 +251,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void GetLatestAddedStat()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -266,6 +266,18 @@ namespace Tests.Unit.Services
             stat.General.LatestAddedMovie.Year.Should().Be(2002);
         }
 
+        [Fact]
+        public async void GetTotalDiskSize()
+        {
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.General.Should().NotBeNull();
+            stat.General.TotalDiskSize.Should().NotBeNull();
+            stat.General.TotalDiskSize.Title.Should().Be(Constants.Common.TotalDiskSize);
+            stat.General.TotalDiskSize.Value.Should().Be(3003);
+        }
+
         #endregion
 
         #region Charts
@@ -275,7 +287,7 @@ namespace Tests.Unit.Services
         {
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(56, 34, 1).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.General.Should().NotBeNull();
@@ -289,7 +301,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void CalculateGenreChart()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
@@ -316,7 +328,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void CalculateOfficialRatingChart()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
@@ -338,7 +350,7 @@ namespace Tests.Unit.Services
         public async void CalculateOfficialRatingChartWithoutMovies()
         {
             var service = CreateMovieService(_settingsServiceMock);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
@@ -355,7 +367,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void CalculateRatingChart()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
@@ -389,7 +401,7 @@ namespace Tests.Unit.Services
         public async void CalculateRatingChartWithoutMovies()
         {
             var service = CreateMovieService(_settingsServiceMock);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
@@ -419,7 +431,7 @@ namespace Tests.Unit.Services
             var movieSix = new MovieBuilder(5).AddPremiereDate(new DateTime(1989, 3, 12)).Build();
             var service = CreateMovieService(_settingsServiceMock,_movieOne, _movieTwo, _movieThree, movieFour, movieFive, movieSix);
 
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
             stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
@@ -445,7 +457,7 @@ namespace Tests.Unit.Services
         {
             var service = CreateMovieService(_settingsServiceMock);
 
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
             stat.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
             stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
@@ -465,7 +477,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void TotalTypeCountForActors()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
             stat.People.TotalActorCount.Should().NotBeNull();
@@ -476,7 +488,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void TotalTypeCountForDirectors()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
             stat.People.TotalDirectorCount.Should().NotBeNull();
@@ -487,7 +499,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void TotalTypeCountForWriters()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
             stat.People.TotalWriterCount.Should().NotBeNull();
@@ -498,7 +510,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async void MostFeaturedActorsPerGenre()
         {
-            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
             stat.People.MostFeaturedActorsPerGenre.Should().NotBeNull();
@@ -520,7 +532,7 @@ namespace Tests.Unit.Services
         {
             var movieFour = new MovieBuilder(3).AddImdb(_movieOne.IMDB).Build();
             var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Suspicious.Should().NotBeNull();
             stat.Suspicious.Duplicates.Should().NotBeNull();
@@ -540,7 +552,7 @@ namespace Tests.Unit.Services
         {
             var movieFour = new MovieBuilder(3).AddVideo3DFormat(Video3DFormat.FullSideBySide).Build();
             var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Suspicious.Should().NotBeNull();
             stat.Suspicious.Duplicates.Should().NotBeNull();
@@ -552,7 +564,7 @@ namespace Tests.Unit.Services
         {
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Suspicious.Should().NotBeNull();
             stat.Suspicious.Shorts.Should().NotBeNull();
@@ -573,7 +585,7 @@ namespace Tests.Unit.Services
                 .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = false });
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Suspicious.Should().NotBeNull();
             stat.Suspicious.Shorts.Should().NotBeNull();
@@ -585,7 +597,7 @@ namespace Tests.Unit.Services
         {
             var movieFour = new MovieBuilder(4).AddImdb(string.Empty).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Suspicious.Should().NotBeNull();
             stat.Suspicious.NoImdb.Should().NotBeNull();
@@ -602,7 +614,7 @@ namespace Tests.Unit.Services
         {
             var movieFour = new MovieBuilder(4).AddPrimaryImage(string.Empty).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = await service.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+            var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
             stat.Suspicious.Should().NotBeNull();
             stat.Suspicious.NoPrimary.Should().NotBeNull();

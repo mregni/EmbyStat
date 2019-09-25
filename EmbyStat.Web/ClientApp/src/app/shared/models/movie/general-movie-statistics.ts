@@ -18,4 +18,5 @@ export class GeneralMovieStatistics {
   mostFeaturedMovieDirector: Card<string>;
   lastPlayedMovie: Card<string>;
   totalPlayableTime: TimespanCard;
+  totalDiskSize: Card<number>;
 }
