@@ -141,13 +141,13 @@
     "OLDESTPREMIERED": "Früheste Premiere",
     "NEWESTPREMIERED": "Neueste Premiere",
     "LATESTADDED": "Kürzlich hinzugefügt",
-    "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview",
-    "MISSINGEPISODES": "Missing episodes"
+    "WITHMOESTEPISODES": "Die meisten Episoden",
+    "SHOWSTATUSGRAPH": "Serienstatus",
+    "SEASONS": "Staffeln",
+    "CONTINUING": "Laufend",
+    "ENDED": "Beendet",
+    "OVERVIEW": "Übersicht",
+    "MISSINGEPISODES": "Fehlende Episoden"
   },
   "SETTINGS": {
     "TITLES": {
@@ -157,7 +157,7 @@
     },
     "SAVED": {
       "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
-      "TVDB": "TVDB key saved!",
+      "TVDB": "TVDB API-Schlüssel gespeichert!",
       "EMBY": "Emby-Einstellungen wurden gespeichert!",
       "MOVIES": "Film-Einstellungen wurden gespeichert!",
       "SHOWS": "Serien-Einstellungen wurden gespeichert!",
@@ -170,7 +170,7 @@
       "EXCEPTIONLOGGING": "Aktivieren / deaktivieren Sie die Protokollierung von Fehlern bei Rollbar (Online Dienst). Mit dieser Protokollierung kann ich die Anwendung schneller debuggen und beheben. Es werden niemals persönliche Daten aufgezeichnet, sondern nur Ausnahmemeldungen, Stacktrace, Betriebssystemname und Versionsnummer."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
       "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Filmstatistiken sehen wollen."
     },
     "SHOW": {
@@ -219,7 +219,7 @@
     "TOOVERVIEW": "Zur Übersicht",
     "DETAILS": {
       "TITLE": "Details für {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "WATCHEDTITLE": "Letzte gesehene Elemente"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
@@ -229,8 +229,8 @@
       "ACTION": "Aktion"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Gesehene Filme",
+      "TOTALWATCHEDEPISODES": "Gesehene Episoden"
     }
   },
   "JOB": {
