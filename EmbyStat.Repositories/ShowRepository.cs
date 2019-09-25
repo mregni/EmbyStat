@@ -50,11 +50,6 @@ namespace EmbyStat.Repositories
             _showCollection.Update(show);
         }
 
-        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds)
-        {
-            return GetAllShows(collectionIds, false, false);
-        }
-
         public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes)
         {
             var query = _showCollection;
@@ -104,23 +99,6 @@ namespace EmbyStat.Repositories
         public IEnumerable<Episode> GetAllEpisodesForShow(int showId)
         {
             return _episodeCollection.Find(Query.EQ("ShowId", showId));
-        }
-
-        public int GetSeasonCountForShow(int showId)
-        {
-            return GetSeasonCountForShow(showId, false);
-        }
-
-        public int GetSeasonCountForShow(int showId, bool includeSpecials)
-        {
-            var show = _showCollection.FindById(showId);
-
-            if (!includeSpecials)
-            {
-                return show.Seasons.Count(x => x.IndexNumber != 0);
-            }
-            
-            return show.Seasons.Count();
         }
 
         public bool AnyShows()
