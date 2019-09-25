@@ -68,7 +68,7 @@ namespace Tests.Unit.Services
         private ShowService CreateShowService(params Show[] shows)
         {
             var showRepositoryMock = new Mock<IShowRepository>();
-            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>())).Returns(shows);
+            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(shows);
             foreach (var show in shows)
             {
                 showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
