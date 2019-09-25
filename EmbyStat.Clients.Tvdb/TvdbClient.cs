@@ -106,11 +106,13 @@ namespace EmbyStat.Clients.Tvdb
                     var epochTimeTo = offset.AddDays(7).ToUnixTimeSeconds();
 
                     var url = string.Format(Constants.Tvdb.UpdatesUrl, epochTimeFrom, epochTimeTo);
+                    var headers = new HttpHeaders { { "Authorization", $"Bearer {JWtoken.Token}" } };
                     var httpRequest = new HttpRequest
                     {
                         CancellationToken = cancellationToken,
                         Method = "GET",
-                        Url = $"{Constants.Tvdb.BaseUrl}{url}"
+                        Url = $"{Constants.Tvdb.BaseUrl}{url}",
+                        RequestHeaders = headers
                     };
 
                     _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
