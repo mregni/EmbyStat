@@ -43,7 +43,7 @@ namespace Tests.Unit.Controllers
 
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieLibraries()).Returns(_collections);
-            _movieServiceMock.Setup(x => x.GetMovieStatisticsAsync(It.IsAny<List<string>>()))
+            _movieServiceMock.Setup(x => x.GetStatisticsAsync(It.IsAny<List<string>>()))
                 .Returns(Task.FromResult(movieStatistics));
 
             var _mapperMock = new Mock<IMapper>();
@@ -90,7 +90,7 @@ namespace Tests.Unit.Controllers
 
             stat.Should().NotBeNull();
             stat.General.LongestMovie.Name.Should().Be(_movieGeneral.LongestMovie.Name);
-            _movieServiceMock.Verify(x => x.GetMovieStatisticsAsync(It.Is<List<string>>(
+            _movieServiceMock.Verify(x => x.GetStatisticsAsync(It.Is<List<string>>(
                 y => y[0] == _collections[0].Id &&
                      y[1] == _collections[1].Id)), Times.Once);
         }
