@@ -12,8 +12,6 @@ namespace EmbyStat.Repositories.Interfaces
         void InsertEpisodesBulk(IEnumerable<Episode> episodes);
         IEnumerable<Show> GetAllShowsWithTvdbId();
         IEnumerable<Episode> GetAllEpisodesForShow(int showId);
-        int GetEpisodeCountForShow(int showId, bool includeMissing);
-        int GetEpisodeCountForShow(int showId, bool includeSpecials, bool includeMissing);
         int GetSeasonCountForShow(int showId);
         int GetSeasonCountForShow(int showId, bool includeSpecials);
         bool AnyShows();
