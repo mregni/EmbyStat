@@ -40,20 +40,20 @@
     "TOTALACTORS": "Anzahl Schauspieler",
     "TOTALDIRECTORS": "Anzahl Regisseure",
     "TOTALWRITERS": "Anzahl Autoren",
-    "MOSTFEATUREDACTOR": "Most Featured Actor",
-    "MOSTFEATUREDDIRECTOR": "Most Featured Director",
-    "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "LIBRARIES": "Libraries",
+    "MOSTFEATUREDACTOR": "Häufigster Schauspieler",
+    "MOSTFEATUREDDIRECTOR": "Häufigster Regisseur",
+    "MOSTFEATUREDWRITER": "Häufigster Autor",
+    "LIBRARIES": "Bibliotheken",
     "PREMIEREDATE": "Premierendatum",
     "STATUS": "Status",
     "PERCENTAGE": "prozentualer Anteil",
     "COLLECTED": "Gesammelt",
     "UPDATES": "Updates",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
-    "MINUTES": "minutes",
-    "DISKSIZE": "Disk size",
-    "TOTALDISKSIZE": "Total disk size"
+    "ACTORSPERGENRE": "Häufigster Schauspieler je Genre",
+    "MINUTES": "Minuten",
+    "DISKSIZE": "Festplattengröße",
+    "TOTALDISKSIZE": "Gesamte Festplattengröße"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
@@ -115,39 +115,39 @@
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filmsammlungen filtern",
-    "TOTALMOVIES": "Total Movies",
-    "TOTALGENRES": "Total Genres",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATED": "Highest Rated",
-    "LOWESTRATED": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "TOTALMOVIES": "Gesamtanzahl Filme",
+    "TOTALGENRES": "Gesamtanzahl Genres",
+    "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
+    "HIGHESTRATED": "Beste Bewertung",
+    "LOWESTRATED": "Schlechteste Bewertung",
+    "OLDESTPREMIERED": "Früheste Premiere",
+    "NEWESTPREMIERED": "Neueste Premiere",
     "SHORTEST": "Am kürzesten",
     "LONGEST": "Am längsten",
-    "LATESTADDED": "Recently Added",
-    "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
-    "DUPLICATEMOVIES": "Duplicate Movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "LATESTADDED": "Zuletzt hinzugefügt",
+    "MOSTFEATUREDPERGENRE": "Häufigster Schauspieler je Genre",
+    "DUPLICATEMOVIES": "Doppelte Filme",
+    "TOSHORTMOVIES": "Sehr kurze Filme",
+    "NOPOSTER": "Fehlende Poster",
+    "NOIMDB": "Fehlende IMDB-ID"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total Shows",
+    "TOTALSHOWS": "Gesamtanzahl Serien",
     "TOTALEPISODES": "Anzahl Episoden",
     "TOTALMISSINGEPISODES": "Anzahl fehlender Episoden",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATEDSHOW": "Highest Rated",
-    "LOWESTRATEDSHOW": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
-    "LATESTADDED": "Recently added",
-    "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview",
-    "MISSINGEPISODES": "Missing episodes"
+    "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
+    "HIGHESTRATEDSHOW": "Beste Bewertung",
+    "LOWESTRATEDSHOW": "Schlechteste Bewertung",
+    "OLDESTPREMIERED": "Früheste Premiere",
+    "NEWESTPREMIERED": "Neueste Premiere",
+    "LATESTADDED": "Kürzlich hinzugefügt",
+    "WITHMOESTEPISODES": "Die meisten Episoden",
+    "SHOWSTATUSGRAPH": "Serienstatus",
+    "SEASONS": "Staffeln",
+    "CONTINUING": "Laufend",
+    "ENDED": "Beendet",
+    "OVERVIEW": "Übersicht",
+    "MISSINGEPISODES": "Fehlende Episoden"
   },
   "SETTINGS": {
     "TITLES": {
@@ -157,7 +157,7 @@
     },
     "SAVED": {
       "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
-      "TVDB": "TVDB key saved!",
+      "TVDB": "TVDB API-Schlüssel gespeichert!",
       "EMBY": "Emby-Einstellungen wurden gespeichert!",
       "MOVIES": "Film-Einstellungen wurden gespeichert!",
       "SHOWS": "Serien-Einstellungen wurden gespeichert!",
@@ -170,7 +170,7 @@
       "EXCEPTIONLOGGING": "Aktivieren / deaktivieren Sie die Protokollierung von Fehlern bei Rollbar (Online Dienst). Mit dieser Protokollierung kann ich die Anwendung schneller debuggen und beheben. Es werden niemals persönliche Daten aufgezeichnet, sondern nur Ausnahmemeldungen, Stacktrace, Betriebssystemname und Versionsnummer."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
       "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Filmstatistiken sehen wollen."
     },
     "SHOW": {
@@ -219,7 +219,7 @@
     "TOOVERVIEW": "Zur Übersicht",
     "DETAILS": {
       "TITLE": "Details für {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "WATCHEDTITLE": "Letzte gesehene Elemente"
     },
     "WATCHEDTABLE": {
       "TITLE": "Titel",
@@ -229,8 +229,8 @@
       "ACTION": "Aktion"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Gesehene Filme",
+      "TOTALWATCHEDEPISODES": "Gesehene Episoden"
     }
   },
   "JOB": {
