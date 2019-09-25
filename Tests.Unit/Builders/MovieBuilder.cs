@@ -27,7 +27,8 @@ namespace Tests.Unit.Builders
                 IMDB = "0001",
                 Video3DFormat = null,
                 Genres = new[] {"id1"},
-                People = new[] {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor}}
+                People = new[] {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor}},
+                MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } }
             };
         }
 

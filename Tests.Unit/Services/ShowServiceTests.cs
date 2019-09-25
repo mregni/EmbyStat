@@ -264,6 +264,18 @@ namespace Tests.Unit.Services
             stat.General.NewestPremieredShow.Title.Should().Be(Constants.Shows.NewestPremiered);
         }
 
+        [Fact]
+        public async void GetTotalDiskSize()
+        {
+            var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.General.Should().NotBeNull();
+            stat.General.TotalDiskSize.Should().NotBeNull();
+            stat.General.TotalDiskSize.Title.Should().Be(Constants.Common.TotalDiskSize);
+            stat.General.TotalDiskSize.Value.Should().Be(909);
+        }
+
         #endregion
 
         #region Charts

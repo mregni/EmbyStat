@@ -266,6 +266,18 @@ namespace Tests.Unit.Services
             stat.General.LatestAddedMovie.Year.Should().Be(2002);
         }
 
+        [Fact]
+        public async void GetTotalDiskSize()
+        {
+            var stat = await _subject.GetMovieStatisticsAsync(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.General.Should().NotBeNull();
+            stat.General.TotalDiskSize.Should().NotBeNull();
+            stat.General.TotalDiskSize.Title.Should().Be(Constants.Common.TotalDiskSize);
+            stat.General.TotalDiskSize.Value.Should().Be(3003);
+        }
+
         #endregion
 
         #region Charts
