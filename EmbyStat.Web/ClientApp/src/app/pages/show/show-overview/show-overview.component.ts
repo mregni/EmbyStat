@@ -91,7 +91,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
 
     this.librariesFormControl.valueChanges.subscribe((collectionList: string[]) => {
       this.statistics$ = this.showService.getStatistics(collectionList);
-      this.collectedDataSub = this.showService.getCollectedList([]).subscribe((data: ShowCollectionRow[]) => {
+      this.collectedDataSub = this.showService.getCollectedList(collectionList).subscribe((data: ShowCollectionRow[]) => {
         this.rows = data;
         this.sortedRowsDataSource = new MatTableDataSource(data);
       });
