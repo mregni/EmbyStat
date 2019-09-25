@@ -14,7 +14,6 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<Episode> GetAllEpisodesForShow(int showId);
         bool AnyShows();
         Episode GetEpisodeById(string id);
-        IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds);
         IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes);
         Season GetSeasonById(string id);
         int GetShowCountForPerson(string personId);

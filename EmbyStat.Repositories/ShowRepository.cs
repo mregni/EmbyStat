@@ -50,11 +50,6 @@ namespace EmbyStat.Repositories
             _showCollection.Update(show);
         }
 
-        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds)
-        {
-            return GetAllShows(collectionIds, false, false);
-        }
-
         public IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes)
         {
             var query = _showCollection;

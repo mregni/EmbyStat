@@ -16,6 +16,7 @@ using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
+using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace EmbyStat.Services
 {
@@ -57,7 +58,7 @@ namespace EmbyStat.Services
 
         public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(libraryIds, false, true).ToList();
+            var shows = _showRepository.GetAllShows(libraryIds, true, true).ToList();
             var statistics = new ShowStatistics
             {
                 General = CalculateGeneralStatistics(shows),
@@ -232,35 +233,29 @@ namespace EmbyStat.Services
             var percentageList = new List<double>();
             foreach (var show in shows)
             {
-                var episodeCount = show.GetNonSpecialEpisodeCount(false);
-                if (episodeCount + show.MissingEpisodesCount == 0)
+                var specialSeasonId = show.Seasons.SingleOrDefault(x => x.IndexNumber == 0)?.Id.ToString() ?? "0";
+                var episodeCount = show.Episodes.Count(x => x.LocationType == LocationType.Disk && x.ParentId != specialSeasonId);
+                var missingEpisodeCount = show.Episodes.Count(x => x.LocationType == LocationType.Virtual && x.ParentId != specialSeasonId);
+
+                if (episodeCount + missingEpisodeCount == 0)
                 {
                     percentageList.Add(0);
                 }
                 else
                 {
-                    percentageList.Add((double)episodeCount / (episodeCount + show.MissingEpisodesCount));
+                    percentageList.Add((double)episodeCount / (episodeCount + missingEpisodeCount));
                 }
             }
 
             var groupedList = percentageList
                 .GroupBy(x => x.RoundToFive())
-                .OrderBy(x => x.Key)
                 .ToList();
 
-            if (percentageList.Any())
+            for (var i = 0; i < 20; i++)
             {
-                var j = 0;
-                for (var i = 0; i < 20; i++)
+                if (groupedList.All(x => x.Key != i * 5))
                 {
-                    if (groupedList[j].Key != i * 5)
-                    {
-                        groupedList.Add(new ChartGrouping<int?, double> { Key = i * 5, Capacity = 0 });
-                    }
-                    else
-                    {
-                        j++;
-                    }
+                    groupedList.Add(new ChartGrouping<int?, double> { Key = i * 5, Capacity = 0 });
                 }
             }
 
