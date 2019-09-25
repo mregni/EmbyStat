@@ -68,11 +68,10 @@ namespace Tests.Unit.Services
         private ShowService CreateShowService(params Show[] shows)
         {
             var showRepositoryMock = new Mock<IShowRepository>();
-            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>())).Returns(shows);
+            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(shows);
             foreach (var show in shows)
             {
                 showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
-                showRepositoryMock.Setup(x => x.GetEpisodeCountForShow(show.Id)).Returns(show.Episodes.Count);
             }
 
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
@@ -263,6 +262,18 @@ namespace Tests.Unit.Services
             stat.General.NewestPremieredShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
             stat.General.NewestPremieredShow.Tag.Should().Be(_showThree.Primary);
             stat.General.NewestPremieredShow.Title.Should().Be(Constants.Shows.NewestPremiered);
+        }
+
+        [Fact]
+        public async void GetTotalDiskSize()
+        {
+            var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+
+            stat.Should().NotBeNull();
+            stat.General.Should().NotBeNull();
+            stat.General.TotalDiskSize.Should().NotBeNull();
+            stat.General.TotalDiskSize.Title.Should().Be(Constants.Common.TotalDiskSize);
+            stat.General.TotalDiskSize.Value.Should().Be(909);
         }
 
         #endregion

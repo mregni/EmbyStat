@@ -44,7 +44,7 @@ namespace EmbyStat.Services
             return _libraryRepository.GetLibrariesByTypes(settings.MovieLibraryTypes);
         }
 
-        public async Task<MovieStatistics> GetMovieStatisticsAsync(List<string> libraryIds)
+        public async Task<MovieStatistics> GetStatisticsAsync(List<string> libraryIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, libraryIds);
 
@@ -97,7 +97,8 @@ namespace EmbyStat.Services
                 NewestPremieredMovie = NewestPremieredMovie(movies),
                 ShortestMovie = ShortestMovie(movies),
                 LongestMovie = LongestMovie(movies),
-                LatestAddedMovie = LatestAddedMovie(movies)
+                LatestAddedMovie = LatestAddedMovie(movies),
+                TotalDiskSize = CalculateTotalDiskSize(movies)
             };
         }
 

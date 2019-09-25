@@ -1,5 +1,5 @@
-﻿using EmbyStat.Common.Models.Entities.Helpers;
-using LiteDB;
+﻿using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Helpers;
 
 namespace EmbyStat.Common.Models.Entities
 {
@@ -7,5 +7,6 @@ namespace EmbyStat.Common.Models.Entities
     {
         public int? IndexNumber { get; set; }
         public int? IndexNumberEnd { get; set; }
+        public LocationType LocationType { get; set; }
     }
 }

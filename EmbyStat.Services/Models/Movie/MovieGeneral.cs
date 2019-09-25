@@ -8,6 +8,7 @@ namespace EmbyStat.Services.Models.Movie
         public Card<int> GenreCount { get; set; }
         public Card<int> BoxsetCount { get; set; }
         public Card<string> MostUsedContainer { get; set; }
+        public Card<double> TotalDiskSize { get; set; }
         public MoviePoster HighestRatedMovie { get; set; }
         public MoviePoster LowestRatedMovie { get; set; }
         public MoviePoster LongestMovie { get; set; }

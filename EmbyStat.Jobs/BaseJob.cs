@@ -19,7 +19,7 @@ namespace EmbyStat.Jobs
         protected readonly IJobHubHelper HubHelper;
         protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
-        private readonly Logger _logger;
+        protected readonly Logger _logger;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
