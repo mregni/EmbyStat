@@ -114,10 +114,10 @@ namespace EmbyStat.Services
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
-            //if (StatisticsAreValid(statistic, libraryIds))
-            //{
-            //    return JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
-            //}
+            if (StatisticsAreValid(statistic, libraryIds))
+            {
+                return JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
+            }
 
             return CalculateCollectedRows(libraryIds);
         }
