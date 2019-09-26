@@ -290,7 +290,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 catch (Exception e)
                 {
                     await LogError($"Can't seem to process show {shows[i].Name}, check the logs for more details!");
-                    _logger.Error(e);
+                    Logger.Error(e);
                     shows[i].TvdbFailed = true;
                     _showRepository.UpdateShow(shows[i]);
                 }
@@ -304,14 +304,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             foreach (var episode in tvdbEpisodes)
             {
-                var season = show.Seasons.SingleOrDefault(x => x.IndexNumber == episode.SeasonNumber);
+                var seasons = show.Seasons.Where(x => x.IndexNumber == episode.SeasonNumber).ToList();
 
-                if (season == null)
+                Season season;
+                if (!seasons.Any())
                 {
+                    Logger.Debug($"No season with index {episode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
                     season = ShowConverter.ConvertToSeason(episode.SeasonNumber, show);
                     _showRepository.InsertSeasonsBulk(new[] { season });
                     show.Seasons.Add(season);
                     _showRepository.UpdateShow(show);
+                }
+                else
+                {
+                    season = seasons.First();
                 }
 
                 if (IsEpisodeMissing(show.Episodes, season, episode))
