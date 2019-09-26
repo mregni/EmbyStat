@@ -41,7 +41,7 @@ namespace Tests.Unit.Services
                 .Build();
             _showTwo = new ShowBuilder(2, _collections.First().Id)
                 .AddName("The 100")
-                .AddMissingEpisodes(10)
+                .AddMissingEpisodes(10, 1)
                 .AddCommunityRating(8.3f)
                 .AddPremiereDate(new DateTime(1992, 4, 1))
                 .AddEpisode(new EpisodeBuilder(3, 2, "1").Build())
@@ -53,7 +53,7 @@ namespace Tests.Unit.Services
                 .Build();
             _showThree = new ShowBuilder(3, _collections.First().Id)
                 .AddName("Dexter")
-                .AddMissingEpisodes(2)
+                .AddMissingEpisodes(2, 1)
                 .AddCommunityRating(8.4f)
                 .AddPremiereDate(new DateTime(2018, 4, 10))
                 .AddEpisode(new EpisodeBuilder(3, 3, "1").Build())
