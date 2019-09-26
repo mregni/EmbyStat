@@ -19,7 +19,7 @@ namespace EmbyStat.Jobs
         protected readonly IJobHubHelper HubHelper;
         protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
-        protected readonly Logger _logger;
+        protected readonly Logger Logger;
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
@@ -31,7 +31,7 @@ namespace EmbyStat.Jobs
             _jobRepository = jobRepository;
             Settings = settingsService.GetUserSettings();
             SettingsService = settingsService;
-            _logger = LogManager.GetCurrentClassLogger();
+            Logger = LogManager.GetCurrentClassLogger();
             EnableUiLogging = enableUiLogging;
         }
 
@@ -61,7 +61,7 @@ namespace EmbyStat.Jobs
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error while running job");
+                Logger.Error(e, "Error while running job");
                 await FailExecution("Job failed, check logs for more info.");
                 throw;
             }
@@ -123,20 +123,20 @@ namespace EmbyStat.Jobs
         {
             if (EnableUiLogging)
             {
-                _logger.Info($"{JobPrefix}\t{message}");
+                Logger.Info($"{JobPrefix}\t{message}");
                 await SendLogUpdateToFront(message, ProgressLogType.Information);
             }
         }
 
         public async Task LogWarning(string message)
         {
-            _logger.Warn($"{JobPrefix}\t{message}");
+            Logger.Warn($"{JobPrefix}\t{message}");
             await SendLogUpdateToFront(message, ProgressLogType.Warning);
         }
 
         public async Task LogError(string message)
         {
-            _logger.Error($"{JobPrefix}\t{message}");
+            Logger.Error($"{JobPrefix}\t{message}");
             await SendLogUpdateToFront(message, ProgressLogType.Error);
         }
 
