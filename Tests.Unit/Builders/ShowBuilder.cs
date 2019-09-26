@@ -118,11 +118,26 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddMissingEpisodes(int count)
+        public ShowBuilder AddMissingEpisodes(int count, int seasonIndex)
         {
             for (var i = 0; i < count; i++)
             {
-                _show.Episodes.Add(new Episode { LocationType = LocationType.Virtual });
+                _show.Episodes.Add(new EpisodeBuilder(i, _show.Id, seasonIndex.ToString())
+                    .WithIndexNumber(i)
+                    .WithLocationType(LocationType.Virtual)
+                    .Build());
+            }
+
+            return this;
+        }
+
+        public ShowBuilder AddSeason(int indexNumber, int extraEpisodes)
+        {
+            _show.Seasons.Add(new SeasonBuilder(indexNumber, _show.Id.ToString()).WithIndexNumber(indexNumber).Build());
+
+            for (var i = 0; i < extraEpisodes; i++)
+            {
+                _show.Episodes.Add(new EpisodeBuilder(i, _show.Id, indexNumber.ToString()).Build());
             }
 
             return this;

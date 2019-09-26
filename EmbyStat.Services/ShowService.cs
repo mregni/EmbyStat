@@ -86,7 +86,7 @@ namespace EmbyStat.Services
                 ShowWithMostEpisodes = CalculateShowWithMostEpisodes(shows),
                 LatestAddedShow = CalculateLatestAddedShow(shows),
                 NewestPremieredShow = CalculateNewestPremieredShow(shows),
-                TotalDiskSize = CalculateTotalDiskSize(shows.SelectMany(x => x.Episodes))
+                TotalDiskSize = CalculateTotalDiskSize(shows.SelectMany(x => x.Episodes).Where(x => x.LocationType == LocationType.Disk))
             };
         }
 

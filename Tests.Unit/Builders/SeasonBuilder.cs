@@ -26,6 +26,11 @@ namespace Tests.Unit.Builders
             };
         }
 
+        public SeasonBuilder WithIndexNumber(int indexNumber)
+        {
+            _season.IndexNumber = indexNumber;
+            return this;
+        }
 
         public Season Build()
         {
