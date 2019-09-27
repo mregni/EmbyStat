@@ -24,7 +24,7 @@ namespace EmbyStat.Services.Abstract
         {
             var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
 
-            //We need to add 5 minutes here because the CalculateionDateTime is ALWAYS just in front of the EndTimeUtc :( Ugly fix
+            //We need to add 5 minutes here because the CalculationDateTime is ALWAYS just in front of the EndTimeUtc :( Ugly fix
             return statistic != null
                    && lastMediaSync != null
                    && statistic.CalculationDateTime.AddMinutes(5) > lastMediaSync.EndTimeUtc

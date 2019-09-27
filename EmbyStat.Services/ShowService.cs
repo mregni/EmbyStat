@@ -233,7 +233,7 @@ namespace EmbyStat.Services
             var percentageList = new List<double>();
             foreach (var show in shows)
             {
-                var specialSeasonId = show.Seasons.SingleOrDefault(x => x.IndexNumber == 0)?.Id.ToString() ?? "0";
+                var specialSeasonId = show.Seasons.FirstOrDefault(x => x.IndexNumber == 0)?.Id.ToString() ?? "0";
                 var episodeCount = show.Episodes.Count(x => x.LocationType == LocationType.Disk && x.ParentId != specialSeasonId);
                 var missingEpisodeCount = show.Episodes.Count(x => x.LocationType == LocationType.Virtual && x.ParentId != specialSeasonId);
 
