@@ -16,7 +16,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Mapper collection")]
     public class ShowServiceTests
     {
         private readonly List<Library> _collections;

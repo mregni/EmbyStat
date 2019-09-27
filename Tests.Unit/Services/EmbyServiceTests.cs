@@ -21,7 +21,6 @@ using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
 	public class EmbyServiceTests
     {
 	    private readonly EmbyService _subject;

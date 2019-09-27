@@ -16,7 +16,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Services collection")]
     public class PersonServiceTests
     {
         private readonly BaseItemDto _basePerson;

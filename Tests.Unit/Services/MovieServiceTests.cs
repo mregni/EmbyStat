@@ -18,7 +18,6 @@ using Constants = EmbyStat.Common.Constants;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Services collection")]
     public class MovieServiceTests
     {
         private readonly MovieService _subject;

@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
     public class AboutServiceTests
     {
         private readonly Mock<IOptions<AppSettings>> _appSettingsMock;

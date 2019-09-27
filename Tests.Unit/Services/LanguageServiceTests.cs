@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
     public class LanguageServiceTests
     {
         private readonly List<Language> _languages;
