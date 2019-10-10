@@ -79,8 +79,8 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in shows.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).Returns(
-                    Task.FromResult(new Person
+                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).ReturnsAsync(
+                    new Person
                     {
                         Id = person.Id,
                         Name = person.Name,
@@ -88,7 +88,7 @@ namespace Tests.Unit.Services
                         Primary = "primary.jpg",
                         MovieCount = 0,
                         ShowCount = 0
-                    }));
+                    });
             }
 
             var settingsServiceMock = new Mock<ISettingsService>();
@@ -111,7 +111,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalShowCount()
+        public async Task GetTotalShowCount()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -123,7 +123,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalEpisodeCount()
+        public async Task GetTotalEpisodeCount()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -135,7 +135,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalMissingEpisodeCount()
+        public async Task GetTotalMissingEpisodeCount()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -147,7 +147,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetCalculatePlayableTime()
+        public async Task GetCalculatePlayableTime()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -162,7 +162,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetHighestRatedShow()
+        public async Task GetHighestRatedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -179,7 +179,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLowestRatedShow()
+        public async Task GetLowestRatedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -196,7 +196,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetOldestPremieredShow()
+        public async Task GetOldestPremieredShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -213,7 +213,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetShowWithMostEpisodes()
+        public async Task GetShowWithMostEpisodes()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -230,7 +230,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLatestAddedShow()
+        public async Task GetLatestAddedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -247,7 +247,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetNewestPremieredShow()
+        public async Task GetNewestPremieredShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -264,7 +264,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalDiskSize()
+        public async Task GetTotalDiskSize()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -280,7 +280,7 @@ namespace Tests.Unit.Services
         #region Charts
 
         [Fact]
-        public async void GetGenreChart()
+        public async Task GetGenreChart()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -307,7 +307,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetRatingChart()
+        public async Task GetRatingChart()
         {
             var showFour = new ShowBuilder(4, _collections.First().Id).AddCommunityRating(9.3f).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
@@ -341,7 +341,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetPremiereYearChart()
+        public async Task GetPremiereYearChart()
         {
             var showFour = new ShowBuilder(4, _collections.First().Id).AddPremiereDate(new DateTime(2002, 1, 10)).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
@@ -376,7 +376,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetCollectedRateChart()
+        public async Task GetCollectedRateChart()
         {
             var showFour = new ShowBuilder(4, _collections.First().Id).ClearEpisodes().Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
@@ -439,7 +439,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetOfficialRatingChart()
+        public async Task GetOfficialRatingChart()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -464,7 +464,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetShowStateChart()
+        public async Task GetShowStateChart()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -492,7 +492,7 @@ namespace Tests.Unit.Services
         #region People
 
         [Fact]
-        public async void GetMostFeaturedActorsPerGenreAsync()
+        public async Task GetMostFeaturedActorsPerGenre()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 

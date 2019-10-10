@@ -35,7 +35,7 @@ namespace EmbyStat.Services
                 var person = _personRepository.GetPersonByName(name);
                 if (person == null)
                 {
-                    var rawPerson = await _embyClient.GetPersonByNameAsync(name, CancellationToken.None);
+                    var rawPerson = await _embyClient.GetPersonByNameAsync(name);
                     person = PersonConverter.Convert(rawPerson);
                     _personRepository.Insert(person);
                 }

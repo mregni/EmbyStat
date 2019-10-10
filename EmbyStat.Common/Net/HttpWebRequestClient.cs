@@ -22,17 +22,17 @@ namespace EmbyStat.Common.Net
 		public async Task<HttpResponse> GetResponse(HttpRequest options, bool sendFailureResponse = false)
 		{
 			options.CancellationToken.ThrowIfCancellationRequested();
-			var httpWebRequest = _requestFactory.Create(options);
-			ApplyHeaders(options.RequestHeaders, httpWebRequest);
+            var httpWebRequest = _requestFactory.Create(options);
+            ApplyHeaders(options.RequestHeaders, httpWebRequest);
 
 			if (options.RequestStream != null)
 			{
 				httpWebRequest.ContentType = options.RequestContentType;
 				_requestFactory.SetContentLength(httpWebRequest, options.RequestStream.Length);
 
-				using (var requestStream = await _requestFactory.GetRequestStreamAsync(httpWebRequest).ConfigureAwait(false))
+				using (var requestStream = await _requestFactory.GetRequestStreamAsync(httpWebRequest))
 				{
-					await options.RequestStream.CopyToAsync(requestStream).ConfigureAwait(false);
+					await options.RequestStream.CopyToAsync(requestStream);
 				}
 			}
 			else if (!string.IsNullOrEmpty(options.RequestContent) || string.Equals(options.Method, "post", StringComparison.OrdinalIgnoreCase))
@@ -42,16 +42,16 @@ namespace EmbyStat.Common.Net
 				httpWebRequest.ContentType = options.RequestContentType ?? "application/x-www-form-urlencoded";
 				_requestFactory.SetContentLength(httpWebRequest, bytes.Length);
 
-				using (var requestStream = await _requestFactory.GetRequestStreamAsync(httpWebRequest).ConfigureAwait(false))
+				using (var requestStream = await _requestFactory.GetRequestStreamAsync(httpWebRequest))
 				{
-					await requestStream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+					await requestStream.WriteAsync(bytes, 0, bytes.Length);
 				}
 			}
 
 			try
 			{
 				options.CancellationToken.ThrowIfCancellationRequested();
-				var response = await _requestFactory.GetResponseAsync(httpWebRequest, options.Timeout).ConfigureAwait(false);
+				var response = await _requestFactory.GetResponseAsync(httpWebRequest, options.Timeout);
 				var httpResponse = (HttpWebResponse)response;
 				var headers = ConvertHeaders(response);
 
@@ -108,7 +108,7 @@ namespace EmbyStat.Common.Net
 
 		public async Task<Stream> SendAsync(HttpRequest options)
 		{
-			var response = await GetResponse(options).ConfigureAwait(false);
+			var response = await GetResponse(options);
 
 			return response.Content;
 		}
@@ -191,6 +191,7 @@ namespace EmbyStat.Common.Net
 		}
 
 		public void Dispose()
+
 		{
 		}
 	}

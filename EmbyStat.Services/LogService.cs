@@ -54,7 +54,7 @@ namespace EmbyStat.Services
             {
                 var writer = new StreamWriter(newLogStream);
                 var configuration = _settingsService.GetUserSettings();
-                var serverInfo = await _embyService.GetServerInfo();
+                var serverInfo = await _embyService.GetServerInfoAsync();
 
                 string line;
                 while ((line = reader.ReadLine()) != null)

@@ -30,9 +30,9 @@ namespace EmbyStat.Repositories
             _showCollection.Delete(Query.All());
         }
 
-        public void InsertShowsBulk(IEnumerable<Show> list)
+        public void InsertShow(Show show)
         {
-            _showCollection.InsertBulk(list);
+            _showCollection.Insert(show);
         }
 
         public void InsertSeasonsBulk(IEnumerable<Season> seasons)

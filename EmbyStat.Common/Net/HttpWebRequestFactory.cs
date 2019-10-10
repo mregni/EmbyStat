@@ -88,7 +88,7 @@ namespace EmbyStat.Common.Net
         {
             if (timedOut)
             {
-                WebRequest request = (WebRequest)state;
+                var request = (WebRequest)state;
                 if (state != null)
                 {
                     request.Abort();

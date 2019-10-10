@@ -17,15 +17,15 @@ namespace EmbyStat.Clients.Emby.Http
     {
         void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId);
         void SetAddressAndUser(string url, string token, string userId);
-		Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address);
-		Task<List<PluginInfo>> GetInstalledPluginsAsync();
+        Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address);
+        Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();
 	    Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync();
         Task<JArray> GetEmbyUsersAsync();
         Task<JObject> GetEmbyDevicesAsync();
-        Task<string> PingEmbyAsync(string embyAddress, CancellationToken cancellationToken);
-        Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query, CancellationToken cancellationToken = default(CancellationToken));
-        Task<BaseItemDto> GetPersonByNameAsync(string personName, CancellationToken cancellationToken);
-        Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<string> PingEmbyAsync(string embyAddress);
+        Task<QueryResult<BaseItemDto>> GetItemsAsync(ItemQuery query);
+        Task<BaseItemDto> GetPersonByNameAsync(string personName);
+        Task<QueryResult<BaseItemDto>> GetMediaFoldersAsync();
     }
 }

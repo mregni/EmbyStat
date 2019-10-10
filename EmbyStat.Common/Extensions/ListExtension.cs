@@ -19,11 +19,12 @@ namespace EmbyStat.Common.Extensions
             return shows.Where(x => !x.TvdbSynced || x.TvdbFailed).ToList();
         }
 
-        public static IEnumerable<Show> GetShowsWithChangedEpisodes(this IEnumerable<Show> shows, IReadOnlyList<Show> oldShows)
+        public static IEnumerable<Show> GetShowsWithChangedEpisodes(this IEnumerable<Show> shows, IEnumerable<Show> oldShows)
         {
+            var oldShowList = oldShows.ToList();
             foreach (var show in shows)
             {
-                var oldShow = oldShows.SingleOrDefault(x => x.Id == show.Id);
+                var oldShow = oldShowList.SingleOrDefault(x => x.Id == show.Id);
                 if (oldShow == null)
                 {
                     continue;

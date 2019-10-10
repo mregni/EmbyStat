@@ -13,9 +13,11 @@ using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Jobs.Jobs.Interfaces;
+using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Net;
@@ -65,18 +67,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            if (!await IsEmbyAliveAsync(cancellationToken))
+            if (!await IsEmbyAliveAsync())
             {
                 await LogWarning($"Halting task because we can't contact the Emby server on {Settings.Emby.FullEmbyServerAddress}, please check the connection and try again.");
                 return;
             }
 
             await LogInformation("First delete all existing media and root media libraries from database so we have a clean start.");
-            var oldShows = _showRepository.GetAllShows(Array.Empty<string>(), false, true).ToList();
-            CleanUpDatabase();
             await LogProgress(3);
 
-            var libraries = await GetLibrariesAsync(cancellationToken);
+            var libraries = await GetLibrariesAsync();
             _libraryRepository.AddOrUpdateRange(libraries);
             await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
             await LogProgress(15);
@@ -84,7 +84,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await ProcessMoviesAsync(libraries, cancellationToken);
             await LogProgress(35);
 
-            await ProcessShowsAsync(libraries, oldShows, cancellationToken);
+            var oldShows = await ProcessShowsAsync(libraries, cancellationToken);
             await LogProgress(55);
 
             await SyncMissingEpisodesAsync(oldShows, cancellationToken);
@@ -92,42 +92,68 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             await CalculateStatistics();
             await LogProgress(100);
-        }
 
-        private void CleanUpDatabase()
-        {
-            _movieRepository.RemoveMovies();
-            _showRepository.RemoveShows();
+            _embyClient.Dispose();
         }
 
         #region Movies
         private async Task ProcessMoviesAsync(IReadOnlyList<Library> libraries, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing movies");
+            _movieRepository.RemoveMovies();
 
             var neededLibraries = libraries.Where(x => Settings.MovieLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                var movies = (await PerformMovieSyncAsync(neededLibraries[i].Id)).ToList();
-                await LogInformation($"Found {movies.Count} movies for {neededLibraries[i].Name} library");
-                _movieRepository.UpsertRange(movies);
+                var totalCount = await GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                await LogInformation($"Found {totalCount} movies for {neededLibraries[i].Name} library");
+                var processed = 0;
+                var j = 0;
+                var limit = 100;
+                do
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var movies = await PerformMovieSyncAsync(neededLibraries[i].Id, j*limit, limit);
+                    _movieRepository.UpsertRange(movies);
+
+                    processed += 100;
+                    j++;
+                    await LogInformation($"Processed {processed / totalCount} movies");
+;                } while (processed < totalCount);
+
                 await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
             }
         }
 
-        private async Task<IEnumerable<Movie>> PerformMovieSyncAsync(string libraryId)
+        private async Task<int> GetTotalLibraryMovieCount(string parentId)
+        {
+            var countQuery = new ItemQuery
+            {
+                ParentId = parentId,
+                Recursive = true,
+                UserId = Settings.Emby.UserId,
+                IncludeItemTypes = new[] {nameof(Movie), nameof(Boxset)},
+                StartIndex = 0,
+                Limit = 1,
+                EnableTotalRecordCount = true
+            };
+
+            var totalCountResult = await _embyClient.GetItemsAsync(countQuery);
+            return totalCountResult.TotalRecordCount;
+        }
+
+        private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, int startIndex, int limit)
         {
             var query = new ItemQuery
             {
-                SortBy = new[] { "SortName" },
-                SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = libraryId,
+                ParentId = parentId,
                 Recursive = true,
                 LocationTypes = new[] { LocationType.FileSystem },
                 UserId = Settings.Emby.UserId,
-                IncludeItemTypes = new[] { nameof(Movie) },
+                IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
+                StartIndex = startIndex,
+                Limit = limit,
                 Fields = new[]
                     {
                         ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
@@ -140,23 +166,22 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             try
             {
-                var embyMovies = await _embyClient.GetItemsAsync(query, new CancellationToken(false));
+                var embyMovies = await _embyClient.GetItemsAsync(query);
                 var movies = embyMovies.Items
                     .Where(x => x.Type == Constants.Type.Movie)
-                    .Select(x => MovieConverter.ConvertToMovie(x, libraryId))
+                    .Select(x => MovieConverter.ConvertToMovie(x, parentId))
                     .ToList();
 
-                var recursiveMovies = new List<Movie>();
                 if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
                 {
                     foreach (var parent in embyMovies.Items.Where(x => x.Type == Constants.Type.Boxset))
                     {
-                        recursiveMovies.AddRange(await PerformMovieSyncAsync(parent.Id));
+                        movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
                     }
                 }
 
-                movies.AddRange(recursiveMovies);
-                return movies.DistinctBy(x => x.Id);
+                embyMovies.Items = new BaseItemDto[0];
+                return movies;
             }
             catch (Exception e)
             {
@@ -168,62 +193,63 @@ namespace EmbyStat.Jobs.Jobs.Sync
         #endregion
 
         #region Shows
-        private async Task ProcessShowsAsync(IEnumerable<Library> libraries, IReadOnlyList<Show> oldSHows, CancellationToken cancellationToken)
+        private async Task<IReadOnlyList<Show>> ProcessShowsAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing shows");
+            var oldShows = _showRepository.GetAllShows(Array.Empty<string>(), false, true).ToList();
+            _showRepository.RemoveShows();
 
             var neededLibraries = libraries.Where(x => Settings.ShowLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                await PerformShowSyncAsync(oldSHows, neededLibraries[i]);
+                await PerformShowSyncAsync(oldShows, neededLibraries[i]);
                 await LogProgress(Math.Round(35 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
             }
+
+            return oldShows;
         }
 
         private async Task PerformShowSyncAsync(IReadOnlyList<Show> oldShows, Library library)
         {
-            var query = new ItemQuery
+            var showList = await GetShowForLibraryAsync(library.Id);
+            await LogInformation($"Found {showList.Items.Length} shows for {library.Name} library");
+
+            foreach (var showDto in showList.Items)
             {
-                SortBy = new[] { "SortName" },
-                SortOrder = SortOrder.Ascending,
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = library.Id,
-                LocationTypes = new[] { LocationType.FileSystem },
-                Recursive = true,
-                UserId = Settings.Emby.UserId,
-                IncludeItemTypes = new[] { "Series", nameof(Season), nameof(Episode) },
-                Fields = new[]
+                //var totalChildrenCount = await GetShowChildrenCount(showDto.Id);
+                var query = new ItemQuery
                 {
+                    EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+                    ParentId = showDto.Id,
+                    LocationTypes = new[] { LocationType.FileSystem },
+                    Recursive = true,
+                    UserId = Settings.Emby.UserId,
+                    IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
+                    Fields = new[]
+                    {
 
-                    ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                    ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
-                    ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
-                    ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
-                }
-            };
-            var embyShows = await _embyClient.GetItemsAsync(query);
+                        ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                        ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
+                        ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
+                        ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
+                        ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
+                    }
+                };
 
-            var shows = embyShows.Items
-                .Where(x => x.Type == "Series")
-                .Select(x => ShowConverter.ConvertToShow(x, library.Id))
-                .ToList();
+                var showChildren = await _embyClient.GetItemsAsync(query);
 
-            await LogInformation($"Found {shows.Count} shows for {library.Name} library");
-
-            Parallel.ForEach(shows, show =>
-            {
-                var seasons = embyShows.Items
+                var show = ShowConverter.ConvertToShow(showDto, library.Id);
+                var seasons = showChildren.Items
                     .Where(x => x.ParentId == show.Id.ToString())
                     .Where(x => x.Type == nameof(Season))
                     .Select(ShowConverter.ConvertToSeason)
                     .ToList();
 
-                var episodes = embyShows.Items
+                var episodes = showChildren.Items
                     .Where(x => seasons.Any(y => y.Id.ToString() == x.ParentId))
                     .Where(x => x.Type == nameof(Episode))
-                    .Select(x => ShowConverter.ConvertToEpisode(x, show))
+                    .Select(x => ShowConverter.ConvertToEpisode(x, Convert.ToInt32(show.Id)))
                     .ToList();
 
                 show.CumulativeRunTimeTicks = episodes.Sum(x => x.RunTimeTicks ?? 0);
@@ -239,9 +265,50 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                 _showRepository.InsertSeasonsBulk(seasons);
                 _showRepository.InsertEpisodesBulk(episodes);
-            });
+                _showRepository.InsertShow(show);
+            }
+        }
 
-            _showRepository.InsertShowsBulk(shows);
+        private async Task<int> GetShowChildrenCount(string parentId)
+        {
+            var countQuery = new ItemQuery
+            {
+                ParentId = parentId,
+                Recursive = true,
+                UserId = Settings.Emby.UserId,
+                IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
+                StartIndex = 0,
+                Limit = 1,
+                EnableTotalRecordCount = true
+            };
+
+            var totalCountResult = await _embyClient.GetItemsAsync(countQuery);
+            return totalCountResult.TotalRecordCount;
+        }
+
+        private Task<QueryResult<BaseItemDto>> GetShowForLibraryAsync(string libraryId)
+        {
+            var query = new ItemQuery
+            {
+                SortBy = new[] { "SortName" },
+                SortOrder = SortOrder.Ascending,
+                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+                ParentId = libraryId,
+                LocationTypes = new[] { LocationType.FileSystem },
+                Recursive = true,
+                UserId = Settings.Emby.UserId,
+                IncludeItemTypes = new[] { "Series" },
+                Fields = new[] {
+                    ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                    ItemFields.Studios, ItemFields.Path, ItemFields.ProviderIds,
+                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.PremiereDate,
+                    ItemFields.CommunityRating, ItemFields.OfficialRating, ItemFields.ProductionYear,
+                    ItemFields.Status, ItemFields.RunTimeTicks
+                }
+            };
+
+            return _embyClient.GetItemsAsync(query);
+
         }
 
         private async Task SyncMissingEpisodesAsync(IReadOnlyList<Show> oldShows, CancellationToken cancellationToken)
@@ -370,9 +437,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
-        private async Task<bool> IsEmbyAliveAsync(CancellationToken cancellationToken)
+        private async Task<bool> IsEmbyAliveAsync()
         {
-            var result = await _embyClient.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress, cancellationToken);
+            var result = await _embyClient.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress);
             return result == "Emby Server";
         }
 
@@ -404,10 +471,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task<List<Library>> GetLibrariesAsync(CancellationToken cancellationToken)
+        private async Task<List<Library>> GetLibrariesAsync()
         {
             await LogInformation("Asking Emby for all root folders");
-            var rootItems = await _embyClient.GetMediaFoldersAsync(cancellationToken);
+            var rootItems = await _embyClient.GetMediaFoldersAsync();
 
             return rootItems.Items
                 .Select(x => new Library

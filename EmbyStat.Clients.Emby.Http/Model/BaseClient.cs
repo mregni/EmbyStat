@@ -17,17 +17,6 @@ namespace EmbyStat.Clients.Emby.Http
 {
 	public abstract class BaseClient
 	{
-		protected Device Device { get; set; }
-        protected string ServerAddress { get; set; }
-		protected string ClientName { get; set; }
-		protected string DeviceName => Device.DeviceName;
-		protected string ApplicationVersion { get; set; }
-		protected string DeviceId => Device.DeviceId;
-		protected string AccessToken { get; private set; }
-		protected Guid CurrentUserId { get; private set; }
-		protected string ApiUrl => ServerAddress + "/emby";
-		protected string AuthorizationScheme { get; set; }
-
 		protected readonly HttpHeaders HttpHeaders = new HttpHeaders();
 		protected readonly IAsyncHttpClient HttpClient;
         protected readonly Logger Logger;
@@ -35,9 +24,7 @@ namespace EmbyStat.Clients.Emby.Http
 		protected BaseClient(IAsyncHttpClient httpClient)
 		{
 			HttpClient = httpClient;
-            Logger = LogManager.GetCurrentClassLogger();
-
-            Device = new Device();
+            
 		}
 
 		public void SetAddressAndUser(string url, string token, string userId)
@@ -52,68 +39,13 @@ namespace EmbyStat.Clients.Emby.Http
 				throw new ArgumentNullException(nameof(token));
 			}
 
-            ServerAddress = url;
-			AccessToken = token;
-            CurrentUserId = new Guid(userId);
-			ResetHttpHeaders();
+   //         ServerAddress = url;
+			//AccessToken = token;
+   //         CurrentUserId = new Guid(userId);
+			//ResetHttpHeaders();
 		}
 
-		protected void SetAuthenticationInfo(string accessToken, Guid userId)
-		{
-			CurrentUserId = userId;
-			AccessToken = accessToken;
-			ResetHttpHeaders();
-		}
-
-		protected void ResetHttpHeaders()
-		{
-			HttpHeaders.SetAccessToken(AccessToken);
-
-			var authValue = AuthorizationParameter;
-
-			if (string.IsNullOrEmpty(authValue))
-			{
-				ClearHttpRequestHeader("Authorization");
-				SetAuthorizationHttpRequestHeader(null, null);
-			}
-			else
-			{
-				SetAuthorizationHttpRequestHeader(AuthorizationScheme, authValue);
-			}
-		}
-
-		protected void SetAuthorizationHttpRequestHeader(string scheme, string parameter)
-		{
-			HttpHeaders.AuthorizationScheme = scheme;
-			HttpHeaders.AuthorizationParameter = parameter;
-		}
-
-		protected void ClearHttpRequestHeader(string name)
-		{
-			HttpHeaders.Remove(name);
-		}
-
-		protected string AuthorizationParameter
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(ClientName) && string.IsNullOrEmpty(DeviceId) && string.IsNullOrEmpty(DeviceName))
-				{
-					return string.Empty;
-				}
-
-				var header = $"Client=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
-
-                if (!string.IsNullOrWhiteSpace(CurrentUserId.ToString()))
-				{
-					header += $", Emby UserId=\"{CurrentUserId}\"";
-				}
-
-				return header;
-			}
-		}
-
-		protected string AddDataFormat(string url)
+        protected string AddDataFormat(string url)
 		{
 			const string format = "json";
 
@@ -143,7 +75,7 @@ namespace EmbyStat.Clients.Emby.Http
 
         protected string GetApiUrl(string handler, QueryStringDictionary queryString = null)
         {
-            return GetApiUrl(ApiUrl, handler, queryString ?? new QueryStringDictionary());
+            return GetApiUrl(string.Empty, handler, queryString ?? new QueryStringDictionary());
         }
 
         protected string GetApiUrl(string apiUrl, string handler)
@@ -185,7 +117,7 @@ namespace EmbyStat.Clients.Emby.Http
 					Method = "POST",
 					RequestContentType = contentType,
 					RequestContent = postContent
-				}).ConfigureAwait(false))
+				}))
 				{
 					return DeserializeFromStream<T>(stream);
 				}
@@ -218,7 +150,7 @@ namespace EmbyStat.Clients.Emby.Http
 					Method = "POST",
 					RequestContentType = contentType,
 					RequestContent = postContent
-				}).ConfigureAwait(false))
+				}))
 				{
 					var reader = new StreamReader(stream);
 					return reader.ReadToEnd();

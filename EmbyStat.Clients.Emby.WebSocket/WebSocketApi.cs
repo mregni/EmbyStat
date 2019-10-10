@@ -100,7 +100,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             var bytes = GetMessageBytes(messageName, data);
             try
             {
-                await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
+                await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken);
             }
             catch (Exception e)
             {

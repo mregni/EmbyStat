@@ -43,8 +43,8 @@ namespace Tests.Unit.Services
             PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns(person);
 
             EmbyClientMock = new Mock<IEmbyClient>();
-            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None))
-                .Returns(Task.FromResult(_basePerson));
+            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(_basePerson);
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
             movieRepositoryMock.Setup(x => x.GetMovieCountForPerson(It.IsAny<string>())).Returns(10);
@@ -55,7 +55,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetPersonByNameNotInDatabase()
+        public async Task GetPersonByNameNotInDatabase()
         {
             var subject = CreatePersonService(null);
             var person = await subject.GetPersonByNameAsync("name");
@@ -75,17 +75,17 @@ namespace Tests.Unit.Services
 
             PersonRepositoryMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
 
-            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Once);
+            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public async void GetPersonByNameWithEmbyFail()
+        public async Task GetPersonByNameWithEmbyFail()
         {
             PersonRepositoryMock = new Mock<IPersonRepository>();
             PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns((Person) null);
 
             EmbyClientMock = new Mock<IEmbyClient>();
-            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None)).Throws(new Exception());
+            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>())).Throws(new Exception());
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
             var showRepositoryMock = new Mock<IShowRepository>();
@@ -97,7 +97,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetPersonByNameInDatabase()
+        public async Task GetPersonByNameInDatabase()
         {
             var databasePerson = new Person
             {
@@ -131,7 +131,7 @@ namespace Tests.Unit.Services
 
             PersonRepositoryMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
 
-            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>(), CancellationToken.None), Times.Never);
+            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>()), Times.Never);
         }
     }
 }

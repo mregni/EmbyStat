@@ -7,7 +7,7 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveShows();
         void UpdateShow(Show show);
-        void InsertShowsBulk(IEnumerable<Show> list);
+        void InsertShow(Show show);
         void InsertSeasonsBulk(IEnumerable<Season> seasons);
         void InsertEpisodesBulk(IEnumerable<Episode> episodes);
         IEnumerable<Show> GetAllShowsWithTvdbId();
