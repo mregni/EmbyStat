@@ -78,7 +78,8 @@ namespace EmbyStat.Clients.Emby.Http
             }
 
             ServerAddress = address;
-
+            ResetHttpHeaders();
+            
             Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
             var request = new RestRequest("Users/AuthenticateByName", Method.POST)
                 .AddQueryParameter("Username", HttpUtility.UrlEncode(username))
@@ -92,7 +93,7 @@ namespace EmbyStat.Clients.Emby.Http
             _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
             var result = await Client.ExecuteTaskAsync<AuthenticationResult>(request);
 
-            if (result.IsSuccessful)
+            if (result.Data != null)
             {
                 SetAuthenticationInfo(result.Data.AccessToken, result.Data.User.Id);
             }

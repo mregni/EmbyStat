@@ -4,6 +4,7 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
+using LiteDB.Engine;
 using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Repositories
@@ -17,7 +18,7 @@ namespace EmbyStat.Repositories
             try
             {
                 var dbPath = Path.Combine(settings.Value.Dirs.Config, settings.Value.DatabaseFile).GetLocalPath();
-                _context = new LiteDatabase(dbPath);
+                _context = new LiteDatabase($"FileName= {dbPath}; Mode= Exclusive");
             }
             catch (Exception ex)
             {

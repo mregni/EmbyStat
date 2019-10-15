@@ -70,7 +70,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             if (!await IsEmbyAliveAsync())
             {
                 await LogWarning($"Halting task because we can't contact the Emby server on {Settings.Emby.FullEmbyServerAddress}, please check the connection and try again.");
-                return;
+                //return;
             }
 
             await LogInformation("First delete all existing media and root media libraries from database so we have a clean start.");
@@ -84,10 +84,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await ProcessMoviesAsync(libraries, cancellationToken);
             await LogProgress(35);
 
-            var oldShows = await ProcessShowsAsync(libraries, cancellationToken);
+            //var oldShows = await ProcessShowsAsync(libraries, cancellationToken);
             await LogProgress(55);
 
-            await SyncMissingEpisodesAsync(oldShows, cancellationToken);
+            //await SyncMissingEpisodesAsync(oldShows, cancellationToken);
             await LogProgress(85);
 
             await CalculateStatistics();
@@ -118,7 +118,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                     processed += 100;
                     j++;
-                    await LogInformation($"Processed {processed / totalCount} movies");
+                    await LogInformation($"Processed { processed } / { totalCount } movies");
 ;                } while (processed < totalCount);
 
                 await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
@@ -459,16 +459,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
 
             await LogInformation("Calculating show statistics");
-            var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
-            var showLibrarySets = showLibraries.PowerSets().ToList();
-            for (var i = 0; i < showLibrarySets.Count; i++)
-            {
-                var libraryList = showLibrarySets[i].ToList();
-                await _showService.CalculateShowStatistics(libraryList);
-                _showService.CalculateCollectedRows(libraryList);
+            //var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
+            //var showLibrarySets = showLibraries.PowerSets().ToList();
+            //for (var i = 0; i < showLibrarySets.Count; i++)
+            //{
+            //    var libraryList = showLibrarySets[i].ToList();
+            //    await _showService.CalculateShowStatistics(libraryList);
+            //    _showService.CalculateCollectedRows(libraryList);
 
-                await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
-            }
+            //    await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
+            //}
         }
 
         private async Task<List<Library>> GetLibrariesAsync()

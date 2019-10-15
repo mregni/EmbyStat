@@ -54,8 +54,8 @@ namespace EmbyStat.Repositories
 
         public void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins)
         {
-            _pluginCollection.Delete(Query.All());
-            _pluginCollection.InsertBulk(plugins);
+            _pluginCollection.DeleteMany(x => true);
+            _pluginCollection.Insert(plugins);
         }
 
         #endregion
@@ -117,7 +117,7 @@ namespace EmbyStat.Repositories
                 bArray.Add(id);
             }
 
-            return _deviceCollection.Find(Query.In("Id", bArray));
+            return _deviceCollection.Find(Query.In("_id", bArray));
         }
 
         public void MarkDevicesAsDeleted(IEnumerable<Device> devices)

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using EmbyStat.Common.Models.Entities;
+using LiteDB;
 
 namespace EmbyStat.Common.Extensions
 {
@@ -57,6 +58,17 @@ namespace EmbyStat.Common.Extensions
 
                 n = n >> 1;
             }
+        }
+
+        public static BsonArray ConvertToBsonArray(this IEnumerable<string> items)
+        {
+            var bArray = new BsonArray();
+            foreach (var item in items)
+            {
+                bArray.Add(item);
+            }
+
+            return bArray;
         }
     }
 }

@@ -173,15 +173,24 @@ namespace EmbyStat.Web
                 var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
                 var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
 
-                migrationRunner.Migrate();
-                settingsService.LoadUserSettingsFromFile();
-                settingsService.CreateRollbarLogger();
-                AddDeviceIdToConfig(settingsService);
-                RemoveVersionFiles();
-                jobService.ResetAllJobs();
-                settingsService.SetUpdateInProgressSettingAsync(false);
-                SetEmbyClientConfiguration(settingsService, embyClient);
-                jobInitializer.Setup();
+                try
+                {
+                    migrationRunner.Migrate();
+                    settingsService.LoadUserSettingsFromFile();
+                    settingsService.CreateRollbarLogger();
+                    AddDeviceIdToConfig(settingsService);
+                    RemoveVersionFiles();
+                    jobService.ResetAllJobs();
+                    settingsService.SetUpdateInProgressSettingAsync(false);
+                    SetEmbyClientConfiguration(settingsService, embyClient);
+                    jobInitializer.Setup();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                
             }
         }
 

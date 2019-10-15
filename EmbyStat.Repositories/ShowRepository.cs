@@ -25,9 +25,9 @@ namespace EmbyStat.Repositories
 
         public void RemoveShows()
         {
-            _seasonCollection.Delete(Query.All());
-            _episodeCollection.Delete(Query.All());
-            _showCollection.Delete(Query.All());
+            _seasonCollection.DeleteMany(x => true);
+            _episodeCollection.DeleteMany(x => true);
+            _showCollection.DeleteMany(x => true);
         }
 
         public void InsertShow(Show show)
@@ -92,7 +92,8 @@ namespace EmbyStat.Repositories
         public IEnumerable<Show> GetAllShowsWithTvdbId()
         {
             return _showCollection
-                .IncludeAll(1)
+                .Include(x => x.Episodes)
+                .Include(x => x.Seasons)
                 .Find(x => !string.IsNullOrWhiteSpace(x.TVDB));
         }
 
