@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
+﻿using EmbyStat.Common.Models.Entities;
+using MediaBrowser.Model.Entities;
+using System.Collections.Generic;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -8,6 +9,7 @@ namespace EmbyStat.Repositories.Interfaces
         void RemoveMovies();
         void UpsertRange(IEnumerable<Movie> movies);
         List<Movie> GetAll(IReadOnlyList<string> collections);
+        List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
         bool Any();
         int GetMovieCountForPerson(string personId);
         Movie GetMovieById(string id);
@@ -22,5 +24,10 @@ namespace EmbyStat.Repositories.Interfaces
         Movie GetLongestMovie(IReadOnlyList<string> libraryIds);
         Movie GetLatestAdded(IReadOnlyList<string> libraryIds);
         double GetTotalDiskSize(IReadOnlyList<string> libraryIds);
+        int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
+        string GetMostFeaturedPerson(IReadOnlyList<string> libraryIds, PersonType type);
+        List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes);
+        List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds);
+        List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds);
     }
 }

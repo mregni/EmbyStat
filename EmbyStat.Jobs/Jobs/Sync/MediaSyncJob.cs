@@ -13,7 +13,6 @@ using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
@@ -94,6 +93,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(100);
 
             _embyClient.Dispose();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         #region Movies
