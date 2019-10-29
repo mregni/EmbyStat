@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
@@ -37,6 +36,7 @@ namespace Tests.Unit.Services
                 .AddName("Chuck")
                 .AddCreateDate(new DateTime(1990, 4, 2))
                 .AddGenre("Comedy", "Action")
+                .AddCommunityRating(null)
                 .Build();
             _showTwo = new ShowBuilder(2, _collections.First().Id)
                 .AddName("The 100")
@@ -67,7 +67,14 @@ namespace Tests.Unit.Services
         private ShowService CreateShowService(params Show[] shows)
         {
             var showRepositoryMock = new Mock<IShowRepository>();
-            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(shows);
+            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(shows.ToList());
+            showRepositoryMock.Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderByDescending(x => x.CommunityRating).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderByDescending(x => x.DateCreated).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>())).Returns(shows.Length);
+            showRepositoryMock.Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderByDescending(x => x.PremiereDate).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderBy(x => x.PremiereDate).FirstOrDefault);
+
             foreach (var show in shows)
             {
                 showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);

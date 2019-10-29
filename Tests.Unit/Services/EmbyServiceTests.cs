@@ -13,7 +13,6 @@ using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Users;
 using Moq;
 using Xunit;

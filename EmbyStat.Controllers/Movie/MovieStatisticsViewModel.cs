@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Services.Models.Movie;
+﻿using EmbyStat.Controllers.HelperClasses;
 
 namespace EmbyStat.Controllers.Movie
 {

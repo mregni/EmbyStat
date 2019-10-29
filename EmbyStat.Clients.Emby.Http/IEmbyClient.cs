@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Common.Net;

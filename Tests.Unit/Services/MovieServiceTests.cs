@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -11,6 +10,7 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Extensions;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
@@ -80,7 +80,30 @@ namespace Tests.Unit.Services
         private MovieService CreateMovieService(Mock<ISettingsService> settingsServiceMock, params Movie[] movies)
         {
             var movieRepositoryMock = new Mock<IMovieRepository>();
-            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>())).Returns(movies);
+            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetAllWithImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), It.IsAny<int>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+
+            movieRepositoryMock.Setup(x => x.GetGenreCount(It.IsAny<IReadOnlyList<string>>())).Returns(movies.SelectMany(x => x.Genres).Distinct().Count);
+            movieRepositoryMock.Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.CommunityRating).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.DateCreated).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Length);
+            movieRepositoryMock.Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.PremiereDate).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderBy(x => x.PremiereDate).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetLongestMovie(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.RunTimeTicks).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetShortestMovie(It.IsAny<IReadOnlyList<string>>(), It.IsAny<long>())).Returns(movies.OrderBy(x => x.RunTimeTicks).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetTotalDiskSize(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0));
+            movieRepositoryMock.Setup(x => x.GetTotalRuntime(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Sum(x => x.RunTimeTicks ?? 0));
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => string.IsNullOrEmpty(x.IMDB)).ToList);
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => string.IsNullOrEmpty(x.Primary)).ToList);
+            movieRepositoryMock.Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), 10)).Returns(movies.Where(x => x.RunTimeTicks < new TimeSpan(0, 0, 10, 0).Ticks).ToList);
+            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Actor)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Actor));
+            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Writer)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Writer));
+            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Director)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Director));
+
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
             collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
 

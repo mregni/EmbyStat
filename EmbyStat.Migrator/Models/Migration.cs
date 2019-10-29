@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common.Models.Settings;
+﻿using EmbyStat.Common.Models.Settings;
 using EmbyStat.Migrator.Interfaces;
 using EmbyStat.Services.Interfaces;
 

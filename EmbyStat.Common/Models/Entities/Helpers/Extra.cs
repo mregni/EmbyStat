@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EmbyStat.Common.Models.Entities.Helpers
+﻿namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class Extra : Media
     {

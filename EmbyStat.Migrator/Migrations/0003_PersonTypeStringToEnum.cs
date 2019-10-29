@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Migrator.Models;
 using LiteDB;
 using MediaBrowser.Model.Entities;

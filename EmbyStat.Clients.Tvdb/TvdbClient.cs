@@ -9,7 +9,6 @@ using EmbyStat.Clients.Tvdb.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Common.Net;
 using MediaBrowser.Model.Net;

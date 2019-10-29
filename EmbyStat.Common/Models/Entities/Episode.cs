@@ -1,6 +1,5 @@
 ﻿using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
-using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
