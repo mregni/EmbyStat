@@ -1,0 +1,543 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Repositories;
+using FluentAssertions;
+using Xunit;
+
+namespace Tests.Unit.Repository
+{
+    public class EmbyRepositoryTests : BaseRepositoryTester
+    {
+        private EmbyRepository _embyRepository;
+        private DbContext _context;
+        public EmbyRepositoryTests() : base("test-data-emby-repo.db")
+        {
+        }
+
+        protected override void SetupRepository()
+        {
+            _context = CreateDbContext();
+            _embyRepository = new EmbyRepository(_context);
+        }
+
+        [Fact]
+        public void GetEmbyStatus_Should_Return_Current_Emby_Status()
+        {
+            RunTest(() =>
+            {
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    collection.Insert(new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 });
+                }
+
+                var status = _embyRepository.GetEmbyStatus();
+                status.Should().NotBeNull();
+                status.MissedPings.Should().Be(0);
+            });
+        }
+
+        [Fact]
+        public void IncreaseMissedPings_Should_Increase_Missed_Pings_By_One()
+        {
+            RunTest(() =>
+            {
+                var status = new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    collection.Insert(status);
+                }
+
+                _embyRepository.IncreaseMissedPings();
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    var dbStatus = collection.FindById(status.Id);
+                    dbStatus.Should().NotBeNull();
+                    dbStatus.Id.Should().Be(status.Id);
+                    dbStatus.MissedPings.Should().Be(status.MissedPings + 1);
+                }
+
+            });
+        }
+
+        [Fact]
+        public void ResetMissedPings_Should_Set_Missed_Pings_To_Zero()
+        {
+            RunTest(() =>
+            {
+                var status = new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 10 };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    collection.Insert(status);
+                }
+
+                _embyRepository.ResetMissedPings();
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    var dbStatus = collection.FindById(status.Id);
+                    dbStatus.Should().NotBeNull();
+                    dbStatus.Id.Should().Be(status.Id);
+                    dbStatus.MissedPings.Should().Be(0);
+                }
+            });
+        }
+
+        [Fact]
+        public void GetAllPlugins_Should_Return_All_Plugins()
+        {
+            RunTest(() =>
+            {
+                var pluginOne = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "statistics" };
+                var pluginTwo = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "movies" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<PluginInfo>();
+                    collection.InsertBulk(new[] { pluginOne, pluginTwo });
+                }
+
+                var plugins = _embyRepository.GetAllPlugins();
+                plugins.Should().NotContainNulls();
+                plugins.Count.Should().Be(2);
+
+                plugins[0].Id.Should().Be(pluginTwo.Id);
+                plugins[0].Name.Should().Be(pluginTwo.Name);
+
+                plugins[1].Id.Should().Be(pluginOne.Id);
+                plugins[1].Name.Should().Be(pluginOne.Name);
+            });
+        }
+
+        [Fact]
+        public void RemoveAllAndInsertPluginRange_Should_Remove_Old_And_Insert_New_Plugins()
+        {
+            RunTest(() =>
+            {
+                var pluginOne = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "statistics" };
+                var pluginTwo = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "movies" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<PluginInfo>();
+                    collection.InsertBulk(new[] { pluginOne, pluginTwo });
+                }
+
+                var pluginThree = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "shows" };
+                var pluginFour = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "tvdb" };
+
+                _embyRepository.RemoveAllAndInsertPluginRange(new[] { pluginThree, pluginFour });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<PluginInfo>();
+                    var plugins = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    plugins.Should().NotContainNulls();
+                    plugins.Count.Should().Be(2);
+
+                    plugins[0].Id.Should().Be(pluginThree.Id);
+                    plugins[0].Name.Should().Be(pluginThree.Name);
+
+                    plugins[1].Id.Should().Be(pluginFour.Id);
+                    plugins[1].Name.Should().Be(pluginFour.Name);
+                }
+            });
+        }
+
+        [Fact]
+        public void GetServerInfo_Should_Return_Server_Info()
+        {
+            RunTest(() =>
+            {
+                var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<ServerInfo>();
+                    collection.Insert(serverInfo);
+                }
+
+                var serverInfoDb = _embyRepository.GetServerInfo();
+
+                serverInfoDb.Should().NotBeNull();
+                serverInfoDb.Id.Should().Be(serverInfo.Id);
+
+            });
+        }
+
+        [Fact]
+        public void UpsertServerInfo_Should_Insert_The_Server_Info()
+        {
+            RunTest(() =>
+            {
+                var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
+                _embyRepository.UpsertServerInfo(serverInfo);
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<ServerInfo>();
+                    var serverInfoDb = collection.FindById(serverInfo.Id);
+
+                    serverInfoDb.Should().NotBeNull();
+                    serverInfoDb.Id.Should().Be(serverInfo.Id);
+                }
+
+            });
+        }
+
+        [Fact]
+        public void UpsertServerInfo_Should_Update_The_Server_Info()
+        {
+            RunTest(() =>
+            {
+                var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<ServerInfo>();
+                    collection.Insert(serverInfo);
+
+                    var serverInfoDb = collection.FindById(serverInfo.Id);
+
+                    serverInfoDb.Should().NotBeNull();
+                    serverInfoDb.Id.Should().Be(serverInfo.Id);
+                }
+
+                serverInfo.CachePath = "/temp";
+                _embyRepository.UpsertServerInfo(serverInfo);
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<ServerInfo>();
+                    var serverInfoDb = collection.FindById(serverInfo.Id);
+
+                    serverInfoDb.Should().NotBeNull();
+                    serverInfoDb.Id.Should().Be(serverInfo.Id);
+                    serverInfoDb.CachePath.Should().Be(serverInfo.CachePath);
+                }
+            });
+        }
+
+        [Fact]
+        public void GetAllUsers_Should_Return_All_Users()
+        {
+            RunTest(() =>
+            {
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    collection.InsertBulk(new[] { embyUserOne, embyUserTwo });
+                }
+
+                var users = _embyRepository.GetAllUsers();
+                users.Should().NotContainNulls();
+                users.Count.Should().Be(2);
+
+                users[0].Id.Should().Be(embyUserOne.Id);
+                users[0].Name.Should().Be(embyUserOne.Name);
+
+                users[1].Id.Should().Be(embyUserTwo.Id);
+                users[1].Name.Should().Be(embyUserTwo.Name);
+            });
+        }
+
+        [Fact]
+        public void UpsertUsers_Should_Insert_New_Users()
+        {
+            RunTest(() =>
+            {
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
+                _embyRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    var users = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    users.Should().NotContainNulls();
+                    users.Count.Should().Be(2);
+
+                    users[0].Id.Should().Be(embyUserOne.Id);
+                    users[0].Name.Should().Be(embyUserOne.Name);
+
+                    users[1].Id.Should().Be(embyUserTwo.Id);
+                    users[1].Name.Should().Be(embyUserTwo.Name);
+                }
+            });
+        }
+
+        [Fact]
+        public void UpsertUsers_Should_Update_Existing_Users()
+        {
+            RunTest(() =>
+            {
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
+
+                _embyRepository.UpsertUsers(new[] { embyUserTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    var users = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    users.Should().NotContainNulls();
+                    users.Count.Should().Be(1);
+
+                    users[0].Id.Should().Be(embyUserTwo.Id);
+                    users[0].Name.Should().Be(embyUserTwo.Name);
+                }
+
+                embyUserTwo.Name = "tim";
+
+                _embyRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    var users = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    users.Should().NotContainNulls();
+                    users.Count.Should().Be(2);
+
+                    users[0].Id.Should().Be(embyUserOne.Id);
+                    users[0].Name.Should().Be(embyUserOne.Name);
+
+                    users[1].Id.Should().Be(embyUserTwo.Id);
+                    users[1].Name.Should().Be(embyUserTwo.Name);
+                }
+            });
+        }
+
+        [Fact]
+        public void MarkUsersAsDeleted_Should_Mark_Users_As_Deleted()
+        {
+            RunTest(() =>
+            {
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
+                var embyUserThee = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "yol" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    collection.InsertBulk(new[] { embyUserOne, embyUserTwo, embyUserThee });
+                }
+
+                _embyRepository.MarkUsersAsDeleted(new[] { embyUserOne, embyUserTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    var users = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    users.Should().NotContainNulls();
+                    users.Count.Should().Be(3);
+
+                    users[0].Id.Should().Be(embyUserOne.Id);
+                    users[0].Name.Should().Be(embyUserOne.Name);
+                    users[0].Deleted.Should().BeTrue();
+
+                    users[1].Id.Should().Be(embyUserTwo.Id);
+                    users[1].Name.Should().Be(embyUserTwo.Name);
+                    users[1].Deleted.Should().BeTrue();
+
+                    users[2].Id.Should().Be(embyUserThee.Id);
+                    users[2].Name.Should().Be(embyUserThee.Name);
+                    users[2].Deleted.Should().BeFalse();
+                }
+            });
+        }
+
+        [Fact]
+        public void GetUserById_Should_Return_Correct_User()
+        {
+            RunTest(() =>
+            {
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
+                var embyUserThee = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "yol" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    collection.InsertBulk(new[] { embyUserOne, embyUserTwo, embyUserThee });
+                }
+
+                var user = _embyRepository.GetUserById(embyUserTwo.Id);
+
+                user.Should().NotBeNull();
+                user.Id.Should().Be(embyUserTwo.Id);
+                user.Name.Should().Be(embyUserTwo.Name);
+            });
+        }
+
+        #region Devices
+
+        [Fact]
+        public void GetAllDevices_Should_Return_All_Devices()
+        {
+            RunTest(() =>
+            {
+                var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
+                var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    collection.InsertBulk(new[] { serverOne, serverTwo });
+                }
+
+                var devices = _embyRepository.GetAllDevices();
+                devices.Should().NotContainNulls();
+                devices.Count.Should().Be(2);
+
+                devices[0].Id.Should().Be(serverOne.Id);
+                devices[0].Name.Should().Be(serverOne.Name);
+
+                devices[1].Id.Should().Be(serverTwo.Id);
+                devices[1].Name.Should().Be(serverTwo.Name);
+            });
+        }
+
+        [Fact]
+        public void UpsertDevice_Should_Insert_New_Devices()
+        {
+            RunTest(() =>
+            {
+                var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
+                var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
+                _embyRepository.UpsertDevices(new[] { serverOne, serverTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    devices.Should().NotContainNulls();
+                    devices.Count.Should().Be(2);
+
+                    devices[0].Id.Should().Be(serverOne.Id);
+                    devices[0].Name.Should().Be(serverOne.Name);
+
+                    devices[1].Id.Should().Be(serverTwo.Id);
+                    devices[1].Name.Should().Be(serverTwo.Name);
+                }
+            });
+        }
+
+        [Fact]
+        public void UpsertDevice_Should_Update_Existing_Device()
+        {
+            RunTest(() =>
+            {
+                var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
+                var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
+
+                _embyRepository.UpsertDevices(new[] { serverTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    devices.Should().NotContainNulls();
+                    devices.Count.Should().Be(1);
+
+                    devices[0].Id.Should().Be(serverTwo.Id);
+                    devices[0].Name.Should().Be(serverTwo.Name);
+                }
+
+                serverTwo.Name = "server3";
+
+                _embyRepository.UpsertDevices(new[] { serverOne, serverTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    devices.Should().NotContainNulls();
+                    devices.Count.Should().Be(2);
+
+                    devices[0].Id.Should().Be(serverOne.Id);
+                    devices[0].Name.Should().Be(serverOne.Name);
+
+                    devices[1].Id.Should().Be(serverTwo.Id);
+                    devices[1].Name.Should().Be(serverTwo.Name);
+                }
+            });
+        }
+
+        [Fact]
+        public void MarkDevicesAsDeleted_Should_Mark_Device_As_Deleted()
+        {
+            RunTest(() =>
+            {
+                var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
+                var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
+                var serverThee = new Device { Id = Guid.NewGuid().ToString(), Name = "server3" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    collection.InsertBulk(new[] { serverOne, serverTwo, serverThee });
+                }
+
+                _embyRepository.MarkDevicesAsDeleted(new[] { serverOne, serverTwo });
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
+
+                    devices.Should().NotContainNulls();
+                    devices.Count.Should().Be(3);
+
+                    devices[0].Id.Should().Be(serverOne.Id);
+                    devices[0].Name.Should().Be(serverOne.Name);
+                    devices[0].Deleted.Should().BeTrue();
+
+                    devices[1].Id.Should().Be(serverTwo.Id);
+                    devices[1].Name.Should().Be(serverTwo.Name);
+                    devices[1].Deleted.Should().BeTrue();
+
+                    devices[2].Id.Should().Be(serverThee.Id);
+                    devices[2].Name.Should().Be(serverThee.Name);
+                    devices[2].Deleted.Should().BeFalse();
+                }
+            });
+        }
+
+        [Fact]
+        public void GetDevicesById_Should_Return_Correct_Device()
+        {
+            RunTest(() =>
+            {
+                var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
+                var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
+                var serverThee = new Device { Id = Guid.NewGuid().ToString(), Name = "server3" };
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    collection.InsertBulk(new[] { serverOne, serverTwo, serverThee });
+                }
+
+                var devices = _embyRepository.GetDeviceById(new []{ serverTwo.Id });
+
+                devices.Should().NotContainNulls();
+                devices.Count.Should().Be(1);
+                devices[0].Should().NotBeNull();
+                devices[0].Id.Should().Be(serverTwo.Id);
+                devices[0].Name.Should().Be(serverTwo.Name);
+            });
+        }
+
+
+        #endregion
+    }
+}
