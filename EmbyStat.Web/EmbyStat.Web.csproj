@@ -15,6 +15,8 @@
     <FileVersion>0.0.0.0</FileVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <AssemblyName>EmbyStat</AssemblyName>
+
+    <ProjectGuid>{1D5D997D-34AE-45BE-9935-13E0D63EAC02}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>

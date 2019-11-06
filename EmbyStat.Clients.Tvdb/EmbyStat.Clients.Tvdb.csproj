@@ -5,6 +5,8 @@
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>0.0.0.0</FileVersion>
+
+    <ProjectGuid>{4C63B355-5D89-4C96-AD17-E3CAD599FD1E}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
