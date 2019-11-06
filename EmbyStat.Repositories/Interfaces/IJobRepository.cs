@@ -7,7 +7,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IJobRepository
     {
-        IEnumerable<Job> GetAll();
+        List<Job> GetAll();
         Job GetById(Guid id);
         void StartJob(Job job);
         void EndJob(Guid id, DateTime endTime, JobState state);

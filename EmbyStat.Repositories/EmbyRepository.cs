@@ -1,61 +1,88 @@
 using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
 
 namespace EmbyStat.Repositories
 {
-    public class EmbyRepository : IEmbyRepository
+    public class EmbyRepository : BaseRepository, IEmbyRepository
     {
-        private readonly LiteCollection<EmbyStatus> _embyStatusCollection;
-        private readonly LiteCollection<PluginInfo> _pluginCollection;
-        private readonly LiteCollection<ServerInfo> _serverInfoCollection;
-        private readonly LiteCollection<EmbyUser> _embyUserCollection;
-        private readonly LiteCollection<Device> _deviceCollection;
-
-        public EmbyRepository(IDbContext context)
+        public EmbyRepository(IDbContext context) : base(context)
         {
-            _embyStatusCollection = context.GetContext().GetCollection<EmbyStatus>();
-            _pluginCollection = context.GetContext().GetCollection<PluginInfo>();
-            _serverInfoCollection = context.GetContext().GetCollection<ServerInfo>();
-            _embyUserCollection = context.GetContext().GetCollection<EmbyUser>();
-            _deviceCollection = context.GetContext().GetCollection<Device>();
+
         }
 
         #region Emby Status
         public EmbyStatus GetEmbyStatus()
         {
-            return _embyStatusCollection.FindOne(Query.All());
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    return collection.FindOne(Query.All());
+                }
+            });
         }
 
         public void IncreaseMissedPings()
         {
-            var state = _embyStatusCollection.FindOne(Query.All());
-            state.MissedPings++;
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    var state = collection.FindOne(Query.All());
 
-            _embyStatusCollection.Update(state);
+                    state.MissedPings++;
+                    collection.Upsert(state);
+                }
+            });
         }
 
         public void ResetMissedPings()
         {
-            var state = _embyStatusCollection.FindOne(Query.All());
-            state.MissedPings = 0;
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyStatus>();
+                    var state = collection.FindOne(Query.All());
 
-            _embyStatusCollection.Update(state);
+                    state.MissedPings = 0;
+                    collection.Upsert(state);
+                }
+            });
         }
         #endregion
 
         #region Emby Plugins
         public List<PluginInfo> GetAllPlugins()
         {
-            return _pluginCollection.FindAll().OrderBy(x => x.Name).ToList();
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<PluginInfo>();
+                    return collection.FindAll().OrderBy(x => x.Name).ToList();
+                }
+            });
         }
 
         public void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins)
         {
-            _pluginCollection.DeleteMany(x => true);
-            _pluginCollection.Insert(plugins);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<PluginInfo>();
+                    collection.Delete(Query.All());
+                    collection.Insert(plugins);
+                }
+            });
+            
         }
 
         #endregion
@@ -63,12 +90,26 @@ namespace EmbyStat.Repositories
         #region Emby Server Info
         public ServerInfo GetServerInfo()
         {
-            return _serverInfoCollection.FindOne(Query.All());
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<ServerInfo>();
+                    return collection.FindOne(Query.All());
+                }
+            });
         }
 
         public void UpsertServerInfo(ServerInfo entity)
         {
-            _serverInfoCollection.Upsert(entity);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<ServerInfo>();
+                    collection.Upsert(entity);
+                }
+            });
         }
 
         #endregion
@@ -77,62 +118,112 @@ namespace EmbyStat.Repositories
 
         public void UpsertUsers(IEnumerable<EmbyUser> users)
         {
-            _embyUserCollection.Upsert(users);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    collection.Upsert(users);
+                }
+            });
         }
 
-        public IEnumerable<EmbyUser> GetAllUsers()
+        public List<EmbyUser> GetAllUsers()
         {
-            return _embyUserCollection.FindAll();
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    return collection.FindAll().OrderBy(x => x.Name).ToList();
+                }
+            });
         }
 
         public void MarkUsersAsDeleted(IEnumerable<EmbyUser> users)
         {
-            foreach (var user in users)
+            ExecuteQuery(() =>
             {
-                var obj = _embyUserCollection.FindById(user.Id);
-                obj.Deleted = true;
-                _embyUserCollection.Update(obj);
-            }
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    foreach (var user in users)
+                    {
+                        var obj = collection.FindById(user.Id);
+                        obj.Deleted = true;
+                        collection.Update(obj);
+                    }
+                }
+            });
         }
 
         public EmbyUser GetUserById(string id)
         {
-            return _embyUserCollection.FindById(id);
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    return collection.FindById(id);
+                }
+            });
         }
 
         #endregion
 
         #region Devices
 
-        public IEnumerable<Device> GetAllDevices()
+        public List<Device> GetAllDevices()
         {
-            return _deviceCollection.FindAll();
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    return collection.FindAll().OrderBy(x => x.Name).ToList();
+                }
+            });
         }
 
-        public IEnumerable<Device> GetDeviceById(IEnumerable<string> ids)
+        public List<Device> GetDeviceById(IEnumerable<string> ids)
         {
-            var bArray = new BsonArray();
-            foreach (var id in ids)
+            return ExecuteQuery(() =>
             {
-                bArray.Add(id);
-            }
-
-            return _deviceCollection.Find(Query.In("_id", bArray));
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    return collection.Find(Query.In("_id", ids.ConvertToBsonArray())).ToList();
+                }
+            });
         }
 
         public void MarkDevicesAsDeleted(IEnumerable<Device> devices)
         {
-            foreach (var device in devices)
+            ExecuteQuery(() =>
             {
-                var obj = _deviceCollection.FindById(device.Id);
-                obj.Deleted = true;
-                _deviceCollection.Update(obj);
-            }
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    foreach (var device in devices)
+                    {
+                        var obj = collection.FindById(device.Id);
+                        obj.Deleted = true;
+                        collection.Update(obj);
+                    }
+                }
+            });
         }
 
         public void UpsertDevices(IEnumerable<Device> devices)
         {
-            _deviceCollection.Upsert(devices);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Device>();
+                    collection.Upsert(devices);
+                }
+            });
         }
 
         #endregion

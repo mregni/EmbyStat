@@ -5,7 +5,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface ILibraryRepository
     {
-        IEnumerable<Library> GetLibrariesByTypes(IEnumerable<LibraryType> types);
+        List<Library> GetLibrariesByTypes(IEnumerable<LibraryType> types);
         void AddOrUpdateRange(IEnumerable<Library> collections);
     }
 }

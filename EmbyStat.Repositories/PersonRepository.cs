@@ -4,23 +4,35 @@ using LiteDB;
 
 namespace EmbyStat.Repositories
 {
-    public class PersonRepository : IPersonRepository
+    public class PersonRepository : BaseRepository, IPersonRepository
     {
-        private readonly LiteCollection<Person> _personCollection;
-
-        public PersonRepository(IDbContext context)
+        public PersonRepository(IDbContext context) : base(context)
         {
-            _personCollection = context.GetContext().GetCollection<Person>();
+
         }
 
         public void Insert(Person person)
         {
-            _personCollection.Insert(person);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Person>();
+                    collection.Insert(person);
+                }
+            });
         }
 
         public Person GetPersonByName(string name)
         {
-            return _personCollection.FindOne(x => x.Name == name);
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Person>();
+                    return collection.FindOne(x => x.Name == name);
+                }
+            });
         }
     }
 }
