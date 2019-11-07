@@ -56,6 +56,7 @@ namespace EmbyStat.Repositories
                 }
             });
         }
+        
         #endregion
 
         #region Emby Plugins

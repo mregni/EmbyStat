@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
@@ -15,37 +16,79 @@ namespace EmbyStat.Repositories
 
         }
 
-        public void RemoveShows()
+        public Show GetShowById(int showId)
         {
-            ExecuteQuery(() =>
+            return ExecuteQuery(() =>
             {
                 using (var database = Context.CreateDatabaseContext())
                 {
-                    var seasonCollection = database.GetCollection<Season>();
-                    var episodeCollection = database.GetCollection<Episode>();
-                    var showCollection = database.GetCollection<Show>();
+                    var collection = database.GetCollection<Show>();
 
-                    seasonCollection.Delete(Query.All());
-                    episodeCollection.Delete(Query.All());
-                    showCollection.Delete(Query.All());
+                    return collection.FindById(showId);
                 }
             });
         }
 
-        public void InsertShow(Show show)
+        public void RemoveShowsThatAreNotUpdated(DateTime startTime)
         {
             ExecuteQuery(() =>
             {
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var episodeCollection = database.GetCollection<Episode>();
-                    episodeCollection.InsertBulk(show.Episodes);
-
                     var seasonCollection = database.GetCollection<Season>();
-                    seasonCollection.InsertBulk(show.Seasons);
+                    var showCollection = database.GetCollection<Show>();
 
-                    var collection = database.GetCollection<Show>();
-                    collection.Insert(show);
+                    var shows = showCollection.Find(x => x.LastUpdated < startTime).ToList();
+
+                    episodeCollection.Delete(Query.In("ShowId", shows.Select(x => x.Id).ConvertToBsonArray()));
+                    seasonCollection.Delete(Query.In("ParentId", shows.Select(x => x.Id.ToString()).ConvertToBsonArray()));
+                    showCollection.Delete(Query.In("_id", shows.Select(x => x.Id).ConvertToBsonArray()));
+                }
+            });
+        }
+
+        public void AddSeason(Season season)
+        {
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Season>();
+                    collection.Insert(season);
+                }
+            });
+        }
+
+        public void AddEpisode(Episode episode)
+        {
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Episode>();
+                    collection.Insert(episode);
+                }
+            });
+        }
+
+        public void UpsertShow(Show show)
+        {
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var episodeCollection = database.GetCollection<Episode>();
+                    var seasonCollection = database.GetCollection<Season>();
+                    var showCollection = database.GetCollection<Show>();
+
+                    episodeCollection.Delete(x => x.ShowId == show.Id);
+                    seasonCollection.Delete(x => x.ParentId == show.Id.ToString());
+                    showCollection.Delete(x => x.Id == show.Id);
+                    
+                    episodeCollection.InsertBulk(show.Episodes);
+                    seasonCollection.InsertBulk(show.Seasons);
+                    showCollection.Insert(show);
                 }
             });
         }
@@ -97,22 +140,6 @@ namespace EmbyStat.Repositories
                 {
                     var collection = database.GetCollection<Season>();
                     return collection.FindById(id);
-                }
-            });
-        }
-
-        public List<Show> GetAllShowsWithTvdbId()
-        {
-            return ExecuteQuery(() =>
-            {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Show>();
-                    return collection
-                        .Include(x => x.Episodes)
-                        .Include(x => x.Seasons)
-                        .Find(x => !string.IsNullOrWhiteSpace(x.TVDB))
-                        .ToList();
                 }
             });
         }
