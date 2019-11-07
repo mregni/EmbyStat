@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common;
@@ -274,7 +273,7 @@ namespace EmbyStat.Services
 
         private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
         {
-            var movie = _movieRepository.GetMovieById(play.MediaId);
+            var movie = _movieRepository.GetMovieById(Convert.ToInt16(play.MediaId));
             if (movie == null)
             {
                 throw new BusinessException("MOVIENOTFOUND");
@@ -301,13 +300,13 @@ namespace EmbyStat.Services
 
         private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
         {
-            var episode = _showRepository.GetEpisodeById(play.MediaId);
+            var episode = _showRepository.GetEpisodeById(Convert.ToInt32(play.MediaId));
             if (episode == null)
             {
                 throw new BusinessException("EPISODENOTFOUND");
             }
 
-            var season = _showRepository.GetSeasonById(play.ParentId);
+            var season = _showRepository.GetSeasonById(Convert.ToInt32(play.ParentId));
             var seasonNumber = season.IndexNumber;
             var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 

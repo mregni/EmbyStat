@@ -44,5 +44,20 @@ namespace EmbyStat.Common.Extensions
                 .Where(x => x.LocationType == LocationType.Disk)
                 .Sum(x => x.MediaSources.First().SizeInMb);
         }
+
+        public static bool NeedsShowSync(this Show show)
+        {
+            return !show.TvdbSynced || show.TvdbFailed;
+        }
+
+        public static bool HasShowChangedEpisodes(this Show show, Show oldShow)
+        {
+            if (oldShow == null)
+            {
+                return true;
+            }
+
+            return !oldShow.Episodes.Select(x => x.Id).AreListEqual(show.Episodes.Select(x => x.Id));
+        }
     }
 }

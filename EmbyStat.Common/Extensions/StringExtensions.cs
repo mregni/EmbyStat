@@ -10,7 +10,7 @@ namespace EmbyStat.Common.Extensions
             return version.Replace("-dev", string.Empty).Replace("-beta", string.Empty);
         }
 
-        public static LibraryType ToCollectionType(this string value)
+        public static LibraryType ToLibraryType(this string value)
         {
             switch (value)
             {

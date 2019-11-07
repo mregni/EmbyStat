@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 
 namespace EmbyStat.Services.Models.Show

@@ -7,6 +7,7 @@
     <FileVersion>0.0.0.0</FileVersion>
 
     <ProjectGuid>{A5D09ABD-5077-48ED-AF5B-2033FB11AF82}</ProjectGuid>
+    <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
 
   <ItemGroup>

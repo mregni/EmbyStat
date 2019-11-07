@@ -6,11 +6,11 @@ namespace EmbyStat.Common.Extensions
 {
     public  static class StatisticExtension
     {
-        public static IEnumerable<Statistic> GetStatisticsWithCollectionIds(this IEnumerable<Statistic> statistics, IReadOnlyList<string> collectionIds)
+        public static IEnumerable<Statistic> GetStatisticsWithCollectionIds(this IEnumerable<Statistic> statistics, IEnumerable<string> collectionIds)
         {
             return statistics
                 .Where(x => x.CollectionIds.All(collectionIds.Contains))
-                .Where(x => x.CollectionIds.Count() == collectionIds.Count);
+                .Where(x => x.CollectionIds.Count() == collectionIds.Count());
 
         }
     }

@@ -3,10 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;
-using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Services
 {
