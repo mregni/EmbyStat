@@ -10,6 +10,6 @@ namespace EmbyStat.Clients.Tvdb
     {
         Task Login(string apiKey, CancellationToken cancellationToken);
         Task<IEnumerable<VirtualEpisode>> GetEpisodes(string seriesId, CancellationToken cancellationToken);
-        Task<IEnumerable<string>> GetShowsToUpdate(IEnumerable<string> showIds, DateTime lastUpdateTime, CancellationToken cancellationToken);
+        Task<List<int>> GetShowsToUpdate(DateTime? lastUpdateTime, CancellationToken cancellationToken);
     }
 }
