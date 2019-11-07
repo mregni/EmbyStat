@@ -300,3 +300,4 @@ __pycache__/
 
 usersettings.json
 **/Embystat.Web/config/**
+**/issues.json
