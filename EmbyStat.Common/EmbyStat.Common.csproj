@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="MediaBrowser.Common" Version="4.2.0.40" />
+    <PackageReference Include="MediaBrowser.Common" Version="4.3.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
