@@ -116,11 +116,11 @@ namespace Tests.Unit.Extensions
         }
 
         [Fact]
-        public void HasShowChangedEpisode_Should_Return_False_If_Show_Is_New()
+        public void HasShowChangedEpisode_Should_Return_True_If_Show_Is_New()
         {
             var newShow = new ShowBuilder(1, "1").Build();
             var changed = newShow.HasShowChangedEpisodes(null);
-            changed.Should().BeFalse();
+            changed.Should().BeTrue();
         }
 
         [Fact]
