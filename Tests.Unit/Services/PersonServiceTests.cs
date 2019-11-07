@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -47,9 +45,9 @@ namespace Tests.Unit.Services
                 .ReturnsAsync(_basePerson);
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
-            movieRepositoryMock.Setup(x => x.GetMovieCountForPerson(It.IsAny<string>())).Returns(10);
+            movieRepositoryMock.Setup(x => x.GetMediaCountForPerson(It.IsAny<string>())).Returns(10);
             var showRepositoryMock = new Mock<IShowRepository>();
-            showRepositoryMock.Setup(x => x.GetShowCountForPerson(It.IsAny<string>())).Returns(2);
+            showRepositoryMock.Setup(x => x.GetMediaCountForPerson(It.IsAny<string>())).Returns(2);
 
             return new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, EmbyClientMock.Object);
         }

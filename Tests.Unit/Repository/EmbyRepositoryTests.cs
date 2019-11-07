@@ -445,7 +445,7 @@ namespace Tests.Unit.Repository
                 {
                     var collection = database.GetCollection<Device>();
                     var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
-
+                    
                     devices.Should().NotContainNulls();
                     devices.Count.Should().Be(1);
 

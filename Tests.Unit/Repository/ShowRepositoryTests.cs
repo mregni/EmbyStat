@@ -19,6 +19,7 @@ namespace Tests.Unit.Repository
     public class ShowRepositoryTests : BaseRepositoryTester
     {
         private ShowRepository _showRepository;
+        private DbContext _context;
 
         public ShowRepositoryTests() : base("test-data-show-repo.db")
         {
@@ -27,7 +28,64 @@ namespace Tests.Unit.Repository
 
         protected override void SetupRepository()
         {
-            _showRepository = new ShowRepository(CreateDbContext());
+            _context = CreateDbContext();
+            _showRepository = new ShowRepository(_context);
+        }
+
+        [Fact]
+        public void GetShowById_Should_Return_Correct_Show()
+        {
+            RunTest(() =>
+            {
+                var showOne = new ShowBuilder(10, "1").AddName("Wallander").Build();
+                var showTwo = new ShowBuilder(12, "1").Build();
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Show>();
+                    collection.InsertBulk(new[] { showOne, showTwo });
+                }
+
+                var show = _showRepository.GetShowById(10);
+                show.Should().NotBeNull();
+                show.Id.Should().Be(showOne.Id);
+                show.Name.Should().Be(showOne.Name);
+            });
+        }
+
+        [Fact]
+        public void AddSeason_Should_Add_The_Season()
+        {
+            RunTest(() =>
+            {
+                var seasonOne = new SeasonBuilder(10, "1").Build();
+                _showRepository.AddSeason(seasonOne);
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Season>();
+                    var season = collection.FindById(seasonOne.Id);
+                    season.Should().NotBeNull();
+                    season.Id.Should().Be(seasonOne.Id);
+                }
+            });
+        }
+
+        [Fact]
+        public void AddEpisode_Should_Add_The_Episode()
+        {
+            RunTest(() =>
+            {
+                var episodeOne = new EpisodeBuilder(10, 1, "1").Build();
+                _showRepository.AddEpisode(episodeOne);
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Episode>();
+                    var episode = collection.FindById(episodeOne.Id);
+                    episode.Should().NotBeNull();
+                    episode.Id.Should().Be(episodeOne.Id);
+                }
+            });
         }
 
         [Fact]
@@ -37,7 +95,7 @@ namespace Tests.Unit.Repository
             {
                 var showOne = new ShowBuilder(10, "1").Build();
 
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var showList = _showRepository.GetAllShows(new string[0], false, false);
                 showList.Should().NotBeNull();
@@ -59,8 +117,8 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
 
                 var count = _showRepository.GetMediaCount(new string[0]);
                 count.Should().Be(2);
@@ -76,9 +134,9 @@ namespace Tests.Unit.Repository
                 var showTwo = new ShowBuilder(11, "1").Build();
                 var showThree = new ShowBuilder(12, "2").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var count = _showRepository.GetMediaCount(new[] { "2" });
                 count.Should().Be(1);
@@ -90,16 +148,17 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
+                var now = DateTime.Now;
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
 
                 var count = _showRepository.GetMediaCount(new string[0]);
                 count.Should().Be(2);
 
-                _showRepository.RemoveShows();
+                _showRepository.RemoveShowsThatAreNotUpdated(now);
 
                 var shows = _showRepository.GetAllShows(new string[0], true, true);
                 shows.Should().NotContainNulls();
@@ -117,7 +176,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], false, false);
                 shows.Should().NotContainNulls();
@@ -144,7 +203,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], false, false);
                 shows.Should().NotContainNulls();
@@ -171,9 +230,9 @@ namespace Tests.Unit.Repository
                 var showTwo = new ShowBuilder(11, "1").Build();
                 var showThree = new ShowBuilder(12, "2").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var shows = _showRepository.GetAllShows(new[] { "2" }, false, false);
                 shows.Should().NotContainNulls();
@@ -197,7 +256,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], false, true);
                 shows.Should().NotContainNulls();
@@ -221,7 +280,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], true, false);
                 shows.Should().NotContainNulls();
@@ -245,7 +304,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], true, true);
                 shows.Should().NotContainNulls();
@@ -269,7 +328,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var season = _showRepository.GetSeasonById(showOne.Seasons.First().Id);
                 season.Should().NotBeNull();
@@ -284,7 +343,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShow(showOne);
 
                 var episode = _showRepository.GetEpisodeById(showOne.Episodes.First().Id);
                 episode.Should().NotBeNull();
@@ -299,7 +358,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var movieOne = new ShowBuilder(10, "1").Build();
-                _showRepository.InsertShow(movieOne);
+                _showRepository.UpsertShow(movieOne);
 
                 var result = _showRepository.Any();
                 result.Should().BeTrue();
@@ -325,35 +384,13 @@ namespace Tests.Unit.Repository
                 var showTwo = new ShowBuilder(11, "1").AddPerson(new ExtraPerson { Id = showOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
                 var showThree = new ShowBuilder(12, "2").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var count = _showRepository.GetMediaCountForPerson(showOne.People.First().Id);
 
                 count.Should().Be(2);
-            });
-        }
-
-        [Fact]
-        public void GetAllShowsWithTvdbId_Should_Return_All_Shows_With_Tvdb_Id()
-        {
-            RunTest(() =>
-            {
-                var showOne = new ShowBuilder(10, "1").Build();
-                var showTwo = new ShowBuilder(11, "1").AddTvdbId(string.Empty).Build();
-                var showThree = new ShowBuilder(12, "2").Build();
-
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
-
-                var shows = _showRepository.GetAllShowsWithTvdbId();
-                shows.Should().NotContainNulls();
-                shows.Count.Should().Be(2);
-
-                shows[0].Id.Should().Be(showOne.Id);
-                shows[1].Id.Should().Be(showThree.Id);
             });
         }
 
@@ -365,8 +402,8 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
 
                 var episodes = _showRepository.GetAllEpisodesForShow(showOne.Id);
                 episodes.Should().NotContainNulls();
@@ -385,9 +422,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 var showThree = new ShowBuilder(12, "2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetNewestPremieredMedia(new string[0]);
 
@@ -404,9 +441,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 var showThree = new ShowBuilder(12, "2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetNewestPremieredMedia(new[] { "1" });
 
@@ -423,9 +460,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 var showThree = new ShowBuilder(12, "2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetOldestPremieredMedia(new string[0]);
 
@@ -442,9 +479,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 var showThree = new ShowBuilder(12, "2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetOldestPremieredMedia(new[] { "1" });
 
@@ -461,9 +498,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddCommunityRating(1).Build();
                 var showThree = new ShowBuilder(12, "2").AddCommunityRating(9).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetHighestRatedMedia(new string[0]);
 
@@ -480,9 +517,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddCommunityRating(1).Build();
                 var showThree = new ShowBuilder(12, "2").AddCommunityRating(9).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetHighestRatedMedia(new[] { "1" });
 
@@ -499,9 +536,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddCommunityRating(9).Build();
                 var showThree = new ShowBuilder(12, "2").AddCommunityRating(1).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetLowestRatedMedia(new string[0]);
 
@@ -518,9 +555,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddCommunityRating(9).Build();
                 var showThree = new ShowBuilder(12, "2").AddCommunityRating(1).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetLowestRatedMedia(new[] { "1" });
 
@@ -537,9 +574,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddCreateDate(new DateTime(2000, 1, 1)).Build();
                 var showThree = new ShowBuilder(12, "2").AddCreateDate(new DateTime(2017, 1, 1)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetLatestAddedMedia(new string[0]);
 
@@ -556,9 +593,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(10, "1").Build();
                 var showTwo = new ShowBuilder(11, "1").AddCreateDate(new DateTime(2000, 1, 1)).Build();
                 var showThree = new ShowBuilder(12, "2").AddCreateDate(new DateTime(2017, 1, 1)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShow(showOne);
+                _showRepository.UpsertShow(showTwo);
+                _showRepository.UpsertShow(showThree);
 
                 var show = _showRepository.GetLatestAddedMedia(new[] { "1" });
 
