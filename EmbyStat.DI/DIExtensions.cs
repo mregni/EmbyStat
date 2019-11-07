@@ -87,8 +87,6 @@ namespace EmbyStat.DI
 
         public static void RegisterHttp(this IServiceCollection services)
         {
-            services.TryAddTransient<IAsyncHttpClient, HttpWebRequestClient>();
-            services.TryAddTransient<IHttpWebRequestFactory, HttpWebRequestFactory>();
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
         }
 
