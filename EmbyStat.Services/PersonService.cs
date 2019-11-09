@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Converters;
@@ -7,7 +6,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using NLog;
-using NLog.Fluent;
 
 namespace EmbyStat.Services
 {
@@ -35,13 +33,13 @@ namespace EmbyStat.Services
                 var person = _personRepository.GetPersonByName(name);
                 if (person == null)
                 {
-                    var rawPerson = await _embyClient.GetPersonByNameAsync(name, CancellationToken.None);
+                    var rawPerson = await _embyClient.GetPersonByNameAsync(name);
                     person = PersonConverter.Convert(rawPerson);
                     _personRepository.Insert(person);
                 }
 
-                person.MovieCount = _movieRepository.GetMovieCountForPerson(person.Id);
-                person.ShowCount = _showRepository.GetShowCountForPerson(person.Id);
+                person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Id);
+                person.ShowCount = _showRepository.GetMediaCountForPerson(person.Id);
 
                 return person;
             }

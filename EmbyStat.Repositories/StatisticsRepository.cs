@@ -10,62 +10,94 @@ using LiteDB;
 namespace EmbyStat.Repositories
 {
 
-    public class StatisticsRepository : IStatisticsRepository
+    public class StatisticsRepository : BaseRepository, IStatisticsRepository
     {
-        private readonly LiteCollection<Statistic> _statisticCollection;
-
-        public StatisticsRepository(IDbContext context)
+        public StatisticsRepository(IDbContext context) : base(context)
         {
-            _statisticCollection = context.GetContext().GetCollection<Statistic>();
         }
 
         public Statistic GetLastResultByType(StatisticType type, IReadOnlyList<string> collectionIds)
         {
-            return _statisticCollection.Find(Query.And(Query.EQ("Type", type.ToString()), Query.EQ("IsValid", true)))
-                .GetStatisticsWithCollectionIds(collectionIds)
-                .OrderByDescending(x => x.CalculationDateTime)
-                .FirstOrDefault();
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Statistic>();
+                    return collection.Find(Query.And(Query.EQ("Type", type.ToString()), Query.EQ("IsValid", true)))
+                        .GetStatisticsWithCollectionIds(collectionIds)
+                        .OrderByDescending(x => x.CalculationDateTime)
+                        .FirstOrDefault();
+                }
+            });
         }
 
-        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IEnumerable<string> collectionIds)
+        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IReadOnlyList<string> collectionIds)
         {
-            var statisticObjs = _statisticCollection
-                .Find(x => x.Type == type)
-                .Where(x => x.CollectionIds.All(collectionIds.Contains))
-                .Where(x => x.CollectionIds.Count() == collectionIds.Count()).ToList();
-
-            statisticObjs.ForEach(x => x.IsValid = false);
-            _statisticCollection.Update(statisticObjs);
-
-            var statistic = new Statistic
+            ExecuteQuery(() =>
             {
-                CalculationDateTime = calculationDateTime,
-                CollectionIds = collectionIds,
-                Type = type,
-                JsonResult = json,
-                IsValid = true
-            };
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Statistic>();
+                    var statistics = collection
+                        .Find(x => x.Type == type)
+                        .GetStatisticsWithCollectionIds(collectionIds)
+                        .ToList();
 
-            _statisticCollection.Insert(statistic);
+                    statistics.ForEach(x => x.IsValid = false);
+                    collection.Update(statistics);
+
+                    var statistic = new Statistic
+                    {
+                        CalculationDateTime = calculationDateTime,
+                        CollectionIds = collectionIds,
+                        Type = type,
+                        JsonResult = json,
+                        IsValid = true
+                    };
+
+                    collection.Insert(statistic);
+                }
+            });
         }
 
         public void CleanupStatistics()
         {
-            _statisticCollection.Delete(Query.Where("isValid", x => x.AsBoolean == false));
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Statistic>();
+                    collection.Delete(x => !x.IsValid);
+                }
+            });
         }
 
         public void MarkMovieTypesAsInvalid()
         {
-            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Movie.ToString()))).ToList();
-            statistics.ForEach(x => x.IsValid = false);
-            _statisticCollection.Update(statistics);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Statistic>();
+                    var statistics = collection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Movie.ToString()))).ToList();
+                    statistics.ForEach(x => x.IsValid = false);
+                    collection.Update(statistics);
+                }
+            });
         }
 
         public void MarkShowTypesAsInvalid()
         {
-            var statistics = _statisticCollection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Show.ToString()))).ToList();
-            statistics.ForEach(x => x.IsValid = false);
-            _statisticCollection.Update(statistics);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Statistic>();
+                    var statistics = collection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Show.ToString()))).ToList();
+                    statistics.ForEach(x => x.IsValid = false);
+                    collection.Update(statistics);
+                }
+            });
         }
     }
 }

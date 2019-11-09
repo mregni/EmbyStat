@@ -44,7 +44,7 @@ namespace Tests.Unit.Controllers
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieLibraries()).Returns(_collections);
             _movieServiceMock.Setup(x => x.GetStatisticsAsync(It.IsAny<List<string>>()))
-                .Returns(Task.FromResult(movieStatistics));
+                .ReturnsAsync(movieStatistics);
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
@@ -82,7 +82,7 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
-        public async void AreMovieStatsReturned()
+        public async Task AreMovieStatsReturned()
         {
             var result = await _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;

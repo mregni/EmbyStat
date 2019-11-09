@@ -1,59 +1,297 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Extensions;
-using NLog;
-using Logger = NLog.Logger;
 
 namespace EmbyStat.Repositories
 {
-    public class MovieRepository : IMovieRepository
+    public class MovieRepository : MediaRepository<Movie>, IMovieRepository
     {
-        private readonly LiteCollection<Movie> _movieCollection;
-
-        public MovieRepository(IDbContext context)
+        public MovieRepository(IDbContext context) : base(context)
         {
-            _movieCollection = context.GetContext().GetCollection<Movie>();
+            
         }
 
         public void UpsertRange(IEnumerable<Movie> movies)
         {
-            _movieCollection.Upsert(movies);
-        }
-
-        public IEnumerable<Movie> GetAll(IEnumerable<string> collectionIds)
-        {
-            var bArray = new BsonArray();
-            foreach (var collectionId in collectionIds)
+            ExecuteQuery(() =>
             {
-                bArray.Add(collectionId);
-            }
-            return collectionIds.Any() ?
-                _movieCollection.Find(Query.In("CollectionId", bArray)) :
-                _movieCollection.FindAll();
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    collection.Upsert(movies);
+                }
+            });
         }
 
-
-        public bool Any()
+        public List<Movie> GetAll(IReadOnlyList<string> libraryIds)
         {
-            return _movieCollection.Exists(Query.All());
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    return GetWorkingLibrarySet(collection, libraryIds).ToList();
+                }
+            });
         }
 
-        public int GetMovieCountForPerson(string personId)
+        public List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds)
         {
-            return _movieCollection.Count(Query.EQ("People[*]._id", personId));
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    if (libraryIds.Any())
+                    {
+                        return collection
+                            .Find(x => x.IMDB != null && libraryIds.Any(y => x.CollectionId == y))
+                            .OrderBy(x => x.SortName)
+                            .ToList();
+                    }
+
+                    return collection
+                        .Find(x => x.IMDB != null)
+                        .OrderBy(x => x.SortName)
+                        .ToList();
+                }
+            });
         }
 
-        public Movie GetMovieById(string id)
+        public Movie GetMovieById(int id)
         {
-            return _movieCollection.FindById(id);
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    return collection.FindById(id);
+                }
+            });
         }
+
+        public int GetGenreCount(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Select(x => x.Genres)
+                        .ToList()
+                        .SelectMany(x => x)
+                        .Distinct()
+                        .Count();
+                }
+            });
+        }
+
+        public long GetTotalRuntime(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Select(x => x.RunTimeTicks)
+                        .ToList()
+                        .Sum(x => x ?? 0);
+                }
+            });
+        }
+
+        public double GetTotalDiskSize(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Select(x => x.MediaSources.FirstOrDefault())
+                        .ToList()
+                        .Sum(x => x.SizeInMb);
+                }
+            });
+        }
+
+        public Movie GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    if (libraryIds.Any())
+                    {
+                        return collection
+                            .Find(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks && libraryIds.Any(y => x.CollectionId == y))
+                            .OrderBy(x => x.RunTimeTicks)
+                            .FirstOrDefault();
+                    }
+
+                    return collection
+                        .Find(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
+                        .OrderBy(x => x.RunTimeTicks)
+                        .FirstOrDefault();
+                }
+            });
+        }
+
+        public Movie GetLongestMovie(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    if (libraryIds.Any())
+                    {
+                        return collection
+                            .Find(x => x.RunTimeTicks != null && libraryIds.Any(y => x.CollectionId == y))
+                            .OrderByDescending(x => x.RunTimeTicks)
+                            .FirstOrDefault();
+                    }
+
+                    return collection
+                        .Find(x => x.RunTimeTicks != null)
+                        .OrderByDescending(x => x.RunTimeTicks)
+                        .FirstOrDefault();
+                }
+            });
+        }
+        
+        #region People
+
+        public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .SelectMany(x => x.People)
+                        .DistinctBy(x => x.Id)
+                        .Count(x => x.Type == type);
+                }
+            });
+        }
+
+        public string GetMostFeaturedPerson(IReadOnlyList<string> libraryIds, PersonType type)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .SelectMany(x => x.People)
+                        .Where(x => x.Type == type)
+                        .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})
+                        .OrderByDescending(x => x.Count)
+                        .Select(x => x.Name)
+                        .FirstOrDefault();
+                }
+            });
+        }
+
+        #endregion
+
+        #region Suspicious
+
+        public List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    if (libraryIds.Any())
+                    {
+                        return collection
+                            .Find(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks && libraryIds.Any(y => x.CollectionId == y))
+                            .OrderBy(x => x.SortName)
+                            .ToList();
+                    }
+
+                    return collection
+                        .Find(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
+                        .OrderBy(x => x.SortName)
+                        .ToList();
+                }
+            });
+        }
+
+        public List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    if (libraryIds.Any())
+                    {
+                        return collection
+                            .Find(x => x.IMDB == null && libraryIds.Any(y => x.CollectionId == y))
+                            .OrderBy(x => x.SortName)
+                            .ToList();
+                    }
+
+                    return collection
+                        .Find(x => x.IMDB == null)
+                        .OrderBy(x => x.SortName)
+                        .ToList();
+                }
+            });
+        }
+
+        public List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    if (libraryIds.Any())
+                    {
+                        return collection
+                            .Find(x => x.Primary == null && libraryIds.Any(y => x.CollectionId == y))
+                            .OrderBy(x => x.SortName)
+                            .ToList();
+                    }
+
+                    return collection
+                        .Find(x => x.Primary == null)
+                        .OrderBy(x => x.SortName)
+                        .ToList();
+                }
+            });
+        }
+
+        #endregion
 
         public void RemoveMovies()
         {
-            _movieCollection.Delete(Query.All());
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Movie>();
+                    collection.Delete(Query.All());
+                }
+            });
         }
     }
 }

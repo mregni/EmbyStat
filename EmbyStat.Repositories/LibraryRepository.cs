@@ -1,32 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
 
 namespace EmbyStat.Repositories
 {
-    public class LibraryRepository : ILibraryRepository
+    public class LibraryRepository : BaseRepository, ILibraryRepository
     {
         private readonly LiteCollection<Library> _libraryCollection;
 
-        public LibraryRepository(IDbContext context)
+        public LibraryRepository(IDbContext context) : base(context)
         {
             _libraryCollection = context.GetContext().GetCollection<Library>();
         }
-        public IEnumerable<Library> GetLibrariesByTypes(IEnumerable<LibraryType> types)
+
+        public List<Library> GetLibrariesByTypes(IEnumerable<LibraryType> types)
         {
-            var bArray = new BsonArray();
-            foreach (var type in types)
+            return ExecuteQuery(() =>
             {
-                bArray.Add(type.ToString()); 
-            }
-            return _libraryCollection.Find(Query.In("Type", bArray));
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Library>();
+                    return collection.Find(Query.In("Type", types.ConvertToBsonArray())).OrderBy(x => x.Name).ToList();
+                }
+            });
         }
 
         public void AddOrUpdateRange(IEnumerable<Library> collections)
         {
-            _libraryCollection.Upsert(collections);
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Library>();
+                    collection.Upsert(collections);
+                }
+            });
         }
     }
 }

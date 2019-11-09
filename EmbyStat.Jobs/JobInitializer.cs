@@ -51,6 +51,7 @@ namespace EmbyStat.Jobs
                 Constants.JobIds.CheckUpdateId.ToString(),
                 () => _checkUpdateJob.Execute(),
                 jobs.Single(x => x.Id == Constants.JobIds.CheckUpdateId).Trigger);
+            
         }
 
         public void UpdateTrigger(Guid id, string trigger)
@@ -82,7 +83,6 @@ namespace EmbyStat.Jobs
             _pingEmbyJob.Dispose();
             _mediaSyncJob.Dispose();
             _smallSyncJob.Dispose();
-            GC.SuppressFinalize(this);
         }
     }
 }

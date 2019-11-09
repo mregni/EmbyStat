@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using EmbyStat.Migrator.Interfaces;
 using EmbyStat.Migrator.Models;
 using Microsoft.Extensions.DependencyInjection;

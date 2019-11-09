@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using MediaBrowser.Model.Entities;
@@ -13,22 +12,22 @@ namespace Tests.Unit.Builders
     {
         private readonly Show _show;
 
-        public ShowBuilder(int id, string collectionId)
+        public ShowBuilder(int id, string libraryId)
         {
             _show = new Show
             {
                 Id = id,
                 Path = "Path/To/Show",
                 Banner = "banner.png",
-                CollectionId = collectionId,
-                CommunityRating = null,
+                CollectionId = libraryId,
+                CommunityRating = 1.7f,
                 CumulativeRunTimeTicks = 19400287400000,
                 DateCreated = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
                 IMDB = "12345",
                 Logo = "logo.jpg",
                 Name = "Chuck",
                 OfficialRating = "R",
-                ParentId = collectionId,
+                ParentId = libraryId,
                 Primary = "primary.jpg",
                 ProductionYear = 2001,
                 RunTimeTicks = 12000000,
@@ -44,12 +43,12 @@ namespace Tests.Unit.Builders
                 Genres = new[] { "Action" },
                 Episodes = new List<Episode>
                 {
-                    new EpisodeBuilder(1, id, "1").Build(),
-                    new EpisodeBuilder(2, id, "1").Build(),
+                    new EpisodeBuilder(id * 1, id, "1").Build(),
+                    new EpisodeBuilder(id * 2, id, "1").Build(),
                 },
                 Seasons = new List<Season>
                 {
-                    new SeasonBuilder(1, id.ToString()).Build()
+                    new SeasonBuilder(id * 1, id.ToString()).Build()
                 }
             };
         }
@@ -118,6 +117,14 @@ namespace Tests.Unit.Builders
             return this;
         }
 
+        public ShowBuilder AddPerson(ExtraPerson person)
+        {
+            var list = _show.People.ToList();
+            list.Add(person);
+            _show.People = list.ToArray();
+            return this;
+        }
+
         public ShowBuilder AddMissingEpisodes(int count, int seasonIndex)
         {
             for (var i = 0; i < count; i++)
@@ -140,6 +147,18 @@ namespace Tests.Unit.Builders
                 _show.Episodes.Add(new EpisodeBuilder(i, _show.Id, indexNumber.ToString()).Build());
             }
 
+            return this;
+        }
+        
+        public ShowBuilder AddFailedSync(bool state)
+        {
+            _show.TvdbFailed = state;
+            return this;
+        }
+
+        public ShowBuilder AddTvdbSynced(bool state)
+        {
+            _show.TvdbSynced = state;
             return this;
         }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Services.Models.Emby;
+﻿using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using Xunit;
 

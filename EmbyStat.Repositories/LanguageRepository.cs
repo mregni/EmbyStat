@@ -1,22 +1,27 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
 
 namespace EmbyStat.Repositories
 {
-    public class LanguageRepository : ILanguageRepository
+    public class LanguageRepository : BaseRepository, ILanguageRepository
     {
-        private readonly LiteCollection<Language> _languageCollection;
-
-        public LanguageRepository(IDbContext context)
+        public LanguageRepository(IDbContext context) : base(context)
         {
-            _languageCollection = context.GetContext().GetCollection<Language>();
         }
 
-        public IEnumerable<Language> GetLanguages()
+        public List<Language> GetLanguages()
         {
-            return _languageCollection.FindAll();
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Language>();
+                    return collection.FindAll().ToList();
+                }
+            });
         }
     }
 }

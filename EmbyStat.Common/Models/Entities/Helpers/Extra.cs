@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {
@@ -12,6 +12,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public string OfficialRating { get; set; }
         public ExtraPerson[] People { get; set; }
         public string[] Genres { get; set; }
-
+        public DateTime LastUpdated { get; set; }
     }
 }

@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Converters;
+using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Stat;
+using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Services.Abstract
 {
     public abstract class MediaService
     {
         private readonly IJobRepository _jobRepository;
+        internal readonly IPersonService PersonService;
 
-        protected MediaService(IJobRepository jobRepository)
+        protected MediaService(IJobRepository jobRepository, IPersonService personService)
         {
             _jobRepository = jobRepository;
+            PersonService = personService;
         }
 
-        public bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds)
+        internal bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds)
         {
             var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
 
@@ -31,7 +37,26 @@ namespace EmbyStat.Services.Abstract
                    && collectionIds.AreListEqual(statistic.CollectionIds);
         }
 
-        public Chart CalculateRatingChart(IEnumerable<float?> list)
+        #region Chart
+
+        internal Chart CalculateGenreChart(IEnumerable<Extra> media)
+        {
+            var genresData = media
+                .SelectMany(x => x.Genres)
+                .GroupBy(x => x)
+                .Select(x => new { Name = x.Key, Count = x.Count() })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            return new Chart
+            {
+                Title = Constants.CountPerGenre,
+                Labels = genresData.Select(x => x.Name),
+                DataSets = new List<IEnumerable<int>> { genresData.Select(x => x.Count) }
+            };
+        }
+
+        internal Chart CalculateRatingChart(IEnumerable<float?> list)
         {
             var ratingDataList = list
                 .GroupBy(x => x.RoundToHalf())
@@ -45,7 +70,7 @@ namespace EmbyStat.Services.Abstract
                     ratingDataList.Add(new ChartGrouping<double?, float?> { Key = i, Capacity = 0 });
                 }
             }
-            
+
             var ratingData = ratingDataList
                 .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
                 .OrderBy(x => x.Name)
@@ -59,7 +84,7 @@ namespace EmbyStat.Services.Abstract
             };
         }
 
-        protected Chart CalculatePremiereYearChart(IEnumerable<DateTimeOffset?> list)
+        internal Chart CalculatePremiereYearChart(IEnumerable<DateTimeOffset?> list)
         {
             var yearDataList = list
                 .GroupBy(x => x.RoundToFiveYear())
@@ -94,7 +119,9 @@ namespace EmbyStat.Services.Abstract
             };
         }
 
-        protected Card<double> CalculateTotalDiskSize(IEnumerable<Video> videos)
+        #endregion
+
+        internal Card<double> CalculateTotalDiskSize(IEnumerable<Video> videos)
         {
             var sum = videos.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
             return new Card<double>
@@ -103,5 +130,36 @@ namespace EmbyStat.Services.Abstract
                 Title = Constants.Common.TotalDiskSize
             };
         }
+
+        #region People
+
+        internal async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<Extra> media)
+        {
+            var list = new List<PersonPoster>();
+            foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
+            {
+                var selectedMovies = media.Where(x => x.Genres.Any(y => y == genre));
+                var personName = selectedMovies
+                    .SelectMany(x => x.People)
+                    .Where(x => x.Type == PersonType.Actor)
+                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Name)
+                    .FirstOrDefault();
+
+                if (personName != null)
+                {
+                    var person = await PersonService.GetPersonByNameAsync(personName);
+                    if (person != null)
+                    {
+                        list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        #endregion
     }
 }

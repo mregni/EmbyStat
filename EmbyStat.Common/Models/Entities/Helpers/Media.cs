@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Helpers

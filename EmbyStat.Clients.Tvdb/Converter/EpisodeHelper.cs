@@ -1,6 +1,5 @@
 ﻿using System;
 using EmbyStat.Clients.Tvdb.Models;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 
 namespace EmbyStat.Clients.Tvdb.Converter

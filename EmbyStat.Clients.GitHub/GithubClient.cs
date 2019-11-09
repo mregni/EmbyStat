@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub.Models;
@@ -10,35 +7,27 @@ using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Net;
 using Microsoft.Extensions.Options;
+using RestSharp;
 
 namespace EmbyStat.Clients.GitHub
 {
     public class GithubClient : IGithubClient
     {
-        private readonly IAsyncHttpClient _httpClient;
+        private IRestClient Client { get; set; }
         private readonly AppSettings _appSettings;
 
-        public GithubClient(IAsyncHttpClient httpClient, IOptions<AppSettings> appSettings)
+        public GithubClient(IOptions<AppSettings> appSettings)
         {
-            _httpClient = httpClient;
             _appSettings = appSettings.Value;
+            Client = new RestClient().UseSerializer(() => new JsonNetSerializer());
+            Client.UserAgent = "EmbyStat/1.0";
         }
 
         public async Task<ReleaseObject[]> GetGithubVersionsAsync(Version minVersion, string assetFileName, UpdateTrain updateTrain, CancellationToken cancellationToken)
         {
-            var options = new HttpRequest
-            {
-                Url = _appSettings.Updater.GithubUrl,
-                Method = "GET",
-                RequestContentType = "application/json",
-                CancellationToken = cancellationToken,
-                UserAgent = "EmbyStat/1.0"
-            };
-
-            using (var stream = await _httpClient.SendAsync(options))
-            {
-                return JsonSerializerExtentions.DeserializeFromStream<ReleaseObject[]>(stream);
-            }
+            var request = new RestRequest(_appSettings.Updater.GithubUrl, Method.GET);
+            var result = await Client.ExecuteTaskAsync<ReleaseObject[]>(request, cancellationToken);
+            return result.Data;
         }
     }
 }

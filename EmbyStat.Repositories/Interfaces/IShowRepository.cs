@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Repositories.Interfaces.Helpers;
 
 namespace EmbyStat.Repositories.Interfaces
 {
-    public interface IShowRepository
+    public interface IShowRepository : IMediaRepository<Show>
     {
-        void RemoveShows();
+        void UpsertShow(Show show);
         void UpdateShow(Show show);
-        void InsertShowsBulk(IEnumerable<Show> list);
-        void InsertSeasonsBulk(IEnumerable<Season> seasons);
-        void InsertEpisodesBulk(IEnumerable<Episode> episodes);
-        IEnumerable<Show> GetAllShowsWithTvdbId();
-        IEnumerable<Episode> GetAllEpisodesForShow(int showId);
-        bool AnyShows();
-        Episode GetEpisodeById(string id);
-        IEnumerable<Show> GetAllShows(IReadOnlyList<string> collectionIds, bool includeSeasons, bool includeEpisodes);
-        Season GetSeasonById(string id);
-        int GetShowCountForPerson(string personId);
+        List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
+        Episode GetEpisodeById(int id);
+        Season GetSeasonById(int id);
+        List<Episode> GetAllEpisodesForShow(int showId);
+        Show GetShowById(int showId);
+        void RemoveShowsThatAreNotUpdated(DateTime startTime);
+        void AddSeason(Season season);
+        void AddEpisode(Episode episode);
     }
 }

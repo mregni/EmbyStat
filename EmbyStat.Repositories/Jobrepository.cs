@@ -8,79 +8,120 @@ using LiteDB;
 
 namespace EmbyStat.Repositories
 {
-    public class JobRepository : IJobRepository
+    public class JobRepository : BaseRepository, IJobRepository
     {
-        private readonly LiteCollection<Job> _jobCollection;
-
-        public JobRepository(IDbContext context)
+        public JobRepository(IDbContext context) : base(context)
         {
-            _jobCollection = context.GetContext().GetCollection<Job>();
+            
         }
 
-        public IEnumerable<Job> GetAll()
+        public List<Job> GetAll()
         {
-            return _jobCollection.FindAll();
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Job>();
+                    return collection.FindAll().ToList();
+                }
+            });
         }
 
         public Job GetById(Guid id)
         {
-            return _jobCollection.FindById(id);
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Job>();
+                    return collection.FindById(id);
+                }
+            });
         }
 
         public void StartJob(Job job)
         {
-            var obj = _jobCollection.FindById(job.Id);
-
-            if (obj != null)
+            ExecuteQuery(() =>
             {
-                obj.State = job.State;
-                obj.StartTimeUtc = job.StartTimeUtc;
-                obj.EndTimeUtc = job.EndTimeUtc;
-                obj.CurrentProgressPercentage = job.CurrentProgressPercentage;
-                _jobCollection.Update(obj);
-            }
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Job>();
+                    var jobDocument = collection.FindById(job.Id);
+
+                    if (jobDocument != null)
+                    {
+                        jobDocument.State = job.State;
+                        jobDocument.StartTimeUtc = job.StartTimeUtc;
+                        jobDocument.EndTimeUtc = job.EndTimeUtc;
+                        jobDocument.CurrentProgressPercentage = job.CurrentProgressPercentage;
+                        collection.Update(jobDocument);
+                    }
+                }
+            });
         }
 
         public void EndJob(Guid id, DateTime endTime, JobState state)
         {
-            var obj = _jobCollection.FindById(id);
-
-            if (obj != null)
+            ExecuteQuery(() =>
             {
-                obj.EndTimeUtc = endTime;
-                obj.State = state;
-                obj.CurrentProgressPercentage = 100;
-                _jobCollection.Update(obj);
-            }
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Job>();
+                    var jobDocument = collection.FindById(id);
+
+                    if (jobDocument != null)
+                    {
+                        jobDocument.EndTimeUtc = endTime;
+                        jobDocument.State = state;
+                        jobDocument.CurrentProgressPercentage = 100;
+                        collection.Update(jobDocument);
+                    }
+                }
+            });
         }
 
         public bool UpdateTrigger(Guid id, string trigger)
         {
-            var obj = _jobCollection.FindById(id);
-
-            if (obj != null)
+            return ExecuteQuery(() =>
             {
-                obj.Trigger = trigger;
-                _jobCollection.Update(obj);
-                return true;
-            }
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Job>();
+                    var job = collection.FindById(id);
 
-            return false;
+                    if (job != null)
+                    {
+                        job.Trigger = trigger;
+                        collection.Update(job);
+                        return true;
+                    }
+
+                    return false;
+                }
+            });
+            
         }
 
         public void ResetAllJobs()
         {
-            var jobs = _jobCollection.FindAll().ToList();
-            jobs.ForEach(x =>
+            ExecuteQuery(() =>
             {
-                if (x.State == JobState.Running)
+                using (var database = Context.CreateDatabaseContext())
                 {
-                    x.State = JobState.Failed;
-                    x.EndTimeUtc = DateTime.Now;
+                    var collection = database.GetCollection<Job>();
+                    var jobs = collection.FindAll().ToList();
+                    jobs.ForEach(x =>
+                    {
+                        if (x.State == JobState.Running)
+                        {
+                            x.State = JobState.Failed;
+                            x.EndTimeUtc = DateTime.Now;
+                        }
+                    });
+
+                    collection.Update(jobs);
                 }
             });
-
-            _jobCollection.Update(jobs);
         }
     }
 }

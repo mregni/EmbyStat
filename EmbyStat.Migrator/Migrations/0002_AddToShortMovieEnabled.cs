@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Migrator.Models;
+﻿using EmbyStat.Migrator.Models;
 
 namespace EmbyStat.Migrator.Migrations
 {

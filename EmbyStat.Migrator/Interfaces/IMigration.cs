@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Services.Interfaces;
+﻿using EmbyStat.Services.Interfaces;
 
 namespace EmbyStat.Migrator.Interfaces
 {

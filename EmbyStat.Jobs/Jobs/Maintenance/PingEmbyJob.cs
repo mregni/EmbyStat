@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs.Job;
@@ -28,7 +27,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJobAsync()
         {
-            var result = await _embyService.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress, Settings.Emby.AccessToken, new CancellationToken(false));
+            var result = await _embyService.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress);
             await LogProgress(50);
             if (result == "Emby Server")
             {
