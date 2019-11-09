@@ -34,11 +34,6 @@ namespace EmbyStat.Controllers.Settings
 	    public IActionResult Get()
         {
 	        var settings = _settingsService.GetUserSettings();
-	        if (!settings.WizardFinished)
-	        {
-                _logger.Info($"{Constants.LogPrefix.ServerApi}\tStarting wizard for user.");
-	        }
-
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
 

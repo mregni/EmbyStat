@@ -90,9 +90,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(100);
 
             _embyClient.Dispose();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
 
         #region Movies

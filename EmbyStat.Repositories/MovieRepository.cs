@@ -25,7 +25,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    var result = collection.Upsert(movies);
+                    collection.Upsert(movies);
                 }
             });
         }
