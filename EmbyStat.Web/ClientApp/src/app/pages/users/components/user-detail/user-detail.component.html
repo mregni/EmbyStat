@@ -4,10 +4,10 @@
       <mat-card-content>
         <div class="d-flex flex-row">
           <div>
-            <img class="profile-image" *ngIf="user.primaryImageTag !== ''; else noImage"
+            <img class="profile-image" alt="Profile image" *ngIf="user.primaryImageTag !== ''; else noImage"
               src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
             <ng-template #noImage>
-              <img class="profile-image" src="../../../../assets/images/no-profile.png" />
+              <img class="profile-image" alt="Profile image" src="../../../../assets/images/no-profile.png" />
             </ng-template>
           </div>
           <div class="d-flex flex-column mt-2 user-detail-column">
@@ -51,10 +51,10 @@
           <ng-container matColumnDef="logo">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <img class="device-logo" src="{{element.deviceLogo}}"
+              <img class="device-logo" alt="Device logo" src="{{element.deviceLogo}}"
                 *ngIf="element.deviceLogo.length !== 0; else NoDevice" />
               <ng-template #NoDevice>
-                <img class="device-logo" src="../../../../assets/images/no-device.png" />
+                <img class="device-logo" alt="Device logo" src="../../../../assets/images/no-device.png" />
               </ng-template>
             </mat-cell>
           </ng-container>
