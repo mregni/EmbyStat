@@ -13,7 +13,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Services collection")]
     public class SettingsServiceTests
     {
         private readonly SettingsService _subject;

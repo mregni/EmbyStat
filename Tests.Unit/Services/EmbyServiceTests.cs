@@ -13,7 +13,6 @@ using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Users;
 using Moq;
 using Xunit;
@@ -21,7 +20,6 @@ using PluginInfo = EmbyStat.Common.Models.Entities.PluginInfo;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
 	public class EmbyServiceTests
     {
 	    private readonly EmbyService _subject;
@@ -57,10 +55,10 @@ namespace Tests.Unit.Services
 			var systemInfo = new ServerInfo();
 
 			_embyClientMock = new Mock<IEmbyClient>();
-		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).Returns(Task.FromResult(embyPlugins));
+		    _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).ReturnsAsync(embyPlugins);
 		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).Returns(Task.FromResult(systemInfo));
-		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).Returns(Task.FromResult(embyDrives));
+		    _embyClientMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(systemInfo);
+		    _embyClientMock.Setup(x => x.GetLocalDrivesAsync()).ReturnsAsync(embyDrives);
 
             var embyRepository = new Mock<IEmbyRepository>();
             embyRepository.Setup(x => x.GetAllPlugins()).Returns(plugins);
@@ -81,7 +79,7 @@ namespace Tests.Unit.Services
 	    }
 
         [Fact]
-        public async void GetEmbyToken()
+        public async Task GetEmbyToken()
         {
             var authResult = new AuthenticationResult
             {
@@ -92,14 +90,14 @@ namespace Tests.Unit.Services
             };
 
             _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(authResult));
+                .ReturnsAsync(authResult);
             var login = new EmbyLogin
             {
                 Password = "AdminPass",
                 Address = "http://localhost",
                 UserName = "reggi"
             };
-            var result = await _subject.GetEmbyToken(login);
+            var result = await _subject.GetEmbyTokenAsync(login);
 
             result.Should().NotBeNull();
             result.Id = authResult.User.Id;
@@ -109,54 +107,54 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-		public async void GetEmbyTokenWithNoLoginInfo()
+		public async Task GetEmbyTokenWithNoLoginInfo()
 	    {
-		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(null));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyTokenAsync(null));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
 	    [Fact]
-	    public async void GetEmbyTokenWithNoPassword()
+	    public async Task GetEmbyTokenWithNoPassword()
 	    {
 			var login = new EmbyLogin
 			{
 				UserName = "Admin",
 				Address = "http://localhost"
 			};
-		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyTokenAsync(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
 	    [Fact]
-	    public async void GetEmbyTokenWithNoUserName()
+	    public async Task GetEmbyTokenWithNoUserName()
 	    {
 		    var login = new EmbyLogin
 		    {
 			    Password = "AdminPass",
 			    Address = "http://localhost"
 		    };
-		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyTokenAsync(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);
 	    }
 
 	    [Fact]
-	    public async void GetEmbyTokenFailedLogin()
+	    public async Task GetEmbyTokenFailedLogin()
 	    {
 		    _embyClientMock.Setup(x => x.AuthenticateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-			    .ThrowsAsync(new Exception());
+			    .Throws(new Exception());
 			var login = new EmbyLogin
 		    {
 			    Password = "AdminPass",
 			    Address = "http://localhost",
 				UserName = "Admin"
 		    };
-		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyToken(login));
+		    var ex = await Assert.ThrowsAsync<BusinessException>(() => _subject.GetEmbyTokenAsync(login));
 
 		    ex.Message.Should().Be("TOKEN_FAILED");
 		    ex.StatusCode.Should().Be(500);

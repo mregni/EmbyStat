@@ -24,15 +24,15 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region Emby Users
         void UpsertUsers(IEnumerable<EmbyUser> users);
-        IEnumerable<EmbyUser> GetAllUsers();
+        List<EmbyUser> GetAllUsers();
         void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);
         EmbyUser GetUserById(string id);
 
         #endregion
 
         #region Devices
-        IEnumerable<Device> GetAllDevices();
-        IEnumerable<Device> GetDeviceById(IEnumerable<string> ids);
+        List<Device> GetAllDevices();
+        List<Device> GetDeviceById(IEnumerable<string> ids);
         void MarkDevicesAsDeleted(IEnumerable<Device> devices);
         void UpsertDevices(IEnumerable<Device> devices);
 

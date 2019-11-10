@@ -7,7 +7,7 @@ using Hangfire;
 
 namespace EmbyStat.Jobs
 {
-    public class JobInitializer : IJobInitializer, IDisposable
+    public class JobInitializer : IJobInitializer
     {
         private readonly IDatabaseCleanupJob _databaseCleanupJob;
         private readonly IPingEmbyJob _pingEmbyJob;
@@ -51,6 +51,7 @@ namespace EmbyStat.Jobs
                 Constants.JobIds.CheckUpdateId.ToString(),
                 () => _checkUpdateJob.Execute(),
                 jobs.Single(x => x.Id == Constants.JobIds.CheckUpdateId).Trigger);
+            
         }
 
         public void UpdateTrigger(Guid id, string trigger)
@@ -75,14 +76,6 @@ namespace EmbyStat.Jobs
             {
                 RecurringJob.AddOrUpdate(id.ToString(), () => _smallSyncJob.Execute(), trigger);
             }
-        }
-
-        public void Dispose()
-        {
-            _pingEmbyJob.Dispose();
-            _mediaSyncJob.Dispose();
-            _smallSyncJob.Dispose();
-            GC.SuppressFinalize(this);
         }
     }
 }

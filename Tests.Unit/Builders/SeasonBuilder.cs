@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using EmbyStat.Common.Models.Entities;
 
 namespace Tests.Unit.Builders
@@ -26,6 +24,11 @@ namespace Tests.Unit.Builders
             };
         }
 
+        public SeasonBuilder WithIndexNumber(int indexNumber)
+        {
+            _season.IndexNumber = indexNumber;
+            return this;
+        }
 
         public Season Build()
         {

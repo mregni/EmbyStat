@@ -1,15 +1,26 @@
-﻿using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
+﻿using EmbyStat.Common.Models.Entities;
+using MediaBrowser.Model.Entities;
+using System.Collections.Generic;
+using EmbyStat.Repositories.Interfaces.Helpers;
 
 namespace EmbyStat.Repositories.Interfaces
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IMediaRepository<Movie>
     {
         void RemoveMovies();
         void UpsertRange(IEnumerable<Movie> movies);
-        IEnumerable<Movie> GetAll(IEnumerable<string> collections);
-        bool Any();
-        int GetMovieCountForPerson(string personId);
-        Movie GetMovieById(string id);
+        List<Movie> GetAll(IReadOnlyList<string> libraryIds);
+        List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
+        Movie GetMovieById(int id);
+        int GetGenreCount(IReadOnlyList<string> libraryIds);
+        long GetTotalRuntime(IReadOnlyList<string> libraryIds);
+        Movie GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks);
+        Movie GetLongestMovie(IReadOnlyList<string> libraryIds);
+        double GetTotalDiskSize(IReadOnlyList<string> libraryIds);
+        int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
+        string GetMostFeaturedPerson(IReadOnlyList<string> libraryIds, PersonType type);
+        List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes);
+        List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds);
+        List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds);
     }
 }

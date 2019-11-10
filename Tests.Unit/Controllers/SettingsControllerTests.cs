@@ -80,6 +80,11 @@ namespace Tests.Unit.Controllers
             statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
 
             var languageServiceMock = new Mock<ILanguageService>();
+            languageServiceMock.Setup(x => x.GetLanguages()).Returns(new List<Language>
+            {
+                new Language {Code = "BE", Id = "1", Name = "Dutch"},
+                new Language {Code = "EN", Id = "2", Name = "English"}
+            });
 
             _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object);
 		}
@@ -137,5 +142,12 @@ namespace Tests.Unit.Controllers
 
 		    _settingsServiceMock.Verify(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()), Times.Once);
 	    }
-	}
+
+        [Fact]
+        public void GetLanguages_Should_Return_All_Languages()
+        {
+            var result = _subject.GetList();
+            result.Should().BeOfType<OkObjectResult>();
+        }
+    }
 }

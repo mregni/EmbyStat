@@ -100,7 +100,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             var bytes = GetMessageBytes(messageName, data);
             try
             {
-                await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
+                await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken);
             }
             catch (Exception e)
             {
@@ -241,7 +241,16 @@ namespace EmbyStat.Clients.Emby.WebSocket
 
         public void Dispose()
         {
-            _clientWebSocket?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _clientWebSocket?.Dispose();
+            }
         }
     }
 }

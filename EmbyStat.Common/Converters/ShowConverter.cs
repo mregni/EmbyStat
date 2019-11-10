@@ -88,12 +88,12 @@ namespace EmbyStat.Common.Converters
             };
         }
 
-        public static Episode ConvertToEpisode(BaseItemDto episode, Show show)
+        public static Episode ConvertToEpisode(BaseItemDto episode, int showId)
         {
             return new Episode
             {
                 Id = Convert.ToInt32(episode.Id),
-                ShowId = Convert.ToInt32(show.Id),
+                ShowId = showId,
                 LocationType = LocationType.Disk,
                 Name = episode.Name,
                 Path = episode.Path,

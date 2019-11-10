@@ -18,10 +18,11 @@ namespace EmbyStat.Web
 {
     public class Program
     {
+        public static Logger Logger; 
         public static int Main(string[] args)
         {
             CreateConfigFolder();
-            var logger = SetupLogging();
+            Logger = SetupLogging();
 
             try
             {
@@ -31,7 +32,7 @@ namespace EmbyStat.Web
 
                 var listeningUrl = $"http://*:{options.Port}";
 
-                logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
+                Logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
                 var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() } };
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
@@ -44,13 +45,13 @@ namespace EmbyStat.Web
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
+                Logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
                 return 1;
             }
             finally
             {
                 Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
-                logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
+                Logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
                 LogManager.Flush();
                 LogManager.Shutdown();
             }
@@ -112,8 +113,7 @@ namespace EmbyStat.Web
                 }
                 catch (Exception ex)
                 {
-                    Log.Fatal($"{Constants.LogPrefix.System}\tDatabase seed or update failed");
-                    Log.Fatal($"{Constants.LogPrefix.System}\t{ex.Message}\n{ex.StackTrace}");
+                    Logger.Fatal(ex);
                     throw;
                 }
             }

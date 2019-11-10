@@ -55,6 +55,12 @@ namespace EmbyStat.Repositories
 
             var movieCollection = _context.GetContext().GetCollection<Movie>();
             movieCollection.EnsureIndex(x => x.Id, true);
+            movieCollection.EnsureIndex(x => x.CollectionId);
+            movieCollection.EnsureIndex(x => x.RunTimeTicks);
+            movieCollection.EnsureIndex(x => x.SortName);
+            movieCollection.EnsureIndex(x => x.IMDB);
+            movieCollection.EnsureIndex(x => x.Primary);
+            movieCollection.EnsureIndex(x => x.CommunityRating);
 
             var personCollection = _context.GetContext().GetCollection<Person>();
             personCollection.EnsureIndex(x => x.Id, true);

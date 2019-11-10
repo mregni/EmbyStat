@@ -15,6 +15,8 @@
     <FileVersion>0.0.0.0</FileVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <AssemblyName>EmbyStat</AssemblyName>
+
+    <ProjectGuid>{1D5D997D-34AE-45BE-9935-13E0D63EAC02}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +24,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.2.1" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.6" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.7" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -30,7 +32,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.5" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.5.0" />
     <PackageReference Include="Rollbar.PlugIns.NLog" Version="3.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />

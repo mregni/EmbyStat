@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Migrator.Models;
-using EmbyStat.Services.Interfaces;
-using Newtonsoft.Json;
 
 namespace EmbyStat.Migrator.Migrations
 {

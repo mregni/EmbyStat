@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -19,7 +18,6 @@ namespace EmbyStat.Controllers.Settings
         private readonly ILanguageService _languageService;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMapper _mapper;
-        private readonly Logger _logger;
 
         public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper)
         {
@@ -27,18 +25,12 @@ namespace EmbyStat.Controllers.Settings
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
             _mapper = mapper;
-            _logger = LogManager.GetCurrentClassLogger();
         }
 
 	    [HttpGet]
 	    public IActionResult Get()
         {
 	        var settings = _settingsService.GetUserSettings();
-	        if (!settings.WizardFinished)
-	        {
-                _logger.Info($"{Constants.LogPrefix.ServerApi}\tStarting wizard for user.");
-	        }
-
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
 

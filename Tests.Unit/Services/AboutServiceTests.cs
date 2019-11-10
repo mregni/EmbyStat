@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common.Models.Settings;
+﻿using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services;
 using FluentAssertions;
 using Microsoft.DotNet.PlatformAbstractions;
@@ -11,7 +8,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
     public class AboutServiceTests
     {
         private readonly Mock<IOptions<AppSettings>> _appSettingsMock;

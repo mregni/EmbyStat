@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
@@ -16,7 +15,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Mapper collection")]
     public class ShowServiceTests
     {
         private readonly List<Library> _collections;
@@ -38,10 +36,11 @@ namespace Tests.Unit.Services
                 .AddName("Chuck")
                 .AddCreateDate(new DateTime(1990, 4, 2))
                 .AddGenre("Comedy", "Action")
+                .AddCommunityRating(null)
                 .Build();
             _showTwo = new ShowBuilder(2, _collections.First().Id)
                 .AddName("The 100")
-                .AddMissingEpisodes(10)
+                .AddMissingEpisodes(10, 1)
                 .AddCommunityRating(8.3f)
                 .AddPremiereDate(new DateTime(1992, 4, 1))
                 .AddEpisode(new EpisodeBuilder(3, 2, "1").Build())
@@ -53,7 +52,7 @@ namespace Tests.Unit.Services
                 .Build();
             _showThree = new ShowBuilder(3, _collections.First().Id)
                 .AddName("Dexter")
-                .AddMissingEpisodes(2)
+                .AddMissingEpisodes(2, 1)
                 .AddCommunityRating(8.4f)
                 .AddPremiereDate(new DateTime(2018, 4, 10))
                 .AddEpisode(new EpisodeBuilder(3, 3, "1").Build())
@@ -68,7 +67,14 @@ namespace Tests.Unit.Services
         private ShowService CreateShowService(params Show[] shows)
         {
             var showRepositoryMock = new Mock<IShowRepository>();
-            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(shows);
+            showRepositoryMock.Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(shows.ToList());
+            showRepositoryMock.Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderByDescending(x => x.CommunityRating).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderByDescending(x => x.DateCreated).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>())).Returns(shows.Length);
+            showRepositoryMock.Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderByDescending(x => x.PremiereDate).FirstOrDefault);
+            showRepositoryMock.Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(shows.OrderBy(x => x.PremiereDate).FirstOrDefault);
+
             foreach (var show in shows)
             {
                 showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
@@ -80,8 +86,8 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in shows.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).Returns(
-                    Task.FromResult(new Person
+                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).ReturnsAsync(
+                    new Person
                     {
                         Id = person.Id,
                         Name = person.Name,
@@ -89,7 +95,7 @@ namespace Tests.Unit.Services
                         Primary = "primary.jpg",
                         MovieCount = 0,
                         ShowCount = 0
-                    }));
+                    });
             }
 
             var settingsServiceMock = new Mock<ISettingsService>();
@@ -112,7 +118,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalShowCount()
+        public async Task GetTotalShowCount()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -124,7 +130,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalEpisodeCount()
+        public async Task GetTotalEpisodeCount()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -136,7 +142,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalMissingEpisodeCount()
+        public async Task GetTotalMissingEpisodeCount()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -148,7 +154,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetCalculatePlayableTime()
+        public async Task GetCalculatePlayableTime()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -163,7 +169,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetHighestRatedShow()
+        public async Task GetHighestRatedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -180,7 +186,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLowestRatedShow()
+        public async Task GetLowestRatedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -197,7 +203,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetOldestPremieredShow()
+        public async Task GetOldestPremieredShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -214,7 +220,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetShowWithMostEpisodes()
+        public async Task GetShowWithMostEpisodes()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -231,7 +237,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLatestAddedShow()
+        public async Task GetLatestAddedShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -248,7 +254,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetNewestPremieredShow()
+        public async Task GetNewestPremieredShow()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -265,7 +271,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalDiskSize()
+        public async Task GetTotalDiskSize()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -281,7 +287,7 @@ namespace Tests.Unit.Services
         #region Charts
 
         [Fact]
-        public async void GetGenreChart()
+        public async Task GetGenreChart()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -308,7 +314,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetRatingChart()
+        public async Task GetRatingChart()
         {
             var showFour = new ShowBuilder(4, _collections.First().Id).AddCommunityRating(9.3f).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
@@ -342,7 +348,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetPremiereYearChart()
+        public async Task GetPremiereYearChart()
         {
             var showFour = new ShowBuilder(4, _collections.First().Id).AddPremiereDate(new DateTime(2002, 1, 10)).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
@@ -377,7 +383,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetCollectedRateChart()
+        public async Task GetCollectedRateChart()
         {
             var showFour = new ShowBuilder(4, _collections.First().Id).ClearEpisodes().Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
@@ -440,7 +446,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetOfficialRatingChart()
+        public async Task GetOfficialRatingChart()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -465,7 +471,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetShowStateChart()
+        public async Task GetShowStateChart()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
@@ -493,7 +499,7 @@ namespace Tests.Unit.Services
         #region People
 
         [Fact]
-        public async void GetMostFeaturedActorsPerGenreAsync()
+        public async Task GetMostFeaturedActorsPerGenre()
         {
             var stat = await _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 

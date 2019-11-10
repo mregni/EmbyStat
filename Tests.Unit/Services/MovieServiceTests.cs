@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -11,6 +10,7 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Extensions;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
@@ -18,7 +18,6 @@ using Constants = EmbyStat.Common.Constants;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Services collection")]
     public class MovieServiceTests
     {
         private readonly MovieService _subject;
@@ -39,7 +38,7 @@ namespace Tests.Unit.Services
             var actorIdOne = Guid.NewGuid();
 
             _movieOne = new MovieBuilder(0)
-                .AddCommunityRating((float) 1.7)
+                .AddCommunityRating((float)1.7)
                 .AddOfficialRating("R")
                 .AddPremiereDate(new DateTime(2002, 4, 2, 0, 0, 0))
                 .AddRunTimeTicks(2, 10, 0)
@@ -66,9 +65,9 @@ namespace Tests.Unit.Services
                 .AddRunTimeTicks(3, 50, 0)
                 .AddName("The lord of the rings, return of the king")
                 .AddGenres("Comedy")
-                .AddPerson(new ExtraPerson{Type = PersonType.Actor,Name = "Frodo", Id = actorIdOne.ToString()})
-                .AddPerson(new ExtraPerson{Type = PersonType.Director, Name = "Frodo", Id = Guid.NewGuid().ToString()})
-                .AddPerson(new ExtraPerson{Type = PersonType.Writer, Name = "Frodo", Id = Guid.NewGuid().ToString()})
+                .AddPerson(new ExtraPerson { Type = PersonType.Actor, Name = "Frodo", Id = actorIdOne.ToString() })
+                .AddPerson(new ExtraPerson { Type = PersonType.Director, Name = "Frodo", Id = Guid.NewGuid().ToString() })
+                .AddPerson(new ExtraPerson { Type = PersonType.Writer, Name = "Frodo", Id = Guid.NewGuid().ToString() })
                 .AddImdb("0003")
                 .Build();
 
@@ -81,15 +80,38 @@ namespace Tests.Unit.Services
         private MovieService CreateMovieService(Mock<ISettingsService> settingsServiceMock, params Movie[] movies)
         {
             var movieRepositoryMock = new Mock<IMovieRepository>();
-            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IEnumerable<string>>())).Returns(movies);
+            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetAllWithImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), It.IsAny<int>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+
+            movieRepositoryMock.Setup(x => x.GetGenreCount(It.IsAny<IReadOnlyList<string>>())).Returns(movies.SelectMany(x => x.Genres).Distinct().Count);
+            movieRepositoryMock.Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.CommunityRating).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.DateCreated).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Length);
+            movieRepositoryMock.Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.PremiereDate).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderBy(x => x.PremiereDate).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetLongestMovie(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.RunTimeTicks).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetShortestMovie(It.IsAny<IReadOnlyList<string>>(), It.IsAny<long>())).Returns(movies.OrderBy(x => x.RunTimeTicks).FirstOrDefault);
+            movieRepositoryMock.Setup(x => x.GetTotalDiskSize(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0));
+            movieRepositoryMock.Setup(x => x.GetTotalRuntime(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Sum(x => x.RunTimeTicks ?? 0));
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => string.IsNullOrEmpty(x.IMDB)).ToList);
+            movieRepositoryMock.Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => string.IsNullOrEmpty(x.Primary)).ToList);
+            movieRepositoryMock.Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), 10)).Returns(movies.Where(x => x.RunTimeTicks < new TimeSpan(0, 0, 10, 0).Ticks).ToList);
+            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Actor)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Actor));
+            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Writer)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Writer));
+            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Director)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Director));
+
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
             collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).Returns(
-                    Task.FromResult(new Person
+                personServiceMock.Setup(x => x.GetPersonByNameAsync(person.Name)).ReturnsAsync(
+                    new Person
                     {
                         Id = person.Id,
                         Name = person.Name,
@@ -97,9 +119,9 @@ namespace Tests.Unit.Services
                         Primary = "primary.jpg",
                         MovieCount = 0,
                         ShowCount = 0
-                    }));
+                    });
             }
-            
+
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
             return new MovieService(movieRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, settingsServiceMock.Object, statisticsRepositoryMock.Object, jobRepositoryMock.Object);
@@ -117,7 +139,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetMovieCountStat()
+        public async Task GetMovieCountStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -129,7 +151,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetGenreCountStat()
+        public async Task GetGenreCountStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -141,7 +163,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLowestRatedStat()
+        public async Task GetLowestRatedStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -159,7 +181,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetHighestRatedStat()
+        public async Task GetHighestRatedStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -177,7 +199,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetOldestPremieredStat()
+        public async Task GetOldestPremieredStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -195,7 +217,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetNewestPremieredStat()
+        public async Task GetNewestPremieredStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -213,7 +235,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetShortestStat()
+        public async Task GetShortestStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -231,7 +253,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLongestStat()
+        public async Task GetLongestStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -249,7 +271,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLatestAddedStat()
+        public async Task GetLatestAddedStat()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -267,7 +289,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetTotalDiskSize()
+        public async Task GetTotalDiskSize()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -283,7 +305,7 @@ namespace Tests.Unit.Services
         #region Charts
 
         [Fact]
-        public async void GetTotalPlayLengthStat()
+        public async Task GetTotalPlayLengthStat()
         {
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(56, 34, 1).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
@@ -299,7 +321,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculateGenreChart()
+        public async Task CalculateGenreChart()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -326,7 +348,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculateOfficialRatingChart()
+        public async Task CalculateOfficialRatingChart()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -347,7 +369,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculateOfficialRatingChartWithoutMovies()
+        public async Task CalculateOfficialRatingChartWithoutMovies()
         {
             var service = CreateMovieService(_settingsServiceMock);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
@@ -365,7 +387,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculateRatingChart()
+        public async Task CalculateRatingChart()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -398,7 +420,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculateRatingChartWithoutMovies()
+        public async Task CalculateRatingChartWithoutMovies()
         {
             var service = CreateMovieService(_settingsServiceMock);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
@@ -424,12 +446,12 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculatePremiereYearChart()
+        public async Task CalculatePremiereYearChart()
         {
             var movieFour = new MovieBuilder(3).AddPremiereDate(new DateTime(1991, 3, 12)).Build();
             var movieFive = new MovieBuilder(4).AddPremiereDate(new DateTime(1992, 3, 12)).Build();
             var movieSix = new MovieBuilder(5).AddPremiereDate(new DateTime(1989, 3, 12)).Build();
-            var service = CreateMovieService(_settingsServiceMock,_movieOne, _movieTwo, _movieThree, movieFour, movieFive, movieSix);
+            var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour, movieFive, movieSix);
 
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
             stat.Should().NotBeNull();
@@ -453,7 +475,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void CalculatePremiereYearChartWithoutMovies()
+        public async Task CalculatePremiereYearChartWithoutMovies()
         {
             var service = CreateMovieService(_settingsServiceMock);
 
@@ -475,7 +497,7 @@ namespace Tests.Unit.Services
         #region People
 
         [Fact]
-        public async void TotalTypeCountForActors()
+        public async Task TotalTypeCountForActors()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -486,7 +508,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void TotalTypeCountForDirectors()
+        public async Task TotalTypeCountForDirectors()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -497,7 +519,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void TotalTypeCountForWriters()
+        public async Task TotalTypeCountForWriters()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -508,7 +530,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void MostFeaturedActorsPerGenre()
+        public async Task MostFeaturedActorsPerGenre()
         {
             var stat = await _subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -528,7 +550,7 @@ namespace Tests.Unit.Services
         #region Suspicious
 
         [Fact]
-        public async void DuplicateMovies()
+        public async Task DuplicateMovies()
         {
             var movieFour = new MovieBuilder(3).AddImdb(_movieOne.IMDB).Build();
             var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
@@ -548,7 +570,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void DuplicateMoviesButDfferent3DFormat()
+        public async Task DuplicateMoviesButDfferent3DFormat()
         {
             var movieFour = new MovieBuilder(3).AddVideo3DFormat(Video3DFormat.FullSideBySide).Build();
             var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
@@ -560,7 +582,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void ShortMovies()
+        public async Task ShortMovies()
         {
             var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
@@ -578,7 +600,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void ShortMoviesWithSettingDisabled()
+        public async Task ShortMoviesWithSettingDisabled()
         {
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
@@ -593,7 +615,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void MoviesWithoutImdb()
+        public async Task MoviesWithoutImdb()
         {
             var movieFour = new MovieBuilder(4).AddImdb(string.Empty).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
@@ -610,7 +632,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void MoviesWithoutPrimaryImage()
+        public async Task MoviesWithoutPrimaryImage()
         {
             var movieFour = new MovieBuilder(4).AddPrimaryImage(string.Empty).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);

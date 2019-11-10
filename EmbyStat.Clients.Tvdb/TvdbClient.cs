@@ -8,45 +8,39 @@ using EmbyStat.Clients.Tvdb.Converter;
 using EmbyStat.Clients.Tvdb.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Helpers;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Common.Net;
 using MediaBrowser.Model.Net;
 using NLog;
+using RestSharp;
 
 namespace EmbyStat.Clients.Tvdb
 {
     public class TvdbClient : ITvdbClient
     {
-        private TvdbToken JWtoken;
-        private readonly IAsyncHttpClient _httpClient;
+        private TvdbToken _jwtoken;
         private readonly Logger _logger;
+        private readonly IRestClient _restClient;
 
-        public TvdbClient(IAsyncHttpClient httpClient)
+        public TvdbClient()
         {
-            _httpClient = httpClient;
             _logger = LogManager.GetCurrentClassLogger();
+            _restClient = new RestClient(Constants.Tvdb.BaseUrl).UseSerializer(() => new JsonNetSerializer());
         }
 
         public async Task Login(string apiKey, CancellationToken cancellationToken)
         {
             _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tLogging in on theTVDB API with key: {apiKey}");
-            var httpRequest = new HttpRequest
-            {
-                CancellationToken = cancellationToken,
-                Method = "POST",
-                Url = $"{Constants.Tvdb.BaseUrl}{Constants.Tvdb.LoginUrl}",
-                RequestContent = "{ \"apikey\": \""+ apiKey + "\"}",
-                RequestContentType = "application/json"
-            };
 
             try
             {
-                using (var stream = await _httpClient.SendAsync(httpRequest))
-                {
-                    JWtoken = JsonSerializerExtentions.DeserializeFromStream<TvdbToken>(stream);
-                }
+                var request = new RestRequest(Constants.Tvdb.LoginUrl, Method.POST);
+                request.AddHeader("Accept", "application/json");
+                request.Parameters.Clear();
+                request.AddParameter("application/json", "{ \"apikey\": \"" + apiKey + "\"}", ParameterType.RequestBody);
+
+                var result = await _restClient.ExecuteTaskAsync<TvdbToken>(request, cancellationToken);
+                _jwtoken = result.Data;
             }
             catch (HttpException e)
             {
@@ -54,6 +48,7 @@ namespace EmbyStat.Clients.Tvdb
                 {
                     throw new BusinessException("TVDB_LOGIN_FAILED", 500, e);
                 }
+
                 throw;
             }
         }
@@ -78,50 +73,48 @@ namespace EmbyStat.Clients.Tvdb
         private async Task<TvdbEpisodes> GetEpisodePage(string url, CancellationToken cancellationToken)
         {
             _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
-            var headers = new HttpHeaders {{"Authorization", $"Bearer {JWtoken.Token}"}};
-            var httpRequest = new HttpRequest
-            {
-                CancellationToken = cancellationToken,
-                Method = "GET",
-                Url = $"{Constants.Tvdb.BaseUrl}{url}",
-                RequestHeaders = headers
-            };
 
-            using (var stream = await _httpClient.SendAsync(httpRequest))
+            var request = new RestRequest(url, Method.GET);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", $"Bearer {_jwtoken.Token}");
+
+            var result = await _restClient.ExecuteTaskAsync<TvdbEpisodes>(request, cancellationToken);
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
             {
-                return JsonSerializerExtentions.DeserializeFromStream<TvdbEpisodes>(stream);
+                throw new HttpException("404 Not Found");
             }
+
+            return result.Data;
         }
 
-        public async Task<IEnumerable<string>> GetShowsToUpdate(IEnumerable<string> showIds, DateTime lastUpdateTime, CancellationToken cancellationToken)
+        public async Task<List<int>> GetShowsToUpdate(DateTime? lastUpdateTime, CancellationToken cancellationToken)
         {
-            _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCalling TheTVDB to udpated shows");
+            if (!lastUpdateTime.HasValue)
+            {
+                return new List<int>();
+            }
+
+            _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCalling TheTVDB for updated shows");
             try
             {
-                var updateList = new List<string>();
-                for (var i = lastUpdateTime; i < DateTime.Now; i = i.AddDays(7))
+                var updateList = new List<int>();
+                for (var i = lastUpdateTime.Value; i < DateTime.Now; i = i.AddDays(7))
                 {
                     var offset = new DateTimeOffset(i);
                     var epochTimeFrom = offset.ToUnixTimeSeconds();
                     var epochTimeTo = offset.AddDays(7).ToUnixTimeSeconds();
 
                     var url = string.Format(Constants.Tvdb.UpdatesUrl, epochTimeFrom, epochTimeTo);
-                    var headers = new HttpHeaders { { "Authorization", $"Bearer {JWtoken.Token}" } };
-                    var httpRequest = new HttpRequest
-                    {
-                        CancellationToken = cancellationToken,
-                        Method = "GET",
-                        Url = $"{Constants.Tvdb.BaseUrl}{url}",
-                        RequestHeaders = headers
-                    };
+
+                    var request = new RestRequest(url, Method.GET);
+                    request.AddHeader("Content-Type", "application/json");
+                    request.AddHeader("Authorization", $"Bearer {_jwtoken.Token}");
+
+                    var result = await _restClient.ExecuteTaskAsync<Updates>(request, cancellationToken);
+                    updateList.AddRange(result.Data.Data.Select(x => x.Id));
 
                     _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
-                    using (var stream = await _httpClient.SendAsync(httpRequest))
-                    {
-                        var list = JsonSerializerExtentions.DeserializeFromStream<Updates>(stream);
-                        var neededList = list.Data.Where(x => showIds.Any(y => y == x.Id.ToString())).Select(x => x.Id.ToString()).ToList();
-                        updateList.AddRange(neededList);
-                    }
                 }
 
                 return updateList;
@@ -129,7 +122,7 @@ namespace EmbyStat.Clients.Tvdb
             catch (Exception e)
             {
                 _logger.Error(e, $"{Constants.LogPrefix.TheTVDBCLient} Could not receive show list from TVDB");
-                return new List<string>();
+                return new List<int>();
             }
         }
     }

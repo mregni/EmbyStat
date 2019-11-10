@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Enums;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
@@ -11,7 +9,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
     public class SessionServiceTests
     {
         private readonly SessionService _sessionService;

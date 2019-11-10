@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using MediaBrowser.Model.Entities;
 
 namespace Tests.Unit.Builders
 {
@@ -50,6 +49,22 @@ namespace Tests.Unit.Builders
                     new MediaSource { Id = "12345", Path = "path/to/video", BitRate = 123456, Container = "mkv", Protocol = "File", RunTimeTicks = 1230498908, SizeInMb = 101 }
                 }
             };
+        }
+
+        public EpisodeBuilder WithLocationType(LocationType type)
+        {
+            _episode.LocationType = type;
+            if (type == LocationType.Virtual)
+            {
+                _episode.MediaSources.ForEach(x => x.SizeInMb = 0);
+            }
+            return this;
+        }
+
+        public EpisodeBuilder WithIndexNumber(int index)
+        {
+            _episode.IndexNumber = index;
+            return this;
         }
 
         public Episode Build()

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
@@ -12,7 +10,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-	[Collection("Mapper collection")]
     public class JobServiceTests
     {
         private readonly Mock<IJobRepository> _jobRepositoryMock;

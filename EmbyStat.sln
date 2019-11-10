@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Tvdb", "Em
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Emby.Http", "EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj", "{3F5C02D5-43D3-447D-B901-2237B124C8E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Migrator", "EmbyStat.Migrator\EmbyStat.Migrator.csproj", "{E87B237C-8E1E-4810-BE22-2E8A9D6A062E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Migrator", "EmbyStat.Migrator\EmbyStat.Migrator.csproj", "{E87B237C-8E1E-4810-BE22-2E8A9D6A062E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

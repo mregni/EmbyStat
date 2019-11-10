@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using NLog;
 using Rollbar;
 using Formatting = Newtonsoft.Json.Formatting;
 

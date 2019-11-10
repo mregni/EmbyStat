@@ -13,14 +13,12 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     public class DatabaseCleanupJob : BaseJob, IDatabaseCleanupJob
     {
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IPersonRepository _personRepository;
 
         public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IStatisticsRepository statisticsRepository, IPersonRepository personRepository) 
+            IStatisticsRepository statisticsRepository)
             : base(hubHelper, jobRepository, settingsService)
         {
             _statisticsRepository = statisticsRepository;
-            _personRepository = personRepository;
             Title = jobRepository.GetById(Id).Title;
         }
 

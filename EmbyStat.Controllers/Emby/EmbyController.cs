@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
@@ -30,7 +29,7 @@ namespace EmbyStat.Controllers.Emby
         public async Task<IActionResult> GenerateToken([FromBody] EmbyLoginViewModel login)
         {
             var embyLogin = _mapper.Map<EmbyLogin>(login);
-            var result = await _embyService.GetEmbyToken(embyLogin);
+            var result = await _embyService.GetEmbyTokenAsync(embyLogin);
             return Ok(_mapper.Map<EmbyTokenViewModel>(result));
         }
 
@@ -38,7 +37,7 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/info")]
         public async Task<IActionResult> GetServerInfo()
         {
-            var result = await _embyService.GetServerInfo();
+            var result = await _embyService.GetServerInfoAsync();
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
             return Ok(serverInfo);
@@ -64,7 +63,7 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/ping")]
         public async Task<IActionResult> PingEmby([FromBody]UrlViewModel url)
         {
-            var result = await _embyService.PingEmbyAsync(url.Url, string.Empty, new CancellationToken(false));
+            var result = await _embyService.PingEmbyAsync(url.Url);
             return Ok(result == "Emby Server");
         }
 

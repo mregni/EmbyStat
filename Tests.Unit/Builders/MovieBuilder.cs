@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using MediaBrowser.Model.Entities;
@@ -28,8 +27,15 @@ namespace Tests.Unit.Builders
                 Video3DFormat = null,
                 Genres = new[] {"id1"},
                 People = new[] {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor}},
-                MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } }
+                MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } },
+                CollectionId = "1"
             };
+        }
+
+        public MovieBuilder AddCreateDate(DateTime date)
+        {
+            _movie.DateCreated = date;
+            return this;
         }
 
         public MovieBuilder AddName(string title)
@@ -92,6 +98,12 @@ namespace Tests.Unit.Builders
         public MovieBuilder AddVideo3DFormat(Video3DFormat format)
         {
             _movie.Video3DFormat = format;
+            return this;
+        }
+
+        public MovieBuilder AddCollectionId(string id)
+        {
+            _movie.CollectionId = id;
             return this;
         }
 

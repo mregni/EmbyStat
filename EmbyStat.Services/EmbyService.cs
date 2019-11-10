@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common;
@@ -90,7 +89,7 @@ namespace EmbyStat.Services
             }
         }
 
-        public async Task<EmbyToken> GetEmbyToken(EmbyLogin login)
+        public async Task<EmbyToken> GetEmbyTokenAsync(EmbyLogin login)
         {
             if (!string.IsNullOrEmpty(login?.Password) && !string.IsNullOrEmpty(login.UserName))
             {
@@ -117,13 +116,13 @@ namespace EmbyStat.Services
             throw new BusinessException("TOKEN_FAILED");
         }
 
-        public async Task<ServerInfo> GetServerInfo()
+        public async Task<ServerInfo> GetServerInfoAsync()
         {
             var server = _embyRepository.GetServerInfo();
             if (server == null)
             {
                 var settings = _settingsService.GetUserSettings();
-                await GetAndProcessServerInfo(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken);
+                await GetAndProcessServerInfoAsync(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken);
             }
 
             return server;
@@ -134,9 +133,9 @@ namespace EmbyStat.Services
             return _embyRepository.GetEmbyStatus();
         }
 
-        public async Task<string> PingEmbyAsync(string embyAddress, string accessToken, CancellationToken cancellationToken)
+        public Task<string> PingEmbyAsync(string embyAddress)
         {
-            return await _embyClient.PingEmbyAsync(embyAddress, cancellationToken);
+            return _embyClient.PingEmbyAsync(embyAddress);
         }
 
         public void ResetMissedPings()
@@ -229,7 +228,7 @@ namespace EmbyStat.Services
 
         #region JobHelpers
 
-        public async Task GetAndProcessServerInfo(string embyAddress, string accessToken)
+        public async Task GetAndProcessServerInfoAsync(string embyAddress, string accessToken)
         {
             var server = await _embyClient.GetServerInfoAsync();
 
@@ -241,14 +240,14 @@ namespace EmbyStat.Services
             _embyRepository.UpsertServerInfo(server);
         }
 
-        public async Task GetAndProcessPluginInfo(string embyAddress, string accessToken)
+        public async Task GetAndProcessPluginInfoAsync(string embyAddress, string accessToken)
         {
             var plugins = await _embyClient.GetInstalledPluginsAsync();
 
             _embyRepository.RemoveAllAndInsertPluginRange(PluginConverter.ConvertToPluginList(plugins));
         }
 
-        public async Task GetAndProcessEmbyUsers(string embyAddress, string accessToken)
+        public async Task GetAndProcessEmbyUsersAsync(string embyAddress, string accessToken)
         {
             var usersJson = await _embyClient.GetEmbyUsersAsync();
             var users = UserConverter.ConvertToUserList(usersJson).ToList();
@@ -259,7 +258,7 @@ namespace EmbyStat.Services
             _embyRepository.MarkUsersAsDeleted(removedUsers);
         }
 
-        public async Task GetAndProcessDevices(string embyAddress, string accessToken)
+        public async Task GetAndProcessDevicesAsync(string embyAddress, string accessToken)
         {
             var devicesJson = await _embyClient.GetEmbyDevicesAsync();
             var devices = DeviceConverter.ConvertToDeviceList(devicesJson).ToList();
@@ -274,7 +273,7 @@ namespace EmbyStat.Services
 
         private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
         {
-            var movie = _movieRepository.GetMovieById(play.MediaId);
+            var movie = _movieRepository.GetMovieById(Convert.ToInt16(play.MediaId));
             if (movie == null)
             {
                 throw new BusinessException("MOVIENOTFOUND");
@@ -301,13 +300,13 @@ namespace EmbyStat.Services
 
         private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
         {
-            var episode = _showRepository.GetEpisodeById(play.MediaId);
+            var episode = _showRepository.GetEpisodeById(Convert.ToInt32(play.MediaId));
             if (episode == null)
             {
                 throw new BusinessException("EPISODENOTFOUND");
             }
 
-            var season = _showRepository.GetSeasonById(play.ParentId);
+            var season = _showRepository.GetSeasonById(Convert.ToInt32(play.ParentId));
             var seasonNumber = season.IndexNumber;
             var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 
@@ -343,11 +342,6 @@ namespace EmbyStat.Services
             }
 
             return watchedPercentage;
-        }
-
-        public void Dispose()
-        {
-            _embyClient?.Dispose();
         }
     }
 }

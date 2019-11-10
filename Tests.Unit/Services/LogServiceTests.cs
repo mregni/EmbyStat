@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -16,7 +15,6 @@ using Xunit;
 
 namespace Tests.Unit.Services
 {
-    [Collection("Mapper collection")]
     public class LogServiceTests
     {
         private readonly Mock<ISettingsService> _settingsServiceMock;
@@ -88,7 +86,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetLogStream()
+        public async Task GetLogStream()
         {
             if (Directory.Exists(Path.Combine("config", "Logs-test3").GetLocalPath()))
             {
@@ -103,7 +101,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
             var embyServiceMock = new Mock<IEmbyService>();
-            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(new ServerInfo { Id = Guid.NewGuid().ToString() }));
+            embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(new ServerInfo { Id = Guid.NewGuid().ToString() });
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
@@ -119,7 +117,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async void GetAnonymousLogStream()
+        public async Task GetAnonymousLogStream()
         {
             if (Directory.Exists(Path.Combine("config", "Logs-test4").GetLocalPath()))
             {
@@ -134,7 +132,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
             var embyServiceMock = new Mock<IEmbyService>();
-            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(Task.FromResult(new ServerInfo { Id = "654321" }));
+            embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(new ServerInfo { Id = "654321" });
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 

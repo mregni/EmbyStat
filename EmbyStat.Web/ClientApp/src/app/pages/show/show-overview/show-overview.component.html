@@ -136,13 +136,13 @@
                       <td mat-cell *matCellDef="let element" [attr.colspan]="getcolumns().length">
                         <div class="element-detail" [@detailExpand]="element == expandedRow ? 'expanded' : 'collapsed'">
                           <div class="d-flex flex-row justify-content-start align-items-start mb-3">
-                            <img src="{{getShowBannerLink(element)}}" height="60" class="border-radius-small"/>
+                            <img src="{{getShowBannerLink(element)}}" alt="Show banner" height="60" class="border-radius-small"/>
                             <div class="d-flex flex-column align-items-center justify-content-center ml-2">
                               <div>
-                              <img src="../../../../assets/images/imdb.png" height="15" class="mb-2" *ngIf="element.imdb !== undefined" (click)="openImdb(element.imdb)" />
+                              <img src="../../../../assets/images/imdb.png" alt="IMDB" height="15" class="mb-2" *ngIf="element.imdb !== undefined" (click)="openImdb(element.imdb)" />
                                 </div>
                               <div>
-                                <img src="../../../../assets/images/tvdb.png" height="15" *ngIf="element.tvdb !== undefined" (click)="openTvdb(element.tvdb)" />
+                                <img src="../../../../assets/images/tvdb.png" alt="TVDB" height="15" *ngIf="element.tvdb !== undefined" (click)="openTvdb(element.tvdb)" />
                               </div>
                             </div>
                           </div>
