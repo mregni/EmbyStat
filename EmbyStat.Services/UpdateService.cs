@@ -183,7 +183,7 @@ namespace EmbyStat.Services
                 _logger.Info($"Downloading zip file {result.Package.Name}");
 
                 var webClient = new WebClient();
-                webClient.DownloadFileCompleted += delegate () { DownloadFileCompleted(result); };
+                webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(result); };
                 await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
             catch (Exception e)
