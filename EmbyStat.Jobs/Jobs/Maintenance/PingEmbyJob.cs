@@ -44,10 +44,5 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
             await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
         }
-
-        public void Dispose()
-        {
-            _embyService.Dispose();
-        }
     }
 }

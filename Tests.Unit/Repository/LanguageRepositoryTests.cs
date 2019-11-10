@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories;
 using FluentAssertions;
-using Microsoft.Extensions.Options;
-using Moq;
-using Tests.Unit.Builders;
 using Xunit;
 
 namespace Tests.Unit.Repository

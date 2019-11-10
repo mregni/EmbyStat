@@ -41,10 +41,5 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await _embyService.GetAndProcessDevicesAsync(Settings.Emby.FullEmbyServerAddress, Settings.Emby.AccessToken);
             await LogInformation("Server devices downloaded");
         }
-
-        public void Dispose()
-        {
-            _embyService.Dispose();
-        }
     }
 }

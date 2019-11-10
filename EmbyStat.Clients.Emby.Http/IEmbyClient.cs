@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Common.Net;
@@ -12,7 +11,7 @@ using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 
 namespace EmbyStat.Clients.Emby.Http
 {
-    public interface IEmbyClient : IDisposable
+    public interface IEmbyClient
     {
         void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId);
         void SetAddressAndUser(string url, string token, string userId);

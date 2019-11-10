@@ -100,21 +100,14 @@ namespace EmbyStat.Common
         public static string Unknown => "UNKNOWN";
         
         //QUALITIES
-        public static string FOURK => "4K";
-        public static string THOUSANDFOURFOURP => "1440P";
-        public static string FULLHD => "1080P";
-        public static string HDREADY => "720P";
-        public static string FOURHUNDERDEIGHTY => "480P";
-        public static string LOWEST => "< 480P";
+        public static string FourK => "4K";
+        public static string Qhd => "1440P";
+        public static string FullHd => "1080P";
+        public static string HdReady => "720P";
+        public static string FourHunderdEighty => "480P";
+        public static string Dvd => "< 480P";
 
         //DUPLICATE REASONS
         public static string ByImdb => "BYIMDB";
-
-        public static class PersonType
-        {
-            public static string Actor = "Actor";
-            public static string Director = "Director";
-            public static string Writer = "Writer";
-        }
     }
 }

@@ -6,35 +6,35 @@
         {
             if (number == null)
             {
-                return Constants.LOWEST;
+                return Constants.Dvd;
             }
 
             if (3800 <= number)
             {
-                return Constants.FOURK;
+                return Constants.FourK;
             }
 
             if (2500 <= number)
             {
-                return Constants.THOUSANDFOURFOURP;
+                return Constants.Qhd;
             }
 
             if (1900 <= number)
             {
-                return Constants.FULLHD;
+                return Constants.FullHd;
             }
 
             if (1260 <= number)
             {
-                return Constants.HDREADY;
+                return Constants.HdReady;
             }
 
             if (700 <= number)
             {
-                return Constants.FOURHUNDERDEIGHTY;
+                return Constants.FourHunderdEighty;
             }
 
-            return Constants.LOWEST;
+            return Constants.Dvd;
         }
     }
 }

@@ -18,7 +18,6 @@ using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
 
@@ -88,8 +87,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             await CalculateStatistics();
             await LogProgress(100);
-
-            _embyClient.Dispose();
         }
 
         #region Movies
@@ -115,7 +112,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     processed += 100;
                     j++;
                     await LogInformation($"Processed { processed } / { totalCount } movies");
-                    ;
                 } while (processed < totalCount);
 
                 await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
@@ -456,10 +452,5 @@ namespace EmbyStat.Jobs.Jobs.Sync
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _embyClient?.Dispose();
-        }
     }
 }

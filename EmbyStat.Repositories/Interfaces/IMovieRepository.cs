@@ -9,7 +9,7 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void RemoveMovies();
         void UpsertRange(IEnumerable<Movie> movies);
-        List<Movie> GetAll(IReadOnlyList<string> collections);
+        List<Movie> GetAll(IReadOnlyList<string> libraryIds);
         List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
         Movie GetMovieById(int id);
         int GetGenreCount(IReadOnlyList<string> libraryIds);

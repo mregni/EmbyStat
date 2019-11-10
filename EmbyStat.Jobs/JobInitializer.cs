@@ -7,7 +7,7 @@ using Hangfire;
 
 namespace EmbyStat.Jobs
 {
-    public class JobInitializer : IJobInitializer, IDisposable
+    public class JobInitializer : IJobInitializer
     {
         private readonly IDatabaseCleanupJob _databaseCleanupJob;
         private readonly IPingEmbyJob _pingEmbyJob;
@@ -76,13 +76,6 @@ namespace EmbyStat.Jobs
             {
                 RecurringJob.AddOrUpdate(id.ToString(), () => _smallSyncJob.Execute(), trigger);
             }
-        }
-
-        public void Dispose()
-        {
-            _pingEmbyJob.Dispose();
-            _mediaSyncJob.Dispose();
-            _smallSyncJob.Dispose();
         }
     }
 }

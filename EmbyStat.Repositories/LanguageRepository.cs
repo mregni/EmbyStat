@@ -2,7 +2,6 @@
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
-using LiteDB;
 
 namespace EmbyStat.Repositories
 {

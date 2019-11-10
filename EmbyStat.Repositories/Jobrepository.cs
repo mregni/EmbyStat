@@ -4,7 +4,6 @@ using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Repositories.Interfaces;
-using LiteDB;
 
 namespace EmbyStat.Repositories
 {

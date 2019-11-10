@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
@@ -86,7 +85,6 @@ namespace EmbyStat.Repositories
                     var collection = database.GetCollection<Movie>();
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Select(x => x.Genres)
-                        .ToList()
                         .SelectMany(x => x)
                         .Distinct()
                         .Count();
@@ -103,7 +101,6 @@ namespace EmbyStat.Repositories
                     var collection = database.GetCollection<Movie>();
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Select(x => x.RunTimeTicks)
-                        .ToList()
                         .Sum(x => x ?? 0);
                 }
             });
@@ -118,8 +115,7 @@ namespace EmbyStat.Repositories
                     var collection = database.GetCollection<Movie>();
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Select(x => x.MediaSources.FirstOrDefault())
-                        .ToList()
-                        .Sum(x => x.SizeInMb);
+                        .Sum(x => x?.SizeInMb ?? 0);
                 }
             });
         }

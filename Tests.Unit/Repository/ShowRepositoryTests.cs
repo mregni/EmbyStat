@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;
-using Microsoft.Extensions.Options;
-using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 

@@ -64,7 +64,7 @@ namespace EmbyStat.Services
 
             if (update.IsUpdateAvailable)
             {
-                //Notify everyone that there is an update
+                //TODO: Notify everyone that there is an update
             }
 
             return update;
@@ -115,15 +115,34 @@ namespace EmbyStat.Services
                 return null;
             }
 
+            UpdateTrain classification;
+            if (obj.PreRelease)
+            {
+                if (obj.Name.Contains(_settingsService.GetAppSettings().Updater.DevString, StringComparison.OrdinalIgnoreCase))
+                {
+                    classification = UpdateTrain.Dev;
+                }
+                else if (obj.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString, StringComparison.OrdinalIgnoreCase))
+                {
+                    classification = UpdateTrain.Beta;
+                }
+                else
+                {
+                    classification = UpdateTrain.Release;
+                }
+            }
+            else
+            {
+                classification = UpdateTrain.Release;
+            }
+
             return new UpdateResult
             {
                 AvailableVersion = version.ToString(),
                 IsUpdateAvailable = version > minVersion,
                 Package = new PackageInfo
                 {
-                    Classification = obj.PreRelease
-                        ? (obj.Name.Contains(_settingsService.GetAppSettings().Updater.DevString, StringComparison.OrdinalIgnoreCase) ? UpdateTrain.Dev : UpdateTrain.Beta)
-                        : UpdateTrain.Release,
+                    Classification = classification,
                     Name = asset.Name,
                     SourceUrl = asset.BrowserDownloadUrl,
                     VersionStr = version.ToString(),
@@ -164,7 +183,7 @@ namespace EmbyStat.Services
                 _logger.Info($"Downloading zip file {result.Package.Name}");
 
                 var webClient = new WebClient();
-                webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(sender, e, result); };
+                webClient.DownloadFileCompleted += delegate () { DownloadFileCompleted(result); };
                 await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
             catch (Exception e)
@@ -237,7 +256,7 @@ namespace EmbyStat.Services
             File.WriteAllText($"{fileName}", obj);
         }
 
-        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e, UpdateResult result)
+        private void DownloadFileCompleted(UpdateResult result)
         {
             _logger.Info("Downloading finished");
             UnPackZip(result);

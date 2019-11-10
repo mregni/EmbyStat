@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Net;
 using Microsoft.Extensions.Options;

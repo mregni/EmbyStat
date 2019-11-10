@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
 

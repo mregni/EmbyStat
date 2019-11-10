@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories;
 using Microsoft.Extensions.Options;

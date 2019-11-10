@@ -7,7 +7,7 @@ using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces
 {
-    public interface IEmbyService : IDisposable
+    public interface IEmbyService
     {
         #region Server
 
@@ -41,9 +41,9 @@ namespace EmbyStat.Services.Interfaces
         #region JobHelpers
 
         Task GetAndProcessServerInfoAsync(string embyAddress, string accessToken);
-        Task GetAndProcessPluginInfoAsync(string embyAddress, string settingsAccessToken);
-        Task GetAndProcessEmbyUsersAsync(string embyAddress, string settingsAccessToken);
-        Task GetAndProcessDevicesAsync(string embyAddress, string settingsAccessToken);
+        Task GetAndProcessPluginInfoAsync(string embyAddress, string accessToken);
+        Task GetAndProcessEmbyUsersAsync(string embyAddress, string accessToken);
+        Task GetAndProcessDevicesAsync(string embyAddress, string accessToken);
 
         #endregion
     }

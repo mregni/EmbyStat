@@ -324,7 +324,7 @@ namespace EmbyStat.Services
             var shortMovies = _movieRepository.GetToShortMovieList(libraryIds, settings.ToShortMovie);
             return shortMovies.Select((t, i) => new ShortMovie
             {
-                Number = i++,
+                Number = i,
                 Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
                 Title = t.Name,
                 MediaId = t.Id
@@ -337,7 +337,7 @@ namespace EmbyStat.Services
             return moviesWithoutImdbId
                 .Select((t, i) => new SuspiciousMovie
                 {
-                    Number = i++,
+                    Number = i,
                     Title = t.Name,
                     MediaId = t.Id
                 });
@@ -348,7 +348,7 @@ namespace EmbyStat.Services
             var noPrimaryImageMovies = _movieRepository.GetMoviesWithoutPrimaryImage(libraryIds);
             return noPrimaryImageMovies.Select((t, i) => new SuspiciousMovie
             {
-                Number = i++,
+                Number = i,
                 Title = t.Name,
                 MediaId = t.Id
             })

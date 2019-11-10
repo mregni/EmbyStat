@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using FluentAssertions;
-using LiteDB;
 using Xunit;
 
 namespace Tests.Unit.Extensions

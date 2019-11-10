@@ -12,7 +12,7 @@ namespace EmbyStat.Repositories.Interfaces
         void InsertPlays(List<Play> sessionPlays);
         IEnumerable<string> GetMediaIdsForUser(string userId, PlayType type);
         IEnumerable<Session> GetSessionsForUser(string userId);
-        int GetPlayCountForUser(string UserId);
+        int GetPlayCountForUser(string userId);
         Session GetSessionById(string sessionId);
     }
 }

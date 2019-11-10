@@ -55,7 +55,7 @@ namespace EmbyStat.Clients.Emby.Http
             ResetHttpHeaders();
         }
 
-        public async Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
+        public Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -74,7 +74,12 @@ namespace EmbyStat.Clients.Emby.Http
 
             ServerAddress = address;
             ResetHttpHeaders();
-            
+
+            return CallAuthenticateUserApi(username, password, address);
+        }
+
+        private async Task<AuthenticationResult> CallAuthenticateUserApi(string username, string password, string address)
+        {
             Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
             var request = new RestRequest("Users/AuthenticateByName", Method.POST)
                 .AddQueryParameter("Username", HttpUtility.UrlEncode(username))
@@ -244,11 +249,6 @@ namespace EmbyStat.Clients.Emby.Http
             CurrentUserId = new Guid(userId);
             ResetHttpHeaders();
             Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
-        }
-
-        public void Dispose()
-        {
-
         }
     }
 }

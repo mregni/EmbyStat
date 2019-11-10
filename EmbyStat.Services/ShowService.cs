@@ -14,7 +14,6 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
 using LocationType = EmbyStat.Common.Enums.LocationType;
 

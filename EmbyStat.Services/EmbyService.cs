@@ -343,10 +343,5 @@ namespace EmbyStat.Services
 
             return watchedPercentage;
         }
-
-        public void Dispose()
-        {
-            _embyClient?.Dispose();
-        }
     }
 }
