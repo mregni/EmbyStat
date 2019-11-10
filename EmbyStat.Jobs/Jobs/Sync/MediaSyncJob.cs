@@ -111,7 +111,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                     processed += 100;
                     j++;
-                    await LogInformation($"Processed { processed } / { totalCount } movies");
+                    var logProcessed = processed < totalCount ? processed : totalCount;
+                    await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                 } while (processed < totalCount);
 
                 await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
