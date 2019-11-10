@@ -80,10 +80,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(15);
 
             await ProcessMoviesAsync(libraries, cancellationToken);
-            await LogProgress(35);
+            await LogProgress(55);
 
             await ProcessShowsAsync(libraries, cancellationToken);
-            await LogProgress(55);
+            await LogProgress(85);
 
             await CalculateStatistics();
             await LogProgress(100);
@@ -111,10 +111,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                     processed += 100;
                     j++;
-                    await LogInformation($"Processed { processed } / { totalCount } movies");
+                    var logProcessed = processed < totalCount ? processed : totalCount;
+                    await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                 } while (processed < totalCount);
 
-                await LogProgress(Math.Round(15 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
+                await LogProgress(Math.Round(15 + 40 * (i + 1) / (double)neededLibraries.Count, 1));
             }
         }
 
@@ -200,7 +201,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 await PerformShowSyncAsync(showsThatNeedAnUpdate, neededLibraries[i], updateStartTime);
-                await LogProgress(Math.Round(35 + 20 * (i + 1) / (double)neededLibraries.Count, 1));
+                await LogProgress(Math.Round(55 + 30 * (i + 1) / (double)neededLibraries.Count, 1));
             }
 
             await LogInformation("Removing shows that are no longer present on your server (if any)");
