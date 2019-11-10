@@ -21,7 +21,7 @@ namespace EmbyStat.Clients.Emby.Http
 
             if (query.SeriesStatuses != null)
             {
-                request.AddQueryParameter("SeriesStatuses", string.Join(',',query));
+                request.AddQueryParameter("SeriesStatuses", string.Join(',',query.SeriesStatuses));
             }
 
             if (query.Fields != null)
@@ -98,7 +98,7 @@ namespace EmbyStat.Clients.Emby.Http
             request.AddIfNotNull("AiredDuringSeason", query.AiredDuringSeason);
         }
 
-        public static void AddIfNotNullOrEmpty(this IRestRequest request, string key, string value)
+        private static void AddIfNotNullOrEmpty(this IRestRequest request, string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -106,7 +106,7 @@ namespace EmbyStat.Clients.Emby.Http
             }
         }
 
-        public static void AddIfNotNull(this IRestRequest request, string key, bool? value)
+        private static void AddIfNotNull(this IRestRequest request, string key, bool? value)
         {
             if (value.HasValue)
             {
@@ -114,7 +114,7 @@ namespace EmbyStat.Clients.Emby.Http
             }
         }
 
-        public static void AddIfNotNull(this IRestRequest request, string key, int? value)
+        private static void AddIfNotNull(this IRestRequest request, string key, int? value)
         {
             if (value.HasValue)
             {
@@ -122,7 +122,7 @@ namespace EmbyStat.Clients.Emby.Http
             }
         }
 
-        public static void AddIfNotNull(this IRestRequest request, string key, double? value)
+        private static void AddIfNotNull(this IRestRequest request, string key, double? value)
         {
             if (value.HasValue)
             {
@@ -130,17 +130,17 @@ namespace EmbyStat.Clients.Emby.Http
             }
         }
 
-        public static void AddIfNotNull(this IRestRequest request, string key, IEnumerable<int> list)
+        private static void AddIfNotNull(this IRestRequest request, string key, IEnumerable<int> list)
         {
             request.AddIfNotNullOrEmpty(key, string.Join(',', list));
         }
 
-        public static void AddIfNotNull(this IRestRequest request, string key, IEnumerable<string> list, char separator)
+        private static void AddIfNotNull(this IRestRequest request, string key, IEnumerable<string> list, char separator)
         {
             request.AddIfNotNullOrEmpty(key, string.Join(separator, list));
         }
 
-        public static void AddIfNotNull(this IRestRequest request, string key, IEnumerable<string> list)
+        private static void AddIfNotNull(this IRestRequest request, string key, IEnumerable<string> list)
         {
             request.AddIfNotNull(key, list, ',');
         }

@@ -139,8 +139,7 @@ namespace EmbyStat.Clients.Emby.Http
             {
                 request.AddHeader(httpHeader.Key, httpHeader.Value);
             }
-
-
+            
             try
             {
                 var result = await pingClient.ExecuteTaskAsync(request);
