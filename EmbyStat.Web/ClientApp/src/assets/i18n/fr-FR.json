@@ -52,8 +52,8 @@
     "VERSION": "Version",
     "ACTORSPERGENRE": "Acteur le plus présent par genre",
     "MINUTES": "minutes",
-    "DISKSIZE": "Disk size",
-    "TOTALDISKSIZE": "Total disk size"
+    "DISKSIZE": "Taille du disque",
+    "TOTALDISKSIZE": "Utilisation du disque totale "
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -121,10 +121,10 @@
     "HIGHESTRATED": "Les mieux notés",
     "LOWESTRATED": "Les moins bien notés",
     "OLDESTPREMIERED": "La plus ancienne sortie",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "NEWESTPREMIERED": "La plus récente sortie",
     "SHORTEST": "Le plus court",
     "LONGEST": "Le plus long",
-    "LATESTADDED": "Recently Added",
+    "LATESTADDED": "Ajouts récents",
     "MOSTFEATUREDPERGENRE": "Acteur le plus présent par genre",
     "DUPLICATEMOVIES": "Films en double",
     "TOSHORTMOVIES": "Films qui sont très courts",
@@ -139,15 +139,15 @@
     "HIGHESTRATEDSHOW": "Les mieux notés",
     "LOWESTRATEDSHOW": "Les moins bien notés",
     "OLDESTPREMIERED": "La plus ancienne sortie",
-    "NEWESTPREMIERED": "Latest Premiered",
-    "LATESTADDED": "Recently added",
+    "NEWESTPREMIERED": "La plus récente sortie",
+    "LATESTADDED": "Ajoutée récemment",
     "WITHMOESTEPISODES": "Avec le plus épisodes",
     "SHOWSTATUSGRAPH": "Statut de la série",
     "SEASONS": "Saisons",
     "CONTINUING": "En cours",
     "ENDED": "Terminée",
     "OVERVIEW": "Aperçu",
-    "MISSINGEPISODES": "Missing episodes"
+    "MISSINGEPISODES": "Épisodes manquants"
   },
   "SETTINGS": {
     "TITLES": {
