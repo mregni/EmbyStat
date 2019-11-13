@@ -9,9 +9,13 @@
         public Rollbar Rollbar { get; set; }
         public string DatabaseFile { get; set; }
         /// <summary>
-        /// Port number, is set dynamically when server is starting
+        /// Port number. Set dynamically when server is starting
         /// </summary>
         public int Port { get; set; }
+        /// <summary>
+        /// If true, update flow is disabled. Set dynamically when server is starting
+        /// </summary>
+        public bool NoUpdate { get; set; }
     }
 
     public class Updater

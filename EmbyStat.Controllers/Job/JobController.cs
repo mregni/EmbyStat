@@ -20,15 +20,17 @@ namespace EmbyStat.Controllers.Job
         private readonly IJobService _jobService;
         private readonly IJobHubHelper _jobHubHelper;
         private readonly IJobInitializer _jobInitializer;
+        private readonly ISettingsService _settingsService;
         private string LogPrefix => Constants.LogPrefix.JobController;
 
         public JobController(IMapper mapper, IJobService jobService, IJobHubHelper jobHubHelper,
-            IJobInitializer jobInitializer)
+            IJobInitializer jobInitializer, ISettingsService settingsService)
         {
             _mapper = mapper;
             _jobService = jobService;
             _jobHubHelper = jobHubHelper;
             _jobInitializer = jobInitializer;
+            _settingsService = settingsService;
         }
 
         [HttpGet]
@@ -58,7 +60,8 @@ namespace EmbyStat.Controllers.Job
         {
             if (_jobService.UpdateTrigger(id, cron))
             {
-                _jobInitializer.UpdateTrigger(id, cron);
+                var settings = _settingsService.GetAppSettings();
+                _jobInitializer.UpdateTrigger(id, cron, settings.NoUpdate);
                 return NoContent();
             }
 

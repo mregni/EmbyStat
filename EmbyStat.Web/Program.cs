@@ -33,7 +33,7 @@ namespace EmbyStat.Web
                 var listeningUrl = $"http://*:{options.Port}";
 
                 Logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
-                var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() } };
+                var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() }, { "NoUpdates", options.NoUpdates.ToString()} };
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
 

@@ -27,7 +27,7 @@ namespace EmbyStat.Jobs
             _jobService = jobService;
         }
 
-        public void Setup()
+        public void Setup(bool disableUpdates)
         {
             var jobs = _jobService.GetAll().ToList();
 
@@ -47,20 +47,23 @@ namespace EmbyStat.Jobs
                 Constants.JobIds.SmallSyncId.ToString(),
                 () => _smallSyncJob.Execute(),
                 jobs.Single(x => x.Id == Constants.JobIds.SmallSyncId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.CheckUpdateId.ToString(),
-                () => _checkUpdateJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.CheckUpdateId).Trigger);
-            
+
+            if (!disableUpdates)
+            {
+                RecurringJob.AddOrUpdate(
+                    Constants.JobIds.CheckUpdateId.ToString(),
+                    () => _checkUpdateJob.Execute(),
+                    jobs.Single(x => x.Id == Constants.JobIds.CheckUpdateId).Trigger);
+            }
         }
 
-        public void UpdateTrigger(Guid id, string trigger)
+        public void UpdateTrigger(Guid id, string trigger, bool disableUpdates)
         {
             if (id == Constants.JobIds.MediaSyncId)
             {
                 RecurringJob.AddOrUpdate(id.ToString(), () => _mediaSyncJob.Execute(), trigger);
             }
-            else if (id == Constants.JobIds.CheckUpdateId)
+            else if (id == Constants.JobIds.CheckUpdateId && !disableUpdates)
             {
                 RecurringJob.AddOrUpdate(id.ToString(), () => _checkUpdateJob.Execute(), trigger);
             }

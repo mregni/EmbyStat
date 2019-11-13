@@ -173,6 +173,9 @@ namespace EmbyStat.Web
                 var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
                 var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
 
+                var settings = settingsService.GetAppSettings();
+                
+
                 migrationRunner.Migrate();
                 settingsService.LoadUserSettingsFromFile();
                 settingsService.CreateRollbarLogger();
@@ -181,7 +184,7 @@ namespace EmbyStat.Web
                 jobService.ResetAllJobs();
                 settingsService.SetUpdateInProgressSettingAsync(false);
                 SetEmbyClientConfiguration(settingsService, embyClient);
-                jobInitializer.Setup();
+                jobInitializer.Setup(settings.NoUpdate);
             }
         }
 
