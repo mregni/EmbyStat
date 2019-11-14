@@ -184,7 +184,7 @@ namespace EmbyStat.Web
                 jobService.ResetAllJobs();
                 settingsService.SetUpdateInProgressSettingAsync(false);
                 SetEmbyClientConfiguration(settingsService, embyClient);
-                jobInitializer.Setup(settings.NoUpdate);
+                jobInitializer.Setup(settings.NoUpdates);
             }
         }
 

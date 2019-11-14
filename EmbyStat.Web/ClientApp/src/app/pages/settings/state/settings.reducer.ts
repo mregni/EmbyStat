@@ -38,7 +38,8 @@ const INITIAL_STATE: Settings = {
   tvdb: tvdbSettings,
   enableRollbarLogging: false,
   isLoaded: false,
-  toShortMovieEnabled: false
+  toShortMovieEnabled: false,
+  noUpdates: false
 };
 
 export function settingsReducer(state: Settings = INITIAL_STATE, action: SettingsActions) {
@@ -63,7 +64,8 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         updateInProgress: action.payload.updateInProgress,
         version: action.payload.version,
         enableRollbarLogging: action.payload.enableRollbarLogging,
-        toShortMovieEnabled: action.payload.toShortMovieEnabled
+        toShortMovieEnabled: action.payload.toShortMovieEnabled,
+        noUpdates: action.payload.noUpdates
       };
     case SettingsActionTypes.UPDATE_SETTINGS_SUCCESS:
       return {
@@ -85,7 +87,8 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         updateInProgress: action.payload.updateInProgress,
         version: action.payload.version,
         enableRollbarLogging: action.payload.enableRollbarLogging,
-        toShortMovieEnabled: action.payload.toShortMovieEnabled
+        toShortMovieEnabled: action.payload.toShortMovieEnabled,
+        noUpdates: action.payload.noUpdates
       };
     default:
       return state;

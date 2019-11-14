@@ -31,8 +31,10 @@ namespace EmbyStat.Controllers.Settings
 	    public IActionResult Get()
         {
 	        var settings = _settingsService.GetUserSettings();
+            var appSettings = _settingsService.GetAppSettings();
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
-            settingsViewModel.Version = _settingsService.GetAppSettings().Version;
+            settingsViewModel.Version = appSettings.Version;
+            settingsViewModel.NoUpdates = appSettings.NoUpdates;
 
             return Ok(settingsViewModel);
 	    }

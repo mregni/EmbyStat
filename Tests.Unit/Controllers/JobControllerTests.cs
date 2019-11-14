@@ -54,7 +54,7 @@ namespace Tests.Unit.Controllers
             jobHubHelperMock.Setup(x => x.BroadCastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()));
             _jobInitializerMock.Setup(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>()));
 
-            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings { NoUpdate = disableUpdateJob });
+            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings { NoUpdates = disableUpdateJob });
 
             return new JobController(mapper, _jobServiceMock.Object, jobHubHelperMock.Object, _jobInitializerMock.Object, _settingsServiceMock.Object);
         }

@@ -41,7 +41,7 @@ namespace EmbyStat.Controllers.Job
             var settings = _settingsService.GetAppSettings();
             var jobs = _jobService.GetAll();
 
-            if (settings.NoUpdate)
+            if (settings.NoUpdates)
             {
                 jobs = jobs.Where(x => x.Id != Constants.JobIds.CheckUpdateId);
             }
@@ -69,7 +69,7 @@ namespace EmbyStat.Controllers.Job
             if (_jobService.UpdateTrigger(id, cron))
             {
                 var settings = _settingsService.GetAppSettings();
-                _jobInitializer.UpdateTrigger(id, cron, settings.NoUpdate);
+                _jobInitializer.UpdateTrigger(id, cron, settings.NoUpdates);
                 return NoContent();
             }
 

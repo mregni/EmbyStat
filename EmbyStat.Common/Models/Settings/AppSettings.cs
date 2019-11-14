@@ -15,7 +15,7 @@
         /// <summary>
         /// If true, update flow is disabled. Set dynamically when server is starting
         /// </summary>
-        public bool NoUpdate { get; set; }
+        public bool NoUpdates { get; set; }
     }
 
     public class Updater
