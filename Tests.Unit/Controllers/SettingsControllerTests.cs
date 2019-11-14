@@ -16,7 +16,6 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-	[Collection("Mapper collection")]
 	public class SettingsControllerTests : IDisposable
     {
 	    private readonly SettingsController _subject;
