@@ -29,31 +29,15 @@ namespace EmbyStat.Jobs
 
         public void Setup(bool disableUpdates)
         {
-            var jobs = _jobService.GetAll().ToList();
-
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.DatabaseCleanupId.ToString(),
-                () => _databaseCleanupJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.DatabaseCleanupId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.PingEmbyId.ToString(),
-                () => _pingEmbyJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.PingEmbyId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.MediaSyncId.ToString(),
-                () => _mediaSyncJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.MediaSyncId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.SmallSyncId.ToString(),
-                () => _smallSyncJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.SmallSyncId).Trigger);
-
-            if (!disableUpdates)
+            var jobs = _jobService.GetAll();
+            if (disableUpdates)
             {
-                RecurringJob.AddOrUpdate(
-                    Constants.JobIds.CheckUpdateId.ToString(),
-                    () => _checkUpdateJob.Execute(),
-                    jobs.Single(x => x.Id == Constants.JobIds.CheckUpdateId).Trigger);
+                jobs = jobs.Where(x => x.Id != Constants.JobIds.CheckUpdateId);
+            }
+
+            foreach (var job in jobs)
+            {
+                RecurringJob.AddOrUpdate(job.Id.ToString(), () =>_databaseCleanupJob.Execute(), job.Trigger);
             }
         }
 
