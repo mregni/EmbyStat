@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
@@ -31,14 +31,14 @@ namespace EmbyStat.Clients.Emby.Http
 
         private readonly Logger _logger;
         private readonly Dictionary<string, string> _httpHeaders;
-        private IRestClient Client { get; set; }
+        private readonly IRestClient _client;
 
-        public EmbyClient()
+        public EmbyClient(IRestClient client)
         {
+            _client = client.UseSerializer(new JsonNetSerializer());
             _logger = LogManager.GetCurrentClassLogger();
-            Device = new Device();
             _httpHeaders = new Dictionary<string, string>();
-            Client = new RestClient();
+            Device = new Device();
         }
 
         public void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId)
@@ -55,16 +55,16 @@ namespace EmbyStat.Clients.Emby.Http
             ResetHttpHeaders();
         }
 
-        public Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
+        public Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string url)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
                 throw new ArgumentNullException(nameof(username));
             }
 
-            if (string.IsNullOrWhiteSpace(address))
+            if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(address));
+                throw new ArgumentNullException(nameof(url));
             }
 
             if (string.IsNullOrWhiteSpace(password))
@@ -72,15 +72,14 @@ namespace EmbyStat.Clients.Emby.Http
                 throw new ArgumentNullException(nameof(password));
             }
 
-            ServerAddress = address;
+            _client.BaseUrl = new Uri(url);
             ResetHttpHeaders();
 
-            return CallAuthenticateUserApi(username, password, address);
+            return CallAuthenticateUserApi(username, password);
         }
 
-        private async Task<AuthenticationResult> CallAuthenticateUserApi(string username, string password, string address)
+        private async Task<AuthenticationResult> CallAuthenticateUserApi(string username, string password)
         {
-            Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
             var request = new RestRequest("Users/AuthenticateByName", Method.POST)
                 .AddQueryParameter("Username", username)
                 .AddQueryParameter("Pw", password);
@@ -90,8 +89,8 @@ namespace EmbyStat.Clients.Emby.Http
                 request.AddHeader(httpHeader.Key, httpHeader.Value);
             }
 
-            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
-            var result = await Client.ExecuteTaskAsync<AuthenticationResult>(request);
+            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {_client.BaseUrl}");
+            var result = await _client.ExecuteTaskAsync<AuthenticationResult>(request);
 
             if (result.Data != null)
             {
@@ -179,7 +178,7 @@ namespace EmbyStat.Clients.Emby.Http
                 request.AddHeader(httpHeader.Key, httpHeader.Value);
             }
             
-            var result = await Client.ExecuteTaskAsync<T>(request);
+            var result = await _client.ExecuteTaskAsync<T>(request);
             return result.Data;
         }
 
@@ -243,11 +242,10 @@ namespace EmbyStat.Clients.Emby.Http
                 throw new ArgumentNullException(nameof(token));
             }
 
-            ServerAddress = url;
+            _client.BaseUrl = new Uri(url);
             AccessToken = token;
             CurrentUserId = new Guid(userId);
             ResetHttpHeaders();
-            Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
         }
     }
 }
