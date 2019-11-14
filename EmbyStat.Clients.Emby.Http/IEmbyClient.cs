@@ -15,7 +15,7 @@ namespace EmbyStat.Clients.Emby.Http
     {
         void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId);
         void SetAddressAndUser(string url, string token, string userId);
-        Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address);
+        Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string url);
         Task<List<PluginInfo>> GetInstalledPluginsAsync();
 		Task<ServerInfo> GetServerInfoAsync();
 	    Task<List<FileSystemEntryInfo>> GetLocalDrivesAsync();

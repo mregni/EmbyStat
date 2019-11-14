@@ -19,26 +19,24 @@ namespace EmbyStat.Clients.Emby.Http
     public class EmbyClient : IEmbyClient
     {
         private Device Device { get; set; }
-        private string ServerAddress { get; set; }
         private string ClientName { get; set; }
         private string DeviceName => Device.DeviceName;
         private string ApplicationVersion { get; set; }
         private string DeviceId => Device.DeviceId;
         private string AccessToken { get; set; }
         private Guid CurrentUserId { get; set; }
-        private string ApiUrl => ServerAddress + "/emby";
         private string AuthorizationScheme { get; set; }
 
         private readonly Logger _logger;
         private readonly Dictionary<string, string> _httpHeaders;
-        private IRestClient Client { get; set; }
+        private readonly IRestClient _client;
 
-        public EmbyClient()
+        public EmbyClient(IRestClient client)
         {
+            _client = client.UseSerializer(new JsonNetSerializer());
             _logger = LogManager.GetCurrentClassLogger();
-            Device = new Device();
             _httpHeaders = new Dictionary<string, string>();
-            Client = new RestClient();
+            Device = new Device();
         }
 
         public void SetDeviceInfo(string clientName, string authorizationScheme, string applicationVersion, string deviceId)
@@ -55,16 +53,11 @@ namespace EmbyStat.Clients.Emby.Http
             ResetHttpHeaders();
         }
 
-        public Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string address)
+        public Task<AuthenticationResult> AuthenticateUserAsync(string username, string password, string url)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
                 throw new ArgumentNullException(nameof(username));
-            }
-
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                throw new ArgumentNullException(nameof(address));
             }
 
             if (string.IsNullOrWhiteSpace(password))
@@ -72,33 +65,32 @@ namespace EmbyStat.Clients.Emby.Http
                 throw new ArgumentNullException(nameof(password));
             }
 
-            ServerAddress = address;
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
+            _client.BaseUrl = new Uri(url);
             ResetHttpHeaders();
 
-            return CallAuthenticateUserApi(username, password, address);
+            return CallAuthenticateUserApi(username, password);
         }
 
-        private async Task<AuthenticationResult> CallAuthenticateUserApi(string username, string password, string address)
+        private async Task<AuthenticationResult> CallAuthenticateUserApi(string username, string password)
         {
-            Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
             var request = new RestRequest("Users/AuthenticateByName", Method.POST)
-                .AddQueryParameter("Username", HttpUtility.UrlEncode(username))
-                .AddQueryParameter("Pw", HttpUtility.UrlEncode(password));
+                .AddQueryParameter("Username", username)
+                .AddQueryParameter("Pw", password);
 
-            foreach (var httpHeader in _httpHeaders)
+            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {_client.BaseUrl}");
+            var result = await ExecuteCall<AuthenticationResult>(request);
+
+            if (result != null)
             {
-                request.AddHeader(httpHeader.Key, httpHeader.Value);
+                SetAuthenticationInfo(result.AccessToken, result.User.Id);
             }
 
-            _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {ServerAddress}");
-            var result = await Client.ExecuteTaskAsync<AuthenticationResult>(request);
-
-            if (result.Data != null)
-            {
-                SetAuthenticationInfo(result.Data.AccessToken, result.Data.User.Id);
-            }
-
-            return result.Data;
+            return result;
         }
 
         public Task<List<PluginInfo>> GetInstalledPluginsAsync()
@@ -179,7 +171,7 @@ namespace EmbyStat.Clients.Emby.Http
                 request.AddHeader(httpHeader.Key, httpHeader.Value);
             }
             
-            var result = await Client.ExecuteTaskAsync<T>(request);
+            var result = await _client.ExecuteTaskAsync<T>(request);
             return result.Data;
         }
 
@@ -222,7 +214,7 @@ namespace EmbyStat.Clients.Emby.Http
 
                 var header = $"Client=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
 
-                if (!string.IsNullOrWhiteSpace(CurrentUserId.ToString()))
+                if (CurrentUserId != Guid.Empty)
                 {
                     header += $", Emby UserId=\"{CurrentUserId}\"";
                 }
@@ -243,11 +235,10 @@ namespace EmbyStat.Clients.Emby.Http
                 throw new ArgumentNullException(nameof(token));
             }
 
-            ServerAddress = url;
+            _client.BaseUrl = new Uri(url);
             AccessToken = token;
             CurrentUserId = new Guid(userId);
             ResetHttpHeaders();
-            Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
         }
     }
 }
