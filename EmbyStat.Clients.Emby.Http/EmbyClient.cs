@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
@@ -82,8 +82,8 @@ namespace EmbyStat.Clients.Emby.Http
         {
             Client = new RestClient(ApiUrl).UseSerializer(() => new JsonNetSerializer());
             var request = new RestRequest("Users/AuthenticateByName", Method.POST)
-                .AddQueryParameter("Username", HttpUtility.UrlEncode(username))
-                .AddQueryParameter("Pw", HttpUtility.UrlEncode(password));
+                .AddQueryParameter("Username", username)
+                .AddQueryParameter("Pw", password);
 
             foreach (var httpHeader in _httpHeaders)
             {
