@@ -19,14 +19,12 @@ namespace EmbyStat.Clients.Emby.Http
     public class EmbyClient : IEmbyClient
     {
         private Device Device { get; set; }
-        private string ServerAddress { get; set; }
         private string ClientName { get; set; }
         private string DeviceName => Device.DeviceName;
         private string ApplicationVersion { get; set; }
         private string DeviceId => Device.DeviceId;
         private string AccessToken { get; set; }
         private Guid CurrentUserId { get; set; }
-        private string ApiUrl => ServerAddress + "/emby";
         private string AuthorizationScheme { get; set; }
 
         private readonly Logger _logger;
@@ -62,14 +60,14 @@ namespace EmbyStat.Clients.Emby.Http
                 throw new ArgumentNullException(nameof(username));
             }
 
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                throw new ArgumentNullException(nameof(url));
-            }
-
             if (string.IsNullOrWhiteSpace(password))
             {
                 throw new ArgumentNullException(nameof(password));
+            }
+
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new ArgumentNullException(nameof(url));
             }
 
             _client.BaseUrl = new Uri(url);
@@ -84,20 +82,15 @@ namespace EmbyStat.Clients.Emby.Http
                 .AddQueryParameter("Username", username)
                 .AddQueryParameter("Pw", password);
 
-            foreach (var httpHeader in _httpHeaders)
-            {
-                request.AddHeader(httpHeader.Key, httpHeader.Value);
-            }
-
             _logger.Info($"{Constants.LogPrefix.EmbyClient}\tAuthenticating user {username} on Emby server on {_client.BaseUrl}");
-            var result = await _client.ExecuteTaskAsync<AuthenticationResult>(request);
+            var result = await ExecuteCall<AuthenticationResult>(request);
 
-            if (result.Data != null)
+            if (result != null)
             {
-                SetAuthenticationInfo(result.Data.AccessToken, result.Data.User.Id);
+                SetAuthenticationInfo(result.AccessToken, result.User.Id);
             }
 
-            return result.Data;
+            return result;
         }
 
         public Task<List<PluginInfo>> GetInstalledPluginsAsync()
@@ -221,7 +214,7 @@ namespace EmbyStat.Clients.Emby.Http
 
                 var header = $"Client=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
 
-                if (!string.IsNullOrWhiteSpace(CurrentUserId.ToString()))
+                if (CurrentUserId != Guid.Empty)
                 {
                     header += $", Emby UserId=\"{CurrentUserId}\"";
                 }
