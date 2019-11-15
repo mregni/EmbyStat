@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-	[Collection("Mapper collection")]
 	public class EmbyControllerTests : IDisposable
     {
 	    private readonly EmbyController _subject;
@@ -51,12 +50,12 @@ namespace Tests.Unit.Controllers
 		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
 		    _embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(_serverInfo);
 
-	        var _mapperMock = new Mock<IMapper>();
-	        _mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
-            _mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = 2, Token = "azerty", Username = "admin" });
-	        _mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "localhost", Name = "emby", Protocol = 0, Port = 80});
+	        var mapperMock = new Mock<IMapper>();
+	        mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
+            mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = 2, Token = "azerty", Username = "admin" });
+	        mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "localhost", Name = "emby", Protocol = 0, Port = 80});
 
-		    _subject = new EmbyController(_embyServiceMock.Object, _mapperMock.Object);
+		    _subject = new EmbyController(_embyServiceMock.Object, mapperMock.Object);
 		}
 
 	    public void Dispose()

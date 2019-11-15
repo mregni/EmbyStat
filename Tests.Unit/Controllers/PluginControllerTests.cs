@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-	[Collection("Mapper collection")]
 	public class PluginControllerTests : IDisposable
 	{
 		private readonly EmbyController _subject;

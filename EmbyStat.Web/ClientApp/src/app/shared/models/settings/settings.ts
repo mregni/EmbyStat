@@ -20,4 +20,5 @@ export class Settings {
   tvdb: TvdbSettings;
   enableRollbarLogging: boolean ;
   isLoaded: boolean;
+  noUpdates: boolean;
 }
