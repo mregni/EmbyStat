@@ -27,40 +27,27 @@ namespace EmbyStat.Jobs
             _jobService = jobService;
         }
 
-        public void Setup()
+        public void Setup(bool disableUpdates)
         {
-            var jobs = _jobService.GetAll().ToList();
+            var jobs = _jobService.GetAll();
+            if (disableUpdates)
+            {
+                jobs = jobs.Where(x => x.Id != Constants.JobIds.CheckUpdateId);
+            }
 
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.DatabaseCleanupId.ToString(),
-                () => _databaseCleanupJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.DatabaseCleanupId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.PingEmbyId.ToString(),
-                () => _pingEmbyJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.PingEmbyId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.MediaSyncId.ToString(),
-                () => _mediaSyncJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.MediaSyncId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.SmallSyncId.ToString(),
-                () => _smallSyncJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.SmallSyncId).Trigger);
-            RecurringJob.AddOrUpdate(
-                Constants.JobIds.CheckUpdateId.ToString(),
-                () => _checkUpdateJob.Execute(),
-                jobs.Single(x => x.Id == Constants.JobIds.CheckUpdateId).Trigger);
-            
+            foreach (var job in jobs)
+            {
+                RecurringJob.AddOrUpdate(job.Id.ToString(), () =>_databaseCleanupJob.Execute(), job.Trigger);
+            }
         }
 
-        public void UpdateTrigger(Guid id, string trigger)
+        public void UpdateTrigger(Guid id, string trigger, bool disableUpdates)
         {
             if (id == Constants.JobIds.MediaSyncId)
             {
                 RecurringJob.AddOrUpdate(id.ToString(), () => _mediaSyncJob.Execute(), trigger);
             }
-            else if (id == Constants.JobIds.CheckUpdateId)
+            else if (id == Constants.JobIds.CheckUpdateId && !disableUpdates)
             {
                 RecurringJob.AddOrUpdate(id.ToString(), () => _checkUpdateJob.Execute(), trigger);
             }
