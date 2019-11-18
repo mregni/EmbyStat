@@ -5,14 +5,12 @@ import { ApplicationState } from '../../../states/app.state';
 import { SettingsActions, SettingsActionTypes } from './settings.actions';
 
 const embySettings: EmbySettings = {
-  accessToken: '',
-  authorizationScheme: 'MediaBrowser',
+  authorizationScheme: 'mediaBrowser',
   serverAddress: '',
   serverName: '',
   serverPort: 0,
   serverProtocol: 0,
-  userId: '',
-  userName: ''
+  apiKey: ''
 };
 
 const tvdbSettings: TvdbSettings = {
@@ -51,7 +49,6 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         wizardFinished: action.payload.wizardFinished,
         username: action.payload.username,
         emby: action.payload.emby,
-        userId: action.payload.emby.userId,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
         movieLibraryTypes: action.payload.movieLibraryTypes,
@@ -74,7 +71,6 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         wizardFinished: action.payload.wizardFinished,
         username: action.payload.username,
         emby: action.payload.emby,
-        userId: action.payload.emby.userId,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
         movieLibraryTypes: action.payload.movieLibraryTypes,

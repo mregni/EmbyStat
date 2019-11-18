@@ -26,19 +26,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public override async Task RunJobAsync()
         {
-            await _embyService.GetAndProcessServerInfoAsync(Settings.Emby.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            await _embyService.GetAndProcessServerInfoAsync();
             await LogInformation("Server info downloaded");
             await LogProgress(35);
 
-            await _embyService.GetAndProcessPluginInfoAsync(Settings.Emby.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            await _embyService.GetAndProcessPluginInfoAsync();
             await LogInformation("Server plugins downloaded");
             await LogProgress(55);
 
-            await _embyService.GetAndProcessEmbyUsersAsync(Settings.Emby.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            await _embyService.GetAndProcessEmbyUsersAsync();
             await LogInformation("Server users downloaded");
             await LogProgress(80);
 
-            await _embyService.GetAndProcessDevicesAsync(Settings.Emby.FullEmbyServerAddress, Settings.Emby.AccessToken);
+            await _embyService.GetAndProcessDevicesAsync();
             await LogInformation("Server devices downloaded");
         }
     }

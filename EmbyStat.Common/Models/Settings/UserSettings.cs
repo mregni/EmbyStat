@@ -29,13 +29,13 @@ namespace EmbyStat.Common.Models.Settings
 
     public class EmbySettings
     {
-        public string UserId { get; set; }
-        public string UserName { get; set; }
         public string ServerName { get; set; }
-        public string AccessToken { get; set; }
+        public string ApiKey { get; set; }
         public string ServerAddress { get; set; }
         public int ServerPort { get; set; }
         public string AuthorizationScheme { get; set; }
+        [Obsolete("Moved to AccessToken")]
+        public string AccessToken { get; set; }
         public ConnectionProtocol ServerProtocol { get; set; }
 
         [JsonIgnore]

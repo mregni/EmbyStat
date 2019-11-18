@@ -60,9 +60,8 @@ namespace EmbyStat.Services
                     line = line.Replace(configuration.Emby.FullEmbyServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.Emby.FullSocketAddress, "wss://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.Tvdb.ApiKey, "xxxxxxxxxxxxxx");
-                    line = line.Replace(configuration.Emby.AccessToken, "xxxxxxxxxxxxxx");
+                    line = line.Replace(configuration.Emby.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(serverInfo.Id, "xxxxxxxxxxxxxx");
-                    line = line.Replace(configuration.Emby.UserName, "{EMBY ADMIN USER}");
                     writer.WriteLine(line);
                 }
 

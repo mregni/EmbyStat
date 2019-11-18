@@ -56,19 +56,11 @@
                   </mat-form-field>
                 </div>
                 <mat-form-field>
-                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYUSERNAME' | translate}}"
-                    formControlName="embyUsername">
-                  <mat-error *ngIf="embyUsernameControl.hasError('required')">
-                    {{'SETTINGS.EMBY.EMBYUSERNAMEREQUIRED' | translate}}</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYPASSWORD' | translate}}"
-                    formControlName="embyPassword" [type]="hidePassword ? 'password' : 'text'">
-                  <fa-icon icon="{{hidePassword ? 'eye' : 'eye-slash'}}" matSuffix
-                    (click)="hidePassword = !hidePassword">
-                  </fa-icon>
-                  <mat-error *ngIf="embyPasswordControl.hasError('required')">
-                    {{'SETTINGS.EMBY.EMBYPASSWORDREQUIRED' | translate}}</mat-error>
+                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate}}"
+                    formControlName="embyApiKey" type="text">
+                  <mat-hint [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></mat-hint>
+                  <mat-error *ngIf="embyApiKeyControl.hasError('required')">
+                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}</mat-error>
                 </mat-form-field>
                 <div class="button-container">
                   <button mat-stroked-button color="primary" matStepperPrevious
@@ -94,21 +86,21 @@
                   <p mat-line>{{ 'WIZARD.EMBYRUNNING' | translate }}</p>
                 </mat-list-item>
                 <mat-list-item *ngIf="embyOnline == 2">
-                  <mat-icon mat-list-icon *ngIf="isAdmin == 3" color="warn">error</mat-icon>
-                  <mat-icon mat-list-icon *ngIf="isAdmin == 2">check</mat-icon>
-                  <mat-icon mat-list-icon *ngIf="isAdmin == 1">hourglass_empty</mat-icon>
-                  <mat-icon mat-list-icon *ngIf="isAdmin == 0">hourglass_empty</mat-icon>
-                  <p mat-line>{{ 'WIZARD.ISADMIN' | translate: { user: username } }}</p>
+                  <mat-icon mat-list-icon *ngIf="apiKeyWorks == 3" color="warn">error</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="apiKeyWorks == 2">check</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="apiKeyWorks == 1">hourglass_empty</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="apiKeyWorks == 0">hourglass_empty</mat-icon>
+                  <p mat-line>{{ 'WIZARD.KEYISVALID' | translate: { user: username } }}</p>
                 </mat-list-item>
               </mat-list>
             </div>
-            <p *ngIf="!(embyOnline && isAdmin)">
+            <p *ngIf="!(embyOnline && apiKeyWorks)">
               {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
             </p>
             <div class="button-container">
-              <button mat-stroked-button color="primary" matStepperPrevious [disabled]="embyOnline == 1 && isAdmin == 1"
+              <button mat-stroked-button color="primary" matStepperPrevious [disabled]="embyOnline == 1 && apiKeyWorks == 1"
                 type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
-              <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline == 2 && isAdmin == 2)"
+              <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
                 type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
             </div>
           </mat-step>

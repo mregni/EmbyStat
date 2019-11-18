@@ -167,22 +167,21 @@ namespace EmbyStat.Web
         {
             using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
             {
+                var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
+                migrationRunner.Migrate();
+                
                 var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
                 var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
                 var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
                 var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
-                var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
 
                 var settings = settingsService.GetAppSettings();
                 
-
-                migrationRunner.Migrate();
                 settingsService.LoadUserSettingsFromFile();
                 settingsService.CreateRollbarLogger();
                 AddDeviceIdToConfig(settingsService);
                 RemoveVersionFiles();
                 jobService.ResetAllJobs();
-                settingsService.SetUpdateInProgressSettingAsync(false);
                 SetEmbyClientConfiguration(settingsService, embyClient);
                 jobInitializer.Setup(settings.NoUpdates);
             }
@@ -222,9 +221,10 @@ namespace EmbyStat.Web
             var settings = settingsService.GetUserSettings();
 
             embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
-            if (!string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+            if (!string.IsNullOrWhiteSpace(settings.Emby.ApiKey))
             {
-                embyClient.SetAddressAndUser(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken, settings.Emby.UserId);
+                embyClient.BaseUrl = settings.Emby.FullEmbyServerAddress;
+                embyClient.ApiKey = settings.Emby.ApiKey;
             }
         }
     }

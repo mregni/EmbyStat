@@ -24,8 +24,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   embyAddressControl = new FormControl('', [Validators.required]);
   embyPortControl = new FormControl('', [Validators.required]);
   embyProtocolControl = new FormControl('0', [Validators.required]);
-  embyUsernameControl = new FormControl('', [Validators.required]);
-  embyPasswordControl = new FormControl('', [Validators.required]);
+  embyApiKeyControl = new FormControl('', [Validators.required]);
 
   isSaving = false;
   hidePassword = true;
@@ -39,8 +38,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       embyAddress: this.embyAddressControl,
       embyPort: this.embyPortControl,
       embyProtocol: this.embyProtocolControl,
-      embyUsername: this.embyUsernameControl,
-      embyPassword: this.embyPasswordControl
+      embyApiKey: this.embyApiKeyControl
     });
   }
 
@@ -52,7 +50,6 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyAddressControl.setValue(this.settings.emby.serverAddress);
       this.embyPortControl.setValue(this.settings.emby.serverPort);
       this.embyProtocolControl.setValue(this.settings.emby.serverProtocol);
-      this.embyUsernameControl.setValue(this.settings.emby.userName);
     }
   }
 
@@ -65,33 +62,31 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
     if (this.embyForm.valid) {
       this.isSaving = true;
       const url = (this.embyProtocolControl.value === 0 ? 'https://' : 'http://') + this.embyAddressControl.value + ':' + this.embyPortControl.value;
-      const login = new EmbyLogin(this.embyUsernameControl.value, this.embyPasswordControl.value, url);
-      this.embyTokenSub = this.embyService.getEmbyToken(login).subscribe((token: EmbyToken) => {
-        if (token.isAdmin) {
+      const login = new EmbyLogin(this.embyApiKeyControl.value, url);
+      this.embyTokenSub = this.embyService.testApiKey(login).subscribe((result: boolean) => {
+        if (result) {
           const settings = { ...this.settings };
           const emby = { ...this.settings.emby };
 
           emby.serverAddress = this.embyAddressControl.value;
           emby.serverPort = this.embyPortControl.value;
-          emby.serverName = "";
+          emby.serverName = '';
           emby.serverProtocol = this.embyProtocolControl.value;
-          emby.userName = this.embyUsernameControl.value;
-          emby.accessToken = token.token;
-          emby.userId = token.id;
+          emby.apiKey = this.embyApiKeyControl.value;
           settings.emby = emby;
 
           this.settingsFacade.updateSettings(settings);
           this.toastService.showSuccess('SETTINGS.SAVED.EMBY');
-          this.embyPasswordControl.setValue('');
-          this.embyPasswordControl.markAsUntouched();
+          this.embyApiKeyControl.setValue('');
+          this.embyApiKeyControl.markAsUntouched();
         } else {
-          this.toastService.showError('SETTINGS.EMBY.NOADMINUSER');
-          this.embyPasswordControl.setValue('');
+          this.toastService.showError('SETTINGS.EMBY.WRONGAPIKEY');
+          this.embyApiKeyControl.setValue('');
         }
       },
         error => {
-          this.toastService.showError('SETTINGS.EMBY.WRONGPASSWORD');
-          this.embyPasswordControl.setValue('');
+          this.toastService.showError('SETTINGS.EMBY.WRONGAPIKEY');
+          this.embyApiKeyControl.setValue('');
         });
 
       this.embyTokenSub.add(() => {

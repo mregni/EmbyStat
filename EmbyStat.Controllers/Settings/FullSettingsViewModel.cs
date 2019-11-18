@@ -26,11 +26,9 @@ namespace EmbyStat.Controllers.Settings
         
         public class EmbySettingsViewModel
         {
-            public string UserId { get; set; }
-            public string UserName { get; set; }
             public string ServerName { get; set; }
-            public string AccessToken { get; set; }
             public string ServerAddress { get; set; }
+            public string ApiKey { get; set; }
             public int ServerPort { get; set; }
             public string AuthorizationScheme { get; set; }
             public int ServerProtocol { get; set; }

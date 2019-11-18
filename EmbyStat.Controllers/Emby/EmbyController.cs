@@ -24,15 +24,6 @@ namespace EmbyStat.Controllers.Emby
 
         #region Server
 
-        [HttpPost]
-        [Route("server/token")]
-        public async Task<IActionResult> GenerateToken([FromBody] EmbyLoginViewModel login)
-        {
-            var embyLogin = _mapper.Map<EmbyLogin>(login);
-            var result = await _embyService.GetEmbyTokenAsync(embyLogin);
-            return Ok(_mapper.Map<EmbyTokenViewModel>(result));
-        }
-
         [HttpGet]
         [Route("server/info")]
         public async Task<IActionResult> GetServerInfo()
@@ -41,6 +32,14 @@ namespace EmbyStat.Controllers.Emby
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
             return Ok(serverInfo);
+        }
+
+        [HttpPost]
+        [Route("server/test")]
+        public async Task<IActionResult> TestApiKey([FromBody] EmbyLoginViewModel login)
+        {
+            var result = await _embyService.TestNewEmbyApiKeyAsync(login.Address, login.ApiKey);
+            return Ok(result);
         }
 
         [HttpGet]

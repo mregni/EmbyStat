@@ -36,10 +36,7 @@ namespace EmbyStat.Controllers
             CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
 		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
-		    CreateMap<EmbyLogin, EmbyLoginViewModel>().ReverseMap();
-            CreateMap<EmbyToken, EmbyTokenViewModel>()
-                .ForMember(x => x.IsAdmin, opt => opt.MapFrom<BooleanToCheckBoolean>());
-		    CreateMap<PluginInfo, EmbyPluginViewModel>();
+            CreateMap<PluginInfo, EmbyPluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
@@ -77,13 +74,5 @@ namespace EmbyStat.Controllers
 			    .ReverseMap()
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore());
 	    }
-
-        private class BooleanToCheckBoolean : IValueResolver<EmbyToken, EmbyTokenViewModel, int>
-        {
-            public int Resolve(EmbyToken source, EmbyTokenViewModel destination, int destMember, ResolutionContext context)
-            {
-                return source.IsAdmin ? 2 : 3;
-            }
-        }
     }
 }

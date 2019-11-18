@@ -125,7 +125,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 ParentId = parentId,
                 Recursive = true,
-                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
                 StartIndex = 0,
                 Limit = 1,
@@ -144,7 +143,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 ParentId = parentId,
                 Recursive = true,
                 LocationTypes = new[] { LocationType.FileSystem },
-                UserId = Settings.Emby.UserId,
                 IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
                 StartIndex = startIndex,
                 Limit = limit,
@@ -222,7 +220,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     ParentId = showDto.Id,
                     LocationTypes = new[] { LocationType.FileSystem },
                     Recursive = true,
-                    UserId = Settings.Emby.UserId,
                     IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
                     Fields = new[]
                        {
@@ -287,7 +284,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 ParentId = libraryId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
-                UserId = Settings.Emby.UserId,
                 EnableTotalRecordCount = true,
                 IncludeItemTypes = new[] { "Series" },
                 Fields = new[] {
@@ -403,7 +399,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task<bool> IsEmbyAliveAsync()
         {
-            var result = await _embyClient.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress);
+            _embyClient.BaseUrl = Settings.Emby.FullEmbyServerAddress;
+            var result = await _embyClient.PingEmbyAsync();
             return result == "Emby Server";
         }
 
