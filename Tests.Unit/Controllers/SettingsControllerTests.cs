@@ -6,6 +6,7 @@ using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Controllers;
 using EmbyStat.Controllers.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -42,14 +43,12 @@ namespace Tests.Unit.Controllers
                 WizardFinished = true,
                 Emby = new EmbySettings
                 {
-                    AccessToken = "1234567980",
-                    UserId = "aaaaaaaaaa",
+                    ApiKey = "1234567980",
                     ServerName = "ServerName",
                     AuthorizationScheme = "MediaBrowser",
                     ServerAddress = "localhost",
                     ServerPort = 8097,
                     ServerProtocol = ConnectionProtocol.Https,
-                    UserName = "admin"
                 },
                 Tvdb = new TvdbSettings
                 {
@@ -121,14 +120,12 @@ namespace Tests.Unit.Controllers
                 WizardFinished = true,
                 Emby = new FullSettingsViewModel.EmbySettingsViewModel
                 {
-                    AccessToken = "1234567980",
-                    UserId = "aaaaaaaaaa",
+                    ApiKey = "1234567980",
                     ServerName = "ServerName",
                     AuthorizationScheme = "MediaBrowser",
                     ServerAddress = "localhost",
                     ServerPort = 8097,
                     ServerProtocol = 1,
-                    UserName = "admin"
                 },
                 Tvdb = new FullSettingsViewModel.TvdbSettingsViewModel
                 {

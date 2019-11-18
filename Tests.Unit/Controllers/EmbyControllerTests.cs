@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Controllers;
 using EmbyStat.Controllers.Emby;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
@@ -12,104 +13,89 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-	public class EmbyControllerTests : IDisposable
+	public class EmbyControllerTests
     {
-	    private readonly EmbyController _subject;
-	    private readonly Mock<IEmbyService> _embyServiceMock;
+        private readonly Mapper _mapper;
 
-	    private readonly EmbyToken _token;
-	    private readonly ServerInfo _serverInfo;
-	    private readonly EmbyUdpBroadcast _emby;
+        public EmbyControllerTests()
+        {
+            var profiles = new MapProfiles();
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profiles));
+            _mapper = new Mapper(configuration);
+        }
 
-		public EmbyControllerTests()
-	    {
-		    _token = new EmbyToken
-            {
-			    IsAdmin = true,
-			    Token = "azerty",
-			    Username = "admin"
-		    };
+        [Fact]
+	    public async Task TestApiKey_Should_Return_True_If_Token_Is_Valid()
+        {
+            var embyServiceMock = new Mock<IEmbyService>();
+            embyServiceMock.Setup(x => x.TestNewEmbyApiKeyAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-		    _emby = new EmbyUdpBroadcast
-            {
-			    Id = "azerty",
-			    Address = "localhost",
-			    Name = "emby",
-                Port = 80,
-                Protocol = 0
-		    };
-
-			_serverInfo = new ServerInfo
-			{
-				HttpServerPortNumber = 8096,
-				HttpsPortNumber = 8097
-			};
-
-			_embyServiceMock = new Mock<IEmbyService>();
-		    _embyServiceMock.Setup(x => x.GetEmbyTokenAsync(It.IsAny<EmbyLogin>())).ReturnsAsync(_token);
-		    _embyServiceMock.Setup(x => x.SearchEmby()).Returns(_emby);
-		    _embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(_serverInfo);
-
-	        var mapperMock = new Mock<IMapper>();
-	        mapperMock.Setup(x => x.Map<ServerInfoViewModel>(It.IsAny<ServerInfo>())).Returns(new ServerInfoViewModel { HttpServerPortNumber = 8096, HttpsPortNumber = 8097 });
-            mapperMock.Setup(x => x.Map<EmbyTokenViewModel>(It.IsAny<EmbyToken>())).Returns(new EmbyTokenViewModel{ IsAdmin = 2, Token = "azerty", Username = "admin" });
-	        mapperMock.Setup(x => x.Map<EmbyUdpBroadcastViewModel>(It.IsAny<EmbyUdpBroadcast>())).Returns(new EmbyUdpBroadcastViewModel { Id = "azerty", Address = "localhost", Name = "emby", Protocol = 0, Port = 80});
-
-		    _subject = new EmbyController(_embyServiceMock.Object, mapperMock.Object);
-		}
-
-	    public void Dispose()
-	    {
-		    _subject?.Dispose();
-		}
-
-		[Fact]
-	    public async Task IsEmbyTokenReturned()
-	    {
-		    var loginViewModel = new EmbyLoginViewModel
+            var controller = new EmbyController(embyServiceMock.Object, _mapper);
+            var loginViewModel = new EmbyLoginViewModel
 		    {
 			    Address = "http://localhost",
-			    Password = "password",
-			    UserName = "username"
+			    ApiKey = "12345"
 		    };
 
-		    var result = await _subject.GenerateToken(loginViewModel);
+            var result = await controller.TestApiKey(loginViewModel);
+            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+		    
+            var succeeded = resultObject.Should().BeOfType<bool>().Subject;
+            succeeded.Should().BeTrue();
 
-		    var tokenObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-		    var token = tokenObject.Should().BeOfType<EmbyTokenViewModel>().Subject;
-
-		    token.IsAdmin.Should().Be(2);
-		    token.Token.Should().Be(_token.Token);
-		    token.Username.Should().Be(_token.Username);
-	    }
+            controller.Dispose();
+        }
 
 	    [Fact]
-	    public void IsEmbyReturned()
+	    public void SearchEmby_Should_Return_Emby_Instance()
 	    {
-		    var result = _subject.SearchEmby();
+            var emby = new EmbyUdpBroadcast
+            {
+                Id = "azerty",
+                Address = "localhost",
+                Name = "emby",
+                Port = 80,
+                Protocol = 0
+            };
+
+            var embyServiceMock = new Mock<IEmbyService>();
+            embyServiceMock.Setup(x => x.SearchEmby()).Returns(emby);
+            var controller = new EmbyController(embyServiceMock.Object, _mapper);
+            var result = controller.SearchEmby();
 
 		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var embyUdpBroadcast = resultObject.Should().BeOfType<EmbyUdpBroadcastViewModel>().Subject;
 
-		    embyUdpBroadcast.Address.Should().Be(_emby.Address);
-		    embyUdpBroadcast.Port.Should().Be(_emby.Port);
-		    embyUdpBroadcast.Protocol.Should().Be(_emby.Protocol);
-            embyUdpBroadcast.Id.Should().Be(_emby.Id);
-		    embyUdpBroadcast.Name.Should().Be(_emby.Name);
+            embyUdpBroadcast.Address.Should().Be(emby.Address);
+		    embyUdpBroadcast.Port.Should().Be(emby.Port);
+		    embyUdpBroadcast.Protocol.Should().Be(emby.Protocol);
+            embyUdpBroadcast.Id.Should().Be(emby.Id);
+		    embyUdpBroadcast.Name.Should().Be(emby.Name);
 
-			_embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
-	    }
+            embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
+            controller.Dispose();
+        }
 
-	    [Fact]
-	    public async Task IsServerInfoReturned()
+        [Fact]
+	    public async Task GetServerInfo_Should_Return_Emby_Server_Info()
 	    {
-		    var result = await _subject.GetServerInfo();
+            var serverInfoObject = new ServerInfo
+            {
+                HttpServerPortNumber = 8096,
+                HttpsPortNumber = 8097
+            };
+
+            var embyServiceMock = new Mock<IEmbyService>();
+            embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(serverInfoObject);
+            var controller = new EmbyController(embyServiceMock.Object, _mapper);
+
+            var result = await controller.GetServerInfo();
 		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var serverInfo = resultObject.Should().BeOfType<ServerInfoViewModel>().Subject;
 
 		    serverInfo.Should().NotBeNull();
-		    serverInfo.HttpServerPortNumber.Should().Be(_serverInfo.HttpServerPortNumber);
-		    serverInfo.HttpsPortNumber.Should().Be(_serverInfo.HttpsPortNumber);
+		    serverInfo.HttpServerPortNumber.Should().Be(serverInfoObject.HttpServerPortNumber);
+		    serverInfo.HttpsPortNumber.Should().Be(serverInfoObject.HttpsPortNumber);
 	    }
 	}
 }
