@@ -89,43 +89,33 @@ namespace EmbyStat.Services
             }
         }
 
-        public async Task<EmbyToken> GetEmbyTokenAsync(EmbyLogin login)
-        {
-            if (!string.IsNullOrEmpty(login?.Password) && !string.IsNullOrEmpty(login.UserName))
-            {
-                try
-                {
-                    var token = await _embyClient.AuthenticateUserAsync(login.UserName, login.Password, login.Address);
-                    return new EmbyToken
-                    {
-                        Token = token.AccessToken,
-                        Username = token.User.ConnectUserName,
-                        IsAdmin = token.User.Policy.IsAdministrator,
-                        Id = token.User.Id
-                    };
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(e);
-                    _logger.Warn($"{Constants.LogPrefix.ServerApi}\tUsername or password are wrong, user should try again with other credentials!");
-                    throw new BusinessException("TOKEN_FAILED", 500, e);
-                }
-            }
-
-            _logger.Warn("Username or password are empty, no use to try a login!");
-            throw new BusinessException("TOKEN_FAILED");
-        }
-
         public async Task<ServerInfo> GetServerInfoAsync()
         {
             var server = _embyRepository.GetServerInfo();
             if (server == null)
             {
-                var settings = _settingsService.GetUserSettings();
-                await GetAndProcessServerInfoAsync(settings.Emby.FullEmbyServerAddress, settings.Emby.AccessToken);
+                server = await GetAndProcessServerInfoAsync();
             }
 
             return server;
+        }
+
+        public async Task<bool> TestNewEmbyApiKeyAsync(string url, string apiKey)
+        {
+            var oldApiKey = _embyClient.ApiKey;
+            var oldUrl = _embyClient.BaseUrl;
+            _embyClient.ApiKey = apiKey;
+            _embyClient.BaseUrl = url;
+
+            var info = await _embyClient.GetServerInfoAsync();
+            if (info != null)
+            {
+                return true;
+            }
+
+            _embyClient.ApiKey = oldApiKey;
+            _embyClient.BaseUrl = oldUrl;
+            return false;
         }
 
         public EmbyStatus GetEmbyStatus()
@@ -133,9 +123,10 @@ namespace EmbyStat.Services
             return _embyRepository.GetEmbyStatus();
         }
 
-        public Task<string> PingEmbyAsync(string embyAddress)
+        public Task<string> PingEmbyAsync(string url)
         {
-            return _embyClient.PingEmbyAsync(embyAddress);
+            _embyClient.BaseUrl = url;
+            return _embyClient.PingEmbyAsync();
         }
 
         public void ResetMissedPings()
@@ -228,26 +219,20 @@ namespace EmbyStat.Services
 
         #region JobHelpers
 
-        public async Task GetAndProcessServerInfoAsync(string embyAddress, string accessToken)
+        public async Task<ServerInfo> GetAndProcessServerInfoAsync()
         {
             var server = await _embyClient.GetServerInfoAsync();
-
-            if (string.IsNullOrEmpty(server.LocalAddress))
-            {
-                server.LocalAddress = string.Empty;
-            }
-
             _embyRepository.UpsertServerInfo(server);
+            return server;
         }
 
-        public async Task GetAndProcessPluginInfoAsync(string embyAddress, string accessToken)
+        public async Task GetAndProcessPluginInfoAsync()
         {
             var plugins = await _embyClient.GetInstalledPluginsAsync();
-
-            _embyRepository.RemoveAllAndInsertPluginRange(PluginConverter.ConvertToPluginList(plugins));
+            _embyRepository.RemoveAllAndInsertPluginRange(plugins);
         }
 
-        public async Task GetAndProcessEmbyUsersAsync(string embyAddress, string accessToken)
+        public async Task GetAndProcessEmbyUsersAsync()
         {
             var usersJson = await _embyClient.GetEmbyUsersAsync();
             var users = usersJson.ConvertToUserList();
@@ -258,7 +243,7 @@ namespace EmbyStat.Services
             _embyRepository.MarkUsersAsDeleted(removedUsers);
         }
 
-        public async Task GetAndProcessDevicesAsync(string embyAddress, string accessToken)
+        public async Task GetAndProcessDevicesAsync()
         {
             var devicesJson = await _embyClient.GetEmbyDevicesAsync();
             var devices = devicesJson.ConvertToDeviceList();

@@ -16,6 +16,7 @@ using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using RestSharp;
 
 namespace EmbyStat.DI
 {
@@ -86,6 +87,7 @@ namespace EmbyStat.DI
 
         public static void RegisterHttp(this IServiceCollection services)
         {
+            services.AddSingleton<IRestClient, RestClient>();
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
         }
 

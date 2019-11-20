@@ -96,7 +96,7 @@ namespace Tests.Unit.Services
             Directory.CreateDirectory(Path.Combine("config", "Logs-test3").GetLocalPath());
 
             var settings = new AppSettings { Dirs = new Dirs { Logs = "Logs-test3", Config = "config" } };
-            var userSettings = new UserSettings { Emby = new EmbySettings { UserName = "reggi", ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001 }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
+            var userSettings = new UserSettings { Emby = new EmbySettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001 }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
@@ -127,7 +127,7 @@ namespace Tests.Unit.Services
             Directory.CreateDirectory(Path.Combine("config", "Logs-test4").GetLocalPath());
 
             var settings = new AppSettings { Dirs = new Dirs { Logs = "Logs-test4", Config = "config" } };
-            var userSettings = new UserSettings { Emby = new EmbySettings { UserName = "reggi", ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001, AccessToken = "123456" }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
+            var userSettings = new UserSettings { Emby = new EmbySettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001, ApiKey = "123456" }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
@@ -136,8 +136,8 @@ namespace Tests.Unit.Services
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
-            const string line = "Log line: http://192.168.1.1:8001; ApiKey:0000; username:reggi; ws://192.168.1.1:8001; accessToken:123456; serverId:654321\r\n";
-            const string anonymousLine = "Log line: http://xxx.xxx.xxx.xxx:xxxx; ApiKey:xxxxxxxxxxxxxx; username:{EMBY ADMIN USER}; wss://xxx.xxx.xxx.xxx:xxxx; accessToken:xxxxxxxxxxxxxx; serverId:xxxxxxxxxxxxxx\r\n";
+            const string line = "Log line: http://192.168.1.1:8001; ApiKey:0000; ws://192.168.1.1:8001; serverId:654321\r\n";
+            const string anonymousLine = "Log line: http://xxx.xxx.xxx.xxx:xxxx; ApiKey:xxxxxxxxxxxxxx; wss://xxx.xxx.xxx.xxx:xxxx; serverId:xxxxxxxxxxxxxx\r\n";
             File.AppendAllText(Path.Combine("config", "Logs-test4", "log1.txt").GetLocalPath(), line);
 
 

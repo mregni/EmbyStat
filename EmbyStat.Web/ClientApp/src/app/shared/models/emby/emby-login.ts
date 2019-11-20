@@ -1,11 +1,9 @@
 export class EmbyLogin {
-    userName: string;
-    address: string;
-    password: string;
+  apiKey: string;
+  address: string;
 
-    constructor(username: string, password: string, address: string) {
-        this.userName = username;
-        this.password = password;
-        this.address = address;
-    }
+    constructor(apiKey: string, address: string) {
+      this.apiKey = apiKey;
+      this.address = address;
+  }
 }

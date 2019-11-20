@@ -12,10 +12,10 @@ namespace EmbyStat.Services.Interfaces
         #region Server
 
         EmbyUdpBroadcast SearchEmby();
-        Task<EmbyToken> GetEmbyTokenAsync(EmbyLogin login);
         Task<ServerInfo> GetServerInfoAsync();
+        Task<bool> TestNewEmbyApiKeyAsync(string url, string apiKey);
         EmbyStatus GetEmbyStatus();
-        Task<string> PingEmbyAsync(string embyAddress);
+        Task<string> PingEmbyAsync(string url);
         void ResetMissedPings();
         void IncreaseMissedPings();
 
@@ -40,10 +40,10 @@ namespace EmbyStat.Services.Interfaces
 
         #region JobHelpers
 
-        Task GetAndProcessServerInfoAsync(string embyAddress, string accessToken);
-        Task GetAndProcessPluginInfoAsync(string embyAddress, string accessToken);
-        Task GetAndProcessEmbyUsersAsync(string embyAddress, string accessToken);
-        Task GetAndProcessDevicesAsync(string embyAddress, string accessToken);
+        Task<ServerInfo> GetAndProcessServerInfoAsync();
+        Task GetAndProcessPluginInfoAsync();
+        Task GetAndProcessEmbyUsersAsync();
+        Task GetAndProcessDevicesAsync();
 
         #endregion
     }

@@ -21,4 +21,9 @@ export class Settings {
   enableRollbarLogging: boolean ;
   isLoaded: boolean;
   noUpdates: boolean;
+
+  constructor(){
+    this.emby = new EmbySettings();
+    this.tvdb = new TvdbSettings();
+  }
 }

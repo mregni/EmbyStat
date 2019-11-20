@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { CheckBoolean } from '../../../shared/enums/check-boolean-enum';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { EmbyLogin } from '../../../shared/models/emby/emby-login';
-import { EmbyToken } from '../../../shared/models/emby/emby-token';
 import { EmbyUdpBroadcast } from '../../../shared/models/emby/emby-udp-broadcast';
 import { Language } from '../../../shared/models/language';
 import { Settings } from '../../../shared/models/settings/settings';
@@ -34,8 +33,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   embyAddressControl = new FormControl('', [Validators.required]);
   embyPortControl = new FormControl('', [Validators.required]);
   embyProtocolControl = new FormControl('1', [Validators.required]);
-  embyUsernameControl = new FormControl('', [Validators.required]);
-  embyPasswordControl = new FormControl('', [Validators.required]);
+  embyApiKeyControl = new FormControl('', [Validators.required]);
+
   exceptionLoggingControl = new FormControl(false);
 
   private languageChangedSub: Subscription;
@@ -44,13 +43,14 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private fireSyncSub: Subscription;
   private checkUrlNeeded = true;
 
+  embyUrl: string;
   embyFound = CheckBoolean.unChecked;
   embyServerName = '';
   hidePassword = true;
   wizardIndex = 0;
   embyOnline = CheckBoolean.unChecked;
-  isAdmin = CheckBoolean.unChecked;
-  username: string;
+  apiKeyWorks = CheckBoolean.unChecked;
+  apiKey: string;
   selectedProtocol: number;
 
   private settings: Settings;
@@ -68,12 +68,29 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       exceptionLogging: this.exceptionLoggingControl
     });
 
+    this.embyPortControl.valueChanges.subscribe((value: string) => {
+      const url = this.embyAddressControl.value;
+      const protocol = this.embyProtocolControl.value;
+      this.updateUrl(protocol, url, value);
+    });
+
+    this.embyProtocolControl.valueChanges.subscribe((value: number) => {
+      const url = this.embyAddressControl.value;
+      const port = this.embyPortControl.value;
+      this.updateUrl(value, url, port);
+    });
+
+    this.embyAddressControl.valueChanges.subscribe((value: string) => {
+      const port = this.embyPortControl.value;
+      const protocol = this.embyProtocolControl.value;
+      this.updateUrl(protocol, value, port);
+    });
+
     this.embyForm = new FormGroup({
       embyAddress: this.embyAddressControl,
       embyPort: this.embyPortControl,
       embyProtocol: this.embyProtocolControl,
-      embyUsername: this.embyUsernameControl,
-      embyPassword: this.embyPasswordControl
+      embyApiKey: this.embyApiKeyControl,
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
@@ -93,7 +110,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.languages$ = this.settingsFacade.getLanguages();
 
     this.embyService.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
-      if (!!data.address) {
+    if (!!data.address) {
         this.embyFound = CheckBoolean.true;
         this.embyAddressControl.setValue(data.address);
         this.embyPortControl.setValue(data.port);
@@ -112,27 +129,29 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.translate.use(value);
   }
 
+  private updateUrl(protocol: number, url: string, port: string){
+    this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
+  }
+
   stepperPageChanged(event) {
     if (event.selectedIndex === 2) {
-      this.username = this.embyUsernameControl.value;
-      const password = this.embyPasswordControl.value;
+      this.apiKey = this.embyApiKeyControl.value;
       const address = this.embyAddressControl.value;
       const port = this.embyPortControl.value;
       const protocol = this.embyProtocolControl.value;
 
-      const url = (protocol === 0 ? 'https://' : 'http://') + address + ':' + port;
-      const login = new EmbyLogin(this.username, password, url);
+      const login = new EmbyLogin(this.apiKey, this.embyUrl);
 
       this.embyOnline = CheckBoolean.busy;
-      this.isAdmin = CheckBoolean.busy;
+      this.apiKeyWorks = CheckBoolean.busy;
 
-      this.embyService.pingEmby(url).subscribe((response: boolean) => {
+      this.embyService.pingEmby(this.embyUrl).subscribe((response: boolean) => {
         this.embyOnline = response ? CheckBoolean.true : CheckBoolean.false;
         if (response) {
-          this.embyService.getEmbyToken(login)
-            .subscribe((token: EmbyToken) => {
-              this.isAdmin = token.isAdmin;
-              if (token.isAdmin) {
+          this.embyService.testApiKey(login)
+            .subscribe((result: boolean) => {
+              this.apiKeyWorks = result ? CheckBoolean.true : CheckBoolean.false;
+              if (result) {
                 const settings = { ...this.settings };
                 const emby = { ...this.settings.emby };
                 settings.language = this.languageControl.value;
@@ -140,23 +159,20 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
                 settings.wizardFinished = true;
                 settings.enableRollbarLogging = this.exceptionLoggingControl.value;
                 emby.serverAddress = address;
-                emby.userName = this.username;
-                emby.accessToken = token.token;
-                emby.userId = token.id;
+                emby.apiKey = this.apiKey;
                 emby.serverPort = port;
                 emby.serverProtocol = protocol;
                 settings.emby = emby;
-                console.log(settings);
                 this.settingsFacade.updateSettings(settings);
               }
             }, (err) => {
-              this.isAdmin = CheckBoolean.false;
+              this.apiKeyWorks = CheckBoolean.false;
             });
         }
       },
         err => {
           this.embyOnline = CheckBoolean.false;
-          this.isAdmin = CheckBoolean.false;
+          this.apiKeyWorks = CheckBoolean.false;
         });
     }
   }

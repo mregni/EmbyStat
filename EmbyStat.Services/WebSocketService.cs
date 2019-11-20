@@ -40,7 +40,7 @@ namespace EmbyStat.Services
                 if (!webSocketApi.IsWebSocketOpenOrConnecting)
                 {
                     var settings = settingsService.GetUserSettings();
-                    if (settings != null && !string.IsNullOrWhiteSpace(settings.Emby.AccessToken))
+                    if (settings != null && !string.IsNullOrWhiteSpace(settings.Emby.ApiKey))
                     {
                         try
                         {
@@ -50,7 +50,7 @@ namespace EmbyStat.Services
                             webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
                             webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
                             webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
-                            await webSocketApi.OpenWebSocket(settings.Emby.FullSocketAddress, settings.Emby.AccessToken, deviceId);
+                            await webSocketApi.OpenWebSocket(settings.Emby.FullSocketAddress, settings.Emby.ApiKey, deviceId);
                         }
                         catch (Exception e)
                         {
