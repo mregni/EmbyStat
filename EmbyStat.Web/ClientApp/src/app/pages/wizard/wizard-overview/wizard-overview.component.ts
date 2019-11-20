@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { CheckBoolean } from '../../../shared/enums/check-boolean-enum';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { EmbyLogin } from '../../../shared/models/emby/emby-login';
-import { EmbyToken } from '../../../shared/models/emby/emby-token';
 import { EmbyUdpBroadcast } from '../../../shared/models/emby/emby-udp-broadcast';
 import { Language } from '../../../shared/models/language';
 import { Settings } from '../../../shared/models/settings/settings';
@@ -111,7 +110,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.languages$ = this.settingsFacade.getLanguages();
 
     this.embyService.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
-      if (!!data.address) {
+    if (!!data.address) {
         this.embyFound = CheckBoolean.true;
         this.embyAddressControl.setValue(data.address);
         this.embyPortControl.setValue(data.port);
@@ -141,13 +140,12 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       const port = this.embyPortControl.value;
       const protocol = this.embyProtocolControl.value;
 
-      const url = (protocol === 0 ? 'https://' : 'http://') + address + ':' + port;
-      const login = new EmbyLogin(this.apiKey, url);
+      const login = new EmbyLogin(this.apiKey, this.embyUrl);
 
       this.embyOnline = CheckBoolean.busy;
       this.apiKeyWorks = CheckBoolean.busy;
 
-      this.embyService.pingEmby(url).subscribe((response: boolean) => {
+      this.embyService.pingEmby(this.embyUrl).subscribe((response: boolean) => {
         this.embyOnline = response ? CheckBoolean.true : CheckBoolean.false;
         if (response) {
           this.embyService.testApiKey(login)
