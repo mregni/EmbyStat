@@ -21,7 +21,7 @@ export class UpdateService {
       this.intervalId = setInterval(() => {
         this.systemService.ping().subscribe(() => {
           if (!this.backendIsOnline) {
-            window.location.reload(true);
+            window.location.reload();
           }
         }, error => {
           this.backendIsOnline = false;

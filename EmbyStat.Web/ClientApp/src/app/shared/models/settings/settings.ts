@@ -22,7 +22,7 @@ export class Settings {
   isLoaded: boolean;
   noUpdates: boolean;
 
-  constructor(){
+  constructor() {
     this.emby = new EmbySettings();
     this.tvdb = new TvdbSettings();
   }

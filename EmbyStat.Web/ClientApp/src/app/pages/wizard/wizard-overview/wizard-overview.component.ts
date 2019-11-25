@@ -129,7 +129,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.translate.use(value);
   }
 
-  private updateUrl(protocol: number, url: string, port: string){
+  private updateUrl(protocol: number, url: string, port: string) {
     this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
   }
 
