@@ -3,7 +3,7 @@ repo:
   - .github/**
 
 test:
-  - **/src/**/*.spec.ts
+  - '**/src/**/*.spec.ts'
   - Tests.Unit/**/*Tests.cs
   
 emby-client:
