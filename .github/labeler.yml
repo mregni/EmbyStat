@@ -43,5 +43,5 @@ npm
   - 'EmbyStat.Web/ClientApp/package.json'
 
 project
- - '**/*.sln'
- - '**/*.csproj'
+  - '**/*.sln'
+  - '**/*.csproj'
