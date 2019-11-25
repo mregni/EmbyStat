@@ -23,25 +23,25 @@ core:
   - 'EmbyStat.Common/**'
   - 'EmbyStat.DI/**'
 
-jobs
+jobs:
   - 'EmbyStat.Jobs/**'
 
-controller
+controller:
   - 'EmbyStat.Controllers/**'
 
-service
+service:
   - 'EmbyStat.Services/**'
  
-repository
+repository:
   - 'EmbyStat.Repositories/**'
   - 'EmbyStat.Migrator/**'
 
-updater
+updater:
   - 'Updater/**'
   
-npm
+npm:
   - 'EmbyStat.Web/ClientApp/package.json'
 
-project
+project:
   - '**/*.sln'
   - '**/*.csproj'
