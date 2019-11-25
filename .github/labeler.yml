@@ -1,5 +1,6 @@
 repo:
   - ./*
+  - .github/**
 
 test:
   - **/src/**/*.spec.ts
