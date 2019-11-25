@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
     "EMBYFOUNDTEXT": "Encontramos um servidor Emby em sua rede e inserimos a URL já no formulário. Sinta-se à vontade para ajustar isso e preencher o restante do formulário.",
     "EMBYRUNNING": "Servidor FTP em execução",
-    "ISADMIN": "{{ user }} é um administrador do Emby",
+    "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado no servidor Emby",
     "SAVINGINSTRUCTIONS": "Se algo falhar, você não poderá começar a usar o EmbyStat. Nesse caso, corrija os erros, pressione voltar e avançar.",
     "SAVING": "Salvando dados...",
@@ -178,15 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP/domain",
-      "EMBYUSERNAME": "Nome de usuário do Emby (admin)",
-      "EMBYPASSWORD": "Inserir senha de administrador",
+      "EMBYAPIKEY": "Emby API key",
       "EMBYPORT": "Emby port",
       "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin username required.",
-      "EMBYPASSWORDREQUIRED": "Emby admin password required.",
       "EMBYPORTREQUIRED": "Emby port required.",
-      "WRONGPASSWORD": "Wrong username/password combination. Please check your credentials and try again",
-      "NOADMINUSER": "Given Emby user is not an admin on the server. Please provide an admin account."
+      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/serversecurity.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Provided API key is not valid"
     },
     "UPDATE": {
       "MASTER": "Master",

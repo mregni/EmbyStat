@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Nous allons maintenant configurer votre connexion Emby. Nous avons essayé de détecter automatiquement votre serveur Emby sur le réseau, mais nous avons échoué. Remplissez tous les champs pour qu'EmbyStat puisse trouver votre serveur Emby.",
     "EMBYFOUNDTEXT": "Nous avons trouvé un serveur Emby dans votre réseau et entré automatiquement l'URL dans le formulaire. N'hésitez pas à l'ajuster et à remplir le reste du formulaire.",
     "EMBYRUNNING": "Le serveur Emby est en cours d'exécution",
-    "ISADMIN": "{{ user }} est un administrateur Emby",
+    "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "Le module EmbyStat a été trouvé sur le serveur Emby",
     "SAVINGINSTRUCTIONS": "Si quelque chose échoue, vous ne pourrez pas commencer à utiliser EmbyStat. Dans ce cas, corrigez les erreurs, appuyez sur précédent et suivant.",
     "SAVING": "Enregistrement des données",
@@ -178,15 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP / domaine",
-      "EMBYUSERNAME": "Nom d'utilisateur de l'administrateur Emby",
-      "EMBYPASSWORD": "Mot de passe l'administrateur Emby",
+      "EMBYAPIKEY": "Emby API key",
       "EMBYPORT": "Port d'Emby",
       "EMBYADDRESSREQUIRED": "Emby IP / domaine requis.",
-      "EMBYUSERNAMEREQUIRED": "Nom d'utilisateur de l'administrateur Emby requis.",
-      "EMBYPASSWORDREQUIRED": "Mot de passe de l'administrateur Emby requis.",
       "EMBYPORTREQUIRED": "Port d'Emby requis.",
-      "WRONGPASSWORD": "Mauvaise combinaison nom d'utilisateur / mot de passe. Veuillez vérifier vos informations d'identification et réessayer",
-      "NOADMINUSER": "L'utilisateur d'Emby n'est pas un administrateur sur le serveur. Veuillez fournir un compte d'administrateur."
+      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/serversecurity.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Provided API key is not valid"
     },
     "UPDATE": {
       "MASTER": "Master",
