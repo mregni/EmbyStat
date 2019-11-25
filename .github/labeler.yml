@@ -1,47 +1,47 @@
 repo:
-  - ./*
-  - .github/**
+  - './*'
+  - '.github/**'
 
 test:
   - '**/src/**/*.spec.ts'
-  - Tests.Unit/**/*Tests.cs
+  - 'Tests.Unit/**/*Tests.cs'
   
 emby-client:
-  - EmbyStat.Clients.Emby.Http/**
-  - EmbyStat.Clients.Emby.WebSocket/**
+  - 'EmbyStat.Clients.Emby.Http/**'
+  - 'EmbyStat.Clients.Emby.WebSocket/**'
   
 github-client:
-  - EmbyStat.Clients.GitHub/**
+  - 'EmbyStat.Clients.GitHub/**'
  
 tvdb-client:
-  - EmbyStat.Clients.Tvdb/**
+  - 'EmbyStat.Clients.Tvdb/**'
  
 core:
-  - EmbyStat.Web/*
-  - EmbyStat.Web/config/**
-  - EmbyStat.Web/Helpers/**
-  - EmbyStat.Common/**
-  - EmbyStat.DI/**
+  - 'EmbyStat.Web/*'
+  - 'EmbyStat.Web/config/**'
+  - 'EmbyStat.Web/Helpers/**'
+  - 'EmbyStat.Common/**'
+  - 'EmbyStat.DI/**'
 
 jobs
-  - EmbyStat.Jobs/**
+  - 'EmbyStat.Jobs/**'
 
 controller
-  - EmbyStat.Controllers/**
+  - 'EmbyStat.Controllers/**'
 
 service
-  - EmbyStat.Services/**
+  - 'EmbyStat.Services/**'
  
 repository
-  - EmbyStat.Repositories/**
-  - EmbyStat.Migrator/**
+  - 'EmbyStat.Repositories/**'
+  - 'EmbyStat.Migrator/**'
 
 updater
-  - Updater/**
+  - 'Updater/**'
   
 npm
-  - EmbyStat.Web/ClientApp/package.json
+  - 'EmbyStat.Web/ClientApp/package.json'
 
 project
- - **/*.sln
- - **/*.csproj
+ - '**/*.sln'
+ - '**/*.csproj'
