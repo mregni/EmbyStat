@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common.Models.Entities;
+﻿using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.Job;
 
 namespace Tests.Unit.Controllers.Builders

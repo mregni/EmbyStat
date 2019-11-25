@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Web;
+﻿using EmbyStat.Web;
 using FluentAssertions;
 using Xunit;
 using CommandLine;

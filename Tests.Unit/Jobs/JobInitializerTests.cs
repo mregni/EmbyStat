@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Hangfire;
-using Hangfire.Common;
 using Hangfire.Storage;
 using Moq;
 using Xunit;
-using EmbyStat.Common.Models.Entities;
 using Hangfire.MemoryStorage;
 using Job = EmbyStat.Common.Models.Entities.Job;
 

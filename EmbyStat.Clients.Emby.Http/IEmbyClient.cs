@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Net;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reflection.Metadata;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
@@ -12,7 +10,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Controllers;
-using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
@@ -21,7 +18,6 @@ using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Tests.Unit.Controllers.Builders;
 using Xunit;
 
 namespace Tests.Unit.Controllers

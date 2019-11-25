@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Emby;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers.Emby

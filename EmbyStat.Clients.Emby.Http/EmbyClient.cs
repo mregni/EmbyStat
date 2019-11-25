@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using EmbyStat.Clients.Emby.Http.Model;
-using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Net;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Newtonsoft.Json.Linq;
-using NLog;
 using RestSharp;
 using ServerInfo = EmbyStat.Common.Models.Entities.ServerInfo;
 

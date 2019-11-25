@@ -6,7 +6,6 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 
 namespace EmbyStat.Controllers.Settings
 {

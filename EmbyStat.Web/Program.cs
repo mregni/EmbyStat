@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog.Fluent;
 using NLog.Web;
 using NLog;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;

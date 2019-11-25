@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Emby.Http.Model;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Net;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
