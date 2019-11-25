@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Nu vil vi opsætte din Emby-forbindelse. Vi har forsøgt at finde din Emby-server automatisk på netværket uden succes. Udfyld alle felter, så EmbyStat kan finde din Emby-server.",
     "EMBYFOUNDTEXT": "Vi fandt en Emby-server i dit netværk og indtastede adressen i formularen. Du er velkommen til at justere dette og udfylde resten af ​​formularen.",
     "EMBYRUNNING": "Emby-server kører",
-    "ISADMIN": "{{ user }} er en Emby-administrator",
+    "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "EmbyStat-plugin fundet på Emby-server",
     "SAVINGINSTRUCTIONS": "Hvis noget fejler, kan du ikke begynde at bruge EmbyStat. I så fald skal du rette fejlene, trykke tilbage og næste.",
     "SAVING": "Gemmer data",
@@ -178,15 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP / domæne",
-      "EMBYUSERNAME": "Emby admin brugernavn",
-      "EMBYPASSWORD": "Emby admin adgangskode",
+      "EMBYAPIKEY": "Emby API key",
       "EMBYPORT": "Emby Port",
       "EMBYADDRESSREQUIRED": "Emby IP / domæne krævet.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin-brugernavn er påkrævet.",
-      "EMBYPASSWORDREQUIRED": "Emby admin-adgangskode er påkrævet.",
       "EMBYPORTREQUIRED": "Emby-port er påkrævet.",
-      "WRONGPASSWORD": "Forkert kombination af brugernavn og adgangskode. Kontroller dine legitimationsoplysninger og prøv igen",
-      "NOADMINUSER": "Oplyste Emby-bruger er ikke en administrator på serveren. Angiv en administratorkonto."
+      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/serversecurity.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Provided API key is not valid"
     },
     "UPDATE": {
       "MASTER": "Master",
