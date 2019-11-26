@@ -63,7 +63,6 @@ $mat-dark-theme-background: ( background: $dark-background, status-bar: $dark-bg
 @include mat-core($fontConfig);
 
 // Theme Config
-
 body {
   --primary-color: #2557af;
   --primary-lighter-color: #becde7;
@@ -71,26 +70,12 @@ body {
   --text-primary-color: $light-primary-text;
   --text-primary-lighter-color: $dark-primary-text;
   --text-primary-darker-color: $light-primary-text;
-}
-
-$mat-primary: ( main: #2557af, lighter: #becde7, darker: #163c96, 200: #2557af, // For slide toggle,
-contrast : ( main: $light-primary-text, lighter: $dark-primary-text, darker: $light-primary-text, ) );
-$theme-primary: mat-palette($mat-primary, main, lighter, darker);
-
-body {
   --accent-color: #f19e2c;
   --accent-lighter-color: #fbe2c0;
   --accent-darker-color: #eb821b;
   --text-accent-color: $dark-primary-text;
   --text-accent-lighter-color: $dark-primary-text;
   --text-accent-darker-color: $dark-primary-text;
-}
-
-$mat-accent: ( main: #f19e2c, lighter: #fbe2c0, darker: #eb821b, 200: #f19e2c, // For slide toggle,
-contrast : ( main: $dark-primary-text, lighter: $dark-primary-text, darker: $dark-primary-text, ) );
-$theme-accent: mat-palette($mat-accent, main, lighter, darker);
-
-body {
   --warn-color: #d00202;
   --warn-lighter-color: #f1b3b3;
   --warn-darker-color: #be0101;
@@ -98,6 +83,14 @@ body {
   --text-warn-lighter-color: $dark-primary-text;
   --text-warn-darker-color: $light-primary-text;
 }
+
+$mat-primary: ( main: #2557af, lighter: #becde7, darker: #163c96, 200: #2557af, // For slide toggle,
+contrast : ( main: $light-primary-text, lighter: $dark-primary-text, darker: $light-primary-text, ) );
+$theme-primary: mat-palette($mat-primary, main, lighter, darker);
+
+$mat-accent: ( main: #f19e2c, lighter: #fbe2c0, darker: #eb821b, 200: #f19e2c, // For slide toggle,
+contrast : ( main: $dark-primary-text, lighter: $dark-primary-text, darker: $dark-primary-text, ) );
+$theme-accent: mat-palette($mat-accent, main, lighter, darker);
 
 $mat-warn: ( main: #d00202, lighter: #f1b3b3, darker: #be0101, 200: #d00202, // For slide toggle,
 contrast : ( main: $light-primary-text, lighter: $dark-primary-text, darker: $light-primary-text, ) );

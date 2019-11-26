@@ -175,7 +175,8 @@
           {{'MOVIES.TOSHORTMOVIES' | translate | capitalizeFirst}}
         </mat-card-title>
         <mat-card-content>
-          <mat-table [dataSource]="stats.suspicious.shorts" matSortActive="created" matSortDisableClear matSortDirection="asc">
+          <mat-table [dataSource]="stats.suspicious.shorts"
+                     matSortActive="created" matSortDisableClear matSortDirection="asc">
             <ng-container matColumnDef="number">
               <mat-header-cell *matHeaderCellDef class="maxw-100">#</mat-header-cell>
               <mat-cell *matCellDef="let row" class="maxw-100">{{ row.number }}</mat-cell>
@@ -221,7 +222,8 @@
           {{ 'MOVIES.NOIMDB' | translate | capitalizeFirst }}
         </mat-card-title>
         <mat-card-content>
-          <mat-table [dataSource]="stats.suspicious.noImdb" matSortActive="created" matSortDisableClear matSortDirection="asc">
+          <mat-table [dataSource]="stats.suspicious.noImdb"
+                     matSortActive="created" matSortDisableClear matSortDirection="asc">
             <ng-container matColumnDef="number">
               <mat-header-cell *matHeaderCellDef class="maxw-100">#</mat-header-cell>
               <mat-cell *matCellDef="let row" class="maxw-100">{{ row.number }}</mat-cell>
@@ -258,7 +260,8 @@
           {{ 'MOVIES.NOPOSTER' | translate | capitalizeFirst }}
         </mat-card-title>
         <mat-card-content>
-          <mat-table [dataSource]="stats.suspicious.noPrimary" matSortActive="created" matSortDisableClear matSortDirection="asc">
+          <mat-table [dataSource]="stats.suspicious.noPrimary"
+                     matSortActive="created" matSortDisableClear matSortDirection="asc">
             <ng-container matColumnDef="number">
               <mat-header-cell *matHeaderCellDef class="maxw-100">#</mat-header-cell>
               <mat-cell *matCellDef="let row" class="maxw-100">{{ row.number }}</mat-cell>

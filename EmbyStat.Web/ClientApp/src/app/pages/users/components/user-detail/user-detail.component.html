@@ -5,7 +5,7 @@
         <div class="d-flex flex-row">
           <div>
             <img class="profile-image" alt="Profile image" *ngIf="user.primaryImageTag !== ''; else noImage"
-              src="{{getEmbyAddress()}}/emby/users/{{user.id}}/images/primary?width=100&tag={{user.primaryImageTag}}&quality=90" />
+              src="{{getUrlProfileImageUrl()}}" />
             <ng-template #noImage>
               <img class="profile-image" alt="Profile image" src="../../../../assets/images/no-profile.png" />
             </ng-template>
@@ -87,7 +87,7 @@
             <mat-header-cell *matHeaderCellDef class="action-cell">{{ 'USERS.WATCHEDTABLE.ACTION' | translate }}
             </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <a mat-raised-button href="{{getEmbyAddress()}}/web/index.html#!/item/item.html?id={{element.id}}&serverId={{this.embyServerInfo.id}}"
+              <a mat-raised-button href="{{getItemImageUrl()}}"
                 target="_blank" color="accent">{{ 'COMMON.OPEN' | translate }}</a>
             </mat-cell>
           </ng-container>

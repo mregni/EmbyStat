@@ -50,7 +50,8 @@
                       {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}</mat-error>
                   </mat-form-field>
                   <mat-form-field class="emby-port">
-                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}" formControlName="embyPort" required>
+                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}"
+                           formControlName="embyPort" required>
                     <mat-error *ngIf="embyPortControl.hasError('required')">
                       {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}</mat-error>
                   </mat-form-field>
@@ -98,9 +99,11 @@
               {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
             </p>
             <div class="button-container">
-              <button mat-stroked-button color="primary" matStepperPrevious [disabled]="embyOnline == 1 && apiKeyWorks == 1"
+              <button mat-stroked-button color="primary" matStepperPrevious
+                      [disabled]="embyOnline == 1 && apiKeyWorks == 1"
                 type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
-              <button mat-raised-button color="primary" matStepperNext [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
+              <button mat-raised-button color="primary" matStepperNext
+                      [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
                 type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
             </div>
           </mat-step>

@@ -23,8 +23,10 @@ export class UserCardComponent implements OnDestroy {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
   }
 
-  getEmbyAddress(): string {
-    return ConfigHelper.getFullEmbyAddress(this.settings);
+  getUrlProfileImageUrl(): string {
+    const url = ConfigHelper.getFullEmbyAddress(this.settings);
+    return `${url}/emby/users/${this.user.id}/images
+            /primary?width=100&tag=${this.user.primaryImageTag}&quality=90`;
   }
 
   ngOnDestroy() {

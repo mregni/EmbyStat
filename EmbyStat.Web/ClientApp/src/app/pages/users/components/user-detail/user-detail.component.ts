@@ -11,6 +11,7 @@ import { EmbyUser } from '../../../../shared/models/emby/emby-user';
 import { Settings } from '../../../../shared/models/settings/settings';
 import { PageService } from '../../../../shared/services/page.service';
 import { UserService } from '../../../../shared/services/user.service';
+import { UserMediaView } from '../../../../shared/models/session/user-media-view';
 
 @Component({
   selector: 'app-user-detail',
@@ -48,10 +49,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     this.pageService.pageChanged('detail');
   }
 
-  getEmbyAddress(): string {
-    return ConfigHelper.getFullEmbyAddress(this.settings);
-  }
-
   getcolumns(): string[] {
     return window.window.innerWidth > 720 ? this.displayedColumnsWide : this.displayedColumnsSmall;
   }
@@ -66,6 +63,17 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   isNowPlaying(value: Date): boolean {
     return moment(value).add(3, 'minute').isAfter(moment.now());
+  }
+
+  getUrlProfileImageUrl(): string {
+    const url = ConfigHelper.getFullEmbyAddress(this.settings);
+    return `${url}/emby/users/${this.user.id}/images
+            /primary?width=100&tag=${this.user.primaryImageTag}&quality=90`;
+  }
+
+  getItemImageUrl(item: UserMediaView): string {
+    const url = ConfigHelper.getFullEmbyAddress(this.settings);
+    return `${url}/web/index.html#!/item/item.html?id=${item.id}&serverId=${this.embyServerInfo.id}`;
   }
 
   private addLeadingZero(value: number): string {
