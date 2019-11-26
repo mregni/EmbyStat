@@ -90,48 +90,75 @@
           {{'MOVIES.DUPLICATEMOVIES' | translate | capitalizeFirst}}
         </mat-card-title>
         <mat-card-content>
-          <table mat-table [dataSource]="stats.suspicious.duplicates" matSortActive="created" matSortDisableClear matSortDirection="asc">
+          <table mat-table [dataSource]="stats.suspicious.duplicates"
+                 matSortActive="created" matSortDisableClear matSortDirection="asc">
             <ng-container matColumnDef="position">
               <th mat-header-cell *matHeaderCellDef class="maxw-100">#</th>
               <td mat-cell *matCellDef="let element" class="maxw-100"> {{ element.number }} </td>
             </ng-container>
             <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.TITLE' | translate | capitalizeFirst }} </th>
+              <th mat-header-cell *matHeaderCellDef>
+                 {{ 'COMMON.TITLE' | translate | capitalizeFirst }}
+              </th>
               <td mat-cell *matCellDef="let element"> {{element.title}} </td>
             </ng-container>
             <ng-container matColumnDef="reason">
-              <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.REASON' | translate | capitalizeFirst }} </th>
-              <td mat-cell *matCellDef="let element"> {{ 'COMMON.' + element.reason | translate | capitalizeFirst }} </td>
+              <th mat-header-cell *matHeaderCellDef>
+                 {{ 'COMMON.REASON' | translate | capitalizeFirst }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ 'COMMON.' + element.reason | translate | capitalizeFirst }}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="linkOne">
-              <th mat-header-cell *matHeaderCellDef class="maxw-100"> {{ 'COMMON.LINK' | translate | capitalizeFirst }} </th>
+              <th mat-header-cell *matHeaderCellDef class="maxw-100">
+                {{ 'COMMON.LINK' | translate | capitalizeFirst }}
+              </th>
               <td mat-cell *matCellDef="let element" class="maxw-100">
-                <a (click)="openMovie(element.itemOne.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a>
+                <a (click)="openMovie(element.itemOne.id)">
+                  {{'COMMON.LINK' | translate | capitalizeFirst }}
+                </a>
               </td>
             </ng-container>
             <ng-container matColumnDef="qualityOne">
-              <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.QUALITY' | translate | capitalizeFirst }} </th>
-              <td mat-cell *matCellDef="let element"> {{ element.itemOne.quality }} </td>
+              <th mat-header-cell *matHeaderCellDef>
+                 {{ 'COMMON.QUALITY' | translate | capitalizeFirst }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.itemOne.quality }}
+              </td>
             </ng-container>
             <ng-container matColumnDef="addedOnOne">
-              <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.ADDEDON' | translate | capitalizeFirst }} </th>
+              <th mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.ADDEDON' | translate | capitalizeFirst }}
+              </th>
               <td mat-cell *matCellDef="let element">
                 {{ element.itemOne.dateCreated | amDateFormat: 'DD/MM/YYYY'}}
               </td>
             </ng-container>
             <ng-container matColumnDef="linkTwo">
-              <th mat-header-cell *matHeaderCellDef class="maxw-100"> {{ 'COMMON.LINK' | translate | capitalizeFirst }} </th>
+              <th mat-header-cell *matHeaderCellDef class="maxw-100">
+                {{ 'COMMON.LINK' | translate | capitalizeFirst }}
+              </th>
               <td mat-cell *matCellDef="let element" class="maxw-100">
-                <a (click)="openMovie(element.itemTwo.id)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a>
+                <a (click)="openMovie(element.itemTwo.id)">
+                  {{'COMMON.LINK' | translate | capitalizeFirst }}
+                </a>
               </td>
             </ng-container>
             <ng-container matColumnDef="qualityTwo">
-              <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.QUALITY' | translate | capitalizeFirst }} </th>
-              <td mat-cell *matCellDef="let element"> {{ element.itemTwo.quality }} </td>
+              <th mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.QUALITY' | translate | capitalizeFirst }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.itemTwo.quality }}
+              </td>
             </ng-container>
             <ng-container matColumnDef="addedOnTwo">
-              <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.ADDEDON' | translate | capitalizeFirst }} </th>
+              <th mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.ADDEDON' | translate | capitalizeFirst }}
+              </th>
               <td mat-cell *matCellDef="let element">
                 {{ element.itemTwo.dateCreated | amDateFormat: 'DD/MM/YYYY'}}
               </td>
@@ -155,18 +182,32 @@
             </ng-container>
 
             <ng-container matColumnDef="title">
-              <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+              <mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.TITLE' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                {{ row.title }}
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="duration">
-              <mat-header-cell *matHeaderCellDef>{{ 'COMMON.DURATION' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{ row.duration }} {{ 'COMMON.MINUTES' | translate }}</mat-cell>
+              <mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.DURATION' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                {{ row.duration }} {{ 'COMMON.MINUTES' | translate }}
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="link">
-              <mat-header-cell *matHeaderCellDef class="maxw-100" >{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row" class="maxw-100"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+              <mat-header-cell *matHeaderCellDef class="maxw-100">
+                {{'COMMON.LINK' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" class="maxw-100">
+                <a (click)="openMovie(row.mediaId)">
+                  {{'COMMON.LINK' | translate | capitalizeFirst }}
+                </a>
+              </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="shortDisplayedColumns"></mat-header-row>
@@ -187,13 +228,23 @@
             </ng-container>
 
             <ng-container matColumnDef="title">
-              <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+              <mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.TITLE' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                {{ row.title }}
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="link">
-              <mat-header-cell *matHeaderCellDef class="maxw-100">{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row" class="maxw-100"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+              <mat-header-cell *matHeaderCellDef class="maxw-100">
+                {{'COMMON.LINK' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" class="maxw-100">
+                <a (click)="openMovie(row.mediaId)">
+                  {{'COMMON.LINK' | translate | capitalizeFirst }}
+                </a>
+              </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="noImdbDisplayedColumns"></mat-header-row>
@@ -214,13 +265,23 @@
             </ng-container>
 
             <ng-container matColumnDef="title">
-              <mat-header-cell *matHeaderCellDef>{{ 'COMMON.TITLE' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+              <mat-header-cell *matHeaderCellDef>
+                {{ 'COMMON.TITLE' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                {{ row.title }}
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="link">
-              <mat-header-cell *matHeaderCellDef class="maxw-100">{{'COMMON.LINK' | translate | capitalizeFirst }}</mat-header-cell>
-              <mat-cell *matCellDef="let row" class="maxw-100"><a (click)="openMovie(row.mediaId)">{{'COMMON.LINK' | translate | capitalizeFirst }}</a></mat-cell>
+              <mat-header-cell *matHeaderCellDef class="maxw-100">
+                {{'COMMON.LINK' | translate | capitalizeFirst }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" class="maxw-100">
+                <a (click)="openMovie(row.mediaId)">
+                  {{'COMMON.LINK' | translate | capitalizeFirst }}
+                </a>
+              </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="noPrimaryDisplayedColumns"></mat-header-row>
