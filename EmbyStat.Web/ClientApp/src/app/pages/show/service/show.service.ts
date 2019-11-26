@@ -11,10 +11,10 @@ import { ShowCollectionRow } from '../../../shared/models/show/show-collection-r
 @Injectable()
 export class ShowService {
   private readonly baseUrl = '/api/show';
-  private getLibraryUrl = this.baseUrl + '/libraries';
-  private getShowStatisticsUrl = this.baseUrl + '/statistics';
-  private isTypePresentUrl = this.baseUrl + '/typepresent';
-  private getCollectionRows = this.baseUrl + '/collectedlist';
+  private getLibraryUrl = `${this.baseUrl}/libraries`;
+  private getShowStatisticsUrl = `${this.baseUrl}/statistics'`;
+  private isTypePresentUrl = `${this.baseUrl}/typepresent`;
+  private getCollectionRows = `${this.baseUrl}/collectedlist`;
 
   constructor(private http: HttpClient) {
 

@@ -29,7 +29,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <ng-scrollbar [shown]='native' [trackX]='true'>
+      <ng-scrollbar [shown]="native" [trackX]="true">
         <div class="d-flex flex-row justify-content-start">
           <app-movie-poster [poster]="stats.general.highestRatedMovie"></app-movie-poster>
           <app-movie-poster [poster]="stats.general.lowestRatedMovie"></app-movie-poster>
@@ -64,7 +64,7 @@
     <div class="col-12 col-xl-6 mb-3">
       <div class="row">
         <div class="col-12 m-b-20">
-          <ng-scrollbar [shown]='native' [trackX]='true'>
+          <ng-scrollbar [shown]="native" [trackX]="true">
             <div class="d-flex flex-row justify-content-start">
               <app-person-poster [poster]="stats.people.mostFeaturedActor"></app-person-poster>
               <app-person-poster [poster]="stats.people.mostFeaturedDirector"></app-person-poster>

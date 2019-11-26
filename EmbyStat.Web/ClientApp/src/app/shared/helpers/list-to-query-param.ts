@@ -5,7 +5,7 @@ export class ListToQueryParam {
 
     let params = '?';
 
-    list.forEach(item => params += name + '=' + item + '&');
+    list.forEach(item => params += `${name}=${item}&`);
 
     return params.slice(0, -1);
   }

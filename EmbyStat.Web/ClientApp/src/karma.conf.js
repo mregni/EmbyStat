@@ -22,16 +22,16 @@ module.exports = function (config) {
       thresholds: {
         emitWarning: false,
         global: {
-          statements: 80,
-          lines: 80,
-          branches: 80,
-          functions: 80
+          statements: 65,
+          lines: 65,
+          branches: 65,
+          functions: 65
         },
         each: {
-          statements: 80,
-          lines: 80,
-          branches: 80,
-          functions: 80
+          statements: 65,
+          lines: 65,
+          branches: 65,
+          functions: 65
         }
       }
     },

@@ -24,7 +24,7 @@ namespace EmbyStat.Services
             var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
             var dirs = _settingsService.GetAppSettings().Dirs;
-            foreach (var filePath in Directory.EnumerateFiles(Path.Combine(Directory.GetCurrentDirectory(), dirs.Config, dirs.Logs).GetLocalPath()))
+            foreach (var filePath in Directory.EnumerateFiles(Path.Combine(dirs.Config, dirs.Logs).GetLocalPath()))
             {
                 var file = new FileInfo(filePath);
                 list.Add(new LogFile

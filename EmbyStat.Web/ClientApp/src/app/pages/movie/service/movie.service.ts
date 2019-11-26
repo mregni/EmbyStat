@@ -10,9 +10,9 @@ import { MovieStatistics } from '../../../shared/models/movie/movie-statistics';
 @Injectable()
 export class MovieService {
   private readonly baseUrl = '/api/movie/';
-  private getLibrariesUrl = this.baseUrl + 'libraries';
-  private getStatisticsUrl = this.baseUrl + 'statistics';
-  private isTypePresentUrl = this.baseUrl + 'typepresent';
+    private getLibrariesUrl = `${this.baseUrl}libraries`;
+    private getStatisticsUrl = `${this.baseUrl}statistics`;
+    private isTypePresentUrl = `${this.baseUrl}typepresent`;
 
   constructor(private http: HttpClient) {
 
