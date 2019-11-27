@@ -30,6 +30,26 @@ module.exports = function (config) {
       outputDir: '../coverage',
       suite: 'models'
     },
+    coverageIstanbulReporter: {
+      dir: require('path').join(__dirname, '../coverage'),
+      reports: ['lcovonly', 'text-summary'],
+      fixWebpackSourcePaths: true,
+      thresholds: {
+        emitWarning: false,
+        global: {
+          statements: 65,
+          lines: 65,
+          branches: 65,
+          functions: 65
+        },
+        each: {
+          statements: 65,
+          lines: 65,
+          branches: 65,
+          functions: 65
+        }
+      }
+    },
     sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST',
       outputFile: '../coverage/ut_report.xml',
