@@ -35,7 +35,7 @@ module.exports = function (config) {
       reports: ['lcovonly'],
       fixWebpackSourcePaths: true,
       thresholds: {
-        emitWarning: false,
+        emitWarning: true,
         global: {
           statements: 65,
           lines: 65,
