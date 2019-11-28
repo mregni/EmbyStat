@@ -11,11 +11,20 @@
     {{ 'TOOLBAR.JOBISRUNNING' | translate: { job: 'JOB.INFO.' + runningJob.title | translate | capitalizeFirst } }}
   </div>
   <div class="toolbar-emby-ping-statusbox">
-    <img *ngIf="missedPings === 0 && settings.emby.serverAddress" alt="Green circle" matTooltip="{{ 'TOOLBAR.NOMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/green_circle.png"/>
-    <img *ngIf="missedPings === 1 && settings.emby.serverAddress" alt="Orange circle" matTooltip="{{ 'TOOLBAR.ONEMISSEDPING' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/orange_circle.png" />
-    <img *ngIf="missedPings >= 2 && settings.emby.serverAddress" alt="Red circle" matTooltip="{{ 'TOOLBAR.MOREMISSEDPINGS' | translate }}" matTooltipHideDelay="2000" position="below" src="../../../assets/images/icons/red_circle.png" />
+    <img *ngIf="missedPings === 0 && settings.emby.serverAddress" alt="Green circle"
+         matTooltip="{{ 'TOOLBAR.NOMISSEDPINGS' | translate }}" matTooltipHideDelay="2000"
+         position="below" src="../../../assets/images/icons/green_circle.png"/>
+    <img *ngIf="missedPings === 1 && settings.emby.serverAddress" alt="Orange circle"
+         matTooltip="{{ 'TOOLBAR.ONEMISSEDPING' | translate }}" matTooltipHideDelay="2000"
+         position="below" src="../../../assets/images/icons/orange_circle.png" />
+    <img *ngIf="missedPings >= 2 && settings.emby.serverAddress" alt="Red circle"
+         matTooltip="{{ 'TOOLBAR.MOREMISSEDPINGS' | translate }}" matTooltipHideDelay="2000"
+         position="below" src="../../../assets/images/icons/red_circle.png" />
   </div>
   <div class="button-container">
-    <a mat-raised-button href="{{ getFullAddress(settings) }}" target="_blank" *ngIf="settings.emby.serverAddress" color="accent">{{ 'TOOLBAR.GOTOEMBY' | translate }}</a>
+    <a mat-raised-button href="{{ getFullAddress(settings) }}" target="_blank"
+       *ngIf="settings.emby.serverAddress" color="accent">
+      {{ 'TOOLBAR.GOTOEMBY' | translate }}
+    </a>
   </div>
 </mat-toolbar>

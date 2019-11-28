@@ -4,8 +4,12 @@
     <p>{{'DIALOGS.NOMOVIETYPEFOUND.BODY' | translate }}</p>
   </div>
   <div mat-dialog-actions class="d-flex flex-row justify-content-end mb-0">
-    <button mat-raised-button color="warn" (click)="cancelClick()" [disabled]="disableButtons">{{ 'COMMON.CLOSE' | translate | capitalizeFirst }}</button>
-    <button mat-raised-button color="primary" (click)="startMediaSync()" cdkFocusInitial [disabled]="disableButtons">{{ 'JOB.INFO.STARTMEDIASYNC' | translate | capitalizeFirst }}</button>
+    <button mat-raised-button color="warn" (click)="cancelClick()" [disabled]="disableButtons">
+      {{ 'COMMON.CLOSE' | translate | capitalizeFirst }}
+    </button>
+    <button mat-raised-button color="primary" (click)="startMediaSync()" cdkFocusInitial [disabled]="disableButtons">
+      {{ 'JOB.INFO.STARTMEDIASYNC' | translate | capitalizeFirst }}
+    </button>
   </div>
 </div>
 
@@ -15,7 +19,11 @@
     <p>{{'DIALOGS.NOSHOWTYPEFOUND.BODY' | translate }}</p>
   </div>
   <div mat-dialog-actions class="d-flex flex-row justify-content-end mb-0">
-    <button mat-raised-button color="warn" (click)="cancelClick()" [disabled]="disableButtons">{{ 'COMMON.CLOSE' | translate | capitalizeFirst }}</button>
-    <button mat-raised-button color="primary" (click)="startMediaSync()" cdkFocusInitial [disabled]="disableButtons">{{ 'JOB.INFO.STARTMEDIASYNC' | translate | capitalizeFirst }}</button>
+    <button mat-raised-button color="warn" (click)="cancelClick()" [disabled]="disableButtons">
+      {{ 'COMMON.CLOSE' | translate | capitalizeFirst }}
+    </button>
+    <button mat-raised-button color="primary" (click)="startMediaSync()" cdkFocusInitial [disabled]="disableButtons">
+      {{ 'JOB.INFO.STARTMEDIASYNC' | translate | capitalizeFirst }}
+    </button>
   </div>
 </div>

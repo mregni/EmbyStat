@@ -61,7 +61,9 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.embyForm.valid) {
       this.isSaving = true;
-      const url = (this.embyProtocolControl.value === 0 ? 'https://' : 'http://') + this.embyAddressControl.value + ':' + this.embyPortControl.value;
+      const protocol = this.embyProtocolControl.value === 0 ? 'https://' : 'http://';
+      const url = `${protocol}${this.embyAddressControl.value}:${this.embyPortControl.value}`;
+
       const login = new EmbyLogin(this.embyApiKeyControl.value, url);
       this.embyTokenSub = this.embyService.testApiKey(login).subscribe((result: boolean) => {
         if (result) {

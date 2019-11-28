@@ -19,7 +19,6 @@ tvdb-client:
 core:
   - 'EmbyStat.Web/*'
   - 'EmbyStat.Web/config/**'
-  - 'EmbyStat.Web/Helpers/**'
   - 'EmbyStat.Common/**'
   - 'EmbyStat.DI/**'
 

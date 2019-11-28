@@ -3,6 +3,10 @@
   <p>{{'DIALOGS.MEDIASYNCTASKRUNNING.BODY' | translate}}</p>
 </div>
 <div mat-dialog-actions class="d-flex flex-row justify-content-end mb-0">
-  <button mat-raised-button color="warn" (click)="cancelClick()">{{ 'COMMON.CLOSE' | translate | capitalizeFirst }}</button>
-  <button mat-raised-button color="primary" (click)="goToJobs()" cdkFocusInitial>{{ 'JOB.INFO.OPENJOBPAGE' | translate | capitalizeFirst }}</button>
+  <button mat-raised-button color="warn" (click)="cancelClick()">
+    {{ 'COMMON.CLOSE' | translate | capitalizeFirst }}
+  </button>
+  <button mat-raised-button color="primary" (click)="goToJobs()" cdkFocusInitial>
+    {{ 'JOB.INFO.OPENJOBPAGE' | translate | capitalizeFirst }}
+  </button>
 </div>

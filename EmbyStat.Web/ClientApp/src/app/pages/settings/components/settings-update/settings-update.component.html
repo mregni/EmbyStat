@@ -23,9 +23,13 @@
           {{ 'SETTINGS.UPDATE.CURRENTVERSION' | translate: { version: settings.version} }}
         </p>
         <button *ngIf="!result.isUpdateAvailable;" [disabled]="settings.updateInProgress" class="margin-bottom"
-                mat-raised-button (click)="checkUpdate()" color="accent">{{ 'SETTINGS.UPDATE.CHECK' | translate }}</button>
+                mat-raised-button (click)="checkUpdate()" color="accent">
+          {{ 'SETTINGS.UPDATE.CHECK' | translate }}
+        </button>
         <button *ngIf="result.isUpdateAvailable;" [disabled]="settings.updateInProgress" class="margin-bottom"
-                mat-raised-button (click)="startUpdate()" color="accent">{{ 'SETTINGS.UPDATE.UPDATE' | translate }}</button>
+                mat-raised-button (click)="startUpdate()" color="accent">
+          {{ 'SETTINGS.UPDATE.UPDATE' | translate }}
+        </button>
         <form class="mt-4 d-flex flex-column" [formGroup]="form">
           <mat-checkbox class="margin-bottom" (change)="onChange($event)" formControlName="autoUpdate">
             {{ 'SETTINGS.UPDATE.AUTO' | translate | capitalizeFirst }}</mat-checkbox>
@@ -64,7 +68,7 @@
       <mat-card>
         <mat-card-content>
           <div class="alert alert-failed">
-            <p>Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option.</p>
+            <p>{{ 'SETTINGS.UPDATE.DISABLED' | translate }}</p>
           </div>
         </mat-card-content>
       </mat-card>

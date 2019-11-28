@@ -27,14 +27,14 @@ class UrlObject {
 })
 export class EmbyService {
   private readonly baseUrl = '/api/emby';
-  private searchEmbyUrl = this.baseUrl + '/server/search';
-  private getTestApiKeyUrl = this.baseUrl + '/server/test';
-  private getEmbyServerInfoUrl = this.baseUrl + '/server/info';
-  private getEmbyStatusUrl = this.baseUrl + '/server/status';
-  private pingEmbyurl = this.baseUrl + '/server/ping';
-  private getPluginsUrl = this.baseUrl + '/plugins';
-  private getEmbyUsersUrl = this.baseUrl + '/users';
-  private getEmbyUserIdsUrl = this.getEmbyUsersUrl + '/ids';
+  private searchEmbyUrl = `${this.baseUrl}/server/search`;
+  private getTestApiKeyUrl = `${ this.baseUrl } /server/test`;
+  private getEmbyServerInfoUrl = `${this.baseUrl}/server/info`;
+  private getEmbyStatusUrl = `${ this.baseUrl } /server/status`;
+  private pingEmbyurl = `${this.baseUrl}/server/ping`;
+  private getPluginsUrl = `${ this.baseUrl }/plugins`;
+  private getEmbyUsersUrl = `${this.baseUrl}/users`;
+  private getEmbyUserIdsUrl = `${ this.baseUrl }/ids`;
 
   constructor(private readonly http: HttpClient) { }
 

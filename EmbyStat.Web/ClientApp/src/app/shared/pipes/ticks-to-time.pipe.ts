@@ -9,13 +9,13 @@ export class TicksToTimePipe implements PipeTransform {
     const second = Math.floor(seconds) % 60;
 
     if (!withSeconds) {
-      return pad2(hour) + ':' + pad2(minute);
+      return `${pad2(hour)}:${pad2(minute)}`;
     } else {
-      return pad2(hour) + ':' + pad2(minute) + ':' + pad2(second);
+      return `${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
     }
 
     function pad2(number) {
-      number = '0' + number;
+      number = `0${number}`;
       return number.substr(number.length - 2);
     }
   }

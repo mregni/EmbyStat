@@ -10,8 +10,8 @@ import { Job } from '../models/jobs/job';
 })
 export class JobService {
   private readonly baseUrl = '/api/job';
-  private fireUrl = this.baseUrl + '/fire/';
-  private getMediaSyncJobUrl = this.baseUrl + '/mediasync';
+  private fireUrl = `${this.baseUrl}/fire/`;
+  private getMediaSyncJobUrl = `${this.baseUrl}/mediasync`;
 
   constructor(private http: HttpClient) {
 

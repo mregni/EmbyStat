@@ -7,7 +7,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Job } from '../models/jobs/job';
 
 @Injectable()
-
 export class JobSocketService {
   private lines: SafeHtml[];
   logsSubject = new BehaviorSubject<SafeHtml[]>([]);
@@ -20,12 +19,12 @@ export class JobSocketService {
 
   updateJobLogs(value: string, type: number) {
     const now = moment().format('HH:mm:ss DD-MM-YY');
-    const line = now + ' ' + value;
+      const line = `${now} ${value}`;
 
     if (type === 1) {
-      this.lines.push(this.sanitizer.bypassSecurityTrustHtml('<span class="text-accent">' + line + '</span>'));
+      this.lines.push(this.sanitizer.bypassSecurityTrustHtml(`<span class="text-accent">${line}</span>`));
     } else if (type === 2) {
-      this.lines.push(this.sanitizer.bypassSecurityTrustHtml('<span class="text-warn">' + line + '</span>'));
+      this.lines.push(this.sanitizer.bypassSecurityTrustHtml(`<span class="text-warn">${line}</span>`));
     } else {
       this.lines.push(line);
     }

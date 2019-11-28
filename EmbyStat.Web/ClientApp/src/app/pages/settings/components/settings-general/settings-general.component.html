@@ -4,7 +4,8 @@
       <mat-card-content>
         <form [formGroup]="generalForm" class="d-flex flex-column">
           <mat-form-field class="mb-1">
-            <input matInput placeholder="{{'FORMLABELS.NAME' | translate}}" formControlName="name" [disableControl]="isSaving">
+            <input matInput placeholder="{{'FORMLABELS.NAME' | translate}}"
+                   formControlName="name" [disableControl]="isSaving">
             <mat-error *ngIf="nameControl.hasError('required')">{{'SETTINGS.GENERAL.NOUSERNAME' | translate}}
             </mat-error>
           </mat-form-field>
@@ -39,7 +40,8 @@
         <form [formGroup]="tvdbForm" class="d-flex flex-column">
           <p>{{ 'SETTINGS.GENERAL.TVDBAPIKEY' | translate }}</p>
           <mat-form-field>
-            <input matInput type="password" placeholder="{{'FORMLABELS.TVDBAPI' | translate}}" formControlName="tvdbKey" [disableControl]="isSaving">
+            <input matInput type="password" placeholder="{{'FORMLABELS.TVDBAPI' | translate}}"
+                   formControlName="tvdbKey" [disableControl]="isSaving">
             <mat-error *ngIf="tvdbKeyControl.hasError('required')">{{'SETTINGS.GENERAL.TVDBAPIKEYWARNING' | translate}}
             </mat-error>
           </mat-form-field>
