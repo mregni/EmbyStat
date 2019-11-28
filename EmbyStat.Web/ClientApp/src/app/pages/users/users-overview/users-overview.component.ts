@@ -71,7 +71,7 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
   }
 
   navigateToUser(id: any) {
-    this.router.navigate(['user/' + id + '/detail']);
+      this.router.navigate([`user/${id}/detail`]);
   }
 
   ngOnDestroy() {

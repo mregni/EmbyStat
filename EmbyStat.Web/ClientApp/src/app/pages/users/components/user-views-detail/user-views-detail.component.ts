@@ -94,7 +94,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
     const hours = this.addLeadingZero(duration.hours());
     const minutes = this.addLeadingZero(duration.minutes());
     const seconds = this.addLeadingZero(duration.seconds());
-    return hours + ':' + minutes + ':' + seconds;
+    return `${hours}:${minutes}:${seconds}`;
   }
 
   isNowPlaying(value: Date): boolean {

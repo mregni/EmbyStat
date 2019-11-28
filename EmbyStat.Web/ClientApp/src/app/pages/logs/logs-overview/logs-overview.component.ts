@@ -19,16 +19,16 @@ export class LogsOverviewComponent implements OnInit {
   }
 
   downloadLog(fileName: string, anonymous: boolean): string {
-    return '/api/log/download/' + fileName + '.log?anonymous=' + anonymous;
+      return `/api/log/download/${fileName}.log?anonymous=${String(anonymous)}`;
   }
 
   convertToSize(value: number): string {
     if (value < 1024) {
-      return value + ' b';
+      return `${String(value)} b`;
     } else if (value < 1024 * 1024) {
-      return Math.floor(value / 1024) + ' Kb';
+      return `${Math.floor(value / 1024)} Kb`;
     } else {
-      return Math.floor(value / (1024 * 1024)) + 'Mb';
+      return `${Math.floor(value / (1024 * 1024))} Mb`;
     }
   }
 

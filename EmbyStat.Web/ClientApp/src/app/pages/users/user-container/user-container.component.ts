@@ -53,7 +53,7 @@ export class UserContainerComponent implements OnInit, OnDestroy {
   }
 
   onPageSelectionChanged(event: any) {
-    this.router.navigate(['user/' + this.selectedUserId + '/' + event.value]);
+      this.router.navigate([`user/${this.selectedUserId}/${event.value}`]);
   }
 
   ngOnInit() {

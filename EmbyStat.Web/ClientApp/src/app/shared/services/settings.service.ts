@@ -9,7 +9,7 @@ import { Settings } from '../models/settings/settings';
 @Injectable()
 export class SettingsService {
   private readonly baseUrl = '/api/settings';
-  private getLangaugesUrl = this.baseUrl + '/languages';
+  private getLangaugesUrl = `${this.baseUrl}/languages`;
 
   constructor(private http: HttpClient) {
 

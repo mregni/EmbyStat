@@ -132,8 +132,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\configHelper.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />

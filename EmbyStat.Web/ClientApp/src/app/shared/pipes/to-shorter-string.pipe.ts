@@ -8,7 +8,7 @@ export class ToShorterStringPipe implements PipeTransform {
     }
 
     if (value.length >= length) {
-      return value.substr(0, length - 3) + '...';
+      return `${value.substr(0, length - 3)}...`;
     }
 
     return value;
