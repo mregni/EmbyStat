@@ -198,7 +198,8 @@
       "CURRENTVERSION": "Version actuelle: {{version}}",
       "CANTCHECK": "Impossible de vérifier les mises à jour maintenant, aucune connexion à GitHub n'a pu être créée.",
       "NOUPDATE": "Aucune mise à jour disponible",
-      "NEWVERSION": "La version {{version}} est disponible pour le téléchargement!"
+      "NEWVERSION": "La version {{version}} est disponible pour le téléchargement!",
+      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
   },
   "USERS": {

@@ -198,7 +198,8 @@
       "CURRENTVERSION": "Nuværende version: {{version}}",
       "CANTCHECK": "Kan ikke tjekke efter opdateringer nu, da der ikke kunne oprettes forbindelse til GitHub.",
       "NOUPDATE": "Ingen opdateringer er tilgængelige",
-      "NEWVERSION": "Version {{version}} er klar til download!"
+      "NEWVERSION": "Version {{version}} er klar til download!",
+      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
   },
   "USERS": {
