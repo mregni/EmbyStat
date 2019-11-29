@@ -16,7 +16,6 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-	[Collection("Mapper collection")]
 	public class SettingsControllerTests : IDisposable
     {
 	    private readonly SettingsController _subject;
@@ -43,14 +42,12 @@ namespace Tests.Unit.Controllers
                 WizardFinished = true,
                 Emby = new EmbySettings
                 {
-                    AccessToken = "1234567980",
-                    UserId = "aaaaaaaaaa",
+                    ApiKey = "1234567980",
                     ServerName = "ServerName",
                     AuthorizationScheme = "MediaBrowser",
                     ServerAddress = "localhost",
                     ServerPort = 8097,
                     ServerProtocol = ConnectionProtocol.Https,
-                    UserName = "admin"
                 },
                 Tvdb = new TvdbSettings
                 {
@@ -122,14 +119,12 @@ namespace Tests.Unit.Controllers
                 WizardFinished = true,
                 Emby = new FullSettingsViewModel.EmbySettingsViewModel
                 {
-                    AccessToken = "1234567980",
-                    UserId = "aaaaaaaaaa",
+                    ApiKey = "1234567980",
                     ServerName = "ServerName",
                     AuthorizationScheme = "MediaBrowser",
                     ServerAddress = "localhost",
                     ServerPort = 8097,
                     ServerProtocol = 1,
-                    UserName = "admin"
                 },
                 Tvdb = new FullSettingsViewModel.TvdbSettingsViewModel
                 {

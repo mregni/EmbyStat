@@ -10,13 +10,9 @@ namespace EmbyStat.Repositories
 {
     public class SessionRepository : BaseRepository, ISessionRepository
     {
-        private readonly LiteCollection<Session> _sessionCollection;
-        private readonly LiteCollection<Play> _playCollection;
-
         public SessionRepository(IDbContext context) : base(context)
         {
-            _sessionCollection = context.GetContext().GetCollection<Session>();
-            _playCollection = context.GetContext().GetCollection<Play>();
+           
         }
 
         public bool DoesSessionExists(string sessionId)

@@ -18,7 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         const error = JSON.parse(err.error);
 
         if (error.IsError) {
-          toaster.showError('EXCEPTIONS.' + error.Message);
+          toaster.showError(`EXCEPTIONS.${error.Message}`);
         } else {
           toaster.showError('EXCEPTIONS.UNHANDLED');
         }

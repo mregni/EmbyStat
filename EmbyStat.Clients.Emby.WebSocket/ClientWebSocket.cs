@@ -76,21 +76,18 @@ namespace EmbyStat.Clients.Emby.WebSocket
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && _socket != null)
             {
-                if (_socket != null)
+                var state = State;
+
+                if (state == WebSocketState.Open || state == WebSocketState.Connecting)
                 {
-                    var state = State;
-
-                    if (state == WebSocketState.Open || state == WebSocketState.Connecting)
-                    {
-                        var logger = LogManager.GetCurrentClassLogger();
-                        logger.Info("Sending web socket close message");
-                        _socket.Close();
-                    }
-
-                    _socket = null;
+                    var logger = LogManager.GetCurrentClassLogger();
+                    logger.Info("Sending web socket close message");
+                    _socket.Close();
                 }
+
+                _socket = null;
             }
         }
     }

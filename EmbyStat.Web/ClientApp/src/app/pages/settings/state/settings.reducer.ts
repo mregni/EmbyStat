@@ -5,14 +5,12 @@ import { ApplicationState } from '../../../states/app.state';
 import { SettingsActions, SettingsActionTypes } from './settings.actions';
 
 const embySettings: EmbySettings = {
-  accessToken: '',
-  authorizationScheme: 'MediaBrowser',
+  authorizationScheme: 'mediaBrowser',
   serverAddress: '',
   serverName: '',
   serverPort: 0,
   serverProtocol: 0,
-  userId: '',
-  userName: ''
+  apiKey: ''
 };
 
 const tvdbSettings: TvdbSettings = {
@@ -38,7 +36,8 @@ const INITIAL_STATE: Settings = {
   tvdb: tvdbSettings,
   enableRollbarLogging: false,
   isLoaded: false,
-  toShortMovieEnabled: false
+  toShortMovieEnabled: false,
+  noUpdates: false
 };
 
 export function settingsReducer(state: Settings = INITIAL_STATE, action: SettingsActions) {
@@ -50,7 +49,6 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         wizardFinished: action.payload.wizardFinished,
         username: action.payload.username,
         emby: action.payload.emby,
-        userId: action.payload.emby.userId,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
         movieLibraryTypes: action.payload.movieLibraryTypes,
@@ -63,7 +61,8 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         updateInProgress: action.payload.updateInProgress,
         version: action.payload.version,
         enableRollbarLogging: action.payload.enableRollbarLogging,
-        toShortMovieEnabled: action.payload.toShortMovieEnabled
+        toShortMovieEnabled: action.payload.toShortMovieEnabled,
+        noUpdates: action.payload.noUpdates
       };
     case SettingsActionTypes.UPDATE_SETTINGS_SUCCESS:
       return {
@@ -72,7 +71,6 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         wizardFinished: action.payload.wizardFinished,
         username: action.payload.username,
         emby: action.payload.emby,
-        userId: action.payload.emby.userId,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
         movieLibraryTypes: action.payload.movieLibraryTypes,
@@ -85,7 +83,8 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         updateInProgress: action.payload.updateInProgress,
         version: action.payload.version,
         enableRollbarLogging: action.payload.enableRollbarLogging,
-        toShortMovieEnabled: action.payload.toShortMovieEnabled
+        toShortMovieEnabled: action.payload.toShortMovieEnabled,
+        noUpdates: action.payload.noUpdates
       };
     default:
       return state;

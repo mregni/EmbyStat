@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  pull_request:
+    branches:    
+      - l10n_develop
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pushbullet Notification
+        uses: ShaunLWM/action-pushbullet@0.0.1
+        with:
+          PB_TOKEN: o.HM9iALoW4oZVLKfWpBHqs5DmE06M2ilV

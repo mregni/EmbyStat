@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Emby.Http.Model;
 using FluentAssertions;

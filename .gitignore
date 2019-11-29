@@ -292,7 +292,7 @@ __pycache__/
 *.db-journal
 .sonarcube
 
-*.js
+**/src/app/**/*.js
 *.js.map
 
 **/*.ver

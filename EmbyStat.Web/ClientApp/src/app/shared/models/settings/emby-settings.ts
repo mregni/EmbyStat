@@ -1,8 +1,6 @@
 export class EmbySettings {
-  userId: string;
-  userName: string;
   serverName: string;
-  accessToken: string;
+  apiKey: string;
   serverAddress: string;
   serverPort: number;
   authorizationScheme: string;

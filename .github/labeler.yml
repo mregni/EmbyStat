@@ -1,0 +1,46 @@
+repo:
+  - './*'
+  - '.github/**'
+
+test:
+  - '**/src/**/*.spec.ts'
+  - 'Tests.Unit/**/*Tests.cs'
+  
+emby-client:
+  - 'EmbyStat.Clients.Emby.Http/**'
+  - 'EmbyStat.Clients.Emby.WebSocket/**'
+  
+github-client:
+  - 'EmbyStat.Clients.GitHub/**'
+ 
+tvdb-client:
+  - 'EmbyStat.Clients.Tvdb/**'
+ 
+core:
+  - 'EmbyStat.Web/*'
+  - 'EmbyStat.Web/config/**'
+  - 'EmbyStat.Common/**'
+  - 'EmbyStat.DI/**'
+
+jobs:
+  - 'EmbyStat.Jobs/**'
+
+controller:
+  - 'EmbyStat.Controllers/**'
+
+service:
+  - 'EmbyStat.Services/**'
+ 
+repository:
+  - 'EmbyStat.Repositories/**'
+  - 'EmbyStat.Migrator/**'
+
+updater:
+  - 'Updater/**'
+  
+npm:
+  - 'EmbyStat.Web/ClientApp/package.json'
+
+project:
+  - '**/*.sln'
+  - '**/*.csproj'

@@ -24,7 +24,7 @@ namespace EmbyStat.Services
             var settings = _settingsService.GetUserSettings();
             var list = new List<LogFile>();
             var dirs = _settingsService.GetAppSettings().Dirs;
-            foreach (var filePath in Directory.EnumerateFiles(Path.Combine(Directory.GetCurrentDirectory(), dirs.Config, dirs.Logs).GetLocalPath()))
+            foreach (var filePath in Directory.EnumerateFiles(Path.Combine(dirs.Config, dirs.Logs).GetLocalPath()))
             {
                 var file = new FileInfo(filePath);
                 list.Add(new LogFile
@@ -60,9 +60,8 @@ namespace EmbyStat.Services
                     line = line.Replace(configuration.Emby.FullEmbyServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.Emby.FullSocketAddress, "wss://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.Tvdb.ApiKey, "xxxxxxxxxxxxxx");
-                    line = line.Replace(configuration.Emby.AccessToken, "xxxxxxxxxxxxxx");
+                    line = line.Replace(configuration.Emby.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(serverInfo.Id, "xxxxxxxxxxxxxx");
-                    line = line.Replace(configuration.Emby.UserName, "{EMBY ADMIN USER}");
                     writer.WriteLine(line);
                 }
 

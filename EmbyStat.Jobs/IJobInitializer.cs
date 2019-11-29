@@ -4,7 +4,7 @@ namespace EmbyStat.Jobs
 {
     public interface IJobInitializer
     {
-        void Setup();
-        void UpdateTrigger(Guid id, string trigger);
+        void Setup(bool disableUpdates);
+        void UpdateTrigger(Guid id, string trigger, bool disableUpdates);
     }
 }

@@ -8,9 +8,9 @@ import { UpdateResult } from '../models/settings/update-result';
 @Injectable()
 export class SystemService {
   private readonly baseUrl = '/api/system/';
-  private checkForUpdateUrl = this.baseUrl + 'checkforupdate';
-  private startUpdateUrl = this.baseUrl + 'startupdate';
-  private pingUrl = this.baseUrl + 'ping';
+  private checkForUpdateUrl = `${this.baseUrl}checkforupdate`;
+  private startUpdateUrl = `${this.baseUrl}startupdate`;
+  private pingUrl = `${this.baseUrl}ping`;
 
   constructor(private http: HttpClient) { }
 

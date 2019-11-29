@@ -24,7 +24,7 @@ export class PersonPosterComponent implements OnDestroy {
   embyServerInfoSub: Subscription;
 
   constructor(
-    private settingsFacade: SettingsFacade, 
+    private settingsFacade: SettingsFacade,
     private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     private _sanitizer: DomSanitizer) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog.Fluent;
 using NLog.Web;
 using NLog;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -18,11 +17,11 @@ namespace EmbyStat.Web
 {
     public class Program
     {
-        public static Logger Logger; 
+        private static Logger _logger; 
         public static int Main(string[] args)
         {
             CreateConfigFolder();
-            Logger = SetupLogging();
+            _logger = SetupLogging();
 
             try
             {
@@ -32,8 +31,8 @@ namespace EmbyStat.Web
 
                 var listeningUrl = $"http://*:{options.Port}";
 
-                Logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
-                var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() } };
+                _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
+                var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() }, { "NoUpdates", options.NoUpdates.ToString()} };
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
 
@@ -45,13 +44,13 @@ namespace EmbyStat.Web
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
+                _logger.Log(NLog.LogLevel.Fatal, ex, $"{Constants.LogPrefix.System}\tServer terminated unexpectedly");
                 return 1;
             }
             finally
             {
                 Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
-                Logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
+                _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
                 LogManager.Flush();
                 LogManager.Shutdown();
             }
@@ -113,7 +112,7 @@ namespace EmbyStat.Web
                 }
                 catch (Exception ex)
                 {
-                    Logger.Fatal(ex);
+                    _logger.Fatal(ex);
                     throw;
                 }
             }

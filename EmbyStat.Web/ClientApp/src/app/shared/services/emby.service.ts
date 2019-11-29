@@ -27,14 +27,14 @@ class UrlObject {
 })
 export class EmbyService {
   private readonly baseUrl = '/api/emby';
-  private searchEmbyUrl = this.baseUrl + '/server/search';
-  private getEmbyTokenUrl = this.baseUrl + '/server/token';
-  private getEmbyServerInfoUrl = this.baseUrl + '/server/info';
-  private getEmbyStatusUrl = this.baseUrl + '/server/status';
-  private pingEmbyurl = this.baseUrl + '/server/ping';
-  private getPluginsUrl = this.baseUrl + '/plugins';
-  private getEmbyUsersUrl = this.baseUrl + '/users';
-  private getEmbyUserIdsUrl = this.getEmbyUsersUrl + '/ids';
+  private searchEmbyUrl = `${this.baseUrl}/server/search`;
+  private getTestApiKeyUrl = `${ this.baseUrl } /server/test`;
+  private getEmbyServerInfoUrl = `${this.baseUrl}/server/info`;
+  private getEmbyStatusUrl = `${ this.baseUrl } /server/status`;
+  private pingEmbyurl = `${this.baseUrl}/server/ping`;
+  private getPluginsUrl = `${ this.baseUrl }/plugins`;
+  private getEmbyUsersUrl = `${this.baseUrl}/users`;
+  private getEmbyUserIdsUrl = `${ this.baseUrl }/ids`;
 
   constructor(private readonly http: HttpClient) { }
 
@@ -46,8 +46,8 @@ export class EmbyService {
     return this.http.get<ServerInfo>(this.getEmbyServerInfoUrl);
   }
 
-  getEmbyToken(login: EmbyLogin): Observable<EmbyToken> {
-    return this.http.post<EmbyToken>(this.getEmbyTokenUrl, login);
+  testApiKey(login: EmbyLogin): Observable<boolean> {
+    return this.http.post<boolean>(this.getTestApiKeyUrl, login);
   }
 
   searchEmby(): Observable<EmbyUdpBroadcast> {

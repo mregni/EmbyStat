@@ -91,7 +91,7 @@ namespace Tests.Unit.Repository
                     job.CurrentProgressPercentage.Should().Be(10);
                     job.StartTimeUtc.Should().HaveValue();
                     // ReSharper disable once PossibleInvalidOperationException
-                    job.StartTimeUtc.Value.Should().BeCloseTo(DateTime.Now, 100);
+                    job.StartTimeUtc.Value.Should().BeCloseTo(DateTime.Now, 500);
                     job.EndTimeUtc.Should().BeNull();
                     job.State.Should().Be(JobState.Running);
                 }

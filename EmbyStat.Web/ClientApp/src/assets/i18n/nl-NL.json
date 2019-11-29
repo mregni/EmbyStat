@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Nu zullen we je Emby verbinding instellen. We hebben geprobeerd om je Emby server automatisch te detecteren in het netwerk maar dit is mislukt. Vul alle velden in zodat EmbyStat je Emby server kan vinden.",
     "EMBYFOUNDTEXT": "We hebben een Emby server gevonden in uw netwerk en de url al in het formulier ingevoerd. Voel u vrij om dit aan te passen en de rest van het formulier in te vullen.",
     "EMBYRUNNING": "Emby server is actief",
-    "ISADMIN": "{{ user }} is een Emby administrator",
+    "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "EmbyStat plugin gevonden op de Emby server",
     "SAVINGINSTRUCTIONS": "Als er iets mislukt, kunt u EmbyStat niet gebruiken. Los in dat geval de fouten op, druk op terug en volgende.",
     "SAVING": "Gegevens aan het opslaan",
@@ -178,15 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP / domein",
-      "EMBYUSERNAME": "Emby admin gebruikersnaam",
-      "EMBYPASSWORD": "Emby administrator wachtwoord",
+      "EMBYAPIKEY": "Emby API key",
       "EMBYPORT": "Emby poort",
       "EMBYADDRESSREQUIRED": "Emby IP / domein vereist.",
-      "EMBYUSERNAMEREQUIRED": "Emby admin gebruikersnaam vereist.",
-      "EMBYPASSWORDREQUIRED": "Emby admin wachtwoord vereist.",
       "EMBYPORTREQUIRED": "Emby poort vereist.",
-      "WRONGPASSWORD": "Verkeerde gebruikersnaam/wachtwoord combinatie. Controleer uw inloggegevens en probeer het opnieuw",
-      "NOADMINUSER": "Gegeven Emby gebruiker is geen admin op de server. Geef een admin account."
+      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/serversecurity.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Provided API key is not valid"
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -200,7 +198,8 @@
       "CURRENTVERSION": "Huidige versie: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "Geen update beschikbaar",
-      "NEWVERSION": "Versie {{version}} beschikbaar om te downloaden!"
+      "NEWVERSION": "Versie {{version}} beschikbaar om te downloaden!",
+      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
   },
   "USERS": {

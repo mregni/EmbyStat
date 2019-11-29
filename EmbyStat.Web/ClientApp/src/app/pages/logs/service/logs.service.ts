@@ -8,7 +8,7 @@ import { LogFile } from '../../../shared/models/logs/log-file';
 @Injectable()
 export class LogService {
   private readonly baseUrl = '/api/log/';
-  private getLogFilesUrl = this.baseUrl + 'list';
+  private getLogFilesUrl = `${this.baseUrl}list`;
 
   constructor(private http: HttpClient) {
 

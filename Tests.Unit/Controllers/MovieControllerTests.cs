@@ -15,7 +15,6 @@ using Xunit;
 
 namespace Tests.Unit.Controllers
 {
-    [Collection("Mapper collection")]
     public class MovieControllerTests
     {
         private readonly MovieController _subject;
