@@ -183,7 +183,7 @@
       "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
       "EMBYPORTREQUIRED": "Emby port required.",
       "EMBYAPIKEYREQUIRED": "Emby API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/serversecurity.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
       "WRONGAPIKEY": "Provided API key is not valid"
     },
     "UPDATE": {
