@@ -44,3 +44,6 @@ npm:
 project:
   - '**/*.sln'
   - '**/*.csproj'
+  
+translation:
+  - 'EmbyStat.Web/ClientApp/src/assets/i18n/*.json'
