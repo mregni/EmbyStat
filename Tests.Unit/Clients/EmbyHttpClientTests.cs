@@ -20,7 +20,7 @@ namespace Tests.Unit.Clients
     public class EmbyHttpClientTests
     {
         private Mock<IRestClient> _restClientMock;
-        private IRestRequest usedRequest;
+        private IRestRequest _usedRequest;
         private EmbyClient CreateClient<T>(T returnObject)
         {
             var response = new RestResponse<T> { Data = returnObject };
@@ -29,7 +29,7 @@ namespace Tests.Unit.Clients
             _restClientMock.Setup(x => x.ExecuteTaskAsync<T>(It.IsAny<IRestRequest>()))
                 .Callback<IRestRequest>((request) =>
                 {
-                    usedRequest = request;
+                    _usedRequest = request;
                 })
                 .ReturnsAsync(response);
             _restClientMock.Setup(x => x.UseSerializer(It.IsAny<IRestSerializer>())).Returns(_restClientMock.Object);
@@ -52,11 +52,11 @@ namespace Tests.Unit.Clients
 
             result[0].Id.Should().Be(resultObj[0].Id);
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(2);
+            _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
             parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
@@ -64,8 +64,8 @@ namespace Tests.Unit.Clients
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
             parameters[1].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("Plugins");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("Plugins");
         }
 
         [Fact]
@@ -81,11 +81,11 @@ namespace Tests.Unit.Clients
             result.Should().NotBeNull();
             result.Id.Should().Be(resultObj.Id);
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(2);
+            _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
             parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
@@ -93,8 +93,8 @@ namespace Tests.Unit.Clients
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
             parameters[1].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("System/Info");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("System/Info");
         }
 
         [Fact]
@@ -112,11 +112,11 @@ namespace Tests.Unit.Clients
 
             result[0].Name.Should().Be(resultObj[0].Name);
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(2);
+            _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
             parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
@@ -124,8 +124,8 @@ namespace Tests.Unit.Clients
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
             parameters[1].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("Environment/Drives");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("Environment/Drives");
         }
 
         [Fact]
@@ -143,11 +143,11 @@ namespace Tests.Unit.Clients
 
             result[0]["Id"].Value<string>().Should().Be(resultObj[0]["Id"].Value<string>());
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(2);
+            _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
             parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
@@ -155,8 +155,8 @@ namespace Tests.Unit.Clients
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
             parameters[1].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("Users");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("Users");
         }
 
         [Fact]
@@ -172,11 +172,11 @@ namespace Tests.Unit.Clients
             result.Should().NotBeNull();
             result["Id"].Value<string>().Should().Be(resultObj["Id"].Value<string>());
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(2);
+            _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
             parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
@@ -184,8 +184,8 @@ namespace Tests.Unit.Clients
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
             parameters[1].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("Devices");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("Devices");
         }
 
         [Fact]
@@ -215,11 +215,11 @@ namespace Tests.Unit.Clients
 
             result.Items[0].Id.Should().Be(resultObj.Items[0].Id);
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(10);
+            _usedRequest?.Parameters.Count.Should().Be(10);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("AirDays");
             parameters[0].Type.Should().Be(ParameterType.QueryString);
             parameters[0].Value.Should().Be(string.Empty);
@@ -251,8 +251,8 @@ namespace Tests.Unit.Clients
             parameters[9].Type.Should().Be(ParameterType.HttpHeader);
             parameters[9].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("Items");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("Items");
         }
 
         [Fact]
@@ -270,11 +270,11 @@ namespace Tests.Unit.Clients
             result.Should().NotBeNull();
             result.Id.Should().Be(resultObj.Id);
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(9);
+            _usedRequest?.Parameters.Count.Should().Be(9);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("AirDays");
             parameters[0].Type.Should().Be(ParameterType.QueryString);
             parameters[0].Value.Should().Be(string.Empty);
@@ -303,8 +303,8 @@ namespace Tests.Unit.Clients
             parameters[8].Type.Should().Be(ParameterType.HttpHeader);
             parameters[8].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be($"persons/{name}");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be($"persons/{name}");
         }
 
         [Fact]
@@ -329,11 +329,11 @@ namespace Tests.Unit.Clients
 
             result.Items[0].Id.Should().Be(resultObj.Items[0].Id);
 
-            usedRequest.Should().NotBeNull();
+            _usedRequest.Should().NotBeNull();
 
-            usedRequest?.Parameters.Count.Should().Be(2);
+            _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
-            var parameters = usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
             parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
             parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
@@ -341,8 +341,8 @@ namespace Tests.Unit.Clients
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
             parameters[1].Value.Should().Be("apikey");
 
-            usedRequest?.Method.Should().Be(Method.GET);
-            usedRequest?.Resource.Should().Be("Library/MediaFolders");
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be("Library/MediaFolders");
         }
 
         [Fact]

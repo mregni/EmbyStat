@@ -191,7 +191,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var updateStartTime = DateTime.Now;
 
             await LogInformation("Logging in on the Tvdb API.");
-            await _tvdbClient.Login(Settings.Tvdb.ApiKey, cancellationToken);
+            await _tvdbClient.Login(Settings.Tvdb.ApiKey);
             var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate, cancellationToken);
 
             var neededLibraries = libraries.Where(x => Settings.ShowLibraryTypes.Any(y => y == x.Type)).ToList();
@@ -263,11 +263,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 _showRepository.UpsertShow(show);
                 if (!string.IsNullOrWhiteSpace(show.TVDB) && (show.HasShowChangedEpisodes(oldShow) || showsThatNeedAnUpdate.Any(x => x == show.Id)))
                 {
-                    await GetMissingEpisodesFromTvdbAsync(show, CancellationToken.None);
+                    await GetMissingEpisodesFromTvdbAsync(show);
                 }
                 else if (oldShow != null && oldShow.NeedsShowSync())
                 {
-                    await GetMissingEpisodesFromTvdbAsync(show, CancellationToken.None);
+                    await GetMissingEpisodesFromTvdbAsync(show);
                 }
 
                 await LogInformation($"Processed ({i}/{showList.TotalRecordCount}) {show.Name}");
@@ -299,11 +299,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         }
 
-        private async Task GetMissingEpisodesFromTvdbAsync(Show show, CancellationToken cancellationToken)
+        private async Task GetMissingEpisodesFromTvdbAsync(Show show)
         {
             try
             {
-                await ProgressMissingEpisodesAsync(show, cancellationToken);
+                await ProgressMissingEpisodesAsync(show);
             }
             catch (HttpException e)
             {
@@ -324,10 +324,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task ProgressMissingEpisodesAsync(Show show, CancellationToken cancellationToken)
+        private async Task ProgressMissingEpisodesAsync(Show show)
         {
             var missingEpisodesCount = 0;
-            var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB, cancellationToken);
+            var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB);
 
             foreach (var tvdbEpisode in tvdbEpisodes)
             {
