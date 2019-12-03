@@ -29,6 +29,7 @@
             <mat-error *ngIf="embyApiKeyControl.hasError('required')">
               {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}</mat-error>
           </mat-form-field>
+          <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
         </form>
       </mat-card-content>
       <mat-card-actions class="button-container d-flex justify-content-end">
