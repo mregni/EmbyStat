@@ -55,7 +55,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Season>();
-                    collection.Insert(season);
+                    collection.Upsert(season);
                 }
             });
         }
@@ -67,7 +67,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Episode>();
-                    collection.Insert(episode);
+                    collection.Upsert(episode);
                 }
             });
         }
@@ -86,9 +86,9 @@ namespace EmbyStat.Repositories
                     seasonCollection.Delete(x => x.ParentId == show.Id.ToString());
                     showCollection.Delete(x => x.Id == show.Id);
                     
-                    episodeCollection.InsertBulk(show.Episodes);
-                    seasonCollection.InsertBulk(show.Seasons);
-                    showCollection.Insert(show);
+                    episodeCollection.Upsert(show.Episodes);
+                    seasonCollection.Upsert(show.Seasons);
+                    showCollection.Upsert(show);
                 }
             });
         }
