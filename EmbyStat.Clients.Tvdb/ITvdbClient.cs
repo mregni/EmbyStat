@@ -8,8 +8,8 @@ namespace EmbyStat.Clients.Tvdb
 {
     public interface ITvdbClient
     {
-        Task Login(string apiKey, CancellationToken cancellationToken);
-        Task<IEnumerable<VirtualEpisode>> GetEpisodes(string seriesId, CancellationToken cancellationToken);
+        Task Login(string apiKey);
+        Task<IEnumerable<VirtualEpisode>> GetEpisodes(string seriesId);
         Task<List<int>> GetShowsToUpdate(DateTime? lastUpdateTime, CancellationToken cancellationToken);
     }
 }
