@@ -176,7 +176,7 @@ namespace Tests.Unit.Clients
             result[0].Id.Should().Be(returnObject.Data[0].Id);
             result[0].EpisodeNumber.Should().Be(returnObject.Data[0].AiredEpisodeNumber);
             // ReSharper disable once PossibleInvalidOperationException
-            result[0].FirstAired.Value.Should().Be(DateTime.MinValue);
+            result[0].FirstAired.Value.ToString(CultureInfo.InvariantCulture).Should().Be(returnObject.Data[0].FirstAired);
             result[0].Name.Should().Be(returnObject.Data[0].EpisodeName);
             result[0].SeasonNumber.Should().Be(returnObject.Data[0].AiredSeason);
         }
