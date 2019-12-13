@@ -132,7 +132,7 @@
     "NOIMDB": "缺少IMDB ID"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total Shows",
+    "TOTALSHOWS": "总演出数",
     "TOTALEPISODES": "总剧集数",
     "TOTALMISSINGEPISODES": "缺少剧集总数",
     "TOTALPLAYLENGTH": "总可观看时间",
@@ -199,7 +199,7 @@
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "No update available",
       "NEWVERSION": "版本 {{version}} 可供下载！",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "DISABLED": "此服务器的更新被禁用，可能会被外部服务更新。 如果这是一个错误，请不要使用 --no-update 选项启动服务器。"
     }
   },
   "USERS": {
@@ -212,7 +212,7 @@
     "SORTING": {
       "USERNAMEASC": "用户名 (A-Z)",
       "USERNAMEDESC": "用户名 (Z-A)",
-      "LASTACTIVEASC": "Last active date (asc)",
+      "LASTACTIVEASC": "最后活动日期 (升序)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
     "TOOVERVIEW": "To overview",
@@ -225,7 +225,7 @@
       "TIME": "时间",
       "WATCHED": "已观看",
       "START": "Start",
-      "ACTION": "Action"
+      "ACTION": "操作"
     },
     "STATS": {
       "TOTALWATCHEDMOVIES": "看过的电影",
@@ -265,36 +265,36 @@
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
       "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "BODY": "我们在 EmbyStat 数据库中找不到任何电影。如果您在 Emby 中有电影，请尝试启动新的媒体同步任务。"
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "找不到演出节目",
+      "BODY": "我们在 EmbyStat 数据库中找不到任何演出节目。如果您在 Emby 中有演出节目的话，请尝试启动一个新的媒体同步任务。"
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "媒体同步任务正在运行",
+      "BODY": "媒体同步任务正在后台运行。所有统计页面均被阻止，因为只要同步运行，计算将完全错误。"
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">在这里</a> 你可以找到更多关于如何格式化CRON字符串的信息。只允许数字，\"*\"，\"/\"和\"-\"。"
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "TITLE": "未找到相应的用户",
+      "BODY": "本地数据库中没有找到用户。这意味着没有运行中的小同步作业。您想现在运行吗？"
     }
   },
   "LOADER": {
     "FETCHING": "正在获取统计",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Page will refresh when the update is finished."
+    "UPDATING": "正在更新 EmbyStat",
+    "UPDATINGSUB": "更新完成后页面将刷新。"
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
+    "MIXED": "混合/其他",
+    "MUSIC": "音乐",
+    "MUSICVIDEOS": "音乐视频",
+    "TRAILERS": "预告片",
+    "HOMEVIDEOS": "家庭影片",
     "BOXSETS": "盒装套装",
     "BOOKS": "图书",
     "PHOTOS": "图片",
@@ -311,8 +311,8 @@
     "MOREMISSEDPINGS": "多次尝试后无法连接到Emby！"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
+    "SERVERINFO": "服务器信息",
+    "GITHUBRELEASE": "在 Github 上发布",
     "REQUESTFEATURE": "请求功能",
     "LOGBUG": "Log bug on Github",
     "HELPTRANSLATE": "帮助翻译这个程序",
@@ -321,7 +321,7 @@
       "TEXT": "非常感谢感谢以下人翻译本应用程序为本地语言："
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "操作"
     }
   },
   "EMBYSERVER": {
