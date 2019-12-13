@@ -115,7 +115,7 @@
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Total Movies",
+    "TOTALMOVIES": "电影总数",
     "TOTALGENRES": "Total Genres",
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATED": "评分最高",
