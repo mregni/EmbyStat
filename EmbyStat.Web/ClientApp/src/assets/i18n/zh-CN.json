@@ -64,10 +64,10 @@
     "UNHANDLED": "Unhandled backend exception",
     "MOVIENOTFOUND": "Movie not found, starting a media sync job could fix this.",
     "EPISODENOTFOUND": "Episode not found, starting a media sync job could fix this.",
-    "CANTCONNECTTOGITHUB": "Can't connect to GitHub to check for updates. Try again later.",
+    "CANTCONNECTTOGITHUB": "无法连接到 GitHub 检查更新。请稍后再试。",
     "NOUPDATEFILE": "Can't locate the update application, no update performed",
     "UPDATEUNPACKERROR": "Something when wrong while unpacking the update package. Please try again.",
-    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
+    "TVDBLOGINFAILED": "TheTVDB 登录失败，请检查 API 密钥。"
   },
   "FORMLABELS": {
     "NAME": "用户名",
@@ -177,8 +177,8 @@
       "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
-      "EMBYAPIKEY": "Emby API key",
+      "EMBYADDRESS": "Emby IP/域",
+      "EMBYAPIKEY": "Emby API 密钥",
       "EMBYPORT": "Emby端口",
       "EMBYADDRESSREQUIRED": "需要 Emby IP/域",
       "EMBYPORTREQUIRED": "需要 Emby 端口。",
@@ -198,7 +198,7 @@
       "CURRENTVERSION": "Current version: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!",
+      "NEWVERSION": "版本 {{version}} 可供下载！",
       "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
   },
@@ -207,7 +207,7 @@
     "ISHIDDEN": "从登录界面隐藏",
     "ISDISABLED": "已禁用",
     "DELETED": "已删除的用户",
-    "ACTIVE": "Active users",
+    "ACTIVE": "活动用户",
     "LASTACTIVE": "上次登录:",
     "SORTING": {
       "USERNAMEASC": "用户名 (A-Z)",
@@ -217,32 +217,32 @@
     },
     "TOOVERVIEW": "To overview",
     "DETAILS": {
-      "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "TITLE": "{{name}} 的详细信息",
+      "WATCHEDTITLE": "上次观看的项目"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
+      "TITLE": "标题",
+      "TIME": "时间",
+      "WATCHED": "已观看",
       "START": "Start",
       "ACTION": "Action"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "看过的电影",
+      "TOTALWATCHEDEPISODES": "已观看的剧集"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
+    "LASTRUNNOW": "上次运行：刚才",
     "LASTRUN": "上次运行",
     "HOURS": "{{hours}} hour(s)",
     "MINUTES": "{{minutes}} minute(s)",
     "SECONDS": "{{seconds}} second(s)",
     "AND": "和",
-    "AGO": "ago",
+    "AGO": "前",
     "FOR": "for",
     "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
+    "NORUN": "尚未运行",
     "MOMENT_AGO": "a moment",
     "JOBLOGS": "Job logs",
     "CRONUPDATED": "Cron value updated",
@@ -254,8 +254,8 @@
       "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
+      "STARTMEDIASYNC": "开始媒体同步",
+      "DATABASECLEANUPTITLE": "数据库清理",
       "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
       "OPENJOBPAGE": "Go to job page",
       "CHECKUPDATETITLE": "Check for new updates",
@@ -285,7 +285,7 @@
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics",
+    "FETCHING": "正在获取统计",
     "UPDATING": "Updating EmbyStat",
     "UPDATINGSUB": "Page will refresh when the update is finished."
   },
