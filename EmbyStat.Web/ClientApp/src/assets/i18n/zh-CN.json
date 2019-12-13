@@ -73,10 +73,10 @@
     "NAME": "用户名",
     "LANGUAGE": "请选择您的语言",
     "DURATIONINMINUTES": "持续时间（分钟）",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
+    "ENABLETOSHORTMOVIES": "启用计算短电影",
     "TVDBAPI": "TheTVDB API 密钥",
-    "CRON": "Cron string",
-    "EXCEPTIONLOGGING": "Enable exception logging"
+    "CRON": "Cron 字符串",
+    "EXCEPTIONLOGGING": "启用异常记录"
   },
   "FORMERRORS": {
     "NAME_REQUIRED": "填写您的姓名或昵称。"
@@ -114,20 +114,20 @@
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
+    "COLLECTIONPLACEHOLDER": "筛选电影收藏",
     "TOTALMOVIES": "电影总数",
     "TOTALGENRES": "Total Genres",
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATED": "评分最高",
     "LOWESTRATED": "评分最低",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "OLDESTPREMIERED": "最早首映",
+    "NEWESTPREMIERED": "最新首映",
     "SHORTEST": "最短",
     "LONGEST": "最长的",
     "LATESTADDED": "最近添加",
     "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
     "DUPLICATEMOVIES": "重复的电影",
-    "TOSHORTMOVIES": "Movies that are very short",
+    "TOSHORTMOVIES": "非常短的电影",
     "NOPOSTER": "缺少海报",
     "NOIMDB": "缺少IMDB ID"
   },
@@ -138,16 +138,16 @@
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATEDSHOW": "评分最高",
     "LOWESTRATEDSHOW": "评分最低",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "OLDESTPREMIERED": "最早首映",
+    "NEWESTPREMIERED": "最新首映",
     "LATESTADDED": "最近添加",
     "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview",
-    "MISSINGEPISODES": "Missing episodes"
+    "SHOWSTATUSGRAPH": "显示状态",
+    "SEASONS": "季数",
+    "CONTINUING": "继续",
+    "ENDED": "结束",
+    "OVERVIEW": "概览",
+    "MISSINGEPISODES": "缺少剧集"
   },
   "SETTINGS": {
     "TITLES": {
@@ -213,9 +213,9 @@
       "USERNAMEASC": "用户名 (A-Z)",
       "USERNAMEDESC": "用户名 (Z-A)",
       "LASTACTIVEASC": "最后活动日期 (升序)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "LASTACTIVEDESC": "最后活动日期 (降序)"
     },
-    "TOOVERVIEW": "To overview",
+    "TOOVERVIEW": "概述",
     "DETAILS": {
       "TITLE": "{{name}} 的详细信息",
       "WATCHEDTITLE": "上次观看的项目"
@@ -244,27 +244,27 @@
     "BUTFAILED": "but failed after",
     "NORUN": "尚未运行",
     "MOMENT_AGO": "片刻",
-    "JOBLOGS": "Job logs",
-    "CRONUPDATED": "Cron value updated",
+    "JOBLOGS": "作业日志",
+    "CRONUPDATED": "Cron 值已更新",
     "INFO": {
       "PINGEMBYSERVERTITLE": "检查 Emby 连接",
       "PINGEMBYSERVERDESCRIPTION": "Ping Emby服务器来检查他是否仍然在线。",
       "SMALLEMBYSYNCDESCRIPTION": "与 Emby 服务器执行小型同步。这只是一个快速而小型的系统更新。",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
+      "SMALLEMBYSYNCTITLE": "与 Emby 进行小同步",
       "STARTSMALLEMBYSYNC": "开始小同步",
       "MEDIASYNCDESCRIPTION": "为您的电影收藏进行增量同步。这可能需要一些时间才能运行！",
       "MEDIASYNCTITLE": "媒体同步",
       "STARTMEDIASYNC": "开始媒体同步",
       "DATABASECLEANUPTITLE": "数据库清理",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "DATABASECLEANUPDESCRIPTION": "清理数据库中不必要的数据。",
+      "OPENJOBPAGE": "转到作业页面",
+      "CHECKUPDATETITLE": "检查更新",
+      "CHECKUPDATEDESCRIPTION": "检查所选更新列上的新更新。"
     }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
+      "TITLE": "未找到电影",
       "BODY": "我们在 EmbyStat 数据库中找不到任何电影。如果您在 Emby 中有电影，请尝试启动新的媒体同步任务。"
     },
     "NOSHOWTYPEFOUND": {
@@ -276,7 +276,7 @@
       "BODY": "媒体同步任务正在后台运行。所有统计页面均被阻止，因为只要同步运行，计算将完全错误。"
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
+      "FORMAT_ERROR": "提交的CRON字符串格式错误。在<a href=\"https://crontab.guru/\" target=\"_blank\">此处</a>查看详细格式规则。仅允许使用数字，空格，\"*\"，\"/\"和\"-\"。",
       "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">在这里</a> 你可以找到更多关于如何格式化CRON字符串的信息。只允许数字，\"*\"，\"/\"和\"-\"。"
     },
     "NOUSERSFOUND": {
@@ -314,7 +314,7 @@
     "SERVERINFO": "服务器信息",
     "GITHUBRELEASE": "在 Github 上发布",
     "REQUESTFEATURE": "请求功能",
-    "LOGBUG": "Log bug on Github",
+    "LOGBUG": "在 Github 上提交错误记录",
     "HELPTRANSLATE": "帮助翻译这个程序",
     "THANKS": {
       "TITLE": "谢谢",
