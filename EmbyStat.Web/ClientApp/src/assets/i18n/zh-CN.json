@@ -70,45 +70,45 @@
     "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
   "FORMLABELS": {
-    "NAME": "Username",
-    "LANGUAGE": "Please select your language",
-    "DURATIONINMINUTES": "Duration in minutes",
+    "NAME": "用户名",
+    "LANGUAGE": "请选择您的语言",
+    "DURATIONINMINUTES": "持续时间（分钟）",
     "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
-    "TVDBAPI": "TheTVDB API key",
+    "TVDBAPI": "TheTVDB API 密钥",
     "CRON": "Cron string",
     "EXCEPTIONLOGGING": "Enable exception logging"
   },
   "FORMERRORS": {
-    "NAME_REQUIRED": "Fill in your name or nickname."
+    "NAME_REQUIRED": "填写您的姓名或昵称。"
   },
   "MENU": {
-    "DASHBOARD": "Dashboard",
+    "DASHBOARD": "仪表盘",
     "MOVIES": "电影",
-    "SHOWS": "Shows",
+    "SHOWS": "演出",
     "SETTINGS": "设置",
     "PLUGINS": "插件",
     "JOBS": "作业",
-    "SERVER": "Emby server",
-    "LOGS": "Logs",
-    "ABOUT": "About",
-    "USERS": "Users"
+    "SERVER": "Emby服务器",
+    "LOGS": "日志",
+    "ABOUT": "关于",
+    "USERS": "用户"
   },
   "WIZARD": {
-    "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby settings",
+    "INTROLABEL": "初始",
+    "EMBYLABEL": "Emby设置",
     "SAVINGLABEL": "First Emby server sync",
-    "FINALLABEL": "Final",
+    "FINALLABEL": "最后",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Checking Emby server ...",
+    "CHECKINGSTATUS": "正在检查 Emby 服务器...",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "EMBYRUNNING": "Emby server is running",
-    "KEYISVALID": "API key is valid",
+    "EMBYNOTFOUNDTEXT": "现在，我们将设置您的Emby连接。我们尝试自动检测网络中的Emby服务器，但失败了。请填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
+    "EMBYFOUNDTEXT": "我们在您的网络中找到了一个Emby服务器，并已经在表格中输入了网址。您可以对其修改，并填写表格的其余部分。",
+    "EMBYRUNNING": "Emby服务器正在运行",
+    "KEYISVALID": "API密钥有效",
     "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
-    "SAVING": "Saving data",
-    "RESCAN": "Rescan",
+    "SAVING": "正在保存数据",
+    "RESCAN": "重新扫描",
     "FINISHWITHSYNC": "Start synchronization",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
@@ -126,10 +126,10 @@
     "LONGEST": "最长的",
     "LATESTADDED": "最近添加",
     "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
-    "DUPLICATEMOVIES": "Duplicate Movies",
+    "DUPLICATEMOVIES": "重复的电影",
     "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "NOPOSTER": "缺少海报",
+    "NOIMDB": "缺少IMDB ID"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total Shows",
@@ -140,7 +140,7 @@
     "LOWESTRATEDSHOW": "评分最低",
     "OLDESTPREMIERED": "Earliest Premiered",
     "NEWESTPREMIERED": "Latest Premiered",
-    "LATESTADDED": "Recently added",
+    "LATESTADDED": "最近添加",
     "WITHMOESTEPISODES": "With Most Episodes",
     "SHOWSTATUSGRAPH": "Show Status",
     "SEASONS": "Seasons",
@@ -152,19 +152,19 @@
   "SETTINGS": {
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TVDB": "TVDB",
       "EMBY": "Emby"
     },
     "SAVED": {
       "GENERAL": "Embystat 常规设置已保存!",
-      "TVDB": "TVDB key saved!",
+      "TVDB": "TVDB密钥已保存！",
       "EMBY": "Emby 设置已保存！",
       "MOVIES": "电影设置已保存！",
       "SHOWS": "节目设置已保存！",
       "UPDATES": "更新设置已保存！"
     },
     "GENERAL": {
-      "NOUSERNAME": "Username can't be blank",
+      "NOUSERNAME": "用户名不能为空",
       "TVDBAPIKEY": "如果您愿意，可以在此处为EmbyStat提供您自己的TheTVDB API密钥。",
       "TVDBAPIKEYWARNING": "确保提供有效的API密钥！如果密钥不正确，则同步任务将失败。",
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
@@ -179,12 +179,12 @@
     "EMBY": {
       "EMBYADDRESS": "Emby IP/domain",
       "EMBYAPIKEY": "Emby API key",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "EMBYPORT": "Emby端口",
+      "EMBYADDRESSREQUIRED": "需要 Emby IP/域",
+      "EMBYPORTREQUIRED": "需要 Emby 端口。",
+      "EMBYAPIKEYREQUIRED": "需要 Emby API 密钥",
       "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid"
+      "WRONGAPIKEY": "提供的API密钥无效"
     },
     "UPDATE": {
       "MASTER": "Master",
