@@ -141,7 +141,7 @@
     "OLDESTPREMIERED": "Earliest Premiered",
     "NEWESTPREMIERED": "Latest Premiered",
     "LATESTADDED": "Recently added",
-    "WITHMOESTEPISODES": "With Most Episodes",
+    "WITHMOESTEPISODES": "Con más episodios",
     "SHOWSTATUSGRAPH": "Mostrar estado",
     "SEASONS": "Temporada",
     "CONTINUING": "Continuing",
@@ -180,9 +180,9 @@
       "EMBYADDRESS": "Emby IP/domain",
       "EMBYAPIKEY": "Emby API key",
       "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "EMBYADDRESSREQUIRED": "Se requiere IP/dominio de Emby.",
+      "EMBYPORTREQUIRED": "Puerto Emby requerido.",
+      "EMBYAPIKEYREQUIRED": "Clave API de Emby requerida",
       "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
       "WRONGAPIKEY": "Provided API key is not valid"
     },
@@ -191,13 +191,13 @@
       "BETA": "Beta",
       "AUTO": "Habilitar actualizaciones automáticas",
       "CHECK": "Check and update server now",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Actualizar servidor",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
       "CURRENTVERSION": "Current version: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
+      "NOUPDATE": "Ninguna actualización disponible",
       "NEWVERSION": "Version {{version}} available for download!",
       "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
@@ -221,14 +221,14 @@
       "WATCHEDTITLE": "Last Watched Items"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
+      "TITLE": "Título",
       "TIME": "Time",
-      "WATCHED": "Watched",
+      "WATCHED": "Visto",
       "START": "Start",
       "ACTION": "Action"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
+      "TOTALWATCHEDMOVIES": "Películas Vistas",
       "TOTALWATCHEDEPISODES": "Episodes Watched"
     }
   },
