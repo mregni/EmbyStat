@@ -73,7 +73,7 @@
     "NAME": "Usuario",
     "LANGUAGE": "Por favor seleccione su idioma",
     "DURATIONINMINUTES": "Duración en minutos",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
+    "ENABLETOSHORTMOVIES": "Habilitar el calculo de películas cortas",
     "TVDBAPI": "Clave API de TheTVDB",
     "CRON": "Parámetro de Cron",
     "EXCEPTIONLOGGING": "Enable exception logging"
@@ -178,13 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "IP/Dominio de Emby",
-      "EMBYAPIKEY": "Emby API key",
-      "EMBYPORT": "Emby port",
+      "EMBYAPIKEY": "Clave API de Emby",
+      "EMBYPORT": "Puerto Emby",
       "EMBYADDRESSREQUIRED": "Se requiere IP/dominio de Emby.",
       "EMBYPORTREQUIRED": "Puerto Emby requerido.",
       "EMBYAPIKEYREQUIRED": "Clave API de Emby requerida",
       "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid"
+      "WRONGAPIKEY": "La clave API proporcionada no es válida"
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -195,24 +195,24 @@
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
+      "CURRENTVERSION": "Versión actual: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "Ninguna actualización disponible",
-      "NEWVERSION": "Version {{version}} available for download!",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "NEWVERSION": "¡Versión {{version}} disponible para descargar!",
+      "DISABLED": "Las actualizaciones están desactivadas para este servidor y probablemente serán actualizadas por un servicio externo. Si esto es un error, no inicie el servidor con la opción --no-updates."
     }
   },
   "USERS": {
     "ISADMIN": "Is administrator",
     "ISHIDDEN": "Is hidden from login screen",
     "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "ACTIVE": "Active users",
-    "LASTACTIVE": "Last active",
+    "DELETED": "Usuarios eliminados",
+    "ACTIVE": "Usuarios Activos",
+    "LASTACTIVE": "Última actividad",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
-      "LASTACTIVEASC": "Last active date (asc)",
+      "USERNAMEASC": "Nombre de usuario (A - Z)",
+      "USERNAMEDESC": "Nombre de usuario (A - Z)",
+      "LASTACTIVEASC": "Última actividad (ascendente)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
     "TOOVERVIEW": "To overview",
@@ -242,20 +242,20 @@
     "AGO": "ago",
     "FOR": "for",
     "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
+    "NORUN": "Aún no se ha ejecutado",
     "MOMENT_AGO": "a moment",
     "JOBLOGS": "Job logs",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Valor de Cron actualizado",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
+      "PINGEMBYSERVERTITLE": "Verifique la conexión de Emby",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SMALLEMBYSYNCTITLE": "Small sync with Emby",
       "STARTSMALLEMBYSYNC": "Start small sync",
       "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
+      "MEDIASYNCTITLE": "Sincronización de medios",
+      "STARTMEDIASYNC": "Inicia la sincronización de medios",
+      "DATABASECLEANUPTITLE": "Limpieza de la base de datos",
       "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
       "OPENJOBPAGE": "Go to job page",
       "CHECKUPDATETITLE": "Check for new updates",
@@ -330,7 +330,7 @@
     "LANADDRESS": "LAN address",
     "CACHEPATH": "Cache path",
     "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HTTPPORT": "Puerto HTTP",
+    "HTTPSPORT": "Puerto HTTPS"
   }
 }
