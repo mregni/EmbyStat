@@ -70,7 +70,7 @@
     "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
   "FORMLABELS": {
-    "NAME": "Username",
+    "NAME": "Usuario",
     "LANGUAGE": "Por favor seleccione su idioma",
     "DURATIONINMINUTES": "Duración en minutos",
     "ENABLETOSHORTMOVIES": "Habilitar el calculo de peliculas cortas",
