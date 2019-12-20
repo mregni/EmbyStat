@@ -51,7 +51,7 @@
     "UPDATES": "Actualizaciones",
     "VERSION": "Versión",
     "ACTORSPERGENRE": "Actor mas destacado por género",
-    "MINUTES": "Minutos",
+    "MINUTES": "minutes",
     "DISKSIZE": "Disk size",
     "TOTALDISKSIZE": "Total disk size"
   },
@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Ahora vamos a configurar su conexión Emby. Intentamos detectar automáticamente su servidor Emby en la red, pero fallamos. Rellene todos los campos para que EmbyStat pueda encontrar su servidor Emby.",
     "EMBYFOUNDTEXT": "Encontramos un servidor Emby en su red y ya ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
     "EMBYRUNNING": "El servidor Emby se está ejecutando",
-    "KEYISVALID": "Clave API válida",
+    "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado en el servidor Emby",
     "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, arregle los errores, presione atrás y siguiente.",
     "SAVING": "Guardando datos",
@@ -115,11 +115,11 @@
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Películas totales",
-    "TOTALGENRES": "Géneros totales",
-    "TOTALPLAYLENGTH": "Tiempo de Visualización",
-    "HIGHESTRATED": "Mejor valorado",
-    "LOWESTRATED": "Peor valorado",
+    "TOTALMOVIES": "Total Movies",
+    "TOTALGENRES": "Total Genres",
+    "TOTALPLAYLENGTH": "Total Watchable Time",
+    "HIGHESTRATED": "Highest Rated",
+    "LOWESTRATED": "Lowest Rated",
     "OLDESTPREMIERED": "Estreno Más Antiguo",
     "NEWESTPREMIERED": "Estreno Más Reciente",
     "SHORTEST": "Más corto",
@@ -198,7 +198,7 @@
       "CURRENTVERSION": "Version actual: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} disponible para su descarga!",
+      "NEWVERSION": "Version {{version}} available for download!",
       "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
   },
@@ -206,38 +206,38 @@
     "ISADMIN": "Is administrator",
     "ISHIDDEN": "Is hidden from login screen",
     "ISDISABLED": "Is disabled",
-    "DELETED": "Usuarios eliminados",
-    "ACTIVE": "Usuarios activos",
+    "DELETED": "Deleted users",
+    "ACTIVE": "Active users",
     "LASTACTIVE": "Last active",
     "SORTING": {
-      "USERNAMEASC": "Nombre de usuario (A - Z)",
-      "USERNAMEDESC": "Nombre de usuario (Z - A)",
+      "USERNAMEASC": "Username (A - Z)",
+      "USERNAMEDESC": "Username (Z - A)",
       "LASTACTIVEASC": "Last active date (asc)",
       "LASTACTIVEDESC": "Last active date (desc)"
     },
     "TOOVERVIEW": "To overview",
     "DETAILS": {
       "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Últimos Elementos Vistos"
+      "WATCHEDTITLE": "Last Watched Items"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Título",
-      "TIME": "Tiempo",
-      "WATCHED": "Visto",
-      "START": "Iniciar",
+      "TITLE": "Title",
+      "TIME": "Time",
+      "WATCHED": "Watched",
+      "START": "Start",
       "ACTION": "Action"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Peliculas Vistas",
-      "TOTALWATCHEDEPISODES": "Episodios Vistas"
+      "TOTALWATCHEDMOVIES": "Movies Watched",
+      "TOTALWATCHEDEPISODES": "Episodes Watched"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Último inicio: Ahora",
-    "LASTRUN": "Último inicio",
-    "HOURS": "{{hours}} hora(s)",
-    "MINUTES": "{{minutes}} minuto(s)",
-    "SECONDS": "{{seconds}} segundo(s)",
+    "LASTRUNNOW": "Last run: just now",
+    "LASTRUN": "Last run",
+    "HOURS": "{{hours}} hour(s)",
+    "MINUTES": "{{minutes}} minute(s)",
+    "SECONDS": "{{seconds}} second(s)",
     "AND": "and",
     "AGO": "ago",
     "FOR": "for",
@@ -245,7 +245,7 @@
     "NORUN": "Not ran yet",
     "MOMENT_AGO": "a moment",
     "JOBLOGS": "Job logs",
-    "CRONUPDATED": "Valor de Cron actualizado",
+    "CRONUPDATED": "Cron value updated",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Check Emby connection",
       "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
@@ -257,7 +257,7 @@
       "STARTMEDIASYNC": "Start media sync",
       "DATABASECLEANUPTITLE": "Database cleanup",
       "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Ir a la pagina Trabajos",
+      "OPENJOBPAGE": "Go to job page",
       "CHECKUPDATETITLE": "Check for new updates",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
     }
