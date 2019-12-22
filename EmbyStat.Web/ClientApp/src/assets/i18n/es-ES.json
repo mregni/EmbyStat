@@ -189,17 +189,17 @@
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Habilitar las actualicaciones automáticas",
+      "AUTO": "Habilitar las actualizaciones automáticas",
       "CHECK": "Comprobar y actualizar servidor",
       "UPDATE:": "Actualizar servidor",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
       "CURRENTVERSION": "Versión actual: {{version}}",
-      "CANTCHECK": "No se puede comprobrar las actualicaciones, no hay conexión con GitHub",
-      "NOUPDATE": "No hay actualicaciones",
+      "CANTCHECK": "No se puede comprobar las actualizaciones, no hay conexión con GitHub.",
+      "NOUPDATE": "No hay actualizaciones",
       "NEWVERSION": "Versión {{version}} disponible para su descarga!",
-      "DISABLED": "Las actualicaciones estan desactivadas para el servidor y probablemente serán actualizadas por un servicio externo. Si esto es un error no inicie el servidor con la opción --no-updates."
+      "DISABLED": "Las actualizaciones están desactivadas para el servidor y probablemente serán actualizadas por un servicio externo. Si esto es un error no inicie el servidor con la opción --no-updates."
     }
   },
   "USERS": {
@@ -228,7 +228,7 @@
       "ACTION": "Acción"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Peliculas Vistas",
+      "TOTALWATCHEDMOVIES": "Películas Vistas",
       "TOTALWATCHEDEPISODES": "Episodios Vistos"
     }
   },
@@ -244,22 +244,22 @@
     "BUTFAILED": "pero falló después",
     "NORUN": "Aún no ejecutado",
     "MOMENT_AGO": "Hace un momento",
-    "JOBLOGS": "Regsitro de tareas",
+    "JOBLOGS": "Registro de tareas",
     "CRONUPDATED": "Valor de Cron actualizado",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Comprobar conexión a Emby",
       "PINGEMBYSERVERDESCRIPTION": "Realiza un ping al servidor Emby para comprobar si esta en linea.",
-      "SMALLEMBYSYNCDESCRIPTION": "Realiza una sincronicación rápida con el servidor Emby. Esta es una actualicación rápida y pequeña del sistema.",
-      "SMALLEMBYSYNCTITLE": "Sincronicación rapida con Emby",
-      "STARTSMALLEMBYSYNC": "Iniciar sincronicación rapida",
-      "MEDIASYNCDESCRIPTION": "Realiza una sincronicación incremental con tus medios de Emby. Puede tomar algun tiempo!",
-      "MEDIASYNCTITLE": "Sincronicación de medios de Emby",
+      "SMALLEMBYSYNCDESCRIPTION": "Realiza una sincronización rápida con el servidor Emby. Esta es una actualización rápida y pequeña del sistema.",
+      "SMALLEMBYSYNCTITLE": "Sincronización rápida con Emby",
+      "STARTSMALLEMBYSYNC": "Iniciar sincronización rápida",
+      "MEDIASYNCDESCRIPTION": "Realiza una sincronización incremental con tus medios de Emby. Puede tomar algún tiempo!",
+      "MEDIASYNCTITLE": "Sincronización de medios de Emby",
       "STARTMEDIASYNC": "Iniciar sincronicación de medios de Emby",
       "DATABASECLEANUPTITLE": "Limpieza de la base de datos",
-      "DATABASECLEANUPDESCRIPTION": "Limpia los datos innecesarios de la base de datosCleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Ir a la pagina tareas",
-      "CHECKUPDATETITLE": "Comprobando si hay nuevas actualicaciones",
-      "CHECKUPDATEDESCRIPTION": "Comprueba actualicaciones en la versión seleccionada."
+      "DATABASECLEANUPDESCRIPTION": "Limpia los datos innecesarios de la base de datos.",
+      "OPENJOBPAGE": "Ir a la página tareas",
+      "CHECKUPDATETITLE": "Comprobando si hay nuevas actualizaciones",
+      "CHECKUPDATEDESCRIPTION": "Comprueba actualizaciones en la versión seleccionada."
     }
   },
   "DIALOGS": {
@@ -272,7 +272,7 @@
       "BODY": "No pudimos encontrar ningún programa en la base de datos EmbyStat. Si tiene medios en Emby, debería intentar comenzar una nueva tarea de sincronización de medios."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Sincronicación de medios de Emby esta en ejecución",
+      "TITLE": "Sincronización de medios de Emby está en ejecución",
       "BODY": "La tarea de sincronización de medios se ejecuta en segundo plano. Debido a esto, todas las páginas de estadísticas están bloqueadas porque los cálculos serían completamente incorrectos mientras se ejecuta la sincronización."
     },
     "EDIT_TRIGGER": {
@@ -281,13 +281,13 @@
     },
     "NOUSERSFOUND": {
       "TITLE": "Ningún usuario encontrado",
-      "BODY": "Ningún usuario encontrado en la base de datos local. Por lo tanto la sincronicación rapida no esta en ejecución. Deseas iniciar la sincronicación rapida?"
+      "BODY": "Ningún usuario encontrado en la base de datos local. Por lo tanto la sincronización rápida no esta en ejecución. Deseas iniciar la sincronización rápida?"
     }
   },
   "LOADER": {
     "FETCHING": "Obteniendo estadísticas",
     "UPDATING": "Actualizando EmbyStat",
-    "UPDATINGSUB": "La página se refrescara cuando termine la actualicación."
+    "UPDATINGSUB": "La página se refrescará cuando termine la actualización."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixto / Otro",
@@ -328,7 +328,7 @@
     "HOSTOS": "Sistema Operativo del Host",
     "WANADDRESS": "IP Externa",
     "LANADDRESS": "IP Local",
-    "CACHEPATH": "Ruta de Cache",
+    "CACHEPATH": "Ruta de Caché",
     "LOGPATH": "Ruta de Registros",
     "HTTPPORT": "Puerto HTTP",
     "HTTPSPORT": "Puerto HTTPS"
