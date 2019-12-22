@@ -116,15 +116,15 @@
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filtrar coleción de películas",
     "TOTALMOVIES": "Peliculas Totales",
-    "TOTALGENRES": "Generos Totales",
-    "TOTALPLAYLENGTH": "Tiempo de Visualicación",
+    "TOTALGENRES": "Géneros Totales",
+    "TOTALPLAYLENGTH": "Tiempo de Visualización",
     "HIGHESTRATED": "Mejor valorada",
     "LOWESTRATED": "Peor valorada",
     "OLDESTPREMIERED": "Estreno Más Antiguo",
     "NEWESTPREMIERED": "Estreno Más Reciente",
     "SHORTEST": "Más corta",
     "LONGEST": "Más Larga",
-    "LATESTADDED": "Ultima Añadida",
+    "LATESTADDED": "Última Añadida",
     "MOSTFEATUREDPERGENRE": "Actor Mejor Valorado Por Género",
     "DUPLICATEMOVIES": "Duplicadas",
     "TOSHORTMOVIES": "Peliculas muy cortas",
@@ -171,10 +171,10 @@
     },
     "MOVIE": {
       "TOSHORTTEXT": "Para encontrar películas sospechosamente cortas, necesitas especificar la cantidad de minutos que consideras que dura una película corta. El valor por defecto son 10 minutos.",
-      "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú deplegable situado en la página de películas"
+      "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú desplegable situado en la página de películas."
     },
     "SHOW": {
-      "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú deplegable situado en la página de series."
+      "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú desplegable situado en la página de series."
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP/dominio",
