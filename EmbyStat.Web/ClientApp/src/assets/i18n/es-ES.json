@@ -254,7 +254,7 @@
       "STARTSMALLEMBYSYNC": "Iniciar sincronización rápida",
       "MEDIASYNCDESCRIPTION": "Realiza una sincronización incremental con tus medios de Emby. Puede tomar algún tiempo!",
       "MEDIASYNCTITLE": "Sincronización de medios de Emby",
-      "STARTMEDIASYNC": "Iniciar sincronicación de medios de Emby",
+      "STARTMEDIASYNC": "Iniciar sincronización de medios de Emby",
       "DATABASECLEANUPTITLE": "Limpieza de la base de datos",
       "DATABASECLEANUPDESCRIPTION": "Limpia los datos innecesarios de la base de datos.",
       "OPENJOBPAGE": "Ir a la página tareas",
@@ -277,7 +277,7 @@
     },
     "EDIT_TRIGGER": {
       "FORMAT_ERROR": "La configuración Cron tiene un formato incorrecto. Comprueba <a href=\"https://crontab.guru/\" target=\"_blank\">aquí</a> las reglas de sintaxis. Solo números, espacio, *, / y - son permitidos.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Aquí</a> puedes encontar más información sobre Cron. Solo números, *, / y - son permitidos."
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Aquí</a> puedes encontrar más información sobre Cron. Solo números, *, / y - son permitidos."
     },
     "NOUSERSFOUND": {
       "TITLE": "Ningún usuario encontrado",
