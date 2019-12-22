@@ -50,7 +50,7 @@
     "COLLECTED": "Coleccionado",
     "UPDATES": "Actualizaciones",
     "VERSION": "Versión",
-    "ACTORSPERGENRE": "Actor mas destacado por género",
+    "ACTORSPERGENRE": "Actor más destacado por género",
     "MINUTES": "Minutos",
     "DISKSIZE": "Tamaño del Disco",
     "TOTALDISKSIZE": "Tamaño en Disco"
@@ -135,13 +135,13 @@
     "TOTALSHOWS": "Series Totales",
     "TOTALEPISODES": "Episodios totales",
     "TOTALMISSINGEPISODES": "Episodios Perdidos",
-    "TOTALPLAYLENGTH": "Tiempo de Visualicación",
+    "TOTALPLAYLENGTH": "Tiempo de Visualización",
     "HIGHESTRATEDSHOW": "Mejor Valorada",
     "LOWESTRATEDSHOW": "Peor Valorada",
     "OLDESTPREMIERED": "Estreno Más Antiguo",
     "NEWESTPREMIERED": "Estreno Más Reciente",
-    "LATESTADDED": "Ultima Añadida",
-    "WITHMOESTEPISODES": "Más Episodios",
+    "LATESTADDED": "Última Añadida",
+    "WITHMOESTEPISODES": "Más episodios",
     "SHOWSTATUSGRAPH": "Ver Estado",
     "SEASONS": "Temporadas",
     "CONTINUING": "En curso",
@@ -159,15 +159,15 @@
       "GENERAL": "Ajustes generales de Embystat guardados!",
       "TVDB": "Clave de TVDB guardada!",
       "EMBY": "Configuración de Emby guardada!",
-      "MOVIES": "Configuración de peliculas guardada!",
+      "MOVIES": "Configuración de películas guardada!",
       "SHOWS": "Configuración de series guardada!",
       "UPDATES": "¡Actualizar ajustes guardados!"
     },
     "GENERAL": {
-      "NOUSERNAME": "El nombre de usuario no puede estar vacio",
+      "NOUSERNAME": "El nombre de usuario no puede estar vacío",
       "TVDBAPIKEY": "Puedes ingresar tu clave de TVDB aquí abajo.",
-      "TVDBAPIKEYWARNING": "Asegurate de que la clave API es correcta, si es incorrecta la tarea de sincronicación puede fallar.",
-      "EXCEPTIONLOGGING": "Activar/Desactivar registro de excepciones del servicio Rollbar. Con este registro podré depurar y arreglar problemas de la aplicación más rápido. No se registrará ningún dato de carácter personal, solo mensajes de excepciones, seguimineto de pila (Stack trace), Sistema operativo y versión del mismo."
+      "TVDBAPIKEYWARNING": "Asegurate de que la clave API es correcta, si es incorrecta la tarea de sincronización puede fallar.",
+      "EXCEPTIONLOGGING": "Activar/Desactivar registro de excepciones del servicio Rollbar. Con este registro podré depurar y arreglar problemas de la aplicación más rápido. No se registrará ningún dato de carácter personal, solo mensajes de excepciones, seguimiento de pila (Stack trace), Sistema operativo y versión del mismo."
     },
     "MOVIE": {
       "TOSHORTTEXT": "Para encontrar películas sospechosamente cortas, necesitas especificar la cantidad de minutos que consideras que dura una película corta. El valor por defecto son 10 minutos.",
