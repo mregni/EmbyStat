@@ -170,28 +170,28 @@
       "EXCEPTIONLOGGING": "Ativar / desativar o log de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Para encontrar os filmes possivelmente curtos, precisamos saber qual a quantidade de minutos que você acha muito curta para um filme. O padrão é definido como 10 minutos, mas você pode alterá-lo, se necessário.",
       "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "SHOW": {
       "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
+      "EMBYADDRESS": "Emby IP/DOMÍNIO",
       "EMBYAPIKEY": "Emby API key",
       "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid"
+      "EMBYADDRESSREQUIRED": "Emby IP/DOMÍNIO requerido.",
+      "EMBYPORTREQUIRED": "Porta do Servidor Emby requerida.",
+      "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
+      "APIKEYHINT": "Vá em Avançado -> Segurança e clique em Chaves de API para gerar sua nova chave API.",
+      "WRONGAPIKEY": "A chave da API fornecida não é válida"
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Ativar atualizações automáticas",
       "CHECK": "Verifique e atualize o servidor agora",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Atualizar servidor agora",
       "TRAIN": "Altere o trem de atualização se você quiser ter atualizações beta.",
       "ONBETA": "Você não está mais no trem Master, então você não pode voltar para ele. Se você quiser voltar no trem mestre, reinstale o servidor.",
       "TRAINWARNING": "Aqui você pode alterar o trem de atualização do mestre para o beta. Se você não sabe o que está fazendo, deixe essa configuração no mestre. Se você deseja receber as atualizações da versão beta, altere-a aqui, esteja ciente de que não será possível voltar ao mestre mais tarde. Você terá que reinstalar o servidor.",
@@ -199,7 +199,7 @@
       "CANTCHECK": "Não é possível verificar atualizações agora, nenhuma conexão com o GitHub foi criada por mim.",
       "NOUPDATE": "Atualização está disponível",
       "NEWVERSION": "Versão {{version}} disponível para download!",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "DISABLED": "As atualizações estão desabilitadas para este servidor e provavelmente serão atualizadas por um serviço externo. Se isso for um erro, não inicie o servidor com a opção sem atualizações."
     }
   },
   "USERS": {
@@ -207,7 +207,7 @@
     "ISHIDDEN": "Está oculto da tela de login",
     "ISDISABLED": "está desabilitado",
     "DELETED": "Os usuários excluídos",
-    "ACTIVE": "Active users",
+    "ACTIVE": "Usuários ativos",
     "LASTACTIVE": "Ativo pela última vez",
     "SORTING": {
       "USERNAMEASC": "Nome de usuário (A - Z)",
@@ -218,7 +218,7 @@
     "TOOVERVIEW": "Para visão geral",
     "DETAILS": {
       "TITLE": "Detalhes para {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "WATCHEDTITLE": "Últimos itens assistidos"
     },
     "WATCHEDTABLE": {
       "TITLE": "Título",
@@ -228,8 +228,8 @@
       "ACTION": "Ação"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Filmes assistidos",
+      "TOTALWATCHEDEPISODES": "Episódios assistidos"
     }
   },
   "JOB": {
@@ -245,7 +245,7 @@
     "NORUN": "Ainda não correu",
     "MOMENT_AGO": "Dentro de instantes",
     "JOBLOGS": "Registros de trabalho",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Valor do Cron atualizado",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Verifique a conexão",
       "PINGEMBYSERVERDESCRIPTION": "Ping no servidor Emby para verificar se ele ainda está online.",
@@ -311,24 +311,24 @@
     "MOREMISSEDPINGS": "Não foi possível conectar-se ao Emby após várias tentativas!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "SERVERINFO": "Informações do Servidor",
+    "GITHUBRELEASE": "Lançamentos no Github",
+    "REQUESTFEATURE": "Requisitar recurso",
+    "LOGBUG": "Erro de log no Github",
+    "HELPTRANSLATE": "Ajude a traduzir o aplicativo",
     "THANKS": {
       "TITLE": "Obrigado",
       "TEXT": "Um grande obrigado às seguintes pessoas por traduzir o aplicativo em sua língua nativa:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Ações"
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
+    "HOSTOS": "Sistema Operacional Hospedeiro",
+    "WANADDRESS": "Endereço WAN (Wide Área Network)",
+    "LANADDRESS": "Endereço LAN (Local Area Network)",
+    "CACHEPATH": "Caminho do Cache",
     "LOGPATH": "Log path",
     "HTTPPORT": "HTTP port",
     "HTTPSPORT": "HTTPS port"
