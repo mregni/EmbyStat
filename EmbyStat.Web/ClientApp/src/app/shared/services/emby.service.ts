@@ -28,9 +28,9 @@ class UrlObject {
 export class EmbyService {
   private readonly baseUrl = '/api/emby';
   private searchEmbyUrl = `${this.baseUrl}/server/search`;
-  private getTestApiKeyUrl = `${ this.baseUrl } /server/test`;
+  private getTestApiKeyUrl = `${ this.baseUrl }/server/test`;
   private getEmbyServerInfoUrl = `${this.baseUrl}/server/info`;
-  private getEmbyStatusUrl = `${ this.baseUrl } /server/status`;
+  private getEmbyStatusUrl = `${ this.baseUrl }/server/status`;
   private pingEmbyurl = `${this.baseUrl}/server/ping`;
   private getPluginsUrl = `${ this.baseUrl }/plugins`;
   private getEmbyUsersUrl = `${this.baseUrl}/users`;
@@ -63,7 +63,7 @@ export class EmbyService {
   }
 
   getUserById(id: string): Observable<EmbyUser> {
-    return this.http.get<EmbyUser>(this.getEmbyUsersUrl + '/' + id);
+    return this.http.get<EmbyUser>(`${this.getEmbyUsersUrl}/${id}`);
   }
 
   getUserIdList(): Observable<UserId[]> {
@@ -71,7 +71,7 @@ export class EmbyService {
   }
 
   getUserViewsByUserId(id: string, page: number, size: number): Observable<ListContainer<UserMediaView>> {
-    return this.http.get<ListContainer<UserMediaView>>(this.getEmbyUsersUrl + '/' + id + '/views/' + page + '/' + size);
+    return this.http.get<ListContainer<UserMediaView>>(`${this.getEmbyUsersUrl}/${id}/views/${page}/${size}`);
   }
 
   pingEmby(url: string): Observable<boolean> {

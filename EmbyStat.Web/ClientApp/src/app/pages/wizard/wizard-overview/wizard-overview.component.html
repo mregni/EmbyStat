@@ -45,29 +45,36 @@
                   </mat-form-field>
                   <mat-form-field class="emby-address mr-3">
                     <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate}}"
-                      formControlName="embyAddress">
+                           formControlName="embyAddress">
                     <mat-error *ngIf="embyAddressControl.hasError('required')">
-                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}</mat-error>
+                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}
+                    </mat-error>
                   </mat-form-field>
                   <mat-form-field class="emby-port">
                     <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}"
                            formControlName="embyPort" required>
                     <mat-error *ngIf="embyPortControl.hasError('required')">
-                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}</mat-error>
+                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <mat-form-field>
                   <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate}}"
-                    formControlName="embyApiKey" type="text">
-                  <mat-hint [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></mat-hint>
+                         formControlName="embyApiKey" type="text">
                   <mat-error *ngIf="embyApiKeyControl.hasError('required')">
-                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}</mat-error>
+                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}
+                  </mat-error>
                 </mat-form-field>
+                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
                 <div class="button-container">
                   <button mat-stroked-button color="primary" matStepperPrevious
-                    type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+                          type="button">
+                    {{'COMMON.BACK' | translate | capitalizeFirst}}
+                  </button>
                   <button mat-raised-button color="primary" matStepperNext
-                    type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
+                          type="button">
+                    {{'COMMON.NEXT' | translate | capitalizeFirst}}
+                  </button>
                 </div>
               </form>
             </div>

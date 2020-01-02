@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serialization;
 
@@ -12,8 +13,15 @@ namespace EmbyStat.Common.Net
         public string Serialize(Parameter parameter) =>
             JsonConvert.SerializeObject(parameter.Value);
 
-        public T Deserialize<T>(IRestResponse response) =>
-            JsonConvert.DeserializeObject<T>(response.Content);
+        public T Deserialize<T>(IRestResponse response)
+        {
+            if (typeof(T) == typeof(string))
+            {
+                return (T)Convert.ChangeType(response.Content, typeof(T));
+            }
+
+            return JsonConvert.DeserializeObject<T>(response.Content);
+        }
 
         public string[] SupportedContentTypes { get; } =
         {

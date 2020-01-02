@@ -41,6 +41,9 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private searchEmbySub: Subscription;
   private settingsSub: Subscription;
   private fireSyncSub: Subscription;
+  private embyPortControlChange: Subscription;
+  private embyAddressControlChange: Subscription;
+  private embyProtocolControlChange: Subscription;
   private checkUrlNeeded = true;
 
   embyUrl: string;
@@ -205,6 +208,18 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     if (this.fireSyncSub !== undefined) {
       this.fireSyncSub.unsubscribe();
+    }
+
+    if (this.embyPortControlChange !== undefined) {
+      this.embyPortControlChange.unsubscribe();
+    }
+
+    if (this.embyProtocolControlChange !== undefined) {
+      this.embyProtocolControlChange.unsubscribe();
+    }
+
+    if (this.embyAddressControlChange !== undefined) {
+      this.embyAddressControlChange.unsubscribe();
     }
   }
 }

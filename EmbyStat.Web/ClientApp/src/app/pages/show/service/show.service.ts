@@ -12,7 +12,7 @@ import { ShowCollectionRow } from '../../../shared/models/show/show-collection-r
 export class ShowService {
   private readonly baseUrl = '/api/show';
   private getLibraryUrl = `${this.baseUrl}/libraries`;
-  private getShowStatisticsUrl = `${this.baseUrl}/statistics'`;
+  private getShowStatisticsUrl = `${this.baseUrl}/statistics`;
   private isTypePresentUrl = `${this.baseUrl}/typepresent`;
   private getCollectionRows = `${this.baseUrl}/collectedlist`;
 

@@ -67,6 +67,7 @@ namespace EmbyStat.DI
         {
             services.TryAddSingleton<IBackgroundJobClient, BackgroundJobClient>();
             services.TryAddTransient<IJobInitializer, JobInitializer>();
+            services.TryAddSingleton<IRecurringJobManager, RecurringJobManager>();
 
             services.TryAddTransient<IDatabaseCleanupJob, DatabaseCleanupJob>();
             services.TryAddTransient<IPingEmbyJob, PingEmbyJob>();

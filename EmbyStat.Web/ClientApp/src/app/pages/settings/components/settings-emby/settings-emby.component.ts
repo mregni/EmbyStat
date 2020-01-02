@@ -26,8 +26,13 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   embyProtocolControl = new FormControl('0', [Validators.required]);
   embyApiKeyControl = new FormControl('', [Validators.required]);
 
+  embyUrl: string;
   isSaving = false;
   hidePassword = true;
+
+  private embyPortControlChange: Subscription;
+  private embyAddressControlChange: Subscription;
+  private embyProtocolControlChange: Subscription;
 
   constructor(
     private readonly toastService: ToastService,
@@ -40,6 +45,24 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       embyProtocol: this.embyProtocolControl,
       embyApiKey: this.embyApiKeyControl
     });
+
+    this.embyPortControl.valueChanges.subscribe((value: string) => {
+      const url = this.embyAddressControl.value;
+      const protocol = this.embyProtocolControl.value;
+      this.updateUrl(protocol, url, value);
+    });
+
+    this.embyProtocolControl.valueChanges.subscribe((value: number) => {
+      const url = this.embyAddressControl.value;
+      const port = this.embyPortControl.value;
+      this.updateUrl(value, url, port);
+    });
+
+    this.embyAddressControl.valueChanges.subscribe((value: string) => {
+      const port = this.embyPortControl.value;
+      const protocol = this.embyProtocolControl.value;
+      this.updateUrl(protocol, value, port);
+    });
   }
 
   ngOnInit() {
@@ -51,6 +74,10 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyPortControl.setValue(this.settings.emby.serverPort);
       this.embyProtocolControl.setValue(this.settings.emby.serverProtocol);
     }
+  }
+
+  private updateUrl(protocol: number, url: string, port: string) {
+    this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
   }
 
   saveEmbyForm() {
@@ -100,6 +127,18 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     if (this.embyTokenSub !== undefined) {
       this.embyTokenSub.unsubscribe();
+    }
+
+    if (this.embyPortControlChange !== undefined) {
+      this.embyPortControlChange.unsubscribe();
+    }
+
+    if (this.embyProtocolControlChange !== undefined) {
+      this.embyProtocolControlChange.unsubscribe();
+    }
+
+    if (this.embyAddressControlChange !== undefined) {
+      this.embyAddressControlChange.unsubscribe();
     }
   }
 }

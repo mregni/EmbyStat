@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Jobs;
@@ -17,14 +18,25 @@ namespace Tests.Unit.Jobs
     public class JobInitializerTests
     {
         private readonly JobInitializer _jobInitializer;
+        private readonly Mock<IRecurringJobManager> _recurringJobManagerMock;
+        private readonly Mock<IDatabaseCleanupJob> _databaseCleanupJobMock;
+        private readonly Mock<IPingEmbyJob> _pingEmbyJobMock;
+        private readonly Mock<IMediaSyncJob> _mediaSyncJobMock;
+        private readonly Mock<ISmallSyncJob> _smallSyncJobMock;
+        private readonly Mock<ICheckUpdateJob> _checkUpdateJobMock;
+        
         public JobInitializerTests()
         {
-            var databaseCleanupJobMock = new Mock<IDatabaseCleanupJob>();
-            var pingEmbyJobMock = new Mock<IPingEmbyJob>();
-            var mediaSyncJobMock = new Mock<IMediaSyncJob>();
-            var smallSyncJobMock = new Mock<ISmallSyncJob>();
-            var checkUpdateJobMock = new Mock<ICheckUpdateJob>();
-            
+            _databaseCleanupJobMock = new Mock<IDatabaseCleanupJob>();
+            _pingEmbyJobMock = new Mock<IPingEmbyJob>();
+            _mediaSyncJobMock = new Mock<IMediaSyncJob>();
+            _smallSyncJobMock = new Mock<ISmallSyncJob>();
+            _checkUpdateJobMock = new Mock<ICheckUpdateJob>();
+            _checkUpdateJobMock.Setup(x => x.Execute());
+
+            _recurringJobManagerMock = new Mock<IRecurringJobManager>();
+            _recurringJobManagerMock.Setup(x => x.AddOrUpdate(It.IsAny<string>(), It.IsAny<Hangfire.Common.Job>(), It.IsAny<string>(), It.IsAny<RecurringJobOptions>()));
+
             var jobList = new List<Job>
             {
                 new Job {Id = Constants.JobIds.MediaSyncId, Trigger = "0 2 * * 1"},
@@ -35,150 +47,73 @@ namespace Tests.Unit.Jobs
             };
             var jobServiceMock = new Mock<IJobService>();
             jobServiceMock.Setup(x => x.GetAll()).Returns(jobList);
-            _jobInitializer = new JobInitializer(databaseCleanupJobMock.Object, pingEmbyJobMock.Object, mediaSyncJobMock.Object, smallSyncJobMock.Object, checkUpdateJobMock.Object, jobServiceMock.Object);
+            _jobInitializer = new JobInitializer(_databaseCleanupJobMock.Object, _pingEmbyJobMock.Object, _mediaSyncJobMock.Object, _smallSyncJobMock.Object, _checkUpdateJobMock.Object, jobServiceMock.Object, _recurringJobManagerMock.Object);
         }
 
         [Fact]
         public void Setup_Should_Enable_All_Jobs()
         {
-            JobStorage.Current = new MemoryStorage();
-
             _jobInitializer.Setup(false);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-
-            jobs.Count.Should().Be(5);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.CheckUpdateId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.DatabaseCleanupId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.MediaSyncId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.PingEmbyId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.SmallSyncId.ToString()).Should().NotBeNull();
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.DatabaseCleanupId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.MediaSyncId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.PingEmbyId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.SmallSyncId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
         }
 
         [Fact]
-        public void Setup_Should_Enable_All_Jobs_But_Update_Job()
+        public void Setup_Should_Enable_All_Jobs_Excluding_Update_Job()
         {
-            JobStorage.Current = null;
-            JobStorage.Current = new MemoryStorage();
-
             _jobInitializer.Setup(true);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-
-            jobs.Count.Should().Be(4);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.CheckUpdateId.ToString()).Should().BeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.DatabaseCleanupId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.MediaSyncId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.PingEmbyId.ToString()).Should().NotBeNull();
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.SmallSyncId.ToString()).Should().NotBeNull();
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Never());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.DatabaseCleanupId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.MediaSyncId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.PingEmbyId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.SmallSyncId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
         }
 
         [Fact]
         public void UpdateTrigger_Should_Update_MediaSync_Job_Trigger()
         {
-            JobStorage.Current = new MemoryStorage();
-            DeleteJobs();
-            RecurringJob.AddOrUpdate(Constants.JobIds.MediaSyncId.ToString(),
-                () => DummyCall(),
-                "0 2 * * 1");
-
             _jobInitializer.UpdateTrigger(Constants.JobIds.MediaSyncId, "0 3 * * 1", false);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Count.Should().Be(1);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.MediaSyncId.ToString()).Should().NotBeNull();
-            // ReSharper disable once PossibleNullReferenceException
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.MediaSyncId.ToString()).Cron.Should().Be("0 3 * * 1");
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.MediaSyncId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
+
         }
 
         [Fact]
         public void UpdateTrigger_Should_Update_SmallSync_Job_Trigger()
         {
-            JobStorage.Current = new MemoryStorage();
-            DeleteJobs();
-            RecurringJob.AddOrUpdate(Constants.JobIds.SmallSyncId.ToString(),
-                () => DummyCall(),
-                "0 2 * * 1");
-
             _jobInitializer.UpdateTrigger(Constants.JobIds.SmallSyncId, "0 3 * * 1", false);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Count.Should().Be(1);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.SmallSyncId.ToString()).Should().NotBeNull();
-            // ReSharper disable once PossibleNullReferenceException
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.SmallSyncId.ToString()).Cron.Should().Be("0 3 * * 1");
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.SmallSyncId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
         }
 
         [Fact]
         public void UpdateTrigger_Should_Update_DatabaseCleanup_Job_Trigger()
         {
-            JobStorage.Current = new MemoryStorage();
-            DeleteJobs();
-            RecurringJob.AddOrUpdate(Constants.JobIds.DatabaseCleanupId.ToString(),
-                () => DummyCall(),
-                "0 2 * * 1");
-
             _jobInitializer.UpdateTrigger(Constants.JobIds.DatabaseCleanupId, "0 3 * * 1", false);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Count.Should().Be(1);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.DatabaseCleanupId.ToString()).Should().NotBeNull();
-            // ReSharper disable once PossibleNullReferenceException
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.DatabaseCleanupId.ToString()).Cron.Should().Be("0 3 * * 1");
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.DatabaseCleanupId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
         }
 
         [Fact]
         public void UpdateTrigger_Should_Update_PingEmby_Job_Trigger()
         {
-            JobStorage.Current = new MemoryStorage();
-            DeleteJobs();
-            RecurringJob.AddOrUpdate(Constants.JobIds.PingEmbyId.ToString(),
-                () => DummyCall(),
-                "0 2 * * 1");
-
             _jobInitializer.UpdateTrigger(Constants.JobIds.PingEmbyId, "0 3 * * 1", false);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Count.Should().Be(1);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.PingEmbyId.ToString()).Should().NotBeNull();
-            // ReSharper disable once PossibleNullReferenceException
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.PingEmbyId.ToString()).Cron.Should().Be("0 3 * * 1");
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.PingEmbyId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
         }
 
         [Fact]
         public void UpdateTrigger_Should_Update_CheckUpdate_Job_Trigger()
         {
-            JobStorage.Current = new MemoryStorage();
-            DeleteJobs();
-            RecurringJob.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(),
-                () => DummyCall(),
-                "0 2 * * 1");
-
             _jobInitializer.UpdateTrigger(Constants.JobIds.CheckUpdateId, "0 3 * * 1", false);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Count.Should().Be(1);
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.CheckUpdateId.ToString()).Should().NotBeNull();
-            // ReSharper disable once PossibleNullReferenceException
-            jobs.SingleOrDefault(x => x.Id == Constants.JobIds.CheckUpdateId.ToString()).Cron.Should().Be("0 3 * * 1");
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
         }
 
         [Fact]
         public void UpdateTrigger_Should_Not_Update_CheckUpdate_Job_Trigger()
         {
-            JobStorage.Current = new MemoryStorage();
-            DeleteJobs();
-
             _jobInitializer.UpdateTrigger(Constants.JobIds.CheckUpdateId, "0 3 * * 1", true);
-            var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Count.Should().Be(0);
-        }
+            _recurringJobManagerMock.Verify(x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(), "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Never());
 
-        private void DeleteJobs()
-        {
-            RecurringJob.RemoveIfExists(Constants.JobIds.SmallSyncId.ToString());
-            RecurringJob.RemoveIfExists(Constants.JobIds.CheckUpdateId.ToString());
-            RecurringJob.RemoveIfExists(Constants.JobIds.DatabaseCleanupId.ToString());
-            RecurringJob.RemoveIfExists(Constants.JobIds.MediaSyncId.ToString());
-            RecurringJob.RemoveIfExists(Constants.JobIds.PingEmbyId.ToString());
-        }
-
-        public static string DummyCall()
-        {
-            return "test fummy function for hangfire jobs";
         }
     }
 }
