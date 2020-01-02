@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -160,7 +160,7 @@ namespace EmbyStat.Common.Converters
 
         public static Episode ConvertToEpisode(this VirtualEpisode episode, Show show, Season season)
         {
-            return new Episode
+           return new Episode
             {
                 Id = episode.Id,
                 ShowId = show.Id,
@@ -168,8 +168,8 @@ namespace EmbyStat.Common.Converters
                 Name = episode.Name,
                 LocationType = LocationType.Virtual,
                 IndexNumber = episode.EpisodeNumber,
-                ParentId = season.Id.ToString(),
-                PremiereDate = episode.FirstAired
+                ParentId = season.Id,
+                PremiereDate = episode.FirstAired?.Date
             };
         }
     }
