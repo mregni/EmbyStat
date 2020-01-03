@@ -1,7 +1,7 @@
 import { Season } from './season';
 
 export class ShowCollectionRow {
-    id: number;
+    id: string;
     title: string;
     seasons: number;
     episodes: number;
