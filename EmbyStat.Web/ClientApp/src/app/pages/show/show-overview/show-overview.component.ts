@@ -71,7 +71,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sortedRowsDataSource.paginator = this.paginator;
   }
 
-  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
+  @ViewChild(NgScrollbar, { static: false }) textAreaScrollbar: NgScrollbar;
 
   constructor(
     private readonly showService: ShowService,
