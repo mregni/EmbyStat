@@ -12,7 +12,7 @@ namespace Tests.Unit.Builders
     {
         private readonly Show _show;
 
-        public ShowBuilder(int id, string libraryId)
+        public ShowBuilder(string id, string libraryId)
         {
             _show = new Show
             {
@@ -43,12 +43,12 @@ namespace Tests.Unit.Builders
                 Genres = new[] { "Action" },
                 Episodes = new List<Episode>
                 {
-                    new EpisodeBuilder(id * 1, id, "1").Build(),
-                    new EpisodeBuilder(id * 2, id, "1").Build(),
+                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").Build(),
+                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithIndexNumber(1).Build(),
                 },
                 Seasons = new List<Season>
                 {
-                    new SeasonBuilder(id * 1, id.ToString()).Build()
+                    new SeasonBuilder(Guid.NewGuid().ToString(), id).Build()
                 }
             };
         }
@@ -127,9 +127,10 @@ namespace Tests.Unit.Builders
 
         public ShowBuilder AddMissingEpisodes(int count, int seasonIndex)
         {
+            var season = _show.Seasons[seasonIndex];
             for (var i = 0; i < count; i++)
             {
-                _show.Episodes.Add(new EpisodeBuilder(i, _show.Id, seasonIndex.ToString())
+                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, season.Id)
                     .WithIndexNumber(i)
                     .WithLocationType(LocationType.Virtual)
                     .Build());
@@ -140,11 +141,12 @@ namespace Tests.Unit.Builders
 
         public ShowBuilder AddSeason(int indexNumber, int extraEpisodes)
         {
-            _show.Seasons.Add(new SeasonBuilder(indexNumber, _show.Id.ToString()).WithIndexNumber(indexNumber).Build());
+            var seasonId = Guid.NewGuid().ToString();
+            _show.Seasons.Add(new SeasonBuilder(seasonId, _show.Id).WithIndexNumber(indexNumber).Build());
 
             for (var i = 0; i < extraEpisodes; i++)
             {
-                _show.Episodes.Add(new EpisodeBuilder(i, _show.Id, indexNumber.ToString()).Build());
+                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, seasonId).Build());
             }
 
             return this;

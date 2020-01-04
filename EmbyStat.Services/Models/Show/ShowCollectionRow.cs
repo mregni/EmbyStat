@@ -6,7 +6,7 @@ namespace EmbyStat.Services.Models.Show
 {
     public class ShowCollectionRow
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Tvdb { get; set; }
         public string Imdb { get; set; }

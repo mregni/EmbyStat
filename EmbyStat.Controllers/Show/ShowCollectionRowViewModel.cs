@@ -5,7 +5,7 @@ namespace EmbyStat.Controllers.Show
 {
     public class ShowCollectionRowViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Tvdb { get; set; }
         public string Imdb { get; set; }

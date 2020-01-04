@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
+using NLog;
+using NLog.Fluent;
 
 namespace EmbyStat.Common.Extensions
 {
@@ -33,9 +36,49 @@ namespace EmbyStat.Common.Extensions
 
         public static IEnumerable<VirtualEpisode> GetMissingEpisodes(this Show show)
         {
-            return show.Episodes
-                .Where(x => x.LocationType == LocationType.Virtual)
-                .Select(x => new VirtualEpisode(x, show.Seasons.First(y => y.Id.ToString() == x.ParentId)));
+            var logger = LogManager.GetCurrentClassLogger();
+            try
+            {
+                var list = show.Episodes
+                    .Where(x => x.LocationType == LocationType.Virtual)
+                    .Select(x => new VirtualEpisode(x, show.Seasons.First(y => y.Id == x.ParentId)));
+
+                return list.ToList();
+            }
+            catch (Exception e)
+            {
+                logger.Info(e);
+                logger.Info($"Data: {show.Name} - {show.Id}");
+
+                logger.Info("Episodes:");
+                logger.Info("Id - ParentId - IndexNumber");
+
+                foreach (var showSeason in show.Seasons)
+                {
+                    logger.Info($"{showSeason.Id} - {showSeason.ParentId} - {showSeason.IndexNumber}");
+                }
+
+                logger.Info("Episodes:");
+                logger.Info("Id - ParentId - IndexNumber");
+
+                foreach (var showEpisode in show.Episodes)
+                {
+                    logger.Info($"{showEpisode.Id} - {showEpisode.ParentId} - {showEpisode.IndexNumber}");
+                }
+
+                logger.Info("wrong episode:");
+                var episodes = show.Episodes
+                    .Where(x => x.LocationType == LocationType.Virtual)
+                    .Select(x => new VirtualEpisode(x, show.Seasons.FirstOrDefault(y => y.Id.ToString() == x.ParentId)));
+
+                foreach (var virtualEpisode in episodes)
+                {
+                    logger.Info($"{virtualEpisode.Id} - {virtualEpisode.EpisodeNumber} - {virtualEpisode.SeasonNumber} - {virtualEpisode.Name}");
+                }
+                Console.WriteLine(e);
+                return null;
+            }
+            
         }
 
         public static double GetShowSize(this Show show)

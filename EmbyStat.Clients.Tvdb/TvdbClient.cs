@@ -69,7 +69,7 @@ namespace EmbyStat.Clients.Tvdb
                     {
                         if (!DateTime.TryParse(x.FirstAired, out _))
                         {
-                            x.FirstAired = DateTime.MinValue.ToString(CultureInfo.InvariantCulture);
+                            x.FirstAired = DateTime.MinValue.ToString("O");
                         }
                     });
                 tvdbEpisodes.AddRange(page.Data
@@ -98,17 +98,17 @@ namespace EmbyStat.Clients.Tvdb
             return result.Data;
         }
 
-        public async Task<List<int>> GetShowsToUpdate(DateTime? lastUpdateTime, CancellationToken cancellationToken)
+        public async Task<List<string>> GetShowsToUpdate(DateTime? lastUpdateTime, CancellationToken cancellationToken)
         {
             if (!lastUpdateTime.HasValue)
             {
-                return new List<int>();
+                return new List<string>();
             }
 
             _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCalling TheTVDB for updated shows");
             try
             {
-                var updateList = new List<int>();
+                var updateList = new List<string>();
                 for (var i = lastUpdateTime.Value; i < DateTime.Now; i = i.AddDays(7))
                 {
                     var offset = new DateTimeOffset(i);
@@ -122,7 +122,7 @@ namespace EmbyStat.Clients.Tvdb
                     request.AddHeader("Authorization", $"Bearer {_jwToken.Token}");
 
                     var result = await _restClient.ExecuteTaskAsync<Updates>(request, cancellationToken);
-                    updateList.AddRange(result.Data.Data.Select(x => x.Id));
+                    updateList.AddRange(result.Data.Data.Select(x => x.Id.ToString()));
 
                     _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
                 }
@@ -132,7 +132,7 @@ namespace EmbyStat.Clients.Tvdb
             catch (Exception e)
             {
                 _logger.Error(e, $"{Constants.LogPrefix.TheTVDBCLient} Could not receive show list from TVDB");
-                return new List<int>();
+                return new List<string>();
             }
         }
     }

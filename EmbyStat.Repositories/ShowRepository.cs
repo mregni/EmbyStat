@@ -16,7 +16,7 @@ namespace EmbyStat.Repositories
 
         }
 
-        public Show GetShowById(int showId)
+        public Show GetShowById(string showId)
         {
             return ExecuteQuery(() =>
             {
@@ -55,7 +55,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Season>();
-                    collection.Upsert(season);
+                    collection.Insert(season);
                 }
             });
         }
@@ -67,12 +67,12 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Episode>();
-                    collection.Upsert(episode);
+                    collection.Insert(episode);
                 }
             });
         }
 
-        public void UpsertShow(Show show)
+        public void InsertShow(Show show)
         {
             ExecuteQuery(() =>
             {
@@ -83,24 +83,12 @@ namespace EmbyStat.Repositories
                     var showCollection = database.GetCollection<Show>();
 
                     episodeCollection.Delete(x => x.ShowId == show.Id);
-                    seasonCollection.Delete(x => x.ParentId == show.Id.ToString());
+                    seasonCollection.Delete(x => x.ParentId == show.Id);
                     showCollection.Delete(x => x.Id == show.Id);
                     
-                    episodeCollection.Upsert(show.Episodes);
-                    seasonCollection.Upsert(show.Seasons);
-                    showCollection.Upsert(show);
-                }
-            });
-        }
-
-        public void UpdateShow(Show show)
-        {
-            ExecuteQuery(() =>
-            {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Show>();
-                    collection.Update(show);
+                    episodeCollection.Insert(show.Episodes);
+                    seasonCollection.Insert(show.Seasons);
+                    showCollection.Insert(show);
                 }
             });
         }
@@ -132,7 +120,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public Season GetSeasonById(int id)
+        public Season GetSeasonById(string id)
         {
             return ExecuteQuery(() =>
             {
@@ -144,26 +132,26 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public List<Episode> GetAllEpisodesForShow(int showId)
+        public List<Episode> GetAllEpisodesForShow(string showId)
         {
             return ExecuteQuery(() =>
             {
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Episode>();
-                    return collection.Find(Query.EQ("ShowId", showId)).ToList();
+                    return collection.Find(Query.EQ("ShowId", showId)).OrderBy(x => x.IndexNumber).ToList();
                 }
             });
         }
 
-        public Episode GetEpisodeById(int id)
+        public Episode GetEpisodeById(string showId, string id)
         {
             return ExecuteQuery(() =>
             {
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Episode>();
-                    return collection.FindById(id);
+                    return collection.Find(Query.And(Query.EQ("_id", id), Query.EQ("ShowId", showId))).SingleOrDefault();
                 }
             });
         }

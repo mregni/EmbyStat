@@ -11,8 +11,9 @@ namespace EmbyStat.Controllers.Show
 
     public class VirtualEpisodeViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int EpisodeNumber { get; set; }
+        public int SeasonNumber { get; set; }
         public string Name { get; set; }
         public DateTime? FirstAired { get; set; }
     }

@@ -10,7 +10,7 @@ namespace EmbyStat.Common.Models.Entities
 	    public int? IndexNumber { get; set; }
 	    public int? IndexNumberEnd { get; set; }
         public string ShowName { get; set; }
-        public int ShowId { get; set; }
+        public string ShowId { get; set; }
         public LocationType LocationType { get; set; }
     }
 }

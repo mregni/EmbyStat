@@ -3,17 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EmbyStat.Common.Converters;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Show;
 using FluentAssertions;
+using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
 using Tests.Unit.Builders;
 using Xunit;
+using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace Tests.Unit.Converters
 {
 
     public class ShowConverterTests
     {
+        [Fact]
+        public void ConvertToShow_Should_Return_A_Show()
+        {
+            var data = new BaseItemDto
+            {
+                Id = "1",
+                ImageTags = new Dictionary<ImageType, string>
+                {
+                    {ImageType.Primary, "primary"}, {ImageType.Thumb, "thumb"}, {ImageType.Logo, "logo"},
+                    {ImageType.Banner, "banner"}
+                },
+                Name = "2 broke girls",
+                ParentId = "123",
+                Path = "c:\\",
+                CommunityRating = 1.2f
+            };
+            var show = data.ConvertToShow("123");
+        }
+
         [Fact]
         public void ConvertToEpisode_Should_Convert_Virtual_Episode()
         {

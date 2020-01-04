@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Repositories.Interfaces;
@@ -344,25 +345,33 @@ namespace EmbyStat.Services
 
         #region Collected Rows
 
-        public IEnumerable<ShowCollectionRow> GetCollectedRows(List<string> libraryIds)
+        public ListContainer<ShowCollectionRow> GetCollectedRows(List<string> libraryIds, int page)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
+            ListContainer<ShowCollectionRow> rows = new ListContainer<ShowCollectionRow>();
             if (StatisticsAreValid(statistic, libraryIds))
             {
-                return JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
+                rows.Data = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
+            }
+            else
+            {
+                rows.Data = CalculateCollectedRows(libraryIds);
             }
 
-            return CalculateCollectedRows(libraryIds);
+            rows.TotalCount = rows.Data.Count();
+            rows.Data = rows.Data.Skip(page * 30).Take(30);
+            return rows;
         }
 
-        public IEnumerable<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds)
+        public List<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds)
         {
             var shows = _showRepository.GetAllShows(libraryIds, true, true);
 
             var stats = shows
                 .Select(CreateShowCollectedRow)
-                .OrderBy(x => x.SortName);
+                .OrderBy(x => x.SortName)
+                .ToList();
             var json = JsonConvert.SerializeObject(stats);
             _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
 

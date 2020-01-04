@@ -36,7 +36,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    return GetWorkingLibrarySet(collection, libraryIds).ToList();
+                    return GetWorkingLibrarySet(collection, libraryIds).OrderBy(x => x.SortName).ToList();
                 }
             });
         }
@@ -64,7 +64,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public Movie GetMovieById(int id)
+        public Movie GetMovieById(string id)
         {
             return ExecuteQuery(() =>
             {

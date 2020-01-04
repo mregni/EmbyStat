@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { ListToQueryParam } from '../../../shared/helpers/list-to-query-param';
 import { Library } from '../../../shared/models/library';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
+import { ListContainer } from '../../../shared/models/list-container';
 
 @Injectable()
 export class ShowService {
@@ -26,12 +27,12 @@ export class ShowService {
 
   getStatistics(list: string[]): Observable<ShowStatistics> {
     const params = ListToQueryParam.convert('libraryIds', list);
-    return this.http.get<ShowStatistics>(this.getShowStatisticsUrl + params);
+    return this.http.get<ShowStatistics>(this.getShowStatisticsUrl + `?${params}`);
   }
 
-  getCollectedList(list: string[]): Observable<ShowCollectionRow[]> {
+  getCollectedList(list: string[], page: number): Observable<ListContainer<ShowCollectionRow>> {
     const params = ListToQueryParam.convert('libraryIds', list);
-    return this.http.get<ShowCollectionRow[]>(this.getCollectionRows + params);
+    return this.http.get<ListContainer<ShowCollectionRow>>(this.getCollectionRows + `?page=${page}&${params}`);
   }
 
   isTypePresent(): Observable<boolean> {

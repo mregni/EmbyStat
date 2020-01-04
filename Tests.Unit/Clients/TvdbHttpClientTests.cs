@@ -74,14 +74,14 @@ namespace Tests.Unit.Clients
                         Id = 1,
                         AiredEpisodeNumber = 1,
                         AiredSeason = 1,
-                        FirstAired = new DateTime(2019, 10, 20).ToString(CultureInfo.InvariantCulture),
+                        FirstAired = new DateTime(2019, 10, 20).ToString("O"),
                         EpisodeName = "test1"
                     },new Data
                     {
                         Id = 2,
                         AiredEpisodeNumber = 2,
                         AiredSeason = 2,
-                        FirstAired = new DateTime(2019, 10, 21).ToString(CultureInfo.InvariantCulture),
+                        FirstAired = new DateTime(2019, 10, 21).ToString("O"),
                         EpisodeName = "test2"
                     }
                 }
@@ -91,17 +91,17 @@ namespace Tests.Unit.Clients
             var result = (await client.GetEpisodes("12")).ToList();
             result.Count.Should().Be(2);
 
-            result[0].Id.Should().Be(returnObject.Data[0].Id);
+            result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
             result[0].EpisodeNumber.Should().Be(returnObject.Data[0].AiredEpisodeNumber);
             // ReSharper disable once PossibleInvalidOperationException
-            result[0].FirstAired.Value.ToString(CultureInfo.InvariantCulture).Should().Be(returnObject.Data[0].FirstAired);
+            result[0].FirstAired.Value.ToString("O").Should().Be(returnObject.Data[0].FirstAired);
             result[0].Name.Should().Be(returnObject.Data[0].EpisodeName);
             result[0].SeasonNumber.Should().Be(returnObject.Data[0].AiredSeason);
 
-            result[1].Id.Should().Be(returnObject.Data[1].Id);
+            result[1].Id.Should().Be(returnObject.Data[1].Id.ToString());
             result[1].EpisodeNumber.Should().Be(returnObject.Data[1].AiredEpisodeNumber);
             // ReSharper disable once PossibleInvalidOperationException
-            result[1].FirstAired.Value.ToString(CultureInfo.InvariantCulture).Should().Be(returnObject.Data[1].FirstAired);
+            result[1].FirstAired.Value.ToString("O").Should().Be(returnObject.Data[1].FirstAired);
             result[1].Name.Should().Be(returnObject.Data[1].EpisodeName);
             result[1].SeasonNumber.Should().Be(returnObject.Data[1].AiredSeason);
         }
@@ -132,7 +132,7 @@ namespace Tests.Unit.Clients
             var result = (await client.GetEpisodes("12")).ToList();
             result.Count.Should().Be(1);
 
-            result[0].Id.Should().Be(returnObject.Data[0].Id);
+            result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
             result[0].EpisodeNumber.Should().Be(returnObject.Data[0].AiredEpisodeNumber);
             // ReSharper disable once PossibleInvalidOperationException
             result[0].FirstAired.Value.Should().Be(DateTime.MinValue);
@@ -143,7 +143,7 @@ namespace Tests.Unit.Clients
         [Fact]
         public async Task GetEpisodes_Should_Skip_Episodes_That_Are_Not_Aired_Yet()
         {
-            var returnObject = new TvdbEpisodes()
+            var returnObject = new TvdbEpisodes
             {
                 Links = new Links
                 {
@@ -156,14 +156,14 @@ namespace Tests.Unit.Clients
                         Id = 1,
                         AiredEpisodeNumber = 1,
                         AiredSeason = 1,
-                        FirstAired = new DateTime(2019, 10, 20).ToString(CultureInfo.InvariantCulture),
+                        FirstAired = new DateTime(2019, 10, 20).ToString("O"),
                         EpisodeName = "test1"
                     },new Data
                     {
                         Id = 2,
                         AiredEpisodeNumber = 2,
                         AiredSeason = 2,
-                        FirstAired = DateTime.Now.AddDays(1).ToString(CultureInfo.InvariantCulture),
+                        FirstAired = DateTime.Now.AddDays(1).ToString("O"),
                         EpisodeName = "test2"
                     }
                 }
@@ -173,10 +173,10 @@ namespace Tests.Unit.Clients
             var result = (await client.GetEpisodes("12")).ToList();
             result.Count.Should().Be(1);
 
-            result[0].Id.Should().Be(returnObject.Data[0].Id);
+            result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
             result[0].EpisodeNumber.Should().Be(returnObject.Data[0].AiredEpisodeNumber);
             // ReSharper disable once PossibleInvalidOperationException
-            result[0].FirstAired.Value.ToString(CultureInfo.InvariantCulture).Should().Be(returnObject.Data[0].FirstAired);
+            result[0].FirstAired.Value.ToString("O").Should().Be(returnObject.Data[0].FirstAired);
             result[0].Name.Should().Be(returnObject.Data[0].EpisodeName);
             result[0].SeasonNumber.Should().Be(returnObject.Data[0].AiredSeason);
         }

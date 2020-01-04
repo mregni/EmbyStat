@@ -1,0 +1,336 @@
+{
+  "COMMON": {
+    "DOWNLOAD": "Download",
+    "ANONYMISEDDOWNLOAD": "Anonymisierter Download",
+    "HIDE": "Ausblenden",
+    "NEXT": "weiter",
+    "BACK": "zurück",
+    "FINISH": "fertig",
+    "SAVE": "speichern",
+    "DISCARD": "verwerfen",
+    "CANCEL": "abbrechen",
+    "CLOSE": "Schließen",
+    "DAYSABBR": "d",
+    "HOURSABBR": "h",
+    "MINUTESABBR": "m",
+    "MIN": "Min.",
+    "TITLE": "Titel",
+    "ADDEDON": "Hinzugefügt am",
+    "QUALITY": "Qualität",
+    "NEVER": "nie",
+    "OPEN": "Öffnen",
+    "VIEWALL": "Alle anzeigen",
+    "LINK": "Link",
+    "REASON": "Grund",
+    "BYIMDB": "Gleiche IMDB ID",
+    "BYTITLE": "Gleicher Titel",
+    "MOVIES": "Filme",
+    "COUNTPERGENRE": "Anzahl / Genre",
+    "COUNTPERCOMMUNITYRATING": "Anzahl / Bewertung",
+    "COUNTPERPREMIEREDATE": "Anzahl / Jahr",
+    "COUNTPEROFFICIALRATING": "Anzahl / Offizielle Bewertung ",
+    "COUNTPERCOLLECTEDRATE": "Anzahl / Gesammelt in Prozent",
+    "EMBY": "Emby",
+    "GENERAL": "Allgemein",
+    "DURATION": "Dauer",
+    "GRAPHS": "Diagramme",
+    "PEOPLE": "Personen",
+    "SUSPICIOUS": "verdächtig",
+    "SHOWS": "Serien",
+    "TOTALACTORS": "Anzahl Schauspieler",
+    "TOTALDIRECTORS": "Anzahl Regisseure",
+    "TOTALWRITERS": "Anzahl Autoren",
+    "MOSTFEATUREDACTOR": "Häufigster Schauspieler",
+    "MOSTFEATUREDDIRECTOR": "Häufigster Regisseur",
+    "MOSTFEATUREDWRITER": "Häufigster Autor",
+    "LIBRARIES": "Bibliotheken",
+    "PREMIEREDATE": "Premierendatum",
+    "STATUS": "Status",
+    "PERCENTAGE": "prozentualer Anteil",
+    "COLLECTED": "Gesammelt",
+    "UPDATES": "Updates",
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "Häufigster Schauspieler je Genre",
+    "MINUTES": "Minuten",
+    "DISKSIZE": "Festplattengröße",
+    "TOTALDISKSIZE": "Gesamte Festplattengröße"
+  },
+  "EXCEPTIONS": {
+    "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
+    "NO_CONFIGURATION_FOUND": "Keine Konfiguration gefunden.",
+    "NOT_FOUND": "Hoppla, wir konnten nicht finden wonach Sie suchen.",
+    "TOKEN_FAILED": "Abrufen des Emby Token ist fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen und Adresse.",
+    "EMBY_CALL_FAILED": "Die Verbindung zum Emby Server ist fehlgeschlagen. Bitte überprüfen Sie, ob Emby ausgeführt wird und ob die Anmeldeinformationen noch korrekt sind.",
+    "UNHANDLED": "Unhandled backend exception",
+    "MOVIENOTFOUND": "Film nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
+    "EPISODENOTFOUND": "Episode nicht gefunden, das Starten der Mediensynchronisierung könnte das beheben.",
+    "CANTCONNECTTOGITHUB": "Keine Verbindung zu GitHub zum Überprüfen von Updates möglich. Versuche es später erneut.",
+    "NOUPDATEFILE": "Die Update-Anwendung kann nicht gefunden werden. Es wurde kein Update durchgeführt",
+    "UPDATEUNPACKERROR": "Etwas ist beim Entpacken des Updates schiefgegangen. Bitte versuchen Sie es erneut.",
+    "TVDBLOGINFAILED": "TheTVDB Login fehlgeschlagen, überprüfen Sie den API-Schlüssel."
+  },
+  "FORMLABELS": {
+    "NAME": "Benutzername",
+    "LANGUAGE": "Sprache auswählen",
+    "DURATIONINMINUTES": "Dauer in Minuten",
+    "ENABLETOSHORTMOVIES": "Erkennung von zu kurzen Filmen aktivieren",
+    "TVDBAPI": "TheTVDB API-Schlüssel",
+    "CRON": "Cron Intervall",
+    "EXCEPTIONLOGGING": "Ausnahmeprotokollierung aktivieren"
+  },
+  "FORMERRORS": {
+    "NAME_REQUIRED": "Namen oder Spitznamen eintragen."
+  },
+  "MENU": {
+    "DASHBOARD": "Dashboard",
+    "MOVIES": "Filme",
+    "SHOWS": "Serien",
+    "SETTINGS": "Einstellungen",
+    "PLUGINS": "Plugins",
+    "JOBS": "Aufgaben",
+    "SERVER": "Emby Server",
+    "LOGS": "Logs",
+    "ABOUT": "Über",
+    "USERS": "Benutzer"
+  },
+  "WIZARD": {
+    "INTROLABEL": "Intro",
+    "EMBYLABEL": "Emby Einstellungen",
+    "SAVINGLABEL": "Erste Emby Server Synchronisierung",
+    "FINALLABEL": "Fertig",
+    "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen",
+    "CHECKINGSTATUS": "Emby Server wird überprüft...",
+    "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
+    "EMBYNOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu Emby einrichten. Wir haben versucht deinen Emby Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen Emby Server finden kann.",
+    "EMBYFOUNDTEXT": "Wir haben einen Emby-Server in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
+    "EMBYRUNNING": "Der Emby Server läuft",
+    "KEYISVALID": "API key is valid",
+    "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
+    "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
+    "SAVING": "Speichere Daten",
+    "RESCAN": "Erneut scannen",
+    "FINISHWITHSYNC": "Synchronisation starten",
+    "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
+    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren."
+  },
+  "MOVIES": {
+    "COLLECTIONPLACEHOLDER": "Filmsammlungen filtern",
+    "TOTALMOVIES": "Gesamtanzahl Filme",
+    "TOTALGENRES": "Gesamtanzahl Genres",
+    "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
+    "HIGHESTRATED": "Beste Bewertung",
+    "LOWESTRATED": "Schlechteste Bewertung",
+    "OLDESTPREMIERED": "Früheste Premiere",
+    "NEWESTPREMIERED": "Neueste Premiere",
+    "SHORTEST": "Am kürzesten",
+    "LONGEST": "Am längsten",
+    "LATESTADDED": "Zuletzt hinzugefügt",
+    "MOSTFEATUREDPERGENRE": "Häufigster Schauspieler je Genre",
+    "DUPLICATEMOVIES": "Doppelte Filme",
+    "TOSHORTMOVIES": "Sehr kurze Filme",
+    "NOPOSTER": "Fehlende Poster",
+    "NOIMDB": "Fehlende IMDB-ID"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Gesamtanzahl Serien",
+    "TOTALEPISODES": "Anzahl Episoden",
+    "TOTALMISSINGEPISODES": "Anzahl fehlender Episoden",
+    "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
+    "HIGHESTRATEDSHOW": "Beste Bewertung",
+    "LOWESTRATEDSHOW": "Schlechteste Bewertung",
+    "OLDESTPREMIERED": "Früheste Premiere",
+    "NEWESTPREMIERED": "Neueste Premiere",
+    "LATESTADDED": "Kürzlich hinzugefügt",
+    "WITHMOESTEPISODES": "Die meisten Episoden",
+    "SHOWSTATUSGRAPH": "Serienstatus",
+    "SEASONS": "Staffeln",
+    "CONTINUING": "Laufend",
+    "ENDED": "Beendet",
+    "OVERVIEW": "Übersicht",
+    "MISSINGEPISODES": "Fehlende Episoden"
+  },
+  "SETTINGS": {
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "The TVDB",
+      "EMBY": "Emby"
+    },
+    "SAVED": {
+      "GENERAL": "Allgemeine EmbyStat-Einstellungen gespeichert!",
+      "TVDB": "TVDB API-Schlüssel gespeichert!",
+      "EMBY": "Emby-Einstellungen wurden gespeichert!",
+      "MOVIES": "Film-Einstellungen wurden gespeichert!",
+      "SHOWS": "Serien-Einstellungen wurden gespeichert!",
+      "UPDATES": "Update-Einstellungen wurden gespeichert!"
+    },
+    "GENERAL": {
+      "NOUSERNAME": "Benutzername darf nicht leer sein",
+      "TVDBAPIKEY": "Wenn Sie möchten, können Sie hier für EmbyStat Ihren eigenen TheTVDB API-Schlüssel eingeben.",
+      "TVDBAPIKEYWARNING": "Stellen Sie sicher, dass der API-Schlüssel gültig ist! Wenn der Schlüssel ungültig ist, dann wird die Synchronisierung fehlschlagen.",
+      "EXCEPTIONLOGGING": "Aktivieren / deaktivieren Sie die Protokollierung von Fehlern bei Rollbar (Online Dienst). Mit dieser Protokollierung kann ich die Anwendung schneller debuggen und beheben. Es werden niemals persönliche Daten aufgezeichnet, sondern nur Ausnahmemeldungen, Stacktrace, Betriebssystemname und Versionsnummer."
+    },
+    "MOVIE": {
+      "TOSHORTTEXT": "Um Filme zu finden die ungewöhlich kurz sind, müssen wir wissen was die Mindestlänge eines Filmes sein sollte. Die Standardeinstellung ist 10 Minuten, Sie können es aber bei Bedarf ändern.",
+      "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Filmstatistiken sehen wollen."
+    },
+    "SHOW": {
+      "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
+    },
+    "EMBY": {
+      "EMBYADDRESS": "Emby IP/Domain",
+      "EMBYAPIKEY": "Emby API key",
+      "EMBYPORT": "Emby Port",
+      "EMBYADDRESSREQUIRED": "Emby IP/Domain erforderlich.",
+      "EMBYPORTREQUIRED": "Emby Port erforderlich.",
+      "EMBYAPIKEYREQUIRED": "Emby API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Provided API key is not valid"
+    },
+    "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
+      "AUTO": "Automatische Updates aktivieren",
+      "CHECK": "Server auf Updates überprüfen und aktualisieren",
+      "UPDATE:": "Server jetzt aktualisieren",
+      "TRAIN": "Ändern Sie den Updatekanal, wenn Sie Beta-Updates erhalten möchten.",
+      "ONBETA": "Sie befinden sich nicht mehr im Master-Kanal und können nicht wieder darauf umsteigen. Wenn Sie mit dem Master-Kanal fortfahren möchten, installieren Sie den Server erneut.",
+      "TRAINWARNING": "Hier können Sie den Updatekanal von Master auf Beta umstellen. Wenn Sie nicht wissen, was Sie tun, lassen Sie diese Einstellung auf Master. Wenn Sie die Beta-Updates erhalten möchten, ändern Sie es hier. Beachten Sie, dass Sie später nicht mehr zu Master wechseln können. Sie müssen den Server neu installieren.",
+      "CURRENTVERSION": "Aktuelle Version: {{version}}",
+      "CANTCHECK": "Ich kann jetzt nicht nach Updates suchen, es konnte keine Verbindung zu GitHub hergestellt werden.",
+      "NOUPDATE": "Kein Update verfügbar",
+      "NEWVERSION": "Version {{version}} zum Download verfügbar!",
+      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+    }
+  },
+  "USERS": {
+    "ISADMIN": "Ist Administrator",
+    "ISHIDDEN": "Wird auf dem Anmeldebildschirm versteckt",
+    "ISDISABLED": "Ist deaktiviert",
+    "DELETED": "Gelöschter Benutzer",
+    "ACTIVE": "Aktive Benutzer",
+    "LASTACTIVE": "Zuletzt aktiv",
+    "SORTING": {
+      "USERNAMEASC": "Benutzername (A - Z)",
+      "USERNAMEDESC": "Benutzername (Z - A)",
+      "LASTACTIVEASC": "Letzter aktiver Tag (aufsteigend)",
+      "LASTACTIVEDESC": "Letzter aktiver Tag (absteigend)"
+    },
+    "TOOVERVIEW": "Zur Übersicht",
+    "DETAILS": {
+      "TITLE": "Details für {{name}}",
+      "WATCHEDTITLE": "Letzte gesehene Elemente"
+    },
+    "WATCHEDTABLE": {
+      "TITLE": "Titel",
+      "TIME": "Zeit",
+      "WATCHED": "Gesehen",
+      "START": "Start",
+      "ACTION": "Aktion"
+    },
+    "STATS": {
+      "TOTALWATCHEDMOVIES": "Gesehene Filme",
+      "TOTALWATCHEDEPISODES": "Gesehene Episoden"
+    }
+  },
+  "JOB": {
+    "LASTRUNNOW": "Zuletzt ausgeführt: Gerade eben",
+    "LASTRUN": "Zuletzt ausgeführt",
+    "HOURS": "{{hours}} Stunde(n)",
+    "MINUTES": "{{minutes}} Minute(n)",
+    "SECONDS": "{{seconds}} Sekunde(n)",
+    "AND": "und",
+    "AGO": "her",
+    "FOR": "für",
+    "BUTFAILED": "aber fehlgeschlagen nach",
+    "NORUN": "Noch nicht druchgeführt",
+    "MOMENT_AGO": "gerade eben",
+    "JOBLOGS": "Job Logs",
+    "CRONUPDATED": "Cron-Wert aktualisiert",
+    "INFO": {
+      "PINGEMBYSERVERTITLE": "Emby Verbindung prüfen",
+      "PINGEMBYSERVERDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
+      "SMALLEMBYSYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
+      "SMALLEMBYSYNCTITLE": "Kleine Synchronisierung mit Emby",
+      "STARTSMALLEMBYSYNC": "Kleine Synchronisierung starten",
+      "MEDIASYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
+      "MEDIASYNCTITLE": "Medien-Synchronisierung",
+      "STARTMEDIASYNC": "Mediensynchronisation starten",
+      "DATABASECLEANUPTITLE": "Datenbankbereinigung",
+      "DATABASECLEANUPDESCRIPTION": "Bereinigen Sie die Datenbank von unnötigen Daten.",
+      "OPENJOBPAGE": "Zur Aufgabenseite",
+      "CHECKUPDATETITLE": "Nach neuen Aktualisierungen suchen",
+      "CHECKUPDATEDESCRIPTION": "Prüft, ob neue Updates für den ausgewählten Updatekanal vorhanden sind."
+    }
+  },
+  "DIALOGS": {
+    "NOMOVIETYPEFOUND": {
+      "TITLE": "Keine Filme gefunden",
+      "BODY": "Wir konnten keine Filme in der EmbyStat-Datenbank finden. Wenn Sie Filme in Emby haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten."
+    },
+    "NOSHOWTYPEFOUND": {
+      "TITLE": "Keine Serien gefunden",
+      "BODY": "Wir konnten keine Serien in der EmbyStat-Datenbank finden. Wenn Sie Serien in Emby haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Die Synchronisierung der Medien lauft",
+      "BODY": "Die Synchronisation der Medien wird im Hintergrund durchgeführt. Während dieser Zeit können keine korrekten Statistiken angezeigt werden."
+    },
+    "EDIT_TRIGGER": {
+      "FORMAT_ERROR": "Der angegebene Cron-String hat ein falsches Format. Schauen Sie <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Hier</a> finden Sie weitere Informationen zum Format eines Cron-Strings. Nur Zahlen, *, / und - sind erlaubt."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "Keine Benutzer gefunden",
+      "BODY": "In der lokalen Datenbank wurden keine Benutzer gefunden. Dies bedeutet, dass kein kleiner Synchronisierungsjob ausgeführt wurde. Du willst ihn jetzt ausführen?"
+    }
+  },
+  "LOADER": {
+    "FETCHING": "Rufe Statistiken ab...",
+    "UPDATING": "EmbyStat wird aktualisiert",
+    "UPDATINGSUB": "Die Seite wird aktualisiert, sobald das Update abgeschlossen ist."
+  },
+  "COLLECTIONTYPES": {
+    "MIXED": "Gemischte / Andere",
+    "MUSIC": "Musik",
+    "MUSICVIDEOS": "Musikvideos",
+    "TRAILERS": "Trailer",
+    "HOMEVIDEOS": "Heimvideos",
+    "BOXSETS": "Kollektionen",
+    "BOOKS": "Bücher",
+    "PHOTOS": "Fotos",
+    "GAMES": "Spiele",
+    "LIVETV": "Live-TV",
+    "PLAYLISTS": "Wiedergabelisten",
+    "FOLDERS": "Ordner"
+  },
+  "TOOLBAR": {
+    "GOTOEMBY": "Öffne Emby",
+    "JOBISRUNNING": "{{job}} Aufgabe wird ausgeführt",
+    "NOMISSEDPINGS": "Der Emby Server läuft",
+    "ONEMISSEDPING": "Es konnte bei der letzten Überprüfung keine Verbindung zu Emby hergestellt werden!",
+    "MOREMISSEDPINGS": "Konnte nach mehreren Versuchen keine Verbindung zu Emby hergestellt werden!"
+  },
+  "ABOUT": {
+    "SERVERINFO": "Serverinfo",
+    "GITHUBRELEASE": "Releases auf Github",
+    "REQUESTFEATURE": "Funktion anfordern",
+    "LOGBUG": "Fehler auf GitHub melden",
+    "HELPTRANSLATE": "Helfe diese App zu übersetzen",
+    "THANKS": {
+      "TITLE": "Vielen Dank",
+      "TEXT": "Vielen Dank an die folgenden Personen für die Übersetzung der App in ihre Muttersprache:"
+    },
+    "ACTIONS": {
+      "TITLE": "Aktionen"
+    }
+  },
+  "EMBYSERVER": {
+    "HOSTOS": "Host-OS",
+    "WANADDRESS": "WAN-Adresse",
+    "LANADDRESS": "LAN-Adresse",
+    "CACHEPATH": "Cache-Pfad",
+    "LOGPATH": "Log-Pfad",
+    "HTTPPORT": "HTTP Port",
+    "HTTPSPORT": "HTTPS Port"
+  }
+}

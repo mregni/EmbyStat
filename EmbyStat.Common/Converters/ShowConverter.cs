@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -11,11 +12,11 @@ namespace EmbyStat.Common.Converters
 {
     public static class ShowConverter
     {
-        public static Show ConvertToShow(BaseItemDto show, string collectionId)
+        public static Show ConvertToShow(this BaseItemDto show, string collectionId)
         {
             return new Show
             {
-                Id = Convert.ToInt32(show.Id),
+                Id = show.Id,
                 CollectionId = collectionId,
                 Primary = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
@@ -45,15 +46,17 @@ namespace EmbyStat.Common.Converters
                         Id = y.Id,
                         Name = y.Name,
                         Type = y.Type
-                    }).ToArray()
+                    }).ToArray(),
+                Seasons = new List<Season>(),
+                Episodes = new List<Episode>()
             };
         }
 
-        public static Season ConvertToSeason(BaseItemDto season)
+        public static Season ConvertToSeason(this BaseItemDto season)
         {
             return new Season
             {
-                Id = Convert.ToInt32(season.Id),
+                Id = season.Id,
                 Name = season.Name,
                 ParentId = season.ParentId,
                 Path = season.Path,
@@ -71,12 +74,13 @@ namespace EmbyStat.Common.Converters
             };
         }
 
-        public static Season ConvertToSeason(int indexNumber, Show show)
+        public static Season ConvertToSeason(this int indexNumber, Show show)
         {
             return new Season
             {
-                Name = indexNumber == 0 ? "Special" : $"Season {indexNumber + 1}",
-                ParentId = show.Id.ToString(),
+                Id = Guid.NewGuid().ToString(),
+                Name = indexNumber == 0 ? "Special" : $"Season {indexNumber}",
+                ParentId = show.Id,
                 Path = string.Empty,
                 DateCreated = null,
                 IndexNumber = indexNumber,
@@ -88,11 +92,11 @@ namespace EmbyStat.Common.Converters
             };
         }
 
-        public static Episode ConvertToEpisode(BaseItemDto episode, int showId)
+        public static Episode ConvertToEpisode(this BaseItemDto episode, string showId)
         {
             return new Episode
             {
-                Id = Convert.ToInt32(episode.Id),
+                Id = Guid.NewGuid().ToString(),
                 ShowId = showId,
                 LocationType = LocationType.Disk,
                 Name = episode.Name,
@@ -160,16 +164,16 @@ namespace EmbyStat.Common.Converters
 
         public static Episode ConvertToEpisode(this VirtualEpisode episode, Show show, Season season)
         {
-           return new Episode
+            return new Episode
             {
-                Id = episode.Id,
+                Id = Guid.NewGuid().ToString(),
                 ShowId = show.Id,
                 ShowName = show.Name,
                 Name = episode.Name,
                 LocationType = LocationType.Virtual,
                 IndexNumber = episode.EpisodeNumber,
                 ParentId = season.Id,
-                PremiereDate = episode.FirstAired?.Date
+                PremiereDate = new DateTimeOffset(episode.FirstAired ?? new DateTime(), TimeSpan.Zero)
             };
         }
     }

@@ -10,10 +10,10 @@ namespace EmbyStat.Clients.Tvdb.Converter
         {
             return new VirtualEpisode
             {
-                Id = episode.Id,
-                EpisodeNumber = episode.AiredEpisodeNumber,
-                SeasonNumber = episode.AiredSeason,
-                FirstAired = Convert.ToDateTime(episode.FirstAired),
+                Id = episode.Id.ToString(),
+                EpisodeNumber = Convert.ToInt32(Math.Floor(episode.DvdEpisodeNumber ?? episode.AiredEpisodeNumber)),
+                SeasonNumber = Convert.ToInt32(Math.Floor(episode.DvdSeason ?? episode.AiredSeason)),
+                FirstAired = DateTime.Parse(episode.FirstAired),
                 Name = episode.EpisodeName
             };
         }

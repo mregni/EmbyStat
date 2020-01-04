@@ -206,50 +206,57 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _showRepository.RemoveShowsThatAreNotUpdated(updateStartTime);
         }
 
-        private async Task PerformShowSyncAsync(IReadOnlyList<int> showsThatNeedAnUpdate, Library library, DateTime updateStartTime)
+        private async Task PerformShowSyncAsync(IReadOnlyList<string> showsThatNeedAnUpdate, Library library, DateTime updateStartTime)
         {
             var showList = await GetShowForLibraryAsync(library.Id);
             await LogInformation($"Found {showList.Items.Length} show for {library.Name} library");
 
-            for (var i = 0; i < showList.TotalRecordCount; i++)
+            var grouped = showList.Items.GroupBy(x => x.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value).ToList();
+
+            for (var i = 0; i < grouped.Count; i++)
             {
-                var showDto = showList.Items[i];
-                var query = new ItemQuery
+                var showGroup = grouped[i];
+
+                var show = showGroup.First().ConvertToShow(library.Id);
+                foreach (var showDto in showGroup)
                 {
-                    EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                    ParentId = showDto.Id,
-                    LocationTypes = new[] { LocationType.FileSystem },
-                    Recursive = true,
-                    IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
-                    Fields = new[]
-                       {
+                    var query = new ItemQuery
+                    {
+                        EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+                        ParentId = showDto.Id,
+                        LocationTypes = new[] { LocationType.FileSystem },
+                        Recursive = true,
+                        IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
+                        Fields = new[]
+                        {
 
-                        ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                        ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                        ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
-                        ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
-                        ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
-                    }
-                };
+                            ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                            ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
+                            ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
+                            ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
+                            ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
+                        }
+                    };
 
-                var showChildren = await _embyClient.GetItemsAsync(query);
+                    var showChildren = await _embyClient.GetItemsAsync(query);
 
-                var show = ShowConverter.ConvertToShow(showDto, library.Id);
-                var seasons = showChildren.Items
-                    .Where(x => x.ParentId == show.Id.ToString())
-                    .Where(x => x.Type == nameof(Season))
-                    .Select(ShowConverter.ConvertToSeason)
-                    .ToList();
+                    var seasons = showChildren.Items
+                        .Where(x => x.ParentId == show.Id)
+                        .Where(x => x.Type == nameof(Season))
+                        .Select(x => x.ConvertToSeason())
+                        .ToList();
 
-                var episodes = showChildren.Items
-                    .Where(x => seasons.Any(y => y.Id.ToString() == x.ParentId))
-                    .Where(x => x.Type == nameof(Episode))
-                    .Select(x => ShowConverter.ConvertToEpisode(x, Convert.ToInt32(show.Id)))
-                    .ToList();
+                    var episodes = showChildren.Items
+                        .Where(x => seasons.Any(y => y.Id == x.ParentId))
+                        .Where(x => x.Type == nameof(Episode))
+                        .Select(x => x.ConvertToEpisode(show.Id))
+                        .ToList();
 
-                show.CumulativeRunTimeTicks = episodes.Sum(x => x.RunTimeTicks ?? 0);
-                show.Seasons = seasons;
-                show.Episodes = episodes;
+                    show.Seasons.AddRange(seasons.Where(x => show.Seasons.All(y => y.Id != x.Id)));
+                    show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
+                }
+
+                show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);
                 show.LastUpdated = updateStartTime;
 
                 var oldShow = _showRepository.GetShowById(show.Id);
@@ -260,17 +267,22 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     show.TvdbSynced = oldShow.TvdbSynced;
                 }
 
-                _showRepository.UpsertShow(show);
-                if (!string.IsNullOrWhiteSpace(show.TVDB) && (show.HasShowChangedEpisodes(oldShow) || showsThatNeedAnUpdate.Any(x => x == show.Id)))
+                //check if show as tvdb id, if not, skip missing ep check!
+                if (!string.IsNullOrWhiteSpace(show.TVDB))
                 {
-                    await GetMissingEpisodesFromTvdbAsync(show);
-                }
-                else if (oldShow != null && oldShow.NeedsShowSync())
-                {
-                    await GetMissingEpisodesFromTvdbAsync(show);
+                    if (!string.IsNullOrWhiteSpace(show.TVDB) &&
+                        (show.HasShowChangedEpisodes(oldShow) || showsThatNeedAnUpdate.Any(x => x == show.Id)))
+                    {
+                        show = await GetMissingEpisodesFromTvdbAsync(show);
+                    }
+                    else if (oldShow != null && oldShow.NeedsShowSync())
+                    {
+                        show = await GetMissingEpisodesFromTvdbAsync(show);
+                    }
                 }
 
-                await LogInformation($"Processed ({i}/{showList.TotalRecordCount}) {show.Name}");
+                _showRepository.InsertShow(show);
+                await LogInformation($"Processed ({i}/{grouped.Count}) {show.Name}");
             }
         }
 
@@ -299,57 +311,51 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         }
 
-        private async Task GetMissingEpisodesFromTvdbAsync(Show show)
+        private async Task<Show> GetMissingEpisodesFromTvdbAsync(Show show)
         {
             try
             {
-                await ProgressMissingEpisodesAsync(show);
+                return await ProcessMissingEpisodesAsync(show);
             }
             catch (HttpException e)
             {
                 show.TvdbFailed = true;
-                _showRepository.UpdateShow(show);
 
                 if (e.Message.Contains("404 Not Found"))
                 {
                     await LogWarning($"Can't seem to find {show.Name} on Tvdb, skipping show for now");
                 }
+                return show;
             }
             catch (Exception e)
             {
                 await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
                 Logger.Error(e);
                 show.TvdbFailed = true;
-                _showRepository.UpdateShow(show);
+                return show;
             }
         }
 
-        private async Task ProgressMissingEpisodesAsync(Show show)
+        private async Task<Show> ProcessMissingEpisodesAsync(Show show)
         {
             var missingEpisodesCount = 0;
             var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB);
 
             foreach (var tvdbEpisode in tvdbEpisodes)
             {
-                var seasons = show.Seasons.Where(x => x.IndexNumber == tvdbEpisode.SeasonNumber).ToList();
-
-                Season season;
-                if (!seasons.Any())
+                var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == tvdbEpisode.SeasonNumber);
+                
+                if (season == null)
                 {
-                    Logger.Debug($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
-                    season = ShowConverter.ConvertToSeason(tvdbEpisode.SeasonNumber, show);
+                    Logger.Info($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
+                    season = tvdbEpisode.SeasonNumber.ConvertToSeason(show);
                     show.Seasons.Add(season);
-                    _showRepository.AddSeason(season);
-                }
-                else
-                {
-                    season = seasons.First();
                 }
 
                 if (IsEpisodeMissing(show.Episodes, season, tvdbEpisode))
                 {
                     var episode = tvdbEpisode.ConvertToEpisode(show, season);
-                    _showRepository.AddEpisode(episode);
+                    Logger.Info($"episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
                     show.Episodes.Add(episode);
                     missingEpisodesCount++;
                 }
@@ -357,8 +363,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             await LogInformation($"Found {missingEpisodesCount} missing episodes for show {show.Name}");
 
+            show.Episodes = show.Episodes.Where(x => show.Seasons.Any(y => y.Id.ToString() == x.ParentId)).ToList();
             show.TvdbSynced = true;
-            _showRepository.UpdateShow(show);
+            return show;
         }
 
         private static bool IsEpisodeMissing(IEnumerable<Episode> localEpisodes, Season season, VirtualEpisode tvdbEpisode)
@@ -370,7 +377,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             foreach (var localEpisode in localEpisodes)
             {
-                if (localEpisode.ParentId == season.Id.ToString())
+                if (localEpisode.ParentId == season.Id)
                 {
                     if (!localEpisode.IndexNumberEnd.HasValue)
                     {

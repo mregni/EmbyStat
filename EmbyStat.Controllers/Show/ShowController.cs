@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -39,10 +40,10 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("collectedlist")]
-        public IActionResult GetCollectedRows(List<string> libraryIds)
+        public IActionResult GetCollectedRows(List<string> libraryIds, int page)
         {
-            var result = _showService.GetCollectedRows(libraryIds);
-            return Ok(_mapper.Map<IList<ShowCollectionRowViewModel>>(result));
+            var result = _showService.GetCollectedRows(libraryIds, page);
+            return Ok(_mapper.Map<ListContainer<ShowCollectionRowViewModel>>(result));
         }
 
         [HttpGet]

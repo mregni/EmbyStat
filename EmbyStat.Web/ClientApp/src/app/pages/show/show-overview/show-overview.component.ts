@@ -4,9 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { MatPaginator } from '@angular/material/paginator';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatTableDataSource, Sort } from '@angular/material';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
@@ -20,6 +21,7 @@ import { Episode } from '../../../shared/models/show/episode';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 import { ShowStatistics } from '../../../shared/models/show/show-statistics';
 import { ShowService } from '../service/show.service';
+import { ListContainer } from '../../../shared/models/list-container';
 
 @Component({
   selector: 'app-show-overview',
@@ -33,7 +35,7 @@ import { ShowService } from '../service/show.service';
     ]),
   ]
 })
-export class ShowOverviewComponent implements OnInit, OnDestroy {
+export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   statistics$: Observable<ShowStatistics>;
   rows: ShowCollectionRow[];
   sortedRowsDataSource: MatTableDataSource<ShowCollectionRow>;
@@ -58,6 +60,14 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   embyServerInfoSub: Subscription;
 
   showDetails = [];
+  showCount: number;
+  selectedCollectionList: string[];
+
+  paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.sortedRowsDataSource.paginator = this.paginator;
+  }
 
   @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
@@ -89,11 +99,15 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     this.pieOptions = this.optionsService.getPieOptions();
     this.barOptions = this.optionsService.getBarOptions();
 
+    this.selectedCollectionList = [];
+
     this.librariesFormControl.valueChanges.subscribe((collectionList: string[]) => {
+      this.selectedCollectionList = collectionList;
       this.statistics$ = this.showService.getStatistics(collectionList);
-      this.collectedDataSub = this.showService.getCollectedList(collectionList).subscribe((data: ShowCollectionRow[]) => {
-        this.rows = data;
-        this.sortedRowsDataSource = new MatTableDataSource(data);
+      this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0).subscribe((data: ListContainer<ShowCollectionRow>) => {
+        this.rows = data.data;
+        this.sortedRowsDataSource = new MatTableDataSource(data.data);
+        this.showCount = data.totalCount;
       });
     });
 
@@ -103,9 +117,24 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectedDataSub = this.showService.getCollectedList([]).subscribe((data: ShowCollectionRow[]) => {
-      this.rows = data;
-      this.sortedRowsDataSource = new MatTableDataSource(data);
+    this.sortedRowsDataSource.paginator = this.paginator;
+  }
+
+  ngAfterViewInit() {
+    this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0).subscribe((data: ListContainer<ShowCollectionRow>) => {
+      this.rows = data.data;
+      this.sortedRowsDataSource = new MatTableDataSource(data.data);
+      this.showCount = data.totalCount;
+    });
+
+    console.log(this.paginator);
+
+    this.paginator.page.subscribe(() => {
+      this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, this.paginator.pageIndex).subscribe((data: ListContainer<ShowCollectionRow>) => {
+        this.rows = data.data;
+        this.sortedRowsDataSource = new MatTableDataSource(data.data);
+        this.showCount = data.totalCount;
+      });
     });
   }
 
