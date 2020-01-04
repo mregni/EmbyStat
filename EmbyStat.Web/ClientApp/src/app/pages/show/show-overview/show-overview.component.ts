@@ -9,7 +9,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatTableDataSource, Sort } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { Options, OptionsService } from '../../../shared/components/charts/options/options';
