@@ -267,7 +267,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     show.TvdbSynced = oldShow.TvdbSynced;
                 }
 
-                //check if show as tvdb id, if not, skip missing ep check!
                 if (!string.IsNullOrWhiteSpace(show.TVDB))
                 {
                     if (!string.IsNullOrWhiteSpace(show.TVDB) &&
@@ -282,7 +281,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
 
                 _showRepository.InsertShow(show);
-                await LogInformation($"Processed ({i}/{grouped.Count}) {show.Name}");
+                await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name}");
             }
         }
 

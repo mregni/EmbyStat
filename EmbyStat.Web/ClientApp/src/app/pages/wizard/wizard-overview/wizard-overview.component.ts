@@ -23,7 +23,7 @@ import { SideBarService } from '../../../shared/services/side-bar.service';
 })
 
 export class WizardOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper') private stepper: MatStepper;
+  @ViewChild('stepper', {static: false}) private stepper: MatStepper;
 
   introFormGroup: FormGroup;
   nameControl = new FormControl('', [Validators.required]);

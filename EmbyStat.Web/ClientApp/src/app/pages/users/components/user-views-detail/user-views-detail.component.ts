@@ -34,7 +34,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
   embyServerInfo: ServerInfo;
   embyServerInfoSub: Subscription;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
