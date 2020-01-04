@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "tfm": "netcoreapp2.2",
-    "configProperties": {
-      "System.GC.Server": true
-    }
-  }
-}
