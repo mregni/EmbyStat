@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rollbar;
 using Rollbar.NetCore.AspNet;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
@@ -27,7 +26,6 @@ using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -173,35 +171,31 @@ namespace EmbyStat.Web
 
         private void PerformPostStartupFunctions()
         {
-            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
-            {
-                var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
-                migrationRunner.Migrate();
+            using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
+            var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
+            migrationRunner.Migrate();
                 
-                var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
-                var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-                var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
-                var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
+            var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+            var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+            var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
+            var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
-                var settings = settingsService.GetAppSettings();
+            var settings = settingsService.GetAppSettings();
                 
-                settingsService.LoadUserSettingsFromFile();
-                settingsService.CreateRollbarLogger();
-                AddDeviceIdToConfig(settingsService);
-                RemoveVersionFiles();
-                jobService.ResetAllJobs();
-                SetEmbyClientConfiguration(settingsService, embyClient);
-                jobInitializer.Setup(settings.NoUpdates);
-            }
+            settingsService.LoadUserSettingsFromFile();
+            settingsService.CreateRollbarLogger();
+            AddDeviceIdToConfig(settingsService);
+            RemoveVersionFiles();
+            jobService.ResetAllJobs();
+            SetEmbyClientConfiguration(settingsService, embyClient);
+            jobInitializer.Setup(settings.NoUpdates);
         }
 
         private void PerformPreShutdownFunctions()
         {
-            using (var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope())
-            {
-                var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-                jobService.ResetAllJobs();
-            }
+            using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
+            var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+            jobService.ResetAllJobs();
         }
 
         private void RemoveVersionFiles()
