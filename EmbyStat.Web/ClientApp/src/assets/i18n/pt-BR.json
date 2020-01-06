@@ -40,20 +40,20 @@
     "TOTALACTORS": "Atores totais",
     "TOTALDIRECTORS": "Diretores totais",
     "TOTALWRITERS": "Escritores totais",
-    "MOSTFEATUREDACTOR": "Most Featured Actor",
-    "MOSTFEATUREDDIRECTOR": "Most Featured Director",
-    "MOSTFEATUREDWRITER": "Most Featured Writer",
-    "LIBRARIES": "Libraries",
+    "MOSTFEATUREDACTOR": "Ator mais destacado",
+    "MOSTFEATUREDDIRECTOR": "Diretor mais destacado",
+    "MOSTFEATUREDWRITER": "Roteirista mais destacado",
+    "LIBRARIES": "Bibliotecas",
     "PREMIEREDATE": "Data de estreia",
     "STATUS": "Status",
     "PERCENTAGE": "Porcentagem",
     "COLLECTED": "Coletado",
     "UPDATES": "Atualização",
     "VERSION": "Versão",
-    "ACTORSPERGENRE": "Most Featured Actor Per Genre",
-    "MINUTES": "minutes",
-    "DISKSIZE": "Disk size",
-    "TOTALDISKSIZE": "Total disk size"
+    "ACTORSPERGENRE": "Ator mais destacado por gênero",
+    "MINUTES": "minutos",
+    "DISKSIZE": "Tamanho do disco",
+    "TOTALDISKSIZE": "Tamanho total do disco"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Opa, recebemos um erro no backend, por favor, tente novamente. Se continuar a falhar, por favor, verifique os logs para mais detalhes.",
@@ -67,14 +67,14 @@
     "CANTCONNECTTOGITHUB": "Não é possível conectar-se ao GitHub para verificar se há atualizações. Tente mais tarde.",
     "NOUPDATEFILE": "Não é possível localizar o aplicativo de atualização, nenhuma atualização executada",
     "UPDATEUNPACKERROR": "Algo deu errado ao adicionar seu prêmio. Por favor, tente novamente.",
-    "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
+    "TVDBLOGINFAILED": "O login do TVDB falhou, verifique a chave da API."
   },
   "FORMLABELS": {
-    "NAME": "Username",
+    "NAME": "Nome do usuário",
     "LANGUAGE": "Por favor, selecione seu idioma",
     "DURATIONINMINUTES": "Duração em minutos",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
-    "TVDBAPI": "TheTVDB API key",
+    "ENABLETOSHORTMOVIES": "Habilitar para cálculo curto de filmes",
+    "TVDBAPI": "A chave da API do TVDB",
     "CRON": "Corda Cron",
     "EXCEPTIONLOGGING": "Ativar log de exceções"
   },
@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
     "EMBYFOUNDTEXT": "Encontramos um servidor Emby em sua rede e inserimos a URL já no formulário. Sinta-se à vontade para ajustar isso e preencher o restante do formulário.",
     "EMBYRUNNING": "Servidor FTP em execução",
-    "KEYISVALID": "API key is valid",
+    "KEYISVALID": "A chave da API é válida",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado no servidor Emby",
     "SAVINGINSTRUCTIONS": "Se algo falhar, você não poderá começar a usar o EmbyStat. Nesse caso, corrija os erros, pressione voltar e avançar.",
     "SAVING": "Salvando dados...",
@@ -114,84 +114,84 @@
     "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar uma tarefa de sincronização de mídia. EmbyStat irá iniciar o download de todos os dados do seu servidor Emby. Tenha em mente que essa tarefa pode levar muito tempo dependendo do tamanho da sua coleção. Se você não quiser iniciar um passeio de sincronização agora basta clicar em Concluir. Você pode iniciá-lo manualmente mais tarde, navegando até a página Tarefas."
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
-    "TOTALMOVIES": "Total Movies",
-    "TOTALGENRES": "Total Genres",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATED": "Highest Rated",
-    "LOWESTRATED": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
+    "COLLECTIONPLACEHOLDER": "Filtrar coleções de filmes",
+    "TOTALMOVIES": "Total de filmes",
+    "TOTALGENRES": "Total de gêneros",
+    "TOTALPLAYLENGTH": "Tempo total de assistibilidade",
+    "HIGHESTRATED": "Melhor avaliado",
+    "LOWESTRATED": "Classificação mais baixa",
+    "OLDESTPREMIERED": "Estreou primeiro",
+    "NEWESTPREMIERED": "Lançado mais recentemente",
     "SHORTEST": "Mais curto",
     "LONGEST": "Mais longo",
-    "LATESTADDED": "Recently Added",
-    "MOSTFEATUREDPERGENRE": "Most Featured Actor Per Genre",
-    "DUPLICATEMOVIES": "Duplicate Movies",
-    "TOSHORTMOVIES": "Movies that are very short",
-    "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "LATESTADDED": "Adicionado recentemente",
+    "MOSTFEATUREDPERGENRE": "Ator mais destacado por gênero",
+    "DUPLICATEMOVIES": "Filmes duplicados",
+    "TOSHORTMOVIES": "Filmes muito curtos",
+    "NOPOSTER": "Faltando um pôster",
+    "NOIMDB": "Faltando um ID IMDB"
   },
   "SHOWS": {
-    "TOTALSHOWS": "Total Shows",
+    "TOTALSHOWS": "Total de séries",
     "TOTALEPISODES": "Episódios totais",
     "TOTALMISSINGEPISODES": "Total de episódios ausentes",
-    "TOTALPLAYLENGTH": "Total Watchable Time",
-    "HIGHESTRATEDSHOW": "Highest Rated",
-    "LOWESTRATEDSHOW": "Lowest Rated",
-    "OLDESTPREMIERED": "Earliest Premiered",
-    "NEWESTPREMIERED": "Latest Premiered",
-    "LATESTADDED": "Recently added",
-    "WITHMOESTEPISODES": "With Most Episodes",
-    "SHOWSTATUSGRAPH": "Show Status",
-    "SEASONS": "Seasons",
-    "CONTINUING": "Continuing",
-    "ENDED": "Ended",
-    "OVERVIEW": "Overview",
-    "MISSINGEPISODES": "Missing episodes"
+    "TOTALPLAYLENGTH": "Tempo total de assistibilidade",
+    "HIGHESTRATEDSHOW": "Melhor avaliado",
+    "LOWESTRATEDSHOW": "Classificação mais baixa",
+    "OLDESTPREMIERED": "Estreou primeiro",
+    "NEWESTPREMIERED": "Lançado mais recentemente",
+    "LATESTADDED": "Adicionado recentemente",
+    "WITHMOESTEPISODES": "Com a maioria dos episódios",
+    "SHOWSTATUSGRAPH": "Mostrar status",
+    "SEASONS": "Temporadas",
+    "CONTINUING": "Continuando",
+    "ENDED": "Terminado",
+    "OVERVIEW": "Visão geral",
+    "MISSINGEPISODES": "Episódios ausentes"
   },
   "SETTINGS": {
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TVDB": "O TVDB",
       "EMBY": "Emby"
     },
     "SAVED": {
       "GENERAL": "Configurações gerais do Embystat salvas!",
-      "TVDB": "TVDB key saved!",
+      "TVDB": "Chave TVDB salva!",
       "EMBY": "Configurações salvas!",
       "MOVIES": "Configurações do filme salvas!",
       "SHOWS": "Mostrar configurações salvas!",
       "UPDATES": "Configurações do filme salvas!"
     },
     "GENERAL": {
-      "NOUSERNAME": "Username can't be blank",
+      "NOUSERNAME": "O nome de usuário não pode ficar em branco",
       "TVDBAPIKEY": "Se você quiser, pode fornecer à EmbyStat sua própria chave de API TheTVDB aqui.",
       "TVDBAPIKEYWARNING": "Certifique-se de fornecer uma chave de API de trabalho! Se a chave estiver incorreta, a tarefa de sincronização falhará.",
       "EXCEPTIONLOGGING": "Ativar / desativar o log de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão."
     },
     "MOVIE": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Para encontrar os filmes possivelmente curtos, precisamos saber qual a quantidade de minutos que você acha muito curta para um filme. O padrão é definido como 10 minutos, mas você pode alterá-lo, se necessário.",
       "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "SHOW": {
       "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domain",
-      "EMBYAPIKEY": "Emby API key",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domain required.",
-      "EMBYPORTREQUIRED": "Emby port required.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid"
+      "EMBYADDRESS": "Emby IP/DOMÍNIO",
+      "EMBYAPIKEY": "Chave da API Emby",
+      "EMBYPORT": "Porta Emby",
+      "EMBYADDRESSREQUIRED": "Emby IP/DOMÍNIO requerido.",
+      "EMBYPORTREQUIRED": "Porta do Servidor Emby requerida.",
+      "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
+      "APIKEYHINT": "Vá em Avançado -> Segurança e clique em Chaves de API para gerar sua nova chave API.",
+      "WRONGAPIKEY": "A chave da API fornecida não é válida"
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Ativar atualizações automáticas",
       "CHECK": "Verifique e atualize o servidor agora",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Atualizar servidor agora",
       "TRAIN": "Altere o trem de atualização se você quiser ter atualizações beta.",
       "ONBETA": "Você não está mais no trem Master, então você não pode voltar para ele. Se você quiser voltar no trem mestre, reinstale o servidor.",
       "TRAINWARNING": "Aqui você pode alterar o trem de atualização do mestre para o beta. Se você não sabe o que está fazendo, deixe essa configuração no mestre. Se você deseja receber as atualizações da versão beta, altere-a aqui, esteja ciente de que não será possível voltar ao mestre mais tarde. Você terá que reinstalar o servidor.",
@@ -199,7 +199,7 @@
       "CANTCHECK": "Não é possível verificar atualizações agora, nenhuma conexão com o GitHub foi criada por mim.",
       "NOUPDATE": "Atualização está disponível",
       "NEWVERSION": "Versão {{version}} disponível para download!",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "DISABLED": "As atualizações estão desabilitadas para este servidor e provavelmente serão atualizadas por um serviço externo. Se isso for um erro, não inicie o servidor com a opção sem atualizações."
     }
   },
   "USERS": {
@@ -207,7 +207,7 @@
     "ISHIDDEN": "Está oculto da tela de login",
     "ISDISABLED": "está desabilitado",
     "DELETED": "Os usuários excluídos",
-    "ACTIVE": "Active users",
+    "ACTIVE": "Usuários ativos",
     "LASTACTIVE": "Ativo pela última vez",
     "SORTING": {
       "USERNAMEASC": "Nome de usuário (A - Z)",
@@ -218,7 +218,7 @@
     "TOOVERVIEW": "Para visão geral",
     "DETAILS": {
       "TITLE": "Detalhes para {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "WATCHEDTITLE": "Últimos itens assistidos"
     },
     "WATCHEDTABLE": {
       "TITLE": "Título",
@@ -228,8 +228,8 @@
       "ACTION": "Ação"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Filmes assistidos",
+      "TOTALWATCHEDEPISODES": "Episódios assistidos"
     }
   },
   "JOB": {
@@ -245,7 +245,7 @@
     "NORUN": "Ainda não correu",
     "MOMENT_AGO": "Dentro de instantes",
     "JOBLOGS": "Registros de trabalho",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Valor do Cron atualizado",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Verifique a conexão",
       "PINGEMBYSERVERDESCRIPTION": "Ping no servidor Emby para verificar se ele ainda está online.",
@@ -311,26 +311,26 @@
     "MOREMISSEDPINGS": "Não foi possível conectar-se ao Emby após várias tentativas!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "SERVERINFO": "Informações do Servidor",
+    "GITHUBRELEASE": "Lançamentos no Github",
+    "REQUESTFEATURE": "Requisitar recurso",
+    "LOGBUG": "Erro de log no Github",
+    "HELPTRANSLATE": "Ajude a traduzir o aplicativo",
     "THANKS": {
       "TITLE": "Obrigado",
       "TEXT": "Um grande obrigado às seguintes pessoas por traduzir o aplicativo em sua língua nativa:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Ações"
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HOSTOS": "Sistema Operacional Hospedeiro",
+    "WANADDRESS": "Endereço WAN (Wide Área Network)",
+    "LANADDRESS": "Endereço LAN (Local Area Network)",
+    "CACHEPATH": "Caminho do Cache",
+    "LOGPATH": "Caminho do Log",
+    "HTTPPORT": "Porta HTTP",
+    "HTTPSPORT": "Porta HTTPS"
   }
 }

@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu Emby einrichten. Wir haben versucht deinen Emby Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen Emby Server finden kann.",
     "EMBYFOUNDTEXT": "Wir haben einen Emby-Server in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
     "EMBYRUNNING": "Der Emby Server läuft",
-    "KEYISVALID": "API key is valid",
+    "KEYISVALID": "Der API-Schlüssel ist gültig",
     "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
     "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
     "SAVING": "Speichere Daten",
@@ -178,13 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP/Domain",
-      "EMBYAPIKEY": "Emby API key",
+      "EMBYAPIKEY": "Emby API-Schlüssel",
       "EMBYPORT": "Emby Port",
       "EMBYADDRESSREQUIRED": "Emby IP/Domain erforderlich.",
       "EMBYPORTREQUIRED": "Emby Port erforderlich.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid"
+      "EMBYAPIKEYREQUIRED": "Emby API-Schlüssel erforderlich",
+      "APIKEYHINT": "Gehen Sie zu Erweitert -> Sicherheit auf <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">Ihr Emby-Server</a> um einen neuen API-Token zu generieren.",
+      "WRONGAPIKEY": "Der angegebene API-Schlüssel ist ungültig"
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -199,7 +199,7 @@
       "CANTCHECK": "Ich kann jetzt nicht nach Updates suchen, es konnte keine Verbindung zu GitHub hergestellt werden.",
       "NOUPDATE": "Kein Update verfügbar",
       "NEWVERSION": "Version {{version}} zum Download verfügbar!",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "DISABLED": "Updates sind für diesen Server deaktiviert und werden wahrscheinlich von einem externen Dienst aktualisiert. Wenn dies ein Fehler ist, starten Sie den Server nicht mit der Option --no-updates."
     }
   },
   "USERS": {
