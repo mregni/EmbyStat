@@ -229,7 +229,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                         IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
                         Fields = new[]
                         {
-
                             ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                             ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
                             ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
