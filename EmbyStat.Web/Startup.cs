@@ -29,19 +29,21 @@ using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace EmbyStat.Web
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment WebHostEnvironment { get; }
         public IApplicationBuilder ApplicationBuilder { get; set; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            HostingEnvironment = hostingEnvironment;
+            WebHostEnvironment = webHostEnvironment;
             Configuration = configuration;
         }
 
@@ -59,11 +61,13 @@ namespace EmbyStat.Web
             });
 
             services
-                .AddMvcCore(options => { options.Filters.Add(new BusinessExceptionFilterAttribute()); })
+                .AddMvcCore(options => {
+                    options.Filters.Add(new BusinessExceptionFilterAttribute());
+                    options.EnableEndpointRouting = false;
+                })
                 .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
                 .AddApiExplorer()
-                .AddJsonFormatters()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddAuthorization();
 
             services.AddHangfire(x =>
             {
@@ -76,7 +80,7 @@ namespace EmbyStat.Web
             services.AddAutoMapper(typeof(MapProfiles));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "EmbyStat API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "EmbyStat API", Version = "1.0"});
             });
 
             services.AddSpaStaticFiles(configuration =>
@@ -92,7 +96,7 @@ namespace EmbyStat.Web
             services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             ApplicationBuilder = app;
 
@@ -133,7 +137,11 @@ namespace EmbyStat.Web
             }
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            app.UseSignalR(routes => { routes.MapHub<JobHub>("/jobs-socket"); });
+            app.UseRouting();
+            app.UseEndpoints(routes =>
+            {
+                routes.MapHub<JobHub>("/jobs-socket");
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
@@ -198,7 +206,7 @@ namespace EmbyStat.Web
 
         private void RemoveVersionFiles()
         {
-            foreach (var file in Directory.GetFiles(HostingEnvironment.ContentRootPath, "*.ver"))
+            foreach (var file in Directory.GetFiles(WebHostEnvironment.ContentRootPath, "*.ver"))
             {
                 File.Delete(file);
             }
