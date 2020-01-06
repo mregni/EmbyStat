@@ -59,10 +59,9 @@ namespace EmbyStat.Web
         public static IWebHost BuildWebHost(string[] args, string listeningUrl, IConfigurationRoot config) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
-                .UseIISIntegration()
+                .UseStartup<Startup>()
                 .UseUrls(listeningUrl)
                 .UseConfiguration(config)
-                .UseStartup<Startup>()
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();

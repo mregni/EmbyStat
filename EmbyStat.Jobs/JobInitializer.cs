@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Services.Interfaces;

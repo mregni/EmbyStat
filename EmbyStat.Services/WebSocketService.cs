@@ -6,12 +6,13 @@ using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Common.Converters;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
 using NLog;
 
 namespace EmbyStat.Services
 {
-    public class WebSocketService : IWebSocketService, IDisposable
+    public class WebSocketService : IHostedService, IDisposable
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly Logger _logger;

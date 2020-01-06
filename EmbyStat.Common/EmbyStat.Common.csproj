@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>0.0.0.0</FileVersion>
@@ -18,19 +18,13 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="MediaBrowser.Common" Version="4.3.0.12" />
+    <PackageReference Include="MediaBrowser.Common" Version="4.3.0.30" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
-    <PackageReference Include="RestSharp" Version="106.6.10" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.SignalR.Core">
-      <HintPath>..\EmbyStat.Repositories\bin\x64\Debug\netcoreapp2.0\Microsoft.AspNetCore.SignalR.Core.dll</HintPath>
-    </Reference>
+    <PackageReference Include="RestSharp" Version="106.9.0" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.7.0" />
   </ItemGroup>
 
 </Project>
