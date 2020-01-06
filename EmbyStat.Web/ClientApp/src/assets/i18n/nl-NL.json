@@ -52,8 +52,8 @@
     "VERSION": "Versie",
     "ACTORSPERGENRE": "Meest Uitgelichte Acteur Per Genre",
     "MINUTES": "minuten",
-    "DISKSIZE": "Disk size",
-    "TOTALDISKSIZE": "Total disk size"
+    "DISKSIZE": "Schijfgrootte",
+    "TOTALDISKSIZE": "Totale schijfruimte"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
@@ -104,7 +104,7 @@
     "EMBYNOTFOUNDTEXT": "Nu zullen we je Emby verbinding instellen. We hebben geprobeerd om je Emby server automatisch te detecteren in het netwerk maar dit is mislukt. Vul alle velden in zodat EmbyStat je Emby server kan vinden.",
     "EMBYFOUNDTEXT": "We hebben een Emby server gevonden in uw netwerk en de url al in het formulier ingevoerd. Voel u vrij om dit aan te passen en de rest van het formulier in te vullen.",
     "EMBYRUNNING": "Emby server is actief",
-    "KEYISVALID": "API key is valid",
+    "KEYISVALID": "API-sleutel is geldig",
     "PLUGININSTALLED": "EmbyStat plugin gevonden op de Emby server",
     "SAVINGINSTRUCTIONS": "Als er iets mislukt, kunt u EmbyStat niet gebruiken. Los in dat geval de fouten op, druk op terug en volgende.",
     "SAVING": "Gegevens aan het opslaan",
@@ -147,7 +147,7 @@
     "CONTINUING": "Doorgaan",
     "ENDED": "Geëindigd",
     "OVERVIEW": "Overzicht",
-    "MISSINGEPISODES": "Missing episodes"
+    "MISSINGEPISODES": "Missende afleveringen"
   },
   "SETTINGS": {
     "TITLES": {
@@ -178,13 +178,13 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP / domein",
-      "EMBYAPIKEY": "Emby API key",
+      "EMBYAPIKEY": "Emby API-Sleutel",
       "EMBYPORT": "Emby poort",
       "EMBYADDRESSREQUIRED": "Emby IP / domein vereist.",
       "EMBYPORTREQUIRED": "Emby poort vereist.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid"
+      "EMBYAPIKEYREQUIRED": "Emby API-sleutel vereist",
+      "APIKEYHINT": "Ga naar Geavanceerd -> Beveiliging op <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">uw Emby-server</a> om een nieuw API-sleutel te genereren.",
+      "WRONGAPIKEY": "Opgegeven API-sleutel is niet geldig"
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -199,7 +199,7 @@
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
       "NOUPDATE": "Geen update beschikbaar",
       "NEWVERSION": "Versie {{version}} beschikbaar om te downloaden!",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "DISABLED": "Updates zijn uitgeschakeld voor deze server en zullen waarschijnlijk worden bijgewerkt door een externe service. Als dit een fout is, start de server dan niet met de optie --no-updates."
     }
   },
   "USERS": {
