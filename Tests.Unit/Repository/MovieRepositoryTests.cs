@@ -28,8 +28,8 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
 
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo });
 
@@ -51,8 +51,8 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo });
 
                 var result = _movieRepository.GetAll(new string[0]);
@@ -73,11 +73,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddImdb(string.Empty).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").AddImdb(string.Empty).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("C").AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
-                _movieRepository.UpsertRange(new[] { movieOne, movieTwo });
 
                 var result = _movieRepository.GetAllWithImdbId(new string[0]);
 
@@ -97,9 +96,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddImdb(string.Empty).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(string.Empty).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var result = _movieRepository.GetAllWithImdbId(new[] { "1" });
@@ -117,9 +116,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddImdb(string.Empty).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(string.Empty).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var result = _movieRepository.Any();
@@ -142,9 +141,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetMediaCountForPerson(movieOne.People.First().Id);
@@ -158,9 +157,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetMovieById(movieTwo.Id);
@@ -175,9 +174,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddGenres("id2").Build();
-                var movieThree = new MovieBuilder(12).AddGenres("id3").AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddGenres("id2").Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddGenres("id3").AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetGenreCount(new string[0]);
@@ -190,9 +189,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddGenres("id2").Build();
-                var movieThree = new MovieBuilder(12).AddGenres("id3").AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddGenres("id2").Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddGenres("id3").AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetGenreCount(new[] { "1" });
@@ -205,9 +204,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetTotalRuntime(new string[0]);
@@ -220,9 +219,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetTotalRuntime(new[] { "1" });
@@ -235,9 +234,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetTotalDiskSize(new string[0]);
@@ -250,9 +249,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetTotalDiskSize(new[] { "1" });
@@ -265,9 +264,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
-                var movieThree = new MovieBuilder(12).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetNewestPremieredMedia(new string[0]);
@@ -282,9 +281,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetNewestPremieredMedia(new[] { "1" });
@@ -299,9 +298,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
-                var movieThree = new MovieBuilder(12).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetOldestPremieredMedia(new string[0]);
@@ -316,9 +315,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetOldestPremieredMedia(new[] { "1" });
@@ -333,9 +332,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddCommunityRating(1).Build();
-                var movieThree = new MovieBuilder(12).AddCommunityRating(9).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(9).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetHighestRatedMedia(new string[0]);
@@ -350,9 +349,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddCommunityRating(1).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").AddCommunityRating(9).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCommunityRating(9).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetHighestRatedMedia(new[] { "1" });
@@ -367,9 +366,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddCreateDate(new DateTime(2000, 1, 1)).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").AddCreateDate(new DateTime(2019, 1, 1)).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddCreateDate(new DateTime(2000, 1, 1)).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCreateDate(new DateTime(2019, 1, 1)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetLatestAddedMedia(new string[0]);
@@ -384,9 +383,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddCreateDate(new DateTime(2000, 1, 1)).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").AddCreateDate(new DateTime(2019, 1, 1)).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddCreateDate(new DateTime(2000, 1, 1)).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCreateDate(new DateTime(2019, 1, 1)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetLatestAddedMedia(new[] { "1" });
@@ -401,9 +400,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddCommunityRating(9).Build();
-                var movieThree = new MovieBuilder(12).AddCommunityRating(1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(9).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetLowestRatedMedia(new string[0]);
@@ -418,9 +417,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddCommunityRating(1).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").AddCommunityRating(9).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCommunityRating(9).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var movie = _movieRepository.GetLowestRatedMedia(new[] { "1" });
@@ -435,10 +434,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddRunTimeTicks(1, 30, 1).Build();
-                var movieThree = new MovieBuilder(12).AddRunTimeTicks(1, 13, 1).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddRunTimeTicks(0, 3, 1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(1, 30, 1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(1, 13, 1).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
                 var movie = _movieRepository.GetShortestMovie(new string[0], TimeSpan.FromMinutes(10).Ticks);
@@ -452,10 +451,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddRunTimeTicks(1, 30, 1).Build();
-                var movieThree = new MovieBuilder(12).AddRunTimeTicks(1, 13, 1).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddRunTimeTicks(0, 3, 1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(1, 30, 1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(1, 13, 1).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
                 var movie = _movieRepository.GetShortestMovie(new[] { "1" }, TimeSpan.FromMinutes(10).Ticks);
@@ -469,10 +468,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddRunTimeTicks(1, 30, 1).Build();
-                var movieThree = new MovieBuilder(12).AddRunTimeTicks(10, 13, 1).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddRunTimeTicks(0, 3, 1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(1, 30, 1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(13, 10, 1).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
                 var movie = _movieRepository.GetLongestMovie(new string[0]);
@@ -486,10 +485,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddRunTimeTicks(1, 30, 1).Build();
-                var movieThree = new MovieBuilder(12).AddRunTimeTicks(4, 13, 1).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddRunTimeTicks(0, 3, 1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(1, 30, 1).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(4, 13, 1).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
                 var movie = _movieRepository.GetLongestMovie(new[] { "1" });
@@ -503,9 +502,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).AddPerson(new ExtraPerson { Id = Guid.NewGuid().ToString(), Type = PersonType.Director, Name = "Test" }).Build();
-                var movieTwo = new MovieBuilder(11).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = Guid.NewGuid().ToString(), Type = PersonType.Director, Name = "Test" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetPeopleCount(new string[0], PersonType.Actor);
@@ -518,9 +517,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).AddPerson(new ExtraPerson { Id = Guid.NewGuid().ToString(), Type = PersonType.Director, Name = "Test" }).Build();
-                var movieTwo = new MovieBuilder(11).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = Guid.NewGuid().ToString(), Type = PersonType.Director, Name = "Test" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetPeopleCount(new[] { "1" }, PersonType.Actor);
@@ -533,9 +532,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).AddPerson(new ExtraPerson { Id = Guid.NewGuid().ToString(), Type = PersonType.Director, Name = "Test" }).Build();
-                var movieTwo = new MovieBuilder(11).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = Guid.NewGuid().ToString(), Type = PersonType.Director, Name = "Test" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetPeopleCount(new string[0], PersonType.Director);
@@ -548,9 +547,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var person = _movieRepository.GetMostFeaturedPerson(new string[0], PersonType.Actor);
@@ -564,11 +563,11 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddRunTimeTicks(0, 3, 1).Build();
-                var movieFive = new MovieBuilder(14).AddCollectionId("2").AddRunTimeTicks(0, 4, 1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("C").AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("D").AddRunTimeTicks(0, 3, 1).Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("E").AddCollectionId("2").AddRunTimeTicks(0, 4, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
 
                 var movies = _movieRepository.GetToShortMovieList(new string[0], 10);
@@ -586,11 +585,11 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddRunTimeTicks(0, 3, 1).Build();
-                var movieFive = new MovieBuilder(14).AddCollectionId("2").AddRunTimeTicks(0, 4, 1).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddRunTimeTicks(0, 4, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
 
                 var movies = _movieRepository.GetToShortMovieList(new[] { "1" }, 10);
@@ -607,11 +606,11 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddImdb(string.Empty).Build();
-                var movieFive = new MovieBuilder(14).AddCollectionId("2").AddImdb(string.Empty).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("C").AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("D").AddImdb(string.Empty).Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("E").AddCollectionId("2").AddImdb(string.Empty).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
 
                 var movies = _movieRepository.GetMoviesWithoutImdbId(new string[0]);
@@ -629,11 +628,11 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddImdb(string.Empty).Build();
-                var movieFive = new MovieBuilder(14).AddCollectionId("2").AddImdb(string.Empty).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(string.Empty).Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddImdb(string.Empty).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
 
                 var movies = _movieRepository.GetMoviesWithoutImdbId(new[] { "1" });
@@ -650,11 +649,11 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddPrimaryImage(string.Empty).Build();
-                var movieFive = new MovieBuilder(14).AddCollectionId("2").AddPrimaryImage(string.Empty).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("C").AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("D").AddPrimaryImage(string.Empty).Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("E").AddCollectionId("2").AddPrimaryImage(string.Empty).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
 
                 var movies = _movieRepository.GetMoviesWithoutPrimaryImage(new string[0]);
@@ -672,11 +671,11 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
-                var movieThree = new MovieBuilder(12).AddCollectionId("2").Build();
-                var movieFour = new MovieBuilder(13).AddPrimaryImage(string.Empty).Build();
-                var movieFive = new MovieBuilder(14).AddCollectionId("2").AddPrimaryImage(string.Empty).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddPrimaryImage(string.Empty).Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddPrimaryImage(string.Empty).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
 
                 var movies = _movieRepository.GetMoviesWithoutPrimaryImage(new[] { "1" });
@@ -693,8 +692,8 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(10).Build();
-                var movieTwo = new MovieBuilder(11).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo });
 
                 _movieRepository.RemoveMovies();

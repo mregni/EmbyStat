@@ -6,7 +6,7 @@ namespace EmbyStat.Common.Models.Entities.Helpers
     public class Media
     {
         [BsonId]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public DateTimeOffset? DateCreated { get; set; }
         public string Banner { get; set; }
         public string Logo { get; set; }

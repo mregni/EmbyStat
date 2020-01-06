@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Job } from '../../../../shared/models/jobs/job';
 import { JobSocketService } from '../../../../shared/services/job-socket.service';

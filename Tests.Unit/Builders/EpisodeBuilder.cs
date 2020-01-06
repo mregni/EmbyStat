@@ -10,7 +10,7 @@ namespace Tests.Unit.Builders
     {
         private readonly Episode _episode;
 
-        public EpisodeBuilder(int id, int showId, string seasonId)
+        public EpisodeBuilder(string id, string showId, string seasonId)
         {
             _episode = new Episode
             {

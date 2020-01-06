@@ -6,15 +6,21 @@ import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild, ViewChildren
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatTableDataSource, Sort } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { Options, OptionsService } from '../../../shared/components/charts/options/options';
 import { NoTypeFoundDialog } from '../../../shared/dialogs/no-type-found/no-type-found.component';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Library } from '../../../shared/models/library';
+import { ListContainer } from '../../../shared/models/list-container';
 import { Settings } from '../../../shared/models/settings/settings';
 import { Episode } from '../../../shared/models/show/episode';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
@@ -27,13 +33,13 @@ import { ShowService } from '../service/show.service';
   styleUrls: ['./show-overview.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ]
 })
-export class ShowOverviewComponent implements OnInit, OnDestroy {
+export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   statistics$: Observable<ShowStatistics>;
   rows: ShowCollectionRow[];
   sortedRowsDataSource: MatTableDataSource<ShowCollectionRow>;
@@ -42,6 +48,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   resizeSub: Subscription;
   collectedDataSub: Subscription;
   isShowTypePresentSub: Subscription;
+  paginatorPageSub: Subscription;
   libraries$: Observable<Library[]>;
   librariesFormControl = new FormControl('', { updateOn: 'blur' });
 
@@ -58,8 +65,22 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   embyServerInfoSub: Subscription;
 
   showDetails = [];
+  showCount: number;
+  selectedCollectionList: string[];
 
-  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
+  private paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) set pane(mp: MatPaginator) {
+    this.paginator = mp;
+    if (mp !== undefined) {
+      this.paginatorPageSub = this.paginator.page.subscribe(() => {
+        this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, this.paginator.pageIndex).subscribe((pageData: ListContainer<ShowCollectionRow>) => {
+          this.setShowTable(pageData);
+        });
+      });
+    }
+  }
+
+  @ViewChild(NgScrollbar, { static: false }) textAreaScrollbar: NgScrollbar;
 
   constructor(
     private readonly showService: ShowService,
@@ -89,11 +110,13 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     this.pieOptions = this.optionsService.getPieOptions();
     this.barOptions = this.optionsService.getBarOptions();
 
+    this.selectedCollectionList = [];
+
     this.librariesFormControl.valueChanges.subscribe((collectionList: string[]) => {
+      this.selectedCollectionList = collectionList;
       this.statistics$ = this.showService.getStatistics(collectionList);
-      this.collectedDataSub = this.showService.getCollectedList(collectionList).subscribe((data: ShowCollectionRow[]) => {
-        this.rows = data;
-        this.sortedRowsDataSource = new MatTableDataSource(data);
+      this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0).subscribe((data: ListContainer<ShowCollectionRow>) => {
+        this.setShowTable(data);
       });
     });
 
@@ -103,9 +126,12 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectedDataSub = this.showService.getCollectedList([]).subscribe((data: ShowCollectionRow[]) => {
-      this.rows = data;
-      this.sortedRowsDataSource = new MatTableDataSource(data);
+    this.sortedRowsDataSource = new MatTableDataSource([]);
+  }
+
+  ngAfterViewInit() {
+    this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0).subscribe((data: ListContainer<ShowCollectionRow>) => {
+      this.setShowTable(data);
     });
   }
 
@@ -161,6 +187,12 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  private setShowTable(data: ListContainer<ShowCollectionRow>) {
+    this.rows = data.data;
+    this.sortedRowsDataSource.data = data.data;
+    this.showCount = data.totalCount;
+  }
+
   ngOnDestroy() {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
@@ -180,6 +212,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy {
 
     if (this.embyServerInfoSub !== undefined) {
       this.embyServerInfoSub.unsubscribe();
+    }
+
+    if (this.paginatorPageSub !== undefined) {
+      this.paginatorPageSub.unsubscribe();
     }
   }
 }

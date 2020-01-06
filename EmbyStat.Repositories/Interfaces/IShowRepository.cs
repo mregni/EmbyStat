@@ -7,13 +7,12 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IShowRepository : IMediaRepository<Show>
     {
-        void UpsertShow(Show show);
-        void UpdateShow(Show show);
+        void InsertShow(Show show);
         List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
-        Episode GetEpisodeById(int id);
-        Season GetSeasonById(int id);
-        List<Episode> GetAllEpisodesForShow(int showId);
-        Show GetShowById(int showId);
+        Episode GetEpisodeById(string showId, string id);
+        Season GetSeasonById(string id);
+        List<Episode> GetAllEpisodesForShow(string showId);
+        Show GetShowById(string showId);
         void RemoveShowsThatAreNotUpdated(DateTime startTime);
         void AddSeason(Season season);
         void AddEpisode(Episode episode);

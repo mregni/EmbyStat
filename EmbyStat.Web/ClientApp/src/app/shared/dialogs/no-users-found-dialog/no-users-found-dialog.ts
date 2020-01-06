@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { JobService } from '../../services/job.service';

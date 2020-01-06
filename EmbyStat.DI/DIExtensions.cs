@@ -88,7 +88,7 @@ namespace EmbyStat.DI
 
         public static void RegisterHttp(this IServiceCollection services)
         {
-            services.AddSingleton<IRestClient, RestClient>();
+            services.AddTransient<IRestClient, RestClient>();
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
         }
 

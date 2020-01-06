@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Show;
+using NLog;
+using NLog.Fluent;
 
 namespace EmbyStat.Common.Extensions
 {
@@ -35,7 +38,8 @@ namespace EmbyStat.Common.Extensions
         {
             return show.Episodes
                 .Where(x => x.LocationType == LocationType.Virtual)
-                .Select(x => new VirtualEpisode(x, show.Seasons.First(y => y.Id.ToString() == x.ParentId)));
+                .Select(x => new VirtualEpisode(x, show.Seasons.First(y => y.Id == x.ParentId)))
+                .ToList();
         }
 
         public static double GetShowSize(this Show show)

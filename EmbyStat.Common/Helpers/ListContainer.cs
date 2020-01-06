@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace EmbyStat.Controllers.HelperClasses
+namespace EmbyStat.Common.Helpers
 {
     public class ListContainer<T>
     {
         public int TotalCount { get; set; }
-        public List<T> Data { get; set; }
+        public IEnumerable<T> Data { get; set; }
     }
 }

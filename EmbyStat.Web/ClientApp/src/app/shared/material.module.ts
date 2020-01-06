@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import {
-    MatInputModule, MatSortModule, MatToolbarModule, MatTooltipModule
-} from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
