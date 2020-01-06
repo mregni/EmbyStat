@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
@@ -73,6 +74,7 @@ namespace EmbyStat.Controllers
 			    .ForMember(x => x.Id, y => Guid.NewGuid())
 			    .ReverseMap()
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore());
-	    }
+            CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
+        }
     }
 }

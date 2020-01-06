@@ -368,7 +368,7 @@ namespace EmbyStat.Services
 
             for (var i = 0; i < duplicatesByImdb.Count; i++)
             {
-                var duplicateMovies = movies.Where(x => x.IMDB == duplicatesByImdb[i].Key).OrderBy(x => x.Id).ToList();
+                var duplicateMovies = movies.Where(x => x.IMDB == duplicatesByImdb[i].Key).OrderBy(x => x.SortName).ToList();
                 var itemOne = duplicateMovies[0];
                 var itemTwo = duplicateMovies[1];
 

@@ -37,33 +37,36 @@ namespace Tests.Unit.Services
 
             var actorIdOne = Guid.NewGuid();
 
-            _movieOne = new MovieBuilder(0)
+            _movieOne = new MovieBuilder(Guid.NewGuid().ToString())
                 .AddCommunityRating((float)1.7)
                 .AddOfficialRating("R")
                 .AddPremiereDate(new DateTime(2002, 4, 2, 0, 0, 0))
                 .AddRunTimeTicks(2, 10, 0)
                 .AddName("The lord of the rings")
+                .AddSortName("The-lord-of-the-rings")
                 .AddGenres("Action", "Drama")
                 .Build();
 
-            _movieTwo = new MovieBuilder(1)
+            _movieTwo = new MovieBuilder(Guid.NewGuid().ToString())
                 .AddCommunityRating((float)2.8)
                 .AddOfficialRating("R")
                 .AddPremiereDate(new DateTime(2003, 4, 2, 0, 0, 0))
                 .AddRunTimeTicks(3, 30, 0)
                 .AddName("The lord of the rings, two towers")
+                .AddSortName("The-lord-of-the-rings,-two-towers")
                 .AddPerson(new ExtraPerson { Type = PersonType.Director, Name = "Frodo", Id = Guid.NewGuid().ToString() })
                 .AddPerson(new ExtraPerson { Type = PersonType.Actor, Name = "Frodo", Id = actorIdOne.ToString() })
                 .AddGenres("Action", "Comedy")
                 .AddImdb("0002")
                 .Build();
 
-            _movieThree = new MovieBuilder(2)
+            _movieThree = new MovieBuilder(Guid.NewGuid().ToString())
                 .AddCommunityRating((float)3.2)
                 .AddOfficialRating("B")
                 .AddPremiereDate(new DateTime(2004, 4, 2, 0, 0, 0))
                 .AddRunTimeTicks(3, 50, 0)
                 .AddName("The lord of the rings, return of the king")
+                .AddSortName("The-lord-of-the-rings,-return-of-the-king")
                 .AddGenres("Comedy")
                 .AddPerson(new ExtraPerson { Type = PersonType.Actor, Name = "Frodo", Id = actorIdOne.ToString() })
                 .AddPerson(new ExtraPerson { Type = PersonType.Director, Name = "Frodo", Id = Guid.NewGuid().ToString() })
@@ -307,7 +310,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetTotalPlayLengthStat()
         {
-            var movieFour = new MovieBuilder(3).AddRunTimeTicks(56, 34, 1).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(56, 34, 1).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -448,9 +451,9 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task CalculatePremiereYearChart()
         {
-            var movieFour = new MovieBuilder(3).AddPremiereDate(new DateTime(1991, 3, 12)).Build();
-            var movieFive = new MovieBuilder(4).AddPremiereDate(new DateTime(1992, 3, 12)).Build();
-            var movieSix = new MovieBuilder(5).AddPremiereDate(new DateTime(1989, 3, 12)).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1991, 3, 12)).Build();
+            var movieFive = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1992, 3, 12)).Build();
+            var movieSix = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1989, 3, 12)).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour, movieFive, movieSix);
 
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
@@ -552,7 +555,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task DuplicateMovies()
         {
-            var movieFour = new MovieBuilder(3).AddImdb(_movieOne.IMDB).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(_movieOne.IMDB).AddSortName("lord-of-the-rings,-the").Build();
             var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -561,18 +564,18 @@ namespace Tests.Unit.Services
             stat.Suspicious.Duplicates.Count().Should().Be(1);
             var duplicate = stat.Suspicious.Duplicates.Single();
 
-            duplicate.ItemOne.Id.Should().Be(0);
-            duplicate.ItemTwo.Id.Should().Be(3);
+            duplicate.ItemOne.Id.Should().Be(movieFour.Id);
+            duplicate.ItemTwo.Id.Should().Be(_movieOne.Id);
 
             duplicate.Number.Should().Be(0);
-            duplicate.Title.Should().Be(_movieOne.Name);
+            duplicate.Title.Should().Be(movieFour.Name);
             duplicate.Reason.Should().Be(Constants.ByImdb);
         }
 
         [Fact]
         public async Task DuplicateMoviesButDfferent3DFormat()
         {
-            var movieFour = new MovieBuilder(3).AddVideo3DFormat(Video3DFormat.FullSideBySide).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddVideo3DFormat(Video3DFormat.FullSideBySide).Build();
             var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await subject.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -584,7 +587,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task ShortMovies()
         {
-            var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -605,7 +608,7 @@ namespace Tests.Unit.Services
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock.Setup(x => x.GetUserSettings())
                 .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = false });
-            var movieFour = new MovieBuilder(3).AddRunTimeTicks(0, 1, 0).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -617,7 +620,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task MoviesWithoutImdb()
         {
-            var movieFour = new MovieBuilder(4).AddImdb(string.Empty).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(string.Empty).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 
@@ -634,7 +637,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task MoviesWithoutPrimaryImage()
         {
-            var movieFour = new MovieBuilder(4).AddPrimaryImage(string.Empty).Build();
+            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddPrimaryImage(string.Empty).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = await service.GetStatisticsAsync(_collections.Select(x => x.Id).ToList());
 

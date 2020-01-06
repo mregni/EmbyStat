@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common.Helpers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;

@@ -13,7 +13,7 @@ namespace EmbyStat.Common.Converters
         {
             return new Movie
             {
-                Id = Convert.ToInt32(x.Id),
+                Id = x.Id,
                 CollectionId = collectionId,
                 Name = x.Name,
                 ParentId = x.ParentId,

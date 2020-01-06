@@ -11,7 +11,7 @@ namespace EmbyStat.Repositories.Interfaces
         void UpsertRange(IEnumerable<Movie> movies);
         List<Movie> GetAll(IReadOnlyList<string> libraryIds);
         List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
-        Movie GetMovieById(int id);
+        Movie GetMovieById(string id);
         int GetGenreCount(IReadOnlyList<string> libraryIds);
         long GetTotalRuntime(IReadOnlyList<string> libraryIds);
         Movie GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks);

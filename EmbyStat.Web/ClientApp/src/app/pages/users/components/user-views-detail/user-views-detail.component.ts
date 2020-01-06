@@ -5,7 +5,8 @@ import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade'
 import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
@@ -33,7 +34,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
   embyServerInfo: ServerInfo;
   embyServerInfoSub: Subscription;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,

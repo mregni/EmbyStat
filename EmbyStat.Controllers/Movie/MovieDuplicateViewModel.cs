@@ -14,7 +14,7 @@ namespace EmbyStat.Controllers.Movie
     public class MovieDuplicateItemViewModel
     {
         public DateTimeOffset? DateCreated { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Quality { get; set; }
     }
 }

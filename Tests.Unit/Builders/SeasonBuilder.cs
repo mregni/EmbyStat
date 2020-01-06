@@ -7,7 +7,7 @@ namespace Tests.Unit.Builders
     {
         private readonly Season _season;
 
-        public SeasonBuilder(int id, string showId)
+        public SeasonBuilder(string id, string showId)
         {
             _season = new Season
             {

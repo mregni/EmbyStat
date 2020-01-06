@@ -24,7 +24,7 @@ export class MovieService {
 
   getStatistics(list: string[]): Observable<MovieStatistics> {
     const params = ListToQueryParam.convert('libraryIds', list);
-    return this.http.get<MovieStatistics>(this.getStatisticsUrl + params);
+    return this.http.get<MovieStatistics>(this.getStatisticsUrl + `${params}`);
   }
 
   isTypePresent(): Observable<boolean> {

@@ -2,7 +2,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,7 +23,7 @@ import { SideBarService } from '../../../shared/services/side-bar.service';
 })
 
 export class WizardOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper') private stepper: MatStepper;
+  @ViewChild('stepper', {static: false}) private stepper: MatStepper;
 
   introFormGroup: FormGroup;
   nameControl = new FormControl('', [Validators.required]);

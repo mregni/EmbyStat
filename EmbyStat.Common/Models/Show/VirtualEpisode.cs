@@ -14,12 +14,12 @@ namespace EmbyStat.Common.Models.Show
         {
             Id = episode.Id;
             Name = episode.Name;
-            SeasonNumber = season.IndexNumber ?? 0;
+            SeasonNumber = season?.IndexNumber ?? 0;
             EpisodeNumber = episode.IndexNumber ?? 0;
             FirstAired = episode.PremiereDate?.DateTime;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public int SeasonNumber { get; set; }
         public int EpisodeNumber { get; set; }

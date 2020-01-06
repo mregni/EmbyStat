@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 
 /* tslint:disable:component-class-suffix */
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { JobService } from '../../services/job.service';

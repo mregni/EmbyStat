@@ -117,8 +117,8 @@
                       <td mat-cell *matCellDef="let element">
                         <div class="progress position-relative">
                           <div class="progress-bar" role="progressbar"
-                            [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
-                            [style.background-color]="getColor(element)">
+                               [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
+                               [style.background-color]="getColor(element)">
                             <span class="justify-content-center d-flex position-absolute w-100 font-weight-bold">
                               {{ element.episodes }} /
                               {{ element.episodes + element.missingEpisodeCount }}
@@ -139,12 +139,12 @@
                             <img src="{{getShowBannerLink(element)}}"
                                  alt="Show banner"
                                  height="60"
-                                 class="border-radius-small"/>
+                                 class="border-radius-small" />
                             <div class="d-flex flex-column align-items-center justify-content-center ml-2">
                               <div>
                                 <img src="../../../../assets/images/imdb.png" alt="IMDB" height="15"
                                      class="mb-2" *ngIf="element.imdb !== undefined" (click)="openImdb(element.imdb)" />
-                                </div>
+                              </div>
                               <div>
                                 <img src="../../../../assets/images/tvdb.png" alt="TVDB" height="15"
                                      *ngIf="element.tvdb !== undefined" (click)="openTvdb(element.tvdb)" />
@@ -152,7 +152,7 @@
                             </div>
                           </div>
                           <div class="mb-3">
-                            {{ 'COMMON.DISKSIZE' | translate }}: 
+                            {{ 'COMMON.DISKSIZE' | translate }}:
                             <span *ngIf="element.size <= 999">
                               {{element.size | number:'0.1-2':settings.language}} MB
                             </span>
@@ -161,15 +161,15 @@
                             </span>
                           </div>
                           <div *ngIf="element.missingEpisodeCount > 0">
-                              <h4>{{ 'SHOWS.MISSINGEPISODES' | translate }}</h4>
-                              <div class="d-flex flex-row justify-content-start align-items-start align-self-stretch flex-wrap">
-                                <div *ngFor="let episodesBySeason of element.missingEpisodes"
-                                     class="mr-3 mb-3">
-                                  <span *ngFor="let missingEpisode of episodesBySeason.episodes">
-                                      S{{episodesBySeason.seasonNumber}} - E{{missingEpisode.episodeNumber}} - {{missingEpisode.name}}<br/>
-                                  </span>
-                                </div>
+                            <h4>{{ 'SHOWS.MISSINGEPISODES' | translate }}</h4>
+                            <div class="d-flex flex-row justify-content-start align-items-start align-self-stretch flex-wrap">
+                              <div *ngFor="let episodesBySeason of element.missingEpisodes"
+                                   class="mr-3 mb-3">
+                                <span *ngFor="let missingEpisode of episodesBySeason.episodes">
+                                  S{{episodesBySeason.seasonNumber}} - E{{missingEpisode.episodeNumber}} - {{missingEpisode.name}}<br />
+                                </span>
                               </div>
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -177,11 +177,12 @@
 
                     <tr mat-header-row *matHeaderRowDef="getcolumns()"></tr>
                     <tr mat-row *matRowDef="let row; columns: getcolumns();"
-                      class="element-row"
-                      [class.expanded-row]="expandedRow === row"
-                      (click)="expandedRow = expandedRow === row ? null : row"></tr>
+                        class="element-row"
+                        [class.expanded-row]="expandedRow === row"
+                        (click)="expandedRow = expandedRow === row ? null : row"></tr>
                     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
                   </table>
+                  <mat-paginator [length]="showCount" [pageSize]="30"></mat-paginator>
                 </mat-card-content>
               </mat-card>
             </div>

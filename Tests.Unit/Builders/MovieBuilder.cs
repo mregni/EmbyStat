@@ -11,7 +11,7 @@ namespace Tests.Unit.Builders
     {
         private readonly Movie _movie;
 
-        public MovieBuilder(int id)
+        public MovieBuilder(string id)
         {
             _movie = new Movie
             {
@@ -30,6 +30,12 @@ namespace Tests.Unit.Builders
                 MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } },
                 CollectionId = "1"
             };
+        }
+
+        public MovieBuilder AddSortName(string name)
+        {
+            _movie.SortName = name;
+            return this;
         }
 
         public MovieBuilder AddCreateDate(DateTime date)

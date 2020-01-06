@@ -32,30 +32,34 @@ namespace Tests.Unit.Services
                 new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = LibraryType.TvShow}
             };
 
-            _showOne = new ShowBuilder(1, _collections.First().Id)
+            var showOneId = Guid.NewGuid().ToString();
+            var showTwoId = Guid.NewGuid().ToString();
+            var showThreeId = Guid.NewGuid().ToString();
+
+            _showOne = new ShowBuilder(showOneId, _collections.First().Id)
                 .AddName("Chuck")
                 .AddCreateDate(new DateTime(1990, 4, 2))
                 .AddGenre("Comedy", "Action")
                 .AddCommunityRating(null)
                 .Build();
-            _showTwo = new ShowBuilder(2, _collections.First().Id)
+            _showTwo = new ShowBuilder(showTwoId, _collections.First().Id)
                 .AddName("The 100")
-                .AddMissingEpisodes(10, 1)
+                .AddMissingEpisodes(10, 0)
                 .AddCommunityRating(8.3f)
                 .AddPremiereDate(new DateTime(1992, 4, 1))
-                .AddEpisode(new EpisodeBuilder(3, 2, "1").Build())
-                .AddEpisode(new EpisodeBuilder(4, 2, "1").Build())
+                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), showTwoId, "1").Build())
+                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), showTwoId, "1").Build())
                 .AddGenre("Drama", "Comedy", "Action")
                 .SetContinuing()
                 .AddOfficialRating("TV-16")
                 .AddActor(_showOne.People.First().Id)
                 .Build();
-            _showThree = new ShowBuilder(3, _collections.First().Id)
+            _showThree = new ShowBuilder(showThreeId, _collections.First().Id)
                 .AddName("Dexter")
-                .AddMissingEpisodes(2, 1)
+                .AddMissingEpisodes(2, 0)
                 .AddCommunityRating(8.4f)
                 .AddPremiereDate(new DateTime(2018, 4, 10))
-                .AddEpisode(new EpisodeBuilder(3, 3, "1").Build())
+                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), showThreeId, "1").Build())
                 .AddCreateDate(new DateTime(2003, 4, 2))
                 .AddGenre("War", "Action")
                 .SetContinuing()
@@ -316,7 +320,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetRatingChart()
         {
-            var showFour = new ShowBuilder(4, _collections.First().Id).AddCommunityRating(9.3f).Build();
+            var showFour = new ShowBuilder(Guid.NewGuid().ToString(), _collections.First().Id).AddCommunityRating(9.3f).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
 
             var stat = await subject.GetStatistics(_collections.Select(x => x.Id).ToList());
@@ -350,7 +354,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetPremiereYearChart()
         {
-            var showFour = new ShowBuilder(4, _collections.First().Id).AddPremiereDate(new DateTime(2002, 1, 10)).Build();
+            var showFour = new ShowBuilder(Guid.NewGuid().ToString(), _collections.First().Id).AddPremiereDate(new DateTime(2002, 1, 10)).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
 
             var stat = await subject.GetStatistics(_collections.Select(x => x.Id).ToList());
@@ -385,7 +389,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetCollectedRateChart()
         {
-            var showFour = new ShowBuilder(4, _collections.First().Id).ClearEpisodes().Build();
+            var showFour = new ShowBuilder(Guid.NewGuid().ToString(), _collections.First().Id).ClearEpisodes().Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
             var stat = await subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 

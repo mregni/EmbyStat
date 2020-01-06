@@ -5,6 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { getTestBed, TestBed } from '@angular/core/testing';
 
 import { Library } from '../../../shared/models/library';
+import { ListContainer } from '../../../shared/models/list-container';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 import { ShowService } from './show.service';
 
@@ -61,13 +62,18 @@ describe('ShowService', () => {
             new ShowCollectionRow()
         ];
 
-        service.getCollectedList(['1', '2']).subscribe((rows: ShowCollectionRow[]) => {
-            expect(rows).toEqual(rowsMock);
+        service.getCollectedList(['1', '2'], 0).subscribe((rows: ListContainer<ShowCollectionRow>) => {
+            expect(rows.data).toEqual(rowsMock);
+            expect(rows.totalCount).toEqual(2);
         });
 
-        const req = httpMock.expectOne('/api/show/collectedlist?libraryIds=1&libraryIds=2');
+        const req = httpMock.expectOne('/api/show/collectedlist?page=0&libraryIds=1&libraryIds=2');
         expect(req.request.method).toBe('GET');
-        req.flush(rowsMock);
+
+        const returnData = new ListContainer<ShowCollectionRow>();
+        returnData.data = rowsMock;
+        returnData.totalCount = rowsMock.length;
+        req.flush(returnData);
     });
 
     afterEach(() => {
