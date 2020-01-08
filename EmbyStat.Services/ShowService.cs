@@ -42,7 +42,7 @@ namespace EmbyStat.Services
             return _libraryRepository.GetLibrariesByTypes(settings.ShowLibraryTypes);
         }
 
-        public async Task<ShowStatistics> GetStatistics(List<string> libraryIds)
+        public ShowStatistics GetStatistics(List<string> libraryIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
 
@@ -51,16 +51,16 @@ namespace EmbyStat.Services
                 return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
 
-            return await CalculateShowStatistics(libraryIds);
+            return CalculateShowStatistics(libraryIds);
         }
 
-        public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
+        public ShowStatistics CalculateShowStatistics(List<string> libraryIds)
         {
             var statistics = new ShowStatistics
             {
                 General = CalculateGeneralStatistics(libraryIds),
                 Charts = CalculateCharts(libraryIds),
-                People = await CalculatePeopleStatistics(libraryIds)
+                People = CalculatePeopleStatistics(libraryIds)
             };
 
             var json = JsonConvert.SerializeObject(statistics);
@@ -327,18 +327,18 @@ namespace EmbyStat.Services
 
         #region People
 
-        private async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
+        private PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
         {
             return new PersonStats
             {
-                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(libraryIds)
+                MostFeaturedActorsPerGenre = GetMostFeaturedActorsPerGenreAsync(libraryIds)
             };
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
+        private List<PersonPoster> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
         {
             var shows = _showRepository.GetAllShows(libraryIds, false, false).ToList();
-            return await GetMostFeaturedActorsPerGenreAsync(shows);
+            return GetMostFeaturedActorsPerGenre(shows);
         }
 
         #endregion

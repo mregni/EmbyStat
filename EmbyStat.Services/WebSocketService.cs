@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Emby.WebSocket;
+using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Converters;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +41,7 @@ namespace EmbyStat.Services
                 if (!webSocketApi.IsWebSocketOpenOrConnecting)
                 {
                     var settings = settingsService.GetUserSettings();
-                    if (settings != null && !string.IsNullOrWhiteSpace(settings.Emby.ApiKey))
+                    if (settings != null && !string.IsNullOrWhiteSpace(settings.MediaServer.ApiKey))
                     {
                         try
                         {
@@ -51,11 +51,11 @@ namespace EmbyStat.Services
                             webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
                             webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
                             webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
-                            await webSocketApi.OpenWebSocket(settings.Emby.FullSocketAddress, settings.Emby.ApiKey, deviceId);
+                            await webSocketApi.OpenWebSocket(settings.MediaServer.FullSocketAddress, settings.MediaServer.ApiKey, deviceId);
                         }
                         catch (Exception e)
                         {
-                            _logger.Error(e, "Failed to open socket connection to Emby");
+                            _logger.Error(e, "Failed to open socket connection to MediaServer");
                             throw;
                         }
                     }

@@ -11,14 +11,14 @@ namespace EmbyStat.Controllers.Emby
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class EmbyController : Controller
+    public class MediaServerController : Controller
     {
-        private readonly IEmbyService _embyService;
+        private readonly IMediaServerService _mediaServerService;
         private readonly IMapper _mapper;
 
-        public EmbyController(IEmbyService embyService, IMapper mapper)
+        public MediaServerController(IMediaServerService mediaServerService, IMapper mapper)
         {
-            _embyService = embyService;
+            _mediaServerService = mediaServerService;
             _mapper = mapper;
         }
 
@@ -26,9 +26,9 @@ namespace EmbyStat.Controllers.Emby
 
         [HttpGet]
         [Route("server/info")]
-        public async Task<IActionResult> GetServerInfo()
+        public IActionResult GetServerInfo()
         {
-            var result = await _embyService.GetServerInfoAsync();
+            var result = _mediaServerService.GetServerInfo();
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
             return Ok(serverInfo);
@@ -36,9 +36,9 @@ namespace EmbyStat.Controllers.Emby
 
         [HttpPost]
         [Route("server/test")]
-        public async Task<IActionResult> TestApiKey([FromBody] EmbyLoginViewModel login)
+        public IActionResult TestApiKey([FromBody] LoginViewModel login)
         {
-            var result = await _embyService.TestNewEmbyApiKeyAsync(login.Address, login.ApiKey);
+            var result = _mediaServerService.TestNewApiKey(login.Address, login.ApiKey);
             return Ok(result);
         }
 
@@ -46,24 +46,24 @@ namespace EmbyStat.Controllers.Emby
         [Route("server/search")]
         public IActionResult SearchEmby()
         {
-            var result = _embyService.SearchEmby();
-            return Ok(_mapper.Map<EmbyUdpBroadcastViewModel>(result));
+            var result = _mediaServerService.SearchEmby();
+            return Ok(_mapper.Map<UdpBroadcastViewModel>(result));
         }
 
         [HttpGet]
         [Route("server/status")]
         public IActionResult GetEmbyStatus()
         {
-            var result = _embyService.GetEmbyStatus();
+            var result = _mediaServerService.GetEmbyStatus();
             return Ok(_mapper.Map<EmbyStatusViewModel>(result));
         }
 
         [HttpPost]
         [Route("server/ping")]
-        public async Task<IActionResult> PingEmby([FromBody]UrlViewModel url)
+        public IActionResult PingEmby([FromBody]UrlViewModel url)
         {
-            var result = await _embyService.PingEmbyAsync(url.Url);
-            return Ok(result == "Emby Server");
+            var result = _mediaServerService.PingMediaServer(url.Url);
+            return Ok(result);
         }
 
         #endregion
@@ -74,8 +74,8 @@ namespace EmbyStat.Controllers.Emby
         [Route("plugins")]
         public IActionResult GetPlugins()
         {
-            var result = _embyService.GetAllPlugins();
-            return Ok(_mapper.Map<IList<EmbyPluginViewModel>>(result));
+            var result = _mediaServerService.GetAllPlugins();
+            return Ok(_mapper.Map<IList<PluginViewModel>>(result));
         }
 
         #endregion
@@ -86,8 +86,8 @@ namespace EmbyStat.Controllers.Emby
         [Route("users")]
         public IActionResult GetUsers()
         {
-            var result = _embyService.GetAllUsers();
-            return Ok(_mapper.Map<IList<EmbyUserOverviewViewModel>>(result));
+            var result = _mediaServerService.GetAllUsers();
+            return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
         }
 
         [HttpGet]
@@ -99,17 +99,17 @@ namespace EmbyStat.Controllers.Emby
                 return NotFound();
             }
 
-            var user = _embyService.GetUserById(id);
+            var user = _mediaServerService.GetUserById(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            var mappedUser = _mapper.Map<EmbyUserFullViewModel>(user);
+            var mappedUser = _mapper.Map<UserFullViewModel>(user);
 
-            var viewedEpisodeCount = _embyService.GetViewedEpisodeCountByUserId(id);
-            var viewedMovieCount = _embyService.GetViewedMovieCountByUserId(id);
-            var lastWatchedMedia = _embyService.GetUserViewPageByUserId(id, 0,10).ToList();
+            var viewedEpisodeCount = _mediaServerService.GetViewedEpisodeCountByUserId(id);
+            var viewedMovieCount = _mediaServerService.GetViewedMovieCountByUserId(id);
+            var lastWatchedMedia = _mediaServerService.GetUserViewPageByUserId(id, 0,10).ToList();
 
             mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
             mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);
@@ -127,10 +127,10 @@ namespace EmbyStat.Controllers.Emby
                 return NotFound();
             }
 
-            var views = _embyService.GetUserViewPageByUserId(id, page, size);
+            var views = _mediaServerService.GetUserViewPageByUserId(id, page, size);
             var list = _mapper.Map<IList<UserMediaViewViewModel>>(views);
 
-            var count = _embyService.GetUserViewCount(id);
+            var count = _mediaServerService.GetUserViewCount(id);
             var container = new ListContainer<UserMediaViewViewModel>
             {
                 Data = list.ToList(),
@@ -143,7 +143,7 @@ namespace EmbyStat.Controllers.Emby
         [Route("users/ids")]
         public IActionResult GetUserIdList()
         {
-            var users = _embyService.GetAllUsers();
+            var users = _mediaServerService.GetAllUsers();
             return Ok(_mapper.Map<IList<UserIdViewModel>>(users));
         }
         #endregion

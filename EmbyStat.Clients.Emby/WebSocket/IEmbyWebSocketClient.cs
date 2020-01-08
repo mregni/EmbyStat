@@ -6,7 +6,7 @@ using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Emby.WebSocket
 {
-    public interface IClientWebSocket : IDisposable
+    public interface IEmbyWebSocketClient : IDisposable
     {
         event EventHandler Closed;
         event EventHandler Connected;

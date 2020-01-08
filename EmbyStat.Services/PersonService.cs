@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -14,26 +16,29 @@ namespace EmbyStat.Services
         private readonly IPersonRepository _personRepository;
         private readonly IShowRepository _showRepository;
         private readonly IMovieRepository _movieRepository;
-        private readonly IEmbyClient _embyClient;
+        private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        public PersonService(IPersonRepository personRepository, IShowRepository showRepository, IMovieRepository movieRepository, IEmbyClient embyClient)
+        public PersonService(IPersonRepository personRepository, IShowRepository showRepository, IMovieRepository movieRepository, 
+            IClientStrategy clientStrategy, ISettingsService settingsService)
         {
             _personRepository = personRepository;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
-            _embyClient = embyClient;
             _logger = LogManager.GetCurrentClassLogger();
+
+            var settings = settingsService.GetUserSettings();
+            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
 
-        public async Task<Person> GetPersonByNameAsync(string name)
+        public Person GetPersonByName(string name)
         {
             try
             {
                 var person = _personRepository.GetPersonByName(name);
                 if (person == null)
                 {
-                    var rawPerson = await _embyClient.GetPersonByNameAsync(name);
+                    var rawPerson = _httpClient.GetPersonByName(name);
                     person = PersonConverter.Convert(rawPerson);
                     _personRepository.Insert(person);
                 }

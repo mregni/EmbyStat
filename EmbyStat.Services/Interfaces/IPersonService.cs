@@ -5,6 +5,6 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IPersonService
     {
-        Task<Person> GetPersonByNameAsync(string name);
+        Person GetPersonByName(string name);
     }
 }

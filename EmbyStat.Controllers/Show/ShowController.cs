@@ -31,9 +31,9 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("statistics")]
-        public async Task<IActionResult> GetStatistics(List<string> libraryIds)
+        public IActionResult GetStatistics(List<string> libraryIds)
         {
-            var result = await _showService.GetStatistics(libraryIds);
+            var result = _showService.GetStatistics(libraryIds);
             var convert = _mapper.Map<ShowStatisticsViewModel>(result);
             return Ok(convert);
         }

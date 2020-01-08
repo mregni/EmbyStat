@@ -2,7 +2,7 @@
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 
-namespace EmbyStat.Clients.Emby.Http.Model
+namespace EmbyStat.Clients.Base.Http.Model
 {
     public class ItemQuery
     {

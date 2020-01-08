@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using WebSocketState = WebSocket4Net.WebSocketState;
 
-namespace EmbyStat.Clients.Emby.WebSocket
+namespace EmbyStat.Clients.Base.WebSocket
 {
     public class WebSocketApi : IWebSocketApi, IDisposable
     {
@@ -25,14 +25,14 @@ namespace EmbyStat.Clients.Emby.WebSocket
         public event EventHandler<GenericEventArgs<JArray>> SessionsUpdated;
         public event EventHandler<EventArgs> RestartRequired;
 
-        private readonly IClientWebSocket _clientWebSocket;
+        private readonly IWebSocketClient _clientWebSocket;
         private readonly Logger _logger;
 
         private string ApiUrl { get; set; }
         public string AccessToken { get; set; }
         public string DeviceId { get; set; }
 
-        public WebSocketApi(IClientWebSocket clientWebSocket)
+        public WebSocketApi(IWebSocketClient clientWebSocket)
         {
             _clientWebSocket = clientWebSocket;
             _logger = LogManager.GetCurrentClassLogger();
@@ -53,7 +53,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
 
         public async Task CloseWebSocket()
         {
-           await _clientWebSocket.CloseConnection();
+           //await _clientWebSocket.CloseConnection();
         }
 
         private async Task EnsureConnectionAsync()
@@ -65,12 +65,12 @@ namespace EmbyStat.Clients.Emby.WebSocket
                 try {
                     _logger.Info($"Connecting to {url}");
 
-                    _clientWebSocket.OnReceiveBytes = OnMessageReceived;
-                    _clientWebSocket.OnReceive = OnMessageReceived;
-                    _clientWebSocket.Closed += ClientWebSocketClosed;
-                    _clientWebSocket.Connected += ClientWebSocketConnected;
+                    //_clientWebSocket.OnReceiveBytes = OnMessageReceived;
+                    //_clientWebSocket.OnReceive = OnMessageReceived;
+                    //_clientWebSocket.Closed += ClientWebSocketClosed;
+                    //_clientWebSocket.Connected += ClientWebSocketConnected;
 
-                    await _clientWebSocket.ConnectAsync(url);                
+                    //await _clientWebSocket.ConnectAsync(url);                
                 }
                 catch (Exception e)
                 {
@@ -100,7 +100,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
             var bytes = GetMessageBytes(messageName, data);
             try
             {
-                await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken);
+                //await _clientWebSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cancellationToken);
             }
             catch (Exception e)
             {
@@ -195,7 +195,8 @@ namespace EmbyStat.Clients.Emby.WebSocket
             //    });
             //}
         }
-        public bool IsWebSocketOpenOrConnecting => _clientWebSocket.State == WebSocketState.Open || _clientWebSocket.State == WebSocketState.Connecting;
+
+        public bool IsWebSocketOpenOrConnecting => false; //_clientWebSocket.State == WebSocketState.Open || _clientWebSocket.State == WebSocketState.Connecting;
 
         private string GetMessageType(string json)
         {
@@ -249,7 +250,7 @@ namespace EmbyStat.Clients.Emby.WebSocket
         {
             if (disposing)
             {
-                _clientWebSocket?.Dispose();
+                //_clientWebSocket?.Dispose();
             }
         }
     }

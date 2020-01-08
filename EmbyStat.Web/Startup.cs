@@ -177,7 +177,7 @@ namespace EmbyStat.Web
                 
             var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
             var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-            var embyClient = serviceScope.ServiceProvider.GetService<IEmbyClient>();
+            var embyClient = serviceScope.ServiceProvider.GetService<IEmbyHttpClient>();
             var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
             var settings = settingsService.GetAppSettings();
@@ -217,16 +217,16 @@ namespace EmbyStat.Web
             }
         }
 
-        private void SetEmbyClientConfiguration(ISettingsService settingsService, IEmbyClient embyClient)
+        private void SetEmbyClientConfiguration(ISettingsService settingsService, IEmbyHttpClient client)
         {
             settingsService.SetUpdateInProgressSettingAsync(false);
             var settings = settingsService.GetUserSettings();
 
-            embyClient.SetDeviceInfo(settings.AppName, settings.Emby.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
-            if (!string.IsNullOrWhiteSpace(settings.Emby.ApiKey))
+            client.SetDeviceInfo(settings.AppName, settings.MediaServer.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+            if (!string.IsNullOrWhiteSpace(settings.MediaServer.ApiKey))
             {
-                embyClient.BaseUrl = settings.Emby.FullEmbyServerAddress;
-                embyClient.ApiKey = settings.Emby.ApiKey;
+                client.BaseUrl = settings.MediaServer.FullMediaServerAddress;
+                client.ApiKey = settings.MediaServer.ApiKey;
             }
         }
     }

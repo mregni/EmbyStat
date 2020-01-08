@@ -33,11 +33,11 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.Version, x => x.Ignore())
                 .ReverseMap()
                 .ForMember(x => x.Version, x => x.Ignore());
-            CreateMap<EmbySettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
+            CreateMap<MediaServerSettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
             CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
-		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
-            CreateMap<PluginInfo, EmbyPluginViewModel>();
+		    CreateMap<EmbyUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
+            CreateMap<PluginInfo, PluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
@@ -64,8 +64,8 @@ namespace EmbyStat.Controllers
 	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
             CreateMap<EmbyUser, UserIdViewModel>();
-            CreateMap<EmbyUser, EmbyUserOverviewViewModel>();
-            CreateMap<EmbyUser, EmbyUserFullViewModel>();
+            CreateMap<EmbyUser, UserOverviewViewModel>();
+            CreateMap<EmbyUser, UserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
             CreateMap<VirtualSeason, VirtualSeasonViewModel>();

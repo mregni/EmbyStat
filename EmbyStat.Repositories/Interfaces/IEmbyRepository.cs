@@ -6,23 +6,23 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IEmbyRepository
     {
-        #region Emby Status
+        #region MediaServer Status
         EmbyStatus GetEmbyStatus();
         void IncreaseMissedPings();
         void ResetMissedPings();
         #endregion
 
-        #region Emby Plugins
+        #region MediaServer Plugins
         List<PluginInfo> GetAllPlugins();
         void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins);
         #endregion
 
-        #region Emby Server Info
+        #region MediaServer Server Info
         ServerInfo GetServerInfo();
         void UpsertServerInfo(ServerInfo entity);
         #endregion
 
-        #region Emby Users
+        #region MediaServer Users
         void UpsertUsers(IEnumerable<EmbyUser> users);
         List<EmbyUser> GetAllUsers();
         void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);

@@ -2,13 +2,14 @@
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbyStat.Clients.Base.WebSocket;
 using NLog;
 using WebSocket4Net;
 using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Emby.WebSocket
 {
-    public class ClientWebSocket : IClientWebSocket
+    public class EmbyWebSocketClient : IWebSocketClient
     {
         private WebSocket4Net.WebSocket _socket;
         public WebSocketState State => _socket?.State ?? WebSocketState.Closed;

@@ -133,7 +133,7 @@ namespace EmbyStat.Services.Abstract
 
         #region People
 
-        internal async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<Extra> media)
+        internal List<PersonPoster> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media)
         {
             var list = new List<PersonPoster>();
             foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
@@ -149,7 +149,7 @@ namespace EmbyStat.Services.Abstract
 
                 if (personName != null)
                 {
-                    var person = await PersonService.GetPersonByNameAsync(personName);
+                    var person = PersonService.GetPersonByName(personName);
                     if (person != null)
                     {
                         list.Add(PosterHelper.ConvertToPersonPoster(person, genre));

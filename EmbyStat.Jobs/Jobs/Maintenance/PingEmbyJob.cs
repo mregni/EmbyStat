@@ -12,12 +12,12 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     [DisableConcurrentExecution(30)]
     public class PingEmbyJob : BaseJob, IPingEmbyJob
     {
-        private readonly IEmbyService _embyService;
+        private readonly IMediaServerService _mediaServerService;
 
         public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-            IEmbyService embyService) : base(hubHelper, jobRepository, settingsService, false)
+            IMediaServerService mediaServerService) : base(hubHelper, jobRepository, settingsService, false)
         {
-            _embyService = embyService;
+            _mediaServerService = mediaServerService;
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -27,20 +27,20 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJobAsync()
         {
-            var result = await _embyService.PingEmbyAsync(Settings.Emby.FullEmbyServerAddress);
+            var result = _mediaServerService.PingMediaServer(Settings.MediaServer.FullMediaServerAddress);
             await LogProgress(50);
-            if (result == "Emby Server")
+            if (result == "MediaServer Server")
             {
-                await LogInformation("We found your Emby server");
-                _embyService.ResetMissedPings();
+                await LogInformation("We found your MediaServer server");
+                _mediaServerService.ResetMissedPings();
             }
             else
             {
-                await LogInformation("We could not ping your Emby server. Might be because it's turned off or dns is wrong");
-                _embyService.IncreaseMissedPings();
+                await LogInformation("We could not ping your MediaServer server. Might be because it's turned off or dns is wrong");
+                _mediaServerService.IncreaseMissedPings();
             }
 
-            var status = _embyService.GetEmbyStatus();
+            var status = _mediaServerService.GetEmbyStatus();
             await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
         }

@@ -22,24 +22,27 @@ namespace EmbyStat.Common.Models.Settings
         public bool AutoUpdate { get; set; }
         public UpdateTrain UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
-        public EmbySettings Emby { get; set; }
+        public MediaServerSettings MediaServer { get; set; }
+        [Obsolete("Moved to MediaServer, wil be revmoed in the next few releases. Is last used in migration 6.")]
+        public MediaServerSettings Emby { get; set; }
         public TvdbSettings Tvdb { get; set; }
         public bool EnableRollbarLogging { get; set; }
     }
 
-    public class EmbySettings
+    public class MediaServerSettings
     {
         public string ServerName { get; set; }
         public string ApiKey { get; set; }
         public string ServerAddress { get; set; }
         public int ServerPort { get; set; }
         public string AuthorizationScheme { get; set; }
-        [Obsolete("Moved to AccessToken")]
+        [Obsolete("Moved to AccessToken, will be removed in the next few releases. Is last used in migration 5.")]
         public string AccessToken { get; set; }
         public ConnectionProtocol ServerProtocol { get; set; }
+        public ServerType ServerType { get; set; }
 
         [JsonIgnore]
-        public string FullEmbyServerAddress
+        public string FullMediaServerAddress
         {
             get
             {

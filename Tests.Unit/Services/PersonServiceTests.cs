@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -18,7 +22,7 @@ namespace Tests.Unit.Services
     {
         private readonly BaseItemDto _basePerson;
 
-        private Mock<IEmbyClient> EmbyClientMock { get; set; }
+        private Mock<IEmbyHttpClient> EmbyClientMock { get; set; }
         private Mock<IPersonRepository> PersonRepositoryMock { get; set; }
         public PersonServiceTests()
         {
@@ -40,23 +44,28 @@ namespace Tests.Unit.Services
             PersonRepositoryMock = new Mock<IPersonRepository>();
             PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns(person);
 
-            EmbyClientMock = new Mock<IEmbyClient>();
-            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>()))
-                .ReturnsAsync(_basePerson);
+            EmbyClientMock = new Mock<IEmbyHttpClient>();
+            EmbyClientMock.Setup(x => x.GetPersonByName(It.IsAny<string>()))
+                .Returns(_basePerson);
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
             movieRepositoryMock.Setup(x => x.GetMediaCountForPerson(It.IsAny<string>())).Returns(10);
             var showRepositoryMock = new Mock<IShowRepository>();
             showRepositoryMock.Setup(x => x.GetMediaCountForPerson(It.IsAny<string>())).Returns(2);
+            var settingsServiceMock = new Mock<ISettingsService>();
+            settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { MediaServer = new MediaServerSettings { ServerType = ServerType.Emby } });
 
-            return new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, EmbyClientMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(EmbyClientMock.Object);
+
+            return new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, strategy.Object, settingsServiceMock.Object);
         }
 
         [Fact]
-        public async Task GetPersonByNameNotInDatabase()
+        public void GetPersonByNameNotInDatabase()
         {
             var subject = CreatePersonService(null);
-            var person = await subject.GetPersonByNameAsync("name");
+            var person = subject.GetPersonByName("name");
 
             person.Should().NotBeNull();
             person.Id.Should().Be(_basePerson.Id);
@@ -73,29 +82,34 @@ namespace Tests.Unit.Services
 
             PersonRepositoryMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
 
-            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>()), Times.Once);
+            EmbyClientMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public async Task GetPersonByNameWithEmbyFail()
+        public void GetPersonByNameWithEmbyFail()
         {
             PersonRepositoryMock = new Mock<IPersonRepository>();
             PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns((Person) null);
 
-            EmbyClientMock = new Mock<IEmbyClient>();
-            EmbyClientMock.Setup(x => x.GetPersonByNameAsync(It.IsAny<string>())).Throws(new Exception());
+            EmbyClientMock = new Mock<IEmbyHttpClient>();
+            EmbyClientMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Throws(new Exception());
 
             var movieRepositoryMock = new Mock<IMovieRepository>();
             var showRepositoryMock = new Mock<IShowRepository>();
+            var settingsServiceMock = new Mock<ISettingsService>();
+            settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { MediaServer = new MediaServerSettings { ServerType = ServerType.Emby }});
 
-            var subject = new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, EmbyClientMock.Object);
-            var person = await subject.GetPersonByNameAsync("testing name");
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(EmbyClientMock.Object);
+
+            var subject = new PersonService(PersonRepositoryMock.Object, showRepositoryMock.Object, movieRepositoryMock.Object, strategy.Object, settingsServiceMock.Object);
+            var person = subject.GetPersonByName("testing name");
 
             person.Should().BeNull();
         }
 
         [Fact]
-        public async Task GetPersonByNameInDatabase()
+        public void GetPersonByNameInDatabase()
         {
             var databasePerson = new Person
             {
@@ -112,7 +126,7 @@ namespace Tests.Unit.Services
             };
 
             var subject = CreatePersonService(databasePerson);
-            var person = await subject.GetPersonByNameAsync(databasePerson.Id);
+            var person = subject.GetPersonByName(databasePerson.Id);
 
             person.Should().NotBeNull();
             person.Id.Should().Be(databasePerson.Id);
@@ -129,7 +143,7 @@ namespace Tests.Unit.Services
 
             PersonRepositoryMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Once);
 
-            EmbyClientMock.Verify(x => x.GetPersonByNameAsync(It.IsAny<string>()), Times.Never);
+            EmbyClientMock.Verify(x => x.GetPersonByName(It.IsAny<string>()), Times.Never);
         }
     }
 }

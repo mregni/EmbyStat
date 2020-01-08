@@ -40,7 +40,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
-            var embyServiceMock = new Mock<IEmbyService>();
+            var embyServiceMock = new Mock<IMediaServerService>();
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
@@ -71,7 +71,7 @@ namespace Tests.Unit.Services
             var userSettings = new UserSettings { KeepLogsCount = 1 };
 
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
-            var embyServiceMock = new Mock<IEmbyService>();
+            var embyServiceMock = new Mock<IMediaServerService>();
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
@@ -86,7 +86,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetLogStream()
+        public void GetLogStream_Should_Return_Log()
         {
             if (Directory.Exists(Path.Combine("config", "Logs-test3").GetLocalPath()))
             {
@@ -96,28 +96,27 @@ namespace Tests.Unit.Services
             Directory.CreateDirectory(Path.Combine("config", "Logs-test3").GetLocalPath());
 
             var settings = new AppSettings { Dirs = new Dirs { Logs = "Logs-test3", Config = "config" } };
-            var userSettings = new UserSettings { Emby = new EmbySettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001 }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
+            var userSettings = new UserSettings { MediaServer = new MediaServerSettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001 }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
-            var embyServiceMock = new Mock<IEmbyService>();
-            embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(new ServerInfo { Id = Guid.NewGuid().ToString() });
+            var embyServiceMock = new Mock<IMediaServerService>();
+            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(new ServerInfo { Id = Guid.NewGuid().ToString() });
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
             var line = "Log line: http://192.168.1.1:8001; ApiKey:0000; username:reggi";
             File.AppendAllText(Path.Combine("config", "Logs-test3", "log1.txt").GetLocalPath(), line);
 
-            var stream = await service.GetLogStream("log1.txt", false);
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
-            {
-                var lines = reader.ReadToEnd();
-                lines.Should().Be(line);
-            }
+            var stream = service.GetLogStream("log1.txt", false);
+
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            var lines = reader.ReadToEnd();
+            lines.Should().Be(line);
         }
 
         [Fact]
-        public async Task GetAnonymousLogStream()
+        public async Task GetAnonymousLogStream_Should_Return_Log()
         {
             if (Directory.Exists(Path.Combine("config", "Logs-test4").GetLocalPath()))
             {
@@ -127,12 +126,12 @@ namespace Tests.Unit.Services
             Directory.CreateDirectory(Path.Combine("config", "Logs-test4").GetLocalPath());
 
             var settings = new AppSettings { Dirs = new Dirs { Logs = "Logs-test4", Config = "config" } };
-            var userSettings = new UserSettings { Emby = new EmbySettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001, ApiKey = "123456" }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
+            var userSettings = new UserSettings { MediaServer = new MediaServerSettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001, ApiKey = "123456" }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
-            var embyServiceMock = new Mock<IEmbyService>();
-            embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(new ServerInfo { Id = "654321" });
+            var embyServiceMock = new Mock<IMediaServerService>();
+            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(new ServerInfo { Id = "654321" });
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
@@ -141,12 +140,11 @@ namespace Tests.Unit.Services
             File.AppendAllText(Path.Combine("config", "Logs-test4", "log1.txt").GetLocalPath(), line);
 
 
-            var stream = await service.GetLogStream("log1.txt", true);
-            using (var reader = new StreamReader(stream))
-            {
-                var lines = reader.ReadToEnd();
-                lines.Should().Be(anonymousLine);
-            }
+            var stream = service.GetLogStream("log1.txt", true);
+
+            using var reader = new StreamReader(stream);
+            var lines = reader.ReadToEnd();
+            lines.Should().Be(anonymousLine);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
@@ -23,15 +24,15 @@ namespace Tests.Unit.Services
         private Mock<IShowRepository> _showRepositoryMock;
         private Mock<IEmbyRepository> _embyRepositoryMock;
         private Mock<ISessionService> _sessionServiceMock;
-        private Mock<ISettingsService> _settingsServiceMock;
-        private Mock<IEmbyClient> _embyClientMock;
+        private readonly Mock<ISettingsService> _settingsServiceMock;
+        private Mock<IEmbyHttpClient> _httpClientMock;
 
         public EmbyServiceTests()
         {
             _settingsServiceMock = new Mock<ISettingsService>();
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings
             {
-                Emby = new EmbySettings
+                MediaServer = new MediaServerSettings
                 {
                     ApiKey = "123",
                     ServerAddress = "localhost",
@@ -42,9 +43,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetServerInfoAsync_Should_Return_Emby_Server_Info()
+        public void GetServerInfo_Should_Return_Emby_Server_Info()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -54,8 +55,11 @@ namespace Tests.Unit.Services
             var serverInfo = new ServerInfo { Id = "1234" };
             _embyRepositoryMock.Setup(x => x.GetServerInfo()).Returns(serverInfo);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = await service.GetServerInfoAsync();
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var result = service.GetServerInfo();
 
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
@@ -64,9 +68,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetServerInfoAsync_Should_Return_Emby_Server_Info_And_Fetch_It_From_Emby()
+        public async Task GetServerInfo_Should_Return_Emby_Server_Info_And_Fetch_It_From_Emby()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -77,23 +81,26 @@ namespace Tests.Unit.Services
             _embyRepositoryMock.Setup(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()));
 
             var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
-            _embyClientMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(serverInfo);
+            _httpClientMock.Setup(x => x.GetServerInfo()).Returns(serverInfo);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = await service.GetServerInfoAsync();
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var result = service.GetServerInfo();
 
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
 
             _embyRepositoryMock.Verify(x => x.GetServerInfo(), Times.Once);
             _embyRepositoryMock.Verify(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()), Times.Once);
-            _embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
+            _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
         }
 
         [Fact]
         public void GetEmbyStatus_Should_Return_Emby_Status_Object()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -103,7 +110,10 @@ namespace Tests.Unit.Services
             var embyStatus = new EmbyStatus() { Id = Guid.NewGuid() };
             _embyRepositoryMock.Setup(x => x.GetEmbyStatus()).Returns(embyStatus);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetEmbyStatus();
 
             result.Should().NotBeNull();
@@ -115,7 +125,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void ResetMissedPings_Should_Return_Reset_Missed_Pings()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -124,7 +134,10 @@ namespace Tests.Unit.Services
 
             _embyRepositoryMock.Setup(x => x.ResetMissedPings());
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             service.ResetMissedPings();
 
             _embyRepositoryMock.Verify(x => x.ResetMissedPings(), Times.Once);
@@ -133,7 +146,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void IncreaseMissedPings_Should_Return_Increased_Missed_Pings()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -142,101 +155,113 @@ namespace Tests.Unit.Services
 
             _embyRepositoryMock.Setup(x => x.ResetMissedPings());
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             service.IncreaseMissedPings();
 
             _embyRepositoryMock.Verify(x => x.IncreaseMissedPings(), Times.Once);
         }
 
         [Fact]
-        public async Task PingEmbyAsync_Should_Ping_Emby_Server()
+        public void PingEmby_Should_Ping_Emby_Server()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _sessionServiceMock = new Mock<ISessionService>();
 
-            _embyClientMock.Setup(x => x.PingEmbyAsync()).ReturnsAsync("Emby Server");
+            _httpClientMock.Setup(x => x.Ping()).Returns("MediaServer Server");
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = await service.PingEmbyAsync("localhost:9000");
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var result = service.PingMediaServer("localhost:9000");
             result.Should().NotBeNull();
-            result.Should().Be("Emby Server");
+            result.Should().Be("MediaServer Server");
 
-            _embyClientMock.Verify(x => x.PingEmbyAsync(), Times.Once);
+            _httpClientMock.Verify(x => x.Ping(), Times.Once);
         }
 
         [Fact]
-        public async Task TestNewEmbyApiKey_Should_Return_True()
+        public void TestNewApiKey_Should_Return_True()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _sessionServiceMock = new Mock<ISessionService>();
 
-            _embyClientMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(new ServerInfo());
-            _embyClientMock.SetupSet(x => x.ApiKey = "1234").Verifiable();
-            _embyClientMock.SetupSet(x => x.BaseUrl = "localhost:9000").Verifiable();
+            _httpClientMock.Setup(x => x.GetServerInfo()).Returns(new ServerInfo());
+            _httpClientMock.SetupSet(x => x.ApiKey = "1234").Verifiable();
+            _httpClientMock.SetupSet(x => x.BaseUrl = "localhost:9000").Verifiable();
 
-            _embyClientMock.SetupGet(x => x.ApiKey).Returns("1234");
-            _embyClientMock.SetupGet(x => x.BaseUrl).Returns("localhost:9000");
+            _httpClientMock.SetupGet(x => x.ApiKey).Returns("1234");
+            _httpClientMock.SetupGet(x => x.BaseUrl).Returns("localhost:9000");
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = await service.TestNewEmbyApiKeyAsync("localhost:9000", "1234");
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var result = service.TestNewApiKey("localhost:9000", "1234");
 
             result.Should().BeTrue();
 
-            _embyClientMock.VerifyGet(x => x.ApiKey, Times.Once);
-            _embyClientMock.VerifyGet(x => x.BaseUrl, Times.Once);
+            _httpClientMock.VerifyGet(x => x.ApiKey, Times.Once);
+            _httpClientMock.VerifyGet(x => x.BaseUrl, Times.Once);
 
-            _embyClientMock.VerifySet(x => x.ApiKey = "1234");
-            _embyClientMock.VerifySet(x => x.BaseUrl = "localhost:9000");
+            _httpClientMock.VerifySet(x => x.ApiKey = "1234");
+            _httpClientMock.VerifySet(x => x.BaseUrl = "localhost:9000");
 
-            _embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
+            _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
         }
 
         [Fact]
-        public async Task TestNewEmbyApiKey_Should_Return_False()
+        public void TestNewApiKey_Should_Return_False()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _sessionServiceMock = new Mock<ISessionService>();
 
-            _embyClientMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync((ServerInfo)null);
-            _embyClientMock.SetupSet(x => x.ApiKey = "1234").Verifiable();
-            _embyClientMock.SetupSet(x => x.BaseUrl = "localhost:9000").Verifiable();
+            _httpClientMock.Setup(x => x.GetServerInfo()).Returns((ServerInfo)null);
+            _httpClientMock.SetupSet(x => x.ApiKey = "1234").Verifiable();
+            _httpClientMock.SetupSet(x => x.BaseUrl = "localhost:9000").Verifiable();
 
-            _embyClientMock.SetupGet(x => x.ApiKey).Returns("12345");
-            _embyClientMock.SetupGet(x => x.BaseUrl).Returns("localhost:9001");
+            _httpClientMock.SetupGet(x => x.ApiKey).Returns("12345");
+            _httpClientMock.SetupGet(x => x.BaseUrl).Returns("localhost:9001");
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = await service.TestNewEmbyApiKeyAsync("localhost:9000", "1234");
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var result = service.TestNewApiKey("localhost:9000", "1234");
 
             result.Should().BeFalse();
 
-            _embyClientMock.VerifyGet(x => x.ApiKey, Times.Once);
-            _embyClientMock.VerifyGet(x => x.BaseUrl, Times.Once);
+            _httpClientMock.VerifyGet(x => x.ApiKey, Times.Once);
+            _httpClientMock.VerifyGet(x => x.BaseUrl, Times.Once);
 
-            _embyClientMock.VerifySet(x => x.ApiKey = "1234", Times.Once);
-            _embyClientMock.VerifySet(x => x.BaseUrl = "localhost:9000", Times.Once);
+            _httpClientMock.VerifySet(x => x.ApiKey = "1234", Times.Once);
+            _httpClientMock.VerifySet(x => x.BaseUrl = "localhost:9000", Times.Once);
 
-            _embyClientMock.VerifySet(x => x.ApiKey = "12345", Times.Once);
-            _embyClientMock.VerifySet(x => x.BaseUrl = "localhost:9001", Times.Once);
+            _httpClientMock.VerifySet(x => x.ApiKey = "12345", Times.Once);
+            _httpClientMock.VerifySet(x => x.BaseUrl = "localhost:9001", Times.Once);
 
-            _embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
+            _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
         }
 
         [Fact]
         public void GetAllPlugins_Should_Return_List_Of_Plugins()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -246,7 +271,10 @@ namespace Tests.Unit.Services
             var plugins = new List<PluginInfo> { new PluginInfo { Id = "123" }, new PluginInfo { Id = "234" } };
             _embyRepositoryMock.Setup(x => x.GetAllPlugins()).Returns(plugins);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetAllPlugins();
 
             result.Should().NotContainNulls();
@@ -258,7 +286,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetAllUsers_Should_Return_List_Of_Users()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -268,7 +296,10 @@ namespace Tests.Unit.Services
             var users = new List<EmbyUser>() { new EmbyUser(), new EmbyUser() };
             _embyRepositoryMock.Setup(x => x.GetAllUsers()).Returns(users);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetAllUsers().ToList();
 
             result.Should().NotContainNulls();
@@ -280,7 +311,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetUserById_Should_Return_Correct_User()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -291,7 +322,10 @@ namespace Tests.Unit.Services
             _embyRepositoryMock.Setup(x => x.GetUserById("1")).Returns(users[0]);
             _embyRepositoryMock.Setup(x => x.GetUserById("2")).Returns(users[1]);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetUserById("1");
 
             result.Should().NotBeNull();
@@ -303,7 +337,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetViewedEpisodeCountByUserId_Should_Return_Total_Episode_View_Count()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -313,7 +347,10 @@ namespace Tests.Unit.Services
             _sessionServiceMock.Setup(x => x.GetMediaIdsForUser(It.IsAny<string>(), It.IsAny<PlayType>()))
                 .Returns(new[] { "12", "13", "14" });
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetViewedEpisodeCountByUserId("1");
 
             result.Should().NotBeNull();
@@ -326,7 +363,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetViewedMovieCountByUserId_Should_Return_Total_Movie_View_Count()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -336,7 +373,10 @@ namespace Tests.Unit.Services
             _sessionServiceMock.Setup(x => x.GetMediaIdsForUser(It.IsAny<string>(), It.IsAny<PlayType>()))
                 .Returns(new[] { "12", "13", "14" });
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetViewedMovieCountByUserId("1");
 
             result.Should().NotBeNull();
@@ -349,7 +389,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetUserViewCount_Should_Return_User_View_Count()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -358,7 +398,10 @@ namespace Tests.Unit.Services
 
             _sessionServiceMock.Setup(x => x.GetPlayCountForUser(It.IsAny<string>())).Returns(12);
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.GetUserViewCount("1");
 
             result.Should().Be(12);
@@ -367,9 +410,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetAndProcessServerInfoAsync_Should_Save_Server_Info()
+        public void GetAndProcessServerInfo_Should_Save_Server_Info()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -377,24 +420,27 @@ namespace Tests.Unit.Services
             _sessionServiceMock = new Mock<ISessionService>();
 
             var serverInfo = new ServerInfo { Id = "1234" };
-            _embyClientMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(serverInfo);
+            _httpClientMock.Setup(x => x.GetServerInfo()).Returns(serverInfo);
             _embyRepositoryMock.Setup(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()));
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = await service.GetAndProcessServerInfoAsync();
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var result = service.GetAndProcessServerInfo();
 
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
 
-            _embyClientMock.Verify(x => x.GetServerInfoAsync(), Times.Once);
+            _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
             _embyRepositoryMock.Verify(x => x.UpsertServerInfo(serverInfo), Times.Once);
 
         }
 
         [Fact]
-        public async Task GetAndProcessPluginInfoAsync_Should_Save_Plugins()
+        public void GetAndProcessPluginInfo_Should_Save_Plugins()
         {
-            _embyClientMock = new Mock<IEmbyClient>();
+            _httpClientMock = new Mock<IEmbyHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -402,14 +448,17 @@ namespace Tests.Unit.Services
             _sessionServiceMock = new Mock<ISessionService>();
 
             var plugins = new List<PluginInfo> { new PluginInfo(), new PluginInfo() };
-            _embyClientMock.Setup(x => x.GetInstalledPluginsAsync()).ReturnsAsync(plugins);
+            _httpClientMock.Setup(x => x.GetInstalledPlugins()).Returns(plugins);
 
             _embyRepositoryMock.Setup(x => x.RemoveAllAndInsertPluginRange(plugins));
 
-            var service = new EmbyService(_embyClientMock.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            await service.GetAndProcessPluginInfoAsync();
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            _embyClientMock.Verify(x => x.GetInstalledPluginsAsync(), Times.Once);
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            service.GetAndProcessPluginInfo();
+
+            _httpClientMock.Verify(x => x.GetInstalledPlugins(), Times.Once);
             _embyRepositoryMock.Verify(x => x.RemoveAllAndInsertPluginRange(plugins), Times.Once);
 
         }

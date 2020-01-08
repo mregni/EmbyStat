@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using EmbyStat.Clients.Emby.Http.Model;
+using EmbyStat.Clients.Base.Http.Model;
 using RestSharp;
 
 namespace EmbyStat.Clients.Emby.Http

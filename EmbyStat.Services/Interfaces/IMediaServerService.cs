@@ -6,15 +6,15 @@ using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces
 {
-    public interface IEmbyService
+    public interface IMediaServerService
     {
         #region Server
 
         EmbyUdpBroadcast SearchEmby();
-        Task<ServerInfo> GetServerInfoAsync();
-        Task<bool> TestNewEmbyApiKeyAsync(string url, string apiKey);
+        ServerInfo GetServerInfo();
+        bool TestNewApiKey(string url, string apiKey);
         EmbyStatus GetEmbyStatus();
-        Task<string> PingEmbyAsync(string url);
+        bool PingMediaServer(string url);
         void ResetMissedPings();
         void IncreaseMissedPings();
 
@@ -39,10 +39,10 @@ namespace EmbyStat.Services.Interfaces
 
         #region JobHelpers
 
-        Task<ServerInfo> GetAndProcessServerInfoAsync();
-        Task GetAndProcessPluginInfoAsync();
-        Task GetAndProcessEmbyUsersAsync();
-        Task GetAndProcessDevicesAsync();
+        ServerInfo GetAndProcessServerInfo();
+        void GetAndProcessPluginInfo();
+        void GetAndProcessUsers();
+        void GetAndProcessDevices();
 
         #endregion
     }

@@ -29,9 +29,9 @@ namespace EmbyStat.Controllers.Log
 
         [HttpGet]
         [Route("download/{fileName}")]
-        public async Task<FileResult> GetZipFile(string fileName, bool anonymous)
+        public FileResult GetZipFile(string fileName, bool anonymous)
         {
-            var stream = await _logService.GetLogStream(fileName, anonymous);
+            var stream = _logService.GetLogStream(fileName, anonymous);
             return File(stream, "application/octet-stream", fileName);
         }
     }

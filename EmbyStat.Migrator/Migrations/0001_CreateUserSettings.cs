@@ -30,7 +30,7 @@ namespace EmbyStat.Migrator.Migrations
                     Username = string.Empty,
                     Version = 0,
                     WizardFinished = false,
-                    Emby = new EmbySettings
+                    MediaServer = new MediaServerSettings
                     {
                         AuthorizationScheme = "MediaBrowser"
                     },

@@ -24,19 +24,19 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
-	    public async Task TestApiKey_Should_Return_True_If_Token_Is_Valid()
+	    public void TestApiKey_Should_Return_True_If_Token_Is_Valid()
         {
-            var embyServiceMock = new Mock<IEmbyService>();
-            embyServiceMock.Setup(x => x.TestNewEmbyApiKeyAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var embyServiceMock = new Mock<IMediaServerService>();
+            embyServiceMock.Setup(x => x.TestNewApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
-            var controller = new EmbyController(embyServiceMock.Object, _mapper);
-            var loginViewModel = new EmbyLoginViewModel
+            var controller = new MediaServerController(embyServiceMock.Object, _mapper);
+            var loginViewModel = new LoginViewModel
 		    {
 			    Address = "http://localhost",
 			    ApiKey = "12345"
 		    };
 
-            var result = await controller.TestApiKey(loginViewModel);
+            var result = controller.TestApiKey(loginViewModel);
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    
             var succeeded = resultObject.Should().BeOfType<bool>().Subject;
@@ -57,13 +57,13 @@ namespace Tests.Unit.Controllers
                 Protocol = 0
             };
 
-            var embyServiceMock = new Mock<IEmbyService>();
+            var embyServiceMock = new Mock<IMediaServerService>();
             embyServiceMock.Setup(x => x.SearchEmby()).Returns(emby);
-            var controller = new EmbyController(embyServiceMock.Object, _mapper);
+            var controller = new MediaServerController(embyServiceMock.Object, _mapper);
             var result = controller.SearchEmby();
 
 		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-		    var embyUdpBroadcast = resultObject.Should().BeOfType<EmbyUdpBroadcastViewModel>().Subject;
+		    var embyUdpBroadcast = resultObject.Should().BeOfType<UdpBroadcastViewModel>().Subject;
 
             embyUdpBroadcast.Address.Should().Be(emby.Address);
 		    embyUdpBroadcast.Port.Should().Be(emby.Port);
@@ -76,7 +76,7 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
-	    public async Task GetServerInfo_Should_Return_Emby_Server_Info()
+	    public void GetServerInfo_Should_Return_Emby_Server_Info()
 	    {
             var serverInfoObject = new ServerInfo
             {
@@ -84,11 +84,11 @@ namespace Tests.Unit.Controllers
                 HttpsPortNumber = 8097
             };
 
-            var embyServiceMock = new Mock<IEmbyService>();
-            embyServiceMock.Setup(x => x.GetServerInfoAsync()).ReturnsAsync(serverInfoObject);
-            var controller = new EmbyController(embyServiceMock.Object, _mapper);
+            var embyServiceMock = new Mock<IMediaServerService>();
+            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(serverInfoObject);
+            var controller = new MediaServerController(embyServiceMock.Object, _mapper);
 
-            var result = await controller.GetServerInfo();
+            var result = controller.GetServerInfo();
 		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var serverInfo = resultObject.Should().BeOfType<ServerInfoViewModel>().Subject;
 

@@ -14,7 +14,7 @@ namespace EmbyStat.Repositories
 
         }
 
-        #region Emby Status
+        #region MediaServer Status
         public EmbyStatus GetEmbyStatus()
         {
             return ExecuteQuery(() =>
@@ -59,7 +59,7 @@ namespace EmbyStat.Repositories
         
         #endregion
 
-        #region Emby Plugins
+        #region MediaServer Plugins
         public List<PluginInfo> GetAllPlugins()
         {
             return ExecuteQuery(() =>
@@ -88,7 +88,7 @@ namespace EmbyStat.Repositories
 
         #endregion
 
-        #region Emby Server Info
+        #region MediaServer Server Info
         public ServerInfo GetServerInfo()
         {
             return ExecuteQuery(() =>
@@ -115,7 +115,7 @@ namespace EmbyStat.Repositories
 
         #endregion
 
-        #region Emby Users
+        #region MediaServer Users
 
         public void UpsertUsers(IEnumerable<EmbyUser> users)
         {

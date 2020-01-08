@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Clients.Emby.Http.Model;
+using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Http;
+using EmbyStat.Clients.Base.Http.Model;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
@@ -20,13 +22,14 @@ using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Querying;
+using LocationType = MediaBrowser.Model.Entities.LocationType;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
     [DisableConcurrentExecution(60 * 60)]
     public class MediaSyncJob : BaseJob, IMediaSyncJob
     {
-        private readonly IEmbyClient _embyClient;
+        private readonly IHttpClient _httpClient;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly ILibraryRepository _libraryRepository;
@@ -36,11 +39,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IShowService _showService;
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IEmbyClient embyClient, IMovieRepository movieRepository, IShowRepository showRepository,
+            IClientStrategy clientStrategy, IMovieRepository movieRepository, IShowRepository showRepository,
             ILibraryRepository libraryRepository, ITvdbClient tvdbClient, IStatisticsRepository statisticsRepository,
             IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
         {
-            _embyClient = embyClient;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _libraryRepository = libraryRepository;
@@ -49,6 +51,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _movieService = movieService;
             _showService = showService;
             Title = jobRepository.GetById(Id).Title;
+
+            var settings = settingsService.GetUserSettings();
+            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
 
         public sealed override Guid Id => Constants.JobIds.MediaSyncId;
@@ -65,9 +70,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            if (!await IsEmbyAliveAsync())
+            if (!IsMediaServerOnline())
             {
-                await LogWarning($"Halting task because we can't contact the Emby server on {Settings.Emby.FullEmbyServerAddress}, please check the connection and try again.");
+                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.FullMediaServerAddress}, please check the connection and try again.");
                 return;
             }
 
@@ -98,7 +103,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var neededLibraries = libraries.Where(x => Settings.MovieLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
-                var totalCount = await GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                var totalCount = GetTotalLibraryMovieCount(neededLibraries[i].Id);
                 await LogInformation($"Found {totalCount} movies for {neededLibraries[i].Name} library");
                 var processed = 0;
                 var j = 0;
@@ -119,7 +124,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task<int> GetTotalLibraryMovieCount(string parentId)
+        private int GetTotalLibraryMovieCount(string parentId)
         {
             var countQuery = new ItemQuery
             {
@@ -131,7 +136,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 EnableTotalRecordCount = true
             };
 
-            var totalCountResult = await _embyClient.GetItemsAsync(countQuery);
+            var totalCountResult = _httpClient.GetItems(countQuery);
             return totalCountResult.TotalRecordCount;
         }
 
@@ -158,7 +163,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             try
             {
-                var embyMovies = await _embyClient.GetItemsAsync(query);
+                var embyMovies = _httpClient.GetItems(query);
                 var movies = embyMovies.Items
                     .Where(x => x.Type == Constants.Type.Movie)
                     .Select(x => MovieConverter.ConvertToMovie(x, parentId))
@@ -208,7 +213,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task PerformShowSyncAsync(IReadOnlyList<string> showsThatNeedAnUpdate, Library library, DateTime updateStartTime)
         {
-            var showList = await GetShowForLibraryAsync(library.Id);
+            var showList = GetShowForLibrary(library.Id);
             await LogInformation($"Found {showList.Items.Length} show for {library.Name} library");
 
             var grouped = showList.Items.GroupBy(x => x.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value).ToList();
@@ -237,7 +242,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                         }
                     };
 
-                    var showChildren = await _embyClient.GetItemsAsync(query);
+                    var showChildren = _httpClient.GetItems(query);
 
                     var seasons = showChildren.Items
                         .Where(x => x.ParentId == show.Id)
@@ -284,7 +289,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private Task<QueryResult<BaseItemDto>> GetShowForLibraryAsync(string libraryId)
+        private QueryResult<BaseItemDto> GetShowForLibrary(string libraryId)
         {
             var query = new ItemQuery
             {
@@ -305,7 +310,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
             };
 
-            return _embyClient.GetItemsAsync(query);
+            return _httpClient.GetItems(query);
 
         }
 
@@ -402,11 +407,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
-        private async Task<bool> IsEmbyAliveAsync()
+        private bool IsMediaServerOnline()
         {
-            _embyClient.BaseUrl = Settings.Emby.FullEmbyServerAddress;
-            var result = await _embyClient.PingEmbyAsync();
-            return result == "Emby Server";
+            _httpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
+            return _httpClient.Ping();
         }
 
         private async Task CalculateStatistics()
@@ -420,7 +424,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var movieLibrarySets = movieLibraries.PowerSets().ToList();
             for (var i = 0; i < movieLibrarySets.Count; i++)
             {
-                await _movieService.CalculateMovieStatistics(movieLibrarySets[i].ToList());
+                _movieService.CalculateMovieStatistics(movieLibrarySets[i].ToList());
                 await LogProgress(Math.Round(85 + 8 * (i + 1) / (double)movieLibrarySets.Count, 1));
             }
 
@@ -430,7 +434,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             for (var i = 0; i < showLibrarySets.Count; i++)
             {
                 var libraryList = showLibrarySets[i].ToList();
-                await _showService.CalculateShowStatistics(libraryList);
+                _showService.CalculateShowStatistics(libraryList);
                 _showService.CalculateCollectedRows(libraryList);
 
                 await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
@@ -439,8 +443,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task<List<Library>> GetLibrariesAsync()
         {
-            await LogInformation("Asking Emby for all root folders");
-            var rootItems = await _embyClient.GetMediaFoldersAsync();
+            await LogInformation("Asking MediaServer for all root folders");
+            var rootItems = _httpClient.GetMediaFolders();
 
             return rootItems.Items
                 .Select(x => new Library

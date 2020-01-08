@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Controllers.Emby
 {
-    public class EmbyUserOverviewViewModel
+    public class UserOverviewViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

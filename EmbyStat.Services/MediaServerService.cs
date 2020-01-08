@@ -5,7 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
@@ -22,9 +23,9 @@ using NLog;
 
 namespace EmbyStat.Services
 {
-    public class EmbyService : IEmbyService
+    public class MediaServerService : IMediaServerService
     {
-        private readonly IEmbyClient _embyClient;
+        private readonly IHttpClient _httpClient;
         private readonly IEmbyRepository _embyRepository;
         private readonly ISessionService _sessionService;
         private readonly ISettingsService _settingsService;
@@ -32,89 +33,89 @@ namespace EmbyStat.Services
         private readonly IShowRepository _showRepository;
         private readonly Logger _logger;
 
-        public EmbyService(IEmbyClient embyClient, IEmbyRepository embyRepository, ISessionService sessionService,
+        public MediaServerService(IClientStrategy clientStrategy, IEmbyRepository embyRepository, ISessionService sessionService,
             ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
         {
-            _embyClient = embyClient;
             _embyRepository = embyRepository;
             _sessionService = sessionService;
             _settingsService = settingsService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _logger = LogManager.GetCurrentClassLogger();
+
+            var settings = _settingsService.GetUserSettings();
+            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
 
         #region Server
         public EmbyUdpBroadcast SearchEmby()
         {
-            using (var client = new UdpClient())
+            using var client = new UdpClient();
+            var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
+            var serverEp = new IPEndPoint(IPAddress.Any, 7359);
+
+            client.EnableBroadcast = true;
+            client.Send(requestData, requestData.Length, new IPEndPoint(IPAddress.Broadcast, 7359));
+
+            var timeToWait = TimeSpan.FromSeconds(2);
+
+            var asyncResult = client.BeginReceive(null, null);
+            asyncResult.AsyncWaitHandle.WaitOne(timeToWait);
+            if (asyncResult.IsCompleted)
             {
-                var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
-                var serverEp = new IPEndPoint(IPAddress.Any, 7359);
-
-                client.EnableBroadcast = true;
-                client.Send(requestData, requestData.Length, new IPEndPoint(IPAddress.Broadcast, 7359));
-
-                var timeToWait = TimeSpan.FromSeconds(2);
-
-                var asyncResult = client.BeginReceive(null, null);
-                asyncResult.AsyncWaitHandle.WaitOne(timeToWait);
-                if (asyncResult.IsCompleted)
+                try
                 {
-                    try
+                    var receivedData = client.EndReceive(asyncResult, ref serverEp);
+                    var serverResponse = Encoding.ASCII.GetString(receivedData);
+                    var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
+
+                    var settings = _settingsService.GetUserSettings();
+                    settings.MediaServer.ServerName = udpBroadcastResult.Name;
+                    _settingsService.SaveUserSettingsAsync(settings);
+
+                    if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address))
                     {
-                        var receivedData = client.EndReceive(asyncResult, ref serverEp);
-                        var serverResponse = Encoding.ASCII.GetString(receivedData);
-                        var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
-
-                        var settings = _settingsService.GetUserSettings();
-                        settings.Emby.ServerName = udpBroadcastResult.Name;
-                        _settingsService.SaveUserSettingsAsync(settings);
-
-                        if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address))
-                        {
-                            _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
-                        }
-
-                        return udpBroadcastResult;
-
+                        _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
                     }
-                    catch (Exception)
-                    {
-                        // No data received, swallow exception and return empty object
-                    }
+
+                    return udpBroadcastResult;
+
                 }
-
-                return new EmbyUdpBroadcast();
+                catch (Exception)
+                {
+                    // No data received, swallow exception and return empty object
+                }
             }
+
+            return new EmbyUdpBroadcast();
         }
 
-        public async Task<ServerInfo> GetServerInfoAsync()
+        public ServerInfo GetServerInfo()
         {
             var server = _embyRepository.GetServerInfo();
             if (server == null)
             {
-                server = await GetAndProcessServerInfoAsync();
+                server = GetAndProcessServerInfo();
             }
 
             return server;
         }
 
-        public async Task<bool> TestNewEmbyApiKeyAsync(string url, string apiKey)
+        public bool TestNewApiKey(string url, string apiKey)
         {
-            var oldApiKey = _embyClient.ApiKey;
-            var oldUrl = _embyClient.BaseUrl;
-            _embyClient.ApiKey = apiKey;
-            _embyClient.BaseUrl = url;
+            var oldApiKey = _httpClient.ApiKey;
+            var oldUrl = _httpClient.BaseUrl;
+            _httpClient.ApiKey = apiKey;
+            _httpClient.BaseUrl = url;
 
-            var info = await _embyClient.GetServerInfoAsync();
+            var info = _httpClient.GetServerInfo();
             if (info != null)
             {
                 return true;
             }
 
-            _embyClient.ApiKey = oldApiKey;
-            _embyClient.BaseUrl = oldUrl;
+            _httpClient.ApiKey = oldApiKey;
+            _httpClient.BaseUrl = oldUrl;
             return false;
         }
 
@@ -123,10 +124,10 @@ namespace EmbyStat.Services
             return _embyRepository.GetEmbyStatus();
         }
 
-        public Task<string> PingEmbyAsync(string url)
+        public bool PingMediaServer(string url)
         {
-            _embyClient.BaseUrl = url;
-            return _embyClient.PingEmbyAsync();
+            _httpClient.BaseUrl = url;
+            return _httpClient.Ping();
         }
 
         public void ResetMissedPings()
@@ -219,22 +220,22 @@ namespace EmbyStat.Services
 
         #region JobHelpers
 
-        public async Task<ServerInfo> GetAndProcessServerInfoAsync()
+        public ServerInfo GetAndProcessServerInfo()
         {
-            var server = await _embyClient.GetServerInfoAsync();
+            var server = _httpClient.GetServerInfo();
             _embyRepository.UpsertServerInfo(server);
             return server;
         }
 
-        public async Task GetAndProcessPluginInfoAsync()
+        public void GetAndProcessPluginInfo()
         {
-            var plugins = await _embyClient.GetInstalledPluginsAsync();
+            var plugins = _httpClient.GetInstalledPlugins();
             _embyRepository.RemoveAllAndInsertPluginRange(plugins);
         }
 
-        public async Task GetAndProcessEmbyUsersAsync()
+        public void GetAndProcessUsers()
         {
-            var usersJson = await _embyClient.GetEmbyUsersAsync();
+            var usersJson = _httpClient.GetUsers();
             var users = usersJson.ConvertToUserList();
             _embyRepository.UpsertUsers(users);
 
@@ -243,9 +244,9 @@ namespace EmbyStat.Services
             _embyRepository.MarkUsersAsDeleted(removedUsers);
         }
 
-        public async Task GetAndProcessDevicesAsync()
+        public void GetAndProcessDevices()
         {
-            var devicesJson = await _embyClient.GetEmbyDevicesAsync();
+            var devicesJson = _httpClient.GetDevices();
             var devices = devicesJson.ConvertToDeviceList();
             _embyRepository.UpsertDevices(devices);
 

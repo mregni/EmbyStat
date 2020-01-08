@@ -4,7 +4,7 @@ using EmbyStat.Controllers.HelperClasses;
 
 namespace EmbyStat.Controllers.Emby
 {
-    public class EmbyUserFullViewModel
+    public class UserFullViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

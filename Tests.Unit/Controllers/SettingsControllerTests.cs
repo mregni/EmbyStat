@@ -40,7 +40,7 @@ namespace Tests.Unit.Controllers
                 UpdateTrain = UpdateTrain.Beta,
                 Username = "reggi",
                 WizardFinished = true,
-                Emby = new EmbySettings
+                MediaServer = new MediaServerSettings
                 {
                     ApiKey = "1234567980",
                     ServerName = "ServerName",
@@ -117,7 +117,7 @@ namespace Tests.Unit.Controllers
                 UpdateTrain = 0,
                 Username = "reggi",
                 WizardFinished = true,
-                Emby = new FullSettingsViewModel.EmbySettingsViewModel
+                MediaServer = new FullSettingsViewModel.EmbySettingsViewModel
                 {
                     ApiKey = "1234567980",
                     ServerName = "ServerName",

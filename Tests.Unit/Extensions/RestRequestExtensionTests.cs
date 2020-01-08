@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using EmbyStat.Clients.Base.Http.Model;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Clients.Emby.Http.Model;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;

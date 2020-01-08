@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using Newtonsoft.Json.Linq;
 
-namespace EmbyStat.Clients.Emby.WebSocket
+namespace EmbyStat.Clients.Base.WebSocket
 {
     public interface IWebSocketApi
     {

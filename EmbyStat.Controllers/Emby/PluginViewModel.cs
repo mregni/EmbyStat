@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Controllers.Emby
 {
-    public class EmbyPluginViewModel
+    public class PluginViewModel
     {
 	    public string Name { get; set; }
 	    public DateTime ConfigurationDateLastModified { get; set; }

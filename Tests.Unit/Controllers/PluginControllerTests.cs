@@ -13,8 +13,8 @@ namespace Tests.Unit.Controllers
 {
 	public class PluginControllerTests : IDisposable
 	{
-		private readonly EmbyController _subject;
-		private readonly Mock<IEmbyService> _embyServiceMock;
+		private readonly MediaServerController _subject;
+		private readonly Mock<IMediaServerService> _embyServiceMock;
 		private readonly List<PluginInfo> _plugins;
 
 		public PluginControllerTests()
@@ -25,12 +25,12 @@ namespace Tests.Unit.Controllers
 				new PluginInfo{ Name = "EmbyStat plugin"}
 			};
 
-            _embyServiceMock = new Mock<IEmbyService>();
+            _embyServiceMock = new Mock<IMediaServerService>();
             _embyServiceMock.Setup(x => x.GetAllPlugins()).Returns(_plugins);
 
 		    var _mapperMock = new Mock<IMapper>();
-            _mapperMock.Setup(x => x.Map<IList<EmbyPluginViewModel>>(It.IsAny<List<PluginInfo>>())).Returns(new List<EmbyPluginViewModel>{ new EmbyPluginViewModel { Name = "Trakt plugin" }, new EmbyPluginViewModel { Name = "EmbyStat plugin" } });
-            _subject = new EmbyController(_embyServiceMock.Object, _mapperMock.Object);
+            _mapperMock.Setup(x => x.Map<IList<PluginViewModel>>(It.IsAny<List<PluginInfo>>())).Returns(new List<PluginViewModel>{ new PluginViewModel { Name = "Trakt plugin" }, new PluginViewModel { Name = "EmbyStat plugin" } });
+            _subject = new MediaServerController(_embyServiceMock.Object, _mapperMock.Object);
 		}
 
 		public void Dispose()
@@ -43,7 +43,7 @@ namespace Tests.Unit.Controllers
         {
             var result = _subject.GetPlugins();
 			var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-			var list = resultObject.Should().BeOfType<List<EmbyPluginViewModel>>().Subject;
+			var list = resultObject.Should().BeOfType<List<PluginViewModel>>().Subject;
 
 			list.Count.Should().Be(2);
 			list[0].Name.Should().Be(_plugins[0].Name);
