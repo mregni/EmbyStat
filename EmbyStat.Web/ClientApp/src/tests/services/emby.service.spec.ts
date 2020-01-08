@@ -1,31 +1,32 @@
-import { EmbyLogin } from 'src/app/shared/models/emby/emby-login';
-import { EmbyStatus } from 'src/app/shared/models/emby/emby-status';
-import { EmbyUdpBroadcast } from 'src/app/shared/models/emby/emby-udp-broadcast';
-import { EmbyUser } from 'src/app/shared/models/emby/emby-user';
-import { UserId } from 'src/app/shared/models/emby/user-id';
 import { ListContainer } from 'src/app/shared/models/list-container';
+import { MediaServerLogin } from 'src/app/shared/models/media-server/media-server-login';
+import { MediaServerStatus } from 'src/app/shared/models/media-server/media-server-status';
+import {
+    MediaServerUdpBroadcast
+} from 'src/app/shared/models/media-server/media-server-udp-broadcast';
+import { MediaServerUser } from 'src/app/shared/models/media-server/media-server-user';
+import { UserId } from 'src/app/shared/models/media-server/user-id';
 import { UserMediaView } from 'src/app/shared/models/session/user-media-view';
-import { EmbyService } from 'src/app/shared/services/emby.service';
+import { MediaServerService } from 'src/app/shared/services/media-server.service';
 
-import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
 
-import { EmbyPlugin } from '../../app/shared/models/emby/emby-plugin';
-import { ServerInfo } from '../../app/shared/models/emby/server-info';
+import { MediaServerPlugin } from '../../app/shared/models/media-server/media-server-plugin';
+import { ServerInfo } from '../../app/shared/models/media-server/server-info';
 
 describe('EmbyService', () => {
     let injector: TestBed;
-    let service: EmbyService;
+    let service: MediaServerService;
     let httpMock: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [EmbyService]
+            providers: [MediaServerService]
         });
         injector = getTestBed();
-        service = injector.get(EmbyService);
+        service = injector.get(MediaServerService);
         httpMock = injector.get(HttpTestingController);
     });
 
@@ -33,22 +34,22 @@ describe('EmbyService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should fetch Emby plugins', () => {
+    it('should fetch media server plugins', () => {
         const pluginMoc = [
-            new EmbyPlugin(),
-            new EmbyPlugin()
+            new MediaServerPlugin(),
+            new MediaServerPlugin()
         ];
 
-        service.getPlugins().subscribe((plugins: EmbyPlugin[]) => {
+        service.getPlugins().subscribe((plugins: MediaServerPlugin[]) => {
             expect(plugins).toEqual(pluginMoc);
         });
 
-        const req = httpMock.expectOne('/api/emby/plugins');
+        const req = httpMock.expectOne('/api/mediaserver/plugins');
         expect(req.request.method).toBe('GET');
         req.flush(pluginMoc);
     });
 
-    it('should fetch Emby server info', () => {
+    it('should fetch media server server info', () => {
         const infoMock = new ServerInfo();
         infoMock.id = '12';
 
@@ -56,66 +57,66 @@ describe('EmbyService', () => {
             expect(info.id).toEqual(infoMock.id);
         });
 
-        const req = httpMock.expectOne('/api/emby/server/info');
+        const req = httpMock.expectOne('/api/mediaserver/server/info');
         expect(req.request.method).toBe('GET');
         req.flush(infoMock);
     });
 
-    it('should search for an Emby server', () => {
-        const broadcastMock = new EmbyUdpBroadcast();
+    it('should search for an media server server', () => {
+        const broadcastMock = new MediaServerUdpBroadcast();
         broadcastMock.id = '123';
 
-        service.searchEmby().subscribe((result: EmbyUdpBroadcast) => {
+        service.searchEmby().subscribe((result: MediaServerUdpBroadcast) => {
             expect(result).toEqual(broadcastMock);
         });
 
-        const req = httpMock.expectOne('/api/emby/server/search');
+        const req = httpMock.expectOne('/api/mediaserver/server/search');
         expect(req.request.method).toBe('GET');
         req.flush(broadcastMock);
     });
 
-    it('should get Emby server status', () => {
-        const embyStatusMock = new EmbyStatus();
+    it('should get media server server status', () => {
+        const embyStatusMock = new MediaServerStatus();
         embyStatusMock.missedPings = 1;
 
-        service.getEmbyStatus().subscribe((result: EmbyStatus) => {
+        service.getEmbyStatus().subscribe((result: MediaServerStatus) => {
             expect(result).toEqual(embyStatusMock);
         });
 
-        const req = httpMock.expectOne('/api/emby/server/status');
+        const req = httpMock.expectOne('/api/mediaserver/server/status');
         expect(req.request.method).toBe('GET');
         req.flush(embyStatusMock);
     });
 
-    it('should fetch Emby users', () => {
+    it('should fetch media server users', () => {
         const embyUsersMock = [
-            new EmbyUser(),
-            new EmbyUser()
+            new MediaServerUser(),
+            new MediaServerUser()
         ];
 
-        service.getUsers().subscribe((result: EmbyUser[]) => {
+        service.getUsers().subscribe((result: MediaServerUser[]) => {
             expect(result).toEqual(embyUsersMock);
         });
 
-        const req = httpMock.expectOne('/api/emby/users');
+        const req = httpMock.expectOne('/api/mediaserver/users');
         expect(req.request.method).toBe('GET');
         req.flush(embyUsersMock);
     });
 
-    it('should fetch Emby user by id', () => {
-        const embyUserMock = new EmbyUser();
+    it('should fetch media server user by id', () => {
+        const embyUserMock = new MediaServerUser();
         embyUserMock.id = '123';
 
-        service.getUserById(embyUserMock.id).subscribe((result: EmbyUser) => {
+        service.getUserById(embyUserMock.id).subscribe((result: MediaServerUser) => {
             expect(result).toEqual(embyUserMock);
         });
 
-        const req = httpMock.expectOne(`/api/emby/users/${embyUserMock.id}`);
+        const req = httpMock.expectOne(`/api/mediaserver/users/${embyUserMock.id}`);
         expect(req.request.method).toBe('GET');
         req.flush(embyUserMock);
     });
 
-    it('should fetch Emby user ids', () => {
+    it('should fetch media server user ids', () => {
         const embyUserIds = [
             new UserId(),
             new UserId()
@@ -125,12 +126,12 @@ describe('EmbyService', () => {
             expect(result).toEqual(embyUserIds);
         });
 
-        const req = httpMock.expectOne(`/api/emby/ids`);
+        const req = httpMock.expectOne(`/api/mediaserver/ids`);
         expect(req.request.method).toBe('GET');
         req.flush(embyUserIds);
     });
 
-    it('should fetch Emby user ids', () => {
+    it('should fetch media server user ids', () => {
         const embyUserViewPage = new ListContainer<UserMediaView>();
         embyUserViewPage.data = [
             new UserMediaView(),
@@ -142,7 +143,7 @@ describe('EmbyService', () => {
             expect(result).toEqual(embyUserViewPage);
         });
 
-        const req = httpMock.expectOne(`/api/emby/users/1/views/0/10`);
+        const req = httpMock.expectOne(`/api/mediaserver/users/1/views/0/10`);
         expect(req.request.method).toBe('GET');
         req.flush(embyUserViewPage);
     });

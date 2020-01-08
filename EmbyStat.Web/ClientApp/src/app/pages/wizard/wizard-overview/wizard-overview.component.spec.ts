@@ -20,13 +20,15 @@ import { ToolbarComponent } from '../../../shared/components/toolbar/toolbar.com
 import { CheckBoolean } from '../../../shared/enums/check-boolean-enum';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { MaterialModule } from '../../../shared/material.module';
-import { EmbyLogin } from '../../../shared/models/emby/emby-login';
-import { EmbyUdpBroadcast } from '../../../shared/models/emby/emby-udp-broadcast';
 import { Language } from '../../../shared/models/language';
+import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
+import {
+    MediaServerUdpBroadcast
+} from '../../../shared/models/media-server/media-server-udp-broadcast';
 import { Settings } from '../../../shared/models/settings/settings';
 import { CapitalizeFirstPipe } from '../../../shared/pipes/capitalize-first.pipe';
-import { EmbyService } from '../../../shared/services/emby.service';
 import { JobService } from '../../../shared/services/job.service';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 import { SideBarService } from '../../../shared/services/side-bar.service';
 import { WizardOverviewComponent } from './wizard-overview.component';
 
@@ -56,16 +58,16 @@ class MockedTranslateService {
   }
 }
 
-class MockedEmbyService {
-  public searchEmby(): Observable<EmbyUdpBroadcast> {
-    return of(new EmbyUdpBroadcast());
+class MockedMediaServerService {
+  public searchEmby(): Observable<MediaServerUdpBroadcast> {
+    return of(new MediaServerUdpBroadcast());
   }
 
   public pingEmby(url: string): Observable<boolean> {
     return of(false);
   }
 
-  public testApiKey(login: EmbyLogin): Observable<boolean> {
+  public testApiKey(login: MediaServerLogin): Observable<boolean> {
     return of(false);
   }
 }
@@ -114,7 +116,7 @@ describe('WizardOverviewComponent', () => {
       providers: [
         { provide: SettingsFacade, useClass: MockedSettingsFacade },
         { provide: TranslateService, useClass: MockedTranslateService },
-        { provide: EmbyService, useClass: MockedEmbyService },
+        { provide: MediaServerService, useClass: MockedMediaServerService },
         { provide: JobService, useClass: MockedJobService },
         { provide: SideBarService, useClass: MockedSideBarService }
       ]
@@ -257,8 +259,8 @@ describe('WizardOverviewComponent', () => {
   });
 
   it('should fail login if ping to Emby fails', async () => {
-    const embyService = debugElement.injector.get(EmbyService);
-    const embyServicePingEmbySpy = spyOn(embyService, 'pingEmby').and.callThrough();
+    const mediaServerService = debugElement.injector.get(MediaServerService);
+    const mediaServerServicePingEmbySpy = spyOn(mediaServerService, 'pingEmby').and.callThrough();
 
     component.nameControl.setValue('test user');
     let button = debugElement.queryAll(By.css('button'))[0].nativeElement;
@@ -283,15 +285,15 @@ describe('WizardOverviewComponent', () => {
     fixture.whenStable().then(() => {
       expect(component.embyOnline).toBe(CheckBoolean.false);
       expect(component.apiKeyWorks).toBe(CheckBoolean.busy);
-      expect(embyServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
-      expect(embyServicePingEmbySpy).toHaveBeenCalledTimes(1);
+      expect(mediaServerServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
+      expect(mediaServerServicePingEmbySpy).toHaveBeenCalledTimes(1);
     });
   });
 
   it('should fail login if API key is wrong', async () => {
-    const embyService = debugElement.injector.get(EmbyService);
-    const embyServicePingEmbySpy = spyOn(embyService, 'pingEmby').and.callThrough();
-    embyServicePingEmbySpy.and.returnValue(of(true));
+    const embyService = debugElement.injector.get(MediaServerService);
+    const mediaServerServicePingEmbySpy = spyOn(embyService, 'pingEmby').and.callThrough();
+    mediaServerServicePingEmbySpy.and.returnValue(of(true));
 
     component.nameControl.setValue('test user');
     let button = debugElement.queryAll(By.css('button'))[0].nativeElement;
@@ -316,15 +318,15 @@ describe('WizardOverviewComponent', () => {
     fixture.whenStable().then(() => {
       expect(component.embyOnline).toBe(CheckBoolean.true);
       expect(component.apiKeyWorks).toBe(CheckBoolean.false);
-      expect(embyServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
-      expect(embyServicePingEmbySpy).toHaveBeenCalledTimes(1);
+      expect(mediaServerServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
+      expect(mediaServerServicePingEmbySpy).toHaveBeenCalledTimes(1);
     });
   });
 
   it('should update settings', async () => {
-    const embyService = debugElement.injector.get(EmbyService);
-    const embyServicePingEmbySpy = spyOn(embyService, 'pingEmby').and.returnValue(of(true));
-    const embyServiceTestApiKeySpy = spyOn(embyService, 'testApiKey').and.returnValue(of(true));
+    const mediaServerService = debugElement.injector.get(MediaServerService);
+    const mediaServerServicePingEmbySpy = spyOn(mediaServerService, 'pingEmby').and.returnValue(of(true));
+    const mediaServerServiceTestApiKeySpy = spyOn(mediaServerService, 'testApiKey').and.returnValue(of(true));
 
     const settingsFacade = debugElement.injector.get(SettingsFacade);
     const settingsFacadeUpdateSettingsSpy = spyOn(settingsFacade, 'updateSettings').and.callThrough();
@@ -352,12 +354,12 @@ describe('WizardOverviewComponent', () => {
     fixture.whenStable().then(() => {
       expect(component.embyOnline).toBe(CheckBoolean.true);
       expect(component.apiKeyWorks).toBe(CheckBoolean.true);
-      expect(embyServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
-      expect(embyServicePingEmbySpy).toHaveBeenCalledTimes(1);
+      expect(mediaServerServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
+      expect(mediaServerServicePingEmbySpy).toHaveBeenCalledTimes(1);
 
-      const login = new EmbyLogin('srfghyddjsfdgdyhdhsrg', 'https://localhost:9000');
-      expect(embyServiceTestApiKeySpy).toHaveBeenCalledWith(login);
-      expect(embyServiceTestApiKeySpy).toHaveBeenCalledTimes(1);
+      const login = new MediaServerLogin('srfghyddjsfdgdyhdhsrg', 'https://localhost:9000');
+      expect(mediaServerServiceTestApiKeySpy).toHaveBeenCalledWith(login);
+      expect(mediaServerServiceTestApiKeySpy).toHaveBeenCalledTimes(1);
 
       expect(settingsFacadeUpdateSettingsSpy).toHaveBeenCalledTimes(1);
     });

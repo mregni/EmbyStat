@@ -3,9 +3,9 @@ import { Observable, Subscription } from 'rxjs';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { EmbyUser } from '../../../shared/models/emby/emby-user';
-import { UserId } from '../../../shared/models/emby/user-id';
-import { EmbyService } from '../../../shared/services/emby.service';
+import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
+import { UserId } from '../../../shared/models/media-server/user-id';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 import { PageService } from '../../../shared/services/page.service';
 import { UserService } from '../../../shared/services/user.service';
 
@@ -25,17 +25,17 @@ export class UserContainerComponent implements OnInit, OnDestroy {
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly embyService: EmbyService,
+    private readonly mediaServerService: MediaServerService,
     private readonly userService: UserService,
     private readonly pageService: PageService,
     private readonly cdRef: ChangeDetectorRef) {
-    this.userIds$ = this.embyService.getUserIdList();
+    this.userIds$ = this.mediaServerService.getUserIdList();
 
     this.paramSub = this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
       this.selectedPage = 'detail';
       if (!!id) {
-        this.embyService.getUserById(id).subscribe((user: EmbyUser) => {
+        this.mediaServerService.getUserById(id).subscribe((user: MediaServerUser) => {
           this.userService.userChanged(user);
           this.selectedUserId = user.id;
         });
@@ -46,7 +46,7 @@ export class UserContainerComponent implements OnInit, OnDestroy {
   }
 
   onUserSelectionChanged(event: any) {
-    this.embyService.getUserById(event.value).subscribe((user: EmbyUser) => {
+    this.mediaServerService.getUserById(event.value).subscribe((user: MediaServerUser) => {
       this.userService.userChanged(user);
       this.selectedUserId = user.id;
     });

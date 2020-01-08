@@ -1,4 +1,4 @@
-import { EmbySettings } from './emby-settings';
+import { MediaServerSettings } from './media-server-settings';
 import { TvdbSettings } from './tvdb-settings';
 
 export class Settings {
@@ -16,14 +16,14 @@ export class Settings {
   updateTrain: number;
   updateInProgress: boolean;
   version: string;
-  emby: EmbySettings;
+  mediaServer: MediaServerSettings;
   tvdb: TvdbSettings;
   enableRollbarLogging: boolean ;
   isLoaded: boolean;
   noUpdates: boolean;
 
   constructor() {
-    this.emby = new EmbySettings();
+    this.mediaServer = new MediaServerSettings();
     this.tvdb = new TvdbSettings();
   }
 }

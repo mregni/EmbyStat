@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 
 import { LoadEmbyServerInfo } from '../../pages/server/state/emby-server.actions';
 import { ApplicationState } from '../../states/app.state';
-import { ServerInfo } from '../models/emby/server-info';
 import { Language } from '../models/language';
+import { ServerInfo } from '../models/media-server/server-info';
 
 @Injectable()
 export class EmbyServerInfoFacade {

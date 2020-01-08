@@ -40,8 +40,8 @@ import { DateToHoursAgoPipe } from './pipes/time-to-hours-ago.pipe';
 import { DateToMinutesAgoPipe } from './pipes/time-to-minutes-ago.pipe';
 import { DateToSecondsAgoPipe } from './pipes/time-to-seconds-ago.pipe';
 import { ToShorterStringPipe } from './pipes/to-shorter-string.pipe';
-import { EmbyService } from './services/emby.service';
 import { JobSocketService } from './services/job-socket.service';
+import { MediaServerService } from './services/media-server.service';
 import { PageService } from './services/page.service';
 import { SettingsService } from './services/settings.service';
 import { SideBarService } from './services/side-bar.service';
@@ -141,7 +141,7 @@ export class SharedModule {
       providers: [
         SettingsService,
         SettingsFacade,
-        EmbyService,
+        MediaServerService,
         EmbyServerInfoFacade,
         ToastService,
         JobSocketService,

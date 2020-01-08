@@ -1,4 +1,4 @@
-export class EmbyLogin {
+export class MediaServerLogin {
   apiKey: string;
   address: string;
 

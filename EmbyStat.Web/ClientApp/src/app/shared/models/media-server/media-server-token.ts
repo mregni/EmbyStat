@@ -1,6 +1,6 @@
 import { CheckBoolean } from '../../enums/check-boolean-enum';
 
-export class EmbyToken {
+export class MediaServerToken {
     token: string;
     username: string;
     isAdmin: CheckBoolean;

@@ -31,6 +31,23 @@
               </form>
             </div>
           </mat-step>
+          <mat-step label="{{ 'WIZARD.SERVERTYPELABEL' | translate }}">
+            <div class="logo-container">
+              <div (click)="selectType('emby')" class="logo-item-container">
+                <img src="../../../../assets/images/emby.png" alt="Emby logo" />
+                <p>{{ 'COMMON.EMBYSERVER' | translate }}</p>
+              </div>
+              <div (click)="selectType('jellyfin')" class="logo-item-container">
+                <img src="../../../../assets/images/jellyfin.png" alt="Jellyfin logo" />
+                <p>{{ 'COMMON.JELLYFINSERVER' | translate }}</p>
+              </div>
+            </div>
+            <div class="button-container">
+              <button mat-stroked-button color="primary" matStepperPrevious type="button">
+                {{'COMMON.BACK' | translate | capitalizeFirst}}
+              </button>
+            </div>
+          </mat-step>
           <mat-step label="{{'WIZARD.EMBYLABEL' | translate}}" [stepControl]="embyForm">
             <div>
               <p *ngIf="embyFound == 3" [innerHTML]="'WIZARD.EMBYNOTFOUNDTEXT' | translate"></p>
@@ -44,35 +61,33 @@
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field class="emby-address mr-3">
-                    <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate}}"
-                           formControlName="embyAddress">
+                    <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate : { type: typeText } }}"
+                      formControlName="embyAddress">
                     <mat-error *ngIf="embyAddressControl.hasError('required')">
-                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}
+                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate : { type: typeText } }}
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field class="emby-port">
-                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}"
-                           formControlName="embyPort" required>
+                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}" formControlName="embyPort"
+                      required>
                     <mat-error *ngIf="embyPortControl.hasError('required')">
-                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}
+                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate : { type: typeText } }}
                     </mat-error>
                   </mat-form-field>
                 </div>
                 <mat-form-field>
-                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate}}"
-                         formControlName="embyApiKey" type="text">
+                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate : { type: typeText } }}" formControlName="embyApiKey"
+                    type="text">
                   <mat-error *ngIf="embyApiKeyControl.hasError('required')">
-                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}
+                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate : { type: typeText } }}
                   </mat-error>
                 </mat-form-field>
-                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
+                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { type: typeText }"></p>
                 <div class="button-container">
-                  <button mat-stroked-button color="primary" matStepperPrevious
-                          type="button">
+                  <button mat-stroked-button color="primary" matStepperPrevious type="button">
                     {{'COMMON.BACK' | translate | capitalizeFirst}}
                   </button>
-                  <button mat-raised-button color="primary" matStepperNext
-                          type="button">
+                  <button mat-raised-button color="primary" matStepperNext type="button">
                     {{'COMMON.NEXT' | translate | capitalizeFirst}}
                   </button>
                 </div>
@@ -81,7 +96,7 @@
           </mat-step>
           <mat-step label="{{'WIZARD.SAVINGLABEL' | translate }}">
             <h3>
-              {{'WIZARD.CHECKINGSTATUS' | translate }}
+              {{'WIZARD.CHECKINGSTATUS' | translate : { type: typeText } }}
             </h3>
 
             <div>
@@ -107,10 +122,10 @@
             </p>
             <div class="button-container">
               <button mat-stroked-button color="primary" matStepperPrevious
-                      [disabled]="embyOnline == 1 && apiKeyWorks == 1"
+                [disabled]="embyOnline == 1 && apiKeyWorks == 1"
                 type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
               <button mat-raised-button color="primary" matStepperNext
-                      [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
+                [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
                 type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
             </div>
           </mat-step>

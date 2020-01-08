@@ -1,4 +1,4 @@
-export class EmbyUserAccessSchedule {
+export class MediaServerUserAccessSchedule {
  id: string;
  dayOfWeek: string ;
  startHour: number ;

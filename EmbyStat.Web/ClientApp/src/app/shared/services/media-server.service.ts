@@ -3,15 +3,14 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { EmbyLogin } from '../models/emby/emby-login';
-import { EmbyPlugin } from '../models/emby/emby-plugin';
-import { EmbyStatus } from '../models/emby/emby-status';
-import { EmbyToken } from '../models/emby/emby-token';
-import { EmbyUdpBroadcast } from '../models/emby/emby-udp-broadcast';
-import { EmbyUser } from '../models/emby/emby-user';
-import { ServerInfo } from '../models/emby/server-info';
-import { UserId } from '../models/emby/user-id';
 import { ListContainer } from '../models/list-container';
+import { MediaServerLogin } from '../models/media-server/media-server-login';
+import { MediaServerPlugin } from '../models/media-server/media-server-plugin';
+import { MediaServerStatus } from '../models/media-server/media-server-status';
+import { MediaServerUdpBroadcast } from '../models/media-server/media-server-udp-broadcast';
+import { MediaServerUser } from '../models/media-server/media-server-user';
+import { ServerInfo } from '../models/media-server/server-info';
+import { UserId } from '../models/media-server/user-id';
 import { UserMediaView } from '../models/session/user-media-view';
 
 class UrlObject {
@@ -25,8 +24,8 @@ class UrlObject {
 @Injectable({
   providedIn: 'root'
 })
-export class EmbyService {
-  private readonly baseUrl = '/api/emby';
+export class MediaServerService {
+  private readonly baseUrl = '/api/mediaserver';
   private searchEmbyUrl = `${this.baseUrl}/server/search`;
   private getTestApiKeyUrl = `${ this.baseUrl }/server/test`;
   private getEmbyServerInfoUrl = `${this.baseUrl}/server/info`;
@@ -38,32 +37,32 @@ export class EmbyService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getPlugins(): Observable<EmbyPlugin[]> {
-    return this.http.get<EmbyPlugin[]>(this.getPluginsUrl);
+  getPlugins(): Observable<MediaServerPlugin[]> {
+    return this.http.get<MediaServerPlugin[]>(this.getPluginsUrl);
   }
 
   getEmbyServerInfo(): Observable<ServerInfo> {
     return this.http.get<ServerInfo>(this.getEmbyServerInfoUrl);
   }
 
-  testApiKey(login: EmbyLogin): Observable<boolean> {
+  testApiKey(login: MediaServerLogin): Observable<boolean> {
     return this.http.post<boolean>(this.getTestApiKeyUrl, login);
   }
 
-  searchEmby(): Observable<EmbyUdpBroadcast> {
-    return this.http.get<EmbyUdpBroadcast>(this.searchEmbyUrl);
+  searchEmby(): Observable<MediaServerUdpBroadcast> {
+    return this.http.get<MediaServerUdpBroadcast>(this.searchEmbyUrl);
   }
 
-  getEmbyStatus(): Observable<EmbyStatus> {
-    return this.http.get<EmbyStatus>(this.getEmbyStatusUrl);
+  getEmbyStatus(): Observable<MediaServerStatus> {
+    return this.http.get<MediaServerStatus>(this.getEmbyStatusUrl);
   }
 
-  getUsers(): Observable<EmbyUser[]> {
-    return this.http.get<EmbyUser[]>(this.getEmbyUsersUrl);
+  getUsers(): Observable<MediaServerUser[]> {
+    return this.http.get<MediaServerUser[]>(this.getEmbyUsersUrl);
   }
 
-  getUserById(id: string): Observable<EmbyUser> {
-    return this.http.get<EmbyUser>(`${this.getEmbyUsersUrl}/${id}`);
+  getUserById(id: string): Observable<MediaServerUser> {
+    return this.http.get<MediaServerUser>(`${this.getEmbyUsersUrl}/${id}`);
   }
 
   getUserIdList(): Observable<UserId[]> {

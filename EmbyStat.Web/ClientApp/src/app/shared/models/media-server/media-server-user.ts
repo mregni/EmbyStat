@@ -1,8 +1,8 @@
 import { Card } from '../common/card';
 import { UserMediaView } from '../session/user-media-view';
-import { EmbyUserAccessSchedule } from './emby-user-access-schedule';
+import { MediaServerUserAccessSchedule } from './media-server-user-access-schedule';
 
-export class EmbyUser {
+export class MediaServerUser {
   id: string;
   name: string;
   serverId: string;
@@ -13,7 +13,7 @@ export class EmbyUser {
   isHidden: boolean;
   isDisabled: boolean;
   maxParentalRating: number;
-  accessSchedules: EmbyUserAccessSchedule[];
+  accessSchedules: MediaServerUserAccessSchedule[];
   invalidLoginAttemptCount: number;
   remoteClientBitRateLimit: number;
   deleted: boolean;

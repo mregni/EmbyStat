@@ -1,4 +1,4 @@
-export class EmbyPlugin {
+export class MediaServerPlugin {
     name: string;
     configurationDateLastModified: Date;
     version: string;

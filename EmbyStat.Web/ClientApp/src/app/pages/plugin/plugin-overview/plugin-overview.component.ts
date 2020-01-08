@@ -4,9 +4,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
-import { EmbyPlugin } from '../../../shared/models/emby/emby-plugin';
+import { MediaServerPlugin } from '../../../shared/models/media-server/media-server-plugin';
 import { Settings } from '../../../shared/models/settings/settings';
-import { EmbyService } from '../../../shared/services/emby.service';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 
 @Component({
   selector: 'app-plugin-overview',
@@ -14,13 +14,13 @@ import { EmbyService } from '../../../shared/services/emby.service';
   styleUrls: ['./plugin-overview.component.scss']
 })
 export class PluginOverviewComponent implements OnInit, OnDestroy {
-  plugins$: Observable<EmbyPlugin[]>;
+  plugins$: Observable<MediaServerPlugin[]>;
 
   settingsSub: Subscription;
   settings: Settings;
 
   constructor(
-    private readonly embyService: EmbyService,
+    private readonly embyService: MediaServerService,
     private readonly settingsFacade: SettingsFacade) {
     this.plugins$ = this.embyService.getPlugins();
     this.settingsSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {

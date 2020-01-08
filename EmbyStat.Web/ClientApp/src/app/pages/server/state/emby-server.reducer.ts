@@ -1,4 +1,4 @@
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { ApplicationState } from '../../../states/app.state';
 import { EmbyServerActionTypes, EmbyServerInfoActions } from './emby-server.actions';

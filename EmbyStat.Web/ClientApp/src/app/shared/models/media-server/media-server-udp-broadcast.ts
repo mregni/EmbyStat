@@ -1,4 +1,4 @@
-export class EmbyUdpBroadcast {
+export class MediaServerUdpBroadcast {
   address: string;
   id: string;
   name: string;

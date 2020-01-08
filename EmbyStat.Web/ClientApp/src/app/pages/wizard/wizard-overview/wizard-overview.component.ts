@@ -8,12 +8,14 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { CheckBoolean } from '../../../shared/enums/check-boolean-enum';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
-import { EmbyLogin } from '../../../shared/models/emby/emby-login';
-import { EmbyUdpBroadcast } from '../../../shared/models/emby/emby-udp-broadcast';
 import { Language } from '../../../shared/models/language';
+import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
+import {
+    MediaServerUdpBroadcast
+} from '../../../shared/models/media-server/media-server-udp-broadcast';
 import { Settings } from '../../../shared/models/settings/settings';
-import { EmbyService } from '../../../shared/services/emby.service';
 import { JobService } from '../../../shared/services/job.service';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 import { SideBarService } from '../../../shared/services/side-bar.service';
 
 @Component({
@@ -57,11 +59,13 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   selectedProtocol: number;
 
   private settings: Settings;
+  private type: number;
+  typeText: string;
   languages$: Observable<Language[]>;
 
   constructor(private translate: TranslateService,
     private settingsFacade: SettingsFacade,
-    private embyService: EmbyService,
+    private mediaServerService: MediaServerService,
     private sideBarService: SideBarService,
     private jobService: JobService,
     private router: Router) {
@@ -112,7 +116,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.languages$ = this.settingsFacade.getLanguages();
 
-    this.embyService.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
+    this.mediaServerService.searchEmby().subscribe((data: MediaServerUdpBroadcast) => {
     if (!!data.address) {
         this.embyFound = CheckBoolean.true;
         this.embyAddressControl.setValue(data.address);
@@ -136,27 +140,38 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
   }
 
+  selectType(type: string) {
+    this.type = type === 'emby' ? 0 : 1;
+    this.typeText = this.type === 0 ? 'Emby' : 'Jellyfin';
+    this.stepper.selectedIndex = 2;
+  }
+
   stepperPageChanged(event) {
     if (event.selectedIndex === 2) {
+      this.embyFound = CheckBoolean.unChecked;
+      this.embyApiKeyControl.setValue('');
+    }
+
+    if (event.selectedIndex === 3) {
       this.apiKey = this.embyApiKeyControl.value;
       const address = this.embyAddressControl.value;
       const port = this.embyPortControl.value;
       const protocol = this.embyProtocolControl.value;
 
-      const login = new EmbyLogin(this.apiKey, this.embyUrl);
+      const login = new MediaServerLogin(this.apiKey, this.embyUrl);
 
       this.embyOnline = CheckBoolean.busy;
       this.apiKeyWorks = CheckBoolean.busy;
 
-      this.embyService.pingEmby(this.embyUrl).subscribe((response: boolean) => {
+      this.mediaServerService.pingEmby(this.embyUrl).subscribe((response: boolean) => {
         this.embyOnline = response ? CheckBoolean.true : CheckBoolean.false;
         if (response) {
-          this.embyService.testApiKey(login)
+          this.mediaServerService.testApiKey(login)
             .subscribe((result: boolean) => {
               this.apiKeyWorks = result ? CheckBoolean.true : CheckBoolean.false;
               if (result) {
                 const settings = { ...this.settings };
-                const emby = { ...this.settings.emby };
+                const emby = { ...this.settings.mediaServer };
                 settings.language = this.languageControl.value;
                 settings.username = this.nameControl.value;
                 settings.wizardFinished = true;
@@ -165,7 +180,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
                 emby.apiKey = this.apiKey;
                 emby.serverPort = port;
                 emby.serverProtocol = protocol;
-                settings.emby = emby;
+                emby.serverType = this.type;
+                settings.mediaServer = emby;
                 this.settingsFacade.updateSettings(settings);
               }
             }, (err) => {
