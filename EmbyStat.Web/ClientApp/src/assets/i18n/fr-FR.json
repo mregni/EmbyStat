@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "DOWNLOAD": "télécharger",
-    "ANONYMISEDDOWNLOAD": "Téléchargement anonyme",
+    "ANONYMISEDDOWNLOAD": "Téléchargement anonymisé",
     "HIDE": "Cacher",
     "NEXT": "suivant",
     "BACK": "retour",
@@ -32,9 +32,9 @@
     "COUNTPERCOLLECTEDRATE": "nombre / pourcentage recueilli",
     "EMBY": "Emby",
     "GENERAL": "général",
-    "DURATION": "temps",
+    "DURATION": "durée",
     "GRAPHS": "graphiques",
-    "PEOPLE": "Personnes",
+    "PEOPLE": "personnalité",
     "SUSPICIOUS": "Suspect",
     "SHOWS": "Séries",
     "TOTALACTORS": "Nombre d'acteurs",
@@ -178,12 +178,12 @@
     },
     "EMBY": {
       "EMBYADDRESS": "Emby IP / domaine",
-      "EMBYAPIKEY": "Emby API key",
+      "EMBYAPIKEY": "Clé API d'Emby",
       "EMBYPORT": "Port d'Emby",
       "EMBYADDRESSREQUIRED": "Emby IP / domaine requis.",
       "EMBYPORTREQUIRED": "Port d'Emby requis.",
-      "EMBYAPIKEYREQUIRED": "Emby API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "EMBYAPIKEYREQUIRED": "Clé API d'Emby requise",
+      "APIKEYHINT": "Aller dans avancé -> sécurité dans <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">votre serveur Emby</a> pour générer un nouveau jeton d'API.",
       "WRONGAPIKEY": "La clé API fournie est n'est pas valide"
     },
     "UPDATE": {
