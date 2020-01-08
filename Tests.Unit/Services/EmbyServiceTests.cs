@@ -174,15 +174,14 @@ namespace Tests.Unit.Services
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _sessionServiceMock = new Mock<ISessionService>();
 
-            _httpClientMock.Setup(x => x.Ping()).Returns("MediaServer Server");
+            _httpClientMock.Setup(x => x.Ping()).Returns(true);
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
             var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
             var result = service.PingMediaServer("localhost:9000");
-            result.Should().NotBeNull();
-            result.Should().Be("MediaServer Server");
+            result.Should().BeTrue();
 
             _httpClientMock.Verify(x => x.Ping(), Times.Once);
         }

@@ -1,4 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
+import { MediaServerTypeSelector } from 'src/app/shared/helpers/media-server-type-selector';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -142,7 +143,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
   selectType(type: string) {
     this.type = type === 'emby' ? 0 : 1;
-    this.typeText = this.type === 0 ? 'Emby' : 'Jellyfin';
+    this.typeText = MediaServerTypeSelector.getServerTypeString(this.type);
     this.stepper.selectedIndex = 2;
   }
 

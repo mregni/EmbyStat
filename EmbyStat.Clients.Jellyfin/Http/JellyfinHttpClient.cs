@@ -43,7 +43,7 @@ namespace EmbyStat.Clients.Jellyfin.Http
             throw new System.NotImplementedException();
         }
 
-        public string Ping()
+        public bool Ping()
         {
             throw new System.NotImplementedException();
         }

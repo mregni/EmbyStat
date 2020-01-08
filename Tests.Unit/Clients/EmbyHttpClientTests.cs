@@ -382,10 +382,10 @@ namespace Tests.Unit.Clients
         [Fact]
         public void PingEmby_Should_Return_Emby_String()
         {
-            var client = CreateStringClient("MediaServer Server");
+            var client = CreateStringClient("Emby Server");
             var result = client.Ping();
 
-            result.Should().Be("MediaServer Server");
+            result.Should().Be(true);
         }
 
         [Fact]
@@ -399,7 +399,7 @@ namespace Tests.Unit.Clients
             var client = new EmbyHttpClient(_restClientMock.Object);
             var result = client.Ping();
 
-            result.Should().Be("Ping failed");
+            result.Should().Be(false);
         }
     }
 }

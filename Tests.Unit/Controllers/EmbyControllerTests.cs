@@ -2,7 +2,7 @@
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
-using EmbyStat.Controllers.Emby;
+using EmbyStat.Controllers.MediaServer;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using FluentAssertions;

@@ -29,7 +29,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         {
             var result = _mediaServerService.PingMediaServer(Settings.MediaServer.FullMediaServerAddress);
             await LogProgress(50);
-            if (result == "MediaServer Server")
+            if (result)
             {
                 await LogInformation("We found your MediaServer server");
                 _mediaServerService.ResetMissedPings();
