@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EmbyStat.Controllers.HelperClasses;
 
-namespace EmbyStat.Controllers.Emby
+namespace EmbyStat.Controllers.MediaServer
 {
     public class UserFullViewModel
     {

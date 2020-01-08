@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Controllers.Emby
+﻿namespace EmbyStat.Controllers.MediaServer
 {
     public class UserIdViewModel
     {
