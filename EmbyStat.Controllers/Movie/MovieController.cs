@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;

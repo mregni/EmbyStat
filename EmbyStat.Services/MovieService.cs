@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
@@ -13,7 +12,6 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services
@@ -382,8 +380,8 @@ namespace EmbyStat.Services
                     Number = i,
                     Title = itemOne.Name,
                     Reason = Constants.ByImdb,
-                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = string.Join(",", itemOne.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) },
-                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = string.Join(",", itemTwo.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) }
+                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = string.Join(",", itemOne.VideoStreams.Select(x => x.Width.ConvertToQualityString())) },
+                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = string.Join(",", itemTwo.VideoStreams.Select(x => x.Width.ConvertToQualityString())) }
                 });
             }
 

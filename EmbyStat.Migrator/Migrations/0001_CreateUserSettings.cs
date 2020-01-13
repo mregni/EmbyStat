@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Migrator.Models;
 

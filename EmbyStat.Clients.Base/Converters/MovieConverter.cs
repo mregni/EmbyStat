@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
+using EmbyStat.Clients.Base.Models;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Entities;
 
-namespace EmbyStat.Common.Converters
+namespace EmbyStat.Clients.Base.Converters
 {
     public static class MovieConverter
     {
-        public static Movie ConvertToMovie(BaseItemDto x, string collectionId)
+        public static Movie ConvertToMovie(this BaseItemDto x, string collectionId)
         {
             return new Movie
             {

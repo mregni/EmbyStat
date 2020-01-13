@@ -26,7 +26,7 @@ import { SideBarService } from '../../../shared/services/side-bar.service';
 })
 
 export class WizardOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper', {static: false}) private stepper: MatStepper;
+  @ViewChild('stepper', { static: false }) private stepper: MatStepper;
 
   introFormGroup: FormGroup;
   nameControl = new FormControl('', [Validators.required]);
@@ -116,21 +116,6 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.languages$ = this.settingsFacade.getLanguages();
-
-    this.mediaServerService.searchEmby().subscribe((data: MediaServerUdpBroadcast) => {
-    if (!!data.address) {
-        this.embyFound = CheckBoolean.true;
-        this.embyAddressControl.setValue(data.address);
-        this.embyPortControl.setValue(data.port);
-        this.embyProtocolControl.setValue(data.protocol);
-        this.embyServerName = data.name;
-      } else {
-        this.embyFound = CheckBoolean.false;
-      }
-    },
-      err => {
-        this.embyFound = CheckBoolean.false;
-      });
   }
 
   private languageChanged(value: string): void {
@@ -142,6 +127,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   selectType(type: string) {
+    console.log(type);
     this.type = type === 'emby' ? 0 : 1;
     this.typeText = MediaServerTypeSelector.getServerTypeString(this.type);
     this.stepper.selectedIndex = 2;
@@ -151,6 +137,23 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     if (event.selectedIndex === 2) {
       this.embyFound = CheckBoolean.unChecked;
       this.embyApiKeyControl.setValue('');
+
+      console.log(this.type);
+      this.mediaServerService.searchMediaServer(this.type).subscribe((data: MediaServerUdpBroadcast) => {
+        if (!!data.address) {
+          this.embyFound = CheckBoolean.true;
+          this.embyAddressControl.setValue(data.address);
+          this.embyPortControl.setValue(data.port);
+          this.embyProtocolControl.setValue(data.protocol);
+          this.embyServerName = data.name;
+        } else {
+          this.embyFound = CheckBoolean.false;
+        }
+      },
+        err => {
+          this.embyFound = CheckBoolean.false;
+        }
+      );
     }
 
     if (event.selectedIndex === 3) {

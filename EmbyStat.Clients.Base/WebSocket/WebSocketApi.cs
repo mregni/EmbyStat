@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using EmbyStat.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
-using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Base.WebSocket
 {

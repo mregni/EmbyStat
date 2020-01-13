@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Clients.Base.Models;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Show;
-using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Entities;
 using LocationType = EmbyStat.Common.Enums.LocationType;
 
-namespace EmbyStat.Common.Converters
+namespace EmbyStat.Clients.Base.Converters
 {
     public static class ShowConverter
     {
-        public static Show ConvertToShow(this BaseItemDto show, string collectionId)
+        public static Show ConvertToShow(this BaseItemDto show, string LibraryId)
         {
             return new Show
             {
                 Id = show.Id,
-                CollectionId = collectionId,
+                CollectionId = LibraryId,
                 Primary = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value,
                 Thumb = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value,
                 Logo = show.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value,

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
@@ -43,17 +44,18 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("server/search")]
-        public IActionResult SearchEmby()
+        public IActionResult SearchMediaServer(int serverType)
         {
-            var result = _mediaServerService.SearchEmby();
+            var type = (ServerType)serverType;
+            var result = _mediaServerService.SearchMediaServer(type);
             return Ok(_mapper.Map<UdpBroadcastViewModel>(result));
         }
 
         [HttpGet]
         [Route("server/status")]
-        public IActionResult GetEmbyStatus()
+        public IActionResult GetMediaServerStatus()
         {
-            var result = _mediaServerService.GetEmbyStatus();
+            var result = _mediaServerService.GetMediaServerStatus();
             return Ok(_mapper.Map<EmbyStatusViewModel>(result));
         }
 

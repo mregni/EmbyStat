@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -11,7 +11,6 @@ using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Services.Abstract
 {

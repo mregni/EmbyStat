@@ -1,4 +1,3 @@
-using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
@@ -12,6 +11,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using AutoMapper;
+using EmbyStat.Clients.Base;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
@@ -177,7 +178,7 @@ namespace EmbyStat.Web
                 
             var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
             var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-            var embyClient = serviceScope.ServiceProvider.GetService<IEmbyHttpClient>();
+            var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
             var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
             var settings = settingsService.GetAppSettings();
@@ -187,7 +188,7 @@ namespace EmbyStat.Web
             AddDeviceIdToConfig(settingsService);
             RemoveVersionFiles();
             jobService.ResetAllJobs();
-            SetEmbyClientConfiguration(settingsService, embyClient);
+            SetEmbyClientConfiguration(settingsService, clientStrategy);
             jobInitializer.Setup(settings.NoUpdates);
         }
 
@@ -217,16 +218,19 @@ namespace EmbyStat.Web
             }
         }
 
-        private void SetEmbyClientConfiguration(ISettingsService settingsService, IEmbyHttpClient client)
+        private void SetEmbyClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
         {
             settingsService.SetUpdateInProgressSettingAsync(false);
             var settings = settingsService.GetUserSettings();
 
-            client.SetDeviceInfo(settings.AppName, settings.MediaServer.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
+            var mediaServerType = settings.MediaServer?.ServerType ?? ServerType.Emby;
+            var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
+
+            mediaServerClient.SetDeviceInfo(settings.AppName, settings.MediaServer.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
             if (!string.IsNullOrWhiteSpace(settings.MediaServer.ApiKey))
             {
-                client.BaseUrl = settings.MediaServer.FullMediaServerAddress;
-                client.ApiKey = settings.MediaServer.ApiKey;
+                mediaServerClient.BaseUrl = settings.MediaServer.FullMediaServerAddress;
+                mediaServerClient.ApiKey = settings.MediaServer.ApiKey;
             }
         }
     }

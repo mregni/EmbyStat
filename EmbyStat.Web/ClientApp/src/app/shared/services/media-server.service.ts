@@ -49,8 +49,8 @@ export class MediaServerService {
     return this.http.post<boolean>(this.getTestApiKeyUrl, login);
   }
 
-  searchEmby(): Observable<MediaServerUdpBroadcast> {
-    return this.http.get<MediaServerUdpBroadcast>(this.searchEmbyUrl);
+  searchMediaServer(type: number): Observable<MediaServerUdpBroadcast> {
+    return this.http.get<MediaServerUdpBroadcast>(this.searchEmbyUrl + `?serverType=${type}`);
   }
 
   getEmbyStatus(): Observable<MediaServerStatus> {

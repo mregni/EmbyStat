@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace EmbyStat.Services.Models.Emby
+namespace EmbyStat.Common.Models
 {
-    public class EmbyUdpBroadcast
+    public class MediaServerUdpBroadcast
     {
         [JsonIgnore]
         private string _address;

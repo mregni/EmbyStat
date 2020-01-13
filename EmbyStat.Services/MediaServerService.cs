@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
-using Newtonsoft.Json;
 using NLog;
 
 namespace EmbyStat.Services
 {
     public class MediaServerService : IMediaServerService
     {
-        private readonly IHttpClient _httpClient;
+        private IHttpClient _httpClient;
         private readonly IEmbyRepository _embyRepository;
         private readonly ISessionService _sessionService;
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
+        private readonly IClientStrategy _clientStrategy;
         private readonly Logger _logger;
 
         public MediaServerService(IClientStrategy clientStrategy, IEmbyRepository embyRepository, ISessionService sessionService,
@@ -41,53 +40,29 @@ namespace EmbyStat.Services
             _settingsService = settingsService;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
+            _clientStrategy = clientStrategy;
             _logger = LogManager.GetCurrentClassLogger();
 
             var settings = _settingsService.GetUserSettings();
-            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
+            ChangeClientType(settings.MediaServer?.ServerType);
         }
 
         #region Server
-        public EmbyUdpBroadcast SearchEmby()
+        public MediaServerUdpBroadcast SearchMediaServer(ServerType type)
         {
-            using var client = new UdpClient();
-            var requestData = Encoding.ASCII.GetBytes("who is EmbyServer?");
-            var serverEp = new IPEndPoint(IPAddress.Any, 7359);
+            ChangeClientType(type);
+            var result = _httpClient.SearchServer();
+            var settings = _settingsService.GetUserSettings();
+            settings.MediaServer.ServerName = result.Name;
+            _settingsService.SaveUserSettingsAsync(settings);
 
-            client.EnableBroadcast = true;
-            client.Send(requestData, requestData.Length, new IPEndPoint(IPAddress.Broadcast, 7359));
-
-            var timeToWait = TimeSpan.FromSeconds(2);
-
-            var asyncResult = client.BeginReceive(null, null);
-            asyncResult.AsyncWaitHandle.WaitOne(timeToWait);
-            if (asyncResult.IsCompleted)
+            if (!string.IsNullOrWhiteSpace(result.Address))
             {
-                try
-                {
-                    var receivedData = client.EndReceive(asyncResult, ref serverEp);
-                    var serverResponse = Encoding.ASCII.GetString(receivedData);
-                    var udpBroadcastResult = JsonConvert.DeserializeObject<EmbyUdpBroadcast>(serverResponse);
-
-                    var settings = _settingsService.GetUserSettings();
-                    settings.MediaServer.ServerName = udpBroadcastResult.Name;
-                    _settingsService.SaveUserSettingsAsync(settings);
-
-                    if (!string.IsNullOrWhiteSpace(udpBroadcastResult.Address))
-                    {
-                        _logger.Info($"{Constants.LogPrefix.ServerApi}\tEmby server found at: " + udpBroadcastResult.Address);
-                    }
-
-                    return udpBroadcastResult;
-
-                }
-                catch (Exception)
-                {
-                    // No data received, swallow exception and return empty object
-                }
+                var serverType = type == ServerType.Emby ? "Emby" : "jellyfin";
+                _logger.Info($"{Constants.LogPrefix.ServerApi}\t{ serverType } server found at: " + result.Address);
             }
 
-            return new EmbyUdpBroadcast();
+            return result;
         }
 
         public ServerInfo GetServerInfo()
@@ -119,7 +94,7 @@ namespace EmbyStat.Services
             return false;
         }
 
-        public EmbyStatus GetEmbyStatus()
+        public EmbyStatus GetMediaServerStatus()
         {
             return _embyRepository.GetEmbyStatus();
         }
@@ -330,6 +305,23 @@ namespace EmbyStat.Services
             }
 
             return watchedPercentage;
+        }
+
+        private void ChangeClientType(ServerType? type)
+        {
+            var realType = type ?? ServerType.Emby;
+            _httpClient = _clientStrategy.CreateHttpClient(realType);
+            var settings = _settingsService.GetUserSettings();
+            var appSettings = _settingsService.GetAppSettings();
+
+            if (settings.MediaServer == null)
+            {
+                settings.MediaServer = new MediaServerSettings();
+            }
+
+            _httpClient.SetDeviceInfo(settings.AppName, settings.MediaServer.AuthorizationScheme, appSettings.Version.ToCleanVersionString(), settings.Id.ToString());
+            settings.MediaServer.ServerType = realType;
+            _settingsService.SaveUserSettingsAsync(settings);
         }
     }
 }

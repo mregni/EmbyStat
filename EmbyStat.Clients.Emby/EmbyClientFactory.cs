@@ -2,7 +2,6 @@
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
-using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Enums;
 using IEmbyHttpClient = EmbyStat.Clients.Emby.Http.IEmbyHttpClient;
 

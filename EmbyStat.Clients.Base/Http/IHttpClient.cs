@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using EmbyStat.Clients.Base.Http.Model;
+﻿using System.Collections.Generic;
+using EmbyStat.Clients.Base.Models;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Newtonsoft.Json.Linq;
@@ -22,8 +19,14 @@ namespace EmbyStat.Clients.Base.Http
         JArray GetUsers();
         JObject GetDevices();
         bool Ping();
-        QueryResult<BaseItemDto> GetItems(ItemQuery query);
-        BaseItemDto GetPersonByName(string personName);
+        MediaServerUdpBroadcast SearchServer();
+        List<Movie> GetMovies(string parentId, int startIndex, int limit);
+        List<Boxset> GetBoxSet(string parentId);
+        List<Show> GetShows(string libraryId);
+        List<Season> GetSeasons(string parentId);
+        List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId);
+        int GetMovieCount(string parentId);
+        Person GetPersonByName(string personName);
         QueryResult<BaseItemDto> GetMediaFolders();
     }
 }

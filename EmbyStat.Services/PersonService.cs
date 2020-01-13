@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common.Converters;
@@ -38,8 +37,7 @@ namespace EmbyStat.Services
                 var person = _personRepository.GetPersonByName(name);
                 if (person == null)
                 {
-                    var rawPerson = _httpClient.GetPersonByName(name);
-                    person = PersonConverter.Convert(rawPerson);
+                    person = _httpClient.GetPersonByName(name);
                     _personRepository.Insert(person);
                 }
 

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using EmbyStat.Clients.Base;
+﻿using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;
@@ -87,9 +85,9 @@ namespace EmbyStat.DI
         {
             services.AddTransient<IRestClient, RestClient>();
 
-            services.TryAddTransient<IClientStrategy, ClientStrategy>();
-            services.TryAddTransient<IClientFactory, EmbyClientFactory>();
-            services.TryAddTransient<IClientFactory, JellyfinClientFactory>();
+            services.AddSingleton<IClientStrategy, ClientStrategy>();
+            services.AddSingleton<IClientFactory, EmbyClientFactory>();
+            services.AddSingleton<IClientFactory, JellyfinClientFactory>();
             
             services.TryAddSingleton<IEmbyHttpClient, EmbyHttpClient>();
             services.TryAddSingleton<IJellyfinHttpClient, JellyfinHttpClient>();

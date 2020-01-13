@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Movie;
 

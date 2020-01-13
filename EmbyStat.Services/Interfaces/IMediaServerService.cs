@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
@@ -10,10 +11,10 @@ namespace EmbyStat.Services.Interfaces
     {
         #region Server
 
-        EmbyUdpBroadcast SearchEmby();
+        MediaServerUdpBroadcast SearchMediaServer(ServerType type);
         ServerInfo GetServerInfo();
         bool TestNewApiKey(string url, string apiKey);
-        EmbyStatus GetEmbyStatus();
+        EmbyStatus GetMediaServerStatus();
         bool PingMediaServer(string url);
         void ResetMissedPings();
         void IncreaseMissedPings();

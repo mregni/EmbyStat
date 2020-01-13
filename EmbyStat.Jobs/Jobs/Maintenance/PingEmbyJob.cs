@@ -40,7 +40,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
                 _mediaServerService.IncreaseMissedPings();
             }
 
-            var status = _mediaServerService.GetEmbyStatus();
+            var status = _mediaServerService.GetMediaServerStatus();
             await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
 
         }

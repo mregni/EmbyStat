@@ -1,9 +1,9 @@
 ﻿using System.Linq;
+using EmbyStat.Clients.Base.Models;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Entities;
 
-namespace EmbyStat.Common.Converters
+namespace EmbyStat.Clients.Base.Converters
 {
     public static class PersonConverter
     {

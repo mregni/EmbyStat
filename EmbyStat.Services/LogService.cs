@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;

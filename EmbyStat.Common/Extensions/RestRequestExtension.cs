@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using EmbyStat.Clients.Base.Http.Model;
+using EmbyStat.Common.Models;
 using RestSharp;
 
-namespace EmbyStat.Clients.Emby.Http
+namespace EmbyStat.Common.Extensions
 {
     public static class RestRequestExtension
     {
         public static void AddItemQueryAsParameters(this IRestRequest request, ItemQuery query)
         {
+            request.AddQueryParameter("UserId", new Guid("fa89fb6cf3b74cc5bc179522e3b94246").ToString());
             if (!query.EnableTotalRecordCount)
             {
                 request.AddQueryParameter("EnableTotalRecordCount", query.EnableTotalRecordCount.ToString());

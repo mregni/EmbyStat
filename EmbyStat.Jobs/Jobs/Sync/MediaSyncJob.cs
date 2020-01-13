@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
-using EmbyStat.Clients.Base.Http.Model;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
@@ -18,11 +17,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Net;
-using MediaBrowser.Model.Querying;
-using LocationType = MediaBrowser.Model.Entities.LocationType;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -126,58 +121,23 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private int GetTotalLibraryMovieCount(string parentId)
         {
-            var countQuery = new ItemQuery
-            {
-                ParentId = parentId,
-                Recursive = true,
-                IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
-                StartIndex = 0,
-                Limit = 1,
-                EnableTotalRecordCount = true
-            };
-
-            var totalCountResult = _httpClient.GetItems(countQuery);
-            return totalCountResult.TotalRecordCount;
+            return _httpClient.GetMovieCount(parentId);
         }
 
         private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, int startIndex, int limit)
         {
-            var query = new ItemQuery
-            {
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = parentId,
-                Recursive = true,
-                LocationTypes = new[] { LocationType.FileSystem },
-                IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
-                StartIndex = startIndex,
-                Limit = limit,
-                Fields = new[]
-                    {
-                        ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
-                        ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
-                        ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
-                        ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
-                        ItemFields.ProductionYear, ItemFields.RunTimeTicks
-                    }
-            };
-
             try
             {
-                var embyMovies = _httpClient.GetItems(query);
-                var movies = embyMovies.Items
-                    .Where(x => x.Type == Constants.Type.Movie)
-                    .Select(x => MovieConverter.ConvertToMovie(x, parentId))
-                    .ToList();
-
-                if (embyMovies.Items.Any(x => x.Type == Constants.Type.Boxset))
+                var movies = _httpClient.GetMovies(parentId, startIndex, limit);
+                var boxSets = _httpClient.GetBoxSet(parentId);
+                if (boxSets.Any())
                 {
-                    foreach (var parent in embyMovies.Items.Where(x => x.Type == Constants.Type.Boxset))
+                    foreach (var parent in boxSets)
                     {
                         movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
                     }
                 }
-
-                embyMovies.Items = new BaseItemDto[0];
+                
                 return movies;
             }
             catch (Exception e)
@@ -213,48 +173,20 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task PerformShowSyncAsync(IReadOnlyList<string> showsThatNeedAnUpdate, Library library, DateTime updateStartTime)
         {
-            var showList = GetShowForLibrary(library.Id);
-            await LogInformation($"Found {showList.Items.Length} show for {library.Name} library");
+            var showList = _httpClient.GetShows(library.Id);
+            await LogInformation($"Found {showList.Count} show for {library.Name} library");
 
-            var grouped = showList.Items.GroupBy(x => x.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value).ToList();
+            var grouped = showList.GroupBy(x => x.TVDB == "Tvdb").ToList();
 
             for (var i = 0; i < grouped.Count; i++)
             {
                 var showGroup = grouped[i];
 
-                var show = showGroup.First().ConvertToShow(library.Id);
+                var show = showGroup.First();
                 foreach (var showDto in showGroup)
                 {
-                    var query = new ItemQuery
-                    {
-                        EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                        ParentId = showDto.Id,
-                        LocationTypes = new[] { LocationType.FileSystem },
-                        Recursive = true,
-                        IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
-                        Fields = new[]
-                        {
-                            ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                            ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                            ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
-                            ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
-                            ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
-                        }
-                    };
-
-                    var showChildren = _httpClient.GetItems(query);
-
-                    var seasons = showChildren.Items
-                        .Where(x => x.ParentId == show.Id)
-                        .Where(x => x.Type == nameof(Season))
-                        .Select(x => x.ConvertToSeason())
-                        .ToList();
-
-                    var episodes = showChildren.Items
-                        .Where(x => seasons.Any(y => y.Id == x.ParentId))
-                        .Where(x => x.Type == nameof(Episode))
-                        .Select(x => x.ConvertToEpisode(show.Id))
-                        .ToList();
+                    var seasons = _httpClient.GetSeasons(showDto.Id);
+                    var episodes = _httpClient.GetEpisodes(seasons.Select(x => x.Id), show.Id);
 
                     show.Seasons.AddRange(seasons.Where(x => show.Seasons.All(y => y.Id != x.Id)));
                     show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
@@ -287,31 +219,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 _showRepository.InsertShow(show);
                 await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name}");
             }
-        }
-
-        private QueryResult<BaseItemDto> GetShowForLibrary(string libraryId)
-        {
-            var query = new ItemQuery
-            {
-                SortBy = new[] { "SortName" },
-                SortOrder = SortOrder.Ascending,
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = libraryId,
-                LocationTypes = new[] { LocationType.FileSystem },
-                Recursive = true,
-                EnableTotalRecordCount = true,
-                IncludeItemTypes = new[] { "Series" },
-                Fields = new[] {
-                    ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                    ItemFields.Studios, ItemFields.Path, ItemFields.ProviderIds,
-                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.PremiereDate,
-                    ItemFields.CommunityRating, ItemFields.OfficialRating, ItemFields.ProductionYear,
-                    ItemFields.Status, ItemFields.RunTimeTicks
-                }
-            };
-
-            return _httpClient.GetItems(query);
-
         }
 
         private async Task<Show> GetMissingEpisodesFromTvdbAsync(Show show)

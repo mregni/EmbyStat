@@ -1,5 +1,4 @@
-﻿using System;
-using EmbyStat.Clients.Base.Http;
+﻿using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Enums;
 

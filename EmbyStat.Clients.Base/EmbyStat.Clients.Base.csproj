@@ -12,4 +12,8 @@
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Http\Model\" />
+  </ItemGroup>
+
 </Project>
