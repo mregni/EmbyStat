@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
@@ -25,7 +26,7 @@ namespace Tests.Unit.Services
         private Mock<IEmbyRepository> _embyRepositoryMock;
         private Mock<ISessionService> _sessionServiceMock;
         private readonly Mock<ISettingsService> _settingsServiceMock;
-        private Mock<IEmbyHttpClient> _httpClientMock;
+        private Mock<IHttpClient> _httpClientMock;
 
         public EmbyServiceTests()
         {
@@ -40,12 +41,17 @@ namespace Tests.Unit.Services
                     ServerProtocol = ConnectionProtocol.Http
                 }
             });
+
+            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings()
+            {
+                Version = "0.0.0.0"
+            });
         }
 
         [Fact]
         public void GetServerInfo_Should_Return_Emby_Server_Info()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -70,7 +76,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetServerInfo_Should_Return_Emby_Server_Info_And_Fetch_It_From_Emby()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -100,7 +106,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetEmbyStatus_Should_Return_Emby_Status_Object()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -114,7 +120,7 @@ namespace Tests.Unit.Services
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
             var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = service.GetEmbyStatus();
+            var result = service.GetMediaServerStatus();
 
             result.Should().NotBeNull();
             result.Id.Should().Be(embyStatus.Id);
@@ -125,7 +131,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void ResetMissedPings_Should_Return_Reset_Missed_Pings()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -146,7 +152,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void IncreaseMissedPings_Should_Return_Increased_Missed_Pings()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -167,7 +173,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void PingEmby_Should_Ping_Emby_Server()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -189,7 +195,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void TestNewApiKey_Should_Return_True()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -202,7 +208,7 @@ namespace Tests.Unit.Services
 
             _httpClientMock.SetupGet(x => x.ApiKey).Returns("1234");
             _httpClientMock.SetupGet(x => x.BaseUrl).Returns("localhost:9000");
-
+            
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
@@ -223,7 +229,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void TestNewApiKey_Should_Return_False()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -260,7 +266,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetAllPlugins_Should_Return_List_Of_Plugins()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -285,7 +291,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetAllUsers_Should_Return_List_Of_Users()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -310,7 +316,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetUserById_Should_Return_Correct_User()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -336,7 +342,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetViewedEpisodeCountByUserId_Should_Return_Total_Episode_View_Count()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -362,7 +368,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetViewedMovieCountByUserId_Should_Return_Total_Movie_View_Count()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -388,7 +394,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetUserViewCount_Should_Return_User_View_Count()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -411,7 +417,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetAndProcessServerInfo_Should_Save_Server_Info()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();
@@ -439,7 +445,7 @@ namespace Tests.Unit.Services
         [Fact]
         public void GetAndProcessPluginInfo_Should_Save_Plugins()
         {
-            _httpClientMock = new Mock<IEmbyHttpClient>();
+            _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IEmbyRepository>();
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _showRepositoryMock = new Mock<IShowRepository>();

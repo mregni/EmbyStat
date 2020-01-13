@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using EmbyStat.Clients.Base.Http.Model;
-using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
@@ -76,9 +76,10 @@ namespace Tests.Unit.Extensions
             };
 
             request.AddItemQueryAsParameters(query);
-            request.Parameters.Count.Should().Be(47);
+            request.Parameters.Count.Should().Be(48);
 
             var parameters = request.Parameters;
+            parameters.Single(x => x.Name == "UserId").Value.As<string>().Should().Be("fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             parameters.Single(x => x.Name == "EnableTotalRecordCount").Value.As<string>().Should().Be("False");
             parameters.Single(x => x.Name == "sortOrder").Value.As<string>().Should().Be("Ascending");
             parameters.Single(x => x.Name == "SeriesStatuses").Value.As<string>().Should().Be("Continuing,Ended");
@@ -135,9 +136,10 @@ namespace Tests.Unit.Extensions
 
             var query = new ItemQuery();
             request.AddItemQueryAsParameters(query);
-            request.Parameters.Count.Should().Be(7);
+            request.Parameters.Count.Should().Be(8);
 
             var parameters = request.Parameters;
+            parameters.Single(x => x.Name == "UserId").Value.As<string>().Should().Be("fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             parameters.Single(x => x.Name == "SeriesStatuses").Value.As<string>().Should().Be(string.Empty);
             parameters.Single(x => x.Name == "fields").Value.As<string>().Should().Be(string.Empty);
             parameters.Single(x => x.Name == "Filters").Value.As<string>().Should().Be(string.Empty);

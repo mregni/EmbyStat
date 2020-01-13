@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Models;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
@@ -11,8 +11,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
-using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Entities;
 using Moq;
 using Xunit;
 
@@ -20,21 +18,22 @@ namespace Tests.Unit.Services
 {
     public class PersonServiceTests
     {
-        private readonly BaseItemDto _basePerson;
+        private readonly Person _basePerson;
 
         private Mock<IEmbyHttpClient> EmbyClientMock { get; set; }
         private Mock<IPersonRepository> PersonRepositoryMock { get; set; }
         public PersonServiceTests()
         {
-            _basePerson = new BaseItemDto
+            _basePerson = new Person
             {
                 Id = "1",
                 Name = "name",
-                ImageTags = new Dictionary<ImageType, string> { { ImageType.Primary, "" } },
-                PremiereDate = new DateTime(2000, 1, 1),
+                Primary = "",
+                BirthDate = new DateTime(2000, 1, 1),
                 Etag = "etag",
-                ProviderIds = new Dictionary<string, string> { { "Imdb", "12345" }, { "Tmdb", "12345" } },
-                Overview = "Lots of text",
+                IMDB = "12345",
+                TMDB = "12345",
+                OverView = "Lots of text",
                 SortName = "name"
             };
         }
@@ -70,13 +69,13 @@ namespace Tests.Unit.Services
             person.Should().NotBeNull();
             person.Id.Should().Be(_basePerson.Id);
             person.Name.Should().Be(_basePerson.Name);
-            person.Primary.Should().Be(_basePerson.ImageTags?.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
+            person.Primary.Should().Be(_basePerson.Primary);
             person.MovieCount.Should().Be(10);
-            person.BirthDate.Should().Be(_basePerson.PremiereDate);
+            person.BirthDate.Should().Be(_basePerson.BirthDate);
             person.Etag.Should().Be(_basePerson.Etag);
-            person.IMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Imdb").Value);
-            person.TMDB.Should().Be(_basePerson.ProviderIds?.FirstOrDefault(y => y.Key == "Tmdb").Value);
-            person.OverView.Should().Be(_basePerson.Overview);
+            person.IMDB.Should().Be(_basePerson.IMDB);
+            person.TMDB.Should().Be(_basePerson.TMDB);
+            person.OverView.Should().Be(_basePerson.OverView);
             person.ShowCount.Should().Be(2);
             person.SortName.Should().Be(_basePerson.SortName);
 

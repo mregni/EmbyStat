@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.MediaServer;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Emby;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -48,7 +48,7 @@ namespace Tests.Unit.Controllers
 	    [Fact]
 	    public void SearchEmby_Should_Return_Emby_Instance()
 	    {
-            var emby = new EmbyUdpBroadcast
+            var emby = new MediaServerUdpBroadcast
             {
                 Id = "azerty",
                 Address = "localhost",
@@ -58,9 +58,9 @@ namespace Tests.Unit.Controllers
             };
 
             var embyServiceMock = new Mock<IMediaServerService>();
-            embyServiceMock.Setup(x => x.SearchEmby()).Returns(emby);
+            embyServiceMock.Setup(x => x.SearchMediaServer(It.IsAny<ServerType>())).Returns(emby);
             var controller = new MediaServerController(embyServiceMock.Object, _mapper);
-            var result = controller.SearchEmby();
+            var result = controller.SearchMediaServer(0);
 
 		    var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
 		    var embyUdpBroadcast = resultObject.Should().BeOfType<UdpBroadcastViewModel>().Subject;
@@ -71,7 +71,7 @@ namespace Tests.Unit.Controllers
             embyUdpBroadcast.Id.Should().Be(emby.Id);
 		    embyUdpBroadcast.Name.Should().Be(emby.Name);
 
-            embyServiceMock.Verify(x => x.SearchEmby(), Times.Once);
+            embyServiceMock.Verify(x => x.SearchMediaServer(ServerType.Emby), Times.Once);
             controller.Dispose();
         }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Castle.Components.DictionaryAdapter;
-using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services;
 using FluentAssertions;

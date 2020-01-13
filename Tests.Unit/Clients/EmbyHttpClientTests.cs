@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Clients.Base.Http.Model;
+using EmbyStat.Clients.Base.Models;
 using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Net;
 using FluentAssertions;
-using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Moq;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Serialization;
+using Tests.Unit.Builders;
+using Tests.Unit.Helpers;
 using Xunit;
 
 namespace Tests.Unit.Clients
@@ -73,12 +75,12 @@ namespace Tests.Unit.Clients
             _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-MediaBrowser-Token");
+            parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("apikey");
-            parameters[1].Name.Should().Be("X-MediaServer-Authorization");
+            parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Name.Should().Be("X-Emby-Token");
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Value.Should().Be("apikey");
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Plugins");
@@ -102,12 +104,12 @@ namespace Tests.Unit.Clients
             _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-MediaBrowser-Token");
+            parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("apikey");
-            parameters[1].Name.Should().Be("X-MediaServer-Authorization");
+            parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Name.Should().Be("X-Emby-Token");
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Value.Should().Be("apikey");
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("System/Info");
@@ -133,12 +135,12 @@ namespace Tests.Unit.Clients
             _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-MediaBrowser-Token");
+            parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("apikey");
-            parameters[1].Name.Should().Be("X-MediaServer-Authorization");
+            parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Name.Should().Be("X-Emby-Token");
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Value.Should().Be("apikey");
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Environment/Drives");
@@ -164,12 +166,12 @@ namespace Tests.Unit.Clients
             _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-MediaBrowser-Token");
+            parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("apikey");
-            parameters[1].Name.Should().Be("X-MediaServer-Authorization");
+            parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Name.Should().Be("X-Emby-Token");
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Value.Should().Be("apikey");
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Users");
@@ -193,25 +195,25 @@ namespace Tests.Unit.Clients
             _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-MediaBrowser-Token");
+            parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("apikey");
-            parameters[1].Name.Should().Be("X-MediaServer-Authorization");
+            parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Name.Should().Be("X-Emby-Token");
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Value.Should().Be("apikey");
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Devices");
         }
 
         [Fact]
-        public void GetItems_Should_Return_List_Of_Items()
+        public void GetMovies_Should_Return_List_Of_Movies()
         {
             var resultObj = new QueryResult<BaseItemDto>
             {
                 Items = new[]
                 {
-                    new BaseItemDto {Id = Guid.NewGuid().ToString()}
+                    new MovieBuilder("123").ToBaseItemDto()
                 }
             };
 
@@ -220,52 +222,33 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var query = new ItemQuery
-            {
-                IncludeItemTypes = new[] {"Movies"}
-            };
-
-            var result = client.GetItems(query);
+            var result = client.GetMovies("123", 0, 1000);
             result.Should().NotBeNull();
-            result.Items.Length.Should().Be(1);
+            result.Count.Should().Be(1);
 
-            result.Items[0].Id.Should().Be(resultObj.Items[0].Id);
+            result[0].Id.Should().Be(resultObj.Items[0].Id);
 
             _usedRequest.Should().NotBeNull();
 
-            _usedRequest?.Parameters.Count.Should().Be(10);
+            _usedRequest?.Parameters.Count.Should().Be(15);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("AirDays");
-            parameters[0].Type.Should().Be(ParameterType.QueryString);
-            parameters[0].Value.Should().Be(string.Empty);
-            parameters[1].Name.Should().Be("EnableImageTypes");
-            parameters[1].Type.Should().Be(ParameterType.QueryString);
-            parameters[1].Value.Should().Be(string.Empty);
-            parameters[2].Name.Should().Be("fields");
-            parameters[2].Type.Should().Be(ParameterType.QueryString);
-            parameters[2].Value.Should().Be(string.Empty);
-            parameters[3].Name.Should().Be("Filters");
-            parameters[3].Type.Should().Be(ParameterType.QueryString);
-            parameters[3].Value.Should().Be(string.Empty);
-            parameters[4].Name.Should().Be("ImageTypes");
-            parameters[4].Type.Should().Be(ParameterType.QueryString);
-            parameters[4].Value.Should().Be(string.Empty);
-            parameters[5].Name.Should().Be("IncludeItemTypes");
-            parameters[5].Type.Should().Be(ParameterType.QueryString);
-            parameters[5].Value.Should().Be("Movies");
-            parameters[6].Name.Should().Be("recursive");
-            parameters[6].Type.Should().Be(ParameterType.QueryString);
-            parameters[6].Value.Should().Be("False");
-            parameters[7].Name.Should().Be("SeriesStatuses");
-            parameters[7].Type.Should().Be(ParameterType.QueryString);
-            parameters[7].Value.Should().Be(string.Empty);
-            parameters[8].Name.Should().Be("X-MediaBrowser-Token");
-            parameters[8].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[8].Value.Should().Be("apikey");
-            parameters[9].Name.Should().Be("X-MediaServer-Authorization");
-            parameters[9].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[9].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+
+            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(1, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
+            parameters.CheckQueryParameter(2, "fields", "Genres,DateCreated,MediaSources,ExternalUrls,OriginalTitle,Studios,MediaStreams,Path,Overview,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,RunTimeTicks", ParameterType.QueryString);
+            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(5, "IncludeItemTypes", "Movie", ParameterType.QueryString);
+            parameters.CheckQueryParameter(6, "Limit", "1000", ParameterType.QueryString);
+            parameters.CheckQueryParameter(7, "LocationTypes", "FileSystem", ParameterType.QueryString);
+            parameters.CheckQueryParameter(8, "ParentId", "123", ParameterType.QueryString);
+            parameters.CheckQueryParameter(9, "recursive", "True", ParameterType.QueryString);
+            parameters.CheckQueryParameter(10, "SeriesStatuses", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(11, "StartIndex", "0", ParameterType.QueryString);
+            parameters.CheckQueryParameter(12, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
+            parameters.CheckQueryParameter(13, "X-Emby-Authorization", "mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
+            parameters.CheckQueryParameter(14, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Items");
@@ -288,36 +271,19 @@ namespace Tests.Unit.Clients
 
             _usedRequest.Should().NotBeNull();
 
-            _usedRequest?.Parameters.Count.Should().Be(9);
+            _usedRequest?.Parameters.Count.Should().Be(10);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("AirDays");
-            parameters[0].Type.Should().Be(ParameterType.QueryString);
-            parameters[0].Value.Should().Be(string.Empty);
-            parameters[1].Name.Should().Be("EnableImageTypes");
-            parameters[1].Type.Should().Be(ParameterType.QueryString);
-            parameters[1].Value.Should().Be(string.Empty);
-            parameters[2].Name.Should().Be("fields");
-            parameters[2].Type.Should().Be(ParameterType.QueryString);
-            parameters[2].Value.Should().Be("PremiereDate");
-            parameters[3].Name.Should().Be("Filters");
-            parameters[3].Type.Should().Be(ParameterType.QueryString);
-            parameters[3].Value.Should().Be(string.Empty);
-            parameters[4].Name.Should().Be("ImageTypes");
-            parameters[4].Type.Should().Be(ParameterType.QueryString);
-            parameters[4].Value.Should().Be(string.Empty);
-            parameters[5].Name.Should().Be("recursive");
-            parameters[5].Type.Should().Be(ParameterType.QueryString);
-            parameters[5].Value.Should().Be("False");
-            parameters[6].Name.Should().Be("SeriesStatuses");
-            parameters[6].Type.Should().Be(ParameterType.QueryString);
-            parameters[6].Value.Should().Be(string.Empty);
-            parameters[7].Name.Should().Be("X-MediaBrowser-Token");
-            parameters[7].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[7].Value.Should().Be("apikey");
-            parameters[8].Name.Should().Be("X-MediaServer-Authorization");
-            parameters[8].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[8].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(1, "EnableImageTypes", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(2, "fields", "PremiereDate", ParameterType.QueryString);
+            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(5, "recursive", "False", ParameterType.QueryString);
+            parameters.CheckQueryParameter(6, "SeriesStatuses", "", ParameterType.QueryString);
+            parameters.CheckQueryParameter(7, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
+            parameters.CheckQueryParameter(8, "X-Emby-Authorization", "mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
+            parameters.CheckQueryParameter(9, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be($"persons/{name}");
@@ -350,12 +316,12 @@ namespace Tests.Unit.Clients
             _usedRequest?.Parameters.Count.Should().Be(2);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-MediaBrowser-Token");
+            parameters[0].Name.Should().Be("X-Emby-Authorization");
             parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("apikey");
-            parameters[1].Name.Should().Be("X-MediaServer-Authorization");
+            parameters[0].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Name.Should().Be("X-Emby-Token");
             parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("mediabrowser Client=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
+            parameters[1].Value.Should().Be("apikey");
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Library/MediaFolders");
@@ -382,7 +348,7 @@ namespace Tests.Unit.Clients
         [Fact]
         public void PingEmby_Should_Return_Emby_String()
         {
-            var client = CreateStringClient("Emby Server");
+            var client = CreateStringClient("Emby server");
             var result = client.Ping();
 
             result.Should().Be(true);

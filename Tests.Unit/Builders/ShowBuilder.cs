@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using MediaBrowser.Model.Entities;
-using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace Tests.Unit.Builders
 {
