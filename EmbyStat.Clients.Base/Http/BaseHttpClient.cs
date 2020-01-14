@@ -220,7 +220,7 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 Recursive = true,
                 LocationTypes = new[] { LocationType.FileSystem },
-                IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
+                IncludeItemTypes = new[] { nameof(Boxset) },
                 Fields = new[]
                 {
                     ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
