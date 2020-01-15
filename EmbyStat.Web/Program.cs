@@ -23,19 +23,16 @@ namespace EmbyStat.Web
         private static Logger _logger;
         public static int Main(string[] args)
         {
-            CreateConfigFolder();
-            _logger = SetupLogging();
-
             try
             {
                 var result = Parser.Default.ParseArguments<StartupOptions>(args);
                 StartupOptions options = null;
                 result.WithParsed(opts => options = opts);
 
-                var listeningUrl = $"http://*:{options.Port}";
-
                 var configArgs = CreateArgsArray(options);
-                SetLogPath(configArgs.Single(x => x.Key == "Dirs:Logs").Value);
+                _logger = SetupLogging(configArgs);
+
+                var listeningUrl = $"http://*:{options.Port}";
                 _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
                 
                 var config = BuildConfigurationRoot(configArgs);
@@ -82,24 +79,24 @@ namespace EmbyStat.Web
                 .AddInMemoryCollection(configArgs)
                 .Build();
 
-        private static void CreateConfigFolder()
+        private static Logger SetupLogging(Dictionary<string, string> configArgs)
         {
-            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config")))
-            {
-                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "config"));
-            }
-        }
+            var logPath = configArgs.Single(x => x.Key == "Dirs:Logs").Value;
+            var configPath = configArgs.Single(x => x.Key == "Dirs:Config").Value;
 
-        private static Logger SetupLogging()
-        {
-            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")))
+            var destination = Path.Combine(configPath, "nlog.config");
+            if (!File.Exists(Path.Combine(configPath, "nlog.config")))
             {
                 var source = Path.Combine(Directory.GetCurrentDirectory(), "nlog.config");
-                var destination = Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config");
                 File.Copy(source, destination);
             }
 
-            var logger = NLogBuilder.ConfigureNLog(Path.Combine(Directory.GetCurrentDirectory(), "config", "nlog.config")).GetCurrentClassLogger();
+            var logger = NLogBuilder.ConfigureNLog(destination).GetCurrentClassLogger();
+
+            var target = (FileTarget)LogManager.Configuration.FindTargetByName("file");
+            target.FileName = $"{logPath}/${{shortdate}}.log";
+            LogManager.ReconfigExistingLoggers();
+
             return logger;
         }
 
@@ -175,13 +172,6 @@ namespace EmbyStat.Web
                 }
             }
             return logDir;
-        }
-
-        private static void SetLogPath(string path)
-        {
-            var target = (FileTarget)LogManager.Configuration.FindTargetByName("file");
-            target.FileName = $"{path}/${{shortdate}}.log";
-            LogManager.ReconfigExistingLoggers();
         }
     }
 }
