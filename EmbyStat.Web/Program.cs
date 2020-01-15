@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CommandLine;
 using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,13 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using NLog;
+using NLog.Targets;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace EmbyStat.Web
 {
     public class Program
     {
-        private static Logger _logger; 
+        private static Logger _logger;
         public static int Main(string[] args)
         {
             CreateConfigFolder();
@@ -31,8 +34,10 @@ namespace EmbyStat.Web
 
                 var listeningUrl = $"http://*:{options.Port}";
 
+                var configArgs = CreateArgsArray(options);
+                SetLogPath(configArgs.Single(x => x.Key == "Dirs:Logs").Value);
                 _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
-                var configArgs = new Dictionary<string, string> { { "Port", options.Port.ToString() }, { "NoUpdates", options.NoUpdates.ToString()} };
+                
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
 
@@ -115,6 +120,68 @@ namespace EmbyStat.Web
                     throw;
                 }
             }
+        }
+
+        private static Dictionary<string, string> CreateArgsArray(StartupOptions options)
+        {
+            return new Dictionary<string, string>
+            {
+                { "Port", options.Port.ToString() }, 
+                { "NoUpdates", options.NoUpdates.ToString() },
+                { "Dirs:Data", GetDataPath(options) },
+                { "Dirs:Config", GetConfigPath(options) },
+                { "Dirs:Logs", GetLogsPath(options) },
+            };
+        }
+
+        private static string GetDataPath(StartupOptions options)
+        {
+            var dataDir = options.DataDir;
+            if (string.IsNullOrWhiteSpace(dataDir))
+            {
+                dataDir = Environment.GetEnvironmentVariable("EMBYSTAT_DATA_DIR");
+                if (string.IsNullOrWhiteSpace(dataDir))
+                {
+                    dataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EmbyStat");
+                }
+            }
+
+            return dataDir;
+        }
+
+        private static string GetConfigPath(StartupOptions options)
+        {
+            var configDir = options.ConfigDir;
+            if (string.IsNullOrWhiteSpace(configDir))
+            {
+                configDir = Environment.GetEnvironmentVariable("EMBYSTAT_CONFIG_DIR");
+                if (string.IsNullOrWhiteSpace(configDir))
+                {
+                    configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EmbyStat");
+                }
+            }
+            return configDir;
+        }
+
+        private static string GetLogsPath(StartupOptions options)
+        {
+            var logDir = options.LogDir;
+            if (string.IsNullOrWhiteSpace(logDir))
+            {
+                logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOG_DIR");
+                if (string.IsNullOrWhiteSpace(logDir))
+                {
+                    logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EmbyStat", "Logs");
+                }
+            }
+            return logDir;
+        }
+
+        private static void SetLogPath(string path)
+        {
+            var target = (FileTarget)LogManager.Configuration.FindTargetByName("file");
+            target.FileName = $"{path}/${{shortdate}}.log";
+            LogManager.ReconfigExistingLoggers();
         }
     }
 }

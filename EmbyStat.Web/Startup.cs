@@ -78,7 +78,7 @@ namespace EmbyStat.Web
             services.AddAutoMapper(typeof(MapProfiles));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "EmbyStat API", Version = "1.0"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmbyStat API", Version = "1.0"});
             });
 
             services.AddSpaStaticFiles(configuration =>
@@ -181,7 +181,7 @@ namespace EmbyStat.Web
             var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
             var settings = settingsService.GetAppSettings();
-                
+            
             settingsService.LoadUserSettingsFromFile();
             settingsService.CreateRollbarLogger();
             AddDeviceIdToConfig(settingsService);
