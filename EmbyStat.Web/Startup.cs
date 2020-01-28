@@ -163,9 +163,9 @@ namespace EmbyStat.Web
 
         private void SetupDirectories(AppSettings settings)
         {
-            if (Directory.Exists(settings.Dirs.TempUpdateDir.GetLocalPath()))
+            if (Directory.Exists(settings.Dirs.TempUpdate.GetLocalPath()))
             {
-                Directory.Delete(settings.Dirs.TempUpdateDir.GetLocalPath(), true);
+                Directory.Delete(settings.Dirs.TempUpdate.GetLocalPath(), true);
             }
         }
 

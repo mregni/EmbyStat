@@ -121,13 +121,14 @@ namespace EmbyStat.Web
 
         private static Dictionary<string, string> CreateArgsArray(StartupOptions options)
         {
+            var dataPath = GetDataPath(options);
             return new Dictionary<string, string>
             {
                 { "Port", options.Port.ToString() }, 
                 { "NoUpdates", options.NoUpdates.ToString() },
-                { "Dirs:Data", GetDataPath(options) },
-                { "Dirs:Config", GetConfigPath(options) },
-                { "Dirs:Logs", GetLogsPath(options) },
+                { "Dirs:Data", dataPath},
+                { "Dirs:Config", GetConfigPath(options, dataPath) },
+                { "Dirs:Logs", GetLogsPath(options, dataPath) },
             };
         }
 
@@ -143,10 +144,20 @@ namespace EmbyStat.Web
                 }
             }
 
+            try
+            {
+                Directory.CreateDirectory(dataDir);
+            }
+            catch (Exception e)
+            {
+                _logger.Warn("Can't create data directory:");
+                _logger.Fatal(e);
+            }
+
             return dataDir;
         }
 
-        private static string GetConfigPath(StartupOptions options)
+        private static string GetConfigPath(StartupOptions options, string basePath)
         {
             var configDir = options.ConfigDir;
             if (string.IsNullOrWhiteSpace(configDir))
@@ -154,13 +165,24 @@ namespace EmbyStat.Web
                 configDir = Environment.GetEnvironmentVariable("EMBYSTAT_CONFIG_DIR");
                 if (string.IsNullOrWhiteSpace(configDir))
                 {
-                    configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EmbyStat");
+                    configDir = basePath;
                 }
             }
+
+            try
+            {
+                Directory.CreateDirectory(configDir);
+            }
+            catch (Exception e)
+            {
+                _logger.Warn("Can't create config directory:");
+                _logger.Fatal(e);
+            }
+
             return configDir;
         }
 
-        private static string GetLogsPath(StartupOptions options)
+        private static string GetLogsPath(StartupOptions options, string basePath)
         {
             var logDir = options.LogDir;
             if (string.IsNullOrWhiteSpace(logDir))
@@ -168,9 +190,20 @@ namespace EmbyStat.Web
                 logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOG_DIR");
                 if (string.IsNullOrWhiteSpace(logDir))
                 {
-                    logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EmbyStat", "Logs");
+                    logDir = Path.Combine(basePath, "Logs");
                 }
             }
+
+            try
+            {
+                Directory.CreateDirectory(logDir);
+            }
+            catch (Exception e)
+            {
+                _logger.Warn("Can't create log directory:");
+                _logger.Fatal(e);
+            }
+
             return logDir;
         }
     }

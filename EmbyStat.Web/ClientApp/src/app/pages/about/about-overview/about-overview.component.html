@@ -9,9 +9,22 @@
           <mat-card-title>{{ 'ABOUT.SERVERINFO' | translate }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p class="m-b-0">EmbyStat version: {{ about.version }}</p>
-          <p class="m-b-0">Operating system: {{ about.operatingSystem }} {{about.architecture}}
-            {{ about.operatingSystemVersion }}</p>
+          <div class="row">
+            <div class="col-xl-5 col-md-5 col-12 mb-3">
+              <p class="m-b-0">
+                EmbyStat version: {{ about.version }}<br />
+                Operating system: {{ about.operatingSystem }} {{about.architecture}}
+                {{ about.operatingSystemVersion }}
+              </p>
+            </div>
+            <div class="col-xl-7 col-md-7 col-12">
+              <p *ngIf="settings$ | async as settings">
+                Database path: {{settings.dataDir}}<br />
+                Log path: {{settings.logDir}}<br />
+                Configuration path: {{settings.configDir}}<br />
+              </p>
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>

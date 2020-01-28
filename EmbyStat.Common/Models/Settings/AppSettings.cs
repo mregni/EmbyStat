@@ -33,7 +33,7 @@ namespace EmbyStat.Common.Models.Settings
 
     public class Dirs
     {
-        public string TempUpdateDir { get; set; }
+        public string TempUpdate { get; set; }
         public string Updater { get; set; }
         /// <summary>
         /// Log folder. Never saved, Set dynamically when server is starting.

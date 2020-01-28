@@ -171,11 +171,11 @@ namespace EmbyStat.Services
         public async Task DownloadZipAsync(UpdateResult result)
         {
             var appSettings = _settingsService.GetAppSettings();
-            if (Directory.Exists(appSettings.Dirs.TempUpdateDir))
+            if (Directory.Exists(appSettings.Dirs.TempUpdate))
             {
-                Directory.Delete(appSettings.Dirs.TempUpdateDir, true);
+                Directory.Delete(appSettings.Dirs.TempUpdate, true);
             }
-            Directory.CreateDirectory(appSettings.Dirs.TempUpdateDir);
+            Directory.CreateDirectory(appSettings.Dirs.TempUpdate);
 
             try
             {
@@ -207,8 +207,8 @@ namespace EmbyStat.Services
                     {
                         updaterExtension = ".exe";
                     }
-                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdateDir, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
-                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdateDir);
+                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
+                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate);
 
                     if (!File.Exists(updaterTool))
                     {
@@ -271,7 +271,7 @@ namespace EmbyStat.Services
             try
             {
                 var appSettings = _settingsService.GetAppSettings();
-                ZipFile.ExtractToDirectory(result.Package.Name, appSettings.Dirs.TempUpdateDir, true);
+                ZipFile.ExtractToDirectory(result.Package.Name, appSettings.Dirs.TempUpdate, true);
             }
             catch (Exception e)
             {

@@ -19,5 +19,8 @@ namespace EmbyStat.Web
 
         [Option("config-dir", Required = false, Default = "", HelpText = "Folder where config files are stored")]
         public string ConfigDir { get; set; }
+
+        [Option("service", Required = false, Default = false, HelpText = "Indicate EmbyStat is running as a service")]
+        public bool Service { get; set; }
     }
 } 
