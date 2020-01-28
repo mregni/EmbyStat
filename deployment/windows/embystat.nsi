@@ -46,10 +46,10 @@ ShowUninstDetails show
     !define REG_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\EmbyStatServer" ;Registry to show up in Add/Remove Programs
     !define REG_CONFIG_KEY "Software\EmbyStat" ;Registry to store all configuration
 
-    !getdllversion "$%InstallLocation%\EmbyStat.dll" ver_ ;Align installer version with jellyfin.dll version
+    !getdllversion "$%InstallLocation%\EmbyStat.dll" ver_ ;Align installer version with EmbyStat.dll version
 
     Name "EmbyStat Server ${ver_1}.${ver_2}.${ver_3} ${NAMESUFFIX}" ; This is referred in various header text labels
-    OutFile "EmbyStat_${ver_1}.${ver_2}.${ver_3}_windows-${ARCH}.exe" ; Naming convention jellyfin_{version}_windows-{arch].exe
+    OutFile "EmbyStat_${ver_1}.${ver_2}.${ver_3}_windows-${ARCH}.exe" ; Naming convention EmbyStat_{version}_windows-{arch].exe
     BrandingText "EmbyStat Server ${ver_1}.${ver_2}.${ver_3} Installer" ; This shows in just over the buttons
 
 ; installer attributes, these show up in details tab on installer properties
@@ -70,7 +70,7 @@ ShowUninstDetails show
 
     !define MUI_ABORTWARNING ;Prompts user in case of aborting install
 
-; TODO: Replace with nice Jellyfin Icons
+; TODO: Replace with nice EmbyStat Icons
 !ifdef UXPATH
     !define MUI_ICON "..\..\branding\NSIS\install.ico" ; Installer Icon
     !define MUI_UNICON "..\..\branding\NSIS\uninstall.ico" ; Uninstaller Icon
@@ -115,10 +115,6 @@ ShowUninstDetails show
     !include "dialogs\confirmation.nsdinc"
 
 ; Select service account type
-    #!define MUI_PAGE_CUSTOMFUNCTION_PRE HideServiceConfigPage ; Controls when to hide / show (This does not work for Page, might need to go PageEx)
-    #!define MUI_PAGE_CUSTOMFUNCTION_SHOW fnc_service_config_Show
-    #!define MUI_PAGE_CUSTOMFUNCTION_LEAVE ServiceConfigPage_Config
-    #!insertmacro MUI_PAGE_CUSTOM ServiceAccountType
     Page custom ShowServiceConfigPage ServiceConfigPage_Config
 
 ; Confirmation Page
@@ -279,7 +275,7 @@ Section "Create Shortcuts" CreateWinShortcuts
     ${If} $_MAKESHORTCUTS_ == "Yes"
         CreateDirectory "$SMPROGRAMS\EmbyStat"
         CreateShortCut "$SMPROGRAMS\EmbyStat\EmbyStat.lnk" "$INSTDIR\EmbyStat.exe" "--data-dir $\"$_EMBYSTATDATADIR_$\"" "$INSTDIR\icon.ico" 0 SW_SHOWMAXIMIZED
-        ;CreateShortCut "$DESKTOP\Jellyfin Server.lnk" "$INSTDIR\jellyfin.exe" "--datadir $\"$_EMBYSTATDATADIR_$\"" "$INSTDIR\icon.ico" 0 SW_SHOWMINIMIZED
+        ;CreateShortCut "$DESKTOP\EmbyStat Server.lnk" "$INSTDIR\EmbyStat.exe" "--datadir $\"$_EMBYSTATDATADIR_$\"" "$INSTDIR\icon.ico" 0 SW_SHOWMINIMIZED
         ;CreateShortCut "$DESKTOP\EmbyStat Server\EmbyStat Server.lnk" "$INSTDIR\EmbyStattray.exe" "" "$INSTDIR\icon.ico" 0
     ${EndIf}
 SectionEnd
@@ -371,7 +367,7 @@ Function .onInit
     StrCmp $R0 0 +3
     !insertmacro ShowErrorFinal "The installer is already running."
 
-;Detect if Jellyfin is already installed.
+;Detect if EmbyStat is already installed.
 ; In case it is installed, let the user choose either
 ;	1. Exit installer
 ;   2. Upgrade without messing with data
@@ -398,8 +394,8 @@ Function .onInit
     ; Hide sections which will not be needed in case of previous install
     ; SectionSetText ${InstallService} ""
 
-   ; check if there is a service called Jellyfin, there should be
-   ; hack : nssm statuscode Jellyfin will return non zero return code in case it exists
+   ; check if there is a service called EmbyStat, there should be
+   ; hack : nssm statuscode EmbyStat will return non zero return code in case it exists
     ExecWait '"$INSTDIR\nssm.exe" statuscode EmbyStatServer' $0
     DetailPrint "EmbyStat Server service statuscode, $0"
     IntCmp $0 0 NoService ; service doesn't exist, may be run from desktop shortcut
