@@ -3,7 +3,7 @@ pool:
   demands: java
 
 jobs:
-- job: main-build
+- job: main_build
   displayName: 'Test application'
   steps:
   - task: gittools.gitversion.gitversion-task.GitVersion@4
@@ -96,8 +96,8 @@ jobs:
       PathtoPublish: '$(webapp.path.win10-x64)'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
 
-- job:  build-win10-x64
-  dependsOn:  main-build
+- job:  build_win10_x64
+  dependsOn:  main_build
   displayName: 'Build Win10-x64 package'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   pool:
@@ -151,8 +151,8 @@ jobs:
       PathtoPublish: '$(webapp.path.win10-x64)'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
 
-- job:  build-ubuntu-x64
-  dependsOn:  main-build
+- job:  build_ubuntu_x64
+  dependsOn:  main_build
   displayName: 'Build Ubuntu-x64 package'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   pool:
@@ -206,11 +206,11 @@ jobs:
       PathtoPublish: '$(webapp.path.ubuntu-x64)'
       ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(Build.BuildNumber)'
 
-- job:  create-docker-files
+- job:  create_docker_files
   dependsOn:
-  - build-win10-x64
-  - build-ubuntu-x64
-  - main-build
+  - build_win10_x64
+  - build_ubuntu_x64
+  - main_build
   displayName: 'Create Docker files'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   pool:
