@@ -39,10 +39,10 @@ jobs:
       projectKey: '15579460-0cb2-4494-a9ed-ebcc05beeb00'
       projectVersion: '$(build.buildNumber)'
       extraProperties: |
-      sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**
-      sonar.ts.tslint.configPath=ClientApp/tslint.json
-      sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info
-      sonar.testExecutionReportPaths=EmbyStat.Web/ClientApp/coverage/ut_report.xml
+        sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**
+        sonar.ts.tslint.configPath=ClientApp/tslint.json
+        sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info
+        sonar.testExecutionReportPaths=EmbyStat.Web/ClientApp/coverage/ut_report.xml
 
   - task: DotNetCoreCLI@2
     displayName: 'Build web app'
