@@ -6,7 +6,7 @@ jobs:
 - job: main_build
   displayName: 'Test application'
   steps:
-  - task: gittools.gitversion.gitversion-task.GitVersion@4
+  - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
       preferBundledVersion: false
@@ -103,7 +103,7 @@ jobs:
   pool:
     name: Hosted Windows 2019 with VS2019
   steps:
-  - task: gittools.gitversion.gitversion-task.GitVersion@4
+  - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
       preferBundledVersion: false
@@ -158,7 +158,7 @@ jobs:
   pool:
     name: Hosted Windows 2019 with VS2019
   steps:
-  - task: gittools.gitversion.gitversion-task.GitVersion@4
+  - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
       preferBundledVersion: false
@@ -216,7 +216,7 @@ jobs:
   pool:
     name: Hosted Windows 2019 with VS2019
   steps:
-  - task: gittools.gitversion.gitversion-task.GitVersion@4
+  - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
       preferBundledVersion: false
