@@ -1,0 +1,94 @@
+pool:
+  name: Hosted Windows 2019 with VS2019
+  demands: java
+
+steps:
+- task: gittools.gitversion.gitversion-task.GitVersion@4
+  displayName: 'Set Version'
+  inputs:
+    preferBundledVersion: false
+
+- powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
+  displayName: 'Update build number'
+
+- task: richardfennellBM.BM-VSTS-Versioning-Task.Version-JSONFile-Task.VersionJSONFile@2
+  displayName: 'Version JSON File'
+  inputs:
+    VersionNumber: '$(GitVersion.AssemblySemVer)'
+
+- task: richardfennellBM.BM-VSTS-Versioning-Task.Version-DotNetCoreAssemblies-Task.VersionDotNetCoreAssemblies@2
+  displayName: 'Version .NET Core Assemblies'
+  inputs:
+    VersionNumber: '$(GitVersion.AssemblySemVer)'
+
+- task: PowerShell@2
+  displayName: 'Update AppSettings.json version'
+  inputs:
+    targetType: filePath
+    filePath: ../Scripts/appsettings.ps1
+    arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
+
+- task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+  displayName: 'Prepare analysis on SonarCloud'
+  inputs:
+    SonarCloud: SonarCloud
+    organization: 'd8c11b45-69cb-4181-8d1a-a2399df9f672'
+    projectKey: '15579460-0cb2-4494-a9ed-ebcc05beeb00'
+    projectVersion: '$(build.buildNumber)'
+    extraProperties: |
+     sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**
+     sonar.ts.tslint.configPath=ClientApp/tslint.json
+     sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info
+     sonar.testExecutionReportPaths=EmbyStat.Web/ClientApp/coverage/ut_report.xml
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build web app'
+  inputs:
+    projects: '$(webapp.projects)'
+    arguments: '--output $(webapp.path.win10-x64)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build unit tests'
+  inputs:
+    projects: '$(tests.projects)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run BE tests'
+  inputs:
+    command: test
+    arguments: '--collect "Code Coverage"'
+    testRunTitle: 'Dev unit tests'
+
+- script: 'npm install tslint typescript @angular/cli -g'
+  workingDirectory: EmbyStat.Web/ClientApp
+  displayName: 'Install FE test packages'
+
+- script: 'tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**'
+  workingDirectory: EmbyStat.Web/ClientApp
+  displayName: 'Run tslint'
+
+- script: 'ng test --code-coverage  --watch=false'
+  workingDirectory: EmbyStat.Web/ClientApp
+  displayName: 'Run FE tests'
+
+- task: CopyFiles@2
+  displayName: 'Copy FE test results'
+  inputs:
+    SourceFolder: EmbyStat.Web/ClientApp
+    Contents: coverage/lcov.info
+    TargetFolder: '$(Common.TestResultsDirectory)'
+
+- task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
+
+- task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Result'
+
+- task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@19
+  displayName: 'Scan for open libraries'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Windows Artifact'
+  inputs:
+    PathtoPublish: '$(webapp.path.win10-x64)'
+    ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'

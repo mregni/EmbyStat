@@ -21,6 +21,9 @@ export class Settings {
   enableRollbarLogging: boolean ;
   isLoaded: boolean;
   noUpdates: boolean;
+  dataDir: string;
+  logDir: string;
+  configDir: string;
 
   constructor() {
     this.emby = new EmbySettings();
