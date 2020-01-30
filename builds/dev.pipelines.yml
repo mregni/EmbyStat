@@ -9,20 +9,37 @@ jobs:
   - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
+      runtime: 'core'
       preferBundledVersion: false
+      configFilePath: 'GitVersion.yml'
 
-  - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
+  - task: PowerShell@2
     displayName: 'Update build number'
+    inputs:
+      targetType: 'inline'
+      script: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
 
-  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-JSONFile-Task.VersionJSONFile@2
+  - task: VersionJSONFile@2
     displayName: 'Version JSON File'
     inputs:
+      Path: '$(Build.SourcesDirectory)'
+      recursion: True
       VersionNumber: '$(GitVersion.AssemblySemVer)'
+      useBuildNumberDirectly: False
+      VersionRegex: '\d+\.\d+\.\d+\.\d+'
+      versionForJSONFileFormat: '{1}.{2}.{3}'
+      FilenamePattern: 'package.json'
+      OutputVersion: 'OutputedVersion'
 
-  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-DotNetCoreAssemblies-Task.VersionDotNetCoreAssemblies@2
+  - task: VersionDotNetCoreAssemblies@2
     displayName: 'Version .NET Core Assemblies'
     inputs:
+      Path: '$(Build.SourcesDirectory)'
       VersionNumber: '$(GitVersion.AssemblySemVer)'
+      Injectversion: False
+      VersionRegex: '\d+\.\d+\.\d+\.\d+'
+      FilenamePattern: '.csproj'
+      OutputVersion: 'OutputedVersion'
 
   - task: PowerShell@2
     displayName: 'Update AppSettings.json version'
@@ -31,11 +48,12 @@ jobs:
       filePath: ./scripts/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
 
-  - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+  - task: SonarCloudPrepare@1
     displayName: 'Prepare analysis on SonarCloud'
     inputs:
-      SonarCloud: SonarCloud
+      SonarCloud: 'SonarCloud'
       organization: 'd8c11b45-69cb-4181-8d1a-a2399df9f672'
+      scannerMode: 'MSBuild'
       projectKey: '15579460-0cb2-4494-a9ed-ebcc05beeb00'
       projectVersion: '$(build.buildNumber)'
       extraProperties: |
@@ -81,14 +99,18 @@ jobs:
       Contents: coverage/lcov.info
       TargetFolder: '$(Common.TestResultsDirectory)'
 
-  - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+  - task: SonarCloudAnalyze@1
     displayName: 'Run Code Analysis'
 
-  - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+  - task: SonarCloudPublish@1
     displayName: 'Publish Quality Gate Result'
+    inputs:
+      pollingTimeoutSec: '300'
 
-  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@19
+  - task: WhiteSource Bolt@20
     displayName: 'Scan for open libraries'
+    inputs:
+      cwd: '$(Build.SourcesDirectory)'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
@@ -108,15 +130,27 @@ jobs:
     inputs:
       preferBundledVersion: false
 
-  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-JSONFile-Task.VersionJSONFile@2
+  - task: VersionJSONFile@2
     displayName: 'Version JSON File'
     inputs:
+      Path: '$(Build.SourcesDirectory)'
+      recursion: True
       VersionNumber: '$(GitVersion.AssemblySemVer)'
+      useBuildNumberDirectly: False
+      VersionRegex: '\d+\.\d+\.\d+\.\d+'
+      versionForJSONFileFormat: '{1}.{2}.{3}'
+      FilenamePattern: 'package.json'
+      OutputVersion: 'OutputedVersion'
 
-  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-DotNetCoreAssemblies-Task.VersionDotNetCoreAssemblies@2
+  - task: VersionDotNetCoreAssemblies@2
     displayName: 'Version .NET Core Assemblies'
     inputs:
+      Path: '$(Build.SourcesDirectory)'
       VersionNumber: '$(GitVersion.AssemblySemVer)'
+      Injectversion: False
+      VersionRegex: '\d+\.\d+\.\d+\.\d+'
+      FilenamePattern: '.csproj'
+      OutputVersion: 'OutputedVersion'
 
   - task: PowerShell@2
     displayName: 'Update AppSettings.json version'
@@ -163,15 +197,27 @@ jobs:
     inputs:
       preferBundledVersion: false
 
-  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-JSONFile-Task.VersionJSONFile@2
+  - task: VersionJSONFile@2
     displayName: 'Version JSON File'
     inputs:
+      Path: '$(Build.SourcesDirectory)'
+      recursion: True
       VersionNumber: '$(GitVersion.AssemblySemVer)'
+      useBuildNumberDirectly: False
+      VersionRegex: '\d+\.\d+\.\d+\.\d+'
+      versionForJSONFileFormat: '{1}.{2}.{3}'
+      FilenamePattern: 'package.json'
+      OutputVersion: 'OutputedVersion'
 
-  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-DotNetCoreAssemblies-Task.VersionDotNetCoreAssemblies@2
+  - task: VersionDotNetCoreAssemblies@2
     displayName: 'Version .NET Core Assemblies'
     inputs:
+      Path: '$(Build.SourcesDirectory)'
       VersionNumber: '$(GitVersion.AssemblySemVer)'
+      Injectversion: False
+      VersionRegex: '\d+\.\d+\.\d+\.\d+'
+      FilenamePattern: '.csproj'
+      OutputVersion: 'OutputedVersion'
 
   - task: Bash@3
     displayName: 'Update AppSettings.json version'
