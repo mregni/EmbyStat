@@ -42,7 +42,7 @@ jobs:
       OutputVersion: 'OutputedVersion'
 
   - task: PowerShell@2
-    displayName: 'Update AppSettings.json version'
+    displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
       filePath: ./scripts/appsettings.ps1
@@ -153,7 +153,7 @@ jobs:
       OutputVersion: 'OutputedVersion'
 
   - task: PowerShell@2
-    displayName: 'Update AppSettings.json version'
+    displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
       filePath: ./scripts/appsettings.ps1
@@ -220,7 +220,13 @@ jobs:
       OutputVersion: 'OutputedVersion'
 
   - task: Bash@3
-    displayName: 'Update AppSettings.json version'
+    displayName: 'Make appsettings.sh executable'
+    inputs:
+      targetType: 'inline'
+      script: 'chmod +x ./scripts/appsettings.sh'
+
+  - task: Bash@3
+    displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
       filePath: ./scripts/appsettings.sh
