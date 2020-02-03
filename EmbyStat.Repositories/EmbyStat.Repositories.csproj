@@ -10,7 +10,7 @@
     <ProjectGuid>{BA9CD238-9261-44C7-A90F-F3DA61ED0A41}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="LiteDB" Version="5.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
