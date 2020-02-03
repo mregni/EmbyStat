@@ -52,11 +52,11 @@ jobs:
     - template: './templates/sonarcloud.end.yml'
 
     - task: PowerShell@2
-    displayName: 'Update AppSettings.json version'
-    inputs:
-      targetType: filePath
-      filePath: ./Scripts/appsettings.ps1
-      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+      displayName: 'Update AppSettings.json version'
+      inputs:
+        targetType: filePath
+        filePath: ./Scripts/appsettings.ps1
+        arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
     - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
       displayName: 'Update build number'
