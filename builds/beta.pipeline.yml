@@ -1,0 +1,71 @@
+jobs:
+  - job: set_version
+    pool:
+      name: Hosted Windows 2019 with VS2019
+      demands: java
+    steps:
+    - task: GitVersion@5
+      displayName: 'Set Version'
+      inputs:
+        preferBundledVersion: false
+
+    - template: './templates/update.version.yml'
+    - template: './templates/sonarcloud.start.yml'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build web app'
+      inputs:
+        projects: '$(webapp.projects)'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'Build unit tests'
+      inputs:
+        projects: '$(tests.projects)'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      inputs:
+        command: test
+        arguments: '--collect "Code Coverage"'
+        testRunTitle: 'Beta unit tests'
+    
+    - script: |
+        cd EmbyStat.Web/ClientApp
+        dir
+        npm install
+        tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**
+        ng test --code-coverage
+      displayName: 'typescript test'
+    
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Common.TestResultsDirectory)'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: |
+        **\*.trx
+        **\*.coverage
+        **\issues.json
+        TargetFolder: '$(Common.TestResultsDirectory)'
+
+    - template: './templates/sonarcloud.end.yml'
+
+    - task: PowerShell@2
+    displayName: 'Update AppSettings.json version'
+    inputs:
+      targetType: filePath
+      filePath: ./Scripts/appsettings.ps1
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+
+    - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
+      displayName: 'Update build number'
+      
+    - powershell: echo "##vso[task.setvariable variable=AssemblySemVer;isOutput=true]$(GitVersion.AssemblySemVer)"
+      name: setAssemblySemVer
+      displayName: 'Set AssemblySemVer variable'
+
+    - powershell: echo "##vso[task.setvariable variable=SemVer;isOutput=true]$(GitVersion.SemVer)"
+      name: setSemVer
+      displayName: 'Set SemVer variable'
+      
+  - template: windows/build.pipeline.yml
+  - template: win-x64/build.pipeline.yml
