@@ -8,7 +8,7 @@ jobs:
     GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
   steps:
-  - template: ''./templates/update.version.yml'
+  - template: ''../templates/update.version.yml'
 
   - task: PowerShell@2
     displayName: 'Update appsettings.json file'
