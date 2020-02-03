@@ -44,10 +44,10 @@ jobs:
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
         Contents: |
-        **\*.trx
-        **\*.coverage
-        **\issues.json
-        TargetFolder: '$(Common.TestResultsDirectory)'
+          **\*.trx
+          **\*.coverage
+          **\issues.json
+          TargetFolder: '$(Common.TestResultsDirectory)'
 
     - template: './templates/sonarcloud.end.yml'
 
