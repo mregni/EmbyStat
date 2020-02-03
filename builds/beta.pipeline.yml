@@ -62,7 +62,7 @@ jobs:
       displayName: 'Update AppSettings.json version'
       inputs:
         targetType: filePath
-        filePath: ./scripts/appsettings.ps1
+        filePath: ./build/scripts/appsettings.ps1
         arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
     - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'

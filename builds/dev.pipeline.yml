@@ -26,7 +26,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./scripts/appsettings.ps1
+      filePath: ./build/scripts/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
 
   - task: SonarCloudPrepare@1
@@ -122,7 +122,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./scripts/appsettings.ps1
+      filePath: ./build/scripts/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
 
   - task: DotNetCoreCLI@2
@@ -169,16 +169,10 @@ jobs:
   - template: './templates/update.version.yml'
 
   - task: Bash@3
-    displayName: 'Make appsettings.sh executable'
-    inputs:
-      targetType: 'inline'
-      script: 'chmod +x ./scripts/appsettings.sh'
-
-  - task: Bash@3
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./scripts/appsettings.sh
+      filePath: ./build/scripts/appsettings.sh
       arguments: '$(package.ubuntu-x64) $(rollbar.key) $(Build.BuildNumber)'
 
   - task: DotNetCoreCLI@2
@@ -221,7 +215,7 @@ jobs:
     displayName: 'Copy Docker files'
     inputs:
       targetType: filePath
-      filePath: ./scripts/dockerfiles.ps1
+      filePath: ./build/scripts/dockerfiles.ps1
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Docker files'

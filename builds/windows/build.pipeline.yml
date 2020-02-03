@@ -14,7 +14,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./scripts/appsettings.ps1
+      filePath: ./build/scripts/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: PowerShell@2
