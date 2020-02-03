@@ -1,5 +1,6 @@
 jobs:
   - job: set_version
+    displayName: Test application
     pool:
       name: Hosted Windows 2019 with VS2019
       demands: java
@@ -10,6 +11,12 @@ jobs:
         runtime: 'core'
         preferBundledVersion: false
         configFilePath: 'GitVersion.yml'
+
+    - task: PowerShell@2
+      displayName: 'Update build number'
+      inputs:
+        targetType: 'inline'
+        script: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
 
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
@@ -25,7 +32,7 @@ jobs:
         projects: '$(tests.projects)'
     
     - task: DotNetCoreCLI@2
-      displayName: 'dotnet test'
+      displayName: 'Backend unit testing'
       inputs:
         command: test
         arguments: '--collect "Code Coverage"'
@@ -37,17 +44,17 @@ jobs:
         npm install
         tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**
         ng test --code-coverage
-      displayName: 'typescript test'
+      displayName: 'Frontend unit testing'
     
     - task: CopyFiles@2
-      displayName: 'Copy Files to: $(Common.TestResultsDirectory)'
+      displayName: 'Copy Test result files'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
         Contents: |
           **\*.trx
           **\*.coverage
           **\issues.json
-          TargetFolder: '$(Common.TestResultsDirectory)'
+        TargetFolder: '$(Common.TestResultsDirectory)'
 
     - template: './templates/sonarcloud.end.yml'
 
@@ -55,7 +62,7 @@ jobs:
       displayName: 'Update AppSettings.json version'
       inputs:
         targetType: filePath
-        filePath: ./Scripts/appsettings.ps1
+        filePath: ./scripts/appsettings.ps1
         arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
     - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'

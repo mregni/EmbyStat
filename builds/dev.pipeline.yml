@@ -19,27 +19,8 @@ jobs:
       targetType: 'inline'
       script: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
 
-  - task: VersionJSONFile@2
-    displayName: 'Version JSON File'
-    inputs:
-      Path: '$(Build.SourcesDirectory)'
-      recursion: True
-      VersionNumber: '$(GitVersion.AssemblySemVer)'
-      useBuildNumberDirectly: False
-      VersionRegex: '\d+\.\d+\.\d+\.\d+'
-      versionForJSONFileFormat: '{1}.{2}.{3}'
-      FilenamePattern: 'package.json'
-      OutputVersion: 'OutputedVersion'
-
-  - task: VersionDotNetCoreAssemblies@2
-    displayName: 'Version .NET Core Assemblies'
-    inputs:
-      Path: '$(Build.SourcesDirectory)'
-      VersionNumber: '$(GitVersion.AssemblySemVer)'
-      Injectversion: False
-      VersionRegex: '\d+\.\d+\.\d+\.\d+'
-      FilenamePattern: '.csproj'
-      OutputVersion: 'OutputedVersion'
+  - template: './templates/update.version.yml'
+  - template: './templates/sonarcloud.start.yml'
 
   - task: PowerShell@2
     displayName: 'Update appsettings.json file'
@@ -99,13 +80,7 @@ jobs:
       Contents: coverage/lcov.info
       TargetFolder: '$(Common.TestResultsDirectory)'
 
-  - task: SonarCloudAnalyze@1
-    displayName: 'Run Code Analysis'
-
-  - task: SonarCloudPublish@1
-    displayName: 'Publish Quality Gate Result'
-    inputs:
-      pollingTimeoutSec: '300'
+  - template: './templates/sonarcloud.end.yml'
 
   - task: WhiteSource Bolt@20
     displayName: 'Scan for open libraries'
@@ -118,39 +93,30 @@ jobs:
       PathtoPublish: '$(webapp.path.win10-x64)'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
 
+  - powershell: echo "##vso[task.setvariable variable=AssemblySemVer;isOutput=true]$(GitVersion.AssemblySemVer)"
+    name: setAssemblySemVer
+    displayName: 'Set AssemblySemVer variable'
+
+  - powershell: echo "##vso[task.setvariable variable=SemVer;isOutput=true]$(GitVersion.SemVer)"
+    name: setSemVer
+    displayName: 'Set SemVer variable'
+
 - job:  build_win10_x64
   dependsOn:  main_build
   displayName: 'Build Win10-x64 package'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   pool:
     name: Hosted Windows 2019 with VS2019
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
       preferBundledVersion: false
 
-  - task: VersionJSONFile@2
-    displayName: 'Version JSON File'
-    inputs:
-      Path: '$(Build.SourcesDirectory)'
-      recursion: True
-      VersionNumber: '$(GitVersion.AssemblySemVer)'
-      useBuildNumberDirectly: False
-      VersionRegex: '\d+\.\d+\.\d+\.\d+'
-      versionForJSONFileFormat: '{1}.{2}.{3}'
-      FilenamePattern: 'package.json'
-      OutputVersion: 'OutputedVersion'
-
-  - task: VersionDotNetCoreAssemblies@2
-    displayName: 'Version .NET Core Assemblies'
-    inputs:
-      Path: '$(Build.SourcesDirectory)'
-      VersionNumber: '$(GitVersion.AssemblySemVer)'
-      Injectversion: False
-      VersionRegex: '\d+\.\d+\.\d+\.\d+'
-      FilenamePattern: '.csproj'
-      OutputVersion: 'OutputedVersion'
+  - template: './templates/update.version.yml'
 
   - task: PowerShell@2
     displayName: 'Update appsettings.json file'
@@ -191,33 +157,16 @@ jobs:
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   pool:
     name: Hosted Windows 2019 with VS2019
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
       preferBundledVersion: false
 
-  - task: VersionJSONFile@2
-    displayName: 'Version JSON File'
-    inputs:
-      Path: '$(Build.SourcesDirectory)'
-      recursion: True
-      VersionNumber: '$(GitVersion.AssemblySemVer)'
-      useBuildNumberDirectly: False
-      VersionRegex: '\d+\.\d+\.\d+\.\d+'
-      versionForJSONFileFormat: '{1}.{2}.{3}'
-      FilenamePattern: 'package.json'
-      OutputVersion: 'OutputedVersion'
-
-  - task: VersionDotNetCoreAssemblies@2
-    displayName: 'Version .NET Core Assemblies'
-    inputs:
-      Path: '$(Build.SourcesDirectory)'
-      VersionNumber: '$(GitVersion.AssemblySemVer)'
-      Injectversion: False
-      VersionRegex: '\d+\.\d+\.\d+\.\d+'
-      FilenamePattern: '.csproj'
-      OutputVersion: 'OutputedVersion'
+  - template: './templates/update.version.yml'
 
   - task: Bash@3
     displayName: 'Make appsettings.sh executable'
@@ -268,11 +217,6 @@ jobs:
   pool:
     name: Hosted Windows 2019 with VS2019
   steps:
-  - task: GitVersion@5
-    displayName: 'Set Version'
-    inputs:
-      preferBundledVersion: false
-
   - task: PowerShell@2
     displayName: 'Copy Docker files'
     inputs:

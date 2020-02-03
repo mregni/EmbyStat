@@ -1,7 +1,7 @@
 jobs:
 - job: windows_nsis
   dependsOn: set_version
-  displayName: 'Build Win10-x64 package'
+  displayName: 'Build Win10-x64 installer'
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
