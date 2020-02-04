@@ -134,7 +134,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     foreach (var parent in boxSets)
                     {
-                        movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
+                            movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
                     }
                 }
                 
@@ -176,7 +176,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var showList = _httpClient.GetShows(library.Id);
             await LogInformation($"Found {showList.Count} show for {library.Name} library");
 
-            var grouped = showList.GroupBy(x => x.TVDB == "Tvdb").ToList();
+            var grouped = showList.GroupBy(x => x.TVDB).ToList();
 
             for (var i = 0; i < grouped.Count; i++)
             {

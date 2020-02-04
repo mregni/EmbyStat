@@ -33,6 +33,7 @@ namespace EmbyStat.Controllers.Settings
             public string AuthorizationScheme { get; set; }
             public int ServerProtocol { get; set; }
             public int ServerType { get; set; }
+            public string UserId { get; set; }
         }
 
         public class TvdbSettingsViewModel

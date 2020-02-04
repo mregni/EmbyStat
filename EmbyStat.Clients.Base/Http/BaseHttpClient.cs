@@ -212,7 +212,7 @@ namespace EmbyStat.Clients.Base.Http
             return baseItems.Items.Select(x => x.ConvertToMovie(parentId)).ToList();
         }
 
-        public List<Boxset> GetBoxSet(string parentId)
+        public List<BoxSet> GetBoxSet(string parentId)
         {
             var query = new ItemQuery
             {
@@ -220,7 +220,7 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 Recursive = true,
                 LocationTypes = new[] { LocationType.FileSystem },
-                IncludeItemTypes = new[] { nameof(Boxset) },
+                IncludeItemTypes = new[] { nameof(BoxSet) },
                 Fields = new[]
                 {
                     ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
@@ -237,17 +237,16 @@ namespace EmbyStat.Clients.Base.Http
             return baseItems.Items.Select(BoxSetConverter.ConvertToBoxSet).ToList();
         }
 
-        public List<Show> GetShows(string libraryId)
+        public List<Show> GetShows(string parentId)
         {
             var query = new ItemQuery
             {
                 SortBy = new[] { "SortName" },
                 SortOrder = SortOrder.Ascending,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = libraryId,
+                ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
-                EnableTotalRecordCount = true,
                 IncludeItemTypes = new[] { "Series" },
                 Fields = new[] {
                     ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
@@ -261,7 +260,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.Items.Select(x => x.ConvertToShow(libraryId)).ToList();
+            return baseItems.Items.Select(x => x.ConvertToShow(parentId)).ToList();
         }
 
         public List<Season> GetSeasons(string parentId)
@@ -272,7 +271,7 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
-                IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
+                IncludeItemTypes = new[] { nameof(Season) },
                 Fields = new[]
                 {
                     ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
@@ -300,7 +299,7 @@ namespace EmbyStat.Clients.Base.Http
                     ParentId = parentId,
                     LocationTypes = new[] { LocationType.FileSystem },
                     Recursive = true,
-                    IncludeItemTypes = new[] { nameof(Season), nameof(Episode) },
+                    IncludeItemTypes = new[] { nameof(Episode) },
                     Fields = new[]
                     {
                         ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
@@ -326,7 +325,7 @@ namespace EmbyStat.Clients.Base.Http
             {
                 ParentId = parentId,
                 Recursive = true,
-                IncludeItemTypes = new[] { nameof(Movie), nameof(Boxset) },
+                IncludeItemTypes = new[] { nameof(Movie), nameof(BoxSet) },
                 StartIndex = 0,
                 Limit = 1,
                 EnableTotalRecordCount = true

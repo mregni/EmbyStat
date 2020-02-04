@@ -6,4 +6,5 @@ export class MediaServerSettings {
   authorizationScheme: string;
   serverProtocol: number;
   serverType: number;
+  userId: string;
 }

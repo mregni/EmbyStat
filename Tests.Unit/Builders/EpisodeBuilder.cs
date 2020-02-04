@@ -78,7 +78,7 @@ namespace Tests.Unit.Builders
             return _episode;
         }
 
-        public BaseItemDto ToBaseItemDto()
+        public BaseItemDto BuildBaseItemDto()
         {
             return new BaseItemDto
             {

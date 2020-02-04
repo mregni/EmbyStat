@@ -50,6 +50,7 @@ import { ToastService } from './services/toast.service';
 import { UpdateOverlayService } from './services/update-overlay.service';
 import { UpdateService } from './services/update.service';
 import { UserService } from './services/user.service';
+import { DigitOnlyDirective } from "./directives/digit-only.directive";
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { UserService } from './services/user.service';
     NoTypeFoundDialog,
     SyncIsRunningDialog,
     NoUsersFoundDialog,
-    SizeCardComponent
+    SizeCardComponent,
+    DigitOnlyDirective
   ],
   exports: [
     RouterModule,
@@ -124,7 +126,8 @@ import { UserService } from './services/user.service';
     DateToMinutesAgoPipe,
     DateToHoursAgoPipe,
     TicksToTimePipe,
-    DisableControlDirective
+    DisableControlDirective,
+    DigitOnlyDirective
   ],
   entryComponents: [
     NoTypeFoundDialog,

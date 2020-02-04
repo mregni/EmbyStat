@@ -7,9 +7,9 @@ using LiteDB;
 
 namespace EmbyStat.Repositories
 {
-    public class EmbyRepository : BaseRepository, IEmbyRepository
+    public class MediaServerRepository : BaseRepository, IMediaServerRepository
     {
-        public EmbyRepository(IDbContext context) : base(context)
+        public MediaServerRepository(IDbContext context) : base(context)
         {
 
         }
@@ -129,7 +129,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public List<EmbyUser> GetAllUsers()
+        IEnumerable<EmbyUser> IMediaServerRepository.GetAllUsers()
         {
             return ExecuteQuery(() =>
             {
@@ -137,6 +137,18 @@ namespace EmbyStat.Repositories
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     return collection.FindAll().OrderBy(x => x.Name).ToList();
+                }
+            });
+        }
+
+        public IEnumerable<EmbyUser> GetAllAdministrators()
+        {
+            return ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    return collection.Find(x => x.IsAdministrator).OrderBy(x => x.Name);
                 }
             });
         }

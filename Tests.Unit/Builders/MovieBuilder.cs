@@ -138,7 +138,7 @@ namespace Tests.Unit.Builders
             return _movie;
         }
 
-        public BaseItemDto ToBaseItemDto()
+        public BaseItemDto BuildBaseItemDto()
         {
             return new BaseItemDto
             {
@@ -169,9 +169,9 @@ namespace Tests.Unit.Builders
                 ImageTags = new Dictionary<ImageType, string>
                 {
                     {ImageType.Primary, _movie.Primary},
-                    {ImageType.Thumb, _movie.Primary},
-                    {ImageType.Logo, _movie.Primary},
-                    {ImageType.Banner, _movie.Primary}
+                    {ImageType.Thumb, _movie.Thumb},
+                    {ImageType.Logo, _movie.Logo},
+                    {ImageType.Banner, _movie.Banner}
                 },
                 ProviderIds = new Dictionary<string, string>
                 {

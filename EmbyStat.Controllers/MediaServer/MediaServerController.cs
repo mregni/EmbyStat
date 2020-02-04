@@ -92,6 +92,14 @@ namespace EmbyStat.Controllers.MediaServer
         }
 
         [HttpGet]
+        [Route("administrators")]
+        public IActionResult GetAdministrators()
+        {
+            var result = _mediaServerService.GetAllAdministrators();
+            return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
+        }
+
+        [HttpGet]
         [Route("users/{id}")]
         public IActionResult GetUserById(string id)
         {

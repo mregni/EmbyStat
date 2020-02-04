@@ -12,9 +12,10 @@ import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Language } from '../../../shared/models/language';
 import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
 import {
-    MediaServerUdpBroadcast
+  MediaServerUdpBroadcast
 } from '../../../shared/models/media-server/media-server-udp-broadcast';
 import { Settings } from '../../../shared/models/settings/settings';
+import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
 import { JobService } from '../../../shared/services/job.service';
 import { MediaServerService } from '../../../shared/services/media-server.service';
 import { SideBarService } from '../../../shared/services/side-bar.service';
@@ -28,6 +29,9 @@ import { SideBarService } from '../../../shared/services/side-bar.service';
 export class WizardOverviewComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: false }) private stepper: MatStepper;
 
+  administratorsSub: Subscription;
+  administrators: MediaServerUser[];
+
   introFormGroup: FormGroup;
   nameControl = new FormControl('', [Validators.required]);
   languageControl = new FormControl('en-US', [Validators.required]);
@@ -37,6 +41,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   embyPortControl = new FormControl('', [Validators.required]);
   embyProtocolControl = new FormControl('1', [Validators.required]);
   embyApiKeyControl = new FormControl('', [Validators.required]);
+  selectedAdministrator = new FormControl('');
 
   exceptionLoggingControl = new FormControl(false);
 
@@ -47,6 +52,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private embyPortControlChange: Subscription;
   private embyAddressControlChange: Subscription;
   private embyProtocolControlChange: Subscription;
+  private selectedAdministratorChange: Subscription;
   private checkUrlNeeded = true;
 
   embyUrl: string;
@@ -154,13 +160,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
           this.embyFound = CheckBoolean.false;
         }
       );
-    }
-
-    if (event.selectedIndex === 3) {
+    } else if (event.selectedIndex === 3) {
       this.apiKey = this.embyApiKeyControl.value;
-      const address = this.embyAddressControl.value;
-      const port = this.embyPortControl.value;
-      const protocol = this.embyProtocolControl.value;
 
       const login = new MediaServerLogin(this.apiKey, this.embyUrl);
 
@@ -174,19 +175,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
             .subscribe((result: boolean) => {
               this.apiKeyWorks = result ? CheckBoolean.true : CheckBoolean.false;
               if (result) {
-                const settings = { ...this.settings };
-                const emby = { ...this.settings.mediaServer };
-                settings.language = this.languageControl.value;
-                settings.username = this.nameControl.value;
-                settings.wizardFinished = true;
-                settings.enableRollbarLogging = this.exceptionLoggingControl.value;
-                emby.serverAddress = address;
-                emby.apiKey = this.apiKey;
-                emby.serverPort = port;
-                emby.serverProtocol = protocol;
-                emby.serverType = this.type;
-                settings.mediaServer = emby;
-                this.settingsFacade.updateSettings(settings);
+                this.saveMediaServerDetails();
               }
             }, (err) => {
               this.apiKeyWorks = CheckBoolean.false;
@@ -197,7 +186,40 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
           this.embyOnline = CheckBoolean.false;
           this.apiKeyWorks = CheckBoolean.false;
         });
+    } else if (event.selectedIndex === 4) {
+      if (this.type === 1) {
+        this.administratorsSub = this.mediaServerService.getAdministrators().subscribe((admins: MediaServerUser[]) => {
+          this.administrators = admins;
+          if (admins.length > 0) {
+            this.selectedAdministrator.setValue(admins[0].id);
+          }
+        });
+        this.selectedAdministratorChange = this.selectedAdministrator.valueChanges.subscribe((event) => {
+          this.saveMediaServerDetails();
+        });
+      }
     }
+  }
+
+  private saveMediaServerDetails() {
+    const address = this.embyAddressControl.value;
+    const port = +this.embyPortControl.value;
+    const protocol = this.embyProtocolControl.value;
+
+    const settings = { ...this.settings };
+    const emby = { ...this.settings.mediaServer };
+    settings.language = this.languageControl.value;
+    settings.username = this.nameControl.value;
+    settings.wizardFinished = true;
+    settings.enableRollbarLogging = this.exceptionLoggingControl.value;
+    emby.serverAddress = address;
+    emby.apiKey = this.apiKey;
+    emby.serverPort = port;
+    emby.serverProtocol = protocol;
+    emby.serverType = this.type;
+    emby.userId = this.selectedAdministrator.value;
+    settings.mediaServer = emby;
+    this.settingsFacade.updateSettings(settings);
   }
 
   finishWizard() {
@@ -240,6 +262,14 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
     if (this.embyAddressControlChange !== undefined) {
       this.embyAddressControlChange.unsubscribe();
+    }
+
+    if (this.selectedAdministratorChange !== undefined) {
+      this.selectedAdministratorChange.unsubscribe();
+    }
+
+    if (this.administratorsSub !== undefined) {
+      this.administratorsSub.unsubscribe();
     }
   }
 }

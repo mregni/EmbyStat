@@ -93,6 +93,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\digit-only.directive.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
@@ -131,6 +132,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\directives\digit-only.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />

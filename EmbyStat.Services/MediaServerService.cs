@@ -24,7 +24,7 @@ namespace EmbyStat.Services
     public class MediaServerService : IMediaServerService
     {
         private IHttpClient _httpClient;
-        private readonly IEmbyRepository _embyRepository;
+        private readonly IMediaServerRepository _mediaServerRepository;
         private readonly ISessionService _sessionService;
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
@@ -32,10 +32,10 @@ namespace EmbyStat.Services
         private readonly IClientStrategy _clientStrategy;
         private readonly Logger _logger;
 
-        public MediaServerService(IClientStrategy clientStrategy, IEmbyRepository embyRepository, ISessionService sessionService,
+        public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
             ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
         {
-            _embyRepository = embyRepository;
+            _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
             _settingsService = settingsService;
             _movieRepository = movieRepository;
@@ -67,7 +67,7 @@ namespace EmbyStat.Services
 
         public ServerInfo GetServerInfo()
         {
-            var server = _embyRepository.GetServerInfo();
+            var server = _mediaServerRepository.GetServerInfo();
             if (server == null)
             {
                 server = GetAndProcessServerInfo();
@@ -96,7 +96,7 @@ namespace EmbyStat.Services
 
         public EmbyStatus GetMediaServerStatus()
         {
-            return _embyRepository.GetEmbyStatus();
+            return _mediaServerRepository.GetEmbyStatus();
         }
 
         public bool PingMediaServer(string url)
@@ -107,12 +107,12 @@ namespace EmbyStat.Services
 
         public void ResetMissedPings()
         {
-            _embyRepository.ResetMissedPings();
+            _mediaServerRepository.ResetMissedPings();
         }
 
         public void IncreaseMissedPings()
         {
-            _embyRepository.IncreaseMissedPings();
+            _mediaServerRepository.IncreaseMissedPings();
         }
 
         #endregion
@@ -121,7 +121,7 @@ namespace EmbyStat.Services
 
         public List<PluginInfo> GetAllPlugins()
         {
-            return _embyRepository.GetAllPlugins();
+            return _mediaServerRepository.GetAllPlugins();
         }
 
         #endregion
@@ -130,12 +130,17 @@ namespace EmbyStat.Services
 
         public IEnumerable<EmbyUser> GetAllUsers()
         {
-            return _embyRepository.GetAllUsers();
+            return _mediaServerRepository.GetAllUsers();
+        }
+
+        public IEnumerable<EmbyUser> GetAllAdministrators()
+        {
+            return _mediaServerRepository.GetAllAdministrators();
         }
 
         public EmbyUser GetUserById(string id)
         {
-            return _embyRepository.GetUserById(id);
+            return _mediaServerRepository.GetUserById(id);
         }
 
         public Card<int> GetViewedEpisodeCountByUserId(string id)
@@ -165,7 +170,7 @@ namespace EmbyStat.Services
             var plays = sessions.SelectMany(x => x.Plays).Skip(skip).Take(size).ToList();
             var deviceIds = sessions.Where(x => plays.Any(y => x.Plays.Any(z => z.Id == y.Id))).Select(x => x.DeviceId);
 
-            var devices = _embyRepository.GetDeviceById(deviceIds).ToList();
+            var devices = _mediaServerRepository.GetDeviceById(deviceIds).ToList();
 
             foreach (var play in plays)
             {
@@ -198,36 +203,36 @@ namespace EmbyStat.Services
         public ServerInfo GetAndProcessServerInfo()
         {
             var server = _httpClient.GetServerInfo();
-            _embyRepository.UpsertServerInfo(server);
+            _mediaServerRepository.UpsertServerInfo(server);
             return server;
         }
 
         public void GetAndProcessPluginInfo()
         {
             var plugins = _httpClient.GetInstalledPlugins();
-            _embyRepository.RemoveAllAndInsertPluginRange(plugins);
+            _mediaServerRepository.RemoveAllAndInsertPluginRange(plugins);
         }
 
         public void GetAndProcessUsers()
         {
             var usersJson = _httpClient.GetUsers();
             var users = usersJson.ConvertToUserList();
-            _embyRepository.UpsertUsers(users);
+            _mediaServerRepository.UpsertUsers(users);
 
-            var localUsers = _embyRepository.GetAllUsers();
+            var localUsers = _mediaServerRepository.GetAllUsers();
             var removedUsers = localUsers.Where(u => users.All(u2 => u2.Id != u.Id));
-            _embyRepository.MarkUsersAsDeleted(removedUsers);
+            _mediaServerRepository.MarkUsersAsDeleted(removedUsers);
         }
 
         public void GetAndProcessDevices()
         {
             var devicesJson = _httpClient.GetDevices();
             var devices = devicesJson.ConvertToDeviceList();
-            _embyRepository.UpsertDevices(devices);
+            _mediaServerRepository.UpsertDevices(devices);
 
-            var localDevices = _embyRepository.GetAllDevices();
+            var localDevices = _mediaServerRepository.GetAllDevices();
             var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
-            _embyRepository.MarkDevicesAsDeleted(removedDevices);
+            _mediaServerRepository.MarkDevicesAsDeleted(removedDevices);
         }
 
         #endregion

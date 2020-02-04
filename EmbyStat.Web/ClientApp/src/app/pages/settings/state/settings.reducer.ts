@@ -11,7 +11,8 @@ const mediaServerSettings: MediaServerSettings = {
   serverPort: 0,
   serverProtocol: 0,
   apiKey: '',
-  serverType: 0
+  serverType: 0,
+  userId: ''
 };
 
 const tvdbSettings: TvdbSettings = {

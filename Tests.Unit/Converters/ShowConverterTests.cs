@@ -182,7 +182,7 @@ namespace Tests.Unit.Converters
         [Fact]
         public void ConvertToEpisode_Should_Return_An_Episode()
         {
-            var baseItem = new EpisodeBuilder("123", "456", "1").ToBaseItemDto();
+            var baseItem = new EpisodeBuilder("123", "456", "1").BuildBaseItemDto();
             var episode = baseItem.ConvertToEpisode("456");
 
             episode.Should().NotBeNull();

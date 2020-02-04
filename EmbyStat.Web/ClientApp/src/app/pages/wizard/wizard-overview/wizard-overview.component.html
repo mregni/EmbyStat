@@ -68,8 +68,8 @@
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field class="emby-port">
-                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}" formControlName="embyPort"
-                      required>
+                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}"
+                           digitOnly maxlength="5" formControlName="embyPort" required>
                     <mat-error *ngIf="embyPortControl.hasError('required')">
                       {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate : { type: typeText } }}
                     </mat-error>
@@ -117,7 +117,7 @@
                 </mat-list-item>
               </mat-list>
             </div>
-            <p *ngIf="!(embyOnline && apiKeyWorks)">
+            <p *ngIf="!(embyOnline && apiKeyWorks && (type == 0 || (type == 1 && !!selectedAdministrator.value)))">
               {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
             </p>
             <div class="button-container">
@@ -125,7 +125,7 @@
                 [disabled]="embyOnline == 1 && apiKeyWorks == 1"
                 type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
               <button mat-raised-button color="primary" matStepperNext
-                [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
+                [disabled]="!(embyOnline == 2 && apiKeyWorks == 2) && (type == 0 || (type == 1 && !!selectedAdministrator.value))"
                 type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
             </div>
           </mat-step>
@@ -134,11 +134,29 @@
               <p>{{ 'WIZARD.FINISHED' | translate }}</p>
               <p>{{ 'WIZARD.FINISHEXPLANATION' | translate }}</p>
             </div>
+            <div *ngIf="type == 1">
+              <p>
+                Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list.
+              </p>
+              <form>
+                <mat-form-field class="mr-3">
+                  <mat-select formControlName="selectedAdministrator">
+                    <mat-option *ngFor="let admin of administrators" [value]="admin.id">
+                      {{admin.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+            </div>
             <div class="button-container">
               <button mat-raised-button color="primary" (click)="finishWizard()"
-                type="button">{{ 'COMMON.FINISH' | translate | capitalizeFirst }}</button>
+                      type="button">
+                {{ 'COMMON.FINISH' | translate | capitalizeFirst }}
+              </button>
               <button mat-raised-button color="accent" (click)="finishWizardAndStartSync()"
-                type="button">{{ 'WIZARD.FINISHWITHSYNC' | translate | capitalizeFirst }}</button>
+                      type="button">
+                {{ 'WIZARD.FINISHWITHSYNC' | translate | capitalizeFirst }}
+              </button>
             </div>
           </mat-step>
         </mat-horizontal-stepper>

@@ -32,7 +32,8 @@ export class MediaServerService {
   private getEmbyStatusUrl = `${ this.baseUrl }/server/status`;
   private pingEmbyurl = `${this.baseUrl}/server/ping`;
   private getPluginsUrl = `${ this.baseUrl }/plugins`;
-  private getEmbyUsersUrl = `${this.baseUrl}/users`;
+  private getUsersUrl = `${this.baseUrl}/administrators`;
+  private getAdministratorsUrl = `${this.baseUrl}/users`;
   private getEmbyUserIdsUrl = `${ this.baseUrl }/ids`;
 
   constructor(private readonly http: HttpClient) { }
@@ -58,11 +59,15 @@ export class MediaServerService {
   }
 
   getUsers(): Observable<MediaServerUser[]> {
-    return this.http.get<MediaServerUser[]>(this.getEmbyUsersUrl);
+    return this.http.get<MediaServerUser[]>(this.getUsersUrl);
+  }
+
+  getAdministrators(): Observable<MediaServerUser[]> {
+    return this.http.get<MediaServerUser[]>(this.getAdministratorsUrl);
   }
 
   getUserById(id: string): Observable<MediaServerUser> {
-    return this.http.get<MediaServerUser>(`${this.getEmbyUsersUrl}/${id}`);
+    return this.http.get<MediaServerUser>(`${this.getUsersUrl}/${id}`);
   }
 
   getUserIdList(): Observable<UserId[]> {
@@ -70,7 +75,7 @@ export class MediaServerService {
   }
 
   getUserViewsByUserId(id: string, page: number, size: number): Observable<ListContainer<UserMediaView>> {
-    return this.http.get<ListContainer<UserMediaView>>(`${this.getEmbyUsersUrl}/${id}/views/${page}/${size}`);
+    return this.http.get<ListContainer<UserMediaView>>(`${this.getUsersUrl}/${id}/views/${page}/${size}`);
   }
 
   pingEmby(url: string): Observable<boolean> {

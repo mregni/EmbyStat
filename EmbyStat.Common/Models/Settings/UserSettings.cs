@@ -39,6 +39,7 @@ namespace EmbyStat.Common.Models.Settings
         public string AccessToken { get; set; }
         public ConnectionProtocol ServerProtocol { get; set; }
         public ServerType ServerType { get; set; }
+        public string UserId { get; set; }
 
         [JsonIgnore]
         public string FullMediaServerAddress

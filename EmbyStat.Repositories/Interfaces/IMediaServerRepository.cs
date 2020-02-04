@@ -4,7 +4,7 @@ using Device = EmbyStat.Common.Models.Entities.Device;
 
 namespace EmbyStat.Repositories.Interfaces
 {
-    public interface IEmbyRepository
+    public interface IMediaServerRepository
     {
         #region MediaServer Status
         EmbyStatus GetEmbyStatus();
@@ -24,7 +24,8 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region MediaServer Users
         void UpsertUsers(IEnumerable<EmbyUser> users);
-        List<EmbyUser> GetAllUsers();
+        IEnumerable<EmbyUser> GetAllUsers();
+        IEnumerable<EmbyUser> GetAllAdministrators();
         void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);
         EmbyUser GetUserById(string id);
 

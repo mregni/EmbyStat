@@ -7,9 +7,9 @@ namespace EmbyStat.Clients.Base.Converters
 {
     public static class BoxSetConverter
     {
-        public static Boxset ConvertToBoxSet(this BaseItemDto x)
+        public static BoxSet ConvertToBoxSet(this BaseItemDto x)
         {
-            return new Boxset
+            return new BoxSet
             {
                 Id = x.Id,
                 Name = x.Name,

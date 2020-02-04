@@ -46,7 +46,7 @@ namespace Tests.Unit.Converters
                     Height = 123,
                     Width = 456
                 })
-                .ToBaseItemDto();
+                .BuildBaseItemDto();
 
             var movie = baseItem.ConvertToMovie("12");
 
