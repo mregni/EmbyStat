@@ -26,7 +26,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./build/scripts/appsettings.ps1
+      filePath: $(Paths.Script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
 
   - task: SonarCloudPrepare@1
@@ -49,36 +49,7 @@ jobs:
       projects: '$(webapp.projects)'
       arguments: '--output $(webapp.path.win10-x64)'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Build unit tests'
-    inputs:
-      projects: '$(tests.projects)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Run BE tests'
-    inputs:
-      command: test
-      arguments: '--collect "Code Coverage"'
-      testRunTitle: 'Dev unit tests'
-
-  - script: 'npm install tslint typescript @angular/cli -g'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'Install FE test packages'
-
-  - script: 'tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'Run tslint'
-
-  - script: 'ng test --code-coverage  --watch=false'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'Run FE tests'
-
-  - task: CopyFiles@2
-    displayName: 'Copy FE test results'
-    inputs:
-      SourceFolder: EmbyStat.Web/ClientApp
-      Contents: coverage/lcov.info
-      TargetFolder: '$(Common.TestResultsDirectory)'
+  - template: ./templates/unit.tests.yml
 
   - template: './templates/sonarcloud.end.yml'
 
@@ -93,13 +64,7 @@ jobs:
       PathtoPublish: '$(webapp.path.win10-x64)'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
 
-  - powershell: echo "##vso[task.setvariable variable=AssemblySemVer;isOutput=true]$(GitVersion.AssemblySemVer)"
-    name: setAssemblySemVer
-    displayName: 'Set AssemblySemVer variable'
-
-  - powershell: echo "##vso[task.setvariable variable=SemVer;isOutput=true]$(GitVersion.SemVer)"
-    name: setSemVer
-    displayName: 'Set SemVer variable'
+  - template: './templates/version.variables.yml'
 
 - job:  build_win10_x64
   dependsOn:  main_build
@@ -111,19 +76,14 @@ jobs:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
-  - task: GitVersion@5
-    displayName: 'Set Version'
-    inputs:
-      preferBundledVersion: false
-
   - template: './templates/update.version.yml'
 
   - task: PowerShell@2
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./build/scripts/appsettings.ps1
-      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
+      filePath: $(Paths.Script)/appsettings.ps1
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Make dotnet win10-x64 package'
@@ -149,7 +109,7 @@ jobs:
     displayName: 'Publish Windows Artifact'
     inputs:
       PathtoPublish: '$(webapp.path.win10-x64)'
-      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
+      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
 
 - job:  build_ubuntu_x64
   dependsOn:  main_build
@@ -161,19 +121,14 @@ jobs:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
-  - task: GitVersion@5
-    displayName: 'Set Version'
-    inputs:
-      preferBundledVersion: false
-
   - template: './templates/update.version.yml'
 
   - task: Bash@3
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: ./build/scripts/appsettings.sh
-      arguments: '$(package.ubuntu-x64) $(rollbar.key) $(Build.BuildNumber)'
+      filePath: $(Paths.Script)/appsettings.sh
+      arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Make dotnet ubuntu-x64 package'
@@ -199,7 +154,7 @@ jobs:
     displayName: 'Publish Ubuntu Artifact'
     inputs:
       PathtoPublish: '$(webapp.path.ubuntu-x64)'
-      ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(Build.BuildNumber)'
+      ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
 
 - job:  create_docker_files
   dependsOn:
@@ -215,7 +170,7 @@ jobs:
     displayName: 'Copy Docker files'
     inputs:
       targetType: filePath
-      filePath: ./build/scripts/dockerfiles.ps1
+      filePath: $(Paths.Script)/dockerfiles.ps1
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Docker files'

@@ -25,41 +25,13 @@ jobs:
       displayName: 'Build web app'
       inputs:
         projects: '$(webapp.projects)'
-    
-    - task: DotNetCoreCLI@2
-      displayName: 'Build unit tests'
-      inputs:
-        projects: '$(tests.projects)'
-    
-    - task: DotNetCoreCLI@2
-      displayName: 'Backend unit testing'
-      inputs:
-        command: test
-        arguments: '--collect "Code Coverage"'
-        testRunTitle: 'Beta unit tests'
-    
-    - script: |
-        cd EmbyStat.Web/ClientApp
-        dir
-        npm install
-        tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**
-        ng test --code-coverage
-      displayName: 'Frontend unit testing'
-    
-    - task: CopyFiles@2
-      displayName: 'Copy Test result files'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: |
-          **\*.trx
-          **\*.coverage
-          **\issues.json
-        TargetFolder: '$(Common.TestResultsDirectory)'
+      
+    - template: ./templates/unit.tests.yml
 
     - template: './templates/sonarcloud.end.yml'
 
     - task: PowerShell@2
-      displayName: 'Update AppSettings.json version'
+      displayName: 'Update appaettings.json version'
       inputs:
         targetType: filePath
         filePath: ./build/scripts/appsettings.ps1

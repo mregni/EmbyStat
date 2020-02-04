@@ -1,0 +1,34 @@
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Build unit tests'
+    inputs:
+      projects: '$(tests.projects)'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Backend unit testing'
+    inputs:
+      command: test
+      arguments: '--collect "Code Coverage"'
+      testRunTitle: 'Beta unit tests'
+
+  - script: 'npm install tslint typescript @angular/cli -g'
+    workingDirectory: EmbyStat.Web/ClientApp
+    displayName: 'Install FE test packages'
+
+  - script: 'tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**'
+    workingDirectory: EmbyStat.Web/ClientApp
+    displayName: 'Run tslint'
+
+  - script: 'ng test --code-coverage  --watch=false'
+    workingDirectory: EmbyStat.Web/ClientApp
+    displayName: 'Run FE tests'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Test result files'
+    inputs:
+      SourceFolder: '$(Agent.TempDirectory)'
+      Contents: |
+        **\*.trx
+        **\*.coverage
+        **\issues.json
+      TargetFolder: '$(Common.TestResultsDirectory)'
