@@ -21,7 +21,7 @@ jobs:
     displayName: 'Create NSIS package'
     inputs:
       targetType: filePath
-      filePath: './build/windows/EmbyStat-build.ps1 '
+      filePath: './builds/windows/EmbyStat-build.ps1 '
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS'
 
   - task: PublishBuildArtifacts@1
