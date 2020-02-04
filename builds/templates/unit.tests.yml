@@ -1,9 +1,4 @@
-steps:
-  - task: DotNetCoreCLI@2
-    displayName: 'Build unit tests'
-    inputs:
-      projects: '$(tests.projects)'
-  
+steps: 
   - task: DotNetCoreCLI@2
     displayName: 'Backend unit testing'
     inputs:
