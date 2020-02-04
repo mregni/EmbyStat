@@ -21,6 +21,13 @@ jobs:
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
 
+    - task: PowerShell@2
+      displayName: 'Update appsettings.json version'
+      inputs:
+        targetType: filePath
+        filePath: $(Paths.Script)/appsettings.ps1
+        arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+
     - task: DotNetCoreCLI@2
       displayName: 'Build web app'
       inputs:
@@ -29,13 +36,6 @@ jobs:
     - template: ./templates/unit.tests.yml
 
     - template: './templates/sonarcloud.end.yml'
-
-    - task: PowerShell@2
-      displayName: 'Update appaettings.json version'
-      inputs:
-        targetType: filePath
-        filePath: ./build/scripts/appsettings.ps1
-        arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
     - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
       displayName: 'Update build number'
