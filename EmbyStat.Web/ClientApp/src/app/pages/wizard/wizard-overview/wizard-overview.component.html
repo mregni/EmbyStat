@@ -139,7 +139,7 @@
               <p>
                 {{ 'WIZARD.JELLYFIN.ADMINTEXT' | translate }}
               </p>
-              <form>
+              <form [formGroup]="adminForm">
                 <mat-form-field class="mr-3">
                   <mat-select formControlName="selectedAdministrator">
                     <mat-option *ngFor="let admin of administrators" [value]="admin.id">

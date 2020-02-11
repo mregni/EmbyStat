@@ -234,7 +234,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo });
                 }
 
-                var users = _mediaServerRepository.GetAllUsers();
+                var users = _mediaServerRepository.GetAllUsers().ToList();
                 users.Should().NotContainNulls();
                 users.Count.Should().Be(2);
 

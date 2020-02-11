@@ -32,8 +32,8 @@ export class MediaServerService {
   private getEmbyStatusUrl = `${ this.baseUrl }/server/status`;
   private pingEmbyurl = `${this.baseUrl}/server/ping`;
   private getPluginsUrl = `${ this.baseUrl }/plugins`;
-  private getUsersUrl = `${this.baseUrl}/administrators`;
-  private getAdministratorsUrl = `${this.baseUrl}/users`;
+  private getUsersUrl = `${this.baseUrl}/users`;
+  private getAdministratorsUrl = `${this.baseUrl}/administrators`;
   private getEmbyUserIdsUrl = `${ this.baseUrl }/ids`;
 
   constructor(private readonly http: HttpClient) { }

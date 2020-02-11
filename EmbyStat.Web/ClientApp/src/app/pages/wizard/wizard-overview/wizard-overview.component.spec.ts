@@ -59,7 +59,7 @@ class MockedTranslateService {
 }
 
 class MockedMediaServerService {
-  public searchEmby(): Observable<MediaServerUdpBroadcast> {
+  public searchMediaServer(type: number): Observable<MediaServerUdpBroadcast> {
     return of(new MediaServerUdpBroadcast());
   }
 
@@ -205,8 +205,8 @@ describe('WizardOverviewComponent', () => {
       matOption.click();
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        expect(component.embyProtocolControl.value).toBe(1);
-        expect(component.embyUrl).toBe('http://:');
+        expect(component.serverProtocolControl.value).toBe(1);
+        expect(component.serverUrl).toBe('http://:');
       });
     });
   });
@@ -218,13 +218,13 @@ describe('WizardOverviewComponent', () => {
       const button = debugElement.nativeElement.querySelector('button');
       button.click();
 
-      const urlInput = debugElement.query(By.css('input[formControlName="embyAddress"]')).nativeElement;
+      const urlInput = debugElement.query(By.css('input[formControlName="serverAddress"]')).nativeElement;
       urlInput.value = 'localhost';
       urlInput.dispatchEvent(new Event('input'));
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        expect(component.embyAddressControl.value).toBe('localhost');
-        expect(component.embyUrl).toBe('https://localhost:');
+        expect(component.serverAddressControl.value).toBe('localhost');
+        expect(component.serverUrl).toBe('https://localhost:');
       });
     });
   });
@@ -234,13 +234,13 @@ describe('WizardOverviewComponent', () => {
     const button = debugElement.nativeElement.querySelector('button');
     button.click();
 
-    const portInput = debugElement.query(By.css('input[formControlName="embyPort"]')).nativeElement;
+    const portInput = debugElement.query(By.css('input[formControlName="serverPort"]')).nativeElement;
     portInput.value = '9000';
     portInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(component.embyPortControl.value).toBe('9000');
-      expect(component.embyUrl).toBe('https://:9000');
+      expect(component.serverPortControl.value).toBe('9000');
+      expect(component.serverUrl).toBe('https://:9000');
     });
   });
 
@@ -249,12 +249,12 @@ describe('WizardOverviewComponent', () => {
     const button = debugElement.nativeElement.querySelector('button');
     button.click();
 
-    const apiInput = debugElement.query(By.css('input[formControlName="embyApiKey"]')).nativeElement;
+    const apiInput = debugElement.query(By.css('input[formControlName="serverApiKey"]')).nativeElement;
     apiInput.value = 'srfghyddjsfdgdyhdhsrg';
     apiInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(component.embyApiKeyControl.value).toBe('srfghyddjsfdgdyhdhsrg');
+      expect(component.serverApiKeyControl.value).toBe('srfghyddjsfdgdyhdhsrg');
     });
   });
 
@@ -266,24 +266,26 @@ describe('WizardOverviewComponent', () => {
     let button = debugElement.queryAll(By.css('button'))[0].nativeElement;
     button.click();
 
-    const urlInput = debugElement.query(By.css('input[formControlName="embyAddress"]')).nativeElement;
+    component.selectType('emby');
+
+    const urlInput = debugElement.query(By.css('input[formControlName="serverAddress"]')).nativeElement;
     urlInput.value = 'localhost';
     urlInput.dispatchEvent(new Event('input'));
 
-    const portInput = debugElement.query(By.css('input[formControlName="embyPort"]')).nativeElement;
+    const portInput = debugElement.query(By.css('input[formControlName="serverPort"]')).nativeElement;
     portInput.value = '9000';
     portInput.dispatchEvent(new Event('input'));
 
-    const apiInput = debugElement.query(By.css('input[formControlName="embyApiKey"]')).nativeElement;
+    const apiInput = debugElement.query(By.css('input[formControlName="serverApiKey"]')).nativeElement;
     apiInput.value = 'srfghyddjsfdgdyhdhsrg';
     apiInput.dispatchEvent(new Event('input'));
 
-    button = debugElement.queryAll(By.css('button'))[2].nativeElement;
+    button = debugElement.queryAll(By.css('button'))[3].nativeElement;
     button.click();
 
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(component.embyOnline).toBe(CheckBoolean.false);
+      expect(component.serverOnline).toBe(CheckBoolean.false);
       expect(component.apiKeyWorks).toBe(CheckBoolean.busy);
       expect(mediaServerServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
       expect(mediaServerServicePingEmbySpy).toHaveBeenCalledTimes(1);
@@ -299,24 +301,26 @@ describe('WizardOverviewComponent', () => {
     let button = debugElement.queryAll(By.css('button'))[0].nativeElement;
     button.click();
 
-    const urlInput = debugElement.query(By.css('input[formControlName="embyAddress"]')).nativeElement;
+    component.selectType('emby');
+
+    const urlInput = debugElement.query(By.css('input[formControlName="serverAddress"]')).nativeElement;
     urlInput.value = 'localhost';
     urlInput.dispatchEvent(new Event('input'));
 
-    const portInput = debugElement.query(By.css('input[formControlName="embyPort"]')).nativeElement;
+    const portInput = debugElement.query(By.css('input[formControlName="serverPort"]')).nativeElement;
     portInput.value = '9000';
     portInput.dispatchEvent(new Event('input'));
 
-    const apiInput = debugElement.query(By.css('input[formControlName="embyApiKey"]')).nativeElement;
+    const apiInput = debugElement.query(By.css('input[formControlName="serverApiKey"]')).nativeElement;
     apiInput.value = 'srfghyddjsfdgdyhdhsrg';
     apiInput.dispatchEvent(new Event('input'));
 
-    button = debugElement.queryAll(By.css('button'))[2].nativeElement;
+    button = debugElement.queryAll(By.css('button'))[3].nativeElement;
     button.click();
 
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(component.embyOnline).toBe(CheckBoolean.true);
+      expect(component.serverOnline).toBe(CheckBoolean.true);
       expect(component.apiKeyWorks).toBe(CheckBoolean.false);
       expect(mediaServerServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
       expect(mediaServerServicePingEmbySpy).toHaveBeenCalledTimes(1);
@@ -335,24 +339,26 @@ describe('WizardOverviewComponent', () => {
     let button = debugElement.queryAll(By.css('button'))[0].nativeElement;
     button.click();
 
-    const urlInput = debugElement.query(By.css('input[formControlName="embyAddress"]')).nativeElement;
+    component.selectType('emby');
+
+    const urlInput = debugElement.query(By.css('input[formControlName="serverAddress"]')).nativeElement;
     urlInput.value = 'localhost';
     urlInput.dispatchEvent(new Event('input'));
 
-    const portInput = debugElement.query(By.css('input[formControlName="embyPort"]')).nativeElement;
+    const portInput = debugElement.query(By.css('input[formControlName="serverPort"]')).nativeElement;
     portInput.value = '9000';
     portInput.dispatchEvent(new Event('input'));
 
-    const apiInput = debugElement.query(By.css('input[formControlName="embyApiKey"]')).nativeElement;
+    const apiInput = debugElement.query(By.css('input[formControlName="serverApiKey"]')).nativeElement;
     apiInput.value = 'srfghyddjsfdgdyhdhsrg';
     apiInput.dispatchEvent(new Event('input'));
 
-    button = debugElement.queryAll(By.css('button'))[2].nativeElement;
+    button = debugElement.queryAll(By.css('button'))[3].nativeElement;
     button.click();
 
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(component.embyOnline).toBe(CheckBoolean.true);
+      expect(component.serverOnline).toBe(CheckBoolean.true);
       expect(component.apiKeyWorks).toBe(CheckBoolean.true);
       expect(mediaServerServicePingEmbySpy).toHaveBeenCalledWith('https://localhost:9000');
       expect(mediaServerServicePingEmbySpy).toHaveBeenCalledTimes(1);

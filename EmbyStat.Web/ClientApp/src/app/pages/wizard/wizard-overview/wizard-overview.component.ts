@@ -41,7 +41,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   serverPortControl = new FormControl('', [Validators.required]);
   serverProtocolControl = new FormControl('1', [Validators.required]);
   serverApiKeyControl = new FormControl('', [Validators.required]);
-  selectedAdministrator = new FormControl('');
+  selectedAdministratorControl = new FormControl('');
+
 
   exceptionLoggingControl = new FormControl(false);
 
@@ -64,6 +65,8 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   apiKeyWorks = CheckBoolean.unChecked;
   apiKey: string;
   selectedProtocol: number;
+
+  adminForm: FormGroup;
 
   private settings: Settings;
   private type: number;
@@ -107,6 +110,10 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       serverApiKey: this.serverApiKeyControl,
     });
 
+    this.adminForm = new FormGroup({
+      selectedAdministrator: this.selectedAdministratorControl
+    });
+
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
     this.settingsSub = this.settingsFacade.settings$.subscribe(config => {
       this.settings = config;
@@ -133,7 +140,6 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   selectType(type: string) {
-    console.log(type);
     this.type = type === 'emby' ? 0 : 1;
     this.typeText = MediaServerTypeSelector.getServerTypeString(this.type);
     this.stepper.selectedIndex = 2;
@@ -191,10 +197,10 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
         this.administratorsSub = this.mediaServerService.getAdministrators().subscribe((admins: MediaServerUser[]) => {
           this.administrators = admins;
           if (admins.length > 0) {
-            this.selectedAdministrator.setValue(admins[0].id);
+            this.selectedAdministratorControl.setValue(admins[0].id);
           }
         });
-        this.selectedAdministratorChange = this.selectedAdministrator.valueChanges.subscribe((event) => {
+        this.selectedAdministratorChange = this.selectedAdministratorControl.valueChanges.subscribe((event) => {
           this.saveMediaServerDetails();
         });
       }
@@ -217,7 +223,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     server.serverPort = port;
     server.serverProtocol = protocol;
     server.serverType = this.type;
-    server.userId = this.selectedAdministrator.value;
+    server.userId = this.selectedAdministratorControl.value;
     settings.mediaServer = server;
     this.settingsFacade.updateSettings(settings);
   }
