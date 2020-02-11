@@ -129,7 +129,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        IEnumerable<EmbyUser> IMediaServerRepository.GetAllUsers()
+        public IEnumerable<EmbyUser> GetAllUsers()
         {
             return ExecuteQuery(() =>
             {
