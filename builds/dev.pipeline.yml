@@ -6,19 +6,7 @@ jobs:
 - job: main_build
   displayName: 'Test application'
   steps:
-  - task: GitVersion@5
-    displayName: 'Set Version'
-    inputs:
-      runtime: 'core'
-      preferBundledVersion: false
-      configFilePath: 'GitVersion.yml'
-
-  - task: PowerShell@2
-    displayName: 'Update build number'
-    inputs:
-      targetType: 'inline'
-      script: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
-
+  - template: './templates/version.variables.yml'
   - template: './templates/update.version.yml'
   - template: './templates/sonarcloud.start.yml'
 
@@ -29,19 +17,13 @@ jobs:
       filePath: $(Paths.Script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
 
-  - task: SonarCloudPrepare@1
-    displayName: 'Prepare analysis on SonarCloud'
-    inputs:
-      SonarCloud: 'SonarCloud'
-      organization: 'd8c11b45-69cb-4181-8d1a-a2399df9f672'
-      scannerMode: 'MSBuild'
-      projectKey: '15579460-0cb2-4494-a9ed-ebcc05beeb00'
-      projectVersion: '$(build.buildNumber)'
-      extraProperties: |
-        sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**
-        sonar.ts.tslint.configPath=ClientApp/tslint.json
-        sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info
-        sonar.testExecutionReportPaths=EmbyStat.Web/ClientApp/coverage/ut_report.xml
+  - script: 'dir'
+    workingDirectory: EmbyStat.Web/ClientApp
+    displayName: 'DIR'
+
+  - script: 'echo $(webapp.projects)'
+    workingDirectory: EmbyStat.Web/ClientApp
+    displayName: 'ECHO'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build web app'
@@ -50,7 +32,6 @@ jobs:
       arguments: '--output $(webapp.path.win10-x64)'
 
   - template: ./templates/unit.tests.yml
-
   - template: './templates/sonarcloud.end.yml'
 
   - task: WhiteSource Bolt@20
@@ -63,8 +44,6 @@ jobs:
     inputs:
       PathtoPublish: '$(webapp.path.win10-x64)'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
-
-  - template: './templates/version.variables.yml'
 
 - job:  build_win10_x64
   dependsOn:  main_build
