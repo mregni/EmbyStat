@@ -84,6 +84,13 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
 
+  - task: CmdLine@2
+    inputs:
+      script: |
+        dir
+        cd publish
+        dir
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
     inputs:
