@@ -77,7 +77,7 @@ jobs:
 - job:  build_win10_x64
   dependsOn:  main_build
   displayName: 'Build Win10-x64 package'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
@@ -122,7 +122,7 @@ jobs:
 - job:  build_ubuntu_x64
   dependsOn:  main_build
   displayName: 'Build Ubuntu-x64 package'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
@@ -170,7 +170,7 @@ jobs:
   - build_ubuntu_x64
   - main_build
   displayName: 'Create Docker files'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
     name: Hosted Windows 2019 with VS2019
   steps:
