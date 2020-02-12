@@ -30,14 +30,14 @@ namespace Tests.Unit.Builders.ViewModels
                 UpdateTrain = (int) settings.UpdateTrain,
                 Username = settings.Username,
                 WizardFinished = settings.WizardFinished,
-                Emby = new EmbySettingsViewModel
+                MediaServer = new EmbySettingsViewModel
                 {
-                    ServerAddress = settings.Emby.ServerAddress,
-                    AuthorizationScheme = settings.Emby.AuthorizationScheme,
-                    ServerPort = settings.Emby.ServerPort,
-                    ApiKey = settings.Emby.ApiKey,
-                    ServerName = settings.Emby.ServerName,
-                    ServerProtocol = (int) settings.Emby.ServerProtocol
+                    ServerAddress = settings.MediaServer.ServerAddress,
+                    AuthorizationScheme = settings.MediaServer.AuthorizationScheme,
+                    ServerPort = settings.MediaServer.ServerPort,
+                    ApiKey = settings.MediaServer.ApiKey,
+                    ServerName = settings.MediaServer.ServerName,
+                    ServerProtocol = (int) settings.MediaServer.ServerProtocol
                 }
             };
         }

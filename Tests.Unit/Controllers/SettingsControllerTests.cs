@@ -124,12 +124,12 @@ namespace Tests.Unit.Controllers
             settings.WizardFinished.Should().Be(_userSettings.WizardFinished);
             settings.MovieLibraryTypes.Count.Should().Be(_userSettings.MovieLibraryTypes.Count);
             settings.ShowLibraryTypes.Count.Should().Be(_userSettings.ShowLibraryTypes.Count);
-            settings.Emby.ApiKey.Should().Be(_userSettings.Emby.ApiKey);
-            settings.Emby.AuthorizationScheme.Should().Be(_userSettings.Emby.AuthorizationScheme);
-            settings.Emby.ServerAddress.Should().Be(_userSettings.Emby.ServerAddress);
-            settings.Emby.ServerName.Should().Be(_userSettings.Emby.ServerName);
-            settings.Emby.ServerPort.Should().Be(_userSettings.Emby.ServerPort);
-            settings.Emby.ServerProtocol.Should().Be((int)_userSettings.Emby.ServerProtocol);
+            settings.MediaServer.ApiKey.Should().Be(_userSettings.MediaServer.ApiKey);
+            settings.MediaServer.AuthorizationScheme.Should().Be(_userSettings.MediaServer.AuthorizationScheme);
+            settings.MediaServer.ServerAddress.Should().Be(_userSettings.MediaServer.ServerAddress);
+            settings.MediaServer.ServerName.Should().Be(_userSettings.MediaServer.ServerName);
+            settings.MediaServer.ServerPort.Should().Be(_userSettings.MediaServer.ServerPort);
+            settings.MediaServer.ServerProtocol.Should().Be((int)_userSettings.MediaServer.ServerProtocol);
 
 
             settings.DataDir.Should().Be(_appSettings.Dirs.Data);
