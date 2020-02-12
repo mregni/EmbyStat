@@ -1,3 +1,11 @@
+trigger:
+- develop
+- features/*
+
+variables:
+- group: dev-build
+- group: packages
+
 pool:
   name: Hosted Windows 2019 with VS2019
   demands: java
@@ -15,21 +23,13 @@ jobs:
     inputs:
       targetType: filePath
       filePath: $(Paths.Script)/appsettings.ps1
-      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
-
-  - script: 'dir'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'DIR'
-
-  - script: 'echo $(webapp.projects)'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'ECHO'
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build web app'
     inputs:
-      projects: '$(webapp.projects)'
-      arguments: '--output $(webapp.path.win10-x64)'
+      projects: '$(webapp.project)'
+      arguments: '--output publish'
 
   - template: ./templates/unit.tests.yml
   - template: './templates/sonarcloud.end.yml'
@@ -42,13 +42,13 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
     inputs:
-      PathtoPublish: '$(webapp.path.win10-x64)'
-      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
+      PathtoPublish: 'publish'
+      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
 
 - job:  build_win10_x64
   dependsOn:  main_build
   displayName: 'Build Win10-x64 package'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
@@ -70,7 +70,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(webapp.projects)'
-      arguments: '$(webapp.publish.win10-x64.arguments)'
+      arguments: '-c Release -r win-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
@@ -80,20 +80,20 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(updater.projects)'
-      arguments: '$(updater.publish.win10-x64.arguments)'
+      arguments: '-c Release -r win-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
     inputs:
-      PathtoPublish: '$(webapp.path.win10-x64)'
+      PathtoPublish: 'publish'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
 
 - job:  build_ubuntu_x64
   dependsOn:  main_build
   displayName: 'Build Ubuntu-x64 package'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
@@ -115,7 +115,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(webapp.projects)'
-      arguments: '$(webapp.publish.ubuntu-x64.arguments)'
+      arguments: '-c Release -r ubuntu-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
@@ -125,7 +125,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(updater.projects)'
-      arguments: '$(updater.publish.ubuntu-x64.arguments)'
+      arguments: '-c Release -r ubuntu-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
@@ -141,7 +141,7 @@ jobs:
   - build_ubuntu_x64
   - main_build
   displayName: 'Create Docker files'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
     name: Hosted Windows 2019 with VS2019
   steps:
@@ -149,7 +149,7 @@ jobs:
     displayName: 'Copy Docker files'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/dockerfiles.ps1
+      filePath: $(paths.script)/dockerfiles.ps1
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Docker files'
