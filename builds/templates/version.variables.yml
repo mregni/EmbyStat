@@ -1,0 +1,8 @@
+steps:
+  - powershell: echo "##vso[task.setvariable variable=AssemblySemVer;isOutput=true]$(GitVersion.AssemblySemVer)"
+    name: setAssemblySemVer
+    displayName: 'Set AssemblySemVer variable'
+
+  - powershell: echo "##vso[task.setvariable variable=SemVer;isOutput=true]$(GitVersion.SemVer)"
+    name: setSemVer
+    displayName: 'Set SemVer variable'

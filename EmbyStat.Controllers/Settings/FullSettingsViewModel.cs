@@ -23,6 +23,9 @@ namespace EmbyStat.Controllers.Settings
         public string Version { get; set; }
         public bool NoUpdates { get; set; }
         public bool EnableRollbarLogging { get; set; }
+        public string DataDir { get; set; }
+        public string LogDir { get; set; }
+        public string ConfigDir { get; set; }
         
         public class EmbySettingsViewModel
         {

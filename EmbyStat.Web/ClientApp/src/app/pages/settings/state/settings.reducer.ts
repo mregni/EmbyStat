@@ -39,7 +39,10 @@ const INITIAL_STATE: Settings = {
   enableRollbarLogging: false,
   isLoaded: false,
   toShortMovieEnabled: false,
-  noUpdates: false
+  noUpdates: false,
+  configDir: '',
+  dataDir: '',
+  logDir: ''
 };
 
 export function settingsReducer(state: Settings = INITIAL_STATE, action: SettingsActions) {
@@ -64,7 +67,11 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         version: action.payload.version,
         enableRollbarLogging: action.payload.enableRollbarLogging,
         toShortMovieEnabled: action.payload.toShortMovieEnabled,
-        noUpdates: action.payload.noUpdates
+        noUpdates: action.payload.noUpdates,
+        configDir: action.payload.configDir,
+        dataDir: action.payload.dataDir,
+        logDir: action.payload.logDir,
+        appName: action.payload.appName
       };
     case SettingsActionTypes.UPDATE_SETTINGS_SUCCESS:
       return {
@@ -86,7 +93,11 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         version: action.payload.version,
         enableRollbarLogging: action.payload.enableRollbarLogging,
         toShortMovieEnabled: action.payload.toShortMovieEnabled,
-        noUpdates: action.payload.noUpdates
+        noUpdates: action.payload.noUpdates,
+        configDir: action.payload.configDir,
+        dataDir: action.payload.dataDir,
+        logDir: action.payload.logDir,
+        appName: action.payload.appName
       };
     default:
       return state;

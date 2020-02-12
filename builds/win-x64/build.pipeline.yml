@@ -1,0 +1,44 @@
+jobs:
+- job: windows_x64
+  dependsOn: set_version
+  displayName: 'Build Win10-x64 package'
+  pool:
+    name: Hosted Windows 2019 with VS2019
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: '../templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(Paths.Script)/appsettings.ps1
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet win10-x64 package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.projects)'
+      arguments: '$(webapp.publish.win10-x64.arguments)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet win10-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.projects)'
+      arguments: '$(updater.publish.win10-x64.arguments)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Windows Artifact'
+    inputs:
+      PathtoPublish: '$(webapp.path.win10-x64)'
+      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'

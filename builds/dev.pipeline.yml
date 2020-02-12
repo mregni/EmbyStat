@@ -1,0 +1,180 @@
+pool:
+  name: Hosted Windows 2019 with VS2019
+  demands: java
+
+jobs:
+- job: main_build
+  displayName: 'Test application'
+  steps:
+  - task: GitVersion@5
+    displayName: 'Set Version'
+    inputs:
+      runtime: 'core'
+      preferBundledVersion: false
+      configFilePath: 'GitVersion.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update build number'
+    inputs:
+      targetType: 'inline'
+      script: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
+
+  - template: './templates/update.version.yml'
+  - template: './templates/sonarcloud.start.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(Paths.Script)/appsettings.ps1
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
+
+  - task: SonarCloudPrepare@1
+    displayName: 'Prepare analysis on SonarCloud'
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'd8c11b45-69cb-4181-8d1a-a2399df9f672'
+      scannerMode: 'MSBuild'
+      projectKey: '15579460-0cb2-4494-a9ed-ebcc05beeb00'
+      projectVersion: '$(build.buildNumber)'
+      extraProperties: |
+        sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**
+        sonar.ts.tslint.configPath=ClientApp/tslint.json
+        sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info
+        sonar.testExecutionReportPaths=EmbyStat.Web/ClientApp/coverage/ut_report.xml
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build web app'
+    inputs:
+      projects: '$(webapp.projects)'
+      arguments: '--output $(webapp.path.win10-x64)'
+
+  - template: ./templates/unit.tests.yml
+
+  - template: './templates/sonarcloud.end.yml'
+
+  - task: WhiteSource Bolt@20
+    displayName: 'Scan for open libraries'
+    inputs:
+      cwd: '$(Build.SourcesDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Windows Artifact'
+    inputs:
+      PathtoPublish: '$(webapp.path.win10-x64)'
+      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
+
+  - template: './templates/version.variables.yml'
+
+- job:  build_win10_x64
+  dependsOn:  main_build
+  displayName: 'Build Win10-x64 package'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  pool:
+    name: Hosted Windows 2019 with VS2019
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: './templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(Paths.Script)/appsettings.ps1
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet win10-x64 package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.projects)'
+      arguments: '$(webapp.publish.win10-x64.arguments)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet win10-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.projects)'
+      arguments: '$(updater.publish.win10-x64.arguments)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Windows Artifact'
+    inputs:
+      PathtoPublish: '$(webapp.path.win10-x64)'
+      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
+
+- job:  build_ubuntu_x64
+  dependsOn:  main_build
+  displayName: 'Build Ubuntu-x64 package'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  pool:
+    name: Hosted Windows 2019 with VS2019
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: './templates/update.version.yml'
+
+  - task: Bash@3
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(Paths.Script)/appsettings.sh
+      arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet ubuntu-x64 package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.projects)'
+      arguments: '$(webapp.publish.ubuntu-x64.arguments)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet ubuntu-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.projects)'
+      arguments: '$(updater.publish.ubuntu-x64.arguments)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Ubuntu Artifact'
+    inputs:
+      PathtoPublish: '$(webapp.path.ubuntu-x64)'
+      ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
+
+- job:  create_docker_files
+  dependsOn:
+  - build_win10_x64
+  - build_ubuntu_x64
+  - main_build
+  displayName: 'Create Docker files'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  pool:
+    name: Hosted Windows 2019 with VS2019
+  steps:
+  - task: PowerShell@2
+    displayName: 'Copy Docker files'
+    inputs:
+      targetType: filePath
+      filePath: $(Paths.Script)/dockerfiles.ps1
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Docker files'
+    inputs:
+      PathtoPublish: publish
+      ArtifactName: 'EmbyStat-dockerfiles'
+
