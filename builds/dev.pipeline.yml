@@ -1,3 +1,10 @@
+trigger:
+- develop
+- features/*
+
+variables:
+- group: dev-build
+
 pool:
   name: Hosted Windows 2019 with VS2019
   demands: java
@@ -17,17 +24,10 @@ jobs:
       filePath: $(Paths.Script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(Build.BuildNumber)'
 
-  - script: 'dir'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'DIR'
-
-  - script: 'echo $(webapp.projects)'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'ECHO'
-
   - task: DotNetCoreCLI@2
     displayName: 'Build web app'
     inputs:
+      workingDirectory: EmbyStat.Web
       projects: '$(webapp.projects)'
       arguments: '--output $(webapp.path.win10-x64)'
 
