@@ -1,3 +1,8 @@
+trigger:
+- develop
+- features/*
+
+
 pool:
   name: Hosted Windows 2019 with VS2019
   demands: java
@@ -6,6 +11,9 @@ jobs:
 - job: main_build
   displayName: 'Test application'
   steps:
+
+  - task: DutchWorkzToolsAllVariables@1
+  
   - task: GitVersion@5
     displayName: 'Set Version'
     inputs:
