@@ -69,7 +69,7 @@
                   </mat-form-field>
                   <mat-form-field class="emby-port">
                     <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}"
-                           digitOnly maxlength="5" formControlName="serverPort" required>
+                           esDigitOnly maxlength="5" formControlName="serverPort" required>
                     <mat-error *ngIf="serverPortControl.hasError('required')">
                       {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate : { type: typeText } }}
                     </mat-error>

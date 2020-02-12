@@ -200,7 +200,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
             this.selectedAdministratorControl.setValue(admins[0].id);
           }
         });
-        this.selectedAdministratorChange = this.selectedAdministratorControl.valueChanges.subscribe((event) => {
+        this.selectedAdministratorChange = this.selectedAdministratorControl.valueChanges.subscribe(() => {
           this.saveMediaServerDetails();
         });
       }

@@ -15,7 +15,7 @@ import { getTestBed, TestBed } from '@angular/core/testing';
 import { MediaServerPlugin } from '../../app/shared/models/media-server/media-server-plugin';
 import { ServerInfo } from '../../app/shared/models/media-server/server-info';
 
-describe('EmbyService', () => {
+describe('MediaServerService', () => {
     let injector: TestBed;
     let service: MediaServerService;
     let httpMock: HttpTestingController;

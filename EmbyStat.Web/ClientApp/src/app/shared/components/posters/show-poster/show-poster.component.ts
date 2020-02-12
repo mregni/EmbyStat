@@ -41,7 +41,7 @@ export class ShowPosterComponent implements OnInit, OnDestroy {
     if (this.settings === undefined) {
       return '';
     }
-    
+
     const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
     const url = `url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90&enableimageenhancers=false)`;
     return this.sanitizer.bypassSecurityTrustStyle(url);

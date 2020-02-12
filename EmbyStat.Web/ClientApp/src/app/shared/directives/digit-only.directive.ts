@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
-  selector: '[digitOnly]'
+  selector: '[esDigitOnly]'
 })
 export class DigitOnlyDirective {
   private decimalCounter = 0;
