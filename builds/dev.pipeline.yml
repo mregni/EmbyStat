@@ -40,6 +40,7 @@ jobs:
       cwd: '$(Build.SourcesDirectory)'
 
   - task: PublishBuildArtifacts@1
+    condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish Windows Artifact'
     inputs:
       PathtoPublish: 'publish'
