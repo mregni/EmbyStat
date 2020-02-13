@@ -39,17 +39,10 @@ jobs:
     inputs:
       cwd: '$(Build.SourcesDirectory)'
 
-  - task: PublishBuildArtifacts@1
-    condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'develop'))
-    displayName: 'Publish Windows Artifact'
-    inputs:
-      PathtoPublish: 'publish'
-      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
-
 - job:  build_win10_x64
   dependsOn:  main_build
   displayName: 'Build Win10-x64 package'
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
+  condition: succeeded()
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
