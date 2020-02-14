@@ -22,7 +22,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/appsettings.ps1
+      filePath: $(paths.script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
@@ -61,7 +61,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/appsettings.ps1
+      filePath: $(paths.script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
@@ -69,7 +69,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '$(webapp.projects)'
+      projects: '$(webapp.project)'
       arguments: '-c Release -r win-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
@@ -79,7 +79,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '$(updater.projects)'
+      projects: '$(updater.project)'
       arguments: '-c Release -r win-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
