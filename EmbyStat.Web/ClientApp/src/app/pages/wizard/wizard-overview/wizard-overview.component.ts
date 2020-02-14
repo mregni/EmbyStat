@@ -69,7 +69,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   adminForm: FormGroup;
 
   private settings: Settings;
-  private type: number;
+  type: number;
   typeText: string;
   languages$: Observable<Language[]>;
 
