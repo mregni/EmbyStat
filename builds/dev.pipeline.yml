@@ -35,6 +35,7 @@ jobs:
   - template: './templates/sonarcloud.end.yml'
 
   - task: WhiteSource Bolt@20
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
     displayName: 'Scan for open libraries'
     inputs:
       cwd: '$(Build.SourcesDirectory)'
