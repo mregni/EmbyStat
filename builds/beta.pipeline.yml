@@ -1,3 +1,7 @@
+trigger:
+- release/*
+
+
 jobs:
   - job: set_version
     displayName: Test application
