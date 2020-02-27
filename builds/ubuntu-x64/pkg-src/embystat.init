@@ -1,0 +1,61 @@
+### BEGIN INIT INFO
+# Provides:          EmbyStat Server
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: EmbyStat Server
+# Description:       Runs EmbyStat Server
+### END INIT INFO
+
+set -e
+
+# Carry out specific functions when asked to by the system
+
+if test -f /etc/default/embystat; then
+    . /etc/default/embystat
+fi
+
+. /lib/lsb/init-functions
+
+PIDFILE="/run/embystat.pid"
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting EmbyStat Server" "embystat" || true
+
+	if start-stop-daemon --start --quiet --oknodo --background --pidfile $PIDFILE --make-pidfile --user $EMBYSTAT_USER --chuid $EMBYSTAT_USER --exec /usr/bin/embystat -- $EMBYSTAT_ARGS; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+    ;;
+
+  stop)
+	log_daemon_msg "Stopping EmbyStat Server" "embystat" || true
+	if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE --remove-pidfile; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+    ;;
+
+  restart)
+	log_daemon_msg "Restarting EmbyStat Server" "embystat" || true
+	start-stop-daemon --stop --quiet --oknodo --retry 30 --pidfile $PIDFILE --remove-pidfile
+	if start-stop-daemon --start --quiet --oknodo --background --pidfile $PIDFILE --make-pidfile --user $EMBYSTAT_USER --chuid $EMBYSTAT_USER --exec /usr/bin/embystat -- $EMBYSTAT_ARGS; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+	;;
+
+  status)
+	status_of_proc -p $PIDFILE /usr/bin/embystat embystat && exit 0 || exit $?
+  ;;
+
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac

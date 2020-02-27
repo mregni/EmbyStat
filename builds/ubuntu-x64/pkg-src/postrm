@@ -1,0 +1,75 @@
+#!/bin/bash
+set -e
+
+NAME=embystat
+DEFAULT_FILE=/etc/default/${NAME}
+
+# Source EmbyStat default configuration
+if [[ -f $DEFAULT_FILE ]]; then
+  . $DEFAULT_FILE
+fi
+
+# Data directories for program data (cache, db), configs, and logs
+PROGRAMDATA=${JELLYFIN_DATA_DIRECTORY-/var/lib/$NAME}
+CONFIGDATA=${JELLYFIN_CONFIG_DIRECTORY-/etc/$NAME}
+LOGDATA=${JELLYFIN_LOG_DIRECTORY-/var/log/$NAME}
+
+# In case this system is running systemd, we make systemd reload the unit files
+# to pick up changes.
+if [[ -d /run/systemd/system ]] ; then
+  systemctl --system daemon-reload >/dev/null || true
+fi
+
+case "$1" in
+  purge)
+    echo PURGE | debconf-communicate $NAME > /dev/null 2>&1 || true
+
+    if [[ -x "/etc/init.d/embystat" ]] || [[ -e "/etc/init/embystat.connf" ]]; then
+      update-rc.d embystat remove >/dev/null 2>&1 || true
+    fi
+
+    if [[ -x "/usr/bin/deb-systemd-helper" ]]; then
+      deb-systemd-helper purge embystat.service >/dev/null
+      deb-systemd-helper unmask embystat.service >/dev/null
+    fi
+
+    # Remove user and group
+    userdel embystat > /dev/null 2>&1 || true
+    delgroup --quiet embystat > /dev/null 2>&1 || true
+    # Remove config dir
+    if [[ -d $CONFIGDATA ]]; then
+      rm -rf $CONFIGDATA
+    fi
+    # Remove log dir
+    if [[ -d $LOGDATA ]]; then
+      rm -rf $LOGDATA
+    fi
+    # Remove program data dir
+    if [[ -d $PROGRAMDATA ]]; then
+      rm -rf $PROGRAMDATA
+    fi
+    # Remove binary symlink
+    [[ -f /usr/bin/embystat ]] && rm /usr/bin/embystat
+    # Remove sudoers config
+    [[ -f /etc/sudoers.d/embystat-sudoers ]] && rm /etc/sudoers.d/embystat-sudoers
+    # Remove anything at the default locations; catches situations where the user moved the defaults
+    [[ -e /etc/embystat ]] && rm -rf /etc/embystat
+    [[ -e /var/log/embystat ]] && rm -rf /var/log/embystat
+    [[ -e /var/lib/embystat ]] && rm -rf /var/lib/embystat
+    ;;
+  remove)
+    if [[ -x "/usr/bin/deb-systemd-helper" ]]; then
+      deb-systemd-helper mask embystat.service >/dev/null
+    fi
+    ;;
+  upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    ;;
+  *)
+    echo "postrm called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

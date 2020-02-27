@@ -1,9 +1,9 @@
 jobs:
-- job: windows_x64
+- job: linux_arm
   dependsOn: set_version
-  displayName: 'Build Win10-x64 package'
+  displayName: 'Build Linux-ARM package'
   pool:
-    name: Hosted Windows 2019 with VS2019
+    vmImage: ubuntu-18.04
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
@@ -15,30 +15,30 @@ jobs:
     inputs:
       targetType: filePath
       filePath: $(Paths.Script)/appsettings.ps1
-      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+      arguments: '-updatePackage $(package.linux-arm) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Make dotnet win10-x64 package'
+    displayName: 'Make dotnet linux-ARM package'
     inputs:
       command: publish
       publishWebProjects: false
       projects: '$(webapp.projects)'
-      arguments: '-c Release -r win-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
+      arguments: '-c Release -r linux-arm -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
   - task: DotNetCoreCLI@2
-    displayName: 'Make dotnet win10-x64 updater package'
+    displayName: 'Make dotnet linux-ARM updater package'
     inputs:
       command: publish
       publishWebProjects: false
       projects: '$(updater.projects)'
-      arguments: '-c Release -r win-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
+      arguments: '-c Release -r linux-arm -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Windows x64 Artifact'
+    displayName: 'Publish Linux ARM Artifact'
     inputs:
       PathtoPublish: 'publish'
-      ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'
+      ArtifactName: 'EmbyStat-$(package.linux-arm)-v$(GitVersion.SemVer)'

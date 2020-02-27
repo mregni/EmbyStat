@@ -28,6 +28,11 @@ jobs:
     - template: ./templates/unit.tests.yml
     - template: './templates/sonarcloud.end.yml'
 
-  - template: windows/build.pipeline.yml
-  - template: win-x64/build.pipeline.yml
+  - template: debian-x64/build.pipeline.yml
+  - template: docker-containers/build.pipeline.yml
+  - template: fedora-x64/build.pipeline.yml
+  - template: linux-arm/build.pipeline.yml
+  - template: linux-arm-x64/build.pipeline.yml
   - template: ubuntu-x64/build.pipeline.yml
+  - template: win-x64/build.pipeline.yml
+  - template: windows/build.pipeline.yml

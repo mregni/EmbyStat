@@ -1,0 +1,23 @@
+jobs:
+- job: docker_container
+  dependsOn: set_version
+  displayName: 'Copy Docker files'
+  pool:
+    vmImage: ubuntu-18.04
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: '../templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Copy Docker files'
+    inputs:
+      targetType: filePath
+      filePath: ./dockerfiles.ps1
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Docker files'
+    inputs:
+      PathtoPublish: publish
+      ArtifactName: 'EmbyStat-dockerfiles'

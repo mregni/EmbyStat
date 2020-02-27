@@ -1,0 +1,6 @@
+usr/lib/embystat usr/lib/
+debian/conf/embystat etc/default/
+debian/conf/logging.json etc/embystat/
+debian/conf/embystat.service.conf etc/systemd/system/embystat.service.d/
+debian/conf/embystat-sudoers etc/sudoers.d/
+debian/bin/restart.sh usr/lib/embystat/
