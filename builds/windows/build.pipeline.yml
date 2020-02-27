@@ -27,4 +27,4 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish NSIS package'
     inputs:
-      ArtifactName: 'EmbyStat-installer-win-x64-$(GitVersion.SemVer)'
+      ArtifactName: 'EmbyStat-installer-win-x64-v$(GitVersion.SemVer)'

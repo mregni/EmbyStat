@@ -41,4 +41,4 @@ jobs:
         displayName: 'Publish Ubuntu x64 Artifact'
         inputs:
           PathtoPublish: 'publish'
-          ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-$(GitVersion.SemVer)'
+          ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
