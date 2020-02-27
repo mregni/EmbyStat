@@ -1,12 +1,12 @@
 FROM debian:10
 # Docker build arguments
-ARG SOURCE_DIR=/home/reggi/embystat-1.0
-ARG PLATFORM_DIR=/home/reggi/embystat-1.0/builds/ubuntu-x64
+ARG SOURCE_DIR=/embystat
+ARG PLATFORM_DIR=/embystat/builds/ubuntu-x64
 ARG ARTIFACT_DIR=/dist
 ARG SDK_VERSION=3.1
 # Docker run environment
-ENV SOURCE_DIR=/home/reggi/embystat-1.0
-ENV ARTIFACT_DIR=/home/reggi/dist
+ENV SOURCE_DIR=/embystat
+ENV ARTIFACT_DIR=/dist
 ENV DEB_BUILD_OPTIONS=noddebs
 ENV ARCH=amd64
 
