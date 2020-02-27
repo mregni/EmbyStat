@@ -66,11 +66,11 @@ describe('EmbyService', () => {
         const broadcastMock = new MediaServerUdpBroadcast();
         broadcastMock.id = '123';
 
-        service.searchMediaServer().subscribe((result: MediaServerUdpBroadcast) => {
+        service.searchMediaServer(0).subscribe((result: MediaServerUdpBroadcast) => {
             expect(result).toEqual(broadcastMock);
         });
 
-        const req = httpMock.expectOne('/api/mediaserver/server/search');
+        const req = httpMock.expectOne('/api/mediaserver/server/search?serverType=0');
         expect(req.request.method).toBe('GET');
         req.flush(broadcastMock);
     });
