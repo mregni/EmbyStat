@@ -21,8 +21,15 @@ jobs:
     displayName: 'Create NSIS package'
     inputs:
       targetType: filePath
-      filePath: './builds/windows/installer-build.ps1 '
+      filePath: './builds/windows/installer-build.ps1'
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS'
+      
+  - task: CopyFiles@2
+    displayName: 'Copy installer to artifact folder'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)\builds\windows'
+      Contents: 'EmbyStat_$(GitVersion.SemVer)_windows-x64.exe'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish NSIS package'

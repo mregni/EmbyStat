@@ -48,15 +48,15 @@ ShowUninstDetails show
 
     !getdllversion "$%InstallLocation%\EmbyStat.dll" ver_ ;Align installer version with EmbyStat.dll version
 
-    Name "EmbyStat Server ${ver_1}.${ver_2}.${ver_3} ${NAMESUFFIX}" ; This is referred in various header text labels
-    OutFile "EmbyStat_${ver_1}.${ver_2}.${ver_3}_windows-${ARCH}.exe" ; Naming convention EmbyStat_{version}_windows-{arch].exe
-    BrandingText "EmbyStat Server ${ver_1}.${ver_2}.${ver_3} Installer" ; This shows in just over the buttons
+    Name "EmbyStat Server ${GitVersion.SemVer} ${NAMESUFFIX}" ; This is referred in various header text labels
+    OutFile "EmbyStat_${GitVersion.SemVer}_windows-${ARCH}.exe" ; Naming convention EmbyStat_{version}_windows-{arch].exe
+    BrandingText "EmbyStat Server ${GitVersion.SemVer} Installer" ; This shows in just over the buttons
 
 ; installer attributes, these show up in details tab on installer properties
-    VIProductVersion "${ver_1}.${ver_2}.${ver_3}.0" ; VIProductVersion format, should be X.X.X.X
-    VIFileVersion "${ver_1}.${ver_2}.${ver_3}.0" ; VIFileVersion format, should be X.X.X.X
+    VIProductVersion "${GitVersion.SemVer}.0" ; VIProductVersion format, should be X.X.X.X
+    VIFileVersion "${GitVersion.SemVer}.0" ; VIFileVersion format, should be X.X.X.X
     VIAddVersionKey "ProductName" "EmbyStat Server"
-    VIAddVersionKey "FileVersion" "${ver_1}.${ver_2}.${ver_3}.0"
+    VIAddVersionKey "FileVersion" "${GitVersion.SemVer}.0"
     VIAddVersionKey "LegalCopyright" "(c) 2019 EmbyStat Contributors. Code released under the GNU General Public License"
     VIAddVersionKey "FileDescription" "EmbyStat Server: The Free Software Media System"
 
@@ -170,7 +170,7 @@ Section "!EmbyStat Server (required)" InstallEmbyStatServer
     WriteRegStr HKLM "${REG_CONFIG_KEY}" "ServiceAccountType" "$_SERVICEACCOUNTTYPE_"
 
     !getdllversion "$%InstallLocation%\EmbyStat.dll" ver_
-    StrCpy $_EMBYSTATVERSION_ "${ver_1}.${ver_2}.${ver_3}" ;
+    StrCpy $_EMBYSTATVERSION_ "${GitVersion.SemVer}" ;
 
 ; Write the uninstall keys for Windows
     WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayName" "EmbyStat Server $_EMBYSTATVERSION_ ${NAMESUFFIX}"
