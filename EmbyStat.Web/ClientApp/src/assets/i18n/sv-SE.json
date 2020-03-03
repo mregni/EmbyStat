@@ -53,7 +53,9 @@
     "ACTORSPERGENRE": "Most Featured Actor Per Genre",
     "MINUTES": "minuter",
     "DISKSIZE": "Disk size",
-    "TOTALDISKSIZE": "Total disk size"
+    "TOTALDISKSIZE": "Total disk size",
+    "EMBYSERVER": "Emby server",
+    "JELLYFINSERVER": "Jellyfin server"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, vi har ett fel i bakgrunden, var snäll och försök igen. Kontrollera loggen för detaljer ifall detta fortsätter.",
@@ -88,22 +90,23 @@
     "SETTINGS": "Inställningar",
     "PLUGINS": "Tillägg",
     "JOBS": "Jobs",
-    "SERVER": "Emby server",
+    "SERVER": "Server",
     "LOGS": "Logs",
     "ABOUT": "About",
     "USERS": "Användare"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby inställningar",
-    "SAVINGLABEL": "First Emby server sync",
+    "SERVERTYPELABEL": "Server type",
+    "SERVERLABEL": "Server settings",
+    "SAVINGLABEL": "Server sync",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Kontrollerar Emby server...",
+    "CHECKINGSTATUS": "Checking {{type}} server ...",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
-    "EMBYNOTFOUNDTEXT": "Now we will setup your Emby connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "EMBYFOUNDTEXT": "We found an Emby server in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "EMBYRUNNING": "Emby servern är igång",
+    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API nyckeln är giltig",
     "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
     "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
@@ -111,7 +114,10 @@
     "RESCAN": "Rescan",
     "FINISHWITHSYNC": "Start synchronization",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page."
+    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page.",
+    "JELLYFIN": {
+      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+    }
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter movie collections",
@@ -177,13 +183,13 @@
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/domän",
-      "EMBYAPIKEY": "Emby API nyckel",
-      "EMBYPORT": "Emby port",
-      "EMBYADDRESSREQUIRED": "Emby IP/domän krävs.",
-      "EMBYPORTREQUIRED": "Emby port krävs.",
-      "EMBYAPIKEYREQUIRED": "Emby API nyckel krävs",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "EMBYADDRESS": "{{type}} IP/domain",
+      "EMBYAPIKEY": "{{type}} API key",
+      "EMBYPORT": "{{type}} port",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
+      "EMBYPORTREQUIRED": "{{type}} port required.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
       "WRONGAPIKEY": "Provided API key is not valid"
     },
     "UPDATE": {

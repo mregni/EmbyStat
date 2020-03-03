@@ -53,7 +53,9 @@
     "ACTORSPERGENRE": "Häufigster Schauspieler je Genre",
     "MINUTES": "Minuten",
     "DISKSIZE": "Festplattengröße",
-    "TOTALDISKSIZE": "Gesamte Festplattengröße"
+    "TOTALDISKSIZE": "Gesamte Festplattengröße",
+    "EMBYSERVER": "Emby server",
+    "JELLYFINSERVER": "Jellyfin server"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
@@ -88,22 +90,23 @@
     "SETTINGS": "Einstellungen",
     "PLUGINS": "Plugins",
     "JOBS": "Aufgaben",
-    "SERVER": "Emby Server",
+    "SERVER": "Server",
     "LOGS": "Logs",
     "ABOUT": "Über",
     "USERS": "Benutzer"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby Einstellungen",
-    "SAVINGLABEL": "Erste Emby Server Synchronisierung",
+    "SERVERTYPELABEL": "Server type",
+    "SERVERLABEL": "Server settings",
+    "SAVINGLABEL": "Server sync",
     "FINALLABEL": "Fertig",
     "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen",
-    "CHECKINGSTATUS": "Emby Server wird überprüft...",
+    "CHECKINGSTATUS": "Checking {{type}} server ...",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
-    "EMBYNOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu Emby einrichten. Wir haben versucht deinen Emby Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen Emby Server finden kann.",
-    "EMBYFOUNDTEXT": "Wir haben einen Emby-Server in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
-    "EMBYRUNNING": "Der Emby Server läuft",
+    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "Der API-Schlüssel ist gültig",
     "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
     "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
@@ -111,7 +114,10 @@
     "RESCAN": "Erneut scannen",
     "FINISHWITHSYNC": "Synchronisation starten",
     "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
-    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren."
+    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren.",
+    "JELLYFIN": {
+      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+    }
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filmsammlungen filtern",
@@ -177,13 +183,13 @@
       "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/Domain",
-      "EMBYAPIKEY": "Emby API-Schlüssel",
-      "EMBYPORT": "Emby Port",
-      "EMBYADDRESSREQUIRED": "Emby IP/Domain erforderlich.",
-      "EMBYPORTREQUIRED": "Emby Port erforderlich.",
-      "EMBYAPIKEYREQUIRED": "Emby API-Schlüssel erforderlich",
-      "APIKEYHINT": "Gehen Sie zu Erweitert -> Sicherheit auf <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">Ihr Emby-Server</a> um einen neuen API-Token zu generieren.",
+      "EMBYADDRESS": "{{type}} IP/domain",
+      "EMBYAPIKEY": "{{type}} API key",
+      "EMBYPORT": "{{type}} port",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
+      "EMBYPORTREQUIRED": "{{type}} port required.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
       "WRONGAPIKEY": "Der angegebene API-Schlüssel ist ungültig"
     },
     "UPDATE": {
