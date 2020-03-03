@@ -1,9 +1,12 @@
 trigger:
 - release/*
 
+variables:
+  - group: dev-build
+  - group: packages
 
 jobs:
-  - job: set_version
+  - job: main_build
     displayName: Test application
     pool:
       name: Hosted Windows 2019 with VS2019
