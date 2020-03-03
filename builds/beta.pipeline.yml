@@ -26,7 +26,7 @@ jobs:
     - task: DotNetCoreCLI@2
       displayName: 'Build web app'
       inputs:
-        projects: '$(webapp.projects)'
+        projects: '$(webapp.project)'
       
     - template: ./templates/unit.tests.yml
     - template: './templates/sonarcloud.end.yml'
