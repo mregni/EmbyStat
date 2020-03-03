@@ -13,9 +13,6 @@ jobs:
       demands: java
     steps:
     - template: './templates/version.variables.yml'
-
-
-    - task: DutchWorkzToolsAllVariables@1
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
 
