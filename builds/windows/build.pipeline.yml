@@ -1,12 +1,12 @@
 jobs:
 - job: windows_nsis
-  dependsOn: set_version
+  dependsOn: main_build
   displayName: 'Build Win10-x64 installer'
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:
-    GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - template: '../templates/update.version.yml'
 

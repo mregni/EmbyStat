@@ -1,12 +1,12 @@
 jobs:
 - job: fedora_x64
-  dependsOn: set_version
+  dependsOn: main_build
   displayName: 'Build Fedora x64 package'
   pool:
     vmImage: ubuntu-18.04
   variables:
-    GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - template: '../templates/update.version.yml'
 
