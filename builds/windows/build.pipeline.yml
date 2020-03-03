@@ -39,9 +39,6 @@ jobs:
       Contents: 'EmbyStat_$(GitVersion.AssemblySemVer)_windows-x64.exe'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-      D:\a\1\s\builds\windows\EmbyStat_0.2.1.0_windows-x64.exe
-
-
   - task: PublishBuildArtifacts@1
     displayName: 'Publish NSIS package'
     inputs:
