@@ -9,8 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import {
     NoUsersFoundDialog
 } from '../../../shared/dialogs/no-users-found-dialog/no-users-found-dialog';
-import { EmbyUser } from '../../../shared/models/emby/emby-user';
-import { EmbyService } from '../../../shared/services/emby.service';
+import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 
 @Component({
   selector: 'app-users-overview',
@@ -21,14 +21,14 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
   private usersSub: Subscription;
   private transSub: Subscription;
 
-  users: EmbyUser[];
-  deletedUsers: EmbyUser[];
+  users: MediaServerUser[];
+  deletedUsers: MediaServerUser[];
   defaultValue = 'name';
 
   orderOptions = [];
 
   constructor(
-    private readonly embyService: EmbyService,
+    private readonly mediaServerService: MediaServerService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly translateService: TranslateService) {
@@ -41,7 +41,7 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
           this.orderOptions.push({ key: value['USERS.SORTING.LASTACTIVEDESC'], value: 'lastActivityDateDesc' });
         });
 
-    this.usersSub = this.embyService.getUsers().subscribe((users: EmbyUser[]) => {
+    this.usersSub = this.mediaServerService.getUsers().subscribe((users: MediaServerUser[]) => {
       if (users.length > 0) {
         this.users = _.orderBy(users.filter(x => !x.deleted), ['name'], 'asc');
         this.deletedUsers = _.orderBy(users.filter(x => x.deleted), ['name'], 'asc');

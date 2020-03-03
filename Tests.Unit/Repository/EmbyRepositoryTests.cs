@@ -9,7 +9,7 @@ namespace Tests.Unit.Repository
 {
     public class EmbyRepositoryTests : BaseRepositoryTester
     {
-        private EmbyRepository _embyRepository;
+        private MediaServerRepository _mediaServerRepository;
         private DbContext _context;
         public EmbyRepositoryTests() : base("test-data-emby-repo.db")
         {
@@ -18,7 +18,7 @@ namespace Tests.Unit.Repository
         protected override void SetupRepository()
         {
             _context = CreateDbContext();
-            _embyRepository = new EmbyRepository(_context);
+            _mediaServerRepository = new MediaServerRepository(_context);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Tests.Unit.Repository
                     collection.Insert(new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 });
                 }
 
-                var status = _embyRepository.GetEmbyStatus();
+                var status = _mediaServerRepository.GetEmbyStatus();
                 status.Should().NotBeNull();
                 status.MissedPings.Should().Be(0);
             });
@@ -50,7 +50,7 @@ namespace Tests.Unit.Repository
                     collection.Insert(status);
                 }
 
-                _embyRepository.IncreaseMissedPings();
+                _mediaServerRepository.IncreaseMissedPings();
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -76,7 +76,7 @@ namespace Tests.Unit.Repository
                     collection.Insert(status);
                 }
 
-                _embyRepository.ResetMissedPings();
+                _mediaServerRepository.ResetMissedPings();
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -102,7 +102,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { pluginOne, pluginTwo });
                 }
 
-                var plugins = _embyRepository.GetAllPlugins();
+                var plugins = _mediaServerRepository.GetAllPlugins();
                 plugins.Should().NotContainNulls();
                 plugins.Count.Should().Be(2);
 
@@ -130,7 +130,7 @@ namespace Tests.Unit.Repository
                 var pluginThree = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "shows" };
                 var pluginFour = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "tvdb" };
 
-                _embyRepository.RemoveAllAndInsertPluginRange(new[] { pluginThree, pluginFour });
+                _mediaServerRepository.RemoveAllAndInsertPluginRange(new[] { pluginThree, pluginFour });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -161,7 +161,7 @@ namespace Tests.Unit.Repository
                     collection.Insert(serverInfo);
                 }
 
-                var serverInfoDb = _embyRepository.GetServerInfo();
+                var serverInfoDb = _mediaServerRepository.GetServerInfo();
 
                 serverInfoDb.Should().NotBeNull();
                 serverInfoDb.Id.Should().Be(serverInfo.Id);
@@ -175,7 +175,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
-                _embyRepository.UpsertServerInfo(serverInfo);
+                _mediaServerRepository.UpsertServerInfo(serverInfo);
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -207,7 +207,7 @@ namespace Tests.Unit.Repository
                 }
 
                 serverInfo.CachePath = "/temp";
-                _embyRepository.UpsertServerInfo(serverInfo);
+                _mediaServerRepository.UpsertServerInfo(serverInfo);
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -234,7 +234,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo });
                 }
 
-                var users = _embyRepository.GetAllUsers();
+                var users = _mediaServerRepository.GetAllUsers().ToList();
                 users.Should().NotContainNulls();
                 users.Count.Should().Be(2);
 
@@ -253,7 +253,7 @@ namespace Tests.Unit.Repository
             {
                 var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
-                _embyRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
+                _mediaServerRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -280,7 +280,7 @@ namespace Tests.Unit.Repository
                 var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
 
-                _embyRepository.UpsertUsers(new[] { embyUserTwo });
+                _mediaServerRepository.UpsertUsers(new[] { embyUserTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -296,7 +296,7 @@ namespace Tests.Unit.Repository
 
                 embyUserTwo.Name = "tim";
 
-                _embyRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
+                _mediaServerRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -329,7 +329,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo, embyUserThee });
                 }
 
-                _embyRepository.MarkUsersAsDeleted(new[] { embyUserOne, embyUserTwo });
+                _mediaServerRepository.MarkUsersAsDeleted(new[] { embyUserOne, embyUserTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -368,7 +368,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo, embyUserThee });
                 }
 
-                var user = _embyRepository.GetUserById(embyUserTwo.Id);
+                var user = _mediaServerRepository.GetUserById(embyUserTwo.Id);
 
                 user.Should().NotBeNull();
                 user.Id.Should().Be(embyUserTwo.Id);
@@ -391,7 +391,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { serverOne, serverTwo });
                 }
 
-                var devices = _embyRepository.GetAllDevices();
+                var devices = _mediaServerRepository.GetAllDevices();
                 devices.Should().NotContainNulls();
                 devices.Count.Should().Be(2);
 
@@ -410,7 +410,7 @@ namespace Tests.Unit.Repository
             {
                 var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
-                _embyRepository.UpsertDevices(new[] { serverOne, serverTwo });
+                _mediaServerRepository.UpsertDevices(new[] { serverOne, serverTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -437,7 +437,7 @@ namespace Tests.Unit.Repository
                 var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
 
-                _embyRepository.UpsertDevices(new[] { serverTwo });
+                _mediaServerRepository.UpsertDevices(new[] { serverTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -453,7 +453,7 @@ namespace Tests.Unit.Repository
 
                 serverTwo.Name = "server3";
 
-                _embyRepository.UpsertDevices(new[] { serverOne, serverTwo });
+                _mediaServerRepository.UpsertDevices(new[] { serverOne, serverTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -486,7 +486,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { serverOne, serverTwo, serverThee });
                 }
 
-                _embyRepository.MarkDevicesAsDeleted(new[] { serverOne, serverTwo });
+                _mediaServerRepository.MarkDevicesAsDeleted(new[] { serverOne, serverTwo });
 
                 using (var database = _context.CreateDatabaseContext())
                 {
@@ -525,7 +525,7 @@ namespace Tests.Unit.Repository
                     collection.InsertBulk(new[] { serverOne, serverTwo, serverThee });
                 }
 
-                var devices = _embyRepository.GetDeviceById(new []{ serverTwo.Id });
+                var devices = _mediaServerRepository.GetDeviceById(new []{ serverTwo.Id });
 
                 devices.Should().NotContainNulls();
                 devices.Count.Should().Be(1);

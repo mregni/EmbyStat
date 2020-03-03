@@ -11,7 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Clients.Emby.WebSocket\EmbyStat.Clients.Emby.WebSocket.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Emby\EmbyStat.Clients.Emby.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
     <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>

@@ -1,17 +1,17 @@
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../../shared/helpers/config-helper';
-import { EmbyUser } from '../../../../shared/models/emby/emby-user';
+import { MediaServerUser } from '../../../../shared/models/media-server/media-server-user';
+import { UserMediaView } from '../../../../shared/models/session/user-media-view';
 import { Settings } from '../../../../shared/models/settings/settings';
 import { PageService } from '../../../../shared/services/page.service';
 import { UserService } from '../../../../shared/services/user.service';
-import { UserMediaView } from '../../../../shared/models/session/user-media-view';
 
 @Component({
   selector: 'app-user-detail',
@@ -24,7 +24,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   displayedColumnsWide: string[] = ['logo', 'name', 'duration', 'start', 'percentage', 'id'];
   displayedColumnsSmall: string[] = ['logo', 'name', 'percentage', 'id'];
-  user: EmbyUser;
+  user: MediaServerUser;
 
   embyServerInfo: ServerInfo;
   embyServerInfoSub: Subscription;
@@ -36,7 +36,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
-    this.userService.user.subscribe((user: EmbyUser) => {
+    this.userService.user.subscribe((user: MediaServerUser) => {
       this.user = user;
     });
 

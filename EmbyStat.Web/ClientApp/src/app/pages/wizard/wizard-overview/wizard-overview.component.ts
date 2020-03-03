@@ -1,4 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
+import { MediaServerTypeSelector } from 'src/app/shared/helpers/media-server-type-selector';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -8,12 +9,15 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { CheckBoolean } from '../../../shared/enums/check-boolean-enum';
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
-import { EmbyLogin } from '../../../shared/models/emby/emby-login';
-import { EmbyUdpBroadcast } from '../../../shared/models/emby/emby-udp-broadcast';
 import { Language } from '../../../shared/models/language';
+import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
+import {
+  MediaServerUdpBroadcast
+} from '../../../shared/models/media-server/media-server-udp-broadcast';
 import { Settings } from '../../../shared/models/settings/settings';
-import { EmbyService } from '../../../shared/services/emby.service';
+import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
 import { JobService } from '../../../shared/services/job.service';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 import { SideBarService } from '../../../shared/services/side-bar.service';
 
 @Component({
@@ -23,17 +27,22 @@ import { SideBarService } from '../../../shared/services/side-bar.service';
 })
 
 export class WizardOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper', {static: false}) private stepper: MatStepper;
+  @ViewChild('stepper', { static: false }) private stepper: MatStepper;
+
+  administratorsSub: Subscription;
+  administrators: MediaServerUser[];
 
   introFormGroup: FormGroup;
   nameControl = new FormControl('', [Validators.required]);
   languageControl = new FormControl('en-US', [Validators.required]);
 
-  embyForm: FormGroup;
-  embyAddressControl = new FormControl('', [Validators.required]);
-  embyPortControl = new FormControl('', [Validators.required]);
-  embyProtocolControl = new FormControl('1', [Validators.required]);
-  embyApiKeyControl = new FormControl('', [Validators.required]);
+  serverForm: FormGroup;
+  serverAddressControl = new FormControl('', [Validators.required]);
+  serverPortControl = new FormControl('', [Validators.required]);
+  serverProtocolControl = new FormControl('1', [Validators.required]);
+  serverApiKeyControl = new FormControl('', [Validators.required]);
+  selectedAdministratorControl = new FormControl('');
+
 
   exceptionLoggingControl = new FormControl(false);
 
@@ -41,27 +50,32 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   private searchEmbySub: Subscription;
   private settingsSub: Subscription;
   private fireSyncSub: Subscription;
-  private embyPortControlChange: Subscription;
-  private embyAddressControlChange: Subscription;
-  private embyProtocolControlChange: Subscription;
+  private serverPortControlChange: Subscription;
+  private serverAddressControlChange: Subscription;
+  private serverProtocolControlChange: Subscription;
+  private selectedAdministratorChange: Subscription;
   private checkUrlNeeded = true;
 
-  embyUrl: string;
-  embyFound = CheckBoolean.unChecked;
-  embyServerName = '';
+  serverUrl: string;
+  serverFound = CheckBoolean.unChecked;
+  serverName = '';
   hidePassword = true;
   wizardIndex = 0;
-  embyOnline = CheckBoolean.unChecked;
+  serverOnline = CheckBoolean.unChecked;
   apiKeyWorks = CheckBoolean.unChecked;
   apiKey: string;
   selectedProtocol: number;
 
+  adminForm: FormGroup;
+
   private settings: Settings;
+  type: number;
+  typeText: string;
   languages$: Observable<Language[]>;
 
   constructor(private translate: TranslateService,
     private settingsFacade: SettingsFacade,
-    private embyService: EmbyService,
+    private mediaServerService: MediaServerService,
     private sideBarService: SideBarService,
     private jobService: JobService,
     private router: Router) {
@@ -71,29 +85,33 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       exceptionLogging: this.exceptionLoggingControl
     });
 
-    this.embyPortControl.valueChanges.subscribe((value: string) => {
-      const url = this.embyAddressControl.value;
-      const protocol = this.embyProtocolControl.value;
+    this.serverPortControl.valueChanges.subscribe((value: string) => {
+      const url = this.serverAddressControl.value;
+      const protocol = this.serverProtocolControl.value;
       this.updateUrl(protocol, url, value);
     });
 
-    this.embyProtocolControl.valueChanges.subscribe((value: number) => {
-      const url = this.embyAddressControl.value;
-      const port = this.embyPortControl.value;
+    this.serverProtocolControl.valueChanges.subscribe((value: number) => {
+      const url = this.serverAddressControl.value;
+      const port = this.serverPortControl.value;
       this.updateUrl(value, url, port);
     });
 
-    this.embyAddressControl.valueChanges.subscribe((value: string) => {
-      const port = this.embyPortControl.value;
-      const protocol = this.embyProtocolControl.value;
+    this.serverAddressControl.valueChanges.subscribe((value: string) => {
+      const port = this.serverPortControl.value;
+      const protocol = this.serverProtocolControl.value;
       this.updateUrl(protocol, value, port);
     });
 
-    this.embyForm = new FormGroup({
-      embyAddress: this.embyAddressControl,
-      embyPort: this.embyPortControl,
-      embyProtocol: this.embyProtocolControl,
-      embyApiKey: this.embyApiKeyControl,
+    this.serverForm = new FormGroup({
+      serverAddress: this.serverAddressControl,
+      serverPort: this.serverPortControl,
+      serverProtocol: this.serverProtocolControl,
+      serverApiKey: this.serverApiKeyControl,
+    });
+
+    this.adminForm = new FormGroup({
+      selectedAdministrator: this.selectedAdministratorControl
     });
 
     this.languageChangedSub = this.languageControl.valueChanges.subscribe((value => this.languageChanged(value)));
@@ -106,26 +124,11 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       this.checkUrlNeeded = false;
       this.sideBarService.closeMenu();
     });
-    this.embyProtocolControl.setValue(0);
+    this.serverProtocolControl.setValue(0);
   }
 
   ngOnInit() {
     this.languages$ = this.settingsFacade.getLanguages();
-
-    this.embyService.searchEmby().subscribe((data: EmbyUdpBroadcast) => {
-    if (!!data.address) {
-        this.embyFound = CheckBoolean.true;
-        this.embyAddressControl.setValue(data.address);
-        this.embyPortControl.setValue(data.port);
-        this.embyProtocolControl.setValue(data.protocol);
-        this.embyServerName = data.name;
-      } else {
-        this.embyFound = CheckBoolean.false;
-      }
-    },
-      err => {
-        this.embyFound = CheckBoolean.false;
-      });
   }
 
   private languageChanged(value: string): void {
@@ -133,40 +136,52 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   private updateUrl(protocol: number, url: string, port: string) {
-    this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
+    this.serverUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
+  }
+
+  selectType(type: string) {
+    this.type = type === 'emby' ? 0 : 1;
+    this.typeText = MediaServerTypeSelector.getServerTypeString(this.type);
+    this.stepper.selectedIndex = 2;
   }
 
   stepperPageChanged(event) {
     if (event.selectedIndex === 2) {
-      this.apiKey = this.embyApiKeyControl.value;
-      const address = this.embyAddressControl.value;
-      const port = this.embyPortControl.value;
-      const protocol = this.embyProtocolControl.value;
+      this.serverFound = CheckBoolean.unChecked;
+      this.serverApiKeyControl.setValue('');
 
-      const login = new EmbyLogin(this.apiKey, this.embyUrl);
+      console.log(this.type);
+      this.mediaServerService.searchMediaServer(this.type).subscribe((data: MediaServerUdpBroadcast) => {
+        if (!!data.address) {
+          this.serverFound = CheckBoolean.true;
+          this.serverAddressControl.setValue(data.address);
+          this.serverPortControl.setValue(data.port);
+          this.serverProtocolControl.setValue(data.protocol);
+          this.serverName = data.name;
+        } else {
+          this.serverFound = CheckBoolean.false;
+        }
+      },
+        err => {
+          this.serverFound = CheckBoolean.false;
+        }
+      );
+    } else if (event.selectedIndex === 3) {
+      this.apiKey = this.serverApiKeyControl.value;
 
-      this.embyOnline = CheckBoolean.busy;
+      const login = new MediaServerLogin(this.apiKey, this.serverUrl);
+
+      this.serverOnline = CheckBoolean.busy;
       this.apiKeyWorks = CheckBoolean.busy;
 
-      this.embyService.pingEmby(this.embyUrl).subscribe((response: boolean) => {
-        this.embyOnline = response ? CheckBoolean.true : CheckBoolean.false;
+      this.mediaServerService.pingEmby(this.serverUrl).subscribe((response: boolean) => {
+        this.serverOnline = response ? CheckBoolean.true : CheckBoolean.false;
         if (response) {
-          this.embyService.testApiKey(login)
+          this.mediaServerService.testApiKey(login)
             .subscribe((result: boolean) => {
               this.apiKeyWorks = result ? CheckBoolean.true : CheckBoolean.false;
               if (result) {
-                const settings = { ...this.settings };
-                const emby = { ...this.settings.emby };
-                settings.language = this.languageControl.value;
-                settings.username = this.nameControl.value;
-                settings.wizardFinished = true;
-                settings.enableRollbarLogging = this.exceptionLoggingControl.value;
-                emby.serverAddress = address;
-                emby.apiKey = this.apiKey;
-                emby.serverPort = port;
-                emby.serverProtocol = protocol;
-                settings.emby = emby;
-                this.settingsFacade.updateSettings(settings);
+                this.saveMediaServerDetails();
               }
             }, (err) => {
               this.apiKeyWorks = CheckBoolean.false;
@@ -174,10 +189,43 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
         }
       },
         err => {
-          this.embyOnline = CheckBoolean.false;
+          this.serverOnline = CheckBoolean.false;
           this.apiKeyWorks = CheckBoolean.false;
         });
+    } else if (event.selectedIndex === 4) {
+      if (this.type === 1) {
+        this.administratorsSub = this.mediaServerService.getAdministrators().subscribe((admins: MediaServerUser[]) => {
+          this.administrators = admins;
+          if (admins.length > 0) {
+            this.selectedAdministratorControl.setValue(admins[0].id);
+          }
+        });
+        this.selectedAdministratorChange = this.selectedAdministratorControl.valueChanges.subscribe(() => {
+          this.saveMediaServerDetails();
+        });
+      }
     }
+  }
+
+  private saveMediaServerDetails() {
+    const address = this.serverAddressControl.value;
+    const port = +this.serverPortControl.value;
+    const protocol = this.serverProtocolControl.value;
+
+    const settings = { ...this.settings };
+    const server = { ...this.settings.mediaServer };
+    settings.language = this.languageControl.value;
+    settings.username = this.nameControl.value;
+    settings.wizardFinished = true;
+    settings.enableRollbarLogging = this.exceptionLoggingControl.value;
+    server.serverAddress = address;
+    server.apiKey = this.apiKey;
+    server.serverPort = port;
+    server.serverProtocol = protocol;
+    server.serverType = this.type;
+    server.userId = this.selectedAdministratorControl.value;
+    settings.mediaServer = server;
+    this.settingsFacade.updateSettings(settings);
   }
 
   finishWizard() {
@@ -210,16 +258,24 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
       this.fireSyncSub.unsubscribe();
     }
 
-    if (this.embyPortControlChange !== undefined) {
-      this.embyPortControlChange.unsubscribe();
+    if (this.serverPortControlChange !== undefined) {
+      this.serverPortControlChange.unsubscribe();
     }
 
-    if (this.embyProtocolControlChange !== undefined) {
-      this.embyProtocolControlChange.unsubscribe();
+    if (this.serverProtocolControlChange !== undefined) {
+      this.serverProtocolControlChange.unsubscribe();
     }
 
-    if (this.embyAddressControlChange !== undefined) {
-      this.embyAddressControlChange.unsubscribe();
+    if (this.serverAddressControlChange !== undefined) {
+      this.serverAddressControlChange.unsubscribe();
+    }
+
+    if (this.selectedAdministratorChange !== undefined) {
+      this.selectedAdministratorChange.unsubscribe();
+    }
+
+    if (this.administratorsSub !== undefined) {
+      this.administratorsSub.unsubscribe();
     }
   }
 }

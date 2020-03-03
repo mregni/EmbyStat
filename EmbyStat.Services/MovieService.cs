@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
@@ -13,7 +12,6 @@ using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services
@@ -41,7 +39,7 @@ namespace EmbyStat.Services
             return _libraryRepository.GetLibrariesByTypes(settings.MovieLibraryTypes);
         }
 
-        public async Task<MovieStatistics> GetStatisticsAsync(List<string> libraryIds)
+        public MovieStatistics GetStatistics(List<string> libraryIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, libraryIds);
 
@@ -57,19 +55,19 @@ namespace EmbyStat.Services
             }
             else
             {
-                statistics = await CalculateMovieStatistics(libraryIds);
+                statistics = CalculateMovieStatistics(libraryIds);
             }
 
             return statistics;
         }
 
-        public async Task<MovieStatistics> CalculateMovieStatistics(List<string> libraryIds)
+        public MovieStatistics CalculateMovieStatistics(List<string> libraryIds)
         {
             var statistics = new MovieStatistics
             {
                 General = CalculateGeneralStatistics(libraryIds),
                 Charts = CalculateCharts(libraryIds),
-                People = await CalculatePeopleStatistics(libraryIds),
+                People = CalculatePeopleStatistics(libraryIds),
                 Suspicious = CalculateSuspiciousMovies(libraryIds)
             };
 
@@ -252,17 +250,17 @@ namespace EmbyStat.Services
 
         #region People
 
-        public async Task<PersonStats> CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
+        public PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
         {
             return new PersonStats
             {
                 TotalActorCount = TotalTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors),
                 TotalDirectorCount = TotalTypeCount(libraryIds, PersonType.Director, Constants.Common.TotalDirectors),
                 TotalWriterCount = TotalTypeCount(libraryIds, PersonType.Writer, Constants.Common.TotalWriters),
-                MostFeaturedActor = await GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
-                MostFeaturedDirector = await GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
-                MostFeaturedWriter = await GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
-                MostFeaturedActorsPerGenre = await GetMostFeaturedActorsPerGenreAsync(libraryIds)
+                MostFeaturedActor = GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
+                MostFeaturedDirector = GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
+                MostFeaturedWriter = GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
+                MostFeaturedActorsPerGenre = GetMostFeaturedActorsPerGenreAsync(libraryIds)
             };
         }
 
@@ -276,12 +274,12 @@ namespace EmbyStat.Services
             };
         }
 
-        private async Task<PersonPoster> GetMostFeaturedPersonAsync(IReadOnlyList<string> libraryIds, PersonType type, string title)
+        private PersonPoster GetMostFeaturedPersonAsync(IReadOnlyList<string> libraryIds, PersonType type, string title)
         {
             var personName = _movieRepository.GetMostFeaturedPerson(libraryIds, type);
             if (personName != null)
             {
-                var person = await PersonService.GetPersonByNameAsync(personName);
+                var person = PersonService.GetPersonByName(personName);
                 if (person != null)
                 {
                     return PosterHelper.ConvertToPersonPoster(person, title);
@@ -292,10 +290,10 @@ namespace EmbyStat.Services
 
         }
 
-        private async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
+        private List<PersonPoster> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
         {
             var movies = _movieRepository.GetAll(libraryIds);
-            return await GetMostFeaturedActorsPerGenreAsync(movies);
+            return GetMostFeaturedActorsPerGenre(movies);
         }
 
         #endregion
@@ -382,8 +380,8 @@ namespace EmbyStat.Services
                     Number = i,
                     Title = itemOne.Name,
                     Reason = Constants.ByImdb,
-                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = string.Join(",", itemOne.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) },
-                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = string.Join(",", itemTwo.VideoStreams.Select(x => QualityConverter.ConvertToQualityString(x.Width))) }
+                    ItemOne = new MovieDuplicateItem { DateCreated = itemOne.DateCreated, Id = itemOne.Id, Quality = string.Join(",", itemOne.VideoStreams.Select(x => x.Width.ConvertToQualityString())) },
+                    ItemTwo = new MovieDuplicateItem { DateCreated = itemTwo.DateCreated, Id = itemTwo.Id, Quality = string.Join(",", itemTwo.VideoStreams.Select(x => x.Width.ConvertToQualityString())) }
                 });
             }
 

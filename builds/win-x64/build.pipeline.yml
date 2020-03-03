@@ -23,7 +23,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(webapp.projects)'
-      arguments: '$(webapp.publish.win10-x64.arguments)'
+      arguments: '-c Release -r win-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
@@ -33,12 +33,12 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(updater.projects)'
-      arguments: '$(updater.publish.win10-x64.arguments)'
+      arguments: '-c Release -r win-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Windows Artifact'
+    displayName: 'Publish Windows x64 Artifact'
     inputs:
-      PathtoPublish: '$(webapp.path.win10-x64)'
+      PathtoPublish: 'publish'
       ArtifactName: 'EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)'

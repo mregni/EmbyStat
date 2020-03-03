@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Clients.Base.Models;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using MediaBrowser.Model.Entities;
-using LocationType = EmbyStat.Common.Enums.LocationType;
 
 namespace Tests.Unit.Builders
 {
@@ -167,6 +167,43 @@ namespace Tests.Unit.Builders
         public Show Build()
         {
             return _show;
+        }
+
+        public BaseItemDto BuildBaseItemDto()
+        {
+            return new BaseItemDto
+            {
+                Id = _show.Id,
+                CommunityRating = _show.CommunityRating,
+                DateCreated = _show.DateCreated,
+                ParentId = _show.ParentId,
+                Path = _show.Path,
+                SortName = _show.SortName,
+                RunTimeTicks = _show.RunTimeTicks,
+                OfficialRating = _show.OfficialRating,
+                PremiereDate = _show.PremiereDate,
+                ProductionYear = _show.ProductionYear,
+                ImageTags = new Dictionary<ImageType, string>
+                {
+                    {ImageType.Primary, _show.Primary},
+                    {ImageType.Thumb, _show.Primary},
+                    {ImageType.Logo, _show.Primary},
+                    {ImageType.Banner, _show.Primary}
+                },
+                ProviderIds = new Dictionary<string, string>
+                {
+                    {"Imdb", _show.IMDB},
+                    {"Tmdb", _show.TMDB},
+                    {"Tvdb", _show.TVDB}
+                },
+                Genres = _show.Genres,
+                People = _show.People.Select(x => new BaseItemPerson
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Type = x.Type
+                }).ToArray()
+            };
         }
     }
 }

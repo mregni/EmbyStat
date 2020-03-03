@@ -4,10 +4,9 @@ import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
-import { EmbyLogin } from '../../../../shared/models/emby/emby-login';
-import { EmbyToken } from '../../../../shared/models/emby/emby-token';
+import { MediaServerLogin } from '../../../../shared/models/media-server/media-server-login';
 import { Settings } from '../../../../shared/models/settings/settings';
-import { EmbyService } from '../../../../shared/services/emby.service';
+import { MediaServerService } from '../../../../shared/services/media-server.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
@@ -37,7 +36,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private readonly toastService: ToastService,
     private readonly settingsFacade: SettingsFacade,
-    private readonly embyService: EmbyService
+    private readonly mediaServerService: MediaServerService
   ) {
     this.embyForm = new FormGroup({
       embyAddress: this.embyAddressControl,
@@ -70,9 +69,9 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(): void {
     if (this.settings !== undefined) {
-      this.embyAddressControl.setValue(this.settings.emby.serverAddress);
-      this.embyPortControl.setValue(this.settings.emby.serverPort);
-      this.embyProtocolControl.setValue(this.settings.emby.serverProtocol);
+      this.embyAddressControl.setValue(this.settings.mediaServer.serverAddress);
+      this.embyPortControl.setValue(this.settings.mediaServer.serverPort);
+      this.embyProtocolControl.setValue(this.settings.mediaServer.serverProtocol);
     }
   }
 
@@ -91,18 +90,18 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       const protocol = this.embyProtocolControl.value === 0 ? 'https://' : 'http://';
       const url = `${protocol}${this.embyAddressControl.value}:${this.embyPortControl.value}`;
 
-      const login = new EmbyLogin(this.embyApiKeyControl.value, url);
-      this.embyTokenSub = this.embyService.testApiKey(login).subscribe((result: boolean) => {
+      const login = new MediaServerLogin(this.embyApiKeyControl.value, url);
+      this.embyTokenSub = this.mediaServerService.testApiKey(login).subscribe((result: boolean) => {
         if (result) {
           const settings = { ...this.settings };
-          const emby = { ...this.settings.emby };
+          const emby = { ...this.settings.mediaServer };
 
           emby.serverAddress = this.embyAddressControl.value;
           emby.serverPort = this.embyPortControl.value;
           emby.serverName = '';
           emby.serverProtocol = this.embyProtocolControl.value;
           emby.apiKey = this.embyApiKeyControl.value;
-          settings.emby = emby;
+          settings.mediaServer = emby;
 
           this.settingsFacade.updateSettings(settings);
           this.toastService.showSuccess('SETTINGS.SAVED.EMBY');

@@ -140,7 +140,7 @@ namespace EmbyStat.Web
                 dataDir = Environment.GetEnvironmentVariable("EMBYSTAT_DATA_DIR");
                 if (string.IsNullOrWhiteSpace(dataDir))
                 {
-                    dataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EmbyStat");
+                    dataDir = Directory.GetCurrentDirectory();
                 }
             }
 

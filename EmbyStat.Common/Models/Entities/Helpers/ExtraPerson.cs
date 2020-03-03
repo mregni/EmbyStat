@@ -1,4 +1,5 @@
-﻿using MediaBrowser.Model.Entities;
+﻿
+using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {

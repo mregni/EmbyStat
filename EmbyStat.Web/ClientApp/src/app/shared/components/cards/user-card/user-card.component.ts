@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 
 import { SettingsFacade } from '../../../facades/settings.facade';
 import { ConfigHelper } from '../../../helpers/config-helper';
-import { EmbyUser } from '../../../models/emby/emby-user';
+import { MediaServerUser } from '../../../models/media-server/media-server-user';
 import { Settings } from '../../../models/settings/settings';
 
 @Component({
@@ -16,7 +16,7 @@ export class UserCardComponent implements OnDestroy {
   private settingsSub: Subscription;
   private settings: Settings;
 
-  @Input() user: EmbyUser;
+  @Input() user: MediaServerUser;
   @Output() clicked = new EventEmitter<string>();
 
   constructor(private readonly settingsFacade: SettingsFacade) {

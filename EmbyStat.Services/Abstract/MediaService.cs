@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -11,7 +11,6 @@ using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Stat;
-using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Services.Abstract
 {
@@ -133,7 +132,7 @@ namespace EmbyStat.Services.Abstract
 
         #region People
 
-        internal async Task<List<PersonPoster>> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<Extra> media)
+        internal List<PersonPoster> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media)
         {
             var list = new List<PersonPoster>();
             foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
@@ -149,7 +148,7 @@ namespace EmbyStat.Services.Abstract
 
                 if (personName != null)
                 {
-                    var person = await PersonService.GetPersonByNameAsync(personName);
+                    var person = PersonService.GetPersonByName(personName);
                     if (person != null)
                     {
                         list.Add(PosterHelper.ConvertToPersonPoster(person, genre));

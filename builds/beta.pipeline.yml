@@ -1,3 +1,7 @@
+trigger:
+- release/*
+
+
 jobs:
   - job: set_version
     displayName: Test application
@@ -5,19 +9,7 @@ jobs:
       name: Hosted Windows 2019 with VS2019
       demands: java
     steps:
-    - task: GitVersion@5
-      displayName: 'Set Version'
-      inputs:
-        runtime: 'core'
-        preferBundledVersion: false
-        configFilePath: 'GitVersion.yml'
-
-    - task: PowerShell@2
-      displayName: 'Update build number'
-      inputs:
-        targetType: 'inline'
-        script: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
-
+    - template: './templates/version.variables.yml'
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
 
@@ -34,19 +26,13 @@ jobs:
         projects: '$(webapp.projects)'
       
     - template: ./templates/unit.tests.yml
-
     - template: './templates/sonarcloud.end.yml'
 
-    - powershell: 'Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"'
-      displayName: 'Update build number'
-      
-    - powershell: echo "##vso[task.setvariable variable=AssemblySemVer;isOutput=true]$(GitVersion.AssemblySemVer)"
-      name: setAssemblySemVer
-      displayName: 'Set AssemblySemVer variable'
-
-    - powershell: echo "##vso[task.setvariable variable=SemVer;isOutput=true]$(GitVersion.SemVer)"
-      name: setSemVer
-      displayName: 'Set SemVer variable'
-
-  - template: windows/build.pipeline.yml
+  - template: debian-x64/build.pipeline.yml
+  - template: docker-containers/build.pipeline.yml
+  - template: fedora-x64/build.pipeline.yml
+  - template: linux-arm/build.pipeline.yml
+  - template: linux-arm-x64/build.pipeline.yml
+  - template: ubuntu-x64/build.pipeline.yml
   - template: win-x64/build.pipeline.yml
+  - template: windows/build.pipeline.yml

@@ -2,7 +2,7 @@
 {
     public static class QualityConverter
     {
-        public static string ConvertToQualityString(int? number)
+        public static string ConvertToQualityString(this int? number)
         {
             if (number == null)
             {

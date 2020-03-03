@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+NAME=embystat
+DEFAULT_FILE=/etc/default/${NAME}
+
+# Source EmbyStat default configuration
+if [[ -f $DEFAULT_FILE ]]; then
+  . $DEFAULT_FILE
+fi
+
+# Data directories for program data (cache, db), configs, and logs
+PROGRAMDATA=${EMBYSTAT_DATA_DIRECTORY-/var/lib/$NAME}
+CONFIGDATA=${EMBYSTAT_CONFIG_DIRECTORY-/etc/$NAME}
+LOGDATA=${EMBYSTAT_LOG_DIRECTORY-/var/log/$NAME}
+
+case "$1" in
+  remove|upgrade|deconfigure)
+    echo "Stopping EmbyStat!"
+    # try graceful termination;
+    if [[ -d /run/systemd/system ]]; then
+      deb-systemd-invoke stop ${NAME}.service > /dev/null 2>&1 || true
+    elif [ -x "/etc/init.d/${NAME}" ] || [ -e "/etc/init/${NAME}.conf" ]; then
+      invoke-rc.d ${NAME} stop > /dev/null 2>&1 || true
+    fi
+    # Ensure that it is shutdown
+    PIDFILE=$(find /var/run/ -maxdepth 1 -mindepth 1 -name "embystat*.pid" -print -quit)
+    [[ -n "$PIDFILE" ]] && [[ -s "$PIDFILE" ]] && EMBYSTAT_PID=$(cat ${PIDFILE})
+    # if its running, let's stop it
+    if [[ -n "$EMBYSTAT_PID" ]]; then
+      # if embystat is still running, kill it
+      if [[ -n "$(ps -p $EMBYSTAT_PID -o pid=)" ]]; then
+        CPIDS=$(pgrep -P $EMBYSTAT_PID)
+        sleep 2 && kill -KILL $CPIDS
+        kill -TERM $CPIDS > /dev/null 2>&1
+      fi
+      sleep 1
+      # if it's still running, show error
+      if [[ -n "$(ps -p $EMBYSTAT_PID -o pid=)" ]]; then
+        echo "Could not successfully stop EmbyStat, please do so before uninstalling."
+        exit 1
+      else
+        [[ -f $PIDFILE ]] && rm $PIDFILE
+      fi
+    fi
+    ;;
+  failed-upgrade)
+    ;;
+  *)
+    echo "prerm called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

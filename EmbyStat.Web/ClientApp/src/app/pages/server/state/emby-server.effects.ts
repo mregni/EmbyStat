@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
-import { ServerInfo } from '../../../shared/models/emby/server-info';
-import { EmbyService } from '../../../shared/services/emby.service';
+import { ServerInfo } from '../../../shared/models/media-server/server-info';
+import { MediaServerService } from '../../../shared/services/media-server.service';
 import { EffectError } from '../../../states/app.actions';
 import { ApplicationState } from '../../../states/app.state';
 import {
@@ -19,7 +19,7 @@ import { EmbyServerInfoQuery } from './emby-server.reducer';
 export class EmbyServerInfoEffects {
   constructor(
     private actions$: Actions,
-    private embyService: EmbyService,
+    private mediaServerService: MediaServerService,
     private store: Store<ApplicationState>) {
   }
 
@@ -34,7 +34,7 @@ export class EmbyServerInfoEffects {
       switchMap(([_, loaded]) => {
         return loaded
           ? of(null)
-          : this.embyService.getEmbyServerInfo();
+          : this.mediaServerService.getEmbyServerInfo();
       }),
       map((serverInfo: ServerInfo | null) => {
         return serverInfo

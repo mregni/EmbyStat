@@ -2,7 +2,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
 import { OptionsService } from 'src/app/shared/components/charts/options/options';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';

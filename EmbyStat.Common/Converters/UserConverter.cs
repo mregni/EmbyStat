@@ -10,41 +10,44 @@ namespace EmbyStat.Common.Converters
     {
         public static List<EmbyUser> ConvertToUserList(this JArray model)
         {
-            return model.Children().Select(user => new EmbyUser
+            return model.Children().Select(user =>
             {
-                DisablePremiumFeatures = user["Policy"]["DisablePremiumFeatures"].Value<bool>(),
-                EnableLocalPassword = user["Configuration"]["EnableLocalPassword"].Value<bool>(),
-                HasConfiguredEasyPassword = user["HasConfiguredEasyPassword"].Value<bool>(),
-                HasConfiguredPassword = user["HasConfiguredPassword"].Value<bool>(),
-                HasPassword = user["HasPassword"].Value<bool>(),
-                IsAdministrator = user["Policy"]["IsAdministrator"].Value<bool>(),
-                IsDisabled = user["Policy"]["IsDisabled"].Value<bool>(),
-                IsHidden = user["Policy"]["IsHidden"].Value<bool>(),
-                PlayDefaultAudioTrack = user["Configuration"]["PlayDefaultAudioTrack"].Value<bool>(),
-                InvalidLoginAttemptCount = user["Policy"]["InvalidLoginAttemptCount"].Value<long>(),
-                MaxParentalRating = user["Policy"]["MaxParentalRating"]?.Value<long?>() ?? null,
-                RemoteClientBitRateLimit = user["Policy"]["RemoteClientBitrateLimit"].Value<long>(),
-                Id = user["Id"].Value<string>(),
-                PrimaryImageTag = user["PrimaryImageTag"]?.Value<string>() ?? string.Empty,
-                Name = user["Name"].Value<string>(),
-                ServerId = user["ServerId"].Value<string>(),
-                SubtitleMode = user["Configuration"]["SubtitleMode"].Value<string>(),
-                LastActivityDate = user["LastActivityDate"] != null
+                var embyUser = new EmbyUser();
+                embyUser.DisablePremiumFeatures = user["Policy"]["DisablePremiumFeatures"]?.Value<bool>() ?? false;
+                embyUser.EnableLocalPassword = user["Configuration"]["EnableLocalPassword"].Value<bool>();
+                embyUser.HasConfiguredEasyPassword = user["HasConfiguredEasyPassword"].Value<bool>();
+                embyUser.HasConfiguredPassword = user["HasConfiguredPassword"].Value<bool>();
+                embyUser.HasPassword = user["HasPassword"].Value<bool>();
+                embyUser.IsAdministrator = user["Policy"]["IsAdministrator"].Value<bool>();
+                embyUser.IsDisabled = user["Policy"]["IsDisabled"].Value<bool>();
+                embyUser.IsHidden = user["Policy"]["IsHidden"].Value<bool>();
+                embyUser.PlayDefaultAudioTrack = user["Configuration"]["PlayDefaultAudioTrack"].Value<bool>();
+                embyUser.InvalidLoginAttemptCount = user["Policy"]["InvalidLoginAttemptCount"].Value<long>();
+                embyUser.MaxParentalRating = user["Policy"]["MaxParentalRating"]?.Value<long?>() ?? null;
+                embyUser.RemoteClientBitRateLimit = user["Policy"]["RemoteClientBitrateLimit"].Value<long>();
+                embyUser.Id = user["Id"].Value<string>();
+                embyUser.PrimaryImageTag = user["PrimaryImageTag"]?.Value<string>() ?? string.Empty;
+                embyUser.Name = user["Name"].Value<string>();
+                embyUser.ServerId = user["ServerId"].Value<string>();
+                embyUser.SubtitleMode = user["Configuration"]["SubtitleMode"].Value<string>();
+                embyUser.LastActivityDate = user["LastActivityDate"] != null
                     ? new DateTimeOffset(user["LastActivityDate"].Value<DateTime>())
-                    : (DateTimeOffset?) null,
-                LastLoginDate = user["LastLoginDate"] != null
+                    : (DateTimeOffset?)null;
+                embyUser.LastLoginDate = user["LastLoginDate"] != null
                     ? new DateTimeOffset(user["LastLoginDate"].Value<DateTime>())
-                    : (DateTimeOffset?) null,
-                BlockUnratedItems = user["Policy"]["BlockUnratedItems"]?.Values<string>().ToList() ??
-                                    new List<string>(),
-                BlockedTags = user["Policy"]["BlockedTags"]?.Values<string>().ToList() ?? new List<string>(),
-                AccessSchedules = user["Policy"]["AccessSchedules"]?.Select(x => new UserAccessSchedule
+                    : (DateTimeOffset?)null;
+                embyUser.BlockUnratedItems = user["Policy"]["BlockUnratedItems"]?.Values<string>().ToList() ??
+                                             new List<string>();
+                embyUser.BlockedTags =
+                    user["Policy"]["BlockedTags"]?.Values<string>().ToList() ?? new List<string>();
+                embyUser.AccessSchedules = user["Policy"]["AccessSchedules"]?.Select(x => new UserAccessSchedule
                 {
                     DayOfWeek = x["DayOfWeek"].Value<string>(),
                     StartHour = x["StartHour"].Value<long>(),
                     EndHour = x["EndHour"].Value<long>()
-                }).ToList() ?? new List<UserAccessSchedule>(),
-                Deleted = false
+                }).ToList() ?? new List<UserAccessSchedule>();
+                embyUser.Deleted = false;
+                return embyUser;
             }).ToList();
         }
     }

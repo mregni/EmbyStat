@@ -2,13 +2,13 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
-import { EmbyUser } from '../models/emby/emby-user';
+import { MediaServerUser } from '../models/media-server/media-server-user';
 
 @Injectable()
 export class UserService {
-  user = new BehaviorSubject<EmbyUser>(undefined);
+  user = new BehaviorSubject<MediaServerUser>(undefined);
 
-  userChanged(user: EmbyUser) {
+  userChanged(user: MediaServerUser) {
     this.user.next(user);
   }
 }
