@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;
@@ -11,12 +10,12 @@ namespace EmbyStat.Services
     public class LogService : ILogService
     {
         private readonly ISettingsService _settingsService;
-        private readonly IEmbyService _embyService;
+        private readonly IMediaServerService _mediaServerService;
 
-        public LogService(ISettingsService settingsService, IEmbyService embyService)
+        public LogService(ISettingsService settingsService, IMediaServerService mediaServerService)
         {
             _settingsService = settingsService;
-            _embyService = embyService;
+            _mediaServerService = mediaServerService;
         }
 
         public List<LogFile> GetLogFileList()
@@ -37,7 +36,7 @@ namespace EmbyStat.Services
             return list.OrderByDescending(x => x.CreatedDate).Take(settings.KeepLogsCount).ToList();
         }
 
-        public async Task<Stream> GetLogStream(string fileName, bool anonymous)
+        public Stream GetLogStream(string fileName, bool anonymous)
         {
             var dirs = _settingsService.GetAppSettings().Dirs;
             var logStream = new FileStream(Path.Combine(dirs.Config, dirs.Logs, fileName).GetLocalPath(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -52,15 +51,15 @@ namespace EmbyStat.Services
             {
                 var writer = new StreamWriter(newLogStream);
                 var configuration = _settingsService.GetUserSettings();
-                var serverInfo = await _embyService.GetServerInfoAsync();
+                var serverInfo = _mediaServerService.GetServerInfo();
 
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    line = line.Replace(configuration.Emby.FullEmbyServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
-                    line = line.Replace(configuration.Emby.FullSocketAddress, "wss://xxx.xxx.xxx.xxx:xxxx");
+                    line = line.Replace(configuration.MediaServer.FullMediaServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
+                    line = line.Replace(configuration.MediaServer.FullSocketAddress, "wss://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.Tvdb.ApiKey, "xxxxxxxxxxxxxx");
-                    line = line.Replace(configuration.Emby.ApiKey, "xxxxxxxxxxxxxx");
+                    line = line.Replace(configuration.MediaServer.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(serverInfo.Id, "xxxxxxxxxxxxxx");
                     writer.WriteLine(line);
                 }

@@ -1,0 +1,18 @@
+Source: embystat
+Section: net
+Priority: optional
+Maintainer: mregni  <info@example.org>
+Build-Depends:  debhelper (>= 10),
+		dotnet-sdk-3.1,
+		npm | nodejs
+		
+Standards-Version: 4.1.2
+Homepage: <insert the upstream URL, if relevant>
+Vcs-Git: https://github.com/mregni/EmbyStat.git
+Vcs-Browser: https://github.com/mregni/EmbyStat
+Package: embystat
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Statistics website for Emby and Jellyfin
+ This application calculates statistics from your Emby or Jellyfin server.
+ It is written in C# for the .NET CORE 3.1 Platform.

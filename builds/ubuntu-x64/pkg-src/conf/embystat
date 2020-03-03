@@ -1,0 +1,36 @@
+# EmbyStat default configuration options
+# This is a POSIX shell fragment
+
+# Use this file to override the default configurations; add additional
+# options with EMBYSTAT_ADD_OPTS.
+
+# Under systemd, use
+#  /etc/systemd/system/embystat.service.d/embystat.service.conf
+# to override the user or this config file's location.
+
+#
+# General options
+#
+
+# Program directories
+EMBYSTAT_DATA_DIR="/var/lib/embystat"
+EMBYSTAT_CONFIG_DIR="/etc/embystat"
+EMBYSTAT_LOG_DIR="/var/log/embystat"
+
+# Restart script for in-app server control
+# EMBYSTAT_RESTART_OPT="--restartpath=/usr/lib/embystat/restart.sh"
+
+# [OPTIONAL] run EmbyStat as a headless service
+#EMBYSTAT_SERVICE_OPT="--service"
+
+#
+# SysV init/Upstart options
+#
+
+EMBYSTAT_DATA_DIR="--data-dir /usr/lib/embystat/bin"
+
+# Application username
+EMBYSTAT_USER="embystat"
+# Full application command
+# EMBYSTAT_ARGS="$EMBYSTAT_RESTART_OPT $EMBYSTAT_SERVICE_OPT"
+EMBYSTAT_ARGS="EMBYSTAT_DATA_DIR"

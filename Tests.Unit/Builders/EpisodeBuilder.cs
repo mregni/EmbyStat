@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -31,6 +33,10 @@ namespace Tests.Unit.Builders
                 SortName = "0001 - EpisodeName",
                 ShowName = "Chuck",
                 Primary = "123987987987",
+                Thumb = "1234",
+                Banner = "3434",
+                Logo = "logo",
+                OfficialRating = "TV",
                 IMDB = "12345",
                 TMDB = "123456",
                 TVDB = "23456",
@@ -70,6 +76,78 @@ namespace Tests.Unit.Builders
         public Episode Build()
         {
             return _episode;
+        }
+
+        public BaseItemDto BuildBaseItemDto()
+        {
+            return new BaseItemDto
+            {
+                Id = _episode.Id,
+                Name = _episode.Name,
+                CommunityRating = _episode.CommunityRating,
+                IndexNumber = _episode.IndexNumber,
+                IndexNumberEnd = _episode.IndexNumberEnd,
+                Container = _episode.Container,
+                DateCreated = _episode.DateCreated,
+                ParentId = _episode.ParentId,
+                Path = _episode.Path,
+                SortName = _episode.SortName,
+                MediaSources = _episode.MediaSources.Select(x => new BaseMediaSourceInfo
+                {
+                    Id = x.Id,
+                    Path = x.Path,
+                    Bitrate = x.BitRate,
+                    Container = x.Container,
+                    Protocol = MediaProtocol.File,
+                    RunTimeTicks = x.RunTimeTicks,
+                    Size = 1000
+                }).ToArray(),
+                RunTimeTicks = _episode.RunTimeTicks,
+                Type = _episode.MediaType,
+                PremiereDate = _episode.PremiereDate,
+                ProductionYear = _episode.ProductionYear,
+                Video3DFormat = _episode.Video3DFormat,
+                ImageTags = new Dictionary<ImageType, string>
+                {
+                    {ImageType.Primary, _episode.Primary},
+                    {ImageType.Thumb, _episode.Thumb},
+                    {ImageType.Logo, _episode.Logo},
+                    {ImageType.Banner, _episode.Banner}
+                },
+                ProviderIds = new Dictionary<string, string>
+                {
+                    {"Imdb", _episode.IMDB},
+                    {"Tmdb", _episode.TMDB},
+                    {"Tvdb", _episode.TVDB}
+                },
+                MediaStreams = _episode.AudioStreams.Select(x => new BaseMediaStream
+                {
+                    BitRate = x.BitRate,
+                    ChannelLayout = x.ChannelLayout,
+                    Channels = x.Channels,
+                    Codec = x.Codec,
+                    Language = x.Language,
+                    SampleRate = x.SampleRate,
+                    Type = MediaStreamType.Audio
+                }).Union(_episode.SubtitleStreams.Select(x => new BaseMediaStream
+                {
+                    Language = x.Language,
+                    Codec = x.Codec,
+                    DisplayTitle = x.DisplayTitle,
+                    IsDefault = x.IsDefault,
+                    Type = MediaStreamType.Subtitle
+                })).Union(_episode.VideoStreams.Select(x => new BaseMediaStream
+                {
+                    Language = x.Language,
+                    BitRate = x.BitRate,
+                    AspectRatio = x.AspectRatio,
+                    AverageFrameRate = x.AverageFrameRate,
+                    Channels = x.Channels,
+                    Height = x.Height,
+                    Width = x.Width,
+                    Type = MediaStreamType.Video
+                })).ToArray()
+            };
         }
     }
 }

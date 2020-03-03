@@ -20,6 +20,5 @@ namespace EmbyStat.Migrator.Models
         }
 
         public abstract void Up();
-
     }
 }

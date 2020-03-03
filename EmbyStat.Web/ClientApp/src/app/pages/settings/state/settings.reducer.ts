@@ -1,16 +1,18 @@
-import { EmbySettings } from '../../../shared/models/settings/emby-settings';
+import { MediaServerSettings } from '../../../shared/models/settings/media-server-settings';
 import { Settings } from '../../../shared/models/settings/settings';
 import { TvdbSettings } from '../../../shared/models/settings/tvdb-settings';
 import { ApplicationState } from '../../../states/app.state';
 import { SettingsActions, SettingsActionTypes } from './settings.actions';
 
-const embySettings: EmbySettings = {
+const mediaServerSettings: MediaServerSettings = {
   authorizationScheme: 'mediaBrowser',
   serverAddress: '',
   serverName: '',
   serverPort: 0,
   serverProtocol: 0,
-  apiKey: ''
+  apiKey: '',
+  serverType: 0,
+  userId: ''
 };
 
 const tvdbSettings: TvdbSettings = {
@@ -32,7 +34,7 @@ const INITIAL_STATE: Settings = {
   updateTrain: 2,
   updateInProgress: false,
   version: '0.0.0',
-  emby: embySettings,
+  mediaServer: mediaServerSettings,
   tvdb: tvdbSettings,
   enableRollbarLogging: false,
   isLoaded: false,
@@ -51,7 +53,7 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         language: action.payload.language,
         wizardFinished: action.payload.wizardFinished,
         username: action.payload.username,
-        emby: action.payload.emby,
+        mediaServer: action.payload.mediaServer,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
         movieLibraryTypes: action.payload.movieLibraryTypes,
@@ -77,7 +79,7 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
         language: action.payload.language,
         wizardFinished: action.payload.wizardFinished,
         username: action.payload.username,
-        emby: action.payload.emby,
+        mediaServer: action.payload.mediaServer,
         toShortMovie: action.payload.toShortMovie,
         id: action.payload.id,
         movieLibraryTypes: action.payload.movieLibraryTypes,

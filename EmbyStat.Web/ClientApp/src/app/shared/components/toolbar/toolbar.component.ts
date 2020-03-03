@@ -6,8 +6,8 @@ import { SettingsFacade } from '../../facades/settings.facade';
 import { ConfigHelper } from '../../helpers/config-helper';
 import { Job } from '../../models/jobs/job';
 import { Settings } from '../../models/settings/settings';
-import { EmbyService } from '../../services/emby.service';
 import { JobSocketService } from '../../services/job-socket.service';
+import { MediaServerService } from '../../services/media-server.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -29,7 +29,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   constructor(
     private settingsFacade: SettingsFacade,
     private jobSocketService: JobSocketService,
-    private embyService: EmbyService) {
+    private mediaServerService: MediaServerService) {
     this.settings$ = settingsFacade.getSettings();
 
     this.missedPings = 0;

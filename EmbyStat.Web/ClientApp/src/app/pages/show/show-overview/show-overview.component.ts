@@ -3,7 +3,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { Observable, Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
@@ -22,7 +22,6 @@ import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Library } from '../../../shared/models/library';
 import { ListContainer } from '../../../shared/models/list-container';
 import { Settings } from '../../../shared/models/settings/settings';
-import { Episode } from '../../../shared/models/show/episode';
 import { ShowCollectionRow } from '../../../shared/models/show/show-collection-row';
 import { ShowStatistics } from '../../../shared/models/show/show-statistics';
 import { ShowService } from '../service/show.service';

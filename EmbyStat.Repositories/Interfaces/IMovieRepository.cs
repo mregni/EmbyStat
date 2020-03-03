@@ -1,6 +1,6 @@
 ﻿using EmbyStat.Common.Models.Entities;
-using MediaBrowser.Model.Entities;
 using System.Collections.Generic;
+using EmbyStat.Common.Enums;
 using EmbyStat.Repositories.Interfaces.Helpers;
 
 namespace EmbyStat.Repositories.Interfaces

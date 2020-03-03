@@ -95,6 +95,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-material.module.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\digit-only.directive.ts" />
     <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
@@ -107,9 +108,9 @@
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
     <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
     <None Remove="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
-    <None Remove="ClientApp\src\app\shared\services\emby.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
     <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\media-server.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\system.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
@@ -133,15 +134,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\directives\digit-only.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\system.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\emby.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\media-server.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
@@ -151,9 +152,6 @@
   <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="config\usersettings.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

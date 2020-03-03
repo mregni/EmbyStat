@@ -6,7 +6,7 @@ namespace EmbyStat.Common.Models.Entities.Helpers
     {
         [BsonId]
         public string Id { get; set; }
-        public long? BitRate { get; set; }
+        public int? BitRate { get; set; }
         public string Container { get; set; }
         public string Path { get; set; }
         public string Protocol { get; set; }

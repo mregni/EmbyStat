@@ -1,6 +1,11 @@
-﻿using EmbyStat.Clients.Emby.Http;
+﻿using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.WebSocket;
+using EmbyStat.Clients.Emby;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.GitHub;
+using EmbyStat.Clients.Jellyfin;
+using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
@@ -32,10 +37,10 @@ namespace EmbyStat.DI
             services.RegisterSignalR();
         }
 
-        public static void RegisterServices(this IServiceCollection services)
+        private static void RegisterServices(this IServiceCollection services)
         {
             services.TryAddTransient<IAboutService, AboutService>();
-            services.TryAddTransient<IEmbyService, EmbyService>();
+            services.TryAddTransient<IMediaServerService, MediaServerService>();
             services.TryAddTransient<IJobService, JobService>();
             services.TryAddTransient<ILanguageService, LanguageService>();
             services.TryAddTransient<ILogService, LogService>();
@@ -47,13 +52,13 @@ namespace EmbyStat.DI
             services.TryAddTransient<IUpdateService, UpdateService>();
         }
 
-        public static void RegisterRepositories(this IServiceCollection services)
+        private static void RegisterRepositories(this IServiceCollection services)
         {
             services.TryAddTransient<IDbContext, DbContext>();
             services.TryAddTransient<IDatabaseInitializer, DatabaseInitializer>();
 
             services.TryAddTransient<IMovieRepository, MovieRepository>();
-            services.TryAddTransient<IEmbyRepository, EmbyRepository>();
+            services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
             services.TryAddTransient<IPersonRepository, PersonRepository>();
             services.TryAddTransient<IShowRepository, ShowRepository>();
             services.TryAddTransient<ILibraryRepository, LibraryRepository>();
@@ -63,7 +68,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<ISessionRepository, SessionRepository>();
         }
 
-        public static void RegisterJobs(this IServiceCollection services)
+        private static void RegisterJobs(this IServiceCollection services)
         {
             services.TryAddSingleton<IBackgroundJobClient, BackgroundJobClient>();
             services.TryAddTransient<IJobInitializer, JobInitializer>();
@@ -76,23 +81,30 @@ namespace EmbyStat.DI
             services.TryAddTransient<ICheckUpdateJob, CheckUpdateJob>();
         }
 
-        public static void RegisterClients(this IServiceCollection services)
+        private static void RegisterClients(this IServiceCollection services)
         {
-            services.TryAddSingleton<IEmbyClient, EmbyClient>();
+            services.AddTransient<IRestClient, RestClient>();
+
+            services.AddSingleton<IClientStrategy, ClientStrategy>();
+            services.AddSingleton<IClientFactory, EmbyClientFactory>();
+            services.AddSingleton<IClientFactory, JellyfinClientFactory>();
+            
+            services.TryAddSingleton<IEmbyHttpClient, EmbyHttpClient>();
+            services.TryAddSingleton<IJellyfinHttpClient, JellyfinHttpClient>();
+
             services.TryAddTransient<ITvdbClient, TvdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
 
             services.TryAddSingleton<IWebSocketApi, WebSocketApi>();
-            services.TryAddSingleton<IClientWebSocket, ClientWebSocket>();
+            services.TryAddSingleton<IWebSocketClient, EmbyWebSocketClient>();
         }
 
-        public static void RegisterHttp(this IServiceCollection services)
+        private static void RegisterHttp(this IServiceCollection services)
         {
-            services.AddTransient<IRestClient, RestClient>();
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
         }
 
-        public static void RegisterSignalR(this IServiceCollection services)
+        private static void RegisterSignalR(this IServiceCollection services)
         {
             services.TryAddSingleton<IJobHubHelper, JobHubHelper>();
         }

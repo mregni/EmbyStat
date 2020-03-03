@@ -31,48 +31,63 @@
               </form>
             </div>
           </mat-step>
-          <mat-step label="{{'WIZARD.EMBYLABEL' | translate}}" [stepControl]="embyForm">
+          <mat-step label="{{ 'WIZARD.SERVERTYPELABEL' | translate }}">
+            <div class="logo-container">
+              <div (click)="selectType('emby')" class="logo-item-container">
+                <img src="../../../../assets/images/emby.png" alt="Emby logo" />
+                <p>{{ 'COMMON.EMBYSERVER' | translate }}</p>
+              </div>
+              <div (click)="selectType('jellyfin')" class="logo-item-container">
+                <img src="../../../../assets/images/jellyfin.png" alt="Jellyfin logo" />
+                <p>{{ 'COMMON.JELLYFINSERVER' | translate }}</p>
+              </div>
+            </div>
+            <div class="button-container">
+              <button mat-stroked-button color="primary" matStepperPrevious type="button">
+                {{'COMMON.BACK' | translate | capitalizeFirst}}
+              </button>
+            </div>
+          </mat-step>
+          <mat-step label="{{'WIZARD.EMBYLABEL' | translate}}" [stepControl]="serverForm">
             <div>
-              <p *ngIf="embyFound == 3" [innerHTML]="'WIZARD.EMBYNOTFOUNDTEXT' | translate"></p>
-              <p *ngIf="embyFound == 2" [innerHTML]="'WIZARD.EMBYFOUNDTEXT' | translate"></p>
-              <form [formGroup]="embyForm" class="d-flex flex-column">
+              <p *ngIf="serverFound == 3" [innerHTML]="'WIZARD.NOTFOUNDTEXT' | translate : { type: typeText }" class="mt-2"></p>
+              <p *ngIf="serverFound == 2" [innerHTML]="'WIZARD.FOUNDTEXT' | translate : { type: typeText, name: serverName }" class="mt-2"></p>
+              <form [formGroup]="serverForm" class="d-flex flex-column">
                 <div class="d-flex flex-row">
                   <mat-form-field class="emby-protocol mr-3">
-                    <mat-select formControlName="embyProtocol">
+                    <mat-select formControlName="serverProtocol">
                       <mat-option [value]="0">https://</mat-option>
                       <mat-option [value]="1">http://</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field class="emby-address mr-3">
-                    <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate}}"
-                           formControlName="embyAddress">
-                    <mat-error *ngIf="embyAddressControl.hasError('required')">
-                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}
+                    <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate : { type: typeText } }}"
+                      formControlName="serverAddress">
+                    <mat-error *ngIf="serverAddressControl.hasError('required')">
+                      {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate : { type: typeText } }}
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field class="emby-port">
-                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}"
-                           formControlName="embyPort" required>
-                    <mat-error *ngIf="embyPortControl.hasError('required')">
-                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}
+                    <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}"
+                           esDigitOnly maxlength="5" formControlName="serverPort" required>
+                    <mat-error *ngIf="serverPortControl.hasError('required')">
+                      {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate : { type: typeText } }}
                     </mat-error>
                   </mat-form-field>
                 </div>
                 <mat-form-field>
-                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate}}"
-                         formControlName="embyApiKey" type="text">
-                  <mat-error *ngIf="embyApiKeyControl.hasError('required')">
-                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}
+                  <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate : { type: typeText } }}"
+                         formControlName="serverApiKey" type="text">
+                  <mat-error *ngIf="serverApiKeyControl.hasError('required')">
+                    {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate : { type: typeText } }}
                   </mat-error>
                 </mat-form-field>
-                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
+                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { type: typeText, url: serverUrl }"></p>
                 <div class="button-container">
-                  <button mat-stroked-button color="primary" matStepperPrevious
-                          type="button">
+                  <button mat-stroked-button color="primary" matStepperPrevious type="button">
                     {{'COMMON.BACK' | translate | capitalizeFirst}}
                   </button>
-                  <button mat-raised-button color="primary" matStepperNext
-                          type="button">
+                  <button mat-raised-button color="primary" matStepperNext type="button">
                     {{'COMMON.NEXT' | translate | capitalizeFirst}}
                   </button>
                 </div>
@@ -80,20 +95,21 @@
             </div>
           </mat-step>
           <mat-step label="{{'WIZARD.SAVINGLABEL' | translate }}">
-            <h3>
-              {{'WIZARD.CHECKINGSTATUS' | translate }}
-            </h3>
-
+            <div class="mt-2">
+              <h3>
+                {{'WIZARD.CHECKINGSTATUS' | translate : { type: typeText } }}
+              </h3>
+            </div>
             <div>
               <mat-list>
                 <mat-list-item>
-                  <mat-icon mat-list-icon *ngIf="embyOnline == 3" color="warn">error</mat-icon>
-                  <mat-icon mat-list-icon *ngIf="embyOnline == 2">check</mat-icon>
-                  <mat-icon mat-list-icon *ngIf="embyOnline == 1">hourglass_empty</mat-icon>
-                  <mat-icon mat-list-icon *ngIf="embyOnline == 0">hourglass_empty</mat-icon>
-                  <p mat-line>{{ 'WIZARD.EMBYRUNNING' | translate }}</p>
+                  <mat-icon mat-list-icon *ngIf="serverOnline == 3" color="warn">error</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="serverOnline == 2">check</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="serverOnline == 1">hourglass_empty</mat-icon>
+                  <mat-icon mat-list-icon *ngIf="serverOnline == 0">hourglass_empty</mat-icon>
+                  <p mat-line>{{ 'WIZARD.SERVERRUNNING' | translate }}</p>
                 </mat-list-item>
-                <mat-list-item *ngIf="embyOnline == 2">
+                <mat-list-item *ngIf="serverOnline == 2">
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 3" color="warn">error</mat-icon>
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 2">check</mat-icon>
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 1">hourglass_empty</mat-icon>
@@ -102,16 +118,16 @@
                 </mat-list-item>
               </mat-list>
             </div>
-            <p *ngIf="!(embyOnline && apiKeyWorks)">
+            <p *ngIf="!(serverOnline && apiKeyWorks && (type == 0 || (type == 1 && !!selectedAdministratorControl.value)))">
               {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
             </p>
             <div class="button-container">
               <button mat-stroked-button color="primary" matStepperPrevious
-                      [disabled]="embyOnline == 1 && apiKeyWorks == 1"
-                type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
+                      [disabled]="serverOnline == 1 && apiKeyWorks == 1"
+                      type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
               <button mat-raised-button color="primary" matStepperNext
-                      [disabled]="!(embyOnline == 2 && apiKeyWorks == 2)"
-                type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
+                      [disabled]="!(serverOnline == 2 && apiKeyWorks == 2) && (type == 0 || (type == 1 && !!selectedAdministratorControl.value))"
+                      type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
             </div>
           </mat-step>
           <mat-step label="{{'WIZARD.FINALLABEL' | translate }}">
@@ -119,11 +135,27 @@
               <p>{{ 'WIZARD.FINISHED' | translate }}</p>
               <p>{{ 'WIZARD.FINISHEXPLANATION' | translate }}</p>
             </div>
+            <div *ngIf="type == 1">
+              <p>
+                {{ 'WIZARD.JELLYFIN.ADMINTEXT' | translate }}
+              </p>
+              <form [formGroup]="adminForm">
+                <mat-form-field class="mr-3">
+                  <mat-select formControlName="selectedAdministrator">
+                    <mat-option *ngFor="let admin of administrators" [value]="admin.id">
+                      {{admin.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+            </div>
             <div class="button-container">
-              <button mat-raised-button color="primary" (click)="finishWizard()"
-                type="button">{{ 'COMMON.FINISH' | translate | capitalizeFirst }}</button>
-              <button mat-raised-button color="accent" (click)="finishWizardAndStartSync()"
-                type="button">{{ 'WIZARD.FINISHWITHSYNC' | translate | capitalizeFirst }}</button>
+              <button mat-raised-button color="primary" (click)="finishWizard()" type="button">
+                {{ 'COMMON.FINISH' | translate | capitalizeFirst }}
+              </button>
+              <button mat-raised-button color="accent" (click)="finishWizardAndStartSync()" type="button">
+                {{ 'WIZARD.FINISHWITHSYNC' | translate | capitalizeFirst }}
+              </button>
             </div>
           </mat-step>
         </mat-horizontal-stepper>

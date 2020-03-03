@@ -127,7 +127,7 @@ namespace EmbyStat.Repositories
 
         private void SeedEmbyStatus()
         {
-            _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding Emby status");
+            _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding MediaServer status");
             var collection = _context.GetContext().GetCollection<EmbyStatus>();
 
             if (!collection.Exists(Query.All()))

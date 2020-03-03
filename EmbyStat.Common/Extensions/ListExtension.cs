@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Enums;
 using LiteDB;
 
 namespace EmbyStat.Common.Extensions

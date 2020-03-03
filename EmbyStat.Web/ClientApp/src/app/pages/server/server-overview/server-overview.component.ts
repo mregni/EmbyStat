@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
 
 import { Component, OnInit } from '@angular/core';
 
 import { EmbyServerInfoFacade } from '../../../shared/facades/emby-server.facade';
+import { ServerInfo } from '../../../shared/models/media-server/server-info';
 
 @Component({
   selector: 'app-server-overview',

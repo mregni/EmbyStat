@@ -5,7 +5,7 @@ import { ActionReducerMap } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 import { embyServerInfoReducer } from '../pages/server/state/emby-server.reducer';
 import { settingsReducer } from '../pages/settings/state/settings.reducer';
-import { ServerInfo } from '../shared/models/emby/server-info';
+import { ServerInfo } from '../shared/models/media-server/server-info';
 import { Settings } from '../shared/models/settings/settings';
 
 export interface ApplicationState {
