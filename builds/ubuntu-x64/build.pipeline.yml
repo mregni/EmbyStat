@@ -1,5 +1,5 @@
 jobs:
-- job: ubuntu-x64
+- job: ubuntu_x64
   dependsOn: set_version
   displayName: 'Build Ubuntu-x64 package'
   pool:
