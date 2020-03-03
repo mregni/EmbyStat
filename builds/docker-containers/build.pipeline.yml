@@ -3,7 +3,7 @@ jobs:
   dependsOn: main_build
   displayName: 'Copy Docker files'
   pool:
-    vmImage: ubuntu-18.04
+    name: Hosted Windows 2019 with VS2019
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
