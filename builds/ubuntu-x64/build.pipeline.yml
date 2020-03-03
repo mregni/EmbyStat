@@ -18,14 +18,14 @@ jobs:
           arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
     
       - task: DotNetCoreCLI@2
-          displayName: 'Make ubuntu-x64 package'
-          inputs:
-          command: publish
-          publishWebProjects: false
-          projects: '$(webapp.project)'
-          arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64 -f $(publish.framework) --self-contained true $(publish.parameters)'
-          zipAfterPublish: false
-          modifyOutputPath: false
+        displayName: 'Make ubuntu-x64 package'
+        inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '$(webapp.project)'
+        arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64 -f $(publish.framework) --self-contained true $(publish.parameters)'
+        zipAfterPublish: false
+        modifyOutputPath: false
         
       - task: DotNetCoreCLI@2
         displayName: 'Make ubuntu-x64 updater package'
