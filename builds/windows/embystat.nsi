@@ -53,10 +53,10 @@ ShowUninstDetails show
     BrandingText "EmbyStat Server ${VERSION} Installer" ; This shows in just over the buttons
 
 ; installer attributes, these show up in details tab on installer properties
-    VIProductVersion "${VERSION}.0" ; VIProductVersion format, should be X.X.X.X
-    VIFileVersion "${VERSION}.0" ; VIFileVersion format, should be X.X.X.X
+    VIProductVersion "${VERSION}" ; VIProductVersion format, should be X.X.X.X
+    VIFileVersion "${VERSION}" ; VIFileVersion format, should be X.X.X.X
     VIAddVersionKey "ProductName" "EmbyStat Server"
-    VIAddVersionKey "FileVersion" "${VERSION}.0"
+    VIAddVersionKey "FileVersion" "${VERSION}"
     VIAddVersionKey "LegalCopyright" "(c) 2019 EmbyStat Contributors. Code released under the GNU General Public License"
     VIAddVersionKey "FileDescription" "EmbyStat Server: The Free Software Media System"
 

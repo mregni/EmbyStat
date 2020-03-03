@@ -24,12 +24,23 @@ jobs:
       filePath: './builds/windows/installer-build.ps1'
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.AssemblySemVer)'
       
+  - task: CmdLine@2
+    inputs:
+      script: |
+        cd $(Build.SourcesDirectory)
+        ls
+        cd builds\windows
+        ls
+  
   - task: CopyFiles@2
     displayName: 'Copy installer to artifact folder'
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)\builds\windows'
       Contents: 'EmbyStat_$(GitVersion.AssemblySemVer)_windows-x64.exe'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+      D:\a\1\s\builds\windows\EmbyStat_0.2.1.0_windows-x64.exe
+
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish NSIS package'
