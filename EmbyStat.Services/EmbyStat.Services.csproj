@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -11,15 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.7" />
-    <PackageReference Include="MediaBrowser.Common" Version="4.3.0.12" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.5.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Clients.Emby.Http\EmbyStat.Clients.Emby.Http.csproj" />
-    <ProjectReference Include="..\EmbyStat.Clients.Emby.WebSocket\EmbyStat.Clients.Emby.WebSocket.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.GitHub\EmbyStat.Clients.GitHub.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />

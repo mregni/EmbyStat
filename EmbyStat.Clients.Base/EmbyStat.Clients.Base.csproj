@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Http\Model\" />
+  </ItemGroup>
+
+</Project>

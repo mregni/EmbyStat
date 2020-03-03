@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using EmbyStat.Clients.Tvdb.Converter;
 using EmbyStat.Clients.Tvdb.Models;
 using FluentAssertions;

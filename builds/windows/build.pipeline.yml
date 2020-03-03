@@ -1,0 +1,37 @@
+jobs:
+- job: windows_nsis
+  dependsOn: main_build
+  displayName: 'Build Win10-x64 installer'
+  pool:
+    name: Hosted Windows 2019 with VS2019
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: '../templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(paths.script)/appsettings.ps1
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+
+  - task: PowerShell@2
+    displayName: 'Create NSIS package'
+    inputs:
+      targetType: filePath
+      filePath: './builds/windows/installer-build.ps1'
+      arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.AssemblySemVer)'
+       
+  - task: CopyFiles@2
+    displayName: 'Copy installer to artifact folder'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: 'EmbyStat_$(GitVersion.AssemblySemVer)_windows-x64.exe'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish NSIS package'
+    inputs:
+      ArtifactName: 'EmbyStat-installer-win-x64-v$(GitVersion.SemVer)'

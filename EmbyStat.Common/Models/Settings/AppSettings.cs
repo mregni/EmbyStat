@@ -1,4 +1,6 @@
-﻿namespace EmbyStat.Common.Models.Settings
+﻿using Newtonsoft.Json;
+
+namespace EmbyStat.Common.Models.Settings
 {
     public class AppSettings
     {
@@ -11,10 +13,12 @@
         /// <summary>
         /// Port number. Set dynamically when server is starting
         /// </summary>
+        [JsonIgnore]
         public int Port { get; set; }
         /// <summary>
         /// If true, update flow is disabled. Set dynamically when server is starting
         /// </summary>
+        [JsonIgnore]
         public bool NoUpdates { get; set; }
     }
 
@@ -29,10 +33,23 @@
 
     public class Dirs
     {
-        public string TempUpdateDir { get; set; }
+        public string TempUpdate { get; set; }
         public string Updater { get; set; }
+        /// <summary>
+        /// Log folder. Never saved, Set dynamically when server is starting.
+        /// </summary>
+        [JsonIgnore]
         public string Logs { get; set; }
+        /// <summary>
+        /// Config folder. Never saved, Set dynamically when server is starting.
+        /// </summary>
+        [JsonIgnore]
         public string Config { get; set; }
+        /// <summary>
+        /// Database folder. Never saved, Set dynamically when server is starting.
+        /// </summary>
+        [JsonIgnore]
+        public string Data { get; set; }
     }
 
     public class Rollbar

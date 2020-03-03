@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Movie;
@@ -42,8 +42,8 @@ namespace Tests.Unit.Controllers
 
             _movieServiceMock = new Mock<IMovieService>();
             _movieServiceMock.Setup(x => x.GetMovieLibraries()).Returns(_collections);
-            _movieServiceMock.Setup(x => x.GetStatisticsAsync(It.IsAny<List<string>>()))
-                .ReturnsAsync(movieStatistics);
+            _movieServiceMock.Setup(x => x.GetStatistics(It.IsAny<List<string>>()))
+                .Returns(movieStatistics);
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
@@ -81,15 +81,15 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
-        public async Task AreMovieStatsReturned()
+        public void AreMovieStatsReturned()
         {
-            var result = await _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
+            var result = _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
             var stat = resultObject.Should().BeOfType<MovieStatisticsViewModel>().Subject;
 
             stat.Should().NotBeNull();
             stat.General.LongestMovie.Name.Should().Be(_movieGeneral.LongestMovie.Name);
-            _movieServiceMock.Verify(x => x.GetStatisticsAsync(It.Is<List<string>>(
+            _movieServiceMock.Verify(x => x.GetStatistics(It.Is<List<string>>(
                 y => y[0] == _collections[0].Id &&
                      y[1] == _collections[1].Id)), Times.Once);
         }

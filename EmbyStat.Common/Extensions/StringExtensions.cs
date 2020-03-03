@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Common.Extensions
 {

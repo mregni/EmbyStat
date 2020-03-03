@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 

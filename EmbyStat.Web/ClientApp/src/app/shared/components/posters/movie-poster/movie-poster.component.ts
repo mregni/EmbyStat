@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -44,9 +44,7 @@ export class MoviePosterComponent implements OnInit, OnDestroy {
 
     if (this.poster.mediaId !== '0') {
       const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
-      const url =
-        `url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag
-        }&quality=90&enableimageenhancers=false)`;
+      const url = `url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90&enableimageenhancers=false)`;
       return this.sanitizer.bypassSecurityTrustStyle(url);
     }
   }

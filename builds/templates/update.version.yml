@@ -1,0 +1,22 @@
+steps:
+- task: VersionJSONFile@2
+  displayName: 'Version JSON File'
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    recursion: True
+    VersionNumber: '$(GitVersion.AssemblySemVer)'
+    useBuildNumberDirectly: False
+    VersionRegex: '\d+\.\d+\.\d+\.\d+'
+    versionForJSONFileFormat: '{1}.{2}.{3}'
+    FilenamePattern: 'package.json'
+    OutputVersion: 'OutputedVersion'
+
+- task: VersionDotNetCoreAssemblies@2
+  displayName: 'Version .NET Core Assemblies'
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    VersionNumber: '$(GitVersion.AssemblySemVer)'
+    Injectversion: False
+    VersionRegex: '\d+\.\d+\.\d+\.\d+'
+    FilenamePattern: '.csproj'
+    OutputVersion: 'OutputedVersion'

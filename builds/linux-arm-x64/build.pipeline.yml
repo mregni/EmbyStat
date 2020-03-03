@@ -1,0 +1,44 @@
+jobs:
+- job: linux_arm_x64
+  dependsOn: main_build
+  displayName: 'Build Linux-ARM-x64 package'
+  pool:
+    vmImage: ubuntu-18.04
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: '../templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(paths.script)/appsettings.ps1
+      arguments: '-updatePackage $(package.linux-arm-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet linux-ARM-x64 package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.project)'
+      arguments: '-c Release -r linux-arm64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet linux-ARM-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.project)'
+      arguments: '-c Release -r linux-arm64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Linux ARM x64 Artifact'
+    inputs:
+      PathtoPublish: 'publish'
+      ArtifactName: 'EmbyStat-$(package.linux-arm-x64)-v$(GitVersion.SemVer)'

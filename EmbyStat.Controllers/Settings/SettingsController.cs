@@ -34,6 +34,9 @@ namespace EmbyStat.Controllers.Settings
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
             settingsViewModel.Version = appSettings.Version;
             settingsViewModel.NoUpdates = appSettings.NoUpdates;
+            settingsViewModel.DataDir = appSettings.Dirs.Data;
+            settingsViewModel.ConfigDir = appSettings.Dirs.Config;
+            settingsViewModel.LogDir = appSettings.Dirs.Logs;
 
             return Ok(settingsViewModel);
 	    }

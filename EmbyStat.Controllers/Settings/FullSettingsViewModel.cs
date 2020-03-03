@@ -18,11 +18,14 @@ namespace EmbyStat.Controllers.Settings
         public bool AutoUpdate { get; set; }
         public int UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
-        public EmbySettingsViewModel Emby { get; set; }
+        public EmbySettingsViewModel MediaServer { get; set; }
         public TvdbSettingsViewModel Tvdb { get; set; }
         public string Version { get; set; }
         public bool NoUpdates { get; set; }
         public bool EnableRollbarLogging { get; set; }
+        public string DataDir { get; set; }
+        public string LogDir { get; set; }
+        public string ConfigDir { get; set; }
         
         public class EmbySettingsViewModel
         {
@@ -32,6 +35,8 @@ namespace EmbyStat.Controllers.Settings
             public int ServerPort { get; set; }
             public string AuthorizationScheme { get; set; }
             public int ServerProtocol { get; set; }
+            public int ServerType { get; set; }
+            public string UserId { get; set; }
         }
 
         public class TvdbSettingsViewModel

@@ -2,11 +2,11 @@
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Controllers.About;
-using EmbyStat.Controllers.Emby;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Controllers.Log;
@@ -14,6 +14,7 @@ using EmbyStat.Controllers.Movie;
 using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
+using EmbyStat.Controllers.MediaServer;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Movie;
@@ -33,11 +34,11 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.Version, x => x.Ignore())
                 .ReverseMap()
                 .ForMember(x => x.Version, x => x.Ignore());
-            CreateMap<EmbySettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
+            CreateMap<MediaServerSettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
             CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
-		    CreateMap<EmbyUdpBroadcast, EmbyUdpBroadcastViewModel>().ReverseMap();
-            CreateMap<PluginInfo, EmbyPluginViewModel>();
+		    CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
+            CreateMap<PluginInfo, PluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
@@ -64,8 +65,8 @@ namespace EmbyStat.Controllers
 	        CreateMap<Services.Models.About.About, AboutViewModel>();
 	        CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
             CreateMap<EmbyUser, UserIdViewModel>();
-            CreateMap<EmbyUser, EmbyUserOverviewViewModel>();
-            CreateMap<EmbyUser, EmbyUserFullViewModel>();
+            CreateMap<EmbyUser, UserOverviewViewModel>();
+            CreateMap<EmbyUser, UserFullViewModel>();
             CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
             CreateMap<VirtualSeason, VirtualSeasonViewModel>();

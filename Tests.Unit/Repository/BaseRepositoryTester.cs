@@ -21,7 +21,15 @@ namespace Tests.Unit.Repository
         {
             var optionsMock = new Mock<IOptions<AppSettings>>();
             optionsMock.Setup(x => x.Value)
-                .Returns(new AppSettings() { DatabaseFile = DbFileName, Dirs = new Dirs { Config = "" } });
+                .Returns(new AppSettings
+                {
+                    DatabaseFile = DbFileName, 
+                    Dirs = new Dirs
+                    {
+                        Config = "",
+                        Data = ""
+                    }
+                });
 
             return new DbContext(optionsMock.Object);
         }

@@ -7,7 +7,7 @@ namespace EmbyStat.Migrator.Migrations
     {
         public override void Up()
         {
-            UserSettings.Emby.ApiKey = UserSettings.Emby.AccessToken;
+            UserSettings.MediaServer.ApiKey = UserSettings.MediaServer.AccessToken;
         }
     }
 }

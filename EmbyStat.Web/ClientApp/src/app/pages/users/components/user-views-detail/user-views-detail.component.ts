@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { merge, Observable, of as observableOf, Subscription } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
-import { ServerInfo } from 'src/app/shared/models/emby/server-info';
+import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,7 +14,7 @@ import { ConfigHelper } from '../../../../shared/helpers/config-helper';
 import { ListContainer } from '../../../../shared/models/list-container';
 import { UserMediaView } from '../../../../shared/models/session/user-media-view';
 import { Settings } from '../../../../shared/models/settings/settings';
-import { EmbyService } from '../../../../shared/services/emby.service';
+import { MediaServerService } from '../../../../shared/services/media-server.service';
 import { PageService } from '../../../../shared/services/page.service';
 
 @Component({
@@ -38,7 +38,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly embyService: EmbyService,
+    private readonly mediaServerService: MediaServerService,
     private readonly embyServerInfoFacade: EmbyServerInfoFacade,
     private readonly settingsFacade: SettingsFacade,
     private readonly pageService: PageService) {
@@ -60,7 +60,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
             .pipe(
               startWith({}),
               switchMap(() => {
-                return this.embyService.getUserViewsByUserId(id, this.paginator.pageIndex, this.paginator.pageSize);
+                return this.mediaServerService.getUserViewsByUserId(id, this.paginator.pageIndex, this.paginator.pageSize);
               }),
               map((data: ListContainer<UserMediaView>) => {
                 this.paginator.length = data.totalCount;

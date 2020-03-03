@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories;
 using FluentAssertions;

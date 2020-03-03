@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Migrator.Models;
 
@@ -30,7 +29,7 @@ namespace EmbyStat.Migrator.Migrations
                     Username = string.Empty,
                     Version = 0,
                     WizardFinished = false,
-                    Emby = new EmbySettings
+                    MediaServer = new MediaServerSettings
                     {
                         AuthorizationScheme = "MediaBrowser"
                     },

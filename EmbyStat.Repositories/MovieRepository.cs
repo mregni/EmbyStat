@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
-using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Extensions;
+using MoreLinq;
 
 namespace EmbyStat.Repositories
 {
