@@ -1,44 +1,44 @@
 jobs:
-    - job: ubuntu-x64
-      dependsOn: set_version
-      displayName: 'Build Ubuntu-x64 package'
-      pool:
-        vmImage: ubuntu-18.04
-      variables:
-        GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
-        GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
-      steps:
-      - template: '../templates/update.version.yml'
+- job: ubuntu-x64
+  dependsOn: set_version
+  displayName: 'Build Ubuntu-x64 package'
+  pool:
+    vmImage: ubuntu-18.04
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.set_version.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.set_version.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: '../templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(Paths.Script)/appsettings.sh
+      arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make ubuntu-x64 package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.project)'
+      arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64 -f $(publish.framework) --self-contained true $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
     
-      - task: PowerShell@2
-        displayName: 'Update appsettings.json file'
-        inputs:
-          targetType: filePath
-          filePath: $(Paths.Script)/appsettings.sh
-          arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
-    
-      - task: DotNetCoreCLI@2
-        displayName: 'Make ubuntu-x64 package'
-        inputs:
-        command: publish
-        publishWebProjects: false
-        projects: '$(webapp.project)'
-        arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64 -f $(publish.framework) --self-contained true $(publish.parameters)'
-        zipAfterPublish: false
-        modifyOutputPath: false
-        
-      - task: DotNetCoreCLI@2
-        displayName: 'Make ubuntu-x64 updater package'
-        inputs:
-          command: publish
-          publishWebProjects: false
-          projects: '$(updater.project)'
-          arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
-          zipAfterPublish: false
-          modifyOutputPath: false
-    
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Ubuntu x64 Artifact'
-        inputs:
-          PathtoPublish: 'publish'
-          ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
+  - task: DotNetCoreCLI@2
+    displayName: 'Make ubuntu-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.project)'
+      arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Ubuntu x64 Artifact'
+    inputs:
+      PathtoPublish: 'publish'
+      ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
