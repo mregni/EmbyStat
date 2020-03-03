@@ -14,7 +14,7 @@ jobs:
     displayName: 'Copy Docker files'
     inputs:
       targetType: filePath
-      filePath: ./dockerfiles.ps1
+      filePath: ./builds/docker-containers/dockerfiles.ps1
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Docker files'

@@ -14,7 +14,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/appsettings.ps1
+      filePath: $(paths.script)/appsettings.ps1
       arguments: '-updatePackage $(package.fedora-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2

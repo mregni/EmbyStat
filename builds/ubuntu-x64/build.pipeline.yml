@@ -14,7 +14,7 @@ jobs:
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/appsettings.sh
+      filePath: $(paths.script)/appsettings.ps1
       arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
