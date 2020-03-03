@@ -4,6 +4,7 @@ param(
     [switch]$InstallNSIS,
     [switch]$InstallNSSM,
     [switch]$GenerateZip,
+    [string]$version,
     [string]$InstallLocation = "./di",
     [string]$UXLocation = "./",
     [ValidateSet('Debug','Release')][string]$BuildType = 'Release',
@@ -78,9 +79,9 @@ function Make-NSIS {
 
     $env:InstallLocation = $ResolvedInstallLocation
     if($InstallNSIS.IsPresent -or ($InstallNSIS -eq $true)){
-        & "$tempdir/nsis/nsis-3.04/makensis.exe" /D$Architecture /DVERSION=$Env:GITVERSION_SEMVER /DUXPATH=$ResolvedUXLocation  ".\builds\windows\embystat.nsi"
+        & "$tempdir/nsis/nsis-3.04/makensis.exe" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation  ".\builds\windows\embystat.nsi"
     } else {
-        & "makensis" /D$Architecture /DVERSION=$Env:GITVERSION_SEMVER /DUXPATH=$ResolvedUXLocation ".\builds\windows\embystat.nsi"
+        & "makensis" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation ".\builds\windows\embystat.nsi"
     }
     Move-Item .\builds\windows\embystat_*.exe $ResolvedInstallLocation\..\
 }
