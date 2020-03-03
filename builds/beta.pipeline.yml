@@ -9,9 +9,9 @@ jobs:
       name: Hosted Windows 2019 with VS2019
       demands: java
     steps:
-  - template: './templates/version.variables.yml'
-  - template: './templates/update.version.yml'
-  - template: './templates/sonarcloud.start.yml'
+    - template: './templates/version.variables.yml'
+    - template: './templates/update.version.yml'
+    - template: './templates/sonarcloud.start.yml'
 
     - task: PowerShell@2
       displayName: 'Update appsettings.json version'
