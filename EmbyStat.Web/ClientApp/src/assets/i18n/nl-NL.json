@@ -53,7 +53,9 @@
     "ACTORSPERGENRE": "Meest Uitgelichte Acteur Per Genre",
     "MINUTES": "minuten",
     "DISKSIZE": "Schijfgrootte",
-    "TOTALDISKSIZE": "Totale schijfruimte"
+    "TOTALDISKSIZE": "Totale schijfruimte",
+    "EMBYSERVER": "Emby server",
+    "JELLYFINSERVER": "Jellyfin server"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
@@ -88,22 +90,23 @@
     "SETTINGS": "Instellingen",
     "PLUGINS": "Plugins",
     "JOBS": "Taken",
-    "SERVER": "Emby server",
+    "SERVER": "Server",
     "LOGS": "Logs",
     "ABOUT": "Over",
     "USERS": "Gebruikers"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "EMBYLABEL": "Emby",
-    "SAVINGLABEL": "Eerste Emby server sync",
+    "SERVERTYPELABEL": "Server type",
+    "SERVERLABEL": "Server settings",
+    "SAVINGLABEL": "Server sync",
     "FINALLABEL": "Laatste",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Emby server aan het controleren ...",
+    "CHECKINGSTATUS": "Checking {{type}} server ...",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
-    "EMBYNOTFOUNDTEXT": "Nu zullen we je Emby verbinding instellen. We hebben geprobeerd om je Emby server automatisch te detecteren in het netwerk maar dit is mislukt. Vul alle velden in zodat EmbyStat je Emby server kan vinden.",
-    "EMBYFOUNDTEXT": "We hebben een Emby server gevonden in uw netwerk en de url al in het formulier ingevoerd. Voel u vrij om dit aan te passen en de rest van het formulier in te vullen.",
-    "EMBYRUNNING": "Emby server is actief",
+    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API-sleutel is geldig",
     "PLUGININSTALLED": "EmbyStat plugin gevonden op de Emby server",
     "SAVINGINSTRUCTIONS": "Als er iets mislukt, kunt u EmbyStat niet gebruiken. Los in dat geval de fouten op, druk op terug en volgende.",
@@ -111,7 +114,10 @@
     "RESCAN": "Opnieuw scannen",
     "FINISHWITHSYNC": "Start synchronisatie",
     "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
-    "FINISHEXPLANATION": "Het beste is om eerst een mediasynchronisatietaak te starten. EmbyStat begint met het downloaden van alle gegevens van uw Emby-server. Houd er rekening mee dat deze taak lang kan duren, afhankelijk van uw collectiegrootte. Als u nu geen synchronisatie taak wilt starten, klikt u op Voltooien. U kunt het later handmatig starten door naar de pagina Taken te navigeren."
+    "FINISHEXPLANATION": "Het beste is om eerst een mediasynchronisatietaak te starten. EmbyStat begint met het downloaden van alle gegevens van uw Emby-server. Houd er rekening mee dat deze taak lang kan duren, afhankelijk van uw collectiegrootte. Als u nu geen synchronisatie taak wilt starten, klikt u op Voltooien. U kunt het later handmatig starten door naar de pagina Taken te navigeren.",
+    "JELLYFIN": {
+      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+    }
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter films collecties",
@@ -177,13 +183,13 @@
       "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met seriestatistieken."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP / domein",
-      "EMBYAPIKEY": "Emby API-Sleutel",
-      "EMBYPORT": "Emby poort",
-      "EMBYADDRESSREQUIRED": "Emby IP / domein vereist.",
-      "EMBYPORTREQUIRED": "Emby poort vereist.",
-      "EMBYAPIKEYREQUIRED": "Emby API-sleutel vereist",
-      "APIKEYHINT": "Ga naar Geavanceerd -> Beveiliging op <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">uw Emby-server</a> om een nieuw API-sleutel te genereren.",
+      "EMBYADDRESS": "{{type}} IP/domain",
+      "EMBYAPIKEY": "{{type}} API key",
+      "EMBYPORT": "{{type}} port",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
+      "EMBYPORTREQUIRED": "{{type}} port required.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
       "WRONGAPIKEY": "Opgegeven API-sleutel is niet geldig"
     },
     "UPDATE": {

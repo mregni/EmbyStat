@@ -53,7 +53,9 @@
     "ACTORSPERGENRE": "Actor más destacado por género",
     "MINUTES": "Minutos",
     "DISKSIZE": "Tamaño del Disco",
-    "TOTALDISKSIZE": "Tamaño en Disco"
+    "TOTALDISKSIZE": "Tamaño en Disco",
+    "EMBYSERVER": "Emby server",
+    "JELLYFINSERVER": "Jellyfin server"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, tenemos un error en el backend, por favor intente de nuevo. Si sigue fallando, verifique los registros para más detalles.",
@@ -88,22 +90,23 @@
     "SETTINGS": "Configuración",
     "PLUGINS": "Extensiones",
     "JOBS": "Tareas",
-    "SERVER": "Servidor Emby",
+    "SERVER": "Server",
     "LOGS": "Registros",
     "ABOUT": "Acerca de",
     "USERS": "Usuarios"
   },
   "WIZARD": {
     "INTROLABEL": "Introducción",
-    "EMBYLABEL": "Configuración de Emby",
-    "SAVINGLABEL": "Primera sincronización del servidor Emby",
+    "SERVERTYPELABEL": "Server type",
+    "SERVERLABEL": "Server settings",
+    "SAVINGLABEL": "Server sync",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "Si su idioma no está mencionado o no está completo, siéntase libre de ayudarme a traducir la aplicación en su idioma en <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Comprobando el servidor Emby ...",
+    "CHECKINGSTATUS": "Checking {{type}} server ...",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
-    "EMBYNOTFOUNDTEXT": "Ahora vamos a configurar su conexión Emby. Intentamos detectar automáticamente su servidor Emby en la red, pero fallamos. Rellene todos los campos para que EmbyStat pueda encontrar su servidor Emby.",
-    "EMBYFOUNDTEXT": "Encontramos un servidor Emby en su red y ya ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
-    "EMBYRUNNING": "El servidor Emby se está ejecutando",
+    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "La clave API no es válida",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado en el servidor Emby",
     "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, arregle los errores, presione atrás y siguiente.",
@@ -111,7 +114,10 @@
     "RESCAN": "Volver a escanear",
     "FINISHWITHSYNC": "Iniciar la sincronización",
     "FINISHED": "Se guardan todas las configuraciones y puede comenzar a usar el servidor Emby ahora. ¡Disfruta de tus nuevas estadísticas!",
-    "FINISHEXPLANATION": "Lo mejor que puede hacer primero es comenzar una tarea de sincronización de medios. EmbyStat comenzará a descargar todos los datos de su servidor Emby. Tenga en cuenta que esta tarea puede llevar mucho tiempo según el tamaño de su colección. Si no desea iniciar la sincronización ahora simplemente haga clic en finalizar. Puede iniciarlo manualmente más tarde navegando a la página de Tareas."
+    "FINISHEXPLANATION": "Lo mejor que puede hacer primero es comenzar una tarea de sincronización de medios. EmbyStat comenzará a descargar todos los datos de su servidor Emby. Tenga en cuenta que esta tarea puede llevar mucho tiempo según el tamaño de su colección. Si no desea iniciar la sincronización ahora simplemente haga clic en finalizar. Puede iniciarlo manualmente más tarde navegando a la página de Tareas.",
+    "JELLYFIN": {
+      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+    }
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filtrar coleción de películas",
@@ -177,13 +183,13 @@
       "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú desplegable situado en la página de series."
     },
     "EMBY": {
-      "EMBYADDRESS": "Emby IP/dominio",
-      "EMBYAPIKEY": "Clave API de Emby",
-      "EMBYPORT": "Puerto Emby",
-      "EMBYADDRESSREQUIRED": "IP/Dominio de Emby necesario.",
-      "EMBYPORTREQUIRED": "Puerto de Emby necesario.",
-      "EMBYAPIKEYREQUIRED": "Se necesita clave API de Emby",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your Emby server</a> to generate a new API token.",
+      "EMBYADDRESS": "{{type}} IP/domain",
+      "EMBYAPIKEY": "{{type}} API key",
+      "EMBYPORT": "{{type}} port",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
+      "EMBYPORTREQUIRED": "{{type}} port required.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
       "WRONGAPIKEY": "La clave API introducida no es válida"
     },
     "UPDATE": {
