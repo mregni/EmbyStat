@@ -78,9 +78,9 @@ function Make-NSIS {
 
     $env:InstallLocation = $ResolvedInstallLocation
     if($InstallNSIS.IsPresent -or ($InstallNSIS -eq $true)){
-        & "$tempdir/nsis/nsis-3.04/makensis.exe" /D$Architecture /DUXPATH=$ResolvedUXLocation ".\builds\windows\embystat.nsi"
+        & "$tempdir/nsis/nsis-3.04/makensis.exe" /D$Architecture /DUXPATH=$ResolvedUXLocation  ".\builds\windows\embystat.nsi"
     } else {
-        & "makensis" /D$Architecture /DUXPATH=$ResolvedUXLocation ".\builds\windows\embystat.nsi"
+        & "makensis" /D$Architecture /DUXPATH=$ResolvedUXLocation /VERSION=$Env:GITVERSION_SEMVER ".\builds\windows\embystat.nsi"
     }
     Move-Item .\builds\windows\embystat_*.exe $ResolvedInstallLocation\..\
 }
