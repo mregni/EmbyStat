@@ -29,7 +29,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy installer to artifact folder'
     inputs:
-      SourceFolder: '$(Build.SourcesDirectory)\builds\windows'
+      SourceFolder: '$(Build.SourcesDirectory)'
       Contents: 'EmbyStat_$(GitVersion.AssemblySemVer)_windows-x64.exe'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
