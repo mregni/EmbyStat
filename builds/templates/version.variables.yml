@@ -21,9 +21,9 @@ steps:
     displayName: 'Set SemVer variable'
     
   - powershell: echo "##vso[task.setvariable variable=MajorMinorPatch;isOutput=true]$(GitVersion.MajorMinorPatch)"
-    name: setSemVer
+    name: setMajorMinorPatch
     displayName: 'Set MajorMinorPatch variable'
     
   - powershell: echo "##vso[task.setvariable variable=PreReleaseNumber;isOutput=true]$(GitVersion.PreReleaseNumber)"
-    name: setSemVer
+    name: setPreReleaseNumber
     displayName: 'Set PreReleaseNumber variable'
