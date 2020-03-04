@@ -7,6 +7,8 @@ jobs:
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+    GitVersion.MajorMinorPatch: $[ dependencies.main_build.outputs['setSemVer.MajorMinorPatch'] ]
+    GitVersion.PreReleaseNumber: $[ dependencies.main_build.outputs['setSemVer.PreReleaseNumber'] ]
   steps:
   - template: '../templates/update.version.yml'
 
@@ -22,15 +24,7 @@ jobs:
     inputs:
       targetType: filePath
       filePath: './builds/windows/installer-build.ps1'
-      arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.AssemblySemVer)'
-      
-  - task: CmdLine@2
-    inputs:
-      script: |
-        cd $(Build.SourcesDirectory)
-        ls
-        cd builds\windows
-        ls
+      arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)'
   
   - task: CopyFiles@2
     displayName: 'Copy installer to artifact folder'
