@@ -116,7 +116,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '$(webapp.projects)'
+      projects: '$(webapp.project)'
       arguments: '-c Release -r ubuntu-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
