@@ -126,7 +126,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '$(updater.projects)'
+      projects: '$(updater.project)'
       arguments: '-c Release -r ubuntu-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
