@@ -134,7 +134,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Ubuntu Artifact'
     inputs:
-      PathtoPublish: '$(webapp.path.ubuntu-x64)'
+      PathtoPublish: 'publish'
       ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
 
 - job:  create_docker_files
