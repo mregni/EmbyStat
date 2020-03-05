@@ -79,13 +79,6 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
 
-  - task: CmdLine@2
-    inputs:
-      script: |
-        dir
-        cd publish
-        dir
-
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
     inputs:
@@ -104,11 +97,11 @@ jobs:
   steps:
   - template: './templates/update.version.yml'
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/appsettings.sh
+      filePath: $(paths.script)/appsettings.ps1
       arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
