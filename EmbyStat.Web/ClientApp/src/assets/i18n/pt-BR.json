@@ -109,7 +109,7 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "A chave da API é válida",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado no servidor Emby",
-    "SAVINGINSTRUCTIONS": "Se algo falhar, você não poderá começar a usar o EmbyStat. Nesse caso, corrija os erros, pressione voltar e avançar.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Salvando dados...",
     "RESCAN": "Verificar novamente",
     "FINISHWITHSYNC": "Gerenciar a sincronização",
@@ -310,7 +310,7 @@
     "FOLDERS": "Pastas"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Ir para Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} trabalho está em execução",
     "NOMISSEDPINGS": "Servidor Emby está vivo",
     "ONEMISSEDPING": "Não foi possível conectar-se ao Emby na última verificação!",
