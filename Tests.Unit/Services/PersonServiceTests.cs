@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using EmbyStat.Clients.Base;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;

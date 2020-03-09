@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +20,9 @@ namespace EmbyStat.Controllers.System
 
         [HttpGet]
         [Route("checkforupdate")]
-        public async Task<ActionResult> CheckForUpdate()
+        public ActionResult CheckForUpdate()
         {
-            var result = await _updateService.CheckForUpdateAsync(new CancellationToken());
+            var result = _updateService.CheckForUpdate();
             return Ok(_mapper.Map<UpdateResultViewModel>(result));
         }
 
@@ -31,7 +30,7 @@ namespace EmbyStat.Controllers.System
         [Route("startupdate")]
         public async Task<IActionResult> StartUpdate()
         {
-            var result = await _updateService.CheckForUpdateAsync(new CancellationToken());
+            var result = _updateService.CheckForUpdate();
             if (result.IsUpdateAvailable)
             {
                 await _updateService.DownloadZipAsync(result);

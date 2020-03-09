@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
