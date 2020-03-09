@@ -109,7 +109,7 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "La clave API no es válida",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado en el servidor Emby",
-    "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, arregle los errores, presione atrás y siguiente.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Guardando datos",
     "RESCAN": "Volver a escanear",
     "FINISHWITHSYNC": "Iniciar la sincronización",
@@ -310,7 +310,7 @@
     "FOLDERS": "Carpetas"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Ir a Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} en funcionamiento",
     "NOMISSEDPINGS": "El servidor Emby esta conectado",
     "ONEMISSEDPING": "No se puedo conectar con el servidor Emby en el último intento!",
