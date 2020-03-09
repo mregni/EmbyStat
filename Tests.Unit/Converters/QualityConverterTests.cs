@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Common;
+﻿using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using FluentAssertions;
 using Xunit;

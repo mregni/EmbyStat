@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.Settings;
 using static EmbyStat.Controllers.Settings.FullSettingsViewModel;

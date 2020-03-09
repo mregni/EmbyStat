@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Models.Settings;
 
@@ -7,8 +6,8 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IUpdateService
     {
-        Task<UpdateResult> CheckForUpdateAsync(CancellationToken cancellationToken);
-        Task<UpdateResult> CheckForUpdateAsync(UserSettings settings, CancellationToken cancellationToken);
+        UpdateResult CheckForUpdate();
+        UpdateResult CheckForUpdate(UserSettings settings);
         Task DownloadZipAsync(UpdateResult result);
         Task UpdateServerAsync();
     }

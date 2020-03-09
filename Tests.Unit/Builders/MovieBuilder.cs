@@ -5,7 +5,6 @@ using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using FluentAssertions;
 
 namespace Tests.Unit.Builders
 {

@@ -156,8 +156,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var updateStartTime = DateTime.Now;
 
             await LogInformation("Logging in on the Tvdb API.");
-            await _tvdbClient.Login(Settings.Tvdb.ApiKey);
-            var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate, cancellationToken);
+            _tvdbClient.Login(Settings.Tvdb.ApiKey);
+            var showsThatNeedAnUpdate = _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate);
 
             var neededLibraries = libraries.Where(x => Settings.ShowLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
@@ -249,7 +249,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task<Show> ProcessMissingEpisodesAsync(Show show)
         {
             var missingEpisodesCount = 0;
-            var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB);
+            var tvdbEpisodes = _tvdbClient.GetEpisodes(show.TVDB);
 
             foreach (var tvdbEpisode in tvdbEpisodes)
             {
