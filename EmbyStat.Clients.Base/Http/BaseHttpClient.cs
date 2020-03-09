@@ -9,18 +9,19 @@ using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Net;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using RestSharp;
 
 namespace EmbyStat.Clients.Base.Http
 {
     public class BaseHttpClient
     {
+        protected readonly Logger Logger;
         protected string DeviceName { get; set; }
         protected string ApplicationVersion { get; set; }
         protected string DeviceId { get; set; }
@@ -42,7 +43,7 @@ namespace EmbyStat.Clients.Base.Http
 
         public string BaseUrl
         {
-            get => Client.BaseUrl?.ToString() ?? string.Empty;
+            get => RestClient.BaseUrl?.ToString() ?? string.Empty;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -50,19 +51,19 @@ namespace EmbyStat.Clients.Base.Http
                     throw new ArgumentNullException(nameof(value));
                 }
 
-                Client.BaseUrl = new Uri(value);
+                RestClient.BaseUrl = new Uri(value);
             }
         }
 
         protected string AuthorizationScheme { get; set; }
-        protected string AuthorizationParameter => $"Client=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+        protected string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
 
-        protected readonly IRestClient Client;
+        protected readonly IRestClient RestClient;
 
         public BaseHttpClient(IRestClient client)
         {
-            Client = client;
-            client.UseSerializer(() => new JsonNetSerializer());
+            Logger = LogManager.GetCurrentClassLogger();
+            RestClient = client.Initialize();
         }
 
         public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId)
@@ -78,7 +79,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
 
-            var result = Client.Execute<T>(request);
+            var result = RestClient.Execute<T>(request);
             return result.Data;
         }
 
@@ -86,7 +87,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
 
-            var result = Client.Execute(request);
+            var result = RestClient.Execute(request);
             return result.Content;
         }
 

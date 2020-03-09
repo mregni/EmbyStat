@@ -17,6 +17,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
+using MoreLinq;
 using NLog;
 
 namespace EmbyStat.Services
@@ -135,6 +136,14 @@ namespace EmbyStat.Services
 
         public IEnumerable<EmbyUser> GetAllAdministrators()
         {
+            var administrators = _mediaServerRepository.GetAllAdministrators().ToList();
+
+            if (administrators.Any())
+            {
+                return administrators;
+            }
+
+            GetAndProcessUsers();
             return _mediaServerRepository.GetAllAdministrators();
         }
 

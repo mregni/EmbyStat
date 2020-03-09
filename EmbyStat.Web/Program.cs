@@ -5,7 +5,6 @@ using System.Linq;
 using CommandLine;
 using EmbyStat.Common;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Clients.Tvdb.Models;
 using FluentAssertions;
 using MediaBrowser.Model.Net;
 using Moq;
 using RestSharp;
-using RestSharp.Serialization;
+using RestSharp.Serialization.Json;
 using Xunit;
 
 namespace Tests.Unit.Clients
@@ -24,19 +23,20 @@ namespace Tests.Unit.Clients
             var response = new RestResponse<T> { Data = returnObject, StatusCode = statusCode };
 
             _restClientMock = new Mock<IRestClient>();
-            _restClientMock.Setup(x => x.ExecuteTaskAsync<T>(It.IsAny<IRestRequest>()))
+            _restClientMock.Setup(x => x.Execute<T>(It.IsAny<IRestRequest>()))
                 .Callback<IRestRequest>((request) =>
                 {
                     _usedRequest = request;
                 })
-                .ReturnsAsync(response);
-            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<IRestSerializer>())).Returns(_restClientMock.Object);
+                .Returns(response);
+
+            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonDeserializer>)).Returns(_restClientMock.Object);
 
             return new TvdbClient(_restClientMock.Object);
         }
 
         [Fact]
-        public async Task Login_Should_Set_JwToken_Object()
+        public void Login_Should_Set_JwToken_Object()
         {
             var returnObj = new TvdbToken
             {
@@ -44,7 +44,7 @@ namespace Tests.Unit.Clients
             };
             var client = CreateClient(returnObj, HttpStatusCode.OK);
 
-            await client.Login("12345");
+            client.Login("12345");
             _usedRequest.Should().NotBeNull();
 
             _usedRequest.Parameters.Count.Should().Be(1);
@@ -55,7 +55,7 @@ namespace Tests.Unit.Clients
         }
 
         [Fact]
-        public async Task GetEpisodes_Should_Return_Virtual_Episode_List()
+        public void GetEpisodes_Should_Return_Virtual_Episode_List()
         {
             var returnObject = new TvdbEpisodes()
             {
@@ -84,7 +84,7 @@ namespace Tests.Unit.Clients
             };
             var client = CreateClient(returnObject, HttpStatusCode.OK);
 
-            var result = (await client.GetEpisodes("12")).ToList();
+            var result = client.GetEpisodes("12").ToList();
             result.Count.Should().Be(2);
 
             result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
@@ -103,7 +103,7 @@ namespace Tests.Unit.Clients
         }
 
         [Fact]
-        public async Task GetEpisodes_Should_Return_Virtual_Episode_List_With_Wrongly_Formatted_DateTimes()
+        public void GetEpisodes_Should_Return_Virtual_Episode_List_With_Wrongly_Formatted_DateTimes()
         {
             var returnObject = new TvdbEpisodes()
             {
@@ -125,7 +125,7 @@ namespace Tests.Unit.Clients
             };
             var client = CreateClient(returnObject, HttpStatusCode.OK);
 
-            var result = (await client.GetEpisodes("12")).ToList();
+            var result = client.GetEpisodes("12").ToList();
             result.Count.Should().Be(1);
 
             result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
@@ -137,7 +137,7 @@ namespace Tests.Unit.Clients
         }
 
         [Fact]
-        public async Task GetEpisodes_Should_Skip_Episodes_That_Are_Not_Aired_Yet()
+        public void GetEpisodes_Should_Skip_Episodes_That_Are_Not_Aired_Yet()
         {
             var returnObject = new TvdbEpisodes
             {
@@ -166,7 +166,7 @@ namespace Tests.Unit.Clients
             };
             var client = CreateClient(returnObject, HttpStatusCode.OK);
 
-            var result = (await client.GetEpisodes("12")).ToList();
+            var result = client.GetEpisodes("12").ToList();
             result.Count.Should().Be(1);
 
             result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
@@ -182,7 +182,7 @@ namespace Tests.Unit.Clients
         {
             var client = CreateClient(new TvdbEpisodes(), HttpStatusCode.NotFound);
 
-            Func<Task> act = async () => await client.GetEpisodes("12");
+            Action act = () => client.GetEpisodes("12");
 
             act.Should().Throw<HttpException>()
                 .WithMessage("404 Not Found");
