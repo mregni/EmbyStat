@@ -8,14 +8,21 @@ namespace EmbyStat.Clients.Tvdb.Converter
     {
         public static VirtualEpisode ConvertToVirtualEpisode(this Data episode)
         {
-            return new VirtualEpisode
+            var virtualEpisode = new VirtualEpisode
             {
                 Id = episode.Id.ToString(),
-                EpisodeNumber = Convert.ToInt32(Math.Floor(episode.DvdEpisodeNumber ?? episode.AiredEpisodeNumber)),
-                SeasonNumber = Convert.ToInt32(Math.Floor(episode.DvdSeason ?? episode.AiredSeason)),
                 FirstAired = DateTime.Parse(episode.FirstAired),
-                Name = episode.EpisodeName
+                Name = episode.EpisodeName,
+                EpisodeNumber = episode.AiredEpisodeNumber,
+                SeasonNumber = episode.AiredSeason
             };
+
+            if (episode.AiredSeason > 500)
+            {
+                virtualEpisode.SeasonNumber = Convert.ToInt32(Math.Floor(episode.DvdSeason ?? episode.AiredSeason));
+            }
+            
+            return virtualEpisode;
         }
     }
 }
