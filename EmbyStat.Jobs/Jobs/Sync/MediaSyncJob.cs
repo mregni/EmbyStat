@@ -174,9 +174,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task PerformShowSyncAsync(IReadOnlyList<string> showsThatNeedAnUpdate, Library library, DateTime updateStartTime)
         {
             var showList = _httpClient.GetShows(library.Id);
-            await LogInformation($"Found {showList.Count} show for {library.Name} library");
 
             var grouped = showList.GroupBy(x => x.TVDB).ToList();
+            await LogInformation($"Found {grouped.Count} show for {library.Name} library");
 
             for (var i = 0; i < grouped.Count; i++)
             {
@@ -323,7 +323,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task CalculateStatistics()
         {
             await LogInformation("Calculating movie statistics");
-
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
 
