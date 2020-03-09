@@ -118,7 +118,7 @@
                 </mat-list-item>
               </mat-list>
             </div>
-            <p *ngIf="!(serverOnline && apiKeyWorks && (type == 0 || (type == 1 && !!selectedAdministratorControl.value)))">
+            <p *ngIf="!(serverOnline && apiKeyWorks)">
               {{ 'WIZARD.SAVINGINSTRUCTIONS' | translate }}
             </p>
             <div class="button-container">
@@ -126,7 +126,7 @@
                       [disabled]="serverOnline == 1 && apiKeyWorks == 1"
                       type="button">{{'COMMON.BACK' | translate | capitalizeFirst}}</button>
               <button mat-raised-button color="primary" matStepperNext
-                      [disabled]="!(serverOnline == 2 && apiKeyWorks == 2) && (type == 0 || (type == 1 && !!selectedAdministratorControl.value))"
+                      [disabled]="!(serverOnline == 2 && apiKeyWorks == 2)"
                       type="button">{{'COMMON.NEXT' | translate | capitalizeFirst}}</button>
             </div>
           </mat-step>
