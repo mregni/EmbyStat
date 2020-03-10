@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Hubs.Job;
@@ -34,7 +33,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
             try
             {
                 await LogInformation("Contacting Github now to see if new version is available.");
-                var update = await _updateService.CheckForUpdateAsync(Settings, new CancellationToken(false));
+                var update = _updateService.CheckForUpdate(Settings);
                 await LogProgress(20);
                 if (update.IsUpdateAvailable && Settings.AutoUpdate)
                 {

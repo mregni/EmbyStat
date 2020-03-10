@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" *ngIf="settings$ | async as settings">
+<mat-toolbar color="primary" *ngIf="settings != undefined">
   <button mat-button (click)="toggleSideNav.emit()" class="sidenav-toggle">
     <fa-icon icon="bars"></fa-icon>
   </button>
@@ -24,7 +24,7 @@
   <div class="button-container">
     <a mat-raised-button href="{{ getFullAddress(settings) }}" target="_blank"
        *ngIf="settings.mediaServer.serverAddress" color="accent">
-      {{ 'TOOLBAR.GOTOEMBY' | translate }}
+      {{ 'TOOLBAR.GOTOMEDIASERVER' | translate : { type: serverType } }}
     </a>
   </div>
 </mat-toolbar>

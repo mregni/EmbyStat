@@ -9,7 +9,6 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.GitHub.Models;
@@ -20,7 +19,7 @@ using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Net;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using NLog;
 
 namespace EmbyStat.Services
@@ -29,10 +28,10 @@ namespace EmbyStat.Services
     {
         private readonly IGithubClient _githubClient;
         private readonly ISettingsService _settingsService;
-        private readonly IApplicationLifetime _applicationLifetime;
+        private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly Logger _logger;
 
-        public UpdateService(IGithubClient githubClient, ISettingsService settingsService, IApplicationLifetime appLifetime)
+        public UpdateService(IGithubClient githubClient, ISettingsService settingsService, IHostApplicationLifetime appLifetime)
         {
             _githubClient = githubClient;
             _settingsService = settingsService;
@@ -40,12 +39,12 @@ namespace EmbyStat.Services
             _logger = LogManager.GetCurrentClassLogger();
         }
 
-        public async Task<UpdateResult> CheckForUpdateAsync(CancellationToken cancellationToken)
+        public UpdateResult CheckForUpdate()
         {
             try
             {
                 var settings = _settingsService.GetUserSettings();
-                return await CheckForUpdateAsync(settings, cancellationToken);
+                return CheckForUpdate(settings);
             }
             catch (HttpException e)
             {
@@ -55,11 +54,11 @@ namespace EmbyStat.Services
 
         #region CheckForUpdate
 
-        public async Task<UpdateResult> CheckForUpdateAsync(UserSettings settings, CancellationToken cancellationToken)
+        public UpdateResult CheckForUpdate(UserSettings settings)
         {
             var appSettings = _settingsService.GetAppSettings();
             var currentVersion = new Version(appSettings.Version.ToCleanVersionString());
-            var result = await _githubClient.GetGithubVersionsAsync(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain, cancellationToken);
+            var result = _githubClient.GetGithubVersions(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain);
             var update = CheckForUpdateResult(result, currentVersion, settings.UpdateTrain, appSettings.Updater.UpdateAsset);
 
             if (update.IsUpdateAvailable)
