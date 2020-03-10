@@ -109,7 +109,7 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "EmbyStat-plugin fundet på Emby-server",
-    "SAVINGINSTRUCTIONS": "Hvis noget fejler, kan du ikke begynde at bruge EmbyStat. I så fald skal du rette fejlene, trykke tilbage og næste.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Gemmer data",
     "RESCAN": "Scan igen",
     "FINISHWITHSYNC": "Start synkronisering",
@@ -310,7 +310,7 @@
     "FOLDERS": "Mapper"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Gå til Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} opgaven kører",
     "NOMISSEDPINGS": "Emby-server er i live",
     "ONEMISSEDPING": "Kunne ikke oprette forbindelse til Emby under sidste kontrol!",
