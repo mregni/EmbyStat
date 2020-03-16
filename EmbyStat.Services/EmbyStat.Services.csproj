@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.8" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.7.0" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.8.0" />
   </ItemGroup>
 
   <ItemGroup>
