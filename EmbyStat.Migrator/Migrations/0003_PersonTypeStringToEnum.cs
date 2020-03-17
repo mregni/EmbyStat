@@ -15,22 +15,23 @@ namespace EmbyStat.Migrator.Migrations
         {
             try
             {
-                var dbPath = Path.Combine(AppSettings.Dirs.Config, AppSettings.DatabaseFile).GetLocalPath();
-                var context = new LiteDatabase(dbPath);
+                var dbPath = Path.Combine(AppSettings.Dirs.Data, AppSettings.DatabaseFile);
+                using (var context = new LiteDatabase($"FileName={dbPath};"))
+                {
+                    var movieCollection = context.GetCollection("Movie");
+                    MigrateItems(movieCollection);
 
-                var movieCollection = context.GetCollection("Movie");
-                MigrateItems(movieCollection);
-
-                var showCollection = context.GetCollection("Show");
-                MigrateItems(showCollection);
+                    var showCollection = context.GetCollection("Show");
+                    MigrateItems(showCollection);   
+                }
             }
             catch (Exception ex)
             {
-                throw new FileNotFoundException("Can find or create LiteDb database.", ex);
+                throw new FileNotFoundException("Can't find or create LiteDb database.", ex);
             }
         }
 
-        private void MigrateItems(LiteCollection<BsonDocument> collection)
+        private void MigrateItems(ILiteCollection<BsonDocument> collection)
         {
             var entities = collection.FindAll().ToList();
 

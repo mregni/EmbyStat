@@ -29,3 +29,12 @@ body {
 .pointer {
   cursor: pointer;
 }
+
+.horizontal-radio-group {
+  display: flex;
+  flex-direction: row;
+
+  mat-radio-button {
+      margin: 0 15px;
+  }
+}

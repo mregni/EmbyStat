@@ -26,7 +26,7 @@ namespace EmbyStat.Repositories.Helpers
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.PremiereDate != null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.PremiereDate != null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderByDescending(x => x.PremiereDate)
                             .FirstOrDefault();
                     }
@@ -50,7 +50,7 @@ namespace EmbyStat.Repositories.Helpers
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.PremiereDate != null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.PremiereDate != null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderBy(x => x.PremiereDate)
                             .FirstOrDefault();
                     }
@@ -73,7 +73,7 @@ namespace EmbyStat.Repositories.Helpers
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderByDescending(x => x.CommunityRating)
                             .FirstOrDefault();
                     }
@@ -96,7 +96,7 @@ namespace EmbyStat.Repositories.Helpers
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => y ==x.CollectionId))
                             .OrderBy(x => x.CommunityRating)
                             .FirstOrDefault();
                     }
@@ -157,7 +157,7 @@ namespace EmbyStat.Repositories.Helpers
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<T>();
-                    return collection.FindAll().Count(x => x.People.Any(y => y.Id == personId));
+                    return collection.FindAll().Count(x => x.People.Any(y => personId == y.Id));
                 }
             });
         }

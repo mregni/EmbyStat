@@ -18,7 +18,7 @@ namespace EmbyStat.Clients.Emby.Http
 
         public bool Ping()
         {
-            return Ping("Emby server");
+            return Ping("Emby Server");
         }
     }
 }

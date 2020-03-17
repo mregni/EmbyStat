@@ -18,6 +18,7 @@ namespace EmbyStat.Services.Interfaces
         bool PingMediaServer(string url);
         void ResetMissedPings();
         void IncreaseMissedPings();
+        void ResetMediaServerData();
 
         #endregion
 
@@ -29,8 +30,8 @@ namespace EmbyStat.Services.Interfaces
 
         #region Users
 
-        IEnumerable<EmbyUser> GetAllUsers();
-        IEnumerable<EmbyUser> GetAllAdministrators();
+        List<EmbyUser> GetAllUsers();
+        List<EmbyUser> GetAllAdministrators();
         EmbyUser GetUserById(string id);
         Card<int> GetViewedEpisodeCountByUserId(string id);
         Card<int> GetViewedMovieCountByUserId(string id);

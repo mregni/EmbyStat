@@ -16,13 +16,15 @@ namespace EmbyStat.Controllers.Settings
         private readonly ISettingsService _settingsService;
         private readonly ILanguageService _languageService;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly IMediaServerService _mediaServerService;
         private readonly IMapper _mapper;
 
-        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper)
+        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper, IMediaServerService mediaServerService)
         {
             _languageService = languageService;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
+            _mediaServerService = mediaServerService;
             _mapper = mapper;
         }
 
@@ -44,12 +46,19 @@ namespace EmbyStat.Controllers.Settings
 	    [HttpPut]
 	    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
 	    {
-	        var settings = _mapper.Map<UserSettings>(userSettings);
-            MarkStatisticsAsInvalidIfNeeded(settings);
-            settings = await _settingsService.SaveUserSettingsAsync(settings);
-            var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
+            var newSettings = _mapper.Map<UserSettings>(userSettings);
+            var oldSettings = _settingsService.GetUserSettings();
 
+            MarkStatisticsAsInvalidIfNeeded(newSettings);
+            newSettings = await _settingsService.SaveUserSettingsAsync(newSettings);
+            var settingsViewModel = _mapper.Map<FullSettingsViewModel>(newSettings);
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
+
+            if (oldSettings.MediaServer.ServerType != newSettings.MediaServer.ServerType)
+            {
+                _mediaServerService.ResetMediaServerData();
+            }
+            
             return Ok(settingsViewModel);
         }
 

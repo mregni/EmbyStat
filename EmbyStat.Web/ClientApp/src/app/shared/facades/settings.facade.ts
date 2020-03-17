@@ -33,4 +33,3 @@ export class SettingsFacade {
     return this.settingsService.getLanguages();
   }
 }
-

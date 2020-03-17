@@ -8,6 +8,7 @@ import { MediaServerLogin } from '../../../../shared/models/media-server/media-s
 import { Settings } from '../../../../shared/models/settings/settings';
 import { MediaServerService } from '../../../../shared/services/media-server.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { MediaServerTypeSelector } from '../../../../shared/helpers/media-server-type-selector';
 
 @Component({
   selector: 'app-settings-emby',
@@ -24,10 +25,12 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   embyPortControl = new FormControl('', [Validators.required]);
   embyProtocolControl = new FormControl('0', [Validators.required]);
   embyApiKeyControl = new FormControl('', [Validators.required]);
+  mediaServerTypeControl = new FormControl(0, Validators.required);
 
   embyUrl: string;
   isSaving = false;
   hidePassword = true;
+  typeText: string;
 
   private embyPortControlChange: Subscription;
   private embyAddressControlChange: Subscription;
@@ -42,7 +45,8 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       embyAddress: this.embyAddressControl,
       embyPort: this.embyPortControl,
       embyProtocol: this.embyProtocolControl,
-      embyApiKey: this.embyApiKeyControl
+      embyApiKey: this.embyApiKeyControl,
+      mediaServerType: this.mediaServerTypeControl
     });
 
     this.embyPortControl.valueChanges.subscribe((value: string) => {
@@ -72,7 +76,14 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyAddressControl.setValue(this.settings.mediaServer.serverAddress);
       this.embyPortControl.setValue(this.settings.mediaServer.serverPort);
       this.embyProtocolControl.setValue(this.settings.mediaServer.serverProtocol);
+      this.mediaServerTypeControl.setValue(`${this.settings.mediaServer.serverType}`);
+      this.mediaServerTypeChanged();
     }
+  }
+
+  mediaServerTypeChanged(): void {
+    const type = parseInt(this.mediaServerTypeControl.value);
+    this.typeText = MediaServerTypeSelector.getServerTypeString(type);
   }
 
   private updateUrl(protocol: number, url: string, port: string) {
@@ -94,14 +105,16 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyTokenSub = this.mediaServerService.testApiKey(login).subscribe((result: boolean) => {
         if (result) {
           const settings = { ...this.settings };
-          const emby = { ...this.settings.mediaServer };
+          const mediaServer = { ...this.settings.mediaServer };
 
-          emby.serverAddress = this.embyAddressControl.value;
-          emby.serverPort = this.embyPortControl.value;
-          emby.serverName = '';
-          emby.serverProtocol = this.embyProtocolControl.value;
-          emby.apiKey = this.embyApiKeyControl.value;
-          settings.mediaServer = emby;
+          mediaServer.serverAddress = this.embyAddressControl.value;
+          mediaServer.serverPort = parseInt(this.embyPortControl.value);
+          mediaServer.serverName = '';
+          mediaServer.serverProtocol = this.embyProtocolControl.value;
+          mediaServer.apiKey = this.embyApiKeyControl.value;
+          mediaServer.serverType = parseInt(this.mediaServerTypeControl.value);
+
+          settings.mediaServer = mediaServer;
 
           this.settingsFacade.updateSettings(settings);
           this.toastService.showSuccess('SETTINGS.SAVED.EMBY');

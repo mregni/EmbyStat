@@ -153,7 +153,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"persons/{personName}", Method.GET);
             request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } });
             var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return PersonConverter.Convert(baseItem);
+            return baseItem != null ? PersonConverter.Convert(baseItem) : null;
         }
 
         public QueryResult<BaseItemDto> GetMediaFolders()

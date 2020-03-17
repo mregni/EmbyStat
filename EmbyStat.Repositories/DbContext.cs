@@ -18,7 +18,7 @@ namespace EmbyStat.Repositories
             try
             {
                 var dbPath = Path.Combine(settings.Value.Dirs.Data, settings.Value.DatabaseFile);
-                _context = new LiteDatabase($"FileName={dbPath};");
+                //_context = new LiteDatabase($"FileName={dbPath};");
             }
             catch (Exception ex)
             {
@@ -36,7 +36,7 @@ namespace EmbyStat.Repositories
             try
             {
                 var dbPath = Path.Combine(_settings.Dirs.Data, _settings.DatabaseFile);
-                return new LiteDatabase($"FileName={dbPath}");
+                return new LiteDatabase($"FileName={dbPath}; Connection=shared");
             }
             catch (Exception ex)
             {

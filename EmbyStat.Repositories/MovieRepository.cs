@@ -51,7 +51,7 @@ namespace EmbyStat.Repositories
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.IMDB != null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.IMDB != null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderBy(x => x.SortName)
                             .ToList();
                     }
@@ -130,7 +130,7 @@ namespace EmbyStat.Repositories
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks && libraryIds.Any(y => y == x.CollectionId))
                             .OrderBy(x => x.RunTimeTicks)
                             .FirstOrDefault();
                     }
@@ -153,7 +153,7 @@ namespace EmbyStat.Repositories
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.RunTimeTicks != null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.RunTimeTicks != null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderByDescending(x => x.RunTimeTicks)
                             .FirstOrDefault();
                     }
@@ -176,7 +176,7 @@ namespace EmbyStat.Repositories
                 {
                     var collection = database.GetCollection<Movie>();
 
-                    return GetWorkingLibrarySet(collection, libraryIds)
+                    return GetWorkingLibrarySet<Movie>(collection, libraryIds)
                         .SelectMany(x => x.People)
                         .DistinctBy(x => x.Id)
                         .Count(x => x.Type == type);
@@ -192,7 +192,7 @@ namespace EmbyStat.Repositories
                 {
                     var collection = database.GetCollection<Movie>();
 
-                    return GetWorkingLibrarySet(collection, libraryIds)
+                    return GetWorkingLibrarySet<Movie>(collection, libraryIds)
                         .SelectMany(x => x.People)
                         .Where(x => x.Type == type)
                         .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})
@@ -217,7 +217,7 @@ namespace EmbyStat.Repositories
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks && libraryIds.Any(y => y == x.CollectionId))
                             .OrderBy(x => x.SortName)
                             .ToList();
                     }
@@ -240,7 +240,7 @@ namespace EmbyStat.Repositories
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.IMDB == null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.IMDB == null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderBy(x => x.SortName)
                             .ToList();
                     }
@@ -263,7 +263,7 @@ namespace EmbyStat.Repositories
                     if (libraryIds.Any())
                     {
                         return collection
-                            .Find(x => x.Primary == null && libraryIds.Any(y => x.CollectionId == y))
+                            .Find(x => x.Primary == null && libraryIds.Any(y => y == x.CollectionId))
                             .OrderBy(x => x.SortName)
                             .ToList();
                     }
@@ -285,7 +285,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    collection.Delete(Query.All());
+                    collection.DeleteMany("1=1");
                 }
             });
         }
