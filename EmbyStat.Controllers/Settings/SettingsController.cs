@@ -46,18 +46,14 @@ namespace EmbyStat.Controllers.Settings
 	    [HttpPut]
 	    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
 	    {
-            var newSettings = _mapper.Map<UserSettings>(userSettings);
-            var oldSettings = _settingsService.GetUserSettings();
+            var settings = _mapper.Map<UserSettings>(userSettings);
 
-            MarkStatisticsAsInvalidIfNeeded(newSettings);
-            newSettings = await _settingsService.SaveUserSettingsAsync(newSettings);
-            var settingsViewModel = _mapper.Map<FullSettingsViewModel>(newSettings);
+            MarkStatisticsAsInvalidIfNeeded(settings);
+            settings = await _settingsService.SaveUserSettingsAsync(settings);
+            var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
 
-            if (oldSettings.MediaServer.ServerType != newSettings.MediaServer.ServerType)
-            {
-                _mediaServerService.ResetMediaServerData();
-            }
+            //TODO, check if user checked the new to implement checkbox to reset the database.
             
             return Ok(settingsViewModel);
         }

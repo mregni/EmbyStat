@@ -116,6 +116,7 @@ namespace EmbyStat.Services
             _mediaServerRepository.IncreaseMissedPings();
         }
 
+        //TODO Add checkbox in settings UI to fully reset the database or not
         public void ResetMediaServerData()
         {
             var settings = _settingsService.GetUserSettings();

@@ -3,10 +3,6 @@
     <mat-card>
       <mat-card-content>
         <form [formGroup]="embyForm" class="d-flex flex-column">
-          <mat-radio-group formControlName="mediaServerType" (change)="mediaServerTypeChanged()" class="horizontal-radio-group mb-4 mt-2" [disableControl]="isSaving">
-            <mat-radio-button value="0">Emby</mat-radio-button>
-            <mat-radio-button value="1">Jellyfin</mat-radio-button>
-          </mat-radio-group>
           <div class="d-flex flex-row">
             <mat-form-field class="emby-protocol mr-3">
               <mat-select formControlName="embyProtocol" [disableControl]="isSaving">
@@ -37,6 +33,7 @@
             </mat-error>
           </mat-form-field>
           <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
+          <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.CHANGESERVERTYPE' | translate : { currentType: typeText, newType: newTypeText }"></p>
         </form>
       </mat-card-content>
       <mat-card-actions class="button-container d-flex justify-content-end">

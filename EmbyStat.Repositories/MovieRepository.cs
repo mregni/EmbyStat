@@ -48,10 +48,12 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
+                    var movies = collection.FindAll().ToList();
+                    
                     if (libraryIds.Any())
                     {
-                        return collection
-                            .Find(x => x.IMDB != null && libraryIds.Any(y => y == x.CollectionId))
+                        return GetWorkingLibrarySet(collection, libraryIds)
+                            .Where(x => x.IMDB != null)
                             .OrderBy(x => x.SortName)
                             .ToList();
                     }

@@ -224,7 +224,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Device>();
-                    return collection.Find(x => ids.Any(y => x.Id == y)).ToList();
+                    return collection.Find(x => ids.Any(y => y == x.Id)).ToList();
                 }
             });
         }

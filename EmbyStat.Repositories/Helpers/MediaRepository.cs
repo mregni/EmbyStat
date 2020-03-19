@@ -72,8 +72,9 @@ namespace EmbyStat.Repositories.Helpers
                     var collection = database.GetCollection<T>();
                     if (libraryIds.Any())
                     {
-                        return collection
-                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => y == x.CollectionId))
+                        return 
+                            GetWorkingLibrarySet(collection, libraryIds)
+                            .Where(x => x.CommunityRating != null)
                             .OrderByDescending(x => x.CommunityRating)
                             .FirstOrDefault();
                     }

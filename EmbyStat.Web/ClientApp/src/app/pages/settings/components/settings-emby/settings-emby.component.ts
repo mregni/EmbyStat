@@ -25,12 +25,12 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   embyPortControl = new FormControl('', [Validators.required]);
   embyProtocolControl = new FormControl('0', [Validators.required]);
   embyApiKeyControl = new FormControl('', [Validators.required]);
-  mediaServerTypeControl = new FormControl(0, Validators.required);
 
   embyUrl: string;
   isSaving = false;
   hidePassword = true;
   typeText: string;
+  newTypeText: string;
 
   private embyPortControlChange: Subscription;
   private embyAddressControlChange: Subscription;
@@ -45,8 +45,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       embyAddress: this.embyAddressControl,
       embyPort: this.embyPortControl,
       embyProtocol: this.embyProtocolControl,
-      embyApiKey: this.embyApiKeyControl,
-      mediaServerType: this.mediaServerTypeControl
+      embyApiKey: this.embyApiKeyControl
     });
 
     this.embyPortControl.valueChanges.subscribe((value: string) => {
@@ -76,14 +75,9 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyAddressControl.setValue(this.settings.mediaServer.serverAddress);
       this.embyPortControl.setValue(this.settings.mediaServer.serverPort);
       this.embyProtocolControl.setValue(this.settings.mediaServer.serverProtocol);
-      this.mediaServerTypeControl.setValue(`${this.settings.mediaServer.serverType}`);
-      this.mediaServerTypeChanged();
+      this.typeText = MediaServerTypeSelector.getServerTypeString(this.settings.mediaServer.serverType);
+      this.newTypeText = MediaServerTypeSelector.getOtherServerTypeString(this.settings.mediaServer.serverType);
     }
-  }
-
-  mediaServerTypeChanged(): void {
-    const type = parseInt(this.mediaServerTypeControl.value);
-    this.typeText = MediaServerTypeSelector.getServerTypeString(type);
   }
 
   private updateUrl(protocol: number, url: string, port: string) {
@@ -112,7 +106,6 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
           mediaServer.serverName = '';
           mediaServer.serverProtocol = this.embyProtocolControl.value;
           mediaServer.apiKey = this.embyApiKeyControl.value;
-          mediaServer.serverType = parseInt(this.mediaServerTypeControl.value);
 
           settings.mediaServer = mediaServer;
 

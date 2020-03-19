@@ -96,9 +96,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
-                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(string.Empty).Build();
-                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").AddImdb(string.Empty).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("C").AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var result = _movieRepository.GetAllWithImdbId(new[] { "1" });
