@@ -7,11 +7,11 @@ using Xunit;
 
 namespace Tests.Unit.Repository
 {
-    public class EmbyRepositoryTests : BaseRepositoryTester
+    public class MediaServerRepositoryTests : BaseRepositoryTester
     {
         private MediaServerRepository _mediaServerRepository;
         private DbContext _context;
-        public EmbyRepositoryTests() : base("test-data-emby-repo.db")
+        public MediaServerRepositoryTests() : base("test-data-emby-repo.db")
         {
         }
 
@@ -85,6 +85,53 @@ namespace Tests.Unit.Repository
                     dbStatus.Should().NotBeNull();
                     dbStatus.Id.Should().Be(status.Id);
                     dbStatus.MissedPings.Should().Be(0);
+                }
+            });
+        }
+
+        [Fact]
+        public void RemoveAllMediaServerData_Should_Remove_All_Data()
+        {
+            RunTest(() =>
+            {
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var pluginOne = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "statistics" };
+                    var pluginCollection = database.GetCollection<PluginInfo>();
+                    pluginCollection.Insert(pluginOne);
+
+                    var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
+                    var serverInfoCollection = database.GetCollection<ServerInfo>();
+                    serverInfoCollection.Insert(serverInfo);
+
+                    var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
+                    var userCollection = database.GetCollection<EmbyUser>();
+                    userCollection.Insert(embyUserOne);
+
+                    var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
+                    var deviceCollection = database.GetCollection<Device>();
+                    deviceCollection.Insert(serverOne);
+                }
+
+                _mediaServerRepository.RemoveAllMediaServerData();
+
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var pluginCollection = database.GetCollection<PluginInfo>();
+                    var plugins = pluginCollection.FindAll();
+                    plugins.Count().Should().Be(0);
+
+                    var serverInfoCollection = database.GetCollection<ServerInfo>();
+                    var serverInfo = serverInfoCollection.FindAll();
+                    serverInfo.Count().Should().Be(0);
+
+                    var userCollection = database.GetCollection<EmbyUser>();
+                    var users = userCollection.FindAll();
+                    users.Count().Should().Be(0);
+
+                    var deviceCollection = database.GetCollection<Device>();
+                    var device = deviceCollection.FindAll();
+                    device.Count().Should().Be(0);
                 }
             });
         }
@@ -226,8 +273,8 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
-                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi", IsAdministrator = false};
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom", IsAdministrator = true};
                 using (var database = _context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<EmbyUser>();
@@ -243,6 +290,28 @@ namespace Tests.Unit.Repository
 
                 users[1].Id.Should().Be(embyUserTwo.Id);
                 users[1].Name.Should().Be(embyUserTwo.Name);
+            });
+        }
+
+        [Fact]
+        public void GetAllAdministrators_Should_Return_All_Administrators()
+        {
+            RunTest(() =>
+            {
+                var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi", IsAdministrator = false};
+                var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom", IsAdministrator = true};
+                using (var database = _context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<EmbyUser>();
+                    collection.InsertBulk(new[] { embyUserOne, embyUserTwo });
+                }
+
+                var users = _mediaServerRepository.GetAllAdministrators().ToList();
+                users.Should().NotContainNulls();
+                users.Count.Should().Be(1);
+
+                users[0].Id.Should().Be(embyUserTwo.Id);
+                users[0].Name.Should().Be(embyUserTwo.Name);
             });
         }
 

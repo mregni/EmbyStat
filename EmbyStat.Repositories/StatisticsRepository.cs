@@ -79,6 +79,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Statistic>();
+                    var all = collection.FindAll().ToList();
                     var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Movie).ToList();
                     statistics.ForEach(x => x.IsValid = false);
                     collection.Update(statistics);

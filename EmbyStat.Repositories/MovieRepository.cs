@@ -48,18 +48,8 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    var movies = collection.FindAll().ToList();
-                    
-                    if (libraryIds.Any())
-                    {
-                        return GetWorkingLibrarySet(collection, libraryIds)
-                            .Where(x => x.IMDB != null)
-                            .OrderBy(x => x.SortName)
-                            .ToList();
-                    }
-
-                    return collection
-                        .Find(x => x.IMDB != null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.IMDB != null)
                         .OrderBy(x => x.SortName)
                         .ToList();
                 }
@@ -129,16 +119,8 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks && libraryIds.Any(y => y == x.CollectionId))
-                            .OrderBy(x => x.RunTimeTicks)
-                            .FirstOrDefault();
-                    }
-
-                    return collection
-                        .Find(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
                         .OrderBy(x => x.RunTimeTicks)
                         .FirstOrDefault();
                 }
@@ -152,16 +134,8 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.RunTimeTicks != null && libraryIds.Any(y => y == x.CollectionId))
-                            .OrderByDescending(x => x.RunTimeTicks)
-                            .FirstOrDefault();
-                    }
-
-                    return collection
-                        .Find(x => x.RunTimeTicks != null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.RunTimeTicks != null)
                         .OrderByDescending(x => x.RunTimeTicks)
                         .FirstOrDefault();
                 }
@@ -178,7 +152,7 @@ namespace EmbyStat.Repositories
                 {
                     var collection = database.GetCollection<Movie>();
 
-                    return GetWorkingLibrarySet<Movie>(collection, libraryIds)
+                    return GetWorkingLibrarySet(collection, libraryIds)
                         .SelectMany(x => x.People)
                         .DistinctBy(x => x.Id)
                         .Count(x => x.Type == type);
@@ -216,16 +190,8 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks && libraryIds.Any(y => y == x.CollectionId))
-                            .OrderBy(x => x.SortName)
-                            .ToList();
-                    }
-
-                    return collection
-                        .Find(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
                         .OrderBy(x => x.SortName)
                         .ToList();
                 }
@@ -239,16 +205,8 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.IMDB == null && libraryIds.Any(y => y == x.CollectionId))
-                            .OrderBy(x => x.SortName)
-                            .ToList();
-                    }
-
-                    return collection
-                        .Find(x => x.IMDB == null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.IMDB == null)
                         .OrderBy(x => x.SortName)
                         .ToList();
                 }
@@ -262,16 +220,8 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.Primary == null && libraryIds.Any(y => y == x.CollectionId))
-                            .OrderBy(x => x.SortName)
-                            .ToList();
-                    }
-
-                    return collection
-                        .Find(x => x.Primary == null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.Primary == null)
                         .OrderBy(x => x.SortName)
                         .ToList();
                 }

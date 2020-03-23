@@ -36,7 +36,9 @@ namespace EmbyStat.Repositories
             try
             {
                 var dbPath = Path.Combine(_settings.Dirs.Data, _settings.DatabaseFile);
-                return new LiteDatabase($"FileName={dbPath}; Connection=shared");
+                var database = new LiteDatabase($"FileName={dbPath}; Connection=shared");
+                database.Mapper.EnumAsInteger = true;
+                return database;
             }
             catch (Exception ex)
             {
