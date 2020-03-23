@@ -109,7 +109,7 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
     "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and next.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Saving data",
     "RESCAN": "Rescan",
     "FINISHWITHSYNC": "Start synchronization",
@@ -310,7 +310,7 @@
     "FOLDERS": "Folders"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Go to Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} job is running",
     "NOMISSEDPINGS": "Emby server is alive",
     "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
