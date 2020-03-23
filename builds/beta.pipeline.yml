@@ -7,12 +7,12 @@ variables:
 
 jobs:
   - job: main_build
+    condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: Test application
     pool:
       name: Hosted Windows 2019 with VS2019
       demands: java
     steps:
-    - task: DutchWorkzToolsAllVariables@1
     - template: './templates/version.variables.yml'
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
