@@ -102,7 +102,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
           const mediaServer = { ...this.settings.mediaServer };
 
           mediaServer.serverAddress = this.embyAddressControl.value;
-          mediaServer.serverPort = parseInt(this.embyPortControl.value);
+          mediaServer.serverPort = parseInt(this.embyPortControl.value, 10);
           mediaServer.serverName = '';
           mediaServer.serverProtocol = this.embyProtocolControl.value;
           mediaServer.apiKey = this.embyApiKeyControl.value;
