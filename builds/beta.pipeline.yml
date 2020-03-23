@@ -12,6 +12,7 @@ jobs:
       name: Hosted Windows 2019 with VS2019
       demands: java
     steps:
+    - task: DutchWorkzToolsAllVariables@1
     - template: './templates/version.variables.yml'
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
