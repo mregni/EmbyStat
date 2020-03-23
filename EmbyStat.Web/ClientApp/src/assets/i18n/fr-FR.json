@@ -109,7 +109,7 @@
     "SERVERRUNNING": "Le serveur {{type}} est en cours d’exécution",
     "KEYISVALID": "La clé de l'API est valide",
     "PLUGININSTALLED": "Le module EmbyStat a été trouvé sur le serveur Emby",
-    "SAVINGINSTRUCTIONS": "Si quelque chose échoue, vous ne pourrez pas commencer à utiliser EmbyStat. Dans ce cas, corrigez les erreurs, appuyez sur précédent et suivant.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Enregistrement des données",
     "RESCAN": "Re-scanner",
     "FINISHWITHSYNC": "Démarrer la synchronisation",
@@ -310,7 +310,7 @@
     "FOLDERS": "Dossiers"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Accéder à Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} est en cours d'exécution",
     "NOMISSEDPINGS": "Le serveur Emby est en cours d'exécution",
     "ONEMISSEDPING": "Impossible de se connecter à Emby lors du dernier contrôle!",
