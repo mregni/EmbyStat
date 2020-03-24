@@ -56,7 +56,26 @@ namespace EmbyStat.Repositories
                 }
             });
         }
-        
+
+        public void RemoveAllMediaServerData()
+        {
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var pluginCollection = database.GetCollection<PluginInfo>();
+                    var serverInfoCollection  = database.GetCollection<ServerInfo>();
+                    var userCollection = database.GetCollection<EmbyUser>();
+                    var deviceCollection = database.GetCollection<Device>();
+
+                    pluginCollection.DeleteMany("1=1");
+                    serverInfoCollection.DeleteMany("1=1");
+                    userCollection.DeleteMany("1=1");
+                    deviceCollection.DeleteMany("1=1");
+                }
+            });
+        }
+
         #endregion
 
         #region MediaServer Plugins
@@ -79,7 +98,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<PluginInfo>();
-                    collection.Delete(Query.All());
+                    collection.DeleteMany("1=1");
                     collection.Insert(plugins);
                 }
             });
@@ -129,7 +148,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public IEnumerable<EmbyUser> GetAllUsers()
+        public List<EmbyUser> GetAllUsers()
         {
             return ExecuteQuery(() =>
             {
@@ -141,14 +160,14 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public IEnumerable<EmbyUser> GetAllAdministrators()
+        public List<EmbyUser> GetAllAdministrators()
         {
             return ExecuteQuery(() =>
             {
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<EmbyUser>();
-                    return collection.Find(x => x.IsAdministrator).OrderBy(x => x.Name);
+                    return collection.Find(x => x.IsAdministrator).OrderBy(x => x.Name).ToList();
                 }
             });
         }
@@ -205,7 +224,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Device>();
-                    return collection.Find(Query.In("_id", ids.ConvertToBsonArray())).ToList();
+                    return collection.Find(x => ids.Any(y => y == x.Id)).ToList();
                 }
             });
         }

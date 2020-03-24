@@ -23,7 +23,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Statistic>();
-                    return collection.Find(Query.And(Query.EQ("Type", type.ToString()), Query.EQ("IsValid", true)))
+                    return collection.Find(x => x.IsValid && x.Type == type)
                         .GetStatisticsWithCollectionIds(collectionIds)
                         .OrderByDescending(x => x.CalculationDateTime)
                         .FirstOrDefault();
@@ -67,7 +67,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Statistic>();
-                    collection.Delete(x => !x.IsValid);
+                    collection.DeleteMany(x => !x.IsValid);
                 }
             });
         }
@@ -79,7 +79,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Statistic>();
-                    var statistics = collection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Movie.ToString()))).ToList();
+                    var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Movie).ToList();
                     statistics.ForEach(x => x.IsValid = false);
                     collection.Update(statistics);
                 }
@@ -93,7 +93,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Statistic>();
-                    var statistics = collection.Find(Query.And(Query.EQ("IsValid", true), Query.EQ("Type", StatisticType.Show.ToString()))).ToList();
+                    var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Show).ToList();
                     statistics.ForEach(x => x.IsValid = false);
                     collection.Update(statistics);
                 }

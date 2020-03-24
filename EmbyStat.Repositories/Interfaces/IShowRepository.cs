@@ -16,5 +16,6 @@ namespace EmbyStat.Repositories.Interfaces
         void RemoveShowsThatAreNotUpdated(DateTime startTime);
         void AddSeason(Season season);
         void AddEpisode(Episode episode);
+        void RemoveShows();
     }
 }

@@ -134,7 +134,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     foreach (var parent in boxSets)
                     {
-                            movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
+                        movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
                     }
                 }
                 

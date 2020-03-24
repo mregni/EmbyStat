@@ -116,6 +116,17 @@ namespace EmbyStat.Services
             _mediaServerRepository.IncreaseMissedPings();
         }
 
+        //TODO Add checkbox in settings UI to fully reset the database or not
+        public void ResetMediaServerData()
+        {
+            var settings = _settingsService.GetUserSettings();
+            ChangeClientType(settings.MediaServer.ServerType);
+            _movieRepository.RemoveMovies();
+            _showRepository.RemoveShows();
+            _mediaServerRepository.ResetMissedPings();
+            _mediaServerRepository.RemoveAllMediaServerData();
+        }
+
         #endregion
 
         #region Plugin
@@ -129,14 +140,14 @@ namespace EmbyStat.Services
 
         #region Users
 
-        public IEnumerable<EmbyUser> GetAllUsers()
+        public List<EmbyUser> GetAllUsers()
         {
             return _mediaServerRepository.GetAllUsers();
         }
 
-        public IEnumerable<EmbyUser> GetAllAdministrators()
+        public List<EmbyUser> GetAllAdministrators()
         {
-            var administrators = _mediaServerRepository.GetAllAdministrators().ToList();
+            var administrators = _mediaServerRepository.GetAllAdministrators();
 
             if (administrators.Any())
             {

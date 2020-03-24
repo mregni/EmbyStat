@@ -8,6 +8,7 @@ import { MediaServerLogin } from '../../../../shared/models/media-server/media-s
 import { Settings } from '../../../../shared/models/settings/settings';
 import { MediaServerService } from '../../../../shared/services/media-server.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { MediaServerTypeSelector } from '../../../../shared/helpers/media-server-type-selector';
 
 @Component({
   selector: 'app-settings-emby',
@@ -28,6 +29,8 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   embyUrl: string;
   isSaving = false;
   hidePassword = true;
+  typeText: string;
+  newTypeText: string;
 
   private embyPortControlChange: Subscription;
   private embyAddressControlChange: Subscription;
@@ -72,6 +75,8 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyAddressControl.setValue(this.settings.mediaServer.serverAddress);
       this.embyPortControl.setValue(this.settings.mediaServer.serverPort);
       this.embyProtocolControl.setValue(this.settings.mediaServer.serverProtocol);
+      this.typeText = MediaServerTypeSelector.getServerTypeString(this.settings.mediaServer.serverType);
+      this.newTypeText = MediaServerTypeSelector.getOtherServerTypeString(this.settings.mediaServer.serverType);
     }
   }
 
@@ -94,14 +99,15 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       this.embyTokenSub = this.mediaServerService.testApiKey(login).subscribe((result: boolean) => {
         if (result) {
           const settings = { ...this.settings };
-          const emby = { ...this.settings.mediaServer };
+          const mediaServer = { ...this.settings.mediaServer };
 
-          emby.serverAddress = this.embyAddressControl.value;
-          emby.serverPort = this.embyPortControl.value;
-          emby.serverName = '';
-          emby.serverProtocol = this.embyProtocolControl.value;
-          emby.apiKey = this.embyApiKeyControl.value;
-          settings.mediaServer = emby;
+          mediaServer.serverAddress = this.embyAddressControl.value;
+          mediaServer.serverPort = parseInt(this.embyPortControl.value, 10);
+          mediaServer.serverName = '';
+          mediaServer.serverProtocol = this.embyProtocolControl.value;
+          mediaServer.apiKey = this.embyApiKeyControl.value;
+
+          settings.mediaServer = mediaServer;
 
           this.settingsFacade.updateSettings(settings);
           this.toastService.showSuccess('SETTINGS.SAVED.EMBY');

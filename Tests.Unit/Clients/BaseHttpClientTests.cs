@@ -107,6 +107,38 @@ namespace Tests.Unit.Clients
         }
 
         [Fact]
+        public void GetPersonByName_Should_Return_Null_If_No_Response()
+        {
+            var client = CreateClient((BaseItemDto)null);
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.BaseUrl = "localhost:9000";
+            client.ApiKey = "apikey";
+
+            var name = "test-person";
+            var result = client.GetPersonByName(name);
+            result.Should().BeNull();
+
+            _usedRequest.Should().NotBeNull();
+
+            _usedRequest?.Parameters.Count.Should().Be(10);
+            // ReSharper disable once PossibleNullReferenceException
+            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
+            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(1, "EnableImageTypes", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(2, "fields", "PremiereDate", ParameterType.QueryString);
+            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(5, "recursive", "False", ParameterType.QueryString);
+            parameters.CheckQueryParameter(6, "SeriesStatuses", "", ParameterType.QueryString);
+            parameters.CheckQueryParameter(7, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
+            parameters.CheckQueryParameter(8, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
+            parameters.CheckQueryParameter(9, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
+
+            _usedRequest?.Method.Should().Be(Method.GET);
+            _usedRequest?.Resource.Should().Be($"persons/{name}");
+        }
+
+        [Fact]
         public void GetMediaFolders_Should_Return_List_Of_Media_Folders()
         {
             var resultObj = new QueryResult<BaseItemDto>

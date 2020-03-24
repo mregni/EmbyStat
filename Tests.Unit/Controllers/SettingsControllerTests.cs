@@ -92,7 +92,9 @@ namespace Tests.Unit.Controllers
                 new Language {Code = "EN", Id = "2", Name = "English"}
             });
 
-            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object);
+            var mediaServerServiceMock = new Mock<IMediaServerService>();
+
+            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object, mediaServerServiceMock.Object);
         }
 
         public void Dispose()

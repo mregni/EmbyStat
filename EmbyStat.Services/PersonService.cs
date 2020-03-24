@@ -37,11 +37,19 @@ namespace EmbyStat.Services
                 if (person == null)
                 {
                     person = _httpClient.GetPersonByName(name);
-                    _personRepository.Insert(person);
+
+                    if (person != null)
+                    {
+                        _personRepository.Insert(person);
+                    }
                 }
 
-                person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Id);
-                person.ShowCount = _showRepository.GetMediaCountForPerson(person.Id);
+                if (person != null)
+                {
+                    person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Id);
+                    person.ShowCount = _showRepository.GetMediaCountForPerson(person.Id);
+
+                }
 
                 return person;
             }

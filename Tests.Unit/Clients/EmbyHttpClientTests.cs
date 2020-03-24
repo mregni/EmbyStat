@@ -48,7 +48,7 @@ namespace Tests.Unit.Clients
         [Fact]
         public void PingEmby_Should_Return_Emby_String()
         {
-            var client = CreateStringClient("Emby server");
+            var client = CreateStringClient("Emby Server");
             var result = client.Ping();
 
             result.Should().Be(true);

@@ -22,7 +22,10 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Library>();
-                    return collection.Find(Query.In("Type", types.ConvertToBsonArray())).OrderBy(x => x.Name).ToList();
+                    return collection
+                        .Find(x => types.Contains(x.Type))
+                        .OrderBy(x => x.Name)
+                        .ToList();
                 }
             });
         }

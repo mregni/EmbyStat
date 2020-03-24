@@ -34,7 +34,7 @@ namespace EmbyStat.Repositories
             GCCollect();
         }
 
-        internal static IEnumerable<T> GetWorkingLibrarySet<T>(LiteCollection<T> collection, IReadOnlyList<string> libraryIds)
+        internal static IEnumerable<T> GetWorkingLibrarySet<T>(ILiteCollection<T> collection, IReadOnlyList<string> libraryIds)
         {
             return libraryIds.Any()
                 ? collection.Find(Query.In("CollectionId", libraryIds.ConvertToBsonArray()))

@@ -20,6 +20,7 @@ export class SettingsService {
   }
 
   updateSettings(settings: Settings): Observable<Settings> {
+    console.log(settings);
     return this.http.put<Settings>(this.baseUrl, settings);
   }
 

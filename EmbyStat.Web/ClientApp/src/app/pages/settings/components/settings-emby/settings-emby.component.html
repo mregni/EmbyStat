@@ -11,25 +11,29 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field class="emby-address mr-3">
-              <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate}}" formControlName="embyAddress"
-                [disableControl]="isSaving">
+              <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate : { type: typeText } }}" formControlName="embyAddress"
+                     [disableControl]="isSaving">
               <mat-error *ngIf="embyAddressControl.hasError('required')">
-                {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}</mat-error>
+                {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="emby-port">
-              <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate }}" formControlName="embyPort"
-                required [disableControl]="isSaving">
-              <mat-error *ngIf="embyPortControl.hasError('required')">{{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}
+              <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}" formControlName="embyPort"
+                     required [disableControl]="isSaving" esDigitOnly maxlength="5">
+              <mat-error *ngIf="embyPortControl.hasError('required')">
+                {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}
               </mat-error>
             </mat-form-field>
           </div>
           <mat-form-field>
-            <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate}}" formControlName="embyApiKey"
-              type="text">
+            <input matInput placeholder="{{'SETTINGS.EMBY.EMBYAPIKEY' | translate : { type: typeText } }}" formControlName="embyApiKey"
+                   type="text">
             <mat-error *ngIf="embyApiKeyControl.hasError('required')">
-              {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}</mat-error>
+              {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}
+            </mat-error>
           </mat-form-field>
           <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
+          <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.CHANGESERVERTYPE' | translate : { currentType: typeText, newType: newTypeText }"></p>
         </form>
       </mat-card-content>
       <mat-card-actions class="button-container d-flex justify-content-end">
