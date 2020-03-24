@@ -190,7 +190,8 @@
       "EMBYPORTREQUIRED": "Port {{type}} requis.",
       "EMBYAPIKEYREQUIRED": "Clé API {{type}} requise",
       "APIKEYHINT": "Accédez au menu avancé -> sécurité sur <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">votre serveur {{type}}</a> pour générer un nouveau jeton d'API.",
-      "WRONGAPIKEY": "La clé API fournie est n'est pas valide"
+      "WRONGAPIKEY": "La clé API fournie est n'est pas valide",
+      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
     },
     "UPDATE": {
       "MASTER": "Master",
