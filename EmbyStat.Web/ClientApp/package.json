@@ -45,7 +45,7 @@
     "ngrx-store-freeze": "^0.2.4",
     "ngx-moment": "^3.5.0",
     "ngx-scrollbar": "^4.2.0",
-    "npm": "^6.13.4",
+    "npm": "^6.14.3",
     "rxjs": "~6.5.4",
     "rxjs-compat": "^6.5.4",
     "ts-mockery": "^1.2.0",
@@ -55,7 +55,7 @@
     "zone.js": "^0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.21",
+    "@angular-devkit/build-angular": "~0.803.24",
     "@angular/cli": "~8.3.21",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
