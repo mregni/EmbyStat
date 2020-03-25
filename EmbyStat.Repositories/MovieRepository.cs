@@ -75,9 +75,10 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Movie>();
-                    return GetWorkingLibrarySet(collection, libraryIds)
-                        .Select(x => x.Genres)
-                        .SelectMany(x => x)
+                    var genres = GetWorkingLibrarySet(collection, libraryIds)
+                        .Select(x => x.Genres);
+
+                    return genres.SelectMany(x => x)
                         .Distinct()
                         .Count();
                 }
