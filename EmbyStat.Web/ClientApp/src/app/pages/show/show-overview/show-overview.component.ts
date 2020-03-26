@@ -68,7 +68,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedCollectionList: string[];
 
   private paginator: MatPaginator;
-  @ViewChild(MatPaginator, { static: false }) set pane(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set pane(mp: MatPaginator) {
     this.paginator = mp;
     if (mp !== undefined) {
       this.paginatorPageSub = this.paginator.page.subscribe(() => {
@@ -79,7 +79,7 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  @ViewChild(NgScrollbar, { static: false }) textAreaScrollbar: NgScrollbar;
+  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
   constructor(
     private readonly showService: ShowService,

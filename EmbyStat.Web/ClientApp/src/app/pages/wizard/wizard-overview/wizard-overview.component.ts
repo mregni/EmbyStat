@@ -27,7 +27,7 @@ import { SideBarService } from '../../../shared/services/side-bar.service';
 })
 
 export class WizardOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper', { static: false }) private stepper: MatStepper;
+  @ViewChild('stepper') private stepper: MatStepper;
 
   administratorsSub: Subscription;
   administrators: MediaServerUser[];

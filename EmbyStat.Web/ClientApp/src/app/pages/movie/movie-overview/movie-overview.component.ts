@@ -25,7 +25,7 @@ import { MovieService } from '../service/movie.service';
 export class MovieOverviewComponent implements OnInit, OnDestroy {
   statistics$: Observable<MovieStatistics>;
 
-  @ViewChild(NgScrollbar, {static: false}) textAreaScrollbar: NgScrollbar;
+  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
   selectedLibrarySub: Subscription;
   dropdownBlurredSub: Subscription;

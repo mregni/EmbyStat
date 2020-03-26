@@ -138,7 +138,7 @@ import { DigitOnlyDirective } from './directives/digit-only.directive';
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [
