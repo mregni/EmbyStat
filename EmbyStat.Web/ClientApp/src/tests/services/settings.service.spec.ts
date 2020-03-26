@@ -16,8 +16,8 @@ describe('SettingsService', () => {
             providers: [SettingsService]
         });
         injector = getTestBed();
-        service = injector.get(SettingsService);
-        httpMock = injector.get(HttpTestingController);
+        service = injector.inject(SettingsService);
+        httpMock = injector.inject(HttpTestingController);
     });
 
     it('should be created', () => {

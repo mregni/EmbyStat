@@ -126,7 +126,7 @@ describe('WizardOverviewComponent', () => {
         fixture = TestBed.createComponent(WizardOverviewComponent);
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
 
         fixture.detectChanges();
 

@@ -36,6 +36,7 @@ import { OptionsService } from './shared/components/charts/options/options';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { META_REDUCERS, ROOT_REDUCER } from './states/app.state';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -76,7 +77,8 @@ library.add(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
     EffectsModule.forRoot([SettingsEffects, EmbyServerInfoEffects]),
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : [],
+    FontAwesomeModule
   ],
   schemas: [],
   providers: [

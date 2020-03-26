@@ -15,8 +15,8 @@ describe('SystemService', () => {
             providers: [SystemService]
         });
         injector = getTestBed();
-        service = injector.get(SystemService);
-        httpMock = injector.get(HttpTestingController);
+        service = injector.inject(SystemService);
+        httpMock = injector.inject(HttpTestingController);
     });
 
     it('should be created', () => {

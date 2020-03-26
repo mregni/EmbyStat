@@ -15,8 +15,8 @@ describe('JobService', () => {
             providers: [JobService]
         });
         injector = getTestBed();
-        service = injector.get(JobService);
-        httpMock = injector.get(HttpTestingController);
+        service = injector.inject(JobService);
+        httpMock = injector.inject(HttpTestingController);
     });
 
     it('should be created', () => {
