@@ -11,12 +11,12 @@
           </p>
           <mat-form-field>
             <input matInput placeholder="{{'FORMLABELS.DURATIONINMINUTES' | translate}}"
-                   formControlName="toShortMovie" [disableControl]="isSaving || !toShortMovieEnabledControl.value">
+                   formControlName="toShortMovie">
           </mat-form-field>
         </form>
       </mat-card-content>
       <mat-card-actions class="d-flex justify-content-end">
-        <button mat-raised-button color="primary" [disabled]="isSaving"
+        <button mat-raised-button color="primary"
           (click)="saveToShortForm()">{{'COMMON.SAVE' | translate | capitalizeFirst}}</button>
       </mat-card-actions>
     </mat-card>

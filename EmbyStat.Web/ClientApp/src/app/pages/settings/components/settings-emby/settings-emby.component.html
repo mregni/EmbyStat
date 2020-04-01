@@ -5,21 +5,20 @@
         <form [formGroup]="embyForm" class="d-flex flex-column">
           <div class="d-flex flex-row">
             <mat-form-field class="emby-protocol mr-3">
-              <mat-select formControlName="embyProtocol" [disableControl]="isSaving">
+              <mat-select formControlName="embyProtocol">
                 <mat-option [value]="0">https://</mat-option>
                 <mat-option [value]="1">http://</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="emby-address mr-3">
-              <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate : { type: typeText } }}" formControlName="embyAddress"
-                     [disableControl]="isSaving">
+              <input matInput placeholder="{{'SETTINGS.EMBY.EMBYADDRESS' | translate : { type: typeText } }}" formControlName="embyAddress">
               <mat-error *ngIf="embyAddressControl.hasError('required')">
                 {{'SETTINGS.EMBY.EMBYADDRESSREQUIRED' | translate}}
               </mat-error>
             </mat-form-field>
             <mat-form-field class="emby-port">
               <input matInput placeholder="{{ 'SETTINGS.EMBY.EMBYPORT' | translate : { type: typeText } }}" formControlName="embyPort"
-                     required [disableControl]="isSaving" esDigitOnly maxlength="5">
+                     required esDigitOnly maxlength="5">
               <mat-error *ngIf="embyPortControl.hasError('required')">
                 {{'SETTINGS.EMBY.EMBYPORTREQUIRED' | translate}}
               </mat-error>
@@ -32,7 +31,7 @@
               {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate}}
             </mat-error>
           </mat-form-field>
-          <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl }"></p>
+          <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { url: embyUrl, type: typeText, page: getPage() }"></p>
           <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.CHANGESERVERTYPE' | translate : { currentType: typeText, newType: newTypeText }"></p>
         </form>
       </mat-card-content>

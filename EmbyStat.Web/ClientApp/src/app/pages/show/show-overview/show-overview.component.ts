@@ -67,6 +67,8 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   showCount: number;
   selectedCollectionList: string[];
 
+  expandedRow: ShowCollectionRow;
+
   private paginator: MatPaginator;
   @ViewChild(MatPaginator) set pane(mp: MatPaginator) {
     this.paginator = mp;

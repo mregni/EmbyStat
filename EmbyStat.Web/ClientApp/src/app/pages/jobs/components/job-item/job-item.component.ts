@@ -26,6 +26,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
 
   startingJob = false;
   _job: Job;
+
   constructor(
     public readonly dialog: MatDialog,
     private readonly jobSocketService: JobSocketService,
@@ -75,25 +76,25 @@ export class JobItemComponent implements OnInit, OnDestroy {
     this.jobSub = this.jobService.fireJob(this._job.id).subscribe();
   }
 
-  hasHours(time: Date, to = moment.utc()): boolean {
+  hasHours(time: moment.Moment, to = moment.utc()): boolean {
     const from = moment.utc(time);
     to = this.convertToMoment(to);
 
     const milliseconds = to.diff(from);
-    const duration = moment.duration(milliseconds);
-    return Math.floor(duration.asHours()) > 0;
+    const durationDiff = moment.duration(milliseconds);
+    return Math.floor(durationDiff.asHours()) > 0;
   }
 
-  hasMinutes(time: Date, to = moment.utc()): boolean {
+  hasMinutes(time: moment.Moment, to = moment.utc()): boolean {
     const from = moment.utc(time);
     to = this.convertToMoment(to);
 
     const milliseconds = to.diff(from);
-    const duration = moment.duration(milliseconds);
-    return Math.floor(duration.asMinutes()) % 60 > 0;
+    const durationDiff = moment.duration(milliseconds);
+    return Math.floor(durationDiff.asMinutes()) % 60 > 0;
   }
 
-  hasSeconds(time: Date, to = moment.utc()): boolean {
+  hasSeconds(time: moment.Moment, to = moment.utc()): boolean {
     const from = moment.utc(time);
     to = this.convertToMoment(to);
 
@@ -101,8 +102,8 @@ export class JobItemComponent implements OnInit, OnDestroy {
     if (milliseconds < 1000) {
       milliseconds = 1000;
     }
-    const duration = moment.duration(milliseconds);
-    return (Math.floor(duration.asSeconds()) % 60 + 1) > 0;
+    const durationDiff = moment.duration(milliseconds);
+    return (Math.floor(durationDiff.asSeconds()) % 60 + 1) > 0;
   }
 
   needsAnd(): boolean {

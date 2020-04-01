@@ -31,15 +31,19 @@
           {{ 'SETTINGS.UPDATE.UPDATE' | translate }}
         </button>
         <form class="mt-4 d-flex flex-column" [formGroup]="form">
-          <mat-checkbox class="margin-bottom" (change)="onChange($event)" formControlName="autoUpdate">
-            {{ 'SETTINGS.UPDATE.AUTO' | translate | capitalizeFirst }}</mat-checkbox>
-          <p class="mb-0 mt-2" *ngIf="onMaster; else notMasterTrain">{{ 'SETTINGS.UPDATE.TRAINWARNING' | translate }}
+          <mat-checkbox class="margin-bottom" formControlName="autoUpdate">
+            {{ 'SETTINGS.UPDATE.AUTO' | translate | capitalizeFirst }}
+          </mat-checkbox>
+          <p class="mb-0 mt-2" *ngIf="onMaster; else notMasterTrain">
+            {{ 'SETTINGS.UPDATE.TRAINWARNING' | translate }}
           </p>
           <ng-template #notMasterTrain>
-            <p class="mb-0 mt-2">{{ 'SETTINGS.UPDATE.ONBETA' | translate }}</p>
+            <p class="mb-0 mt-2">
+              {{ 'SETTINGS.UPDATE.ONBETA' | translate }}
+            </p>
           </ng-template>
           <mat-form-field class="mt-2">
-            <mat-select formControlName="train" [disableControl]="!onMaster">
+            <mat-select formControlName="train">
               <mat-option [value]="option.value" *ngFor="let option of trainOptions">{{option.key}}</mat-option>
             </mat-select>
             <mat-placeholder>{{ 'SETTINGS.UPDATE.TRAIN' | translate }}</mat-placeholder>

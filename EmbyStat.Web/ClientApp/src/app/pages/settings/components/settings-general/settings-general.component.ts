@@ -16,17 +16,16 @@ import { ToastService } from '../../../../shared/services/toast.service';
 export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() settings: Settings;
 
+  isSaving = false;
   languages$: Observable<Language[]>;
 
   generalForm: FormGroup;
   nameControl = new FormControl('', [Validators.required]);
   languageControl = new FormControl('', [Validators.required]);
-  exceptionLoggingControl = new FormControl(false);
+  exceptionLoggingControl = new FormControl('');
 
   tvdbForm: FormGroup;
   tvdbKeyControl = new FormControl('');
-
-  isSaving = false;
 
   constructor(
     private readonly settingsFacade: SettingsFacade,
@@ -59,6 +58,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   saveGeneralForm() {
     if (this.checkForm(this.generalForm)) {
       this.isSaving = true;
+      this.generalForm.disable();
       this.markFormAsUntouched(this.tvdbForm);
 
       const settings = { ...this.settings };
@@ -67,12 +67,14 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       settings.enableRollbarLogging = this.exceptionLoggingControl.value;
 
       this.saveSettings(settings, 'SETTINGS.SAVED.GENERAL');
+      this.generalForm.enable();
     }
   }
 
   saveTvdbForm() {
     if (this.checkForm(this.tvdbForm)) {
       this.isSaving = true;
+      this.tvdbForm.disable();
       this.markFormAsUntouched(this.generalForm);
 
       const settings = { ...this.settings };
@@ -80,6 +82,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       tvdb.apiKey = this.tvdbKeyControl.value;
       settings.tvdb = tvdb;
       this.saveSettings(settings, 'SETTINGS.SAVED.TVDB');
+      this.tvdbForm.enable();
     }
   }
 
