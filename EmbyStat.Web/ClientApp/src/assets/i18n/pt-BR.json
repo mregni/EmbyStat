@@ -191,7 +191,7 @@
       "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
       "APIKEYHINT": "Vá em Avançado -> Segurança e clique em Chaves de API para gerar sua nova chave API.",
       "WRONGAPIKEY": "A chave da API fornecida não é válida",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "CHANGESERVERTYPE": "Você configurou um servidor {{currentType}}, se quiser mudar para {{newType}}, precisará reinstalar o aplicativo."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -311,7 +311,7 @@
     "FOLDERS": "Pastas"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
+    "GOTOMEDIASERVER": "Ir a {{type}}",
     "JOBISRUNNING": "{{job}} trabalho está em execução",
     "NOMISSEDPINGS": "Servidor Emby está vivo",
     "ONEMISSEDPING": "Não foi possível conectar-se ao Emby na última verificação!",
