@@ -104,7 +104,7 @@ export function settingsReducer(state: Settings = INITIAL_STATE, action: Setting
   }
 }
 
-export namespace SettingsQuery {
-  export const getSettings = (state: ApplicationState) => state.settings;
-  export const getLoaded = (state: ApplicationState) => state.settings.isLoaded;
+export class SettingsQuery {
+  public static getSettings = (state: ApplicationState) => state.settings;
+  public static getLoaded = (state: ApplicationState) => state.settings.isLoaded;
 }

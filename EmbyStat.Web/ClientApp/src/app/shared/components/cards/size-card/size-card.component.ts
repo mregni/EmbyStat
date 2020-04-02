@@ -4,7 +4,7 @@ import { Card } from 'src/app/shared/models/common/card';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-size-card',
+  selector: 'es-size-card',
   templateUrl: './size-card.component.html',
   styleUrls: ['./size-card.component.scss']
 })

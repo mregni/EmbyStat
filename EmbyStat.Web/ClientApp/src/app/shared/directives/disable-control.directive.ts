@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Component({
-    selector: '[disableForm]',
-    styles: [`
+  selector: 'es-disable-form',
+  styles: [`
       fieldset {
         display: block;
         margin: unset;
@@ -11,13 +11,14 @@ import { NgControl } from '@angular/forms';
         border: unset;
       }
     `],
-    template: `
+  template: `
       <fieldset [disabled]="state">
         <ng-content></ng-content>
       </fieldset>
     `
 })
 export class DisableFormComponent {
-    @Input('disableForm') state: boolean;
-    constructor() { }
+  // tslint:disable-next-line:no-input-rename
+  @Input('disableForm') state: boolean;
+  constructor() { }
 }

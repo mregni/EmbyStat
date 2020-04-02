@@ -19,14 +19,13 @@
   <h3>{{ 'USERS.ACTIVE' | translate }}</h3>
   <div class="row">
     <div class="col-12 d-flex flex-row flex-wrap">
-      <app-user-card *ngFor="let user of users" [user]="user" (clicked)="navigateToUser($event)" class="mt-3 mr-3">
-      </app-user-card>
+      <es-user-card *ngFor="let user of users" [user]="user" (clicked)="navigateToUser($event)" class="mt-3 mr-3"></es-user-card>
     </div>
   </div>
   <h3 class="mt-5">{{ 'USERS.DELETED' | translate }}</h3>
   <div class="row">
     <div class="col-12 d-flex flex-row flex-wrap">
-      <app-user-card *ngFor="let user of deletedUsers" [user]="user" (clicked)="navigateToUser($event)" class="mt-3 mr-3"></app-user-card>
+      <es-user-card *ngFor="let user of deletedUsers" [user]="user" (clicked)="navigateToUser($event)" class="mt-3 mr-3"></es-user-card>
     </div>
   </div>
 </div>

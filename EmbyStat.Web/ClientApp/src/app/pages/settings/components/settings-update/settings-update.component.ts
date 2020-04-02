@@ -12,7 +12,7 @@ import { SystemService } from '../../../../shared/services/system.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-update',
+  selector: 'es-settings-update',
   templateUrl: './settings-update.component.html',
   styleUrls: ['./settings-update.component.scss']
 })
@@ -58,7 +58,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
       this.autoUpdateControl.setValue(this.settings.autoUpdate);
       this.trainControl.setValue(this.settings.updateTrain);
       this.onMaster = this.settings.updateTrain === 2;
-      if(this.settings.updateTrain !== 2){
+      if (this.settings.updateTrain !== 2){
         this.trainControl.disable();
       }
     }

@@ -15,7 +15,7 @@
                 <mat-form-field>
                   <mat-select formControlName="language">
                     <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
-                      <app-language [language]="language"></app-language>
+                      <es-language [language]="language"></es-language>
                     </mat-option>
                   </mat-select>
                   <mat-placeholder>{{'FORMLABELS.LANGUAGE' | translate}}</mat-placeholder>

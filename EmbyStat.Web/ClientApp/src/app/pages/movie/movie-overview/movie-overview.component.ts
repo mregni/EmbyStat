@@ -18,7 +18,7 @@ import { Settings } from '../../../shared/models/settings/settings';
 import { MovieService } from '../service/movie.service';
 
 @Component({
-  selector: 'app-movie-overview',
+  selector: 'es-movie-overview',
   templateUrl: './movie-overview.component.html',
   styleUrls: ['./movie-overview.component.scss']
 })

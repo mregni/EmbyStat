@@ -21,7 +21,7 @@ import { MediaServerService } from '../../../shared/services/media-server.servic
 import { SideBarService } from '../../../shared/services/side-bar.service';
 
 @Component({
-  selector: 'app-wizard',
+  selector: 'es-wizard',
   templateUrl: './wizard-overview.component.html',
   styleUrls: ['./wizard-overview.component.scss']
 })

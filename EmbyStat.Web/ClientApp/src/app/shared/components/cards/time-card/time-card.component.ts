@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TimespanCard } from '../../../models/common/timespan-card';
 
 @Component({
-  selector: 'app-time-card',
+  selector: 'es-time-card',
   templateUrl: './time-card.component.html',
   styleUrls: ['./time-card.component.scss']
 })

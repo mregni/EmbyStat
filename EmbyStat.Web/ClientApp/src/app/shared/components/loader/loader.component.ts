@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-loader',
+  selector: 'es-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })

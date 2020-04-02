@@ -8,7 +8,7 @@ import { Settings } from '../../../../shared/models/settings/settings';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-movie',
+  selector: 'es-settings-movie',
   templateUrl: './settings-movie.component.html',
   styleUrls: ['./settings-movie.component.scss']
 })

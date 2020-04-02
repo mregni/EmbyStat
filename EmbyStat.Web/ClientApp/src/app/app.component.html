@@ -1,11 +1,11 @@
 <div *ngIf="!settings?.updateInProgress">
   <ng-progress [spinner]="false" [color]="'#bc012a'"></ng-progress>
-  <app-toolbar (toggleSideNav)="sidenav.toggle()"></app-toolbar>
+  <es-toolbar (toggleSideNav)="sidenav.toggle()"></es-toolbar>
 
   <mat-sidenav-container class="app-sidenav-container">
     <mat-sidenav mode="side" class="app-sidenav mat-elevation-z1" [opened]="!isScreenSmall() && openMenu" #sidenav
       [mode]="isScreenSmall() ? 'over' : 'side'" position="start">
-      <app-side-navigation></app-side-navigation>
+      <es-side-navigation></es-side-navigation>
     </mat-sidenav>
 
     <mat-sidenav-content class="app-sidenav-content">

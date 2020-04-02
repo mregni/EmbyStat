@@ -9,7 +9,7 @@ import { Settings } from '../../../../shared/models/settings/settings';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-general',
+  selector: 'es-settings-general',
   templateUrl: './settings-general.component.html',
   styleUrls: ['./settings-general.component.scss']
 })

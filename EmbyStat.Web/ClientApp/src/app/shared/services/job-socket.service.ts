@@ -19,7 +19,7 @@ export class JobSocketService {
 
   updateJobLogs(value: string, type: number) {
     const now = moment().format('HH:mm:ss DD-MM-YY');
-      const line = `${now} ${value}`;
+    const line = `${now} ${value}`;
 
     if (type === 1) {
       this.lines.push(this.sanitizer.bypassSecurityTrustHtml(`<span class="text-accent">${line}</span>`));

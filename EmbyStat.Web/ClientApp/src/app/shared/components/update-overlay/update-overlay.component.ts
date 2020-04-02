@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-update-overlay',
+  selector: 'es-update-overlay',
   templateUrl: './update-overlay.component.html',
   styleUrls: ['./update-overlay.component.scss']
 })

@@ -11,7 +11,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { TriggerDialogComponent } from '../trigger-dialog/trigger-dialog.component';
 
 @Component({
-  selector: 'app-job-item',
+  selector: 'es-job-item',
   templateUrl: './job-item.component.html',
   styleUrls: ['./job-item.component.scss']
 })
@@ -25,6 +25,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
   private jobSub: Subscription;
 
   startingJob = false;
+  // tslint:disable-next-line: variable-name
   _job: Job;
 
   constructor(

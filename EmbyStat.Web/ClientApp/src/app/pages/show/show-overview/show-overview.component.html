@@ -16,31 +16,31 @@
   <div *ngIf="statistics$ | async as stats; else loading">
     <div class="row">
       <div class="col-xl-2 col-md-4 col-12 mb-3">
-        <app-number-card [card]="stats.general.showCount"></app-number-card>
+        <es-number-card [card]="stats.general.showCount"></es-number-card>
       </div>
       <div class="col-xl-2 col-md-4 col-12 mb-3">
-        <app-number-card [card]="stats.general.episodeCount"></app-number-card>
+        <es-number-card [card]="stats.general.episodeCount"></es-number-card>
       </div>
       <div class="col-xl-2 col-md-4 col-12 mb-3">
-        <app-number-card [card]="stats.general.missingEpisodeCount"></app-number-card>
+        <es-number-card [card]="stats.general.missingEpisodeCount"></es-number-card>
       </div>
       <div class="col-xl-2 col-md-4 col-12 mb-3">
-          <app-size-card [card]="stats.general.totalDiskSize"></app-size-card>
-        </div>
+        <es-size-card [card]="stats.general.totalDiskSize"></es-size-card>
+      </div>
       <div class="col-xl-3 col-md-4 col-12 mb-3">
-        <app-time-card [card]="stats.general.totalPlayableTime"></app-time-card>
+        <es-time-card [card]="stats.general.totalPlayableTime"></es-time-card>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
         <ng-scrollbar track="horizontal">
           <div class="d-flex flex-row justify-content-start">
-            <app-show-poster [poster]="stats.general.highestRatedShow"></app-show-poster>
-            <app-show-poster [poster]="stats.general.lowestRatedShow"></app-show-poster>
-            <app-show-poster [poster]="stats.general.showWithMostEpisodes"></app-show-poster>
-            <app-show-poster [poster]="stats.general.oldestPremieredShow"></app-show-poster>
-            <app-show-poster [poster]="stats.general.newestPremieredShow"></app-show-poster>
-            <app-show-poster [poster]="stats.general.latestAddedShow"></app-show-poster>
+            <es-show-poster [poster]="stats.general.highestRatedShow"></es-show-poster>
+            <es-show-poster [poster]="stats.general.lowestRatedShow"></es-show-poster>
+            <es-show-poster [poster]="stats.general.showWithMostEpisodes"></es-show-poster>
+            <es-show-poster [poster]="stats.general.oldestPremieredShow"></es-show-poster>
+            <es-show-poster [poster]="stats.general.newestPremieredShow"></es-show-poster>
+            <es-show-poster [poster]="stats.general.latestAddedShow"></es-show-poster>
           </div>
         </ng-scrollbar>
       </div>
@@ -53,11 +53,10 @@
             <div class="col-12">
               <div class="row">
                 <div class="col-12 col-xl-6 mb-3" *ngFor="let chart of stats.charts.barCharts">
-                  <app-simple-chart [chart]="chart" [options]="barOptions"></app-simple-chart>
+                  <es-simple-chart [chart]="chart" [options]="barOptions"></es-simple-chart>
                 </div>
                 <div class="col-12 col-md-6 col-xl-3 mb-3" *ngFor="let chart of stats.charts.pieCharts">
-                  <app-simple-chart [chart]="chart" type="doughnut" height="175" [options]="pieOptions">
-                  </app-simple-chart>
+                  <es-simple-chart [chart]="chart" type="doughnut" height="175" [options]="pieOptions"></es-simple-chart>
                 </div>
                 <div class="col-12 col-xl-6">
                   <mat-card>
@@ -65,7 +64,7 @@
                       {{ 'COMMON.ACTORSPERGENRE' | translate | capitalizeFirst }}
                     </mat-card-title>
                     <mat-card-content>
-                      <app-person-list [posters]="stats.people.mostFeaturedActorsPerGenre"></app-person-list>
+                      <es-person-list [posters]="stats.people.mostFeaturedActorsPerGenre"></es-person-list>
                     </mat-card-content>
                   </mat-card>
                 </div>
@@ -117,8 +116,8 @@
                       <td mat-cell *matCellDef="let element">
                         <div class="progress position-relative">
                           <div class="progress-bar" role="progressbar"
-                               [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
-                               [style.background-color]="getColor(element)">
+                            [style.width.%]="calculatePercentage(element) * 100 | number:'1.0-1'"
+                            [style.background-color]="getColor(element)">
                             <span class="justify-content-center d-flex position-absolute w-100 font-weight-bold">
                               {{ element.episodes }} /
                               {{ element.episodes + element.missingEpisodeCount }}
@@ -136,18 +135,16 @@
                       <td mat-cell *matCellDef="let element" [attr.colspan]="getcolumns().length">
                         <div class="element-detail" [@detailExpand]="element == expandedRow ? 'expanded' : 'collapsed'">
                           <div class="d-flex flex-row justify-content-start align-items-start mb-3">
-                            <img src="{{getShowBannerLink(element)}}"
-                                 alt="Show banner"
-                                 height="60"
-                                 class="border-radius-small" />
+                            <img src="{{getShowBannerLink(element)}}" alt="Show banner" height="60"
+                              class="border-radius-small" />
                             <div class="d-flex flex-column align-items-center justify-content-center ml-2">
                               <div>
-                                <img src="../../../../assets/images/imdb.png" alt="IMDB" height="15"
-                                     class="mb-2" *ngIf="element.imdb !== undefined" (click)="openImdb(element.imdb)" />
+                                <img src="../../../../assets/images/imdb.png" alt="IMDB" height="15" class="mb-2"
+                                  *ngIf="element.imdb !== undefined" (click)="openImdb(element.imdb)" />
                               </div>
                               <div>
                                 <img src="../../../../assets/images/tvdb.png" alt="TVDB" height="15"
-                                     *ngIf="element.tvdb !== undefined" (click)="openTvdb(element.tvdb)" />
+                                  *ngIf="element.tvdb !== undefined" (click)="openTvdb(element.tvdb)" />
                               </div>
                             </div>
                           </div>
@@ -162,11 +159,12 @@
                           </div>
                           <div *ngIf="element.missingEpisodeCount > 0">
                             <h4>{{ 'SHOWS.MISSINGEPISODES' | translate }}</h4>
-                            <div class="d-flex flex-row justify-content-start align-items-start align-self-stretch flex-wrap">
-                              <div *ngFor="let episodesBySeason of element.missingEpisodes"
-                                   class="mr-3 mb-3">
+                            <div
+                              class="d-flex flex-row justify-content-start align-items-start align-self-stretch flex-wrap">
+                              <div *ngFor="let episodesBySeason of element.missingEpisodes" class="mr-3 mb-3">
                                 <span *ngFor="let missingEpisode of episodesBySeason.episodes">
-                                  S{{episodesBySeason.seasonNumber}} - E{{missingEpisode.episodeNumber}} - {{missingEpisode.name}}<br />
+                                  S{{episodesBySeason.seasonNumber}} - E{{missingEpisode.episodeNumber}} -
+                                  {{missingEpisode.name}}<br />
                                 </span>
                               </div>
                             </div>
@@ -176,10 +174,9 @@
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="getcolumns()"></tr>
-                    <tr mat-row *matRowDef="let row; columns: getcolumns();"
-                        class="element-row"
-                        [class.expanded-row]="expandedRow === row"
-                        (click)="expandedRow = expandedRow === row ? null : row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: getcolumns();" class="element-row"
+                      [class.expanded-row]="expandedRow === row"
+                      (click)="expandedRow = expandedRow === row ? null : row"></tr>
                     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
                   </table>
                   <mat-paginator [length]="showCount" [pageSize]="30"></mat-paginator>
@@ -194,7 +191,7 @@
 
   <ng-template #loading>
     <div class="col-xl-2 col-md-4 col-sm-6">
-      <app-loader></app-loader>
+      <es-loader></es-loader>
     </div>
   </ng-template>
 </div>

@@ -11,7 +11,7 @@ import { MediaServerService } from '../../../../shared/services/media-server.ser
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-emby',
+  selector: 'es-settings-emby',
   templateUrl: './settings-emby.component.html',
   styleUrls: ['./settings-emby.component.scss']
 })
