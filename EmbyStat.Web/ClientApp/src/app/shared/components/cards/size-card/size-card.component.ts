@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'es-size-card',
   templateUrl: './size-card.component.html',
-  styleUrls: ['./size-card.component.scss']
+  styleUrls: ['../number-card/number-card.component.scss']
 })
 export class SizeCardComponent implements OnInit {
   @Input() card: Card<number>;
