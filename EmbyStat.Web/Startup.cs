@@ -84,7 +84,7 @@ namespace EmbyStat.Web
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "ClientApp/dist/embystat";
             });
 
             services.AddSignalR();
