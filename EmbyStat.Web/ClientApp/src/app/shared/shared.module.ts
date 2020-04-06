@@ -29,7 +29,8 @@ import { UpdateOverlayComponent } from './components/update-overlay/update-overl
 import { NoTypeFoundDialog } from './dialogs/no-type-found/no-type-found.component';
 import { NoUsersFoundDialog } from './dialogs/no-users-found-dialog/no-users-found-dialog';
 import { SyncIsRunningDialog } from './dialogs/sync-is-running/sync-is-running.component';
-import { DisableControlDirective } from './directives/disable-control.directive';
+import { DigitOnlyDirective } from './directives/digit-only.directive';
+import { DisableFormComponent } from './directives/disable-control.directive';
 import { EmbyServerInfoFacade } from './facades/emby-server.facade';
 import { SettingsFacade } from './facades/settings.facade';
 import { SyncGuard } from './guards/sync.guard';
@@ -50,7 +51,6 @@ import { ToastService } from './services/toast.service';
 import { UpdateOverlayService } from './services/update-overlay.service';
 import { UpdateService } from './services/update.service';
 import { UserService } from './services/user.service';
-import { DigitOnlyDirective } from './directives/digit-only.directive';
 
 @NgModule({
   imports: [
@@ -85,7 +85,7 @@ import { DigitOnlyDirective } from './directives/digit-only.directive';
     SideNavigationComponent,
     LibrarySelectorComponent,
     LanguageComponent,
-    DisableControlDirective,
+    DisableFormComponent,
     MoviePosterComponent,
     ShowPosterComponent,
     UserCardComponent,
@@ -126,7 +126,7 @@ import { DigitOnlyDirective } from './directives/digit-only.directive';
     DateToMinutesAgoPipe,
     DateToHoursAgoPipe,
     TicksToTimePipe,
-    DisableControlDirective,
+    DisableFormComponent,
     DigitOnlyDirective
   ],
   entryComponents: [
@@ -138,7 +138,7 @@ import { DigitOnlyDirective } from './directives/digit-only.directive';
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [

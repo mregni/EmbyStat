@@ -4,30 +4,30 @@
 <div class="content">
   <div class="row">
     <div class="col-12">
-      <mat-tab-group [selectedIndex]="selected" *ngIf="settings$ | async as settings">
+      <mat-tab-group [selectedIndex]="selected" *ngIf="settings != undefined">
         <mat-tab label="{{'COMMON.GENERAL' | translate | capitalizeFirst}}">
           <div class="mt-2 pl-0 container-fluid">
-            <app-settings-general [settings]="settings"></app-settings-general>
+            <es-settings-general [settings]="settings"></es-settings-general>
           </div>
         </mat-tab>
-        <mat-tab label="{{'COMMON.EMBY' | translate | capitalizeFirst}}">
+        <mat-tab label="{{serverTypeText | capitalizeFirst}}">
           <div class="mt-2 pl-0 container-fluid">
-            <app-settings-emby [settings]="settings"></app-settings-emby>
+            <es-settings-emby [settings]="settings"></es-settings-emby>
           </div>
         </mat-tab>
         <mat-tab label="{{'COMMON.MOVIES' | translate | capitalizeFirst}}">
           <div class="mt-2 pl-0 container-fluid">
-            <app-settings-movie [settings]="settings"></app-settings-movie>
+            <es-settings-movie [settings]="settings"></es-settings-movie>
           </div>
         </mat-tab>
         <mat-tab label="{{'COMMON.SHOWS' | translate | capitalizeFirst}}">
           <div class="mt-2 pl-0 container-fluid">
-            <app-settings-show [settings]="settings"></app-settings-show>
+            <es-settings-show [settings]="settings"></es-settings-show>
           </div>
         </mat-tab>
         <mat-tab label="{{'COMMON.UPDATES' | translate | capitalizeFirst}}">
           <div class="mt-2 pl-0 container-fluid">
-            <app-settings-update [settings]="settings"></app-settings-update>
+            <es-settings-update [settings]="settings"></es-settings-update>
           </div>
         </mat-tab>
       </mat-tab-group>

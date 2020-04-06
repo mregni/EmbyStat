@@ -18,14 +18,14 @@ import { Settings } from '../../../shared/models/settings/settings';
 import { MovieService } from '../service/movie.service';
 
 @Component({
-  selector: 'app-movie-overview',
+  selector: 'es-movie-overview',
   templateUrl: './movie-overview.component.html',
   styleUrls: ['./movie-overview.component.scss']
 })
 export class MovieOverviewComponent implements OnInit, OnDestroy {
   statistics$: Observable<MovieStatistics>;
 
-  @ViewChild(NgScrollbar, {static: false}) textAreaScrollbar: NgScrollbar;
+  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
   selectedLibrarySub: Subscription;
   dropdownBlurredSub: Subscription;

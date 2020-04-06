@@ -4,7 +4,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
     faBars, faBirthdayCake, faCogs, faEye, faEyeSlash, faFile, faFilm, faHome, faInfo, faPlayCircle,
     faPuzzlePiece, faServer, faStopwatch, faTv, faUserLock, faUsers, faUserTie
@@ -41,10 +41,6 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
-library.add(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
-  faTv, faUsers, faPuzzlePiece, faServer, faCogs, faStopwatch, faFile, faInfo,
-  faBars, faEye, faEyeSlash);
-
 @NgModule({
   declarations: [
     AppComponent
@@ -76,7 +72,8 @@ library.add(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
     NgProgressHttpModule,
     StoreModule.forRoot(ROOT_REDUCER, { metaReducers: META_REDUCERS }),
     EffectsModule.forRoot([SettingsEffects, EmbyServerInfoEffects]),
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : []
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 15 }) : [],
+    FontAwesomeModule
   ],
   schemas: [],
   providers: [
@@ -88,4 +85,10 @@ library.add(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faHome, faBirthdayCake, faFilm, faPlayCircle, faUserTie, faUserLock,
+      faTv, faUsers, faPuzzlePiece, faServer, faCogs, faStopwatch, faFile, faInfo,
+      faBars, faEye, faEyeSlash);
+  }
+}

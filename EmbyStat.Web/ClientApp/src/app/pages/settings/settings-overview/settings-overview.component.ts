@@ -1,28 +1,35 @@
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { MediaServerTypeSelector } from '../../../shared/helpers/media-server-type-selector';
 import { Settings } from '../../../shared/models/settings/settings';
 
 @Component({
-  selector: 'app-settings-overview',
+  selector: 'es-settings-overview',
   templateUrl: './settings-overview.component.html',
   styleUrls: ['./settings-overview.component.scss']
 })
 export class SettingsOverviewComponent implements OnInit, OnDestroy {
   private readonly paramSub: Subscription;
 
-  settings$: Observable<Settings>;
+  settingsSub: Subscription;
+  settings: Settings;
   selected = 0;
+  serverTypeText: string;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly settingsFacade: SettingsFacade) {
-    this.settings$ = this.settingsFacade.getSettings();
+    this.settingsSub = this.settingsFacade.getSettings().subscribe((settings: Settings) => {
+      this.settings = settings;
+      this.serverTypeText = MediaServerTypeSelector.getServerTypeString(this.settings.mediaServer.serverType);
+    });
+
     this.paramSub = this.activatedRoute.params.subscribe(params => {
-      const tab = params['tab'];
+      const tab = params.tab;
       switch (tab) {
       case 'emby':
         this.selected = 1;
@@ -48,6 +55,10 @@ export class SettingsOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.paramSub !== undefined) {
       this.paramSub.unsubscribe();
+    }
+
+    if (this.settingsSub !== undefined) {
+      this.settingsSub.unsubscribe();
     }
   }
 }

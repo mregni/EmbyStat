@@ -109,7 +109,7 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "Der API-Schlüssel ist gültig",
     "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
-    "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht beginnen. In diesem Fall beheben Sie die Fehler, drücken Sie zurück und dann weiter.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Speichere Daten",
     "RESCAN": "Erneut scannen",
     "FINISHWITHSYNC": "Synchronisation starten",
@@ -189,8 +189,9 @@
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
       "EMBYPORTREQUIRED": "{{type}} port required.",
       "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Der angegebene API-Schlüssel ist ungültig"
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Der angegebene API-Schlüssel ist ungültig",
+      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -310,7 +311,7 @@
     "FOLDERS": "Ordner"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Öffne Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} Aufgabe wird ausgeführt",
     "NOMISSEDPINGS": "Der Emby Server läuft",
     "ONEMISSEDPING": "Es konnte bei der letzten Überprüfung keine Verbindung zu Emby hergestellt werden!",

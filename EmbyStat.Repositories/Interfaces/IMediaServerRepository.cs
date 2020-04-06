@@ -10,6 +10,8 @@ namespace EmbyStat.Repositories.Interfaces
         EmbyStatus GetEmbyStatus();
         void IncreaseMissedPings();
         void ResetMissedPings();
+        void RemoveAllMediaServerData();
+
         #endregion
 
         #region MediaServer Plugins
@@ -24,8 +26,8 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region MediaServer Users
         void UpsertUsers(IEnumerable<EmbyUser> users);
-        IEnumerable<EmbyUser> GetAllUsers();
-        IEnumerable<EmbyUser> GetAllAdministrators();
+        List<EmbyUser> GetAllUsers();
+        List<EmbyUser> GetAllAdministrators();
         void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);
         EmbyUser GetUserById(string id);
 
@@ -38,5 +40,6 @@ namespace EmbyStat.Repositories.Interfaces
         void UpsertDevices(IEnumerable<Device> devices);
 
         #endregion
+
     }
 }

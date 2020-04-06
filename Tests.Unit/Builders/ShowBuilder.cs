@@ -164,6 +164,12 @@ namespace Tests.Unit.Builders
             return this;
         }
 
+        public ShowBuilder AddUpdateState(DateTime updated)
+        {
+            _show.LastUpdated = updated;
+            return this;
+        }
+
         public Show Build()
         {
             return _show;

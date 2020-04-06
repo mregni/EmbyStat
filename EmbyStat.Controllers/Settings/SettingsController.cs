@@ -16,13 +16,15 @@ namespace EmbyStat.Controllers.Settings
         private readonly ISettingsService _settingsService;
         private readonly ILanguageService _languageService;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly IMediaServerService _mediaServerService;
         private readonly IMapper _mapper;
 
-        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper)
+        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper, IMediaServerService mediaServerService)
         {
             _languageService = languageService;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
+            _mediaServerService = mediaServerService;
             _mapper = mapper;
         }
 
@@ -44,12 +46,15 @@ namespace EmbyStat.Controllers.Settings
 	    [HttpPut]
 	    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
 	    {
-	        var settings = _mapper.Map<UserSettings>(userSettings);
+            var settings = _mapper.Map<UserSettings>(userSettings);
+
             MarkStatisticsAsInvalidIfNeeded(settings);
             settings = await _settingsService.SaveUserSettingsAsync(settings);
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
-
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
+
+            //TODO, check if user checked the new to implement checkbox to reset the database.
+            
             return Ok(settingsViewModel);
         }
 

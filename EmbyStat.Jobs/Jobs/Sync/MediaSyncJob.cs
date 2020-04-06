@@ -134,7 +134,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     foreach (var parent in boxSets)
                     {
-                            movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
+                        movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
                     }
                 }
                 
@@ -156,8 +156,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var updateStartTime = DateTime.Now;
 
             await LogInformation("Logging in on the Tvdb API.");
-            await _tvdbClient.Login(Settings.Tvdb.ApiKey);
-            var showsThatNeedAnUpdate = await _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate, cancellationToken);
+            _tvdbClient.Login(Settings.Tvdb.ApiKey);
+            var showsThatNeedAnUpdate = _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate);
 
             var neededLibraries = libraries.Where(x => Settings.ShowLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
@@ -174,9 +174,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task PerformShowSyncAsync(IReadOnlyList<string> showsThatNeedAnUpdate, Library library, DateTime updateStartTime)
         {
             var showList = _httpClient.GetShows(library.Id);
-            await LogInformation($"Found {showList.Count} show for {library.Name} library");
 
             var grouped = showList.GroupBy(x => x.TVDB).ToList();
+            await LogInformation($"Found {grouped.Count} show for {library.Name} library");
 
             for (var i = 0; i < grouped.Count; i++)
             {
@@ -249,7 +249,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task<Show> ProcessMissingEpisodesAsync(Show show)
         {
             var missingEpisodesCount = 0;
-            var tvdbEpisodes = await _tvdbClient.GetEpisodes(show.TVDB);
+            var tvdbEpisodes = _tvdbClient.GetEpisodes(show.TVDB);
 
             foreach (var tvdbEpisode in tvdbEpisodes)
             {
@@ -323,7 +323,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task CalculateStatistics()
         {
             await LogInformation("Calculating movie statistics");
-
             _statisticsRepository.MarkShowTypesAsInvalid();
             _statisticsRepository.MarkMovieTypesAsInvalid();
 

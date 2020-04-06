@@ -5,7 +5,6 @@ using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using FluentAssertions;
 
 namespace Tests.Unit.Builders
 {
@@ -26,7 +25,7 @@ namespace Tests.Unit.Builders
                 RunTimeTicks = 120000000000,
                 Primary = "primaryImage",
                 IMDB = "0001",
-                Video3DFormat = null,
+                Video3DFormat = Video3DFormat.None,
                 Genres = new[] { "id1" },
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
                 MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } },

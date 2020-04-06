@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-sync-is-running',
+  selector: 'es-sync-is-running',
   templateUrl: './sync-is-running.component.html',
   styleUrls: ['./sync-is-running.component.scss']
 })

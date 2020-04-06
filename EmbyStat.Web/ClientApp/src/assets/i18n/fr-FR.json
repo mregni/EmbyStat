@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "DOWNLOAD": "télécharger",
-    "ANONYMISEDDOWNLOAD": "Téléchargement anonymisé",
+    "ANONYMISEDDOWNLOAD": "Téléchargement anonyme",
     "HIDE": "Cacher",
     "NEXT": "suivant",
     "BACK": "retour",
@@ -35,7 +35,7 @@
     "DURATION": "durée",
     "GRAPHS": "graphiques",
     "PEOPLE": "personnalité",
-    "SUSPICIOUS": "Suspect",
+    "SUSPICIOUS": "suspect",
     "SHOWS": "Séries",
     "TOTALACTORS": "Nombre d'acteurs",
     "TOTALDIRECTORS": "Nombre de directeur",
@@ -50,12 +50,12 @@
     "COLLECTED": "collecté",
     "UPDATES": "Mises à jour",
     "VERSION": "Version",
-    "ACTORSPERGENRE": "Acteur le plus présent par genre",
+    "ACTORSPERGENRE": "Acteur vedette par genre",
     "MINUTES": "minutes",
     "DISKSIZE": "Taille du disque",
     "TOTALDISKSIZE": "Utilisation du disque totale ",
-    "EMBYSERVER": "Emby server",
-    "JELLYFINSERVER": "Jellyfin server"
+    "EMBYSERVER": "Serveur Emby",
+    "JELLYFINSERVER": "Serveur Jellyfin"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -67,7 +67,7 @@
     "MOVIENOTFOUND": "Film introuvable, lancer une synchronisation des médias pourrait résoudre ce problème.",
     "EPISODENOTFOUND": "Épisode introuvable, lancer une synchronisation des médias pourrait résoudre ce problème.",
     "CANTCONNECTTOGITHUB": "Impossible de se connecter à GitHub pour vérifier les mises à jour. Réessayez plus tard.",
-    "NOUPDATEFILE": "Impossible de localiser l’application mise à jour, aucune mise à jour effectuée",
+    "NOUPDATEFILE": "Impossible de localiser l’application de mise à jour, aucune mise à jour effectuée",
     "UPDATEUNPACKERROR": "L'extraction de l'archive de la mise à jour à échouée. Veuillez réessayer.",
     "TVDBLOGINFAILED": "La connexion TVDB a échoué, vérifiez la clé API."
   },
@@ -90,33 +90,33 @@
     "SETTINGS": "Paramètres",
     "PLUGINS": "Extensions",
     "JOBS": "Tâches planifiées",
-    "SERVER": "Server",
+    "SERVER": "Serveur",
     "LOGS": "Journaux",
     "ABOUT": "À propos",
     "USERS": "Utilisateurs"
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "SERVERTYPELABEL": "Server type",
-    "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
+    "SERVERTYPELABEL": "Type de serveur",
+    "SERVERLABEL": "Paramètres serveur",
+    "SAVINGLABEL": "Synchronisation serveur",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "Si votre langue n'est pas mentionnée ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
-    "CHECKINGSTATUS": "Checking {{type}} server ...",
+    "CHECKINGSTATUS": "Vérification du serveur {{type}}...",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
-    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "SERVERRUNNING": "{{type}} server is running",
+    "NOTFOUNDTEXT": "Nous allons maintenant configurer votre connexion {{type}}. Nous avons essayé de détecter automatiquement votre serveur {{type}} sur le réseau, mais nous avons échoué. Remplissez tous les champs pour qu'EmbyStat puisse trouver votre serveur {{type}}.",
+    "FOUNDTEXT": "Nous avons trouvé un serveur {{type}} nommé {{name}} dans votre réseau et avons entré automatiquement l'Url dans le formulaire. N'hésitez pas à l'ajuster et à remplir le reste du formulaire.",
+    "SERVERRUNNING": "Le serveur {{type}} est en cours d’exécution",
     "KEYISVALID": "La clé de l'API est valide",
     "PLUGININSTALLED": "Le module EmbyStat a été trouvé sur le serveur Emby",
-    "SAVINGINSTRUCTIONS": "Si quelque chose échoue, vous ne pourrez pas commencer à utiliser EmbyStat. Dans ce cas, corrigez les erreurs, appuyez sur précédent et suivant.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Enregistrement des données",
     "RESCAN": "Re-scanner",
     "FINISHWITHSYNC": "Démarrer la synchronisation",
     "FINISHED": "Tous les paramètres sont enregistrés. Vous pouvez commencer à utiliser le serveur Emby maintenant. Profitez de vos nouvelles statistiques!",
     "FINISHEXPLANATION": "La meilleure chose à faire est de démarrer une tâche de synchronisation multimédia. EmbyStat commencera à télécharger toutes les données de votre serveur Emby. Gardez à l'esprit que cette tâche peut prendre du temps en fonction de la taille de votre collection. Si vous ne voulez pas commencer la synchronisation maintenant, cliquez simplement sur Terminer. Vous pourez le démarrer manuellement plus tard en accédant à la page Tâches.",
     "JELLYFIN": {
-      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+      "ADMINTEXT": "Parce que vous utilisez Jellyfin, vous devez fournir un compte administrateur que vous souhaitez utiliser pour récupérer les données du serveur. Veuillez sélectionner l'administrateur souhaité dans la liste déroulante."
     }
   },
   "MOVIES": {
@@ -183,14 +183,15 @@
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "EMBY": {
-      "EMBYADDRESS": "{{type}} IP/domain",
-      "EMBYAPIKEY": "{{type}} API key",
-      "EMBYPORT": "{{type}} port",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
-      "WRONGAPIKEY": "La clé API fournie est n'est pas valide"
+      "EMBYADDRESS": "{{type}} IP/Domaine",
+      "EMBYAPIKEY": "Clé API {{type}}",
+      "EMBYPORT": "Port {{type}}",
+      "EMBYADDRESSREQUIRED": "IP/domaine {{type}} requis.",
+      "EMBYPORTREQUIRED": "Port {{type}} requis.",
+      "EMBYAPIKEYREQUIRED": "Clé API {{type}} requise",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "WRONGAPIKEY": "La clé API fournie est n'est pas valide",
+      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -310,7 +311,7 @@
     "FOLDERS": "Dossiers"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Accéder à Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} est en cours d'exécution",
     "NOMISSEDPINGS": "Le serveur Emby est en cours d'exécution",
     "ONEMISSEDPING": "Impossible de se connecter à Emby lors du dernier contrôle!",

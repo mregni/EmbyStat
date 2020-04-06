@@ -79,13 +79,6 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
 
-  - task: CmdLine@2
-    inputs:
-      script: |
-        dir
-        cd publish
-        dir
-
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
     inputs:
@@ -104,11 +97,11 @@ jobs:
   steps:
   - template: './templates/update.version.yml'
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Update appsettings.json file'
     inputs:
       targetType: filePath
-      filePath: $(Paths.Script)/appsettings.sh
+      filePath: $(paths.script)/appsettings.ps1
       arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
@@ -116,7 +109,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '$(webapp.projects)'
+      projects: '$(webapp.project)'
       arguments: '-c Release -r ubuntu-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
@@ -126,7 +119,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '$(updater.projects)'
+      projects: '$(updater.project)'
       arguments: '-c Release -r ubuntu-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
@@ -134,7 +127,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Ubuntu Artifact'
     inputs:
-      PathtoPublish: '$(webapp.path.ubuntu-x64)'
+      PathtoPublish: 'publish'
       ArtifactName: 'EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)'
 
 - job:  create_docker_files
@@ -151,7 +144,7 @@ jobs:
     displayName: 'Copy Docker files'
     inputs:
       targetType: filePath
-      filePath: $(paths.script)/dockerfiles.ps1
+      filePath: ./builds/docker-containers/dockerfiles.ps1
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Docker files'

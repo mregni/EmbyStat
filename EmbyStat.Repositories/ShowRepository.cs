@@ -41,9 +41,9 @@ namespace EmbyStat.Repositories
 
                     var shows = showCollection.Find(x => x.LastUpdated < startTime).ToList();
 
-                    episodeCollection.Delete(Query.In("ShowId", shows.Select(x => x.Id).ConvertToBsonArray()));
-                    seasonCollection.Delete(Query.In("ParentId", shows.Select(x => x.Id.ToString()).ConvertToBsonArray()));
-                    showCollection.Delete(Query.In("_id", shows.Select(x => x.Id).ConvertToBsonArray()));
+                    episodeCollection.DeleteMany(x => shows.Select(y => y.Id).Any(y => y == x.ShowId));
+                    seasonCollection.DeleteMany(x => shows.Select(y => y.Id).Any(y => y == x.ParentId));
+                    showCollection.DeleteMany(x => shows.Select(y => y.Id).Any(y => y == x.Id));
                 }
             });
         }
@@ -72,6 +72,23 @@ namespace EmbyStat.Repositories
             });
         }
 
+        public void RemoveShows()
+        {
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var episodeCollection = database.GetCollection<Episode>();
+                    var seasonCollection = database.GetCollection<Season>();
+                    var showCollection = database.GetCollection<Show>();
+
+                    episodeCollection.DeleteMany("1=1");
+                    seasonCollection.DeleteMany("1=1");
+                    showCollection.DeleteMany("1=1");
+                }
+            });
+        }
+
         public void InsertShow(Show show)
         {
             ExecuteQuery(() =>
@@ -82,9 +99,9 @@ namespace EmbyStat.Repositories
                     var seasonCollection = database.GetCollection<Season>();
                     var showCollection = database.GetCollection<Show>();
 
-                    episodeCollection.Delete(x => x.ShowId == show.Id);
-                    seasonCollection.Delete(x => x.ParentId == show.Id);
-                    showCollection.Delete(x => x.Id == show.Id);
+                    episodeCollection.DeleteMany(x => x.ShowId == show.Id);
+                    seasonCollection.DeleteMany(x =>  x.ParentId == show.Id);
+                    showCollection.DeleteMany(x => x.Id == show.Id);
                     
                     episodeCollection.Insert(show.Episodes);
                     seasonCollection.Insert(show.Seasons);
@@ -112,7 +129,7 @@ namespace EmbyStat.Repositories
 
                     if (libraryIds.Any())
                     {
-                        return collection.Find(Query.In("CollectionId", libraryIds.ConvertToBsonArray())).ToList();
+                        return collection.Find(x => libraryIds.Any(y => y == x.CollectionId)).ToList();
                     }
 
                     return collection.FindAll().ToList();
@@ -139,7 +156,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Episode>();
-                    return collection.Find(Query.EQ("ShowId", showId)).OrderBy(x => x.IndexNumber).ToList();
+                    return collection.Find(x => x.ShowId == showId).OrderBy(x => x.IndexNumber).ToList();
                 }
             });
         }
@@ -151,7 +168,7 @@ namespace EmbyStat.Repositories
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Episode>();
-                    return collection.Find(Query.And(Query.EQ("_id", id), Query.EQ("ShowId", showId))).SingleOrDefault();
+                    return collection.Find(x => x.Id == id && x.ShowId == showId).SingleOrDefault();
                 }
             });
         }

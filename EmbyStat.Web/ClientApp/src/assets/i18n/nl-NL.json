@@ -109,7 +109,7 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API-sleutel is geldig",
     "PLUGININSTALLED": "EmbyStat plugin gevonden op de Emby server",
-    "SAVINGINSTRUCTIONS": "Als er iets mislukt, kunt u EmbyStat niet gebruiken. Los in dat geval de fouten op, druk op terug en volgende.",
+    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
     "SAVING": "Gegevens aan het opslaan",
     "RESCAN": "Opnieuw scannen",
     "FINISHWITHSYNC": "Start synchronisatie",
@@ -189,8 +189,9 @@
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
       "EMBYPORTREQUIRED": "{{type}} port required.",
       "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Opgegeven API-sleutel is niet geldig"
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "WRONGAPIKEY": "Opgegeven API-sleutel is niet geldig",
+      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -310,7 +311,7 @@
     "FOLDERS": "Mappen"
   },
   "TOOLBAR": {
-    "GOTOEMBY": "Ga naar Emby",
+    "GOTOMEDIASERVER": "Go to {{type}}",
     "JOBISRUNNING": "{{job}} taak wordt uitgevoerd",
     "NOMISSEDPINGS": "Emby server is actief",
     "ONEMISSEDPING": "Kon bij de laatste controle geen verbinding maken met Emby!",

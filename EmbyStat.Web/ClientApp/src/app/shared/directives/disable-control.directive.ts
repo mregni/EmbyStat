@@ -1,15 +1,24 @@
-import { Directive, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-@Directive({
-// tslint:disable-next-line: directive-selector
-    selector: '[disableControl]'
+@Component({
+  selector: 'es-disable-form',
+  styles: [`
+      fieldset {
+        display: block;
+        margin: unset;
+        padding: unset;
+        border: unset;
+      }
+    `],
+  template: `
+      <fieldset [disabled]="state">
+        <ng-content></ng-content>
+      </fieldset>
+    `
 })
-export class DisableControlDirective {
-    @Input() set disableControl(condition: boolean) {
-        const action = condition ? 'disable' : 'enable';
-        this.ngControl.control[action]();
-    }
-
-    constructor(private ngControl: NgControl) { }
+export class DisableFormComponent {
+  // tslint:disable-next-line:no-input-rename
+  @Input('disableForm') state: boolean;
+  constructor() { }
 }

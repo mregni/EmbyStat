@@ -14,7 +14,7 @@ import { PageService } from '../../../../shared/services/page.service';
 import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
-  selector: 'app-user-detail',
+  selector: 'es-user-detail',
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
 })

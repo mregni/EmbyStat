@@ -18,7 +18,7 @@ import { MediaServerService } from '../../../../shared/services/media-server.ser
 import { PageService } from '../../../../shared/services/page.service';
 
 @Component({
-  selector: 'app-user-views-detail',
+  selector: 'es-user-views-detail',
   templateUrl: './user-views-detail.component.html',
   styleUrls: ['./user-views-detail.component.scss']
 })
@@ -34,14 +34,14 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
   embyServerInfo: ServerInfo;
   embyServerInfoSub: Subscription;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly mediaServerService: MediaServerService,
-    private readonly embyServerInfoFacade: EmbyServerInfoFacade,
-    private readonly settingsFacade: SettingsFacade,
-    private readonly pageService: PageService) {
+              private readonly router: Router,
+              private readonly mediaServerService: MediaServerService,
+              private readonly embyServerInfoFacade: EmbyServerInfoFacade,
+              private readonly settingsFacade: SettingsFacade,
+              private readonly pageService: PageService) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
     this.pageService.pageChanged('views');
 
@@ -50,7 +50,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
     });
 
     this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
-      const id = params['id'];
+      const id = params.id;
       if (!!id) {
         this.dataSource = new MatTableDataSource([]);
         this.dataSource.paginator = this.paginator;

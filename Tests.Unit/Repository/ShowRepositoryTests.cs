@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
@@ -138,13 +139,13 @@ namespace Tests.Unit.Repository
         }
 
         [Fact]
-        public void RemoveShows_Should_Remove_All_Shows()
+        public void RemoveShowsThatAreNotUpdated_Should_Remove_All_Shows_That_Are_Not_Updated()
         {
             RunTest(() =>
             {
                 var now = DateTime.Now;
-                var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
+                var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddUpdateState(now.AddDays(-1)).Build();
+                var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddUpdateState(now.AddDays(1)).Build();
 
                 _showRepository.InsertShow(showOne);
                 _showRepository.InsertShow(showTwo);
@@ -156,11 +157,15 @@ namespace Tests.Unit.Repository
 
                 var shows = _showRepository.GetAllShows(new string[0], true, true);
                 shows.Should().NotContainNulls();
-                shows.Should().BeEmpty();
+                shows.Count.Should().Be(1);
 
                 var episodes = _showRepository.GetAllEpisodesForShow(showOne.Id);
                 episodes.Should().NotContainNulls();
                 episodes.Should().BeEmpty();
+
+                episodes = _showRepository.GetAllEpisodesForShow(showTwo.Id);
+                episodes.Should().NotContainNulls();
+                episodes.Should().NotBeEmpty();
             });
         }
 
@@ -568,6 +573,26 @@ namespace Tests.Unit.Repository
 
                 show.Should().NotBeNull();
                 show.Id.Should().Be(showOne.Id);
+            });
+        }
+
+        
+        [Fact]
+        public void RemoveShows_Should_Remove_All_Shows()
+        {
+            RunTest(() =>
+            {
+                var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
+                var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCreateDate(new DateTime(2000, 1, 1)).Build();
+                var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCreateDate(new DateTime(2017, 1, 1)).Build();
+                _showRepository.InsertShow(showOne);
+                _showRepository.InsertShow(showTwo);
+                _showRepository.InsertShow(showThree);
+
+                _showRepository.RemoveShows();
+
+                var shows = _showRepository.GetAllShows(new List<string>(), false, false);
+                shows.Count.Should().Be(0);
             });
         }
     }

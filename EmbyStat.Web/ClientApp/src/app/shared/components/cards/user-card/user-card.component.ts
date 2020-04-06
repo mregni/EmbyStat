@@ -8,9 +8,9 @@ import { MediaServerUser } from '../../../models/media-server/media-server-user'
 import { Settings } from '../../../models/settings/settings';
 
 @Component({
-  selector: 'app-user-card',
+  selector: 'es-user-card',
   templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss']
+  styleUrls: ['../number-card/number-card.component.scss']
 })
 export class UserCardComponent implements OnDestroy {
   private settingsSub: Subscription;

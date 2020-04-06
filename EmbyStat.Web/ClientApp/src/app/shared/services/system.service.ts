@@ -25,8 +25,8 @@ export class SystemService {
   ping(): Observable<void> {
     const headers = new HttpHeaders({
       'Cache-Control': 'no-cache',
-      'Pragma': 'no-cache'
+      Pragma: 'no-cache'
     });
-    return this.http.get<void>(this.pingUrl, { headers: headers});
+    return this.http.get<void>(this.pingUrl, { headers });
   }
 }

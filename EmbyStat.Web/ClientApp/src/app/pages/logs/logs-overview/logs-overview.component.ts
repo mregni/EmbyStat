@@ -7,7 +7,7 @@ import { LogFile } from '../../../shared/models/logs/log-file';
 import { LogService } from '../service/logs.service';
 
 @Component({
-  selector: 'app-logs-overview',
+  selector: 'es-logs-overview',
   templateUrl: './logs-overview.component.html',
   styleUrls: ['./logs-overview.component.scss']
 })

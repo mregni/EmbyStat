@@ -73,7 +73,7 @@ export function embyServerInfoReducer(state: ServerInfo = INITIAL_STATE, action:
     }
 }
 
-export namespace EmbyServerInfoQuery {
-    export const getInfo = (state: ApplicationState) => state.embyServerInfo;
-    export const getLoaded = (state: ApplicationState) => state.embyServerInfo.isLoaded;
+export class EmbyServerInfoQuery {
+    public static getInfo = (state: ApplicationState) => state.embyServerInfo;
+    public static getLoaded = (state: ApplicationState) => state.embyServerInfo.isLoaded;
 }

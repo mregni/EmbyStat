@@ -6,7 +6,7 @@ import { EmbyServerInfoFacade } from '../../../shared/facades/emby-server.facade
 import { ServerInfo } from '../../../shared/models/media-server/server-info';
 
 @Component({
-  selector: 'app-server-overview',
+  selector: 'es-server-overview',
   templateUrl: './server-overview.component.html',
   styleUrls: ['./server-overview.component.scss']
 })

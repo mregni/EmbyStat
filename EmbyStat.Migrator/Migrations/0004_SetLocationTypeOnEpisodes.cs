@@ -14,14 +14,15 @@ namespace EmbyStat.Migrator.Migrations
         {
             try
             {
-                var dbPath = Path.Combine(AppSettings.Dirs.Config, AppSettings.DatabaseFile).GetLocalPath();
-                var context = new LiteDatabase(dbPath);
-
-                var episodeCollection = context.GetCollection("Episode");
-                foreach (var episode in episodeCollection.FindAll())
+                var dbPath = Path.Combine(AppSettings.Dirs.Data, AppSettings.DatabaseFile);
+                using (var context = new LiteDatabase($"FileName={dbPath};"))
                 {
-                    episode["LocationType"] = (int) LocationType.Disk;
-                    episodeCollection.Update(episode);
+                    var episodeCollection = context.GetCollection("Episode");
+                    foreach (var episode in episodeCollection.FindAll())
+                    {
+                        episode["LocationType"] = (int) LocationType.Disk;
+                        episodeCollection.Update(episode);
+                    }
                 }
             }
             catch (Exception ex)

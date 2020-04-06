@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Net;
 using FluentAssertions;
-using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Querying;
 using Moq;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Serialization;
-using Tests.Unit.Builders;
-using Tests.Unit.Helpers;
 using Xunit;
 
 namespace Tests.Unit.Clients
@@ -58,7 +48,7 @@ namespace Tests.Unit.Clients
         [Fact]
         public void PingEmby_Should_Return_Emby_String()
         {
-            var client = CreateStringClient("Emby server");
+            var client = CreateStringClient("Emby Server");
             var result = client.Ping();
 
             result.Should().Be(true);

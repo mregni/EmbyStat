@@ -22,17 +22,8 @@ namespace EmbyStat.Repositories.Helpers
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<T>();
-
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.PremiereDate != null && libraryIds.Any(y => x.CollectionId == y))
-                            .OrderByDescending(x => x.PremiereDate)
-                            .FirstOrDefault();
-                    }
-
-                    return collection
-                        .Find(x => x.PremiereDate != null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.PremiereDate != null)
                         .OrderByDescending(x => x.PremiereDate)
                         .FirstOrDefault();
                 }
@@ -46,17 +37,8 @@ namespace EmbyStat.Repositories.Helpers
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<T>();
-
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.PremiereDate != null && libraryIds.Any(y => x.CollectionId == y))
-                            .OrderBy(x => x.PremiereDate)
-                            .FirstOrDefault();
-                    }
-
-                    return collection
-                        .Find(x => x.PremiereDate != null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.PremiereDate != null)
                         .OrderBy(x => x.PremiereDate)
                         .FirstOrDefault();
                 }
@@ -70,16 +52,8 @@ namespace EmbyStat.Repositories.Helpers
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<T>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => x.CollectionId == y))
-                            .OrderByDescending(x => x.CommunityRating)
-                            .FirstOrDefault();
-                    }
-
-                    return collection
-                        .Find(x => x.CommunityRating != null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.CommunityRating != null)
                         .OrderByDescending(x => x.CommunityRating)
                         .FirstOrDefault();
                 }
@@ -93,16 +67,8 @@ namespace EmbyStat.Repositories.Helpers
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<T>();
-                    if (libraryIds.Any())
-                    {
-                        return collection
-                            .Find(x => x.CommunityRating != null && libraryIds.Any(y => x.CollectionId == y))
-                            .OrderBy(x => x.CommunityRating)
-                            .FirstOrDefault();
-                    }
-
-                    return collection
-                        .Find(x => x.CommunityRating != null)
+                    return GetWorkingLibrarySet(collection, libraryIds)
+                        .Where(x => x.CommunityRating != null)
                         .OrderBy(x => x.CommunityRating)
                         .FirstOrDefault();
                 }
@@ -157,7 +123,7 @@ namespace EmbyStat.Repositories.Helpers
                 using (var database = Context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<T>();
-                    return collection.FindAll().Count(x => x.People.Any(y => y.Id == personId));
+                    return collection.FindAll().Count(x => x.People.Any(y => personId == y.Id));
                 }
             });
         }
