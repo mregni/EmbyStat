@@ -189,7 +189,7 @@
       "EMBYADDRESSREQUIRED": "IP/DOMÍNIO requerido.",
       "EMBYPORTREQUIRED": "Ip/Domínio requerido.",
       "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
-      "APIKEYHINT": "Vá em Avançado -> Segurança e clique em Chaves de API para gerar sua nova chave API.",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
       "WRONGAPIKEY": "A chave da API fornecida não é válida",
       "CHANGESERVERTYPE": "Você configurou um servidor {{currentType}}, se quiser mudar para {{newType}}, precisará reinstalar o aplicativo."
     },
