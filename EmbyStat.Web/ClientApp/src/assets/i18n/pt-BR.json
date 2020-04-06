@@ -54,8 +54,8 @@
     "MINUTES": "minutos",
     "DISKSIZE": "Tamanho do disco",
     "TOTALDISKSIZE": "Tamanho total do disco",
-    "EMBYSERVER": "Emby server",
-    "JELLYFINSERVER": "Jellyfin server"
+    "EMBYSERVER": "Servidor Emby",
+    "JELLYFINSERVER": "Servidor Jellyfin"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Opa, recebemos um erro no backend, por favor, tente novamente. Se continuar a falhar, por favor, verifique os logs para mais detalhes.",
@@ -90,33 +90,33 @@
     "SETTINGS": "Configurações",
     "PLUGINS": "Plugins",
     "JOBS": "Tarefas",
-    "SERVER": "Server",
+    "SERVER": "Servidor",
     "LOGS": "Registros",
     "ABOUT": "Sobre",
     "USERS": "Usuários"
   },
   "WIZARD": {
     "INTROLABEL": "Introdução",
-    "SERVERTYPELABEL": "Server type",
-    "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
+    "SERVERTYPELABEL": "Tipo de Servidor",
+    "SERVERLABEL": "Configurações do servidor",
+    "SAVINGLABEL": "Sincronizar o servidor",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "Se o seu idioma não for mencionado ou não estiver completo, sinta-se à vontade para me ajudar a traduzir o aplicativo em seu idioma no <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Checking {{type}} server ...",
+    "CHECKINGSTATUS": "Verificando o servidor Emby ...",
     "INTROTEXT": "Bem-vindo ao assistente do servidor EmbyStat.<br/><br/>Com este assistente vamos configurar as configurações básicas para que você possa começar a trabalhar com o EmbyStat sem muita dor de cabeça. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
-    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "SERVERRUNNING": "{{type}} server is running",
+    "NOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
+    "FOUNDTEXT": "Encontramos um servidor Emby em sua rede e inserimos a Url já no formulário. Sinta-se à vontade para ajustar isso e preencher o restante do formulário.",
+    "SERVERRUNNING": "O Servidor está em execução",
     "KEYISVALID": "A chave da API é válida",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado no servidor Emby",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
+    "SAVINGINSTRUCTIONS": "Se algo falhar, você não poderá começar a usar o EmbyStat. Nesse caso, corrija os erros, pressione voltar e avançar.",
     "SAVING": "Salvando dados...",
     "RESCAN": "Verificar novamente",
     "FINISHWITHSYNC": "Gerenciar a sincronização",
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor Emby agora. Aproveite suas novas estatísticas!",
     "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar uma tarefa de sincronização de mídia. EmbyStat irá iniciar o download de todos os dados do seu servidor Emby. Tenha em mente que essa tarefa pode levar muito tempo dependendo do tamanho da sua coleção. Se você não quiser iniciar um passeio de sincronização agora basta clicar em Concluir. Você pode iniciá-lo manualmente mais tarde, navegando até a página Tarefas.",
     "JELLYFIN": {
-      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+      "ADMINTEXT": "Como você está usando o Jellyfin, é necessário fornecer uma conta de administrador que você deseja usar para buscar dados do servidor. Selecione o administrador desejado na lista suspensa."
     }
   },
   "MOVIES": {
@@ -183,15 +183,15 @@
       "COLLECTIONTYPES": "Selecione todos os tipos de coleção Emby que você deseja selecionar na lista suspensa de coleção na página de estatísticas do filme."
     },
     "EMBY": {
-      "EMBYADDRESS": "{{type}} IP/domain",
-      "EMBYAPIKEY": "{{type}} API key",
-      "EMBYPORT": "{{type}} port",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "EMBYADDRESS": "IP/Domínio",
+      "EMBYAPIKEY": "Chave da API",
+      "EMBYPORT": "Porta",
+      "EMBYADDRESSREQUIRED": "IP/DOMÍNIO requerido.",
+      "EMBYPORTREQUIRED": "Ip/Domínio requerido.",
+      "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
+      "APIKEYHINT": "Vá em Avançado -> Segurança e clique em Chaves de API para gerar sua nova chave API.",
       "WRONGAPIKEY": "A chave da API fornecida não é válida",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "CHANGESERVERTYPE": "Você configurou um servidor {{currentType}}, se quiser mudar para {{newType}}, precisará reinstalar o aplicativo."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -311,7 +311,7 @@
     "FOLDERS": "Pastas"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
+    "GOTOMEDIASERVER": "Ir a {{type}}",
     "JOBISRUNNING": "{{job}} trabalho está em execução",
     "NOMISSEDPINGS": "Servidor Emby está vivo",
     "ONEMISSEDPING": "Não foi possível conectar-se ao Emby na última verificação!",
