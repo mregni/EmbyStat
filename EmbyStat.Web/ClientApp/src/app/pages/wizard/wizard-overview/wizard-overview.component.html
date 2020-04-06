@@ -107,7 +107,7 @@
                   <mat-icon mat-list-icon *ngIf="serverOnline == 2">check</mat-icon>
                   <mat-icon mat-list-icon *ngIf="serverOnline == 1">hourglass_empty</mat-icon>
                   <mat-icon mat-list-icon *ngIf="serverOnline == 0">hourglass_empty</mat-icon>
-                  <p mat-line>{{ 'WIZARD.SERVERRUNNING' | translate }}</p>
+                  <p mat-line>{{ 'WIZARD.SERVERRUNNING' | translate : { type: typeText } }}</p>
                 </mat-list-item>
                 <mat-list-item *ngIf="serverOnline == 2">
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 3" color="warn">error</mat-icon>
