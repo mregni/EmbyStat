@@ -4,7 +4,7 @@
 <div class="content">
   <div class="row">
     <div class="col-12 col-md-6 d-flex flex-column">
-      <app-job-item *ngFor="let job of jobs$ | async" [job]="job"></app-job-item>
+      <es-job-item *ngFor="let job of jobs$ | async" [job]="job"></es-job-item>
     </div>
     <div class="col-12 col-md-6">
       <mat-card>

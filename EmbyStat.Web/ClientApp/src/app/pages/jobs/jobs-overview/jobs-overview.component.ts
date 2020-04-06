@@ -8,7 +8,7 @@ import { JobSocketService } from '../../../shared/services/job-socket.service';
 import { JobService } from '../../../shared/services/job.service';
 
 @Component({
-  selector: 'app-jobs-overview',
+  selector: 'es-jobs-overview',
   templateUrl: './jobs-overview.component.html',
   styleUrls: ['./jobs-overview.component.scss']
 })

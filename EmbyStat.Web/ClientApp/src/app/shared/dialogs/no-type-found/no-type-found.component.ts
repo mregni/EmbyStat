@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { JobService } from '../../services/job.service';
 
 @Component({
-  selector: 'app-no-type-found',
+  selector: 'es-no-type-found',
   templateUrl: './no-type-found.component.html',
   styleUrls: ['./no-type-found.component.scss']
 })

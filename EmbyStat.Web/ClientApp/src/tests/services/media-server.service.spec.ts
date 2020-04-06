@@ -26,8 +26,8 @@ describe('MediaServerService', () => {
             providers: [MediaServerService]
         });
         injector = getTestBed();
-        service = injector.get(MediaServerService);
-        httpMock = injector.get(HttpTestingController);
+        service = injector.inject(MediaServerService);
+        httpMock = injector.inject(HttpTestingController);
     });
 
     it('should be created', () => {

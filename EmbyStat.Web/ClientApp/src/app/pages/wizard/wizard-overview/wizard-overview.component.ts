@@ -12,22 +12,22 @@ import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Language } from '../../../shared/models/language';
 import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
 import {
-  MediaServerUdpBroadcast
+    MediaServerUdpBroadcast
 } from '../../../shared/models/media-server/media-server-udp-broadcast';
-import { Settings } from '../../../shared/models/settings/settings';
 import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
+import { Settings } from '../../../shared/models/settings/settings';
 import { JobService } from '../../../shared/services/job.service';
 import { MediaServerService } from '../../../shared/services/media-server.service';
 import { SideBarService } from '../../../shared/services/side-bar.service';
 
 @Component({
-  selector: 'app-wizard',
+  selector: 'es-wizard',
   templateUrl: './wizard-overview.component.html',
   styleUrls: ['./wizard-overview.component.scss']
 })
 
 export class WizardOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper', { static: false }) private stepper: MatStepper;
+  @ViewChild('stepper') private stepper: MatStepper;
 
   administratorsSub: Subscription;
   administrators: MediaServerUser[];
@@ -74,11 +74,11 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   languages$: Observable<Language[]>;
 
   constructor(private translate: TranslateService,
-    private settingsFacade: SettingsFacade,
-    private mediaServerService: MediaServerService,
-    private sideBarService: SideBarService,
-    private jobService: JobService,
-    private router: Router) {
+              private settingsFacade: SettingsFacade,
+              private mediaServerService: MediaServerService,
+              private sideBarService: SideBarService,
+              private jobService: JobService,
+              private router: Router) {
     this.introFormGroup = new FormGroup({
       name: this.nameControl,
       language: this.languageControl,
@@ -239,6 +239,10 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.jobService.fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e').subscribe().unsubscribe();
     this.sideBarService.openMenu();
     this.router.navigate(['/jobs']);
+  }
+
+  getPage() {
+    return MediaServerTypeSelector.getServerApiPage(this.settings.mediaServer.serverType);
   }
 
   ngOnDestroy() {

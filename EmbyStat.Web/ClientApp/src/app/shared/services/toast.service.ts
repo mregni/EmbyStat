@@ -8,7 +8,7 @@ export class ToastService {
   private hideTranslation: string;
 
   constructor(private snackBar: MatSnackBar,
-    private translate: TranslateService) {
+              private translate: TranslateService) {
     this.translate.get('COMMON.HIDE').subscribe(translation => this.hideTranslation = translation);
   }
 

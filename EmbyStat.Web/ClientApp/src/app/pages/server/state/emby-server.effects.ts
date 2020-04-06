@@ -41,6 +41,6 @@ export class EmbyServerInfoEffects {
           ? new LoadEmbyServerInfoSuccess(serverInfo)
           : new NoNeedEmbyServerInfo();
       }),
-      catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
+      catchError((err: any, caught: Observable<object>) => throwError(new EffectError(err)))
     );
 }

@@ -34,7 +34,7 @@ import { UpdateService } from './shared/services/update.service';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
-  selector: 'app-root',
+  selector: 'es-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

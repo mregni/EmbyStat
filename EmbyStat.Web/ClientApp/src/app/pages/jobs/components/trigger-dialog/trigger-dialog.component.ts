@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { JobService } from '../../../../shared/services/job.service';
 
 @Component({
-  selector: 'app-trigger-dialog',
+  selector: 'es-trigger-dialog',
   templateUrl: './trigger-dialog.component.html',
   styleUrls: ['./trigger-dialog.component.scss']
 })

@@ -10,7 +10,7 @@ import { PersonPoster } from '../../../models/common/person-poster';
 import { Settings } from '../../../models/settings/settings';
 
 @Component({
-  selector: 'app-person-list',
+  selector: 'es-person-list',
   templateUrl: './person-list.component.html',
   styleUrls: ['./person-list.component.scss']
 })

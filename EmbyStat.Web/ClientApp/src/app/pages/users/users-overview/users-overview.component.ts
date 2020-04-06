@@ -13,7 +13,7 @@ import { MediaServerUser } from '../../../shared/models/media-server/media-serve
 import { MediaServerService } from '../../../shared/services/media-server.service';
 
 @Component({
-  selector: 'app-users-overview',
+  selector: 'es-users-overview',
   templateUrl: './users-overview.component.html',
   styleUrls: ['./users-overview.component.scss']
 })

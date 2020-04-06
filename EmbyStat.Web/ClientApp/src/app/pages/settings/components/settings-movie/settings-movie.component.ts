@@ -8,19 +8,19 @@ import { Settings } from '../../../../shared/models/settings/settings';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-movie',
+  selector: 'es-settings-movie',
   templateUrl: './settings-movie.component.html',
   styleUrls: ['./settings-movie.component.scss']
 })
 export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
   @Input() settings: Settings;
+  isSaving = false;
 
   formToShort: FormGroup;
-  toShortMovieControl = new FormControl('', [Validators.required]);
   toShortMovieEnabledControl = new FormControl('', [Validators.required]);
+  toShortMovieControl = new FormControl('', [Validators.required]);
 
   newCollectionList: number[];
-  isSaving = false;
 
   constructor(
     private readonly settingsFacade: SettingsFacade,
@@ -29,6 +29,10 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
       toShortMovie: this.toShortMovieControl,
       toShortMovieEnabled: this.toShortMovieEnabledControl
     });
+
+    this.toShortMovieEnabledControl.valueChanges.subscribe((value: boolean) => {
+      value ? this.toShortMovieControl.enable() : this.toShortMovieControl.disable();
+    });
   }
 
   ngOnInit() {
@@ -36,7 +40,6 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(): void {
     if (this.settings !== undefined) {
-      console.log(this.settings);
       this.toShortMovieControl.setValue(this.settings.toShortMovie);
       this.toShortMovieEnabledControl.setValue(this.settings.toShortMovieEnabled);
     }
@@ -46,12 +49,16 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     if (this.checkForm(this.formToShort)) {
       this.isSaving = true;
 
+      this.formToShort.disable();
       const settings = { ...this.settings };
-      settings.toShortMovie = this.toShortMovieControl.value;
+      settings.toShortMovie = parseInt(this.toShortMovieControl.value, 10);
       settings.toShortMovieEnabled = this.toShortMovieEnabledControl.value;
+
+      console.log(settings);
       this.settingsFacade.updateSettings(settings);
       this.toastService.showSuccess('SETTINGS.SAVED.MOVIES');
       this.isSaving = false;
+      this.formToShort.enable();
     }
   }
 

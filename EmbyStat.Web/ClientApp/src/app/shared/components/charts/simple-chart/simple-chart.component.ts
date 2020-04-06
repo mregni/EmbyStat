@@ -8,7 +8,7 @@ import { Chart } from '../../../models/charts/chart';
 import { OptionsService, Title } from '../options/options';
 
 @Component({
-  selector: 'app-simple-chart',
+  selector: 'es-simple-chart',
   templateUrl: './simple-chart.component.html',
   styleUrls: ['./simple-chart.component.scss']
 })

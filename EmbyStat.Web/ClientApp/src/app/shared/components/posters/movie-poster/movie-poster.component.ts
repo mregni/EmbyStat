@@ -11,7 +11,7 @@ import { MoviePoster } from '../../../models/movie/movie-poster';
 import { Settings } from '../../../models/settings/settings';
 
 @Component({
-  selector: 'app-movie-poster',
+  selector: 'es-movie-poster',
   templateUrl: './movie-poster.component.html',
   styleUrls: ['./movie-poster.component.scss']
 })

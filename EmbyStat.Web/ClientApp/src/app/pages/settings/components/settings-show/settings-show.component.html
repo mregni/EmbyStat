@@ -3,8 +3,8 @@
     <mat-card>
       <mat-card-content>
         <p>{{ 'SETTINGS.SHOW.COLLECTIONTYPES' | translate }}</p>
-        <app-library-selector [list]="settings.showLibraryTypes" (newList)="onLibraryListChanged($event)">
-        </app-library-selector>
+        <es-library-selector [list]="settings.showLibraryTypes" (newList)="onLibraryListChanged($event)">
+        </es-library-selector>
       </mat-card-content>
       <mat-card-actions class="d-flex justify-content-end">
         <button mat-raised-button color="primary"

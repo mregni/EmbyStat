@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-library-selector',
+  selector: 'es-library-selector',
   templateUrl: './library-selector.component.html',
   styleUrls: ['./library-selector.component.scss']
 })

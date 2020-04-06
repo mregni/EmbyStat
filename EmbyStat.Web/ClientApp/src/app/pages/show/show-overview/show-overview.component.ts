@@ -27,7 +27,7 @@ import { ShowStatistics } from '../../../shared/models/show/show-statistics';
 import { ShowService } from '../service/show.service';
 
 @Component({
-  selector: 'app-show-overview',
+  selector: 'es-show-overview',
   templateUrl: './show-overview.component.html',
   styleUrls: ['./show-overview.component.scss'],
   animations: [
@@ -67,19 +67,22 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   showCount: number;
   selectedCollectionList: string[];
 
+  expandedRow: ShowCollectionRow;
+
   private paginator: MatPaginator;
-  @ViewChild(MatPaginator, { static: false }) set pane(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set pane(mp: MatPaginator) {
     this.paginator = mp;
     if (mp !== undefined) {
       this.paginatorPageSub = this.paginator.page.subscribe(() => {
-        this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, this.paginator.pageIndex).subscribe((pageData: ListContainer<ShowCollectionRow>) => {
-          this.setShowTable(pageData);
-        });
+        this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, this.paginator.pageIndex)
+          .subscribe((pageData: ListContainer<ShowCollectionRow>) => {
+            this.setShowTable(pageData);
+          });
       });
     }
   }
 
-  @ViewChild(NgScrollbar, { static: false }) textAreaScrollbar: NgScrollbar;
+  @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
 
   constructor(
     private readonly showService: ShowService,
@@ -114,9 +117,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.librariesFormControl.valueChanges.subscribe((collectionList: string[]) => {
       this.selectedCollectionList = collectionList;
       this.statistics$ = this.showService.getStatistics(collectionList);
-      this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0).subscribe((data: ListContainer<ShowCollectionRow>) => {
-        this.setShowTable(data);
-      });
+      this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0)
+        .subscribe((data: ListContainer<ShowCollectionRow>) => {
+          this.setShowTable(data);
+        });
     });
 
     this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
@@ -129,9 +133,10 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0).subscribe((data: ListContainer<ShowCollectionRow>) => {
-      this.setShowTable(data);
-    });
+    this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0)
+      .subscribe((data: ListContainer<ShowCollectionRow>) => {
+        this.setShowTable(data);
+      });
   }
 
   openShow(id: string): void {

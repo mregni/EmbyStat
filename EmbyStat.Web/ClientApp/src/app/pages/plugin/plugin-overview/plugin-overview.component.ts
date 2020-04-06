@@ -9,7 +9,7 @@ import { Settings } from '../../../shared/models/settings/settings';
 import { MediaServerService } from '../../../shared/services/media-server.service';
 
 @Component({
-  selector: 'app-plugin-overview',
+  selector: 'es-plugin-overview',
   templateUrl: './plugin-overview.component.html',
   styleUrls: ['./plugin-overview.component.scss']
 })

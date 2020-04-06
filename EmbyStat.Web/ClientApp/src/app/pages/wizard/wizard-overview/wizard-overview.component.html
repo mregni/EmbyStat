@@ -15,7 +15,7 @@
                 <mat-form-field>
                   <mat-select formControlName="language">
                     <mat-option *ngFor="let language of languages$ | async" value="{{language.code}}">
-                      <app-language [language]="language"></app-language>
+                      <es-language [language]="language"></es-language>
                     </mat-option>
                   </mat-select>
                   <mat-placeholder>{{'FORMLABELS.LANGUAGE' | translate}}</mat-placeholder>
@@ -82,7 +82,7 @@
                     {{'SETTINGS.EMBY.EMBYAPIKEYREQUIRED' | translate : { type: typeText } }}
                   </mat-error>
                 </mat-form-field>
-                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { type: typeText, url: serverUrl }"></p>
+                <p class="mt-2" [innerHtml]="'SETTINGS.EMBY.APIKEYHINT' | translate : { type: typeText, url: serverUrl, page: getPage() }"></p>
                 <div class="button-container">
                   <button mat-stroked-button color="primary" matStepperPrevious type="button">
                     {{'COMMON.BACK' | translate | capitalizeFirst}}
@@ -114,7 +114,7 @@
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 2">check</mat-icon>
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 1">hourglass_empty</mat-icon>
                   <mat-icon mat-list-icon *ngIf="apiKeyWorks == 0">hourglass_empty</mat-icon>
-                  <p mat-line>{{ 'WIZARD.KEYISVALID' | translate: { user: username } }}</p>
+                  <p mat-line>{{ 'WIZARD.KEYISVALID' | translate }}</p>
                 </mat-list-item>
               </mat-list>
             </div>
