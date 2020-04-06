@@ -5,7 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Card } from '../../../models/common/card';
 
 @Component({
-  selector: 'app-number-card',
+  selector: 'es-number-card',
   templateUrl: './number-card.component.html',
   styleUrls: ['./number-card.component.scss']
 })

@@ -89,13 +89,13 @@ namespace Tests.Unit.Repository
                     statistics.Count.Should().Be(2);
 
                     statistics[0].IsValid.Should().BeFalse();
-                    statistics[0].CalculationDateTime.Should().BeCloseTo(DateTime.Now, 400);
+                    statistics[0].CalculationDateTime.Should().BeCloseTo(DateTime.Now, 1000);
                     statistics[0].CollectionIds.Count().Should().Be(0);
                     statistics[0].JsonResult.Should().Be("statistics");
                     statistics[0].Type.Should().Be(StatisticType.Movie);
 
                     statistics[1].IsValid.Should().BeTrue();
-                    statistics[1].CalculationDateTime.Should().BeCloseTo(DateTime.Now.AddDays(1), 400);
+                    statistics[1].CalculationDateTime.Should().BeCloseTo(DateTime.Now.AddDays(1), 1000);
                     statistics[1].CollectionIds.Count().Should().Be(0);
                     statistics[1].JsonResult.Should().Be("statistics");
                     statistics[1].Type.Should().Be(StatisticType.Movie);

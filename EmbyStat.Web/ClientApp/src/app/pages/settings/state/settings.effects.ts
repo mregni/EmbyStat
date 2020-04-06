@@ -41,7 +41,7 @@ export class SettingsEffects {
           ? new LoadSettingsSuccessAction(settings)
           : new NoNeedSettingsAction();
       }),
-      catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
+      catchError((err: any, caught: Observable<object>) => throwError(new EffectError(err)))
     );
 
   @Effect()
@@ -55,6 +55,6 @@ export class SettingsEffects {
       switchMap((settings: Settings | null) => {
         return [new UpdateSettingsSuccessAction(settings)];
       }),
-      catchError((err: any, caught: Observable<Object>) => throwError(new EffectError(err)))
+      catchError((err: any, caught: Observable<object>) => throwError(new EffectError(err)))
     );
 }

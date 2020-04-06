@@ -11,7 +11,7 @@ import { PersonPoster } from '../../../models/common/person-poster';
 import { Settings } from '../../../models/settings/settings';
 
 @Component({
-  selector: 'app-person-poster',
+  selector: 'es-person-poster',
   templateUrl: './person-poster.component.html',
   styleUrls: ['./person-poster.component.scss']
 })
@@ -26,7 +26,7 @@ export class PersonPosterComponent implements OnDestroy {
   constructor(
     private settingsFacade: SettingsFacade,
     private readonly embyServerInfoFacade: EmbyServerInfoFacade,
-    private _sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer) {
     this.settingsSub = settingsFacade.getSettings().subscribe(data => this.settings = data);
 
     this.embyServerInfoSub = this.embyServerInfoFacade.getEmbyServerInfo().subscribe((info: ServerInfo) => {
@@ -40,12 +40,12 @@ export class PersonPosterComponent implements OnDestroy {
     }
 
     if (this.poster.tag === null) {
-      return this._sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
+      return this.sanitizer.bypassSecurityTrustStyle('url(../../../../assets/images/backgrounds/defaultPerson.png)');
     }
 
     const fullAddress = ConfigHelper.getFullEmbyAddress(this.settings);
     const url = `url(${fullAddress}/emby/Items/${this.poster.mediaId}/Images/Primary?maxHeight=350&tag=${this.poster.tag}&quality=90&enableimageenhancers=false)`;
-    return this._sanitizer.bypassSecurityTrustStyle(url);
+    return this.sanitizer.bypassSecurityTrustStyle(url);
   }
 
   openPerson(): void {

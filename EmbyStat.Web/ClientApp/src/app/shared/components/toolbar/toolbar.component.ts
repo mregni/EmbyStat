@@ -4,14 +4,14 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 
 import { SettingsFacade } from '../../facades/settings.facade';
 import { ConfigHelper } from '../../helpers/config-helper';
+import { MediaServerTypeSelector } from '../../helpers/media-server-type-selector';
 import { Job } from '../../models/jobs/job';
 import { Settings } from '../../models/settings/settings';
 import { JobSocketService } from '../../services/job-socket.service';
 import { MediaServerService } from '../../services/media-server.service';
-import { MediaServerTypeSelector } from '../../helpers/media-server-type-selector';
 
 @Component({
-  selector: 'app-toolbar',
+  selector: 'es-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })

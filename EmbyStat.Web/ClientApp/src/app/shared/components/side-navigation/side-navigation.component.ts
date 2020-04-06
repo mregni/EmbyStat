@@ -6,7 +6,7 @@ import { SettingsFacade } from '../../facades/settings.facade';
 import { Settings } from '../../models/settings/settings';
 
 @Component({
-  selector: 'app-side-navigation',
+  selector: 'es-side-navigation',
   templateUrl: './side-navigation.component.html',
   styleUrls: ['./side-navigation.component.scss']
 })

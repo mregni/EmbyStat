@@ -20,8 +20,8 @@ describe('ShowService', () => {
             providers: [ShowService]
         });
         injector = getTestBed();
-        service = injector.get(ShowService);
-        httpMock = injector.get(HttpTestingController);
+        service = injector.inject(ShowService);
+        httpMock = injector.inject(HttpTestingController);
     });
 
     it('should be created', () => {
@@ -31,7 +31,7 @@ describe('ShowService', () => {
     it('should fetch show libraries', () => {
         const libraryList = [
             new Library(),
-            new Library(),
+            new Library()
         ];
 
         service.getLibraries().subscribe((list: Library[]) => {

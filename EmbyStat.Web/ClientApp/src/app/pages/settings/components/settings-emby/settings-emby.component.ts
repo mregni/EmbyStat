@@ -4,14 +4,14 @@ import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
+import { MediaServerTypeSelector } from '../../../../shared/helpers/media-server-type-selector';
 import { MediaServerLogin } from '../../../../shared/models/media-server/media-server-login';
 import { Settings } from '../../../../shared/models/settings/settings';
 import { MediaServerService } from '../../../../shared/services/media-server.service';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { MediaServerTypeSelector } from '../../../../shared/helpers/media-server-type-selector';
 
 @Component({
-  selector: 'app-settings-emby',
+  selector: 'es-settings-emby',
   templateUrl: './settings-emby.component.html',
   styleUrls: ['./settings-emby.component.scss']
 })
@@ -19,15 +19,15 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
   @Input() settings: Settings;
 
   embyTokenSub: Subscription;
+  isSaving = false;
 
   embyForm: FormGroup;
   embyAddressControl = new FormControl('', [Validators.required]);
   embyPortControl = new FormControl('', [Validators.required]);
-  embyProtocolControl = new FormControl('0', [Validators.required]);
+  embyProtocolControl = new FormControl({ value: '0' }, [Validators.required]);
   embyApiKeyControl = new FormControl('', [Validators.required]);
 
   embyUrl: string;
-  isSaving = false;
   hidePassword = true;
   typeText: string;
   newTypeText: string;
@@ -84,6 +84,10 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
     this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
   }
 
+  getPage() {
+    return MediaServerTypeSelector.getServerApiPage(this.settings.mediaServer.serverType);
+  }
+
   saveEmbyForm() {
     for (const i of Object.keys(this.embyForm.controls)) {
       this.embyForm.controls[i].markAsTouched();
@@ -96,6 +100,8 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
       const url = `${protocol}${this.embyAddressControl.value}:${this.embyPortControl.value}`;
 
       const login = new MediaServerLogin(this.embyApiKeyControl.value, url);
+      this.embyForm.disable();
+
       this.embyTokenSub = this.mediaServerService.testApiKey(login).subscribe((result: boolean) => {
         if (result) {
           const settings = { ...this.settings };
@@ -106,7 +112,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
           mediaServer.serverName = '';
           mediaServer.serverProtocol = this.embyProtocolControl.value;
           mediaServer.apiKey = this.embyApiKeyControl.value;
-
+          console.log(this.embyApiKeyControl.value);
           settings.mediaServer = mediaServer;
 
           this.settingsFacade.updateSettings(settings);
@@ -125,6 +131,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
 
       this.embyTokenSub.add(() => {
         this.isSaving = false;
+        this.embyForm.enable();
       });
     }
   }

@@ -100,7 +100,7 @@ export class DigitOnlyDirective {
     return result;
   }
 
-  private isValidDecimal(string: string): boolean {
-    return string.split(this.decimalSeparator).length <= 2;
+  private isValidDecimal(value: string): boolean {
+    return value.split(this.decimalSeparator).length <= 2;
   }
 }

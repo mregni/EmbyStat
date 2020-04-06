@@ -7,7 +7,7 @@ import { Settings } from '../../../../shared/models/settings/settings';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-show',
+  selector: 'es-settings-show',
   templateUrl: './settings-show.component.html',
   styleUrls: ['./settings-show.component.scss']
 })

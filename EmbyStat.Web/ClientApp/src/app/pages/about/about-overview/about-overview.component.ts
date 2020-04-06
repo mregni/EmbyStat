@@ -3,13 +3,13 @@ import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
 import { environment } from '../../../../environments/environment';
+import { Settings } from '../../../shared/models/settings/settings';
+import { SettingsService } from '../../../shared/services/settings.service';
 import { About } from '../models/about';
 import { AboutService } from '../services/about.service';
-import { SettingsService } from '../../../shared/services/settings.service';
-import { Settings } from '../../../shared/models/settings/settings';
 
 @Component({
-  selector: 'app-about-overview',
+  selector: 'es-about-overview',
   templateUrl: './about-overview.component.html',
   styleUrls: ['./about-overview.component.scss']
 })

@@ -14,9 +14,9 @@ export class TicksToTimePipe implements PipeTransform {
       return `${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
     }
 
-    function pad2(number) {
-      number = `0${number}`;
-      return number.substr(number.length - 2);
+    function pad2(valueToPad: number) {
+      const result = `0${valueToPad}`;
+      return result.substr(result.length - 2);
     }
   }
 }

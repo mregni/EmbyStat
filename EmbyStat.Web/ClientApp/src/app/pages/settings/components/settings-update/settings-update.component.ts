@@ -12,7 +12,7 @@ import { SystemService } from '../../../../shared/services/system.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-settings-update',
+  selector: 'es-settings-update',
   templateUrl: './settings-update.component.html',
   styleUrls: ['./settings-update.component.scss']
 })
@@ -25,7 +25,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
 
   form: FormGroup;
   autoUpdateControl = new FormControl('', [Validators.required]);
-  trainControl = new FormControl('', [Validators.required]);
+  trainControl = new FormControl({value: '', disabled: !this.onMaster}, [Validators.required]);
   updateCheckFailed = false;
 
   trainOptions = [];
@@ -58,11 +58,15 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
       this.autoUpdateControl.setValue(this.settings.autoUpdate);
       this.trainControl.setValue(this.settings.updateTrain);
       this.onMaster = this.settings.updateTrain === 2;
+      if (this.settings.updateTrain !== 2){
+        this.trainControl.disable();
+      }
     }
   }
 
   save() {
     this.isSaving = true;
+    this.form.disable();
 
     const settings = {...this.settings};
     settings.updateTrain = this.trainControl.value;
@@ -70,6 +74,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
     this.settingsFacade.updateSettings(settings);
     this.toastService.showSuccess('SETTINGS.SAVED.UPDATES');
     this.isSaving = false;
+    this.form.enable();
   }
 
   private setUpdateState(state: boolean) {

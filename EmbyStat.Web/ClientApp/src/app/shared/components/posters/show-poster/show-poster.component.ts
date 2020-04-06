@@ -11,7 +11,7 @@ import { Settings } from '../../../models/settings/settings';
 import { ShowPoster } from '../../../models/show/show-poster';
 
 @Component({
-  selector: 'app-show-poster',
+  selector: 'es-show-poster',
   templateUrl: './show-poster.component.html',
   styleUrls: ['./show-poster.component.scss']
 })

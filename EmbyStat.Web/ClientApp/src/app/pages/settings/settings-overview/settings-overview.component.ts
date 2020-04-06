@@ -1,14 +1,14 @@
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MediaServerTypeSelector } from '../../../shared/helpers/media-server-type-selector';
 
+import { MediaServerTypeSelector } from '../../../shared/helpers/media-server-type-selector';
 import { Settings } from '../../../shared/models/settings/settings';
 
 @Component({
-  selector: 'app-settings-overview',
+  selector: 'es-settings-overview',
   templateUrl: './settings-overview.component.html',
   styleUrls: ['./settings-overview.component.scss']
 })
@@ -29,7 +29,7 @@ export class SettingsOverviewComponent implements OnInit, OnDestroy {
     });
 
     this.paramSub = this.activatedRoute.params.subscribe(params => {
-      const tab = params['tab'];
+      const tab = params.tab;
       switch (tab) {
       case 'emby':
         this.selected = 1;

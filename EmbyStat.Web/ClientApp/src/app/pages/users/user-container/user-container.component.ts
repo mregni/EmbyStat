@@ -10,7 +10,7 @@ import { PageService } from '../../../shared/services/page.service';
 import { UserService } from '../../../shared/services/user.service';
 
 @Component({
-  selector: 'app-user-container',
+  selector: 'es-user-container',
   templateUrl: './user-container.component.html',
   styleUrls: ['./user-container.component.scss']
 })
@@ -24,15 +24,15 @@ export class UserContainerComponent implements OnInit, OnDestroy {
   selectedPage: string;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly mediaServerService: MediaServerService,
-    private readonly userService: UserService,
-    private readonly pageService: PageService,
-    private readonly cdRef: ChangeDetectorRef) {
+              private readonly router: Router,
+              private readonly mediaServerService: MediaServerService,
+              private readonly userService: UserService,
+              private readonly pageService: PageService,
+              private readonly cdRef: ChangeDetectorRef) {
     this.userIds$ = this.mediaServerService.getUserIdList();
 
     this.paramSub = this.activatedRoute.params.subscribe(params => {
-      const id = params['id'];
+      const id = params.id;
       this.selectedPage = 'detail';
       if (!!id) {
         this.mediaServerService.getUserById(id).subscribe((user: MediaServerUser) => {
@@ -53,7 +53,7 @@ export class UserContainerComponent implements OnInit, OnDestroy {
   }
 
   onPageSelectionChanged(event: any) {
-      this.router.navigate([`user/${this.selectedUserId}/${event.value}`]);
+    this.router.navigate([`user/${this.selectedUserId}/${event.value}`]);
   }
 
   ngOnInit() {
