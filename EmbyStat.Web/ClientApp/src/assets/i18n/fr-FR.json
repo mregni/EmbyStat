@@ -189,7 +189,7 @@
       "EMBYADDRESSREQUIRED": "IP/domaine {{type}} requis.",
       "EMBYPORTREQUIRED": "Port {{type}} requis.",
       "EMBYAPIKEYREQUIRED": "Clé API {{type}} requise",
-      "APIKEYHINT": "Accédez au menu avancé -> sécurité sur <a href=\"{{url}}/web/index.html#!/apikeys/apikeys.html\" target=\"_blank\">votre serveur {{type}}</a> pour générer un nouveau jeton d'API.",
+      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
       "WRONGAPIKEY": "La clé API fournie est n'est pas valide",
       "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
     },
