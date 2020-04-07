@@ -27,3 +27,13 @@ steps:
   - powershell: echo "##vso[task.setvariable variable=PreReleaseNumber;isOutput=true]$(GitVersion.PreReleaseNumber)"
     name: setPreReleaseNumber
     displayName: 'Set PreReleaseNumber variable'
+    
+  - task: PowerShell@2
+    displayName: 'Printing variables'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host AssemblySemVer: $(GitVersion.AssemblySemVer)
+        Write-host SemVer: $(GitVersion.SemVer)
+        Write-Host MajorMinorPatch: $(GitVersion.MajorMinorPatch)
+        Write-Host: PreReleaseNumber: $(GitVersion.PreReleaseNumber)

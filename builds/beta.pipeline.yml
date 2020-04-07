@@ -14,29 +14,32 @@ jobs:
       demands: java
     steps:
     - template: './templates/version.variables.yml'
+
+    - task: DutchWorkzToolsAllVariables@1
+
     - template: './templates/update.version.yml'
-    - template: './templates/sonarcloud.start.yml'
+    # - template: './templates/sonarcloud.start.yml'
 
-    - task: PowerShell@2
-      displayName: 'Update appsettings.json version'
-      inputs:
-        targetType: filePath
-        filePath: $(paths.script)/appsettings.ps1
-        arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+    # - task: PowerShell@2
+    #   displayName: 'Update appsettings.json version'
+    #   inputs:
+    #     targetType: filePath
+    #     filePath: $(paths.script)/appsettings.ps1
+    #     arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Build web app'
-      inputs:
-        projects: '$(webapp.project)'
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'Build web app'
+    #   inputs:
+    #     projects: '$(webapp.project)'
       
-    - template: ./templates/unit.tests.yml
-    - template: './templates/sonarcloud.end.yml'
+    # - template: ./templates/unit.tests.yml
+    # - template: './templates/sonarcloud.end.yml'
 
-  - template: debian-x64/build.pipeline.yml
-  - template: docker-containers/build.pipeline.yml
-  - template: fedora-x64/build.pipeline.yml
-  - template: linux-arm/build.pipeline.yml
-  - template: linux-arm-x64/build.pipeline.yml
-  - template: ubuntu-x64/build.pipeline.yml
-  - template: win-x64/build.pipeline.yml
+  # - template: debian-x64/build.pipeline.yml
+  # - template: docker-containers/build.pipeline.yml
+  # - template: fedora-x64/build.pipeline.yml
+  # - template: linux-arm/build.pipeline.yml
+  # - template: linux-arm-x64/build.pipeline.yml
+  # - template: ubuntu-x64/build.pipeline.yml
+  # - template: win-x64/build.pipeline.yml
   - template: windows/build.pipeline.yml
