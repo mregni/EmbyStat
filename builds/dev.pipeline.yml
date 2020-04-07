@@ -2,6 +2,10 @@ trigger:
 - develop
 - features/*
 
+pr:
+- develop
+- release/*
+
 variables:
 - group: dev-build
 - group: packages
