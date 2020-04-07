@@ -36,4 +36,4 @@ steps:
         Write-Host AssemblySemVer: $(GitVersion.AssemblySemVer)
         Write-host SemVer: $(GitVersion.SemVer)
         Write-Host MajorMinorPatch: $(GitVersion.MajorMinorPatch)
-        Write-Host: PreReleaseNumber: $(GitVersion.PreReleaseNumber)
+        Write-Host PreReleaseNumber: $(GitVersion.PreReleaseNumber)
