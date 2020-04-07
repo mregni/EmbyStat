@@ -2,6 +2,14 @@ trigger:
 - develop
 - features/*
 
+pr:
+  branches:
+    include:
+    - develop
+    - release/*
+    exclude:
+    - dependabot/*
+    
 variables:
 - group: dev-build
 - group: packages

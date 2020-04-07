@@ -1,6 +1,8 @@
 trigger:
 - release/*
 
+pr: none
+
 variables:
   - group: dev-build
   - group: packages
