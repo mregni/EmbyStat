@@ -11,9 +11,6 @@ jobs:
     GitVersion.PreReleaseNumber: $[ dependencies.main_build.outputs['setPreReleaseNumber.PreReleaseNumber'] ]
   steps:
   - template: '../templates/update.version.yml'
-  
-  - powershell: Write-Host $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)
-    displayName: 'Print version'
 
   - task: PowerShell@2
     displayName: 'Update appsettings.json file'
