@@ -23,7 +23,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(webapp.project)'
-      arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64 -f $(publish.framework) --self-contained true $(publish.parameters)'
+      arguments: '-c Release -r ubuntu-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
     
@@ -33,7 +33,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '$(updater.project)'
-      arguments: '-c Release -r ubuntu-x64 -o publish/ubuntu-x64/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
+      arguments: '-c Release -r ubuntu-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
 
