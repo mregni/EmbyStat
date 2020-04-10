@@ -11,9 +11,6 @@ jobs:
     GitVersion.PreReleaseNumber: $[ dependencies.main_build.outputs['setPreReleaseNumber.PreReleaseNumber'] ]
   steps:
   - template: '../templates/update.version.yml'
-  
-  - powershell: Write-Host $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)
-    displayName: 'Print version'
 
   - task: PowerShell@2
     displayName: 'Update appsettings.json file'
@@ -28,12 +25,18 @@ jobs:
       targetType: filePath
       filePath: './builds/windows/installer-build.ps1'
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)'
+      
+  - task: CmdLine@2
+    inputs:
+      script: |
+        cd $(Build.SourcesDirectory)
+        dir
   
   - task: CopyFiles@2
     displayName: 'Copy installer to artifact folder'
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)'
-      Contents: 'EmbyStat_$(GitVersion.AssemblySemVer)_windows-x64.exe'
+      Contents: 'EmbyStat_$(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)_windows-x64.exe'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: PublishBuildArtifacts@1
