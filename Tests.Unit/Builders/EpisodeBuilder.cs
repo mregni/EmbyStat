@@ -73,6 +73,12 @@ namespace Tests.Unit.Builders
             return this;
         }
 
+        public EpisodeBuilder WithIndexNumberEnd(int index)
+        {
+            _episode.IndexNumberEnd = index;
+            return this;
+        }
+
         public Episode Build()
         {
             return _episode;
