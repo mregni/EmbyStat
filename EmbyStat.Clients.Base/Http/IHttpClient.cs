@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Newtonsoft.Json.Linq;

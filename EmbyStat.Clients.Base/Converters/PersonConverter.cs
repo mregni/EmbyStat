@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Net;
 
 namespace EmbyStat.Clients.Base.Converters
 {
