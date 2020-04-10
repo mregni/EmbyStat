@@ -6,10 +6,10 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using NLog;
 
 namespace EmbyStat.Jobs
 {
@@ -25,25 +25,25 @@ namespace EmbyStat.Jobs
         protected UserSettings Settings { get; set; }
         protected bool EnableUiLogging { get; set; }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, bool enableUiLogging)
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, bool enableUiLogging, Type type, string prefix)
         {
             HubHelper = hubHelper;
             _jobRepository = jobRepository;
             Settings = settingsService.GetUserSettings();
             SettingsService = settingsService;
-            Logger = LogManager.GetCurrentClassLogger();
             EnableUiLogging = enableUiLogging;
+            Logger = LogFactory.CreateLoggerForType(type, prefix);
         }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService)
-            :this(hubHelper, jobRepository, settingsService, true)
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, Type type, string prefix)
+            :this(hubHelper, jobRepository, settingsService, true, type, prefix)
         {
             
         }
 
         public abstract Guid Id { get; }
-        public abstract string JobPrefix { get; }
         public abstract string Title { get; }
+        public abstract string JobPrefix { get; }
         public abstract Task RunJobAsync();
 
         public async Task Execute()
@@ -69,6 +69,11 @@ namespace EmbyStat.Jobs
 
         private async Task PreJobExecution()
         {
+            if (!Settings.WizardFinished)
+            {
+                throw new WizardNotFinishedException("Job not running because wizard is not finished");
+            }
+
             await SendLogProgressToFront(0);
             await LogInformation("Starting job");
 
@@ -77,11 +82,6 @@ namespace EmbyStat.Jobs
             var job = new Job { CurrentProgressPercentage = 0, Id = Id, State = State, StartTimeUtc = StartTimeUtc, EndTimeUtc = null };
 
             _jobRepository.StartJob(job);
-
-            if (!Settings.WizardFinished)
-            {
-                throw new WizardNotFinishedException("Job not running because wizard is not finished");
-            }
         }
 
         private async Task PostJobExecution()
@@ -123,20 +123,20 @@ namespace EmbyStat.Jobs
         {
             if (EnableUiLogging)
             {
-                Logger.Info($"{JobPrefix}\t{message}");
+                Logger.Info(message);
                 await SendLogUpdateToFront(message, ProgressLogType.Information);
             }
         }
 
         public async Task LogWarning(string message)
         {
-            Logger.Warn($"{JobPrefix}\t{message}");
+            Logger.Warn(message);
             await SendLogUpdateToFront(message, ProgressLogType.Warning);
         }
 
         public async Task LogError(string message)
         {
-            Logger.Error($"{JobPrefix}\t{message}");
+            Logger.Error(message);
             await SendLogUpdateToFront(message, ProgressLogType.Error);
         }
 

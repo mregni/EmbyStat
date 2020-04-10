@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,12 +9,12 @@ using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NLog;
 using RestSharp;
 
 namespace EmbyStat.Clients.Base.Http
@@ -62,7 +62,7 @@ namespace EmbyStat.Clients.Base.Http
 
         public BaseHttpClient(IRestClient client)
         {
-            Logger = LogManager.GetCurrentClassLogger();
+            Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
             RestClient = client.Initialize();
         }
 
@@ -134,7 +134,9 @@ namespace EmbyStat.Clients.Base.Http
 
             try
             {
-                return ExecuteCall(request) == message;
+                var result = ExecuteCall(request);
+                Logger.Debug($"Ping returned {result}");
+                return result == message;
             }
             catch (Exception)
             {

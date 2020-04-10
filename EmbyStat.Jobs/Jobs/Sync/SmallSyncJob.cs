@@ -14,7 +14,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
     {
         private readonly IMediaServerService _mediaServerService;
 
-        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, IMediaServerService mediaServerService) : base(hubHelper, jobRepository, settingsService)
+        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+            IMediaServerService mediaServerService) 
+            : base(hubHelper, jobRepository, settingsService, typeof(SmallSyncJob), Constants.LogPrefix.SmallEmbySyncJob)
         {
             _mediaServerService = mediaServerService;
             Title = jobRepository.GetById(Id).Title;

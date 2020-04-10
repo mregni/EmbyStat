@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmbyStat.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using Rollbar;
@@ -9,7 +10,7 @@ namespace EmbyStat.Common.Exceptions
     {
         public override void OnException(ExceptionContext context)
         {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
+            var logger = LogFactory.CreateLoggerForType(typeof(BusinessExceptionFilterAttribute), "EXCEPTION-HANDLER");
 
             ApiError apiError;
             if (context.Exception is BusinessException ex)
@@ -34,8 +35,8 @@ namespace EmbyStat.Common.Exceptions
                 }
 
                 context.HttpContext.Response.StatusCode = ex.StatusCode;
-                logger.Warn($"{Constants.LogPrefix.ExceptionHandler}\tApplication thrown error: {ex.Message}", ex);
-                logger.Warn($"{Constants.LogPrefix.ExceptionHandler}\tFrontend will know what to do with this!");
+                logger.Warn(ex, $"Application thrown error: {ex.Message}");
+                logger.Warn($"Frontend will know what to do with this!");
             }
             else
             {

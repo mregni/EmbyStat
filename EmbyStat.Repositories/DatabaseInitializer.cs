@@ -4,10 +4,9 @@ using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Tasks.Enum;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
-using NLog;
-using Logger = NLog.Logger;
 
 namespace EmbyStat.Repositories
 {
@@ -19,7 +18,7 @@ namespace EmbyStat.Repositories
         public DatabaseInitializer(IDbContext context)
         {
             _context = context;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(DatabaseInitializer), "DATABASE-SEEDER");
         }
 
         public void CreateIndexes()
@@ -98,7 +97,7 @@ namespace EmbyStat.Repositories
 
         private void SeedLanguages()
         {
-            _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding languages");
+            _logger.Debug("Seeding languages");
             using (var context = _context.CreateDatabaseContext())
             {
                 var collection = context.GetCollection<Language>();
@@ -135,7 +134,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = _context.CreateDatabaseContext())
             {
-                _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding MediaServer status");
+                _logger.Debug("Seeding MediaServer status");
                 var collection = context.GetCollection<EmbyStatus>();
 
                 if (!collection.Exists(Query.All()))
@@ -150,7 +149,7 @@ namespace EmbyStat.Repositories
         {
             using (var context = _context.CreateDatabaseContext())
             {
-                _logger.Debug($"{Constants.LogPrefix.DatabaseSeeder}\tSeeding job data");
+                _logger.Debug("Seeding job data");
                 var collection = context.GetCollection<Job>();
 
                 if (!collection.Exists(Query.All()))

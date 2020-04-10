@@ -91,7 +91,7 @@ namespace EmbyStat.Web
             services.AddCors();
 
             services.RegisterApplicationDependencies();
-            services.AddHostedService<WebSocketService>();
+            //services.AddHostedService<WebSocketService>();
             services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
         }
 

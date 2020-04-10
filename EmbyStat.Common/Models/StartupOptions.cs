@@ -1,6 +1,7 @@
 ﻿using CommandLine;
+using NLog;
 
-namespace EmbyStat.Web
+namespace EmbyStat.Common.Models
 {
     public class StartupOptions
     {
@@ -21,5 +22,8 @@ namespace EmbyStat.Web
 
         [Option("service", Required = false, Default = false, HelpText = "Indicate EmbyStat is running as a service")]
         public bool Service { get; set; }
+
+        [Option("log-level", Required = false, Default = 2, HelpText = "Set the proper log level\n1: Debug\n2: Information")]
+        public int LogLevel { get; set; }
     }
 } 

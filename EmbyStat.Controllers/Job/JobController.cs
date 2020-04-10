@@ -22,7 +22,6 @@ namespace EmbyStat.Controllers.Job
         private readonly IJobHubHelper _jobHubHelper;
         private readonly IJobInitializer _jobInitializer;
         private readonly ISettingsService _settingsService;
-        private string LogPrefix => Constants.LogPrefix.JobController;
 
         public JobController(IMapper mapper, IJobService jobService, IJobHubHelper jobHubHelper,
             IJobInitializer jobInitializer, ISettingsService settingsService)
@@ -87,7 +86,7 @@ namespace EmbyStat.Controllers.Job
             }
 
             await Task.Run(() => { RecurringJob.Trigger(job.Id.ToString()); });
-            await _jobHubHelper.BroadCastJobLog(LogPrefix, $"{GetJobTitle(job.Title)} job queued", ProgressLogType.Information);
+            await _jobHubHelper.BroadCastJobLog("JOB CONTROLLER", $"{GetJobTitle(job.Title)} job queued", ProgressLogType.Information);
             return Ok();
         }
 
