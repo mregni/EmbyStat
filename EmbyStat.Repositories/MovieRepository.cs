@@ -5,7 +5,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
-using LiteDB;
 using MoreLinq;
 
 namespace EmbyStat.Repositories
