@@ -124,7 +124,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private Task<int> GetTotalLibraryMovieCount(string parentId)
+        private async Task<int> GetTotalLibraryMovieCount(string parentId)
         {
             var count = _httpClient.GetMovieCount(parentId);
             if (count == 0)
