@@ -33,12 +33,6 @@ jobs:
       filePath: $(paths.script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
 
-  - task: NuGetCommand@2
-    displayName: 'Authenticate with Azure DevOps NuGet'
-    inputs:
-      command: custom
-      arguments: sources update -Name "uping-be" -Username "vsts" -Password "$(System.AccessToken)" -StorePasswordInClearText -ConfigFile ./nuget.config
-
   - task: DotNetCoreCLI@2
     displayName: 'Build web app'
     inputs:
