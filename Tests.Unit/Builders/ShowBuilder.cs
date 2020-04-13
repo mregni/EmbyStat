@@ -12,6 +12,11 @@ namespace Tests.Unit.Builders
     {
         private readonly Show _show;
 
+        public ShowBuilder(Show show)
+        {
+            _show = show;
+        }
+
         public ShowBuilder(string id, string libraryId)
         {
             _show = new Show

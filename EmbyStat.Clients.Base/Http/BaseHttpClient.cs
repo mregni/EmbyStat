@@ -337,7 +337,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.TotalRecordCount;
+            return baseItems?.TotalRecordCount ?? 0;
         }
     }
 }

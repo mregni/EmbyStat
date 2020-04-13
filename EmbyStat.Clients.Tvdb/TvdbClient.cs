@@ -66,9 +66,9 @@ namespace EmbyStat.Clients.Tvdb
                 page.Data
                     .ForEach(x =>
                     {
-                        if (!DateTime.TryParse(x.FirstAired, out _))
+                        if (string.IsNullOrWhiteSpace(x.FirstAired) || !DateTime.TryParse(x.FirstAired, out _))
                         {
-                            x.FirstAired = DateTime.MinValue.ToString("O");
+                            x.FirstAired = DateTime.MaxValue.ToString("O");
                         }
                     });
                 tvdbEpisodes.AddRange(page.Data
