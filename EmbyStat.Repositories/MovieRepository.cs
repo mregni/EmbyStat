@@ -5,7 +5,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
-using LiteDB;
 using MoreLinq;
 
 namespace EmbyStat.Repositories
@@ -169,7 +168,7 @@ namespace EmbyStat.Repositories
                 {
                     var collection = database.GetCollection<Movie>();
 
-                    return GetWorkingLibrarySet<Movie>(collection, libraryIds)
+                    return GetWorkingLibrarySet(collection, libraryIds)
                         .SelectMany(x => x.People)
                         .Where(x => x.Type == type)
                         .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})

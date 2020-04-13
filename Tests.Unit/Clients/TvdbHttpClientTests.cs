@@ -103,7 +103,7 @@ namespace Tests.Unit.Clients
         }
 
         [Fact]
-        public void GetEpisodes_Should_Return_Virtual_Episode_List_With_Wrongly_Formatted_DateTimes()
+        public void GetEpisodes_Should_Return_Virtual_Episode_List_When_FirstAired_Is_Wrong_Format()
         {
             var returnObject = new TvdbEpisodes()
             {
@@ -126,14 +126,34 @@ namespace Tests.Unit.Clients
             var client = CreateClient(returnObject, HttpStatusCode.OK);
 
             var result = client.GetEpisodes("12").ToList();
-            result.Count.Should().Be(1);
+            result.Count.Should().Be(0);
+        }
 
-            result[0].Id.Should().Be(returnObject.Data[0].Id.ToString());
-            result[0].EpisodeNumber.Should().Be(returnObject.Data[0].AiredEpisodeNumber);
-            // ReSharper disable once PossibleInvalidOperationException
-            result[0].FirstAired.Value.Should().Be(DateTime.MinValue);
-            result[0].Name.Should().Be(returnObject.Data[0].EpisodeName);
-            result[0].SeasonNumber.Should().Be(returnObject.Data[0].AiredSeason);
+        [Fact]
+        public void GetEpisodes_Should_Return_Virtual_Episode_List_When_FirstAired_Is_Empty()
+        {
+            var returnObject = new TvdbEpisodes()
+            {
+                Links = new Links
+                {
+                    Next = null
+                },
+                Data = new List<Data>(2)
+                {
+                    new Data
+                    {
+                        Id = 1,
+                        AiredEpisodeNumber = 1,
+                        AiredSeason = 1,
+                        FirstAired = "",
+                        EpisodeName = "test1"
+                    }
+                }
+            };
+            var client = CreateClient(returnObject, HttpStatusCode.OK);
+
+            var result = client.GetEpisodes("12").ToList();
+            result.Count.Should().Be(0);
         }
 
         [Fact]
