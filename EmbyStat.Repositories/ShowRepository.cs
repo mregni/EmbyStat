@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
-using LiteDB;
 
 namespace EmbyStat.Repositories
 {
@@ -102,10 +100,11 @@ namespace EmbyStat.Repositories
                     episodeCollection.DeleteMany(x => x.ShowId == show.Id);
                     seasonCollection.DeleteMany(x =>  x.ParentId == show.Id);
                     showCollection.DeleteMany(x => x.Id == show.Id);
-                    
-                    episodeCollection.Insert(show.Episodes);
-                    seasonCollection.Insert(show.Seasons);
-                    showCollection.Insert(show);
+                    database.Commit();
+
+                    episodeCollection.Upsert(show.Episodes);
+                    seasonCollection.Upsert(show.Seasons);
+                    showCollection.Upsert(show);
                 }
             });
         }

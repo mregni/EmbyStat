@@ -64,7 +64,7 @@ namespace Tests.Unit.Repository
                     statistics.Count.Should().Be(1);
 
                     statistics[0].IsValid.Should().BeTrue();
-                    statistics[0].CalculationDateTime.Should().BeCloseTo(DateTime.Now, 400);
+                    statistics[0].CalculationDateTime.Should().BeCloseTo(DateTime.Now, 1000);
                     statistics[0].CollectionIds.Count().Should().Be(0);
                     statistics[0].JsonResult.Should().Be("statistics");
                     statistics[0].Type.Should().Be(StatisticType.Movie);

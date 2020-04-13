@@ -17,7 +17,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
-using MoreLinq;
 using NLog;
 
 namespace EmbyStat.Services
