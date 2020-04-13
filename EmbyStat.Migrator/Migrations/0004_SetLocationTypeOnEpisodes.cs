@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Migrator.Models;
 using LiteDB;
 
