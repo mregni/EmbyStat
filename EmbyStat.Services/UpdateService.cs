@@ -17,10 +17,10 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Net;
 using Microsoft.Extensions.Hosting;
-using NLog;
 
 namespace EmbyStat.Services
 {
@@ -36,7 +36,7 @@ namespace EmbyStat.Services
             _githubClient = githubClient;
             _settingsService = settingsService;
             _applicationLifetime = appLifetime;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(UpdateService), "UPDATE-SERVICE");
         }
 
         public UpdateResult CheckForUpdate()

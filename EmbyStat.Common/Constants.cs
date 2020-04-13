@@ -66,18 +66,12 @@ namespace EmbyStat.Common
 
         public static class LogPrefix
         {
-            public static string ServerApi => "SERVER-API";
-            public static string DatabaseSeeder => "DATABASE-SEEDER";
             public static string MediaSyncJob => "MEDIASYNC-JOB";
             public static string CheckUpdateJob => "CHECKUDPATE-JOB";
             public static string PingEmbyJob => "PINGEMBYSERVER-JOB";
             public static string SmallEmbySyncJob => "SMALLEMBYSYNC-JOB";
             public static string System => "SYSTEM";
-            public static string EmbyClient => "EMBY-CLIENT";
-            public static string TheTVDBCLient => "THETVDB-CLIENT";
-            public static string ExceptionHandler => "EXCEPTION-HANDLER";
             public static string DatabaseCleanupJob => "DATABASE CLEANUP-JOB";
-            public static string JobController => "JOB CONTROLLER";
         }
 
         public static class JobIds

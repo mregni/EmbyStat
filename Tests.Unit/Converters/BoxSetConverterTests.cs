@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Clients.Base.Converters;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Net;
 using FluentAssertions;
 using Xunit;
 

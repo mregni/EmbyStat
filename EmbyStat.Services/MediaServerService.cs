@@ -13,11 +13,11 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
-using NLog;
 
 namespace EmbyStat.Services
 {
@@ -41,7 +41,7 @@ namespace EmbyStat.Services
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _clientStrategy = clientStrategy;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
 
             var settings = _settingsService.GetUserSettings();
             ChangeClientType(settings.MediaServer?.ServerType);
@@ -59,7 +59,7 @@ namespace EmbyStat.Services
             if (!string.IsNullOrWhiteSpace(result.Address))
             {
                 var serverType = type == ServerType.Emby ? "Emby" : "jellyfin";
-                _logger.Info($"{Constants.LogPrefix.ServerApi}\t{ serverType } server found at: " + result.Address);
+                _logger.Info($"{ serverType } server found at: " + result.Address);
             }
 
             return result;
@@ -78,6 +78,8 @@ namespace EmbyStat.Services
 
         public bool TestNewApiKey(string url, string apiKey)
         {
+            _logger.Debug($"Testing new API key on {url}");
+            _logger.Debug($"API key used: {apiKey}");
             var oldApiKey = _httpClient.ApiKey;
             var oldUrl = _httpClient.BaseUrl;
             _httpClient.ApiKey = apiKey;
@@ -86,11 +88,14 @@ namespace EmbyStat.Services
             var info = _httpClient.GetServerInfo();
             if (info != null)
             {
+                _logger.Debug("new API key works!");
                 return true;
             }
 
             _httpClient.ApiKey = oldApiKey;
             _httpClient.BaseUrl = oldUrl;
+
+            _logger.Debug("new API key not working!");
             return false;
         }
 
@@ -101,6 +106,7 @@ namespace EmbyStat.Services
 
         public bool PingMediaServer(string url)
         {
+            _logger.Debug($"Pinging server on {url}");
             _httpClient.BaseUrl = url;
             return _httpClient.Ping();
         }

@@ -17,7 +17,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
 
         public CheckUpdateJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
             ISettingsService settingsService, IUpdateService updateService) 
-            : base(hubHelper, jobRepository, settingsService)
+            : base(hubHelper, jobRepository, settingsService, typeof(CheckUpdateJob), Constants.LogPrefix.CheckUpdateJob)
         {
             _updateService = updateService;
             _settingsService = settingsService;

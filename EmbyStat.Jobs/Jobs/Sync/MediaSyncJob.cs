@@ -36,7 +36,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IMovieRepository movieRepository, IShowRepository showRepository,
             ILibraryRepository libraryRepository, ITvdbClient tvdbClient, IStatisticsRepository statisticsRepository,
-            IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
+            IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService, 
+            typeof(MediaSyncJob), Constants.LogPrefix.MediaSyncJob)
         {
             _movieRepository = movieRepository;
             _showRepository = showRepository;
@@ -268,7 +269,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 
                 if (season == null)
                 {
-                    Logger.Info($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
+                    Logger.Debug($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
                     season = tvdbEpisode.SeasonNumber.ConvertToSeason(show);
                     show.Seasons.Add(season);
                 }
@@ -276,7 +277,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 if (IsEpisodeMissing(show.Episodes, season, tvdbEpisode))
                 {
                     var episode = tvdbEpisode.ConvertToEpisode(show, season);
-                    Logger.Info($"episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
+                    Logger.Debug($"Episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
                     show.Episodes.Add(episode);
                     missingEpisodesCount++;
                 }

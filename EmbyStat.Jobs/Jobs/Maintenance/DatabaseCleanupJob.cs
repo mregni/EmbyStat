@@ -16,7 +16,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IStatisticsRepository statisticsRepository)
-            : base(hubHelper, jobRepository, settingsService)
+            : base(hubHelper, jobRepository, settingsService, typeof(DatabaseCleanupJob), Constants.LogPrefix.DatabaseCleanupJob)
         {
             _statisticsRepository = statisticsRepository;
             Title = jobRepository.GetById(Id).Title;
