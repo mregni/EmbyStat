@@ -37,6 +37,23 @@ namespace Tests.Unit.Extensions
         }
 
         [Fact]
+        public void GetNonSpecialEpisodeCount_Should_Count_Multi_Episode_Entries()
+        {
+            var id = Guid.NewGuid().ToString();
+            var episode = new EpisodeBuilder(Guid.NewGuid().ToString(), id, Guid.NewGuid().ToString())
+                .WithIndexNumber(8)
+                .WithIndexNumberEnd(9)
+                .Build();
+
+            var show = new ShowBuilder(_show)
+                .AddEpisode(episode)
+                .Build();
+
+            var count = show.GetNonSpecialEpisodeCount(false);
+            count.Should().Be(9);
+        }
+
+        [Fact]
         public void GetNonSpecialSeasonCount_Should_Only_Include_Normal_Seasons()
         {
             var count = _show.GetNonSpecialSeasonCount();
