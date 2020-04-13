@@ -98,11 +98,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var neededLibraries = libraries.Where(x => Settings.MovieLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
-                var totalCount = GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                var totalCount = await GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                if (totalCount == 0)
+                {
+                    continue;;
+                }
+
                 await LogInformation($"Found {totalCount} movies for {neededLibraries[i].Name} library");
                 var processed = 0;
                 var j = 0;
-                var limit = 100;
+                const int limit = 100;
                 do
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -119,9 +124,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private int GetTotalLibraryMovieCount(string parentId)
+        private async Task<int> GetTotalLibraryMovieCount(string parentId)
         {
-            return _httpClient.GetMovieCount(parentId);
+            var count = _httpClient.GetMovieCount(parentId);
+            if (count == 0)
+            {
+               await LogWarning($"0 movies found in parent with id {parentId}. Propably means something is wrong with the HTTP call.");
+            }
+
+            return count;
         }
 
         private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, int startIndex, int limit)
