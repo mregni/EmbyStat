@@ -79,6 +79,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
 
+            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}{request.Resource}");
             var result = RestClient.Execute<T>(request);
             return result.Data;
         }
@@ -87,6 +88,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
 
+            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}/{request.Resource}");
             var result = RestClient.Execute(request);
             return result.Content;
         }
@@ -135,7 +137,7 @@ namespace EmbyStat.Clients.Base.Http
             try
             {
                 var result = ExecuteCall(request);
-                Logger.Debug($"Ping returned {result}");
+                Logger.Debug($"Ping returned: {result}");
                 return result == message;
             }
             catch (Exception)

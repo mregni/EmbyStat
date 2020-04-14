@@ -242,7 +242,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
   }
 
   getPage() {
-    return MediaServerTypeSelector.getServerApiPage(this.settings.mediaServer.serverType);
+    return MediaServerTypeSelector.getServerApiPage(this.type);
   }
 
   ngOnDestroy() {
