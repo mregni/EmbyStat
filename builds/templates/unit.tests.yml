@@ -1,5 +1,5 @@
 steps: 
-  - script: 'npm install tslint typescript @angular/cli -g'
+  - script: 'npm install eslint typescript @angular/cli -g'
     workingDirectory: EmbyStat.Web/ClientApp
     displayName: 'Install FE test packages'
     
@@ -10,9 +10,9 @@ steps:
       arguments: '--collect "Code Coverage"'
       testRunTitle: 'Beta unit tests'
 
-  - script: 'tslint -o issues.json -p "tsconfig.json" -t json -c "tslint.json" -e **/*.spec.tsx -e **/*.spec.ts -e **/node_modules/**'
+  - script: 'eslint -f json -o report.json .'
     workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'Run tslint'
+    displayName: 'Run eslint'
 
   - script: 'ng test --code-coverage  --watch=false'
     workingDirectory: EmbyStat.Web/ClientApp
