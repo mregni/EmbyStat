@@ -37,7 +37,7 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
       
-  - template: './templates/npmbuild.yml'
+  - template: '../templates/npmbuild.yml'
     parameters:
       npmBuild: 'run build -- --prod'
 

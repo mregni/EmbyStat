@@ -45,12 +45,6 @@ jobs:
   - template: ./templates/unit.tests.yml
   - template: './templates/sonarcloud.end.yml'
 
-  - task: WhiteSource Bolt@20
-    condition: eq(variables['Build.SourceBranchName'], 'develop')
-    displayName: 'Scan for open libraries'
-    inputs:
-      cwd: '$(Build.SourcesDirectory)'
-
 - job:  build_win10_x64
   dependsOn:  main_build
   displayName: 'Build Win10-x64 package'
