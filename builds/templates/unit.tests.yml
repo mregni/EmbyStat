@@ -1,7 +1,11 @@
 steps: 
-  - script: 'npm install eslint typescript @angular/cli -g'
-    workingDirectory: EmbyStat.Web/ClientApp
+  - task: CmdLine@2
     displayName: 'Install FE test packages'
+    inputs:
+      script: |
+        npm install eslint typescript @angular/cli -g
+        npm install --only=dev
+      workingDirectory: 'EmbyStat.Web/ClientApp'
     
   - task: DotNetCoreCLI@2
     displayName: 'Backend unit testing'
