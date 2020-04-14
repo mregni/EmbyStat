@@ -84,7 +84,7 @@ namespace EmbyStat.Web
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist/embystat";
+                configuration.RootPath = "dist";
             });
 
             services.AddSignalR();
@@ -152,11 +152,14 @@ namespace EmbyStat.Web
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
+                    spa.Options.SourcePath = "ClientApp";
                     spa.UseAngularCliServer(npmScript: "start");
+                }
+                else
+                {
+                    spa.Options.SourcePath = "dist";
                 }
             });
 
