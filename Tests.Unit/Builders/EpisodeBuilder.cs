@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Net;
 
 namespace Tests.Unit.Builders
 {
@@ -70,6 +70,12 @@ namespace Tests.Unit.Builders
         public EpisodeBuilder WithIndexNumber(int index)
         {
             _episode.IndexNumber = index;
+            return this;
+        }
+
+        public EpisodeBuilder WithIndexNumberEnd(int index)
+        {
+            _episode.IndexNumberEnd = index;
             return this;
         }
 

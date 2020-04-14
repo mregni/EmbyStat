@@ -9,8 +9,8 @@ using EmbyStat.Common;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Logging;
 using MediaBrowser.Model.Net;
-using NLog;
 using RestSharp;
 
 namespace EmbyStat.Clients.Tvdb
@@ -23,14 +23,14 @@ namespace EmbyStat.Clients.Tvdb
 
         public TvdbClient(IRestClient client)
         {
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(TvdbClient), "THETVDB-CLIENT");
             _restClient = client.Initialize();
             _restClient.BaseUrl = new Uri(Constants.Tvdb.BaseUrl);
         }
 
         public bool Login(string apiKey)
         {
-            _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tLogging in on theTVDB API with key: {apiKey}");
+            _logger.Debug($"Logging in on theTVDB API with key: {apiKey}");
 
             try
             {
@@ -66,9 +66,9 @@ namespace EmbyStat.Clients.Tvdb
                 page.Data
                     .ForEach(x =>
                     {
-                        if (!DateTime.TryParse(x.FirstAired, out _))
+                        if (string.IsNullOrWhiteSpace(x.FirstAired) || !DateTime.TryParse(x.FirstAired, out _))
                         {
-                            x.FirstAired = DateTime.MinValue.ToString("O");
+                            x.FirstAired = DateTime.MaxValue.ToString("O");
                         }
                     });
                 tvdbEpisodes.AddRange(page.Data
@@ -81,7 +81,7 @@ namespace EmbyStat.Clients.Tvdb
 
         private TvdbEpisodes GetEpisodePage(string url)
         {
-            _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
+            _logger.Debug($"Call to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
 
             var request = new RestRequest(url, Method.GET);
             request.AddHeader("Content-Type", "application/json");
@@ -104,7 +104,7 @@ namespace EmbyStat.Clients.Tvdb
                 return new List<string>();
             }
 
-            _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCalling TheTVDB for updated shows");
+            _logger.Info($"Calling TheTVDB for updated shows");
             try
             {
                 var updateList = new List<string>();
@@ -123,14 +123,14 @@ namespace EmbyStat.Clients.Tvdb
                     var result = _restClient.Execute<Updates>(request);
                     updateList.AddRange(result.Data.Data.Select(x => x.Id.ToString()));
 
-                    _logger.Info($"{Constants.LogPrefix.TheTVDBCLient}\tCall to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
+                    _logger.Debug($"Call to THETVDB: {Constants.Tvdb.BaseUrl}{url}");
                 }
 
                 return updateList;
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"{Constants.LogPrefix.TheTVDBCLient} Could not receive show list from TVDB");
+                _logger.Error(e, "Could not receive show list from TVDB");
                 return new List<string>();
             }
         }

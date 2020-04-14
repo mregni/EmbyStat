@@ -15,7 +15,8 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         private readonly IMediaServerService _mediaServerService;
 
         public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-            IMediaServerService mediaServerService) : base(hubHelper, jobRepository, settingsService, false)
+            IMediaServerService mediaServerService) 
+            : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob), Constants.LogPrefix.PingEmbyJob)
         {
             _mediaServerService = mediaServerService;
             Title = jobRepository.GetById(Id).Title;

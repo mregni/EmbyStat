@@ -36,7 +36,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IMovieRepository movieRepository, IShowRepository showRepository,
             ILibraryRepository libraryRepository, ITvdbClient tvdbClient, IStatisticsRepository statisticsRepository,
-            IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService)
+            IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService, 
+            typeof(MediaSyncJob), Constants.LogPrefix.MediaSyncJob)
         {
             _movieRepository = movieRepository;
             _showRepository = showRepository;
@@ -98,11 +99,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var neededLibraries = libraries.Where(x => Settings.MovieLibraryTypes.Any(y => y == x.Type)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
-                var totalCount = GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                var totalCount = await GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                if (totalCount == 0)
+                {
+                    continue;;
+                }
+
                 await LogInformation($"Found {totalCount} movies for {neededLibraries[i].Name} library");
                 var processed = 0;
                 var j = 0;
-                var limit = 100;
+                const int limit = 100;
                 do
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -119,9 +125,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private int GetTotalLibraryMovieCount(string parentId)
+        private async Task<int> GetTotalLibraryMovieCount(string parentId)
         {
-            return _httpClient.GetMovieCount(parentId);
+            var count = _httpClient.GetMovieCount(parentId);
+            if (count == 0)
+            {
+               await LogWarning($"0 movies found in parent with id {parentId}. Propably means something is wrong with the HTTP call.");
+            }
+
+            return count;
         }
 
         private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, int startIndex, int limit)
@@ -257,7 +269,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 
                 if (season == null)
                 {
-                    Logger.Info($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
+                    Logger.Debug($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
                     season = tvdbEpisode.SeasonNumber.ConvertToSeason(show);
                     show.Seasons.Add(season);
                 }
@@ -265,7 +277,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 if (IsEpisodeMissing(show.Episodes, season, tvdbEpisode))
                 {
                     var episode = tvdbEpisode.ConvertToEpisode(show, season);
-                    Logger.Info($"episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
+                    Logger.Debug($"Episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
                     show.Episodes.Add(episode);
                     missingEpisodesCount++;
                 }

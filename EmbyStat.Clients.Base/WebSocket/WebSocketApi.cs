@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
+using EmbyStat.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NLog;
 
 namespace EmbyStat.Clients.Base.WebSocket
 {
@@ -33,7 +33,7 @@ namespace EmbyStat.Clients.Base.WebSocket
         public WebSocketApi(IWebSocketClient clientWebSocket)
         {
             _clientWebSocket = clientWebSocket;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(WebSocketApi), "WEB-SOCKET-API");
         }
 
         public async Task OpenWebSocket(string url, string accessToken, string deviceId)

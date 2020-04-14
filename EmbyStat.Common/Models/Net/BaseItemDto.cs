@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 
-namespace EmbyStat.Clients.Base.Models
+namespace EmbyStat.Common.Models.Net
 {
     public class BaseItemDto
     {

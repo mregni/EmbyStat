@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Net;
 
 namespace Tests.Unit.Builders
 {
@@ -24,7 +24,12 @@ namespace Tests.Unit.Builders
                 OfficialRating = "R",
                 RunTimeTicks = 120000000000,
                 Primary = "primaryImage",
+                Logo = "logoImage",
+                Banner = "bannerImage",
+                TMDB = "0002",
                 IMDB = "0001",
+                TVDB = "0003",
+                Thumb = "thumbImage",
                 Video3DFormat = Video3DFormat.None,
                 Genres = new[] { "id1" },
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },

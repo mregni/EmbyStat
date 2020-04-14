@@ -3,9 +3,9 @@ using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
-using NLog;
 
 namespace EmbyStat.Services
 {
@@ -23,7 +23,7 @@ namespace EmbyStat.Services
             _personRepository = personRepository;
             _movieRepository = movieRepository;
             _showRepository = showRepository;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(PersonService), "PERSON-SERVICE");
 
             var settings = settingsService.GetUserSettings();
             _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);

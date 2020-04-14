@@ -26,12 +26,6 @@ jobs:
       filePath: './builds/windows/installer-build.ps1'
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)'
       
-  - task: CmdLine@2
-    inputs:
-      script: |
-        cd $(Build.SourcesDirectory)
-        dir
-  
   - task: CopyFiles@2
     displayName: 'Copy installer to artifact folder'
     inputs:

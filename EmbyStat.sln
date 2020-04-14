@@ -27,11 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Tvdb", "Em
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Migrator", "EmbyStat.Migrator\EmbyStat.Migrator.csproj", "{A28AF54B-0002-4BA7-9EC8-E71E777ABA31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Clients.Base", "EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj", "{CC92EA4C-6E0D-49AD-B795-C15BF9D7EB24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Base", "EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj", "{CC92EA4C-6E0D-49AD-B795-C15BF9D7EB24}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Emby", "EmbyStat.Clients.Emby\EmbyStat.Clients.Emby.csproj", "{0145B376-DB18-42A2-B2AF-98B4A952002F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Jellyfin", "EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj", "{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Logging", "EmbyStat.Logging\EmbyStat.Logging.csproj", "{2F5A8959-10EE-4633-9FEA-F063C3BB485D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -316,6 +318,24 @@ Global
 		{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}.Release|x64.Build.0 = Release|Any CPU
 		{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}.Release|x86.ActiveCfg = Release|Any CPU
 		{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}.Release|x86.Build.0 = Release|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Debug|x64.Build.0 = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.DefaultBuild|x64.ActiveCfg = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.DefaultBuild|x64.Build.0 = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.DefaultBuild|x86.ActiveCfg = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.DefaultBuild|x86.Build.0 = Debug|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Release|x64.Build.0 = Release|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F5A8959-10EE-4633-9FEA-F063C3BB485D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

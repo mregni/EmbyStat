@@ -4,11 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Converters;
+using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
-using NLog;
 
 namespace EmbyStat.Services
 {
@@ -22,7 +22,7 @@ namespace EmbyStat.Services
         public WebSocketService(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogFactory.CreateLoggerForType(typeof(WebSocketService), "WEB-SOCKET-SERVICE");
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

@@ -1,6 +1,5 @@
 trigger:
 - develop
-- features/*
 
 pr:
   branches:
@@ -38,6 +37,10 @@ jobs:
     inputs:
       projects: '$(webapp.project)'
       arguments: '--output publish'
+
+  - template: './templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build'
 
   - template: ./templates/unit.tests.yml
   - template: './templates/sonarcloud.end.yml'
@@ -87,6 +90,10 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
 
+  - template: './templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build'
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows Artifact'
     inputs:
@@ -98,7 +105,7 @@ jobs:
   displayName: 'Build Ubuntu-x64 package'
   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   pool:
-    name: Hosted Windows 2019 with VS2019
+    vmImage: 'ubuntu-latest'
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
@@ -132,6 +139,10 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
 
+  - template: './templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build'
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Ubuntu Artifact'
     inputs:
@@ -159,4 +170,3 @@ jobs:
     inputs:
       PathtoPublish: publish
       ArtifactName: 'EmbyStat-dockerfiles'
-

@@ -11,11 +11,14 @@ namespace EmbyStat.Common.Extensions
         public static int GetNonSpecialEpisodeCount(this Show show, bool includeMissing)
         {
             var specialSeason = show.Seasons.Where(x => x.IndexNumber == 0).ToList();
-            var list = includeMissing ? show.Episodes : show.Episodes.Where(x => x.LocationType == LocationType.Disk);
+            var list = includeMissing ? show.Episodes.ToList() : show.Episodes.Where(x => x.LocationType == LocationType.Disk).ToList();
+            
+            list = specialSeason.Any() ? list.Where(x => specialSeason.All(y => y.Id.ToString() != x.ParentId)).ToList() : list;
 
-            return specialSeason.Any()
-                ? list.Count(x => specialSeason.All(y => y.Id.ToString() != x.ParentId))
-                : list.Count();
+            var count = list.Count(x => x.IndexNumberEnd == null);
+            count += list.Where(x => x.IndexNumberEnd != null && x.IndexNumber != null).Sum(x => x.IndexNumberEnd.Value - x.IndexNumber.Value + 1);
+
+            return count;
         }
 
         public static int GetNonSpecialSeasonCount(this Show show)

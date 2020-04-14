@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using CommandLine;
 using EmbyStat.Common;
+using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -19,17 +21,22 @@ namespace EmbyStat.Web
 {
     public class Program
     {
-        private static Logger _logger;
+        private static NLog.Logger _logger;
         public static int Main(string[] args)
         {
             try
             {
-                var result = Parser.Default.ParseArguments<StartupOptions>(args);
                 StartupOptions options = null;
-                result.WithParsed(opts => options = opts);
+                var result = Parser.Default.ParseArguments<StartupOptions>(args).MapResult(opts => options = opts, NotParedOptions);
 
+                if (options == null)
+                {
+                    return 0;
+                }
+                
                 var configArgs = CreateArgsArray(options);
                 _logger = SetupLogging(configArgs);
+                LogLevelChanger.SetNlogLogLevel(NLog.LogLevel.FromOrdinal(options.LogLevel));
 
                 var listeningUrl = $"http://*:{options.Port}";
                 _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
@@ -51,10 +58,30 @@ namespace EmbyStat.Web
             finally
             {
                 Console.WriteLine($"{Constants.LogPrefix.System}\tServer shutdown");
-                _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
+                _logger?.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tServer shutdown");
                 LogManager.Flush();
                 LogManager.Shutdown();
             }
+        }
+
+        private static StartupOptions NotParedOptions(IEnumerable<Error> errs)
+        {
+            var errors = errs.ToList();
+            if (errors.Any(x => x is HelpRequestedError))
+            {
+                Console.WriteLine("Help requested by user so application will not start.");
+            }
+            else if (errors.Any(x => x is VersionRequestedError))
+            {
+                Console.WriteLine("Version requested by user so application will not start.");
+            }
+            else
+            {
+                Console.WriteLine($"errors {errors.Count}");
+                Console.WriteLine("Can't map startup settings, please check settings or use --help for more info.");
+            }
+            
+            return null;
         }
 
         public static IWebHost BuildWebHost(string[] args, string listeningUrl, IConfigurationRoot config) =>
@@ -78,7 +105,7 @@ namespace EmbyStat.Web
                 .AddInMemoryCollection(configArgs)
                 .Build();
 
-        private static Logger SetupLogging(Dictionary<string, string> configArgs)
+        private static NLog.Logger SetupLogging(Dictionary<string, string> configArgs)
         {
             var logPath = configArgs.Single(x => x.Key == "Dirs:Logs").Value;
             var configPath = configArgs.Single(x => x.Key == "Dirs:Config").Value;

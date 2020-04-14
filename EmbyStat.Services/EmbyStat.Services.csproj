@@ -11,15 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.9" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.9.0" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.9.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.GitHub\EmbyStat.Clients.GitHub.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
+    <ProjectReference Include="..\EmbyStat.Logging\EmbyStat.Logging.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
   </ItemGroup>
 

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Xunit;
 using CommandLine;
+using EmbyStat.Common.Models;
 
 namespace Tests.Unit.Models
 {

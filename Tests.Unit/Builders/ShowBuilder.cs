@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Clients.Base.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Net;
 
 namespace Tests.Unit.Builders
 {
     public class ShowBuilder
     {
         private readonly Show _show;
+
+        public ShowBuilder(Show show)
+        {
+            _show = show;
+        }
 
         public ShowBuilder(string id, string libraryId)
         {

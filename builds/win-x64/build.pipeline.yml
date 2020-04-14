@@ -36,6 +36,10 @@ jobs:
       arguments: '-c Release -r win-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
+      
+  - template: './templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build -- --prod'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Windows x64 Artifact'

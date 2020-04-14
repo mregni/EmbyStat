@@ -36,6 +36,10 @@ jobs:
       arguments: '-c Release -r linux-arm -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
+      
+  - template: './templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build -- --prod'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Linux ARM Artifact'
