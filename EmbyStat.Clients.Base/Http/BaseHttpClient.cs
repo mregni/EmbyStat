@@ -74,21 +74,33 @@ namespace EmbyStat.Clients.Base.Http
             DeviceName = deviceName;
         }
 
+        protected string ExecuteCall(IRestRequest request)
+        {
+            request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
+
+            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}/{request.Resource}");
+            var result = RestClient.Execute(request);
+
+            if (!result.IsSuccessful)
+            {
+                Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
+            }
+
+            return result.Content;
+        }
 
         protected T ExecuteCall<T>(IRestRequest request) where T : new()
         {
             request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
 
+            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}{request.Resource}");
             var result = RestClient.Execute<T>(request);
+
+            if (!result.IsSuccessful)
+            {
+                Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
+            }
             return result.Data;
-        }
-
-        protected string ExecuteCall(IRestRequest request)
-        {
-            request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
-
-            var result = RestClient.Execute(request);
-            return result.Content;
         }
 
         protected T ExecuteAuthenticatedCall<T>(IRestRequest request) where T : new()
@@ -135,7 +147,7 @@ namespace EmbyStat.Clients.Base.Http
             try
             {
                 var result = ExecuteCall(request);
-                Logger.Debug($"Ping returned {result}");
+                Logger.Debug($"Ping returned: {result}");
                 return result == message;
             }
             catch (Exception)
