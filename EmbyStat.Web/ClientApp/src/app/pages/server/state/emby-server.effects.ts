@@ -11,7 +11,7 @@ import { MediaServerService } from '../../../shared/services/media-server.servic
 import { EffectError } from '../../../states/app.actions';
 import { ApplicationState } from '../../../states/app.state';
 import {
-    EmbyServerActionTypes, LoadEmbyServerInfo, LoadEmbyServerInfoSuccess, NoNeedEmbyServerInfo
+  EmbyServerActionTypes, LoadEmbyServerInfo, LoadEmbyServerInfoSuccess, NoNeedEmbyServerInfo
 } from './emby-server.actions';
 import { EmbyServerInfoQuery } from './emby-server.reducer';
 

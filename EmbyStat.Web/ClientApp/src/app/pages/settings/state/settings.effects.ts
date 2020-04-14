@@ -10,8 +10,8 @@ import { SettingsService } from '../../../shared/services/settings.service';
 import { EffectError } from '../../../states/app.actions';
 import { ApplicationState } from '../../../states/app.state';
 import {
-    LoadSettingsAction, LoadSettingsSuccessAction, NoNeedSettingsAction, SettingsActionTypes,
-    UpdateSettingsAction, UpdateSettingsSuccessAction
+  LoadSettingsAction, LoadSettingsSuccessAction, NoNeedSettingsAction, SettingsActionTypes,
+  UpdateSettingsAction, UpdateSettingsSuccessAction
 } from './settings.actions';
 import { SettingsQuery } from './settings.reducer';
 

@@ -124,10 +124,10 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
           this.embyApiKeyControl.setValue('');
         }
       },
-        error => {
-          this.toastService.showError('SETTINGS.EMBY.WRONGAPIKEY');
-          this.embyApiKeyControl.setValue('');
-        });
+      error => {
+        this.toastService.showError('SETTINGS.EMBY.WRONGAPIKEY');
+        this.embyApiKeyControl.setValue('');
+      });
 
       this.embyTokenSub.add(() => {
         this.isSaving = false;

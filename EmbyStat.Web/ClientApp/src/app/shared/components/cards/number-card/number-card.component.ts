@@ -20,7 +20,7 @@ export class NumberCardComponent implements OnInit {
     this.options.separator = '';
     this.options.decimal = ',';
     this.options.duration = 4;
-   }
+  }
 
   ngOnInit() {
   }

@@ -7,7 +7,7 @@ import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
-    AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild, ViewChildren
+  AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild, ViewChildren
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';

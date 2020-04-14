@@ -14,7 +14,7 @@ import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate
 
 import { LanguageComponent } from '../../../shared/components/language/language.component';
 import {
-    SideNavigationComponent
+  SideNavigationComponent
 } from '../../../shared/components/side-navigation/side-navigation.component';
 import { ToolbarComponent } from '../../../shared/components/toolbar/toolbar.component';
 import { CheckBoolean } from '../../../shared/enums/check-boolean-enum';
@@ -23,7 +23,7 @@ import { MaterialModule } from '../../../shared/material.module';
 import { Language } from '../../../shared/models/language';
 import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
 import {
-    MediaServerUdpBroadcast
+  MediaServerUdpBroadcast
 } from '../../../shared/models/media-server/media-server-udp-broadcast';
 import { Settings } from '../../../shared/models/settings/settings';
 import { CapitalizeFirstPipe } from '../../../shared/pipes/capitalize-first.pipe';

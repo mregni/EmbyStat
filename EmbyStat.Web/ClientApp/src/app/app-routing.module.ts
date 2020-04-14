@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AboutOverviewComponent } from './pages/about/about-overview/about-overview.component';
 import {
-    DashboardOverviewComponent
+  DashboardOverviewComponent
 } from './pages/dashboard/dashboard-overview/dashboard-overview.component';
 import { JobsOverviewComponent } from './pages/jobs/jobs-overview/jobs-overview.component';
 import { LogsOverviewComponent } from './pages/logs/logs-overview/logs-overview.component';
@@ -11,12 +11,12 @@ import { MovieOverviewComponent } from './pages/movie/movie-overview/movie-overv
 import { PluginOverviewComponent } from './pages/plugin/plugin-overview/plugin-overview.component';
 import { ServerOverviewComponent } from './pages/server/server-overview/server-overview.component';
 import {
-    SettingsOverviewComponent
+  SettingsOverviewComponent
 } from './pages/settings/settings-overview/settings-overview.component';
 import { ShowOverviewComponent } from './pages/show/show-overview/show-overview.component';
 import { UserDetailComponent } from './pages/users/components/user-detail/user-detail.component';
 import {
-    UserViewsDetailComponent
+  UserViewsDetailComponent
 } from './pages/users/components/user-views-detail/user-views-detail.component';
 import { UserContainerComponent } from './pages/users/user-container/user-container.component';
 import { UsersOverviewComponent } from './pages/users/users-overview/users-overview.component';

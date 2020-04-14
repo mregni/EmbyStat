@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 import {
-    NoUsersFoundDialog
+  NoUsersFoundDialog
 } from '../../../shared/dialogs/no-users-found-dialog/no-users-found-dialog';
 import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
 import { MediaServerService } from '../../../shared/services/media-server.service';
@@ -35,11 +35,11 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
     this.transSub = this.translateService.get(
       ['USERS.SORTING.USERNAMEASC', 'USERS.SORTING.USERNAMEDESC',
         'USERS.SORTING.LASTACTIVEASC', 'USERS.SORTING.LASTACTIVEDESC']).subscribe((value) => {
-          this.orderOptions.push({ key: value['USERS.SORTING.USERNAMEASC'], value: 'name' });
-          this.orderOptions.push({ key: value['USERS.SORTING.USERNAMEDESC'], value: 'nameDesc' });
-          this.orderOptions.push({ key: value['USERS.SORTING.LASTACTIVEASC'], value: 'lastActivityDate' });
-          this.orderOptions.push({ key: value['USERS.SORTING.LASTACTIVEDESC'], value: 'lastActivityDateDesc' });
-        });
+      this.orderOptions.push({ key: value['USERS.SORTING.USERNAMEASC'], value: 'name' });
+      this.orderOptions.push({ key: value['USERS.SORTING.USERNAMEDESC'], value: 'nameDesc' });
+      this.orderOptions.push({ key: value['USERS.SORTING.LASTACTIVEASC'], value: 'lastActivityDate' });
+      this.orderOptions.push({ key: value['USERS.SORTING.LASTACTIVEDESC'], value: 'lastActivityDateDesc' });
+    });
 
     this.usersSub = this.mediaServerService.getUsers().subscribe((users: MediaServerUser[]) => {
       if (users.length > 0) {
@@ -63,7 +63,7 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
       const prop = event.value.slice(0, -4);
       this.users = _.orderBy(this.users, [prop], ['desc']);
       this.deletedUsers = _.orderBy(this.deletedUsers, [prop], ['desc']);
-  } else {
+    } else {
       const prop = event.value;
       this.users = _.orderBy(this.users, [prop], ['asc']);
       this.deletedUsers = _.orderBy(this.deletedUsers, [prop], ['asc']);
@@ -71,7 +71,7 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
   }
 
   navigateToUser(id: any) {
-      this.router.navigate([`user/${id}/detail`]);
+    this.router.navigate([`user/${id}/detail`]);
   }
 
   ngOnDestroy() {

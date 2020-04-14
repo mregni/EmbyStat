@@ -16,4 +16,4 @@ export class ShowCollectionRow {
     imdb: string;
     size: number;
     banner: string;
-  }
+}

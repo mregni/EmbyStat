@@ -14,20 +14,20 @@ export class MovieService {
     private getStatisticsUrl = `${this.baseUrl}statistics`;
     private isTypePresentUrl = `${this.baseUrl}typepresent`;
 
-  constructor(private http: HttpClient) {
+    constructor(private http: HttpClient) {
 
-  }
+    }
 
-  getLibraries(): Observable<Library[]> {
-    return this.http.get<Library[]>(this.getLibrariesUrl);
-  }
+    getLibraries(): Observable<Library[]> {
+      return this.http.get<Library[]>(this.getLibrariesUrl);
+    }
 
-  getStatistics(list: string[]): Observable<MovieStatistics> {
-    const params = ListToQueryParam.convert('libraryIds', list);
-    return this.http.get<MovieStatistics>(this.getStatisticsUrl + `${params}`);
-  }
+    getStatistics(list: string[]): Observable<MovieStatistics> {
+      const params = ListToQueryParam.convert('libraryIds', list);
+      return this.http.get<MovieStatistics>(this.getStatisticsUrl + `${params}`);
+    }
 
-  isTypePresent(): Observable<boolean> {
-    return this.http.get<boolean>(this.isTypePresentUrl);
-  }
+    isTypePresent(): Observable<boolean> {
+      return this.http.get<boolean>(this.isTypePresentUrl);
+    }
 }
