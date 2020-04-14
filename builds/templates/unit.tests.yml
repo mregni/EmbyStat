@@ -10,7 +10,7 @@ steps:
       arguments: '--collect "Code Coverage"'
       testRunTitle: 'Beta unit tests'
 
-  - script: 'eslint -f json -o report.json .'
+  - script: 'eslint -f json -o report.json ./**/*.ts'
     workingDirectory: EmbyStat.Web/ClientApp
     displayName: 'Run eslint'
 
