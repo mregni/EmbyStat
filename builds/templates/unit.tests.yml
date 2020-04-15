@@ -10,11 +10,16 @@ steps:
     displayName: 'Install FE test packages'
     inputs:
       script: |
-        dir
         npm install eslint typescript @angular/cli lodash -g
-        npm install
       workingDirectory: 'EmbyStat.Web/ClientApp'
       
+  - task: CmdLine@2
+    displayName: 'Run npm install'
+    inputs:
+      script: |
+        npm install
+      workingDirectory: 'EmbyStat.Web/ClientApp'
+   
   - task: CmdLine@2
     displayName: 'Run eslint'
     inputs:
