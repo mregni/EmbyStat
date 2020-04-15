@@ -3,7 +3,7 @@ steps:
     displayName: 'Install FE test packages'
     inputs:
       script: |
-        npm install eslint typescript @angular/cli -g
+        npm install eslint typescript @angular/cli lodash -g
         npm install --only=dev
       workingDirectory: 'EmbyStat.Web/ClientApp'
     
