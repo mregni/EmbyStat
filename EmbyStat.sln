@@ -35,11 +35,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Jellyfin",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Logging", "EmbyStat.Logging\EmbyStat.Logging.csproj", "{2F5A8959-10EE-4633-9FEA-F063C3BB485D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5747F2E7-56F1-4598-AD93-7165DB4709A3}"
-	ProjectSection(SolutionItems) = preProject
-		builds\templates\unit.tests.yml = builds\templates\unit.tests.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
