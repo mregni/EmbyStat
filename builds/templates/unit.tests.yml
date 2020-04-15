@@ -24,7 +24,6 @@ steps:
     displayName: 'Run eslint'
     inputs:
       script: |
-        dir
         eslint -f json -o report.json ./**/*.ts
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
