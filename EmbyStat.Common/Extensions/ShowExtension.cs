@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
@@ -46,7 +46,7 @@ namespace EmbyStat.Common.Extensions
         {
             return show.Episodes
                 .Where(x => x.LocationType == LocationType.Disk)
-                .Sum(x => x.MediaSources.First().SizeInMb);
+                .Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
         }
 
         public static bool NeedsShowSync(this Show show)

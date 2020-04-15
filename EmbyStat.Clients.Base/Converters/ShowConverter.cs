@@ -109,6 +109,7 @@ namespace EmbyStat.Clients.Base.Converters
             dto.MapImageTags(episode);
             dto.MapProviderIds(episode);
             dto.MapStreams(episode);
+            dto.MapMediaSources(episode);
 
             return episode;
         }

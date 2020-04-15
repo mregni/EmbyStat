@@ -96,36 +96,36 @@ namespace Tests.Unit.Extensions
         public void MapPeople_Should_Not_Map_People()
         {
             var dto = new BaseItemDto();
-            var extra = new Video();
-            dto.MapPeople(extra);
+            var video = new Video();
+            dto.MapPeople(video);
 
-            extra.People.Length.Should().Be(0);
+            video.People.Length.Should().Be(0);
         }
 
         [Fact]
         public void MapImageTags_Should_Not_Map_Images()
         {
             var dto = new BaseItemDto();
-            var extra = new Video();
-            dto.MapImageTags(extra);
+            var video = new Video();
+            dto.MapImageTags(video);
 
-            extra.Logo.Should().BeNull();
-            extra.Banner.Should().BeNull();
-            extra.Thumb.Should().BeNull();
-            extra.Banner.Should().BeNull();
+            video.Logo.Should().BeNull();
+            video.Banner.Should().BeNull();
+            video.Thumb.Should().BeNull();
+            video.Banner.Should().BeNull();
         }
 
         [Fact]
         public void MapImageTags_Should_Map_To_Empty_Images()
         {
             var dto = new BaseItemDto { ImageTags = new Dictionary<ImageType, string>() };
-            var extra = new Video();
-            dto.MapImageTags(extra);
+            var video = new Video();
+            dto.MapImageTags(video);
 
-            extra.Logo.Should().BeEmpty();
-            extra.Banner.Should().BeEmpty();
-            extra.Thumb.Should().BeEmpty();
-            extra.Banner.Should().BeEmpty();
+            video.Logo.Should().BeEmpty();
+            video.Banner.Should().BeEmpty();
+            video.Thumb.Should().BeEmpty();
+            video.Banner.Should().BeEmpty();
         }
 
         [Fact]
@@ -138,37 +138,37 @@ namespace Tests.Unit.Extensions
                 { ImageType.Thumb, "thumb" },
                 { ImageType.Primary, "primary" }
             } };
-            var extra = new Video();
-            dto.MapImageTags(extra);
+            var video = new Video();
+            dto.MapImageTags(video);
 
-            extra.Logo.Should().Be("logo");
-            extra.Banner.Should().Be("banner");
-            extra.Thumb.Should().Be("thumb");
-            extra.Primary.Should().Be("primary");
+            video.Logo.Should().Be("logo");
+            video.Banner.Should().Be("banner");
+            video.Thumb.Should().Be("thumb");
+            video.Primary.Should().Be("primary");
         }
 
         [Fact]
         public void MapProviderIds_Should_Not_Map_ProviderIds()
         {
             var dto = new BaseItemDto();
-            var extra = new Video();
-            dto.MapProviderIds(extra);
+            var video = new Video();
+            dto.MapProviderIds(video);
 
-            extra.TMDB.Should().BeNull();
-            extra.TVDB.Should().BeNull();
-            extra.IMDB.Should().BeNull();
+            video.TMDB.Should().BeNull();
+            video.TVDB.Should().BeNull();
+            video.IMDB.Should().BeNull();
         }
 
         [Fact]
         public void MapProviderIds_Should_Map_To_Empty_ProviderIds()
         {
             var dto = new BaseItemDto() { ProviderIds = new Dictionary<string, string>() };
-            var extra = new Video();
-            dto.MapProviderIds(extra);
+            var video = new Video();
+            dto.MapProviderIds(video);
 
-            extra.TMDB.Should().BeEmpty();
-            extra.TVDB.Should().BeEmpty();
-            extra.IMDB.Should().BeEmpty();
+            video.TMDB.Should().BeEmpty();
+            video.TVDB.Should().BeEmpty();
+            video.IMDB.Should().BeEmpty();
         }
 
         [Fact]
@@ -180,12 +180,49 @@ namespace Tests.Unit.Extensions
                 { "Tvdb", "2345" },
                 { "Imdb", "3456" }
             } };
-            var extra = new Video();
-            dto.MapProviderIds(extra);
+            var video = new Video();
+            dto.MapProviderIds(video);
 
-            extra.TMDB.Should().Be("1234");
-            extra.TVDB.Should().Be("2345");
-            extra.IMDB.Should().Be("3456");
+            video.TMDB.Should().Be("1234");
+            video.TVDB.Should().Be("2345");
+            video.IMDB.Should().Be("3456");
+        }
+
+        [Fact]
+        public void MapMediaSources_Should_Not_Map_MediaSources()
+        {
+            var dto = new BaseItemDto();
+            var video = new Video();
+            dto.MapMediaSources(video);
+
+            video.MediaSources.Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void MapMediaSources_Should_Map_To_Empty_MediaSources()
+        {
+            var dto = new BaseItemDto { MediaSources = new BaseMediaSourceInfo[0] };
+            var video = new Video();
+            dto.MapMediaSources(video);
+
+            video.MediaSources.Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void MapMediaSources_Should_Map_MediaSources()
+        {
+            var dto = new BaseItemDto
+            {
+                MediaSources = new []
+                {
+                    new BaseMediaSourceInfo(), 
+                    new BaseMediaSourceInfo()
+                }
+            };
+            var video = new Video();
+            dto.MapMediaSources(video);
+
+            video.MediaSources.Count.Should().Be(2);
         }
     }
 }
