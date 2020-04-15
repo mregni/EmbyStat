@@ -58,27 +58,27 @@ export class AppComponent implements OnInit, OnDestroy {
       'sv-SE', 'cs-CZ']);
 
     const hubConnection = new signalR.HubConnectionBuilder()
-     .withUrl('/jobs-socket')
-     .build();
+      .withUrl('/jobs-socket')
+      .build();
     hubConnection.start().catch(err => document.write(err));
 
     hubConnection.on('job-report-progress', (data: Job) => {
-     jobSocketService.updateJobsInfo(data);
+      jobSocketService.updateJobsInfo(data);
     });
 
     hubConnection.on('job-report-log', (data: JobLog) => {
-    jobSocketService.updateJobLogs(data.value, data.type);
+      jobSocketService.updateJobLogs(data.value, data.type);
     });
 
     hubConnection.on('emby-connection-state', (data: number) => {
-     jobSocketService.updateMissedPings(data);
+      jobSocketService.updateMissedPings(data);
     });
 
     hubConnection.on('update-state', (state: boolean) => {
-     if (this.settings !== undefined) {
-       this.settings.updateInProgress = state;
-       this.settingsFacade.updateSettings(this.settings);
-     }
+      if (this.settings !== undefined) {
+        this.settings.updateInProgress = state;
+        this.settingsFacade.updateSettings(this.settings);
+      }
     });
 
     sideBarService.menuVisibleSubject.subscribe((state: boolean) => {
@@ -114,24 +114,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private getLanguageLocal(language: string) {
     switch (language) {
-      case 'en-US': return localeEn;
-      case 'nl-NL': return localeNl;
-      case 'fr-FR': return localeFr;
-      case 'de-DE': return localeDe;
-      case 'da-DK': return localeDa;
-      case 'el-GR': return localeEl;
-      case 'es-ES': return localeEs;
-      case 'fi-FI': return localeFi;
-      case 'hu-HU': return localeHu;
-      case 'it-IT': return localeIt;
-      case 'no-NO': return localeNo;
-      case 'pl-PL': return localePl;
-      case 'pt-BR': return localePtBr;
-      case 'pt-PT': return localePtPt;
-      case 'ro-RO': return localeRo;
-      case 'sv-SE': return localeSv;
-      case 'cs-CZ': return localeCs;
-      default: return localeEn;
+    case 'en-US': return localeEn;
+    case 'nl-NL': return localeNl;
+    case 'fr-FR': return localeFr;
+    case 'de-DE': return localeDe;
+    case 'da-DK': return localeDa;
+    case 'el-GR': return localeEl;
+    case 'es-ES': return localeEs;
+    case 'fi-FI': return localeFi;
+    case 'hu-HU': return localeHu;
+    case 'it-IT': return localeIt;
+    case 'no-NO': return localeNo;
+    case 'pl-PL': return localePl;
+    case 'pt-BR': return localePtBr;
+    case 'pt-PT': return localePtPt;
+    case 'ro-RO': return localeRo;
+    case 'sv-SE': return localeSv;
+    case 'cs-CZ': return localeCs;
+    default: return localeEn;
     }
   }
 }

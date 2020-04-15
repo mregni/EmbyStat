@@ -19,7 +19,7 @@ export class LogsOverviewComponent implements OnInit {
   }
 
   downloadLog(fileName: string, anonymous: boolean): string {
-      return `/api/log/download/${fileName}.log?anonymous=${String(anonymous)}`;
+    return `/api/log/download/${fileName}.log?anonymous=${String(anonymous)}`;
   }
 
   convertToSize(value: number): string {

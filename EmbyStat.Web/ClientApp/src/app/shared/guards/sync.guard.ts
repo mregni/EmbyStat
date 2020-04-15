@@ -20,15 +20,15 @@ export class SyncGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.jobService.getMediaSyncJob().pipe(
       map((job: Job) => {
-      if (job.state === 1) {
-        this.dialog.open(SyncIsRunningDialog,
-          {
-            width: '550px'
-          });
-        return false;
-      }
+        if (job.state === 1) {
+          this.dialog.open(SyncIsRunningDialog,
+            {
+              width: '550px'
+            });
+          return false;
+        }
 
-      return true;
-    }));
+        return true;
+      }));
   }
 }

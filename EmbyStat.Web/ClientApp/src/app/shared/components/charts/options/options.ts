@@ -1,91 +1,91 @@
 import { Injectable } from '@angular/core';
 
 const colors: string[] = [
-    '#2fab11',
-    '#5ecbdd',
-    '#753328',
-    '#d8a34b',
-    '#165af7',
-    '#26cb95',
-    '#9350c2',
-    '#3987cb',
-    '#732816',
-    '#51a4dd',
-    '#c35e8f',
-    '#5f8b5f',
-    '#772574',
-    '#0cbdf4',
-    '#9bd053',
-    '#790796',
-    '#fd9211',
-    '#22b09e',
-    '#08af65',
-    '#967bb7',
-    '#bbfc7a',
-    '#66e402',
-    '#ff6d45'
+  '#2fab11',
+  '#5ecbdd',
+  '#753328',
+  '#d8a34b',
+  '#165af7',
+  '#26cb95',
+  '#9350c2',
+  '#3987cb',
+  '#732816',
+  '#51a4dd',
+  '#c35e8f',
+  '#5f8b5f',
+  '#772574',
+  '#0cbdf4',
+  '#9bd053',
+  '#790796',
+  '#fd9211',
+  '#22b09e',
+  '#08af65',
+  '#967bb7',
+  '#bbfc7a',
+  '#66e402',
+  '#ff6d45'
 ];
 
 const barOptions: Options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-        yAxes: [{
-            gridLines: {
-                display: true
-            },
-            ticks: {
-                beginAtZero: true,
-                fontColor: '#CCC',
-                autoSkip: false
-            }
-        }],
-        xAxes: [{
-            gridLines: {
-                display: false
-            },
-            ticks: {
-                beginAtZero: true,
-                autoSkip: false,
-                fontColor: '#CCC'
-            }
-        }]
-    },
-    legend: { display: false },
-    title: {
-        display: true,
-        fontColor: '#FFF',
-        text: ''
-    },
-    tooltips: {
-        display: true,
-        callbacks: {
-            label: (tooltipItem, data) => ` ${Math.round(tooltipItem.yLabel * 100) / 100}`
-        }
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    yAxes: [{
+      gridLines: {
+        display: true
+      },
+      ticks: {
+        beginAtZero: true,
+        fontColor: '#CCC',
+        autoSkip: false
+      }
+    }],
+    xAxes: [{
+      gridLines: {
+        display: false
+      },
+      ticks: {
+        beginAtZero: true,
+        autoSkip: false,
+        fontColor: '#CCC'
+      }
+    }]
+  },
+  legend: { display: false },
+  title: {
+    display: true,
+    fontColor: '#FFF',
+    text: ''
+  },
+  tooltips: {
+    display: true,
+    callbacks: {
+      label: (tooltipItem, data) => ` ${Math.round(tooltipItem.yLabel * 100) / 100}`
     }
+  }
 };
 
 @Injectable()
 export class OptionsService {
-    getPieOptions(): any {
-        return {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutoutPercentage: 70, legend: { labels: { fontColor: '#FFF' } }
-        };
-    }
+  getPieOptions(): any {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutoutPercentage: 70, legend: { labels: { fontColor: '#FFF' } }
+    };
+  }
 
-    getBarOptions(): Options {
-        return barOptions;
-    }
+  getBarOptions(): Options {
+    return barOptions;
+  }
 
-    getColors(length: number): string[] {
-        const list = colors;
-        while (list.length < length) {
-            list.push(...colors);
-        }
-        return list.slice(0, length);
+  getColors(length: number): string[] {
+    const list = colors;
+    while (list.length < length) {
+      list.push(...colors);
     }
+    return list.slice(0, length);
+  }
 }
 
 export interface Options {

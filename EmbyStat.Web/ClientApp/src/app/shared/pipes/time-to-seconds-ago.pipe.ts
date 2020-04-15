@@ -6,9 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateToSecondsAgoPipe implements PipeTransform {
   transform(value: any, to = moment()): number {
     const from = moment(value);
-    if (to instanceof moment) {
-
-    } else {
+    if (!(to instanceof moment)) {
       to = moment(to);
     }
 

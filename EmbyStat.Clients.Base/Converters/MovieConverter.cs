@@ -47,6 +47,7 @@ namespace EmbyStat.Clients.Base.Converters
             dto.MapPeople(movie);
             dto.MapProviderIds(movie);
             dto.MapStreams(movie);
+            dto.MapMediaSources(movie);
 
             return movie;
         }

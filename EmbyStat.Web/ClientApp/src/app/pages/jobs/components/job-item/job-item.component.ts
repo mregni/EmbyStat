@@ -35,7 +35,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService
   ) {
     this.jobSocketSub = this.jobSocketService.infoSubject.subscribe((job: Job) => {
-        if (job != null && this._job !== undefined && job.id === this._job.id) {
+      if (job != null && this._job !== undefined && job.id === this._job.id) {
         this._job = job;
         this.startingJob = false;
       }

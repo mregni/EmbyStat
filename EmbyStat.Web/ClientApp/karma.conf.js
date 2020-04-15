@@ -17,7 +17,7 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-	angularFilesort: {
+    angularFilesort: {
       whitelist: ['/**/!(*.html|*.spec|*.mock).js']
     },
     reporters: ['progress', 'junit', 'sonarqubeUnit'],
@@ -57,8 +57,8 @@ module.exports = function (config) {
       useBrowserName: false
     },
     preprocessors: {
-        'app/**/*.js': 'coverage',
-        'app/*.js': 'coverage'
-    },
-  });
-};
+      'app/**/*.js': 'coverage',
+      'app/*.js': 'coverage'
+    }
+  })
+}

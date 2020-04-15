@@ -51,7 +51,7 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
 
     this.paramSub = this.activatedRoute.parent.params.subscribe(params => {
       const id = params.id;
-      if (!!id) {
+      if (id) {
         this.dataSource = new MatTableDataSource([]);
         this.dataSource.paginator = this.paginator;
 

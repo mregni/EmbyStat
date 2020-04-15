@@ -34,7 +34,7 @@ export class UserContainerComponent implements OnInit, OnDestroy {
     this.paramSub = this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       this.selectedPage = 'detail';
-      if (!!id) {
+      if (id) {
         this.mediaServerService.getUserById(id).subscribe((user: MediaServerUser) => {
           this.userService.userChanged(user);
           this.selectedUserId = user.id;

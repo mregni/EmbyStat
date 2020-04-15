@@ -20,7 +20,7 @@ export class SizeCardComponent implements OnInit {
     this.options.decimal = ',';
     this.options.duration = 4;
     this.options.decimalPlaces = 2;
-   }
+  }
 
   ngOnInit() {
   }

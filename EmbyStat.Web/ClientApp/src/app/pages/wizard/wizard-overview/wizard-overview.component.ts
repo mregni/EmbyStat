@@ -12,7 +12,7 @@ import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { Language } from '../../../shared/models/language';
 import { MediaServerLogin } from '../../../shared/models/media-server/media-server-login';
 import {
-    MediaServerUdpBroadcast
+  MediaServerUdpBroadcast
 } from '../../../shared/models/media-server/media-server-udp-broadcast';
 import { MediaServerUser } from '../../../shared/models/media-server/media-server-user';
 import { Settings } from '../../../shared/models/settings/settings';
@@ -152,7 +152,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
 
       console.log(this.type);
       this.mediaServerService.searchMediaServer(this.type).subscribe((data: MediaServerUdpBroadcast) => {
-        if (!!data.address) {
+        if (data.address) {
           this.serverFound = CheckBoolean.true;
           this.serverAddressControl.setValue(data.address);
           this.serverPortControl.setValue(data.port);
@@ -162,9 +162,9 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
           this.serverFound = CheckBoolean.false;
         }
       },
-        err => {
-          this.serverFound = CheckBoolean.false;
-        }
+      err => {
+        this.serverFound = CheckBoolean.false;
+      }
       );
     } else if (event.selectedIndex === 3) {
       this.apiKey = this.serverApiKeyControl.value;
@@ -188,10 +188,10 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
             });
         }
       },
-        err => {
-          this.serverOnline = CheckBoolean.false;
-          this.apiKeyWorks = CheckBoolean.false;
-        });
+      err => {
+        this.serverOnline = CheckBoolean.false;
+        this.apiKeyWorks = CheckBoolean.false;
+      });
     } else if (event.selectedIndex === 4) {
       if (this.type === 1) {
         this.administratorsSub = this.mediaServerService.getAdministrators().subscribe((admins: MediaServerUser[]) => {

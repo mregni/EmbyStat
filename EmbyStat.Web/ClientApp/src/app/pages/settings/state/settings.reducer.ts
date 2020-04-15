@@ -47,60 +47,60 @@ const INITIAL_STATE: Settings = {
 
 export function settingsReducer(state: Settings = INITIAL_STATE, action: SettingsActions) {
   switch (action.type) {
-    case SettingsActionTypes.LOAD_SETTINGS_SUCCESS:
-      return {
-        ...state,
-        language: action.payload.language,
-        wizardFinished: action.payload.wizardFinished,
-        username: action.payload.username,
-        mediaServer: action.payload.mediaServer,
-        toShortMovie: action.payload.toShortMovie,
-        id: action.payload.id,
-        movieLibraryTypes: action.payload.movieLibraryTypes,
-        showLibraryTypes: action.payload.showLibraryTypes,
-        tvdb: action.payload.tvdb,
-        keepLogsCount: action.payload.keepLogsCount,
-        isLoaded: true,
-        autoUpdate: action.payload.autoUpdate,
-        updateTrain: action.payload.updateTrain,
-        updateInProgress: action.payload.updateInProgress,
-        version: action.payload.version,
-        enableRollbarLogging: action.payload.enableRollbarLogging,
-        toShortMovieEnabled: action.payload.toShortMovieEnabled,
-        noUpdates: action.payload.noUpdates,
-        configDir: action.payload.configDir,
-        dataDir: action.payload.dataDir,
-        logDir: action.payload.logDir,
-        appName: action.payload.appName
-      };
-    case SettingsActionTypes.UPDATE_SETTINGS_SUCCESS:
-      return {
-        ...state,
-        language: action.payload.language,
-        wizardFinished: action.payload.wizardFinished,
-        username: action.payload.username,
-        mediaServer: action.payload.mediaServer,
-        toShortMovie: action.payload.toShortMovie,
-        id: action.payload.id,
-        movieLibraryTypes: action.payload.movieLibraryTypes,
-        showLibraryTypes: action.payload.showLibraryTypes,
-        tvdb: action.payload.tvdb,
-        keepLogsCount: action.payload.keepLogsCount,
-        isLoaded: true,
-        autoUpdate: action.payload.autoUpdate,
-        updateTrain: action.payload.updateTrain,
-        updateInProgress: action.payload.updateInProgress,
-        version: action.payload.version,
-        enableRollbarLogging: action.payload.enableRollbarLogging,
-        toShortMovieEnabled: action.payload.toShortMovieEnabled,
-        noUpdates: action.payload.noUpdates,
-        configDir: action.payload.configDir,
-        dataDir: action.payload.dataDir,
-        logDir: action.payload.logDir,
-        appName: action.payload.appName
-      };
-    default:
-      return state;
+  case SettingsActionTypes.LOAD_SETTINGS_SUCCESS:
+    return {
+      ...state,
+      language: action.payload.language,
+      wizardFinished: action.payload.wizardFinished,
+      username: action.payload.username,
+      mediaServer: action.payload.mediaServer,
+      toShortMovie: action.payload.toShortMovie,
+      id: action.payload.id,
+      movieLibraryTypes: action.payload.movieLibraryTypes,
+      showLibraryTypes: action.payload.showLibraryTypes,
+      tvdb: action.payload.tvdb,
+      keepLogsCount: action.payload.keepLogsCount,
+      isLoaded: true,
+      autoUpdate: action.payload.autoUpdate,
+      updateTrain: action.payload.updateTrain,
+      updateInProgress: action.payload.updateInProgress,
+      version: action.payload.version,
+      enableRollbarLogging: action.payload.enableRollbarLogging,
+      toShortMovieEnabled: action.payload.toShortMovieEnabled,
+      noUpdates: action.payload.noUpdates,
+      configDir: action.payload.configDir,
+      dataDir: action.payload.dataDir,
+      logDir: action.payload.logDir,
+      appName: action.payload.appName
+    };
+  case SettingsActionTypes.UPDATE_SETTINGS_SUCCESS:
+    return {
+      ...state,
+      language: action.payload.language,
+      wizardFinished: action.payload.wizardFinished,
+      username: action.payload.username,
+      mediaServer: action.payload.mediaServer,
+      toShortMovie: action.payload.toShortMovie,
+      id: action.payload.id,
+      movieLibraryTypes: action.payload.movieLibraryTypes,
+      showLibraryTypes: action.payload.showLibraryTypes,
+      tvdb: action.payload.tvdb,
+      keepLogsCount: action.payload.keepLogsCount,
+      isLoaded: true,
+      autoUpdate: action.payload.autoUpdate,
+      updateTrain: action.payload.updateTrain,
+      updateInProgress: action.payload.updateInProgress,
+      version: action.payload.version,
+      enableRollbarLogging: action.payload.enableRollbarLogging,
+      toShortMovieEnabled: action.payload.toShortMovieEnabled,
+      noUpdates: action.payload.noUpdates,
+      configDir: action.payload.configDir,
+      dataDir: action.payload.dataDir,
+      logDir: action.payload.logDir,
+      appName: action.payload.appName
+    };
+  default:
+    return state;
   }
 }
 

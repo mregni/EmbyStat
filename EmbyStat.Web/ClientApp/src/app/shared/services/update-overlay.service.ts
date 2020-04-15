@@ -19,7 +19,7 @@ export class UpdateOverlayService {
       const spinnerOverlayPortal = new ComponentPortal(UpdateOverlayComponent);
       const component = this.overlayRef.attach(spinnerOverlayPortal);
     } else {
-      if (!!this.overlayRef) {
+      if (this.overlayRef) {
         this.overlayRef.detach();
       }
     }

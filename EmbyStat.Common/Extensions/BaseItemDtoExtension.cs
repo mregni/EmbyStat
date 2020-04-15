@@ -63,6 +63,30 @@ namespace EmbyStat.Common.Extensions
             return video;
         }
 
+        public static T MapMediaSources<T>(this BaseItemDto dto, T video) where T : Video
+        {
+            if (dto.MediaSources != null)
+            {
+                video.MediaSources = dto.MediaSources
+                    .Select(y => new MediaSource
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Path = y.Path,
+                        BitRate = y.Bitrate,
+                        Container = y.Container,
+                        Protocol = y.Protocol.ToString(),
+                        RunTimeTicks = y.RunTimeTicks,
+                        SizeInMb = Math.Round(y.Size / (double) 1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)
+                    }).ToList();
+            }
+            else
+            {
+                video.MediaSources = new List<MediaSource>(0);
+            }
+
+            return video;
+        }
+
         public static T MapPeople<T>(this BaseItemDto dto, T extra) where T : Extra
         {
             if (dto.People != null)

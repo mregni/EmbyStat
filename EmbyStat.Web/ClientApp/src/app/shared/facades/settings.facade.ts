@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import {
-    LoadSettingsAction, UpdateSettingsAction
+  LoadSettingsAction, UpdateSettingsAction
 } from '../../pages/settings/state/settings.actions';
 import { SettingsQuery } from '../../pages/settings/state/settings.reducer';
 import { ApplicationState } from '../../states/app.state';

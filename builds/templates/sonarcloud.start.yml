@@ -9,5 +9,5 @@ steps:
       extraProperties: |
        sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**
        sonar.ts.excludetypedefinitionfiles=true
-       sonar.ts.tslint.outputPath=EmbyStat.Web/ClientApp/issues.json
+       sonar.eslint.reportPaths=EmbyStat.Web/ClientApp/report.json
        sonar.typescript.lcov.reportPaths=EmbyStat.Web/ClientApp/coverage/lcov.info

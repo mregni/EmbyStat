@@ -6,8 +6,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-    faBars, faBirthdayCake, faCogs, faEye, faEyeSlash, faFile, faFilm, faHome, faInfo, faPlayCircle,
-    faPuzzlePiece, faServer, faStopwatch, faTv, faUserLock, faUsers, faUserTie
+  faBars, faBirthdayCake, faCogs, faEye, faEyeSlash, faFile, faFilm, faHome, faInfo, faPlayCircle,
+  faPuzzlePiece, faServer, faStopwatch, faTv, faUserLock, faUsers, faUserTie
 } from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
