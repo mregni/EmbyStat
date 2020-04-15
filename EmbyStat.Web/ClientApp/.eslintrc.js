@@ -18,7 +18,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [ "**/*.reducer.ts", "**/app.component.ts", "**/app.module.ts" ],
+      files: [ "**/*.reducer.ts", "**/app.component.ts", "**/app.module.ts", "**/app.actions.ts" ],
       rules: {
         "@typescript-eslint/explicit-function-return-type": 0
       }

@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "eslint --ignore-path .gitignore ."
+    "lint": "eslint **/*.ts"
   },
   "private": true,
   "dependencies": {
