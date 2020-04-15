@@ -8,6 +8,7 @@ export enum AppActionTypes {
 
 export class EffectError implements Action {
   readonly type = AppActionTypes.ERROR;
+  constructor(payload: Error = null) { }
 }
 
 export class NoopAction implements Action {

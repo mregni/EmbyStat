@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs';
+import { SafeStyle } from '@angular/platform-browser';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
@@ -34,7 +35,7 @@ export class ShowPosterComponent implements OnDestroy {
     });
   }
 
-  getPoster(): void {
+  getPoster(): SafeStyle {
     if (this.settings === undefined) {
       return '';
     }

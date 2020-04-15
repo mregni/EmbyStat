@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
@@ -15,7 +15,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   templateUrl: './settings-emby.component.html',
   styleUrls: ['./settings-emby.component.scss']
 })
-export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
+export class SettingsEmbyComponent implements OnChanges, OnDestroy {
   @Input() settings: Settings;
 
   embyTokenSub: Subscription;
