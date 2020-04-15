@@ -1,12 +1,4 @@
-steps: 
-  - task: CmdLine@2
-    displayName: 'Install FE test packages'
-    inputs:
-      script: |
-        npm install eslint typescript @angular/cli lodash -g
-        npm install --only=dev
-      workingDirectory: 'EmbyStat.Web/ClientApp'
-    
+steps:    
   - task: DotNetCoreCLI@2
     displayName: 'Backend unit testing'
     inputs:
@@ -14,12 +6,18 @@ steps:
       arguments: '--collect "Code Coverage"'
       testRunTitle: 'Beta unit tests'
 
-  - script: 'eslint -f json -o report.json ./**/*.ts'
-    workingDirectory: EmbyStat.Web/ClientApp
-    displayName: 'Run eslint'
+  - task: CmdLine@2
+    displayName: 'Install FE test packages'
+    inputs:
+      script: |
+        npm install eslint typescript @angular/cli lodash -g
+        npm install --only=dev
+        dir
+        eslint -f json -o report.json ./**/*.ts
+      workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - script: 'ng test --code-coverage  --watch=false'
-    workingDirectory: EmbyStat.Web/ClientApp
+    workingDirectory: 'EmbyStat.Web/ClientApp'
     displayName: 'Run FE tests'
 
   - task: CopyFiles@2
@@ -29,5 +27,5 @@ steps:
       Contents: |
         **\*.trx
         **\*.coverage
-        **\issues.json
+        **\report.json
       TargetFolder: '$(Common.TestResultsDirectory)'
