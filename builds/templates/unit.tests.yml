@@ -24,7 +24,7 @@ steps:
     displayName: 'Run eslint'
     inputs:
       script: |
-        eslint -f json -o report.json ./**/*.ts
+        npm run lint
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - script: 'ng test --code-coverage  --watch=false'

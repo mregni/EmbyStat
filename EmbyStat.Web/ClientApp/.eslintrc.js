@@ -20,7 +20,8 @@ module.exports = {
     {
       files: [ "**/*.reducer.ts", "**/app.component.ts", "**/app.module.ts", "**/app.actions.ts" ],
       rules: {
-        "@typescript-eslint/explicit-function-return-type": 0
+        "@typescript-eslint/explicit-function-return-type": 0,
+		"@typescript-eslint/no-empty-function": 0
       }
     }
   ]

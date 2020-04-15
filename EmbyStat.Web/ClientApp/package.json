@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "eslint **/*.ts"
+    "lint": "eslint -f json -o report.json ./**/*.ts"
   },
   "private": true,
   "dependencies": {
