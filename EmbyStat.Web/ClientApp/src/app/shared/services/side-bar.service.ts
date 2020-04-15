@@ -5,11 +5,11 @@ import { BehaviorSubject } from 'rxjs';
 export class SideBarService {
   menuVisibleSubject = new BehaviorSubject<boolean>(true);
 
-  closeMenu() {
+  closeMenu(): void {
     this.menuVisibleSubject.next(false);
   }
 
-  openMenu() {
+  openMenu(): void {
     this.menuVisibleSubject.next(true);
   }
 }

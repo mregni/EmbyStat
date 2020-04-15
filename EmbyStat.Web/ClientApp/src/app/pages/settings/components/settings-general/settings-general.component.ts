@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
@@ -13,7 +13,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   templateUrl: './settings-general.component.html',
   styleUrls: ['./settings-general.component.scss']
 })
-export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
+export class SettingsGeneralComponent implements OnChanges {
   @Input() settings: Settings;
 
   isSaving = false;
@@ -52,10 +52,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnInit() {
-  }
-
-  saveGeneralForm() {
+  saveGeneralForm(): void {
     if (this.checkForm(this.generalForm)) {
       this.isSaving = true;
       this.generalForm.disable();
@@ -71,7 +68,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  saveTvdbForm() {
+  saveTvdbForm(): void {
     if (this.checkForm(this.tvdbForm)) {
       this.isSaving = true;
       this.tvdbForm.disable();
@@ -86,7 +83,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private saveSettings(settings: Settings, confirmMessage: string) {
+  private saveSettings(settings: Settings, confirmMessage: string): void {
     this.settingsFacade.updateSettings(settings);
     this.toastService.showSuccess(confirmMessage);
     this.isSaving = false;
@@ -101,13 +98,9 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     return form.valid;
   }
 
-  private markFormAsUntouched(form: FormGroup) {
+  private markFormAsUntouched(form: FormGroup): void {
     for (const i of Object.keys(form.controls)) {
       form.controls[i].markAsUntouched();
     }
-  }
-
-  ngOnDestroy() {
-
   }
 }

@@ -4,7 +4,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ import { PageService } from '../../../../shared/services/page.service';
   templateUrl: './user-views-detail.component.html',
   styleUrls: ['./user-views-detail.component.scss']
 })
-export class UserViewsDetailComponent implements OnInit, OnDestroy {
+export class UserViewsDetailComponent implements  OnDestroy {
   private paramSub: Subscription;
   private settingsSub: Subscription;
   private settings: Settings;
@@ -77,9 +77,6 @@ export class UserViewsDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['/users']);
       }
     });
-  }
-
-  ngOnInit() {
   }
 
   getcolumns(): string[] {

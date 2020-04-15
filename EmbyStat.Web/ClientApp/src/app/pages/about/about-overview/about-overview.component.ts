@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { environment } from '../../../../environments/environment';
 import { Settings } from '../../../shared/models/settings/settings';
@@ -13,7 +13,7 @@ import { AboutService } from '../services/about.service';
   templateUrl: './about-overview.component.html',
   styleUrls: ['./about-overview.component.scss']
 })
-export class AboutOverviewComponent implements OnInit {
+export class AboutOverviewComponent {
   about$: Observable<About>;
   settings$: Observable<Settings>;
   environment;
@@ -25,8 +25,4 @@ export class AboutOverviewComponent implements OnInit {
     this.settings$ = this.settingsService.getSettings();
     this.environment = environment;
   }
-
-  ngOnInit() {
-  }
-
 }

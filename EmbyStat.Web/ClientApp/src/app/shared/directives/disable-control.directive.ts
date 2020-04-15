@@ -20,5 +20,4 @@ import { NgControl } from '@angular/forms';
 export class DisableFormComponent {
   // tslint:disable-next-line:no-input-rename
   @Input('disableForm') state: boolean;
-  constructor() { }
 }

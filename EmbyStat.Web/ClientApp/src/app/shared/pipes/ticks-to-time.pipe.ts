@@ -8,15 +8,15 @@ export class TicksToTimePipe implements PipeTransform {
     const minute = Math.floor((seconds / 60) % 60);
     const second = Math.floor(seconds) % 60;
 
+    function pad2(valueToPad: number): string {
+      const result = `0${valueToPad}`;
+      return result.substr(result.length - 2);
+    }
+
     if (!withSeconds) {
       return `${pad2(hour)}:${pad2(minute)}`;
     } else {
       return `${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
-    }
-
-    function pad2(valueToPad: number) {
-      const result = `0${valueToPad}`;
-      return result.substr(result.length - 2);
     }
   }
 }

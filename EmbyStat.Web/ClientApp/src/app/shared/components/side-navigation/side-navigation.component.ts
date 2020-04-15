@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { SettingsFacade } from '../../facades/settings.facade';
 import { Settings } from '../../models/settings/settings';
@@ -10,7 +10,7 @@ import { Settings } from '../../models/settings/settings';
   templateUrl: './side-navigation.component.html',
   styleUrls: ['./side-navigation.component.scss']
 })
-export class SideNavigationComponent implements OnInit, OnDestroy {
+export class SideNavigationComponent implements OnDestroy {
   private configSub: Subscription;
   version: string;
 
@@ -20,13 +20,9 @@ export class SideNavigationComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.configSub !== undefined) {
       this.configSub.unsubscribe();
     }
   }
-
 }

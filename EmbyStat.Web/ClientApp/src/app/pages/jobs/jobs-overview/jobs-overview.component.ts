@@ -1,7 +1,7 @@
 import { Observable, Subscription } from 'rxjs';
 import { Job } from 'src/app/shared/models/jobs/job';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 
 import { JobSocketService } from '../../../shared/services/job-socket.service';
@@ -12,7 +12,7 @@ import { JobService } from '../../../shared/services/job.service';
   templateUrl: './jobs-overview.component.html',
   styleUrls: ['./jobs-overview.component.scss']
 })
-export class JobsOverviewComponent implements OnInit, OnDestroy {
+export class JobsOverviewComponent implements OnDestroy {
   jobs$: Observable<Job[]>;
   private jobLogsSignalSub: Subscription;
 
@@ -28,10 +28,7 @@ export class JobsOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.jobLogsSignalSub !== undefined) {
       this.jobLogsSignalSub.unsubscribe();
     }

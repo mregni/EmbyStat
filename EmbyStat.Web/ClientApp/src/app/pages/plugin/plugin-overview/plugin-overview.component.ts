@@ -1,6 +1,6 @@
 import { Observable, Subscription } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { SettingsFacade } from '../../../shared/facades/settings.facade';
 import { ConfigHelper } from '../../../shared/helpers/config-helper';
@@ -13,7 +13,7 @@ import { MediaServerService } from '../../../shared/services/media-server.servic
   templateUrl: './plugin-overview.component.html',
   styleUrls: ['./plugin-overview.component.scss']
 })
-export class PluginOverviewComponent implements OnInit, OnDestroy {
+export class PluginOverviewComponent implements OnDestroy {
   plugins$: Observable<MediaServerPlugin[]>;
 
   settingsSub: Subscription;
@@ -28,14 +28,11 @@ export class PluginOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
   getFullAddress(): string {
     return ConfigHelper.getFullEmbyAddress(this.settings);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
     }

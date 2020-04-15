@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { TimespanCard } from '../../../models/common/timespan-card';
 
@@ -7,12 +7,6 @@ import { TimespanCard } from '../../../models/common/timespan-card';
   templateUrl: './time-card.component.html',
   styleUrls: ['../number-card/number-card.component.scss']
 })
-export class TimeCardComponent implements OnInit {
+export class TimeCardComponent {
   @Input() card: TimespanCard;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

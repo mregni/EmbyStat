@@ -10,7 +10,7 @@ export class UpdateOverlayService {
 
   constructor(private overlay: Overlay) { }
 
-  public show(state: boolean) {
+  public show(state: boolean): void {
     if (state) {
       if (!this.overlayRef) {
         this.overlayRef = this.overlay.create();

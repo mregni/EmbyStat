@@ -60,7 +60,7 @@ const barOptions: Options = {
   tooltips: {
     display: true,
     callbacks: {
-      label: (tooltipItem, data) => ` ${Math.round(tooltipItem.yLabel * 100) / 100}`
+      label: (tooltipItem, data): string => ` ${Math.round(tooltipItem.yLabel * 100) / 100}`
     }
   }
 };

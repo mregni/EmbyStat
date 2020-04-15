@@ -35,13 +35,13 @@ export class TriggerDialogComponent implements OnInit {
     this.cronControl.setValue(data.trigger);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = new FormGroup({
       cron: this.cronControl
     });
   }
 
-  saveCron() {
+  saveCron(): void {
     for (const i of Object.keys(this.form.controls)) {
       this.form.controls[i].markAsTouched();
       this.form.controls[i].updateValueAndValidity();
@@ -56,7 +56,7 @@ export class TriggerDialogComponent implements OnInit {
     }
   }
 
-  cancel() {
+  cancel(): void {
     this.dialogRef.close(false);
   }
 }

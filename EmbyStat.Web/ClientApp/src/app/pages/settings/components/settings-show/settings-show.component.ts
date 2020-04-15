@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Settings } from '../../../../shared/models/settings/settings';
 import { ToastService } from '../../../../shared/services/toast.service';
@@ -11,7 +11,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   templateUrl: './settings-show.component.html',
   styleUrls: ['./settings-show.component.scss']
 })
-export class SettingsShowComponent implements OnInit, OnDestroy {
+export class SettingsShowComponent {
   @Input() settings: Settings;
 
   newLibraryList: number[];
@@ -21,10 +21,7 @@ export class SettingsShowComponent implements OnInit, OnDestroy {
     private readonly settingsFacade: SettingsFacade,
     private readonly toastService: ToastService) { }
 
-  ngOnInit() {
-  }
-
-  saveFormLibraryTypes() {
+  saveFormLibraryTypes(): void {
     this.isSaving = true;
 
     const settings = {...this.settings};
@@ -35,11 +32,7 @@ export class SettingsShowComponent implements OnInit, OnDestroy {
 
   }
 
-  onLibraryListChanged(event: number[]) {
+  onLibraryListChanged(event: number[]): void {
     this.newLibraryList = event;
-  }
-
-  ngOnDestroy() {
-
   }
 }

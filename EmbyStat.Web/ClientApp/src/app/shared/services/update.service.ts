@@ -14,7 +14,7 @@ export class UpdateService {
 
   }
 
-  setUiToUpdateState(value: boolean) {
+  setUiToUpdateState(value: boolean): void {
     this.updateOverlayService.show(value);
 
     if (value && this.intervalId === undefined) {

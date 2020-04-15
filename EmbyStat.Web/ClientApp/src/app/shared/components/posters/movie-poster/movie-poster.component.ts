@@ -3,7 +3,7 @@ import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade'
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { ConfigHelper } from '../../../helpers/config-helper';
@@ -15,7 +15,7 @@ import { Settings } from '../../../models/settings/settings';
   templateUrl: './movie-poster.component.html',
   styleUrls: ['./movie-poster.component.scss']
 })
-export class MoviePosterComponent implements OnInit, OnDestroy {
+export class MoviePosterComponent implements OnDestroy {
   settingsSub: Subscription;
   settings: Settings;
   @Input() poster: MoviePoster;
@@ -34,10 +34,7 @@ export class MoviePosterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  getPoster() {
+  getPoster(): string {
     if (this.settings === undefined) {
       return '';
     }
@@ -49,11 +46,11 @@ export class MoviePosterComponent implements OnInit, OnDestroy {
     }
   }
 
-  openMovie() {
+  openMovie(): void {
     window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
     }

@@ -1,14 +1,14 @@
 import { CountUpOptions } from 'countup.js';
 import { Card } from 'src/app/shared/models/common/card';
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'es-size-card',
   templateUrl: './size-card.component.html',
   styleUrls: ['../number-card/number-card.component.scss']
 })
-export class SizeCardComponent implements OnInit {
+export class SizeCardComponent {
   @Input() card: Card<number>;
   options: CountUpOptions;
 
@@ -20,9 +20,6 @@ export class SizeCardComponent implements OnInit {
     this.options.decimal = ',';
     this.options.duration = 4;
     this.options.decimalPlaces = 2;
-  }
-
-  ngOnInit() {
   }
 
   getFormattedValue(value: number): number {

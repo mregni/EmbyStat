@@ -12,19 +12,19 @@ export class ToastService {
     this.translate.get('COMMON.HIDE').subscribe(translation => this.hideTranslation = translation);
   }
 
-  showError(error: string) {
+  showError(error: string): void {
     this.translate.get(error).subscribe(translation => {
       this.snackBar.open(translation, this.hideTranslation, { duration: 10000, horizontalPosition: 'right', panelClass: 'toast-fail' });
     });
   }
 
-  showWarning(message: string) {
+  showWarning(message: string): void {
     this.translate.get(message).subscribe(translation => {
       this.snackBar.open(translation, this.hideTranslation, { duration: 10000, horizontalPosition: 'right', panelClass: 'toast-warning' });
     });
   }
 
-  showSuccess(message: string) {
+  showSuccess(message: string): void {
     this.translate.get(message).subscribe(translation => {
       this.snackBar.open(translation, this.hideTranslation, { duration: 5000, horizontalPosition: 'right', panelClass: 'toast-success' });
     });

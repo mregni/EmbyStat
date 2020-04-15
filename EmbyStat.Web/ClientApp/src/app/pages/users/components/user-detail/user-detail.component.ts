@@ -45,7 +45,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.pageService.pageChanged('detail');
   }
 

@@ -34,7 +34,7 @@ export class PersonPosterComponent implements OnDestroy {
     });
   }
 
-  getPoster() {
+  getPoster(): string {
     if (this.settings === undefined) {
       return '';
     }

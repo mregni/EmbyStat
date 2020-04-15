@@ -1,5 +1,5 @@
 export class ListToQueryParam {
-  public static convert(name: string, list: string[], firstParam: boolean = true): string {
+  public static convert(name: string, list: string[], firstParam = true): string {
     let params = '';
     if (firstParam) {
       params = '?';

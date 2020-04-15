@@ -4,7 +4,7 @@ import { OptionsService } from 'src/app/shared/components/charts/options/options
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -22,7 +22,7 @@ import { MovieService } from '../service/movie.service';
   templateUrl: './movie-overview.component.html',
   styleUrls: ['./movie-overview.component.scss']
 })
-export class MovieOverviewComponent implements OnInit, OnDestroy {
+export class MovieOverviewComponent implements OnDestroy {
   statistics$: Observable<MovieStatistics>;
 
   @ViewChild(NgScrollbar) textAreaScrollbar: NgScrollbar;
@@ -87,15 +87,12 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
   getSuspiciousColumns(): string[] {
     return window.window.innerWidth > 720 ? this.suspiciousDisplayedWideColumns : this.suspiciousDisplayedSmallColumns;
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(event): void {
     this.statistics$.subscribe(() => {
       this.textAreaScrollbar.update();
     });
@@ -106,7 +103,7 @@ export class MovieOverviewComponent implements OnInit, OnDestroy {
     window.open(`${embyUrl}/web/index.html#!/item/item.html?id=${id}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.selectedLibrarySub !== undefined) {
       this.selectedLibrarySub.unsubscribe();
     }

@@ -128,11 +128,11 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sortedRowsDataSource = new MatTableDataSource([]);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.collectedDataSub = this.showService.getCollectedList(this.selectedCollectionList, 0)
       .subscribe((data: ListContainer<ShowCollectionRow>) => {
         this.setShowTable(data);
@@ -185,19 +185,19 @@ export class ShowOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(event): void {
     this.resizeSub = this.statistics$.subscribe(() => {
       this.textAreaScrollbar.update();
     });
   }
 
-  private setShowTable(data: ListContainer<ShowCollectionRow>) {
+  private setShowTable(data: ListContainer<ShowCollectionRow>): void {
     this.rows = data.data;
     this.sortedRowsDataSource.data = data.data;
     this.showCount = data.totalCount;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
     }
