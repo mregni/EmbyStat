@@ -99,7 +99,7 @@
     "INTROLABEL": "Intro",
     "SERVERTYPELABEL": "Server type",
     "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
+    "SAVINGLABEL": "Sincronizzazione server",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Checking {{type}} server ...",
