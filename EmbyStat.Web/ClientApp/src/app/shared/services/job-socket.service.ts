@@ -17,7 +17,7 @@ export class JobSocketService {
     this.lines = [];
   }
 
-  updateJobLogs(value: string, type: number) {
+  updateJobLogs(value: string, type: number): void {
     const now = moment().format('HH:mm:ss DD-MM-YY');
     const line = `${now} ${value}`;
 
@@ -36,11 +36,11 @@ export class JobSocketService {
     this.logsSubject.next(this.lines);
   }
 
-  updateJobsInfo(job: Job) {
+  updateJobsInfo(job: Job): void {
     this.infoSubject.next(job);
   }
 
-  updateMissedPings(count: number) {
+  updateMissedPings(count: number): void {
     this.missedPingsSubject.next(count);
   }
 }

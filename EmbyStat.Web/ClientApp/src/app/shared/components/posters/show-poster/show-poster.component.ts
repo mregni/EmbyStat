@@ -1,9 +1,10 @@
 import { Subscription } from 'rxjs';
+import { SafeStyle } from '@angular/platform-browser';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { SettingsFacade } from '../../../facades/settings.facade';
@@ -15,7 +16,7 @@ import { ShowPoster } from '../../../models/show/show-poster';
   templateUrl: './show-poster.component.html',
   styleUrls: ['./show-poster.component.scss']
 })
-export class ShowPosterComponent implements OnInit, OnDestroy {
+export class ShowPosterComponent implements OnDestroy {
   settingsSub: Subscription;
   settings: Settings;
   @Input() poster: ShowPoster;
@@ -34,10 +35,7 @@ export class ShowPosterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  getPoster() {
+  getPoster(): SafeStyle {
     if (this.settings === undefined) {
       return '';
     }
@@ -47,11 +45,11 @@ export class ShowPosterComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustStyle(url);
   }
 
-  openShow() {
+  openShow(): void {
     window.open(`${ConfigHelper.getFullEmbyAddress(this.settings)}/web/index.html#!/item/item.html?id=${this.poster.mediaId}&serverId=${this.embyServerInfo.id}`, '_blank');
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.embyServerInfoSub !== undefined) {
       this.embyServerInfoSub.unsubscribe();
     }

@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component } from '@angular/core';
 
 import { LogFile } from '../../../shared/models/logs/log-file';
 import { LogService } from '../service/logs.service';
@@ -11,7 +10,7 @@ import { LogService } from '../service/logs.service';
   templateUrl: './logs-overview.component.html',
   styleUrls: ['./logs-overview.component.scss']
 })
-export class LogsOverviewComponent implements OnInit {
+export class LogsOverviewComponent {
   logs$: Observable<LogFile[]>;
 
   constructor(private readonly logService: LogService) {
@@ -30,8 +29,5 @@ export class LogsOverviewComponent implements OnInit {
     } else {
       return `${Math.floor(value / (1024 * 1024))} Mb`;
     }
-  }
-
-  ngOnInit() {
   }
 }

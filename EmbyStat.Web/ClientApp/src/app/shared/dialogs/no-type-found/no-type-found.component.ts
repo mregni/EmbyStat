@@ -36,7 +36,7 @@ export class NoTypeFoundDialog implements OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.jobSub !== undefined) {
       this.jobSub.unsubscribe();
     }

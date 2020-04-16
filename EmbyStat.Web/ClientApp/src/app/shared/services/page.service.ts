@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class PageService {
   page = new BehaviorSubject<string>('detail');
 
-  pageChanged(page: string) {
+  pageChanged(page: string): void {
     this.page.next(page);
   }
 }

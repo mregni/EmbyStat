@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Options } from '../../../components/charts/options/options';
@@ -12,7 +12,7 @@ import { OptionsService, Title } from '../options/options';
   templateUrl: './simple-chart.component.html',
   styleUrls: ['./simple-chart.component.scss']
 })
-export class SimpleChartComponent implements OnInit, OnChanges, OnDestroy {
+export class SimpleChartComponent implements OnChanges, OnDestroy {
   translateSub: Subscription;
   @Input() chart: Chart;
   @Input() type = 'bar';
@@ -46,11 +46,7 @@ export class SimpleChartComponent implements OnInit, OnChanges, OnDestroy {
       }));
   }
 
-  ngOnInit() {
-
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.translateSub !== undefined) {
       this.translateSub.unsubscribe();
     }

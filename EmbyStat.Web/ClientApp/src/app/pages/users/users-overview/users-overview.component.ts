@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { MediaServerService } from '../../../shared/services/media-server.servic
   templateUrl: './users-overview.component.html',
   styleUrls: ['./users-overview.component.scss']
 })
-export class UsersOverviewComponent implements OnInit, OnDestroy {
+export class UsersOverviewComponent implements OnDestroy {
   private usersSub: Subscription;
   private transSub: Subscription;
 
@@ -54,10 +54,7 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  filterChanged(event: any) {
+  filterChanged(event: any): void {
     console.log(event.value);
     if (event.value.endsWith('Desc')) {
       const prop = event.value.slice(0, -4);
@@ -70,11 +67,11 @@ export class UsersOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateToUser(id: any) {
+  navigateToUser(id: any): void {
     this.router.navigate([`user/${id}/detail`]);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.usersSub !== undefined) {
       this.usersSub.unsubscribe();
     }

@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Job } from '../../../../shared/models/jobs/job';
@@ -15,7 +15,7 @@ import { TriggerDialogComponent } from '../trigger-dialog/trigger-dialog.compone
   templateUrl: './job-item.component.html',
   styleUrls: ['./job-item.component.scss']
 })
-export class JobItemComponent implements OnInit, OnDestroy {
+export class JobItemComponent implements OnDestroy {
   @Input()
   set job(value: Job) {
     this._job = value;
@@ -42,10 +42,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  disableStart() {
+  disableStart(): boolean {
     return this._job.state === 1;
   }
 
@@ -72,7 +69,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  fireJob() {
+  fireJob(): void {
     this.startingJob = true;
     this.jobSub = this.jobService.fireJob(this._job.id).subscribe();
   }
@@ -137,7 +134,7 @@ export class JobItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.jobSocketSub !== undefined) {
       this.jobSocketSub.unsubscribe();
     }

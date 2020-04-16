@@ -1,6 +1,6 @@
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 
 import { SettingsFacade } from '../../facades/settings.facade';
 import { ConfigHelper } from '../../helpers/config-helper';
@@ -15,7 +15,7 @@ import { MediaServerService } from '../../services/media-server.service';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit, OnDestroy {
+export class ToolbarComponent implements OnDestroy {
   settings: Settings;
   private settingsSub: Subscription;
   private embyStatusSeb: Subscription;
@@ -56,11 +56,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     return ConfigHelper.getFullEmbyAddress(settings);
   }
 
-  ngOnInit() {
-
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.jobSocketSub !== undefined) {
       this.jobSocketSub.unsubscribe();
     }

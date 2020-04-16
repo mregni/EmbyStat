@@ -127,7 +127,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.serverProtocolControl.setValue(0);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.languages$ = this.settingsFacade.getLanguages();
   }
 
@@ -135,17 +135,17 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.translate.use(value);
   }
 
-  private updateUrl(protocol: number, url: string, port: string) {
+  private updateUrl(protocol: number, url: string, port: string): void {
     this.serverUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
   }
 
-  selectType(type: string) {
+  selectType(type: string): void {
     this.type = type === 'emby' ? 0 : 1;
     this.typeText = MediaServerTypeSelector.getServerTypeString(this.type);
     this.stepper.selectedIndex = 2;
   }
 
-  stepperPageChanged(event) {
+  stepperPageChanged(event): void {
     if (event.selectedIndex === 2) {
       this.serverFound = CheckBoolean.unChecked;
       this.serverApiKeyControl.setValue('');
@@ -207,7 +207,7 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private saveMediaServerDetails() {
+  private saveMediaServerDetails(): void {
     const address = this.serverAddressControl.value;
     const port = +this.serverPortControl.value;
     const protocol = this.serverProtocolControl.value;
@@ -228,24 +228,24 @@ export class WizardOverviewComponent implements OnInit, OnDestroy {
     this.settingsFacade.updateSettings(settings);
   }
 
-  finishWizard() {
+  finishWizard(): void {
     this.jobService.fireJob('41e0bf22-1e6b-4f5d-90be-ec966f746a2f').subscribe().unsubscribe();
     this.sideBarService.openMenu();
     this.router.navigate(['']);
   }
 
-  finishWizardAndStartSync() {
+  finishWizardAndStartSync(): void {
     this.jobService.fireJob('41e0bf22-1e6b-4f5d-90be-ec966f746a2f').subscribe().unsubscribe();
     this.jobService.fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e').subscribe().unsubscribe();
     this.sideBarService.openMenu();
     this.router.navigate(['/jobs']);
   }
 
-  getPage() {
+  getPage(): string {
     return MediaServerTypeSelector.getServerApiPage(this.type);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.languageChangedSub !== undefined) {
       this.languageChangedSub.unsubscribe();
     }

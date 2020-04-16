@@ -8,7 +8,7 @@ import { MediaServerUser } from '../models/media-server/media-server-user';
 export class UserService {
   user = new BehaviorSubject<MediaServerUser>(undefined);
 
-  userChanged(user: MediaServerUser) {
+  userChanged(user: MediaServerUser): void {
     this.user.next(user);
   }
 }

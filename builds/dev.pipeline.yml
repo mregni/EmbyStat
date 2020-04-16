@@ -38,10 +38,6 @@ jobs:
       projects: '$(webapp.project)'
       arguments: '--output publish'
 
-  - template: './templates/npmbuild.yml'
-    parameters:
-      npmBuild: 'run build'
-
   - template: ./templates/unit.tests.yml
   - template: './templates/sonarcloud.end.yml'
 

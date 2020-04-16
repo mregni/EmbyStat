@@ -18,7 +18,7 @@ import localePtBr from '@angular/common/locales/pt';
 import localePtPt from '@angular/common/locales/pt-PT';
 import localeRo from '@angular/common/locales/ro';
 import localeSv from '@angular/common/locales/sv';
-import { Component, LOCALE_ID, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, NgZone, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import * as signalR from '@aspnet/signalr';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,7 +38,7 @@ const SMALL_WIDTH_BREAKPOINT = 960;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnDestroy {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
   private settingLoadSub: Subscription;
   settings: Settings;
@@ -96,10 +96,6 @@ export class AppComponent implements OnInit, OnDestroy {
       registerLocaleData(this.getLanguageLocal(settings.language), settings.language);
       this.updateService.setUiToUpdateState(settings.updateInProgress);
     });
-  }
-
-  ngOnInit(): void {
-
   }
 
   ngOnDestroy() {

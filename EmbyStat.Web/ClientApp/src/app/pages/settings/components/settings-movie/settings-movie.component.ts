@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
@@ -12,7 +12,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   templateUrl: './settings-movie.component.html',
   styleUrls: ['./settings-movie.component.scss']
 })
-export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
+export class SettingsMovieComponent implements OnChanges {
   @Input() settings: Settings;
   isSaving = false;
 
@@ -35,9 +35,6 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  ngOnInit() {
-  }
-
   ngOnChanges(): void {
     if (this.settings !== undefined) {
       this.toShortMovieControl.setValue(this.settings.toShortMovie);
@@ -45,7 +42,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  saveToShortForm() {
+  saveToShortForm(): void {
     if (this.checkForm(this.formToShort)) {
       this.isSaving = true;
 
@@ -62,7 +59,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  saveCollectionTypesForm() {
+  saveCollectionTypesForm(): void {
     this.isSaving = true;
 
     const settings = { ...this.settings };
@@ -72,7 +69,7 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     this.isSaving = false;
   }
 
-  onCollectionListChanged(event: number[]) {
+  onCollectionListChanged(event: number[]): void {
     this.newCollectionList = event;
   }
 
@@ -83,9 +80,5 @@ export class SettingsMovieComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     return form.valid;
-  }
-
-  ngOnDestroy() {
-
   }
 }

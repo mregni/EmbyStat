@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { MediaServerTypeSelector } from '../../../shared/helpers/media-server-type-selector';
@@ -12,7 +12,7 @@ import { Settings } from '../../../shared/models/settings/settings';
   templateUrl: './settings-overview.component.html',
   styleUrls: ['./settings-overview.component.scss']
 })
-export class SettingsOverviewComponent implements OnInit, OnDestroy {
+export class SettingsOverviewComponent implements OnDestroy {
   private readonly paramSub: Subscription;
 
   settingsSub: Subscription;
@@ -49,10 +49,7 @@ export class SettingsOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.paramSub !== undefined) {
       this.paramSub.unsubscribe();
     }

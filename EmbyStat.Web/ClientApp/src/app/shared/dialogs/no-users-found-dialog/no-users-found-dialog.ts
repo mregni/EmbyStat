@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { JobService } from '../../services/job.service';
   styleUrls: ['./no-users-found-dialog.scss']
 })
 // tslint:disable-next-line: component-class-suffix
-export class NoUsersFoundDialog implements OnInit, OnDestroy {
+export class NoUsersFoundDialog implements OnDestroy {
   private jobSub: Subscription;
 
   disableButtons = false;
@@ -22,9 +22,6 @@ export class NoUsersFoundDialog implements OnInit, OnDestroy {
     private readonly dialogRef: MatDialogRef<string>,
     private readonly router: Router,
     private readonly jobService: JobService) { }
-
-  ngOnInit() {
-  }
 
   cancelClick(): void {
     this.dialogRef.close();
@@ -38,7 +35,7 @@ export class NoUsersFoundDialog implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.jobSub !== undefined) {
       this.jobSub.unsubscribe();
     }

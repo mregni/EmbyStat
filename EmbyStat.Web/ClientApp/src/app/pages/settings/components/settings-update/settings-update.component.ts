@@ -1,7 +1,7 @@
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -16,7 +16,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   templateUrl: './settings-update.component.html',
   styleUrls: ['./settings-update.component.scss']
 })
-export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
+export class SettingsUpdateComponent implements OnDestroy, OnChanges {
   @Input() settings: Settings;
   updatingSub: Subscription;
 
@@ -50,9 +50,6 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  ngOnInit() {
-  }
-
   ngOnChanges(): void {
     if (this.settings !== undefined) {
       this.autoUpdateControl.setValue(this.settings.autoUpdate);
@@ -64,7 +61,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     this.form.disable();
 
@@ -77,13 +74,13 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
     this.form.enable();
   }
 
-  private setUpdateState(state: boolean) {
+  private setUpdateState(state: boolean): void {
     const settings = {...this.settings};
     settings.updateInProgress = state;
     this.settingsFacade.updateSettings(settings);
   }
 
-  checkUpdate() {
+  checkUpdate(): void {
     this.updateResult$ = this.systemService.checkForUpdate()
       .pipe(catchError((err, caught) => {
         this.updateCheckFailed = true;
@@ -92,7 +89,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
       }) as any);
   }
 
-  startUpdate() {
+  startUpdate(): void {
     this.setUpdateState(true);
     this.systemService.startUpdate().pipe(catchError((err, caught) => {
       this.updateCheckFailed = true;
@@ -107,7 +104,7 @@ export class SettingsUpdateComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.updatingSub !== undefined) {
       this.updatingSub.unsubscribe();
     }

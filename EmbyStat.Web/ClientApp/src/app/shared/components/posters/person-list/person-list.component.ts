@@ -3,7 +3,7 @@ import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade'
 import { ConfigHelper } from 'src/app/shared/helpers/config-helper';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 
 import { SettingsFacade } from '../../../facades/settings.facade';
 import { PersonPoster } from '../../../models/common/person-poster';
@@ -14,7 +14,7 @@ import { Settings } from '../../../models/settings/settings';
   templateUrl: './person-list.component.html',
   styleUrls: ['./person-list.component.scss']
 })
-export class PersonListComponent implements OnInit, OnDestroy {
+export class PersonListComponent implements OnDestroy {
   settingsSub: Subscription;
   settings: Settings;
   @Input() posters: PersonPoster[];
@@ -37,11 +37,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-
-  }
-
-  getPoster(tag: string, mediaId: string) {
+  getPoster(tag: string, mediaId: string): string {
     if (this.settings === undefined) {
       return '';
     }

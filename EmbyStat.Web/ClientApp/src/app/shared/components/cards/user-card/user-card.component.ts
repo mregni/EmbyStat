@@ -28,13 +28,13 @@ export class UserCardComponent implements OnDestroy {
     return `${url}/emby/users/${this.user.id}/images/primary?width=100&tag=${this.user.primaryImageTag}&quality=90`;
   }
 
-  ngOnDestroy() {
+  openUser(): void {
+    this.clicked.emit(this.user.id);
+  }
+
+  ngOnDestroy(): void {
     if (this.settingsSub !== undefined) {
       this.settingsSub.unsubscribe();
     }
-  }
-
-  openUser(): void {
-    this.clicked.emit(this.user.id);
   }
 }

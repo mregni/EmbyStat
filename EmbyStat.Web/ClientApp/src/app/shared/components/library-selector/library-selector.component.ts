@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './library-selector.component.html',
   styleUrls: ['./library-selector.component.scss']
 })
-export class LibrarySelectorComponent implements OnInit {
+export class LibrarySelectorComponent {
   private privateList: number[];
   public form: FormGroup;
 
@@ -64,7 +64,7 @@ export class LibrarySelectorComponent implements OnInit {
     });
   }
 
-  onChange(event) {
+  onChange(event): void {
     const checkbox = event.source.value;
     const index = this.privateList.indexOf(+checkbox, 0);
 
@@ -79,8 +79,5 @@ export class LibrarySelectorComponent implements OnInit {
       }
     }
     this.newList.emit(this.privateList);
-  }
-
-  ngOnInit() {
   }
 }

@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { SettingsFacade } from '../../../../shared/facades/settings.facade';
@@ -15,7 +15,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
   templateUrl: './settings-emby.component.html',
   styleUrls: ['./settings-emby.component.scss']
 })
-export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
+export class SettingsEmbyComponent implements OnChanges, OnDestroy {
   @Input() settings: Settings;
 
   embyTokenSub: Subscription;
@@ -67,9 +67,6 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
-
   ngOnChanges(): void {
     if (this.settings !== undefined) {
       this.embyAddressControl.setValue(this.settings.mediaServer.serverAddress);
@@ -80,15 +77,15 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private updateUrl(protocol: number, url: string, port: string) {
+  private updateUrl(protocol: number, url: string, port: string): void {
     this.embyUrl = (protocol === 0 ? 'https://' : 'http://') + url + ':' + port;
   }
 
-  getPage() {
+  getPage(): string {
     return MediaServerTypeSelector.getServerApiPage(this.settings.mediaServer.serverType);
   }
 
-  saveEmbyForm() {
+  saveEmbyForm(): void {
     for (const i of Object.keys(this.embyForm.controls)) {
       this.embyForm.controls[i].markAsTouched();
       this.embyForm.controls[i].updateValueAndValidity();
@@ -136,7 +133,7 @@ export class SettingsEmbyComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.embyTokenSub !== undefined) {
       this.embyTokenSub.unsubscribe();
     }

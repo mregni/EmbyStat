@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { EmbyServerInfoFacade } from 'src/app/shared/facades/emby-server.facade';
 import { SettingsFacade } from 'src/app/shared/facades/settings.facade';
 import { ServerInfo } from 'src/app/shared/models/media-server/server-info';
+import { SafeStyle } from '@angular/platform-browser';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -34,7 +35,7 @@ export class PersonPosterComponent implements OnDestroy {
     });
   }
 
-  getPoster() {
+  getPoster(): SafeStyle {
     if (this.settings === undefined) {
       return '';
     }

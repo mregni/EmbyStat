@@ -45,18 +45,18 @@ export class UserContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  onUserSelectionChanged(event: any) {
+  onUserSelectionChanged(event: any): void {
     this.mediaServerService.getUserById(event.value).subscribe((user: MediaServerUser) => {
       this.userService.userChanged(user);
       this.selectedUserId = user.id;
     });
   }
 
-  onPageSelectionChanged(event: any) {
+  onPageSelectionChanged(event: any): void {
     this.router.navigate([`user/${this.selectedUserId}/${event.value}`]);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.pageSub = this.pageService.page.subscribe((page: string) => {
       this.selectedPage = page;
       this.cdRef.detectChanges();
