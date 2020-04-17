@@ -39,8 +39,7 @@ function Build-EmbyStat {
     dotnet publish Embystat.Web/EmbyStat.Web.csproj -c $BuildType --output $ResolvedInstallLocation -v $DotNetVerbosity --runtime `"$windowsversion-$Architecture`" -p:GenerateDocumentationFile=false -p:DebugSymbols=false -p:DebugType=none
 	dotnet publish Updater/Updater.csproj -c $BuildType --output $ResolvedInstallLocation/updater -v $DotNetVerbosity --runtime `"$windowsversion-$Architecture`" -p:GenerateDocumentationFile=false -p:DebugSymbols=false -p:DebugType=none
 	cd EmbyStat.Web/ClientApp
-	npm install
-	npm run build -- --prod
+	npm run build
 	Move-Item -Path ./dist/embystat/* -Destination $ResolvedInstallLocation/dist
 	cd ../../
 }
