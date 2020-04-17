@@ -18,6 +18,11 @@ jobs:
       targetType: filePath
       filePath: $(paths.script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+  
+  - script: |
+        cd EmbyStat.Web/ClientApp
+        npm install
+      displayName: 'Instal FE dependencies'
 
   - task: PowerShell@2
     displayName: 'Create NSIS package'
