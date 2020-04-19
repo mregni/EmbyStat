@@ -19,10 +19,29 @@ jobs:
       filePath: $(paths.script)/appsettings.ps1
       arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
   
-  - task: CmdLine@2
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet win10-x64 package'
     inputs:
-      script: 'npm install'
-      workingDirectory: 'EmbyStat.Web/ClientApp'
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.project)'
+      arguments: '-c Release -r win-x64 -o publish -f $(publish.framework) --self-contained true $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make dotnet win10-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.project)'
+      arguments: '-c Release -r win-x64 -o publish/updater -f $(publish.framework) --self-contained true $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+      
+  - template: '../templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build -- --prod'
 
   - task: PowerShell@2
     displayName: 'Create NSIS package'
