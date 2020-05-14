@@ -26,6 +26,7 @@ namespace EmbyStat.Services
         private IHttpClient _httpClient;
         private readonly IMediaServerRepository _mediaServerRepository;
         private readonly ISessionService _sessionService;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
@@ -33,7 +34,7 @@ namespace EmbyStat.Services
         private readonly Logger _logger;
 
         public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
+            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, ILibraryRepository libraryRepository)
         {
             _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
@@ -41,6 +42,7 @@ namespace EmbyStat.Services
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _clientStrategy = clientStrategy;
+            _libraryRepository = libraryRepository;
             _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
 
             var settings = _settingsService.GetUserSettings();
@@ -102,6 +104,19 @@ namespace EmbyStat.Services
         public EmbyStatus GetMediaServerStatus()
         {
             return _mediaServerRepository.GetEmbyStatus();
+        }
+
+        public IEnumerable<Library> GetMediaServerLibraries()
+        {
+            var rootItems = _httpClient.GetMediaFolders();
+
+            var libraries = rootItems.Items
+                .Select(LibraryConverter.ConvertToLibrary)
+                .Where(x => x.Type != LibraryType.BoxSets)
+                .ToList();
+
+            _libraryRepository.AddOrUpdateRange(libraries);
+            return libraries;
         }
 
         public bool PingMediaServer(string url)

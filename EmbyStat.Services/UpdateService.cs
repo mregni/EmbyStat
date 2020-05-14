@@ -211,6 +211,7 @@ namespace EmbyStat.Services
 
                     if (!File.Exists(updaterTool))
                     {
+                        _logger.Debug($"Update tool not found in location: {updaterTool}");
                         throw new BusinessException("NOUPDATEFILE");
                     }
 

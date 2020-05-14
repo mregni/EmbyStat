@@ -118,11 +118,11 @@ namespace EmbyStat.Clients.Base.Http
             client.EnableBroadcast = true;
             client.Send(requestData, requestData.Length, new IPEndPoint(IPAddress.Broadcast, 7359));
 
-            var timeToWait = TimeSpan.FromSeconds(2);
+            var timeToWait = TimeSpan.FromSeconds(5);
 
             var asyncResult = client.BeginReceive(null, null);
             asyncResult.AsyncWaitHandle.WaitOne(timeToWait);
-            if (asyncResult.IsCompleted)
+            if (asyncResult.IsCompleted)    
             {
                 try
                 {

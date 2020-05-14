@@ -59,6 +59,14 @@ namespace EmbyStat.Controllers.MediaServer
             return Ok(_mapper.Map<EmbyStatusViewModel>(result));
         }
 
+        [HttpGet]
+        [Route("server/libraries")]
+        public IActionResult GetMediaServerLibraries()
+        {
+            var result = _mediaServerService.GetMediaServerLibraries();
+            return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
+        }
+
         [HttpPost]
         [Route("server/ping")]
         public IActionResult PingEmby([FromBody]UrlViewModel url)

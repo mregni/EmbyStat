@@ -131,6 +131,18 @@ namespace EmbyStat.Repositories
             });
         }
 
+        public void UpsertMediaServerLibraries(IEnumerable<Library> items)
+        {
+            ExecuteQuery(() =>
+            {
+                using (var database = Context.CreateDatabaseContext())
+                {
+                    var collection = database.GetCollection<Library>();
+                    collection.Upsert(items);
+                }
+            });
+        }
+
         #endregion
 
         #region MediaServer Users

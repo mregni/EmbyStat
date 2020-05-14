@@ -8,6 +8,7 @@ using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
@@ -365,13 +366,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var rootItems = _httpClient.GetMediaFolders();
 
             return rootItems.Items
-                .Select(x => new Library
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Type = x.CollectionType.ToLibraryType(),
-                    PrimaryImage = x.ImageTags.ContainsKey(ImageType.Primary) ? x.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value : default(string)
-                })
+                .Select(LibraryConverter.ConvertToLibrary)
                 .Where(x => x.Type != LibraryType.BoxSets)
                 .ToList();
         }

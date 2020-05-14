@@ -19,6 +19,7 @@ namespace EmbyStat.Services.Interfaces
         void ResetMissedPings();
         void IncreaseMissedPings();
         void ResetMediaServerData();
+        IEnumerable<Library> GetMediaServerLibraries();
 
         #endregion
 
