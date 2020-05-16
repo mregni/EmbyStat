@@ -272,72 +272,72 @@
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
       "TITLE": "Nie znaleziono filmów",
-      "BODY": "Nie mogliśmy znaleźć żadnych filmów w bazie danych EmbyStat. Jeśli masz filmy w Emby powinieneś spróbować uruchomić nowe zadanie synchronizacji mediów."
+      "BODY": "Nie mogliśmy znaleźć żadnych filmów w bazie danych EmbyStat. Jeśli masz filmy w Emby powinieneś uruchomić nowe zadanie synchronizacji mediów."
     },
     "NOSHOWTYPEFOUND": {
       "TITLE": "Nie znaleziono seriali",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "BODY": "Nie mogliśmy znaleźć żadnych seriali w bazie danych EmbyStat. Jeśli masz seriale w Emby powinieneś uruchomić nowe zadanie synchronizacji mediów."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "Zadanie synchronizacji mediów jest uruchomione",
+      "BODY": "Zadanie synchronizacji mediów jest uruchomione w tle. Dopóki się nie zakończy, nie możesz sprawdzić statystyk."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "FORMAT_ERROR": "Podany wpis cron ma niewłaściwy format. Zajrzyj na<a href=\"https://crontab.guru/\" target=\"_blank\">tutaj</a> dla reguł formatowania. Dozwolone są tylko cyfry, spacje, * i / oraz -.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Tutaj</a> znajdziesz więcej informacji na temat formatowania łańcucha CRON. Dozwolone są tylko cyfry *, / i -."
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "TITLE": "Nie znaleziono użytkowników",
+      "BODY": "Nie znaleziono użytkowników w lokalnej bazie danych. Oznacza to ze mała synchronizacja nie została uruchomiona jeszcze. Czy chcesz to zrobić teraz ?"
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Page will refresh when the update is finished."
+    "FETCHING": "Pobieranie statystyk",
+    "UPDATING": "Aktualizowanie EmbyStat",
+    "UPDATINGSUB": "Strona zostanie odświeżona po zakończeniu aktualizacji."
   },
   "COLLECTIONTYPES": {
-    "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
-    "GAMES": "Games",
-    "LIVETV": "Live TV",
-    "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "MIXED": "Mieszane / Inne",
+    "MUSIC": "Muzyka",
+    "MUSICVIDEOS": "Filmy muzyczne",
+    "TRAILERS": "Zwiastuny",
+    "HOMEVIDEOS": "Domowe filmy wideo",
+    "BOXSETS": "Zestawy pudełkowe",
+    "BOOKS": "Książki",
+    "PHOTOS": "Zdjęcia",
+    "GAMES": "Gry",
+    "LIVETV": "Telewizja na żywo",
+    "PLAYLISTS": "Listy odtwarzania",
+    "FOLDERS": "Katalogi"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "GOTOMEDIASERVER": "Przejdź do {{type}}",
+    "JOBISRUNNING": "Zadanie {{job}} jest uruchomione",
+    "NOMISSEDPINGS": "Serwer Emby działa",
+    "ONEMISSEDPING": "Nie mogłem połączyć się z Emby podczas ostatniego sprawdzenia!",
+    "MOREMISSEDPINGS": "Nie można połączyć się z Emby po wielu próbach!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "SERVERINFO": "Informacje o serwerze",
+    "GITHUBRELEASE": "Wydania na Github",
+    "REQUESTFEATURE": "Zaproponuj nową funkcjonalność",
+    "LOGBUG": "Zgłoś błąd na GitHub",
+    "HELPTRANSLATE": "Pomóż przetłumaczyć aplikację",
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Podziękowania",
+      "TEXT": "Ogromne podziękowania dla następujących osób za tłumaczenie aplikacji na ich język ojczysty:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Zadania"
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HOSTOS": "System operacyjny",
+    "WANADDRESS": "Adres zewnętrzny WAN",
+    "LANADDRESS": "Adres wewnętrzny LAN",
+    "CACHEPATH": "Ścieżka do pamięci podręcznej",
+    "LOGPATH": "Ścieżka do logów",
+    "HTTPPORT": "Port HTTP",
+    "HTTPSPORT": "Port HTTPS"
   }
 }
