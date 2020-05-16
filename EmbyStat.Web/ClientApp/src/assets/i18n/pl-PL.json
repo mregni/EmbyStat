@@ -210,40 +210,40 @@
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
-    "ISHIDDEN": "Is hidden from login screen",
-    "ISDISABLED": "Is disabled",
-    "DELETED": "Deleted users",
-    "ACTIVE": "Active users",
-    "LASTACTIVE": "Last active",
+    "ISADMIN": "jest administratorem",
+    "ISHIDDEN": "Jest ukryty na ekranie logowania",
+    "ISDISABLED": "jest wyłączony",
+    "DELETED": "Usunięci uzytkownicy",
+    "ACTIVE": "Aktywni użytkownicy",
+    "LASTACTIVE": "Ostatnio aktywny",
     "SORTING": {
-      "USERNAMEASC": "Username (A - Z)",
-      "USERNAMEDESC": "Username (Z - A)",
-      "LASTACTIVEASC": "Last active date (asc)",
-      "LASTACTIVEDESC": "Last active date (desc)"
+      "USERNAMEASC": "Nazwa użytkownika (A-Z)",
+      "USERNAMEDESC": "Nazwa użytkownika (Z-A)",
+      "LASTACTIVEASC": "Data ostatniej aktywności (rosnąco)",
+      "LASTACTIVEDESC": "Data ostatniej aktywności (malejąco)"
     },
-    "TOOVERVIEW": "To overview",
+    "TOOVERVIEW": "Do przeglądu",
     "DETAILS": {
-      "TITLE": "Details for {{name}}",
-      "WATCHEDTITLE": "Last Watched Items"
+      "TITLE": "Szczegóły dla {{name}}",
+      "WATCHEDTITLE": "Ostatnio oglądane"
     },
     "WATCHEDTABLE": {
-      "TITLE": "Title",
-      "TIME": "Time",
-      "WATCHED": "Watched",
-      "START": "Start",
-      "ACTION": "Action"
+      "TITLE": "Tytuł",
+      "TIME": "Czas",
+      "WATCHED": "Obejrzane",
+      "START": "Początek",
+      "ACTION": "Akcja"
     },
     "STATS": {
-      "TOTALWATCHEDMOVIES": "Movies Watched",
-      "TOTALWATCHEDEPISODES": "Episodes Watched"
+      "TOTALWATCHEDMOVIES": "Filmy obejrzane",
+      "TOTALWATCHEDEPISODES": "Obejrzane odcinki"
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
-    "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
+    "LASTRUNNOW": "Ostatnie uruchomienie: właśnie teraz",
+    "LASTRUN": "Ostatnio uruchomione",
+    "HOURS": "{{hours}} godzin(y)",
+    "MINUTES": "{{minutes}} minut(y)",
     "SECONDS": "{{seconds}} second(s)",
     "AND": "and",
     "AGO": "ago",
