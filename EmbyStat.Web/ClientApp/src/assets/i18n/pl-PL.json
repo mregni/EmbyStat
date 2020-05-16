@@ -187,26 +187,26 @@
       "EMBYAPIKEY": "{{type}} klucz API",
       "EMBYPORT": "{{type}} port",
       "EMBYADDRESSREQUIRED": "{{type}} adres IP/domena jest wymagana.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "EMBYPORTREQUIRED": "{{type}} port jest wymagany.",
+      "EMBYAPIKEYREQUIRED": "klucz {{type}} API wymagany",
+      "APIKEYHINT": "Przejdź do ustawień zaawansowanych -> bezpieczeństwo na <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\"> {{type}} serwerze</a> aby wygenerować nowy klucz API.",
+      "WRONGAPIKEY": "Podany klucz API jest nieprawidłowy",
+      "CHANGESERVERTYPE": "Skonfigurowałeś serwer {{currentType}}, jeśli chcesz przełączyć się na {{newType}} musisz ponownie zainstalować aplikację."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Enable auto updates",
+      "AUTO": "Włącz automatyczne aktualizowanie",
       "CHECK": "Sprawdź aktualizacje",
-      "UPDATE:": "Update server now",
-      "TRAIN": "Akutalizacja treningu",
-      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
+      "UPDATE:": "Zaktualizuj serwer teraz",
+      "TRAIN": "Aktualizacja treningu",
+      "ONBETA": "Zrezygnowałęś z kanału aktualizacji MASTER, jest to operacja nieodwracalna! Jeśli chcesz zmienić kanał, musisz zainstalować serwer na nowo.",
+      "TRAINWARNING": "Tutaj możesz zmienić kanał aktualizacji z MASTER do Beta. Jeśli nie jesteś pewnien tego, zostaw MASTER. Jeśli zmienisz kanał na Beta i stwierdzisz że chcesz do niego wrócić, musisz zainstalować serwer od nowa!",
+      "CURRENTVERSION": "Aktualna wersja: {{version}}",
       "CANTCHECK": "Nie można sprawdzić aktualizacji teraz, nie można połączyć się z GitHub.",
-      "NOUPDATE": "No update available",
-      "NEWVERSION": "Version {{version}} available for download!",
-      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+      "NOUPDATE": "Brak aktualizacji",
+      "NEWVERSION": "Wersja {{version}} dostępna do pobrania!",
+      "DISABLED": "Aktualizacje są wyłączone dla tego serwera i prawdopodobnie zostaną zaktualizowane przez usługę zewnętrzną. Jeśli to pomyłka, nie uruchamiaj serwera z opcją --no-updates."
     }
   },
   "USERS": {
