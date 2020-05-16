@@ -245,37 +245,37 @@
     "HOURS": "{{hours}} godzin(y)",
     "MINUTES": "{{minutes}} minut(y)",
     "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
-    "JOBLOGS": "Job logs",
-    "CRONUPDATED": "Cron value updated",
+    "AND": "i",
+    "AGO": "temu",
+    "FOR": "dla",
+    "BUTFAILED": "ale nie powiodło się po",
+    "NORUN": "Jeszcze nie uruchomiono",
+    "MOMENT_AGO": "chwilę temu",
+    "JOBLOGS": "Dziennik zadań",
+    "CRONUPDATED": "Wartość cron zaktualizowana",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
-      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "PINGEMBYSERVERTITLE": "Sprawdź połączenie Emby",
+      "PINGEMBYSERVERDESCRIPTION": "Sprawdz połączenie do serwera Emby, aby sprawdzić, czy nadal jest online.",
+      "SMALLEMBYSYNCDESCRIPTION": "Wykonaj małą synchronizację z serwerem Emby. Jest to tylko szybka i mała aktualizacja systemu.",
+      "SMALLEMBYSYNCTITLE": "Mała synchronizacja z Emby",
+      "STARTSMALLEMBYSYNC": "Rozpocznij małą synchronizację",
+      "MEDIASYNCDESCRIPTION": "Wykonaj przyrostową synchronizację dla swojej kolekcji filmów. To może chwilę potrwać!",
+      "MEDIASYNCTITLE": "Synchronizacja mediów",
+      "STARTMEDIASYNC": "Rozpocznij synchronizację multimediów",
+      "DATABASECLEANUPTITLE": "Oczyszczanie bazy danych",
+      "DATABASECLEANUPDESCRIPTION": "Oczyść bazę z niepotrzebnych danych.",
+      "OPENJOBPAGE": "Przejdź do strony zadań",
+      "CHECKUPDATETITLE": "Sprawdź aktualizacje",
+      "CHECKUPDATEDESCRIPTION": "Sprawdza dostępność nowych aktualizacji w wybranym kanale aktualizacji."
     }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Nie znaleziono filmów",
+      "BODY": "Nie mogliśmy znaleźć żadnych filmów w bazie danych EmbyStat. Jeśli masz filmy w Emby powinieneś spróbować uruchomić nowe zadanie synchronizacji mediów."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
+      "TITLE": "Nie znaleziono seriali",
       "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
     },
     "MEDIASYNCTASKRUNNING": {
