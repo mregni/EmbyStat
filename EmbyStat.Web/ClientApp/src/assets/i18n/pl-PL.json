@@ -77,7 +77,7 @@
     "DURATIONINMINUTES": "Czas trwania w minutach",
     "ENABLETOSHORTMOVIES": "Włącz do obliczania krótkich filmów",
     "TVDBAPI": "Klucz API TVDB",
-    "CRON": "Ciąg crontab",
+    "CRON": "Wpis crontab",
     "EXCEPTIONLOGGING": "Włącz raportowanie błędów"
   },
   "FORMERRORS": {
@@ -200,8 +200,8 @@
       "CHECK": "Sprawdź aktualizacje",
       "UPDATE:": "Zaktualizuj serwer teraz",
       "TRAIN": "Aktualizacja treningu",
-      "ONBETA": "Zrezygnowałęś z kanału aktualizacji MASTER, jest to operacja nieodwracalna! Jeśli chcesz zmienić kanał, musisz zainstalować serwer na nowo.",
-      "TRAINWARNING": "Tutaj możesz zmienić kanał aktualizacji z MASTER do Beta. Jeśli nie jesteś pewnien tego, zostaw MASTER. Jeśli zmienisz kanał na Beta i stwierdzisz że chcesz do niego wrócić, musisz zainstalować serwer od nowa!",
+      "ONBETA": "Zrezygnowałeś z kanału aktualizacji MASTER, jest to operacja nieodwracalna! Jeśli chcesz zmienić kanał, musisz zainstalować serwer na nowo.",
+      "TRAINWARNING": "Tutaj możesz zmienić kanał aktualizacji z MASTER do BETA. Jeśli nie jesteś pewnien tego, zostaw MASTER. Jeśli zmienisz kanał na Beta i stwierdzisz że chcesz do niego wrócić, musisz zainstalować serwer od nowa!",
       "CURRENTVERSION": "Aktualna wersja: {{version}}",
       "CANTCHECK": "Nie można sprawdzić aktualizacji teraz, nie można połączyć się z GitHub.",
       "NOUPDATE": "Brak aktualizacji",
@@ -213,7 +213,7 @@
     "ISADMIN": "jest administratorem",
     "ISHIDDEN": "Jest ukryty na ekranie logowania",
     "ISDISABLED": "jest wyłączony",
-    "DELETED": "Usunięci uzytkownicy",
+    "DELETED": "Usunięci użytkownicy",
     "ACTIVE": "Aktywni użytkownicy",
     "LASTACTIVE": "Ostatnio aktywny",
     "SORTING": {
@@ -255,7 +255,7 @@
     "CRONUPDATED": "Wartość cron zaktualizowana",
     "INFO": {
       "PINGEMBYSERVERTITLE": "Sprawdź połączenie Emby",
-      "PINGEMBYSERVERDESCRIPTION": "Sprawdz połączenie do serwera Emby, aby sprawdzić, czy nadal jest online.",
+      "PINGEMBYSERVERDESCRIPTION": "Sprawdź połączenie do serwera Emby, aby sprawdzić, czy nadal jest online.",
       "SMALLEMBYSYNCDESCRIPTION": "Wykonaj małą synchronizację z serwerem Emby. Jest to tylko szybka i mała aktualizacja systemu.",
       "SMALLEMBYSYNCTITLE": "Mała synchronizacja z Emby",
       "STARTSMALLEMBYSYNC": "Rozpocznij małą synchronizację",
@@ -288,7 +288,7 @@
     },
     "NOUSERSFOUND": {
       "TITLE": "Nie znaleziono użytkowników",
-      "BODY": "Nie znaleziono użytkowników w lokalnej bazie danych. Oznacza to ze mała synchronizacja nie została uruchomiona jeszcze. Czy chcesz to zrobić teraz ?"
+      "BODY": "Nie znaleziono użytkowników w lokalnej bazie danych. Oznacza to ze mała synchronizacja nie została uruchomiona jeszcze. Czy chcesz to zrobić teraz?"
     }
   },
   "LOADER": {
