@@ -9,6 +9,7 @@ namespace EmbyStat.Services.Interfaces
         IEnumerable<Library> GetMovieLibraries();
         MovieStatistics GetStatistics(List<string> libraryIds);
         MovieStatistics CalculateMovieStatistics(List<string> libraryIds);
+        MovieStatistics CalculateMovieStatistics(string libraryId);
         bool TypeIsPresent();
     }
 }
