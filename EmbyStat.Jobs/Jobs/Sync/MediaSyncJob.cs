@@ -339,24 +339,57 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _statisticsRepository.MarkMovieTypesAsInvalid();
 
             var movieLibraries = _movieService.GetMovieLibraries().Select(x => x.Id).ToList();
-            var movieLibrarySets = movieLibraries.PowerSets().ToList();
-            for (var i = 0; i < movieLibrarySets.Count; i++)
+            var totalMoviesToCalculate = movieLibraries.Count + ((movieLibraries.Count > 1) ? 1 : 0) + 1;
+            var currentCalculationCount = 0;
+            for (var i = 0; i < movieLibraries.Count; i++)
             {
-                _movieService.CalculateMovieStatistics(movieLibrarySets[i].ToList());
-                await LogProgress(Math.Round(85 + 8 * (i + 1) / (double)movieLibrarySets.Count, 1));
+                _movieService.CalculateMovieStatistics(movieLibraries[i]);
+                await LogProgress(Math.Round(85 + 8 * (i + 1) / ((double)movieLibraries.Count + 2), 1));
+                currentCalculationCount++;
+                await LogInformation($"Calculation {currentCalculationCount}/{totalMoviesToCalculate} done");
             }
+
+            if (movieLibraries.Count > 1)
+            {
+                _movieService.CalculateMovieStatistics(movieLibraries);
+
+                currentCalculationCount++;
+                await LogProgress(Math.Round(85 + 8 * ((double)movieLibraries.Count + 1) / ((double)movieLibraries.Count + 2), 1));
+                await LogInformation($"Calculation {currentCalculationCount}/{totalMoviesToCalculate} done");
+            }
+
+            _movieService.CalculateMovieStatistics(new List<string>());
+            await LogInformation($"Calculation {totalMoviesToCalculate}/{totalMoviesToCalculate} done");
+
+            await LogProgress(93);
 
             await LogInformation("Calculating show statistics");
             var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
-            var showLibrarySets = showLibraries.PowerSets().ToList();
-            for (var i = 0; i < showLibrarySets.Count; i++)
+            var totalShowsToCalculate = showLibraries.Count + ((showLibraries.Count > 1) ? 1 : 0) + 1;
+            currentCalculationCount = 0;
+            for (var i = 0; i < showLibraries.Count; i++)
             {
-                var libraryList = showLibrarySets[i].ToList();
-                _showService.CalculateShowStatistics(libraryList);
-                _showService.CalculateCollectedRows(libraryList);
+                _showService.CalculateShowStatistics(showLibraries[i]);
+                _showService.CalculateCollectedRows(showLibraries[i]);
 
-                await LogProgress(Math.Round(93 + 7 * (i + 1) / (double)showLibrarySets.Count, 1));
+                currentCalculationCount++;
+                await LogProgress(Math.Round(93 + 7 * (i + 1) / ((double)showLibraries.Count + 2), 1));
+                await LogInformation($"Calculation {currentCalculationCount}/{totalShowsToCalculate} done");
             }
+
+            if (showLibraries.Count > 1)
+            {
+                _showService.CalculateShowStatistics(showLibraries);
+                _showService.CalculateCollectedRows(showLibraries);
+
+                currentCalculationCount++;
+                await LogProgress(Math.Round(93 + 7 * (showLibraries.Count + 1) / ((double)showLibraries.Count + 2), 1));
+                await LogInformation($"Calculation {currentCalculationCount}/{totalShowsToCalculate} done");
+            }
+
+            _showService.CalculateShowStatistics(new List<string>());
+            _showService.CalculateCollectedRows(new List<string>());
+            await LogInformation($"Calculation {totalShowsToCalculate}/{totalShowsToCalculate} done");
         }
 
         private async Task<List<Library>> GetLibrariesAsync()
