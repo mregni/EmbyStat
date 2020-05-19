@@ -54,8 +54,8 @@
     "MINUTES": "Minuten",
     "DISKSIZE": "Festplattengröße",
     "TOTALDISKSIZE": "Gesamte Festplattengröße",
-    "EMBYSERVER": "Emby server",
-    "JELLYFINSERVER": "Jellyfin server"
+    "EMBYSERVER": "Emby Server",
+    "JELLYFINSERVER": "Jellyfin Server"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
@@ -97,26 +97,26 @@
   },
   "WIZARD": {
     "INTROLABEL": "Intro",
-    "SERVERTYPELABEL": "Server type",
-    "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
+    "SERVERTYPELABEL": "Servertyp",
+    "SERVERLABEL": "Servereinstellungen",
+    "SAVINGLABEL": "Serversynchronisierung",
     "FINALLABEL": "Fertig",
     "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen",
-    "CHECKINGSTATUS": "Checking {{type}} server ...",
+    "CHECKINGSTATUS": "{{type}} Server wird überprüft ...",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
-    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "SERVERRUNNING": "{{type}} server is running",
+    "NOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu {{type}} einrichten. Wir haben versucht deinen {{type}} Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen {{type}} Server finden kann.",
+    "FOUNDTEXT": "Wir haben einen {{type}} Server mit dem Namen {{name}} in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
+    "SERVERRUNNING": "Der {{type}} Server läuft",
     "KEYISVALID": "Der API-Schlüssel ist gültig",
     "PLUGININSTALLED": "EmbyStat Plugin auf dem Emby Server gefunden",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
+    "SAVINGINSTRUCTIONS": "Wenn etwas fehlschlägt, dann können Sie mit EmbyStat nicht nutzen. In diesem Fall drücken Sie zurück, beheben Sie die Fehler und dann weiter.",
     "SAVING": "Speichere Daten",
     "RESCAN": "Erneut scannen",
     "FINISHWITHSYNC": "Synchronisation starten",
     "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
     "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren.",
     "JELLYFIN": {
-      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+      "ADMINTEXT": "Da Sie Jellyfin verwenden, müssen Sie ein Administratorkonto angeben, mit dem Sie Daten vom Server abrufen möchten. Bitte wählen Sie den gewünschten Administrator aus der Dropdown-Liste aus."
     }
   },
   "MOVIES": {
@@ -183,15 +183,15 @@
       "COLLECTIONTYPES": "Wählen Sie alle Typen von Sammlungen aus, die Sie in der Dropdown-Liste für die Sammlung auf der Seite mit den Serienstatistiken sehen wollen."
     },
     "EMBY": {
-      "EMBYADDRESS": "{{type}} IP/domain",
-      "EMBYAPIKEY": "{{type}} API key",
-      "EMBYPORT": "{{type}} port",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "EMBYADDRESS": "{{type}} IP/Domain",
+      "EMBYAPIKEY": "{{type}} API-Schlüssel",
+      "EMBYPORT": "{{type}} Port",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/Domain ist erforderlich.",
+      "EMBYPORTREQUIRED": "{{type}} Port ist erforderlich.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API-Schlüssel ist erforderlich",
+      "APIKEYHINT": "Gehen Sie zu Erweitert -> Sicherheit auf <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">Ihrem {{type}} Server</a> um einen neuen API-Schlüssel zu generieren.",
       "WRONGAPIKEY": "Der angegebene API-Schlüssel ist ungültig",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "CHANGESERVERTYPE": "Sie haben einen {{currentType}} Server konfiguriert. Wenn Sie zu {{newType}} wechseln möchten, dann müssen Sie die Anwendung neu installieren."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -311,7 +311,7 @@
     "FOLDERS": "Ordner"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
+    "GOTOMEDIASERVER": "Gehe zu {{type}}",
     "JOBISRUNNING": "{{job}} Aufgabe wird ausgeführt",
     "NOMISSEDPINGS": "Der Emby Server läuft",
     "ONEMISSEDPING": "Es konnte bei der letzten Überprüfung keine Verbindung zu Emby hergestellt werden!",

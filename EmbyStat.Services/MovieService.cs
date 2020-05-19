@@ -77,6 +77,11 @@ namespace EmbyStat.Services
             return statistics;
         }
 
+        public MovieStatistics CalculateMovieStatistics(string libraryId)
+        {
+            return CalculateMovieStatistics(new List<string> {libraryId});
+        }
+
         public bool TypeIsPresent()
         {
             return _movieRepository.Any();
