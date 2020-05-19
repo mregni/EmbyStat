@@ -53,6 +53,11 @@ namespace EmbyStat.Services
             return CalculateShowStatistics(libraryIds);
         }
 
+        public ShowStatistics CalculateShowStatistics(string libraryId)
+        {
+            return CalculateShowStatistics(new List<string> { libraryId });
+        }
+
         public ShowStatistics CalculateShowStatistics(List<string> libraryIds)
         {
             var statistics = new ShowStatistics
@@ -361,6 +366,11 @@ namespace EmbyStat.Services
             rows.TotalCount = rows.Data.Count();
             rows.Data = rows.Data.Skip(page * 30).Take(30);
             return rows;
+        }
+
+        public List<ShowCollectionRow> CalculateCollectedRows(string libraryId)
+        {
+            return CalculateCollectedRows(new List<string> { libraryId });
         }
 
         public List<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds)

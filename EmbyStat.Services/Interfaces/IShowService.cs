@@ -10,8 +10,10 @@ namespace EmbyStat.Services.Interfaces
         IEnumerable<Library> GetShowLibraries();
         ShowStatistics GetStatistics(List<string> libraryIds);
         ShowStatistics CalculateShowStatistics(List<string> libraryIds);
+        ShowStatistics CalculateShowStatistics(string libraryId);
         ListContainer<ShowCollectionRow> GetCollectedRows(List<string> libraryIds, int page);
         List<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds);
+        List<ShowCollectionRow> CalculateCollectedRows(string libraryId);
         bool TypeIsPresent();
     }
 }

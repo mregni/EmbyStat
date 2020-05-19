@@ -54,8 +54,8 @@
     "MINUTES": "Minutos",
     "DISKSIZE": "Tamaño del Disco",
     "TOTALDISKSIZE": "Tamaño en Disco",
-    "EMBYSERVER": "Emby server",
-    "JELLYFINSERVER": "Jellyfin server"
+    "EMBYSERVER": "Servidor Emby",
+    "JELLYFINSERVER": "Servidor Jellyfin"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, tenemos un error en el backend, por favor intente de nuevo. Si sigue fallando, verifique los registros para más detalles.",
@@ -90,33 +90,33 @@
     "SETTINGS": "Configuración",
     "PLUGINS": "Extensiones",
     "JOBS": "Tareas",
-    "SERVER": "Server",
+    "SERVER": "Servidor",
     "LOGS": "Registros",
     "ABOUT": "Acerca de",
     "USERS": "Usuarios"
   },
   "WIZARD": {
     "INTROLABEL": "Introducción",
-    "SERVERTYPELABEL": "Server type",
-    "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
+    "SERVERTYPELABEL": "Tipo de servidor",
+    "SERVERLABEL": "Configuración del servidor",
+    "SAVINGLABEL": "Sincronización del servidor",
     "FINALLABEL": "Final",
     "CROWNDINHELP": "Si su idioma no está mencionado o no está completo, siéntase libre de ayudarme a traducir la aplicación en su idioma en <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Checking {{type}} server ...",
+    "CHECKINGSTATUS": "Comprobando {{type}} servidor ...",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
-    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "SERVERRUNNING": "{{type}} server is running",
+    "NOTFOUNDTEXT": "Ahora vamos a configurar su conexión {{type}}. Hemos intentado detectar automáticamente su servidor Emby en la red, pero ha fallado la detección. Rellene todos los campos para que EmbyStat pueda encontrar su servidor Emby.",
+    "FOUNDTEXT": "Encontramos un servidor {{type}} llamado {{name}} en su red e ingresamos la url en el formulario. Siéntase libre de ajustar esto y completar el resto del formulario.",
+    "SERVERRUNNING": "El servidor {{type}} está corriendo",
     "KEYISVALID": "La clave API no es válida",
     "PLUGININSTALLED": "Plugin EmbyStat encontrado en el servidor Emby",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
+    "SAVINGINSTRUCTIONS": "Si algo falla, no puede comenzar a usar EmbyStat. En ese caso, corrija los errores, presione hacia atrás y solucione el problema.",
     "SAVING": "Guardando datos",
     "RESCAN": "Volver a escanear",
     "FINISHWITHSYNC": "Iniciar la sincronización",
     "FINISHED": "Se guardan todas las configuraciones y puede comenzar a usar el servidor Emby ahora. ¡Disfruta de tus nuevas estadísticas!",
     "FINISHEXPLANATION": "Lo mejor que puede hacer primero es comenzar una tarea de sincronización de medios. EmbyStat comenzará a descargar todos los datos de su servidor Emby. Tenga en cuenta que esta tarea puede llevar mucho tiempo según el tamaño de su colección. Si no desea iniciar la sincronización ahora simplemente haga clic en finalizar. Puede iniciarlo manualmente más tarde navegando a la página de Tareas.",
     "JELLYFIN": {
-      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+      "ADMINTEXT": "Debido a que está utilizando Jellyfin, debe proporcionar una cuenta de administrador que desee utilizar para obtener datos del servidor. Seleccione el administrador deseado de la lista desplegable."
     }
   },
   "MOVIES": {
@@ -183,15 +183,15 @@
       "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú desplegable situado en la página de series."
     },
     "EMBY": {
-      "EMBYADDRESS": "{{type}} IP/domain",
-      "EMBYAPIKEY": "{{type}} API key",
-      "EMBYPORT": "{{type}} port",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "EMBYADDRESS": "{{type}} IP/dominio",
+      "EMBYAPIKEY": "{{type}} clave API",
+      "EMBYPORT": "{{type}} puerto",
+      "EMBYADDRESSREQUIRED": "{{type}} IP / dominio requerido.",
+      "EMBYPORTREQUIRED": "{{type}} puerto requerido.",
+      "EMBYAPIKEYREQUIRED": "{{type}} clave API requerida",
+      "APIKEYHINT": "Vaya a avanzado -> seguridad en <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">su servidor {{type}} </a> para generar un nuevo token API.",
       "WRONGAPIKEY": "La clave API introducida no es válida",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "CHANGESERVERTYPE": "Configuraste un servidor {{currentType}}, si quieres cambiar a {{newType}} tendrás que reinstalar la aplicación."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -200,8 +200,8 @@
       "CHECK": "Comprobar y actualizar servidor",
       "UPDATE:": "Actualizar servidor",
       "TRAIN": "Change the update train if you want to have beta updates.",
-      "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
-      "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
+      "ONBETA": "Ya no estás en la rama principal, así que no puedes volver a ella. Si desea volver a la rama principal, reinstale el servidor.",
+      "TRAINWARNING": "Aquí puede cambiar la rama de actualización de principal a beta. Si no sabe lo que está haciendo, simplemente deje esta configuración en principal. Si desea recibir las actualizaciones Beta, cámbielas aquí, tenga en cuenta que no puede volver a principal más tarde. Deberá reinstalar el servidor.",
       "CURRENTVERSION": "Versión actual: {{version}}",
       "CANTCHECK": "No se puede comprobar las actualizaciones, no hay conexión con GitHub.",
       "NOUPDATE": "No hay actualizaciones",
@@ -311,7 +311,7 @@
     "FOLDERS": "Carpetas"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
+    "GOTOMEDIASERVER": "Ir a {{type}}",
     "JOBISRUNNING": "{{job}} en funcionamiento",
     "NOMISSEDPINGS": "El servidor Emby esta conectado",
     "ONEMISSEDPING": "No se puedo conectar con el servidor Emby en el último intento!",
