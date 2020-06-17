@@ -266,7 +266,7 @@
       "DATABASECLEANUPDESCRIPTION": "Cleanup database, remove unnecessary data.",
       "OPENJOBPAGE": "Go to job page",
       "CHECKUPDATETITLE": "Check for new updates",
-      "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
+      "CHECKUPDATEDESCRIPTION": "Checks for new updates."
     }
   },
   "DIALOGS": {
@@ -288,7 +288,7 @@
     },
     "NOUSERSFOUND": {
       "TITLE": "No users found",
-      "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
+      "BODY": "No users are found in the local database. This means that no small sync job has run. Do you want to run it now?"
     }
   },
   "LOADER": {
