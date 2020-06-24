@@ -67,10 +67,10 @@ namespace Tests.Unit.Repository
                 using (var database = _context.CreateDatabaseContext())
                 {
                     var collection = database.GetCollection<Library>();
-                    collection.InsertBulk(new[] {libraryOne, libraryTwo, libraryThree, libraryFour });
+                    collection.InsertBulk(new[] { libraryOne, libraryTwo, libraryThree, libraryFour });
                 }
 
-                var libraries = _libraryRepository.GetLibrariesByTypes(new[] {LibraryType.TvShow, LibraryType.Movies});
+                var libraries = _libraryRepository.GetLibrariesById(new[] { libraryOne.Id, libraryTwo.Id, libraryThree.Id });
                 libraries.Should().NotContainNulls();
                 libraries.Count.Should().Be(3);
 

@@ -13,8 +13,8 @@ namespace EmbyStat.Controllers.Settings
         public int ToShortMovie { get; set; }
         public bool ToShortMovieEnabled { get; set; }
         public int KeepLogsCount { get; set; }
-        public List<int> MovieLibraryTypes { get; set; }
-        public List<int> ShowLibraryTypes { get; set; }
+        public List<string> MovieLibraries { get; set; }
+        public List<string> ShowLibraries { get; set; }
         public bool AutoUpdate { get; set; }
         public int UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
@@ -26,7 +26,7 @@ namespace EmbyStat.Controllers.Settings
         public string DataDir { get; set; }
         public string LogDir { get; set; }
         public string ConfigDir { get; set; }
-        
+
         public class EmbySettingsViewModel
         {
             public string ServerName { get; set; }
@@ -37,6 +37,7 @@ namespace EmbyStat.Controllers.Settings
             public int ServerProtocol { get; set; }
             public int ServerType { get; set; }
             public string UserId { get; set; }
+            public string ServerId { get; set; }
         }
 
         public class TvdbSettingsViewModel

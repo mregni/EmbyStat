@@ -40,7 +40,7 @@ namespace EmbyStat.Clients.Base.Converters
                 PremiereDate = dto.PremiereDate,
                 ProductionYear = dto.ProductionYear,
                 Video3DFormat = dto.Video3DFormat ?? 0,
-                Genres = dto.Genres
+                Genres = dto.Genres,
             };
 
             dto.MapImageTags(movie);

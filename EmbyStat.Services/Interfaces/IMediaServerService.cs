@@ -12,8 +12,8 @@ namespace EmbyStat.Services.Interfaces
         #region Server
 
         MediaServerUdpBroadcast SearchMediaServer(ServerType type);
-        ServerInfo GetServerInfo();
-        bool TestNewApiKey(string url, string apiKey);
+        ServerInfo GetServerInfo(bool forceReSync);
+        bool TestNewApiKey(string url, string apiKey, ServerType type);
         EmbyStatus GetMediaServerStatus();
         bool PingMediaServer(string url);
         void ResetMissedPings();

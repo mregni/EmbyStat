@@ -36,8 +36,8 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraryTypes = new List<LibraryType> { LibraryType.Other, LibraryType.Movies, LibraryType.HomeVideos },
-                ShowLibraryTypes = new List<LibraryType> { LibraryType.TvShow, LibraryType.Other },
+                MovieLibraries = new List<string>(),
+                ShowLibraries = new List<string>(),
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = UpdateTrain.Beta,
@@ -77,8 +77,8 @@ namespace Tests.Unit.Controllers
             mapperMock.Setup(x => x.Map<UserSettings>(It.IsAny<FullSettingsViewModel>()))
                 .Returns(new UserSettings
                 {
-                    MovieLibraryTypes = new List<LibraryType>(),
-                    ShowLibraryTypes = new List<LibraryType>()
+                    MovieLibraries = new List<string>(),
+                    ShowLibraries = new List<string>()
                 });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
@@ -124,8 +124,8 @@ namespace Tests.Unit.Controllers
             settings.UpdateTrain.Should().Be((int)_userSettings.UpdateTrain);
             settings.Username.Should().Be(_userSettings.Username);
             settings.WizardFinished.Should().Be(_userSettings.WizardFinished);
-            settings.MovieLibraryTypes.Count.Should().Be(_userSettings.MovieLibraryTypes.Count);
-            settings.ShowLibraryTypes.Count.Should().Be(_userSettings.ShowLibraryTypes.Count);
+            settings.MovieLibraries.Count.Should().Be(_userSettings.MovieLibraries.Count);
+            settings.ShowLibraries.Count.Should().Be(_userSettings.ShowLibraries.Count);
             settings.MediaServer.ApiKey.Should().Be(_userSettings.MediaServer.ApiKey);
             settings.MediaServer.AuthorizationScheme.Should().Be(_userSettings.MediaServer.AuthorizationScheme);
             settings.MediaServer.ServerAddress.Should().Be(_userSettings.MediaServer.ServerAddress);
@@ -152,8 +152,8 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraryTypes = new List<int> { 0, 2, 6 },
-                ShowLibraryTypes = new List<int> { 0, 2 },
+                MovieLibraries = new List<string>(),
+                ShowLibraries = new List<string>(),
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = 0,

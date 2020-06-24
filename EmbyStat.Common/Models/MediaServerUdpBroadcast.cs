@@ -40,5 +40,6 @@ namespace EmbyStat.Common.Models
         public int Port { get; set; }
         [JsonIgnore]
         public int Protocol { get; set; }
+        public int Type { get; set; }
 	}
 }

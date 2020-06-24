@@ -9,6 +9,7 @@ namespace EmbyStat.Common.Models.Net
         public string Id { get; set; }
         public DateTimeOffset? DateCreated { get; set; }
         public Dictionary<ImageType, string> ImageTags { get; set; }
+        public string[] BackdropImageTags { get; set; }
         public string Name { get; set; }
         public string ParentId { get; set; }
         public string Path { get; set; }

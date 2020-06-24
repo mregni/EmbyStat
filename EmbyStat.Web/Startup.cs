@@ -28,6 +28,7 @@ using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -59,6 +60,13 @@ namespace EmbyStat.Web
                 loggerOptions.Filter = (loggerName, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
             });
 
+            services.AddCors(b => b.AddPolicy("default", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services
                 .AddMvcCore(options => {
                     options.Filters.Add(new BusinessExceptionFilterAttribute());
@@ -88,7 +96,6 @@ namespace EmbyStat.Web
             });
 
             services.AddSignalR();
-            services.AddCors();
 
             services.RegisterApplicationDependencies();
             //services.AddHostedService<WebSocketService>();
@@ -134,8 +141,8 @@ namespace EmbyStat.Web
                         Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
                     });
             }
-
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            
+            app.UseCors("default");
             app.UseRouting();
             app.UseEndpoints(routes =>
             {
@@ -154,8 +161,11 @@ namespace EmbyStat.Web
             {
                 if (env.IsDevelopment())
                 {
-                    spa.Options.SourcePath = "ClientApp";
-                    spa.UseAngularCliServer(npmScript: "start");
+                    spa.Options.SourcePath = "ClientApp/build";
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseReactDevelopmentServer(npmScript: "start");
+                    }
                 }
                 else
                 {

@@ -58,8 +58,9 @@ namespace Tests.Unit.Clients
         {
             var resultObj = "test";
             var client = CreateStringClient(resultObj);
-            Action act = () => client.BaseUrl = string.Empty;
-            act.Should().Throw<ArgumentNullException>();
+            client.BaseUrl = string.Empty;
+
+            client.BaseUrl.Should().BeEmpty();
         }
 
         [Fact]
@@ -67,8 +68,9 @@ namespace Tests.Unit.Clients
         {
             var resultObj = "test";
             var client = CreateStringClient(resultObj);
-            Action act = () => client.ApiKey = string.Empty;
-            act.Should().Throw<ArgumentNullException>();
+            client.ApiKey = string.Empty;
+
+            client.ApiKey.Should().BeEmpty();
         }
 
         [Fact]
@@ -210,7 +212,7 @@ namespace Tests.Unit.Clients
         [Fact]
         public void GetServerInfo_Should_Return_Server_Info()
         {
-            var resultObj = new ServerInfo { Id = Guid.NewGuid().ToString() };
+            var resultObj = new ServerInfoDto { Id = Guid.NewGuid().ToString() };
             var client = CreateClient(resultObj);
             client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
             client.BaseUrl = "localhost:9000";

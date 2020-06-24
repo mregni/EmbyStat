@@ -63,8 +63,9 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = service.GetServerInfo();
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
+            var result = service.GetServerInfo(false);
 
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
@@ -91,8 +92,9 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = service.GetServerInfo();
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
+            var result = service.GetServerInfo(false);
 
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
@@ -118,7 +120,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetMediaServerStatus();
 
             result.Should().NotBeNull();
@@ -142,7 +145,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             service.ResetMissedPings();
 
             _embyRepositoryMock.Verify(x => x.ResetMissedPings(), Times.Once);
@@ -163,7 +167,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             service.IncreaseMissedPings();
 
             _embyRepositoryMock.Verify(x => x.IncreaseMissedPings(), Times.Once);
@@ -184,7 +189,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.PingMediaServer("localhost:9000");
             result.Should().BeTrue();
 
@@ -211,8 +217,9 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = service.TestNewApiKey("localhost:9000", "1234");
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
+            var result = service.TestNewApiKey("localhost:9000", "1234", ServerType.Emby);
 
             result.Should().BeTrue();
 
@@ -245,8 +252,9 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
-            var result = service.TestNewApiKey("localhost:9000", "1234");
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
+            var result = service.TestNewApiKey("localhost:9000", "1234", ServerType.Emby);
 
             result.Should().BeFalse();
 
@@ -278,7 +286,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetAllPlugins();
 
             result.Should().NotContainNulls();
@@ -303,7 +312,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetAllUsers().ToList();
 
             result.Should().NotContainNulls();
@@ -329,7 +339,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetUserById("1");
 
             result.Should().NotBeNull();
@@ -354,7 +365,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetViewedEpisodeCountByUserId("1");
 
             result.Should().NotBeNull();
@@ -380,7 +392,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetViewedMovieCountByUserId("1");
 
             result.Should().NotBeNull();
@@ -405,7 +418,8 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetUserViewCount("1");
 
             result.Should().Be(12);
@@ -430,7 +444,9 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             var result = service.GetAndProcessServerInfo();
 
             result.Should().NotBeNull();
@@ -459,7 +475,9 @@ namespace Tests.Unit.Services
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
+            var libraryRepository = new Mock<ILibraryRepository>();
+
+            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object, _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object, libraryRepository.Object);
             service.GetAndProcessPluginInfo();
 
             _httpClientMock.Verify(x => x.GetInstalledPlugins(), Times.Once);

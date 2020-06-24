@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using EmbyStat.Clients.Base.Converters;
+using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -30,29 +31,13 @@ namespace EmbyStat.Clients.Base.Http
         public string ApiKey
         {
             get => apiKey;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                apiKey = value;
-            }
+            set => apiKey = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
         }
 
         public string BaseUrl
         {
             get => RestClient.BaseUrl?.ToString() ?? string.Empty;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                RestClient.BaseUrl = new Uri(value);
-            }
+            set => RestClient.BaseUrl = string.IsNullOrWhiteSpace(value) ? null : new Uri(value);
         }
 
         protected string AuthorizationScheme { get; set; }
@@ -122,7 +107,7 @@ namespace EmbyStat.Clients.Base.Http
 
             var asyncResult = client.BeginReceive(null, null);
             asyncResult.AsyncWaitHandle.WaitOne(timeToWait);
-            if (asyncResult.IsCompleted)    
+            if (asyncResult.IsCompleted)
             {
                 try
                 {
@@ -137,7 +122,7 @@ namespace EmbyStat.Clients.Base.Http
                 }
             }
 
-            return new MediaServerUdpBroadcast();
+            return null;
         }
 
         public bool Ping(string message)
@@ -159,7 +144,9 @@ namespace EmbyStat.Clients.Base.Http
         public ServerInfo GetServerInfo()
         {
             var request = new RestRequest("System/Info", Method.GET);
-            return ExecuteAuthenticatedCall<ServerInfo>(request);
+            var result = ExecuteAuthenticatedCall<ServerInfoDto>(request);
+
+            return result.ConvertToInfo();
         }
 
         public Person GetPersonByName(string personName)
@@ -200,38 +187,38 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteAuthenticatedCall<JObject>(request);
         }
 
-        public List<Movie> GetMovies(string parentId, int startIndex, int limit)
+        public List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit)
         {
             var query = new ItemQuery
-                {
-                    EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                    ParentId = parentId,
-                    Recursive = true,
-                    LocationTypes = new[] { LocationType.FileSystem },
-                    IncludeItemTypes = new[] { nameof(Movie) },
-                    StartIndex = startIndex,
-                    Limit = limit,
-                    Fields = new[]
-                    {
-                        ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
-                        ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
-                        ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
-                        ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
-                        ItemFields.ProductionYear, ItemFields.RunTimeTicks
-                    }
-                };
+            {
+                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+                ParentId = parentId,
+                Recursive = true,
+                LocationTypes = new[] { LocationType.FileSystem },
+                IncludeItemTypes = new[] { nameof(Movie) },
+                StartIndex = startIndex,
+                Limit = limit,
+                EnableImages = true,
+                Fields = new[] {
+                    ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
+                    ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
+                    ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
+                    ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
+                    ItemFields.ProductionYear, ItemFields.RunTimeTicks
+                }
+            };
 
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.Items.Select(x => x.ConvertToMovie(parentId)).ToList();
+            return baseItems.Items.Select(x => x.ConvertToMovie(collectionId)).ToList();
         }
 
         public List<BoxSet> GetBoxSet(string parentId)
         {
             var query = new ItemQuery
             {
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+                EnableImageTypes = new[] { ImageType.Primary },
                 ParentId = parentId,
                 Recursive = true,
                 LocationTypes = new[] { LocationType.FileSystem },

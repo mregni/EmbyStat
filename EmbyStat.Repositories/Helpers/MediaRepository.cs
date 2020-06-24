@@ -15,7 +15,7 @@ namespace EmbyStat.Repositories.Helpers
             
         }
 
-        public T GetNewestPremieredMedia(IReadOnlyList<string> libraryIds)
+        public IEnumerable<T> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -25,12 +25,12 @@ namespace EmbyStat.Repositories.Helpers
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Where(x => x.PremiereDate != null)
                         .OrderByDescending(x => x.PremiereDate)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }
 
-        public T GetOldestPremieredMedia(IReadOnlyList<string> libraryIds)
+        public IEnumerable<T> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -40,12 +40,12 @@ namespace EmbyStat.Repositories.Helpers
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Where(x => x.PremiereDate != null)
                         .OrderBy(x => x.PremiereDate)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }
 
-        public T GetHighestRatedMedia(IReadOnlyList<string> libraryIds)
+        public IEnumerable<T> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -55,12 +55,12 @@ namespace EmbyStat.Repositories.Helpers
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Where(x => x.CommunityRating != null)
                         .OrderByDescending(x => x.CommunityRating)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }
 
-        public T GetLowestRatedMedia(IReadOnlyList<string> libraryIds)
+        public IEnumerable<T> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -70,12 +70,12 @@ namespace EmbyStat.Repositories.Helpers
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Where(x => x.CommunityRating != null)
                         .OrderBy(x => x.CommunityRating)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }
 
-        public T GetLatestAddedMedia(IReadOnlyList<string> libraryIds)
+        public IEnumerable<T> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -85,7 +85,7 @@ namespace EmbyStat.Repositories.Helpers
 
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .OrderByDescending(x => x.DateCreated)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }

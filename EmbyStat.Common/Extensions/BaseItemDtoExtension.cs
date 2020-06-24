@@ -25,7 +25,8 @@ namespace EmbyStat.Common.Extensions
                         Channels = y.Channels,
                         Codec = y.Codec,
                         Language = y.Language,
-                        SampleRate = y.SampleRate
+                        SampleRate = y.SampleRate,
+                        IsDefault = y.IsDefault,
                     }).ToList();
 
                 video.SubtitleStreams = dto.MediaStreams

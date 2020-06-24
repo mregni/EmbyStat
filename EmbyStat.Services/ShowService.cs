@@ -38,7 +38,7 @@ namespace EmbyStat.Services
         public IEnumerable<Library> GetShowLibraries()
         {
             var settings = _settingsService.GetUserSettings();
-            return _libraryRepository.GetLibrariesByTypes(settings.ShowLibraryTypes);
+            return _libraryRepository.GetLibrariesById(settings.ShowLibraries);
         }
 
         public ShowStatistics GetStatistics(List<string> libraryIds)
@@ -100,55 +100,55 @@ namespace EmbyStat.Services
 
         private ShowPoster CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)
         {
-            var newestPremiered = _showRepository.GetNewestPremieredMedia(libraryIds);
-            if (newestPremiered != null)
-            {
-                return PosterHelper.ConvertToShowPoster(newestPremiered, Constants.Shows.NewestPremiered);
-            }
+            //var newestPremiered = _showRepository.GetNewestPremieredMedia(libraryIds);
+            //if (newestPremiered != null)
+            //{
+            //    return PosterHelper.ConvertToShowPoster(newestPremiered, Constants.Shows.NewestPremiered);
+            //}
 
             return new ShowPoster();
         }
 
         private ShowPoster CalculateOldestPremieredShow(IReadOnlyList<string> libraryIds)
         {
-            var oldestPremiered = _showRepository.GetOldestPremieredMedia(libraryIds);
-            if (oldestPremiered != null)
-            {
-                return PosterHelper.ConvertToShowPoster(oldestPremiered, Constants.Shows.OldestPremiered);
-            }
+            //var oldestPremiered = _showRepository.GetOldestPremieredMedia(libraryIds);
+            //if (oldestPremiered != null)
+            //{
+            //    return PosterHelper.ConvertToShowPoster(oldestPremiered, Constants.Shows.OldestPremiered);
+            //}
 
             return new ShowPoster();
         }
 
         private ShowPoster CalculateLatestAddedShow(IReadOnlyList<string> libraryIds)
         {
-            var latestAdded = _showRepository.GetLatestAddedMedia(libraryIds);
-            if (latestAdded != null)
-            {
-                return PosterHelper.ConvertToShowPoster(latestAdded, Constants.Shows.LatestAdded);
-            }
+            //var latestAdded = _showRepository.GetLatestAddedMedia(libraryIds);
+            //if (latestAdded != null)
+            //{
+            //    return PosterHelper.ConvertToShowPoster(latestAdded, Constants.Shows.LatestAdded);
+            //}
 
             return new ShowPoster();
         }
 
         private ShowPoster CalculateHighestRatedShow(IReadOnlyList<string> libraryIds)
         {
-            var highest = _showRepository.GetHighestRatedMedia(libraryIds);
-            if (highest != null)
-            {
-                return PosterHelper.ConvertToShowPoster(highest, Constants.Shows.HighestRatedShow);
-            }
+            //var highest = _showRepository.GetHighestRatedMedia(libraryIds);
+            //if (highest != null)
+            //{
+            //    return PosterHelper.ConvertToShowPoster(highest, Constants.Shows.HighestRatedShow);
+            //}
 
             return new ShowPoster();
         }
 
         private ShowPoster CalculateLowestRatedShow(IReadOnlyList<string> libraryIds)
         {
-            var lowest = _showRepository.GetLowestRatedMedia(libraryIds);
-            if (lowest != null)
-            {
-                return PosterHelper.ConvertToShowPoster(lowest, Constants.Shows.LowestRatedShow);
-            }
+            //var lowest = _showRepository.GetLowestRatedMedia(libraryIds);
+            //if (lowest != null)
+            //{
+            //    return PosterHelper.ConvertToShowPoster(lowest, Constants.Shows.LowestRatedShow);
+            //}
 
             return new ShowPoster();
         }
@@ -252,15 +252,15 @@ namespace EmbyStat.Services
         {
             var list = shows
                 .GroupBy(x => x.Status)
-                .Select(x => new { Name = x.Key, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.Shows.ShowStatusChart,
-                Labels = list.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { list.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(list),
+                SeriesCount = 1
 
             };
         }
@@ -270,15 +270,15 @@ namespace EmbyStat.Services
             var ratingData = shows
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
                 .GroupBy(x => x.OfficialRating.ToUpper())
-                .Select(x => new { Name = x.Key, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerOfficialRating,
-                Labels = ratingData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(ratingData),
+                SeriesCount = 1
             };
         }
 
@@ -315,15 +315,15 @@ namespace EmbyStat.Services
 
             var rates = groupedList
                 .OrderBy(x => x.Key)
-                .Select(x => new { Name = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Count = x.Count() })
-                .Select(x => new { x.Name, x.Count })
+                .Select(x => new { Label = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Val0 = x.Count() })
+                .Select(x => new { x.Label, x.Val0 })
                 .ToList();
 
             return new Chart
             {
-                Title = Constants.CountPerCollectedRate,
-                Labels = rates.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { rates.Select(x => x.Count) }
+                Title = Constants.CountPerCollectedPercentage,
+                DataSets = JsonConvert.SerializeObject(rates),
+                SeriesCount = 1
             };
         }
 

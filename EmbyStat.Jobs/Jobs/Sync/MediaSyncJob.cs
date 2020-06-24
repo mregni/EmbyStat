@@ -61,6 +61,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             var cancellationToken = new CancellationToken(false);
 
+
             if (!Settings.WizardFinished)
             {
                 await LogWarning("Media sync task not running because wizard is not yet finished!");
@@ -97,30 +98,43 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Lets start processing movies");
             _movieRepository.RemoveMovies();
 
-            var neededLibraries = libraries.Where(x => Settings.MovieLibraryTypes.Any(y => y == x.Type)).ToList();
+            var neededLibraries = libraries.Where(x => Settings.MovieLibraries.Any(y => y == x.Id)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
-                var totalCount = await GetTotalLibraryMovieCount(neededLibraries[i].Id);
+                var collectionId = neededLibraries[i].Id;
+                var totalCount = await GetTotalLibraryMovieCount(collectionId);
                 if (totalCount == 0)
                 {
                     continue;;
                 }
 
-                await LogInformation($"Found {totalCount} movies for {neededLibraries[i].Name} library");
+                await LogInformation($"Found {totalCount} movies in {neededLibraries[i].Name} library");
                 var processed = 0;
                 var j = 0;
                 const int limit = 100;
                 do
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    var movies = await PerformMovieSyncAsync(neededLibraries[i].Id, j * limit, limit);
+                    var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
                     _movieRepository.UpsertRange(movies);
 
-                    processed += 100;
+                    processed += 100; 
                     j++;
                     var logProcessed = processed < totalCount ? processed : totalCount;
                     await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                 } while (processed < totalCount);
+
+
+                var boxSets = _httpClient.GetBoxSet(collectionId);
+                if (boxSets.Any())
+                {
+                    await LogInformation($"Found {boxSets.Count} box sets in {neededLibraries[i].Name} library");
+                    foreach (var parent in boxSets)
+                    {
+                        _movieRepository.UpsertRange(await PerformMovieSyncAsync(parent.Id, collectionId, 0, 1000));
+                    }
+                    await LogInformation("Processed all box sets");
+                }
 
                 await LogProgress(Math.Round(15 + 40 * (i + 1) / (double)neededLibraries.Count, 1));
             }
@@ -137,21 +151,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
             return count;
         }
 
-        private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, int startIndex, int limit)
+        private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, string collectionId, int startIndex, int limit)
         {
             try
             {
-                var movies = _httpClient.GetMovies(parentId, startIndex, limit);
-                var boxSets = _httpClient.GetBoxSet(parentId);
-                if (boxSets.Any())
-                {
-                    foreach (var parent in boxSets)
-                    {
-                        movies.AddRange(await PerformMovieSyncAsync(parent.Id, 0, 1000));
-                    }
-                }
-                
-                return movies;
+                return _httpClient.GetMovies(parentId, collectionId, startIndex, limit);
             }
             catch (Exception e)
             {
@@ -172,7 +176,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _tvdbClient.Login(Settings.Tvdb.ApiKey);
             var showsThatNeedAnUpdate = _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate);
 
-            var neededLibraries = libraries.Where(x => Settings.ShowLibraryTypes.Any(y => y == x.Type)).ToList();
+            var neededLibraries = libraries.Where(x => Settings.ShowLibraries.Any(y => y == x.Id)).ToList();
             for (var i = 0; i < neededLibraries.Count; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();

@@ -26,9 +26,9 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("server/info")]
-        public IActionResult GetServerInfo()
+        public IActionResult GetServerInfo(bool forceReSync = false)
         {
-            var result = _mediaServerService.GetServerInfo();
+            var result = _mediaServerService.GetServerInfo(forceReSync);
 
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
             return Ok(serverInfo);
@@ -38,7 +38,7 @@ namespace EmbyStat.Controllers.MediaServer
         [Route("server/test")]
         public IActionResult TestApiKey([FromBody] LoginViewModel login)
         {
-            var result = _mediaServerService.TestNewApiKey(login.Address, login.ApiKey);
+            var result = _mediaServerService.TestNewApiKey(login.Address, login.ApiKey, login.Type);
             return Ok(result);
         }
 
@@ -48,7 +48,12 @@ namespace EmbyStat.Controllers.MediaServer
         {
             var type = (ServerType)serverType;
             var result = _mediaServerService.SearchMediaServer(type);
-            return Ok(_mapper.Map<UdpBroadcastViewModel>(result));
+            if (result != null)
+            {
+                return Ok(_mapper.Map<UdpBroadcastViewModel>(result));
+            }
+
+            return NoContent();
         }
 
         [HttpGet]

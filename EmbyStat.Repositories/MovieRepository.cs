@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Data.ResponseModel;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using MoreLinq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Repositories
 {
@@ -112,7 +119,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public Movie GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks)
+        public IEnumerable<Movie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -122,12 +129,12 @@ namespace EmbyStat.Repositories
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
                         .OrderBy(x => x.RunTimeTicks)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }
 
-        public Movie GetLongestMovie(IReadOnlyList<string> libraryIds)
+        public IEnumerable<Movie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -137,7 +144,7 @@ namespace EmbyStat.Repositories
                     return GetWorkingLibrarySet(collection, libraryIds)
                         .Where(x => x.RunTimeTicks != null)
                         .OrderByDescending(x => x.RunTimeTicks)
-                        .FirstOrDefault();
+                        .Take(count);
                 }
             });
         }
@@ -225,6 +232,32 @@ namespace EmbyStat.Repositories
                         .OrderBy(x => x.SortName)
                         .ToList();
                 }
+            });
+        }
+
+        public IEnumerable<Movie> GetMoviePage(int skip, int take, string filter, string sort, List<string> libraryIds)
+        {
+            //filter=[["runTimeTicks","="],"and",["communityRating","="]]
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Movie>();
+                var query = GetWorkingLibrarySet(collection, libraryIds);
+
+                if (!string.IsNullOrWhiteSpace(sort))
+                {
+                    var jObj = JsonConvert.DeserializeObject<JArray>(sort);
+                    var selector = jObj[0]["selector"].Value<string>().FirstCharToUpper();
+                    var desc = jObj[0]["desc"].Value<bool>();
+
+                    query = desc 
+                        ? query.Where(x => x.RunTimeTicks != null).OrderByDescending(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null))
+                        : query.Where(x => x.RunTimeTicks != null).OrderBy(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null));
+                }
+
+                return query
+                    .Skip(skip)
+                    .Take(take);
             });
         }
 

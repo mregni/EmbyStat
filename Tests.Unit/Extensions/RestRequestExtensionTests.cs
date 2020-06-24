@@ -85,7 +85,7 @@ namespace Tests.Unit.Extensions
             parameters.Single(x => x.Name == "SeriesStatuses").Value.As<string>().Should().Be("Continuing,Ended");
             parameters.Single(x => x.Name == "fields").Value.As<string>().Should().Be("Bitrate,AirTime");
             parameters.Single(x => x.Name == "Filters").Value.As<string>().Should().Be("IsFavorite");
-            parameters.Single(x => x.Name == "ImageTypes").Value.As<string>().Should().Be("Banner,Art");
+            parameters.Single(x => x.Name == "ImageTypes").Value.As<string>().Should().Be("Banner,Backdrop");
             parameters.Single(x => x.Name == "AirDays").Value.As<string>().Should().Be("Friday,Monday");
             parameters.Single(x => x.Name == "EnableImageTypes").Value.As<string>().Should().Be("Banner,Box");
             parameters.Single(x => x.Name == "LocationTypes").Value.As<string>().Should().Be("Virtual,FileSystem");

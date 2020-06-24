@@ -8,10 +8,10 @@ namespace EmbyStat.Common.Hubs.Job
     public class JobHubHelper : IJobHubHelper
     {
         private readonly IHubContext<JobHub> _jobHubContext;
-        private static string JobReportLogMethod => "job-report-log";
-        private static string JobReportProgressMethod => "job-report-progress";
-        private static string EmbyConnectionStatusMethod => "emby-connection-state";
-        private static string UpdateIsRunningMethod => "update-state";
+        private static string JobReportLogMethod => "JobReportLog";
+        private static string JobReportProgressMethod => "JobReportProgress";
+        private static string EmbyConnectionStatusMethod => "MediaServerConnectionState";
+        private static string UpdateIsRunningMethod => "UpdateState";
 
         public JobHubHelper(IHubContext<JobHub> jobHubContext)
         {

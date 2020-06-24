@@ -1,4 +1,5 @@
 ﻿using System;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Common
 {
@@ -16,6 +17,15 @@ namespace EmbyStat.Common
             public static string Longest => "MOVIES.LONGEST";
             public static string LatestAdded => "MOVIES.LATESTADDED";
             public static string TotalPlayLength => "MOVIES.TOTALPLAYLENGTH";
+        }
+
+        public static class Icons
+        {
+            public static string TheatersRoundedIcon => "TheatersRoundedIcon";
+            public static string StorageRoundedIcon => "StorageRoundedIcon";
+            public static string QueryBuilderRoundedIcon => "QueryBuilderRoundedIcon";
+            public static string PoundRoundedIcon => "PoundRoundedIcon";
+            public static string PeopleAltRoundedIcon => "PeopleAltRoundedIcon";
         }
 
         public static class Common
@@ -66,12 +76,12 @@ namespace EmbyStat.Common
 
         public static class LogPrefix
         {
-            public static string MediaSyncJob => "MEDIASYNC-JOB";
-            public static string CheckUpdateJob => "CHECKUDPATE-JOB";
-            public static string PingEmbyJob => "PINGEMBYSERVER-JOB";
-            public static string SmallEmbySyncJob => "SMALLEMBYSYNC-JOB";
+            public static string MediaSyncJob => "MEDIA-SYNC";
+            public static string CheckUpdateJob => "UPDATE-CHECKER";
+            public static string PingMediaServerJob => "PING";
+            public static string SmallMediaServerSyncJob => "SYSTEM-SYNC";
             public static string System => "SYSTEM";
-            public static string DatabaseCleanupJob => "DATABASE CLEANUP-JOB";
+            public static string DatabaseCleanupJob => "DATABASE-CLEANUP";
         }
 
         public static class JobIds
@@ -84,11 +94,11 @@ namespace EmbyStat.Common
         }
 
         //CHARTS
-        public static string CountPerGenre => "COMMON.COUNTPERGENRE";
-        public static string CountPerCommunityRating => "COMMON.COUNTPERCOMMUNITYRATING";
-        public static string CountPerPremiereYear => "COMMON.COUNTPERPREMIEREDATE";
-        public static string CountPerCollectedRate => "COMMON.COUNTPERCOLLECTEDRATE";
-        public static string CountPerOfficialRating => "COMMON.COUNTPEROFFICIALRATING";
+        public static string CountPerGenre => "COMMON.GENRES";
+        public static string CountPerCommunityRating => "COMMON.COMMUNITYRATING";
+        public static string CountPerPremiereYear => "COMMON.PREMIEREDATE";
+        public static string CountPerCollectedPercentage => "COMMON.COLLECTEDPERCENTAGE";
+        public static string CountPerOfficialRating => "COMMON.OFFICIALRATING";
 
         //COMMON
         public static string Unknown => "UNKNOWN";

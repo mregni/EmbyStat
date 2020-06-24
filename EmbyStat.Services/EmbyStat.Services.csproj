@@ -11,9 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.6.1" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.11" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.9.1" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.12.0" />
   </ItemGroup>
 
   <ItemGroup>

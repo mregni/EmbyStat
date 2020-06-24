@@ -11,6 +11,7 @@ using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Stat;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Services.Abstract
 {
@@ -43,15 +44,15 @@ namespace EmbyStat.Services.Abstract
             var genresData = media
                 .SelectMany(x => x.Genres)
                 .GroupBy(x => x)
-                .Select(x => new { Name = x.Key, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerGenre,
-                Labels = genresData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { genresData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(genresData),
+                SeriesCount = 1
             };
         }
 
@@ -71,15 +72,15 @@ namespace EmbyStat.Services.Abstract
             }
 
             var ratingData = ratingDataList
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key?.ToString() ?? Constants.Unknown, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerCommunityRating,
-                Labels = ratingData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(ratingData),
+                SeriesCount = 1
             };
         }
 
@@ -106,15 +107,15 @@ namespace EmbyStat.Services.Abstract
             }
 
             var yearData = yearDataList
-                .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerPremiereYear,
-                Labels = yearData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { yearData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(yearData),
+                SeriesCount = 1
             };
         }
 

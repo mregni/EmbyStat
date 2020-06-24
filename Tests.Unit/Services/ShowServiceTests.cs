@@ -85,7 +85,7 @@ namespace Tests.Unit.Services
             }
 
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
-            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
+            collectionRepositoryMock.Setup(x => x.GetLibrariesById(It.IsAny<IEnumerable<string>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in shows.SelectMany(x => x.People))
@@ -103,8 +103,9 @@ namespace Tests.Unit.Services
             }
 
             var settingsServiceMock = new Mock<ISettingsService>();
-            settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ShowLibraryTypes = new List<LibraryType> { LibraryType.TvShow } });
+            settingsServiceMock
+                .Setup(x => x.GetUserSettings())
+                .Returns(new UserSettings { ShowLibraries = new List<string> { _collections[0].Id, _collections[1].Id } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
             return new ShowService(jobRepositoryMock.Object, showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);
@@ -396,9 +397,9 @@ namespace Tests.Unit.Services
             stat.Should().NotBeNull();
             stat.Charts.Should().NotBeNull();
             stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCollectedRate).Should().BeTrue();
+            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCollectedPercentage).Should().BeTrue();
 
-            var bar = stat.Charts.BarCharts.Single(x => x.Title == Constants.CountPerCollectedRate);
+            var bar = stat.Charts.BarCharts.Single(x => x.Title == Constants.CountPerCollectedPercentage);
             bar.Labels.Count().Should().Be(21);
             var labels = bar.Labels.ToArray();
 
