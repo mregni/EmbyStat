@@ -258,6 +258,20 @@ namespace Tests.Unit.Repository
         }
 
         [Fact]
+        public void CreateIndexes_Should_Setup_Filters_Indexes()
+        {
+            RunTest(() =>
+            {
+                _databaseInitializer.CreateIndexes();
+                using (var context = _context.CreateDatabaseContext())
+                {
+                    var filtersCollection = context.GetCollection<FilterValues>();
+                    filtersCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                }
+            });
+        }
+
+        [Fact]
         public void CreateIndexes_Should_Setup_Genre_Indexes()
         {
             RunTest(() =>

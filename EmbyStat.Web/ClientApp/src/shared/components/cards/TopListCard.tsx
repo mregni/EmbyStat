@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Zoom, Paper, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Zoom, Paper, Grid, makeStyles } from '@material-ui/core';
 import uuid from 'react-uuid';
 import moment from 'moment';
 

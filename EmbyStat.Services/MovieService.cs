@@ -8,6 +8,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -96,10 +97,10 @@ namespace EmbyStat.Services
             return _movieRepository.Any();
         }
 
-        public Page<MovieColumn> GetMoviePage(int skip, int take, string filter, string sort, bool requireTotalCount, List<string> libraryIds)
+        public Page<MovieColumn> GetMoviePage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
             var list = _movieRepository
-                .GetMoviePage(skip, take, filter, sort, libraryIds)
+                .GetMoviePage(skip, take, sort, filters, libraryIds)
                 .Select(x => new MovieColumn
                 {
                     Id = x.Id,
@@ -128,7 +129,7 @@ namespace EmbyStat.Services
             var page = new Page<MovieColumn> { Data = list };
             if (requireTotalCount)
             {
-                page.TotalCount = _movieRepository.GetMediaCount(libraryIds);
+                page.TotalCount = _movieRepository.GetMediaCount(filters, libraryIds);
             }
 
             return page;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using EmbyStat.Common.Models;
 
 namespace EmbyStat.Services.Models.Cards
 {

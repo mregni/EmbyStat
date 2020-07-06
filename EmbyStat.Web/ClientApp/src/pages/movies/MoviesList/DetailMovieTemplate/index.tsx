@@ -141,8 +141,8 @@ const DetailMovieTemplate = (props: Props) => {
             <Grid item container alignItems="center">
               <AspectRatioRoundedIcon />
               <p className="m-l-8">
-                {movie.videoStreams[0].height}x{movie.videoStreams[0].width}
-                &nbsp;({movie.videoStreams[0].aspectRatio}) @ {Math.round(movie.videoStreams[0].averageFrameRate ?? 0)}fps</p>
+                {movie.videoStreams[0]?.height ?? 0}x{movie.videoStreams[0]?.width ?? 0}
+                &nbsp;({movie.videoStreams[0]?.aspectRatio}) @ {Math.round(movie.videoStreams[0]?.averageFrameRate ?? 0)}fps</p>
             </Grid>
             <Grid item container alignItems="center">
               <InboxRoundedIcon />

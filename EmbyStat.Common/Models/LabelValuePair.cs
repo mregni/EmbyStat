@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Services.Models
+﻿namespace EmbyStat.Common.Models
 {
     public class LabelValuePair
     {

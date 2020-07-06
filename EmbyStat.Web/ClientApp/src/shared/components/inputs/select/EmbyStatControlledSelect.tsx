@@ -1,5 +1,6 @@
-import React, { ChangeEvent, ReactNode } from 'react';
+import React from 'react';
 import { Select, MenuItem } from '@material-ui/core';
+import classNames from 'classnames';
 
 import styles from "./style.module.scss";
 import { Controller, Control } from 'react-hook-form';
@@ -11,7 +12,6 @@ interface Props {
   variant: 'outlined' | 'filled' | 'standard',
   name: string,
   control: Control<Record<string, any>>,
-  onChange: any,
 }
 
 const EmbyStatControlledSelect = (props: Props) => {
@@ -22,13 +22,7 @@ const EmbyStatControlledSelect = (props: Props) => {
     variant,
     name,
     control,
-    onChange,
   } = props;
-
-  console.log(name + " " + value);
-
-  const interalClassNames = className?.split(' ') ?? [];
-  interalClassNames.push(styles.selector);
 
   return (
     <Controller
@@ -36,7 +30,7 @@ const EmbyStatControlledSelect = (props: Props) => {
         <Select
           autoWidth={false}
           defaultValue={value}
-          className={interalClassNames.join(' ')}
+          className={classNames(className, styles.selector)}
           variant={variant}>
           {
             menuItems.map((x) => (

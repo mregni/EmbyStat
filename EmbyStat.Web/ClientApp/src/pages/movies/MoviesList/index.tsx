@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import DataGrid, { Scrolling, Paging, Column, Sorting, MasterDetail } from 'devextreme-react/data-grid';
 import * as AspNetData from 'devextreme-aspnet-data-nojquery';
 import { makeStyles, Grid, Typography, Zoom, Chip } from '@material-ui/core';
@@ -8,8 +8,11 @@ import imdb from '../../../shared/assets/icons/imdb.svg';
 import tmdb from '../../../shared/assets/icons/tmdb.svg';
 import DetailMovieTemplate from './DetailMovieTemplate';
 import Flag from '../../../shared/components/flag';
-import Filter from '../../../shared/components/filter';
+import FilterDrawer from '../../../shared/components/filterDrawer';
 import { useTranslation } from 'react-i18next';
+
+import movieFilters from '../../../shared/filters/movieFilters';
+import { ActiveFilter } from '../../../shared/models/filter';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,11 +27,12 @@ interface Props {
 const MovieList = (props: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const dataSource = AspNetData.createStore({
+  const dataGridRef = useRef(null);
+  const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
+  const [dataSource, setDataSource] = useState(AspNetData.createStore({
     key: 'id',
-    loadUrl: '/api/movie/list?libraryids=f137a2dd21bbc1b99aa5c0f6bf02a805'
-  });
-  const [activeFilters, setActiveFilters] = useState<any[]>([]);
+    loadUrl: `/api/movie/list?libraryids=f137a2dd21bbc1b99aa5c0f6bf02a805`
+  }));
 
   const handleFilterHide = (id) => {
     const currentFilterIndex = activeFilters.findIndex(x => x.id === id);
@@ -39,8 +43,27 @@ const MovieList = (props: Props) => {
     }
   }
 
+  useEffect(() => {
+    const datagrid = dataGridRef != null ? dataGridRef.current as unknown as DataGrid : {} as DataGrid;
+    datagrid.instance.refresh();
+
+    let filterParameters = '';
+    if (activeFilters.length > 0) {
+      filterParameters = `&filters=${JSON.stringify(activeFilters.map(x => ({ field: x.field, operation: x.operation, value: x.value })))}`;
+    }
+
+    setDataSource(AspNetData.createStore({
+      key: 'id',
+      loadUrl: `/api/movie/list?libraryids=f137a2dd21bbc1b99aa5c0f6bf02a805${filterParameters}`
+    }));
+  }, [activeFilters])
+
   const handleFilterDelete = (id) => {
     setActiveFilters(activeFilters.filter(x => x.id !== id));
+  }
+
+  const addFilter = (filter: ActiveFilter) => {
+    setActiveFilters((state) => ([...state, filter]));
   }
 
   const calculateRunTimeValue = (data) => {
@@ -113,9 +136,19 @@ const MovieList = (props: Props) => {
     </Grid>
   }
 
+  const generateLabel = (filter: ActiveFilter): string => {
+    return filter.fieldLabel
+      .replace(/\{0\}/g, t(filter.operationLabel))
+      .replace(/\{1\}/g, filter.valueLabel);
+  }
+
   return (
     <Grid container direction="column" spacing={1}>
-      <Filter updateFilters={setActiveFilters} filters={activeFilters} />
+      <FilterDrawer
+        filterCount={activeFilters.length}
+        addFilter={addFilter}
+        filterDefinitions={movieFilters}
+        clearFilters={() => setActiveFilters([])} />
       <Grid item container direction="row" spacing={1}>
         <Grid item>
           <Typography variant='h5'>{t('COMMON.FILTERS')}: {activeFilters.length === 0 ? 'none' : null}</Typography>
@@ -123,7 +156,7 @@ const MovieList = (props: Props) => {
         {activeFilters.map((filter: any) => <Grid item key={filter.id}>
           <Zoom in={filter.visible} onExited={() => handleFilterDelete(filter.id)}>
             <Chip
-              label={`${filter.label} ${filter.action} "${filter.display}"`}
+              label={generateLabel(filter)}
               onDelete={() => handleFilterHide(filter.id)}
             />
           </Zoom>
@@ -134,6 +167,7 @@ const MovieList = (props: Props) => {
           elementAttr={{
             class: classes.container
           }}
+          ref={dataGridRef}
           dataSource={{ store: dataSource }}
           showBorders={true}
           remoteOperations={true}

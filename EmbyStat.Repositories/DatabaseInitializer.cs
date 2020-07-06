@@ -41,6 +41,9 @@ namespace EmbyStat.Repositories
                 episodeCollection.EnsureIndex(x => x.Id);
                 episodeCollection.EnsureIndex(x => x.ShowId);
 
+                var filtersCollection = context.GetCollection<FilterValues>("Filters");
+                filtersCollection.EnsureIndex(x => x.Id, true);
+
                 var genreCollection = context.GetCollection<Genre>();
                 genreCollection.EnsureIndex(x => x.Id, true);
 

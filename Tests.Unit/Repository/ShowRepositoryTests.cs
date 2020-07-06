@@ -398,10 +398,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetNewestPremieredMedia(new string[0]);
+                var shows = _showRepository
+                    .GetNewestPremieredMedia(new string[0], 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showThree.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showThree.Id);
             });
         }
 
@@ -417,10 +421,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetNewestPremieredMedia(new[] { "1" });
+                var shows = _showRepository
+                    .GetNewestPremieredMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showOne.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showOne.Id);
             });
         }
 
@@ -436,10 +444,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetOldestPremieredMedia(new string[0]);
+                var shows = _showRepository
+                    .GetOldestPremieredMedia(new string[0], 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showThree.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showThree.Id);
             });
         }
 
@@ -455,10 +467,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetOldestPremieredMedia(new[] { "1" });
+                var shows = _showRepository
+                    .GetOldestPremieredMedia(new[] {"1"}, 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showOne.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showOne.Id);
             });
         }
 
@@ -474,10 +490,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetHighestRatedMedia(new string[0]);
+                var shows = _showRepository
+                    .GetHighestRatedMedia(new string[0], 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showThree.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showThree.Id);
             });
         }
 
@@ -493,10 +513,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetHighestRatedMedia(new[] { "1" });
+                var shows = _showRepository
+                    .GetHighestRatedMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showOne.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showOne.Id);
             });
         }
 
@@ -512,10 +536,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetLowestRatedMedia(new string[0]);
+                var shows = _showRepository
+                    .GetLowestRatedMedia(new string[0], 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showThree.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showThree.Id);
             });
         }
 
@@ -531,10 +559,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetLowestRatedMedia(new[] { "1" });
+                var shows = _showRepository
+                    .GetLowestRatedMedia(new[] {"1"}, 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showOne.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showOne.Id);
             });
         }
 
@@ -550,10 +582,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetLatestAddedMedia(new string[0]);
+                var shows = _showRepository
+                    .GetLatestAddedMedia(new string[0], 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showThree.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showThree.Id);
             });
         }
 
@@ -569,10 +605,14 @@ namespace Tests.Unit.Repository
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var show = _showRepository.GetLatestAddedMedia(new[] { "1" });
+                var shows = _showRepository
+                    .GetLatestAddedMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                show.Should().NotBeNull();
-                show.Id.Should().Be(showOne.Id);
+                shows.Should().NotBeNull();
+                shows.Count.Should().Be(1);
+
+                shows[0].Id.Should().Be(showOne.Id);
             });
         }
 

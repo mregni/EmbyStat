@@ -269,10 +269,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetNewestPremieredMedia(new string[0]);
+                var movies = _movieRepository
+                    .GetNewestPremieredMedia(new string[0], 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -286,10 +290,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetNewestPremieredMedia(new[] { "1" });
+                var movies = _movieRepository
+                    .GetNewestPremieredMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieOne.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieOne.Id);
             });
         }
 
@@ -303,10 +311,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetOldestPremieredMedia(new string[0]);
+                var movies = _movieRepository
+                    .GetOldestPremieredMedia(new string[0], 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -320,10 +332,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetOldestPremieredMedia(new[] { "1" });
+                var movies = _movieRepository
+                    .GetOldestPremieredMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieOne.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieOne.Id);
             });
         }
 
@@ -337,10 +353,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(9).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetHighestRatedMedia(new string[0]);
+                var movies = _movieRepository
+                    .GetHighestRatedMedia(new string[0], 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -354,10 +374,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCommunityRating(9).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetHighestRatedMedia(new[] { "1" });
+                var movies = _movieRepository
+                    .GetHighestRatedMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieOne.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieOne.Id);
             });
         }
 
@@ -371,10 +395,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCreateDate(new DateTime(2019, 1, 1)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetLatestAddedMedia(new string[0]);
+                var movies = _movieRepository
+                    .GetLatestAddedMedia(new string[0], 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -388,10 +416,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCreateDate(new DateTime(2019, 1, 1)).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetLatestAddedMedia(new[] { "1" });
+                var movies = _movieRepository
+                    .GetLatestAddedMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieOne.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieOne.Id);
             });
         }
 
@@ -405,10 +437,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCommunityRating(1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetLowestRatedMedia(new string[0]);
+                var movies = _movieRepository
+                    .GetLowestRatedMedia(new string[0], 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -422,10 +458,14 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").AddCommunityRating(9).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var movie = _movieRepository.GetLowestRatedMedia(new[] { "1" });
+                var movies = _movieRepository
+                    .GetLowestRatedMedia(new[] { "1" }, 1)
+                    .ToList();
 
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieTwo.Id);
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieTwo.Id);
             });
         }
 
@@ -440,9 +480,13 @@ namespace Tests.Unit.Repository
                 var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
-                var movie = _movieRepository.GetShortestMovie(new string[0], TimeSpan.FromMinutes(10).Ticks);
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                var movies = _movieRepository
+                    .GetShortestMovie(new string[0], TimeSpan.FromMinutes(10).Ticks, 1)
+                    .ToList();
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -457,9 +501,13 @@ namespace Tests.Unit.Repository
                 var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
-                var movie = _movieRepository.GetShortestMovie(new[] { "1" }, TimeSpan.FromMinutes(10).Ticks);
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieTwo.Id);
+                var movies = _movieRepository
+                    .GetShortestMovie(new[] { "1" }, TimeSpan.FromMinutes(10).Ticks, 1)
+                    .ToList();
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieTwo.Id);
             });
         }
 
@@ -474,9 +522,13 @@ namespace Tests.Unit.Repository
                 var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
-                var movie = _movieRepository.GetLongestMovie(new string[0]);
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieThree.Id);
+                var movies = _movieRepository
+                    .GetLongestMovie(new string[0], 1)
+                    .ToList();
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieThree.Id);
             });
         }
 
@@ -491,9 +543,13 @@ namespace Tests.Unit.Repository
                 var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 3, 1).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
-                var movie = _movieRepository.GetLongestMovie(new[] { "1" });
-                movie.Should().NotBeNull();
-                movie.Id.Should().Be(movieOne.Id);
+                var movies = _movieRepository
+                    .GetLongestMovie(new[] {"1"}, 1)
+                    .ToList();
+                movies.Should().NotBeNull();
+                movies.Count.Should().Be(1);
+
+                movies[0].Id.Should().Be(movieOne.Id);
             });
         }
 
@@ -699,6 +755,127 @@ namespace Tests.Unit.Repository
                 _movieRepository.RemoveMovies();
                 var result = _movieRepository.Any();
                 result.Should().BeFalse();
+            });
+        }
+
+        [Fact]
+        public void CalculateContainerFilterValues_Should_Return_Two_Containers()
+        {
+            RunTest(() =>
+            {
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddContainer("mkv").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddContainer("mkv").Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
+
+                var containers = _movieRepository
+                    .CalculateContainerFilterValues(new[] { "1" })
+                    .ToList();
+
+                containers.Should().NotBeNull();
+                containers.Count.Should().Be(2);
+
+                containers[0].Label.Should().Be("avi");
+                containers[0].Value.Should().Be("avi");
+                containers[1].Label.Should().Be("mkv");
+                containers[1].Value.Should().Be("mkv");
+            });
+        }
+
+        [Fact]
+        public void CalculateSubtitleFilterValues_Should_Return_Two_Languages()
+        {
+            RunTest(() =>
+            {
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "nl", DisplayTitle = "Dutch" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "en", DisplayTitle = "English" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "en", DisplayTitle = "English"}).Build();
+                _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
+
+                var languages = _movieRepository
+                    .CalculateSubtitleFilterValues(new[] { "1" })
+                    .ToList();
+
+                languages.Should().NotBeNull();
+                languages.Count.Should().Be(2);
+
+                languages[0].Value.Should().Be("nl");
+                languages[0].Label.Should().Be("Dutch");
+                languages[1].Value.Should().Be("en");
+                languages[1].Label.Should().Be("English");
+            });
+        }
+
+        [Fact]
+        public void CalculateSubtitleFilterValues_Should_Skip_Und_Languages()
+        {
+            RunTest(() =>
+            {
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "nl", DisplayTitle = "Dutch"}).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "und" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "Und" }).Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = null }).Build();
+                _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
+
+                var languages = _movieRepository
+                    .CalculateSubtitleFilterValues(new[] { "1" })
+                    .ToList();
+
+                languages.Should().NotBeNull();
+                languages.Count.Should().Be(1);
+
+                languages[0].Label.Should().Be("Dutch");
+                languages[0].Value.Should().Be("nl");
+            });
+        }
+
+        [Fact]
+        public void CalculateGenreFilterValues_Should_Return_Two_Genres()
+        {
+            RunTest(() =>
+            {
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddGenres("Action", "SiFi").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
+
+                var genres = _movieRepository
+                    .CalculateGenreFilterValues(new[] { "1" })
+                    .ToList();
+
+                genres.Should().NotBeNull();
+                genres.Count.Should().Be(3);
+
+                genres[0].Label.Should().Be("Action");
+                genres[0].Value.Should().Be("Action");
+                genres[1].Label.Should().Be("id1");
+                genres[1].Value.Should().Be("id1");
+                genres[2].Label.Should().Be("SiFi");
+                genres[2].Value.Should().Be("SiFi");
+            });          
+        }                
+
+        [Fact]
+        public void CalculateCollectionFilterValues_Should_Return_Two_Genres()
+        {
+            RunTest(() =>
+            {
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).Build();
+                _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
+
+                var collections = _movieRepository
+                    .CalculateCollectionFilterValues()
+                    .ToList();
+
+                collections.Should().NotBeNull();
+                collections.Count.Should().Be(2);
+
+                collections[0].Label.Should().Be("1");
+                collections[0].Value.Should().Be("1");
+                collections[1].Label.Should().Be("2");
+                collections[1].Value.Should().Be("2");
             });
         }
     }

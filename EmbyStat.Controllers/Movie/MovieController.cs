@@ -8,6 +8,7 @@ using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using DevExtreme.AspNet.Data;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Controllers.Movie
 {
@@ -35,11 +36,16 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("list")]
-        public IActionResult GetMoviePageList(int skip, int take, string filter, string sort, bool requireTotalCount, List<string> libraryIds)
+        public IActionResult GetMoviePageList(int skip, int take, string sort, bool requireTotalCount, string filters, List<string> libraryIds)
         {
-            var page = _movieService.GetMoviePage(skip, take, filter, sort, requireTotalCount, libraryIds);
+            var filtersObj = new Filter[0];
+            if (filters != null)
+            {
+                filtersObj = JsonConvert.DeserializeObject<Filter[]>(filters);
+            }
 
-            var boe = page.Data.ToList();
+            var page = _movieService.GetMoviePage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
+
             var convert = _mapper.Map<PageViewModel<MovieColumnViewModel>>(page);
             return Ok(convert);
         }

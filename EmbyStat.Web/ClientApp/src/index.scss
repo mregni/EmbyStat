@@ -22,3 +22,16 @@ p {
 h4 {
   margin-bottom: 16px;
 }
+
+/* Disabling arrows in number text field
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

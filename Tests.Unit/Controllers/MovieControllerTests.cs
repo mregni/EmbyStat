@@ -6,6 +6,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Movie;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using FluentAssertions;
@@ -20,7 +21,7 @@ namespace Tests.Unit.Controllers
         private readonly MovieController _subject;
         private readonly Mock<IMovieService> _movieServiceMock;
         private readonly List<Library> _collections;
-        private readonly List<MoviePoster> _moviePosters;
+        private readonly List<TopCard> _movieCards;
 
         public MovieControllerTests()
         {
@@ -30,14 +31,14 @@ namespace Tests.Unit.Controllers
                 new Library{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = LibraryType.Movies}
             };
 
-            _moviePosters = new List<MoviePoster>
+            _movieCards = new List<TopCard>
             {
-                new MoviePoster { Name = "The lord of the rings" }
+                new TopCard { Title = "The lord of the rings" }
             };
 
             var movieStatistics = new MovieStatistics
             {
-                TopCards = _moviePosters
+                TopCards = _movieCards
             };
 
             _movieServiceMock = new Mock<IMovieService>();
@@ -47,7 +48,7 @@ namespace Tests.Unit.Controllers
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
-                .Returns(new MovieStatisticsViewModel { Posters = new List<MoviePosterViewModel> { new MoviePosterViewModel { Name = "The lord of the rings" } } });
+                .Returns(new MovieStatisticsViewModel { TopCards = new List<TopCardViewModel> { new TopCardViewModel { Title = "The lord of the rings" } } });
             _mapperMock.Setup(x => x.Map<IList<LibraryViewModel>>(It.IsAny<List<Library>>())).Returns(
                 new List<LibraryViewModel>
                 {
@@ -88,8 +89,8 @@ namespace Tests.Unit.Controllers
             var stat = resultObject.Should().BeOfType<MovieStatisticsViewModel>().Subject;
 
             stat.Should().NotBeNull();
-            stat.Posters.Count.Should().Be(1);
-            stat.Posters[0].Name.Should().Be(_moviePosters[0].Name);
+            stat.TopCards.Count.Should().Be(1);
+            stat.TopCards[0].Title.Should().Be(_movieCards[0].Title);
             _movieServiceMock.Verify(x => x.GetStatistics(It.Is<List<string>>(
                 y => y[0] == _collections[0].Id &&
                      y[1] == _collections[1].Id)), Times.Once);

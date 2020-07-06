@@ -1,5 +1,6 @@
 import React, { ChangeEvent, ReactNode } from 'react';
 import { Select, MenuItem } from '@material-ui/core';
+import classNames from 'classnames';
 
 import styles from "./style.module.scss";
 
@@ -21,15 +22,12 @@ const EmbyStatSelect = (props: Props) => {
     variant,
   } = props;
 
-  const interalClassNames = className?.split(' ') ?? [];
-  interalClassNames.push(styles.selector);
-
   return (
     <Select
       {...(value !== undefined && { value })}
       onChange={onChange}
       autoWidth={false}
-      className={interalClassNames.join(' ')}
+      className={classNames(className, styles.selector)}
       variant={variant}>
       {
         menuItems.map((x) => (

@@ -42,6 +42,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IAboutService, AboutService>();
             services.TryAddTransient<IMediaServerService, MediaServerService>();
             services.TryAddTransient<IJobService, JobService>();
+            services.TryAddTransient<IFilterService, FilterService>();
             services.TryAddTransient<ILanguageService, LanguageService>();
             services.TryAddTransient<ILogService, LogService>();
             services.TryAddTransient<IMovieService, MovieService>();
@@ -60,6 +61,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IMovieRepository, MovieRepository>();
             services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
             services.TryAddTransient<IPersonRepository, PersonRepository>();
+            services.TryAddTransient<IFilterRepository, FilterRepository>();
             services.TryAddTransient<IShowRepository, ShowRepository>();
             services.TryAddTransient<ILibraryRepository, LibraryRepository>();
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();

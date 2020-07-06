@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Grid, Typography, TextField } from '@material-ui/core';
@@ -14,7 +14,7 @@ interface Props {
 
 const UserDetails = (props: Props): ReactElement => {
   const { errors, register, disableBack, disableNext } = props;
-  const [username, setUsername] = React.useState('');
+  const [username, setUsername] = useState('');
   const { t } = useTranslation();
 
   useEffect(() => {

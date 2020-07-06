@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Ara from '../../assets/icons/flags/ara.svg';
+import Bas from '../../assets/icons/flags/bas.svg';
 import Bul from '../../assets/icons/flags/bul.svg';
 import Cat from '../../assets/icons/flags/cat.svg';
 import Chi from '../../assets/icons/flags/chi.svg';
@@ -25,8 +26,10 @@ import Jpn from '../../assets/icons/flags/jpn.svg';
 import Kor from '../../assets/icons/flags/kor.svg';
 import Lav from '../../assets/icons/flags/lav.svg';
 import Lit from '../../assets/icons/flags/lit.svg';
+import Mac from '../../assets/icons/flags/mac.svg';
 import May from '../../assets/icons/flags/may.svg';
 import Nor from '../../assets/icons/flags/nor.svg';
+import Per from '../../assets/icons/flags/per.svg';
 import Pol from '../../assets/icons/flags/pol.svg';
 import Por from '../../assets/icons/flags/por.svg';
 import PorBra from '../../assets/icons/flags/por-bra.svg';
@@ -48,6 +51,7 @@ import { makeStyles } from '@material-ui/core';
 const convertToIcon = (language: string): string => {
   switch (language) {
     case 'ara': return Ara;
+    case 'baq': return Bas;
     case 'bul': return Bul;
     case 'cat': return Cat;
     case 'chi': return Chi;
@@ -59,6 +63,7 @@ const convertToIcon = (language: string): string => {
     case 'est': return Est;
     case 'fin': return Fin;
     case 'fra':
+    case 'frf':
     case 'fre': return Fre;
     case 'deu':
     case 'ger': return Ger;
@@ -75,9 +80,11 @@ const convertToIcon = (language: string): string => {
     case 'kor': return Kor;
     case 'lav': return Lav;
     case 'lit': return Lit;
+    case 'mac': return Mac;
     case 'may': return May;
     case 'nob': return Nor;
     case 'nor': return Nor;
+    case 'per': return Per;
     case 'pol': return Pol;
     case 'por': return Por;
     case 'Portuguese-Bra': return PorBra;

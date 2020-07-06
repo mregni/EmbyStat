@@ -15,6 +15,9 @@
     "HOURSABBR": "h",
     "MINUTESABBR": "m",
     "MIN": "min",
+    "GB": "Gb",
+    "AND": "and",
+    "PIXELS": "px",
     "TITLE": "title",
     "ADDEDON": "added on",
     "QUALITY": "quality",
@@ -63,8 +66,13 @@
     "WANADDRESS": "WAN address",
     "LANADDRESS": "LAN address",
     "UPDATELEVEL": "Update level",
+    "SELECTVALUE": "Select value",
     "ADD": "Add",
     "DATE": "date"
+  },
+  "FORMERRORS": {
+    "EMPTY": "Field may not be empty",
+    "REQUIRED": "Required"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, we got an error in the backend, please try again. If it keeps failing please check the logs for more details.",

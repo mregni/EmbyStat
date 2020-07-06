@@ -345,7 +345,7 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var result = client.GetMovies("123", 0, 1000);
+            var result = client.GetMovies("123", "0", 1000, 100);
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
 
@@ -353,25 +353,26 @@ namespace Tests.Unit.Clients
 
             _usedRequest.Should().NotBeNull();
 
-            _usedRequest?.Parameters.Count.Should().Be(15);
+            _usedRequest?.Parameters.Count.Should().Be(16);
             // ReSharper disable once PossibleNullReferenceException
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
 
             parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "Genres,DateCreated,MediaSources,ExternalUrls,OriginalTitle,Studios,MediaStreams,Path,Overview,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,RunTimeTicks", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "IncludeItemTypes", "Movie", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "Limit", "1000", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "LocationTypes", "FileSystem", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "ParentId", "123", ParameterType.QueryString);
-            parameters.CheckQueryParameter(9, "recursive", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(10, "SeriesStatuses", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(11, "StartIndex", "0", ParameterType.QueryString);
-            parameters.CheckQueryParameter(12, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(13, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(14, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
+            parameters.CheckQueryParameter(1, "EnableImages", "True", ParameterType.QueryString);
+            parameters.CheckQueryParameter(2, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
+            parameters.CheckQueryParameter(3, "fields", "Genres,DateCreated,MediaSources,ExternalUrls,OriginalTitle,Studios,MediaStreams,Path,Overview,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,RunTimeTicks", ParameterType.QueryString);
+            parameters.CheckQueryParameter(4, "Filters", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(5, "ImageTypes", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(6, "IncludeItemTypes", "Movie", ParameterType.QueryString);
+            parameters.CheckQueryParameter(7, "Limit", "100", ParameterType.QueryString);
+            parameters.CheckQueryParameter(8, "LocationTypes", "FileSystem", ParameterType.QueryString);
+            parameters.CheckQueryParameter(9, "ParentId", "123", ParameterType.QueryString);
+            parameters.CheckQueryParameter(10, "recursive", "True", ParameterType.QueryString);
+            parameters.CheckQueryParameter(11, "SeriesStatuses", string.Empty, ParameterType.QueryString);
+            parameters.CheckQueryParameter(12, "StartIndex", "1000", ParameterType.QueryString);
+            parameters.CheckQueryParameter(13, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
+            parameters.CheckQueryParameter(14, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
+            parameters.CheckQueryParameter(15, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
 
             _usedRequest?.Method.Should().Be(Method.GET);
             _usedRequest?.Resource.Should().Be("Items");
@@ -406,7 +407,7 @@ namespace Tests.Unit.Clients
             var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
 
             parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
+            parameters.CheckQueryParameter(1, "EnableImageTypes", "Primary", ParameterType.QueryString);
             parameters.CheckQueryParameter(2, "fields", "Genres,DateCreated,MediaSources,ExternalUrls,OriginalTitle,Studios,MediaStreams,Path,Overview,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,RunTimeTicks", ParameterType.QueryString);
             parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
             parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);

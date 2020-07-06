@@ -1,6 +1,6 @@
 import React from 'react'
 import uuid from 'react-uuid';
-import { Grid, Card, CardContent, makeStyles, Typography, Zoom } from '@material-ui/core';
+import { Grid, Card, CardContent, makeStyles, Zoom } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
