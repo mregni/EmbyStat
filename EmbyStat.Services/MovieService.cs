@@ -19,7 +19,6 @@ using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
-using ValueType = EmbyStat.Services.Converters.ValueType;
 
 namespace EmbyStat.Services
 {
@@ -246,7 +245,7 @@ namespace EmbyStat.Services
             var list = _movieRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueType.date)
+                ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                 : null;
         }
 
@@ -255,7 +254,7 @@ namespace EmbyStat.Services
             var list = _movieRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueType.date)
+                ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                 : null;
         }
 
@@ -266,7 +265,7 @@ namespace EmbyStat.Services
             var list = _movieRepository.GetShortestMovie(libraryIds, toShortMovieTicks, 5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks", ValueType.ticks)
+                ? list.ConvertToTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
                 : null;
         }
 
@@ -275,7 +274,7 @@ namespace EmbyStat.Services
             var list = _movieRepository.GetLongestMovie(libraryIds, 5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueType.ticks)
+                ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
                 : null;
         }
 
@@ -284,7 +283,7 @@ namespace EmbyStat.Services
             var list = _movieRepository.GetLatestAddedMedia(libraryIds, 5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated", ValueType.date)
+                ? list.ConvertToTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated", ValueTypeEnum.Date)
                 : null;
         }
 

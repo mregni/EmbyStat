@@ -23,7 +23,6 @@ const FilterTextField = (props: Props) => {
 
   const handleChange = (event) => {
     setValue(event.target.value);
-    console.log(errors.txt);
     disableAdd(errors.txt);
     if (!errors.txt) {
       onValueChanged(event.target.value);

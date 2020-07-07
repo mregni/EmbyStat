@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   onValueChanged: (arg0: string) => void;
+  errors: any;
+  register: Function;
+  disableAdd: (disable: boolean) => void;
 }
 
 interface BetweenValue {
@@ -32,7 +35,7 @@ interface BetweenValue {
 
 
 const FilterDateRangeField = (props: Props) => {
-  const { onValueChanged } = props;
+  const { onValueChanged, errors, register, disableAdd } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const [betweenValue, setBetweenValue] = useState<BetweenValue>({
@@ -41,17 +44,19 @@ const FilterDateRangeField = (props: Props) => {
   });
 
   useEffect(() => {
+    console.log(betweenValue.right?.isValid());
+    disableAdd((!betweenValue.left?.isValid() ?? true) || (!betweenValue.right?.isValid() ?? true));
     onValueChanged(`${betweenValue.left?.format()}|${betweenValue.right?.format()}`);
-  }, [betweenValue, onValueChanged]);
+  }, [betweenValue, onValueChanged, disableAdd]);
 
   const leftChanged = (date: Moment | null) => {
-    if (date !== null) {
+    if (date !== null && !errors.dateLeft) {
       setBetweenValue((state) => ({ ...state, left: date }));
     }
   }
 
   const rightChanged = (date: Moment | null) => {
-    if (date !== null) {
+    if (date !== null && !errors.dateRight) {
       setBetweenValue((state) => ({ ...state, right: date }));
     }
   }
@@ -68,6 +73,10 @@ const FilterDateRangeField = (props: Props) => {
             autoOk
             onChange={leftChanged}
             className={classes.small__fields}
+            name="dateLeft"
+            error={errors.dateLeft ? true : false}
+            helperText={errors.dateLeft ? errors.dateLeft.message : ''}
+            inputRef={register({ required: t('FORMERRORS.EMPTY') })}
           />
         </MuiPickersUtilsProvider>
       </Grid>
@@ -86,6 +95,10 @@ const FilterDateRangeField = (props: Props) => {
             autoOk
             onChange={rightChanged}
             className={classes.small__fields}
+            name="dateRight"
+            error={errors.dateRight ? true : false}
+            helperText={errors.dateRight ? errors.dateRight.message : ''}
+            inputRef={register({ required: t('FORMERRORS.EMPTY') })}
           />
         </MuiPickersUtilsProvider>
       </Grid>

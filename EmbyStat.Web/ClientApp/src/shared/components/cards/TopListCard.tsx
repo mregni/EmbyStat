@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Zoom, Paper, Grid, makeStyles } from '@material-ui/core';
 import uuid from 'react-uuid';
 import moment from 'moment';
 
-import { TopCard } from '../../models/common';
+import { TopCard, TopCardItem } from '../../models/common';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/RootReducer';
 import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
@@ -59,21 +59,23 @@ interface Props {
 }
 
 const TopListCard = (props: Props) => {
-  const { t } = useTranslation();
   const { data } = props;
+  const { t } = useTranslation();
+  const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
+
+  console.log(data);
 
   const settings = useSelector((state: RootState) => state.settings);
   const getBackdropUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
-    console.log(`${fullAddress}/emby/Items/${data.mediaId}/Images/Backdrop?EnableImageEnhancers=false`);
-    return `${fullAddress}/emby/Items/${data.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
+    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
   }
 
   const classes = useStyles({ backdrop: getBackdropUrl() });
 
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${data.mediaId}/Images/Primary?maxHeight=200&tag=${data.image}&quality=90&enableimageenhancers=false`;
+    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
   }
 
   const calculateTime = (date: string): string => {
@@ -102,9 +104,9 @@ const TopListCard = (props: Props) => {
             </Grid>
             {
               data.values.map(pair =>
-                <Grid item container justify="space-between" key={uuid()} className={classes.details}>
+                <Grid item container justify="space-between" key={uuid()} className={classes.details} onMouseOver={() => setHoveredItem(pair)}>
                   <Grid item className={classes.link}>
-                    <a href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${data.mediaId}&serverId=${settings.mediaServer.serverId}`}
+                    <a href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${pair.mediaId}&serverId=${settings.mediaServer.serverId}`}
                       target="_blank"
                       rel="noopener noreferrer">
                       {t(pair.label)}

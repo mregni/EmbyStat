@@ -68,7 +68,15 @@
     "UPDATELEVEL": "Update level",
     "SELECTVALUE": "Select value",
     "ADD": "Add",
-    "DATE": "date"
+    "DATE": "date",
+    "FPS": "fps",
+    "LINKS": "Links",
+    "AUDIO": "Audio",
+    "SUBTITLES": "Subtitles",
+    "RATING": "Rating",
+    "RESOLUTION": "Resolution",
+    "RUNTIME": "Runtime",
+    "TABLE": "Table"
   },
   "FORMERRORS": {
     "EMPTY": "Field may not be empty",

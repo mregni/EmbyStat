@@ -36,12 +36,12 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("list")]
-        public IActionResult GetMoviePageList(int skip, int take, string sort, bool requireTotalCount, string filters, List<string> libraryIds)
+        public IActionResult GetMoviePageList(int skip, int take, string sort, bool requireTotalCount, string filter, List<string> libraryIds)
         {
             var filtersObj = new Filter[0];
-            if (filters != null)
+            if (filter != null)
             {
-                filtersObj = JsonConvert.DeserializeObject<Filter[]>(filters);
+                filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
             }
 
             var page = _movieService.GetMoviePage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);

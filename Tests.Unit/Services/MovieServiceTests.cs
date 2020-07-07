@@ -230,7 +230,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieOne.Id);
             card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(false);
-            card.ValueType.Should().Be(ValueType.none);
+            card.ValueType.Should().Be(ValueType.None);
         }
 
         [Fact]
@@ -250,7 +250,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieThree.Id);
             card.Image.Should().Be(_movieThree.Primary);
             card.UnitNeedsTranslation.Should().Be(false);
-            card.ValueType.Should().Be(ValueType.none);
+            card.ValueType.Should().Be(ValueType.None);
         }
 
         [Fact]
@@ -270,7 +270,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieOne.Id);
             card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.date);
+            card.ValueType.Should().Be(ValueType.Date);
         }
 
         [Fact]
@@ -290,7 +290,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieThree.Id);
             card.Image.Should().Be(_movieThree.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.date);
+            card.ValueType.Should().Be(ValueType.Date);
         }
 
         [Fact]
@@ -310,7 +310,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieOne.Id);
             card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.ticks);
+            card.ValueType.Should().Be(ValueType.Ticks);
         }
 
         [Fact]
@@ -330,7 +330,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieThree.Id);
             card.Image.Should().Be(_movieThree.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.ticks);
+            card.ValueType.Should().Be(ValueType.Ticks);
         }
 
         [Fact]
@@ -350,7 +350,7 @@ namespace Tests.Unit.Services
             card.MediaId.Should().Be(_movieOne.Id);
             card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.date);
+            card.ValueType.Should().Be(ValueType.Date);
         }
 
         [Fact]

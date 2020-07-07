@@ -52,6 +52,8 @@ const FilterPicker = (props: Props) => {
       const current = types.filter(x => x.id === id)[0];
       setTypes(types.map((x) => (x.id !== id ? { ...x, open: false } : current.open !== state ? { ...x, open: state } : x)))
     }
+
+    reset();
   }
 
   const handleOnExited = () => {
@@ -59,7 +61,7 @@ const FilterPicker = (props: Props) => {
     setTypes((state) => state.map(x => ({ ...x, open: false })));
   }
 
-  const calculateValue = (type: string): string | number => {
+  const calculateValue = (): string | number => {
     switch (filterDefinition.field) {
       case "RunTimeTicks": return parseInt(value, 10) * 600000000;
       case "Images":
@@ -71,7 +73,6 @@ const FilterPicker = (props: Props) => {
   }
 
   const calculateValueLabel = (type: FilterType): string => {
-    console.log(value);
     switch (type.type) {
       case "dropdown": return `${value.split('|')[1]}`;
       case "date": return moment(value).format('L');
@@ -86,7 +87,7 @@ const FilterPicker = (props: Props) => {
     }
   }
 
-  const { register, triggerValidation, errors, getValues, reset } = useForm(
+  const { register, triggerValidation, errors, reset } = useForm(
     {
       mode: 'onBlur',
       defaultValues: {
@@ -102,7 +103,7 @@ const FilterPicker = (props: Props) => {
         fieldLabel: filterDefinition.label,
         operation: type.operation,
         operationLabel: type.label,
-        value: calculateValue(type.type).toString(),
+        value: calculateValue().toString(),
         valueLabel: calculateValueLabel(type),
         id: uuid(),
         visible: true,
@@ -168,7 +169,11 @@ const FilterPicker = (props: Props) => {
                         errors={errors}
                         register={register}
                         disableAdd={setIntputInError} /> : null}
-                      {type.type === "dateRange" ? <FilterDateRangeField onValueChanged={setValue} /> : null}
+                      {type.type === "dateRange" ? <FilterDateRangeField
+                        onValueChanged={setValue}
+                        errors={errors}
+                        register={register}
+                        disableAdd={setIntputInError} /> : null}
                     </>
                   </FilterRadioButton>)
               }

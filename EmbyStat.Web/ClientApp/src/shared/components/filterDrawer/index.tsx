@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderBottomRightRadius: 0,
     position: 'fixed',
     right: 0,
-    top: 150,
+    top: 75,
     zIndex: 5000,
   },
 }));
@@ -66,6 +66,11 @@ const FilterDrawer = (props: Props) => {
     definitions.forEach(x => x.open = false);
   };
 
+  const resetDrawerState = () => {
+    setOpenFiltersDrawer(false);
+    definitions.forEach(x => x.open = false);
+  }
+
   const openFilterDefinition = (id: string, state: boolean) => {
     if (lastClickedDefinition === id) {
       const current = definitions.filter(x => x.id === id)[0];
@@ -73,12 +78,16 @@ const FilterDrawer = (props: Props) => {
     }
   }
 
+  const save = (filter: ActiveFilter) => {
+    resetDrawerState();
+    addFilter(filter);
+  }
+
   const list = () => (
     <Grid
       container
       className={classes.container}
       role="presentation"
-      onKeyDown={toggleDrawer(false)}
       direction="column"
       spacing={1}
       justify="flex-start"
@@ -104,7 +113,7 @@ const FilterDrawer = (props: Props) => {
             <FilterPicker
               filterDefinition={filterDefinition}
               open={openFilterDefinition}
-              save={addFilter}
+              save={save}
               key={filterDefinition.id}
               setClickedId={setLastClickedDefinition}
             />

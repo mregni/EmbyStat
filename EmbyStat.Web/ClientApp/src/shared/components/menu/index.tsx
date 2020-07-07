@@ -83,7 +83,7 @@ const Menu = (props: Props) => {
           route: '/movies/graphs',
         },
         {
-          title: "LIST NO TRANS",
+          title: t('COMMON.TABLE'),
           route: '/movies/list',
         },
       ],

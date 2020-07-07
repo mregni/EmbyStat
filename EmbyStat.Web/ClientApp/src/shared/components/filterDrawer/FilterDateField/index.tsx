@@ -21,7 +21,7 @@ const FilterDateField = (props: Props) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    disableAdd(selectedDate == null);
+    disableAdd(!selectedDate?.isValid() ?? true);
   }, [disableAdd, selectedDate]);
 
   const handleDateChange = (date: Moment | null) => {

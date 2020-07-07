@@ -12,7 +12,7 @@ namespace EmbyStat.Services.Converters
 {
     public static class TopCardHelper
     {
-        public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, ValueType valueType, bool unitNeedsTranslation)
+        public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
         {
             var values = list.Select(x =>
             {
@@ -23,10 +23,12 @@ namespace EmbyStat.Services.Converters
                     value = DateTimeOffset.Parse(value).ToString("O");
                 }
 
-                return new LabelValuePair
+                return new TopCardItem
                 {
                     Value = value,
-                    Label = x.Name
+                    Label = x.Name,
+                    MediaId = x.Id,
+                    Image = x.Primary
                 };
             }).ToArray();
 
@@ -36,28 +38,19 @@ namespace EmbyStat.Services.Converters
                 Title = title,
                 Values = values,
                 Unit = unit,
-                Image = list[0].Primary,
-                MediaId = list[0].Id,
                 UnitNeedsTranslation = unitNeedsTranslation,
-                ValueType = valueType
+                ValueType = valueTypeEnum
             };
         }
 
-        public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, ValueType valueType)
+        public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
         {
-            return ConvertToTopCard(list, title, unit, valueSelector, valueType, true);
+            return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
         }
 
         public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
         {
-            return ConvertToTopCard(list, title, unit, valueSelector, ValueType.none, unitNeedsTranslation);
+            return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
-    }
-
-    public enum ValueType
-    {
-        none = 0,
-        ticks = 1,
-        date = 2
     }
 }

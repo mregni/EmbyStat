@@ -46,7 +46,6 @@ const FilterDropdownField = (props: Props) => {
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setValue(event.target.value as string);
-
     if (type.itemType === 'url') {
       const labelPair = values.filter(x => x.value === event.target.value);
       if (labelPair.length !== -1) {
@@ -55,7 +54,7 @@ const FilterDropdownField = (props: Props) => {
       }
     }
 
-    onValueChanged(event.target.value as string);
+    onValueChanged(`${event.target.value}|${event.target.value}`);
   };
 
   return (
@@ -73,9 +72,9 @@ const FilterDropdownField = (props: Props) => {
           : values.map(x =>
             <MenuItem key={x.label} value={x.value}>
               {field === 'Subtitles' ?
-                <Grid container alignItems="center" spacing={1}>
+                <Grid container alignItems="center">
                   <Grid item>
-                    <Flag language={x.value} width={25} height={25} />
+                    <Flag language={x.value} width={25} height={25} className="m-r-8" />
                   </Grid>
                   <Grid item className={classes['pull-up']}>
                     {x.label}

@@ -1,23 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import DataGrid, { Scrolling, Paging, Column, Sorting, MasterDetail } from 'devextreme-react/data-grid';
 import * as AspNetData from 'devextreme-aspnet-data-nojquery';
-import { makeStyles, Grid, Typography, Zoom, Chip } from '@material-ui/core';
+import { makeStyles, Grid, Typography, Zoom, Chip, Button } from '@material-ui/core';
 import uuid from 'react-uuid';
+import { useSelector } from 'react-redux';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import { useTranslation } from 'react-i18next';
 
-import imdb from '../../../shared/assets/icons/imdb.svg';
-import tmdb from '../../../shared/assets/icons/tmdb.svg';
 import DetailMovieTemplate from './DetailMovieTemplate';
 import Flag from '../../../shared/components/flag';
 import FilterDrawer from '../../../shared/components/filterDrawer';
-import { useTranslation } from 'react-i18next';
-
 import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
+import CustomStore from 'devextreme/data/custom_store';
+import getFullMediaServerUrl from '../../../shared/utils/GetFullMediaServerUtil';
+import { RootState } from '../../../store/RootReducer';
+import { useServerType } from '../../../shared/hooks';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     height: 'calc(100vh - 180px)',
-  }
+  },
+  title: {
+    textTransform: 'capitalize',
+    marginRight: 16,
+  },
 }));
 
 interface Props {
@@ -27,12 +34,10 @@ interface Props {
 const MovieList = (props: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const dataGridRef = useRef(null);
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
-  const [dataSource, setDataSource] = useState(AspNetData.createStore({
-    key: 'id',
-    loadUrl: `/api/movie/list?libraryids=f137a2dd21bbc1b99aa5c0f6bf02a805`
-  }));
+  const [dataSource, setDataSource] = useState<CustomStore>();
+  const settings = useSelector((state: RootState) => state.settings);
+  const serverType = useServerType();
 
   const handleFilterHide = (id) => {
     const currentFilterIndex = activeFilters.findIndex(x => x.id === id);
@@ -44,19 +49,15 @@ const MovieList = (props: Props) => {
   }
 
   useEffect(() => {
-    const datagrid = dataGridRef != null ? dataGridRef.current as unknown as DataGrid : {} as DataGrid;
-    datagrid.instance.refresh();
-
-    let filterParameters = '';
-    if (activeFilters.length > 0) {
-      filterParameters = `&filters=${JSON.stringify(activeFilters.map(x => ({ field: x.field, operation: x.operation, value: x.value })))}`;
-    }
-
     setDataSource(AspNetData.createStore({
       key: 'id',
-      loadUrl: `/api/movie/list?libraryids=f137a2dd21bbc1b99aa5c0f6bf02a805${filterParameters}`
+      loadUrl: `/api/movie/list`,
+      loadParams: {
+        libraryids: 'f137a2dd21bbc1b99aa5c0f6bf02a805',
+        filter: JSON.stringify(activeFilters.map(x => ({ field: x.field, operation: x.operation, value: x.value })))
+      }
     }));
-  }, [activeFilters])
+  }, [activeFilters]);
 
   const handleFilterDelete = (id) => {
     setActiveFilters(activeFilters.filter(x => x.id !== id));
@@ -116,23 +117,15 @@ const MovieList = (props: Props) => {
   }
 
   const renderLinks = (row) => {
-    return <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
-      {
-        row.data.imdb != null
-          ? <Grid item>
-            <a href={`https://www.imdb.com/title/${row.data.imdb}`} target="_blank" rel="noopener noreferrer">
-              <img src={imdb} alt="Imdb icon" height="20" />
-            </a>
-          </Grid> : null
-      }
-      {
-        row.data.tmdb != null
-          ? <Grid item>
-            <a href={`https://www.themoviedb.org/movie/${row.data.tmdb}`} target="_blank" rel="noopener noreferrer">
-              <img src={tmdb} alt="Tmdb icon" height="15" />
-            </a>
-          </Grid> : null
-      }
+    return <Grid container direction="row" justify="flex-end" alignItems="center">
+      <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${row.id}&serverId=${settings.mediaServer.serverId}`}
+        target="_blank"
+        startIcon={<OpenInNewIcon />}
+      >{serverType}</Button>
     </Grid>
   }
 
@@ -143,19 +136,20 @@ const MovieList = (props: Props) => {
   }
 
   return (
-    <Grid container direction="column" spacing={1}>
+    <Grid container direction="column">
       <FilterDrawer
         filterCount={activeFilters.length}
         addFilter={addFilter}
         filterDefinitions={movieFilters}
         clearFilters={() => setActiveFilters([])} />
-      <Grid item container direction="row" spacing={1}>
+      <Grid item container direction="row" className="p-b-16">
         <Grid item>
-          <Typography variant='h5'>{t('COMMON.FILTERS')}: {activeFilters.length === 0 ? 'none' : null}</Typography>
+          <Typography variant='h5' className={classes.title}>{t('COMMON.MOVIES')}</Typography>
         </Grid>
         {activeFilters.map((filter: any) => <Grid item key={filter.id}>
           <Zoom in={filter.visible} onExited={() => handleFilterDelete(filter.id)}>
             <Chip
+              className="m-r-16"
               label={generateLabel(filter)}
               onDelete={() => handleFilterHide(filter.id)}
             />
@@ -167,41 +161,43 @@ const MovieList = (props: Props) => {
           elementAttr={{
             class: classes.container
           }}
-          ref={dataGridRef}
           dataSource={{ store: dataSource }}
           showBorders={true}
           remoteOperations={true}
           wordWrapEnabled={true}
           rowAlternationEnabled={true}
           allowColumnResizing={true}
+          columnAutoWidth={true}
           columnResizingMode={'nextColumn'}
         >
           <Scrolling mode="virtual" rowRenderingMode="virtual" />
           <Paging pageSize="100" />
           <Sorting mode="single" />
 
-          <Column dataField="id" width="75" />
+          <Column dataField="id" />
           <Column
             dataField="sortName"
-            caption="Title"
+            caption={t('COMMON.TITLE')}
             width="300"
             calculateCellValue={getTitleValue}
+            defaultSortIndex={0}
+            defaultSortOrder="asc"
           />
-          <Column dataField="container" caption="Container" width="100" />
+          <Column dataField="container" caption="Container" />
           <Column
             dataField="runTimeTicks"
-            caption="Run time"
+            caption={t('COMMON.RUNTIME')}
             width="120"
             dataType="number"
             calculateCellValue={calculateRunTimeValue}
           />
-          <Column caption="Genres" width="250" calculateCellValue={getGenresValues} allowSorting={false} />
-          <Column dataField="officialRating" caption="Official rating" width="120" />
-          <Column caption="Resolution" width="200" calculateCellValue={getResolutionValues} allowSorting={false} />
-          <Column dataField="communityRating" caption="Rating" width="100" />
-          <Column caption="Subtitles" width="200" cellRender={getSubtitleValues} allowSorting={false} />
-          <Column caption="Audio" width="120" cellRender={getAudioValues} allowSorting={false} />
-          <Column caption="Links" cellRender={renderLinks} allowSorting={false} />
+          <Column caption={t('COMMON.GENRES')} calculateCellValue={getGenresValues} allowSorting={false} />
+          <Column caption={t('COMMON.OFFICIALRATING')} dataField="officialRating" />
+          <Column caption={t('COMMON.RESOLUTION')} calculateCellValue={getResolutionValues} allowSorting={false} />
+          <Column caption={t('COMMON.RATING')} dataField="communityRating" />
+          <Column caption={t('COMMON.SUBTITLES')} width={180} cellRender={getSubtitleValues} allowSorting={false} />
+          <Column caption={t('COMMON.AUDIO')} width={100} cellRender={getAudioValues} allowSorting={false} />
+          <Column caption={t('COMMON.LINKS')} width={100} cellRender={renderLinks} allowSorting={false} alignment="right" />
           <MasterDetail
             enabled={true}
             component={DetailMovieTemplate}

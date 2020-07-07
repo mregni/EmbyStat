@@ -65,10 +65,6 @@ const MenuItem = (props: Props) => {
     }
   }, [drawerOpen]);
 
-  useEffect(() => {
-    console.log(title + ' ' + open);
-  }, [open]);
-
   const handleNavigation = () => {
     if (small) {
       setDrawerOpen(false);

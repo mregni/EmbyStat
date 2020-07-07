@@ -5,7 +5,6 @@ import { Grid, makeStyles, Button } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import Ratings from 'react-ratings-declarative';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import { useTranslation } from 'react-i18next';
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 import AspectRatioRoundedIcon from '@material-ui/icons/AspectRatioRounded';
@@ -74,18 +73,6 @@ const DetailMovieTemplate = (props: Props) => {
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
     return `${fullAddress}/emby/Items/${data.data.id}/Images/Backdrop?EnableImageEnhancers=false`;
-  }
-
-  const openMovie = () => {
-    window.open(`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${movie.id}&serverId=${settings.mediaServer.serverId}`, "_blank")
-  }
-
-  const openImdb = () => {
-    window.open(`https://www.imdb.com/title/${movie.imdb}`);
-  }
-
-  const openTmdb = () => {
-    window.open(`https://www.themoviedb.org/movie/${movie.tmdb}`);
   }
 
   const classes = useStyles({ background: getPosterUrl() });
@@ -211,24 +198,27 @@ const DetailMovieTemplate = (props: Props) => {
               variant="outlined"
               color="secondary"
               size="small"
-              startIcon={<OpenInNewIcon />}
-              onClick={() => openMovie()}>{serverType}</Button>
+              target="_blank"
+              href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${movie.id}&serverId=${settings.mediaServer.serverId}`}
+              startIcon={<OpenInNewIcon />}>{serverType}</Button>
           </Grid>
           <Grid item>
             <Button
               variant="outlined"
               color="secondary"
               size="small"
-              startIcon={<OpenInNewIcon />}
-              onClick={() => openImdb()}>IMDB</Button>
+              target="_blank"
+              href={`https://www.imdb.com/title/${movie.imdb}`}
+              startIcon={<OpenInNewIcon />}>IMDB</Button>
           </Grid>
           <Grid item>
             <Button
               variant="outlined"
               color="secondary"
               size="small"
-              startIcon={<OpenInNewIcon />}
-              onClick={() => openTmdb()}>TMDB</Button>
+              target="_blank"
+              href={`https://www.themoviedb.org/movie/${movie.tmdb}`}
+              startIcon={<OpenInNewIcon />}>TMDB</Button>
           </Grid>
         </Grid>
       </div>

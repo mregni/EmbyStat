@@ -1,14 +1,16 @@
-export interface LabelValuePair {
+
+
+export interface TopCardItem {
+  mediaId: string;
+  image: string;
   label: string;
   value: string;
 }
 
 export interface TopCard {
-  mediaId: string;
   title: string;
-  image: string;
   unit: string;
   unitNeedsTranslation: boolean;
-  values: LabelValuePair[];
+  values: TopCardItem[];
   valueType: number;
 }

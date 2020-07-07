@@ -18,7 +18,7 @@
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "devextreme": "20.1.4",
-    "devextreme-aspnet-data-nojquery": "^2.6.1",
+    "devextreme-aspnet-data-nojquery": "^2.6.2",
     "devextreme-react": "20.1.4",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
