@@ -20,7 +20,6 @@ export interface Settings {
   id: string;
   appName: string;
   wizardFinished: boolean;
-  username: string;
   language: string;
   toShortMovie: number;
   toShortMovieEnabled: boolean;

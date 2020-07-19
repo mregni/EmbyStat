@@ -1,5 +1,7 @@
-import React from 'react'
-import { Paper, makeStyles, Zoom } from '@material-ui/core';
+import React from 'react';
+import Zoom from '@material-ui/core/Zoom';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { Card } from '../../models/common';
 import convertToIcon from '../../utils/StringToIconUtil';
@@ -23,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 4,
     borderBottomLeftRadius: 4,
     '& > svg': {
-      color: theme.palette.primary.dark,
+      color: theme.palette.grey[400],
       height: 30,
       width: 30,
-    }
+    },
   },
   card__text: {
     display: 'flex',
@@ -37,17 +39,17 @@ const useStyles = makeStyles((theme) => ({
   },
   card__value: {
     fontWeight: 700,
-    fontSize: '1.3rem'
+    fontSize: '1.3rem',
   },
   card__title: {
     textTransform: 'uppercase',
     fontWeight: 300,
-    fontSize: '0.75rem'
-  }
+    fontSize: '0.75rem',
+  },
 }));
 
 interface Props {
-  card: Card,
+  card: Card;
 }
 
 const BasicCard = (props: Props) => {
@@ -56,9 +58,9 @@ const BasicCard = (props: Props) => {
   const classes = useStyles();
 
   const calculateSize = (value: string): string => {
-    let newValue = parseInt(value, 10);
+    const newValue = parseInt(value, 10);
     return calculateFileSize(newValue);
-  }
+  };
 
   const calculateTime = (value: string): string => {
     const newValues = String(value).split('|');
@@ -74,15 +76,13 @@ const BasicCard = (props: Props) => {
     }
 
     return returnValue;
-  }
+  };
 
   return (
     <Zoom in={true}>
       <Paper elevation={5}>
         <div className={classes.card}>
-          <div className={classes.card__icon}>
-            {convertToIcon(card.icon)}
-          </div>
+          <div className={classes.card__icon}>{convertToIcon(card.icon)}</div>
           <div className={classes.card__text}>
             <div className={classes.card__value}>
               {card.type === 'text' ? card.value : null}
@@ -94,7 +94,7 @@ const BasicCard = (props: Props) => {
         </div>
       </Paper>
     </Zoom>
-  )
-}
+  );
+};
 
-export default BasicCard
+export default BasicCard;

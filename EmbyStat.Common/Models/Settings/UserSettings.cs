@@ -11,7 +11,6 @@ namespace EmbyStat.Common.Models.Settings
         public Guid? Id { get; set; }
         public long Version { get; set; }
         public bool WizardFinished { get; set; }
-        public string Username { get; set; }
         public string Language { get; set; }
         public bool ToShortMovieEnabled { get; set; }
         public int ToShortMovie { get; set; }
@@ -36,7 +35,7 @@ namespace EmbyStat.Common.Models.Settings
         public ConnectionProtocol ServerProtocol { get; set; }
         public ServerType ServerType { get; set; }
         public string UserId { get; set; }
-        public string BaseUrl { get; set; }
+        public string ServerBaseUrl { get; set; }
         public string ServerId { get; set; }
 
         [JsonIgnore]
@@ -45,7 +44,7 @@ namespace EmbyStat.Common.Models.Settings
             get
             {
                 var protocol = ServerProtocol == ConnectionProtocol.Https ? "https" : "http";
-                return $"{protocol}://{ServerAddress}:{ServerPort}{BaseUrl}";
+                return $"{protocol}://{ServerAddress}:{ServerPort}{ServerBaseUrl}";
             }
         }
 
@@ -55,7 +54,7 @@ namespace EmbyStat.Common.Models.Settings
             get
             {
                 var protocol = ServerProtocol == ConnectionProtocol.Https ? "wss" : "ws";
-                return $"{protocol}://{ServerAddress}:{ServerPort}{BaseUrl}";
+                return $"{protocol}://{ServerAddress}:{ServerPort}{ServerBaseUrl}";
             }
         }
     }

@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { makeStyles, Button, Drawer, Grid, Typography, Badge, List, ListItem, ListItemText } from '@material-ui/core';
-import { Theme, withStyles, createStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Grid from '@material-ui/core/Grid';
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
+import List from '@material-ui/core/List';
+import { makeStyles, Theme, withStyles, createStyles } from '@material-ui/core/styles';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import uuid from 'react-uuid';
 
 import { FilterDefinition, ActiveFilter } from '../../models/filter';
 import FilterPicker from './FilterPicker';
@@ -38,7 +42,7 @@ const StyledBadge = withStyles((theme: Theme) =>
       border: `2px solid ${theme.palette.background.paper}`,
       padding: '0 4px',
     },
-  }),
+  })
 )(Badge);
 
 interface Props {
@@ -57,31 +61,39 @@ const FilterDrawer = (props: Props) => {
   const [lastClickedDefinition, setLastClickedDefinition] = useState();
 
   const toggleDrawer = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent,
+    event: React.KeyboardEvent | React.MouseEvent
   ) => {
     if (event.type === 'keydown') {
       return;
     }
     setOpenFiltersDrawer(open);
-    definitions.forEach(x => x.open = false);
+    definitions.forEach((x) => (x.open = false));
   };
 
   const resetDrawerState = () => {
     setOpenFiltersDrawer(false);
-    definitions.forEach(x => x.open = false);
-  }
+    definitions.forEach((x) => (x.open = false));
+  };
 
   const openFilterDefinition = (id: string, state: boolean) => {
     if (lastClickedDefinition === id) {
-      const current = definitions.filter(x => x.id === id)[0];
-      setDefinitions(definitions.map((x) => (x.id !== id ? { ...x, open: false } : current.open !== state ? { ...x, open: state } : x)))
+      const current = definitions.filter((x) => x.id === id)[0];
+      setDefinitions(
+        definitions.map((x) =>
+          x.id !== id
+            ? { ...x, open: false }
+            : current.open !== state
+              ? { ...x, open: state }
+              : x
+        )
+      );
     }
-  }
+  };
 
   const save = (filter: ActiveFilter) => {
     resetDrawerState();
     addFilter(filter);
-  }
+  };
 
   const list = () => (
     <Grid
@@ -92,24 +104,28 @@ const FilterDrawer = (props: Props) => {
       spacing={1}
       justify="flex-start"
     >
-      <Grid item container justify={filterCount > 0 ? "space-between" : "flex-start"}>
+      <Grid
+        item
+        container
+        justify={filterCount > 0 ? 'space-between' : 'flex-start'}
+      >
         <Grid item>
-          <Typography variant='h4'>
-            {t('COMMON.FILTERS')}
-          </Typography>
+          <Typography variant="h4">{t('COMMON.FILTERS')}</Typography>
         </Grid>
-        {filterCount > 0 ?
+        {filterCount > 0 ? (
           <Grid item>
-            <Button color="secondary" onClick={() => clearFilters()}>Clear All</Button>
+            <Button color="secondary" onClick={() => clearFilters()}>
+              Clear All
+            </Button>
           </Grid>
-          : null}
+        ) : null}
       </Grid>
       <Grid item>
         <hr />
       </Grid>
       <Grid item container direction="column">
         <List>
-          {definitions.map((filterDefinition: FilterDefinition) =>
+          {definitions.map((filterDefinition: FilterDefinition) => (
             <FilterPicker
               filterDefinition={filterDefinition}
               open={openFilterDefinition}
@@ -117,10 +133,10 @@ const FilterDrawer = (props: Props) => {
               key={filterDefinition.id}
               setClickedId={setLastClickedDefinition}
             />
-          )}
+          ))}
         </List>
       </Grid>
-    </Grid >
+    </Grid>
   );
 
   return (
@@ -131,22 +147,28 @@ const FilterDrawer = (props: Props) => {
         size="small"
         color="primary"
         classes={{
-          root: classes.button__root
-        }}>
+          root: classes.button__root,
+        }}
+      >
         <StyledBadge badgeContent={filterCount} color="secondary">
           <SvgIcon
             classes={{
-              root: classes.icon__root
-            }}>
+              root: classes.icon__root,
+            }}
+          >
             <path d="M4.25,5.61C6.27,8.2,10,13,10,13v6c0,0.55,0.45,1,1,1h2c0.55,0,1-0.45,1-1v-6c0,0,3.72-4.8,5.74-7.39 C20.25,4.95,19.78,4,18.95,4H5.04C4.21,4,3.74,4.95,4.25,5.61z" />
           </SvgIcon>
         </StyledBadge>
       </Button>
-      <Drawer anchor="right" open={openFiltersDrawer} onClose={toggleDrawer(false)}>
+      <Drawer
+        anchor="right"
+        open={openFiltersDrawer}
+        onClose={toggleDrawer(false)}
+      >
         {list()}
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default FilterDrawer
+export default FilterDrawer;

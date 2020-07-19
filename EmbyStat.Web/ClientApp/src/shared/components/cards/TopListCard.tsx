@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Zoom, Paper, Grid, makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Zoom from '@material-ui/core/Zoom';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import uuid from 'react-uuid';
 import moment from 'moment';
 
-import { TopCard, TopCardItem } from '../../models/common';
 import { useSelector } from 'react-redux';
+import { TopCard, TopCardItem } from '../../models/common';
 import { RootState } from '../../../store/RootReducer';
 import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
 
@@ -13,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
     width: 375,
     height: 138,
-    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url(${props.backdrop})`,
+    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url(${props.backdrop})`,
     backgroundPosition: 'top',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
@@ -23,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     '& img': {
       borderTopLeftRadius: 4,
       borderBottomLeftRadius: 4,
-    }
+    },
   },
   info: {
     marginLeft: 8,
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: 16,
     textTransform: 'uppercase',
-    fontWeight: 700
+    fontWeight: 700,
   },
   details: {
     fontSize: '0.8rem',
@@ -41,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   secondaryColor: {
     color: theme.palette.secondary.main,
+    fontWeight: 700,
   },
   link: {
     cursor: 'pointer',
@@ -69,22 +73,22 @@ const TopListCard = (props: Props) => {
   const getBackdropUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
     return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
-  }
+  };
 
   const classes = useStyles({ backdrop: getBackdropUrl() });
 
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
     return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
-  }
+  };
 
   const calculateTime = (date: string): string => {
     return moment(date).format('l');
-  }
+  };
 
   const calculateMinutes = (ticks: string): number => {
     return Math.round(parseInt(ticks) / 600000000);
-  }
+  };
 
   return (
     <Zoom in={true}>
@@ -94,37 +98,51 @@ const TopListCard = (props: Props) => {
             <img src={getPosterUrl()} alt="poster" width="92" height="138" />
           </Grid>
           <Grid item className={classes.info} container direction="column">
-            <Grid item container justify="space-between" className={classes.title}>
-              <Grid item>
-                {t(data.title)}
-              </Grid>
+            <Grid
+              item
+              container
+              justify="space-between"
+              className={classes.title}
+            >
+              <Grid item>{t(data.title)}</Grid>
               <Grid item className={classes.secondaryColor}>
                 {data.unitNeedsTranslation ? t(data.unit) : data.unit}
               </Grid>
             </Grid>
-            {
-              data.values.map(pair =>
-                <Grid item container justify="space-between" key={uuid()} className={classes.details} onMouseOver={() => setHoveredItem(pair)}>
-                  <Grid item className={classes.link}>
-                    <a href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${pair.mediaId}&serverId=${settings.mediaServer.serverId}`}
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      {t(pair.label)}
-                    </a>
-                  </Grid>
-                  <Grid item className={classes.secondaryColor}>
-                    {data.valueType === 0 ? pair.value : null}
-                    {data.valueType === 1 ? calculateMinutes(pair.value) : null}
-                    {data.valueType === 2 ? calculateTime(pair.value) : null}
-                  </Grid>
+            {data.values.map((pair) => (
+              <Grid
+                item
+                container
+                justify="space-between"
+                key={uuid()}
+                className={classes.details}
+                onMouseOver={() => setHoveredItem(pair)}
+              >
+                <Grid item className={classes.link}>
+                  <a
+                    href={`${getFullMediaServerUrl(
+                      settings
+                    )}/web/index.html#!/item?id=${pair.mediaId}&serverId=${
+                      settings.mediaServer.serverId
+                      }`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t(pair.label)}
+                  </a>
                 </Grid>
-              )
-            }
+                <Grid item className={classes.secondaryColor}>
+                  {data.valueType === 0 ? pair.value : null}
+                  {data.valueType === 1 ? calculateMinutes(pair.value) : null}
+                  {data.valueType === 2 ? calculateTime(pair.value) : null}
+                </Grid>
+              </Grid>
+            ))}
           </Grid>
         </Grid>
       </Paper>
     </Zoom>
-  )
-}
+  );
+};
 
 export default TopListCard;

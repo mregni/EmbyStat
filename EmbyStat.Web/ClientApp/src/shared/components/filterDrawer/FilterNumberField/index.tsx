@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { TextField, InputAdornment } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
@@ -36,15 +37,17 @@ const FilterNumberField = (props: Props) => {
       type="number"
       name={type.type}
       value={value}
-      error={errors.number ? true : false}
+      error={!!errors.number}
       helperText={errors.number ? errors.number.message : ''}
       fullWidth
       onChange={handleChange}
       InputProps={{
-        endAdornment: <InputAdornment position="end">{t(type.unit ?? "")}</InputAdornment>,
+        endAdornment: (
+          <InputAdornment position="end">{t(type.unit ?? '')}</InputAdornment>
+        ),
       }}
     />
-  )
-}
+  );
+};
 
-export default FilterNumberField
+export default FilterNumberField;

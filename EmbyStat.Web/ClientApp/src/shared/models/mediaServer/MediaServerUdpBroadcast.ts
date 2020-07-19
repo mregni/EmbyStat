@@ -5,4 +5,5 @@ export interface MediaServerUdpBroadcast {
   port: number;
   protocol: number;
   type: number;
+  baseUrl: string;
 }

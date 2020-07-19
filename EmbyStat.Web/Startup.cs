@@ -3,34 +3,42 @@ using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rollbar;
 using Rollbar.NetCore.AspNet;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using AspNetCore.Identity.LiteDB;
+using AspNetCore.Identity.LiteDB.Models;
 using AutoMapper;
 using EmbyStat.Clients.Base;
+using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
 using EmbyStat.Migrator;
 using EmbyStat.Migrator.Interfaces;
 using EmbyStat.Migrator.Migrations;
-using EmbyStat.Services;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace EmbyStat.Web
@@ -52,6 +60,7 @@ namespace EmbyStat.Web
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             var appSettings = Configuration.Get<AppSettings>();
+            services.RegisterApplicationDependencies();
 
             RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
 
@@ -88,6 +97,29 @@ namespace EmbyStat.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmbyStat API", Version = "1.0"});
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Description = "Please insert JWT token into field"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
             });
 
             services.AddSpaStaticFiles(configuration =>
@@ -97,7 +129,69 @@ namespace EmbyStat.Web
 
             services.AddSignalR();
 
-            services.RegisterApplicationDependencies();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Roles, Constants.JwtClaims.User));
+                options.AddPolicy("ApiAdmin", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Roles, Constants.JwtClaims.Admin));
+            });
+
+            services.AddIdentity<EmbyStatUser, AspNetCore.Identity.LiteDB.IdentityRole>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 6;
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedPhoneNumber = false;
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.User.RequireUniqueEmail = false;
+                })
+                .AddUserStore<LiteDbUserStore<EmbyStatUser>>()
+                .AddRoleStore<LiteDbRoleStore<AspNetCore.Identity.LiteDB.IdentityRole>>()
+                .AddDefaultTokenProviders();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.ClaimsIssuer = appSettings.Jwt.Issuer;
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.Key)),
+
+                        ValidateIssuer = true,
+                        ValidIssuer = appSettings.Jwt.Issuer,
+
+                        ValidateAudience = true,
+                        ValidAudience = appSettings.Jwt.Audience,
+
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                    x.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("AccessToken-Expired", "true");
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+            services.AddHttpContextAccessor();
+
             //services.AddHostedService<WebSocketService>();
             services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
         }
@@ -144,6 +238,10 @@ namespace EmbyStat.Web
             
             app.UseCors("default");
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(routes =>
             {
                 routes.MapHub<JobHub>("/jobs-socket");

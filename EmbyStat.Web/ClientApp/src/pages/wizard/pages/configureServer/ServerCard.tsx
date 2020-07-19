@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
-import { MediaServerUdpBroadcast } from '../../../../shared/models/mediaServer';
-import { Zoom, Grid, Card, CardMedia, makeStyles, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Zoom from '@material-ui/core/Zoom';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-
-import Emby from '../../../../shared/assets/images/emby.png';
-import Jellyfin from '../../../../shared/assets/images/jellyfin.png';
 import { Trans } from 'react-i18next';
 
+import { MediaServerUdpBroadcast } from '../../../../shared/models/mediaServer';
+import Emby from '../../../../shared/assets/images/emby.png';
+import Jellyfin from '../../../../shared/assets/images/jellyfin.png';
+
 interface Props {
-  server: MediaServerUdpBroadcast,
-  onClick: Function,
+  server: MediaServerUdpBroadcast;
+  onClick: Function;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -17,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     position: 'relative',
     '&:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '&:active': {
-      boxShadow: theme.shadows[7]
-    }
+      boxShadow: theme.shadows[7],
+    },
   },
   content: {
     flex: '1 0 auto',
@@ -29,22 +34,24 @@ const useStyles = makeStyles((theme) => ({
   cover: {
     width: 80,
     height: 80,
-    padding: '10px'
+    padding: '10px',
   },
   server__details__header: {
-    color: theme.palette.type === 'dark'
-      ? theme.palette.grey[400] : theme.palette.grey[600],
-    fontSize: '0.8rem'
+    color:
+      theme.palette.type === 'dark'
+        ? theme.palette.grey[400]
+        : theme.palette.grey[600],
+    fontSize: '0.8rem',
   },
   server__details__name: {
-    paddingLeft: '8px'
+    paddingLeft: '8px',
   },
   server__details__icon: {
     width: '20px',
     position: 'absolute',
     right: 5,
     top: 5,
-  }
+  },
 }));
 
 const ServerCard = (props: Props) => {
@@ -53,8 +60,13 @@ const ServerCard = (props: Props) => {
   const classes = useStyles();
 
   const openServer = () => {
-    window.open(`${server.protocol === 0 ? 'https://' : 'http://'}${server.address}:${server.port}`, "_blank");
-  }
+    window.open(
+      `${server.protocol === 0 ? 'https://' : 'http://'}${server.address}:${
+      server.port
+      }`,
+      '_blank'
+    );
+  };
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3} onClick={() => onClick(server)}>
@@ -64,7 +76,8 @@ const ServerCard = (props: Props) => {
           square
           onMouseEnter={() => setElevation(12)}
           onMouseLeave={() => setElevation(7)}
-          className={classes.root}>
+          className={classes.root}
+        >
           <CardMedia
             className={classes.cover}
             component="img"
@@ -72,19 +85,28 @@ const ServerCard = (props: Props) => {
             title="Media server logo"
           />
           <Grid item container direction="column" justify="center">
-            <Typography variant="body1" className={classes["server__details__header"]}>
+            <Typography
+              variant="body1"
+              className={classes.server__details__header}
+            >
               <Trans i18nKey="COMMON.SERVERNAME" />
             </Typography>
-            <Typography variant="body1" className={classes["server__details__name"]}>
+            <Typography
+              variant="body1"
+              className={classes.server__details__name}
+            >
               {server.name}
             </Typography>
           </Grid>
 
-          <OpenInNewIcon className={classes["server__details__icon"]} onClick={() => openServer()} />
+          <OpenInNewIcon
+            className={classes.server__details__icon}
+            onClick={() => openServer()}
+          />
         </Card>
-      </Zoom >
-    </Grid >
-  )
-}
+      </Zoom>
+    </Grid>
+  );
+};
 
-export default ServerCard
+export default ServerCard;

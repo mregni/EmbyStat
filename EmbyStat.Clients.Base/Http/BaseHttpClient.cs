@@ -20,7 +20,7 @@ using RestSharp;
 
 namespace EmbyStat.Clients.Base.Http
 {
-    public class BaseHttpClient
+    public abstract class BaseHttpClient
     {
         protected readonly Logger Logger;
         protected string DeviceName { get; set; }
@@ -45,7 +45,7 @@ namespace EmbyStat.Clients.Base.Http
 
         protected readonly IRestClient RestClient;
 
-        public BaseHttpClient(IRestClient client)
+        protected BaseHttpClient(IRestClient client)
         {
             Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
             RestClient = client.Initialize();

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from 'react'
+import React, { ReactNode, useState, useEffect } from 'react';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import uuid from 'react-uuid';
 import List from '@material-ui/core/List';
 
-import theme from "../../../../styles/theme";
+import theme from '../../../../styles/theme';
 
 const useStyles = makeStyles((theme) => ({
   menu__item: (props: any) => ({
@@ -36,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  route: string | undefined,
-  icon?: ReactNode,
-  title: string,
-  setDrawerOpen: Function,
-  children: any,
-  drawerOpen: boolean,
-  isChild?: boolean,
+  route: string | undefined;
+  icon?: ReactNode;
+  title: string;
+  setDrawerOpen: Function;
+  children: any;
+  drawerOpen: boolean;
+  isChild?: boolean;
 }
 
 const MenuItem = (props: Props) => {
@@ -69,49 +69,52 @@ const MenuItem = (props: Props) => {
     if (small) {
       setDrawerOpen(false);
     }
-  }
+  };
 
   const openMenu = () => {
     if (!drawerOpen) {
       setDrawerOpen(true);
     }
     setOpen(!open);
-  }
+  };
 
   return (
     <>
-      {children != null && children.length > 0 ?
+      {children != null && children.length > 0 ? (
         <>
-          <ListItem
-            classes={{ root: classes.menu__item }}
-            onClick={openMenu}
-          >
-            <ListItemIcon classes={{ root: classes.menu__icon }}>{icon}</ListItemIcon>
-            <ListItemText className={classNames({ [classes.hide]: !drawerOpen })} primary={title} />
-            {children !== undefined && children.length > 0 && drawerOpen
-              ? open
-                ? <ExpandLessRounded /> : <ExpandMoreRounded />
-              : null}
+          <ListItem classes={{ root: classes.menu__item }} onClick={openMenu}>
+            <ListItemIcon classes={{ root: classes.menu__icon }}>
+              {icon}
+            </ListItemIcon>
+            <ListItemText
+              className={classNames({ [classes.hide]: !drawerOpen })}
+              primary={title}
+            />
+            {children !== undefined && children.length > 0 && drawerOpen ? (
+              open ? (
+                <ExpandLessRounded />
+              ) : (
+                <ExpandMoreRounded />
+              )
+            ) : null}
           </ListItem>
           <Collapse in={open && drawerOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {
-                children.map(item =>
-                  <MenuItem
-                    route={item.route}
-                    key={uuid()}
-                    title={item.title}
-                    setDrawerOpen={setDrawerOpen}
-                    drawerOpen={drawerOpen}
-                    children={null}
-                    isChild={true}
-                  />
-                )
-              }
+              {children.map((item) => (
+                <MenuItem
+                  route={item.route}
+                  key={uuid()}
+                  title={item.title}
+                  setDrawerOpen={setDrawerOpen}
+                  drawerOpen={drawerOpen}
+                  children={null}
+                  isChild={true}
+                />
+              ))}
             </List>
           </Collapse>
         </>
-        :
+      ) : (
         <ListItem
           button
           component={NavLink}
@@ -121,18 +124,24 @@ const MenuItem = (props: Props) => {
           activeClassName={classes['link--active']}
           onClick={handleNavigation}
         >
-          {icon != null ? <ListItemIcon classes={{ root: classes.menu__icon }}>{icon}</ListItemIcon> : null}
-          <ListItemText className={classNames({ [classes.hide]: !drawerOpen })} primary={title} />
+          {icon != null ? (
+            <ListItemIcon classes={{ root: classes.menu__icon }}>
+              {icon}
+            </ListItemIcon>
+          ) : null}
+          <ListItemText
+            className={classNames({ [classes.hide]: !drawerOpen })}
+            primary={title}
+          />
         </ListItem>
-      }
+      )}
     </>
-
-  )
-}
+  );
+};
 
 MenuItem.defaultProps = {
   isChild: false,
   icon: null,
-}
+};
 
-export default MenuItem
+export default MenuItem;

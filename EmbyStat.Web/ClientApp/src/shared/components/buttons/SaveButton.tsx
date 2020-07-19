@@ -1,10 +1,11 @@
-import React from 'react'
-import { Button, CircularProgress } from '@material-ui/core';
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
-  hasError: boolean,
-  isSaving: boolean,
+  hasError: boolean;
+  isSaving: boolean;
 }
 
 const SaveButton = (props: Props) => {
@@ -12,13 +13,19 @@ const SaveButton = (props: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Button type="submit" color="primary" variant="contained" disabled={hasError}>
-      {isSaving
-        ? <CircularProgress color="inherit" size={22} />
-        : t('COMMON.SAVE')
-      }
+    <Button
+      type="submit"
+      color="primary"
+      variant="contained"
+      disabled={hasError}
+    >
+      {isSaving ? (
+        <CircularProgress color="inherit" size={22} />
+      ) : (
+          t('COMMON.SAVE')
+        )}
     </Button>
-  )
-}
+  );
+};
 
-export default SaveButton
+export default SaveButton;

@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, TextField, Button, FormControlLabel, Switch, Tooltip, Fade, makeStyles } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
+import Switch from '@material-ui/core/Switch';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 import { Wizard } from '../../../../shared/models/wizard';
-import { setMediaServerType, setMediaServerProtocol, setBaseUrlIsNeeded } from '../../../../store/WizardSlice';
-import EmbyStatSelect from '../../../../shared/components/inputs/select/EmbyStatSelect';
 
 const useStyles = makeStyles((theme) => ({
   'input-field__padding': {
     marginTop: 16,
     [theme.breakpoints.up('md')]: {
       marginTop: 0,
-    }
+    },
   },
   'input-field__container': {
     height: 53,
     [theme.breakpoints.up('md')]: {
       paddingLeft: 8,
-    }
+    },
   },
   'base-url__container': {
     marginTop: 16,
@@ -27,14 +34,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  className?: string,
-  errors: any
-  register: Function,
-  wizard: Wizard
+  className?: string;
+  errors: any;
+  register: Function;
+  wizard: Wizard;
+  triggerValidation: Function;
+  setValue: Function;
 }
 
 const ServerForm = (props: Props) => {
-  const { className, register, errors, wizard } = props;
+  const { className, register, errors, wizard, triggerValidation, setValue } = props;
   const classes = useStyles();
   const [protocol, setProtocol] = useState(wizard.serverProtocol);
   const [address, setAddress] = useState(wizard.serverAddress);
@@ -42,110 +51,170 @@ const ServerForm = (props: Props) => {
   const [apiKey, setApiKey] = useState(wizard.apiKey);
   const [type, setType] = useState<number>(wizard.serverType);
   const [baseUrl, setBaseUrl] = useState(wizard.serverBaseurl);
-  const [baseUrlNeeded, setBaseUrlNeeded] = useState(wizard.serverBaseUrlNeeded);
+  const [baseUrlNeeded, setBaseUrlNeeded] = useState(
+    wizard.serverBaseUrlNeeded
+  );
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    setProtocol(wizard.serverProtocol);
-    setAddress(wizard.serverAddress);
     setPort(wizard.serverPort);
+    setAddress(wizard.serverAddress);
+    setProtocol(wizard.serverProtocol);
     setApiKey(wizard.apiKey);
     setType(wizard.serverType);
-    setBaseUrl(wizard.serverBaseurl);
+    setBaseUrlNeeded(wizard.serverBaseUrlNeeded);
+    if (wizard.serverBaseUrlNeeded) {
+      if (wizard.serverBaseurl.startsWith('/')) {
+        setBaseUrl(wizard.serverBaseurl);
+      } else {
+        setBaseUrl(`/${wizard.serverBaseurl}`);
+      }
+    }
+
+    setValue('protocol', wizard.serverProtocol);
+    setValue('type', wizard.serverType);
+    setValue('baseUrlNeeded', wizard.serverBaseUrlNeeded);
+
+    if (address !== wizard.serverAddress && address !== '') {
+      triggerValidation(['address', 'port']);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wizard]);
 
-  const protocolChanged = (event) => {
-    setProtocol(event.target.value);
-    dispatch(setMediaServerProtocol(event.target.value));
-  }
+  useEffect(() => {
+    register({ name: 'protocol' }, { required: true });
+    register({ name: 'type' }, { required: true });
+    register({ name: 'baseUrlNeeded' });
+  }, [register]);
 
-  const portChanged = (event) => {
-    setPort(event.target.value);
-  }
+  const protocolChanged = (event) => {
+    setValue('protocol', event.target.value);
+    setProtocol(event.target.value);
+  };
 
   const typeChanged = (event) => {
+    setValue('type', event.target.value);
     setType(event.target.value);
-    dispatch(setMediaServerType(event.target.value))
-  }
-
-  const openMediaServer = () => {
-    const htmlPage = type === 0 ? 'apikeys' : 'apikeys.html';
-    const protocolTxt = protocol === 0 ? 'https://' : 'http://';
-    window.open(`${protocolTxt}${address}:${port}${baseUrl}/web/index.html#!/${htmlPage}`, '_blank');
-  }
+  };
 
   const baseUrlNeededChanged = (event) => {
     event.preventDefault();
     setBaseUrlNeeded(event.target.checked);
     setBaseUrl('');
-    dispatch(setBaseUrlIsNeeded(event.target.checked));
-  }
+    setValue('baseUrlNeeded', event.target.value);
+  };
+
+  const openMediaServer = () => {
+    const htmlPage = type === 0 ? 'apikeys' : 'apikeys.html';
+    const protocolTxt = protocol === 0 ? 'https://' : 'http://';
+    window.open(
+      `${protocolTxt}${address}:${port}${baseUrl}/web/index.html#!/${htmlPage}`,
+      '_blank'
+    );
+  };
 
   const protocolList = [
-    { id: 0, value: 0, label: 'https://', },
-    { id: 1, value: 1, label: 'http://', },
-  ]
+    { id: 0, value: 0, label: 'https://' },
+    { id: 1, value: 1, label: 'http://' },
+  ];
 
   const serverTypeList = [
-    { id: 0, value: 0, label: 'Emby', },
-    { id: 1, value: 1, label: 'Jellyfin', },
-  ]
+    { id: 0, value: 0, label: 'Emby' },
+    { id: 1, value: 1, label: 'Jellyfin' },
+  ];
 
   return (
-    <Grid container direction="column" {...(className !== undefined && { className })}>
-      <Grid item container xs={12} direction="row" justify="flex-end" className="m-t-16">
-        <EmbyStatSelect
-          className={classes["input-field__padding"]}
+    <Grid
+      container
+      direction="column"
+      {...(className !== undefined && { className })}
+    >
+      <Grid
+        item
+        container
+        xs={12}
+        direction="row"
+        justify="flex-end"
+        className="m-t-16"
+      >
+        <Select
+          className={classNames(classes['input-field__padding'], "max-width")}
           variant="standard"
-          value={type}
           onChange={typeChanged}
-          menuItems={serverTypeList} />
+          value={type}
+          name='type'
+        >
+          {serverTypeList.map((x) => (
+            <MenuItem key={x.id} value={x.value}>
+              {x.label}
+            </MenuItem>
+          ))}
+        </Select>
       </Grid>
       <Grid item container direction="row" className="m-t-16">
         <Grid item xs={12} md={2}>
-          <EmbyStatSelect
-            className={classes["input-field__padding"]}
+          <Select
+            className={classNames(classes['input-field__padding'], "max-width")}
             variant="standard"
-            value={protocol}
             onChange={protocolChanged}
-            menuItems={protocolList} />
+            value={protocol}
+            name='protocol'
+          >
+            {protocolList.map((x) => (
+              <MenuItem key={x.id} value={x.value}>
+                {x.label}
+              </MenuItem>
+            ))}
+          </Select>
         </Grid>
-        <Grid item xs={12} md={8} className={classes["input-field__container"]}>
+        <Grid item xs={12} md={8} className={classes['input-field__container']}>
           <TextField
-            inputRef={register({ required: t('SETTINGS.MEDIASERVER.NOADDRESS') })}
-            error={errors.address ? true : false}
+            inputRef={register({
+              required: t('SETTINGS.MEDIASERVER.NOADDRESS'),
+            })}
+            error={!!errors.address}
             helperText={errors.address ? errors.address.message : ''}
-            className={classes["input-field__padding"]}
+            className={classes['input-field__padding']}
             placeholder={t('SETTINGS.MEDIASERVER.ADDRESS')}
             value={address}
             name="address"
             variant="standard"
-            onChange={(event) => setAddress(event.target.value)} />
+            onChange={(event) => setAddress(event.target.value)}
+          />
         </Grid>
-        <Grid item xs={12} md={2} className={classes["input-field__container"]}>
+        <Grid item xs={12} md={2} className={classes['input-field__container']}>
           <TextField
-            inputRef={register({ required: t('SETTINGS.MEDIASERVER.NOPORT') })}
-            error={errors.port ? true : false}
+            inputRef={register({ required: t('dfdfg') })}
+            error={!!errors.port}
             helperText={errors.port ? errors.port.message : ''}
-            className={classes["input-field__padding"]}
+            className={classes['input-field__padding']}
             value={port}
             name="port"
             type="number"
             inputProps={{ min: 0, max: 65535, step: 1 }}
             placeholder={t('SETTINGS.MEDIASERVER.PORT')}
             variant="standard"
-            onChange={portChanged} />
+            onChange={(event) => setPort(event.target.value)}
+          />
         </Grid>
       </Grid>
-      <Grid item container direction="column" className={classes["base-url__container"]}>
+      <Grid
+        item
+        container
+        direction="column"
+        className={classes['base-url__container']}
+      >
         <Grid item>
-          <Tooltip title={t('SETTINGS.MEDIASERVER.BASEURLNEEDEDTOOLTIP')!} TransitionComponent={Fade} TransitionProps={{ timeout: 600 }}>
+          <Tooltip
+            title={t('SETTINGS.MEDIASERVER.BASEURLNEEDEDTOOLTIP')!}
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
+          >
             <FormControlLabel
               control={
                 <Switch
                   checked={baseUrlNeeded}
-                  color="secondary"
+                  color="primary"
                   onChange={baseUrlNeededChanged}
                 />
               }
@@ -153,48 +222,74 @@ const ServerForm = (props: Props) => {
             />
           </Tooltip>
         </Grid>
-        {baseUrlNeeded ? <Grid item xs={12}>
-          <TextField
-            inputRef={register({ required: baseUrlNeeded, pattern: /^\// })}
-            error={errors.baseUrl ? true : false}
-            helperText={errors.baseUrl ? t('SETTINGS.MEDIASERVER.NOBASEURL')
-              : t('SETTINGS.MEDIASERVER.BASEURLHINT')}
-            className={classes["input-field__padding"]}
-            value={baseUrl}
-            placeholder={t('SETTINGS.MEDIASERVER.BASEURL')}
-            name="baseUrl"
-            variant="standard"
-            onChange={(event) => setBaseUrl(event.target.value)} />
-        </Grid> : null}
+        {baseUrlNeeded ? (
+          <Grid item xs={12}>
+            <TextField
+              inputRef={register({ required: baseUrlNeeded, pattern: /^\// })}
+              error={!!errors.baseUrl}
+              helperText={
+                errors.baseUrl
+                  ? t('SETTINGS.MEDIASERVER.NOBASEURL')
+                  : t('SETTINGS.MEDIASERVER.BASEURLHINT')
+              }
+              className={classes['input-field__padding']}
+              value={baseUrl}
+              placeholder={t('SETTINGS.MEDIASERVER.BASEURL')}
+              name="baseUrl"
+              variant="standard"
+              onChange={(event) => setBaseUrl(event.target.value)}
+            />
+          </Grid>
+        ) : null}
       </Grid>
-      <Grid item container xs={12} direction="row" justify="flex-end" className="m-t-16">
+      <Grid
+        item
+        container
+        xs={12}
+        direction="row"
+        justify="flex-end"
+        className="m-t-16"
+      >
         <Button
           color="primary"
-          disabled={address.length === 0 || !port || (baseUrlNeeded && !/^\//.test(baseUrl))}
+          disabled={
+            address.length === 0 ||
+            !port ||
+            (baseUrlNeeded && !/^\//.test(baseUrl))
+          }
           variant="contained"
-          onClick={openMediaServer}>
-          {t('WIZARD.OPENSERVERAPIPAGE', { type: type === 0 ? "Emby" : "Jellyfin" })}
+          onClick={openMediaServer}
+        >
+          {t('WIZARD.OPENSERVERAPIPAGE', {
+            type: type === 0 ? 'Emby' : 'Jellyfin',
+          })}
         </Button>
       </Grid>
       <Grid item xs={12} className="m-t-16">
         <TextField
           inputRef={register({ required: t('SETTINGS.MEDIASERVER.NOAPIKEY') })}
-          error={errors.apiKey ? true : false}
-          helperText={errors.apiKey ? errors.apiKey.message
-            : t('SETTINGS.MEDIASERVER.APIKEYHINT', { type: type === 0 ? "Emby" : "Jellyfin" })}
-          className={classes["input-field__padding"]}
+          error={!!errors.apiKey}
+          helperText={
+            errors.apiKey
+              ? errors.apiKey.message
+              : t('SETTINGS.MEDIASERVER.APIKEYHINT', {
+                type: type === 0 ? 'Emby' : 'Jellyfin',
+              })
+          }
+          className={classes['input-field__padding']}
           value={apiKey}
           placeholder={t('SETTINGS.MEDIASERVER.APIKEY')}
           name="apiKey"
           variant="standard"
-          onChange={(event) => setApiKey(event.target.value)} />
+          onChange={(event) => setApiKey(event.target.value)}
+        />
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
 ServerForm.defaultProps = {
   className: '',
-}
+};
 
-export default ServerForm
+export default ServerForm;

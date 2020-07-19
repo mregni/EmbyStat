@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
@@ -7,9 +7,9 @@ import { FilterType } from '../../../models/filter';
 interface Props {
   onValueChanged: (val0: string) => void;
   type: FilterType;
-  errors: any
-  register: Function,
-  disableAdd: (disable: boolean) => void,
+  errors: any;
+  register: Function;
+  disableAdd: (disable: boolean) => void;
 }
 
 const FilterTextField = (props: Props) => {
@@ -19,7 +19,7 @@ const FilterTextField = (props: Props) => {
 
   useEffect(() => {
     disableAdd(value === '');
-  }, [disableAdd, value])
+  }, [disableAdd, value]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -37,12 +37,12 @@ const FilterTextField = (props: Props) => {
         name={type.type}
         value={value}
         placeholder={t(type.placeholder ?? '')}
-        error={errors.txt ? true : false}
+        error={!!errors.txt}
         helperText={errors.txt ? errors.txt.message : ''}
         onChange={handleChange}
       />
     </form>
-  )
-}
+  );
+};
 
-export default FilterTextField
+export default FilterTextField;

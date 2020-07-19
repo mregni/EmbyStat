@@ -26,7 +26,7 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyStatus>();
                     collection.Insert(new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 });
@@ -44,7 +44,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var status = new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyStatus>();
                     collection.Insert(status);
@@ -52,7 +52,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.IncreaseMissedPings();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyStatus>();
                     var dbStatus = collection.FindById(status.Id);
@@ -70,7 +70,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var status = new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 10 };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyStatus>();
                     collection.Insert(status);
@@ -78,7 +78,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.ResetMissedPings();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyStatus>();
                     var dbStatus = collection.FindById(status.Id);
@@ -94,7 +94,7 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var pluginOne = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "statistics" };
                     var pluginCollection = database.GetCollection<PluginInfo>();
@@ -115,7 +115,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.RemoveAllMediaServerData();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var pluginCollection = database.GetCollection<PluginInfo>();
                     var plugins = pluginCollection.FindAll();
@@ -143,7 +143,7 @@ namespace Tests.Unit.Repository
             {
                 var pluginOne = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "statistics" };
                 var pluginTwo = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "movies" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<PluginInfo>();
                     collection.InsertBulk(new[] { pluginOne, pluginTwo });
@@ -168,7 +168,7 @@ namespace Tests.Unit.Repository
             {
                 var pluginOne = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "statistics" };
                 var pluginTwo = new PluginInfo { Id = Guid.NewGuid().ToString(), Name = "movies" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<PluginInfo>();
                     collection.InsertBulk(new[] { pluginOne, pluginTwo });
@@ -179,7 +179,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.RemoveAllAndInsertPluginRange(new[] { pluginThree, pluginFour });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<PluginInfo>();
                     var plugins = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -202,7 +202,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<ServerInfo>();
                     collection.Insert(serverInfo);
@@ -224,7 +224,7 @@ namespace Tests.Unit.Repository
                 var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
                 _mediaServerRepository.UpsertServerInfo(serverInfo);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<ServerInfo>();
                     var serverInfoDb = collection.FindById(serverInfo.Id);
@@ -242,7 +242,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<ServerInfo>();
                     collection.Insert(serverInfo);
@@ -256,7 +256,7 @@ namespace Tests.Unit.Repository
                 serverInfo.CachePath = "/temp";
                 _mediaServerRepository.UpsertServerInfo(serverInfo);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<ServerInfo>();
                     var serverInfoDb = collection.FindById(serverInfo.Id);
@@ -275,7 +275,7 @@ namespace Tests.Unit.Repository
             {
                 var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi", IsAdministrator = false};
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom", IsAdministrator = true};
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo });
@@ -300,7 +300,7 @@ namespace Tests.Unit.Repository
             {
                 var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi", IsAdministrator = false};
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom", IsAdministrator = true};
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo });
@@ -324,7 +324,7 @@ namespace Tests.Unit.Repository
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
                 _mediaServerRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     var users = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -351,7 +351,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.UpsertUsers(new[] { embyUserTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     var users = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -367,7 +367,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     var users = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -392,7 +392,7 @@ namespace Tests.Unit.Repository
                 var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
                 var embyUserThee = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "yol" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo, embyUserThee });
@@ -400,7 +400,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.MarkUsersAsDeleted(new[] { embyUserOne, embyUserTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     var users = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -431,7 +431,7 @@ namespace Tests.Unit.Repository
                 var embyUserOne = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "reggi" };
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
                 var embyUserThee = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "yol" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<EmbyUser>();
                     collection.InsertBulk(new[] { embyUserOne, embyUserTwo, embyUserThee });
@@ -454,7 +454,7 @@ namespace Tests.Unit.Repository
             {
                 var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     collection.InsertBulk(new[] { serverOne, serverTwo });
@@ -481,7 +481,7 @@ namespace Tests.Unit.Repository
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
                 _mediaServerRepository.UpsertDevices(new[] { serverOne, serverTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -508,7 +508,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.UpsertDevices(new[] { serverTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -524,7 +524,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.UpsertDevices(new[] { serverOne, serverTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -549,7 +549,7 @@ namespace Tests.Unit.Repository
                 var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
                 var serverThee = new Device { Id = Guid.NewGuid().ToString(), Name = "server3" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     collection.InsertBulk(new[] { serverOne, serverTwo, serverThee });
@@ -557,7 +557,7 @@ namespace Tests.Unit.Repository
 
                 _mediaServerRepository.MarkDevicesAsDeleted(new[] { serverOne, serverTwo });
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -588,7 +588,7 @@ namespace Tests.Unit.Repository
                 var serverOne = new Device { Id = Guid.NewGuid().ToString(), Name = "server1" };
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
                 var serverThee = new Device { Id = Guid.NewGuid().ToString(), Name = "server3" };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Device>();
                     collection.InsertBulk(new[] { serverOne, serverTwo, serverThee });

@@ -5,7 +5,7 @@ import { JobLogLine, EnhancedJobLogLine } from '../shared/models/jobs';
 const initialState: EnhancedJobLogLine[] = [];
 
 const jobLogsSlice = createSlice({
-  name: "jobLogs",
+  name: 'jobLogs',
   initialState,
   reducers: {
     receiveLog(state, action: PayloadAction<JobLogLine>) {
@@ -14,12 +14,12 @@ const jobLogsSlice = createSlice({
       const textArray = action.payload.value.split('=>');
       const left = `${time} ${date} - ${textArray[0]}`;
 
-      let lines = [...state];
+      const lines = [...state];
       const newLine = {
-        left: left,
+        left,
         right: textArray.length > 1 ? textArray[1] : '',
         type: action.payload.type,
-      }
+      };
 
       lines.push(newLine);
 
@@ -28,8 +28,8 @@ const jobLogsSlice = createSlice({
       }
 
       return lines;
-    }
-  }
+    },
+  },
 });
 
 export default jobLogsSlice;

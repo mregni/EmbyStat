@@ -1,5 +1,5 @@
 export interface EnhancedJobLogLine {
-  left: string,
-  right: string,
-  type: number,
+  left: string;
+  right: string;
+  type: number;
 }

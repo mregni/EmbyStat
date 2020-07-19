@@ -26,26 +26,27 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+import PageLoader from './shared/components/pageLoader';
 
 function render() {
   ReactDOM.render(
-    //<React.StrictMode>
+    // <React.StrictMode>
     <Provider store={store}>
-      <Suspense fallback="Loading">
+      <Suspense fallback={PageLoader}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
       </Suspense>
     </Provider>,
     // </React.StrictMode>,
-    document.getElementById("root")
+    document.getElementById('root')
   );
 }
 
 render();
 
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept("./App", render);
+if (process.env.NODE_ENV === 'development' && module.hot) {
+  module.hot.accept('./App', render);
 }
 
 serviceWorker.unregister();

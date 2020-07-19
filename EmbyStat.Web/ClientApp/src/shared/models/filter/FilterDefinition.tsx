@@ -4,11 +4,25 @@ export interface FilterItem {
 }
 
 export interface FilterType {
-  operation: "any" | "!any" | "null" | "!null" | "between" | "in" | "contains"
-  | "!contains" | "empty" | "==" | "!=" | "<" | ">" | "startsWith" | "endsWith";
+  operation:
+  | 'any'
+  | '!any'
+  | 'null'
+  | '!null'
+  | 'between'
+  | 'in'
+  | 'contains'
+  | '!contains'
+  | 'empty'
+  | '=='
+  | '!='
+  | '<'
+  | '>'
+  | 'startsWith'
+  | 'endsWith';
   label: string;
-  type: "txt" | "none" | "dropdown" | "range" | "number" | "date" | "dateRange";
-  itemType?: "url" | "static";
+  type: 'txt' | 'none' | 'dropdown' | 'range' | 'number' | 'date' | 'dateRange';
+  itemType?: 'url' | 'static';
   items?: FilterItem[];
   itemUrl?: string;
   min?: number;

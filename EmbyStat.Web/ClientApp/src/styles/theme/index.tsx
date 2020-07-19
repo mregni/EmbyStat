@@ -1,7 +1,7 @@
-import { createMuiTheme, ThemeOptions } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeOptions } from '@material-ui/core/styles';
 
-const primaryColor = "#2557af";
-const secondaryColor = "#FFD421";
+const primaryColor = '#52b54b';
+const secondaryColor = '#b54b52';
 
 const overrides: ThemeOptions = {
   palette: {
@@ -15,23 +15,23 @@ const overrides: ThemeOptions = {
     MuiSelect: {
       select: {
         '&:focus': {
-          backgroundColor: 'transparant'
-        }
-      }
+          backgroundColor: 'transparant',
+        },
+      },
     },
     MuiButtonBase: {
       root: {
         '& .MuiSvgIcon-root': {
-          marginTop: '-1px'
-        }
-      }
+          marginTop: '-1px',
+        },
+      },
     },
     MuiTextField: {
       root: {
-        width: '100%'
-      }
-    }
-  }
+        width: '100%',
+      },
+    },
+  },
 };
 
 export default createMuiTheme(overrides);

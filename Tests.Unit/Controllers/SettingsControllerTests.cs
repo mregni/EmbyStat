@@ -159,7 +159,7 @@ namespace Tests.Unit.Controllers
                 UpdateTrain = 0,
                 Username = "reggi",
                 WizardFinished = true,
-                MediaServer = new FullSettingsViewModel.EmbySettingsViewModel
+                MediaServer = new FullSettingsViewModel.MediaServerSettingsViewModel
                 {
                     ApiKey = "1234567980",
                     ServerName = "ServerName",

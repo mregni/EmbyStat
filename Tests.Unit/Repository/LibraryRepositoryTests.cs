@@ -33,7 +33,7 @@ namespace Tests.Unit.Repository
                    var libraryTwo = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows", PrimaryImage = "image.png", Type = LibraryType.TvShow };
                    _libraryRepository.AddOrUpdateRange(new[] { libraryOne, libraryTwo });
 
-                   using (var database = _context.CreateDatabaseContext())
+                   using (var database = _context.LiteDatabase)
                    {
                        var collection = database.GetCollection<Library>();
                        var libraries = collection.FindAll().OrderBy(x => x.Name).ToList();
@@ -64,7 +64,7 @@ namespace Tests.Unit.Repository
                 var libraryThree = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows2", PrimaryImage = "image2.png", Type = LibraryType.TvShow };
                 var libraryFour = new Library { Id = Guid.NewGuid().ToString(), Name = "Folder", PrimaryImage = "image2.png", Type = LibraryType.Folders };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Library>();
                     collection.InsertBulk(new[] { libraryOne, libraryTwo, libraryThree, libraryFour });

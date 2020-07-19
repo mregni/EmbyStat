@@ -50,7 +50,8 @@ namespace EmbyStat.Controllers.MediaServer
             var result = _mediaServerService.SearchMediaServer(type);
             if (result != null)
             {
-                return Ok(_mapper.Map<UdpBroadcastViewModel>(result));
+                var boe = _mapper.Map<UdpBroadcastViewModel>(result);
+                return Ok(boe);
             }
 
             return NoContent();
@@ -74,7 +75,7 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpPost]
         [Route("server/ping")]
-        public IActionResult PingEmby([FromBody]UrlViewModel url)
+        public IActionResult PingEmby([FromBody] UrlViewModel url)
         {
             var result = _mediaServerService.PingMediaServer(url.Url);
             return Ok(result);

@@ -1,2 +1,2 @@
-export * from "./Settings";
-export * from "./UpdateResult";
+export * from './Settings';
+export * from './UpdateResult';

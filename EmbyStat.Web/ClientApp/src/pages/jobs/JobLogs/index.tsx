@@ -1,7 +1,11 @@
-import React from 'react'
+import React from 'react';
 import uuid from 'react-uuid';
-import { Grid, Card, CardContent, makeStyles, Zoom } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Zoom from '@material-ui/core/Zoom';
+import { makeStyles } from '@material-ui/core/styles';
 import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down('md')]: {
       marginTop: '16px',
-    }
+    },
   },
   text__container: {
     display: 'flex',
@@ -27,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '0.85rem',
   },
   text__accent: {
-    color: orange['A400'],
+    color: orange.A400,
     fontWeight: 'bold',
   },
   text__warn: {
-    color: red['A700'],
+    color: red.A700,
     fontWeight: 'bold',
-  }
+  },
 }));
 
 const JobLogs = () => {
@@ -47,23 +51,23 @@ const JobLogs = () => {
         <CardContent>
           <h2 className="m-t-0">{t('JOB.JOBLOGS')}</h2>
           <Grid container direction="column-reverse">
-            {
-              lines.map((line: EnhancedJobLogLine) =>
-                <div key={uuid()}
-                  className={
-                    classNames(
-                      classes.text__container,
-                      { [classes.text__accent]: line.type === 1 },
-                      { [classes.text__warn]: line.type === 2 })
-                  }>
-                  {line.left}  - {line.right}
-                </div>
-              )}
+            {lines.map((line: EnhancedJobLogLine) => (
+              <div
+                key={uuid()}
+                className={classNames(
+                  classes.text__container,
+                  { [classes.text__accent]: line.type === 1 },
+                  { [classes.text__warn]: line.type === 2 }
+                )}
+              >
+                {line.left} - {line.right}
+              </div>
+            ))}
           </Grid>
         </CardContent>
-      </Card >
+      </Card>
     </Zoom>
-  )
-}
+  );
+};
 
-export default JobLogs
+export default JobLogs;

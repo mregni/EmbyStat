@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { Job } from '../../../shared/models/jobs';
-import { useServerType } from '../../../shared/hooks';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import red from '@material-ui/core/colors/red';
+import { useServerType } from '../../../shared/hooks';
+import { Job } from '../../../shared/models/jobs';
 
 import { updateTrigger } from '../../../shared/services/JobService';
 import SaveButton from '../../../shared/components/buttons/SaveButton';
@@ -13,23 +20,24 @@ import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 
 const useStyles = makeStyles((theme) => ({
   button__red: {
-    color: red['A700'],
+    color: red.A700,
     '&:hover': {
       backgroundColor: fade(red['200'], 0.08),
-    }
+    },
   },
   link: {
     '& a': {
-      color: theme.palette.type === 'dark'
-        ? theme.palette.secondary.light
-        : theme.palette.secondary.dark,
-    }
-  }
+      color:
+        theme.palette.type === 'dark'
+          ? theme.palette.secondary.light
+          : theme.palette.secondary.dark,
+    },
+  },
 }));
 
 interface Props {
-  openSettingsDialog: boolean,
-  job: Job,
+  openSettingsDialog: boolean;
+  job: Job;
 }
 
 const JobSettingsDialog = (props: Props) => {
@@ -51,14 +59,14 @@ const JobSettingsDialog = (props: Props) => {
   const { register, handleSubmit, errors } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      cron: job.trigger
-    }
+      cron: job.trigger,
+    },
   });
 
   const handleChange = (event) => {
     setChanged(true);
     setCron(event.target.value);
-  }
+  };
 
   const safeChanges = (data) => {
     setIsSaving(true);
@@ -67,22 +75,24 @@ const JobSettingsDialog = (props: Props) => {
         setOpenSettings(false);
         SnackbarUtils.success(t('JOB.CRONUPDATED'));
       })
-      .catch(error => {
+      .catch((error) => {
         setIsSaving(false);
       });
-  }
+  };
 
   const helperText = { __html: t('DIALOGS.EDIT_TRIGGER.CRON_HELPER') };
   const errorText = { __html: t('DIALOGS.EDIT_TRIGGER.FORMAT_ERROR') };
 
   return (
-
     <Dialog
       open={openSettings}
       keepMounted
-      onClose={() => setOpenSettings(false)}>
+      onClose={() => setOpenSettings(false)}
+    >
       <form autoComplete="off" onSubmit={handleSubmit(safeChanges)}>
-        <DialogTitle>{t(`JOB.INFO.${job.title}`, { type: serverType })}</DialogTitle>
+        <DialogTitle>
+          {t(`JOB.INFO.${job.title}`, { type: serverType })}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             {t(`JOB.INFO.${job.description}`)}
@@ -93,12 +103,23 @@ const JobSettingsDialog = (props: Props) => {
             size="small"
             name="cron"
             disabled={isSaving}
-            error={errors.cron ? true : false}
-            helperText={errors.cron
-              ? <span className={classes.link} dangerouslySetInnerHTML={errorText} />
-              : <span className={classes.link} dangerouslySetInnerHTML={helperText} />}
+            error={!!errors.cron}
+            helperText={
+              errors.cron ? (
+                <span
+                  className={classes.link}
+                  dangerouslySetInnerHTML={errorText}
+                />
+              ) : (
+                  <span
+                    className={classes.link}
+                    dangerouslySetInnerHTML={helperText}
+                  />
+                )
+            }
             value={cron}
-            onChange={handleChange} />
+            onChange={handleChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button
@@ -106,15 +127,16 @@ const JobSettingsDialog = (props: Props) => {
             color="secondary"
             disabled={isSaving}
             classes={{
-              textSecondary: classes.button__red
-            }} >
+              textSecondary: classes.button__red,
+            }}
+          >
             {changed ? t('COMMON.DISCARD') : t('COMMON.CANCEL')}
           </Button>
-          <SaveButton hasError={errors.cron ? true : false} isSaving={isSaving} />
+          <SaveButton hasError={!!errors.cron} isSaving={isSaving} />
         </DialogActions>
       </form>
-    </Dialog >
-  )
-}
+    </Dialog>
+  );
+};
 
-export default JobSettingsDialog
+export default JobSettingsDialog;

@@ -8,13 +8,13 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using FluentAssertions;
 using Moq;
 using MoreLinq;
 using Tests.Unit.Builders;
 using Xunit;
 using Constants = EmbyStat.Common.Constants;
-using ValueType = EmbyStat.Services.Converters.ValueType;
 
 namespace Tests.Unit.Services
 {
@@ -227,10 +227,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("/10");
             card.Values[0].Value.Should().Be(_movieOne.CommunityRating.ToString());
             card.Values[0].Label.Should().Be(_movieOne.Name);
-            card.MediaId.Should().Be(_movieOne.Id);
-            card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(false);
-            card.ValueType.Should().Be(ValueType.None);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -247,10 +245,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("/10");
             card.Values[0].Value.Should().Be(_movieThree.CommunityRating.ToString());
             card.Values[0].Label.Should().Be(_movieThree.Name);
-            card.MediaId.Should().Be(_movieThree.Id);
-            card.Image.Should().Be(_movieThree.Primary);
             card.UnitNeedsTranslation.Should().Be(false);
-            card.ValueType.Should().Be(ValueType.None);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -267,10 +263,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("COMMON.DATE");
             card.Values[0].Value.Should().Be(_movieOne.PremiereDate?.ToString("O"));
             card.Values[0].Label.Should().Be(_movieOne.Name);
-            card.MediaId.Should().Be(_movieOne.Id);
-            card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.Date);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -287,10 +281,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("COMMON.DATE");
             card.Values[0].Value.Should().Be(_movieThree.PremiereDate?.ToString("O"));
             card.Values[0].Label.Should().Be(_movieThree.Name);
-            card.MediaId.Should().Be(_movieThree.Id);
-            card.Image.Should().Be(_movieThree.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.Date);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -307,10 +299,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("COMMON.MIN");
             card.Values[0].Value.Should().Be(_movieOne.RunTimeTicks.ToString());
             card.Values[0].Label.Should().Be(_movieOne.Name);
-            card.MediaId.Should().Be(_movieOne.Id);
-            card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.Ticks);
+            card.ValueType.Should().Be(ValueTypeEnum.Ticks);
         }
 
         [Fact]
@@ -327,10 +317,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("COMMON.MIN");
             card.Values[0].Value.Should().Be(_movieThree.RunTimeTicks.ToString());
             card.Values[0].Label.Should().Be(_movieThree.Name);
-            card.MediaId.Should().Be(_movieThree.Id);
-            card.Image.Should().Be(_movieThree.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.Ticks);
+            card.ValueType.Should().Be(ValueTypeEnum.Ticks);
         }
 
         [Fact]
@@ -347,10 +335,8 @@ namespace Tests.Unit.Services
             card.Unit.Should().Be("COMMON.DATE");
             card.Values[0].Value.Should().Be(_movieOne.DateCreated?.ToString("O"));
             card.Values[0].Label.Should().Be(_movieOne.Name);
-            card.MediaId.Should().Be(_movieOne.Id);
-            card.Image.Should().Be(_movieOne.Primary);
             card.UnitNeedsTranslation.Should().Be(true);
-            card.ValueType.Should().Be(ValueType.Date);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]

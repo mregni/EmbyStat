@@ -1,6 +1,6 @@
-import { MovieStatistics } from ".";
+import { MovieStatistics } from '.';
 
 export interface MovieStatisticsContainer {
-  statistics: MovieStatistics,
-  isLoaded: boolean,
+  statistics: MovieStatistics;
+  isLoaded: boolean;
 }

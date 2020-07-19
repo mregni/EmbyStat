@@ -39,7 +39,7 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.Version, x => x.Ignore())
                 .ReverseMap()
                 .ForMember(x => x.Version, x => x.Ignore());
-            CreateMap<MediaServerSettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
+            CreateMap<MediaServerSettings, FullSettingsViewModel.MediaServerSettingsViewModel>().ReverseMap();
             CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
 		    CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();

@@ -27,7 +27,7 @@ namespace Tests.Unit.Builders.ViewModels
                 UpdateTrain = (int) settings.UpdateTrain,
                 Username = settings.Username,
                 WizardFinished = settings.WizardFinished,
-                MediaServer = new EmbySettingsViewModel
+                MediaServer = new MediaServerSettingsViewModel
                 {
                     ServerAddress = settings.MediaServer.ServerAddress,
                     AuthorizationScheme = settings.MediaServer.AuthorizationScheme,

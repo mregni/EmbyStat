@@ -1,85 +1,139 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, Typography, Button } from '@material-ui/core'
-import { Trans, useTranslation } from 'react-i18next'
-import Loading from '../../../../shared/components/loading';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles } from '@material-ui/core/styles';
+import { Trans, useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../store/RootReducer';
+import { useHistory } from 'react-router-dom'
 
-import { getSettings, updateSettings } from '../../../../shared/services/SettingsService';
+import { saveSettings } from '../../../../store/SettingsSlice';
+import { register } from '../../../../shared/services/AccountService';
+import { fireJob } from '../../../../shared/services/JobService';
 
-const Result = ({ wizard }) => {
-  const { t } = useTranslation();
-  const serverType = wizard.serverType === 0 ? 'Emby' : 'Jellyfin';
-  return (
-    <Grid container direction="column">
-      <Typography variant="body1" className="m-t-16 m-b-16">
-        <Trans i18nKey="WIZARD.FINISHED" values={{ type: serverType }} />
-      </Typography>
-      <Typography variant="body1">
-        <Trans i18nKey="WIZARD.FINISHEXPLANATION" values={{ type: serverType }} />
-      </Typography>
-      <Grid item container direction="row" justify="flex-end" className="m-t-32">
-        <Button color="secondary" className="m-r-16">{t('COMMON.FINISH')}</Button>
-        <Button variant="contained" color="primary">{t('WIZARD.FINISHWITHSYNC')}</Button>
-      </Grid>
-    </Grid>
-  );
-}
+const useStyles = makeStyles((theme) => ({
+  button__loading: {
+    color: '#d3d3d3'
+  },
+  button: {
+    height: 36,
+    width: 242,
+  }
+}));
 
 interface Props {
-  disableNext: Function,
-  disableBack: Function,
+  disableNext: Function;
+  disableBack: Function;
 }
 
 const Finish = (props: Props) => {
   const { disableNext, disableBack } = props;
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+  const [fireSync, setFireSync] = useState(false);
+
+  const settings = useSelector((state: RootState) => state.settings);
+  const wizard = useSelector((state: RootState) => state.wizard);
+
+  const serverType = wizard.serverType === 0 ? 'Emby' : 'Jellyfin';
+
+  const onFinish = async (triggerSync: boolean) => {
+    setIsLoading(true);
+    if (triggerSync) {
+      await fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e');
+    }
+
+    const loginView = {
+      username: wizard.username,
+      password: wizard.password,
+    };
+    await register(loginView);
+
+    const newSettings = { ...settings };
+    const mediaServer = { ...newSettings.mediaServer };
+    mediaServer.serverId = wizard.serverId;
+    mediaServer.apiKey = wizard.apiKey;
+    mediaServer.serverAddress = wizard.serverAddress;
+    mediaServer.serverBaseurl = wizard.serverBaseurl;
+    mediaServer.serverName = wizard.serverName;
+    mediaServer.serverPort =
+      typeof wizard.serverPort === 'number'
+        ? wizard.serverPort
+        : parseInt(wizard.serverPort, 10);
+    mediaServer.serverProtocol = wizard.serverProtocol;
+    mediaServer.serverType = wizard.serverType;
+    mediaServer.userId = wizard.userId;
+    newSettings.mediaServer = mediaServer;
+    newSettings.movieLibraries = wizard.movieLibraries;
+    newSettings.showLibraries = wizard.showLibraries;
+    newSettings.language = wizard.language;
+    newSettings.enableRollbarLogging = wizard.enableRollbarLogging;
+    newSettings.wizardFinished = true;
+    dispatch(saveSettings(newSettings));
+    if (triggerSync) {
+      history.push('/jobs');
+    }
+    history.push('/');
+  }
 
   useEffect(() => {
     disableNext(true);
     disableBack(true);
   }, [disableNext, disableBack]);
 
-  const wizard = useSelector((state: RootState) => state.wizard);
-  useEffect(() => {
-    const safeSettings = async () => {
-      console.log("SAFE SETTINGS");
-      const settings = await getSettings();
-      settings.mediaServer.serverId = wizard.serverId;
-      settings.mediaServer.apiKey = wizard.apiKey;
-      settings.mediaServer.serverAddress = wizard.serverAddress;
-      settings.mediaServer.serverBaseurl = wizard.serverBaseurl;
-      settings.mediaServer.serverName = wizard.serverName;
-      settings.mediaServer.serverPort = typeof wizard.serverPort === 'number' ? wizard.serverPort : parseInt(wizard.serverPort, 10);
-      settings.mediaServer.serverProtocol = wizard.serverProtocol;
-      settings.mediaServer.serverType = wizard.serverType;
-      settings.mediaServer.userId = wizard.userId;
-      settings.movieLibraries = wizard.movieLibraries;
-      settings.showLibraries = wizard.showLibraries;
-      settings.wizardFinished = true;
-      settings.language = wizard.language;
-      settings.enableRollbarLogging = wizard.enableRollbarLogging
-      await updateSettings(settings);
-      setIsLoading(false);
-    }
-
-    safeSettings();
-  }, [wizard])
-
-
   return (
     <Grid container direction="column">
-      <Typography variant="h4" color="secondary">
+      <Typography variant="h4" color="primary">
         <Trans i18nKey="WIZARD.FINALLABEL" />
       </Typography>
-      <Loading
-        className="m-t-32"
-        loading={isLoading}
-        label={t('WIZARD.SAVING')}
-        Component={Result}
-        wizard={wizard}
-      />
+      <Grid container direction="column">
+        <Typography variant="body1" className="m-t-16 m-b-16">
+          <Trans i18nKey="WIZARD.FINISHED" values={{ type: serverType }} />
+        </Typography>
+        <Typography variant="body1">
+          <Trans
+            i18nKey="WIZARD.FINISHEXPLANATION"
+            values={{ type: serverType }}
+          />
+        </Typography>
+        <Grid item>
+          <FormGroup row>
+            <FormControlLabel
+              control={<Checkbox checked={fireSync} onChange={(event) => setFireSync(event.target.checked)} />}
+              label="run madia sync after wizard"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid
+          item
+          container
+          direction="row"
+          justify="flex-end"
+          className="m-t-32"
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => onFinish(true)}
+            className={classes.button}
+            disabled={isLoading}
+          >
+            {
+              isLoading
+                ? <CircularProgress size={16} className={classes.button__loading} />
+                : t('COMMON.FINISH')
+            }
+          </Button>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

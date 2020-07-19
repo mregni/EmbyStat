@@ -20,7 +20,7 @@ namespace Tests.Unit.Repository
         protected override void SetupRepository()
         {
             var context = CreateDbContext();
-            using (var database = context.CreateDatabaseContext())
+            using (var database = context.LiteDatabase)
             {
                 var collection = database.GetCollection<FilterValues>("Filters");
                 var filterValuesOne = new FilterValues

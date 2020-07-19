@@ -1,34 +1,40 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { MediaServerSettings, Settings, TvdbSettings } from '../shared/models/settings';
-import { getSettings, updateSettings } from '../shared/services/SettingsService';
-import { AppDispatch, AppThunk } from '.';
-import { RootState } from './RootReducer';
+import {
+  MediaServerSettings,
+  Settings,
+  TvdbSettings,
+} from '../shared/models/settings';
+import {
+  getSettings,
+  updateSettings,
+} from '../shared/services/SettingsService';
+
+import { AppThunk } from '.';
 
 const mediaServerSettings: MediaServerSettings = {
-  authorizationScheme: "mediaBrowser",
-  serverAddress: "",
-  serverName: "",
+  authorizationScheme: 'mediaBrowser',
+  serverAddress: '',
+  serverName: '',
   serverPort: 0,
   serverProtocol: 0,
-  apiKey: "",
+  apiKey: '',
   serverType: 0,
-  userId: "",
-  serverBaseurl: "",
-  serverId: "",
+  userId: '',
+  serverBaseurl: '',
+  serverId: '',
 };
 
 const tvdbSettings: TvdbSettings = {
-  apiKey: "",
+  apiKey: '',
   lastUpdate: null,
 };
 
 const initialState: Settings = {
-  id: "",
-  appName: "EmbyStat",
+  id: '',
+  appName: 'EmbyStat',
   wizardFinished: true,
-  username: "",
-  language: "en-US",
+  language: 'en-US',
   toShortMovie: 10,
   keepLogsCount: 20,
   movieLibraries: [],
@@ -36,20 +42,20 @@ const initialState: Settings = {
   autoUpdate: false,
   updateTrain: 2,
   updateInProgress: false,
-  version: "0.0.0",
+  version: '0.0.0',
   mediaServer: mediaServerSettings,
   tvdb: tvdbSettings,
   enableRollbarLogging: false,
   isLoaded: false,
   toShortMovieEnabled: false,
   noUpdates: false,
-  configDir: "",
-  dataDir: "",
-  logDir: "",
+  configDir: '',
+  dataDir: '',
+  logDir: '',
 };
 
 const settingsSlice = createSlice({
-  name: "settings",
+  name: 'settings',
   initialState,
   reducers: {
     receiveSettings(state, action: PayloadAction<Settings>) {
@@ -60,11 +66,14 @@ const settingsSlice = createSlice({
     },
     alreadyLoaded(state, action: PayloadAction) {
       return state;
-    }
+    },
   },
 });
 
-export const loadSettings = (): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const loadSettings = (): AppThunk => async (
+  dispatch,
+  getState
+) => {
   if (!getState().settings.isLoaded) {
     const settings = await getSettings();
     dispatch(settingsSlice.actions.receiveSettings(settings));
@@ -74,9 +83,10 @@ export const loadSettings = (): AppThunk => async (dispatch: AppDispatch, getSta
 };
 
 export const saveSettings = (settings: Settings): AppThunk => async (
-  dispatch: AppDispatch,
-  getState: () => RootState
+  dispatch,
+  getState
 ) => {
+  console.log(settings);
   dispatch(settingsSlice.actions.receiveSettings(settings));
   updateSettings(getState().settings);
 };

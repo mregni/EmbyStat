@@ -119,7 +119,7 @@
   "WIZARD": {
     "WIZARDLABEL": "Wizard",
     "USERDETAILS": "User details",
-    "PROVIDEUSERNAME": "Provide your username",
+    "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
     "SERVERCONFIGURATIONTEST": "Server configuration test",
     "CONFIGURELIBRARIES": "Configure {{type}} libraries",
@@ -152,8 +152,8 @@
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Select the preferred administrator from the dropdown list."
     },
     "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address used: <i>{{address}}</i>",
-    "APIKEYUSED": "API key used: <i>{{api}}</i>"
+    "ADDRESSUSED": "Address: <i>{{address}}</i>",
+    "APIKEYUSED": "API key: <i>{{api}}</i>"
   },
   "MOVIES": {
     "COLLECTIONPLACEHOLDER": "Filter movie collections",
@@ -171,7 +171,8 @@
     "DUPLICATEMOVIES": "Duplicate Movies",
     "TOSHORTMOVIES": "Movies that are very short",
     "NOPOSTER": "Missing a poster",
-    "NOIMDB": "Missing an IMDB id"
+    "NOIMDB": "Missing an IMDB id",
+    "LOADER": "Loading movie statistics"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total Shows",
@@ -208,6 +209,9 @@
     "GENERAL": {
       "USERNAME": "Username",
       "NOUSERNAME": "Username is required",
+      "PASSWORD": "Password",
+      "NOPASSWORD": "Password is required",
+      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
       "TVDBAPIKEY": "If you want you can supply EmbyStat with your own TheTVDB API key here.",
       "TVDBAPIKEYWARNING": "Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number."
@@ -253,6 +257,15 @@
       "NEWVERSION": "Version {{version}} available for download!",
       "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
+  },
+  "LOGIN": {
+    "LOGIN": "Login",
+    "ERROR": "Username or password unknown",
+    "LOGOUT": "Log out",
+    "FORGOTPASSWORD": "Forgot password",
+    "RECOVERPASSWORD": "Recover password",
+    "RESETCOMPLETED": "Check logs for new password",
+    "RESETFAILED": "Username reset failed"
   },
   "USERS": {
     "ISADMIN": "Is administrator",

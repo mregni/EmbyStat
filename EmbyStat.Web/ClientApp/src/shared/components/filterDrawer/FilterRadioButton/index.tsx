@@ -1,7 +1,12 @@
-import React, { useEffect, useState, ReactNode } from 'react'
-import { makeStyles, Grid, FormControlLabel, Radio, Collapse } from '@material-ui/core';
-import { FilterType } from '../../../models/filter';
+import React, { useEffect, useState, ReactNode } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import Collapse from '@material-ui/core/Collapse';
+
 import { useTranslation } from 'react-i18next';
+import { FilterType } from '../../../models/filter';
 
 const useStyles = makeStyles((theme) => ({
   textfield__root: {
@@ -25,7 +30,6 @@ const FilterRadioButton = (props: Props) => {
   const { t } = useTranslation();
   const [openState, setOpenState] = useState(false);
 
-
   useEffect(() => {
     setOpenState(type.open);
   }, [type.open]);
@@ -33,13 +37,13 @@ const FilterRadioButton = (props: Props) => {
   const handleClick = () => {
     setOpenState(true);
     setClickedTypeId(type.id);
-  }
+  };
 
   const handleOpen = () => {
     if (openState) {
-      open(type.id, true)
+      open(type.id, true);
     }
-  }
+  };
 
   return (
     <Grid container direction="column">
@@ -52,7 +56,7 @@ const FilterRadioButton = (props: Props) => {
           onClick={handleClick}
         />
       </Grid>
-      <Grid item >
+      <Grid item>
         <Collapse
           in={openState}
           unmountOnExit
@@ -64,7 +68,7 @@ const FilterRadioButton = (props: Props) => {
         </Collapse>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default FilterRadioButton
+export default FilterRadioButton;

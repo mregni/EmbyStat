@@ -29,7 +29,7 @@ namespace Tests.Unit.Repository
             {
                 var jobOne = new Job {Id = Guid.NewGuid()};
                 var jobTwo = new Job {Id = Guid.NewGuid()};
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     collection.InsertBulk(new[] {jobOne, jobTwo});
@@ -50,7 +50,7 @@ namespace Tests.Unit.Repository
             {
                 var jobOne = new Job { Id = Guid.NewGuid() };
                 var jobTwo = new Job { Id = Guid.NewGuid() };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     collection.InsertBulk(new[] { jobOne, jobTwo });
@@ -69,7 +69,7 @@ namespace Tests.Unit.Repository
             {
                 var jobOne = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
                 var jobTwo = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     collection.InsertBulk(new[] { jobOne, jobTwo });
@@ -81,7 +81,7 @@ namespace Tests.Unit.Repository
                 
                 _jobRepository.StartJob(jobOne);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     var job = collection.FindById(jobOne.Id);
@@ -106,7 +106,7 @@ namespace Tests.Unit.Repository
                 var jobOne = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
                 var jobTwo = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     collection.InsertBulk(new[] { jobOne, jobTwo });
@@ -114,7 +114,7 @@ namespace Tests.Unit.Repository
 
                 _jobRepository.EndJob(jobOne.Id, DateTime.Now, JobState.Completed);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     var job = collection.FindById(jobOne.Id);
@@ -138,7 +138,7 @@ namespace Tests.Unit.Repository
                 var jobOne = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null, Trigger = "* * * * *"};
                 var jobTwo = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     collection.InsertBulk(new[] { jobOne, jobTwo });
@@ -149,7 +149,7 @@ namespace Tests.Unit.Repository
                 var result = _jobRepository.UpdateTrigger(jobOne.Id, "* */5 * * *");
                 result.Should().BeTrue();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     var job = collection.FindById(jobOne.Id);
@@ -179,7 +179,7 @@ namespace Tests.Unit.Repository
                 var jobOne = new Job { Id = Guid.NewGuid(), State = JobState.Running, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
                 var jobTwo = new Job { Id = Guid.NewGuid(), State = JobState.Idle, StartTimeUtc = null, EndTimeUtc = null, CurrentProgressPercentage = null };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     collection.InsertBulk(new[] { jobOne, jobTwo });
@@ -187,7 +187,7 @@ namespace Tests.Unit.Repository
 
                 _jobRepository.ResetAllJobs();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Job>();
                     var job = collection.FindById(jobOne.Id);

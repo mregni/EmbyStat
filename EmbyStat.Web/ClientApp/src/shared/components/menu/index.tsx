@@ -1,5 +1,5 @@
-import React from 'react'
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,7 +10,7 @@ import uuid from 'react-uuid';
 import classNames from 'classnames';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import theme from "../../../styles/theme";
+import theme from '../../../styles/theme';
 import MenuItem from './MenuItem';
 
 const drawerWidth = 240;
@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  open: boolean,
-  setOpen: Function,
+  open: boolean;
+  setOpen: Function;
 }
 
 const Menu = (props: Props) => {
@@ -97,17 +97,24 @@ const Menu = (props: Props) => {
 
   return (
     <Drawer
-      className={classNames(classes.drawer, { [classes.drawerOpen]: open, [classes.drawerClose]: !open })}
-      variant={small ? "temporary" : "permanent"}
+      className={classNames(classes.drawer, {
+        [classes.drawerOpen]: open,
+        [classes.drawerClose]: !open,
+      })}
+      variant={small ? 'temporary' : 'permanent'}
       open={open}
       onClose={() => setOpen(false)}
       classes={{
-        paper: classNames(classes.drawerPaper, { [classes.drawerOpen]: open, [classes.drawerClose]: !open }),
-      }}>
+        paper: classNames(classes.drawerPaper, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        }),
+      }}
+    >
       <div className={classes.drawerContainer}>
         {small ? <div>EmbyStat</div> : null}
         <List classes={{ root: classes.menu__list }}>
-          {menuItems.map(item =>
+          {menuItems.map((item) => (
             <MenuItem
               route={item.route}
               icon={item.icon}
@@ -115,12 +122,13 @@ const Menu = (props: Props) => {
               key={uuid()}
               setDrawerOpen={setOpen}
               drawerOpen={open}
-              children={item.children} />
-          )}
+              children={item.children}
+            />
+          ))}
         </List>
       </div>
     </Drawer>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;

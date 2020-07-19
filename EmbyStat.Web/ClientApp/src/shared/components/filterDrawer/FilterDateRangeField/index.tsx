@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import MomentUtils from '@date-io/moment';
 import moment, { Moment } from 'moment';
 import {
@@ -6,16 +6,15 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { useTranslation } from 'react-i18next';
-import { Grid, makeStyles } from '@material-ui/core';
-import { NullLogger } from '@aspnet/signalr';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   small__fields: {
     width: 150,
     marginTop: 0,
-
   },
-  "sub-text__padding": {
+  'sub-text__padding': {
     marginTop: 5,
     fontStyle: 'italic',
   },
@@ -33,7 +32,6 @@ interface BetweenValue {
   right: Moment | null;
 }
 
-
 const FilterDateRangeField = (props: Props) => {
   const { onValueChanged, errors, register, disableAdd } = props;
   const classes = useStyles();
@@ -45,21 +43,26 @@ const FilterDateRangeField = (props: Props) => {
 
   useEffect(() => {
     console.log(betweenValue.right?.isValid());
-    disableAdd((!betweenValue.left?.isValid() ?? true) || (!betweenValue.right?.isValid() ?? true));
-    onValueChanged(`${betweenValue.left?.format()}|${betweenValue.right?.format()}`);
+    disableAdd(
+      (!betweenValue.left?.isValid() ?? true) ||
+      (!betweenValue.right?.isValid() ?? true)
+    );
+    onValueChanged(
+      `${betweenValue.left?.format()}|${betweenValue.right?.format()}`
+    );
   }, [betweenValue, onValueChanged, disableAdd]);
 
   const leftChanged = (date: Moment | null) => {
     if (date !== null && !errors.dateLeft) {
       setBetweenValue((state) => ({ ...state, left: date }));
     }
-  }
+  };
 
   const rightChanged = (date: Moment | null) => {
     if (date !== null && !errors.dateRight) {
       setBetweenValue((state) => ({ ...state, right: date }));
     }
-  }
+  };
 
   return (
     <Grid container direction="row" spacing={1}>
@@ -67,43 +70,41 @@ const FilterDateRangeField = (props: Props) => {
         <MuiPickersUtilsProvider utils={MomentUtils} locale={moment.locale()}>
           <KeyboardDatePicker
             margin="normal"
-            format={moment().local().localeData().longDateFormat("L")}
+            format={moment().local().localeData().longDateFormat('L')}
             value={betweenValue.left}
             inputVariant="standard"
             autoOk
             onChange={leftChanged}
             className={classes.small__fields}
             name="dateLeft"
-            error={errors.dateLeft ? true : false}
+            error={!!errors.dateLeft}
             helperText={errors.dateLeft ? errors.dateLeft.message : ''}
             inputRef={register({ required: t('FORMERRORS.EMPTY') })}
           />
         </MuiPickersUtilsProvider>
       </Grid>
       <Grid item>
-        <div className={classes["sub-text__padding"]}>
-          {t('COMMON.AND')}
-        </div>
+        <div className={classes['sub-text__padding']}>{t('COMMON.AND')}</div>
       </Grid>
       <Grid item>
         <MuiPickersUtilsProvider utils={MomentUtils} locale={moment.locale()}>
           <KeyboardDatePicker
             margin="normal"
-            format={moment().local().localeData().longDateFormat("L")}
+            format={moment().local().localeData().longDateFormat('L')}
             value={betweenValue.right}
             inputVariant="standard"
             autoOk
             onChange={rightChanged}
             className={classes.small__fields}
             name="dateRight"
-            error={errors.dateRight ? true : false}
+            error={!!errors.dateRight}
             helperText={errors.dateRight ? errors.dateRight.message : ''}
             inputRef={register({ required: t('FORMERRORS.EMPTY') })}
           />
         </MuiPickersUtilsProvider>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default FilterDateRangeField
+export default FilterDateRangeField;

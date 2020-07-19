@@ -1,5 +1,3 @@
-
-
 export interface TopCardItem {
   mediaId: string;
   image: string;

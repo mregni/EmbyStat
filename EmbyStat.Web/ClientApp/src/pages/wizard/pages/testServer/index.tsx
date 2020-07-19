@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, Typography } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { Trans, useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import Loading from '../../../../shared/components/loading';
 
-import { testApiKey, getServerInfo, getAdministrators, getLibraries } from '../../../../shared/services/MediaServerService';
-import { useSelector } from 'react-redux';
+import {
+  testApiKey,
+  getServerInfo,
+  getAdministrators,
+  getLibraries,
+} from '../../../../shared/services/MediaServerService';
 import { RootState } from '../../../../store/RootReducer';
-import { MediaServerLogin, MediaServerInfo, MediaServerUser, Library } from '../../../../shared/models/mediaServer';
+import {
+  MediaServerLogin,
+  MediaServerInfo,
+  MediaServerUser,
+  Library,
+} from '../../../../shared/models/mediaServer';
 import TestFailed from './TestFailed';
 import TestSuccessful from './TestSuccessFul';
 
 interface Props {
-  disableBack: Function,
-  disableNext: Function,
+  disableBack: Function;
+  disableNext: Function;
 }
 
 const TestServer = (props: Props) => {
@@ -36,30 +47,52 @@ const TestServer = (props: Props) => {
       const fullAddress = `${protocolTxt}${address}:${port}${baseUrl}`;
 
       if (currentStep === 1) {
-        const result = await testApiKey({ address: fullAddress, apiKey: wizard.apiKey, type: wizard.serverType } as MediaServerLogin);
+        const result = await testApiKey({
+          address: fullAddress,
+          apiKey: wizard.apiKey,
+          type: wizard.serverType,
+        } as MediaServerLogin);
+
+        if (result == null) {
+          setIsLoading(false);
+          return;
+        }
+
         if (result) {
           setCurrentStep(2);
           setLoadingLabel('WIZARD.STEPTWO');
-          const serervInfo = await getServerInfo(true);
-          setServerInfo(serervInfo);
+          const serverInfo = await getServerInfo(true);
+          console.log(serverInfo);
+          if (serverInfo == null) {
+            setIsLoading(false);
+            return;
+          }
+          setServerInfo(serverInfo);
 
           setCurrentStep(3);
           setLoadingLabel('WIZARD.STEPTHREE');
           const admins = await getAdministrators();
+          if (admins == null) {
+            setIsLoading(false);
+            return;
+          }
           setAdministrators(admins);
 
           setCurrentStep(4);
           setLoadingLabel('WIZARD.STEPFOUR');
           const libs = await getLibraries();
+          if (libs == null) {
+            setIsLoading(false);
+            return;
+          }
           setLibraries(libs);
           setIsLoading(false);
         } else {
-          console.log('step 1 failed');
           setErrorMessage('WIZARD.APIKEYFAILED');
           setIsLoading(false);
         }
       }
-    }
+    };
     performSteps();
   }, [currentStep, wizard, isLoading]);
 
@@ -73,7 +106,7 @@ const TestServer = (props: Props) => {
 
   return (
     <Grid container direction="column">
-      <Typography variant="h4" color="secondary">
+      <Typography variant="h4" color="primary">
         <Trans i18nKey="WIZARD.SERVERCONFIGURATIONTEST" />
       </Typography>
       <Loading
@@ -88,7 +121,7 @@ const TestServer = (props: Props) => {
         Component={errorMessage === '' ? TestSuccessful : TestFailed}
       />
     </Grid>
-  )
-}
+  );
+};
 
-export default TestServer
+export default TestServer;

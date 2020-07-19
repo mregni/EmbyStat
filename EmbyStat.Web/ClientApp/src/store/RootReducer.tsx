@@ -1,4 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit'
+import { combineReducers } from '@reduxjs/toolkit';
 import settingsSlice from './SettingsSlice';
 import languageSlice from './LanguageSlice';
 import wizardSlice from './WizardSlice';
@@ -13,8 +13,8 @@ const rootReducer = combineReducers({
   jobs: jobSlice.reducer,
   jobLogs: jobLogsSlice.reducer,
   movies: movieSlice,
-})
+});
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;
 
-export default rootReducer
+export default rootReducer;

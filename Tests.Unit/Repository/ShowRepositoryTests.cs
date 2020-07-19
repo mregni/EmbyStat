@@ -34,7 +34,7 @@ namespace Tests.Unit.Repository
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddName("Wallander").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Show>();
                     collection.InsertBulk(new[] { showOne, showTwo });
@@ -55,7 +55,7 @@ namespace Tests.Unit.Repository
                 var seasonOne = new SeasonBuilder(Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.AddSeason(seasonOne);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Season>();
                     var season = collection.FindById(seasonOne.Id);
@@ -73,7 +73,7 @@ namespace Tests.Unit.Repository
                 var episodeOne = new EpisodeBuilder(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.AddEpisode(episodeOne);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Episode>();
                     var episode = collection.FindById(episodeOne.Id);

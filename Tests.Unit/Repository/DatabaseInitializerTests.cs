@@ -30,7 +30,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.SeedAsync();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var collection = context.GetCollection<Language>();
                     var languages = collection.FindAll().ToList();
@@ -82,7 +82,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.SeedAsync();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var collection = context.GetCollection<EmbyStatus>();
                     var status = collection.FindAll().FirstOrDefault();
@@ -100,7 +100,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.SeedAsync();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var collection = context.GetCollection<Job>();
                     var jobs = collection.FindAll().ToList();
@@ -125,7 +125,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var collectionCollection = context.GetCollection<Library>();
                     collectionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -142,7 +142,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var deviceCollection = context.GetCollection<Device>();
                     deviceCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -163,7 +163,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var embyStatusCollection = context.GetCollection<EmbyStatus>();
                     embyStatusCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -178,7 +178,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var embyUserCollection = context.GetCollection<EmbyUser>();
                     embyUserCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -214,7 +214,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var episodeCollection = context.GetCollection<Episode>();
                     episodeCollection.EnsureIndex(x => x.Id).Should().BeFalse();
@@ -263,7 +263,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var filtersCollection = context.GetCollection<FilterValues>();
                     filtersCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -277,7 +277,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var genreCollection = context.GetCollection<Genre>();
                     genreCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -292,7 +292,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var jobsCollection = context.GetCollection<Job>();
                     jobsCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -314,7 +314,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var languageCollection = context.GetCollection<Language>();
                     languageCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -330,7 +330,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var playCollection = context.GetCollection<Play>();
                     playCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -362,7 +362,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var movieCollection = context.GetCollection<Movie>();
                     movieCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -398,7 +398,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var personCollection = context.GetCollection<Person>();
                     personCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -423,7 +423,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var pluginInfoCollection = context.GetCollection<PluginInfo>();
                     pluginInfoCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -442,7 +442,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var seasonCollection = context.GetCollection<Season>();
                     seasonCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -470,7 +470,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var serverInfoCollection = context.GetCollection<ServerInfo>();
                     serverInfoCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -493,7 +493,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var sessionCollection = context.GetCollection<Session>();
                     sessionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -514,7 +514,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var showCollection = context.GetCollection<Show>();
                     showCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
@@ -553,7 +553,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.CreateDatabaseContext())
+                using (var context = _context.LiteDatabase)
                 {
                     var statisticsCollection = context.GetCollection<Statistic>();
                     statisticsCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();

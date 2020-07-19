@@ -1,5 +1,6 @@
-import React from 'react'
-import { Grid, makeStyles } from '@material-ui/core';
+import React from 'react';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import TvRoundedIcon from '@material-ui/icons/TvRounded';
 import TheatersRoundedIcon from '@material-ui/icons/TheatersRounded';
@@ -9,7 +10,7 @@ import { MovieStatistics } from '../../../shared/models/movie';
 import { PersonPoster } from '../../../shared/models/person';
 import BasicCard from '../../../shared/components/cards/BasicCard';
 import PosterCard from '../../../shared/components/cards/PosterCard';
-import { Card } from "../../../shared/models/common";
+import { Card } from '../../../shared/models/common';
 import MostFeaturesActorPerGenre from '../../../shared/components/tables/MostFeaturesActorPerGenre';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('lg')]: {
       marginTop: 16,
     },
-  }
+  },
 }));
 
 interface Props {
-  statistics: MovieStatistics
+  statistics: MovieStatistics;
 }
 
 const GeneralFrame = (props: Props) => {
@@ -37,17 +38,17 @@ const GeneralFrame = (props: Props) => {
 
   return (
     <>
-      <Grid container alignItems="flex-start" >
-        <Grid item xs={12} xl={6} container >
+      <Grid container alignItems="flex-start">
+        <Grid item xs={12} xl={6} container>
           <Grid item container spacing={2}>
-            {statistics.people.cards.map((card: Card) =>
+            {statistics.people.cards.map((card: Card) => (
               <Grid item>
                 <BasicCard card={card} />
               </Grid>
-            )}
+            ))}
           </Grid>
           <Grid item container spacing={2} className="m-t-16">
-            {statistics.people.posters.map((poster: PersonPoster) =>
+            {statistics.people.posters.map((poster: PersonPoster) => (
               <Grid item>
                 <PosterCard
                   mediaId={poster.mediaId}
@@ -57,25 +58,41 @@ const GeneralFrame = (props: Props) => {
                   height={195}
                   details={
                     <>
-                      <TheatersRoundedIcon className={classes['icon--small']} />{poster.movieCount} /
-                      <TvRoundedIcon className={classNames("m-l-4", classes['icon--small'])} />{poster.showCount} /
-                     {poster.birthDate != null
-                        ? <span className="m-l-4">{moment(poster.birthDate).format('l')}</span>
-                        : null}
-                    </>}
+                      <TheatersRoundedIcon className={classes['icon--small']} />
+                      {poster.movieCount} /
+                      <TvRoundedIcon
+                        className={classNames('m-l-4', classes['icon--small'])}
+                      />
+                      {poster.showCount} /
+                      {poster.birthDate != null ? (
+                        <span className="m-l-4">
+                          {moment(poster.birthDate).format('l')}
+                        </span>
+                      ) : null}
+                    </>
+                  }
                 />
               </Grid>
-            )}
+            ))}
           </Grid>
         </Grid>
-        <Grid item xs={12} xl={6} container spacing={2} className={classes.tableMargin}>
+        <Grid
+          item
+          xs={12}
+          xl={6}
+          container
+          spacing={2}
+          className={classes.tableMargin}
+        >
           <Grid item container>
-            <MostFeaturesActorPerGenre people={statistics.people.mostFeaturedActorsPerGenre} />
+            <MostFeaturesActorPerGenre
+              people={statistics.people.mostFeaturedActorsPerGenre}
+            />
           </Grid>
         </Grid>
       </Grid>
     </>
-  )
-}
+  );
+};
 
-export default GeneralFrame
+export default GeneralFrame;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import MomentUtils from '@date-io/moment';
 import moment, { Moment } from 'moment';
 import {
@@ -13,7 +13,6 @@ interface Props {
   register: Function;
   disableAdd: (disable: boolean) => void;
 }
-
 
 const FilterDateField = (props: Props) => {
   const { onValueChanged, errors, register, disableAdd } = props;
@@ -35,18 +34,18 @@ const FilterDateField = (props: Props) => {
     <MuiPickersUtilsProvider utils={MomentUtils} locale={moment.locale()}>
       <KeyboardDatePicker
         margin="normal"
-        format={moment().local().localeData().longDateFormat("L")}
+        format={moment().local().localeData().longDateFormat('L')}
         value={selectedDate}
         inputVariant="standard"
         autoOk
         onChange={handleDateChange}
         name="date"
-        error={errors.date ? true : false}
+        error={!!errors.date}
         helperText={errors.date ? errors.date.message : ''}
         inputRef={register({ required: t('FORMERRORS.EMPTY') })}
       />
     </MuiPickersUtilsProvider>
-  )
-}
+  );
+};
 
-export default FilterDateField
+export default FilterDateField;

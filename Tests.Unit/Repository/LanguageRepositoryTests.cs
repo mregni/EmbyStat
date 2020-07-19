@@ -16,7 +16,7 @@ namespace Tests.Unit.Repository
         protected override void SetupRepository()
         {
             var context = CreateDbContext();
-            using (var database = context.CreateDatabaseContext())
+            using (var database = context.LiteDatabase)
             {
                 var collection = database.GetCollection<Language>();
                 var languageOne = new Language { Code = "BE", Id = "01", Name = "Dutch" };

@@ -1,15 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-interface Props {
-
-}
+interface Props {}
 
 const NotFound = (props: Props) => {
-  return (
-    <div>
-      Not found!!
-    </div>
-  )
-}
+  return <div>Not found!!</div>;
+};
 
-export default NotFound
+export default NotFound;

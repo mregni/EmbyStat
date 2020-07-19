@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, Select, MenuItem, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
@@ -16,12 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 interface Props {
   onValueChanged: (value: string) => void;
   type: FilterType;
   field: string;
-  disableAdd: (disable: boolean) => void,
+  disableAdd: (disable: boolean) => void;
 }
 
 const FilterDropdownField = (props: Props) => {
@@ -33,10 +35,9 @@ const FilterDropdownField = (props: Props) => {
 
   useEffect(() => {
     if (type.itemType === 'url') {
-      getFilterValues(type.itemUrl, [])
-        .then(response => {
-          setValues(response.values);
-        });
+      getFilterValues(type.itemUrl, []).then((response) => {
+        setValues(response.values);
+      });
     }
   }, [type]);
 
@@ -47,7 +48,7 @@ const FilterDropdownField = (props: Props) => {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setValue(event.target.value as string);
     if (type.itemType === 'url') {
-      const labelPair = values.filter(x => x.value === event.target.value);
+      const labelPair = values.filter((x) => x.value === event.target.value);
       if (labelPair.length !== -1) {
         onValueChanged(`${labelPair[0].value}|${labelPair[0].label}`);
         return;
@@ -58,32 +59,39 @@ const FilterDropdownField = (props: Props) => {
   };
 
   return (
-    <Select
-      style={{ width: '100%' }}
-      onChange={handleChange}
-      value={value}
-    >
-      <MenuItem value={'u'} disabled>
+    <Select style={{ width: '100%' }} onChange={handleChange} value={value}>
+      <MenuItem value="u" disabled>
         {t('COMMON.SELECTVALUE')}
       </MenuItem>
-      {
-        type.itemType === 'static'
-          ? type.items?.map(x => <MenuItem key={x.value} value={x.value}>{x.label}</MenuItem>)
-          : values.map(x =>
-            <MenuItem key={x.label} value={x.value}>
-              {field === 'Subtitles' ?
-                <Grid container alignItems="center">
-                  <Grid item>
-                    <Flag language={x.value} width={25} height={25} className="m-r-8" />
-                  </Grid>
-                  <Grid item className={classes['pull-up']}>
-                    {x.label}
-                  </Grid>
-                </Grid> : x.label}
-            </MenuItem>)
-      }
-    </Select >
-  )
-}
+      {type.itemType === 'static'
+        ? type.items?.map((x) => (
+          <MenuItem key={x.value} value={x.value}>
+            {x.label}
+          </MenuItem>
+        ))
+        : values.map((x) => (
+          <MenuItem key={x.label} value={x.value}>
+            {field === 'Subtitles' ? (
+              <Grid container alignItems="center">
+                <Grid item>
+                  <Flag
+                    language={x.value}
+                    width={25}
+                    height={25}
+                    className="m-r-8"
+                  />
+                </Grid>
+                <Grid item className={classes['pull-up']}>
+                  {x.label}
+                </Grid>
+              </Grid>
+            ) : (
+                x.label
+              )}
+          </MenuItem>
+        ))}
+    </Select>
+  );
+};
 
-export default FilterDropdownField
+export default FilterDropdownField;

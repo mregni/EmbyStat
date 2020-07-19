@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Common
@@ -91,6 +92,18 @@ namespace EmbyStat.Common
             public static Guid CheckUpdateId => new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a");
             public static Guid PingEmbyId => new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e");
             public static Guid DatabaseCleanupId => new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
+        }
+
+        public static class JwtClaims
+        {
+            public static string Admin => "admin";
+            public static string User => "user";
+        }
+
+        public static class JwtClaimIdentifiers
+        {
+            public static string Roles => "roles";
+            public static string Id => "id";
         }
 
         //CHARTS

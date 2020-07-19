@@ -1,4 +1,4 @@
-import { LabelValuePair } from "../common";
+import { LabelValuePair } from '../common';
 
 export interface FilterValues {
   id: string;

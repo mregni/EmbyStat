@@ -1,10 +1,14 @@
 import React, { ReactNode } from 'react';
-import { Paper, makeStyles, Zoom, Grid, Button } from '@material-ui/core';
-import { RootState } from '../../../store/RootReducer';
+import Paper from '@material-ui/core/Paper';
+import Zoom from '@material-ui/core/Zoom';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import { RootState } from '../../../store/RootReducer';
 
 import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
 
@@ -22,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
   },
   'card__container--mask': {
-    background: '-webkit-linear-gradient(top,  rgba(255,255,255,0) 38%,rgba(255,255,255,0.06) 39%,rgba(30,27,38,0.88) 53%,rgba(30,27,38,1) 55%)',
+    background:
+      '-webkit-linear-gradient(top,  rgba(255,255,255,0) 38%,rgba(255,255,255,0.06) 39%,rgba(30,27,38,0.88) 53%,rgba(30,27,38,1) 55%)',
   },
   poster: (props: any) => ({
     width: '100%',
@@ -37,8 +42,7 @@ const useStyles = makeStyles((theme) => ({
   }),
   'poster--mask': (props: any) => ({
     height: props.height,
-    '-webkit-mask-image':
-      `-webkit-gradient(linear, left top, left bottom, 
+    '-webkit-mask-image': `-webkit-gradient(linear, left top, left bottom, 
     color-stop(0.00,  rgba(0,0,0,1)),
     color-stop(0.35,  rgba(0,0,0,1)),
     color-stop(0.50,  rgba(0,0,0,1)),
@@ -57,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   card__title: {
     textTransform: 'uppercase',
     fontWeight: 300,
-    fontSize: '0.75rem'
+    fontSize: '0.75rem',
   },
   card__details: {
     fontSize: '0.7rem',
@@ -79,52 +83,99 @@ interface Props {
 }
 
 const PosterCard = (props: Props) => {
-  const { mediaId, tag, name, title, details, height, noGradient, noOpen } = props;
+  const {
+    mediaId,
+    tag,
+    name,
+    title,
+    details,
+    height,
+    noGradient,
+    noOpen,
+  } = props;
   const { t } = useTranslation();
   const settings = useSelector((state: RootState) => state.settings);
 
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
     return `${fullAddress}/emby/Items/${mediaId}/Images/Primary?maxHeight=350&tag=${tag}&quality=90&enableimageenhancers=false`;
-  }
+  };
 
   const classes = useStyles({ poster: getPosterUrl(), height });
 
   const openMovie = () => {
-    window.open(`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${mediaId}&serverId=${settings.mediaServer.serverId}`, "_blank")
-  }
+    window.open(
+      `${getFullMediaServerUrl(
+        settings
+      )}/web/index.html#!/item?id=${mediaId}&serverId=${
+      settings.mediaServer.serverId
+      }`,
+      '_blank'
+    );
+  };
 
   return (
     <Zoom in={true}>
       <Paper elevation={5} className={classes.card}>
-        <div className={classNames(classes.card__container, { [classes['card__container--mask']]: !noGradient })}>
-          <div className={classNames(classes.poster, { [classes['poster--mask']]: !noGradient })} />
-          <Grid container className={classes.card__text} direction="column" justify="space-between" >
+        <div
+          className={classNames(classes.card__container, {
+            [classes['card__container--mask']]: !noGradient,
+          })}
+        >
+          <div
+            className={classNames(classes.poster, {
+              [classes['poster--mask']]: !noGradient,
+            })}
+          />
+          <Grid
+            container
+            className={classes.card__text}
+            direction="column"
+            justify="space-between"
+          >
             <Grid item container direction="column">
-              {title != null ? <Grid item className={classes.card__title}>{t(title)}</Grid> : null}
-              {name != null ? <Grid item className={classes.card__name}>{name}</Grid> : null}
+              {title != null ? (
+                <Grid item className={classes.card__title}>
+                  {t(title)}
+                </Grid>
+              ) : null}
+              {name != null ? (
+                <Grid item className={classes.card__name}>
+                  {name}
+                </Grid>
+              ) : null}
             </Grid>
             <Grid item container direction="column">
-              {details != null ?
-                <Grid item container alignItems="center" className={classes.card__details}>
+              {details != null ? (
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  className={classes.card__details}
+                >
                   {details}
-                </Grid> : null}
+                </Grid>
+              ) : null}
               <Grid item>
-                {!noOpen ?
+                {!noOpen ? (
                   <Button
                     variant="outlined"
                     color="secondary"
                     size="small"
                     startIcon={<OpenInNewIcon />}
-                    onClick={() => openMovie()}>{t('COMMON.OPEN')}</Button> : null}
+                    onClick={() => openMovie()}
+                  >
+                    {t('COMMON.OPEN')}
+                  </Button>
+                ) : null}
               </Grid>
             </Grid>
           </Grid>
         </div>
       </Paper>
-    </Zoom >
-  )
-}
+    </Zoom>
+  );
+};
 
 PosterCard.defaultProps = {
   height: 175,
@@ -133,6 +184,6 @@ PosterCard.defaultProps = {
   name: null,
   noGradient: false,
   noOpen: false,
-}
+};
 
-export default PosterCard
+export default PosterCard;

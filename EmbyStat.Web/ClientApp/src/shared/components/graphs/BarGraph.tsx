@@ -1,26 +1,39 @@
-import React from 'react'
+import React from 'react';
 import {
-  Chart as BarChart, Series, CommonSeriesSettings,
-  Font, Margin, Label, Format, Legend, ValueAxis,
-  Title, Animation, ArgumentAxis, LoadingIndicator
+  Chart as BarChart,
+  Series,
+  CommonSeriesSettings,
+  Font,
+  Margin,
+  Label,
+  Format,
+  Legend,
+  ValueAxis,
+  Title,
+  Animation,
+  ArgumentAxis,
+  LoadingIndicator,
 } from 'devextreme-react/chart';
 
-import { Chart } from "../../models/common";
 import { useTranslation } from 'react-i18next';
-
+import { Chart } from '../../models/common';
+import { withTheme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
 interface Props {
-  chart: Chart,
+  chart: Chart;
+  theme: Theme;
 }
 
 const BarGraph = (props: Props) => {
-  const { chart } = props;
+  const { chart, theme } = props;
   const { t } = useTranslation();
 
   return (
     <BarChart
       palette="Material"
       paletteExtensionMode="blend"
-      dataSource={JSON.parse(chart.dataSets)}>
+      dataSource={JSON.parse(chart.dataSets)}
+    >
       <CommonSeriesSettings
         argumentField="Label"
         type="bar"
@@ -32,34 +45,29 @@ const BarGraph = (props: Props) => {
         </Label>
       </CommonSeriesSettings>
       <Title text={t(chart.title)} horizontalAlignment="center">
-        <Font size={30} color="#CFB53B" />
+        <Font size={30} color={theme.palette.primary.main} />
         <Margin top={25} />
       </Title>
-      <Series
-        valueField="Val0"
-        name={t(chart.title)} />
+      <Series valueField="Val0" name={t(chart.title)} />
       <ValueAxis position="right">
         <Title text="Count" />
       </ValueAxis>
-      <ArgumentAxis> {/* or ValueAxis, or CommonAxisSettings */}
+      <ArgumentAxis>
+        {' '}
         <Label
           displayMode="standard"
           rotationAngle={45}
           overlappingBehavior="rotate"
         />
       </ArgumentAxis>
-      <Legend visible={false}></Legend>
+      <Legend visible={false} />
       <LoadingIndicator enabled={true} />
-      <Animation
-        easing="linear"
-        duration={500}
-        maxPointCountSupported={100}
-      />
+      <Animation easing="linear" duration={500} maxPointCountSupported={100} />
     </BarChart>
-  )
-}
+  );
+};
 
-export default BarGraph
+export default withTheme(BarGraph);
 
 // class BarGraph extends React.Component<Props, {}> {
 //   constructor(props) {

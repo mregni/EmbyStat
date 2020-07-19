@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AspNetCore.Identity.LiteDB.Data;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace EmbyStat.Repositories
 {
-    public class DbContext : IDbContext
+    public class DbContext : IDbContext, ILiteDbContext
     {
         private readonly AppSettings _settings;
 
@@ -30,5 +31,7 @@ namespace EmbyStat.Repositories
                 throw new FileNotFoundException("Can find or create LiteDb database.", ex);
             }
         }
+
+        public ILiteDatabase LiteDatabase => CreateDatabaseContext();
     }
 }

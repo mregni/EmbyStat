@@ -12,22 +12,25 @@ const initialState: LanguageContainer = {
 };
 
 const languageSlice = createSlice({
-  name: "language",
+  name: 'language',
   initialState,
   reducers: {
     receiveLanguages(state, action: PayloadAction<Language[]>) {
       return {
         languages: action.payload,
-        isLoaded: true
+        isLoaded: true,
       };
     },
     alreadyLoaded(state, action: PayloadAction) {
       return state;
-    }
+    },
   },
 });
 
-export const loadLanguages = (): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const loadLanguages = (): AppThunk => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
   if (!getState().languages.isLoaded) {
     const languages = await getLanguages();
     dispatch(languageSlice.actions.receiveLanguages(languages));

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/RootReducer';
 
 export function useServerType() {

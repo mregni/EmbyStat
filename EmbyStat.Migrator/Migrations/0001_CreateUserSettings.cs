@@ -26,7 +26,6 @@ namespace EmbyStat.Migrator.Migrations
                     ToShortMovie = 10,
                     UpdateInProgress = false,
                     UpdateTrain = UpdateTrain.Beta,
-                    Username = string.Empty,
                     Version = 0,
                     WizardFinished = false,
                     MediaServer = new MediaServerSettings

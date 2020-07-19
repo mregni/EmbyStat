@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
-import { Grid } from '@material-ui/core'
+import React, { useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
+import { useDispatch, useSelector } from 'react-redux';
 import { Job } from '../../shared/models/jobs';
 import { loadJobs } from '../../store/JobSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/RootReducer';
-
 
 import JobItem from './JobItem';
 import JobLogs from './JobLogs';
@@ -19,16 +18,23 @@ const Jobs = () => {
 
   return (
     <Grid container direction="row">
-      <Grid item container direction="column" justify="flex-start" xs={12} lg={6}>
-        {jobsContainer.jobs.map((job: Job, i: number) =>
+      <Grid
+        item
+        container
+        direction="column"
+        justify="flex-start"
+        xs={12}
+        lg={6}
+      >
+        {jobsContainer.jobs.map((job: Job, i: number) => (
           <JobItem key={job.id} job={job} i={i} />
-        )}
+        ))}
       </Grid>
       <Grid item xs={12} lg={6}>
         <JobLogs />
       </Grid>
-    </Grid >
-  )
-}
+    </Grid>
+  );
+};
 
-export default Jobs
+export default Jobs;

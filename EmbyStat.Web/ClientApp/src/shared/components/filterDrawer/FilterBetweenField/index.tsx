@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, TextField, Input, InputAdornment, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
@@ -8,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   small__fields: {
     width: 60,
   },
-  "sub-text__padding": {
+  'sub-text__padding': {
     marginTop: 5,
     fontStyle: 'italic',
   },
@@ -44,14 +47,14 @@ const FilterBetweenField = (props: Props) => {
     if (!errors.betweenLeft) {
       setBetweenValue((state) => ({ ...state, left: event.target.value }));
     }
-  }
+  };
 
   const rightChanged = (event) => {
     event.persist();
     if (!errors.betweenRight) {
       setBetweenValue((state) => ({ ...state, right: event.target.value }));
     }
-  }
+  };
 
   return (
     <Grid container direction="row" spacing={1}>
@@ -62,20 +65,22 @@ const FilterBetweenField = (props: Props) => {
           type="number"
           name="betweenLeft"
           value={betweenValue.left}
-          error={errors.betweenLeft ? true : false}
+          error={!!errors.betweenLeft}
           helperText={errors.betweenLeft ? errors.betweenLeft.message : ''}
           fullWidth
           className={classes.small__fields}
           onChange={leftChanged}
           InputProps={{
-            endAdornment: <InputAdornment position="end">{t(type.unit ?? "")}</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">
+                {t(type.unit ?? '')}
+              </InputAdornment>
+            ),
           }}
         />
       </Grid>
       <Grid item>
-        <div className={classes["sub-text__padding"]}>
-          {t('COMMON.AND')}
-        </div>
+        <div className={classes['sub-text__padding']}>{t('COMMON.AND')}</div>
       </Grid>
       <Grid item>
         <TextField
@@ -84,18 +89,22 @@ const FilterBetweenField = (props: Props) => {
           type="number"
           name="betweenRight"
           value={betweenValue.right}
-          error={errors.betweenRight ? true : false}
+          error={!!errors.betweenRight}
           helperText={errors.betweenRight ? errors.betweenRight.message : ''}
           fullWidth
           className={classes.small__fields}
           onChange={rightChanged}
           InputProps={{
-            endAdornment: <InputAdornment position="end">{t(type.unit ?? "")}</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">
+                {t(type.unit ?? '')}
+              </InputAdornment>
+            ),
           }}
         />
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default FilterBetweenField
+export default FilterBetweenField;

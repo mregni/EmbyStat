@@ -1,18 +1,24 @@
-import React, { useState } from 'react'
-import {
-  TableContainer, Card, Zoom, Typography,
-  CardContent, Table, TableHead, TableRow,
-  TableCell, TableBody, makeStyles,
-  TableSortLabel,
-} from '@material-ui/core';
+import React, { useState } from 'react';
+import TableContainer from '@material-ui/core/TableContainer';
+import Zoom from '@material-ui/core/Zoom';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import { makeStyles } from '@material-ui/core/styles';
 import uuid from 'react-uuid';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
-import { PersonPoster } from '../../models/person'
+import { PersonPoster } from '../../models/person';
 
 interface Props {
-  people: PersonPoster[],
+  people: PersonPoster[];
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   'row--hover': {
     '&&:hover': {
       backgroundColor: theme.palette.secondary.dark,
-    }
+    },
   },
   visuallyHidden: {
     border: 0,
@@ -85,7 +91,7 @@ const MostFeaturesActorPerGenre = (props: Props) => {
   const { people } = props;
   const { t } = useTranslation();
   const classes = useStyles();
-  const [order, setOrder] = useState<"desc" | "asc" | undefined>('asc');
+  const [order, setOrder] = useState<'desc' | 'asc' | undefined>('asc');
   const [orderBy, setOrderBy] = useState('genre');
 
   const handleRequestSort = (property) => {
@@ -109,7 +115,7 @@ const MostFeaturesActorPerGenre = (props: Props) => {
           <Typography gutterBottom variant="h5" component="h2">
             {t('COMMON.ACTORSPERGENRE')}
           </Typography>
-          <TableContainer >
+          <TableContainer>
             <Table size="small">
               <TableHead>
                 <TableRow>
@@ -128,7 +134,9 @@ const MostFeaturesActorPerGenre = (props: Props) => {
                         {headCell.label}
                         {orderBy === headCell.id ? (
                           <span className={classes.visuallyHidden}>
-                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                            {order === 'desc'
+                              ? 'sorted descending'
+                              : 'sorted ascending'}
                           </span>
                         ) : null}
                       </TableSortLabel>
@@ -137,30 +145,36 @@ const MostFeaturesActorPerGenre = (props: Props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {stableSort(people, getComparator(order, orderBy))
-                  .map((row) => (
+                {stableSort(people, getComparator(order, orderBy)).map(
+                  (row) => (
                     <TableRow
                       key={uuid()}
                       hover
                       classes={{
-                        hover: classes['row--hover']
-                      }}>
+                        hover: classes['row--hover'],
+                      }}
+                    >
                       <TableCell component="th" scope="row">
                         {row.title}
                       </TableCell>
                       <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.birthDate != null ? moment(row.birthDate).format('ll') : null}</TableCell>
+                      <TableCell align="right">
+                        {row.birthDate != null
+                          ? moment(row.birthDate).format('ll')
+                          : null}
+                      </TableCell>
                       <TableCell align="right">{row.movieCount}</TableCell>
                       <TableCell align="right">{row.showCount}</TableCell>
                     </TableRow>
-                  ))}
+                  )
+                )}
               </TableBody>
             </Table>
           </TableContainer>
         </CardContent>
       </Card>
     </Zoom>
-  )
-}
+  );
+};
 
-export default MostFeaturesActorPerGenre
+export default MostFeaturesActorPerGenre;

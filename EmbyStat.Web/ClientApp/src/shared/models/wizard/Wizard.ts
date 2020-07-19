@@ -12,13 +12,14 @@ export interface Wizard {
   serverBaseurl: string;
   serverBaseUrlNeeded: boolean;
   username: string;
+  password: string;
   language: string;
   enableRollbarLogging: boolean;
-  foundServers: MediaServerUdpBroadcast[],
-  searchedServers: boolean,
-  allLibraries: Library[],
-  movieLibraries: string[],
-  showLibraries: string[],
-  loadedMovieLibraryStep: boolean,
-  loadedShowLibraryStep: boolean,
+  foundServers: MediaServerUdpBroadcast[];
+  searchedServers: boolean;
+  allLibraries: Library[];
+  movieLibraries: string[];
+  showLibraries: string[];
+  loadedMovieLibraryStep: boolean;
+  loadedShowLibraryStep: boolean;
 }
