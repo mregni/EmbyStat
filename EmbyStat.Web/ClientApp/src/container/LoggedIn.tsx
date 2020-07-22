@@ -26,6 +26,7 @@ import MoviesList from '../pages/movies/MoviesList';
 import Jobs from '../pages/jobs';
 import NotFound from '../pages/notFound';
 import Login from '../pages/login';
+import Settings from '../pages/settings';
 import PrivateRoute from '../shared/components/privateRoute';
 import theme from '../styles/theme';
 import { RootState } from '../store/RootReducer';
@@ -174,6 +175,9 @@ const LoggedIn = (props: Props) => {
           </PrivateRoute>
           <PrivateRoute path="/jobs" exact>
             <Jobs />
+          </PrivateRoute>
+          <PrivateRoute path="/settings" exact>
+            <Settings />
           </PrivateRoute>
           <Route path="/login">
             <Login />

@@ -29,6 +29,7 @@
     "moment": "^2.26.0",
     "node-sass": "^4.14.1",
     "notistack": "^0.9.16",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.7.1",

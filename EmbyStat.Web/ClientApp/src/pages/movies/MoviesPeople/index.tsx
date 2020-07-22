@@ -5,6 +5,7 @@ import moment from 'moment';
 import TvRoundedIcon from '@material-ui/icons/TvRounded';
 import TheatersRoundedIcon from '@material-ui/icons/TheatersRounded';
 import classNames from 'classnames';
+import uuid from 'react-uuid';
 
 import { MovieStatistics } from '../../../shared/models/movie';
 import { PersonPoster } from '../../../shared/models/person';
@@ -42,14 +43,14 @@ const GeneralFrame = (props: Props) => {
         <Grid item xs={12} xl={6} container>
           <Grid item container spacing={2}>
             {statistics.people.cards.map((card: Card) => (
-              <Grid item>
+              <Grid item key={uuid()}>
                 <BasicCard card={card} />
               </Grid>
             ))}
           </Grid>
           <Grid item container spacing={2} className="m-t-16">
             {statistics.people.posters.map((poster: PersonPoster) => (
-              <Grid item>
+              <Grid item key={uuid()}>
                 <PosterCard
                   mediaId={poster.mediaId}
                   tag={poster.tag}

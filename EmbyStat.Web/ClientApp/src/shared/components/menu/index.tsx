@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
+import SettingsIcon from '@material-ui/icons/Settings';
 import uuid from 'react-uuid';
 import classNames from 'classnames';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -103,6 +104,11 @@ const Menu = (props: Props) => {
       icon: <AssignmentRoundedIcon />,
       title: t('MENU.JOBS'),
       route: '/jobs',
+    },
+    {
+      icon: <SettingsIcon />,
+      title: t('MENU.SETTINGS'),
+      route: '/settings',
     },
   ];
 
