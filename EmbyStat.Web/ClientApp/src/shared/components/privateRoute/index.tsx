@@ -18,6 +18,7 @@ const PrivateRoute = (props: Props) => {
 
   useEffect(() => {
     const checkUser = async () => {
+      console.log("checking if user is logged in");
       const result = await isUserLoggedIn();
       if (result) {
         const includeRole = checkUserRoles(roles);

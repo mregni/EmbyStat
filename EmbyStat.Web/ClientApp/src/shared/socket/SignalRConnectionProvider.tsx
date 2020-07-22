@@ -8,9 +8,10 @@ import {
 } from '@aspnet/signalr';
 
 import { Store } from 'redux';
-import jobSlice from './JobSlice';
-import { Job } from '../shared/models/jobs';
-import jobLogsSlice from './JobLogsSlice';
+import jobSlice from '../../store/JobSlice';
+import { Job } from '../models/jobs';
+import jobLogsSlice from '../../store/JobLogsSlice';
+import ServerStatusSlice from '../../store/ServerStatusSlice';
 
 interface Props {
   store: Store;
@@ -53,7 +54,7 @@ class SignalRConnectionProvider extends Component<Props, State> {
         );
         this.state.hubConnection.on(
           'MediaServerConnectionState',
-          this.onNotifReceived
+          this.onMissedPingStatusReceived
         );
         this.state.hubConnection.on('UpdateState', this.onNotifReceived);
       });
@@ -76,6 +77,12 @@ class SignalRConnectionProvider extends Component<Props, State> {
   onNotifReceived = (res) => {
     console.log('****** NOTIFICATION ******', res);
   };
+
+  onMissedPingStatusReceived = (res: number) => {
+    console.log(res);
+    const { store } = this.props;
+    store.dispatch(ServerStatusSlice.actions.receivePingResult(res));
+  }
 
   onJobReportLogReceived = (res) => {
     const { store } = this.props;

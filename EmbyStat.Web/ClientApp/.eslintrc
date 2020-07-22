@@ -7,7 +7,7 @@
   "extends": [
     "react-app",
     "prettier",
-    "plugin:you-dont-need-momentjs/recommended",
+    //"plugin:you-dont-need-momentjs/recommended",
     "plugin:react-hooks/recommended",
     "plugin:import/warnings",
     "plugin:import/errors",

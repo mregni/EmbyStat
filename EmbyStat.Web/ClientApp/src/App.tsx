@@ -12,7 +12,7 @@ import { RootState } from './store/RootReducer';
 import { SnackbarUtilsConfigurator } from './shared/utils/SnackbarUtilsConfigurator';
 import LoggedIn from './container/LoggedIn';
 import { loadJobs } from './store/JobSlice';
-import SignalRConnectionProvider from './store/SignalRConnectionProvider';
+import SignalRConnectionProvider from './shared/socket/SignalRConnectionProvider';
 import Wizard from './pages/wizard';
 
 import 'devextreme/dist/css/dx.common.css';
@@ -34,9 +34,6 @@ function App(): ReactElement {
     moment.locale(settings.language);
   }, [settings]);
 
-  console.log(settings.wizardFinished);
-
-
   return (
     <ThemeProvider theme={theme}>
       <StylesProvider injectFirst>
@@ -50,9 +47,9 @@ function App(): ReactElement {
             }}
           >
             <SnackbarUtilsConfigurator />
+            {!settings.isLoaded ? <PageLoader /> : null}
             {settings.isLoaded && !settings.wizardFinished ? <Wizard settings={settings} /> : null}
             {settings.isLoaded && settings.wizardFinished ? <LoggedIn /> : null}
-            {!settings.isLoaded ? <PageLoader /> : null}
           </SnackbarProvider>
         </SignalRConnectionProvider>
       </StylesProvider>

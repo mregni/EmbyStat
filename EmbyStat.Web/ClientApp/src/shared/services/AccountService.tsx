@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { axiosInstance } from './axiosInstance';
 
 import { LoginView, AuthenticateResponse, User } from '../models/login';
+import { isNullOrUndefined } from 'util';
 
 const domain = 'account/';
 const accessTokenStr = 'accessToken';
@@ -47,7 +48,9 @@ export const refreshLogin = (
   return axiosInstance
     .post<AuthenticateResponse>(`${domain}refreshtoken`, refresh)
     .then((response) => {
-      if (response.data == null) {
+      console.log("refresh token data: " + response.data.accessToken);
+      console.log(isNullOrUndefined(response.data));
+      if (isNullOrUndefined(response.data) || isNullOrUndefined(response.data.accessToken)) {
         return false;
       }
       setLocalStorage(response.data);
@@ -94,6 +97,8 @@ export const isUserLoggedIn = async (): Promise<boolean> => {
 
   let tokenExpiration = jwt(accessToken).exp;
   let tokenExpirationTimeInSeconds = tokenExpiration - moment().unix();
+  console.log('expires: ' + jwt(accessToken).exp);
+  console.log('expires seconds: ' + tokenExpirationTimeInSeconds);
 
   if (tokenExpirationTimeInSeconds < 250) {
     const result = await refreshLogin(
@@ -143,6 +148,7 @@ export const checkUserRoles = (roles: string[]): boolean => {
 };
 
 const setLocalStorage = (tokenInfo: AuthenticateResponse) => {
+  console.log("storing refresh token: " + tokenInfo.refreshToken);
   localStorage.setItem(accessTokenStr, tokenInfo.accessToken);
   localStorage.setItem(refreshTokenStr, tokenInfo.refreshToken);
 };

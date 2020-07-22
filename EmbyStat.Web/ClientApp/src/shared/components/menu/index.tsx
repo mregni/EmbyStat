@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
@@ -12,6 +13,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import theme from '../../../styles/theme';
 import MenuItem from './MenuItem';
+import ServerStatus from './ServerStatus';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/RootReducer';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +51,11 @@ const useStyles = makeStyles((theme) => ({
   menu__list: {
     paddingTop: 0,
   },
+  version: {
+    color: theme.palette.grey[400],
+    fontSize: "0.8rem",
+    paddingBottom: 16
+  }
 }));
 
 interface Props {
@@ -59,6 +68,8 @@ const Menu = (props: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const small = useMediaQuery(theme.breakpoints.down('md'));
+  const settings = useSelector((state: RootState) => state.settings);
+
 
   const menuItems = [
     {
@@ -111,22 +122,30 @@ const Menu = (props: Props) => {
         }),
       }}
     >
-      <div className={classes.drawerContainer}>
-        {small ? <div>EmbyStat</div> : null}
-        <List classes={{ root: classes.menu__list }}>
-          {menuItems.map((item) => (
-            <MenuItem
-              route={item.route}
-              icon={item.icon}
-              title={item.title}
-              key={uuid()}
-              setDrawerOpen={setOpen}
-              drawerOpen={open}
-              children={item.children}
-            />
-          ))}
-        </List>
-      </div>
+      <Grid container direction="column" justify="space-between" className="max-height">
+        <Grid item>
+          <div className={classes.drawerContainer}>
+            {small ? <div>EmbyStat</div> : null}
+            <List classes={{ root: classes.menu__list }}>
+              {menuItems.map((item) => (
+                <MenuItem
+                  route={item.route}
+                  icon={item.icon}
+                  title={item.title}
+                  key={uuid()}
+                  setDrawerOpen={setOpen}
+                  drawerOpen={open}
+                  children={item.children}
+                />
+              ))}
+            </List>
+            <ServerStatus />
+          </div>
+        </Grid>
+        <Grid item container justify="center" direction="row" className={classes.version}>
+          {settings.version}
+        </Grid>
+      </Grid>
     </Drawer>
   );
 };

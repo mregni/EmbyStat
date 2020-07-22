@@ -46,7 +46,7 @@ $sizes: (
   @include size-modifiers("padding-top" "padding-bottom");
 }
 
-@mixin m {
+.m {
   @include size-modifiers("margin");
 }
 
