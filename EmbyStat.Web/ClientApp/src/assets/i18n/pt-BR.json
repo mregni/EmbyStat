@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "DOWNLOAD": "baixar",
-    "ANONYMISEDDOWNLOAD": "Baixar em Anônimo",
+    "ANONYMISEDDOWNLOAD": "Baixar como anônimo",
     "HIDE": "Ocultar",
     "NEXT": "Próximo",
     "BACK": "Voltar",
@@ -69,7 +69,7 @@
     "CANTCONNECTTOGITHUB": "Não é possível conectar-se ao GitHub para verificar se há atualizações. Tente mais tarde.",
     "NOUPDATEFILE": "Não é possível localizar o aplicativo de atualização, nenhuma atualização executada",
     "UPDATEUNPACKERROR": "Algo deu errado ao adicionar seu prêmio. Por favor, tente novamente.",
-    "TVDBLOGINFAILED": "O login do TVDB falhou, verifique a chave da API."
+    "TVDBLOGINFAILED": "O login do TVDB falhou, verifique a chave API."
   },
   "FORMLABELS": {
     "NAME": "Nome do usuário",
@@ -101,9 +101,9 @@
     "SERVERLABEL": "Configurações do servidor",
     "SAVINGLABEL": "Sincronizar o servidor",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "Se o seu idioma não for mencionado ou não estiver completo, sinta-se à vontade para me ajudar a traduzir o aplicativo em seu idioma no <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "Se o seu idioma não for encontrado ou estiver incompleto, sinta-se à vontade para contribuir para a tradução, acessando <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Verificando o servidor Emby ...",
-    "INTROTEXT": "Bem-vindo ao assistente do servidor EmbyStat.<br/><br/>Com este assistente vamos configurar as configurações básicas para que você possa começar a trabalhar com o EmbyStat sem muita dor de cabeça. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
+    "INTROTEXT": "Bem-vindo ao assistente EmbyStat.<br/><br/>Com este assistente vamos processar as configurações básicas para que você possa começar a trabalhar. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
     "NOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
     "FOUNDTEXT": "Encontramos um servidor Emby em sua rede e inserimos a Url já no formulário. Sinta-se à vontade para ajustar isso e preencher o restante do formulário.",
     "SERVERRUNNING": "O Servidor está em execução",
