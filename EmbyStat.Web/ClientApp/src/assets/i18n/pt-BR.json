@@ -190,14 +190,14 @@
       "EMBYPORTREQUIRED": "Porta requerida.",
       "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
       "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
-      "WRONGAPIKEY": "A chave da API fornecida não é válida",
+      "WRONGAPIKEY": "Chave API inválida",
       "CHANGESERVERTYPE": "Você configurou um servidor {{currentType}}, se quiser mudar para {{newType}}, precisará reinstalar o aplicativo."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Ativar atualizações automáticas",
-      "CHECK": "Verifique e atualize o servidor agora",
+      "CHECK": "Verifique atualização agora",
       "UPDATE:": "Atualizar servidor agora",
       "TRAIN": "Altere o trem de atualização se você quiser ter atualizações beta.",
       "ONBETA": "Você não está mais no trem Master, então você não pode voltar para ele. Se você quiser voltar no trem mestre, reinstale o servidor.",
@@ -271,7 +271,7 @@
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "Nenhum dispositivo foi encontrado",
+      "TITLE": "Nenhum filme encontrado",
       "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "NOSHOWTYPEFOUND": {
@@ -279,7 +279,7 @@
       "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "A sincronização de mídia está em execução",
+      "TITLE": "A sincronização está em execução",
       "BODY": "A tarefa de sincronização da mídia está sendo executada em segundo plano. Por causa disso, todas as páginas de estatísticas são bloqueadas porque os cálculos estariam completamente errados, desde que a sincronização esteja em execução."
     },
     "EDIT_TRIGGER": {
@@ -299,7 +299,7 @@
   "COLLECTIONTYPES": {
     "MIXED": "Misto / Outro",
     "MUSIC": "Música",
-    "MUSICVIDEOS": "Vídeos de música",
+    "MUSICVIDEOS": "Concertos",
     "TRAILERS": "Trailer",
     "HOMEVIDEOS": "Vídeos caseiros",
     "BOXSETS": "Boxsets",
@@ -311,9 +311,9 @@
     "FOLDERS": "Pastas"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Ir a {{type}}",
+    "GOTOMEDIASERVER": "Ir para {{type}}",
     "JOBISRUNNING": "{{job}} trabalho está em execução",
-    "NOMISSEDPINGS": "Servidor Emby está vivo",
+    "NOMISSEDPINGS": "Servidor Emby está ativo",
     "ONEMISSEDPING": "Não foi possível conectar-se ao Emby na última verificação!",
     "MOREMISSEDPINGS": "Não foi possível conectar-se ao Emby após várias tentativas!"
   },
