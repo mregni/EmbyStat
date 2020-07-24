@@ -112,7 +112,7 @@
     "SAVINGINSTRUCTIONS": "Se algo falhar, você não poderá começar a usar o EmbyStat. Nesse caso, corrija os erros, pressione voltar e avançar.",
     "SAVING": "Salvando dados...",
     "RESCAN": "Verificar novamente",
-    "FINISHWITHSYNC": "Gerenciar a sincronização",
+    "FINISHWITHSYNC": "Iniciar a sincronização",
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor Emby agora. Aproveite suas novas estatísticas!",
     "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar uma tarefa de sincronização de mídia. EmbyStat irá iniciar o download de todos os dados do seu servidor Emby. Tenha em mente que essa tarefa pode levar muito tempo dependendo do tamanho da sua coleção. Se você não quiser iniciar um passeio de sincronização agora basta clicar em Concluir. Você pode iniciá-lo manualmente mais tarde, navegando até a página Tarefas.",
     "JELLYFIN": {
@@ -279,7 +279,7 @@
       "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "A sincronização está em execução",
+      "TITLE": "Sincronizando. Aguarde.",
       "BODY": "A tarefa de sincronização da mídia está sendo executada em segundo plano. Por causa disso, todas as páginas de estatísticas são bloqueadas porque os cálculos estariam completamente errados, desde que a sincronização esteja em execução."
     },
     "EDIT_TRIGGER": {
