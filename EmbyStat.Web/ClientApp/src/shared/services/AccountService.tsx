@@ -3,7 +3,7 @@ import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { axiosInstance } from './axiosInstance';
 
-import { LoginView, AuthenticateResponse, User } from '../models/login';
+import { LoginView, AuthenticateResponse, User, ChangeUserNameRequest, ChangePasswordRequest } from '../models/login';
 import { isNullOrUndefined } from 'util';
 
 const domain = 'account/';
@@ -40,6 +40,17 @@ export const register = (register: LoginView): Promise<boolean> => {
     });
 };
 
+export const forcedRefreshLogin = async () => {
+  if (isUserLoggedIn()) {
+    const accessToken = localStorage.getItem(accessTokenStr);
+    const refreshToken = localStorage.getItem(refreshTokenStr);
+
+    if (accessToken != null && refreshToken != null) {
+      await refreshLogin(accessToken, refreshToken);
+    }
+  }
+}
+
 export const refreshLogin = (
   accessToken: string,
   refreshToken: string
@@ -74,13 +85,23 @@ export const anyAdmins = (): Promise<boolean> => {
 
 export const resetPassword = (username: string): Promise<boolean> => {
   return axiosInstance
-    .post<boolean>(`${domain}password/reset/${username}`)
-    .then(response => {
-      return response.data;
-    })
-    .catch(() => {
-      return false;
-    })
+    .post<boolean>(`${domain}reset/password/${username}`)
+    .then(response => response.data)
+    .catch(() => false)
+}
+
+export const changePassword = (request: ChangePasswordRequest): Promise<boolean> => {
+  return axiosInstance
+    .post<boolean>(`${domain}change/password`, request)
+    .then(response => response.data)
+    .catch(() => false);
+}
+
+export const changeUserName = (request: ChangeUserNameRequest): Promise<boolean> => {
+  return axiosInstance
+    .post<boolean>(`${domain}change/username`, request)
+    .then(response => response.data)
+    .catch(() => false);
 }
 
 export const isUserLoggedIn = async (): Promise<boolean> => {
@@ -97,8 +118,6 @@ export const isUserLoggedIn = async (): Promise<boolean> => {
 
   let tokenExpiration = jwt(accessToken).exp;
   let tokenExpirationTimeInSeconds = tokenExpiration - moment().unix();
-  console.log('expires: ' + jwt(accessToken).exp);
-  console.log('expires seconds: ' + tokenExpirationTimeInSeconds);
 
   if (tokenExpirationTimeInSeconds < 250) {
     const result = await refreshLogin(

@@ -50,7 +50,7 @@ const UserDetails = (props: Props): ReactElement => {
   return (
     <Grid container direction="column">
       <Typography variant="h4" color="primary">
-        <Trans i18nKey="WIZARD.USERDETAILS" />
+        <Trans i18nKey="SETTINGS.ACCOUNT.TITLE" />
       </Typography>
       <Typography variant="body1" className="m-t-32">
         <Trans i18nKey="WIZARD.USERDETAILTEXT" />

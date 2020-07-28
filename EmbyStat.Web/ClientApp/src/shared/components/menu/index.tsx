@@ -108,7 +108,16 @@ const Menu = (props: Props) => {
     {
       icon: <SettingsIcon />,
       title: t('MENU.SETTINGS'),
-      route: '/settings',
+      children: [
+        {
+          title: t('COMMON.GENERAL'),
+          route: '/settings/general',
+        },
+        {
+          title: t('COMMON.MOVIES'),
+          route: '/settings/movie',
+        },
+      ],
     },
   ];
 

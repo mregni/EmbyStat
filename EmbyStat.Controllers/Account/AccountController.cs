@@ -109,7 +109,7 @@ namespace EmbyStat.Controllers.Account
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("password/reset/{username}")]
+        [Route("reset/password/{username}")]
         public async Task<IActionResult> ResetPassword([FromRoute] string username)
         {
             try
@@ -126,11 +126,20 @@ namespace EmbyStat.Controllers.Account
 
         [HttpPost]
         [Authorize]
-        [Route("password/change")]
+        [Route("change/password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            await _accountService.ChangePassword(request);
-            return Ok();
+            var result = await _accountService.ChangePassword(request);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("change/username")]
+        public async Task<IActionResult> ChangeUsername([FromBody] ChangeUserNameRequest request)
+        {
+            var result = await _accountService.ChangeUserName(request);
+            return Ok(result);
         }
     }
 }

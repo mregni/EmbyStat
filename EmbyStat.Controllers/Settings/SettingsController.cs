@@ -46,6 +46,10 @@ namespace EmbyStat.Controllers.Settings
 	    [HttpPut]
 	    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
 	    {
+            if (userSettings == null)
+            {
+                return BadRequest();
+            }
             var settings = _mapper.Map<UserSettings>(userSettings);
 
             MarkStatisticsAsInvalidIfNeeded(settings);

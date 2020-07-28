@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
 import { Trans } from 'react-i18next';
-
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,10 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import moment from 'moment';
+
 import { loadLanguages } from '../../../../store/LanguageSlice';
 import { RootState } from '../../../../store/RootReducer';
 import { Language } from '../../../../shared/models/language';
-
 import { setlanguage } from '../../../../store/WizardSlice';
 
 interface Props {
@@ -28,11 +27,8 @@ const Intro = (props: Props): ReactElement => {
   }, [disableBack]);
 
   useEffect(() => {
-    dispatch(setlanguage(i18next.language));
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(loadLanguages());
+    dispatch(setlanguage(i18next.language));
   }, [dispatch]);
 
   const languages = useSelector((state: RootState) => state.languages);
@@ -68,15 +64,6 @@ const Intro = (props: Props): ReactElement => {
               </MenuItem>
             ))}
           </Select>
-
-          // <EmbyStatSelect
-          //   value={language}
-          //   variant="standard"
-          //   onChange={handleChange}
-          //   menuItems={languages.languages.map((x: Language) => {
-          //     return { id: x.code, value: x.code, label: x.name };
-          //   })}
-          // />
         ) : null}
       </Grid>
     </Grid>

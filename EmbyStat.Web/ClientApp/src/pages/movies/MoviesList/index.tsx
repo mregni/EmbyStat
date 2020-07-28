@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     height: 'calc(100vh - 180px)',
   },
   title: {
-    textTransform: 'capitalize',
     marginRight: 16,
   },
 }));

@@ -132,13 +132,38 @@ namespace EmbyStat.Services
             return _userManager.Users.Any(x => x.Roles.Contains(Constants.JwtClaims.Admin));
         }
 
-        public async Task ChangePassword(ChangePasswordRequest request)
+        public async Task<bool> ChangePassword(ChangePasswordRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user != null)
             {
-                await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+                var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+                if (!result.Succeeded)
+                {
+                    _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+                }
+
+                return result.Succeeded;
             }
+
+            return false;
+        }
+
+        public async Task<bool> ChangeUserName(ChangeUserNameRequest request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user != null)
+            {
+                var result = await _userManager.SetUserNameAsync(user, request.NewUserName);
+                if (!result.Succeeded)
+                {
+                    _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+                }
+
+                return result.Succeeded;
+            }
+
+            return false;
         }
 
         public async Task<bool> ResetPassword(string username)

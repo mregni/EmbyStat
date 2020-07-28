@@ -13,7 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useSelector } from 'react-redux';
 import { StaticContext } from 'react-router';
 
 import Menu from '../shared/components/menu';
@@ -26,10 +25,10 @@ import MoviesList from '../pages/movies/MoviesList';
 import Jobs from '../pages/jobs';
 import NotFound from '../pages/notFound';
 import Login from '../pages/login';
-import Settings from '../pages/settings';
+import GeneralSettings from '../pages/settings/GeneralSettings';
+import MovieSettings from '../pages/settings/MovieSettings';
 import PrivateRoute from '../shared/components/privateRoute';
 import theme from '../styles/theme';
-import { RootState } from '../store/RootReducer';
 import { userLoggedIn$, logout } from '../shared/services/AccountService';
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +89,6 @@ const LoggedIn = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const small = useMediaQuery(theme.breakpoints.down('md'));
-  const settings = useSelector((state: RootState) => state.settings);
 
   useEffect(() => {
     setOpenMenu(!small);
@@ -133,7 +131,7 @@ const LoggedIn = (props: Props) => {
                 {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
               </IconButton>
               <Typography variant="h6" noWrap>
-                {settings.appName}
+                EmbyStat
               </Typography>
             </Grid>
             <Grid item>
@@ -176,8 +174,11 @@ const LoggedIn = (props: Props) => {
           <PrivateRoute path="/jobs" exact>
             <Jobs />
           </PrivateRoute>
-          <PrivateRoute path="/settings" exact>
-            <Settings />
+          <PrivateRoute path="/settings/general" exact>
+            <GeneralSettings />
+          </PrivateRoute>
+          <PrivateRoute path="/settings/movie" exact>
+            <MovieSettings />
           </PrivateRoute>
           <Route path="/login">
             <Login />

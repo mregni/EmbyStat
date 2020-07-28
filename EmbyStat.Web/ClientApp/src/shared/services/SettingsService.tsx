@@ -1,6 +1,9 @@
+import i18n from 'i18next';
+
 import { axiosInstance } from './axiosInstance';
 import { Settings } from '../models/settings';
 import { Language } from '../models/language';
+import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
 
 const domain = 'settings/';
 
@@ -13,15 +16,18 @@ export const updateSettings = async (
   userSettings: Settings
 ): Promise<Settings> => {
   const config = { headers: { 'Content-Type': 'application/json' } };
-  const response = await axiosInstance.put<Settings>(
+  return await axiosInstance.put<Settings>(
     `${domain}`,
     userSettings,
     config
-  );
-  return response.data;
+  ).then((response) => {
+    if (response.status === 200) {
+      SnackbarUtils.success(i18n.t('SETTINGS.SAVED'))
+    }
+    return response.data;
+  });
 };
 
 export const getLanguages = async (): Promise<Language[]> => {
-  const response = await axiosInstance.get<Language[]>(`${domain}languages`);
-  return response.data;
+  return await axiosInstance.get<Language[]>(`${domain}languages`).then(response => response.data);
 };
