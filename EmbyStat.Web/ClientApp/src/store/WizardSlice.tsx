@@ -84,6 +84,15 @@ export const setlanguage = (language: string): AppThunk => async (
   dispatch(wizardSlice.actions.updateWizardState(wizard));
 };
 
+export const setrollbar = (enabled: boolean): AppThunk => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
+  const wizard = { ...getState().wizard };
+  wizard.enableRollbarLogging = enabled;
+  dispatch(wizardSlice.actions.updateWizardState(wizard));
+};
+
 export const setAdminId = (adminId: string): AppThunk => async (
   dispatch: AppDispatch,
   getState: () => RootState

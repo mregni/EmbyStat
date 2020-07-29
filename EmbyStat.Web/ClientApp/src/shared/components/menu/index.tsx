@@ -17,6 +17,7 @@ import MenuItem from './MenuItem';
 import ServerStatus from './ServerStatus';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/RootReducer';
+import { UserRoles } from '../../../shared/models/login';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +78,7 @@ const Menu = (props: Props) => {
       icon: <HomeRoundedIcon />,
       title: t('MENU.DASHBOARD'),
       route: '/',
-      roles: ['admin', 'user'],
+      roles: [UserRoles.Admin, UserRoles.User],
     },
     {
       icon: <LocalMoviesRoundedIcon />,
@@ -86,22 +87,22 @@ const Menu = (props: Props) => {
         {
           title: t('COMMON.GENERAL'),
           route: '/movies/general',
-          roles: ['admin', 'user'],
+          roles: [UserRoles.Admin, UserRoles.User],
         },
         {
           title: t('COMMON.PEOPLE'),
           route: '/movies/people',
-          roles: ['admin', 'user'],
+          roles: [UserRoles.Admin, UserRoles.User],
         },
         {
           title: t('COMMON.GRAPHS'),
           route: '/movies/graphs',
-          roles: ['admin', 'user'],
+          roles: [UserRoles.Admin, UserRoles.User],
         },
         {
           title: t('COMMON.TABLE'),
           route: '/movies/list',
-          roles: ['admin', 'user'],
+          roles: [UserRoles.Admin, UserRoles.User],
         },
       ],
     },
@@ -109,7 +110,7 @@ const Menu = (props: Props) => {
       icon: <AssignmentRoundedIcon />,
       title: t('MENU.JOBS'),
       route: '/jobs',
-      roles: ['admin', 'user'],
+      roles: [UserRoles.Admin, UserRoles.User],
     },
     {
       icon: <SettingsIcon />,
@@ -118,12 +119,12 @@ const Menu = (props: Props) => {
         {
           title: t('COMMON.GENERAL'),
           route: '/settings/general',
-          roles: ['admin', 'user'],
+          roles: [UserRoles.Admin, UserRoles.User],
         },
         {
           title: t('COMMON.MOVIES'),
           route: '/settings/movie',
-          roles: ['admin', 'user'],
+          roles: [UserRoles.Admin, UserRoles.User],
         },
       ],
     },

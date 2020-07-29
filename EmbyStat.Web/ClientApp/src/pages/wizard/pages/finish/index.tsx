@@ -107,7 +107,7 @@ const Finish = (props: Props) => {
         <Grid item>
           <FormGroup row>
             <FormControlLabel
-              control={<Checkbox checked={fireSync} onChange={(event) => setFireSync(event.target.checked)} />}
+              control={<Checkbox checked={fireSync} onChange={(event) => setFireSync(event.target.checked)} color="primary" />}
               label="run madia sync after wizard"
             />
           </FormGroup>
