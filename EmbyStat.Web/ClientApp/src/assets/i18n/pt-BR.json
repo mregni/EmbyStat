@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "DOWNLOAD": "baixar",
-    "ANONYMISEDDOWNLOAD": "Baixar em Anônimo",
+    "ANONYMISEDDOWNLOAD": "Baixar como anônimo",
     "HIDE": "Ocultar",
     "NEXT": "Próximo",
     "BACK": "Voltar",
@@ -69,7 +69,7 @@
     "CANTCONNECTTOGITHUB": "Não é possível conectar-se ao GitHub para verificar se há atualizações. Tente mais tarde.",
     "NOUPDATEFILE": "Não é possível localizar o aplicativo de atualização, nenhuma atualização executada",
     "UPDATEUNPACKERROR": "Algo deu errado ao adicionar seu prêmio. Por favor, tente novamente.",
-    "TVDBLOGINFAILED": "O login do TVDB falhou, verifique a chave da API."
+    "TVDBLOGINFAILED": "O login do TVDB falhou, verifique a chave API."
   },
   "FORMLABELS": {
     "NAME": "Nome do usuário",
@@ -101,9 +101,9 @@
     "SERVERLABEL": "Configurações do servidor",
     "SAVINGLABEL": "Sincronizar o servidor",
     "FINALLABEL": "Final",
-    "CROWNDINHELP": "Se o seu idioma não for mencionado ou não estiver completo, sinta-se à vontade para me ajudar a traduzir o aplicativo em seu idioma no <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWNDINHELP": "Se o seu idioma não for encontrado ou estiver incompleto, sinta-se à vontade para contribuir para a tradução, acessando <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "CHECKINGSTATUS": "Verificando o servidor Emby ...",
-    "INTROTEXT": "Bem-vindo ao assistente do servidor EmbyStat.<br/><br/>Com este assistente vamos configurar as configurações básicas para que você possa começar a trabalhar com o EmbyStat sem muita dor de cabeça. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
+    "INTROTEXT": "Bem-vindo ao assistente EmbyStat.<br/><br/>Com este assistente vamos processar as configurações básicas para que você possa começar a trabalhar. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
     "NOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
     "FOUNDTEXT": "Encontramos um servidor Emby em sua rede e inserimos a Url já no formulário. Sinta-se à vontade para ajustar isso e preencher o restante do formulário.",
     "SERVERRUNNING": "O Servidor está em execução",
@@ -112,7 +112,7 @@
     "SAVINGINSTRUCTIONS": "Se algo falhar, você não poderá começar a usar o EmbyStat. Nesse caso, corrija os erros, pressione voltar e avançar.",
     "SAVING": "Salvando dados...",
     "RESCAN": "Verificar novamente",
-    "FINISHWITHSYNC": "Gerenciar a sincronização",
+    "FINISHWITHSYNC": "Iniciar a sincronização",
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor Emby agora. Aproveite suas novas estatísticas!",
     "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar uma tarefa de sincronização de mídia. EmbyStat irá iniciar o download de todos os dados do seu servidor Emby. Tenha em mente que essa tarefa pode levar muito tempo dependendo do tamanho da sua coleção. Se você não quiser iniciar um passeio de sincronização agora basta clicar em Concluir. Você pode iniciá-lo manualmente mais tarde, navegando até a página Tarefas.",
     "JELLYFIN": {
@@ -187,24 +187,24 @@
       "EMBYAPIKEY": "Chave da API",
       "EMBYPORT": "Porta",
       "EMBYADDRESSREQUIRED": "IP/DOMÍNIO requerido.",
-      "EMBYPORTREQUIRED": "Ip/Domínio requerido.",
+      "EMBYPORTREQUIRED": "Porta requerida.",
       "EMBYAPIKEYREQUIRED": "Chave API do Servidor Emby Requerida",
       "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
-      "WRONGAPIKEY": "A chave da API fornecida não é válida",
+      "WRONGAPIKEY": "Chave API inválida",
       "CHANGESERVERTYPE": "Você configurou um servidor {{currentType}}, se quiser mudar para {{newType}}, precisará reinstalar o aplicativo."
     },
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
       "AUTO": "Ativar atualizações automáticas",
-      "CHECK": "Verifique e atualize o servidor agora",
+      "CHECK": "Verifique atualização agora",
       "UPDATE:": "Atualizar servidor agora",
       "TRAIN": "Altere o trem de atualização se você quiser ter atualizações beta.",
       "ONBETA": "Você não está mais no trem Master, então você não pode voltar para ele. Se você quiser voltar no trem mestre, reinstale o servidor.",
       "TRAINWARNING": "Aqui você pode alterar o trem de atualização do mestre para o beta. Se você não sabe o que está fazendo, deixe essa configuração no mestre. Se você deseja receber as atualizações da versão beta, altere-a aqui, esteja ciente de que não será possível voltar ao mestre mais tarde. Você terá que reinstalar o servidor.",
       "CURRENTVERSION": "Versão atual: {{version}}",
       "CANTCHECK": "Não é possível verificar atualizações agora, nenhuma conexão com o GitHub foi criada por mim.",
-      "NOUPDATE": "Atualização está disponível",
+      "NOUPDATE": "Nenhuma atualização disponível",
       "NEWVERSION": "Versão {{version}} disponível para download!",
       "DISABLED": "As atualizações estão desabilitadas para este servidor e provavelmente serão atualizadas por um serviço externo. Se isso for um erro, não inicie o servidor com a opção sem atualizações."
     }
@@ -213,7 +213,7 @@
     "ISADMIN": "Administrator",
     "ISHIDDEN": "Está oculto da tela de login",
     "ISDISABLED": "está desabilitado",
-    "DELETED": "Os usuários excluídos",
+    "DELETED": "Usuários excluídos",
     "ACTIVE": "Usuários ativos",
     "LASTACTIVE": "Ativo pela última vez",
     "SORTING": {
@@ -243,13 +243,13 @@
     "LASTRUNNOW": "Última execução: agora",
     "LASTRUN": "Última execução",
     "HOURS": "{{hours}} hora (s)",
-    "MINUTES": "{{minutes}} minuto (s)",
-    "SECONDS": "{{seconds}} segundo (s)",
+    "MINUTES": "{{minutes}} minuto(s)",
+    "SECONDS": "{{seconds}} segundo(s)",
     "AND": "e",
     "AGO": "atrás",
-    "FOR": "para",
+    "FOR": "por",
     "BUTFAILED": "mas falhou depois",
-    "NORUN": "Ainda não correu",
+    "NORUN": "Ainda não processado",
     "MOMENT_AGO": "Dentro de instantes",
     "JOBLOGS": "Registros de trabalho",
     "CRONUPDATED": "Valor do Cron atualizado",
@@ -259,19 +259,19 @@
       "SMALLEMBYSYNCDESCRIPTION": "Execute uma pequena sincronização com o servidor Emby. Esta é apenas uma atualização rápida e pequena do sistema.",
       "SMALLEMBYSYNCTITLE": "Pequena sincronização com Emby",
       "STARTSMALLEMBYSYNC": "Inicie uma pequena sincronização",
-      "MEDIASYNCDESCRIPTION": "Execute uma sincronização incremental para sua coleção de filmes. Isso pode levar algum tempo para ser executado!",
+      "MEDIASYNCDESCRIPTION": "Execute uma sincronização incremental para sua coleção. Isso pode levar algum tempo para ser executado!",
       "MEDIASYNCTITLE": "Sincronização de mídia",
       "STARTMEDIASYNC": "Iniciar sincronização de mídia",
       "DATABASECLEANUPTITLE": "Limpeza de banco de dados",
       "DATABASECLEANUPDESCRIPTION": "Limpar banco de dados com dados desnecessários.",
-      "OPENJOBPAGE": "Ir para Página Principal",
+      "OPENJOBPAGE": "Ir para página principal",
       "CHECKUPDATETITLE": "Verificar novas atualizações",
       "CHECKUPDATEDESCRIPTION": "Verifica se há novas atualizações no seu trem de atualização selecionado."
     }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "Nenhum dispositivo foi encontrado",
+      "TITLE": "Nenhum filme encontrado",
       "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "NOSHOWTYPEFOUND": {
@@ -279,7 +279,7 @@
       "BODY": "Não conseguimos encontrar nenhum filme no banco de dados EmbyStat. Se você tiver filmes no Emby, tente iniciar uma nova tarefa de sincronização de mídia."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "A sincronização de mídia está em execução",
+      "TITLE": "Sincronizando. Aguarde.",
       "BODY": "A tarefa de sincronização da mídia está sendo executada em segundo plano. Por causa disso, todas as páginas de estatísticas são bloqueadas porque os cálculos estariam completamente errados, desde que a sincronização esteja em execução."
     },
     "EDIT_TRIGGER": {
@@ -294,14 +294,14 @@
   "LOADER": {
     "FETCHING": "Buscando estatísticas",
     "UPDATING": "Atualizando EmbyStat",
-    "UPDATINGSUB": "A página será atualizada quando a atualização for concluída."
+    "UPDATINGSUB": "A página será atualizada quando concluído."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Misto / Outro",
     "MUSIC": "Música",
-    "MUSICVIDEOS": "Vídeos de música",
+    "MUSICVIDEOS": "Concertos",
     "TRAILERS": "Trailer",
-    "HOMEVIDEOS": "Vídeos caseiros",
+    "HOMEVIDEOS": "Concertos",
     "BOXSETS": "Boxsets",
     "BOOKS": "Livros",
     "PHOTOS": "Fotos",
@@ -311,9 +311,9 @@
     "FOLDERS": "Pastas"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Ir a {{type}}",
+    "GOTOMEDIASERVER": "Ir para {{type}}",
     "JOBISRUNNING": "{{job}} trabalho está em execução",
-    "NOMISSEDPINGS": "Servidor Emby está vivo",
+    "NOMISSEDPINGS": "Servidor Emby está ativo",
     "ONEMISSEDPING": "Não foi possível conectar-se ao Emby na última verificação!",
     "MOREMISSEDPINGS": "Não foi possível conectar-se ao Emby após várias tentativas!"
   },
