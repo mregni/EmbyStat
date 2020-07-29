@@ -39,9 +39,9 @@ const UserDetails = (props: Props): ReactElement => {
   const getPasswordErrorMessage = (): string => {
     switch (errors.password.type) {
       case 'required':
-        return t('SETTINGS.GENERAL.NOPASSWORD');
+        return t('SETTINGS.ACCOUNT.NOPASSWORD');
       case 'minLength':
-        return t('SETTINGS.GENERAL.PASSWORDMINLENGTH');
+        return t('SETTINGS.ACCOUNT.PASSWORDMINLENGTH');
       default:
         return '';
     }
@@ -65,8 +65,8 @@ const UserDetails = (props: Props): ReactElement => {
       >
         <Grid item xs={12} md={6}>
           <TextField
-            inputRef={register({ required: t('SETTINGS.GENERAL.NOUSERNAME') })}
-            label={t('SETTINGS.GENERAL.USERNAME')}
+            inputRef={register({ required: t('SETTINGS.ACCOUNT.NOUSERNAME') })}
+            label={t('SETTINGS.ACCOUNT.USERNAME')}
             size="small"
             name="username"
             error={!!errors.username}
@@ -79,7 +79,7 @@ const UserDetails = (props: Props): ReactElement => {
         <Grid item xs={12} md={6}>
           <TextField
             inputRef={register({ required: true, minLength: 6 })}
-            label={t('SETTINGS.GENERAL.PASSWORD')}
+            label={t('SETTINGS.ACCOUNT.PASSWORD')}
             size="small"
             type="password"
             color="primary"

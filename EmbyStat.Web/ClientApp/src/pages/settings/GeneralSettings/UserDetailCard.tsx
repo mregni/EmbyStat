@@ -95,7 +95,12 @@ const UserDetailCard = (props: Props) => {
       const valid = await triggerValidation(['confirmedPassword', 'password', 'currentPassword']);
       if (valid) {
         console.log(username);
-        const result = await changePassword({ userName: username, oldPassword: currentPassword, newPassword: password });
+        const result = await changePassword(
+          {
+            userName: username,
+            oldPassword: currentPassword,
+            newPassword: password
+          });
         if (result) {
           await login({ username, password });
           SnackbarUtils.success('Password updated succesfully');

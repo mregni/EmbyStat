@@ -85,7 +85,7 @@ const PasswordRecoveryForm = (props: Props) => {
           <Grid item>
             <TextField
               inputRef={register({ required: true })}
-              label={t('SETTINGS.GENERAL.USERNAME')}
+              label={t('SETTINGS.ACCOUNT.USERNAME')}
               onChange={usernameChanged}
               value={username}
               color="primary"

@@ -45,9 +45,9 @@ const Finish = (props: Props) => {
 
   const serverType = wizard.serverType === 0 ? 'Emby' : 'Jellyfin';
 
-  const onFinish = async (triggerSync: boolean) => {
+  const onFinish = async () => {
     setIsLoading(true);
-    if (triggerSync) {
+    if (fireSync) {
       await fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e');
     }
 
@@ -78,7 +78,7 @@ const Finish = (props: Props) => {
     newSettings.enableRollbarLogging = wizard.enableRollbarLogging;
     newSettings.wizardFinished = true;
     dispatch(saveSettings(newSettings));
-    if (triggerSync) {
+    if (fireSync) {
       history.push('/jobs');
     }
     history.push('/');
@@ -122,7 +122,7 @@ const Finish = (props: Props) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => onFinish(true)}
+            onClick={onFinish}
             className={classes.button}
             disabled={isLoading}
           >

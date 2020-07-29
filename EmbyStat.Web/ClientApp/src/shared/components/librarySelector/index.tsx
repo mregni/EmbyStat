@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Zoom from '@material-ui/core/Zoom';
@@ -65,7 +65,11 @@ interface Props {
 const LibrarySelector = (props: Props) => {
   const classes = useStyles();
   const { allLibraries, libraries, address, saveList } = props;
-  const [selectedLibraries, setSelectedLibraries] = useState(libraries);
+  const [selectedLibraries, setSelectedLibraries] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedLibraries(libraries);
+  }, [libraries])
 
   const librarySelected = (libraryId: string): boolean => {
     return selectedLibraries.indexOf(libraryId, 0) > -1;

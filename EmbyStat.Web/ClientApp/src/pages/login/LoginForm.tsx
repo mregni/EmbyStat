@@ -111,7 +111,7 @@ const LoginForm = (props: Props) => {
           <Grid item>
             <TextField
               inputRef={register()}
-              label={t('SETTINGS.GENERAL.USERNAME')}
+              label={t('SETTINGS.ACCOUNT.USERNAME')}
               onChange={usernameChanged}
               value={loginView.username}
               color="primary"
@@ -122,7 +122,7 @@ const LoginForm = (props: Props) => {
           <Grid item className={classNames({ [classes.input__padding]: !failedLogin })}>
             <TextField
               inputRef={register()}
-              label={t('SETTINGS.GENERAL.PASSWORD')}
+              label={t('SETTINGS.ACCOUNT.PASSWORD')}
               type="password"
               size="small"
               color="primary"

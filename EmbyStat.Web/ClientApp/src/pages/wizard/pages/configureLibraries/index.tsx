@@ -50,6 +50,7 @@ const ConfigureLibraries = (props: Props) => {
             .map((x) => x.id);
         dispatch(setShowLibraryStepLoaded(true));
       }
+
       setSelectedLibraries(list);
       dispatch(updateSelectedLibraries(list, type));
     }
