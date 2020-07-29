@@ -77,6 +77,7 @@ const Menu = (props: Props) => {
       icon: <HomeRoundedIcon />,
       title: t('MENU.DASHBOARD'),
       route: '/',
+      roles: ['admin', 'user'],
     },
     {
       icon: <LocalMoviesRoundedIcon />,
@@ -85,18 +86,22 @@ const Menu = (props: Props) => {
         {
           title: t('COMMON.GENERAL'),
           route: '/movies/general',
+          roles: ['admin', 'user'],
         },
         {
           title: t('COMMON.PEOPLE'),
           route: '/movies/people',
+          roles: ['admin', 'user'],
         },
         {
           title: t('COMMON.GRAPHS'),
           route: '/movies/graphs',
+          roles: ['admin', 'user'],
         },
         {
           title: t('COMMON.TABLE'),
           route: '/movies/list',
+          roles: ['admin', 'user'],
         },
       ],
     },
@@ -104,6 +109,7 @@ const Menu = (props: Props) => {
       icon: <AssignmentRoundedIcon />,
       title: t('MENU.JOBS'),
       route: '/jobs',
+      roles: ['admin', 'user'],
     },
     {
       icon: <SettingsIcon />,
@@ -112,10 +118,12 @@ const Menu = (props: Props) => {
         {
           title: t('COMMON.GENERAL'),
           route: '/settings/general',
+          roles: ['admin', 'user'],
         },
         {
           title: t('COMMON.MOVIES'),
           route: '/settings/movie',
+          roles: ['admin', 'user'],
         },
       ],
     },
@@ -144,6 +152,7 @@ const Menu = (props: Props) => {
             <List classes={{ root: classes.menu__list }}>
               {menuItems.map((item) => (
                 <MenuItem
+                  roles={item.roles}
                   route={item.route}
                   icon={item.icon}
                   title={item.title}

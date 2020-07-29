@@ -13,6 +13,7 @@ import uuid from 'react-uuid';
 import List from '@material-ui/core/List';
 
 import theme from '../../../../styles/theme';
+import { checkUserRoles } from '../../../../shared/services/AccountService';
 
 const useStyles = makeStyles((theme) => ({
   menu__item: (props: any) => ({
@@ -39,6 +40,7 @@ interface Props {
   route: string | undefined;
   icon?: ReactNode;
   title: string;
+  roles?: string[];
   setDrawerOpen: Function;
   children: any;
   drawerOpen: boolean;
@@ -50,6 +52,7 @@ const MenuItem = (props: Props) => {
     route,
     icon,
     title,
+    roles,
     setDrawerOpen,
     children,
     drawerOpen,
@@ -65,6 +68,8 @@ const MenuItem = (props: Props) => {
     }
   }, [drawerOpen]);
 
+
+
   const handleNavigation = () => {
     if (small) {
       setDrawerOpen(false);
@@ -77,6 +82,13 @@ const MenuItem = (props: Props) => {
     }
     setOpen(!open);
   };
+
+  if (roles != null) {
+    const includeRole = checkUserRoles(roles);
+    if (!includeRole) {
+      return null;
+    }
+  }
 
   return (
     <>
@@ -94,8 +106,8 @@ const MenuItem = (props: Props) => {
               open ? (
                 <ExpandLessRounded />
               ) : (
-                <ExpandMoreRounded />
-              )
+                  <ExpandMoreRounded />
+                )
             ) : null}
           </ListItem>
           <Collapse in={open && drawerOpen} timeout="auto" unmountOnExit>
@@ -115,26 +127,26 @@ const MenuItem = (props: Props) => {
           </Collapse>
         </>
       ) : (
-        <ListItem
-          button
-          component={NavLink}
-          to={route as string}
-          classes={{ root: classes.menu__item }}
-          exact
-          activeClassName={classes['link--active']}
-          onClick={handleNavigation}
-        >
-          {icon != null ? (
-            <ListItemIcon classes={{ root: classes.menu__icon }}>
-              {icon}
-            </ListItemIcon>
-          ) : null}
-          <ListItemText
-            className={classNames({ [classes.hide]: !drawerOpen })}
-            primary={title}
-          />
-        </ListItem>
-      )}
+          <ListItem
+            button
+            component={NavLink}
+            to={route as string}
+            classes={{ root: classes.menu__item }}
+            exact
+            activeClassName={classes['link--active']}
+            onClick={handleNavigation}
+          >
+            {icon != null ? (
+              <ListItemIcon classes={{ root: classes.menu__icon }}>
+                {icon}
+              </ListItemIcon>
+            ) : null}
+            <ListItemText
+              className={classNames({ [classes.hide]: !drawerOpen })}
+              primary={title}
+            />
+          </ListItem>
+        )}
     </>
   );
 };
