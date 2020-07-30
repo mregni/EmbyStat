@@ -19,39 +19,44 @@ const MoviesGeneral = (props: Props) => {
   return (
     <Grid container direction="column" spacing={4}>
       <Grid item container spacing={2}>
-        {statistics.cards.map((card: Card) => (
-          <Grid item key={card.title}>
-            <BasicCard card={card} />
-          </Grid>
-        ))}
+        {statistics.cards != null
+          ? statistics.cards.map((card: Card) => (
+            <Grid item key={card.title}>
+              <BasicCard card={card} />
+            </Grid>
+          )) : null}
       </Grid>
       <Grid item container spacing={2}>
-        {statistics.topCards.map((card: TopCard) => (
-          <Grid item key={card.title}>
-            <TopListCard data={card} fallbackImg={NoPosterHigh} enableBackground />
-          </Grid>
-        ))}
+        {statistics.topCards != null
+          ? statistics.topCards.map((card: TopCard) => (
+            <Grid item key={card.title}>
+              <TopListCard data={card} fallbackImg={NoPosterHigh} enableBackground />
+            </Grid>
+          )) : null}
       </Grid>
       <Grid item container spacing={2}>
-        {statistics.people.cards.map((card: Card) => (
-          <Grid item key={uuid()}>
-            <BasicCard card={card} />
-          </Grid>
-        ))}
+        {statistics.people.cards != null
+          ? statistics.people.cards.map((card: Card) => (
+            <Grid item key={uuid()}>
+              <BasicCard card={card} />
+            </Grid>
+          )) : null}
       </Grid>
       <Grid item container spacing={2}>
-        {statistics.people.globalCards.map((card: TopCard) => (
-          <Grid item key={card.title}>
-            <TopListCard data={card} fallbackImg={NoProfileHigh} />
-          </Grid>
-        ))}
+        {statistics.people.globalCards != null
+          ? statistics.people.globalCards.map((card: TopCard) => (
+            <Grid item key={card.title}>
+              <TopListCard data={card} fallbackImg={NoProfileHigh} />
+            </Grid>
+          )) : null}
       </Grid>
       <Grid item container spacing={2}>
-        {statistics.people.mostFeaturedActorsPerGenreCards.map((card: TopCard) => (
-          <Grid item key={card.title}>
-            <TopListCard data={card} fallbackImg={NoProfileHigh} />
-          </Grid>
-        ))}
+        {statistics.people.mostFeaturedActorsPerGenreCards != null
+          ? statistics.people.mostFeaturedActorsPerGenreCards.map((card: TopCard) => (
+            <Grid item key={card.title}>
+              <TopListCard data={card} fallbackImg={NoProfileHigh} />
+            </Grid>
+          )) : null}
       </Grid>
     </Grid>
   );
