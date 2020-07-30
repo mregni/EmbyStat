@@ -2,6 +2,7 @@
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using Microsoft.AspNetCore.SignalR;
+using RestSharp;
 
 namespace EmbyStat.Common.Hubs.Job
 {
@@ -12,6 +13,7 @@ namespace EmbyStat.Common.Hubs.Job
         private static string JobReportProgressMethod => "JobReportProgress";
         private static string EmbyConnectionStatusMethod => "MediaServerConnectionState";
         private static string UpdateIsRunningMethod => "UpdateState";
+        private static string UpdateFinishedMethod => "UpdateFinished";
 
         public JobHubHelper(IHubContext<JobHub> jobHubContext)
         {
@@ -39,6 +41,11 @@ namespace EmbyStat.Common.Hubs.Job
         public async Task BroadcastUpdateState(bool isRunning)
         {
             await _jobHubContext.Clients.All.SendAsync(UpdateIsRunningMethod, isRunning);
+        }
+
+        public async Task BroadcastUpdateFinished(bool successful)
+        {
+            await _jobHubContext.Clients.All.SendAsync(UpdateFinishedMethod, successful ? 1 : 2);
         }
     }
 }

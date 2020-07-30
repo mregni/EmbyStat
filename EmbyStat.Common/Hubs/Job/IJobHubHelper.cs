@@ -10,5 +10,6 @@ namespace EmbyStat.Common.Hubs.Job
         Task BroadCastJobLog(string prefix, string message, ProgressLogType type);
         Task BroadcastEmbyConnectionStatus(int missedPings);
         Task BroadcastUpdateState(bool isRunning);
+        Task BroadcastUpdateFinished(bool successful);
     }
 }

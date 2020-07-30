@@ -12,7 +12,7 @@ import { RootState } from './store/RootReducer';
 import { SnackbarUtilsConfigurator } from './shared/utils/SnackbarUtilsConfigurator';
 import LoggedIn from './container/LoggedIn';
 import { loadJobs } from './store/JobSlice';
-import SignalRConnectionProvider from './shared/socket/SignalRConnectionProvider';
+import SignalRConnectionProvider from './shared/providers/SignalRConnectionProvider';
 import Wizard from './pages/wizard';
 
 import 'devextreme/dist/css/dx.common.css';

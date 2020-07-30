@@ -1,21 +1,54 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppThunk } from '.';
+import { AppDispatch, AppThunk } from '.';
+import { ServerState, UpdateSuccessFull } from '../shared/models/embystat';
+import { RootState } from './RootReducer';
 
-const initialState: number = 0;
+const initialState: ServerState = {
+  missedPings: 0,
+  updating: false,
+  updateSuccesfull: UpdateSuccessFull.unknown,
+}
 
 const serverStatusSlice = createSlice({
   name: 'serverStatus',
   initialState,
   reducers: {
-    receivePingResult(state, action: PayloadAction<number>) {
-      return action.payload;
-    }
+    updateState(state, action: PayloadAction<ServerState>) {
+      return {
+        ...action.payload,
+      }
+    },
   },
 });
 
-export const receivePingUpdate = (missedPings: number): AppThunk => async (dispatch) => {
-  dispatch(serverStatusSlice.actions.receivePingResult(missedPings));
+export const receivePingUpdate = (missedPings: number): AppThunk => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
+  const state = { ...getState().serverStatus };
+  console.log(state);
+  state.missedPings = missedPings;
+  console.log(state);
+  dispatch(serverStatusSlice.actions.updateState(state));
+};
+
+export const receivedServerUpdateState = (updating: boolean): AppThunk => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
+  const state = { ...getState().serverStatus };
+  state.updating = updating;
+  dispatch(serverStatusSlice.actions.updateState(state));
+};
+
+export const receivedUpdateFinishedState = (succesfull: UpdateSuccessFull): AppThunk => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
+  const state = { ...getState().serverStatus };
+  state.updateSuccesfull = succesfull;
+  dispatch(serverStatusSlice.actions.updateState(state));
 };
 
 export default serverStatusSlice;

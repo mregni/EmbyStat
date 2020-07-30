@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppDispatch, AppThunk } from '.';
 import { Language, LanguageContainer } from '../shared/models/language';
-
 import { getLanguages } from '../shared/services/SettingsService';
 import { RootState } from './RootReducer';
 

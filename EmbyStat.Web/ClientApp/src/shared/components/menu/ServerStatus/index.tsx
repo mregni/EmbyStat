@@ -39,7 +39,7 @@ const ServerStatus = (props: Props) => {
   const serverType = useServerType();
   const { t } = useTranslation();
 
-  const missedPings = useSelector((state: RootState) => state.serverStatus);
+  const status = useSelector((state: RootState) => state.serverStatus);
   const settings = useSelector((state: RootState) => state.settings);
 
   const [index, openPage] = useState(0);
@@ -58,13 +58,13 @@ const ServerStatus = (props: Props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       openPage(index === 0 ? 1 : 0);
-    }, 1000);
+    }, 700);
     return () => clearInterval(interval);
   }, [index]);
 
   useEffect(() => {
-    missedPings < 2 ? setImage(OrangeCircle) : setImage(RedCircle);
-  }, [missedPings])
+    status.missedPings < 2 ? setImage(OrangeCircle) : setImage(RedCircle);
+  }, [status.missedPings])
 
   return (
     <Grid container direction="column" className="p-16">
@@ -73,7 +73,7 @@ const ServerStatus = (props: Props) => {
           <Trans i18nKey="STATUS.TITLE" values={{ type: serverType }} />
         </Typography>
       </Grid>
-      {missedPings === 0
+      {status.missedPings === 0
         ? <Grid item container direction="row" align-items="center" spacing={1}>
           <Grid item>
             <img src={GreenCircle} alt="server online" width="20" height="20" />
@@ -96,7 +96,7 @@ const ServerStatus = (props: Props) => {
           </Grid>
           <Grid item container direction="column" className={classes.second__column}>
             <Grid item className={classNames(classes.status__text, classes.second__column)}>
-              <Trans i18nKey="STATUS.OFFLINE" values={{ count: missedPings }} />
+              <Trans i18nKey="STATUS.OFFLINE" values={{ count: status.missedPings }} />
             </Grid>
             <Grid item className={classNames(classes.status__text, classes.second__column, "wordwrap")}>
               {getFullMediaServerUrl(settings)}

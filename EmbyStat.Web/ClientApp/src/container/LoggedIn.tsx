@@ -29,6 +29,7 @@ import MovieSettings from '../pages/settings/MovieSettings';
 import PrivateRoute from '../shared/components/privateRoute';
 import theme from '../styles/theme';
 import { userLoggedIn$, logout } from '../shared/services/AccountService';
+import UpdateProvider from '../shared/providers/UpdateProvider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,73 +118,75 @@ const LoggedIn = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classNames(classes.appBar, { [classes.appBar__closed]: !openHeader })}>
-        <Toolbar>
-          <Grid container direction="row" alignItems="center" justify="space-between">
-            <Grid item className={classes.header__buttons} container direction="row" alignItems="center" >
-              <IconButton
-                color="inherit"
-                onClick={handleDrawerToggle}
-                edge="start"
-                className={classNames(classes.menuButton)}
-              >
-                {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
-              </IconButton>
-              <Typography variant="h6" noWrap>
-                EmbyStat
+      <UpdateProvider>
+        <AppBar position="fixed" className={classNames(classes.appBar, { [classes.appBar__closed]: !openHeader })}>
+          <Toolbar>
+            <Grid container direction="row" alignItems="center" justify="space-between">
+              <Grid item className={classes.header__buttons} container direction="row" alignItems="center" >
+                <IconButton
+                  color="inherit"
+                  onClick={handleDrawerToggle}
+                  edge="start"
+                  className={classNames(classes.menuButton)}
+                >
+                  {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
+                </IconButton>
+                <Typography variant="h6" noWrap>
+                  EmbyStat
               </Typography>
+              </Grid>
+              <Grid item>
+                <Button
+                  onClick={logoutUser}
+                  variant="contained"
+                  color="secondary"
+                  disabled={isLoading}
+                  className={classes.logout__button}
+                >
+                  {
+                    isLoading
+                      ? <CircularProgress size={16} className={classes.button__loading} />
+                      : t('LOGIN.LOGOUT')
+                  }
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Button
-                onClick={logoutUser}
-                variant="contained"
-                color="secondary"
-                disabled={isLoading}
-                className={classes.logout__button}
-              >
-                {
-                  isLoading
-                    ? <CircularProgress size={16} className={classes.button__loading} />
-                    : t('LOGIN.LOGOUT')
-                }
-              </Button>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <Menu open={openMenu} setOpen={setOpenMenu} />
+          </Toolbar>
+        </AppBar>
+        <Menu open={openMenu} setOpen={setOpenMenu} />
 
-      <main className={classes.content}>
-        <Switch location={location}>
-          <PrivateRoute path="/" exact>
-            <Home />
-          </PrivateRoute>
-          <PrivateRoute path={['/movies/general', '/movies']} exact>
-            <MoviesLoader Component={MoviesGeneral} />
-          </PrivateRoute>
-          <PrivateRoute path="/movies/graphs" exact>
-            <MoviesLoader Component={MoviesGraphs} />
-          </PrivateRoute>
-          <PrivateRoute path="/movies/list" exact>
-            <MoviesLoader Component={MoviesList} />
-          </PrivateRoute>
-          <PrivateRoute path="/jobs" exact>
-            <Jobs />
-          </PrivateRoute>
-          <PrivateRoute path="/settings/general" exact>
-            <GeneralSettings />
-          </PrivateRoute>
-          <PrivateRoute path="/settings/movie" exact>
-            <MovieSettings />
-          </PrivateRoute>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
-      </main>
+        <main className={classes.content}>
+          <Switch location={location}>
+            <PrivateRoute path="/" exact>
+              <Home />
+            </PrivateRoute>
+            <PrivateRoute path={['/movies/general', '/movies']} exact>
+              <MoviesLoader Component={MoviesGeneral} />
+            </PrivateRoute>
+            <PrivateRoute path="/movies/graphs" exact>
+              <MoviesLoader Component={MoviesGraphs} />
+            </PrivateRoute>
+            <PrivateRoute path="/movies/list" exact>
+              <MoviesLoader Component={MoviesList} />
+            </PrivateRoute>
+            <PrivateRoute path="/jobs" exact>
+              <Jobs />
+            </PrivateRoute>
+            <PrivateRoute path="/settings/general" exact>
+              <GeneralSettings />
+            </PrivateRoute>
+            <PrivateRoute path="/settings/movie" exact>
+              <MovieSettings />
+            </PrivateRoute>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </main>
+      </UpdateProvider>
     </div>
   );
 };

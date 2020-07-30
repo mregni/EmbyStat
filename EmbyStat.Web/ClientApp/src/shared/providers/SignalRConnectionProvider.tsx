@@ -11,7 +11,8 @@ import { Store } from 'redux';
 import jobSlice from '../../store/JobSlice';
 import { Job } from '../models/jobs';
 import jobLogsSlice from '../../store/JobLogsSlice';
-import ServerStatusSlice from '../../store/ServerStatusSlice';
+import { receivePingUpdate, receivedServerUpdateState, receivedUpdateFinishedState } from '../../store/ServerStatusSlice';
+import { UpdateSuccessFull } from '../models/embystat';
 
 interface Props {
   store: Store;
@@ -26,7 +27,6 @@ class SignalRConnectionProvider extends Component<Props, State> {
     if (this.state === null) {
       console.log('*********CONNECTING********');
       const connectionHub = `${window.location.origin}/jobs-socket`;
-      console.log(connectionHub);
       const protocol = new JsonHubProtocol();
       const transport =
         HttpTransportType.WebSockets | HttpTransportType.LongPolling;
@@ -56,7 +56,14 @@ class SignalRConnectionProvider extends Component<Props, State> {
           'MediaServerConnectionState',
           this.onMissedPingStatusReceived
         );
-        this.state.hubConnection.on('UpdateState', this.onNotifReceived);
+        this.state.hubConnection.on(
+          'UpdateState',
+          this.onUpdateProgressReceived
+        );
+        this.state.hubConnection.on(
+          'UpdateFinished',
+          this.onUpdateFinishReceived
+        );
       });
     }
   }
@@ -74,14 +81,19 @@ class SignalRConnectionProvider extends Component<Props, State> {
       .catch((err) => console.error("Can't close SignalR Connection: ", err));
   }
 
-  onNotifReceived = (res) => {
-    console.log('****** NOTIFICATION ******', res);
-  };
+  onUpdateProgressReceived = (state: boolean) => {
+    const { store } = this.props;
+    store.dispatch<any>(receivedServerUpdateState(state));
+  }
+
+  onUpdateFinishReceived = (state: UpdateSuccessFull) => {
+    const { store } = this.props;
+    store.dispatch<any>(receivedUpdateFinishedState(state));
+  }
 
   onMissedPingStatusReceived = (res: number) => {
-    console.log(res);
     const { store } = this.props;
-    store.dispatch(ServerStatusSlice.actions.receivePingResult(res));
+    store.dispatch<any>(receivePingUpdate(res));
   }
 
   onJobReportLogReceived = (res) => {

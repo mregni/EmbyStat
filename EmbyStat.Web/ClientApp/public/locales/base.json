@@ -366,7 +366,6 @@
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics",
     "UPDATING": "Updating EmbyStat",
     "UPDATINGSUB": "Page will refresh when the update is finished."
   },

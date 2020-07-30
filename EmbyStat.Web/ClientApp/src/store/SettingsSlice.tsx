@@ -86,7 +86,6 @@ export const saveSettings = (settings: Settings): AppThunk => async (
   dispatch,
   getState
 ) => {
-  console.log(settings);
   dispatch(settingsSlice.actions.receiveSettings(settings));
   updateSettings(getState().settings);
 };
