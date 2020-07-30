@@ -326,23 +326,34 @@ namespace EmbyStat.Services
 
         public PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
         {
-            return new PersonStats
+            var returnObj = new PersonStats();
+            try
             {
-                Cards = new List<Card<string>>
+                returnObj.Cards = new List<Card<string>>
                 {
                     TotalTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors),
                     TotalTypeCount(libraryIds, PersonType.Director, Constants.Common.TotalDirectors),
                     TotalTypeCount(libraryIds, PersonType.Writer, Constants.Common.TotalWriters),
-                },
-                Posters = new List<PersonPoster>
+                };
+
+                returnObj.GlobalCards = new List<TopCard>
                 {
                     GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
                     GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
                     GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
-                },
-                MostFeaturedActorsPerGenre = GetMostFeaturedActorsPerGenreAsync(libraryIds)
-            };
+                };
+
+                returnObj.MostFeaturedActorsPerGenreCards = GetMostFeaturedActorsPerGenreAsync(libraryIds);
+
+                return returnObj;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
+
 
         private Card<string> TotalTypeCount(IReadOnlyList<string> libraryIds, PersonType type, string title)
         {
@@ -357,26 +368,21 @@ namespace EmbyStat.Services
 
         }
 
-        private PersonPoster GetMostFeaturedPersonAsync(IReadOnlyList<string> libraryIds, PersonType type, string title)
+        private TopCard GetMostFeaturedPersonAsync(IReadOnlyList<string> libraryIds, PersonType type, string title)
         {
-            var personName = _movieRepository.GetMostFeaturedPerson(libraryIds, type);
-            if (personName != null)
-            {
-                var person = PersonService.GetPersonByName(personName);
-                if (person != null)
-                {
-                    return PosterHelper.ConvertToPersonPoster(person, title);
-                }
-            }
+            var people = _movieRepository
+                    .GetMostFeaturedPersons(libraryIds, type, 5)
+                    .Select(name => PersonService.GetPersonByNameForMovies(name))
+                    .ToArray();
 
-            return new PersonPoster(title);
+            return people.ConvertToTopCard(title, string.Empty, "MovieCount");
 
         }
 
-        private List<PersonPoster> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
+        private List<TopCard> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
         {
             var movies = _movieRepository.GetAll(libraryIds);
-            return GetMostFeaturedActorsPerGenre(movies);
+            return GetMostFeaturedActorsPerGenre(movies, 5);
         }
 
         #endregion

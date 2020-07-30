@@ -4,15 +4,11 @@ import { Job } from '../models/jobs';
 const domain = 'job/';
 
 export const getAllJobs = (): Promise<Job[]> => {
-  return axiosInstance.get<Job[]>(domain).then((response) => {
-    return response.data;
-  });
+  return axiosInstance.get<Job[]>(domain).then((response) => response.data);
 };
 
 export const fireJob = (id: string): Promise<void> => {
-  return axiosInstance.post(`${domain}fire/${id}`).then((response) => {
-    return response.data;
-  });
+  return axiosInstance.post(`${domain}fire/${id}`).then((response) => response.data);
 };
 
 export const updateTrigger = (id: string, cron: string): Promise<void> => {
@@ -23,4 +19,8 @@ export const updateTrigger = (id: string, cron: string): Promise<void> => {
       params: { cron },
     }
   );
+};
+
+export const getMediaSyncJob = (): Promise<Job> => {
+  return axiosInstance.get<Job>(`${domain}mediasync`).then((response) => response.data);
 };

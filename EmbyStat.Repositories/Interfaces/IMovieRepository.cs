@@ -22,7 +22,7 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<Movie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count);
         double GetTotalDiskSize(IReadOnlyList<string> libraryIds);
         int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
-        string GetMostFeaturedPerson(IReadOnlyList<string> libraryIds, PersonType type);
+        IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count);
         List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes);
         List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds);
         List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds);

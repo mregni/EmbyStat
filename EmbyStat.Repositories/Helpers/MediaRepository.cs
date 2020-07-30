@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -24,14 +22,12 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
-                    return GetWorkingLibrarySet(collection, libraryIds)
-                        .Where(x => x.PremiereDate != null)
-                        .OrderByDescending(x => x.PremiereDate)
-                        .Take(count);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .Where(x => x.PremiereDate != null)
+                    .OrderByDescending(x => x.PremiereDate)
+                    .Take(count);
             });
         }
 
@@ -39,14 +35,12 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
-                    return GetWorkingLibrarySet(collection, libraryIds)
-                        .Where(x => x.PremiereDate != null)
-                        .OrderBy(x => x.PremiereDate)
-                        .Take(count);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .Where(x => x.PremiereDate != null)
+                    .OrderBy(x => x.PremiereDate)
+                    .Take(count);
             });
         }
 
@@ -54,14 +48,12 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
-                    return GetWorkingLibrarySet(collection, libraryIds)
-                        .Where(x => x.CommunityRating != null)
-                        .OrderByDescending(x => x.CommunityRating)
-                        .Take(count);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .Where(x => x.CommunityRating != null)
+                    .OrderByDescending(x => x.CommunityRating)
+                    .Take(count);
             });
         }
 
@@ -69,14 +61,12 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
-                    return GetWorkingLibrarySet(collection, libraryIds)
-                        .Where(x => x.CommunityRating != null)
-                        .OrderBy(x => x.CommunityRating)
-                        .Take(count);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .Where(x => x.CommunityRating != null)
+                    .OrderBy(x => x.CommunityRating)
+                    .Take(count);
             });
         }
 
@@ -84,14 +74,12 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
 
-                    return GetWorkingLibrarySet(collection, libraryIds)
-                        .OrderByDescending(x => x.DateCreated)
-                        .Take(count);
-                }
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .OrderByDescending(x => x.DateCreated)
+                    .Take(count);
             });
         }
 
@@ -99,17 +87,15 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                var query = GetWorkingLibrarySet(collection, libraryIds);
+                foreach (var filter in filters)
                 {
-                    var collection = database.GetCollection<T>();
-                    var query = GetWorkingLibrarySet(collection, libraryIds);
-                    foreach (var filter in filters)
-                    {
-                        query = ApplyFilter(query, filter);
-                    }
-
-                    return query.Count();
+                    query = ApplyFilter(query, filter);
                 }
+
+                return query.Count();
             });
         }
 
@@ -122,23 +108,34 @@ namespace EmbyStat.Repositories.Helpers
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
-                    return collection.Exists(Query.All());
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return collection.Exists(Query.All());
             });
         }
 
-        public int GetMediaCountForPerson(string personId)
+        public int GetMediaCountForPerson(string name, string genre)
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<T>();
-                    return collection.FindAll().Count(x => x.People.Any(y => personId == y.Id));
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return collection
+                    .FindAll()
+                    .Where(x => x.Genres.Any(y => y == genre))
+                    .Count(x => x.People.Any(y => name == y.Name));
+            });
+        }
+
+        public int GetMediaCountForPerson(string name)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                return collection
+                    .FindAll()
+                    .Count(x => x.People.Any(y => name == y.Name));
             });
         }
 

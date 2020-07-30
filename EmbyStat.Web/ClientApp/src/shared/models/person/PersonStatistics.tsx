@@ -1,8 +1,7 @@
-import { Card } from '../common';
-import { PersonPoster } from '.';
+import { Card, TopCard } from '../common';
 
 export interface PersonStatistics {
   cards: Card[];
-  posters: PersonPoster[];
-  mostFeaturedActorsPerGenre: PersonPoster[];
+  globalCards: TopCard[];
+  mostFeaturedActorsPerGenreCards: TopCard[];
 }

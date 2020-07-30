@@ -28,7 +28,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var person = new Person{ Id = Guid.NewGuid().ToString(), Name = "reggi", IMDB = "t0000001"};
-                _personRepository.Insert(person);
+                _personRepository.Upsert(person);
 
                 using (var database = _context.LiteDatabase)
                 {

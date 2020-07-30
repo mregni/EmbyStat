@@ -64,7 +64,7 @@ namespace EmbyStat.Services
             {
                 General = CalculateGeneralStatistics(libraryIds),
                 Charts = CalculateCharts(libraryIds),
-                People = CalculatePeopleStatistics(libraryIds)
+                //People = CalculatePeopleStatistics(libraryIds)
             };
 
             var json = JsonConvert.SerializeObject(statistics);
@@ -331,19 +331,19 @@ namespace EmbyStat.Services
 
         #region People
 
-        private PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
-        {
-            return new PersonStats
-            {
-                MostFeaturedActorsPerGenre = GetMostFeaturedActorsPerGenreAsync(libraryIds)
-            };
-        }
+        //private PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
+        //{
+        //    return new PersonStats
+        //    {
+        //        MostFeaturedActorsPerGenreCards = GetMostFeaturedActorsPerGenreAsync(libraryIds)
+        //    };
+        //}
 
-        private List<PersonPoster> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
-        {
-            var shows = _showRepository.GetAllShows(libraryIds, false, false).ToList();
-            return GetMostFeaturedActorsPerGenre(shows);
-        }
+        //private List<PersonPoster> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
+        //{
+        //    var shows = _showRepository.GetAllShows(libraryIds, false, false).ToList();
+        //    return GetMostFeaturedActorsPerGenre(shows);
+        //}
 
         #endregion
 

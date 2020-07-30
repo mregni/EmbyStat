@@ -90,11 +90,6 @@ const Menu = (props: Props) => {
           roles: [UserRoles.Admin, UserRoles.User],
         },
         {
-          title: t('COMMON.PEOPLE'),
-          route: '/movies/people',
-          roles: [UserRoles.Admin, UserRoles.User],
-        },
-        {
           title: t('COMMON.GRAPHS'),
           route: '/movies/graphs',
           roles: [UserRoles.Admin, UserRoles.User],

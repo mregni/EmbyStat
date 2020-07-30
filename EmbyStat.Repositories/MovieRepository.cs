@@ -11,6 +11,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
@@ -151,7 +152,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public string GetMostFeaturedPerson(IReadOnlyList<string> libraryIds, PersonType type)
+        public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
         {
             return ExecuteQuery(() =>
             {
@@ -164,7 +165,7 @@ namespace EmbyStat.Repositories
                     .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})
                     .OrderByDescending(x => x.Count)
                     .Select(x => x.Name)
-                    .FirstOrDefault();
+                    .Take(count);
             });
         }
 

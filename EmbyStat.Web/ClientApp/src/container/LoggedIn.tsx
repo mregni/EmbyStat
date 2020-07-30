@@ -19,7 +19,6 @@ import Menu from '../shared/components/menu';
 import Home from '../pages/home';
 import MoviesLoader from '../pages/movies/Helpers/MoviesLoader';
 import MoviesGeneral from '../pages/movies/MoviesGeneral';
-import MoviesPeople from '../pages/movies/MoviesPeople';
 import MoviesGraphs from '../pages/movies/MoviesGraphs';
 import MoviesList from '../pages/movies/MoviesList';
 import Jobs from '../pages/jobs';
@@ -161,9 +160,6 @@ const LoggedIn = (props: Props) => {
           </PrivateRoute>
           <PrivateRoute path={['/movies/general', '/movies']} exact>
             <MoviesLoader Component={MoviesGeneral} />
-          </PrivateRoute>
-          <PrivateRoute path="/movies/people" exact>
-            <MoviesLoader Component={MoviesPeople} />
           </PrivateRoute>
           <PrivateRoute path="/movies/graphs" exact>
             <MoviesLoader Component={MoviesGraphs} />

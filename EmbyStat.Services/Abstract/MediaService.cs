@@ -9,6 +9,7 @@ using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
@@ -133,28 +134,23 @@ namespace EmbyStat.Services.Abstract
 
         #region People
 
-        internal List<PersonPoster> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media)
+        internal List<TopCard> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media, int count)
         {
-            var list = new List<PersonPoster>();
+            var list = new List<TopCard>();
             foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
             {
                 var selectedMovies = media.Where(x => x.Genres.Any(y => y == genre));
-                var personName = selectedMovies
+                var people = selectedMovies
                     .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                    .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})
                     .OrderByDescending(x => x.Count)
                     .Select(x => x.Name)
-                    .FirstOrDefault();
+                    .Take(count)
+                    .Select(name => PersonService.GetPersonByNameForMovies(name, genre))
+                    .ToArray();
 
-                if (personName != null)
-                {
-                    var person = PersonService.GetPersonByName(personName);
-                    if (person != null)
-                    {
-                        list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
-                    }
-                }
+                list.Add(people.ConvertToTopCard(genre, string.Empty, "MovieCount"));
             }
 
             return list;

@@ -608,7 +608,7 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var person = _movieRepository.GetMostFeaturedPerson(new string[0], PersonType.Actor);
+                var person = _movieRepository.GetMostFeaturedPersons(new string[0], PersonType.Actor);
                 person.Should().NotBeNullOrWhiteSpace();
                 person.Should().Be("Gimli");
             });

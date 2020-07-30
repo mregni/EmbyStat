@@ -19,8 +19,8 @@ const initialState: MovieStatisticsContainer = {
     shorts: [],
     people: {
       cards: [],
-      mostFeaturedActorsPerGenre: [],
-      posters: [],
+      mostFeaturedActorsPerGenreCards: [],
+      globalCards: [],
     },
   },
   isLoaded: false,

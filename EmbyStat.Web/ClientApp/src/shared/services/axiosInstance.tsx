@@ -5,7 +5,7 @@ import i18n from '../../i18n';
 
 const axiosInstance = axios.create({
   baseURL: '/api/',
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json'
   }

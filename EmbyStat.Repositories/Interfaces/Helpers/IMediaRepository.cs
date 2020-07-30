@@ -14,6 +14,7 @@ namespace EmbyStat.Repositories.Interfaces.Helpers
         int GetMediaCount(IReadOnlyList<string> libraryIds);
         int GetMediaCount(Filter[] filters, IReadOnlyList<string> libraryIds);
         bool Any();
-        int GetMediaCountForPerson(string personId);
+        int GetMediaCountForPerson(string name, string genre);
+        int GetMediaCountForPerson(string name);
     }
 }

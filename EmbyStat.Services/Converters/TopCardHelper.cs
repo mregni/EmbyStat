@@ -52,5 +52,36 @@ namespace EmbyStat.Services.Converters
         {
             return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
+
+        public static TopCard ConvertToTopCard(this Person[] list, string title, string unit, string valueSelector)
+        {
+            var values = list.Select(x =>
+            {
+                
+                var propertyInfo = typeof(Person).GetProperty(valueSelector);
+                var value = propertyInfo?.GetValue(x, null).ToString();
+                if (propertyInfo?.PropertyType == typeof(DateTimeOffset?))
+                {
+                    value = DateTimeOffset.Parse(value).ToString("O");
+                }
+
+                return new TopCardItem
+                {
+                    Value = value,
+                    Label = x.Name,
+                    MediaId = x.Id,
+                    Image = x.Primary
+                };
+            }).ToArray();
+
+            return new TopCard
+            {
+                Title = title,
+                Values = values,
+                Unit = unit,
+                UnitNeedsTranslation = false,
+                ValueType = ValueTypeEnum.None
+            };
+        }
     }
 }

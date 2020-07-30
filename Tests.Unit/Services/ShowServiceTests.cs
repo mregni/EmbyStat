@@ -534,12 +534,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
-            stat.People.MostFeaturedActorsPerGenre.Should().NotBeNull();
-            stat.People.MostFeaturedActorsPerGenre.Count.Should().Be(4);
-            stat.People.MostFeaturedActorsPerGenre[0].Title.Should().Be("Action");
-            stat.People.MostFeaturedActorsPerGenre[1].Title.Should().Be("Comedy");
-            stat.People.MostFeaturedActorsPerGenre[2].Title.Should().Be("Drama");
-            stat.People.MostFeaturedActorsPerGenre[3].Title.Should().Be("War");
+            stat.People.MostFeaturedActorsPerGenreCards.Should().NotBeNull();
+            stat.People.MostFeaturedActorsPerGenreCards.Count.Should().Be(4);
+            stat.People.MostFeaturedActorsPerGenreCards[0].Title.Should().Be("Action");
+            stat.People.MostFeaturedActorsPerGenreCards[1].Title.Should().Be("Comedy");
+            stat.People.MostFeaturedActorsPerGenreCards[2].Title.Should().Be("Drama");
+            stat.People.MostFeaturedActorsPerGenreCards[3].Title.Should().Be("War");
         }
 
         #endregion

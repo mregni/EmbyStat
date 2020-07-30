@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import uuid from 'react-uuid';
 import moment from 'moment';
+import classNames from 'classnames';
 
 import { useSelector } from 'react-redux';
 import { TopCard, TopCardItem } from '../../models/common';
@@ -13,9 +14,11 @@ import { RootState } from '../../../store/RootReducer';
 import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
 
 const useStyles = makeStyles((theme) => ({
-  container: (props: any) => ({
+  container: {
     width: 375,
     height: 138,
+  },
+  container__background: (props: any) => ({
     backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url(${props.backdrop})`,
     backgroundPosition: 'top',
     backgroundSize: 'cover',
@@ -60,10 +63,12 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   data: TopCard;
+  fallbackImg: string;
+  enableBackground: boolean;
 }
 
 const TopListCard = (props: Props) => {
-  const { data } = props;
+  const { data, fallbackImg, enableBackground } = props;
   const { t } = useTranslation();
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
 
@@ -90,12 +95,21 @@ const TopListCard = (props: Props) => {
     return Math.round(parseInt(ticks) / 600000000);
   };
 
+  const addDefaultSrc = (e) => {
+    e.target.src = fallbackImg
+  }
+
   return (
     <Zoom in={true}>
-      <Paper elevation={5} className={classes.container}>
+      <Paper elevation={5} className={classNames(classes.container, { [classes.container__background]: enableBackground })}>
         <Grid container direction="row">
           <Grid item className={classes.poster}>
-            <img src={getPosterUrl()} alt="poster" width="92" height="138" />
+            <img
+              src={getPosterUrl()}
+              alt="poster"
+              width="92"
+              height="138"
+              onError={addDefaultSrc} />
           </Grid>
           <Grid item className={classes.info} container direction="column">
             <Grid
@@ -144,5 +158,9 @@ const TopListCard = (props: Props) => {
     </Zoom>
   );
 };
+
+TopListCard.defaultProps = {
+  enableBackground: false,
+}
 
 export default TopListCard;
