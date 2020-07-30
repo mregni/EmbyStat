@@ -25,8 +25,8 @@ class SignalRConnectionProvider extends Component<Props, State> {
   componentDidMount() {
     if (this.state === null) {
       console.log('*********CONNECTING********');
-      const urlRoot = 'http://localhost:6555';
-      const connectionHub = `${urlRoot}/jobs-socket`;
+      const connectionHub = `${window.location.origin}/jobs-socket`;
+      console.log(connectionHub);
       const protocol = new JsonHubProtocol();
       const transport =
         HttpTransportType.WebSockets | HttpTransportType.LongPolling;

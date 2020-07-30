@@ -59,8 +59,6 @@ export const refreshLogin = (
   return axiosInstance
     .post<AuthenticateResponse>(`${domain}refreshtoken`, refresh)
     .then((response) => {
-      console.log("refresh token data: " + response.data.accessToken);
-      console.log(isNullOrUndefined(response.data));
       if (isNullOrUndefined(response.data) || isNullOrUndefined(response.data.accessToken)) {
         return false;
       }
@@ -157,7 +155,7 @@ export const getUserInfo = (): User | null => {
 
 export const checkUserRoles = (roles: string[]): boolean => {
   const accessToken = localStorage.getItem(accessTokenStr);
-  if (accessToken === ('undefined' || undefined || null)) {
+  if (['undefined', undefined, null].includes(accessToken)) {
     return false;
   }
 
@@ -167,7 +165,6 @@ export const checkUserRoles = (roles: string[]): boolean => {
 };
 
 const setLocalStorage = (tokenInfo: AuthenticateResponse) => {
-  console.log("storing refresh token: " + tokenInfo.refreshToken);
   localStorage.setItem(accessTokenStr, tokenInfo.accessToken);
   localStorage.setItem(refreshTokenStr, tokenInfo.refreshToken);
 };

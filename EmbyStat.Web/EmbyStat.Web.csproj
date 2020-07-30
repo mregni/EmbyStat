@@ -44,91 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="ClientApp\dist\**" />
-    <Compile Remove="ClientApp\src\app\about\**" />
-    <Compile Remove="ClientApp\src\app\activity\**" />
-    <Compile Remove="ClientApp\src\app\components\**" />
-    <Compile Remove="ClientApp\src\app\logs\**" />
-    <Compile Remove="ClientApp\src\app\movie\**" />
-    <Compile Remove="ClientApp\src\app\server\**" />
-    <Compile Remove="ClientApp\src\app\settings\**" />
-    <Compile Remove="ClientApp\src\app\show\**" />
-    <Compile Remove="ClientApp\src\app\user\**" />
-    <Compile Remove="config\**" />
-    <Compile Remove="wwwroot\**" />
-    <Content Remove="$(SpaRoot)**" />
-    <Content Remove="ClientApp\dist\**" />
-    <Content Remove="ClientApp\src\app\about\**" />
-    <Content Remove="ClientApp\src\app\activity\**" />
-    <Content Remove="ClientApp\src\app\components\**" />
-    <Content Remove="ClientApp\src\app\logs\**" />
-    <Content Remove="ClientApp\src\app\movie\**" />
-    <Content Remove="ClientApp\src\app\server\**" />
-    <Content Remove="ClientApp\src\app\settings\**" />
-    <Content Remove="ClientApp\src\app\show\**" />
-    <Content Remove="ClientApp\src\app\user\**" />
-    <Content Remove="config\**" />
-    <Content Remove="wwwroot\**" />
-    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="ClientApp\dist\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\about\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\activity\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\components\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\logs\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\movie\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\server\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\settings\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\show\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\user\**" />
-    <EmbeddedResource Remove="config\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
-    <None Remove="ClientApp\dist\**" />
-    <None Remove="ClientApp\src\app\about\**" />
-    <None Remove="ClientApp\src\app\activity\**" />
-    <None Remove="ClientApp\src\app\components\**" />
-    <None Remove="ClientApp\src\app\logs\**" />
-    <None Remove="ClientApp\src\app\movie\**" />
-    <None Remove="ClientApp\src\app\server\**" />
-    <None Remove="ClientApp\src\app\settings\**" />
-    <None Remove="ClientApp\src\app\show\**" />
-    <None Remove="ClientApp\src\app\user\**" />
-    <None Remove="config\**" />
-    <None Remove="wwwroot\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="ClientApp\src\app\app-material.module.ts" />
-    <None Remove="ClientApp\src\app\shared\directives\digit-only.directive.ts" />
-    <None Remove="ClientApp\src\app\shared\error.interceptor.ts" />
-    <None Remove="ClientApp\src\app\shared\guards\sync.guard.ts" />
-    <None Remove="ClientApp\src\app\shared\helpers\configHelper.ts" />
-    <None Remove="ClientApp\src\app\shared\helpers\listToQueryParam.ts" />
-    <None Remove="ClientApp\src\app\shared\models\bar.ts" />
-    <None Remove="ClientApp\src\app\shared\models\collection.ts" />
-    <None Remove="ClientApp\src\app\shared\models\list-container.ts" />
-    <None Remove="ClientApp\src\app\shared\models\poster.js" />
-    <None Remove="ClientApp\src\app\shared\models\poster.js" />
-    <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
-    <None Remove="ClientApp\src\app\shared\models\poster.js.map" />
-    <None Remove="ClientApp\src\app\shared\pipes\shorten-string.pipe.ts" />
-    <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
-    <None Remove="ClientApp\src\app\shared\services\language.service.spec.ts" />
-    <None Remove="ClientApp\src\app\shared\services\media-server.service.ts" />
-    <None Remove="ClientApp\src\app\shared\services\side-bar.service.ts" />
-    <None Remove="ClientApp\src\app\shared\services\system.service.ts" />
-    <None Remove="ClientApp\src\app\shared\services\toast.service.ts" />
-    <None Remove="ClientApp\src\app\shared\services\update-overlay.service.ts" />
-    <None Remove="ClientApp\src\app\shared\services\update.service.ts" />
-    <None Remove="ClientApp\src\app\states\app.actions.ts" />
-    <None Remove="ClientApp\src\app\states\app.state.ts" />
-    <None Remove="win10-x64-v0.1.0-beta.37.zip" />
-  </ItemGroup>
-
-  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
@@ -138,22 +53,6 @@
     <ProjectReference Include="..\EmbyStat.Migrator\EmbyStat.Migrator.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\shared\directives\digit-only.directive.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\guards\sync.guard.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\list-container.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\update-overlay.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\side-bar.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\system.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\media-server.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\job-socket.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\services\toast.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\states\app.actions.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\states\app.state.ts" />
   </ItemGroup>
 
   <ItemGroup>

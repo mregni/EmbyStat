@@ -260,10 +260,7 @@ namespace EmbyStat.Web
                 if (env.IsDevelopment())
                 {
                     spa.Options.SourcePath = "ClientApp/build";
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseReactDevelopmentServer(npmScript: "start");
-                    }
+                    spa.UseReactDevelopmentServer(npmScript: "start");
                 }
                 else
                 {
