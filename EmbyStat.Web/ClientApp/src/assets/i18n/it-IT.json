@@ -305,39 +305,39 @@
     "BOXSETS": "Cofanetti",
     "BOOKS": "Libri",
     "PHOTOS": "Foto",
-    "GAMES": "Games",
+    "GAMES": "Giochi",
     "LIVETV": "Live TV",
     "PLAYLISTS": "Playlists",
-    "FOLDERS": "Folders"
+    "FOLDERS": "Cartelle"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
-    "JOBISRUNNING": "{{job}} job is running",
-    "NOMISSEDPINGS": "Emby server is alive",
-    "ONEMISSEDPING": "Couldn't connect to Emby on the last check!",
-    "MOREMISSEDPINGS": "Couldn't connect to Emby after multiple attempts!"
+    "GOTOMEDIASERVER": "Vai a {{type}}",
+    "JOBISRUNNING": "{{job}} lavoro in esecuzione",
+    "NOMISSEDPINGS": "Il server Emby è attivo",
+    "ONEMISSEDPING": "Impossibile connettersi a Emby nell'ultimo controllo!",
+    "MOREMISSEDPINGS": "Impossibile connettersi a Emby dopo più tentativi!"
   },
   "ABOUT": {
-    "SERVERINFO": "Server info",
-    "GITHUBRELEASE": "Releases on Github",
-    "REQUESTFEATURE": "Request feature",
-    "LOGBUG": "Log bug on Github",
-    "HELPTRANSLATE": "Help translate the app",
+    "SERVERINFO": "Informazioni sul server",
+    "GITHUBRELEASE": "Rilasci su Github",
+    "REQUESTFEATURE": "Richiedi funzionalità",
+    "LOGBUG": "Log bug su Github",
+    "HELPTRANSLATE": "Aiuta a tradurre l'app",
     "THANKS": {
-      "TITLE": "Thanks",
-      "TEXT": "A big thanks to the following people for translating the app in their native language:"
+      "TITLE": "Grazie",
+      "TEXT": "Un grande ringraziamento alle seguenti persone per aver tradotto l'app nella loro lingua madre:"
     },
     "ACTIONS": {
-      "TITLE": "Actions"
+      "TITLE": "Azioni"
     }
   },
   "EMBYSERVER": {
-    "HOSTOS": "Host OS",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "CACHEPATH": "Cache path",
-    "LOGPATH": "Log path",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port"
+    "HOSTOS": "Sistema operativo host",
+    "WANADDRESS": "Indirizzo WAN",
+    "LANADDRESS": "Indirizzo LAN",
+    "CACHEPATH": "Percorso cache",
+    "LOGPATH": "Percorso dei log",
+    "HTTPPORT": "Porta HTTP",
+    "HTTPSPORT": "Porta HTTPS"
   }
 }
