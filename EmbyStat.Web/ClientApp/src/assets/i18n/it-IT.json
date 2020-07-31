@@ -196,21 +196,21 @@
     "UPDATE": {
       "MASTER": "Master",
       "BETA": "Beta",
-      "AUTO": "Enable auto updates",
+      "AUTO": "Abilita aggiornamenti automatici",
       "CHECK": "Check and update server now",
-      "UPDATE:": "Update server now",
+      "UPDATE:": "Aggiorna il server ora",
       "TRAIN": "Change the update train if you want to have beta updates.",
       "ONBETA": "You are not on the Master train anymore so you can't switch back to it. If you want to go back on the master train, please reinstall the server.",
       "TRAINWARNING": "Here you can change the update train from master to beta. If you don't know what you are doing just leave this setting on Master. If you want to receive the Beta updates change it here, be aware that you can't go back to Master later. You will have to reinstall the server.",
-      "CURRENTVERSION": "Current version: {{version}}",
+      "CURRENTVERSION": "Versione attuale: {{version}}",
       "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "No update available",
+      "NOUPDATE": "Nessun aggiornamento disponibile",
       "NEWVERSION": "Version {{version}} available for download!",
       "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
     }
   },
   "USERS": {
-    "ISADMIN": "Is administrator",
+    "ISADMIN": "È amministratore",
     "ISHIDDEN": "È nascosto dalla schermata di accesso",
     "ISDISABLED": "È disabilitato",
     "DELETED": "Utenti eliminati",
@@ -240,71 +240,71 @@
     }
   },
   "JOB": {
-    "LASTRUNNOW": "Last run: just now",
-    "LASTRUN": "Last run",
+    "LASTRUNNOW": "Ultima esecuzione: proprio ora",
+    "LASTRUN": "Ultima esecuzione",
     "HOURS": "{{hours}} hour(s)",
-    "MINUTES": "{{minutes}} minute(s)",
-    "SECONDS": "{{seconds}} second(s)",
-    "AND": "and",
-    "AGO": "ago",
-    "FOR": "for",
-    "BUTFAILED": "but failed after",
-    "NORUN": "Not ran yet",
-    "MOMENT_AGO": "a moment",
+    "MINUTES": "{{minutes}} minuto(i)",
+    "SECONDS": "{{seconds}} secondo(i)",
+    "AND": "e",
+    "AGO": "fa",
+    "FOR": "per",
+    "BUTFAILED": "ma fallito dopo",
+    "NORUN": "Non ancora eseguito",
+    "MOMENT_AGO": "un momento",
     "JOBLOGS": "Job logs",
-    "CRONUPDATED": "Cron value updated",
+    "CRONUPDATED": "Valore Cron aggiornato",
     "INFO": {
-      "PINGEMBYSERVERTITLE": "Check Emby connection",
-      "PINGEMBYSERVERDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SMALLEMBYSYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SMALLEMBYSYNCTITLE": "Small sync with Emby",
-      "STARTSMALLEMBYSYNC": "Start small sync",
-      "MEDIASYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIASYNCTITLE": "Media synchronization",
-      "STARTMEDIASYNC": "Start media sync",
-      "DATABASECLEANUPTITLE": "Database cleanup",
-      "DATABASECLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "OPENJOBPAGE": "Go to job page",
-      "CHECKUPDATETITLE": "Check for new updates",
+      "PINGEMBYSERVERTITLE": "Controlla la connessione Emby",
+      "PINGEMBYSERVERDESCRIPTION": "Esegui il ping del server Emby per verificare se è ancora online.",
+      "SMALLEMBYSYNCDESCRIPTION": "Esegui una piccola sincronizzazione con il server Emby. Questo è un aggiornamento di sistema rapido e di piccole dimensioni.",
+      "SMALLEMBYSYNCTITLE": "Piccola sincronizzazione con Emby",
+      "STARTSMALLEMBYSYNC": "Inizia una piccola sincronizzazione",
+      "MEDIASYNCDESCRIPTION": "Esegui una sincronizzazione incrementale per la tua raccolta di film. Questo può richiedere del tempo per l'esecuzione!",
+      "MEDIASYNCTITLE": "Sincronizzazione multimediale",
+      "STARTMEDIASYNC": "Avvia sincronizzazione media",
+      "DATABASECLEANUPTITLE": "Pulizia database",
+      "DATABASECLEANUPDESCRIPTION": "Pulizia del database di dati inutili.",
+      "OPENJOBPAGE": "Vai alla pagina del lavoro",
+      "CHECKUPDATETITLE": "Controlla nuovi aggiornamenti",
       "CHECKUPDATEDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
   "DIALOGS": {
     "NOMOVIETYPEFOUND": {
-      "TITLE": "No movies found",
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Nessun film trovato",
+      "BODY": "Non siamo riusciti a trovare nessun film nel database di EmbyStat. Se hai film in Emby, dovresti provare ad avviare una nuova attività di sincronizzazione multimediale."
     },
     "NOSHOWTYPEFOUND": {
-      "TITLE": "No shows found",
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in Emby you should try starting a new media syncronisation task."
+      "TITLE": "Nessuno spettacolo trovato",
+      "BODY": "Non è stato possibile trovare nessuno spettacolo nel database EmbyStat. Se hai degli spettacoli in Emby, dovresti provare ad avviare una nuova attività di sincronizzazione dei media."
     },
     "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media sync task is running",
-      "BODY": "The media syncronisation task is running in the background. Because of this all statistics pages are block because the calculations would be completely wrong as long as the sync is running."
+      "TITLE": "L'attività di sincronizzazione media è in esecuzione",
+      "BODY": "L'attività di sincronizzazione dei media è in esecuzione in background. Per questo motivo tutte le pagine delle statistiche sono bloccate perché i calcoli sarebbero completamente sbagliati finché la sincronizzazione è in esecuzione."
     },
     "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Here</a> you can find more information on how to format a CRON string. Only numbers, *, / and - are allowed."
+      "FORMAT_ERROR": "La stringa cron data è in un formato errato. Controlla <a href=\"https://crontab.guru/\" target=\"_blank\">qui</a> per le regole di formattazione. Sono ammessi solo numeri, spazi, *, / e -.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Qui</a> puoi trovare ulteriori informazioni su come formattare una stringa CRON. Sono ammessi solo numeri, *, / e -."
     },
     "NOUSERSFOUND": {
-      "TITLE": "No users found",
+      "TITLE": "Nessun utente trovato",
       "BODY": "No users are found in the local database. This means that no small sync job as run. You want to run it now?"
     }
   },
   "LOADER": {
-    "FETCHING": "Fetching statistics",
-    "UPDATING": "Updating EmbyStat",
-    "UPDATINGSUB": "Page will refresh when the update is finished."
+    "FETCHING": "Recupero statistiche",
+    "UPDATING": "Aggiornamento EmbyStat",
+    "UPDATINGSUB": "La pagina verrà aggiornata al termine dell'aggiornamento."
   },
   "COLLECTIONTYPES": {
     "MIXED": "Mixed / Other",
-    "MUSIC": "Music",
-    "MUSICVIDEOS": "Music videos",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home videos",
-    "BOXSETS": "Boxsets",
-    "BOOKS": "Books",
-    "PHOTOS": "Photos",
+    "MUSIC": "Musica",
+    "MUSICVIDEOS": "Video musicali",
+    "TRAILERS": "Trailer",
+    "HOMEVIDEOS": "Video domestici",
+    "BOXSETS": "Cofanetti",
+    "BOOKS": "Libri",
+    "PHOTOS": "Foto",
     "GAMES": "Games",
     "LIVETV": "Live TV",
     "PLAYLISTS": "Playlists",
