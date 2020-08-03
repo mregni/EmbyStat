@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
+import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
+import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import SettingsIcon from '@material-ui/icons/Settings';
 import uuid from 'react-uuid';
 import classNames from 'classnames';
@@ -102,9 +104,21 @@ const Menu = (props: Props) => {
       ],
     },
     {
+      icon: <StorageRoundedIcon />,
+      title: t('MENU.SERVER'),
+      route: '/mediaserver',
+      roles: [UserRoles.Admin, UserRoles.User],
+    },
+    {
       icon: <AssignmentRoundedIcon />,
       title: t('MENU.JOBS'),
       route: '/jobs',
+      roles: [UserRoles.Admin, UserRoles.User],
+    },
+    {
+      icon: <DescriptionRoundedIcon />,
+      title: t('MENU.LOGS'),
+      route: '/logs',
       roles: [UserRoles.Admin, UserRoles.User],
     },
     {

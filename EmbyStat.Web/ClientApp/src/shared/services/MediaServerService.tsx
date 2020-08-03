@@ -6,6 +6,7 @@ import {
   MediaServerInfo,
   MediaServerUser,
   Library,
+  MediaServerPlugin,
 } from '../models/mediaServer';
 
 const domain = 'mediaserver/';
@@ -61,6 +62,16 @@ export const getServerInfo = (
       return null;
     });
 };
+
+export const getPlugins = (): Promise<MediaServerPlugin[] | null> => {
+  return axiosInstance.get<MediaServerPlugin[]>(`${domain}plugins`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch(() => {
+      return null;
+    });
+}
 
 export const getLibraries = (): Promise<Library[] | null> => {
   return axiosInstance.get<Library[]>(`${domain}server/libraries`)

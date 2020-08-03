@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Zoom from '@material-ui/core/Zoom';
 import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
@@ -17,9 +14,9 @@ import {
   Library,
 } from '../../../../shared/models/mediaServer';
 import { Wizard } from '../../../../shared/models/wizard';
-import Emby from '../../../../shared/assets/images/emby.png';
-import Jellyfin from '../../../../shared/assets/images/jellyfin.png';
+
 import EmbyStatSelect from '../../../../shared/components/inputs/select/EmbyStatSelect';
+import MediaServerHeader from '../../../../shared/components/mediaServerHeader';
 import {
   setAdminId,
   setAllLibraries,
@@ -75,16 +72,6 @@ const TestSuccessFul = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const openServer = () => {
-    const protocol = wizard.serverProtocol === 0 ? 'https://' : 'http://';
-    window.open(
-      `${protocol}${wizard.serverAddress}:${wizard.serverPort}${
-      wizard?.serverBaseurl ?? ''
-      }`,
-      '_blank'
-    );
-  };
-
   useEffect(() => {
     dispatch(setAdminId(selectedAdmin));
   }, [selectedAdmin, dispatch]);
@@ -98,135 +85,20 @@ const TestSuccessFul = (props: Props) => {
   }, [dispatch, libraries]);
 
   const adminChanged = (event) => {
-    console.log(event.target.value);
     setSelectedAdmin(event.target.value);
   };
 
-  const getReleaseString = (updatelevel: number): string => {
-    if (serverInfo.systemUpdateLevel === 0) {
-      return 'Release';
-    }
-    else if (serverInfo.systemUpdateLevel === 1) {
-      return 'Beta';
-    }
-    return 'Dev';
-  }
+  const generateServerAddress = (): string => {
+    const protocol = wizard.serverProtocol === 0 ? 'https://' : 'http://';
+    return `${protocol}${wizard.serverAddress}:${wizard.serverPort}${wizard?.serverBaseurl ?? ''}`
+  };
 
   return (
     <Grid item xs={12} className="m-t-32">
-      <Zoom in={true} style={{ transitionDelay: '100ms' }}>
-        <Card elevation={7} square className={classes.root}>
-          <CardMedia
-            className={classes.cover}
-            component="img"
-            image={wizard.serverType === 0 ? Emby : Jellyfin}
-            title="Media server logo"
-          />
-          <CardContent>
-            <Grid item container direction="row">
-              <Grid
-                item
-                md={4}
-                container
-                direction="column"
-                justify="flex-start"
-                className="m-l-32"
-              >
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__header}
-                >
-                  <Trans i18nKey="COMMON.SERVERNAME" />
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__name}
-                >
-                  {serverInfo.serverName}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__header}
-                >
-                  <Trans i18nKey="COMMON.VERSION" />
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__name}
-                >
-                  {serverInfo.version}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__header}
-                >
-                  <Trans i18nKey="COMMON.OS" />
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__name}
-                >
-                  {serverInfo.operatingSystem}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                md={4}
-                container
-                direction="column"
-                justify="flex-start"
-              >
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__header}
-                >
-                  <Trans i18nKey="COMMON.LANADDRESS" />
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__name}
-                >
-                  {serverInfo.localAddress}
-                </Typography>
-                {serverInfo.wanAddress !== null ? (
-                  <>
-                    <Typography
-                      variant="body1"
-                      className={classes.server__details__header}
-                    >
-                      <Trans i18nKey="COMMON.WANADDRESS" />
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      className={classes.server__details__name}
-                    >
-                      {serverInfo.wanAddress}
-                    </Typography>
-                  </>
-                ) : null}
-
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__header}
-                >
-                  <Trans i18nKey="COMMON.UPDATELEVEL" />
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={classes.server__details__name}
-                >
-                  {getReleaseString(serverInfo.systemUpdateLevel)}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            <OpenInNewIcon
-              className={classes.server__details__icon}
-              onClick={() => openServer()}
-            />
-          </CardContent>
-        </Card>
-      </Zoom>
+      <MediaServerHeader
+        serverType={wizard.serverType}
+        serverInfo={serverInfo}
+        serverAddress={generateServerAddress()} />
       {wizard.serverType === 1 ? (
         <Zoom in={true} style={{ transitionDelay: '300ms' }}>
           <Card

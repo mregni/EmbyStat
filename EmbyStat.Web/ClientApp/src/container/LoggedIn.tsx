@@ -22,6 +22,8 @@ import MoviesGeneral from '../pages/movies/MoviesGeneral';
 import MoviesGraphs from '../pages/movies/MoviesGraphs';
 import MoviesList from '../pages/movies/MoviesList';
 import Jobs from '../pages/jobs';
+import Logs from '../pages/logs';
+import MediaServer from '../pages/mediaServer';
 import NotFound from '../pages/notFound';
 import Login from '../pages/login';
 import GeneralSettings from '../pages/settings/GeneralSettings';
@@ -168,6 +170,12 @@ const LoggedIn = (props: Props) => {
             </PrivateRoute>
             <PrivateRoute path="/movies/list" exact>
               <MoviesLoader Component={MoviesList} />
+            </PrivateRoute>
+            <PrivateRoute path="/mediaserver" exact>
+              <MediaServer />
+            </PrivateRoute>
+            <PrivateRoute path="/logs" exact>
+              <Logs />
             </PrivateRoute>
             <PrivateRoute path="/jobs" exact>
               <Jobs />

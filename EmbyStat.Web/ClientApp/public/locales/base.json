@@ -2,7 +2,6 @@
   "COMMON": {
     "SERVERNAME": "Server name",
     "DOWNLOAD": "download",
-    "ANONYMISEDDOWNLOAD": "Anonymised download",
     "HIDE": "Hide",
     "NEXT": "next",
     "BACK": "back",
@@ -79,7 +78,14 @@
     "TABLE": "Table",
     "LIBRARYERROR": "Could not fetch libraries",
     "LOADING": "Loading {{item}}",
-    "STATISTICS": "Statistics"
+    "STATISTICS": "Statistics",
+    "NAME": "Name"
+  },
+  "LOGS": {
+    "ANONYMISED": "Anonymised",
+    "SIZE": "Size",
+    "CREATIONDATE": "Creation date",
+    "ACTIONS": "Actions"
   },
   "FORMERRORS": {
     "EMPTY": "Field may not be empty",

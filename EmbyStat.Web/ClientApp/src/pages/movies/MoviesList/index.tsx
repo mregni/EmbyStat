@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginRight: 16,
   },
+  button__padding: {
+    paddingTop: 5,
+  },
 }));
 
 interface Props { }
@@ -142,6 +145,9 @@ const MovieList = (props: Props) => {
             }&serverId=${settings.mediaServer.serverId}`}
           target="_blank"
           startIcon={<OpenInNewIcon />}
+          classes={{
+            outlinedSizeSmall: classes.button__padding
+          }}
         >
           {serverType}
         </Button>
