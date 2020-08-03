@@ -182,7 +182,7 @@ namespace EmbyStat.Services
                 _logger.Info($"Downloading zip file {result.Package.Name}");
 
                 var webClient = new WebClient();
-                webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(result); };
+                webClient.DownloadFileCompleted += delegate { DownloadFileCompleted(result); };
                 await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
             catch (Exception e)
@@ -267,6 +267,7 @@ namespace EmbyStat.Services
             sb.Append($" --processId {Process.GetCurrentProcess().Id}");
             sb.Append($" --processName {appSettings.ProcessName}");
             sb.Append($" --port {appSettings.Port}");
+            sb.Append($" --listening-urls {appSettings.ListeningUrls}");
 
             return sb.ToString();
         }

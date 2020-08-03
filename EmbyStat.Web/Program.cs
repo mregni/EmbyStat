@@ -21,26 +21,26 @@ namespace EmbyStat.Web
 {
     public class Program
     {
-        private static NLog.Logger _logger;
+        private static Logger _logger;
         public static int Main(string[] args)
         {
             try
             {
                 StartupOptions options = null;
-                var result = Parser.Default.ParseArguments<StartupOptions>(args).MapResult(opts => options = opts, NotParedOptions);
+                Parser.Default.ParseArguments<StartupOptions>(args).MapResult(opts => options = opts, NotParedOptions);
 
                 if (options == null)
                 {
                     return 0;
                 }
-                
+
                 var configArgs = CreateArgsArray(options);
                 _logger = SetupLogging(configArgs);
                 LogLevelChanger.SetNlogLogLevel(NLog.LogLevel.FromOrdinal(options.LogLevel));
 
-                var listeningUrl = $"http://*:{options.Port}";
-                _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server on port {options.Port}");
+                LogStartupParameters(configArgs, options.LogLevel);
                 
+                var listeningUrl = string.Join(';', options.ListeningUrls.Split(';').Select(x => $"{x}:{options.Port}"));
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
 
@@ -80,7 +80,7 @@ namespace EmbyStat.Web
                 Console.WriteLine($"errors {errors.Count}");
                 Console.WriteLine("Can't map startup settings, please check settings or use --help for more info.");
             }
-            
+
             return null;
         }
 
@@ -105,7 +105,7 @@ namespace EmbyStat.Web
                 .AddInMemoryCollection(configArgs)
                 .Build();
 
-        private static NLog.Logger SetupLogging(Dictionary<string, string> configArgs)
+        private static Logger SetupLogging(Dictionary<string, string> configArgs)
         {
             var logPath = configArgs.Single(x => x.Key == "Dirs:Logs").Value;
             var configPath = configArgs.Single(x => x.Key == "Dirs:Config").Value;
@@ -128,21 +128,34 @@ namespace EmbyStat.Web
 
         private static void SetupDatabase(IWebHost host)
         {
-            using (var scope = host.Services.CreateScope())
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
             {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
-                    databaseInitializer.CreateIndexes();
-                    databaseInitializer.SeedAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Fatal(ex);
-                    throw;
-                }
+                var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
+                databaseInitializer.CreateIndexes();
+                databaseInitializer.SeedAsync();
             }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex);
+                throw;
+            }
+        }
+
+        private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel)
+        {
+            var logLevelStr = logLevel == 1 ? "Debug" : "Information";
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t--------------------------------------------------------------------");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server with following options:");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tLog level:\t\t{logLevelStr}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tPort:\t\t\t{options["Port"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tURL's:\t\t\t{options["ListeningUrls"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tConfigDir:\t\t{options["Dirs:Config"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tDataDir:\t\t{options["Dirs:Data"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tLogDir:\t\t\t{options["Dirs:Logs"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tUpdates enabled:\t{options["NoUpdates"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t--------------------------------------------------------------------");
         }
 
         private static Dictionary<string, string> CreateArgsArray(StartupOptions options)
@@ -150,11 +163,12 @@ namespace EmbyStat.Web
             var dataPath = GetDataPath(options);
             return new Dictionary<string, string>
             {
-                { "Port", options.Port.ToString() }, 
+                { "Port", options.Port.ToString() },
+                { "ListeningUrls", options.ListeningUrls },
                 { "NoUpdates", options.NoUpdates.ToString() },
                 { "Dirs:Data", dataPath},
                 { "Dirs:Config", GetConfigPath(options, dataPath) },
-                { "Dirs:Logs", GetLogsPath(options, dataPath) },
+                { "Dirs:Logs", GetLogsPath(options, dataPath) }
             };
         }
 
