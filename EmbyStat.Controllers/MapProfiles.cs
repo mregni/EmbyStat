@@ -102,6 +102,7 @@ namespace EmbyStat.Controllers
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
+            CreateMap<EmbyStatus, EmbyStatusViewModel>();
         }
     }
 }

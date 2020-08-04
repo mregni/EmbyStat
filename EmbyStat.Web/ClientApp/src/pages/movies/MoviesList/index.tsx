@@ -66,7 +66,6 @@ const MovieList = (props: Props) => {
         key: 'id',
         loadUrl: '/api/movie/list',
         loadParams: {
-          libraryids: 'f137a2dd21bbc1b99aa5c0f6bf02a805',
           filter: JSON.stringify(
             activeFilters.map((x) => ({
               field: x.field,

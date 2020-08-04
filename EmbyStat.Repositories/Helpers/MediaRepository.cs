@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Web;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -202,10 +204,27 @@ namespace EmbyStat.Repositories.Helpers
                         "null" => query.Where(x => string.IsNullOrWhiteSpace((string)typeof(T).GetProperty(filter.Value)?.GetValue(x, null) ?? string.Empty)),
                         _ => query
                     });
+                case "CommunityRating":
+                    return (filter.Operation switch
+                    {
+                        "==" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) == Convert.ToDouble(filter.Value)),
+                        "between" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) > FormatInputValue(filter.Value)[0]
+                                                      && ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) < FormatInputValue(filter.Value)[1]),
+                        _ => query
+                    });
+                case "RunTimeTicks":
+                    return (filter.Operation switch
+                    {
+                        "<" => query.Where(x => ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < Convert.ToInt64(filter.Value)),
+                        ">" => query.Where(x => ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > Convert.ToInt64(filter.Value)),
+                        "between" => query.Where(x => ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > FormatInputValue(filter.Value)[0]
+                                                      && ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < FormatInputValue(filter.Value)[1]),
+                        _ => query
+                    });
                 default:
                     return (filter.Operation switch
                     {
-                        "==" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) == filter.Value),
+                        "==" => query.Where(x => (string)(typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) == filter.Value),
                         "!=" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) != filter.Value),
                         "contains" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
                         "!contains" => query.Where(x => !((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
@@ -213,9 +232,9 @@ namespace EmbyStat.Repositories.Helpers
                         "endsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().EndsWith(filter.Value.ToLowerInvariant())),
                         "null" => query.Where(x => typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
                         "<" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < Convert.ToDouble(filter.Value)),
-                        ">" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) > Convert.ToDouble(filter.Value)),
+                        ">" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > Convert.ToDouble(filter.Value)),
                         "between" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > FormatInputValue(filter.Value)[0]
-                                                      && ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) < FormatInputValue(filter.Value)[1]),
+                                                      && ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < FormatInputValue(filter.Value)[1]),
                         _ => query,
                     });
             }
@@ -223,10 +242,11 @@ namespace EmbyStat.Repositories.Helpers
 
         protected double[] FormatInputValue(string value, int multiplier = 1)
         {
-            if (value.Contains('|'))
+            var decodedValue = HttpUtility.UrlDecode(value);
+            if (decodedValue.Contains('|'))
             {
-                var left = Convert.ToDouble(value.Split('|')[0]) * multiplier;
-                var right = Convert.ToDouble(value.Split('|')[1]) * multiplier;
+                var left = Convert.ToDouble(decodedValue.Split('|')[0]) * multiplier;
+                var right = Convert.ToDouble(decodedValue.Split('|')[1]) * multiplier;
 
                 //switching sides if user put the biggest number on the left side.
                 if (right < left)
@@ -238,10 +258,8 @@ namespace EmbyStat.Repositories.Helpers
 
                 return new[] { left, right };
             }
-            else
-            {
-                return new[] { Convert.ToDouble(value) * multiplier };
-            }
+
+            return new[] { Convert.ToDouble(decodedValue) * multiplier };
         }
 
         protected DateTimeOffset[] FormatDateInputValue(string value)
