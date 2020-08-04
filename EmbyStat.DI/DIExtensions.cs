@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using AspNetCore.Identity.LiteDB.Data;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.WebSocket;
@@ -39,6 +40,12 @@ namespace EmbyStat.DI
             services.RegisterClients();
             services.RegisterHttp();
             services.RegisterSignalR();
+            services.RegisterUserHandlers();
+        }
+
+        private static void RegisterUserHandlers(this IServiceCollection services)
+        {
+            services.TryAddSingleton<JwtSecurityTokenHandler>();
         }
 
         private static void RegisterServices(this IServiceCollection services)

@@ -41,7 +41,6 @@ namespace Tests.Unit.Controllers
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = UpdateTrain.Beta,
-                Username = "reggi",
                 WizardFinished = true,
                 MediaServer = new MediaServerSettings
                 {
@@ -122,7 +121,6 @@ namespace Tests.Unit.Controllers
             settings.ToShortMovieEnabled.Should().Be(_userSettings.ToShortMovieEnabled);
             settings.UpdateInProgress.Should().Be(_userSettings.UpdateInProgress);
             settings.UpdateTrain.Should().Be((int)_userSettings.UpdateTrain);
-            settings.Username.Should().Be(_userSettings.Username);
             settings.WizardFinished.Should().Be(_userSettings.WizardFinished);
             settings.MovieLibraries.Count.Should().Be(_userSettings.MovieLibraries.Count);
             settings.ShowLibraries.Count.Should().Be(_userSettings.ShowLibraries.Count);

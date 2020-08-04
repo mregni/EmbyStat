@@ -142,11 +142,11 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).Build();
-                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddPerson(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).ReplacePersons(new ExtraPerson { Id = movieOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var count = _movieRepository.GetMediaCountForPerson(movieOne.People.First().Id);
+                var count = _movieRepository.GetMediaCountForPerson(movieOne.People.First().Name);
 
                 count.Should().Be(2);
             });
@@ -608,9 +608,9 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var person = _movieRepository.GetMostFeaturedPersons(new string[0], PersonType.Actor);
-                person.Should().NotBeNullOrWhiteSpace();
-                person.Should().Be("Gimli");
+                var people = _movieRepository.GetMostFeaturedPersons(new string[0], PersonType.Actor, 5);
+
+                
             });
         }
 

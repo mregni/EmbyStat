@@ -158,7 +158,7 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByName(person.Name)).Returns(
+                personServiceMock.Setup(x => x.GetPersonByNameForMovies(person.Name, It.IsAny<string>())).Returns(
                     new Person
                     {
                         Id = person.Id,
@@ -577,11 +577,17 @@ namespace Tests.Unit.Services
             stat.People.MostFeaturedActorsPerGenreCards.Should().NotBeNull();
             stat.People.MostFeaturedActorsPerGenreCards.Count.Should().Be(3);
             stat.People.MostFeaturedActorsPerGenreCards[0].Title.Should().Be("Action");
-            stat.People.MostFeaturedActorsPerGenreCards[0].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[0].UnitNeedsTranslation.Should().Be(false);
+            stat.People.MostFeaturedActorsPerGenreCards[0].Unit.Should().Be(string.Empty);
+            stat.People.MostFeaturedActorsPerGenreCards[0].ValueType.Should().Be(ValueTypeEnum.None);
             stat.People.MostFeaturedActorsPerGenreCards[1].Title.Should().Be("Comedy");
-            stat.People.MostFeaturedActorsPerGenreCards[1].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[1].UnitNeedsTranslation.Should().Be(false);
+            stat.People.MostFeaturedActorsPerGenreCards[1].Unit.Should().Be(string.Empty);
+            stat.People.MostFeaturedActorsPerGenreCards[1].ValueType.Should().Be(ValueTypeEnum.None);
             stat.People.MostFeaturedActorsPerGenreCards[2].Title.Should().Be("Drama");
-            stat.People.MostFeaturedActorsPerGenreCards[2].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[2].UnitNeedsTranslation.Should().Be(false);
+            stat.People.MostFeaturedActorsPerGenreCards[2].Unit.Should().Be(string.Empty);
+            stat.People.MostFeaturedActorsPerGenreCards[2].ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         #endregion

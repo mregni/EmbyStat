@@ -143,14 +143,16 @@ namespace EmbyStat.Services.Abstract
                 var people = selectedMovies
                     .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})
+                    .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
                     .OrderByDescending(x => x.Count)
-                    .Select(x => x.Name)
-                    .Take(count)
-                    .Select(name => PersonService.GetPersonByNameForMovies(name, genre))
+                    .Select(x => x.Name);
+
+                var boe = people
+                    .Take(count);
+                    var boeTwo = boe.Select(name => PersonService.GetPersonByNameForMovies(name, genre))
                     .ToArray();
 
-                list.Add(people.ConvertToTopCard(genre, string.Empty, "MovieCount"));
+                list.Add(boeTwo.ConvertToTopCard(genre, string.Empty, "MovieCount"));
             }
 
             return list;

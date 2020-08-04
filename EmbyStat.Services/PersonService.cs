@@ -63,7 +63,10 @@ namespace EmbyStat.Services
         public Person GetPersonByNameForMovies(string name)
         {
             var person = GetPersonByName(name);
-            person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Name);
+            if (person != null)
+            {
+                person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Name);
+            }
 
             return person;
         }
@@ -71,7 +74,10 @@ namespace EmbyStat.Services
         public Person GetPersonByNameForMovies(string name, string genre)
         {
             var person = GetPersonByName(name);
-            person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Name, genre);
+            if (person != null)
+            {
+                person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Name, genre);
+            }
 
             return person;
         }

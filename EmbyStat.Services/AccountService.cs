@@ -29,42 +29,39 @@ namespace EmbyStat.Services
         private readonly Logger _logger;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
-        public AccountService(SignInManager<EmbyStatUser> signInManager, UserManager<EmbyStatUser> userManager, ISettingsService settingsService)
+        public AccountService(SignInManager<EmbyStatUser> signInManager, UserManager<EmbyStatUser> userManager, 
+            ISettingsService settingsService, JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
             _signInManager = signInManager;
+            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
             _userManager = userManager;
             _userManager.Options.User.RequireUniqueEmail = false;
 
             _appSettings = settingsService.GetAppSettings();
             _logger = LogFactory.CreateLoggerForType(typeof(AccountService), "ACCOUNT");
-
-            if (_jwtSecurityTokenHandler == null)
-            {
-                _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-            }
         }
 
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest login, string remoteIp)
         {
             var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, false);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(login.Username);
-                var token = AuthenticationHelper.GenerateAccessToken(user, _appSettings.Jwt);
-
-                var refreshToken = AuthenticationHelper.GenerateRefreshToken();
-                user.AddRefreshToken(refreshToken, user.Id, remoteIp);
-                await _userManager.UpdateAsync(user);
-
-                return new AuthenticateResponse
-                {
-                    AccessToken = token,
-                    RefreshToken = refreshToken,
-                };
+                return null;
             }
 
-            return null;
+            var user = await _userManager.FindByNameAsync(login.Username);
+            var token = AuthenticationHelper.GenerateAccessToken(user, _appSettings.Jwt, _jwtSecurityTokenHandler);
+
+            var refreshToken = AuthenticationHelper.GenerateRefreshToken();
+            user.AddRefreshToken(refreshToken, user.Id, remoteIp);
+            await _userManager.UpdateAsync(user);
+
+            return new AuthenticateResponse
+            {
+                AccessToken = token,
+                RefreshToken = refreshToken,
+            };
         }
 
         public async Task<AuthenticateResponse> RefreshToken(string accessToken, string refreshToken, string remoteIp)
@@ -83,26 +80,28 @@ namespace EmbyStat.Services
             {
                 throw new SecurityTokenException("Invalid token");
             }
-            
-            if (principal != null)
+
+            if (principal == null)
             {
-                var username = principal.Claims.First(c => c.Type == "sub");
-                var user = await _userManager.FindByNameAsync(username.Value);
+                return null;
+            }
 
-                if (user != null && user.HasValidRefreshToken(refreshToken))
+            var username = principal.Claims.First(c => c.Type == "sub");
+            var user = await _userManager.FindByNameAsync(username.Value);
+
+            if (user != null && user.HasValidRefreshToken(refreshToken))
+            {
+                var token = AuthenticationHelper.GenerateAccessToken(user, _appSettings.Jwt, _jwtSecurityTokenHandler);
+                var newRefreshToken = AuthenticationHelper.GenerateRefreshToken();
+                user.RemoveRefreshToken(refreshToken);
+                user.AddRefreshToken(newRefreshToken, user.Id, remoteIp);
+                await _userManager.UpdateAsync(user);
+
+                return new AuthenticateResponse
                 {
-                    var token = AuthenticationHelper.GenerateAccessToken(user, _appSettings.Jwt);
-                    var newRefreshToken = AuthenticationHelper.GenerateRefreshToken();
-                    user.RemoveRefreshToken(refreshToken);
-                    user.AddRefreshToken(newRefreshToken, user.Id, remoteIp);
-                    await _userManager.UpdateAsync(user);
-
-                    return new AuthenticateResponse
-                    {
-                        AccessToken = token,
-                        RefreshToken = newRefreshToken,
-                    };
-                }
+                    AccessToken = token,
+                    RefreshToken = newRefreshToken,
+                };
             }
 
             return null;
@@ -135,35 +134,36 @@ namespace EmbyStat.Services
         public async Task<bool> ChangePassword(ChangePasswordRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user != null)
+            if (user == null)
             {
-                var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
-                if (!result.Succeeded)
-                {
-                    _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
-                }
-
-                return result.Succeeded;
+                return false;
             }
 
-            return false;
+            var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+            if (!result.Succeeded)
+            {
+                _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+            }
+
+            return result.Succeeded;
+
         }
 
         public async Task<bool> ChangeUserName(ChangeUserNameRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user != null)
+            if (user == null)
             {
-                var result = await _userManager.SetUserNameAsync(user, request.NewUserName);
-                if (!result.Succeeded)
-                {
-                    _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
-                }
-
-                return result.Succeeded;
+                return false;
             }
 
-            return false;
+            var result = await _userManager.SetUserNameAsync(user, request.NewUserName);
+            if (!result.Succeeded)
+            {
+                _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+            }
+
+            return result.Succeeded;
         }
 
         public async Task<bool> ResetPassword(string username)

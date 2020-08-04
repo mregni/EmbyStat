@@ -108,9 +108,9 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder AddVideo3DFormat(Video3DFormat format)
+        public MovieBuilder ReplacePersons(ExtraPerson person)
         {
-            _movie.Video3DFormat = format;
+            _movie.People = new[] {person};
             return this;
         }
 
