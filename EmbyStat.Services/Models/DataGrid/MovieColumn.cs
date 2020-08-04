@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.AccessControl;
-using System.Text;
 
 namespace EmbyStat.Services.Models.DataGrid
 {

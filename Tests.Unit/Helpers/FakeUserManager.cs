@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AspNetCore.Identity.LiteDB.Models;
 using EmbyStat.Common.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

@@ -2,7 +2,6 @@
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using Microsoft.AspNetCore.SignalR;
-using RestSharp;
 
 namespace EmbyStat.Common.Hubs.Job
 {

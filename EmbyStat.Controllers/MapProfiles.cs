@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
@@ -18,7 +17,6 @@ using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
 using EmbyStat.Controllers.MediaServer;
-using EmbyStat.Services.Models;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.DataGrid;

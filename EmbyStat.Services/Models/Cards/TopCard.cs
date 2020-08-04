@@ -1,6 +1,4 @@
-﻿using EmbyStat.Common.Models;
-
-namespace EmbyStat.Services.Models.Cards
+﻿namespace EmbyStat.Services.Models.Cards
 {
     public class TopCard
     {

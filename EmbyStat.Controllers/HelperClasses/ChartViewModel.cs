@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EmbyStat.Controllers.HelperClasses
+﻿namespace EmbyStat.Controllers.HelperClasses
 {
     public class ChartViewModel
     {

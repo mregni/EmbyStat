@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;

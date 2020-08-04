@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Show;
 using LocationType = EmbyStat.Common.Enums.LocationType;

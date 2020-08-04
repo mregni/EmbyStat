@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
-using EmbyStat.Controllers.MediaServer;
-using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace EmbyStat.Controllers.Account
 {
@@ -22,12 +11,10 @@ namespace EmbyStat.Controllers.Account
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(IAccountService accountService, IHttpContextAccessor httpContextAccessor)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]

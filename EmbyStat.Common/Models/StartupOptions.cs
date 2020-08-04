@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using NLog;
 
 namespace EmbyStat.Common.Models
 {

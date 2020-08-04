@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EmbyStat.Services.Models.Charts
+﻿namespace EmbyStat.Services.Models.Charts
 {
     public class Chart
     {

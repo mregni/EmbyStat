@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using AspNetCore.Identity.LiteDB.Models;
-using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using Microsoft.IdentityModel.Tokens;

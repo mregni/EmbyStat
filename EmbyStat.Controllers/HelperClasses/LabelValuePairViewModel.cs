@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.HelperClasses
+﻿namespace EmbyStat.Controllers.HelperClasses
 {
     public class LabelValuePairViewModel
     {

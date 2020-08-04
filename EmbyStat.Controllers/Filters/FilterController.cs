@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AutoMapper;
-using EmbyStat.Common;
+﻿using AutoMapper;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.Models.Tasks.Enum;
-using EmbyStat.Controllers.Movie;
-using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
-using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers.Filters
