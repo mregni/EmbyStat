@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -15,7 +14,6 @@ using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;

@@ -2,7 +2,6 @@
   "COMMON": {
     "SERVERNAME": "Server name",
     "DOWNLOAD": "download",
-    "HIDE": "Hide",
     "NEXT": "next",
     "BACK": "back",
     "FINISH": "finish",
@@ -22,8 +21,6 @@
     "QUALITY": "quality",
     "NEVER": "never",
     "OPEN": "Open",
-    "VIEWALL": "View all",
-    "LINK": "link",
     "REASON": "reason",
     "BYIMDB": "same imdb id",
     "BYTITLE": "same title",
@@ -106,8 +103,6 @@
     "TVDBLOGINFAILED": "TheTVDB login failed, check the API key."
   },
   "FORMLABELS": {
-    "DURATIONINMINUTES": "Duration in minutes",
-    "ENABLETOSHORTMOVIES": "Enable to short movie calculation",
     "CRON": "Cron string"
   },
   "MENU": {
@@ -133,23 +128,15 @@
     "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
     "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Server type",
-    "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
     "FINALLABEL": "Final",
     "SEARCHSERVERS": "Searching servers",
     "OPENSERVERAPIPAGE": "Open {{type}} API key page",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Checking {{type}} server ...",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.",
     "NOTFOUNDTEXT": "We could not detect media server in your network. Fill in your server details manually in the form.",
     "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to and enter your API key. Feel free to adjust the server configuration in the form.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
-    "PLUGININSTALLED": "EmbyStat plugin found on Emby server",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
-    "SAVING": "Saving data",
-    "RESCAN": "Rescan",
-    "FINISHWITHSYNC": "Finish with synchronization",
     "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
     "FINISHED": "All settings are saved and you can start using {{type}} server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Jobs page.",
@@ -161,7 +148,6 @@
     "APIKEYUSED": "API key: <i>{{api}}</i>"
   },
   "MOVIES": {
-    "COLLECTIONPLACEHOLDER": "Filter movie collections",
     "TOTALMOVIES": "Total Movies",
     "TOTALGENRES": "Total Genres",
     "TOTALPLAYLENGTH": "Total Watchable Time",

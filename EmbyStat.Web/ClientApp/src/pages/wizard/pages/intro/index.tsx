@@ -9,17 +9,32 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import moment from 'moment';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { loadLanguages } from '../../../../store/LanguageSlice';
 import { RootState } from '../../../../store/RootReducer';
 import { Language } from '../../../../shared/models/language';
 import { setlanguage } from '../../../../store/WizardSlice';
 
+const useStyles = makeStyles((theme) => ({
+  link: {
+    fontStyle: 'italic',
+    fontSize: '0.8rem',
+    '& a': {
+      color:
+        theme.palette.type === 'dark'
+          ? theme.palette.secondary.light
+          : theme.palette.secondary.dark,
+    },
+  },
+}));
+
 interface Props {
   disableBack: Function;
 }
 
 const Intro = (props: Props): ReactElement => {
+  const classes = useStyles();
   const { disableBack } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -49,6 +64,9 @@ const Intro = (props: Props): ReactElement => {
     setRollbar(event.target.checked);
   }
 
+  const crowdinText = { __html: t('WIZARD.CROWNDINHELP') };
+  const introText = { __html: t('WIZARD.INTROTEXT') };
+
   return (
     <Grid container direction="column" spacing={7}>
       <Grid item>
@@ -58,9 +76,7 @@ const Intro = (props: Props): ReactElement => {
       </Grid>
       <Grid item container direction="column" spacing={1}>
         <Grid item>
-          <Typography variant="body1">
-            {t('WIZARD.INTROTEXT')}
-          </Typography>
+          <Typography variant="body1" dangerouslySetInnerHTML={introText} />
         </Grid>
         <Grid item>
           {languages !== undefined && languages.isLoaded ? (
@@ -78,6 +94,9 @@ const Intro = (props: Props): ReactElement => {
               ))}
             </Select>
           ) : null}
+        </Grid>
+        <Grid item>
+          <Typography variant="body1" dangerouslySetInnerHTML={crowdinText} className={classes.link} />
         </Grid>
       </Grid>
       <Grid item container direction="column" spacing={1}>

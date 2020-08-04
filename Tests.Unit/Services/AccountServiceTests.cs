@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
@@ -8,7 +7,6 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Tests.Unit.Helpers;
@@ -21,7 +19,6 @@ namespace Tests.Unit.Services
         private readonly AuthenticateRequest _loginRequest;
         private readonly EmbyStatUser _user;
         private readonly AppSettings _appSettings;
-        private delegate void CallbackDelegate(SecurityToken p1, out SecurityToken p2);
 
         public AccountServiceTests()
         {
