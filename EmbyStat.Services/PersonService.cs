@@ -29,7 +29,7 @@ namespace EmbyStat.Services
             _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
 
-        public Person GetPersonByName(string name)
+        private Person GetPersonByName(string name)
         {
             try
             {
@@ -40,15 +40,15 @@ namespace EmbyStat.Services
 
                     if (person != null)
                     {
-                        _personRepository.Insert(person);
+                        _personRepository.Upsert(person);
                     }
-                }
-
-                if (person != null)
-                {
-                    person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Id);
-                    person.ShowCount = _showRepository.GetMediaCountForPerson(person.Id);
-
+                    else
+                    {
+                        person = new Person
+                        {
+                            Name = name
+                        };
+                    }
                 }
 
                 return person;
@@ -58,6 +58,30 @@ namespace EmbyStat.Services
                 _logger.Warn(e, $"Error fetching data for person {name}.");
                 return null;
             }
+        }
+
+        public Person GetPersonByNameForMovies(string name)
+        {
+            var person = GetPersonByName(name);
+            person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Name);
+
+            return person;
+        }
+
+        public Person GetPersonByNameForMovies(string name, string genre)
+        {
+            var person = GetPersonByName(name);
+            person.MovieCount = _movieRepository.GetMediaCountForPerson(person.Name, genre);
+
+            return person;
+        }
+
+        public Person GetPersonByNameForShows(string name, string genre)
+        {
+            var person = GetPersonByName(name);
+            person.ShowCount = _showRepository.GetMediaCountForPerson(person.Name, genre);
+
+            return person;
         }
     }
 }

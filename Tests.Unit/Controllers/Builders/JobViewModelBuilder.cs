@@ -13,9 +13,9 @@ namespace Tests.Unit.Controllers.Builders
             {
                 CurrentProgressPercentage = job.CurrentProgressPercentage,
                 Description = job.Description,
-                EndTimeUtc = job.EndTimeUtc,
+                EndTimeUtcIso = job.EndTimeUtc?.ToString("O") ?? string.Empty,
                 Id = job.Id,
-                StartTimeUtc = job.StartTimeUtc,
+                StartTimeUtcIso = job.StartTimeUtc?.ToString("O") ?? string.Empty,
                 State = (int)job.State,
                 Title = job.Title,
                 Trigger = job.Trigger

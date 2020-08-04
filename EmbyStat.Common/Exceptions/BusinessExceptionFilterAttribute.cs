@@ -54,7 +54,8 @@ namespace EmbyStat.Common.Exceptions
                 logger.Error(context.Exception, msg);
             }
 
-            context.Result = new JsonResult(JsonConvert.SerializeObject(apiError));
+            context.Result = new JsonResult(apiError);
+            context.ExceptionHandled = true;
             base.OnException(context);
         }
     }

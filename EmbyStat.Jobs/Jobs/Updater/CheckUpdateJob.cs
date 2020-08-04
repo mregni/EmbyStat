@@ -44,6 +44,8 @@ namespace EmbyStat.Jobs.Jobs.Updater
                     Task.WaitAll(_updateService.DownloadZipAsync(update));
                     await LogProgress(50);
                     await _updateService.UpdateServerAsync();
+                    await _settingsService.SetUpdateInProgressSettingAsync(false);
+                    await HubHelper.BroadcastUpdateFinished(true);
                 }
                 else if (update.IsUpdateAvailable)
                 {
@@ -59,6 +61,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
             {
                 await _settingsService.SetUpdateInProgressSettingAsync(false);
                 await HubHelper.BroadcastUpdateState(false);
+                await HubHelper.BroadcastUpdateFinished(false);
                 throw;
             }
         }

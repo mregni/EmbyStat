@@ -27,7 +27,7 @@ namespace Tests.Unit.Controllers
 	    public void TestApiKey_Should_Return_True_If_Token_Is_Valid()
         {
             var embyServiceMock = new Mock<IMediaServerService>();
-            embyServiceMock.Setup(x => x.TestNewApiKey(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            embyServiceMock.Setup(x => x.TestNewApiKey(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ServerType>())).Returns(true);
 
             var controller = new MediaServerController(embyServiceMock.Object, _mapper);
             var loginViewModel = new LoginViewModel
@@ -85,7 +85,7 @@ namespace Tests.Unit.Controllers
             };
 
             var embyServiceMock = new Mock<IMediaServerService>();
-            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(serverInfoObject);
+            embyServiceMock.Setup(x => x.GetServerInfo(false)).Returns(serverInfoObject);
             var controller = new MediaServerController(embyServiceMock.Object, _mapper);
 
             var result = controller.GetServerInfo();

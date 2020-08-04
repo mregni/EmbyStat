@@ -15,6 +15,6 @@ steps:
   - task: CopyFiles@2
     displayName: 'Copy frontend to publish folder'
     inputs:
-      SourceFolder: 'EmbyStat.Web/ClientApp/dist/embystat'
+      SourceFolder: 'EmbyStat.Web/ClientApp/build'
       Contents: '**'
       TargetFolder: 'publish/dist'

@@ -16,14 +16,14 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IMediaServerService mediaServerService) 
-            : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob), Constants.LogPrefix.PingEmbyJob)
+            : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob), Constants.LogPrefix.PingMediaServerJob)
         {
             _mediaServerService = mediaServerService;
             Title = jobRepository.GetById(Id).Title;
         }
 
         public sealed override Guid Id => Constants.JobIds.PingEmbyId;
-        public override string JobPrefix => Constants.LogPrefix.PingEmbyJob;
+        public override string JobPrefix => Constants.LogPrefix.PingMediaServerJob;
         public override string Title { get; }
 
         public override async Task RunJobAsync()

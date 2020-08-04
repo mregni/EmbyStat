@@ -8,6 +8,7 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using FluentAssertions;
 using Moq;
 using MoreLinq;
@@ -74,40 +75,85 @@ namespace Tests.Unit.Services
                 .Build();
 
             _settingsServiceMock = new Mock<ISettingsService>();
-            _settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = true });
+            _settingsServiceMock
+                .Setup(x => x.GetUserSettings())
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraries = new List<string> { _collections[0].Id, _collections[1].Id }, ToShortMovieEnabled = true });
             _subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree);
         }
 
         private MovieService CreateMovieService(Mock<ISettingsService> settingsServiceMock, params Movie[] movies)
         {
             var movieRepositoryMock = new Mock<IMovieRepository>();
-            movieRepositoryMock.Setup(x => x.GetAll(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
-            movieRepositoryMock.Setup(x => x.GetAllWithImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
-            movieRepositoryMock.Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), It.IsAny<int>())).Returns(movies.ToList());
-            movieRepositoryMock.Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
-            movieRepositoryMock.Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>())).Returns(movies.ToList());
+            movieRepositoryMock
+                .Setup(x => x.GetAll(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.ToList());
+            movieRepositoryMock
+                .Setup(x => x.GetAllWithImdbId(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.ToList());
+            movieRepositoryMock
+                .Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), It.IsAny<int>()))
+                .Returns(movies.ToList());
+            movieRepositoryMock
+                .Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.ToList());
+            movieRepositoryMock
+                .Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.ToList());
 
-            movieRepositoryMock.Setup(x => x.GetGenreCount(It.IsAny<IReadOnlyList<string>>())).Returns(movies.SelectMany(x => x.Genres).Distinct().Count);
-            movieRepositoryMock.Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.CommunityRating).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.DateCreated).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Length);
-            movieRepositoryMock.Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.PremiereDate).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderBy(x => x.PremiereDate).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetLongestMovie(It.IsAny<IReadOnlyList<string>>())).Returns(movies.OrderByDescending(x => x.RunTimeTicks).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetShortestMovie(It.IsAny<IReadOnlyList<string>>(), It.IsAny<long>())).Returns(movies.OrderBy(x => x.RunTimeTicks).FirstOrDefault);
-            movieRepositoryMock.Setup(x => x.GetTotalDiskSize(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0));
-            movieRepositoryMock.Setup(x => x.GetTotalRuntime(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Sum(x => x.RunTimeTicks ?? 0));
-            movieRepositoryMock.Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => string.IsNullOrEmpty(x.IMDB)).ToList);
-            movieRepositoryMock.Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>())).Returns(movies.Where(x => string.IsNullOrEmpty(x.Primary)).ToList);
-            movieRepositoryMock.Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), 10)).Returns(movies.Where(x => x.RunTimeTicks < new TimeSpan(0, 0, 10, 0).Ticks).ToList);
-            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Actor)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Actor));
-            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Writer)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Writer));
-            movieRepositoryMock.Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Director)).Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Director));
+            movieRepositoryMock
+                .Setup(x => x.GetGenreCount(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.SelectMany(x => x.Genres).Distinct().Count);
+            movieRepositoryMock
+                .Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(movies.OrderByDescending(x => x.CommunityRating));
+            movieRepositoryMock
+                .Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(movies.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating));
+            movieRepositoryMock
+                .Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(movies.OrderByDescending(x => x.DateCreated));
+            movieRepositoryMock
+                .Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.Length);
+            movieRepositoryMock
+                .Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(movies.OrderByDescending(x => x.PremiereDate));
+            movieRepositoryMock
+                .Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(movies.OrderBy(x => x.PremiereDate));
+            movieRepositoryMock
+                .Setup(x => x.GetLongestMovie(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(movies.OrderByDescending(x => x.RunTimeTicks));
+            movieRepositoryMock
+                .Setup(x => x.GetShortestMovie(It.IsAny<IReadOnlyList<string>>(), It.IsAny<long>(), 5))
+                .Returns(movies.OrderBy(x => x.RunTimeTicks));
+            movieRepositoryMock
+                .Setup(x => x.GetTotalDiskSize(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0));
+            movieRepositoryMock
+                .Setup(x => x.GetTotalRuntime(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.Sum(x => x.RunTimeTicks ?? 0));
+            movieRepositoryMock
+                .Setup(x => x.GetMoviesWithoutImdbId(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.Where(x => string.IsNullOrEmpty(x.IMDB)).ToList);
+            movieRepositoryMock
+                .Setup(x => x.GetMoviesWithoutPrimaryImage(It.IsAny<IReadOnlyList<string>>()))
+                .Returns(movies.Where(x => string.IsNullOrEmpty(x.Primary)).ToList);
+            movieRepositoryMock
+                .Setup(x => x.GetToShortMovieList(It.IsAny<IReadOnlyList<string>>(), 10))
+                .Returns(movies.Where(x => x.RunTimeTicks < new TimeSpan(0, 0, 10, 0).Ticks).ToList);
+            movieRepositoryMock
+                .Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Actor))
+                .Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Actor));
+            movieRepositoryMock
+                .Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Writer))
+                .Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Writer));
+            movieRepositoryMock
+                .Setup(x => x.GetPeopleCount(It.IsAny<IReadOnlyList<string>>(), PersonType.Director))
+                .Returns(movies.SelectMany(x => x.People).DistinctBy(x => x.Id).Count(x => x.Type == PersonType.Director));
 
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
-            collectionRepositoryMock.Setup(x => x.GetLibrariesByTypes(It.IsAny<IEnumerable<LibraryType>>())).Returns(_collections);
+            collectionRepositoryMock.Setup(x => x.GetLibrariesById(It.IsAny<IEnumerable<string>>())).Returns(_collections);
 
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
@@ -146,10 +192,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.MovieCount.Should().NotBeNull();
-            stat.General.MovieCount.Title.Should().Be(Constants.Movies.TotalMovies);
-            stat.General.MovieCount.Value.Should().Be(3);
+            stat.Cards.Should().NotBeNull();
+            stat.Cards.Count(x => x.Title == Constants.Movies.TotalMovies).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Movies.TotalMovies);
+            card.Title.Should().Be(Constants.Movies.TotalMovies);
+            card.Value.Should().Be("3");
         }
 
         [Fact]
@@ -158,10 +206,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.GenreCount.Should().NotBeNull();
-            stat.General.GenreCount.Title.Should().Be(Constants.Movies.TotalGenres);
-            stat.General.GenreCount.Value.Should().Be(3);
+            stat.Cards.Should().NotBeNull();
+            stat.Cards.Count(x => x.Title == Constants.Movies.TotalGenres).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Movies.TotalGenres);
+            card.Title.Should().Be(Constants.Movies.TotalGenres);
+            card.Value.Should().Be("3");
         }
 
         [Fact]
@@ -170,16 +220,15 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.LowestRatedMovie.Should().NotBeNull();
-            stat.General.LowestRatedMovie.Title.Should().Be(Constants.Movies.LowestRated);
-            stat.General.LowestRatedMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.LowestRatedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.LowestRatedMovie.DurationMinutes.Should().Be(130);
-            stat.General.LowestRatedMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.LowestRatedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.LowestRatedMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.LowestRatedMovie.Year.Should().Be(2002);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.LowestRated).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.LowestRated);
+            card.Title.Should().Be(Constants.Movies.LowestRated);
+            card.Unit.Should().Be("/10");
+            card.Values[0].Value.Should().Be(_movieOne.CommunityRating.ToString());
+            card.Values[0].Label.Should().Be(_movieOne.Name);
+            card.UnitNeedsTranslation.Should().Be(false);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -188,16 +237,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.HighestRatedMovie.Should().NotBeNull();
-            stat.General.HighestRatedMovie.Title.Should().Be(Constants.Movies.HighestRated);
-            stat.General.HighestRatedMovie.Name.Should().Be(_movieThree.Name);
-            stat.General.HighestRatedMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
-            stat.General.HighestRatedMovie.DurationMinutes.Should().Be(230);
-            stat.General.HighestRatedMovie.MediaId.Should().Be(_movieThree.Id);
-            stat.General.HighestRatedMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
-            stat.General.HighestRatedMovie.Tag.Should().Be(_movieThree.Primary);
-            stat.General.HighestRatedMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.HighestRated).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.HighestRated);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Movies.HighestRated);
+            card.Unit.Should().Be("/10");
+            card.Values[0].Value.Should().Be(_movieThree.CommunityRating.ToString());
+            card.Values[0].Label.Should().Be(_movieThree.Name);
+            card.UnitNeedsTranslation.Should().Be(false);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -206,16 +255,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.OldestPremieredMovie.Should().NotBeNull();
-            stat.General.OldestPremieredMovie.Title.Should().Be(Constants.Movies.OldestPremiered);
-            stat.General.OldestPremieredMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.OldestPremieredMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.OldestPremieredMovie.DurationMinutes.Should().Be(130);
-            stat.General.OldestPremieredMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.OldestPremieredMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.OldestPremieredMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.OldestPremieredMovie.Year.Should().Be(2002);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.OldestPremiered).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.OldestPremiered);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Movies.OldestPremiered);
+            card.Unit.Should().Be("COMMON.DATE");
+            card.Values[0].Value.Should().Be(_movieOne.PremiereDate?.ToString("O"));
+            card.Values[0].Label.Should().Be(_movieOne.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -224,16 +273,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.NewestPremieredMovie.Should().NotBeNull();
-            stat.General.NewestPremieredMovie.Title.Should().Be(Constants.Movies.NewestPremiered);
-            stat.General.NewestPremieredMovie.Name.Should().Be(_movieThree.Name);
-            stat.General.NewestPremieredMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
-            stat.General.NewestPremieredMovie.DurationMinutes.Should().Be(230);
-            stat.General.NewestPremieredMovie.MediaId.Should().Be(_movieThree.Id);
-            stat.General.NewestPremieredMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
-            stat.General.NewestPremieredMovie.Tag.Should().Be(_movieThree.Primary);
-            stat.General.NewestPremieredMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.NewestPremiered).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.NewestPremiered);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Movies.NewestPremiered);
+            card.Unit.Should().Be("COMMON.DATE");
+            card.Values[0].Value.Should().Be(_movieThree.PremiereDate?.ToString("O"));
+            card.Values[0].Label.Should().Be(_movieThree.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -242,16 +291,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.ShortestMovie.Should().NotBeNull();
-            stat.General.ShortestMovie.Title.Should().Be(Constants.Movies.Shortest);
-            stat.General.ShortestMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.ShortestMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.ShortestMovie.DurationMinutes.Should().Be(130);
-            stat.General.ShortestMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.ShortestMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.ShortestMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.ShortestMovie.Year.Should().Be(_movieOne.PremiereDate.Value.Year);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.Shortest).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.Shortest);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Movies.Shortest);
+            card.Unit.Should().Be("COMMON.MIN");
+            card.Values[0].Value.Should().Be(_movieOne.RunTimeTicks.ToString());
+            card.Values[0].Label.Should().Be(_movieOne.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Ticks);
         }
 
         [Fact]
@@ -260,16 +309,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.LongestMovie.Should().NotBeNull();
-            stat.General.LongestMovie.Title.Should().Be(Constants.Movies.Longest);
-            stat.General.LongestMovie.Name.Should().Be(_movieThree.Name);
-            stat.General.LongestMovie.CommunityRating.Should().Be(_movieThree.CommunityRating.ToString());
-            stat.General.LongestMovie.DurationMinutes.Should().Be(230);
-            stat.General.LongestMovie.MediaId.Should().Be(_movieThree.Id);
-            stat.General.LongestMovie.OfficialRating.Should().Be(_movieThree.OfficialRating);
-            stat.General.LongestMovie.Tag.Should().Be(_movieThree.Primary);
-            stat.General.LongestMovie.Year.Should().Be(_movieThree.PremiereDate.Value.Year);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.Longest).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.Longest);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Movies.Longest);
+            card.Unit.Should().Be("COMMON.MIN");
+            card.Values[0].Value.Should().Be(_movieThree.RunTimeTicks.ToString());
+            card.Values[0].Label.Should().Be(_movieThree.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Ticks);
         }
 
         [Fact]
@@ -278,16 +327,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.LatestAddedMovie.Should().NotBeNull();
-            stat.General.LatestAddedMovie.Title.Should().Be(Constants.Movies.LatestAdded);
-            stat.General.LatestAddedMovie.Name.Should().Be(_movieOne.Name);
-            stat.General.LatestAddedMovie.CommunityRating.Should().Be(_movieOne.CommunityRating.ToString());
-            stat.General.LatestAddedMovie.DurationMinutes.Should().Be(130);
-            stat.General.LatestAddedMovie.MediaId.Should().Be(_movieOne.Id);
-            stat.General.LatestAddedMovie.OfficialRating.Should().Be(_movieOne.OfficialRating);
-            stat.General.LatestAddedMovie.Tag.Should().Be(_movieOne.Primary);
-            stat.General.LatestAddedMovie.Year.Should().Be(2002);
+            stat.TopCards.Count(x => x.Title == Constants.Movies.LatestAdded).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Movies.LatestAdded);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Movies.LatestAdded);
+            card.Unit.Should().Be("COMMON.DATE");
+            card.Values[0].Value.Should().Be(_movieOne.DateCreated?.ToString("O"));
+            card.Values[0].Label.Should().Be(_movieOne.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -296,10 +345,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.TotalDiskSize.Should().NotBeNull();
-            stat.General.TotalDiskSize.Title.Should().Be(Constants.Common.TotalDiskSize);
-            stat.General.TotalDiskSize.Value.Should().Be(3003);
+            stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSize).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSize);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Common.TotalDiskSize);
+            card.Value.Should().Be("3003");
         }
 
         #endregion
@@ -312,14 +363,11 @@ namespace Tests.Unit.Services
             var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(56, 34, 1).Build();
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
+            stat.Cards.Count(x => x.Title == Constants.Movies.TotalPlayLength).Should().Be(1);
 
-            stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.TotalPlayableTime.Should().NotBeNull();
-            stat.General.TotalPlayableTime.Title.Should().Be(Constants.Movies.TotalPlayLength);
-            stat.General.TotalPlayableTime.Days.Should().Be(2);
-            stat.General.TotalPlayableTime.Hours.Should().Be(18);
-            stat.General.TotalPlayableTime.Minutes.Should().Be(4);
+            var card = stat.Cards.First(x => x.Title == Constants.Movies.TotalPlayLength);
+            card.Title.Should().Be(Constants.Movies.TotalPlayLength);
+            card.Value.Should().Be("2|18|4");
         }
 
         [Fact]
@@ -328,25 +376,13 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerGenre);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerGenre);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(3);
-            var labels = graph.Labels.ToArray();
-
-            labels[0].Should().Be("Action");
-            labels[1].Should().Be("Comedy");
-            labels[2].Should().Be("Drama");
-
-            graph.DataSets.Count.Should().Be(1);
-
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(3);
-            dataset[0].Should().Be(2);
-            dataset[1].Should().Be(2);
-            dataset[2].Should().Be(1);
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"Action\",\"Val0\":2},{\"Label\":\"Comedy\",\"Val0\":2},{\"Label\":\"Drama\",\"Val0\":1}]");
         }
 
         [Fact]
@@ -355,19 +391,13 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerOfficialRating);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerOfficialRating);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(2);
-            graph.Labels.ToList()[0].Should().Be("B");
-            graph.Labels.ToList()[1].Should().Be("R");
-
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(2);
-            dataset[0].Should().Be(1);
-            dataset[1].Should().Be(2);
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"B\",\"Val0\":1},{\"Label\":\"R\",\"Val0\":2}]");
         }
 
         [Fact]
@@ -377,15 +407,13 @@ namespace Tests.Unit.Services
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerOfficialRating);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerOfficialRating);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(0);
-
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(0);
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[]");
         }
 
         [Fact]
@@ -394,31 +422,33 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerCommunityRating);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerCommunityRating);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(20);
-            for (var i = 0; i < 20; i++)
-            {
-                graph.Labels.ToArray()[i].Should().Be((i * (float)0.5).ToString());
-            }
-
-            var dataSet = graph.DataSets.Single().ToList();
-            dataSet.Count.Should().Be(20);
-            dataSet[0].Should().Be(0);
-            dataSet[1].Should().Be(0);
-            dataSet[2].Should().Be(0);
-            dataSet[3].Should().Be(1);
-            dataSet[4].Should().Be(0);
-            dataSet[5].Should().Be(0);
-            dataSet[6].Should().Be(2);
-            dataSet[7].Should().Be(0);
-            for (var i = 8; i < 20; i++)
-            {
-                dataSet[i].Should().Be(0);
-            }
+            graph.SeriesCount.Should().Be(1);
+            var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"0,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"1\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"1,5\",\"Val0\":1},";
+            dataSet += "{\"Label\":\"2\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"2,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"3\",\"Val0\":2},";
+            dataSet += "{\"Label\":\"3,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"4\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"4,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"5,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"6\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"6,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"7\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"7,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"8\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"8,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"9\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"9,5\",\"Val0\":0}";
+            graph.DataSets.Should().Be("[" +dataSet + "]");
         }
 
         [Fact]
@@ -428,23 +458,33 @@ namespace Tests.Unit.Services
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerCommunityRating);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerCommunityRating);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(20);
-            for (var i = 0; i < 20; i++)
-            {
-                graph.Labels.ToArray()[i].Should().Be((i * (float)0.5).ToString());
-            }
-
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(20);
-            for (var i = 0; i < 20; i++)
-            {
-                dataset[i].Should().Be(0);
-            }
+            graph.SeriesCount.Should().Be(1);
+            var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"0,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"1\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"1,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"2\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"2,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"3\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"3,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"4\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"4,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"5,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"6\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"6,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"7\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"7,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"8\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"8,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"9\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"9,5\",\"Val0\":0}";
+            graph.DataSets.Should().Be("[" + dataSet + "]");
         }
 
         [Fact]
@@ -457,23 +497,17 @@ namespace Tests.Unit.Services
 
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerPremiereYear);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerPremiereYear);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(4);
-            graph.Labels.ToArray()[0].Should().Be("1985 - 1989");
-            graph.Labels.ToArray()[1].Should().Be("1990 - 1994");
-            graph.Labels.ToArray()[2].Should().Be("1995 - 1999");
-            graph.Labels.ToArray()[3].Should().Be("2000 - 2004");
-
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(4);
-            dataset[0].Should().Be(1);
-            dataset[1].Should().Be(2);
-            dataset[2].Should().Be(0);
-            dataset[3].Should().Be(3);
+            graph.SeriesCount.Should().Be(1);
+            var dataSet = "{\"Label\":\"1985 - 1989\",\"Val0\":1},";
+            dataSet += "{\"Label\":\"1990 - 1994\",\"Val0\":2},";
+            dataSet += "{\"Label\":\"1995 - 1999\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"2000 - 2004\",\"Val0\":3}";
+            graph.DataSets.Should().Be("[" + dataSet + "]");
         }
 
         [Fact]
@@ -483,15 +517,13 @@ namespace Tests.Unit.Services
 
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
             stat.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
+            stat.Charts.Count.Should().Be(4);
+            stat.Charts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
 
-            var graph = stat.Charts.BarCharts.SingleOrDefault(x => x.Title == Constants.CountPerPremiereYear);
+            var graph = stat.Charts.SingleOrDefault(x => x.Title == Constants.CountPerPremiereYear);
             graph.Should().NotBeNull();
-            graph.Labels.Count().Should().Be(0);
-
-            var dataset = graph.DataSets.Single().ToList();
-            dataset.Count.Should().Be(0);
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[]");
         }
 
         #endregion
@@ -502,11 +534,12 @@ namespace Tests.Unit.Services
         public void TotalTypeCountForActors()
         {
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            stat.People.Cards.Count(x => x.Title == Constants.Common.TotalActors).Should().Be(1);
 
-            stat.People.Should().NotBeNull();
-            stat.People.TotalActorCount.Should().NotBeNull();
-            stat.People.TotalActorCount.Value.Should().Be(4);
-            stat.People.TotalActorCount.Title.Should().Be(Constants.Common.TotalActors);
+            var card = stat.People.Cards.First(x => x.Title == Constants.Common.TotalActors);
+            card.Should().NotBeNull();
+            card.Value.Should().Be("4");
+            card.Title.Should().Be(Constants.Common.TotalActors);
         }
 
         [Fact]
@@ -515,20 +548,24 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
-            stat.People.TotalDirectorCount.Should().NotBeNull();
-            stat.People.TotalDirectorCount.Value.Should().Be(2);
-            stat.People.TotalDirectorCount.Title.Should().Be(Constants.Common.TotalDirectors);
+            stat.People.Cards.Count(x => x.Title == Constants.Common.TotalDirectors).Should().Be(1);
+
+            var card = stat.People.Cards.First(x => x.Title == Constants.Common.TotalDirectors);
+            card.Should().NotBeNull();
+            card.Value.Should().Be("2");
+            card.Title.Should().Be(Constants.Common.TotalDirectors);
         }
 
         [Fact]
         public void TotalTypeCountForWriters()
         {
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            stat.People.Cards.Count(x => x.Title == Constants.Common.TotalWriters).Should().Be(1);
 
-            stat.People.Should().NotBeNull();
-            stat.People.TotalWriterCount.Should().NotBeNull();
-            stat.People.TotalWriterCount.Value.Should().Be(1);
-            stat.People.TotalWriterCount.Title.Should().Be(Constants.Common.TotalWriters);
+            var card = stat.People.Cards.First(x => x.Title == Constants.Common.TotalWriters);
+            card.Should().NotBeNull();
+            card.Value.Should().Be("1");
+            card.Title.Should().Be(Constants.Common.TotalWriters);
         }
 
         [Fact]
@@ -537,51 +574,19 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.People.Should().NotBeNull();
-            stat.People.MostFeaturedActorsPerGenre.Should().NotBeNull();
-            stat.People.MostFeaturedActorsPerGenre.Count.Should().Be(3);
-            stat.People.MostFeaturedActorsPerGenre[0].Title.Should().Be("Action");
-            stat.People.MostFeaturedActorsPerGenre[0].Name.Should().Be("Gimli");
-            stat.People.MostFeaturedActorsPerGenre[1].Title.Should().Be("Comedy");
-            stat.People.MostFeaturedActorsPerGenre[1].Name.Should().Be("Gimli");
-            stat.People.MostFeaturedActorsPerGenre[2].Title.Should().Be("Drama");
-            stat.People.MostFeaturedActorsPerGenre[2].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards.Should().NotBeNull();
+            stat.People.MostFeaturedActorsPerGenreCards.Count.Should().Be(3);
+            stat.People.MostFeaturedActorsPerGenreCards[0].Title.Should().Be("Action");
+            stat.People.MostFeaturedActorsPerGenreCards[0].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[1].Title.Should().Be("Comedy");
+            stat.People.MostFeaturedActorsPerGenreCards[1].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[2].Title.Should().Be("Drama");
+            stat.People.MostFeaturedActorsPerGenreCards[2].Name.Should().Be("Gimli");
         }
 
         #endregion
 
         #region Suspicious
-
-        [Fact]
-        public void DuplicateMovies()
-        {
-            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(_movieOne.IMDB).AddSortName("lord-of-the-rings,-the").Build();
-            var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
-
-            stat.Suspicious.Should().NotBeNull();
-            stat.Suspicious.Duplicates.Should().NotBeNull();
-            stat.Suspicious.Duplicates.Count().Should().Be(1);
-            var duplicate = stat.Suspicious.Duplicates.Single();
-
-            duplicate.ItemOne.Id.Should().Be(movieFour.Id);
-            duplicate.ItemTwo.Id.Should().Be(_movieOne.Id);
-
-            duplicate.Number.Should().Be(0);
-            duplicate.Title.Should().Be(movieFour.Name);
-            duplicate.Reason.Should().Be(Constants.ByImdb);
-        }
-
-        [Fact]
-        public void DuplicateMoviesButDfferent3DFormat()
-        {
-            var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddVideo3DFormat(Video3DFormat.FullSideBySide).Build();
-            var subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
-            var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
-
-            stat.Suspicious.Should().NotBeNull();
-            stat.Suspicious.Duplicates.Should().NotBeNull();
-            stat.Suspicious.Duplicates.Count().Should().Be(0);
-        }
 
         [Fact]
         public void ShortMovies()
@@ -590,10 +595,10 @@ namespace Tests.Unit.Services
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
 
-            stat.Suspicious.Should().NotBeNull();
-            stat.Suspicious.Shorts.Should().NotBeNull();
-            stat.Suspicious.Shorts.Count().Should().Be(1);
-            var shortMovie = stat.Suspicious.Shorts.Single();
+            stat.Should().NotBeNull();
+            stat.Shorts.Should().NotBeNull();
+            stat.Shorts.Count().Should().Be(1);
+            var shortMovie = stat.Shorts.Single();
 
             shortMovie.Title = movieFour.Name;
             shortMovie.MediaId = movieFour.Id;
@@ -605,15 +610,16 @@ namespace Tests.Unit.Services
         public void ShortMoviesWithSettingDisabled()
         {
             var settingsServiceMock = new Mock<ISettingsService>();
-            settingsServiceMock.Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraryTypes = new List<LibraryType> { LibraryType.Movies }, ToShortMovieEnabled = false });
+            settingsServiceMock
+                .Setup(x => x.GetUserSettings())
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraries = new List<string> { _collections[0].Id, _collections[1].Id }, ToShortMovieEnabled = false });
             var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
 
-            stat.Suspicious.Should().NotBeNull();
-            stat.Suspicious.Shorts.Should().NotBeNull();
-            stat.Suspicious.Shorts.Count().Should().Be(0);
+            stat.Should().NotBeNull();
+            stat.Shorts.Should().NotBeNull();
+            stat.Shorts.Count().Should().Be(0);
         }
 
         [Fact]
@@ -623,10 +629,10 @@ namespace Tests.Unit.Services
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
 
-            stat.Suspicious.Should().NotBeNull();
-            stat.Suspicious.NoImdb.Should().NotBeNull();
-            stat.Suspicious.NoImdb.Count().Should().Be(1);
-            var noImdbIdMovie = stat.Suspicious.NoImdb.Single();
+            stat.Should().NotBeNull();
+            stat.NoImdb.Should().NotBeNull();
+            stat.NoImdb.Count().Should().Be(1);
+            var noImdbIdMovie = stat.NoImdb.Single();
 
             noImdbIdMovie.Title = movieFour.Name;
             noImdbIdMovie.MediaId = movieFour.Id;
@@ -640,10 +646,10 @@ namespace Tests.Unit.Services
             var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());
 
-            stat.Suspicious.Should().NotBeNull();
-            stat.Suspicious.NoPrimary.Should().NotBeNull();
-            stat.Suspicious.NoPrimary.Count().Should().Be(1);
-            var noPrimaryImageMovie = stat.Suspicious.NoPrimary.Single();
+            stat.Should().NotBeNull();
+            stat.NoPrimary.Should().NotBeNull();
+            stat.NoPrimary.Count().Should().Be(1);
+            var noPrimaryImageMovie = stat.NoPrimary.Single();
 
             noPrimaryImageMovie.Title = movieFour.Name;
             noPrimaryImageMovie.MediaId = movieFour.Id;

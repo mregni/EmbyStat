@@ -46,6 +46,10 @@ namespace EmbyStat.Controllers.Settings
 	    [HttpPut]
 	    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
 	    {
+            if (userSettings == null)
+            {
+                return BadRequest();
+            }
             var settings = _mapper.Map<UserSettings>(userSettings);
 
             MarkStatisticsAsInvalidIfNeeded(settings);
@@ -69,14 +73,14 @@ namespace EmbyStat.Controllers.Settings
         private void MarkStatisticsAsInvalidIfNeeded(UserSettings configuration)
         {
             var useSettings = _settingsService.GetUserSettings();
-            if (!(useSettings.MovieLibraryTypes.All(configuration.MovieLibraryTypes.Contains) &&
-                  useSettings.MovieLibraryTypes.Count == configuration.MovieLibraryTypes.Count))
+            if (!(useSettings.MovieLibraries.All(configuration.MovieLibraries.Contains) &&
+                  useSettings.MovieLibraries.Count == configuration.MovieLibraries.Count))
             {
                 _statisticsRepository.MarkMovieTypesAsInvalid();
             }
 
-            if (!(useSettings.ShowLibraryTypes.All(configuration.ShowLibraryTypes.Contains) &&
-                  useSettings.ShowLibraryTypes.Count == configuration.ShowLibraryTypes.Count))
+            if (!(useSettings.ShowLibraries.All(configuration.ShowLibraries.Contains) &&
+                  useSettings.ShowLibraries.Count == configuration.ShowLibraries.Count))
             {
                 _statisticsRepository.MarkShowTypesAsInvalid();
             }

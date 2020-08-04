@@ -34,18 +34,5 @@ namespace EmbyStat.Services.Converters
                 Year = show.PremiereDate?.Year ?? 0
             };
         }
-
-        public static PersonPoster ConvertToPersonPoster(Person person, string title)
-        {
-            return new PersonPoster(title)
-            {
-                MediaId = person.Id,
-                Name = person.Name,
-                BirthDate = person.BirthDate,
-                MovieCount = person.MovieCount,
-                ShowCount = person.ShowCount,
-                Tag = person.Primary
-            };
-        }
     }
 }

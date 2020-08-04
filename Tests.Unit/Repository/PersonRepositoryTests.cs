@@ -28,9 +28,9 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var person = new Person{ Id = Guid.NewGuid().ToString(), Name = "reggi", IMDB = "t0000001"};
-                _personRepository.Insert(person);
+                _personRepository.Upsert(person);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Person>();
                     var people = collection.FindAll().ToList();
@@ -53,7 +53,7 @@ namespace Tests.Unit.Repository
                 var personOne = new Person { Id = Guid.NewGuid().ToString(), Name = "reggi", IMDB = "t0000001" };
                 var personTwo = new Person { Id = Guid.NewGuid().ToString(), Name = "tom", IMDB = "t0000002" };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Person>();
                     collection.InsertBulk(new[] {personOne, personTwo});

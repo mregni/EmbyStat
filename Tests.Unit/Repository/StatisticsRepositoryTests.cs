@@ -32,7 +32,7 @@ namespace Tests.Unit.Repository
                var statisticThree = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Show, CalculationDateTime = DateTime.Now, JsonResult = "", IsValid = true, CollectionIds = new string[0] };
                var statisticFour = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Movie, CalculationDateTime = DateTime.Now, JsonResult = "", IsValid = true, CollectionIds = new[] { "1" } };
 
-               using (var database = _context.CreateDatabaseContext())
+               using (var database = _context.LiteDatabase)
                {
                    var collection = database.GetCollection<Statistic>();
                    collection.InsertBulk(new[] { statisticOne, statisticTwo, statisticThree, statisticFour });
@@ -55,7 +55,7 @@ namespace Tests.Unit.Repository
             {
                 _statisticsRepository.AddStatistic("statistics", DateTime.Now, StatisticType.Movie, new string[0]);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     var statistics = collection.FindAll().ToList();
@@ -80,7 +80,7 @@ namespace Tests.Unit.Repository
                 _statisticsRepository.AddStatistic("statistics", DateTime.Now, StatisticType.Movie, new string[0]);
                 _statisticsRepository.AddStatistic("statistics", DateTime.Now.AddDays(1), StatisticType.Movie, new string[0]);
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     var statistics = collection.FindAll().OrderBy(x => x.CalculationDateTime).ToList();
@@ -113,7 +113,7 @@ namespace Tests.Unit.Repository
                 var statisticThree = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Show, CalculationDateTime = DateTime.Now.AddDays(1), JsonResult = "", IsValid = true, CollectionIds = new string[0] };
                 var statisticFour = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Movie, CalculationDateTime = DateTime.Now.AddDays(2), JsonResult = "", IsValid = true, CollectionIds = new[] { "1" } };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     collection.InsertBulk(new[] { statisticOne, statisticTwo, statisticThree, statisticFour });
@@ -124,7 +124,7 @@ namespace Tests.Unit.Repository
 
                 _statisticsRepository.CleanupStatistics();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     var statistics = collection.FindAll().OrderBy(x => x.CalculationDateTime).ToList();
@@ -164,7 +164,7 @@ namespace Tests.Unit.Repository
                 var statisticThree = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Show, CalculationDateTime = DateTime.Now.AddDays(1), JsonResult = "", IsValid = true, CollectionIds = new string[0] };
                 var statisticFour = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Movie, CalculationDateTime = DateTime.Now.AddDays(2), JsonResult = "", IsValid = true, CollectionIds = new[] { "1" } };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     collection.InsertBulk(new[] { statisticOne, statisticTwo, statisticThree, statisticFour });
@@ -175,7 +175,7 @@ namespace Tests.Unit.Repository
 
                 _statisticsRepository.MarkMovieTypesAsInvalid();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     var statistics = collection.FindAll().OrderBy(x => x.CalculationDateTime).ToList();
@@ -197,7 +197,7 @@ namespace Tests.Unit.Repository
                 var statisticThree = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Movie, CalculationDateTime = DateTime.Now.AddDays(1), JsonResult = "", IsValid = true, CollectionIds = new string[0] };
                 var statisticFour = new Statistic { Id = Guid.NewGuid(), Type = StatisticType.Show, CalculationDateTime = DateTime.Now.AddDays(2), JsonResult = "", IsValid = true, CollectionIds = new[] { "1" } };
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     collection.InsertBulk(new[] { statisticOne, statisticTwo, statisticThree, statisticFour });
@@ -208,7 +208,7 @@ namespace Tests.Unit.Repository
 
                 _statisticsRepository.MarkShowTypesAsInvalid();
 
-                using (var database = _context.CreateDatabaseContext())
+                using (var database = _context.LiteDatabase)
                 {
                     var collection = database.GetCollection<Statistic>();
                     var statistics = collection.FindAll().OrderBy(x => x.CalculationDateTime).ToList();
