@@ -54,8 +54,8 @@
     "MINUTES": "分钟",
     "DISKSIZE": "磁盘空间",
     "TOTALDISKSIZE": "总磁盘空间",
-    "EMBYSERVER": "Emby server",
-    "JELLYFINSERVER": "Jellyfin server"
+    "EMBYSERVER": "Emby服务器",
+    "JELLYFINSERVER": "Jellyfin 服务器"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "呃。。。后台出错了，请再试一次。如果它一直不行，请查看日志以获取更多详细信息。",
@@ -90,33 +90,33 @@
     "SETTINGS": "设置",
     "PLUGINS": "插件",
     "JOBS": "作业",
-    "SERVER": "Server",
+    "SERVER": "服务器",
     "LOGS": "日志",
     "ABOUT": "关于",
     "USERS": "用户"
   },
   "WIZARD": {
     "INTROLABEL": "初始",
-    "SERVERTYPELABEL": "Server type",
-    "SERVERLABEL": "Server settings",
-    "SAVINGLABEL": "Server sync",
+    "SERVERTYPELABEL": "服务器类型",
+    "SERVERLABEL": "服务器设置",
+    "SAVINGLABEL": "服务器同步",
     "FINALLABEL": "最后",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
-    "CHECKINGSTATUS": "Checking {{type}} server ...",
+    "CHECKINGSTATUS": "正在检查 {{type}} 服务器...",
     "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
-    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
-    "SERVERRUNNING": "{{type}} server is running",
+    "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
+    "FOUNDTEXT": "我们在您的网络中找到了一个名为 {{name}} 的 {{type}} 服务器，并已经在表格中输入了网址。随时进行调整，并填写表格的其余部分。",
+    "SERVERRUNNING": "{{type}} 服务器正在运行",
     "KEYISVALID": "API密钥有效",
     "PLUGININSTALLED": "在 Emby 服务器上找到 EmbyStat 插件",
-    "SAVINGINSTRUCTIONS": "If something fails, you can't start using EmbyStat. In that case, fix the errors, press back and fix the issue.",
+    "SAVINGINSTRUCTIONS": "如果失败，则无法开始使用EmbyStat。在这种情况下，请按“返回”修复错误，然后按“下一步”继续。",
     "SAVING": "正在保存数据",
     "RESCAN": "重新扫描",
     "FINISHWITHSYNC": "开始同步",
     "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
     "FINISHEXPLANATION": "首先最好是启动一个媒体同步任务。EmbyStat将开始从您的 Emby 服务器下载所有数据。 请记住，这个任务可能需要很长时间，取决于您的收藏大小。 如果您不想现在只需点击完成即可开始同步。您可以稍后通过导航到任务页面手动启动。",
     "JELLYFIN": {
-      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+      "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
     }
   },
   "MOVIES": {
@@ -183,15 +183,15 @@
       "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
     },
     "EMBY": {
-      "EMBYADDRESS": "{{type}} IP/domain",
-      "EMBYAPIKEY": "{{type}} API key",
-      "EMBYPORT": "{{type}} port",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">your {{type}} server</a> to generate a new API token.",
+      "EMBYADDRESS": "{{type}} IP /域",
+      "EMBYAPIKEY": "{{type}} API密钥",
+      "EMBYPORT": "{{type}} 端口",
+      "EMBYADDRESSREQUIRED": "{{type}} IP /域要求。",
+      "EMBYPORTREQUIRED": "需要{{type}} 端口。",
+      "EMBYAPIKEYREQUIRED": "需要{{type}} API密钥",
+      "APIKEYHINT": "进入高级- >安全 <a href=\"{{url}}/web/index.html#!/{{page}}\" target=\"_blank\">您 {{type}} 服务器</a> 生成一个新的API令牌。",
       "WRONGAPIKEY": "提供的API密钥无效",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "CHANGESERVERTYPE": "您配置了一个 {{currentType}} 服务器，如果要切换到 {{newType}} ，则必须重新安装该应用程序。"
     },
     "UPDATE": {
       "MASTER": "主干",
@@ -311,7 +311,7 @@
     "FOLDERS": "文件夹"
   },
   "TOOLBAR": {
-    "GOTOMEDIASERVER": "Go to {{type}}",
+    "GOTOMEDIASERVER": "转到 {{type}}",
     "JOBISRUNNING": "{{job}} 作业正在运行",
     "NOMISSEDPINGS": "Emby 服务器处于活跃状态",
     "ONEMISSEDPING": "在最后一次检查时无法连接到Emby！",
