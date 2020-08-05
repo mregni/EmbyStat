@@ -5,12 +5,9 @@ steps:
       command: 'install'
       workingDir: 'EmbyStat.Web/ClientApp'
 
-  - task: Npm@1
+  - script: 'npm ${{ parameters.npmBuild }}'
     displayName: 'Build frontend'
-    inputs:
-      command: 'custom'
-      workingDir: 'EmbyStat.Web/ClientApp'
-      customCommand: '${{ parameters.npmBuild }}'
+    workingDirectory: 'EmbyStat.Web/ClientApp'
   
   - task: CopyFiles@2
     displayName: 'Copy frontend to publish folder'
