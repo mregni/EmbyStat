@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Services.Models;
-
-namespace EmbyStat.Controllers.HelperClasses
+﻿namespace EmbyStat.Controllers.HelperClasses
 {
     public class TopCardViewModel
     {

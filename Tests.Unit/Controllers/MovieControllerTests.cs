@@ -8,7 +8,6 @@ using EmbyStat.Controllers.Movie;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Movie;
-using EmbyStat.Services.Models.Stat;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Zoom from '@material-ui/core/Zoom';
-import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { getServerInfo, getPlugins } from '../../shared/services/MediaServerService';
@@ -34,7 +33,6 @@ const MediaServer = (props: Props) => {
   const [serverInfo, setServerInfo] = useState<MediaServerInfo | null>(null);
   const [plugins, setPlugins] = useState<MediaServerPlugin[] | null>(null);
   const settings = useSelector((state: RootState) => state.settings);
-  const { t } = useTranslation();
   const classes = useStyles();
 
   useEffect(() => {

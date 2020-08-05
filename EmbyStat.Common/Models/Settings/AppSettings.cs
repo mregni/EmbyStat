@@ -21,6 +21,11 @@ namespace EmbyStat.Common.Models.Settings
         /// </summary>
         [JsonIgnore]
         public bool NoUpdates { get; set; }
+        /// <summary>
+        /// Listeing urls. Set dynamically when server is starting
+        /// </summary>
+        [JsonIgnore]
+        public string ListeningUrls { get; set; }
         public Jwt Jwt { get; set; }
     }
 

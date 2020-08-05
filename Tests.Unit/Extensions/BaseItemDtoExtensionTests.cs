@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities.Helpers;

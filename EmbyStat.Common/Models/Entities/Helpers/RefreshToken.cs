@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Helpers

@@ -84,7 +84,8 @@ const TopListCard = (props: Props) => {
 
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
+    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images
+    /Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
   };
 
   const calculateTime = (date: string): string => {

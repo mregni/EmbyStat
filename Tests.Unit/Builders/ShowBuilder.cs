@@ -44,7 +44,7 @@ namespace Tests.Unit.Builders
                 TvdbFailed = false,
                 TvdbSynced = false,
                 PremiereDate = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
-                People = new[] {new ExtraPerson {Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor}},
+                People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
                 Genres = new[] { "Action" },
                 Episodes = new List<Episode>
                 {
@@ -117,7 +117,7 @@ namespace Tests.Unit.Builders
         public ShowBuilder AddActor(string id)
         {
             var list = _show.People.ToList();
-            list.Add(new ExtraPerson {Id = id, Name = "Gimli", Type = PersonType.Actor});
+            list.Add(new ExtraPerson { Id = id, Name = "Gimli", Type = PersonType.Actor });
             _show.People = list.ToArray();
             return this;
         }
@@ -127,6 +127,12 @@ namespace Tests.Unit.Builders
             var list = _show.People.ToList();
             list.Add(person);
             _show.People = list.ToArray();
+            return this;
+        }
+
+        public ShowBuilder ReplacePersons(ExtraPerson person)
+        {
+            _show.People = new[] { person };
             return this;
         }
 
@@ -156,7 +162,7 @@ namespace Tests.Unit.Builders
 
             return this;
         }
-        
+
         public ShowBuilder AddFailedSync(bool state)
         {
             _show.TvdbFailed = state;

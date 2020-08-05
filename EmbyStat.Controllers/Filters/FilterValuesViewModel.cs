@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EmbyStat.Controllers.HelperClasses;
+﻿using EmbyStat.Controllers.HelperClasses;
 
 namespace EmbyStat.Controllers.Filters
 {

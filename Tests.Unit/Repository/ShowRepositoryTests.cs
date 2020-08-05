@@ -353,14 +353,14 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddPerson(new ExtraPerson { Id = showOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
+                var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").ReplacePersons(new ExtraPerson { Id = showOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").Build();
 
                 _showRepository.InsertShow(showOne);
                 _showRepository.InsertShow(showTwo);
                 _showRepository.InsertShow(showThree);
 
-                var count = _showRepository.GetMediaCountForPerson(showOne.People.First().Id);
+                var count = _showRepository.GetMediaCountForPerson(showOne.People.First().Name);
 
                 count.Should().Be(2);
             });

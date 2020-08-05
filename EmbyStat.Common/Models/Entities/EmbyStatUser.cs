@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AspNetCore.Identity.LiteDB.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
 

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Jobs;

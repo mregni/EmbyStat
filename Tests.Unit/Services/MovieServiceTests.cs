@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
@@ -158,7 +159,7 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in movies.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByName(person.Name)).Returns(
+                personServiceMock.Setup(x => x.GetPersonByNameForMovies(person.Name, It.IsAny<string>())).Returns(
                     new Person
                     {
                         Id = person.Id,
@@ -429,25 +430,25 @@ namespace Tests.Unit.Services
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
             var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"0,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 0.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"1\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"1,5\",\"Val0\":1},";
+            dataSet += "{\"Label\":\"" + 1.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":1},";
             dataSet += "{\"Label\":\"2\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"2,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 2.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"3\",\"Val0\":2},";
-            dataSet += "{\"Label\":\"3,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 3.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"4\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"4,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 4.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"5\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"5,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 5.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"6\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"6,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 6.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"7\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"7,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 7.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"8\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"8,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 8.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"9\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"9,5\",\"Val0\":0}";
+            dataSet += "{\"Label\":\"" + 9.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0}";
             graph.DataSets.Should().Be("[" +dataSet + "]");
         }
 
@@ -465,25 +466,25 @@ namespace Tests.Unit.Services
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
             var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"0,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 0.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"1\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"1,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 1.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"2\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"2,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 2.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"3\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"3,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 3.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"4\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"4,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 4.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"5\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"5,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 5.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"6\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"6,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 6.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"7\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"7,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 7.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"8\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"8,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 8.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"9\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"9,5\",\"Val0\":0}";
+            dataSet += "{\"Label\":\"" + 9.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0}";
             graph.DataSets.Should().Be("[" + dataSet + "]");
         }
 
@@ -577,11 +578,17 @@ namespace Tests.Unit.Services
             stat.People.MostFeaturedActorsPerGenreCards.Should().NotBeNull();
             stat.People.MostFeaturedActorsPerGenreCards.Count.Should().Be(3);
             stat.People.MostFeaturedActorsPerGenreCards[0].Title.Should().Be("Action");
-            stat.People.MostFeaturedActorsPerGenreCards[0].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[0].UnitNeedsTranslation.Should().Be(false);
+            stat.People.MostFeaturedActorsPerGenreCards[0].Unit.Should().Be(string.Empty);
+            stat.People.MostFeaturedActorsPerGenreCards[0].ValueType.Should().Be(ValueTypeEnum.None);
             stat.People.MostFeaturedActorsPerGenreCards[1].Title.Should().Be("Comedy");
-            stat.People.MostFeaturedActorsPerGenreCards[1].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[1].UnitNeedsTranslation.Should().Be(false);
+            stat.People.MostFeaturedActorsPerGenreCards[1].Unit.Should().Be(string.Empty);
+            stat.People.MostFeaturedActorsPerGenreCards[1].ValueType.Should().Be(ValueTypeEnum.None);
             stat.People.MostFeaturedActorsPerGenreCards[2].Title.Should().Be("Drama");
-            stat.People.MostFeaturedActorsPerGenreCards[2].Name.Should().Be("Gimli");
+            stat.People.MostFeaturedActorsPerGenreCards[2].UnitNeedsTranslation.Should().Be(false);
+            stat.People.MostFeaturedActorsPerGenreCards[2].Unit.Should().Be(string.Empty);
+            stat.People.MostFeaturedActorsPerGenreCards[2].ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         #endregion

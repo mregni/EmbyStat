@@ -81,6 +81,9 @@ const FilterPicker = (props: Props) => {
   const calculateValue = (): string | number => {
     switch (filterDefinition.field) {
       case 'RunTimeTicks':
+        if (value.includes('|')) {
+          return `${parseInt(value.split('|')[0], 10) * 600000000}|${parseInt(value.split('|')[1], 10) * 600000000}`;
+        }
         return parseInt(value, 10) * 600000000;
       case 'Images':
       case 'Genres':

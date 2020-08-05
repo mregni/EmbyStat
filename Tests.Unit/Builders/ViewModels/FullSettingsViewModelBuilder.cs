@@ -25,7 +25,6 @@ namespace Tests.Unit.Builders.ViewModels
                 ToShortMovieEnabled = settings.ToShortMovieEnabled,
                 UpdateInProgress = settings.UpdateInProgress,
                 UpdateTrain = (int) settings.UpdateTrain,
-                Username = settings.Username,
                 WizardFinished = settings.WizardFinished,
                 MediaServer = new MediaServerSettingsViewModel
                 {

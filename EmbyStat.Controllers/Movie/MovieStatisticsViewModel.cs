@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
-using EmbyStat.Services.Models.Movie;
-using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Controllers.Movie
 {

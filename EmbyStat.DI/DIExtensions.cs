@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.IdentityModel.Tokens.Jwt;
 using AspNetCore.Identity.LiteDB.Data;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.WebSocket;
@@ -11,7 +11,6 @@ using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Tvdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Maintenance;
@@ -22,7 +21,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using RestSharp;
@@ -39,6 +37,12 @@ namespace EmbyStat.DI
             services.RegisterClients();
             services.RegisterHttp();
             services.RegisterSignalR();
+            services.RegisterUserHandlers();
+        }
+
+        private static void RegisterUserHandlers(this IServiceCollection services)
+        {
+            services.TryAddSingleton<JwtSecurityTokenHandler>();
         }
 
         private static void RegisterServices(this IServiceCollection services)

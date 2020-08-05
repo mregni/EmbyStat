@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using AspNetCore.Identity.LiteDB.Models;
-using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +15,7 @@ namespace EmbyStat.Common.Helpers
 {
     public static class AuthenticationHelper
     {
-        public static string GenerateAccessToken(EmbyStatUser user, Jwt jwt)
+        public static string GenerateAccessToken(EmbyStatUser user, Jwt jwt, JwtSecurityTokenHandler tokenHandler)
         {
             var identity = GenerateClaimsIdentity(user);
 
@@ -30,7 +29,7 @@ namespace EmbyStat.Common.Helpers
             claims.AddRange(identity.Claims);
 
             var token = GenerateToken(claims, jwt);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenHandler.WriteToken(token);
         }
 
         public static string GenerateRefreshToken(int size = 128)

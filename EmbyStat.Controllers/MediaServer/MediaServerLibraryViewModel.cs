@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer
 {
     public class MediaServerLibraryViewModel
     {

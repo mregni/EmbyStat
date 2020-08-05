@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;

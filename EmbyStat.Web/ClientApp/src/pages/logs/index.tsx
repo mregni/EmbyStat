@@ -14,7 +14,7 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
 import { getLogList, downloadLogFile } from '../../shared/services/LogService';
-import { LogFile } from '../../shared/models/log';
+import { LogFile } from '../../shared/models/logs';
 
 const useStyles = makeStyles({
   table: {

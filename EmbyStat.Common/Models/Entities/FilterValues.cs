@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Common.Models.Entities
 {

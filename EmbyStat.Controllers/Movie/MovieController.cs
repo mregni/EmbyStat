@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using DevExtreme.AspNet.Data;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Controllers.Movie

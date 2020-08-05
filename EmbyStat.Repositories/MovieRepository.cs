@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Data.ResponseModel;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;

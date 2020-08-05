@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
-using Newtonsoft.Json;
 
 namespace EmbyStat.Services
 {

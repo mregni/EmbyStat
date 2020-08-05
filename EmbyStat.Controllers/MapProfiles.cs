@@ -17,7 +17,6 @@ using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
 using EmbyStat.Controllers.MediaServer;
-using EmbyStat.Services.Models;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.DataGrid;
@@ -103,6 +102,7 @@ namespace EmbyStat.Controllers
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
+            CreateMap<EmbyStatus, EmbyStatusViewModel>();
         }
     }
 }

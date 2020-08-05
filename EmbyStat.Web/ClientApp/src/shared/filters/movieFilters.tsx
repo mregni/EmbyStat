@@ -220,7 +220,7 @@ const movieFilters: FilterDefinition[] = [
     label: 'Runtime {0} {1}',
     types: [
       {
-        operation: '>',
+        operation: '<',
         label: 'shorter',
         type: 'number',
         unit: 'COMMON.MIN',
@@ -228,7 +228,7 @@ const movieFilters: FilterDefinition[] = [
         id: uuid(),
       },
       {
-        operation: '<',
+        operation: '>',
         label: 'longer',
         type: 'number',
         unit: 'COMMON.MIN',

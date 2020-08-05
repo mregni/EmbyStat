@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Data.ResponseModel;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EmbyStat.Services.Interfaces
 {

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using EmbyStat.Repositories.Interfaces.Helpers;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Data.ResponseModel;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Query;
 

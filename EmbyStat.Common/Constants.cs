@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Common
 {
