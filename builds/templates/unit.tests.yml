@@ -27,10 +27,6 @@ steps:
         npm run lint
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
-  - script: 'ng test --code-coverage  --watch=false'
-    workingDirectory: 'EmbyStat.Web/ClientApp'
-    displayName: 'Run FE tests'
-
   - task: CopyFiles@2
     displayName: 'Copy Test result files'
     inputs:
