@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
@@ -429,25 +430,25 @@ namespace Tests.Unit.Services
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
             var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"0,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 0.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"1\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"1,5\",\"Val0\":1},";
+            dataSet += "{\"Label\":\"" + 1.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":1},";
             dataSet += "{\"Label\":\"2\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"2,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 2.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"3\",\"Val0\":2},";
-            dataSet += "{\"Label\":\"3,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 3.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"4\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"4,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 4.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"5\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"5,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 5.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"6\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"6,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 6.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"7\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"7,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 7.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"8\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"8,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 8.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"9\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"9,5\",\"Val0\":0}";
+            dataSet += "{\"Label\":\"" + 9.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0}";
             graph.DataSets.Should().Be("[" +dataSet + "]");
         }
 
@@ -465,25 +466,25 @@ namespace Tests.Unit.Services
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
             var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"0,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 0.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"1\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"1,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 1.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"2\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"2,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 2.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"3\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"3,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 3.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"4\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"4,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 4.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"5\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"5,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 5.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"6\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"6,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 6.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"7\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"7,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 7.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"8\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"8,5\",\"Val0\":0},";
+            dataSet += "{\"Label\":\"" + 8.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
             dataSet += "{\"Label\":\"9\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"9,5\",\"Val0\":0}";
+            dataSet += "{\"Label\":\"" + 9.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0}";
             graph.DataSets.Should().Be("[" + dataSet + "]");
         }
 
