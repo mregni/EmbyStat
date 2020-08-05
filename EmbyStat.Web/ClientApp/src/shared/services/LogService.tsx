@@ -1,7 +1,7 @@
 import { axiosInstance } from './axiosInstance';
 import { saveAs } from 'file-saver';
 
-import { LogFile } from '../models/log';
+import { LogFile } from '../models/logs';
 
 const domain = 'log/';
 
