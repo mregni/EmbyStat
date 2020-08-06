@@ -146,6 +146,7 @@ namespace EmbyStat.Web
         private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel)
         {
             var logLevelStr = logLevel == 1 ? "Debug" : "Information";
+            var updatesEnabled = options["NoUpdates"] == "False";
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t--------------------------------------------------------------------");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\tBooting up server with following options:");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tLog level:\t\t{logLevelStr}");
@@ -154,7 +155,7 @@ namespace EmbyStat.Web
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tConfigDir:\t\t{options["Dirs:Config"]}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tDataDir:\t\t{options["Dirs:Data"]}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tLogDir:\t\t\t{options["Dirs:Logs"]}");
-            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tUpdates enabled:\t{options["NoUpdates"]}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tUpdates enabled:\t{updatesEnabled}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t--------------------------------------------------------------------");
         }
 
