@@ -5,7 +5,7 @@ param(
     [switch]$InstallNSSM,
     [switch]$GenerateZip,
     [string]$version,
-    [string]$InstallLocation = "./di",
+    [string]$InstallLocation = "./publish",
     [string]$UXLocation = "./",
     [ValidateSet('Debug','Release')][string]$BuildType = 'Release',
     [ValidateSet('Quiet','Minimal', 'Normal')][string]$DotNetVerbosity = 'Minimal',
@@ -23,27 +23,6 @@ if(($PSVersionTable.PSEdition -eq 'Core') -and (-not $IsWindows)){
 New-Item -ItemType Directory -Force -Path $InstallLocation
 $ResolvedInstallLocation = Resolve-Path $InstallLocation
 $ResolvedUXLocation = Resolve-Path $UXLocation
-
-function Build-EmbyStat {
-    if(($Architecture -eq 'arm64') -and ($WindowsVersion -ne 'win10')){
-            Write-Error "arm64 only supported with Windows10 Version"
-            exit
-        }
-    if(($Architecture -eq 'arm') -and ($WindowsVersion -notin @('win10','win81','win8'))){
-            Write-Error "arm only supported with Windows 8 or higher"
-            exit
-        }
-    Write-Verbose "windowsversion-Architecture: $windowsversion-$Architecture"
-    Write-Verbose "InstallLocation: $ResolvedInstallLocation"
-    Write-Verbose "DotNetVerbosity: $DotNetVerbosity"
-    dotnet publish Embystat.Web/EmbyStat.Web.csproj -c $BuildType --output $ResolvedInstallLocation -v $DotNetVerbosity --runtime `"$windowsversion-$Architecture`" -p:GenerateDocumentationFile=false -p:DebugSymbols=false -p:DebugType=none
-	dotnet publish Updater/Updater.csproj -c $BuildType --output $ResolvedInstallLocation/updater -v $DotNetVerbosity --runtime `"$windowsversion-$Architecture`" -p:GenerateDocumentationFile=false -p:DebugSymbols=false -p:DebugType=none
-	cd EmbyStat.Web/ClientApp
-	npm install
-	npm run build -- --prod
-	Move-Item -Path ./dist/embystat/* -Destination $ResolvedInstallLocation/dist
-	cd ../../
-}
 
 function Install-NSSM {
     param(
@@ -106,7 +85,6 @@ function Cleanup-NSIS {
 }
 
 Write-Verbose "Starting Build Process: Selected Environment is $WindowsVersion-$Architecture"
-Build-EmbyStat
 
 if($InstallNSSM.IsPresent -or ($InstallNSSM -eq $true)){
     Write-Verbose "Starting NSSM Install"
