@@ -1,9 +1,7 @@
 steps: 
-  - task: Npm@1
+  - script: 'npm install'
     displayName: 'Npm install'
-    inputs:
-      command: 'install'
-      workingDir: 'EmbyStat.Web/ClientApp'
+    workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - script: 'npm ${{ parameters.npmBuild }}'
     displayName: 'Build frontend'
