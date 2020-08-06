@@ -9,7 +9,7 @@ using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Emby.WebSocket
 {
-    public class EmbyWebSocketClient : IWebSocketClient
+    public class EmbyWebSocketClient : IWebSocketClient, IDisposable
     {
         private WebSocket4Net.WebSocket _socket;
         public WebSocketState State => _socket?.State ?? WebSocketState.Closed;

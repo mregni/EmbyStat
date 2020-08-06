@@ -179,7 +179,7 @@ namespace EmbyStat.Services
                 _logger.Info("---------------------------------");
                 _logger.Info($"Downloading zip file {result.Package.Name}");
 
-                var webClient = new WebClient();
+                using var webClient = new WebClient();
                 webClient.DownloadFileCompleted += delegate { DownloadFileCompleted(result); };
                 await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
