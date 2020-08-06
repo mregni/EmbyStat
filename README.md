@@ -1,4 +1,4 @@
-![# Logo!](https://raw.githubusercontent.com/mregni/EmbyStat/develop/branding/logo-color.png =350x)
+<img src="https://raw.githubusercontent.com/mregni/EmbyStat/develop/branding/logo-color.png" width="350">
 
 [![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg)](https://gitter.im/EmbyStat/Lobby)
 ![GitHub (pre-)release](https://img.shields.io/github/release/mregni/embystat/all.svg)
