@@ -244,7 +244,7 @@
       "NOADDRESS": "IP / domein is vereist",
       "APIKEY": "API sleutel",
       "NOAPIKEY": "API-sleutel is vereist",
-      "PORT": "Haven",
+      "PORT": "Poort",
       "NOPORT": "IP / domein is vereist",
       "BASEURL": "Basis-URL",
       "NOBASEURL": "String is vereist en moet beginnen met /",
@@ -319,7 +319,7 @@
     "NORUN": "Nog niet gestart",
     "JOBLOGS": "Taaklogboeken",
     "CRONUPDATED": "Cron waarde bijgewerkt",
-    "OPENJOBPAGE": "Ga naar vacaturepagina",
+    "OPENJOBPAGE": "Ga naar job pagina",
     "STARTMEDIASYNC": "Start mediasynchronisatie",
     "INFO": {
       "PING": "Controleer {{type}} verbinding",
