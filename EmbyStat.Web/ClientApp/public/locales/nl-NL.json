@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "SERVERNAME": "Server name",
+    "SERVERNAME": "Server naam",
     "DOWNLOAD": "download",
     "NEXT": "volgende",
     "BACK": "vorige",
@@ -14,7 +14,7 @@
     "MINUTESABBR": "m",
     "MIN": "min",
     "GB": "Gb",
-    "AND": "and",
+    "AND": "en",
     "PIXELS": "px",
     "TITLE": "titel",
     "ADDEDON": "toegevoegd op",
@@ -25,12 +25,12 @@
     "BYIMDB": "dezelfde imdb id",
     "BYTITLE": "dezelfde titel",
     "MOVIES": "films",
-    "MOVIE": "movie",
-    "SHOW": "show",
+    "MOVIE": "film",
+    "SHOW": "serie",
     "GENRES": "Genres",
-    "COMMUNITYRATING": "Community rating",
-    "OFFICIALRATING": "Official rating",
-    "COLLECTEDPERCENTAGE": "Collected percentage",
+    "COMMUNITYRATING": "Communautaire beoordeling",
+    "OFFICIALRATING": "Officiële beoordeling",
+    "COLLECTEDPERCENTAGE": "Verzameld percentage",
     "EMBY": "Emby",
     "GENERAL": "algemeen",
     "DURATION": "duur",
@@ -58,35 +58,35 @@
     "TOTALDISKSIZE": "Totale schijfruimte",
     "EMBYSERVER": "Emby server",
     "JELLYFINSERVER": "Jellyfin server",
-    "OS": "Operating system",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
-    "UPDATELEVEL": "Update level",
-    "SELECTVALUE": "Select value",
-    "ADD": "Add",
-    "DATE": "date",
+    "OS": "Besturingssysteem",
+    "WANADDRESS": "WAN-adres",
+    "LANADDRESS": "LAN-adres",
+    "UPDATELEVEL": "Update niveau",
+    "SELECTVALUE": "Selecteer waarde",
+    "ADD": "Toevoegen",
+    "DATE": "datum",
     "FPS": "fps",
     "LINKS": "Links",
     "AUDIO": "Audio",
-    "SUBTITLES": "Subtitles",
-    "RATING": "Rating",
-    "RESOLUTION": "Resolution",
-    "RUNTIME": "Runtime",
-    "TABLE": "Table",
-    "LIBRARYERROR": "Could not fetch libraries",
-    "LOADING": "Loading {{item}}",
-    "STATISTICS": "Statistics",
-    "NAME": "Name"
+    "SUBTITLES": "Ondertitels",
+    "RATING": "Beoordeling",
+    "RESOLUTION": "Resolutie",
+    "RUNTIME": "Looptijd",
+    "TABLE": "Tafel",
+    "LIBRARYERROR": "Kan bibliotheken niet ophalen",
+    "LOADING": "Bezig met laden {{item}}",
+    "STATISTICS": "Statistieken",
+    "NAME": "Naam"
   },
   "LOGS": {
-    "ANONYMISED": "Anonymised",
-    "SIZE": "Size",
-    "CREATIONDATE": "Creation date",
-    "ACTIONS": "Actions"
+    "ANONYMISED": "Geanonimiseerd",
+    "SIZE": "Grootte",
+    "CREATIONDATE": "Aanmaakdatum",
+    "ACTIONS": "Acties"
   },
   "FORMERRORS": {
-    "EMPTY": "Field may not be empty",
-    "REQUIRED": "Required"
+    "EMPTY": "Veld mag niet leeg zijn",
+    "REQUIRED": "Verplicht"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
@@ -119,33 +119,33 @@
   },
   "WIZARD": {
     "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Provide a username and password for your admin user",
-    "SERVERCONFIGURATION": "Server configuration",
-    "SERVERCONFIGURATIONTEST": "Server configuration test",
-    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
-    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
-    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
-    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker",
+    "SERVERCONFIGURATION": "Server configuratie",
+    "SERVERCONFIGURATIONTEST": "Serverconfiguratietest",
+    "CONFIGURELIBRARIES": "Configureer {{type}} bibliotheken",
+    "STEPONE": "Controleren of API-sleutel is geldig ({{step}}/{{total}})",
+    "STEPTWO": "Fetching serverinformatie ({{step}}/{{total}})",
+    "STEPTHREE": "Ophalen beheerdersaccounts ({{step}}/{{total}})",
+    "STEPFOUR": "Ophalen server bibliotheken ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Laatste",
-    "SEARCHSERVERS": "Searching servers",
-    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
+    "SEARCHSERVERS": "Servers zoeken",
+    "OPENSERVERAPIPAGE": "Open {{type}} API-sleutelpagina",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API-sleutel is geldig",
-    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "SELECTLIBRARIES": "Selecteer alle bibliotheken die u wilt opnemen in de berekeningen met {{type}} statistieken. Alle {{type}} bibliotheken zijn standaard geselecteerd. Als je wilt, kun je dit later op de instellingenpagina wijzigen.",
     "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
     "FINISHEXPLANATION": "Het beste is om eerst een mediasynchronisatietaak te starten. EmbyStat begint met het downloaden van alle gegevens van uw Emby-server. Houd er rekening mee dat deze taak lang kan duren, afhankelijk van uw collectiegrootte. Als u nu geen synchronisatie taak wilt starten, klikt u op Voltooien. U kunt het later handmatig starten door naar de pagina Taken te navigeren.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
-    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>"
+    "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
+    "ADDRESSUSED": "Adres: <i>{{address}}</i>",
+    "APIKEYUSED": "API-sleutel: <i>{{api}}</i>"
   },
   "MOVIES": {
     "TOTALMOVIES": "Totale Films",
@@ -163,7 +163,7 @@
     "TOSHORTMOVIES": "Films die zeer kort zijn",
     "NOPOSTER": "Ontbrekende Poster",
     "NOIMDB": "Ontbrekende IMDB-ID",
-    "LOADER": "Loading movie statistics"
+    "LOADER": "Filmstatistieken laden"
   },
   "SHOWS": {
     "TOTALSHOWS": "Totale Series",
@@ -184,55 +184,55 @@
     "MISSINGEPISODES": "Missende afleveringen"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
+    "SAVED": "Instellingen opgeslagen",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TVDB": "The TVDB",
       "EMBY": "Emby"
     },
     "TVDB": {
-      "TITLE": "Tvdb connection",
-      "APIKEYLABEL": "TheTVDB API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "TITLE": "Tvdb-aansluiting",
+      "APIKEYLABEL": "TheTVDB API-sleutel",
+      "APIKEYWARNING": "Als u wilt, kunt u EmbyStat hier voorzien van uw eigen TheTVDB API-sleutel. Zorg ervoor dat u een werkende API-sleutel opgeeft! Als de sleutel onjuist is, mislukt de synchronisatietaak.",
+      "NOAPIKEY": "API-sleutel mag niet leeg zijn",
+      "SAVING": "TVDB-sleutel opslaan"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Enable exception logging",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
-      "SAVING": "Saving Rollbar settings"
+      "ENABLEROLLBAR": "Uitgebreide logboekregistratie voor foutmeldingen inschakelen",
+      "EXCEPTIONLOGGING": "Schakel de exceptie logging in / uit voor de online Rollbar-service. Met deze logging kan ik de applicatie sneller debuggen en repareren. Er worden nooit persoonlijke gegevens vastgelegd, alleen crash berichten, stacktrace, OS-naam en versienummer.",
+      "SAVING": "Rollbar-instellingen opslaan"
     },
     "LANGUAGE": {
-      "TITLE": "Language",
-      "LABEL": "Select your prefert language",
-      "SAVING": "Updating language to {{lang}}"
+      "TITLE": "Taal",
+      "LABEL": "Selecteer uw voorkeurstaal",
+      "SAVING": "Taal bijwerken naar {{lang}}"
     },
     "ACCOUNT": {
-      "TITLE": "User details",
-      "USERNAME": "Username",
-      "NOUSERNAME": "Username is required",
-      "PASSWORD": "Password",
-      "NEWPASSWORD": "New password",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "CURRENTPASSWORD": "Current password",
-      "NOPASSWORD": "Password is required",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "TITLE": "Gebruikersdetails",
+      "USERNAME": "Gebruikersnaam",
+      "NOUSERNAME": "gebruikersnaam is vereist",
+      "PASSWORD": "Wachtwoord",
+      "NEWPASSWORD": "Nieuw paswoord",
+      "REPEATNEWPASSWORD": "Herhaal nieuw wachtwoord",
+      "CURRENTPASSWORD": "Huidig wachtwoord",
+      "NOPASSWORD": "Een wachtwoord is verplicht",
+      "PASSWORDNOTEQUAL": "Wachtwoorden zijn niet gelijk",
+      "PASSWORDMINLENGTH": "De lengte van het wachtwoord moet minimaal 6 tekens zijn",
+      "PASSWORDWARNING": "U hoeft alleen een nieuw wachtwoord in te vullen als u uw huidige wachtwoord wilt wijzigen.",
+      "WRONGPASSWORD": "Verkeerd wachtwoord voor ingelogde gebruiker",
+      "USERNAMEUPDATED": "Gebruikersnaam succesvol bijgewerkt",
+      "USERNAMEUPDATEFAILED": "Update van gebruikersnaam mislukt, controleer logging voor meer info"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "SAVING": "Saving all {{type}} statistic settings",
-      "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "TOSHORTTEXT": "Om de verdacht korte films te vinden, moeten we weten hoeveel minuten je te kort vindt voor een film. Standaard is dit ingesteld op 10 minuten, maar u kunt dit indien nodig wijzigen.",
+      "SAVING": "Alle {{type}} statistische instellingen worden opgeslagen",
+      "TOSHORTMINUTES": "Minuten",
+      "ENABLETOSHORTSCAN": "Zoeken naar korte films inschakelen"
     },
     "MOVIE": {
       "LIBRARY": {
-        "SAVING": "Saving movie libraries"
+        "SAVING": "Filmbibliotheken opslaan"
       },
       "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met filmstatistieken."
     },
@@ -240,23 +240,23 @@
       "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met seriestatistieken."
     },
     "MEDIASERVER": {
-      "ADDRESS": "IP/domain",
-      "NOADDRESS": "IP/domain is required",
-      "APIKEY": "API key",
-      "NOAPIKEY": "API key is required",
-      "PORT": "Port",
-      "NOPORT": "IP/domain is required",
-      "BASEURL": "Base Url",
-      "NOBASEURL": "String is required and should start with /",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
-      "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
-      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "ADDRESS": "IP / domein",
+      "NOADDRESS": "IP / domein is vereist",
+      "APIKEY": "API sleutel",
+      "NOAPIKEY": "API-sleutel is vereist",
+      "PORT": "Poort",
+      "NOPORT": "IP / domein is vereist",
+      "BASEURL": "Basis-URL",
+      "NOBASEURL": "String is vereist en moet beginnen met /",
+      "EMBYADDRESSREQUIRED": "{{type}} IP / domein vereist.",
+      "EMBYPORTREQUIRED": "{{type}} poort vereist.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API-sleutel vereist",
+      "APIKEYHINT": "Ga naar geavanceerd -> beveiliging op uw {{type}} server om een nieuw API-token te genereren.",
+      "BASEURLHINT": "Basis-URL moet beginnen met een /",
+      "BASEURLNEEDED": "Ik moet een basis-URL instellen",
+      "BASEURLNEEDEDTOOLTIP": "Je hebt dit waarschijnlijk niet nodig als je niet achter een reverse proxy zit!",
+      "WRONGAPIKEY": "De opgegeven API-sleutel is niet geldig",
+      "CHANGESERVERTYPE": "U heeft een {{currentType}} server geconfigureerd, als u wilt overschakelen naar {{newType}} moet u de applicatie opnieuw installeren."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -275,13 +275,13 @@
     }
   },
   "LOGIN": {
-    "LOGIN": "Login",
-    "ERROR": "Username or password unknown",
-    "LOGOUT": "Log out",
-    "FORGOTPASSWORD": "Forgot password",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "LOGIN": "Log in",
+    "ERROR": "Gebruikersnaam of wachtwoord onbekend",
+    "LOGOUT": "Uitloggen",
+    "FORGOTPASSWORD": "Wachtwoord vergeten",
+    "RECOVERPASSWORD": "Herstel wachtwoord",
+    "RESETCOMPLETED": "Controleer logs voor nieuw wachtwoord",
+    "RESETFAILED": "Het resetten van de gebruikersnaam is mislukt"
   },
   "USERS": {
     "ISADMIN": "Is beheerder",
@@ -319,20 +319,20 @@
     "NORUN": "Nog niet gestart",
     "JOBLOGS": "Taaklogboeken",
     "CRONUPDATED": "Cron waarde bijgewerkt",
-    "OPENJOBPAGE": "Go to job page",
-    "STARTMEDIASYNC": "Start media sync",
+    "OPENJOBPAGE": "Ga naar job pagina",
+    "STARTMEDIASYNC": "Start mediasynchronisatie",
     "INFO": {
-      "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "PING": "Controleer {{type}} verbinding",
+      "PINGDESCRIPTION": "Ping de Emby-server om te controleren of hij nog online is.",
+      "SYSTEM-SYNCDESCRIPTION": "Voer een kleine synchronisatie uit met de Emby-server. Dit is alleen een snelle en kleine systeemupdate.",
+      "SYSTEM-SYNC": "Synchroniseer {{type}} info",
+      "SYSTEM-SYNCSTART": "Start kleine synchronisatie",
+      "MEDIA-SYNCDESCRIPTION": "Voer een incrementele synchronisatie uit voor uw filmverzameling. Dit kan even duren om te rennen!",
+      "MEDIA-SYNC": "Media synchronisatie",
+      "DATABASE-CLEANUP": "Database opschonen",
+      "DATABASE-CLEANUPDESCRIPTION": "Database opschonen met onnodige gegevens.",
+      "UPDATE-CHECKER": "Controleer op nieuwe updates",
+      "UPDATE-CHECKERDESCRIPTION": "Controleert op nieuwe updates op uw geselecteerde updatetrein."
     }
   },
   "DIALOGS": {
@@ -378,7 +378,7 @@
   "STATUS": {
     "TITLE": "{{type}} status",
     "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "OFFLINE": "{{count}} gemiste pings"
   },
   "ABOUT": {
     "SERVERINFO": "Server info",
@@ -395,6 +395,6 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where"
+    "WHEREMOVIES": "Films waar"
   }
 }
