@@ -20,7 +20,7 @@ namespace EmbyStat.Clients.Base.Http
         JObject GetDevices();
         bool Ping();
         MediaServerUdpBroadcast SearchServer();
-        List<Movie> GetMovies(string parentId, int startIndex, int limit);
+        List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit);
         List<BoxSet> GetBoxSet(string parentId);
         List<Show> GetShows(string libraryId);
         List<Season> GetSeasons(string parentId);

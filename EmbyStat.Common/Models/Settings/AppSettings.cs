@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Models.Settings
 {
@@ -20,6 +21,12 @@ namespace EmbyStat.Common.Models.Settings
         /// </summary>
         [JsonIgnore]
         public bool NoUpdates { get; set; }
+        /// <summary>
+        /// Listeing urls. Set dynamically when server is starting
+        /// </summary>
+        [JsonIgnore]
+        public string ListeningUrls { get; set; }
+        public Jwt Jwt { get; set; }
     }
 
     public class Updater
@@ -59,5 +66,16 @@ namespace EmbyStat.Common.Models.Settings
         public string LogLevel { get; set; }
         public int MaxReportsPerMinute { get; set; }
         public int ReportingQueueDepth { get; set; }
+    }
+
+    public class Jwt
+    {
+        public string Key { get; set; }
+        public int AccessExpireMinutes { get; set; }
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public DateTime IssuedAt => DateTime.UtcNow;
+        public DateTime NotBefore => DateTime.UtcNow;
+        public DateTime Expiration => IssuedAt.Add(TimeSpan.FromMinutes(AccessExpireMinutes));
     }
 }

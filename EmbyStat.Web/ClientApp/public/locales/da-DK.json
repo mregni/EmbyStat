@@ -1,0 +1,400 @@
+{
+  "COMMON": {
+    "SERVERNAME": "Server name",
+    "DOWNLOAD": "download",
+    "NEXT": "næste",
+    "BACK": "tilbage",
+    "FINISH": "udfør",
+    "SAVE": "gem",
+    "DISCARD": "kasser",
+    "CANCEL": "annuller",
+    "CLOSE": "luk",
+    "DAYSABBR": "d",
+    "HOURSABBR": "t",
+    "MINUTESABBR": "m",
+    "MIN": "min",
+    "GB": "Gb",
+    "AND": "and",
+    "PIXELS": "px",
+    "TITLE": "titel",
+    "ADDEDON": "tilføjet den",
+    "QUALITY": "kvalitet",
+    "NEVER": "aldrig",
+    "OPEN": "Åbn",
+    "REASON": "årsag",
+    "BYIMDB": "samme IMDb-ID",
+    "BYTITLE": "samme titel",
+    "MOVIES": "film",
+    "MOVIE": "movie",
+    "SHOW": "show",
+    "GENRES": "Genres",
+    "COMMUNITYRATING": "Community rating",
+    "OFFICIALRATING": "Official rating",
+    "COLLECTEDPERCENTAGE": "Collected percentage",
+    "EMBY": "Emby",
+    "GENERAL": "generelt",
+    "DURATION": "spilletid",
+    "GRAPHS": "grafer",
+    "PEOPLE": "personer",
+    "FILTERS": "Filters",
+    "SUSPICIOUS": "mistænkelige",
+    "SHOWS": "serier",
+    "TOTALACTORS": "Antal skuespillere",
+    "TOTALDIRECTORS": "Antal instruktører",
+    "TOTALWRITERS": "Antal forfattere",
+    "MOSTFEATUREDACTOR": "Mest fremtrædende skuespiller",
+    "MOSTFEATUREDDIRECTOR": "Mest fremtrædende instruktør",
+    "MOSTFEATUREDWRITER": "Mest fremtrædende forfatter",
+    "LIBRARIES": "Biblioteker",
+    "PREMIEREDATE": "udgivelsesdato",
+    "STATUS": "status",
+    "PERCENTAGE": "procent",
+    "COLLECTED": "indsamlet",
+    "UPDATES": "Opdateringer",
+    "VERSION": "Version",
+    "ACTORSPERGENRE": "Mest fremtrædende skuespiller per genre",
+    "MINUTES": "minutter",
+    "DISKSIZE": "Diskforbrug",
+    "TOTALDISKSIZE": "Diskforbrug i alt",
+    "EMBYSERVER": "Emby server",
+    "JELLYFINSERVER": "Jellyfin server",
+    "OS": "Operating system",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "UPDATELEVEL": "Update level",
+    "SELECTVALUE": "Select value",
+    "ADD": "Add",
+    "DATE": "date",
+    "FPS": "fps",
+    "LINKS": "Links",
+    "AUDIO": "Audio",
+    "SUBTITLES": "Subtitles",
+    "RATING": "Rating",
+    "RESOLUTION": "Resolution",
+    "RUNTIME": "Runtime",
+    "TABLE": "Table",
+    "LIBRARYERROR": "Could not fetch libraries",
+    "LOADING": "Loading {{item}}",
+    "STATISTICS": "Statistics",
+    "NAME": "Name"
+  },
+  "LOGS": {
+    "ANONYMISED": "Anonymised",
+    "SIZE": "Size",
+    "CREATIONDATE": "Creation date",
+    "ACTIONS": "Actions"
+  },
+  "FORMERRORS": {
+    "EMPTY": "Field may not be empty",
+    "REQUIRED": "Required"
+  },
+  "EXCEPTIONS": {
+    "INTERNAL_ERROR": "Woops, vi fik en fejl i backend, prøv igen. Hvis det forsætter, bedes du tjekke logfilerne for flere detaljer.",
+    "NO_CONFIGURATION_FOUND": "Der blev ikke fundet nogen konfigurationer.",
+    "NOT_FOUND": "Undskyld, vi kan ikke finde det, som du leder efter.",
+    "TOKEN_FAILED": "Det lykkes ikke at få Emby token. Kontroller venligst dine legitimationsoplysninger og adresse.",
+    "EMBY_CALL_FAILED": "Opkald til Emby-server mislykkedes. Kontroller, om Emby kører, og hvis legitimationsoplysningerne stadig er korrekte.",
+    "UNHANDLED": "Ubegrænset backend-undtagelse",
+    "MOVIENOTFOUND": "Film, der ikke blev fundet, Start eventuelt mediesynkroniseringsjob for at fikse dette.",
+    "EPISODENOTFOUND": "Afsnit ikke fundet, Starte eventuelt et mediesynkroniseringsjob for at rette dette.",
+    "CANTCONNECTTOGITHUB": "Kan ikke oprette forbindelse til GitHub for at se efter opdateringer. Prøv igen senere.",
+    "NOUPDATEFILE": "Kan ikke finde opdateringsprogrammet, ingen opdatering udført",
+    "UPDATEUNPACKERROR": "Noget gik galt under udpakning af opdateringspakken. Prøv igen.",
+    "TVDBLOGINFAILED": "TVDB-login mislykkedes, kontroller API-nøglen."
+  },
+  "FORMLABELS": {
+    "CRON": "Cron-streng"
+  },
+  "MENU": {
+    "DASHBOARD": "Instrumentpanel",
+    "MOVIES": "Film",
+    "SHOWS": "Serier",
+    "SETTINGS": "Indstillinger",
+    "PLUGINS": "Plugins",
+    "JOBS": "Job",
+    "SERVER": "Server",
+    "LOGS": "Logfiler",
+    "ABOUT": "Om",
+    "USERS": "Brugere"
+  },
+  "WIZARD": {
+    "WIZARDLABEL": "Wizard",
+    "USERDETAILTEXT": "Provide a username and password for your admin user",
+    "SERVERCONFIGURATION": "Server configuration",
+    "SERVERCONFIGURATIONTEST": "Server configuration test",
+    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
+    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
+    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
+    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
+    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "SERVERTYPELABEL": "Server type",
+    "FINALLABEL": "Sidste trin",
+    "SEARCHSERVERS": "Searching servers",
+    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
+    "CROWNDINHELP": "Hvis dit sprog ikke er angivet eller ikke er komplet, kan du hjælpe mig med at oversætte appen i dit sprog på <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "INTROTEXT": "Velkommen til guiden til EmbyStat-server.<br/><br/>Med denne guide opretter vi de grundlæggende indstillinger, så du kan begynde at arbejde med EmbyStat uden for meget hovedpine. Når guiden er færdig, kan du nyde alle funktioner på serveren. Hvis du vil tilpasse serveren mere, kan du altid gå til Indstillinger.<br/><br/>Nu skal vi bare vide, hvad vi skal kalde dig og hvilket sprog, du ønsker at få vist brugergrænsefladen på.",
+    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "SERVERRUNNING": "{{type}} server is running",
+    "KEYISVALID": "API key is valid",
+    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "FINISHED": "Alle indstillinger gemmes, og du kan nu begynde at bruge Emby-serveren. Nyd dine nye statistikker!",
+    "FINISHEXPLANATION": "Det bedste er først at starte en medie-synkroniseringsopgave. EmbyStat vil begynde at downloade alle data fra din Emby-server. Husk, at denne opgave kan tage lang tid afhængigt af størrensen af din samling. Hvis du ikke vil starte en synkronisering nu, kan du bare klikke på Fuldfør. Du kan starte det manuelt senere ved at navigere til siden Opgaver.",
+    "JELLYFIN": {
+      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+    },
+    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
+    "ADDRESSUSED": "Address: <i>{{address}}</i>",
+    "APIKEYUSED": "API key: <i>{{api}}</i>"
+  },
+  "MOVIES": {
+    "TOTALMOVIES": "Antal film",
+    "TOTALGENRES": "Antal genrer",
+    "TOTALPLAYLENGTH": "Samlet spilletid",
+    "HIGHESTRATED": "Bedst bedømte",
+    "LOWESTRATED": "Dårligst bedømte",
+    "OLDESTPREMIERED": "Ældste premieredato",
+    "NEWESTPREMIERED": "Seneste premieredato",
+    "SHORTEST": "Korteste spilletid",
+    "LONGEST": "Længste spilletid",
+    "LATESTADDED": "Senest tilføjet",
+    "MOSTFEATUREDPERGENRE": "Mest fremtrædende skuespiller per genre",
+    "DUPLICATEMOVIES": "Dubletter",
+    "TOSHORTMOVIES": "Meget korte film",
+    "NOPOSTER": "Mangler en plakat",
+    "NOIMDB": "Mangler et IMDb-ID",
+    "LOADER": "Loading movie statistics"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "Antal serier",
+    "TOTALEPISODES": "Antal episoder",
+    "TOTALMISSINGEPISODES": "Antal manglende episoder",
+    "TOTALPLAYLENGTH": "Samlet spilletid",
+    "HIGHESTRATEDSHOW": "Bedst bedømte",
+    "LOWESTRATEDSHOW": "Dårligst bedømte",
+    "OLDESTPREMIERED": "Ældste premieredato",
+    "NEWESTPREMIERED": "Seneste premieredato",
+    "LATESTADDED": "Nylig tilføjet",
+    "WITHMOESTEPISODES": "Med de fleste episoder",
+    "SHOWSTATUSGRAPH": "Vis status",
+    "SEASONS": "Sæsoner",
+    "CONTINUING": "Fortsættes",
+    "ENDED": "Afsluttet",
+    "OVERVIEW": "Oversigt",
+    "MISSINGEPISODES": "Manglende episoder"
+  },
+  "SETTINGS": {
+    "SAVED": "Settings saved",
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "The TVDB",
+      "EMBY": "Emby"
+    },
+    "TVDB": {
+      "TITLE": "Tvdb connection",
+      "APIKEYLABEL": "TheTVDB API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "NOAPIKEY": "API key can not be empty",
+      "SAVING": "Saving TVDB key"
+    },
+    "ROLLBAR": {
+      "TITLE": "Rollbar",
+      "ENABLEROLLBAR": "Enable exception logging",
+      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
+      "SAVING": "Saving Rollbar settings"
+    },
+    "LANGUAGE": {
+      "TITLE": "Language",
+      "LABEL": "Select your prefert language",
+      "SAVING": "Updating language to {{lang}}"
+    },
+    "ACCOUNT": {
+      "TITLE": "User details",
+      "USERNAME": "Username",
+      "NOUSERNAME": "Username is required",
+      "PASSWORD": "Password",
+      "NEWPASSWORD": "New password",
+      "REPEATNEWPASSWORD": "Repeat new password",
+      "CURRENTPASSWORD": "Current password",
+      "NOPASSWORD": "Password is required",
+      "PASSWORDNOTEQUAL": "Passwords are not equal",
+      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
+      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
+      "WRONGPASSWORD": "Wrong password for loggedin user",
+      "USERNAMEUPDATED": "Username updated succesfully",
+      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+    },
+    "STATISTICS": {
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "SAVING": "Saving all {{type}} statistic settings",
+      "TOSHORTMINUTES": "Minutes",
+      "ENABLETOSHORTSCAN": "Enable search for short movies"
+    },
+    "MOVIE": {
+      "LIBRARY": {
+        "SAVING": "Saving movie libraries"
+      },
+      "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på filmstatistiksiden."
+    },
+    "SHOW": {
+      "COLLECTIONTYPES": "Vælg alle Emby-samlingstyper, som du vil kunne vælge i samlingstildelingen på seriestatistiksiden."
+    },
+    "MEDIASERVER": {
+      "ADDRESS": "IP/domain",
+      "NOADDRESS": "IP/domain is required",
+      "APIKEY": "API key",
+      "NOAPIKEY": "API key is required",
+      "PORT": "Port",
+      "NOPORT": "IP/domain is required",
+      "BASEURL": "Base Url",
+      "NOBASEURL": "String is required and should start with /",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
+      "EMBYPORTREQUIRED": "{{type}} port required.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
+      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
+      "BASEURLHINT": "Base url needs to start with a /",
+      "BASEURLNEEDED": "I need to set a base url",
+      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
+      "WRONGAPIKEY": "Provided API key is not valid",
+      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+    },
+    "UPDATE": {
+      "MASTER": "Master",
+      "BETA": "Beta",
+      "AUTO": "Aktiver automatiske opdateringer",
+      "CHECK": "Kontroller for opdateringer nu",
+      "UPDATE:": "Opdater server nu",
+      "TRAIN": "Skift opdateringsniveau, hvis du vil have beta-opdateringer",
+      "ONBETA": "Du er ikke på masterniveau længere, så du ikke kan skifte tilbage til det. Hvis du vil gå tilbage til masterniveauet, skal du geninstallere serveren.",
+      "TRAINWARNING": "Her kan du ændre opdateringsniveau fra master til beta. Hvis du ikke ved, hvad du laver, skal du bare lade denne indstilling blive på Master. Hvis du vil modtage Beta-opdateringerne, skal du ændre det her. Vær opmærksom på, at du ikke kan gå tilbage til Master senere, da det kræver geninstallering af serveren.",
+      "CURRENTVERSION": "Nuværende version: {{version}}",
+      "CANTCHECK": "Kan ikke tjekke efter opdateringer nu, da der ikke kunne oprettes forbindelse til GitHub.",
+      "NOUPDATE": "Ingen opdateringer er tilgængelige",
+      "NEWVERSION": "Version {{version}} er klar til download!",
+      "DISABLED": "Updates are disabled for this server and will probably be updated by an external service. If this is a mistake don't start the server with the --no-updates option."
+    }
+  },
+  "LOGIN": {
+    "LOGIN": "Login",
+    "ERROR": "Username or password unknown",
+    "LOGOUT": "Log out",
+    "FORGOTPASSWORD": "Forgot password",
+    "RECOVERPASSWORD": "Recover password",
+    "RESETCOMPLETED": "Check logs for new password",
+    "RESETFAILED": "Username reset failed"
+  },
+  "USERS": {
+    "ISADMIN": "Er administrator",
+    "ISHIDDEN": "Er skjult fra login-skærmen",
+    "ISDISABLED": "Er deaktiveret",
+    "DELETED": "Slettede brugere",
+    "ACTIVE": "Aktive brugere",
+    "LASTACTIVE": "Senest aktiv",
+    "SORTING": {
+      "USERNAMEASC": "Brugernavn (A - Z)",
+      "USERNAMEDESC": "Brugernavn (Z - A)",
+      "LASTACTIVEASC": "Senest aktiv (stigende)",
+      "LASTACTIVEDESC": "Senest aktiv (faldende)"
+    },
+    "TOOVERVIEW": "Gå til oversigt",
+    "DETAILS": {
+      "TITLE": "Detaljer for {{name}}",
+      "WATCHEDTITLE": "Seneste viste titler"
+    },
+    "WATCHEDTABLE": {
+      "TITLE": "Titel",
+      "TIME": "Tid",
+      "WATCHED": "Set",
+      "START": "Start",
+      "ACTION": "Handling"
+    },
+    "STATS": {
+      "TOTALWATCHEDMOVIES": "Antal film set",
+      "TOTALWATCHEDEPISODES": "Antal episoder set"
+    }
+  },
+  "JOB": {
+    "LASTRUN": "Seneste kørsel",
+    "BUTFAILED": "men mislykkedes efter",
+    "NORUN": "Ikke kørt endnu",
+    "JOBLOGS": "Joblog",
+    "CRONUPDATED": "Cron-værdi opdateret",
+    "OPENJOBPAGE": "Go to job page",
+    "STARTMEDIASYNC": "Start media sync",
+    "INFO": {
+      "PING": "Check {{type}} connection",
+      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SYSTEM-SYNC": "Sync {{type}} info",
+      "SYSTEM-SYNCSTART": "Start small sync",
+      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIA-SYNC": "Media synchronization",
+      "DATABASE-CLEANUP": "Database cleanup",
+      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "UPDATE-CHECKER": "Check for new updates",
+      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+    }
+  },
+  "DIALOGS": {
+    "NOMOVIETYPEFOUND": {
+      "TITLE": "Ingen film fundet",
+      "BODY": "Vi kunne ikke finde nogen film i EmbyStat-databasen. Hvis du har film i Emby, bør du prøve at starte en ny mediesynkroniseringsopgave."
+    },
+    "NOSHOWTYPEFOUND": {
+      "TITLE": "Ingen shows fundet",
+      "BODY": "Vi kunne ikke finde nogen shows i EmbyStat databasen. Hvis du har shows i Emby, bør du prøve at starte en ny mediesynkroniseringsopgave."
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "Media synkroniseringsopgave kører",
+      "BODY": "Media synkroniseringsopgaven kører i baggrunden. På grund af dette er alle statistiske sider blokeret, fordi beregningerne ville være fuldstændig forkerte, så længe synkroniseringen kører."
+    },
+    "EDIT_TRIGGER": {
+      "FORMAT_ERROR": "Angivet cron-streng er i et forkert format. Tjek <a href=\"https://crontab.guru/\" target=\"_blank\">her</a> for formatering regler. Kun tal, mellemrum, *, / og - er tilladt.",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Her</a> kan du finde flere oplysninger om, hvordan du formaterer en CRON-streng. Kun tal, *, / og - er tilladt."
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "Ingen brugere fundet",
+      "BODY": "Ingen brugere findes i den lokale database. Det betyder, at der ikke er noget lille synkroniseringsjob som kører. Vil du køre det nu?"
+    }
+  },
+  "LOADER": {
+    "UPDATING": "Opdatering af EmbyStat",
+    "UPDATINGSUB": "Siden opdateres, når opdateringen er færdig."
+  },
+  "COLLECTIONTYPES": {
+    "MIXED": "Blandet/Andet",
+    "MUSIC": "Musik",
+    "MUSICVIDEOS": "Musikvideoer",
+    "TRAILERS": "Trailere",
+    "HOMEVIDEOS": "Hjemmevideoer",
+    "BOXSETS": "Filmsamlinger",
+    "BOOKS": "Bøger",
+    "PHOTOS": "Billeder",
+    "GAMES": "Spil",
+    "LIVETV": "Live-tv",
+    "PLAYLISTS": "Afspilningslister",
+    "FOLDERS": "Mapper"
+  },
+  "STATUS": {
+    "TITLE": "{{type}} status",
+    "ONLINE": "Server online",
+    "OFFLINE": "{{count}} missed pings"
+  },
+  "ABOUT": {
+    "SERVERINFO": "Serverinfo",
+    "GITHUBRELEASE": "Udgivelser på Github",
+    "REQUESTFEATURE": "Anmod om funktion",
+    "LOGBUG": "Rapporter fejl på Github",
+    "HELPTRANSLATE": "Hjælp med at oversætte denne app",
+    "THANKS": {
+      "TITLE": "Tak til",
+      "TEXT": "En stor tak til følgende personer for oversættelse af appen til deres modersmål:"
+    },
+    "ACTIONS": {
+      "TITLE": "Handlinger"
+    }
+  },
+  "FILTERS": {
+    "WHEREMOVIES": "Movies where"
+  }
+}

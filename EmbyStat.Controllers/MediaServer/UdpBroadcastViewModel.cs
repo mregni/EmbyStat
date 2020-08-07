@@ -7,5 +7,7 @@
 	    public string Name { get; set; }
         public int Port { get; set; }
         public int Protocol { get; set; }
-	}
+        public int Type { get; set; }
+        public string BaseUrl { get; set; }
+    }
 }

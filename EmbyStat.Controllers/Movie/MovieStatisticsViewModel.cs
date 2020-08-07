@@ -1,12 +1,17 @@
-﻿using EmbyStat.Controllers.HelperClasses;
+﻿using System.Collections.Generic;
+using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Services.Models.Charts;
 
 namespace EmbyStat.Controllers.Movie
 {
     public class MovieStatisticsViewModel
     {
-        public MovieGeneralViewModel General { get; set; }
-        public MovieChartsViewModel Charts { get; set; }
+        public List<CardViewModel<string>> Cards { get; set; }
+        public List<TopCardViewModel> TopCards { get; set; }
+        public List<Chart> Charts { get; set; }
         public PersonStatsViewModel People { get; set; }
-        public SuspiciousTablesViewModel Suspicious { get; set; }
+        public List<ShortMovieViewModel> Shorts { get; set; }
+        public List<SuspiciousMovieViewModel> NoImdb { get; set; }
+        public List<SuspiciousMovieViewModel> NoPrimary { get; set; }
     }
 }

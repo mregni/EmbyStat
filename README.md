@@ -1,17 +1,17 @@
-![# Logo!](https://github.com/mregni/EmbyStat/blob/master/EmbyStat.Web/ClientApp/src/assets/images/logo_color.png?raw=true)
+<img src="https://raw.githubusercontent.com/mregni/EmbyStat/develop/branding/logo-color.png" width="350">
 
 [![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg)](https://gitter.im/EmbyStat/Lobby)
 ![GitHub (pre-)release](https://img.shields.io/github/release/mregni/embystat/all.svg)
 ![Github All Releases](https://img.shields.io/github/downloads/mregni/embystat/total.svg)
 [![Docker Pulls](https://img.shields.io/docker/pulls/uping/embystat.svg)](https://hub.docker.com/r/uping/embystat/)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mregni/embystat.svg)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
+[![Crowdin](https://badges.crowdin.net/embystat/localized.svg)](https://crowdin.com/project/embystat)
 ![Codacy](https://api.codacy.com/project/badge/Grade/92431e9931574cf2a663242fde86c47f)
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 
 # Intro
 
-EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby server. Just install this on your server and let him calculate all kinds of fun stuff.
+EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby or Jellyfin server. Just install this on your server and let him calculate all kinds of fun stuff.
 
 This project is still in Alpha fase, but feel free to pull in on your computer and test it out yourself. When the time is right I will host a full informational website/release for common platforms and Wiki pages.
 
@@ -42,7 +42,7 @@ If you have knowledge about building unix packages please feel free to contact m
 
 ## Installation Guides
 
-For full installation guides please see the [Wiki](https://github.com/mregni/EmbyStat/wiki) page
+For full installation guides please see the [Wiki](https://github.com/mregni/EmbyStat/wiki) page. Work in progress!
 
 ## Translations
 
@@ -57,11 +57,11 @@ Or just go and upvote your favorite features so I have a better idea about what 
 
 This project is build from scratch with the following technologies:
 
-* .NET CORE 2.2
-* LiteDB
+* .NET CORE 3.1
+* LiteDB 5
 * SignalR
 * NLog
-* Angular 5
+* React
 * Rollbar
 
 ## Roadmap

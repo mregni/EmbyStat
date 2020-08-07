@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
@@ -25,7 +23,8 @@ namespace EmbyStat.Common.Extensions
                         Channels = y.Channels,
                         Codec = y.Codec,
                         Language = y.Language,
-                        SampleRate = y.SampleRate
+                        SampleRate = y.SampleRate,
+                        IsDefault = y.IsDefault,
                     }).ToList();
 
                 video.SubtitleStreams = dto.MediaStreams

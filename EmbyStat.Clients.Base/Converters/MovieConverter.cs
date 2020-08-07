@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -40,7 +39,7 @@ namespace EmbyStat.Clients.Base.Converters
                 PremiereDate = dto.PremiereDate,
                 ProductionYear = dto.ProductionYear,
                 Video3DFormat = dto.Video3DFormat ?? 0,
-                Genres = dto.Genres
+                Genres = dto.Genres,
             };
 
             dto.MapImageTags(movie);

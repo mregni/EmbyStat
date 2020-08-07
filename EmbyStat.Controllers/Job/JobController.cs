@@ -86,7 +86,7 @@ namespace EmbyStat.Controllers.Job
             }
 
             await Task.Run(() => { RecurringJob.Trigger(job.Id.ToString()); });
-            await _jobHubHelper.BroadCastJobLog("JOB CONTROLLER", $"{GetJobTitle(job.Title)} job queued", ProgressLogType.Information);
+            await _jobHubHelper.BroadCastJobLog("JOBS", $"{job.Title} job queued", ProgressLogType.Information);
             return Ok();
         }
 
@@ -95,19 +95,6 @@ namespace EmbyStat.Controllers.Job
         public IActionResult GetMediaSyncJob()
         {
             return Get(Constants.JobIds.MediaSyncId);
-        }
-
-        private string GetJobTitle(string key)
-        {
-            switch (key)
-            {
-                case "DATABASECLEANUPTITLE": return Constants.LogPrefix.DatabaseCleanupJob;
-                case "CHECKUPDATETITLE": return Constants.LogPrefix.CheckUpdateJob;
-                case "SMALLEMBYSYNCTITLE": return Constants.LogPrefix.SmallEmbySyncJob;
-                case "MEDIASYNCTITLE": return Constants.LogPrefix.MediaSyncJob;
-                case "PINGEMBYSERVERTITLE": return Constants.LogPrefix.PingEmbyJob;
-                default: return string.Empty;
-            }
         }
     }
 }

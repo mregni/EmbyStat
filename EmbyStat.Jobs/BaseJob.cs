@@ -95,6 +95,7 @@ namespace EmbyStat.Jobs
             await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
                 ? "Job finished after 1 minute."
                 : $"Job finished after {Math.Ceiling(runTime)} minutes.");
+            await LogProgress(100);
         }
 
         private async Task FailExecution()

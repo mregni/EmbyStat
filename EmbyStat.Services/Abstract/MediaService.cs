@@ -9,8 +9,10 @@ using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.Stat;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Services.Abstract
 {
@@ -43,15 +45,15 @@ namespace EmbyStat.Services.Abstract
             var genresData = media
                 .SelectMany(x => x.Genres)
                 .GroupBy(x => x)
-                .Select(x => new { Name = x.Key, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerGenre,
-                Labels = genresData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { genresData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(genresData),
+                SeriesCount = 1
             };
         }
 
@@ -71,15 +73,15 @@ namespace EmbyStat.Services.Abstract
             }
 
             var ratingData = ratingDataList
-                .Select(x => new { Name = x.Key?.ToString() ?? Constants.Unknown, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key?.ToString() ?? Constants.Unknown, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerCommunityRating,
-                Labels = ratingData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { ratingData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(ratingData),
+                SeriesCount = 1
             };
         }
 
@@ -106,15 +108,15 @@ namespace EmbyStat.Services.Abstract
             }
 
             var yearData = yearDataList
-                .Select(x => new { Name = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Count = x.Count() })
-                .OrderBy(x => x.Name)
+                .Select(x => new { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Val0 = x.Count() })
+                .OrderBy(x => x.Label)
                 .ToList();
 
             return new Chart
             {
                 Title = Constants.CountPerPremiereYear,
-                Labels = yearData.Select(x => x.Name),
-                DataSets = new List<IEnumerable<int>> { yearData.Select(x => x.Count) }
+                DataSets = JsonConvert.SerializeObject(yearData),
+                SeriesCount = 1
             };
         }
 
@@ -132,28 +134,25 @@ namespace EmbyStat.Services.Abstract
 
         #region People
 
-        internal List<PersonPoster> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media)
+        internal List<TopCard> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media, int count)
         {
-            var list = new List<PersonPoster>();
+            var list = new List<TopCard>();
             foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
             {
                 var selectedMovies = media.Where(x => x.Genres.Any(y => y == genre));
-                var personName = selectedMovies
+                var people = selectedMovies
                     .SelectMany(x => x.People)
                     .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                    .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
                     .OrderByDescending(x => x.Count)
-                    .Select(x => x.Name)
-                    .FirstOrDefault();
+                    .Select(x => x.Name);
 
-                if (personName != null)
-                {
-                    var person = PersonService.GetPersonByName(personName);
-                    if (person != null)
-                    {
-                        list.Add(PosterHelper.ConvertToPersonPoster(person, genre));
-                    }
-                }
+                var boe = people
+                    .Take(count);
+                    var boeTwo = boe.Select(name => PersonService.GetPersonByNameForMovies(name, genre))
+                    .ToArray();
+
+                list.Add(boeTwo.ConvertToTopCard(genre, string.Empty, "MovieCount"));
             }
 
             return list;

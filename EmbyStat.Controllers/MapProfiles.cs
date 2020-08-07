@@ -1,12 +1,14 @@
 ﻿using System;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Controllers.About;
+using EmbyStat.Controllers.Filters;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Controllers.Log;
@@ -15,7 +17,9 @@ using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
 using EmbyStat.Controllers.MediaServer;
+using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Show;
@@ -34,28 +38,43 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.Version, x => x.Ignore())
                 .ReverseMap()
                 .ForMember(x => x.Version, x => x.Ignore());
-            CreateMap<MediaServerSettings, FullSettingsViewModel.EmbySettingsViewModel>().ReverseMap();
+            CreateMap<MediaServerSettings, FullSettingsViewModel.MediaServerSettingsViewModel>().ReverseMap();
             CreateMap<TvdbSettings, FullSettingsViewModel.TvdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
 		    CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
             CreateMap<PluginInfo, PluginViewModel>();
 		    CreateMap<ServerInfo, ServerInfoViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
-	        CreateMap<Common.Models.Entities.Job, JobViewModel>();
-	        CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
-	        CreateMap( typeof(Card<>), typeof(CardViewModel<>));
+
+            CreateMap<Common.Models.Entities.Job, JobViewModel>()
+                .ForMember(dest => dest.StartTimeUtcIso,
+                    src => src.MapFrom((org, x) =>
+                        org.StartTimeUtc?.ToString("O") ?? string.Empty))
+                .ForMember(dest => dest.EndTimeUtcIso,
+                    src => src.MapFrom((org, x) =>
+                        org.EndTimeUtc?.ToString("O") ?? string.Empty));
+
+            CreateMap<TimeSpanCard, TimeSpanCardViewModel>();
+	        CreateMap( typeof(Card<>), typeof(CardViewModel<>))
+                .ForMember("Type", src => src.MapFrom((org, x) =>
+                {
+                    switch (((Card<string>)org).Type)
+                    {
+                        case CardType.Text: return "text";
+                        case CardType.Size: return "size";
+                        case CardType.Time: return "time";
+                        default: return "text";
+                    }
+                }));
+
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
 	        CreateMap<ShowPoster, ShowPosterViewModel>();
             CreateMap<PersonPoster, PersonPosterViewModel>();
             CreateMap<MovieStatistics, MovieStatisticsViewModel>();
             CreateMap<ShowStatistics, ShowStatisticsViewModel>();
-            CreateMap<MovieGeneral, MovieGeneralViewModel>();
 	        CreateMap<PersonStats, PersonStatsViewModel>();
             CreateMap<Library, LibraryViewModel>();
-	        CreateMap<MovieDuplicate, MovieDuplicateViewModel>();
-	        CreateMap<MovieDuplicateItem, MovieDuplicateItemViewModel>();
 	        CreateMap<Chart, ChartViewModel>();
-	        CreateMap<MovieCharts, MovieChartsViewModel>();
 	        CreateMap<ShowCharts, ShowChartsViewModel>();
             CreateMap<ShortMovie, ShortMovieViewModel>();
 	        CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
@@ -76,6 +95,14 @@ namespace EmbyStat.Controllers
 			    .ReverseMap()
 			    .ForMember(x => x.CompletedInstallations, y => y.Ignore());
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
+
+            CreateMap(typeof(Page<>), typeof(PageViewModel<>));
+            CreateMap<MovieColumn, MovieColumnViewModel>();
+            CreateMap<TopCard, TopCardViewModel>();
+            CreateMap<TopCardItem, TopCardItemViewModel>();
+            CreateMap<LabelValuePair, LabelValuePairViewModel>();
+            CreateMap<FilterValues, FilterValuesViewModel>();
+            CreateMap<EmbyStatus, EmbyStatusViewModel>();
         }
     }
 }

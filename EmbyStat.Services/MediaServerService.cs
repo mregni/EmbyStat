@@ -26,6 +26,7 @@ namespace EmbyStat.Services
         private IHttpClient _httpClient;
         private readonly IMediaServerRepository _mediaServerRepository;
         private readonly ISessionService _sessionService;
+        private readonly ILibraryRepository _libraryRepository;
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
@@ -33,7 +34,7 @@ namespace EmbyStat.Services
         private readonly Logger _logger;
 
         public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository)
+            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, ILibraryRepository libraryRepository)
         {
             _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
@@ -41,6 +42,7 @@ namespace EmbyStat.Services
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _clientStrategy = clientStrategy;
+            _libraryRepository = libraryRepository;
             _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
 
             var settings = _settingsService.GetUserSettings();
@@ -52,34 +54,34 @@ namespace EmbyStat.Services
         {
             ChangeClientType(type);
             var result = _httpClient.SearchServer();
-            var settings = _settingsService.GetUserSettings();
-            settings.MediaServer.ServerName = result.Name;
-            _settingsService.SaveUserSettingsAsync(settings);
-
-            if (!string.IsNullOrWhiteSpace(result.Address))
+            if (result != null)
             {
-                var serverType = type == ServerType.Emby ? "Emby" : "jellyfin";
-                _logger.Info($"{ serverType } server found at: " + result.Address);
+                result.Type = (int) type;
+                if (!string.IsNullOrWhiteSpace(result.Address))
+                {
+                    var serverType = type == ServerType.Emby ? "Emby" : "jellyfin";
+                    _logger.Info($"{serverType} server found at: " + result.Address);
+                }
             }
 
             return result;
         }
 
-        public ServerInfo GetServerInfo()
+        public ServerInfo GetServerInfo(bool forceReSync)
         {
-            var server = _mediaServerRepository.GetServerInfo();
-            if (server == null)
+            if (forceReSync)
             {
-                server = GetAndProcessServerInfo();
+                return GetAndProcessServerInfo();
             }
 
-            return server;
+            return _mediaServerRepository.GetServerInfo() ?? GetAndProcessServerInfo();
         }
 
-        public bool TestNewApiKey(string url, string apiKey)
+        public bool TestNewApiKey(string url, string apiKey, ServerType type)
         {
             _logger.Debug($"Testing new API key on {url}");
             _logger.Debug($"API key used: {apiKey}");
+            ChangeClientType(type);
             var oldApiKey = _httpClient.ApiKey;
             var oldUrl = _httpClient.BaseUrl;
             _httpClient.ApiKey = apiKey;
@@ -102,6 +104,19 @@ namespace EmbyStat.Services
         public EmbyStatus GetMediaServerStatus()
         {
             return _mediaServerRepository.GetEmbyStatus();
+        }
+
+        public IEnumerable<Library> GetMediaServerLibraries()
+        {
+            var rootItems = _httpClient.GetMediaFolders();
+
+            var libraries = rootItems.Items
+                .Select(LibraryConverter.ConvertToLibrary)
+                .Where(x => x.Type != LibraryType.BoxSets)
+                .ToList();
+
+            _libraryRepository.AddOrUpdateRange(libraries);
+            return libraries;
         }
 
         public bool PingMediaServer(string url)

@@ -1,7 +1,6 @@
 ﻿using EmbyStat.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using Rollbar;
 
 namespace EmbyStat.Common.Exceptions
@@ -54,7 +53,8 @@ namespace EmbyStat.Common.Exceptions
                 logger.Error(context.Exception, msg);
             }
 
-            context.Result = new JsonResult(JsonConvert.SerializeObject(apiError));
+            context.Result = new JsonResult(apiError);
+            context.ExceptionHandled = true;
             base.OnException(context);
         }
     }

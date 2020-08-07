@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Controllers.Movie
 {
@@ -18,14 +20,6 @@ namespace EmbyStat.Controllers.Movie
             _movieService = movieService;
             _mapper = mapper;
         }
-        
-        [HttpGet]
-        [Route("libraries")]
-        public IActionResult GetLibraries()
-        {
-            var result = _movieService.GetMovieLibraries();
-            return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
-        }
 
         [HttpGet]
         [Route("statistics")]
@@ -34,6 +28,42 @@ namespace EmbyStat.Controllers.Movie
             var result = _movieService.GetStatistics(libraryIds);
             var convert = _mapper.Map<MovieStatisticsViewModel>(result);
             return Ok(convert);
+        }
+
+        [HttpGet]
+        [Route("list")]
+        public IActionResult GetMoviePageList(int skip, int take, string sort, bool requireTotalCount, string filter, List<string> libraryIds)
+        {
+            var filtersObj = new Filter[0];
+            if (filter != null)
+            {
+                filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
+            }
+
+            var page = _movieService.GetMoviePage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
+
+            var convert = _mapper.Map<PageViewModel<MovieColumnViewModel>>(page);
+            return Ok(convert);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetMovie(string id)
+        {
+            var movie = _movieService.GetMovie(id);
+            if (movie != null)
+            {
+                return Ok(movie);
+            }
+            return NotFound(id);
+        }
+
+        [HttpGet]
+        [Route("libraries")]
+        public IActionResult GetLibraries()
+        {
+            var result = _movieService.GetMovieLibraries();
+            return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
         }
 
         [HttpGet]

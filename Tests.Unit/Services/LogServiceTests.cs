@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
@@ -101,7 +100,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
             var embyServiceMock = new Mock<IMediaServerService>();
-            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(new ServerInfo { Id = Guid.NewGuid().ToString() });
+            embyServiceMock.Setup(x => x.GetServerInfo(false)).Returns(new ServerInfo { Id = Guid.NewGuid().ToString() });
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 
@@ -116,7 +115,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetAnonymousLogStream_Should_Return_Log()
+        public void GetAnonymousLogStream_Should_Return_Log()
         {
             if (Directory.Exists(Path.Combine("config", "Logs-test4").GetLocalPath()))
             {
@@ -131,7 +130,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
             var embyServiceMock = new Mock<IMediaServerService>();
-            embyServiceMock.Setup(x => x.GetServerInfo()).Returns(new ServerInfo { Id = "654321" });
+            embyServiceMock.Setup(x => x.GetServerInfo(false)).Returns(new ServerInfo { Id = "654321" });
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 

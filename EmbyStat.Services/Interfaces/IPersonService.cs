@@ -4,6 +4,8 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IPersonService
     {
-        Person GetPersonByName(string name);
+        Person GetPersonByNameForMovies(string name);
+        Person GetPersonByNameForMovies(string name, string genre);
+        Person GetPersonByNameForShows(string name, string genre);
     }
 }

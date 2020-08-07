@@ -19,15 +19,14 @@ namespace Tests.Unit.Builders.ViewModels
                 Id = settings.Id,
                 KeepLogsCount = settings.KeepLogsCount,
                 Language = settings.Language,
-                MovieLibraryTypes = settings.MovieLibraryTypes.Select(x => (int) x).ToList(),
-                ShowLibraryTypes = settings.ShowLibraryTypes.Select(x => (int) x).ToList(),
+                MovieLibraries = settings.MovieLibraries.ToList(),
+                ShowLibraries = settings.ShowLibraries.ToList(),
                 ToShortMovie = settings.ToShortMovie,
                 ToShortMovieEnabled = settings.ToShortMovieEnabled,
                 UpdateInProgress = settings.UpdateInProgress,
                 UpdateTrain = (int) settings.UpdateTrain,
-                Username = settings.Username,
                 WizardFinished = settings.WizardFinished,
-                MediaServer = new EmbySettingsViewModel
+                MediaServer = new MediaServerSettingsViewModel
                 {
                     ServerAddress = settings.MediaServer.ServerAddress,
                     AuthorizationScheme = settings.MediaServer.AuthorizationScheme,

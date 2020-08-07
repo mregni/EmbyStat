@@ -1,4 +1,6 @@
-﻿using EmbyStat.Clients.Base;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AspNetCore.Identity.LiteDB.Data;
+using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;
@@ -35,13 +37,21 @@ namespace EmbyStat.DI
             services.RegisterClients();
             services.RegisterHttp();
             services.RegisterSignalR();
+            services.RegisterUserHandlers();
+        }
+
+        private static void RegisterUserHandlers(this IServiceCollection services)
+        {
+            services.TryAddSingleton<JwtSecurityTokenHandler>();
         }
 
         private static void RegisterServices(this IServiceCollection services)
         {
             services.TryAddTransient<IAboutService, AboutService>();
+            services.TryAddTransient<IAccountService, AccountService>();
             services.TryAddTransient<IMediaServerService, MediaServerService>();
             services.TryAddTransient<IJobService, JobService>();
+            services.TryAddTransient<IFilterService, FilterService>();
             services.TryAddTransient<ILanguageService, LanguageService>();
             services.TryAddTransient<ILogService, LogService>();
             services.TryAddTransient<IMovieService, MovieService>();
@@ -54,12 +64,14 @@ namespace EmbyStat.DI
 
         private static void RegisterRepositories(this IServiceCollection services)
         {
-            services.TryAddTransient<IDbContext, DbContext>();
+            services.AddSingleton<ILiteDbContext, DbContext>();
+            services.AddSingleton<IDbContext, DbContext>();
             services.TryAddTransient<IDatabaseInitializer, DatabaseInitializer>();
 
             services.TryAddTransient<IMovieRepository, MovieRepository>();
             services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
             services.TryAddTransient<IPersonRepository, PersonRepository>();
+            services.TryAddTransient<IFilterRepository, FilterRepository>();
             services.TryAddTransient<IShowRepository, ShowRepository>();
             services.TryAddTransient<ILibraryRepository, LibraryRepository>();
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -15,7 +14,6 @@ using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
@@ -181,8 +179,8 @@ namespace EmbyStat.Services
                 _logger.Info("---------------------------------");
                 _logger.Info($"Downloading zip file {result.Package.Name}");
 
-                var webClient = new WebClient();
-                webClient.DownloadFileCompleted += delegate (object sender, AsyncCompletedEventArgs e) { DownloadFileCompleted(result); };
+                using var webClient = new WebClient();
+                webClient.DownloadFileCompleted += delegate { DownloadFileCompleted(result); };
                 await webClient.DownloadFileTaskAsync(result.Package.SourceUrl, result.Package.Name);
             }
             catch (Exception e)
@@ -196,70 +194,45 @@ namespace EmbyStat.Services
             return Task.Run(() =>
             {
                 _logger.Info("Starting updater process.");
-                var updateFile = CheckForUpdateFiles();
-                if (updateFile != null)
+                var appSettings = _settingsService.GetAppSettings();
+                _logger.Info(Directory.GetCurrentDirectory());
+                var updaterExtension = string.Empty;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    var appSettings = _settingsService.GetAppSettings();
-                    _logger.Info(Directory.GetCurrentDirectory());
-                    var updaterExtension = string.Empty;
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    {
-                        updaterExtension = ".exe";
-                    }
-                    var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
-                    var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate);
-
-                    if (!File.Exists(updaterTool))
-                    {
-                        throw new BusinessException("NOUPDATEFILE");
-                    }
-
-                    _logger.Info($"StartJob tool located at {updaterTool}");
-                    _logger.Info($"Arguments passed are {GetArgs(appSettings)}");
-                    _logger.Info($"Working directory is {workingDirectory}");
-
-                    var start = new ProcessStartInfo
-                    {
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        FileName = updaterTool,
-                        Arguments = GetArgs(appSettings),
-                        WorkingDirectory = workingDirectory
-                    };
-
-                    using (var proc = new Process { StartInfo = start })
-                    {
-                        proc.Start();
-                        _applicationLifetime.StopApplication();
-                    }
+                    updaterExtension = ".exe";
                 }
+                var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
+                var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate);
+
+                if (!File.Exists(updaterTool))
+                {
+                    _logger.Debug($"Update tool not found in location: {updaterTool}");
+                    throw new BusinessException("NOUPDATEFILE");
+                }
+
+                _logger.Info($"StartJob tool located at {updaterTool}");
+                _logger.Info($"Arguments passed are {GetArgs(appSettings)}");
+                _logger.Info($"Working directory is {workingDirectory}");
+
+                var start = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    FileName = updaterTool,
+                    Arguments = GetArgs(appSettings),
+                    WorkingDirectory = workingDirectory
+                };
+
+                using var proc = new Process { StartInfo = start };
+                proc.Start();
+                _applicationLifetime.StopApplication();
             });
-        }
-
-        private FileInfo CheckForUpdateFiles()
-        {
-            var fileNames = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ver");
-            return fileNames.Select(x => new FileInfo(x)).OrderByDescending(x => x.Name).FirstOrDefault();
-        }
-
-        private void CreateUpdateFile(PackageInfo package)
-        {
-            var fileName = $"{package.VersionStr}.ver";
-            var obj = JsonSerializerExtentions.SerializeToString(package);
-
-            foreach (var file in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ver"))
-            {
-                File.Delete(file);
-            }
-
-            File.WriteAllText($"{fileName}", obj);
         }
 
         private void DownloadFileCompleted(UpdateResult result)
         {
             _logger.Info("Downloading finished");
             UnPackZip(result);
-            CreateUpdateFile(result.Package);
         }
 
         private void UnPackZip(UpdateResult result)
@@ -292,6 +265,7 @@ namespace EmbyStat.Services
             sb.Append($" --processId {Process.GetCurrentProcess().Id}");
             sb.Append($" --processName {appSettings.ProcessName}");
             sb.Append($" --port {appSettings.Port}");
+            sb.Append($" --listening-urls {appSettings.ListeningUrls}");
 
             return sb.ToString();
         }

@@ -6,8 +6,8 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Movie;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Movie;
-using EmbyStat.Services.Models.Stat;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -20,7 +20,7 @@ namespace Tests.Unit.Controllers
         private readonly MovieController _subject;
         private readonly Mock<IMovieService> _movieServiceMock;
         private readonly List<Library> _collections;
-        private readonly MovieGeneral _movieGeneral;
+        private readonly List<TopCard> _movieCards;
 
         public MovieControllerTests()
         {
@@ -30,14 +30,14 @@ namespace Tests.Unit.Controllers
                 new Library{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = LibraryType.Movies}
             };
 
-            _movieGeneral = new MovieGeneral
+            _movieCards = new List<TopCard>
             {
-                LongestMovie = new MoviePoster { Name = "The lord of the rings" }
+                new TopCard { Title = "The lord of the rings" }
             };
 
             var movieStatistics = new MovieStatistics
             {
-                General = _movieGeneral
+                TopCards = _movieCards
             };
 
             _movieServiceMock = new Mock<IMovieService>();
@@ -47,7 +47,7 @@ namespace Tests.Unit.Controllers
 
             var _mapperMock = new Mock<IMapper>();
             _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
-                .Returns(new MovieStatisticsViewModel { General = new MovieGeneralViewModel { LongestMovie = new MoviePosterViewModel { Name = "The lord of the rings" } } });
+                .Returns(new MovieStatisticsViewModel { TopCards = new List<TopCardViewModel> { new TopCardViewModel { Title = "The lord of the rings" } } });
             _mapperMock.Setup(x => x.Map<IList<LibraryViewModel>>(It.IsAny<List<Library>>())).Returns(
                 new List<LibraryViewModel>
                 {
@@ -88,7 +88,8 @@ namespace Tests.Unit.Controllers
             var stat = resultObject.Should().BeOfType<MovieStatisticsViewModel>().Subject;
 
             stat.Should().NotBeNull();
-            stat.General.LongestMovie.Name.Should().Be(_movieGeneral.LongestMovie.Name);
+            stat.TopCards.Count.Should().Be(1);
+            stat.TopCards[0].Title.Should().Be(_movieCards[0].Title);
             _movieServiceMock.Verify(x => x.GetStatistics(It.Is<List<string>>(
                 y => y[0] == _collections[0].Id &&
                      y[1] == _collections[1].Id)), Times.Once);

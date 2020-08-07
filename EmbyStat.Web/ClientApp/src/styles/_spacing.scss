@@ -1,0 +1,75 @@
+$sizes: (
+  0: 0px,
+  4: 4px,
+  8: 8px,
+  16: 16px,
+  24: 24px,
+  32: 32px,
+);
+
+@mixin size-modifiers($attributes) {
+  $prefix: "-";
+  @each $name, $size in $sizes {
+    &#{$prefix}#{$name} {
+      @each $attribute in $attributes {
+        #{$attribute}: $size;
+      }
+    }
+  }
+}
+
+.p {
+  @include size-modifiers("padding");
+}
+
+.p-t {
+  @include size-modifiers("padding-top");
+}
+
+.p-b {
+  @include size-modifiers("padding-bottom");
+}
+
+.p-l {
+  @include size-modifiers("padding-left");
+}
+
+.p-r {
+  @include size-modifiers("padding-right");
+}
+
+.p-h {
+  @include size-modifiers("padding-left" "padding-right");
+}
+
+.p-v {
+  @include size-modifiers("padding-top" "padding-bottom");
+}
+
+.m {
+  @include size-modifiers("margin");
+}
+
+.m-t {
+  @include size-modifiers("margin-top");
+}
+
+.m-b {
+  @include size-modifiers("margin-bottom");
+}
+
+.m-l {
+  @include size-modifiers("margin-left");
+}
+
+.m-r {
+  @include size-modifiers("margin-right");
+}
+
+.m-h {
+  @include size-modifiers("margin-left" "margin-right");
+}
+
+.m-v {
+  @include size-modifiers("margin-top" "margin-bottom");
+}

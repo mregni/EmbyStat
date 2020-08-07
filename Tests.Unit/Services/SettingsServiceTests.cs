@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Castle.Components.DictionaryAdapter;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services;
 using FluentAssertions;
@@ -43,8 +41,8 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraryTypes = new EditableList<LibraryType>(),
-                ShowLibraryTypes = new List<LibraryType>()
+                MovieLibraries = new List<string>(),
+                ShowLibraries = new List<string>()
             };
 
             var strJson = JsonConvert.SerializeObject(fileSettings, Formatting.Indented);
@@ -64,8 +62,8 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraryTypes = new EditableList<LibraryType>(),
-                ShowLibraryTypes = new List<LibraryType>()
+                MovieLibraries = new List<string>(),
+                ShowLibraries = new List<string>()
             };
 
             _subject.LoadUserSettingsFromFile();

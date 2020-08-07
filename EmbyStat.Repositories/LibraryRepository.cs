@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 
@@ -13,18 +12,16 @@ namespace EmbyStat.Repositories
             
         }
 
-        public List<Library> GetLibrariesByTypes(IEnumerable<LibraryType> types)
+        public List<Library> GetLibrariesById(IEnumerable<string> ids)
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Library>();
-                    return collection
-                        .Find(x => types.Contains(x.Type))
-                        .OrderBy(x => x.Name)
-                        .ToList();
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Library>();
+                return collection
+                    .Find(x => ids.Contains(x.Id))
+                    .OrderBy(x => x.Name)
+                    .ToList();
             });
         }
 
@@ -32,11 +29,9 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Library>();
-                    collection.Upsert(collections);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Library>();
+                collection.Upsert(collections);
             });
         }
     }

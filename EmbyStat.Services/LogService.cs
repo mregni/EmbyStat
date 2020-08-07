@@ -51,7 +51,7 @@ namespace EmbyStat.Services
             {
                 var writer = new StreamWriter(newLogStream);
                 var configuration = _settingsService.GetUserSettings();
-                var serverInfo = _mediaServerService.GetServerInfo();
+                var serverInfo = _mediaServerService.GetServerInfo(false);
 
                 string line;
                 while ((line = reader.ReadLine()) != null)

@@ -33,37 +33,35 @@ namespace EmbyStat.Services
 
         private async void TryToConnect(object state)
         {
-            using (var scope = _scopeFactory.CreateScope())
+            using var scope = _scopeFactory.CreateScope();
+            var settingsService = scope.ServiceProvider.GetRequiredService<ISettingsService>();
+            var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
+
+            if (!webSocketApi.IsWebSocketOpenOrConnecting)
             {
-                var settingsService = scope.ServiceProvider.GetRequiredService<ISettingsService>();
-                var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
-
-                if (!webSocketApi.IsWebSocketOpenOrConnecting)
+                var settings = settingsService.GetUserSettings();
+                if (settings != null && !string.IsNullOrWhiteSpace(settings.MediaServer.ApiKey))
                 {
-                    var settings = settingsService.GetUserSettings();
-                    if (settings != null && !string.IsNullOrWhiteSpace(settings.MediaServer.ApiKey))
+                    try
                     {
-                        try
-                        {
-                            var deviceId = settings.Id.ToString();
+                        var deviceId = settings.Id.ToString();
 
-                            webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
-                            webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
-                            webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
-                            webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
-                            await webSocketApi.OpenWebSocket(settings.MediaServer.FullSocketAddress, settings.MediaServer.ApiKey, deviceId);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(e, "Failed to open socket connection to MediaServer");
-                            throw;
-                        }
+                        webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
+                        webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
+                        webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
+                        webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
+                        await webSocketApi.OpenWebSocket(settings.MediaServer.FullSocketAddress, settings.MediaServer.ApiKey, deviceId);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Failed to open socket connection to MediaServer");
+                        throw;
                     }
                 }
-                else
-                {
-                    _timer.Change(60000, 60000);
-                }
+            }
+            else
+            {
+                _timer.Change(60000, 60000);
             }
         }
 

@@ -18,6 +18,15 @@ namespace EmbyStat.Common
             public static string TotalPlayLength => "MOVIES.TOTALPLAYLENGTH";
         }
 
+        public static class Icons
+        {
+            public static string TheatersRoundedIcon => "TheatersRoundedIcon";
+            public static string StorageRoundedIcon => "StorageRoundedIcon";
+            public static string QueryBuilderRoundedIcon => "QueryBuilderRoundedIcon";
+            public static string PoundRoundedIcon => "PoundRoundedIcon";
+            public static string PeopleAltRoundedIcon => "PeopleAltRoundedIcon";
+        }
+
         public static class Common
         {
             public static string TotalActors => "COMMON.TOTALACTORS";
@@ -66,12 +75,12 @@ namespace EmbyStat.Common
 
         public static class LogPrefix
         {
-            public static string MediaSyncJob => "MEDIASYNC-JOB";
-            public static string CheckUpdateJob => "CHECKUDPATE-JOB";
-            public static string PingEmbyJob => "PINGEMBYSERVER-JOB";
-            public static string SmallEmbySyncJob => "SMALLEMBYSYNC-JOB";
+            public static string MediaSyncJob => "MEDIA-SYNC";
+            public static string CheckUpdateJob => "UPDATE-CHECKER";
+            public static string PingMediaServerJob => "PING";
+            public static string SmallMediaServerSyncJob => "SYSTEM-SYNC";
             public static string System => "SYSTEM";
-            public static string DatabaseCleanupJob => "DATABASE CLEANUP-JOB";
+            public static string DatabaseCleanupJob => "DATABASE-CLEANUP";
         }
 
         public static class JobIds
@@ -83,12 +92,24 @@ namespace EmbyStat.Common
             public static Guid DatabaseCleanupId => new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
         }
 
+        public static class JwtClaims
+        {
+            public static string Admin => "admin";
+            public static string User => "user";
+        }
+
+        public static class JwtClaimIdentifiers
+        {
+            public static string Roles => "roles";
+            public static string Id => "id";
+        }
+
         //CHARTS
-        public static string CountPerGenre => "COMMON.COUNTPERGENRE";
-        public static string CountPerCommunityRating => "COMMON.COUNTPERCOMMUNITYRATING";
-        public static string CountPerPremiereYear => "COMMON.COUNTPERPREMIEREDATE";
-        public static string CountPerCollectedRate => "COMMON.COUNTPERCOLLECTEDRATE";
-        public static string CountPerOfficialRating => "COMMON.COUNTPEROFFICIALRATING";
+        public static string CountPerGenre => "COMMON.GENRES";
+        public static string CountPerCommunityRating => "COMMON.COMMUNITYRATING";
+        public static string CountPerPremiereYear => "COMMON.PREMIEREDATE";
+        public static string CountPerCollectedPercentage => "COMMON.COLLECTEDPERCENTAGE";
+        public static string CountPerOfficialRating => "COMMON.OFFICIALRATING";
 
         //COMMON
         public static string Unknown => "UNKNOWN";

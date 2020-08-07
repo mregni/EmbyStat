@@ -302,3 +302,4 @@ usersettings.json
 **/Embystat.Web/config/**
 **/issues.json
 **/coverage/**
+**/ClientApp/build/**

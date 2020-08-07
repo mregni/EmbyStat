@@ -1,5 +1,4 @@
-﻿using EmbyStat.Web;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 using CommandLine;
 using EmbyStat.Common.Models;

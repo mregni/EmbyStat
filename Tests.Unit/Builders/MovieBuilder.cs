@@ -34,7 +34,8 @@ namespace Tests.Unit.Builders
                 Genres = new[] { "id1" },
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
                 MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } },
-                CollectionId = "1"
+                CollectionId = "1",
+                Container = "avi",
             };
         }
 
@@ -107,9 +108,9 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder AddVideo3DFormat(Video3DFormat format)
+        public MovieBuilder ReplacePersons(ExtraPerson person)
         {
-            _movie.Video3DFormat = format;
+            _movie.People = new[] {person};
             return this;
         }
 
@@ -134,6 +135,12 @@ namespace Tests.Unit.Builders
         public MovieBuilder AddVideoStream(VideoStream stream)
         {
             _movie.VideoStreams.Add(stream);
+            return this;
+        }
+
+        public MovieBuilder AddContainer(string container)
+        {
+            _movie.Container = container;
             return this;
         }
 

@@ -1,0 +1,400 @@
+{
+  "COMMON": {
+    "SERVERNAME": "Server name",
+    "DOWNLOAD": "下载",
+    "NEXT": "下一个",
+    "BACK": "返回",
+    "FINISH": "完成",
+    "SAVE": "保存",
+    "DISCARD": "放弃",
+    "CANCEL": "取消",
+    "CLOSE": "关闭",
+    "DAYSABBR": "日",
+    "HOURSABBR": "时",
+    "MINUTESABBR": "分",
+    "MIN": "分",
+    "GB": "Gb",
+    "AND": "and",
+    "PIXELS": "px",
+    "TITLE": "标题",
+    "ADDEDON": "添加时间",
+    "QUALITY": "画质",
+    "NEVER": "从未",
+    "OPEN": "打开",
+    "REASON": "原因",
+    "BYIMDB": "相同的imdb id",
+    "BYTITLE": "相同的标题",
+    "MOVIES": "*电影*",
+    "MOVIE": "movie",
+    "SHOW": "show",
+    "GENRES": "Genres",
+    "COMMUNITYRATING": "Community rating",
+    "OFFICIALRATING": "Official rating",
+    "COLLECTEDPERCENTAGE": "Collected percentage",
+    "EMBY": "Emby",
+    "GENERAL": "常规",
+    "DURATION": "片长",
+    "GRAPHS": "图表",
+    "PEOPLE": "人员",
+    "FILTERS": "Filters",
+    "SUSPICIOUS": "可疑",
+    "SHOWS": "表演",
+    "TOTALACTORS": "演员总数",
+    "TOTALDIRECTORS": "导演总数",
+    "TOTALWRITERS": "编剧总数",
+    "MOSTFEATUREDACTOR": "最具特色的演员",
+    "MOSTFEATUREDDIRECTOR": "最具特色的导演",
+    "MOSTFEATUREDWRITER": "最具特色的作家",
+    "LIBRARIES": "库",
+    "PREMIEREDATE": "首播日期",
+    "STATUS": "状态",
+    "PERCENTAGE": "百分比",
+    "COLLECTED": "已收藏",
+    "UPDATES": "更新",
+    "VERSION": "版本",
+    "ACTORSPERGENRE": "每个类型的最具特色的演员",
+    "MINUTES": "分钟",
+    "DISKSIZE": "磁盘空间",
+    "TOTALDISKSIZE": "总磁盘空间",
+    "EMBYSERVER": "Emby服务器",
+    "JELLYFINSERVER": "Jellyfin 服务器",
+    "OS": "Operating system",
+    "WANADDRESS": "WAN address",
+    "LANADDRESS": "LAN address",
+    "UPDATELEVEL": "Update level",
+    "SELECTVALUE": "Select value",
+    "ADD": "Add",
+    "DATE": "date",
+    "FPS": "fps",
+    "LINKS": "Links",
+    "AUDIO": "Audio",
+    "SUBTITLES": "Subtitles",
+    "RATING": "Rating",
+    "RESOLUTION": "Resolution",
+    "RUNTIME": "Runtime",
+    "TABLE": "Table",
+    "LIBRARYERROR": "Could not fetch libraries",
+    "LOADING": "Loading {{item}}",
+    "STATISTICS": "Statistics",
+    "NAME": "Name"
+  },
+  "LOGS": {
+    "ANONYMISED": "Anonymised",
+    "SIZE": "Size",
+    "CREATIONDATE": "Creation date",
+    "ACTIONS": "Actions"
+  },
+  "FORMERRORS": {
+    "EMPTY": "Field may not be empty",
+    "REQUIRED": "Required"
+  },
+  "EXCEPTIONS": {
+    "INTERNAL_ERROR": "呃。。。后台出错了，请再试一次。如果它一直不行，请查看日志以获取更多详细信息。",
+    "NO_CONFIGURATION_FOUND": "没有找到配置文件",
+    "NOT_FOUND": "抱歉，找不到您想要的东西。",
+    "TOKEN_FAILED": "获取 Emby 令牌失败。请检查您的凭据和地址。",
+    "EMBY_CALL_FAILED": "对 Emby 服务器的调用失败，请检查 Emby 是否在运行，以及凭据是否仍然正确。",
+    "UNHANDLED": "未处理的后端异常",
+    "MOVIENOTFOUND": "未找到电影，启动媒体同步任务可以解决这个问题。",
+    "EPISODENOTFOUND": "未找到剧集，启动媒体同步任务可以解决这个问题。",
+    "CANTCONNECTTOGITHUB": "无法连接到 GitHub 检查更新。请稍后再试。",
+    "NOUPDATEFILE": "无法定位更新应用程序，不执行更新",
+    "UPDATEUNPACKERROR": "解压更新包时出错。请再试一次。",
+    "TVDBLOGINFAILED": "TheTVDB 登录失败，请检查 API 密钥。"
+  },
+  "FORMLABELS": {
+    "CRON": "Cron 字符串"
+  },
+  "MENU": {
+    "DASHBOARD": "仪表盘",
+    "MOVIES": "电影",
+    "SHOWS": "演出",
+    "SETTINGS": "设置",
+    "PLUGINS": "插件",
+    "JOBS": "作业",
+    "SERVER": "服务器",
+    "LOGS": "日志",
+    "ABOUT": "关于",
+    "USERS": "用户"
+  },
+  "WIZARD": {
+    "WIZARDLABEL": "Wizard",
+    "USERDETAILTEXT": "Provide a username and password for your admin user",
+    "SERVERCONFIGURATION": "Server configuration",
+    "SERVERCONFIGURATIONTEST": "Server configuration test",
+    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
+    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
+    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
+    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
+    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "SERVERTYPELABEL": "服务器类型",
+    "FINALLABEL": "最后",
+    "SEARCHSERVERS": "Searching servers",
+    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
+    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
+    "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
+    "FOUNDTEXT": "我们在您的网络中找到了一个名为 {{name}} 的 {{type}} 服务器，并已经在表格中输入了网址。随时进行调整，并填写表格的其余部分。",
+    "SERVERRUNNING": "{{type}} 服务器正在运行",
+    "KEYISVALID": "API密钥有效",
+    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
+    "FINISHEXPLANATION": "首先最好是启动一个媒体同步任务。EmbyStat将开始从您的 Emby 服务器下载所有数据。 请记住，这个任务可能需要很长时间，取决于您的收藏大小。 如果您不想现在只需点击完成即可开始同步。您可以稍后通过导航到任务页面手动启动。",
+    "JELLYFIN": {
+      "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
+    },
+    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
+    "ADDRESSUSED": "Address: <i>{{address}}</i>",
+    "APIKEYUSED": "API key: <i>{{api}}</i>"
+  },
+  "MOVIES": {
+    "TOTALMOVIES": "电影总数",
+    "TOTALGENRES": "所有类型",
+    "TOTALPLAYLENGTH": "总可观看时间",
+    "HIGHESTRATED": "评分最高",
+    "LOWESTRATED": "评分最低",
+    "OLDESTPREMIERED": "最早首映",
+    "NEWESTPREMIERED": "最新首映",
+    "SHORTEST": "最短",
+    "LONGEST": "最长的",
+    "LATESTADDED": "最近添加",
+    "MOSTFEATUREDPERGENRE": "每个类型的最具特色的演员",
+    "DUPLICATEMOVIES": "重复的电影",
+    "TOSHORTMOVIES": "非常短的电影",
+    "NOPOSTER": "缺少海报",
+    "NOIMDB": "缺少IMDB ID",
+    "LOADER": "Loading movie statistics"
+  },
+  "SHOWS": {
+    "TOTALSHOWS": "总演出数",
+    "TOTALEPISODES": "总剧集数",
+    "TOTALMISSINGEPISODES": "缺少剧集总数",
+    "TOTALPLAYLENGTH": "总可观看时间",
+    "HIGHESTRATEDSHOW": "评分最高",
+    "LOWESTRATEDSHOW": "评分最低",
+    "OLDESTPREMIERED": "最早首映",
+    "NEWESTPREMIERED": "最新首映",
+    "LATESTADDED": "最近添加",
+    "WITHMOESTEPISODES": "大部分剧集",
+    "SHOWSTATUSGRAPH": "显示状态",
+    "SEASONS": "季数",
+    "CONTINUING": "继续",
+    "ENDED": "结束",
+    "OVERVIEW": "概览",
+    "MISSINGEPISODES": "缺少剧集"
+  },
+  "SETTINGS": {
+    "SAVED": "Settings saved",
+    "TITLES": {
+      "EMBYSTAT": "Embystat",
+      "TVDB": "TVDB",
+      "EMBY": "Emby"
+    },
+    "TVDB": {
+      "TITLE": "Tvdb connection",
+      "APIKEYLABEL": "TheTVDB API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "NOAPIKEY": "API key can not be empty",
+      "SAVING": "Saving TVDB key"
+    },
+    "ROLLBAR": {
+      "TITLE": "Rollbar",
+      "ENABLEROLLBAR": "Enable exception logging",
+      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
+      "SAVING": "Saving Rollbar settings"
+    },
+    "LANGUAGE": {
+      "TITLE": "Language",
+      "LABEL": "Select your prefert language",
+      "SAVING": "Updating language to {{lang}}"
+    },
+    "ACCOUNT": {
+      "TITLE": "User details",
+      "USERNAME": "Username",
+      "NOUSERNAME": "Username is required",
+      "PASSWORD": "Password",
+      "NEWPASSWORD": "New password",
+      "REPEATNEWPASSWORD": "Repeat new password",
+      "CURRENTPASSWORD": "Current password",
+      "NOPASSWORD": "Password is required",
+      "PASSWORDNOTEQUAL": "Passwords are not equal",
+      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
+      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
+      "WRONGPASSWORD": "Wrong password for loggedin user",
+      "USERNAMEUPDATED": "Username updated succesfully",
+      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+    },
+    "STATISTICS": {
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "SAVING": "Saving all {{type}} statistic settings",
+      "TOSHORTMINUTES": "Minutes",
+      "ENABLETOSHORTSCAN": "Enable search for short movies"
+    },
+    "MOVIE": {
+      "LIBRARY": {
+        "SAVING": "Saving movie libraries"
+      },
+      "COLLECTIONTYPES": "选择您希望能够在电影统计页面的集合下拉列表中选择的所有Emby集合类型。"
+    },
+    "SHOW": {
+      "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
+    },
+    "MEDIASERVER": {
+      "ADDRESS": "IP/domain",
+      "NOADDRESS": "IP/domain is required",
+      "APIKEY": "API key",
+      "NOAPIKEY": "API key is required",
+      "PORT": "Port",
+      "NOPORT": "IP/domain is required",
+      "BASEURL": "Base Url",
+      "NOBASEURL": "String is required and should start with /",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
+      "EMBYPORTREQUIRED": "{{type}} port required.",
+      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
+      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
+      "BASEURLHINT": "Base url needs to start with a /",
+      "BASEURLNEEDED": "I need to set a base url",
+      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
+      "WRONGAPIKEY": "Provided API key is not valid",
+      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+    },
+    "UPDATE": {
+      "MASTER": "主干",
+      "BETA": "测试版",
+      "AUTO": "启用自动更新",
+      "CHECK": "立即检查并更新服务器",
+      "UPDATE:": "现在更新服务器",
+      "TRAIN": "如果要选择测试版更新, 请更改更新计划。",
+      "ONBETA": "你已经不在用稳定版上了, 所以你不能再退回去了。如果您想返回稳定版, 请重新安装服务器。",
+      "TRAINWARNING": "您可以在此从稳定版变更到测试版。如果您不知道您正在做什么事情，请先使用稳定版。如果您想要切换到测试版，请在这里修改设定。但之后想返回稳定版则您必须重新安装服务器。",
+      "CURRENTVERSION": "当前版本: {{version}}",
+      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
+      "NOUPDATE": "无可用更新",
+      "NEWVERSION": "版本 {{version}} 可供下载！",
+      "DISABLED": "此服务器的更新被禁用，可能会被外部服务更新。 如果这是一个错误，请不要使用 --no-update 选项启动服务器。"
+    }
+  },
+  "LOGIN": {
+    "LOGIN": "Login",
+    "ERROR": "Username or password unknown",
+    "LOGOUT": "Log out",
+    "FORGOTPASSWORD": "Forgot password",
+    "RECOVERPASSWORD": "Recover password",
+    "RESETCOMPLETED": "Check logs for new password",
+    "RESETFAILED": "Username reset failed"
+  },
+  "USERS": {
+    "ISADMIN": "是管理员",
+    "ISHIDDEN": "从登录界面隐藏",
+    "ISDISABLED": "已禁用",
+    "DELETED": "已删除的用户",
+    "ACTIVE": "活动用户",
+    "LASTACTIVE": "上次登录:",
+    "SORTING": {
+      "USERNAMEASC": "用户名 (A-Z)",
+      "USERNAMEDESC": "用户名 (Z-A)",
+      "LASTACTIVEASC": "最后活动日期 (升序)",
+      "LASTACTIVEDESC": "最后活动日期 (降序)"
+    },
+    "TOOVERVIEW": "概述",
+    "DETAILS": {
+      "TITLE": "{{name}} 的详细信息",
+      "WATCHEDTITLE": "上次观看的项目"
+    },
+    "WATCHEDTABLE": {
+      "TITLE": "标题",
+      "TIME": "时间",
+      "WATCHED": "已观看",
+      "START": "开始",
+      "ACTION": "操作"
+    },
+    "STATS": {
+      "TOTALWATCHEDMOVIES": "看过的电影",
+      "TOTALWATCHEDEPISODES": "已观看的剧集"
+    }
+  },
+  "JOB": {
+    "LASTRUN": "上次运行",
+    "BUTFAILED": "但之后失败了",
+    "NORUN": "尚未运行",
+    "JOBLOGS": "作业日志",
+    "CRONUPDATED": "Cron 值已更新",
+    "OPENJOBPAGE": "Go to job page",
+    "STARTMEDIASYNC": "Start media sync",
+    "INFO": {
+      "PING": "Check {{type}} connection",
+      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SYSTEM-SYNC": "Sync {{type}} info",
+      "SYSTEM-SYNCSTART": "Start small sync",
+      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIA-SYNC": "Media synchronization",
+      "DATABASE-CLEANUP": "Database cleanup",
+      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "UPDATE-CHECKER": "Check for new updates",
+      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+    }
+  },
+  "DIALOGS": {
+    "NOMOVIETYPEFOUND": {
+      "TITLE": "未找到电影",
+      "BODY": "我们在 EmbyStat 数据库中找不到任何电影。如果您在 Emby 中有电影，请尝试启动新的媒体同步任务。"
+    },
+    "NOSHOWTYPEFOUND": {
+      "TITLE": "找不到演出节目",
+      "BODY": "我们在 EmbyStat 数据库中找不到任何演出节目。如果您在 Emby 中有演出节目的话，请尝试启动一个新的媒体同步任务。"
+    },
+    "MEDIASYNCTASKRUNNING": {
+      "TITLE": "媒体同步任务正在运行",
+      "BODY": "媒体同步任务正在后台运行。所有统计页面均被阻止，因为只要同步运行，计算将完全错误。"
+    },
+    "EDIT_TRIGGER": {
+      "FORMAT_ERROR": "提交的CRON字符串格式错误。在<a href=\"https://crontab.guru/\" target=\"_blank\">此处</a>查看详细格式规则。仅允许使用数字，空格，\"*\"，\"/\"和\"-\"。",
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">在这里</a> 你可以找到更多关于如何格式化CRON字符串的信息。只允许数字，\"*\"，\"/\"和\"-\"。"
+    },
+    "NOUSERSFOUND": {
+      "TITLE": "未找到相应的用户",
+      "BODY": "本地数据库中没有找到用户。这意味着没有运行中的小同步作业。您想现在运行吗？"
+    }
+  },
+  "LOADER": {
+    "UPDATING": "正在更新 EmbyStat",
+    "UPDATINGSUB": "更新完成后页面将刷新。"
+  },
+  "COLLECTIONTYPES": {
+    "MIXED": "混合/其他",
+    "MUSIC": "音乐",
+    "MUSICVIDEOS": "音乐视频",
+    "TRAILERS": "预告片",
+    "HOMEVIDEOS": "家庭影片",
+    "BOXSETS": "盒装套装",
+    "BOOKS": "图书",
+    "PHOTOS": "图片",
+    "GAMES": "游戏",
+    "LIVETV": "电视直播",
+    "PLAYLISTS": "播放列表",
+    "FOLDERS": "文件夹"
+  },
+  "STATUS": {
+    "TITLE": "{{type}} status",
+    "ONLINE": "Server online",
+    "OFFLINE": "{{count}} missed pings"
+  },
+  "ABOUT": {
+    "SERVERINFO": "服务器信息",
+    "GITHUBRELEASE": "在 Github 上发布",
+    "REQUESTFEATURE": "请求功能",
+    "LOGBUG": "在 Github 上提交错误记录",
+    "HELPTRANSLATE": "帮助翻译这个程序",
+    "THANKS": {
+      "TITLE": "谢谢",
+      "TEXT": "非常感谢感谢以下人翻译本应用程序为本地语言："
+    },
+    "ACTIONS": {
+      "TITLE": "操作"
+    }
+  },
+  "FILTERS": {
+    "WHEREMOVIES": "Movies where"
+  }
+}

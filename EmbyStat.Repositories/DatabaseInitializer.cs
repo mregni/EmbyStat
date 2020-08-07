@@ -41,6 +41,9 @@ namespace EmbyStat.Repositories
                 episodeCollection.EnsureIndex(x => x.Id);
                 episodeCollection.EnsureIndex(x => x.ShowId);
 
+                var filtersCollection = context.GetCollection<FilterValues>("Filters");
+                filtersCollection.EnsureIndex(x => x.Id, true);
+
                 var genreCollection = context.GetCollection<Genre>();
                 genreCollection.EnsureIndex(x => x.Id, true);
 
@@ -160,8 +163,8 @@ namespace EmbyStat.Repositories
                         {
                             Id = Constants.JobIds.CheckUpdateId,
                             State = JobState.Idle,
-                            Description = "CHECKUPDATEDESCRIPTION",
-                            Title = "CHECKUPDATETITLE",
+                            Description = $"{Constants.LogPrefix.CheckUpdateJob}DESCRIPTION",
+                            Title = $"{Constants.LogPrefix.CheckUpdateJob}",
                             Trigger = "0 */12 * * *",
                             CurrentProgressPercentage = 0,
                             EndTimeUtc = null,
@@ -171,8 +174,8 @@ namespace EmbyStat.Repositories
                         {
                             Id = Constants.JobIds.SmallSyncId,
                             State = JobState.Idle,
-                            Description = "SMALLEMBYSYNCDESCRIPTION",
-                            Title = "SMALLEMBYSYNCTITLE",
+                            Description = $"{Constants.LogPrefix.SmallMediaServerSyncJob}DESCRIPTION",
+                            Title = $"{Constants.LogPrefix.SmallMediaServerSyncJob}",
                             Trigger = "0 2 * * *",
                             CurrentProgressPercentage = 0,
                             EndTimeUtc = null,
@@ -182,8 +185,8 @@ namespace EmbyStat.Repositories
                         {
                             Id = Constants.JobIds.MediaSyncId,
                             State = JobState.Idle,
-                            Description = "MEDIASYNCDESCRIPTION",
-                            Title = "MEDIASYNCTITLE",
+                            Description = $"{Constants.LogPrefix.MediaSyncJob}DESCRIPTION",
+                            Title = $"{Constants.LogPrefix.MediaSyncJob}",
                             Trigger = "0 3 * * *",
                             CurrentProgressPercentage = 0,
                             EndTimeUtc = null,
@@ -193,8 +196,8 @@ namespace EmbyStat.Repositories
                         {
                             Id = Constants.JobIds.PingEmbyId,
                             State = JobState.Idle,
-                            Description = "PINGEMBYSERVERDESCRIPTION",
-                            Title = "PINGEMBYSERVERTITLE",
+                            Description = $"{Constants.LogPrefix.PingMediaServerJob}DESCRIPTION",
+                            Title = $"{Constants.LogPrefix.PingMediaServerJob}",
                             Trigger = "*/5 * * * *",
                             CurrentProgressPercentage = 0,
                             EndTimeUtc = null,
@@ -204,8 +207,8 @@ namespace EmbyStat.Repositories
                         {
                             Id = Constants.JobIds.DatabaseCleanupId,
                             State = JobState.Idle,
-                            Description = "DATABASECLEANUPDESCRIPTION",
-                            Title = "DATABASECLEANUPTITLE",
+                            Description = $"{Constants.LogPrefix.DatabaseCleanupJob}DESCRIPTION",
+                            Title = $"{Constants.LogPrefix.DatabaseCleanupJob}",
                             Trigger = "0 4 * * *",
                             CurrentProgressPercentage = 0,
                             EndTimeUtc = null,

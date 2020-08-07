@@ -16,14 +16,14 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IMediaServerService mediaServerService) 
-            : base(hubHelper, jobRepository, settingsService, typeof(SmallSyncJob), Constants.LogPrefix.SmallEmbySyncJob)
+            : base(hubHelper, jobRepository, settingsService, typeof(SmallSyncJob), Constants.LogPrefix.SmallMediaServerSyncJob)
         {
             _mediaServerService = mediaServerService;
             Title = jobRepository.GetById(Id).Title;
         }
 
         public sealed override Guid Id => Constants.JobIds.SmallSyncId;
-        public override string JobPrefix => Constants.LogPrefix.SmallEmbySyncJob;
+        public override string JobPrefix => Constants.LogPrefix.SmallMediaServerSyncJob;
         public override string Title { get; }
 
         public override async Task RunJobAsync()

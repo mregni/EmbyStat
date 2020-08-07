@@ -4,7 +4,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IPersonRepository
     {
-        void Insert(Person person);
+        void Upsert(Person person);
         Person GetPersonByName(string name);
     }
 }

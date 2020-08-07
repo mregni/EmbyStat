@@ -10,15 +10,13 @@ namespace EmbyStat.Repositories
 
         }
 
-        public void Insert(Person person)
+        public void Upsert(Person person)
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Person>();
-                    collection.Insert(person);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Person>();
+                collection.Upsert(person);
             });
         }
 
@@ -26,11 +24,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Person>();
-                    return collection.FindOne(x => x.Name == name);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Person>();
+                return collection.FindOne(x => x.Name == name);
             });
         }
     }
