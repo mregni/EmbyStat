@@ -205,7 +205,7 @@
     },
     "LANGUAGE": {
       "TITLE": "Language",
-      "LABEL": "Select your prefert language",
+      "LABEL": "Select your prefered language",
       "SAVING": "Updating language to {{lang}}"
     },
     "ACCOUNT": {
