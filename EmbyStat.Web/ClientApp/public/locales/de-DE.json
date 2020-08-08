@@ -247,7 +247,7 @@
       "PORT": "Port",
       "NOPORT": "IP/Domain ist erforderlich",
       "BASEURL": "Basis-Url",
-      "NOBASEURL": "Zeichenkette ist erforderlich und sollte mit / beginnen",
+      "NOBASEURL": "Base URL ist erforderlich und sollte mit / beginnen",
       "EMBYADDRESSREQUIRED": "{{type}} IP/Domain ist erforderlich.",
       "EMBYPORTREQUIRED": "{{type}} Port ist erforderlich.",
       "EMBYAPIKEYREQUIRED": "{{type}} API-Schlüssel ist erforderlich",
