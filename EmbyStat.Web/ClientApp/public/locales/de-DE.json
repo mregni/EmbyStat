@@ -63,7 +63,7 @@
     "LANADDRESS": "LAN-Adresse",
     "UPDATELEVEL": "Update level",
     "SELECTVALUE": "Wert auswählen",
-    "ADD": "Add",
+    "ADD": "Hinzufügen",
     "DATE": "Datum",
     "FPS": "FPS",
     "LINKS": "Links",
@@ -253,10 +253,10 @@
       "EMBYAPIKEYREQUIRED": "{{type}} API-Schlüssel ist erforderlich",
       "APIKEYHINT": "Gehen Sie auf Ihrem {{type}} Server zu Erweitert -> API-Schlüssel, um ein neues API-Token zu generieren.",
       "BASEURLHINT": "Die Basis-URL muss mit einem / beginnen",
-      "BASEURLNEEDED": "I need to set a base url",
-      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "BASEURLNEEDED": "Die Basis-URL wird benötigt",
+      "BASEURLNEEDEDTOOLTIP": "Wahrscheinlich brauchen Sie das nicht, wenn Sie nicht hinter einem Reverse Proxy sind!",
+      "WRONGAPIKEY": "Der angegebene API-Schlüssel ist ungültig",
+      "CHANGESERVERTYPE": "Sie haben einen {{currentType}} Server konfiguriert. Wenn Sie zu {{newType}} wechseln möchten, dann müssen Sie die Anwendung neu installieren."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -276,12 +276,12 @@
   },
   "LOGIN": {
     "LOGIN": "Anmelden",
-    "ERROR": "Username or password unknown",
+    "ERROR": "Benutzername oder Passwort unbekannt",
     "LOGOUT": "Abmelden",
-    "FORGOTPASSWORD": "Forgot password",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "FORGOTPASSWORD": "Passwort vergessen",
+    "RECOVERPASSWORD": "Passwort wiederherstellen",
+    "RESETCOMPLETED": "Logs auf neues Passwort prüfen",
+    "RESETFAILED": "Zurücksetzen des Benutzernamens fehlgeschlagen"
   },
   "USERS": {
     "ISADMIN": "Ist Administrator",
@@ -319,15 +319,15 @@
     "NORUN": "Noch nicht druchgeführt",
     "JOBLOGS": "Job Logs",
     "CRONUPDATED": "Cron-Wert aktualisiert",
-    "OPENJOBPAGE": "Go to job page",
-    "STARTMEDIASYNC": "Start media sync",
+    "OPENJOBPAGE": "Zur Aufgabenseite",
+    "STARTMEDIASYNC": "Mediensynchronisation starten",
     "INFO": {
       "PING": "{{type}} Verbindung prüfen",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "PINGDESCRIPTION": "Emby-Server anpingen um zu überprüfen ob er noch online ist.",
       "SYSTEM-SYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
       "SYSTEM-SYNC": "Synchronisiere {{type}} Info",
       "SYSTEM-SYNCSTART": "Kleine Synchronisierung starten",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIA-SYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
       "MEDIA-SYNC": "Medien-Synchronisierung",
       "DATABASE-CLEANUP": "Datenbankbereinigung",
       "DATABASE-CLEANUPDESCRIPTION": "Datenbank von unnötigen Daten bereinigen.",
@@ -378,7 +378,7 @@
   "STATUS": {
     "TITLE": "{{type}} Status",
     "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "OFFLINE": "{{count}} verpasste Pings"
   },
   "ABOUT": {
     "SERVERINFO": "Serverinfo",
