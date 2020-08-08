@@ -195,7 +195,7 @@
       "APIKEYLABEL": "TheTVDB API key",
       "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "SAVING": "Saving TheTVDB API key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -218,17 +218,17 @@
       "CURRENTPASSWORD": "Current password",
       "NOPASSWORD": "Password is required",
       "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
+      "PASSWORDMINLENGTH": "The password must be at least 6 characters long",
       "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
+      "WRONGPASSWORD": "Wrong password for current user",
       "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "USERNAMEUPDATEFAILED": "Username update failed, check logs for more info"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what you think is too short for a movie. The default is 10 minutes but you can change this setting below if needed.",
       "SAVING": "Saving all {{type}} statistic settings",
       "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "ENABLETOSHORTSCAN": "Enable short movies detection"
     },
     "MOVIE": {
       "LIBRARY": {
@@ -247,7 +247,7 @@
       "PORT": "Port",
       "NOPORT": "IP/domain is required",
       "BASEURL": "Base Url",
-      "NOBASEURL": "String is required and should start with /",
+      "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
       "EMBYPORTREQUIRED": "{{type}} port required.",
       "EMBYAPIKEYREQUIRED": "{{type}} API key required",
