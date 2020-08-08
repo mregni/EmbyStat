@@ -79,7 +79,7 @@
     "NAME": "Name"
   },
   "LOGS": {
-    "ANONYMISED": "Anonymised",
+    "ANONYMISED": "Anonymized",
     "SIZE": "Size",
     "CREATIONDATE": "Creation date",
     "ACTIONS": "Actions"
@@ -323,16 +323,16 @@
     "STARTMEDIASYNC": "Start media sync",
     "INFO": {
       "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "PINGDESCRIPTION": "Ping the Emby server to check if it is still online.",
+      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with the Emby server. This is only a fast and small system update.",
       "SYSTEM-SYNC": "Sync {{type}} info",
       "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This may take some time!",
       "MEDIA-SYNC": "Media synchronization",
       "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database of unnecessary data.",
       "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update channel."
     }
   },
   "DIALOGS": {
