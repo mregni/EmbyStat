@@ -67,12 +67,12 @@
     "DATE": "date",
     "FPS": "fps",
     "LINKS": "Links",
-    "AUDIO": "Audio",
-    "SUBTITLES": "Subtitles",
-    "RATING": "Rating",
-    "RESOLUTION": "Resolution",
-    "RUNTIME": "Runtime",
-    "TABLE": "Table",
+    "AUDIO": "Sprache",
+    "SUBTITLES": "Untertitel",
+    "RATING": "Bewertung",
+    "RESOLUTION": "Auflösung",
+    "RUNTIME": "Laufzeit",
+    "TABLE": "Übersicht",
     "LIBRARYERROR": "Could not fetch libraries",
     "LOADING": "Loading {{item}}",
     "STATISTICS": "Statistiken",
@@ -86,7 +86,7 @@
   },
   "FORMERRORS": {
     "EMPTY": "Field may not be empty",
-    "REQUIRED": "Required"
+    "REQUIRED": "Pflichtfeld"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, wir haben einen Fehler im Backend, bitte versuchen Sie es erneut. Wenn es weiterhin nicht funktioniert, überprüfen Sie die Logs für weitere Details.",
@@ -118,18 +118,18 @@
     "USERS": "Benutzer"
   },
   "WIZARD": {
-    "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Provide a username and password for your admin user",
+    "WIZARDLABEL": "Assistent",
+    "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein",
     "SERVERCONFIGURATION": "Server configuration",
     "SERVERCONFIGURATIONTEST": "Server configuration test",
     "CONFIGURELIBRARIES": "Configure {{type}} libraries",
     "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
     "STEPTWO": "Fetching server information ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
+    "STEPTHREE": "Abrufen der Administratorkonten ({{step}}/{{total}})",
     "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Servertyp",
     "FINALLABEL": "Fertig",
-    "SEARCHSERVERS": "Searching servers",
+    "SEARCHSERVERS": "Nach Servern suchen",
     "OPENSERVERAPIPAGE": "Open {{type}} API key page",
     "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
@@ -184,7 +184,7 @@
     "MISSINGEPISODES": "Fehlende Episoden"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
+    "SAVED": "Einstellungen gespeichert",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TVDB": "The TVDB",
@@ -194,7 +194,7 @@
       "TITLE": "TVDB-Verbindung",
       "APIKEYLABEL": "TheTVDB-API-Schlüssel",
       "APIKEYWARNING": "Wenn Sie möchten, können Sie EmbyStat hier mit Ihrem eigenen TheTVDB-API-Schlüssel versorgen. Stellen Sie sicher, dass Sie einen funktionierenden API-Schlüssel angeben! Wenn der Schlüssel falsch ist, schlägt die Synchronisierungsaufgabe fehl.",
-      "NOAPIKEY": "API key can not be empty",
+      "NOAPIKEY": "Der API-Schlüssel darf nicht leer sein",
       "SAVING": "TVDB Schlüssel speichern"
     },
     "ROLLBAR": {
@@ -212,7 +212,7 @@
       "TITLE": "Benutzerdetails",
       "USERNAME": "Benutzername",
       "NOUSERNAME": "Der Benutzername ist erforderlich",
-      "PASSWORD": "Password",
+      "PASSWORD": "Passwort",
       "NEWPASSWORD": "Neues Passwort",
       "REPEATNEWPASSWORD": "Neues Passwort wiederholen",
       "CURRENTPASSWORD": "Aktuelles Passwort",
@@ -376,7 +376,7 @@
     "FOLDERS": "Ordner"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
+    "TITLE": "{{type}} Status",
     "ONLINE": "Server online",
     "OFFLINE": "{{count}} missed pings"
   },
