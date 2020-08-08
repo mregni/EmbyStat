@@ -191,7 +191,7 @@
       "EMBY": "Emby"
     },
     "TVDB": {
-      "TITLE": "Tvdb connection",
+      "TITLE": "TheTVDB connection",
       "APIKEYLABEL": "TheTVDB API key",
       "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
