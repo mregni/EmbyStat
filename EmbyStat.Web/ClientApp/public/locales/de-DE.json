@@ -222,7 +222,7 @@
       "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
       "WRONGPASSWORD": "Wrong password for loggedin user",
       "USERNAMEUPDATED": "Benutzername erfolgreich aktualisiert",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "USERNAMEUPDATEFAILED": "Aktualisierung des Benutzernamens fehlgeschlagen. Überprüfen Sie das Protokoll auf weitere Informationen"
     },
     "STATISTICS": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
@@ -275,9 +275,9 @@
     }
   },
   "LOGIN": {
-    "LOGIN": "Login",
+    "LOGIN": "Anmelden",
     "ERROR": "Username or password unknown",
-    "LOGOUT": "Log out",
+    "LOGOUT": "Abmelden",
     "FORGOTPASSWORD": "Forgot password",
     "RECOVERPASSWORD": "Recover password",
     "RESETCOMPLETED": "Check logs for new password",
@@ -325,13 +325,13 @@
       "PING": "Check {{type}} connection",
       "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCSTART": "Start small sync",
+      "SYSTEM-SYNC": "Synchronisiere {{type}} Info",
+      "SYSTEM-SYNCSTART": "Kleine Synchronisierung starten",
       "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
+      "MEDIA-SYNC": "Medien-Synchronisierung",
+      "DATABASE-CLEANUP": "Datenbankbereinigung",
       "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
+      "UPDATE-CHECKER": "Nach neuen Aktualisierungen suchen",
       "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
