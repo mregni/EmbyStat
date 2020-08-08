@@ -205,7 +205,7 @@
     },
     "LANGUAGE": {
       "TITLE": "Language",
-      "LABEL": "Select your prefert language",
+      "LABEL": "Select your prefered language",
       "SAVING": "Updating language to {{lang}}"
     },
     "ACCOUNT": {
@@ -253,7 +253,7 @@
       "EMBYAPIKEYREQUIRED": "{{type}} API key required",
       "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
       "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
+      "BASEURLNEEDED": "A base url is required",
       "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
       "WRONGAPIKEY": "Provided API key is not valid",
       "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
