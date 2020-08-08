@@ -76,7 +76,8 @@
     "LIBRARYERROR": "Could not fetch libraries",
     "LOADING": "Loading {{item}}",
     "STATISTICS": "Statistics",
-    "NAME": "Name"
+    "NAME": "Name",
+    "COUNT": "Count"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
@@ -118,6 +119,7 @@
     "USERS": "Users"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
@@ -317,6 +319,7 @@
     "LASTRUN": "Last run",
     "BUTFAILED": "but failed",
     "NORUN": "Not ran yet",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Job logs",
     "CRONUPDATED": "Cron value updated",
     "OPENJOBPAGE": "Go to job page",
