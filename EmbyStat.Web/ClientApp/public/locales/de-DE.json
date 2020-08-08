@@ -79,10 +79,10 @@
     "NAME": "Name"
   },
   "LOGS": {
-    "ANONYMISED": "Anonymised",
-    "SIZE": "Size",
-    "CREATIONDATE": "Creation date",
-    "ACTIONS": "Actions"
+    "ANONYMISED": "Anonymisiert",
+    "SIZE": "Größe",
+    "CREATIONDATE": "Erstellt am",
+    "ACTIONS": "Aktionen"
   },
   "FORMERRORS": {
     "EMPTY": "Field may not be empty",
@@ -204,22 +204,22 @@
       "SAVING": "Saving Rollbar settings"
     },
     "LANGUAGE": {
-      "TITLE": "Language",
+      "TITLE": "Sprache",
       "LABEL": "Select your prefert language",
       "SAVING": "Updating language to {{lang}}"
     },
     "ACCOUNT": {
-      "TITLE": "User details",
-      "USERNAME": "Username",
-      "NOUSERNAME": "Username is required",
+      "TITLE": "Benutzerdetails",
+      "USERNAME": "Benutzername",
+      "NOUSERNAME": "Der Benutzername ist erforderlich",
       "PASSWORD": "Password",
-      "NEWPASSWORD": "New password",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "CURRENTPASSWORD": "Current password",
-      "NOPASSWORD": "Password is required",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
+      "NEWPASSWORD": "Neues Passwort",
+      "REPEATNEWPASSWORD": "Neues Passwort wiederholen",
+      "CURRENTPASSWORD": "Aktuelles Passwort",
+      "NOPASSWORD": "Passwort erforderlich",
+      "PASSWORDNOTEQUAL": "Passwörter stimmen nicht überein",
+      "PASSWORDMINLENGTH": "Das Passwort muss mindenstens 6 Zeichen lang sein",
+      "PASSWORDWARNING": "Sie müssen nur ein neues Passwort eingeben, wenn Sie Ihr aktuelles Passwort ändern möchten.",
       "WRONGPASSWORD": "Wrong password for loggedin user",
       "USERNAMEUPDATED": "Benutzername erfolgreich aktualisiert",
       "USERNAMEUPDATEFAILED": "Aktualisierung des Benutzernamens fehlgeschlagen. Überprüfen Sie das Protokoll auf weitere Informationen"
@@ -322,17 +322,17 @@
     "OPENJOBPAGE": "Go to job page",
     "STARTMEDIASYNC": "Start media sync",
     "INFO": {
-      "PING": "Check {{type}} connection",
+      "PING": "{{type}} Verbindung prüfen",
       "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SYSTEM-SYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
       "SYSTEM-SYNC": "Synchronisiere {{type}} Info",
       "SYSTEM-SYNCSTART": "Kleine Synchronisierung starten",
       "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "MEDIA-SYNC": "Medien-Synchronisierung",
       "DATABASE-CLEANUP": "Datenbankbereinigung",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "DATABASE-CLEANUPDESCRIPTION": "Datenbank von unnötigen Daten bereinigen.",
       "UPDATE-CHECKER": "Nach neuen Aktualisierungen suchen",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "UPDATE-CHECKERDESCRIPTION": "Prüft, ob neue Updates für den ausgewählten Updatekanal vorhanden sind."
     }
   },
   "DIALOGS": {
