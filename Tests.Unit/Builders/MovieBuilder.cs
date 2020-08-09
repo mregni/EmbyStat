@@ -19,8 +19,8 @@ namespace Tests.Unit.Builders
                 CommunityRating = (float)1.7,
                 Id = id,
                 Name = "The lord of the rings",
-                PremiereDate = new DateTime(2002, 4, 2, 0, 0, 0),
-                DateCreated = new DateTime(2018, 1, 1, 0, 0, 0),
+                PremiereDate = new DateTime(2002, 1, 1),
+                DateCreated = new DateTime(2018, 1, 1),
                 OfficialRating = "R",
                 RunTimeTicks = 120000000000,
                 Primary = "primaryImage",
@@ -33,9 +33,18 @@ namespace Tests.Unit.Builders
                 Video3DFormat = Video3DFormat.None,
                 Genres = new[] { "id1" },
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
-                MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 1001 } },
+                MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 2000 } },
                 CollectionId = "1",
                 Container = "avi",
+                ProductionYear = 2000,
+                SubtitleStreams = new List<SubtitleStream>
+                {
+                    new SubtitleStreamBuilder("en").Build()
+                },
+                VideoStreams = new List<VideoStream>
+                {
+                    new VideoStreamBuilder().Build()
+                }
             };
         }
 
@@ -69,6 +78,12 @@ namespace Tests.Unit.Builders
             return this;
         }
 
+        public MovieBuilder AddLogo(string image)
+        {
+            _movie.Logo = image;
+            return this;
+        }
+
         public MovieBuilder AddOfficialRating(string rating)
         {
             _movie.OfficialRating = rating;
@@ -81,7 +96,7 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder AddPremiereDate(DateTime date)
+        public MovieBuilder AddPremiereDate(DateTime? date)
         {
             _movie.PremiereDate = date;
             return this;
@@ -110,7 +125,7 @@ namespace Tests.Unit.Builders
 
         public MovieBuilder ReplacePersons(ExtraPerson person)
         {
-            _movie.People = new[] {person};
+            _movie.People = new[] { person };
             return this;
         }
 
@@ -141,6 +156,30 @@ namespace Tests.Unit.Builders
         public MovieBuilder AddContainer(string container)
         {
             _movie.Container = container;
+            return this;
+        }
+
+        public MovieBuilder ReplaceSubtitleStream(SubtitleStream stream)
+        {
+            _movie.SubtitleStreams = new List<SubtitleStream> { stream };
+            return this;
+        }
+
+        public MovieBuilder EmptySubtitleStreams()
+        {
+            _movie.SubtitleStreams = null;
+            return this;
+        }
+
+        public MovieBuilder ReplaceMediaSources(MediaSource source)
+        {
+            _movie.MediaSources = new List<MediaSource> { source };
+            return this;
+        }
+
+        public MovieBuilder ReplaceVideoStreams(VideoStream stream)
+        {
+            _movie.VideoStreams = new List<VideoStream> { stream };
             return this;
         }
 

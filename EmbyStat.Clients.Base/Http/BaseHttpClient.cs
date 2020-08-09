@@ -154,7 +154,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"persons/{personName}", Method.GET);
             request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } });
             var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return baseItem != null ? PersonConverter.Convert(baseItem) : null;
+            return baseItem != null ? PersonConverter.Convert(baseItem, Logger) : null;
         }
 
         public QueryResult<BaseItemDto> GetMediaFolders()
@@ -211,7 +211,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.Items.Select(x => x.ConvertToMovie(collectionId)).ToList();
+            return baseItems.Items.Select(x => x.ConvertToMovie(collectionId, Logger)).ToList();
         }
 
         public List<BoxSet> GetBoxSet(string parentId)
@@ -236,7 +236,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.Items.Select(BoxSetConverter.ConvertToBoxSet).ToList();
+            return baseItems.Items.Select(x => x.ConvertToBoxSet(Logger)).ToList();
         }
 
         public List<Show> GetShows(string parentId)
@@ -262,7 +262,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.Items.Select(x => x.ConvertToShow(parentId)).ToList();
+            return baseItems.Items.Select(x => x.ConvertToShow(parentId, Logger)).ToList();
         }
 
         public List<Season> GetSeasons(string parentId)
@@ -287,7 +287,7 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems.Items.Select(x => x.ConvertToSeason()).ToList();
+            return baseItems.Items.Select(x => x.ConvertToSeason(Logger)).ToList();
         }
 
         public List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId)
@@ -315,7 +315,7 @@ namespace EmbyStat.Clients.Base.Http
                 var request = new RestRequest($"Items", Method.GET);
                 request.AddItemQueryAsParameters(query);
                 var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-                episodes.AddRange(baseItems.Items.Select(x => x.ConvertToEpisode(showId)));
+                episodes.AddRange(baseItems.Items.Select(x => x.ConvertToEpisode(showId, Logger)).Where(x => x != null));
             }
 
             return episodes;

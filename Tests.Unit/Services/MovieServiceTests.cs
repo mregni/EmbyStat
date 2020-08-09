@@ -351,7 +351,7 @@ namespace Tests.Unit.Services
             var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSize);
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Common.TotalDiskSize);
-            card.Value.Should().Be("3003");
+            card.Value.Should().Be("6000");
         }
 
         #endregion
