@@ -250,8 +250,8 @@
       "NOAPIKEY": "API-Schlüssel ist erforderlich",
       "PORT": "Port",
       "NOPORT": "Port is required",
-      "BASEURL": "Basis-Url",
-      "NOBASEURL": "Base URL ist erforderlich und sollte mit / beginnen",
+      "BASEURL": "Base URL",
+      "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/Domain ist erforderlich.",
       "EMBYPORTREQUIRED": "{{type}} Port ist erforderlich.",
       "EMBYAPIKEYREQUIRED": "{{type}} API-Schlüssel ist erforderlich",
@@ -400,7 +400,6 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where",
     "CLEARALL": "Clear all",
     "CONTAINS": "contains",
     "NOTCONTAINS": "not contains",

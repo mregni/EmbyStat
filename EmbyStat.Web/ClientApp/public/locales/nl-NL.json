@@ -250,8 +250,8 @@
       "NOAPIKEY": "API-sleutel is vereist",
       "PORT": "Poort",
       "NOPORT": "Port is required",
-      "BASEURL": "Basis-URL",
-      "NOBASEURL": "String is vereist en moet beginnen met /",
+      "BASEURL": "Base URL",
+      "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP / domein vereist.",
       "EMBYPORTREQUIRED": "{{type}} poort vereist.",
       "EMBYAPIKEYREQUIRED": "{{type}} API-sleutel vereist",
@@ -400,7 +400,6 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Films waar",
     "CLEARALL": "Clear all",
     "CONTAINS": "contains",
     "NOTCONTAINS": "not contains",
