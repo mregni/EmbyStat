@@ -76,7 +76,8 @@
     "LIBRARYERROR": "Kan bibliotheken niet ophalen",
     "LOADING": "Bezig met laden {{item}}",
     "STATISTICS": "Statistieken",
-    "NAME": "Naam"
+    "NAME": "Naam",
+    "COUNT": "Count"
   },
   "LOGS": {
     "ANONYMISED": "Geanonimiseerd",
@@ -118,6 +119,7 @@
     "USERS": "Gebruikers"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker",
     "SERVERCONFIGURATION": "Server configuratie",
@@ -245,7 +247,7 @@
       "APIKEY": "API sleutel",
       "NOAPIKEY": "API-sleutel is vereist",
       "PORT": "Poort",
-      "NOPORT": "IP / domein is vereist",
+      "NOPORT": "Port is required",
       "BASEURL": "Basis-URL",
       "NOBASEURL": "String is vereist en moet beginnen met /",
       "EMBYADDRESSREQUIRED": "{{type}} IP / domein vereist.",
@@ -317,6 +319,7 @@
     "LASTRUN": "Laatst uitgevoerd",
     "BUTFAILED": "maar is gefaald na",
     "NORUN": "Nog niet gestart",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Taaklogboeken",
     "CRONUPDATED": "Cron waarde bijgewerkt",
     "OPENJOBPAGE": "Ga naar job pagina",
@@ -395,6 +398,25 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Films waar"
+    "WHEREMOVIES": "Films waar",
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is null",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before"
   }
 }
