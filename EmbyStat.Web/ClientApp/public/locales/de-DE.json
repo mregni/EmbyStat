@@ -61,7 +61,7 @@
     "OS": "Betriebssystem",
     "WANADDRESS": "WAN-Adresse",
     "LANADDRESS": "LAN-Adresse",
-    "UPDATELEVEL": "Update level",
+    "UPDATELEVEL": "Update-Kanal",
     "SELECTVALUE": "Wert auswählen",
     "ADD": "Hinzufügen",
     "DATE": "Datum",
@@ -77,10 +77,10 @@
     "LOADING": "Lade {{item}}",
     "STATISTICS": "Statistiken",
     "NAME": "Name",
-    "COUNT": "Count",
+    "COUNT": "Anzahl",
     "SIZE": "Größe",
-    "HEIGHT": "Height",
-    "WIDTH": "Width"
+    "HEIGHT": "Höhe",
+    "WIDTH": "Breite"
   },
   "LOGS": {
     "ANONYMISED": "Anonymisiert",
@@ -121,7 +121,7 @@
     "USERS": "Benutzer"
   },
   "WIZARD": {
-    "RUNSYNC": "Run media sync after wizard",
+    "RUNSYNC": "Führen Sie die Mediensynchronisierung nach Beendigung des Assistenten aus",
     "WIZARDLABEL": "Assistent",
     "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein",
     "SERVERCONFIGURATION": "Server-Konfiguration",
@@ -249,7 +249,7 @@
       "APIKEY": "API-Schlüssel",
       "NOAPIKEY": "API-Schlüssel ist erforderlich",
       "PORT": "Port",
-      "NOPORT": "Port is required",
+      "NOPORT": "Port ist erforderlich",
       "BASEURL": "Base URL",
       "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/Domain ist erforderlich.",
