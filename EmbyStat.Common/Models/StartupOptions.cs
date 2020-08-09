@@ -24,5 +24,8 @@ namespace EmbyStat.Common.Models
 
         [Option("listen-urls", Required = false, Default = "http://*", HelpText = "Set the url's where EmbyStat needs to listen on. Default is http://* but you can change it to only loopback address here if needed. Don't add port number, it will be added automatically. Use ; if you want to define more then one url.")]
         public string ListeningUrls { get; set; }
+
+        [Option("service", Required = false, Default = false, HelpText = "Indicate EmbyStat is running as a service")]
+        public bool Service { get; set; }
     }
 } 

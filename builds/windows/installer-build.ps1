@@ -29,31 +29,31 @@ function Install-NSSM {
         [string]$ResolvedInstallLocation,
         [string]$Architecture
     )
-    Write-Verbose "Checking Architecture"
+    Write-Host "Checking Architecture"
     if($Architecture -notin @('x86','x64')){
         Write-Warning "No builds available for your selected architecture of $Architecture"
         Write-Warning "NSSM will not be installed"
     }else{
-         Write-Verbose "Downloading NSSM"
+         Write-Host "Downloading NSSM"
          # [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
          # Temporary workaround, file is hosted in an azure blob with a custom domain in front for brevity
-         Invoke-WebRequest -Uri http://files.evilt.win/nssm/nssm-2.24-101-g897c7ad.zip -UseBasicParsing -OutFile "$tempdir/nssm.zip" | Write-Verbose
+         Invoke-WebRequest -Uri http://files.evilt.win/nssm/nssm-2.24-101-g897c7ad.zip -UseBasicParsing -OutFile "$tempdir/nssm.zip" | Write-Host
     }
 
-    Expand-Archive "$tempdir/nssm.zip" -DestinationPath "$tempdir/nssm/" -Force | Write-Verbose
+    Expand-Archive "$tempdir/nssm.zip" -DestinationPath "$tempdir/nssm/" -Force | Write-Host
     if($Architecture -eq 'x64'){
-        Write-Verbose "Copying Binaries to Embystat location"
+        Write-Host "Copying Binaries to Embystat location"
         Get-ChildItem "$tempdir/nssm/nssm-2.24-101-g897c7ad/win64" | ForEach-Object {
-            Copy-Item $_.FullName -Destination $installLocation | Write-Verbose
+            Copy-Item $_.FullName -Destination $installLocation | Write-Host
         }
     }else{
-        Write-Verbose "Copying Binaries to Embystat location"
+        Write-Host "Copying Binaries to Embystat location"
         Get-ChildItem "$tempdir/nssm/nssm-2.24-101-g897c7ad/win32" | ForEach-Object {
-            Copy-Item $_.FullName -Destination $installLocation | Write-Verbose
+            Copy-Item $_.FullName -Destination $installLocation | Write-Host
         }
     }
-    Remove-Item "$tempdir/nssm/" -Recurse -Force -ErrorAction Continue | Write-Verbose
-    Remove-Item "$tempdir/nssm.zip" -Force -ErrorAction Continue | Write-Verbose
+    Remove-Item "$tempdir/nssm/" -Recurse -Force -ErrorAction Continue | Write-Host
+    Remove-Item "$tempdir/nssm.zip" -Force -ErrorAction Continue | Write-Host
 }
 
 function Make-NSIS {
@@ -72,38 +72,38 @@ function Make-NSIS {
 
 
 function Install-NSIS {
-    Write-Verbose "Downloading NSIS"
+    Write-Host "Downloading NSIS"
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest -Uri https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/3.04/nsis-3.04.zip -UseBasicParsing -OutFile "$tempdir/nsis.zip" | Write-Verbose
+    Invoke-WebRequest -Uri https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/3.04/nsis-3.04.zip -UseBasicParsing -OutFile "$tempdir/nsis.zip" | Write-Host
 
-    Expand-Archive "$tempdir/nsis.zip" -DestinationPath "$tempdir/nsis/" -Force | Write-Verbose
+    Expand-Archive "$tempdir/nsis.zip" -DestinationPath "$tempdir/nsis/" -Force | Write-Host
 }
 
 function Cleanup-NSIS {
-    Remove-Item "$tempdir/nsis/" -Recurse -Force -ErrorAction Continue | Write-Verbose
-    Remove-Item "$tempdir/nsis.zip" -Force -ErrorAction Continue | Write-Verbose
+    Remove-Item "$tempdir/nsis/" -Recurse -Force -ErrorAction Continue | Write-Host
+    Remove-Item "$tempdir/nsis.zip" -Force -ErrorAction Continue | Write-Host
 }
 
-Write-Verbose "Starting Build Process: Selected Environment is $WindowsVersion-$Architecture"
+Write-Host "Starting Build Process: Selected Environment is $WindowsVersion-$Architecture"
 
 if($InstallNSSM.IsPresent -or ($InstallNSSM -eq $true)){
-    Write-Verbose "Starting NSSM Install"
+    Write-Host "Starting NSSM Install"
     Install-NSSM $ResolvedInstallLocation $Architecture
 }
 Copy-Item .\LICENSE $ResolvedInstallLocation\LICENSE
 if($InstallNSIS.IsPresent -or ($InstallNSIS -eq $true)){
-    Write-Verbose "Installing NSIS"
+    Write-Host "Installing NSIS"
     Install-NSIS
 }
 if($MakeNSIS.IsPresent -or ($MakeNSIS -eq $true)){
-    Write-Verbose "Starting NSIS Package creation"
+    Write-Host "Starting NSIS Package creation"
     Make-NSIS $ResolvedInstallLocation
 }
 if($InstallNSIS.IsPresent -or ($InstallNSIS -eq $true)){
-    Write-Verbose "Cleanup NSIS"
+    Write-Host "Cleanup NSIS"
     Cleanup-NSIS
 }
 if($GenerateZip.IsPresent -or ($GenerateZip -eq $true)){
     Compress-Archive -Path $ResolvedInstallLocation -DestinationPath "$ResolvedInstallLocation/embystat.zip" -Force
 }
-Write-Verbose "Finished"
+Write-Host "Finished"
