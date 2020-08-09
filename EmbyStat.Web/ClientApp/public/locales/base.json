@@ -77,11 +77,13 @@
     "LOADING": "Loading {{item}}",
     "STATISTICS": "Statistics",
     "NAME": "Name",
-    "COUNT": "Count"
+    "COUNT": "Count",
+    "SIZE": "Size",
+    "HEIGHT": "Height",
+    "WIDTH": "Width"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
-    "SIZE": "Size",
     "CREATIONDATE": "Creation date",
     "ACTIONS": "Actions"
   },
@@ -417,6 +419,16 @@
     "ISZERO": "is 0",
     "LARGER": "larger",
     "SMALLER": "smaller",
-    "BEFORE": "before"
+    "BEFORE": "before",
+    "AFTER": "after",
+    "TITLES": {
+      "TITLE": "Title",
+      "IMDB": "Imdb",
+      "TMDB": "Tmdb",
+      "IMAGES": "Images",
+      "GENRES": "Genres",
+      "FRAMERATE": "Frame rate",
+      "CONTAINER": "Container"
+    }
   }
 }

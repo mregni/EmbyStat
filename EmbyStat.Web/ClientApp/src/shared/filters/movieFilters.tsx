@@ -6,6 +6,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Name",
     label: "Title {0} {1}",
+    title: "FILTERS.TITLES.TITLE",
     types: [
       {
         operation: "contains",
@@ -13,7 +14,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "!contains",
@@ -21,7 +22,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "==",
@@ -29,7 +30,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "startsWith",
@@ -37,7 +38,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "endsWith",
@@ -45,7 +46,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
     ],
     open: false,
@@ -54,6 +55,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "IMDB",
     label: "Imdb {0} {1}",
+    title: "FILTERS.TITLES.IMDB",
     types: [
       {
         operation: "==",
@@ -77,6 +79,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "TMDB",
     label: "Tmdb {0} {1}",
+    title: "FILTERS.TITLES.TMDB",
     types: [
       {
         operation: "==",
@@ -100,6 +103,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Images",
     label: "Images {0} {1}",
+    title: "FILTERS.TITLES.IMAGES",
     types: [
       {
         operation: "!null",
@@ -132,6 +136,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Genres",
     label: "Genres {0} {1}",
+    title: "COMMON.GENRES",
     types: [
       {
         operation: "any",
@@ -158,6 +163,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Subtitles",
     label: "Subtitles {0} {1}",
+    title: "COMMON.SUBTITLES",
     types: [
       {
         operation: "empty",
@@ -191,6 +197,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "CommunityRating",
     label: "Community rating {0} {1}",
+    title: "COMMON.COMMUNITYRATING",
     types: [
       {
         operation: "==",
@@ -199,7 +206,7 @@ const movieFilters: FilterDefinition[] = [
         unit: "",
         open: false,
         id: uuid(),
-        placeholder: "Rating",
+        placeholder: "COMMON.COMMUNITYRATING",
       },
       {
         operation: "between",
@@ -219,6 +226,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "RunTimeTicks",
     label: "Runtime {0} {1}",
+    title: "COMMON.RUNTIME",
     types: [
       {
         operation: "<",
@@ -261,6 +269,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "SizeInMb",
     label: "Size {0} {1}",
+    title: "COMMON.SIZE",
     types: [
       {
         operation: ">",
@@ -303,6 +312,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Height",
     label: "Height {0} {1}",
+    title: "COMMON.HEIGHT",
     types: [
       {
         operation: "==",
@@ -353,6 +363,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Width",
     label: "Width {0} {1}",
+    title: "COMMON.WIDTH",
     types: [
       {
         operation: "==",
@@ -403,6 +414,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "AverageFrameRate",
     label: "FrameRate {0} {1}",
+    title: "FILTERS.TITLES.FRAMERATE",
     types: [
       {
         operation: "==",
@@ -453,6 +465,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "Container",
     label: "Container {0} {1}",
+    title: "FILTERS.TITLES.CONTAINER",
     types: [
       {
         operation: "==",
@@ -486,6 +499,7 @@ const movieFilters: FilterDefinition[] = [
   {
     field: "PremiereDate",
     label: "Premiere Date {0} {1}",
+    title: "COMMON.PREMIEREDATE",
     types: [
       {
         operation: "<",
@@ -494,7 +508,13 @@ const movieFilters: FilterDefinition[] = [
         open: false,
         id: uuid(),
       },
-      { operation: ">", label: "after", type: "date", open: false, id: uuid() },
+      {
+        operation: ">",
+        label: "FILTERS.AFTER",
+        type: "date",
+        open: false,
+        id: uuid(),
+      },
       {
         operation: "between",
         label: "FILTERS.BETWEEN",
