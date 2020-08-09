@@ -84,7 +84,6 @@
   },
   "LOGS": {
     "ANONYMISED": "Anonymisiert",
-    "SIZE": "Größe",
     "CREATIONDATE": "Erstellt am",
     "ACTIONS": "Aktionen"
   },
@@ -421,6 +420,7 @@
     "LARGER": "larger",
     "SMALLER": "smaller",
     "BEFORE": "before",
+    "AFTER": "after",
     "TITLES": {
       "TITLE": "Titel",
       "IMDB": "Imdb",
