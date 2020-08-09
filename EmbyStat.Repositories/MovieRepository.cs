@@ -306,6 +306,7 @@ namespace EmbyStat.Repositories
                         _ => query
                     });
                 case "Subtitles":
+                    var boe = query.ToList();
                     return (filter.Operation switch
                     {
                         "!any" => query.Where(x => x.SubtitleStreams.All(y => y.Language != filter.Value)),

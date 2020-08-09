@@ -179,10 +179,15 @@ namespace EmbyStat.Repositories.Helpers
             switch (filter.Field)
             {
                 case "PremiereDate":
-                    var values = FormatDateInputValue(filter.Value);
+                    var values = new DateTimeOffset[0];
+                    if (filter.Operation != "null")
+                    {
+                        values = FormatDateInputValue(filter.Value);
+                    }
+
                     return (filter.Operation switch
                     {
-                        "==" => query.Where(x => DateTimeOffset.Parse((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) == values[0]),
+                        "==" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) == values[0]),
                         "<" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MaxValue) < values[0]),
                         ">" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) > values[0]),
                         "between" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) > values[0]
@@ -231,10 +236,6 @@ namespace EmbyStat.Repositories.Helpers
                         "startsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().StartsWith(filter.Value.ToLowerInvariant())),
                         "endsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().EndsWith(filter.Value.ToLowerInvariant())),
                         "null" => query.Where(x => typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
-                        "<" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < Convert.ToDouble(filter.Value)),
-                        ">" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > Convert.ToDouble(filter.Value)),
-                        "between" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > FormatInputValue(filter.Value)[0]
-                                                      && ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < FormatInputValue(filter.Value)[1]),
                         _ => query,
                     });
             }
@@ -257,6 +258,11 @@ namespace EmbyStat.Repositories.Helpers
                 }
 
                 return new[] { left, right };
+            }
+
+            if (decodedValue.Length == 0)
+            {
+                return new[] { 0d };
             }
 
             return new[] { Convert.ToDouble(decodedValue) * multiplier };

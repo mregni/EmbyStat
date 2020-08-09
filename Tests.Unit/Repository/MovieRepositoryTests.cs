@@ -2,6 +2,7 @@
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories;
 using FluentAssertions;
 using Tests.Unit.Builders;
@@ -240,7 +241,7 @@ namespace Tests.Unit.Repository
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetTotalDiskSize(new string[0]);
-                count.Should().Be(3003);
+                count.Should().Be(6000);
             });
         }
 
@@ -255,7 +256,7 @@ namespace Tests.Unit.Repository
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var count = _movieRepository.GetTotalDiskSize(new[] { "1" });
-                count.Should().Be(2002);
+                count.Should().Be(4000);
             });
         }
 
@@ -544,7 +545,7 @@ namespace Tests.Unit.Repository
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
                 var movies = _movieRepository
-                    .GetLongestMovie(new[] {"1"}, 1)
+                    .GetLongestMovie(new[] { "1" }, 1)
                     .ToList();
                 movies.Should().NotBeNull();
                 movies.Count.Should().Be(1);
@@ -610,7 +611,7 @@ namespace Tests.Unit.Repository
 
                 var people = _movieRepository.GetMostFeaturedPersons(new string[0], PersonType.Actor, 5);
 
-                
+
             });
         }
 
@@ -787,9 +788,9 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "nl", DisplayTitle = "Dutch" }).Build();
-                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "en", DisplayTitle = "English" }).Build();
-                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "en", DisplayTitle = "English"}).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = "nl", DisplayTitle = "Dutch" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = "en", DisplayTitle = "English" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = "en", DisplayTitle = "English" }).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var languages = _movieRepository
@@ -811,10 +812,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "nl", DisplayTitle = "Dutch"}).Build();
-                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "und" }).Build();
-                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = "Und" }).Build();
-                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddSubtitleStream(new SubtitleStream { Language = null }).Build();
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = "nl", DisplayTitle = "Dutch" }).Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = "und" }).Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = "Und" }).Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).ReplaceSubtitleStream(new SubtitleStream { Language = null }).Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour });
 
                 var languages = _movieRepository
@@ -852,8 +853,8 @@ namespace Tests.Unit.Repository
                 genres[1].Value.Should().Be("id1");
                 genres[2].Label.Should().Be("SiFi");
                 genres[2].Value.Should().Be("SiFi");
-            });          
-        }                
+            });
+        }
 
         [Fact]
         public void CalculateCollectionFilterValues_Should_Return_Two_Genres()
@@ -876,6 +877,114 @@ namespace Tests.Unit.Repository
                 collections[0].Value.Should().Be("1");
                 collections[1].Label.Should().Be("2");
                 collections[1].Value.Should().Be("2");
+            });
+        }
+
+        [Theory]
+        [InlineData("Container", "mkv", "==", 1)]
+        [InlineData("Container", "mkv", "!=", 4)]
+        [InlineData("Container", "", "null", 1)]
+        [InlineData("Subtitles", "nl", "any", 1)]
+        [InlineData("Subtitles", "en", "!any", 2)]
+        [InlineData("Subtitles", "en", "empty", 1)]
+        [InlineData("SizeInMb", "1", "<", 2)]
+        [InlineData("SizeInMb", "1", ">", 3)]
+        [InlineData("SizeInMb", "1", "null", 1)]
+        [InlineData("SizeInMb", "3|4", "between", 1)]
+        [InlineData("Height", "1000", "==", 2)]
+        [InlineData("Height", "900", "<", 1)]
+        [InlineData("Height", "1100", ">", 1)]
+        [InlineData("Height", "1100", "null", 1)]
+        [InlineData("Height", "1100|2000", "between", 1)]
+        [InlineData("Width", "1000", "==", 2)]
+        [InlineData("Width", "900", "<", 1)]
+        [InlineData("Width", "1100", ">", 1)]
+        [InlineData("Width", "1100", "null", 1)]
+        [InlineData("Width", "1100|2000", "between", 1)]
+        [InlineData("AverageFrameRate", "25", "==", 2)]
+        [InlineData("AverageFrameRate", "20", "<", 1)]
+        [InlineData("AverageFrameRate", "40", ">", 1)]
+        [InlineData("AverageFrameRate", "40", "null", 1)]
+        [InlineData("AverageFrameRate", "40|60", "between", 1)]
+        [InlineData("Genres", "id1", "any", 4)]
+        [InlineData("Genres", "id1", "!any", 1)]
+        [InlineData("Images", "Primary", "!null", 4)]
+        [InlineData("Images", "Primary", "null", 1)]
+        [InlineData("Images", "Logo", "!null", 4)]
+        [InlineData("Images", "Logo", "null", 1)]
+        [InlineData("CommunityRating", "8", "==", 1)]
+        [InlineData("CommunityRating", "7|9", "between", 1)]
+        [InlineData("RunTimeTicks", "100000000000", "<", 1)]
+        [InlineData("RunTimeTicks", "100000000000", ">", 4)]
+        [InlineData("RunTimeTicks", "100000000000|10000000", "between", 1)]
+        [InlineData("Name", "The Hobbit", "==", 1)]
+        [InlineData("Name", "The Hobbit", "!=", 4)]
+        [InlineData("Name", "The", "contains", 5)]
+        [InlineData("Name", "Hobbit", "!contains", 4)]
+        [InlineData("Name", "The", "startsWith", 5)]
+        [InlineData("Name", "rings", "endsWith", 4)]
+        [InlineData("IMDB", "", "null", 1)]
+        [InlineData("PremiereDate", "2/04/2002 0:00:00", "==", 2)]
+        [InlineData("PremiereDate", "1/01/1000 0:00:00", "<", 1)]
+        [InlineData("PremiereDate", "1/01/1000 0:00:00", ">", 2)]
+        [InlineData("PremiereDate", "1/01/900 0:00:00|1/01/1500 0:00:00", "between", 1)]
+        [InlineData("PremiereDate", "", "null", 1)]
+        public void GetMediaCount_Should_Filter(string field, string value, string operation, int result)
+        {
+            RunTest(() =>
+            {
+                var filters = new[] { new Filter { Field = field, Value = value, Operation = operation } };
+                var movieOne = new MovieBuilder(Guid.NewGuid().ToString())
+                    .AddContainer("mkv")
+                    .AddName("The Hobbit")
+                    .AddImdb(null)
+                    .AddPremiereDate(new DateTime(1000, 1, 1))
+                    .ReplaceMediaSources(new MediaSource { SizeInMb = 100 })
+                    .Build();
+                var movieTwo = new MovieBuilder(Guid.NewGuid().ToString())
+                    .ReplaceMediaSources(new MediaSource { SizeInMb = 0.01 })
+                    .AddPremiereDate(null)
+                    .ReplaceVideoStreams(
+                        new VideoStreamBuilder()
+                            .AddWidth(1200)
+                            .AddHeight(1200)
+                            .AddAverageFrameRate(50)
+                            .Build())
+                    .Build();
+                var movieThree = new MovieBuilder(Guid.NewGuid().ToString())
+                    .ReplaceMediaSources(new MediaSource { SizeInMb = 3500 })
+                    .AddPremiereDate(new DateTime(100, 1, 1))
+                    .ReplaceVideoStreams(
+                        new VideoStreamBuilder()
+                            .AddWidth(100)
+                            .AddHeight(100)
+                            .AddAverageFrameRate(3)
+                            .Build())
+                    .AddGenres("id2")
+                    .AddPrimaryImage(null)
+                    .AddLogo(null)
+                    .EmptySubtitleStreams()
+                    .AddCommunityRating(8f)
+                    .Build();
+                var movieFour = new MovieBuilder(Guid.NewGuid().ToString())
+                    .AddContainer(null)
+                    .ReplaceSubtitleStream(new SubtitleStreamBuilder("nl").Build())
+                    .AddCommunityRating(7f)
+                    .AddRunTimeTicks(1, 0, 0)
+                    .Build();
+                var movieFive = new MovieBuilder(Guid.NewGuid().ToString())
+                    .ReplaceVideoStreams(
+                        new VideoStreamBuilder()
+                            .AddWidth(null)
+                            .AddHeight(null)
+                            .AddAverageFrameRate(null)
+                            .Build())
+                    .AddCommunityRating(9f)
+                    .Build();
+                _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree, movieFour, movieFive });
+
+                var queryResult = _movieRepository.GetMediaCount(filters, new string[0]);
+                queryResult.Should().Be(result);
             });
         }
     }

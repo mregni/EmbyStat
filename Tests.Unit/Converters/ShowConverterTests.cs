@@ -6,7 +6,9 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Logging;
 using FluentAssertions;
+using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 
@@ -18,6 +20,7 @@ namespace Tests.Unit.Converters
         [Fact]
         public void ConvertToShow_Should_Return_A_Show()
         {
+            var logger = LogFactory.CreateLoggerForType(typeof(ShowConverterTests), string.Empty);
             var data = new BaseItemDto
             {
                 Id = "1",
@@ -55,7 +58,7 @@ namespace Tests.Unit.Converters
                 }
             };
 
-            var show = data.ConvertToShow("123");
+            var show = data.ConvertToShow("123", logger);
             show.Id.Should().Be(data.Id);
             show.CollectionId.Should().Be("123");
             show.Primary.Should().Be(data.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value);
@@ -85,6 +88,7 @@ namespace Tests.Unit.Converters
         [Fact]
         public void ConvertToSeason_Should_Return_Season()
         {
+            var logger = LogFactory.CreateLoggerForType(typeof(ShowConverterTests), string.Empty);
             var data = new BaseItemDto
             {
                 Id = "123",
@@ -104,7 +108,7 @@ namespace Tests.Unit.Converters
                 }
             };
 
-            var season = data.ConvertToSeason();
+            var season = data.ConvertToSeason(logger);
             season.Id.Should().Be(data.Id);
             season.ParentId.Should().Be(data.ParentId);
             season.Name.Should().Be(data.Name);
@@ -183,7 +187,8 @@ namespace Tests.Unit.Converters
         public void ConvertToEpisode_Should_Return_An_Episode()
         {
             var baseItem = new EpisodeBuilder("123", "456", "1").BuildBaseItemDto();
-            var episode = baseItem.ConvertToEpisode("456");
+            var logger = LogFactory.CreateLoggerForType(typeof(ShowConverterTests), string.Empty);
+            var episode = baseItem.ConvertToEpisode("456", logger);
 
             episode.Should().NotBeNull();
             episode.Id.Should().NotBeNullOrWhiteSpace();
