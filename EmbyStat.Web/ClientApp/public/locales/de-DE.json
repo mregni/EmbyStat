@@ -76,11 +76,14 @@
     "LIBRARYERROR": "Bibliotheken konnten nicht abgerufen werden",
     "LOADING": "Lade {{item}}",
     "STATISTICS": "Statistiken",
-    "NAME": "Name"
+    "NAME": "Name",
+    "COUNT": "Count",
+    "SIZE": "Größe",
+    "HEIGHT": "Height",
+    "WIDTH": "Width"
   },
   "LOGS": {
     "ANONYMISED": "Anonymisiert",
-    "SIZE": "Größe",
     "CREATIONDATE": "Erstellt am",
     "ACTIONS": "Aktionen"
   },
@@ -118,6 +121,7 @@
     "USERS": "Benutzer"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Assistent",
     "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein",
     "SERVERCONFIGURATION": "Server-Konfiguration",
@@ -245,7 +249,7 @@
       "APIKEY": "API-Schlüssel",
       "NOAPIKEY": "API-Schlüssel ist erforderlich",
       "PORT": "Port",
-      "NOPORT": "IP/Domain ist erforderlich",
+      "NOPORT": "Port is required",
       "BASEURL": "Basis-Url",
       "NOBASEURL": "Base URL ist erforderlich und sollte mit / beginnen",
       "EMBYADDRESSREQUIRED": "{{type}} IP/Domain ist erforderlich.",
@@ -317,6 +321,7 @@
     "LASTRUN": "Zuletzt ausgeführt",
     "BUTFAILED": "aber fehlgeschlagen nach",
     "NORUN": "Noch nicht druchgeführt",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Job Logs",
     "CRONUPDATED": "Cron-Wert aktualisiert",
     "OPENJOBPAGE": "Zur Aufgabenseite",
@@ -395,6 +400,35 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where"
+    "WHEREMOVIES": "Movies where",
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is null",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before",
+    "AFTER": "after",
+    "TITLES": {
+      "TITLE": "Titel",
+      "IMDB": "Imdb",
+      "TMDB": "Tmdb",
+      "IMAGES": "Images",
+      "GENRES": "Genres",
+      "FRAMERATE": "Frame rate",
+      "CONTAINER": "Container"
+    }
   }
 }
