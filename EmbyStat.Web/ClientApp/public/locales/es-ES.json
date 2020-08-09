@@ -76,11 +76,14 @@
     "LIBRARYERROR": "Could not fetch libraries",
     "LOADING": "Loading {{item}}",
     "STATISTICS": "Statistics",
-    "NAME": "Name"
+    "NAME": "Name",
+    "COUNT": "Count",
+    "SIZE": "Size",
+    "HEIGHT": "Height",
+    "WIDTH": "Width"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
-    "SIZE": "Size",
     "CREATIONDATE": "Creation date",
     "ACTIONS": "Actions"
   },
@@ -118,6 +121,7 @@
     "USERS": "Usuarios"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
@@ -245,7 +249,7 @@
       "APIKEY": "API key",
       "NOAPIKEY": "API key is required",
       "PORT": "Port",
-      "NOPORT": "IP/domain is required",
+      "NOPORT": "Port is required",
       "BASEURL": "Base Url",
       "NOBASEURL": "String is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
@@ -317,6 +321,7 @@
     "LASTRUN": "Último inicio",
     "BUTFAILED": "pero falló después",
     "NORUN": "Aún no ejecutado",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Registro de tareas",
     "CRONUPDATED": "Valor de Cron actualizado",
     "OPENJOBPAGE": "Go to job page",
@@ -395,6 +400,35 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where"
+    "WHEREMOVIES": "Movies where",
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is null",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before",
+    "AFTER": "after",
+    "TITLES": {
+      "TITLE": "Título",
+      "IMDB": "Imdb",
+      "TMDB": "Tmdb",
+      "IMAGES": "Images",
+      "GENRES": "Genres",
+      "FRAMERATE": "Frame rate",
+      "CONTAINER": "Container"
+    }
   }
 }

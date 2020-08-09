@@ -38,7 +38,7 @@ namespace EmbyStat.Web
                 _logger = SetupLogging(configArgs);
                 LogLevelChanger.SetNlogLogLevel(NLog.LogLevel.FromOrdinal(options.LogLevel));
 
-                LogStartupParameters(configArgs, options.LogLevel);
+                LogStartupParameters(configArgs, options.LogLevel, options.Service);
                 
                 var listeningUrl = string.Join(';', options.ListeningUrls.Split(';').Select(x => $"{x}:{options.Port}"));
                 var config = BuildConfigurationRoot(configArgs);
@@ -143,7 +143,7 @@ namespace EmbyStat.Web
             }
         }
 
-        private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel)
+        private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel, bool service)
         {
             var logLevelStr = logLevel == 1 ? "Debug" : "Information";
             var updatesEnabled = options["NoUpdates"] == "False";
@@ -156,6 +156,7 @@ namespace EmbyStat.Web
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tDataDir:\t\t{options["Dirs:Data"]}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tLogDir:\t\t\t{options["Dirs:Logs"]}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tUpdates enabled:\t{updatesEnabled}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tRunning as service:\t{service}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t--------------------------------------------------------------------");
         }
 
