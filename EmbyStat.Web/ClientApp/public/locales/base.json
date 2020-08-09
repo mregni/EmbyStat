@@ -247,7 +247,7 @@
       "APIKEY": "API key",
       "NOAPIKEY": "API key is required",
       "PORT": "Port",
-      "NOPORT": "IP/domain is required",
+      "NOPORT": "Port is required",
       "BASEURL": "Base Url",
       "NOBASEURL": "String is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
@@ -398,6 +398,25 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where"
+    "WHEREMOVIES": "Movies where",
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is null",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before"
   }
 }

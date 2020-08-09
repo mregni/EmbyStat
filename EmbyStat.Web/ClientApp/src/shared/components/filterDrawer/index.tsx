@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Grid from '@material-ui/core/Grid';
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import List from '@material-ui/core/List';
-import { makeStyles, Theme, withStyles, createStyles } from '@material-ui/core/styles';
-import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { FilterDefinition, ActiveFilter } from '../../models/filter';
+import Badge from '@material-ui/core/Badge';
+import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
+import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import { createStyles, makeStyles, Theme, withStyles } from '@material-ui/core/styles';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import Typography from '@material-ui/core/Typography';
+
+import { ActiveFilter, FilterDefinition } from '../../models/filter';
 import FilterPicker from './FilterPicker';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     width: 350,
     margin: 16,
-    height: '100%',
-    position: 'relative',
+    height: "100%",
+    position: "relative",
   },
   icon__root: {
     color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 50,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    position: 'fixed',
+    position: "fixed",
     right: 0,
     top: 75,
     zIndex: 5000,
@@ -40,7 +41,7 @@ const StyledBadge = withStyles((theme: Theme) =>
       right: -3,
       top: 18,
       border: `2px solid ${theme.palette.background.paper}`,
-      padding: '0 4px',
+      padding: "0 4px",
     },
   })
 )(Badge);
@@ -63,7 +64,7 @@ const FilterDrawer = (props: Props) => {
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
   ) => {
-    if (event.type === 'keydown') {
+    if (event.type === "keydown") {
       return;
     }
     setOpenFiltersDrawer(open);
@@ -83,8 +84,8 @@ const FilterDrawer = (props: Props) => {
           x.id !== id
             ? { ...x, open: false }
             : current.open !== state
-              ? { ...x, open: state }
-              : x
+            ? { ...x, open: state }
+            : x
         )
       );
     }
@@ -107,15 +108,15 @@ const FilterDrawer = (props: Props) => {
       <Grid
         item
         container
-        justify={filterCount > 0 ? 'space-between' : 'flex-start'}
+        justify={filterCount > 0 ? "space-between" : "flex-start"}
       >
         <Grid item>
-          <Typography variant="h4">{t('COMMON.FILTERS')}</Typography>
+          <Typography variant="h4">{t("COMMON.FILTERS")}</Typography>
         </Grid>
         {filterCount > 0 ? (
           <Grid item>
             <Button color="secondary" onClick={() => clearFilters()}>
-              Clear All
+              {t("FILTERS.CLEARALL")}
             </Button>
           </Grid>
         ) : null}
