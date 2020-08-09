@@ -924,7 +924,7 @@ namespace Tests.Unit.Repository
         [InlineData("Name", "The", "startsWith", 5)]
         [InlineData("Name", "rings", "endsWith", 4)]
         [InlineData("IMDB", "", "null", 1)]
-        [InlineData("PremiereDate", "2/04/2002 0:00:00", "==", 2)]
+        [InlineData("PremiereDate", "1/01/2002 0:00:00", "==", 2)]
         [InlineData("PremiereDate", "1/01/1000 0:00:00", "<", 1)]
         [InlineData("PremiereDate", "1/01/1000 0:00:00", ">", 2)]
         [InlineData("PremiereDate", "1/01/900 0:00:00|1/01/1500 0:00:00", "between", 1)]
