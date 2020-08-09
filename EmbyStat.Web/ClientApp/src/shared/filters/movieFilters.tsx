@@ -14,7 +14,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "!contains",
@@ -22,7 +22,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "==",
@@ -30,7 +30,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "startsWith",
@@ -38,7 +38,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
       {
         operation: "endsWith",
@@ -46,7 +46,7 @@ const movieFilters: FilterDefinition[] = [
         type: "txt",
         open: false,
         id: uuid(),
-        placeholder: "Title",
+        placeholder: "FILTERS.TITLES.TITLE",
       },
     ],
     open: false,
@@ -206,7 +206,7 @@ const movieFilters: FilterDefinition[] = [
         unit: "",
         open: false,
         id: uuid(),
-        placeholder: "Rating",
+        placeholder: "COMMON.COMMUNITYRATING",
       },
       {
         operation: "between",
@@ -508,7 +508,13 @@ const movieFilters: FilterDefinition[] = [
         open: false,
         id: uuid(),
       },
-      { operation: ">", label: "after", type: "date", open: false, id: uuid() },
+      {
+        operation: ">",
+        label: "FILTERS.AFTER",
+        type: "date",
+        open: false,
+        id: uuid(),
+      },
       {
         operation: "between",
         label: "FILTERS.BETWEEN",

@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getLogList, downloadLogFile } from '../../shared/services/LogService';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
+
 import { LogFile } from '../../shared/models/logs';
+import { downloadLogFile, getLogList } from '../../shared/services/LogService';
 
 const useStyles = makeStyles({
   table: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
   },
   button__padding: {
     paddingTop: 5,
-  }
+  },
 });
 
 const Logs = () => {
@@ -31,8 +32,7 @@ const Logs = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getLogList()
-      .then((response: LogFile[]) => setLogs(response))
+    getLogList().then((response: LogFile[]) => setLogs(response));
   }, []);
 
   const convertToSize = (value: number): string => {
@@ -43,18 +43,22 @@ const Logs = () => {
     } else {
       return `${Math.floor(value / (1024 * 1024))} Mb`;
     }
-  }
+  };
 
   return (
     <Grid container item xs={12} lg={8} xl={6}>
       <TableContainer component={Paper}>
-        <Table className={classes.table} size="small" aria-label="a dense table">
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <TableCell>{t('COMMON.NAME')}</TableCell>
-              <TableCell align="right">{t('LOGS.SIZE')}</TableCell>
-              <TableCell align="right">{t('LOGS.CREATIONDATE')}</TableCell>
-              <TableCell align="right">{t('LOGS.ACTIONS')}</TableCell>
+              <TableCell>{t("COMMON.NAME")}</TableCell>
+              <TableCell align="right">{t("COMMON.SIZE")}</TableCell>
+              <TableCell align="right">{t("LOGS.CREATIONDATE")}</TableCell>
+              <TableCell align="right">{t("LOGS.ACTIONS")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,7 +68,9 @@ const Logs = () => {
                   {row.fileName}
                 </TableCell>
                 <TableCell align="right">{convertToSize(row.size)}</TableCell>
-                <TableCell align="right">{moment(row.createdDate).format('L')}</TableCell>
+                <TableCell align="right">
+                  {moment(row.createdDate).format("L")}
+                </TableCell>
                 <TableCell align="right">
                   <Button
                     onClick={() => downloadLogFile(row.fileName, false)}
@@ -73,10 +79,10 @@ const Logs = () => {
                     variant="outlined"
                     startIcon={<GetAppRoundedIcon />}
                     classes={{
-                      outlinedSizeSmall: classes.button__padding
+                      outlinedSizeSmall: classes.button__padding,
                     }}
                   >
-                    {t('COMMON.DOWNLOAD')}
+                    {t("COMMON.DOWNLOAD")}
                   </Button>
                   <Button
                     onClick={() => downloadLogFile(row.fileName, true)}
@@ -86,10 +92,10 @@ const Logs = () => {
                     variant="outlined"
                     startIcon={<GetAppRoundedIcon />}
                     classes={{
-                      outlinedSizeSmall: classes.button__padding
+                      outlinedSizeSmall: classes.button__padding,
                     }}
                   >
-                    {t('LOGS.ANONYMISED')}
+                    {t("LOGS.ANONYMISED")}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -98,7 +104,7 @@ const Logs = () => {
         </Table>
       </TableContainer>
     </Grid>
-  )
-}
+  );
+};
 
-export default Logs
+export default Logs;
