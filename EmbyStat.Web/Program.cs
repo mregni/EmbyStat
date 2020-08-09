@@ -232,7 +232,7 @@ namespace EmbyStat.Web
                 logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOG_DIR");
                 if (string.IsNullOrWhiteSpace(logDir))
                 {
-                    logDir = Path.Combine(basePath, "Logs");
+                    logDir = Path.Combine(basePath, "logs");
                 }
             }
 
