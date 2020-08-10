@@ -10,13 +10,13 @@ namespace EmbyStat.Common.Models
         [Option('n', "no-updates", Required = false, Default = false, HelpText = "Disable all update flow and pages on the server.")]
         public bool NoUpdates { get; set; }
 
-        [Option('d', "data-dir", Required = false, Default = "<current-directory>", HelpText = "Folder where database is stored")]
+        [Option('d', "data-dir", Required = false, Default = "", HelpText = "Folder where database is stored, default is <current-directory>")]
         public string DataDir { get; set; }
 
-        [Option('l', "log-dir", Required = false, Default = "<current-directory>/logs", HelpText = "Folder where log files are stored")] 
+        [Option('l', "log-dir", Required = false, Default = "", HelpText = "Folder where log files are stored, default is <current-directory>/logs")] 
         public string LogDir { get; set; }
 
-        [Option('c', "config-dir", Required = false, Default = "<current-directory>", HelpText = "Folder where config files are stored")]
+        [Option('c', "config-dir", Required = false, Default = "", HelpText = "Folder where config files are stored, default is <current-directory>")]
         public string ConfigDir { get; set; }
 
         [Option('l', "log-level", Required = false, Default = 2, HelpText = "Set the proper log level\n1: Debug\n2: Information")]
