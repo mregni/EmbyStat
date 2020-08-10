@@ -1,6 +1,6 @@
 jobs:
 - job: docker_container
-  dependsOn: main_build
+  dependsOn: [win_docker_container, linux_docker_container]
   displayName: 'Copy Docker files'
   pool:
     name: Hosted Windows 2019 with VS2019
@@ -8,8 +8,6 @@ jobs:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
-  - template: '../templates/update.version.yml'
-
   - task: PowerShell@2
     displayName: 'Copy Docker files'
     inputs:

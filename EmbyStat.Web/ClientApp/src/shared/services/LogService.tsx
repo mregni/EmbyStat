@@ -24,6 +24,6 @@ const saveFile = (response) => {
     .replace('filename=', '')
     .replace(/"/g, '')
     .trim();
-
-  saveAs(response.data, filename);
+  var blob = new Blob([response.data], { type: "text/plain;charset=utf-8" });
+  saveAs(blob, filename);
 };

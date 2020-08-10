@@ -1,12 +1,12 @@
 image: uping/embystat:nightly
 manifests:
   -
-    image: uping/embystat:nightly-win10-x64
+    image: uping/embystat:nightly-win-x64
     platform:
       architecture: amd64
       os: windows
   -
-    image: uping/embystat:nightly-ubuntu-x64
+    image: uping/embystat:nightly-linux-x64
     platform:
       architecture: amd64
       os: linux

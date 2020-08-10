@@ -36,17 +36,18 @@ namespace EmbyStat.Services
             return list.OrderByDescending(x => x.CreatedDate).Take(settings.KeepLogsCount).ToList();
         }
 
-        public Stream GetLogStream(string fileName, bool anonymous)
+        public MemoryStream GetLogStream(string fileName, bool anonymous)
         {
             var dirs = _settingsService.GetAppSettings().Dirs;
             var logStream = new FileStream(Path.Combine(dirs.Config, dirs.Logs, fileName).GetLocalPath(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
+            var newLogStream = new MemoryStream();
             if (!anonymous)
             {
-                return logStream;
+                logStream.CopyTo(newLogStream);
+                return newLogStream;
             }
 
-            var newLogStream = new MemoryStream();
             using (var reader = new StreamReader(logStream))
             {
                 var writer = new StreamWriter(newLogStream);
