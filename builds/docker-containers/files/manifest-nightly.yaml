@@ -1,7 +1,7 @@
 image: uping/embystat:nightly
 manifests:
   -
-    image: uping/embystat:nightly-win10-x64
+    image: uping/embystat:nightly-win-x64
     platform:
       architecture: amd64
       os: windows
