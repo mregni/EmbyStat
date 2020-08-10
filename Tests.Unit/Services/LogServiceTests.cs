@@ -108,8 +108,9 @@ namespace Tests.Unit.Services
             File.AppendAllText(Path.Combine("config", "Logs-test3", "log1.txt").GetLocalPath(), line);
 
             var stream = service.GetLogStream("log1.txt", false);
+            stream.Position = 0;
 
-            using var reader = new StreamReader(stream, Encoding.UTF8);
+            using var reader = new StreamReader(stream);
             var lines = reader.ReadToEnd();
             lines.Should().Be(line);
         }
@@ -137,9 +138,9 @@ namespace Tests.Unit.Services
             const string line = "Log line: http://192.168.1.1:8001; ApiKey:0000; ws://192.168.1.1:8001; serverId:654321\r\n";
             const string anonymousLine = "Log line: http://xxx.xxx.xxx.xxx:xxxx; ApiKey:xxxxxxxxxxxxxx; wss://xxx.xxx.xxx.xxx:xxxx; serverId:xxxxxxxxxxxxxx\r\n";
             File.AppendAllText(Path.Combine("config", "Logs-test4", "log1.txt").GetLocalPath(), line);
-
-
+            
             var stream = service.GetLogStream("log1.txt", true);
+            stream.Position = 0;
 
             using var reader = new StreamReader(stream);
             var lines = reader.ReadToEnd();

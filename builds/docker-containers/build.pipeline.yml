@@ -1,6 +1,6 @@
 jobs:
 - job: docker_container
-  dependsOn: main_build
+  dependsOn: [win_docker_container, linux_docker_container]
   displayName: 'Copy Docker files'
   pool:
     name: Hosted Windows 2019 with VS2019
