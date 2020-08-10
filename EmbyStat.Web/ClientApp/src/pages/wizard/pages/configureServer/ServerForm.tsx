@@ -77,6 +77,8 @@ const ServerForm = (props: Props) => {
       } else {
         setBaseUrl(`/${wizard.serverBaseurl}`);
       }
+    } else {
+      setBaseUrl('');
     }
 
     setValue("protocol", wizard.serverProtocol);
@@ -281,8 +283,8 @@ const ServerForm = (props: Props) => {
             errors.apiKey
               ? errors.apiKey.message
               : t("SETTINGS.MEDIASERVER.APIKEYHINT", {
-                  type: type === 0 ? "Emby" : "Jellyfin",
-                })
+                type: type === 0 ? "Emby" : "Jellyfin",
+              })
           }
           className={classes["input-field__padding"]}
           value={apiKey}
