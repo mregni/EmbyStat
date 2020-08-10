@@ -8,8 +8,6 @@ jobs:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
   steps:
-  - template: '../templates/update.version.yml'
-
   - task: PowerShell@2
     displayName: 'Copy Docker files'
     inputs:
