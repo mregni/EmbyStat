@@ -34,6 +34,8 @@ namespace EmbyStat.Web
                     return 0;
                 }
 
+                options = CheckEnvironmentVariables(options);
+                
                 var configArgs = CreateArgsArray(options);
                 _logger = SetupLogging(configArgs);
                 LogLevelChanger.SetNlogLogLevel(NLog.LogLevel.FromOrdinal(options.LogLevel));
@@ -247,6 +249,59 @@ namespace EmbyStat.Web
             }
 
             return logDir;
+        }
+
+        private static StartupOptions CheckEnvironmentVariables(StartupOptions options)
+        {
+            var portStr = Environment.GetEnvironmentVariable("EMBYSTAT_PORT");
+            if (portStr != null && int.TryParse(portStr, out var port))
+            {
+                options.Port = port;
+            }
+
+            var dataDir = Environment.GetEnvironmentVariable("EMBYSTAT_DATADIR");
+            if (dataDir != null)
+            {
+                options.DataDir = dataDir;
+            }
+
+            var configDir = Environment.GetEnvironmentVariable("EMBYSTAT_CONFIGDIR");
+            if (configDir != null)
+            {
+                options.ConfigDir = configDir;
+            }
+
+            var logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOGDIR");
+            if (logDir != null)
+            {
+                options.LogDir = logDir;
+            }
+
+            var logLevelStr = Environment.GetEnvironmentVariable("EMBYSTAT_LOGLEVEL");
+            if (logLevelStr != null && int.TryParse(logLevelStr, out var logLevel))
+            {
+                options.LogLevel = logLevel;
+            }
+
+            var listeningUrls = Environment.GetEnvironmentVariable("EMBYSTAT_LISTENURL");
+            if (listeningUrls != null)
+            {
+                options.ListeningUrls = listeningUrls;
+            }
+
+            var noUpdatesStr = Environment.GetEnvironmentVariable("EMBYSTAT_NOUPDATES");
+            if (noUpdatesStr != null && bool.TryParse(noUpdatesStr, out var noUpdates))
+            {
+                options.Service = noUpdates;
+            }
+
+            var serviceStr = Environment.GetEnvironmentVariable("EMBYSTAT_SERVICE");
+            if (serviceStr != null && bool.TryParse(serviceStr, out var service))
+            {
+                options.Service = service;
+            }
+
+            return options;
         }
     }
 }
