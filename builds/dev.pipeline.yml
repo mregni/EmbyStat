@@ -43,7 +43,7 @@ jobs:
 
   - template: './win-x64/build.pipeline.yml'
 
-  - ${{ if and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop')) }}:
+  - ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
     - template: './docker-containers/win.pipeline.yml'
     - template: './docker-containers/linux.pipeline.yml'
     - template: './docker-containers/build.pipeline.yml'
