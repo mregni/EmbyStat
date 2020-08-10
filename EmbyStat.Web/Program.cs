@@ -181,11 +181,7 @@ namespace EmbyStat.Web
             var dataDir = options.DataDir;
             if (string.IsNullOrWhiteSpace(dataDir))
             {
-                dataDir = Environment.GetEnvironmentVariable("EMBYSTAT_DATA_DIR");
-                if (string.IsNullOrWhiteSpace(dataDir))
-                {
-                    dataDir = Directory.GetCurrentDirectory();
-                }
+                dataDir = Directory.GetCurrentDirectory();
             }
 
             try
@@ -206,11 +202,7 @@ namespace EmbyStat.Web
             var configDir = options.ConfigDir;
             if (string.IsNullOrWhiteSpace(configDir))
             {
-                configDir = Environment.GetEnvironmentVariable("EMBYSTAT_CONFIG_DIR");
-                if (string.IsNullOrWhiteSpace(configDir))
-                {
-                    configDir = basePath;
-                }
+                configDir = basePath;
             }
 
             try
@@ -231,11 +223,7 @@ namespace EmbyStat.Web
             var logDir = options.LogDir;
             if (string.IsNullOrWhiteSpace(logDir))
             {
-                logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOG_DIR");
-                if (string.IsNullOrWhiteSpace(logDir))
-                {
-                    logDir = Path.Combine(basePath, "logs");
-                }
+                logDir = Path.Combine(basePath, "logs");
             }
 
             try
