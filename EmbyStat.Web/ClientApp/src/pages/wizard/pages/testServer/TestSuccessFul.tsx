@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import Zoom from '@material-ui/core/Zoom';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +23,7 @@ import {
   setAdminId,
   setAllLibraries,
   setMediaServerId,
+  setServerAddress,
 } from '../../../../store/WizardSlice';
 
 interface Props {
@@ -63,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer',
     },
   },
+  italic: {
+    fontStyle: 'italic',
+  },
 }));
 
 const TestSuccessFul = (props: Props) => {
@@ -93,13 +99,25 @@ const TestSuccessFul = (props: Props) => {
     return `${protocol}${wizard.serverAddress}:${wizard.serverPort}${wizard?.serverBaseurl ?? ''}`
   };
 
+  const [selectedAddress, setSelectedAddress] = useState(generateServerAddress());
+  const handleAddressChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedAddress(event.target.value as string);
+    var addressArray = (event.target.value as string).split('://');
+    const protocol = addressArray[0] === 'https' ? 0 : 1;
+    const address = addressArray[1].split(':')[0];
+    const port = parseInt(addressArray[1].split(':')[1].split('/')[0], 10);
+    dispatch(setServerAddress(address, port, protocol));
+  };
+
   return (
-    <Grid item xs={12} className="m-t-32">
-      <MediaServerHeader
-        serverType={wizard.serverType}
-        serverInfo={serverInfo}
-        serverAddress={generateServerAddress()} />
-      {wizard.serverType === 1 ? (
+    <Grid item container xs={12} className="m-t-32" direction="column">
+      <Grid item>
+        <MediaServerHeader
+          serverType={wizard.serverType}
+          serverInfo={serverInfo}
+          serverAddress={generateServerAddress()} />
+      </Grid>
+      <Grid item>
         <Zoom in={true} style={{ transitionDelay: '300ms' }}>
           <Card
             elevation={7}
@@ -107,20 +125,55 @@ const TestSuccessFul = (props: Props) => {
             className={classNames(classes.root, 'm-t-32')}
           >
             <CardContent>
-              {t('WIZARD.JELLYFIN.ADMINTEXT')}
-              <EmbyStatSelect
-                className="m-t-16"
-                value={selectedAdmin}
-                variant="standard"
-                onChange={adminChanged}
-                menuItems={administrators.map((admin) => {
-                  return { id: admin.id, value: admin.id, label: admin.name };
-                })}
-              />
+              <Grid container direction="column">
+                <Grid item>
+                  {t('WIZARD.LANWANCHOISE', { type: wizard.serverType === 0 ? "Emby" : "Jellyfin" })}
+                </Grid>
+                <Grid item>
+                  <Select
+                    className="m-t-16"
+                    value={selectedAddress}
+                    variant="standard"
+                    onChange={handleAddressChange}
+                  >
+                    {
+                      generateServerAddress() !== serverInfo.wanAddress && generateServerAddress() !== serverInfo.localAddress
+                        ? <MenuItem value={generateServerAddress()}>Current&nbsp;<span className={classes.italic}>({generateServerAddress()})</span></MenuItem>
+                        : null
+                    }
+                    <MenuItem value={serverInfo.wanAddress}>WAN&nbsp;<span className={classes.italic}>({serverInfo.wanAddress})</span></MenuItem>
+                    <MenuItem value={serverInfo.localAddress}>LAN&nbsp;<span className={classes.italic}>({serverInfo.localAddress})</span></MenuItem>
+                  </Select>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Zoom>
-      ) : null}
+      </Grid>
+      <Grid item>
+        {wizard.serverType === 1 ? (
+          <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+            <Card
+              elevation={7}
+              square
+              className={classNames(classes.root, 'm-t-32')}
+            >
+              <CardContent>
+                {t('WIZARD.JELLYFIN.ADMINTEXT')}
+                <EmbyStatSelect
+                  className="m-t-16"
+                  value={selectedAdmin}
+                  variant="standard"
+                  onChange={adminChanged}
+                  menuItems={administrators.map((admin) => {
+                    return { id: admin.id, value: admin.id, label: admin.name };
+                  })}
+                />
+              </CardContent>
+            </Card>
+          </Zoom>
+        ) : null}
+      </Grid>
     </Grid>
   );
 };
