@@ -75,14 +75,14 @@ const TopListCard = (props: Props) => {
   const settings = useSelector((state: RootState) => state.settings);
   const getBackdropUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
+    return `${fullAddress}/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
   };
 
   const classes = useStyles({ backdrop: getBackdropUrl() });
 
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
+    return `${fullAddress}/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
   };
 
   const calculateTime = (date: string): string => {
