@@ -149,7 +149,8 @@
     },
     "APIKEYFAILED": "Wir haben versucht, Ihren {{type}} Server zu kontaktieren, aber es scheint fehlzuschlagen. Bitte gehen Sie zurück, korrigieren Sie die Konfiguration und versuchen Sie es erneut.",
     "ADDRESSUSED": "Adresse: <i>{{address}}</i>",
-    "APIKEYUSED": "API-Schlüssel: <i>{{api}}</i>"
+    "APIKEYUSED": "API-Schlüssel: <i>{{api}}</i>",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Gesamtanzahl Filme",
