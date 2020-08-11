@@ -102,11 +102,23 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "n00b42",
+      "name": "n00b42",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6792900?v=4",
+      "profile": "https://github.com/n00b42",
+      "contributions": [
+        "translation",
+        "userTesting",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "EmbyStat",
   "projectOwner": "mregni",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
