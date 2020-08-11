@@ -36,7 +36,6 @@ export const searchMediaServers = async (): Promise<
 };
 
 export const testApiKey = (login: MediaServerLogin): Promise<boolean | null> => {
-  console.log(login);
   return axiosInstance
     .post<boolean>(`${domain}server/test`, login)
     .then((response) => {
@@ -58,7 +57,6 @@ export const getServerInfo = (
       return response.data;
     })
     .catch(() => {
-      console.log('server info error');
       return null;
     });
 };

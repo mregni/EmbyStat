@@ -34,8 +34,6 @@ const UserDetails = (props: Props): ReactElement => {
     setPassword(wizard.password);
   }, [wizard]);
 
-  console.log(errors);
-
   const getPasswordErrorMessage = (): string => {
     switch (errors.password.type) {
       case 'required':

@@ -112,7 +112,6 @@ const JobItem = (props: Props) => {
   };
 
   const fireJobAction = () => {
-    console.log(`job ${job.id} fired`);
     fireJob(job.id);
     setLoading(true);
   };
@@ -185,24 +184,24 @@ const JobItem = (props: Props) => {
                 </div>
               </div>
             ) : (
-              <div
-                className={classNames(classes["paper__details--bottom"], [
-                  classes.progess__height,
-                ])}
-              >
-                <LinearProgress
-                  color="secondary"
-                  variant="indeterminate"
-                  className={classes.progress}
-                />
-                <div>
-                  <i>0 %</i>
+                <div
+                  className={classNames(classes["paper__details--bottom"], [
+                    classes.progess__height,
+                  ])}
+                >
+                  <LinearProgress
+                    color="secondary"
+                    variant="indeterminate"
+                    className={classes.progress}
+                  />
+                  <div>
+                    <i>0 %</i>
+                  </div>
                 </div>
-              </div>
-            )
+              )
           ) : (
-            <div className={classes.progess__height} />
-          )}
+              <div className={classes.progess__height} />
+            )}
         </div>
       </Paper>
     </Zoom>

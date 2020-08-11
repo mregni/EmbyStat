@@ -72,8 +72,6 @@ const TopListCard = (props: Props) => {
   const { t } = useTranslation();
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
 
-  console.log(data);
-
   const settings = useSelector((state: RootState) => state.settings);
   const getBackdropUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
