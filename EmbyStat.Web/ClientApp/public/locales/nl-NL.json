@@ -149,7 +149,8 @@
     },
     "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
     "ADDRESSUSED": "Adres: <i>{{address}}</i>",
-    "APIKEYUSED": "API-sleutel: <i>{{api}}</i>"
+    "APIKEYUSED": "API-sleutel: <i>{{api}}</i>",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Totale Films",
