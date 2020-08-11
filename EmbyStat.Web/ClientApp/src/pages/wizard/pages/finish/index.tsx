@@ -63,7 +63,7 @@ const Finish = (props: Props) => {
     mediaServer.serverId = wizard.serverId;
     mediaServer.apiKey = wizard.apiKey;
     mediaServer.serverAddress = wizard.serverAddress;
-    mediaServer.serverBaseurl = wizard.serverBaseurl;
+    mediaServer.serverBaseUrl = wizard.serverBaseurl;
     mediaServer.serverName = wizard.serverName;
     mediaServer.serverPort =
       typeof wizard.serverPort === "number"
@@ -136,8 +136,8 @@ const Finish = (props: Props) => {
             {isLoading ? (
               <CircularProgress size={16} className={classes.button__loading} />
             ) : (
-              t("COMMON.FINISH")
-            )}
+                t("COMMON.FINISH")
+              )}
           </Button>
         </Grid>
       </Grid>
