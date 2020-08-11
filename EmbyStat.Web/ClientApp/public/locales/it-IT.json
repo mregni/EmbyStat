@@ -149,7 +149,8 @@
     },
     "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
     "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>"
+    "APIKEYUSED": "API key: <i>{{api}}</i>",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Film Totali",
