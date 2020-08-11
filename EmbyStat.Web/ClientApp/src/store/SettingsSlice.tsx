@@ -21,7 +21,7 @@ const mediaServerSettings: MediaServerSettings = {
   apiKey: '',
   serverType: 0,
   userId: '',
-  serverBaseurl: '',
+  serverBaseUrl: '',
   serverId: '',
 };
 

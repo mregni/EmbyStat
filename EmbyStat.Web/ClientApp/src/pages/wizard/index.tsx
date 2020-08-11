@@ -70,7 +70,6 @@ const Wizard = (props: Props): ReactElement => {
     const loadAnyAdmin = async () => {
       var result = await anyAdmins();
       if (result) {
-        console.log("updating settings");
         const newSettings = { ...settings };
         newSettings.wizardFinished = true;
         dispatch(saveSettings(newSettings));

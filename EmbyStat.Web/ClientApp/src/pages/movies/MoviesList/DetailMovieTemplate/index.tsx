@@ -70,8 +70,6 @@ const DetailMovieTemplate = (props: Props) => {
     loadMovie();
   }, [data]);
 
-  console.log(movie);
-
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
     return `${fullAddress}/emby/Items/${data.data.id}/Images/Backdrop?EnableImageEnhancers=false`;

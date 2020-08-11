@@ -26,9 +26,6 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("axios timeout");
-    console.log(error);
-
     if (error.response == null) {
       SnackbarUtils.error(i18n.t('EXCEPTIONS.UNHANDLED'));
       return Promise.reject(error.response);
@@ -36,7 +33,6 @@ axiosInstance.interceptors.response.use(
 
     if (error.response?.status === 500)
       if (error.response.data.isError) {
-        console.log(error.response.data);
         SnackbarUtils.error(
           i18n.t(`EXCEPTIONS.${error.response.data.message}`)
         );
