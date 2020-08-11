@@ -142,7 +142,7 @@ const TopListCard = (props: Props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {t(pair.label)}
+                    {pair.label.length > 35 ? t(pair.label).substr(0, 32) + '...' : t(pair.label)}
                   </a>
                 </Grid>
                 <Grid item className={classes.secondaryColor}>
