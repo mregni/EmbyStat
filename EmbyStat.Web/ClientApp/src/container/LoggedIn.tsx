@@ -25,6 +25,7 @@ import MoviesLoader from '../pages/movies/Helpers/MoviesLoader';
 import MoviesGeneral from '../pages/movies/MoviesGeneral';
 import MoviesGraphs from '../pages/movies/MoviesGraphs';
 import MoviesList from '../pages/movies/MoviesList';
+import ShowsGeneral from '../pages/shows/ShowsGeneral';
 import NotFound from '../pages/notFound';
 import GeneralSettings from '../pages/settings/GeneralSettings';
 import MovieSettings from '../pages/settings/MovieSettings';
@@ -168,8 +169,8 @@ const LoggedIn = (props: Props) => {
                       className={classes.button__loading}
                     />
                   ) : (
-                    t("LOGIN.LOGOUT")
-                  )}
+                      t("LOGIN.LOGOUT")
+                    )}
                 </Button>
               </Grid>
             </Grid>
@@ -190,6 +191,9 @@ const LoggedIn = (props: Props) => {
             </PrivateRoute>
             <PrivateRoute path="/movies/list" exact>
               <MoviesLoader Component={MoviesList} />
+            </PrivateRoute>
+            <PrivateRoute path="/shows/general" exact>
+              <ShowsGeneral />
             </PrivateRoute>
             <PrivateRoute path="/mediaserver" exact>
               <MediaServer />

@@ -9,6 +9,7 @@ import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
+import TvRoundedIcon from '@material-ui/icons/TvRounded';
 import SettingsIcon from '@material-ui/icons/Settings';
 import uuid from 'react-uuid';
 import classNames from 'classnames';
@@ -101,6 +102,17 @@ const Menu = (props: Props) => {
           route: '/movies/list',
           roles: [UserRoles.Admin, UserRoles.User],
         },
+      ],
+    },
+    {
+      icon: <TvRoundedIcon />,
+      title: t('MENU.SHOWS'),
+      children: [
+        {
+          title: t('COMMON.GENERAL'),
+          route: '/shows/general',
+          roles: [UserRoles.Admin, UserRoles.User],
+        }
       ],
     },
     {
