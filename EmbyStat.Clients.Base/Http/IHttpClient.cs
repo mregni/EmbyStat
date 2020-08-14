@@ -10,7 +10,7 @@ namespace EmbyStat.Clients.Base.Http
 {
     public interface IHttpClient
     {
-        void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId);
+        void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId);
         string BaseUrl { get; set; }
         string ApiKey { get; set; }
         List<PluginInfo> GetInstalledPlugins();
