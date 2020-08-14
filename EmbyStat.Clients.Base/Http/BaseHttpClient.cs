@@ -26,6 +26,7 @@ namespace EmbyStat.Clients.Base.Http
         protected string DeviceName { get; set; }
         protected string ApplicationVersion { get; set; }
         protected string DeviceId { get; set; }
+        protected string UserId { get; set; }
 
         protected string apiKey { get; set; }
         public string ApiKey
@@ -51,12 +52,13 @@ namespace EmbyStat.Clients.Base.Http
             RestClient = client.Initialize();
         }
 
-        public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId)
+        public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId)
         {
             AuthorizationScheme = authorizationScheme;
             ApplicationVersion = applicationVersion;
             DeviceId = deviceId;
             DeviceName = deviceName;
+            UserId = userId;
         }
 
         protected string ExecuteCall(IRestRequest request)
@@ -152,7 +154,7 @@ namespace EmbyStat.Clients.Base.Http
         public Person GetPersonByName(string personName)
         {
             var request = new RestRequest($"persons/{personName}", Method.GET);
-            request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } });
+            request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } }, UserId);
             var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
             return baseItem != null ? PersonConverter.Convert(baseItem, Logger) : null;
         }
@@ -209,7 +211,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems.Items.Select(x => x.ConvertToMovie(collectionId, Logger)).ToList();
         }
@@ -234,7 +236,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems.Items.Select(x => x.ConvertToBoxSet(Logger)).ToList();
         }
@@ -260,7 +262,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems.Items.Select(x => x.ConvertToShow(parentId, Logger)).ToList();
         }
@@ -285,7 +287,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems.Items.Select(x => x.ConvertToSeason(Logger)).ToList();
         }
@@ -313,7 +315,7 @@ namespace EmbyStat.Clients.Base.Http
                 };
 
                 var request = new RestRequest($"Items", Method.GET);
-                request.AddItemQueryAsParameters(query);
+                request.AddItemQueryAsParameters(query, UserId);
                 var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
                 episodes.AddRange(baseItems.Items.Select(x => x.ConvertToEpisode(showId, Logger)).Where(x => x != null));
             }
@@ -334,7 +336,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems?.TotalRecordCount ?? 0;
         }

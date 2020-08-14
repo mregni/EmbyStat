@@ -364,7 +364,13 @@ namespace EmbyStat.Services
                 settings.MediaServer = new MediaServerSettings();
             }
 
-            _httpClient.SetDeviceInfo(settings.AppName, settings.MediaServer.AuthorizationScheme, appSettings.Version.ToCleanVersionString(), settings.Id.ToString());
+            _httpClient.SetDeviceInfo(
+                settings.AppName, 
+                settings.MediaServer.AuthorizationScheme, 
+                appSettings.Version.ToCleanVersionString(), 
+                settings.Id.ToString(),
+                settings.MediaServer.UserId);
+
             settings.MediaServer.ServerType = realType;
             _settingsService.SaveUserSettingsAsync(settings);
         }

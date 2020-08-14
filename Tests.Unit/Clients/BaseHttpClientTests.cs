@@ -79,7 +79,7 @@ namespace Tests.Unit.Clients
             var resultObj = new BaseItemDto { Id = Guid.NewGuid().ToString() };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -112,7 +112,7 @@ namespace Tests.Unit.Clients
         public void GetPersonByName_Should_Return_Null_If_No_Response()
         {
             var client = CreateClient((BaseItemDto)null);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -152,7 +152,7 @@ namespace Tests.Unit.Clients
             };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -183,7 +183,7 @@ namespace Tests.Unit.Clients
         {
             var resultObj = new List<PluginInfo> { new PluginInfo { Id = Guid.NewGuid().ToString() } };
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -214,7 +214,7 @@ namespace Tests.Unit.Clients
         {
             var resultObj = new ServerInfoDto { Id = Guid.NewGuid().ToString() };
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -243,7 +243,7 @@ namespace Tests.Unit.Clients
         {
             var resultObj = new List<FileSystemEntryInfo> { new FileSystemEntryInfo { Name = "Movies" } };
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -274,7 +274,7 @@ namespace Tests.Unit.Clients
         {
             var resultObj = new JArray { new JObject { { "Id", "username" } } };
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -305,7 +305,7 @@ namespace Tests.Unit.Clients
         {
             var resultObj = new JObject { { "Id", Guid.NewGuid().ToString() } };
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -341,7 +341,7 @@ namespace Tests.Unit.Clients
             };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -390,7 +390,7 @@ namespace Tests.Unit.Clients
             };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -436,7 +436,7 @@ namespace Tests.Unit.Clients
             };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -484,7 +484,7 @@ namespace Tests.Unit.Clients
             };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
@@ -530,7 +530,7 @@ namespace Tests.Unit.Clients
             };
 
             var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399");
+            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
