@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Http\Model\**" />
+    <EmbeddedResource Remove="Http\Model\**" />
+    <None Remove="Http\Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WebSocket4Net" Version="0.15.2" />
   </ItemGroup>
 
@@ -13,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Http\Model\" />
     <Folder Include="Models\" />
   </ItemGroup>
 
