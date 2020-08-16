@@ -146,7 +146,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var count = _httpClient.GetMovieCount(parentId);
             if (count == 0)
             {
-               await LogWarning($"0 movies found in parent with id {parentId}. Propably means something is wrong with the HTTP call.");
+               await LogWarning($"0 movies found in parent with id {parentId}. Probably means something is wrong with the HTTP call.");
             }
 
             return count;

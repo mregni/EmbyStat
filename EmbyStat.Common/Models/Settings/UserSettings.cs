@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using Newtonsoft.Json;
+using Rollbar.DTOs;
 
 namespace EmbyStat.Common.Models.Settings
 {
@@ -44,7 +45,8 @@ namespace EmbyStat.Common.Models.Settings
             get
             {
                 var protocol = ServerProtocol == ConnectionProtocol.Https ? "https" : "http";
-                return $"{protocol}://{ServerAddress}:{ServerPort}{ServerBaseUrl}";
+                var baseUrl = ServerBaseUrl == "/" ? string.Empty : ServerBaseUrl;
+                return $"{protocol}://{ServerAddress}:{ServerPort}{baseUrl}";
             }
         }
 
@@ -54,7 +56,8 @@ namespace EmbyStat.Common.Models.Settings
             get
             {
                 var protocol = ServerProtocol == ConnectionProtocol.Https ? "wss" : "ws";
-                return $"{protocol}://{ServerAddress}:{ServerPort}{ServerBaseUrl}";
+                var baseUrl = ServerBaseUrl == "/" ? string.Empty : ServerBaseUrl;
+                return $"{protocol}://{ServerAddress}:{ServerPort}{baseUrl}";
             }
         }
     }

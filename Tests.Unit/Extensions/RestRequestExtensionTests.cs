@@ -75,7 +75,7 @@ namespace Tests.Unit.Extensions
                 Years = new[] { 2000 }
             };
 
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             request.Parameters.Count.Should().Be(48);
 
             var parameters = request.Parameters;
@@ -135,7 +135,7 @@ namespace Tests.Unit.Extensions
             var request = new RestRequest();
 
             var query = new ItemQuery();
-            request.AddItemQueryAsParameters(query);
+            request.AddItemQueryAsParameters(query, "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
             request.Parameters.Count.Should().Be(8);
 
             var parameters = request.Parameters;

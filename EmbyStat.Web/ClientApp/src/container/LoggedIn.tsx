@@ -72,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#d3d3d3",
   },
   logout__button: {
-    width: 100,
     height: 36,
   },
 }));

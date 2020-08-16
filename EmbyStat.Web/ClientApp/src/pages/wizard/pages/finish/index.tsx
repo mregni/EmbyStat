@@ -63,7 +63,7 @@ const Finish = (props: Props) => {
     mediaServer.serverId = wizard.serverId;
     mediaServer.apiKey = wizard.apiKey;
     mediaServer.serverAddress = wizard.serverAddress;
-    mediaServer.serverBaseUrl = wizard.serverBaseurl;
+    mediaServer.serverBaseUrl = wizard.serverBaseurl != null ? wizard.serverBaseurl : "";
     mediaServer.serverName = wizard.serverName;
     mediaServer.serverPort =
       typeof wizard.serverPort === "number"
