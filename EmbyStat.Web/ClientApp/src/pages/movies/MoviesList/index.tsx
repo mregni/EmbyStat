@@ -25,7 +25,7 @@ import Flag from '../../../shared/components/flag';
 import FilterDrawer from '../../../shared/components/filterDrawer';
 import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
-import getFullMediaServerUrl from '../../../shared/utils/GetFullMediaServerUtil';
+import { getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import { RootState } from '../../../store/RootReducer';
 import { useServerType } from '../../../shared/hooks';
 
@@ -139,9 +139,7 @@ const MovieList = (props: Props) => {
           variant="outlined"
           color="secondary"
           size="small"
-          href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${
-            row.id
-            }&serverId=${settings.mediaServer.serverId}`}
+          href={getItemDetailLink(settings, row.data.id)}
           target="_blank"
           startIcon={<OpenInNewIcon />}
           classes={{
@@ -207,7 +205,6 @@ const MovieList = (props: Props) => {
           <Paging pageSize="100" />
           <Sorting mode="single" />
 
-          <Column dataField="id" />
           <Column
             dataField="sortName"
             caption={t('COMMON.TITLE')}
@@ -253,7 +250,6 @@ const MovieList = (props: Props) => {
           />
           <Column
             caption={t('COMMON.LINKS')}
-            width={100}
             cellRender={renderLinks}
             allowSorting={false}
             alignment="right"

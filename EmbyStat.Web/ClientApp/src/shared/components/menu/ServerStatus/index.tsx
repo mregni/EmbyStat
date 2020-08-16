@@ -11,7 +11,7 @@ import { useTransition, config, animated } from 'react-spring'
 
 import { RootState } from '../../../../store/RootReducer';
 import { useServerType } from '../../../../shared/hooks';
-import getFullMediaServerUrl from '../../../../shared/utils/GetFullMediaServerUtil';
+import getFullMediaServerUrl from '../../../utils/MediaServerUrlUtil';
 import GreenCircle from '../../../../shared/assets/images/circle-green.png';
 import OrangeCircle from '../../../../shared/assets/images/circle-orange.png';
 import RedCircle from '../../../../shared/assets/images/circle-red.png';
@@ -108,7 +108,7 @@ const ServerStatus = (props: Props) => {
           variant="outlined"
           color="secondary"
           size="small"
-          href={`${getFullMediaServerUrl(settings)}/web/index.html`}
+          href={getFullMediaServerUrl(settings)}
           target="_blank"
           startIcon={<OpenInNewIcon />}
         >

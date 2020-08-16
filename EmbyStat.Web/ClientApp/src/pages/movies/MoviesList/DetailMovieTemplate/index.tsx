@@ -16,7 +16,7 @@ import { getMovieDetails } from '../../../../shared/services/MovieService';
 import { Movie } from '../../../../shared/models/common';
 
 import { RootState } from '../../../../store/RootReducer';
-import getFullMediaServerUrl from '../../../../shared/utils/GetFullMediaServerUtil';
+import { getBackdropImageLink, getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
 import PosterCard from '../../../../shared/components/cards/PosterCard';
 import theme from '../../../../styles/theme';
 import { useServerType } from '../../../../shared/hooks';
@@ -71,8 +71,7 @@ const DetailMovieTemplate = (props: Props) => {
   }, [data]);
 
   const getPosterUrl = (): string => {
-    const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${data.data.id}/Images/Backdrop?EnableImageEnhancers=false`;
+    return getBackdropImageLink(settings, data.data.id);
   };
 
   const classes = useStyles({ background: getPosterUrl() });
@@ -223,11 +222,7 @@ const DetailMovieTemplate = (props: Props) => {
             color="secondary"
             size="small"
             target="_blank"
-            href={`${getFullMediaServerUrl(
-              settings
-            )}/web/index.html#!/item?id=${movie.id}&serverId=${
-              settings.mediaServer.serverId
-              }`}
+            href={getItemDetailLink(settings, movie.id)}
             startIcon={<OpenInNewIcon />}
           >
             {serverType}

@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { TopCard, TopCardItem } from '../../models/common';
 import { RootState } from '../../../store/RootReducer';
-import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
+import getFullMediaServerUrl from '../../utils/MediaServerUrlUtil';
 
 const useStyles = makeStyles((theme) => ({
   container: {
