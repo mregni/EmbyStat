@@ -144,8 +144,9 @@ namespace EmbyStat.Clients.Base.Http
                 Logger.Debug($"Ping returned: {result}");
                 return result == message;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.Error(e, "Ping failed");
                 return false;
             }
         }

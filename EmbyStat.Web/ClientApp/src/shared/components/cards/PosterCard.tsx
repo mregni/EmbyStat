@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { RootState } from '../../../store/RootReducer';
 
-import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
+import { getItemDetailLink, getPrimaryImageLink } from '../../utils/MediaServerUrlUtil';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -97,21 +97,13 @@ const PosterCard = (props: Props) => {
   const settings = useSelector((state: RootState) => state.settings);
 
   const getPosterUrl = (): string => {
-    const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${mediaId}/Images/Primary?maxHeight=350&tag=${tag}&quality=90&enableimageenhancers=false`;
+    return getPrimaryImageLink(settings, mediaId, tag);
   };
 
   const classes = useStyles({ poster: getPosterUrl(), height });
 
   const openMovie = () => {
-    window.open(
-      `${getFullMediaServerUrl(
-        settings
-      )}/web/index.html#!/item?id=${mediaId}&serverId=${
-      settings.mediaServer.serverId
-      }`,
-      '_blank'
-    );
+    window.open(getItemDetailLink(settings, mediaId), '_blank');
   };
 
   return (

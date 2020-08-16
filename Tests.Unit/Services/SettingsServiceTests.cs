@@ -63,7 +63,8 @@ namespace Tests.Unit.Services
                 KeepLogsCount = 10,
                 Language = "en-US",
                 MovieLibraries = new List<string>(),
-                ShowLibraries = new List<string>()
+                ShowLibraries = new List<string>(),
+                MediaServer = new MediaServerSettings()
             };
 
             _subject.LoadUserSettingsFromFile();

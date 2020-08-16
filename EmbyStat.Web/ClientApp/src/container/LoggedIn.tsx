@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#d3d3d3",
   },
   logout__button: {
-    width: 100,
     height: 36,
   },
 }));
@@ -168,8 +167,8 @@ const LoggedIn = (props: Props) => {
                       className={classes.button__loading}
                     />
                   ) : (
-                    t("LOGIN.LOGOUT")
-                  )}
+                      t("LOGIN.LOGOUT")
+                    )}
                 </Button>
               </Grid>
             </Grid>

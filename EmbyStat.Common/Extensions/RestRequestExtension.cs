@@ -10,7 +10,10 @@ namespace EmbyStat.Common.Extensions
     {
         public static void AddItemQueryAsParameters(this IRestRequest request, ItemQuery query, string userId)
         {
-            request.AddQueryParameter("UserId", new Guid(userId).ToString());
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                request.AddQueryParameter("UserId", new Guid(userId).ToString());
+            }
 
             if (!query.EnableTotalRecordCount)
             {
