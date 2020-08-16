@@ -104,7 +104,7 @@ namespace Tests.Unit.Services
             var personServiceMock = new Mock<IPersonService>();
             foreach (var person in shows.SelectMany(x => x.People))
             {
-                personServiceMock.Setup(x => x.GetPersonByNameForMovies(person.Name, It.IsAny<string>())).Returns(
+                personServiceMock.Setup(x => x.GetPersonByNameForShows(person.Name, It.IsAny<string>())).Returns(
                     new Person
                     {
                         Id = person.Id,

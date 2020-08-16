@@ -6,6 +6,7 @@ namespace EmbyStat.Services.Interfaces
     {
         Person GetPersonByNameForMovies(string name);
         Person GetPersonByNameForMovies(string name, string genre);
+        Person GetPersonByNameForShows(string name);
         Person GetPersonByNameForShows(string name, string genre);
     }
 }

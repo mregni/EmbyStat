@@ -1,9 +1,9 @@
-import React, { ReactElement, ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../../store/RootReducer';
-import { loadStatistics } from '../../../store/MovieSlice';
-import { isTypePresent } from '../../../shared/services/MovieService';
+import { loadStatistics } from '../../../store/ShowSlice';
+import { isTypePresent } from '../../../shared/services/ShowService';
 import StatisticsLoader from '../../../shared/components/statisticsLoader';
 import { getMediaSyncJob } from '../../../shared/services/JobService';
 
@@ -11,9 +11,9 @@ interface Props {
   Component: ReactNode;
 }
 
-const MoviesLoader = (props: Props): ReactElement => {
+const ShowsLoader = (props: Props) => {
   const { Component } = props;
-  const statistics = useSelector((state: RootState) => state.movies);
+  const statistics = useSelector((state: RootState) => state.shows);
   const [typePresent, setTypePresent] = useState(false);
   const [typePresentLoading, setTypePresentLoading] = useState(true);
   const [runningSync, setRunningSync] = useState(false);
@@ -50,17 +50,17 @@ const MoviesLoader = (props: Props): ReactElement => {
   return (
     <StatisticsLoader
       Component={Component}
-      noMediaTypeTitle="DIALOGS.NOMOVIETYPEFOUND.TITLE"
-      noMediaTypeBody="DIALOGS.NOMOVIETYPEFOUND.BODY"
+      noMediaTypeTitle="DIALOGS.NOSHOWTYPEFOUND.TITLE"
+      noMediaTypeBody="DIALOGS.NOSHOWTYPEFOUND.BODY"
       typePresent={typePresent}
       typePresentLoading={typePresentLoading}
       runningSync={runningSync}
       runningSyncLoading={runningSyncLoading}
       isLoading={isLoading}
       statistics={statistics.statistics}
-      label="MOVIES.LOADER"
+      label="SHOWS.LOADER"
     />
   );
 };
 
-export default MoviesLoader;
+export default ShowsLoader

@@ -5,6 +5,7 @@ import wizardSlice from './WizardSlice';
 import jobSlice from './JobSlice';
 import jobLogsSlice from './JobLogsSlice';
 import movieSlice from './MovieSlice';
+import showSlice from './ShowSlice';
 import serverStatusSlice from './ServerStatusSlice';
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   jobs: jobSlice.reducer,
   jobLogs: jobLogsSlice.reducer,
   movies: movieSlice,
+  shows: showSlice,
   serverStatus: serverStatusSlice.reducer
 });
 

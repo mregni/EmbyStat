@@ -5,6 +5,7 @@ using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
@@ -166,7 +167,7 @@ namespace EmbyStat.Services
             var totalGenres = _movieRepository.GetGenreCount(libraryIds);
             return new Card<string>
             {
-                Title = Constants.Movies.TotalGenres,
+                Title = Constants.Common.TotalGenres,
                 Value = totalGenres.ToString(),
                 Type = CardType.Text,
                 Icon = Constants.Icons.PoundRoundedIcon
@@ -224,7 +225,6 @@ namespace EmbyStat.Services
             return list.Length > 0
                 ? list.ConvertToTopCard(Constants.Movies.HighestRated, "/10", "CommunityRating", false)
                 : null;
-
         }
 
         private TopCard LowestRatedMovie(IReadOnlyList<string> libraryIds)
@@ -362,7 +362,6 @@ namespace EmbyStat.Services
                 Icon = Constants.Icons.PeopleAltRoundedIcon,
                 Type = CardType.Text
             };
-
         }
 
         private TopCard GetMostFeaturedPersonAsync(IReadOnlyList<string> libraryIds, PersonType type, string title)
@@ -379,7 +378,29 @@ namespace EmbyStat.Services
         private List<TopCard> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
         {
             var movies = _movieRepository.GetAll(libraryIds);
-            return GetMostFeaturedActorsPerGenre(movies, 5);
+            return GetMostFeaturedActorsPerGenre(movies, 5, "MovieCount");
+        }
+
+        private List<TopCard> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media, int count, string valueSelector)
+        {
+            var list = new List<TopCard>();
+            foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
+            {
+                var selectedMovies = media.Where(x => x.Genres.Any(y => y == genre));
+                var people = selectedMovies
+                    .SelectMany(x => x.People)
+                    .Where(x => x.Type == PersonType.Actor)
+                    .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Name)
+                    .Take(count)
+                    .Select(name => PersonService.GetPersonByNameForMovies(name, genre))
+                    .ToArray();
+
+                list.Add(people.ConvertToTopCard(genre, string.Empty, valueSelector));
+            }
+
+            return list;
         }
 
         #endregion

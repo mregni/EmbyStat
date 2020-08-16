@@ -14,13 +14,10 @@ namespace EmbyStat.Repositories.Interfaces
         List<Movie> GetAll(IReadOnlyList<string> libraryIds);
         List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
         Movie GetMovieById(string id);
-        int GetGenreCount(IReadOnlyList<string> libraryIds);
         long GetTotalRuntime(IReadOnlyList<string> libraryIds);
         IEnumerable<Movie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count);
         IEnumerable<Movie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count);
         double GetTotalDiskSize(IReadOnlyList<string> libraryIds);
-        int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
-        IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count);
         List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes);
         List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds);
         List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds);
