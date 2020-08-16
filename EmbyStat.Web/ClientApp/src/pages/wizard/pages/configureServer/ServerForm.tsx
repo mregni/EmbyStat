@@ -53,16 +53,16 @@ const ServerForm = (props: Props) => {
     setValue,
   } = props;
   const classes = useStyles();
+  const { t } = useTranslation();
   const [protocol, setProtocol] = useState(wizard.serverProtocol);
   const [address, setAddress] = useState(wizard.serverAddress);
   const [port, setPort] = useState(wizard.serverPort);
   const [apiKey, setApiKey] = useState(wizard.apiKey);
   const [type, setType] = useState<number>(wizard.serverType);
-  const [baseUrl, setBaseUrl] = useState(wizard.serverBaseurl);
-  const [baseUrlNeeded, setBaseUrlNeeded] = useState(
+  const [baseUrl, setBaseUrl] = useState<string>(wizard.serverBaseurl);
+  const [baseUrlNeeded, setBaseUrlNeeded] = useState<boolean>(
     wizard.serverBaseUrlNeeded
   );
-  const { t } = useTranslation();
 
   useEffect(() => {
     setPort(wizard.serverPort);
@@ -110,9 +110,16 @@ const ServerForm = (props: Props) => {
   const baseUrlNeededChanged = (event) => {
     event.preventDefault();
     setBaseUrlNeeded(event.target.checked);
+    setValue("baseUrlNeeded", event.target.checked);
     setBaseUrl("");
-    setValue("baseUrlNeeded", event.target.value);
+    setValue("baseUrl", "");
   };
+
+  const baseUrlChanged = (event) => {
+    event.preventDefault();
+    setBaseUrl(event.target.value);
+    setValue("baseUrl", event.target.value);
+  }
 
   const openMediaServer = () => {
     const htmlPage = type === 0 ? "apikeys" : "apikeys.html";
@@ -247,7 +254,7 @@ const ServerForm = (props: Props) => {
               placeholder={t("SETTINGS.MEDIASERVER.BASEURL")}
               name="baseUrl"
               variant="standard"
-              onChange={(event) => setBaseUrl(event.target.value)}
+              onChange={baseUrlChanged}
             />
           </Grid>
         ) : null}
