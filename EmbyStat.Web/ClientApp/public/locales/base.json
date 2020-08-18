@@ -81,7 +81,11 @@
     "SIZE": "Size",
     "HEIGHT": "Height",
     "WIDTH": "Width",
-    "TOTALGENRES": "Total Genres"
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",

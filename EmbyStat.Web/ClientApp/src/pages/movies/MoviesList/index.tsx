@@ -28,6 +28,7 @@ import { ActiveFilter } from '../../../shared/models/filter';
 import { getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import { RootState } from '../../../store/RootReducer';
 import { useServerType } from '../../../shared/hooks';
+import calculateFileSize from '../../../shared/utils/CalculateFileSize';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -98,6 +99,10 @@ const MovieList = (props: Props) => {
     return data.genres.join(', ');
   };
 
+  const getSizeInMbValue = (data) => {
+    return calculateFileSize(data.sizeInMb)
+  }
+
   const getSubtitleValues = (row) => {
     return (
       <Grid container>
@@ -126,10 +131,6 @@ const MovieList = (props: Props) => {
         ) : null}
       </Grid>
     );
-  };
-
-  const getResolutionValues = (data) => {
-    return data.resolutions.join(', ');
   };
 
   const renderLinks = (row) => {
@@ -231,8 +232,33 @@ const MovieList = (props: Props) => {
             dataField="officialRating"
           />
           <Column
-            caption={t('COMMON.RESOLUTION')}
-            calculateCellValue={getResolutionValues}
+            caption={t('COMMON.HEIGHT')}
+            dataField="height"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.WIDTH')}
+            dataField="width"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.BITRATE') + " (Mbps)"}
+            dataField="bitRate"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.SIZEINMB')}
+            calculateCellValue={getSizeInMbValue}
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.BITDEPTH')}
+            dataField="bitDepth"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.CODEC')}
+            dataField="codec"
             allowSorting={false}
           />
           <Column caption={t('COMMON.RATING')} dataField="communityRating" />

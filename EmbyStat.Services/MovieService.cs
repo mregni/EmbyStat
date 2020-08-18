@@ -119,8 +119,12 @@ namespace EmbyStat.Services
                     Subtitles = x.SubtitleStreams.Select(y => y.Language).ToArray(),
                     TMDB = x.TMDB,
                     Thumb = x.Thumb,
-                    Resolutions = x.VideoStreams.Select(y => $"{y.Height}x{y.Width} ({Math.Round((y.BitRate ?? 0d) / 1048576, 2)} Mbps)").ToArray(),
-                    SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0
+                    Height = x.VideoStreams.FirstOrDefault()?.Height,
+                    Width = x.VideoStreams.FirstOrDefault()?.Width,
+                    SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0,
+                    BitRate = Math.Round((x.VideoStreams.FirstOrDefault()?.BitRate ?? 0d) / 1048576, 2),
+                    Codec = x.VideoStreams.FirstOrDefault()?.Codec,
+                    BitDepth = x.VideoStreams.FirstOrDefault()?.BitDepth
                 });
 
             var page = new Page<MovieColumn> { Data = list };

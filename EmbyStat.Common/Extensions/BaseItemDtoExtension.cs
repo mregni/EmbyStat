@@ -49,7 +49,10 @@ namespace EmbyStat.Common.Extensions
                         AverageFrameRate = y.AverageFrameRate,
                         Channels = y.Channels,
                         Height = y.Height,
-                        Width = y.Width
+                        Width = y.Width,
+                        BitDepth = y.BitDepth,
+                        Codec = y.Codec,
+                        IsDefault = y.IsDefault
                     }).ToList();
             }
             else
