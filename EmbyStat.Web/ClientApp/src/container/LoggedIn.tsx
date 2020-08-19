@@ -26,6 +26,7 @@ import MoviesGeneral from '../pages/movies/MoviesGeneral';
 import MoviesGraphs from '../pages/movies/MoviesGraphs';
 import MoviesList from '../pages/movies/MoviesList';
 import ShowsGeneral from '../pages/shows/ShowsGeneral';
+import ShowsGraphs from '../pages/shows/ShowsGraphs';
 import ShowsLoader from '../pages/shows/Helpers/ShowsLoader';
 import NotFound from '../pages/notFound';
 import GeneralSettings from '../pages/settings/GeneralSettings';
@@ -194,6 +195,9 @@ const LoggedIn = (props: Props) => {
             </PrivateRoute>
             <PrivateRoute path="/shows/general" exact>
               <ShowsLoader Component={ShowsGeneral} />
+            </PrivateRoute>
+            <PrivateRoute path="/shows/graphs" exact>
+              <ShowsLoader Component={ShowsGraphs} />
             </PrivateRoute>
             <PrivateRoute path="/mediaserver" exact>
               <MediaServer />

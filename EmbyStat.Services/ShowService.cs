@@ -62,13 +62,15 @@ namespace EmbyStat.Services
 
         public ShowStatistics CalculateShowStatistics(List<string> libraryIds)
         {
+            var shows = _showRepository.GetAllShows(libraryIds, true, true);
+
             var statistics = new ShowStatistics
             {
                 Cards = CalculateCards(libraryIds),
                 TopCards = CalculateTopCards(libraryIds),
                 People = CalculatePeopleStatistics(libraryIds),
-                //Charts = CalculateCharts(libraryIds),
-                //People = CalculatePeopleStatistics(libraryIds)
+                BarCharts = CalculateBarCharts(shows),
+                PieCharts = CalculatePieChars(shows)
             };
 
             var json = JsonConvert.SerializeObject(statistics);
@@ -262,19 +264,24 @@ namespace EmbyStat.Services
 
         #region Charts
 
-        private ShowCharts CalculateCharts(IReadOnlyList<string> libraryIds)
+        private List<Chart> CalculateBarCharts(IReadOnlyList<Show> shows)
         {
-            var shows = _showRepository.GetAllShows(libraryIds, true, true);
+            return new List<Chart>
+            {
+                CalculateGenreChart(shows),
+                CalculateRatingChart(shows.Select(x => x.CommunityRating)),
+                CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)),
+                CalculateCollectedRateChart(shows)
+            };
+        }
 
-            var stats = new ShowCharts();
-            stats.BarCharts.Add(CalculateGenreChart(shows));
-            stats.BarCharts.Add(CalculateRatingChart(shows.Select(x => x.CommunityRating)));
-            stats.BarCharts.Add(CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)));
-            stats.BarCharts.Add(CalculateCollectedRateChart(shows));
-            stats.PieCharts.Add(CalculateOfficialRatingChart(shows));
-            stats.PieCharts.Add(CalculateShowStateChart(shows));
-
-            return stats;
+        private List<Chart> CalculatePieChars(IReadOnlyList<Show> shows)
+        {
+            return new List<Chart>
+            {
+                CalculateOfficialRatingChart(shows),
+                CalculateShowStateChart(shows)
+            };
         }
 
         private Chart CalculateShowStateChart(IReadOnlyList<Show> shows)
@@ -282,7 +289,7 @@ namespace EmbyStat.Services
             var list = shows
                 .GroupBy(x => x.Status)
                 .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                .OrderBy(x => x.Label)
+                .OrderByDescending(x => x.Val0)
                 .ToList();
 
             return new Chart
@@ -300,7 +307,7 @@ namespace EmbyStat.Services
                 .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
                 .GroupBy(x => x.OfficialRating.ToUpper())
                 .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                .OrderBy(x => x.Label)
+                .OrderByDescending(x => x.Val0)
                 .ToList();
 
             return new Chart
@@ -343,6 +350,7 @@ namespace EmbyStat.Services
             }
 
             var rates = groupedList
+                .Where(x => x.Key != 100)
                 .OrderBy(x => x.Key)
                 .Select(x => new { Label = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Val0 = x.Count() })
                 .Select(x => new { x.Label, x.Val0 })

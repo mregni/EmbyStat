@@ -6,6 +6,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
@@ -174,7 +175,7 @@ namespace EmbyStat.Repositories
                     var selector = jObj[0]["selector"].Value<string>().FirstCharToUpper();
                     var desc = jObj[0]["desc"].Value<bool>();
 
-                    query = desc 
+                    query = desc
                         ? query.OrderByDescending(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null))
                         : query.OrderBy(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null));
                 }

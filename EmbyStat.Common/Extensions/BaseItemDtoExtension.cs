@@ -92,7 +92,7 @@ namespace EmbyStat.Common.Extensions
 
         public static T MapPeople<T>(this BaseItemDto dto, T extra) where T : Extra
         {
-            if (dto.People != null)
+            if (dto?.People != null)
             {
                 extra.People = dto.People
                     .Where(y => y.Name.Length > 1)

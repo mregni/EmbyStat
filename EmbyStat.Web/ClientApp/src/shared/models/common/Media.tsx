@@ -41,6 +41,9 @@ export interface MediaSource {
   protocol: string;
   runTimeTicks: number | null;
   sizeInMb: number;
+  bitDepth: number | null;
+  codec: string;
+  videoRange: string;
 }
 
 export interface VideoStream {

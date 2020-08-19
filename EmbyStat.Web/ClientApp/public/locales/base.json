@@ -85,7 +85,8 @@
     "BITRATE": "Bitrate",
     "SIZEINMB": "Size in MB",
     "BITDEPTH": "Bit depth",
-    "CODEC": "Codec"
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
