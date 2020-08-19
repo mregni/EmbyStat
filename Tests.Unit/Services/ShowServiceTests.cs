@@ -8,6 +8,7 @@ using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using FluentAssertions;
 using Moq;
 using Tests.Unit.Builders;
@@ -92,6 +93,9 @@ namespace Tests.Unit.Services
             showRepositoryMock
                 .Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.OrderBy(x => x.PremiereDate));
+            showRepositoryMock
+                .Setup(x => x.GetShowsWithMostEpisodes(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Returns(shows.OrderByDescending(x => x.Episodes.Count).ToDictionary(x => x, x => x.Episodes.Count));
 
             foreach (var show in shows)
             {
@@ -137,15 +141,17 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetTotalShowCount()
+        public void GetShowCountStat()
         {
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.ShowCount.Should().NotBeNull();
-            stat.General.ShowCount.Title.Should().Be(Constants.Shows.TotalShows);
-            stat.General.ShowCount.Value.Should().Be(3);
+            stat.Cards.Should().NotBeNull();
+            stat.Cards.Count(x => x.Title == Constants.Shows.TotalShows).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalShows);
+            card.Title.Should().Be(Constants.Shows.TotalShows);
+            card.Value.Should().Be("3");
         }
 
         [Fact]
@@ -154,10 +160,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.EpisodeCount.Should().NotBeNull();
-            stat.General.EpisodeCount.Title.Should().Be(Constants.Shows.TotalEpisodes);
-            stat.General.EpisodeCount.Value.Should().Be(9);
+            stat.Cards.Should().NotBeNull();
+            stat.Cards.Count(x => x.Title == Constants.Shows.TotalEpisodes).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalEpisodes);
+            card.Title.Should().Be(Constants.Shows.TotalEpisodes);
+            card.Value.Should().Be("9");
         }
 
         [Fact]
@@ -166,10 +174,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.MissingEpisodeCount.Should().NotBeNull();
-            stat.General.MissingEpisodeCount.Title.Should().Be(Constants.Shows.TotalMissingEpisodes);
-            stat.General.MissingEpisodeCount.Value.Should().Be(12);
+            stat.Cards.Should().NotBeNull();
+            stat.Cards.Count(x => x.Title == Constants.Shows.TotalMissingEpisodes).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalMissingEpisodes);
+            card.Title.Should().Be(Constants.Shows.TotalMissingEpisodes);
+            card.Value.Should().Be("12");
         }
 
         [Fact]
@@ -178,13 +188,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.TotalPlayableTime.Should().NotBeNull();
-            stat.General.TotalPlayableTime.Title.Should().Be(Constants.Shows.TotalPlayLength);
-            stat.General.TotalPlayableTime.Days.Should().Be(67);
-            stat.General.TotalPlayableTime.Hours.Should().Be(8);
-            stat.General.TotalPlayableTime.Minutes.Should().Be(41);
-            stat.General.TotalPlayableTime.Value.Should().BeNull();
+            stat.Cards.Should().NotBeNull();
+            stat.Cards.Count(x => x.Title == Constants.Shows.TotalPlayLength).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalPlayLength);
+            card.Title.Should().Be(Constants.Shows.TotalPlayLength);
+            card.Value.Should().Be("67|8|41");
         }
 
         [Fact]
@@ -193,16 +202,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.HighestRatedShow.Should().NotBeNull();
-            //TODO fix show test
-            //stat.General.HighestRatedShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
-            //stat.General.HighestRatedShow.MediaId.Should().Be(_showThree.Id);
-            //stat.General.HighestRatedShow.Name.Should().Be(_showThree.Name);
-            //stat.General.HighestRatedShow.OfficialRating.Should().Be(_showThree.OfficialRating);
-            //stat.General.HighestRatedShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
-            //stat.General.HighestRatedShow.Tag.Should().Be(_showThree.Primary);
-            //stat.General.HighestRatedShow.Title.Should().Be(Constants.Shows.HighestRatedShow);
+            stat.TopCards.Count(x => x.Title == Constants.Shows.HighestRatedShow).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Shows.HighestRatedShow);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Shows.HighestRatedShow);
+            card.Unit.Should().Be("/10");
+            card.Values[0].Value.Should().Be(_showThree.CommunityRating.ToString());
+            card.Values[0].Label.Should().Be(_showThree.Name);
+            card.UnitNeedsTranslation.Should().Be(false);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -211,16 +220,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.LowestRatedShow.Should().NotBeNull();
-            //TODO fix show test
-            //stat.General.LowestRatedShow.CommunityRating.Should().Be($"{_showTwo.CommunityRating:0.0}");
-            //stat.General.LowestRatedShow.MediaId.Should().Be(_showTwo.Id);
-            //stat.General.LowestRatedShow.Name.Should().Be(_showTwo.Name);
-            //stat.General.LowestRatedShow.OfficialRating.Should().Be(_showTwo.OfficialRating);
-            //stat.General.LowestRatedShow.Year.Should().Be(_showTwo.PremiereDate?.Year ?? 0);
-            //stat.General.LowestRatedShow.Tag.Should().Be(_showTwo.Primary);
-            //stat.General.LowestRatedShow.Title.Should().Be(Constants.Shows.LowestRatedShow);
+            stat.TopCards.Count(x => x.Title == Constants.Shows.LowestRatedShow).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Shows.LowestRatedShow);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Shows.LowestRatedShow);
+            card.Unit.Should().Be("/10");
+            card.Values[0].Value.Should().Be(_showTwo.CommunityRating.ToString());
+            card.Values[0].Label.Should().Be(_showTwo.Name);
+            card.UnitNeedsTranslation.Should().Be(false);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -229,16 +238,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.OldestPremieredShow.Should().NotBeNull();
-            //TODO fix show test
-            //stat.General.OldestPremieredShow.CommunityRating.Should().Be($"{_showTwo.CommunityRating:0.0}");
-            //stat.General.OldestPremieredShow.MediaId.Should().Be(_showTwo.Id);
-            //stat.General.OldestPremieredShow.Name.Should().Be(_showTwo.Name);
-            //stat.General.OldestPremieredShow.OfficialRating.Should().Be(_showTwo.OfficialRating);
-            //stat.General.OldestPremieredShow.Year.Should().Be(_showTwo.PremiereDate?.Year ?? 0);
-            //stat.General.OldestPremieredShow.Tag.Should().Be(_showTwo.Primary);
-            //stat.General.OldestPremieredShow.Title.Should().Be(Constants.Shows.OldestPremiered);
+            stat.TopCards.Count(x => x.Title == Constants.Shows.OldestPremiered).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Shows.OldestPremiered);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Shows.OldestPremiered);
+            card.Unit.Should().Be("COMMON.DATE");
+            card.Values[0].Value.Should().Be(_showTwo.PremiereDate?.ToString("O"));
+            card.Values[0].Label.Should().Be(_showTwo.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -247,15 +256,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.ShowWithMostEpisodes.Should().NotBeNull();
-            stat.General.ShowWithMostEpisodes.CommunityRating.Should().Be($"{_showTwo.CommunityRating:0.0}");
-            stat.General.ShowWithMostEpisodes.MediaId.Should().Be(_showTwo.Id);
-            stat.General.ShowWithMostEpisodes.Name.Should().Be(_showTwo.Name);
-            stat.General.ShowWithMostEpisodes.OfficialRating.Should().Be(_showTwo.OfficialRating);
-            stat.General.ShowWithMostEpisodes.Year.Should().Be(_showTwo.PremiereDate?.Year ?? 0);
-            stat.General.ShowWithMostEpisodes.Tag.Should().Be(_showTwo.Primary);
-            stat.General.ShowWithMostEpisodes.Title.Should().Be(Constants.Shows.MostEpisodes);
+            stat.TopCards.Count(x => x.Title == Constants.Shows.MostEpisodes).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Shows.MostEpisodes);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Shows.MostEpisodes);
+            card.Unit.Should().Be("#");
+            card.Values[0].Value.Should().Be(_showTwo.Episodes.Count.ToString());
+            card.Values[0].Label.Should().Be(_showTwo.Name);
+            card.UnitNeedsTranslation.Should().Be(false);
+            card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
@@ -264,16 +274,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.LatestAddedShow.Should().NotBeNull();
-            //TODO fix show test
-            //stat.General.LatestAddedShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
-            //stat.General.LatestAddedShow.MediaId.Should().Be(_showThree.Id);
-            //stat.General.LatestAddedShow.Name.Should().Be(_showThree.Name);
-            //stat.General.LatestAddedShow.OfficialRating.Should().Be(_showThree.OfficialRating);
-            //stat.General.LatestAddedShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
-            //stat.General.LatestAddedShow.Tag.Should().Be(_showThree.Primary);
-            //stat.General.LatestAddedShow.Title.Should().Be(Constants.Shows.LatestAdded);
+            stat.TopCards.Count(x => x.Title == Constants.Shows.LatestAdded).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Shows.LatestAdded);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Shows.LatestAdded);
+            card.Unit.Should().Be("COMMON.DATE");
+            card.Values[0].Value.Should().Be(_showThree.DateCreated?.ToString("O"));
+            card.Values[0].Label.Should().Be(_showThree.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -282,16 +292,16 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.NewestPremieredShow.Should().NotBeNull();
-            //TODO fix show test
-            //stat.General.NewestPremieredShow.CommunityRating.Should().Be($"{_showThree.CommunityRating:0.0}");
-            //stat.General.NewestPremieredShow.MediaId.Should().Be(_showThree.Id);
-            //stat.General.NewestPremieredShow.Name.Should().Be(_showThree.Name);
-            //stat.General.NewestPremieredShow.OfficialRating.Should().Be(_showThree.OfficialRating);
-            //stat.General.NewestPremieredShow.Year.Should().Be(_showThree.PremiereDate?.Year ?? 0);
-            //stat.General.NewestPremieredShow.Tag.Should().Be(_showThree.Primary);
-            //stat.General.NewestPremieredShow.Title.Should().Be(Constants.Shows.NewestPremiered);
+            stat.TopCards.Count(x => x.Title == Constants.Shows.NewestPremiered).Should().Be(1);
+
+            var card = stat.TopCards.First(x => x.Title == Constants.Shows.NewestPremiered);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Shows.NewestPremiered);
+            card.Unit.Should().Be("COMMON.DATE");
+            card.Values[0].Value.Should().Be(_showThree.PremiereDate?.ToString("O"));
+            card.Values[0].Label.Should().Be(_showThree.Name);
+            card.UnitNeedsTranslation.Should().Be(true);
+            card.ValueType.Should().Be(ValueTypeEnum.Date);
         }
 
         [Fact]
@@ -300,10 +310,12 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.General.Should().NotBeNull();
-            stat.General.TotalDiskSize.Should().NotBeNull();
-            stat.General.TotalDiskSize.Title.Should().Be(Constants.Common.TotalDiskSize);
-            stat.General.TotalDiskSize.Value.Should().Be(909);
+            stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSize).Should().Be(1);
+
+            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSize);
+            card.Should().NotBeNull();
+            card.Title.Should().Be(Constants.Common.TotalDiskSize);
+            card.Value.Should().Be("909");
         }
 
         #endregion
@@ -316,26 +328,14 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
+            stat.BarCharts.Should().NotBeNull();
+            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
 
-            var bar = stat.Charts.BarCharts.Single(x => x.Title == Constants.CountPerGenre);
-            //TODO fix show test
-            //bar.Labels.Count().Should().Be(4);
-
-            //var labels = bar.Labels.ToArray();
-            //labels[0].Should().Be("Action");
-            //labels[1].Should().Be("Comedy");
-            //labels[2].Should().Be("Drama");
-            //labels[3].Should().Be("War");
-
-            //bar.DataSets.Count.Should().Be(1);
-            //var dataSet = bar.DataSets[0].ToArray();
-            //dataSet[0].Should().Be(3);
-            //dataSet[1].Should().Be(2);
-            //dataSet[2].Should().Be(1);
-            //dataSet[3].Should().Be(1);
+            var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerGenre);
+            graph.Should().NotBeNull();
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"Action\",\"Val0\":3},{\"Label\":\"Comedy\",\"Val0\":2},{\"Label\":\"Drama\",\"Val0\":1},{\"Label\":\"War\",\"Val0\":1}]");
         }
 
         [Fact]
@@ -347,30 +347,14 @@ namespace Tests.Unit.Services
             var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
+            stat.Should().NotBeNull();
+            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
 
-            var bar = stat.Charts.BarCharts.Single(x => x.Title == Constants.CountPerCommunityRating);
-            //TODO fix show test
-            //bar.Labels.Count().Should().Be(21);
-            //for (var i = 0; i < 20; i++)
-            //{
-            //    bar.Labels.ToArray()[i].Should().Be((i * (float)0.5).ToString());
-            //}
-
-            //bar.Labels.Last().Should().Be(Constants.Unknown);
-
-            //var dataSet = bar.DataSets.Single().ToList();
-            //dataSet.Count.Should().Be(21);
-            //for (var i = 0; i < 16; i++)
-            //{
-            //    dataSet[i].Should().Be(0);
-            //}
-            //dataSet[17].Should().Be(2);
-            //dataSet[18].Should().Be(0);
-            //dataSet[19].Should().Be(1);
-            //dataSet[20].Should().Be(1);
+            var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCommunityRating);
+            graph.Should().NotBeNull();
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"0\",\"Val0\":0},{\"Label\":\"0,5\",\"Val0\":0},{\"Label\":\"1\",\"Val0\":0},{\"Label\":\"1,5\",\"Val0\":0},{\"Label\":\"2\",\"Val0\":0},{\"Label\":\"2,5\",\"Val0\":0},{\"Label\":\"3\",\"Val0\":0},{\"Label\":\"3,5\",\"Val0\":0},{\"Label\":\"4\",\"Val0\":0},{\"Label\":\"4,5\",\"Val0\":0},{\"Label\":\"5\",\"Val0\":0},{\"Label\":\"5,5\",\"Val0\":0},{\"Label\":\"6\",\"Val0\":0},{\"Label\":\"6,5\",\"Val0\":0},{\"Label\":\"7\",\"Val0\":0},{\"Label\":\"7,5\",\"Val0\":0},{\"Label\":\"8\",\"Val0\":0},{\"Label\":\"8,5\",\"Val0\":2},{\"Label\":\"9\",\"Val0\":0},{\"Label\":\"9,5\",\"Val0\":1},{\"Label\":\"UNKNOWN\",\"Val0\":1}]");
         }
 
         [Fact]
@@ -382,31 +366,14 @@ namespace Tests.Unit.Services
             var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
+            stat.Should().NotBeNull();
+            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
 
-            var bar = stat.Charts.BarCharts.Single(x => x.Title == Constants.CountPerPremiereYear);
-            //TODO fix show test
-            //bar.Labels.Count().Should().Be(6);
-            //var labels = bar.Labels.ToArray();
-
-            //labels[0].Should().Be("1990 - 1994");
-            //labels[1].Should().Be("1995 - 1999");
-            //labels[2].Should().Be("2000 - 2004");
-            //labels[3].Should().Be("2005 - 2009");
-            //labels[4].Should().Be("2010 - 2014");
-            //labels[5].Should().Be("2015 - 2019");
-
-            //var dataSet = bar.DataSets.Single().ToArray();
-            //dataSet.Length.Should().Be(6);
-
-            //dataSet[0].Should().Be(1);
-            //dataSet[1].Should().Be(0);
-            //dataSet[2].Should().Be(2);
-            //dataSet[3].Should().Be(0);
-            //dataSet[4].Should().Be(0);
-            //dataSet[5].Should().Be(1);
+            var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerPremiereYear);
+            graph.Should().NotBeNull();
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"1990 - 1994\",\"Val0\":1},{\"Label\":\"1995 - 1999\",\"Val0\":0},{\"Label\":\"2000 - 2004\",\"Val0\":2},{\"Label\":\"2005 - 2009\",\"Val0\":0},{\"Label\":\"2010 - 2014\",\"Val0\":0},{\"Label\":\"2015 - 2019\",\"Val0\":1}]");
         }
 
         [Fact]
@@ -417,60 +384,14 @@ namespace Tests.Unit.Services
             var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.Should().NotBeNull();
-            stat.Charts.BarCharts.Count.Should().Be(4);
-            stat.Charts.BarCharts.Any(x => x.Title == Constants.CountPerCollectedPercentage).Should().BeTrue();
+            stat.Should().NotBeNull();
+            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Any(x => x.Title == Constants.CountPerCollectedPercentage).Should().BeTrue();
 
-            var bar = stat.Charts.BarCharts.Single(x => x.Title == Constants.CountPerCollectedPercentage);
-            //TODO fix show test
-            //bar.Labels.Count().Should().Be(21);
-            //var labels = bar.Labels.ToArray();
-
-            //labels[0].Should().Be("0% - 4%");
-            //labels[1].Should().Be("5% - 9%");
-            //labels[2].Should().Be("10% - 14%");
-            //labels[3].Should().Be("15% - 19%");
-            //labels[4].Should().Be("20% - 24%");
-            //labels[5].Should().Be("25% - 29%");
-            //labels[6].Should().Be("30% - 34%");
-            //labels[7].Should().Be("35% - 39%");
-            //labels[8].Should().Be("40% - 44%");
-            //labels[9].Should().Be("45% - 49%");
-            //labels[10].Should().Be("50% - 54%");
-            //labels[11].Should().Be("55% - 59%");
-            //labels[12].Should().Be("60% - 64%");
-            //labels[13].Should().Be("65% - 69%");
-            //labels[14].Should().Be("70% - 74%");
-            //labels[15].Should().Be("75% - 79%");
-            //labels[16].Should().Be("80% - 84%");
-            //labels[17].Should().Be("85% - 89%");
-            //labels[18].Should().Be("90% - 94%");
-            //labels[19].Should().Be("95% - 99%");
-            //labels[20].Should().Be("100%");
-
-            //bar.DataSets[0].Count().Should().Be(21);
-            //var dataSet = bar.DataSets[0].ToArray();
-            //dataSet[0].Should().Be(1);
-            //dataSet[1].Should().Be(0);
-            //dataSet[2].Should().Be(0);
-            //dataSet[3].Should().Be(0);
-            //dataSet[4].Should().Be(0);
-            //dataSet[5].Should().Be(1);
-            //dataSet[6].Should().Be(0);
-            //dataSet[7].Should().Be(0);
-            //dataSet[8].Should().Be(0);
-            //dataSet[9].Should().Be(0);
-            //dataSet[10].Should().Be(0);
-            //dataSet[11].Should().Be(0);
-            //dataSet[12].Should().Be(1);
-            //dataSet[13].Should().Be(0);
-            //dataSet[14].Should().Be(0);
-            //dataSet[15].Should().Be(0);
-            //dataSet[16].Should().Be(0);
-            //dataSet[17].Should().Be(0);
-            //dataSet[18].Should().Be(0);
-            //dataSet[19].Should().Be(0);
-            //dataSet[20].Should().Be(1);
+            var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCollectedPercentage);
+            graph.Should().NotBeNull();
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"0% - 4%\",\"Val0\":1},{\"Label\":\"5% - 9%\",\"Val0\":0},{\"Label\":\"10% - 14%\",\"Val0\":0},{\"Label\":\"15% - 19%\",\"Val0\":0},{\"Label\":\"20% - 24%\",\"Val0\":0},{\"Label\":\"25% - 29%\",\"Val0\":1},{\"Label\":\"30% - 34%\",\"Val0\":0},{\"Label\":\"35% - 39%\",\"Val0\":0},{\"Label\":\"40% - 44%\",\"Val0\":0},{\"Label\":\"45% - 49%\",\"Val0\":0},{\"Label\":\"50% - 54%\",\"Val0\":0},{\"Label\":\"55% - 59%\",\"Val0\":0},{\"Label\":\"60% - 64%\",\"Val0\":1},{\"Label\":\"65% - 69%\",\"Val0\":0},{\"Label\":\"70% - 74%\",\"Val0\":0},{\"Label\":\"75% - 79%\",\"Val0\":0},{\"Label\":\"80% - 84%\",\"Val0\":0},{\"Label\":\"85% - 89%\",\"Val0\":0},{\"Label\":\"90% - 94%\",\"Val0\":0},{\"Label\":\"95% - 99%\",\"Val0\":0}]");
         }
 
         [Fact]
@@ -479,24 +400,14 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.Should().NotBeNull();
-            stat.Charts.PieCharts.Count.Should().Be(2);
-            stat.Charts.PieCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
+            stat.Should().NotBeNull();
+            stat.PieCharts.Count.Should().Be(2);
+            stat.PieCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
 
-            var pie = stat.Charts.PieCharts.Single(x => x.Title == Constants.CountPerOfficialRating);
-            //TODO fix show test
-            //pie.Labels.Count().Should().Be(2);
-
-            //var labels = pie.Labels.ToArray();
-            //labels[0].Should().Be("R");
-            //labels[1].Should().Be("TV-16");
-
-            //pie.DataSets[0].Count().Should().Be(2);
-            //var dataSet = pie.DataSets[0].ToArray();
-
-            //dataSet[0].Should().Be(2);
-            //dataSet[1].Should().Be(1);
-
+            var graph = stat.PieCharts.Single(x => x.Title == Constants.CountPerOfficialRating);
+            graph.Should().NotBeNull();
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"R\",\"Val0\":2},{\"Label\":\"TV-16\",\"Val0\":1}]");
         }
 
         [Fact]
@@ -505,23 +416,14 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Charts.Should().NotBeNull();
-            stat.Charts.PieCharts.Count.Should().Be(2);
-            stat.Charts.PieCharts.Any(x => x.Title == Constants.Shows.ShowStatusChart).Should().BeTrue();
+            stat.Should().NotBeNull();
+            stat.PieCharts.Count.Should().Be(2);
+            stat.PieCharts.Any(x => x.Title == Constants.Shows.ShowStatusChart).Should().BeTrue();
 
-            var pie = stat.Charts.PieCharts.Single(x => x.Title == Constants.Shows.ShowStatusChart);
-            //TODO fix show test
-            //pie.Labels.Count().Should().Be(2);
-
-            //var labels = pie.Labels.ToArray();
-            //labels[0].Should().Be("Continuing");
-            //labels[1].Should().Be("Ended");
-
-            //pie.DataSets[0].Count().Should().Be(2);
-            //var dataSet = pie.DataSets[0].ToArray();
-
-            //dataSet[0].Should().Be(2);
-            //dataSet[1].Should().Be(1);
+            var graph = stat.PieCharts.Single(x => x.Title == Constants.Shows.ShowStatusChart);
+            graph.Should().NotBeNull();
+            graph.SeriesCount.Should().Be(1);
+            graph.DataSets.Should().Be("[{\"Label\":\"Continuing\",\"Val0\":2},{\"Label\":\"Ended\",\"Val0\":1}]");
         }
 
         #endregion
