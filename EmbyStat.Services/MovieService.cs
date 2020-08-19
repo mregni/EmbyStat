@@ -124,7 +124,8 @@ namespace EmbyStat.Services
                     SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0,
                     BitRate = Math.Round((x.VideoStreams.FirstOrDefault()?.BitRate ?? 0d) / 1048576, 2),
                     Codec = x.VideoStreams.FirstOrDefault()?.Codec,
-                    BitDepth = x.VideoStreams.FirstOrDefault()?.BitDepth
+                    BitDepth = x.VideoStreams.FirstOrDefault()?.BitDepth,
+                    VideoRange = x.VideoStreams.FirstOrDefault()?.VideoRange
                 });
 
             var page = new Page<MovieColumn> { Data = list };

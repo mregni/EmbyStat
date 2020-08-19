@@ -16,5 +16,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public int? BitDepth { get; set; }
         public string Codec { get; set; }
         public bool IsDefault { get; set; }
+        public string VideoRange { get; set; }
     }
 }

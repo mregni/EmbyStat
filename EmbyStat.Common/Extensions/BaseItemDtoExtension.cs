@@ -52,7 +52,8 @@ namespace EmbyStat.Common.Extensions
                         Width = y.Width,
                         BitDepth = y.BitDepth,
                         Codec = y.Codec,
-                        IsDefault = y.IsDefault
+                        IsDefault = y.IsDefault,
+                        VideoRange = y.VideoRange
                     }).ToList();
             }
             else

@@ -214,18 +214,17 @@ const MovieList = (props: Props) => {
             defaultSortIndex={0}
             defaultSortOrder="asc"
           />
-          <Column dataField="container" caption="Container" />
-          <Column
-            dataField="runTimeTicks"
-            caption={t('COMMON.RUNTIME')}
-            width="120"
-            dataType="number"
-            calculateCellValue={calculateRunTimeValue}
-          />
           <Column
             caption={t('COMMON.GENRES')}
             calculateCellValue={getGenresValues}
             allowSorting={false}
+          />
+          <Column dataField="container" caption="Container" />
+          <Column
+            dataField="runTimeTicks"
+            caption={t('COMMON.RUNTIME')}
+            dataType="number"
+            calculateCellValue={calculateRunTimeValue}
           />
           <Column
             caption={t('COMMON.OFFICIALRATING')}
@@ -259,6 +258,11 @@ const MovieList = (props: Props) => {
           <Column
             caption={t('COMMON.CODEC')}
             dataField="codec"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.VIDEORANGE')}
+            dataField="videoRange"
             allowSorting={false}
           />
           <Column caption={t('COMMON.RATING')} dataField="communityRating" />

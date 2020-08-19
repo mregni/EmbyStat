@@ -29,5 +29,6 @@ namespace EmbyStat.Controllers.Movie
         public int? Width { get; set; }
         public string Codec { get; set; }
         public int? BitDepth { get; set; }
+        public string VideoRange { get; set; }
     }
 }
