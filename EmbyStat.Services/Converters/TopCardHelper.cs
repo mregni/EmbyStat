@@ -14,7 +14,7 @@ namespace EmbyStat.Services.Converters
             var values = list.Select(x =>
             {
                 var propertyInfo = typeof(T).GetProperty(valueSelector);
-                var value = propertyInfo?.GetValue(x, null).ToString();
+                var value = propertyInfo?.GetValue(x, null)?.ToString();
                 if (propertyInfo?.PropertyType == typeof(DateTimeOffset?))
                 {
                     value = DateTimeOffset.Parse(value).ToString("O");
