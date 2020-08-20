@@ -74,9 +74,13 @@ const TopListCard = (props: Props) => {
 
   const settings = useSelector((state: RootState) => state.settings);
   const getBackdropUrl = (): string => {
+    console.log("DEBUG INFO FOR ISSUE #1295");
+    console.log(settings);
     if (settings != null) {
       const fullAddress = getFullMediaServerUrl(settings);
-      return `${fullAddress}/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
+      console.log(fullAddress);
+      console.log(`${fullAddress}/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`);
+      return `${fullAddress}/Items/${hoveredItem?.mediaId ?? ''}/Images/Backdrop?EnableImageEnhancers=false`;
     }
 
     return '';
