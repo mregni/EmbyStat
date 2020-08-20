@@ -80,7 +80,13 @@
     "COUNT": "Count",
     "SIZE": "Size",
     "HEIGHT": "Height",
-    "WIDTH": "Width"
+    "WIDTH": "Width",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
@@ -154,7 +160,6 @@
   },
   "MOVIES": {
     "TOTALMOVIES": "电影总数",
-    "TOTALGENRES": "所有类型",
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATED": "评分最高",
     "LOWESTRATED": "评分最低",
@@ -186,7 +191,8 @@
     "CONTINUING": "继续",
     "ENDED": "结束",
     "OVERVIEW": "概览",
-    "MISSINGEPISODES": "缺少剧集"
+    "MISSINGEPISODES": "缺少剧集",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Settings saved",
