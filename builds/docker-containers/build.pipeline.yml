@@ -1,4 +1,7 @@
 jobs:
+- template: './linux.pipeline.yml'
+- template: './win.pipeline.yml' 
+
 - job: docker_container
   dependsOn: [win_docker_container, linux_docker_container]
   displayName: 'Copy Docker files'
