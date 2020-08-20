@@ -26,8 +26,12 @@ namespace Tests.Unit.Services
         private readonly Show _showTwo;
         private readonly Show _showThree;
 
+        private readonly Mock<IShowRepository> _showRepositoryMock;
+
         public ShowServiceTests()
         {
+            _showRepositoryMock = new Mock<IShowRepository>();
+
             _collections = new List<Library>
             {
                 new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = LibraryType.TvShow},
@@ -72,35 +76,37 @@ namespace Tests.Unit.Services
 
         private ShowService CreateShowService(params Show[] shows)
         {
-            var showRepositoryMock = new Mock<IShowRepository>();
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Returns(shows.ToList());
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.OrderByDescending(x => x.CommunityRating));
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating));
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.OrderByDescending(x => x.DateCreated));
-            showRepositoryMock.
+            _showRepositoryMock.
                 Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>()))
                 .Returns(shows.Length);
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.OrderByDescending(x => x.PremiereDate));
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.OrderBy(x => x.PremiereDate));
-            showRepositoryMock
+            _showRepositoryMock
                 .Setup(x => x.GetShowsWithMostEpisodes(It.IsAny<IReadOnlyList<string>>(), 5))
                 .Returns(shows.OrderByDescending(x => x.Episodes.Count).ToDictionary(x => x, x => x.Episodes.Count));
+            _showRepositoryMock
+                .Setup(x => x.Any())
+                .Returns(true);
 
             foreach (var show in shows)
             {
-                showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
+                _showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
             }
 
             var collectionRepositoryMock = new Mock<ILibraryRepository>();
@@ -127,7 +133,7 @@ namespace Tests.Unit.Services
                 .Returns(new UserSettings { ShowLibraries = new List<string> { _collections[0].Id, _collections[1].Id } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
-            return new ShowService(jobRepositoryMock.Object, showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);
+            return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);
         }
 
         #region General
@@ -449,6 +455,15 @@ namespace Tests.Unit.Services
         }
 
         #endregion
+
+        [Fact]
+        public void TypeIsPresent_Should_Return_True()
+        {
+            var result = _subject.TypeIsPresent();
+            result.Should().BeTrue();
+
+            _showRepositoryMock.Verify(x => x.Any(), Times.Once);
+        }
 
         #region People
 
