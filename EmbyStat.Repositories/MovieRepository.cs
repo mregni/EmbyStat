@@ -6,6 +6,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
@@ -38,7 +39,9 @@ namespace EmbyStat.Repositories
             {
                 using var database = Context.CreateDatabaseContext();
                 var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds).OrderBy(x => x.SortName).ToList();
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .OrderBy(x => x.SortName)
+                    .ToList();
             });
         }
 
@@ -62,21 +65,6 @@ namespace EmbyStat.Repositories
                 using var database = Context.CreateDatabaseContext();
                 var collection = database.GetCollection<Movie>();
                 return collection.FindById(id);
-            });
-        }
-
-        public int GetGenreCount(IReadOnlyList<string> libraryIds)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var genres = GetWorkingLibrarySet(collection, libraryIds)
-                    .Select(x => x.Genres);
-
-                return genres.SelectMany(x => x)
-                    .Distinct()
-                    .Count();
             });
         }
 
@@ -129,41 +117,6 @@ namespace EmbyStat.Repositories
                     .Take(count);
             });
         }
-        
-        #region People
-
-        public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .SelectMany(x => x.People)
-                    .DistinctBy(x => x.Id)
-                    .Count(x => x.Type == type);
-            });
-        }
-
-        public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .SelectMany(x => x.People)
-                    .Where(x => x.Type == type)
-                    .GroupBy(x => x.Name, (name, people) => new {Name = name, Count = people.Count()})
-                    .OrderByDescending(x => x.Count)
-                    .Select(x => x.Name)
-                    .Take(count);
-            });
-        }
-
-        #endregion
 
         #region Suspicious
 
@@ -222,7 +175,7 @@ namespace EmbyStat.Repositories
                     var selector = jObj[0]["selector"].Value<string>().FirstCharToUpper();
                     var desc = jObj[0]["desc"].Value<bool>();
 
-                    query = desc 
+                    query = desc
                         ? query.OrderByDescending(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null))
                         : query.OrderBy(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null));
                 }

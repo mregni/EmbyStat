@@ -82,6 +82,14 @@ namespace EmbyStat.Services
             return person;
         }
 
+        public Person GetPersonByNameForShows(string name)
+        {
+            var person = GetPersonByName(name);
+            person.ShowCount = _showRepository.GetMediaCountForPerson(person.Name);
+
+            return person;
+        }
+
         public Person GetPersonByNameForShows(string name, string genre)
         {
             var person = GetPersonByName(name);

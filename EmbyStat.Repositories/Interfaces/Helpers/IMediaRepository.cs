@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 
@@ -16,5 +17,8 @@ namespace EmbyStat.Repositories.Interfaces.Helpers
         bool Any();
         int GetMediaCountForPerson(string name, string genre);
         int GetMediaCountForPerson(string name);
+        int GetGenreCount(IReadOnlyList<string> libraryIds);
+        int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
+        IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count);
     }
 }

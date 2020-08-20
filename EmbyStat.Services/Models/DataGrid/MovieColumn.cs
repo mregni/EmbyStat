@@ -23,7 +23,12 @@ namespace EmbyStat.Services.Models.DataGrid
         public string SortName { get; set; }
         public string Path { get; set; }
         public DateTimeOffset? PremiereDate { get; set; }
-        public string[] Resolutions { get; set; }
         public double SizeInMb { get; set; }
+        public double BitRate { get; set; }
+        public int? Height { get; set; }
+        public int? Width { get; set; }
+        public string Codec { get; set; }
+        public int? BitDepth { get; set; }
+        public string VideoRange { get; set; }
     }
 }

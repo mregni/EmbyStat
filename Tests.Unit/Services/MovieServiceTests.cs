@@ -208,10 +208,10 @@ namespace Tests.Unit.Services
 
             stat.Should().NotBeNull();
             stat.Cards.Should().NotBeNull();
-            stat.Cards.Count(x => x.Title == Constants.Movies.TotalGenres).Should().Be(1);
+            stat.Cards.Count(x => x.Title == Constants.Common.TotalGenres).Should().Be(1);
 
-            var card = stat.Cards.First(x => x.Title == Constants.Movies.TotalGenres);
-            card.Title.Should().Be(Constants.Movies.TotalGenres);
+            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalGenres);
+            card.Title.Should().Be(Constants.Common.TotalGenres);
             card.Value.Should().Be("3");
         }
 

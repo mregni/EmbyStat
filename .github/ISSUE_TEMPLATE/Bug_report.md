@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
 - OS: [e.g. Windows, Ubuntu]
 - Browser [e.g. chrome, safari]
 - Version [e.g. 22]
+- Media server type [e.g. Emby/Jellyfin]
 
 **Additional context**
 Add any other context about the problem here.

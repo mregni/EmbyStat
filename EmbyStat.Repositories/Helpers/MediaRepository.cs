@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Web;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -140,6 +141,56 @@ namespace EmbyStat.Repositories.Helpers
                     .Count(x => x.People.Any(y => name == y.Name));
             });
         }
+
+        public int GetGenreCount(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                var genres = GetWorkingLibrarySet(collection, libraryIds)
+                    .Select(x => x.Genres);
+
+                return genres.SelectMany(x => x)
+                    .Distinct()
+                    .Count();
+            });
+        }
+
+        #region People
+
+        public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .SelectMany(x => x.People)
+                    .DistinctBy(x => x.Id)
+                    .Count(x => x.Type == type);
+            });
+        }
+
+        public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .SelectMany(x => x.People)
+                    .Where(x => x.Type == type)
+                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Name)
+                    .Take(count);
+            });
+        }
+
+        #endregion
 
         #region Filters
 

@@ -121,43 +121,5 @@ namespace EmbyStat.Services.Abstract
         }
 
         #endregion
-
-        internal Card<double> CalculateTotalDiskSize(IEnumerable<Video> videos)
-        {
-            var sum = videos.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
-            return new Card<double>
-            {
-                Value = sum,
-                Title = Constants.Common.TotalDiskSize
-            };
-        }
-
-        #region People
-
-        internal List<TopCard> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media, int count)
-        {
-            var list = new List<TopCard>();
-            foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
-            {
-                var selectedMovies = media.Where(x => x.Genres.Any(y => y == genre));
-                var people = selectedMovies
-                    .SelectMany(x => x.People)
-                    .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
-                    .OrderByDescending(x => x.Count)
-                    .Select(x => x.Name);
-
-                var boe = people
-                    .Take(count);
-                    var boeTwo = boe.Select(name => PersonService.GetPersonByNameForMovies(name, genre))
-                    .ToArray();
-
-                list.Add(boeTwo.ConvertToTopCard(genre, string.Empty, "MovieCount"));
-            }
-
-            return list;
-        }
-
-        #endregion
     }
 }

@@ -1,6 +1,18 @@
 import {
-    Animation, ArgumentAxis, Chart as BarChart, CommonSeriesSettings, Font, Format, Label, Legend,
-    LoadingIndicator, Margin, Series, Title, ValueAxis
+  Animation,
+  ArgumentAxis,
+  Chart as BarChart,
+  CommonSeriesSettings,
+  Font,
+  Format,
+  Label,
+  Legend,
+  LoadingIndicator,
+  Margin,
+  Series,
+  Title,
+  ValueAxis,
+  Tooltip
 } from 'devextreme-react/chart';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +33,7 @@ const BarGraph = (props: Props) => {
 
   return (
     <BarChart
-      palette="Material"
+      palette="Soft Blue"
       paletteExtensionMode="blend"
       dataSource={JSON.parse(chart.dataSets)}
     >
