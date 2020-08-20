@@ -80,7 +80,13 @@
     "COUNT": "Anzahl",
     "SIZE": "Größe",
     "HEIGHT": "Höhe",
-    "WIDTH": "Breite"
+    "WIDTH": "Breite",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymisiert",
@@ -154,7 +160,6 @@
   },
   "MOVIES": {
     "TOTALMOVIES": "Gesamtanzahl Filme",
-    "TOTALGENRES": "Gesamtanzahl Genres",
     "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
     "HIGHESTRATED": "Beste Bewertung",
     "LOWESTRATED": "Schlechteste Bewertung",
@@ -186,7 +191,8 @@
     "CONTINUING": "Laufend",
     "ENDED": "Beendet",
     "OVERVIEW": "Übersicht",
-    "MISSINGEPISODES": "Fehlende Episoden"
+    "MISSINGEPISODES": "Fehlende Episoden",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Einstellungen gespeichert",
