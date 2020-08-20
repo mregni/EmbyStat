@@ -80,7 +80,13 @@
     "COUNT": "Count",
     "SIZE": "Grootte",
     "HEIGHT": "Height",
-    "WIDTH": "Width"
+    "WIDTH": "Width",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Geanonimiseerd",
@@ -154,7 +160,6 @@
   },
   "MOVIES": {
     "TOTALMOVIES": "Totale Films",
-    "TOTALGENRES": "Totale Genres",
     "TOTALPLAYLENGTH": "Totale Kijk Duur",
     "HIGHESTRATED": "Hoogste Score",
     "LOWESTRATED": "Laagste Score",
@@ -186,7 +191,8 @@
     "CONTINUING": "Doorgaan",
     "ENDED": "Geëindigd",
     "OVERVIEW": "Overzicht",
-    "MISSINGEPISODES": "Missende afleveringen"
+    "MISSINGEPISODES": "Missende afleveringen",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Instellingen opgeslagen",

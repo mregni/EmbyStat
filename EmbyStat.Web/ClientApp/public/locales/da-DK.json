@@ -80,7 +80,13 @@
     "COUNT": "Count",
     "SIZE": "Size",
     "HEIGHT": "Height",
-    "WIDTH": "Width"
+    "WIDTH": "Width",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
@@ -154,7 +160,6 @@
   },
   "MOVIES": {
     "TOTALMOVIES": "Antal film",
-    "TOTALGENRES": "Antal genrer",
     "TOTALPLAYLENGTH": "Samlet spilletid",
     "HIGHESTRATED": "Bedst bedømte",
     "LOWESTRATED": "Dårligst bedømte",
@@ -186,7 +191,8 @@
     "CONTINUING": "Fortsættes",
     "ENDED": "Afsluttet",
     "OVERVIEW": "Oversigt",
-    "MISSINGEPISODES": "Manglende episoder"
+    "MISSINGEPISODES": "Manglende episoder",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Settings saved",
