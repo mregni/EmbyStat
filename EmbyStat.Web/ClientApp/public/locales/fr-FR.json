@@ -13,7 +13,7 @@
     "HOURSABBR": "h",
     "MINUTESABBR": "m",
     "MIN": "min",
-    "GB": "Gb",
+    "GB": "GB",
     "AND": "and",
     "PIXELS": "px",
     "TITLE": "titre",
@@ -76,11 +76,20 @@
     "LIBRARYERROR": "Could not fetch libraries",
     "LOADING": "Loading {{item}}",
     "STATISTICS": "Statistics",
-    "NAME": "Name"
+    "NAME": "Name",
+    "COUNT": "Count",
+    "SIZE": "Size",
+    "HEIGHT": "Height",
+    "WIDTH": "Width",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
-    "SIZE": "Size",
     "CREATIONDATE": "Creation date",
     "ACTIONS": "Actions"
   },
@@ -118,6 +127,7 @@
     "USERS": "Utilisateurs"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
@@ -145,11 +155,11 @@
     },
     "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
     "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>"
+    "APIKEYUSED": "API key: <i>{{api}}</i>",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Nombre total de films",
-    "TOTALGENRES": "Nombre total de genres",
     "TOTALPLAYLENGTH": "Temps de visionnage total",
     "HIGHESTRATED": "Les mieux notés",
     "LOWESTRATED": "Les moins bien notés",
@@ -181,7 +191,8 @@
     "CONTINUING": "En cours",
     "ENDED": "Terminée",
     "OVERVIEW": "Aperçu",
-    "MISSINGEPISODES": "Épisodes manquants"
+    "MISSINGEPISODES": "Épisodes manquants",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Settings saved",
@@ -245,9 +256,9 @@
       "APIKEY": "API key",
       "NOAPIKEY": "API key is required",
       "PORT": "Port",
-      "NOPORT": "IP/domain is required",
-      "BASEURL": "Base Url",
-      "NOBASEURL": "String is required and should start with /",
+      "NOPORT": "Port is required",
+      "BASEURL": "Base URL",
+      "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
       "EMBYPORTREQUIRED": "{{type}} port required.",
       "EMBYAPIKEYREQUIRED": "{{type}} API key required",
@@ -317,6 +328,7 @@
     "LASTRUN": "Dernière exécution",
     "BUTFAILED": "a échoué après",
     "NORUN": "Pas encore exécuté",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Logs d'activités",
     "CRONUPDATED": "Valeur du cron mise à jour",
     "OPENJOBPAGE": "Go to job page",
@@ -395,6 +407,34 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where"
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is null",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before",
+    "AFTER": "after",
+    "TITLES": {
+      "TITLE": "Titre",
+      "IMDB": "Imdb",
+      "TMDB": "Tmdb",
+      "IMAGES": "Images",
+      "GENRES": "Genres",
+      "FRAMERATE": "Frame rate",
+      "CONTAINER": "Container"
+    }
   }
 }

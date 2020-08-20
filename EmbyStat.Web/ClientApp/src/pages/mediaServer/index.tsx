@@ -10,7 +10,7 @@ import { MediaServerInfo, MediaServerPlugin } from '../../shared/models/mediaSer
 import MediaServerHeader from '../../shared/components/mediaServerHeader';
 import { RootState } from '../../store/RootReducer';
 import construction from '../../shared/assets/images/under-construction.webp';
-import getFullMediaServerUrl from "../../shared/utils/GetFullMediaServerUtil";
+import getFullMediaServerUrl from "../../shared/utils/MediaServerUrlUtil";
 import fallbackImg from "../../shared/assets/images/no-image.png";
 
 const useStyles = makeStyles((theme) => ({

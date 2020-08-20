@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog;
 
 namespace EmbyStat.Logging
 {
@@ -6,7 +7,7 @@ namespace EmbyStat.Logging
     {
         public static Logger CreateLoggerForType(Type type, string prefix)
         {
-            var logger = NLog.LogManager.GetCurrentClassLogger(type);
+            var logger = LogManager.GetCurrentClassLogger(type);
             return new Logger(logger, prefix);
         }
     }

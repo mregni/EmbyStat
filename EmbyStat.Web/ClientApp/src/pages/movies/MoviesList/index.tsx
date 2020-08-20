@@ -25,9 +25,10 @@ import Flag from '../../../shared/components/flag';
 import FilterDrawer from '../../../shared/components/filterDrawer';
 import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
-import getFullMediaServerUrl from '../../../shared/utils/GetFullMediaServerUtil';
+import { getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import { RootState } from '../../../store/RootReducer';
 import { useServerType } from '../../../shared/hooks';
+import calculateFileSize from '../../../shared/utils/CalculateFileSize';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -98,6 +99,10 @@ const MovieList = (props: Props) => {
     return data.genres.join(', ');
   };
 
+  const getSizeInMbValue = (data) => {
+    return calculateFileSize(data.sizeInMb)
+  }
+
   const getSubtitleValues = (row) => {
     return (
       <Grid container>
@@ -128,10 +133,6 @@ const MovieList = (props: Props) => {
     );
   };
 
-  const getResolutionValues = (data) => {
-    return data.resolutions.join(', ');
-  };
-
   const renderLinks = (row) => {
     return (
       <Grid container direction="row" justify="flex-end" alignItems="center">
@@ -139,9 +140,7 @@ const MovieList = (props: Props) => {
           variant="outlined"
           color="secondary"
           size="small"
-          href={`${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${
-            row.id
-            }&serverId=${settings.mediaServer.serverId}`}
+          href={getItemDetailLink(settings, row.data.id)}
           target="_blank"
           startIcon={<OpenInNewIcon />}
           classes={{
@@ -207,7 +206,6 @@ const MovieList = (props: Props) => {
           <Paging pageSize="100" />
           <Sorting mode="single" />
 
-          <Column dataField="id" />
           <Column
             dataField="sortName"
             caption={t('COMMON.TITLE')}
@@ -216,26 +214,55 @@ const MovieList = (props: Props) => {
             defaultSortIndex={0}
             defaultSortOrder="asc"
           />
-          <Column dataField="container" caption="Container" />
-          <Column
-            dataField="runTimeTicks"
-            caption={t('COMMON.RUNTIME')}
-            width="120"
-            dataType="number"
-            calculateCellValue={calculateRunTimeValue}
-          />
           <Column
             caption={t('COMMON.GENRES')}
             calculateCellValue={getGenresValues}
             allowSorting={false}
+          />
+          <Column dataField="container" caption="Container" />
+          <Column
+            dataField="runTimeTicks"
+            caption={t('COMMON.RUNTIME')}
+            dataType="number"
+            calculateCellValue={calculateRunTimeValue}
           />
           <Column
             caption={t('COMMON.OFFICIALRATING')}
             dataField="officialRating"
           />
           <Column
-            caption={t('COMMON.RESOLUTION')}
-            calculateCellValue={getResolutionValues}
+            caption={t('COMMON.HEIGHT')}
+            dataField="height"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.WIDTH')}
+            dataField="width"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.BITRATE') + " (Mbps)"}
+            dataField="bitRate"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.SIZEINMB')}
+            calculateCellValue={getSizeInMbValue}
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.BITDEPTH')}
+            dataField="bitDepth"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.CODEC')}
+            dataField="codec"
+            allowSorting={false}
+          />
+          <Column
+            caption={t('COMMON.VIDEORANGE')}
+            dataField="videoRange"
             allowSorting={false}
           />
           <Column caption={t('COMMON.RATING')} dataField="communityRating" />
@@ -253,7 +280,6 @@ const MovieList = (props: Props) => {
           />
           <Column
             caption={t('COMMON.LINKS')}
-            width={100}
             cellRender={renderLinks}
             allowSorting={false}
             alignment="right"

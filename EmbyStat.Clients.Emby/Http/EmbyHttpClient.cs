@@ -20,6 +20,5 @@ namespace EmbyStat.Clients.Emby.Http
         {
             return Ping("Emby Server");
         }
-
     }
 }

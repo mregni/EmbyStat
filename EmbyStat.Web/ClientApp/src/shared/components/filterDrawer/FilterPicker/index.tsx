@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import uuid from 'react-uuid';
+
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import ExpandLessRounded from '@material-ui/icons/ExpandLessRounded';
 import ExpandMoreRounded from '@material-ui/icons/ExpandMoreRounded';
-import { useTranslation } from 'react-i18next';
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
-import uuid from 'react-uuid';
-import moment from 'moment';
-import { useForm } from 'react-hook-form';
 
-import {
-  FilterDefinition,
-  ActiveFilter,
-  FilterType,
-} from '../../../models/filter';
-import FilterTextField from '../FilterTextField';
-import FilterNumberField from '../FilterNumberField';
+import { ActiveFilter, FilterDefinition, FilterType } from '../../../models/filter';
 import FilterBetweenField from '../FilterBetweenField';
-import FilterDropdownField from '../FilterDropdownField';
-import FilterRadioButton from '../FilterRadioButton';
 import FilterDateField from '../FilterDateField';
 import FilterDateRangeField from '../FilterDateRangeField';
+import FilterDropdownField from '../FilterDropdownField';
+import FilterNumberField from '../FilterNumberField';
+import FilterRadioButton from '../FilterRadioButton';
+import FilterTextField from '../FilterTextField';
 
 interface Props {
   save: (filter: ActiveFilter) => void;
@@ -38,7 +35,7 @@ const FilterPicker = (props: Props) => {
   const { t } = useTranslation();
   const [openState, setOpenState] = useState(false);
   const [clickedTypeId, setclickedTypeId] = useState();
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>("");
   const [types, setTypes] = useState(filterDefinition.types);
   const [intputInError, setIntputInError] = useState(false);
   useEffect(() => {
@@ -64,8 +61,8 @@ const FilterPicker = (props: Props) => {
           x.id !== id
             ? { ...x, open: false }
             : current.open !== state
-              ? { ...x, open: state }
-              : x
+            ? { ...x, open: state }
+            : x
         )
       );
     }
@@ -80,16 +77,18 @@ const FilterPicker = (props: Props) => {
 
   const calculateValue = (): string | number => {
     switch (filterDefinition.field) {
-      case 'RunTimeTicks':
-        if (value.includes('|')) {
-          return `${parseInt(value.split('|')[0], 10) * 600000000}|${parseInt(value.split('|')[1], 10) * 600000000}`;
+      case "RunTimeTicks":
+        if (value.includes("|")) {
+          return `${parseInt(value.split("|")[0], 10) * 600000000}|${
+            parseInt(value.split("|")[1], 10) * 600000000
+          }`;
         }
         return parseInt(value, 10) * 600000000;
-      case 'Images':
-      case 'Genres':
-      case 'Container':
-      case 'Subtitles':
-        return `${value.split('|')[0]}`;
+      case "Images":
+      case "Genres":
+      case "Container":
+      case "Subtitles":
+        return `${value.split("|")[0]}`;
       default:
         return encodeURIComponent(value);
     }
@@ -97,36 +96,36 @@ const FilterPicker = (props: Props) => {
 
   const calculateValueLabel = (type: FilterType): string => {
     switch (type.type) {
-      case 'dropdown':
-        return `${value.split('|')[1]}`;
-      case 'date':
-        return moment(value).format('L');
-      case 'dateRange':
-        return `${encodeURI(moment(value.split('|')[0]).format('L'))} ${t(
-          'COMMON.AND'
-        )} ${encodeURI(moment(value.split('|')[1]).format('L'))}`;
+      case "dropdown":
+        return `${value.split("|")[1]}`;
+      case "date":
+        return moment(value).format("L");
+      case "dateRange":
+        return `${encodeURI(moment(value.split("|")[0]).format("L"))} ${t(
+          "COMMON.AND"
+        )} ${encodeURI(moment(value.split("|")[1]).format("L"))}`;
       default:
         break;
     }
 
     switch (type.operation) {
-      case 'between':
-        return `${value.split('|')[0]}${
-          type.unit != null ? t(type.unit) : ''
-          } ${t('COMMON.AND')} ${value.split('|')[1]}${
-          type.unit != null ? t(type.unit) : ''
-          }`;
-      case 'null':
-        return '';
+      case "between":
+        return `${value.split("|")[0]}${
+          type.unit != null ? t(type.unit) : ""
+        } ${t("COMMON.AND")} ${value.split("|")[1]}${
+          type.unit != null ? t(type.unit) : ""
+        }`;
+      case "null":
+        return "";
       default:
-        return `${value}${type.unit != null ? t(type.unit) : ''}`;
+        return `${value}${type.unit != null ? t(type.unit) : ""}`;
     }
   };
 
   const { register, triggerValidation, errors, reset } = useForm({
-    mode: 'onBlur',
+    mode: "onBlur",
     defaultValues: {
-      txt: '',
+      txt: "",
     },
   });
 
@@ -154,9 +153,7 @@ const FilterPicker = (props: Props) => {
   return (
     <>
       <ListItem button onClick={handleClick}>
-        <ListItemText
-          primary={filterDefinition.label.replace(/ \{[0-9]\}/g, '')}
-        />
+        <ListItemText primary={t(filterDefinition.title)} />
         {openState ? <ExpandLessRounded /> : <ExpandMoreRounded />}
       </ListItem>
       <Collapse
@@ -177,7 +174,7 @@ const FilterPicker = (props: Props) => {
                   setClickedTypeId={setclickedTypeId}
                 >
                   <>
-                    {type.type === 'txt' ? (
+                    {type.type === "txt" ? (
                       <FilterTextField
                         type={type}
                         onValueChanged={setValue}
@@ -186,7 +183,7 @@ const FilterPicker = (props: Props) => {
                         disableAdd={setIntputInError}
                       />
                     ) : null}
-                    {type.type === 'number' ? (
+                    {type.type === "number" ? (
                       <FilterNumberField
                         type={type}
                         onValueChanged={setValue}
@@ -195,7 +192,7 @@ const FilterPicker = (props: Props) => {
                         disableAdd={setIntputInError}
                       />
                     ) : null}
-                    {type.type === 'range' ? (
+                    {type.type === "range" ? (
                       <FilterBetweenField
                         type={type}
                         onValueChanged={setValue}
@@ -204,7 +201,7 @@ const FilterPicker = (props: Props) => {
                         disableAdd={setIntputInError}
                       />
                     ) : null}
-                    {type.type === 'dropdown' ? (
+                    {type.type === "dropdown" ? (
                       <FilterDropdownField
                         type={type}
                         onValueChanged={setValue}
@@ -212,7 +209,7 @@ const FilterPicker = (props: Props) => {
                         disableAdd={setIntputInError}
                       />
                     ) : null}
-                    {type.type === 'date' ? (
+                    {type.type === "date" ? (
                       <FilterDateField
                         onValueChanged={setValue}
                         errors={errors}
@@ -220,7 +217,7 @@ const FilterPicker = (props: Props) => {
                         disableAdd={setIntputInError}
                       />
                     ) : null}
-                    {type.type === 'dateRange' ? (
+                    {type.type === "dateRange" ? (
                       <FilterDateRangeField
                         onValueChanged={setValue}
                         errors={errors}
@@ -243,7 +240,7 @@ const FilterPicker = (props: Props) => {
               onClick={saveFilter}
               size="small"
             >
-              {t('COMMON.ADD')}
+              {t("COMMON.ADD")}
             </Button>
           </Grid>
         </Grid>

@@ -13,7 +13,7 @@
     "HOURSABBR": "h",
     "MINUTESABBR": "m",
     "MIN": "min",
-    "GB": "Gb",
+    "GB": "GB",
     "AND": "en",
     "PIXELS": "px",
     "TITLE": "titel",
@@ -76,11 +76,20 @@
     "LIBRARYERROR": "Kan bibliotheken niet ophalen",
     "LOADING": "Bezig met laden {{item}}",
     "STATISTICS": "Statistieken",
-    "NAME": "Naam"
+    "NAME": "Naam",
+    "COUNT": "Count",
+    "SIZE": "Grootte",
+    "HEIGHT": "Height",
+    "WIDTH": "Width",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Geanonimiseerd",
-    "SIZE": "Grootte",
     "CREATIONDATE": "Aanmaakdatum",
     "ACTIONS": "Acties"
   },
@@ -118,6 +127,7 @@
     "USERS": "Gebruikers"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker",
     "SERVERCONFIGURATION": "Server configuratie",
@@ -145,11 +155,11 @@
     },
     "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
     "ADDRESSUSED": "Adres: <i>{{address}}</i>",
-    "APIKEYUSED": "API-sleutel: <i>{{api}}</i>"
+    "APIKEYUSED": "API-sleutel: <i>{{api}}</i>",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Totale Films",
-    "TOTALGENRES": "Totale Genres",
     "TOTALPLAYLENGTH": "Totale Kijk Duur",
     "HIGHESTRATED": "Hoogste Score",
     "LOWESTRATED": "Laagste Score",
@@ -181,7 +191,8 @@
     "CONTINUING": "Doorgaan",
     "ENDED": "Geëindigd",
     "OVERVIEW": "Overzicht",
-    "MISSINGEPISODES": "Missende afleveringen"
+    "MISSINGEPISODES": "Missende afleveringen",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Instellingen opgeslagen",
@@ -245,9 +256,9 @@
       "APIKEY": "API sleutel",
       "NOAPIKEY": "API-sleutel is vereist",
       "PORT": "Poort",
-      "NOPORT": "IP / domein is vereist",
-      "BASEURL": "Basis-URL",
-      "NOBASEURL": "String is vereist en moet beginnen met /",
+      "NOPORT": "Port is required",
+      "BASEURL": "Base URL",
+      "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP / domein vereist.",
       "EMBYPORTREQUIRED": "{{type}} poort vereist.",
       "EMBYAPIKEYREQUIRED": "{{type}} API-sleutel vereist",
@@ -317,6 +328,7 @@
     "LASTRUN": "Laatst uitgevoerd",
     "BUTFAILED": "maar is gefaald na",
     "NORUN": "Nog niet gestart",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Taaklogboeken",
     "CRONUPDATED": "Cron waarde bijgewerkt",
     "OPENJOBPAGE": "Ga naar job pagina",
@@ -395,6 +407,34 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Films waar"
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is null",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before",
+    "AFTER": "after",
+    "TITLES": {
+      "TITLE": "Titel",
+      "IMDB": "Imdb",
+      "TMDB": "Tmdb",
+      "IMAGES": "Images",
+      "GENRES": "Genres",
+      "FRAMERATE": "Frame rate",
+      "CONTAINER": "Container"
+    }
   }
 }

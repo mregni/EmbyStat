@@ -1,0 +1,48 @@
+jobs:
+- job: linux_docker_container
+  dependsOn: main_build
+  displayName: 'Create Linux docker build'
+  pool:
+    vmImage: ubuntu-18.04
+  variables:
+    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+  steps:
+  - template: '../templates/update.version.yml'
+
+  - task: PowerShell@2
+    displayName: 'Update appsettings.json file'
+    inputs:
+      targetType: filePath
+      filePath: $(paths.script)/appsettings.ps1
+      arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Make linux-x64 package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(webapp.project)'
+      arguments: '-c Release -r linux-x64 -o publish -f $(publish.framework) $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+    
+  - task: DotNetCoreCLI@2
+    displayName: 'Make linux-x64 updater package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(updater.project)'
+      arguments: '-c Release -r linux-x64 -o publish/updater -f $(publish.framework) $(publish.parameters)'
+      zipAfterPublish: false
+      modifyOutputPath: false
+      
+  - template: '../templates/npmbuild.yml'
+    parameters:
+      npmBuild: 'run build -- --prod'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Linux Docker Artifact'
+    inputs:
+      PathtoPublish: 'publish'
+      ArtifactName: 'EmbyStat-docker-linux-v$(GitVersion.SemVer)'

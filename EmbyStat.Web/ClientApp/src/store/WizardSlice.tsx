@@ -75,6 +75,19 @@ export const setServerConfiguration = (
   dispatch(wizardSlice.actions.updateWizardState(wizard));
 };
 
+export const setServerAddress = (
+  address: string,
+  port: number,
+  protocol: number,
+): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const wizard = { ...getState().wizard };
+  wizard.serverAddress = address;
+  wizard.serverPort = port;
+  wizard.serverProtocol = protocol;
+
+  dispatch(wizardSlice.actions.updateWizardState(wizard));
+};
+
 export const setlanguage = (language: string): AppThunk => async (
   dispatch: AppDispatch,
   getState: () => RootState

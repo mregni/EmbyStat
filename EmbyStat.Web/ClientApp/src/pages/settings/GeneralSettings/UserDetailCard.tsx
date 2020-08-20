@@ -94,7 +94,6 @@ const UserDetailCard = (props: Props) => {
     if (password.length !== 0) {
       const valid = await triggerValidation(['confirmedPassword', 'password', 'currentPassword']);
       if (valid) {
-        console.log(username);
         const result = await changePassword(
           {
             userName: username,

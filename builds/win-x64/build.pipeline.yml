@@ -2,6 +2,7 @@ jobs:
 - job: windows_x64
   dependsOn: main_build
   displayName: 'Build Win10-x64 package'
+  condition: succeeded()
   pool:
     name: Hosted Windows 2019 with VS2019
   variables:

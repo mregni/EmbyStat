@@ -333,8 +333,14 @@ namespace EmbyStat.Web
             var mediaServerType = settings.MediaServer?.ServerType ?? ServerType.Emby;
             var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
 
-            mediaServerClient.SetDeviceInfo(settings.AppName, settings.MediaServer.AuthorizationScheme, settingsService.GetAppSettings().Version.ToCleanVersionString(), settings.Id.ToString());
-            if (!string.IsNullOrWhiteSpace(settings.MediaServer.ApiKey))
+            mediaServerClient.SetDeviceInfo(
+                settings.AppName, 
+                settings.MediaServer?.AuthorizationScheme ?? string.Empty, 
+                settingsService.GetAppSettings().Version.ToCleanVersionString(), 
+                settings.Id.ToString(),
+                settings.MediaServer?.UserId ?? string.Empty);
+
+            if (!string.IsNullOrWhiteSpace(settings.MediaServer?.ApiKey))
             {
                 mediaServerClient.BaseUrl = settings.MediaServer.FullMediaServerAddress;
                 mediaServerClient.ApiKey = settings.MediaServer.ApiKey;

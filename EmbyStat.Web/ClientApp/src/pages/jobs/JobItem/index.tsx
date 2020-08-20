@@ -1,71 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Zoom from '@material-ui/core/Zoom';
+import classNames from 'classnames';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import IconButton from '@material-ui/core/IconButton';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import moment from 'moment';
-import PlayCircleOutlineRoundedIcon from '@material-ui/icons/PlayCircleOutlineRounded';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Zoom from '@material-ui/core/Zoom';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { useTranslation } from 'react-i18next';
-import classNames from 'classnames';
-import { Job } from '../../../shared/models/jobs';
-import RoundIconButton from '../../../shared/components/buttons/RoundIconButton';
+import PlayCircleOutlineRoundedIcon from '@material-ui/icons/PlayCircleOutlineRounded';
 
+import RoundIconButton from '../../../shared/components/buttons/RoundIconButton';
+import { useServerType } from '../../../shared/hooks';
+import { Job } from '../../../shared/models/jobs';
 import { fireJob } from '../../../shared/services/JobService';
 import JobSettingsDialog from '../JobSettingsDialog';
-import { useServerType } from '../../../shared/hooks';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    display: 'flex',
-    position: 'relative',
+    display: "flex",
+    position: "relative",
     padding: 8,
-    '&:not(:first-child)': {
+    "&:not(:first-child)": {
       marginTop: 16,
     },
   },
   paper__details: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
-  'paper__details--top': {
-    display: 'flex',
-    flex: '0 1 auto',
+  "paper__details--top": {
+    display: "flex",
+    flex: "0 1 auto",
     height: 30,
     paddingTop: 5,
   },
-  'paper__details--bottom': {
-    display: 'flex',
-    flex: '1 1 auto',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  "paper__details--bottom": {
+    display: "flex",
+    flex: "1 1 auto",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingRight: 5,
   },
   paper__menu: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     top: 0,
   },
   progress: {
-    width: 'calc(100% - 65px)',
+    width: "calc(100% - 65px)",
     marginRight: 20,
   },
   title: {
-    fontWeight: 'bold',
-    [theme.breakpoints.down('sm')]: {
-      width: '200px',
+    fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      width: "200px",
     },
-    [theme.breakpoints.up('md')]: {
-      width: '250px',
+    [theme.breakpoints.up("md")]: {
+      width: "250px",
     },
   },
   hidden: {
-    visibility: 'hidden',
+    visibility: "hidden",
   },
   progess__height: {
     height: 22,
@@ -94,24 +95,23 @@ const JobItem = (props: Props) => {
   const stateSwitch = (job: Job) => {
     switch (job.state) {
       case 0:
-        return t('JOB.NORUN');
+        return t("JOB.NORUN");
       case 1:
-        return 'Processing';
+        return t("JOB.PROCESSING");
       case 2:
-        return `${t('JOB.LASTRUN')} ${moment(job.endTimeUtcIso).from(
+        return `${t("JOB.LASTRUN")} ${moment(job.endTimeUtcIso).from(
           moment()
         )}`;
       case 3:
-        return `${t('JOB.LASTRUN')} ${moment(job.endTimeUtcIso).from(
+        return `${t("JOB.LASTRUN")} ${moment(job.endTimeUtcIso).from(
           moment()
         )}`;
       default:
-        return '';
+        return "";
     }
   };
 
   const fireJobAction = () => {
-    console.log(`job ${job.id} fired`);
     fireJob(job.id);
     setLoading(true);
   };
@@ -123,7 +123,7 @@ const JobItem = (props: Props) => {
 
   const handleCloseMenu = (option: string | null) => {
     setAnchorEl(null);
-    if (option === 'settings') {
+    if (option === "settings") {
       setOpenSettings(true);
     }
   };
@@ -153,14 +153,14 @@ const JobItem = (props: Props) => {
             open={open}
             onClose={() => handleCloseMenu(null)}
           >
-            <MenuItem onClick={() => handleCloseMenu('settings')}>
-              Settings
+            <MenuItem onClick={() => handleCloseMenu("settings")}>
+              {t("MENU.SETTINGS")}
             </MenuItem>
           </Menu>
           <JobSettingsDialog openSettingsDialog={openSettings} job={job} />
         </div>
         <div className={classes.paper__details}>
-          <div className={classes['paper__details--top']}>
+          <div className={classes["paper__details--top"]}>
             <div className={classes.title}>
               {t(`JOB.INFO.${job.title}`, { type: serverType })}
             </div>
@@ -169,7 +169,7 @@ const JobItem = (props: Props) => {
           {loading ? (
             job.state === 1 ? (
               <div
-                className={classNames(classes['paper__details--bottom'], [
+                className={classNames(classes["paper__details--bottom"], [
                   classes.progess__height,
                 ])}
               >
@@ -185,7 +185,7 @@ const JobItem = (props: Props) => {
               </div>
             ) : (
                 <div
-                  className={classNames(classes['paper__details--bottom'], [
+                  className={classNames(classes["paper__details--bottom"], [
                     classes.progess__height,
                   ])}
                 >

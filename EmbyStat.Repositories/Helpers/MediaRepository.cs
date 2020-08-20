@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Web;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -141,6 +142,56 @@ namespace EmbyStat.Repositories.Helpers
             });
         }
 
+        public int GetGenreCount(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+                var genres = GetWorkingLibrarySet(collection, libraryIds)
+                    .Select(x => x.Genres);
+
+                return genres.SelectMany(x => x)
+                    .Distinct()
+                    .Count();
+            });
+        }
+
+        #region People
+
+        public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .SelectMany(x => x.People)
+                    .DistinctBy(x => x.Id)
+                    .Count(x => x.Type == type);
+            });
+        }
+
+        public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<T>();
+
+                return GetWorkingLibrarySet(collection, libraryIds)
+                    .SelectMany(x => x.People)
+                    .Where(x => x.Type == type)
+                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Select(x => x.Name)
+                    .Take(count);
+            });
+        }
+
+        #endregion
+
         #region Filters
 
         public IEnumerable<LabelValuePair> CalculateGenreFilterValues(IReadOnlyList<string> libraryIds)
@@ -179,10 +230,15 @@ namespace EmbyStat.Repositories.Helpers
             switch (filter.Field)
             {
                 case "PremiereDate":
-                    var values = FormatDateInputValue(filter.Value);
+                    var values = new DateTimeOffset[0];
+                    if (filter.Operation != "null")
+                    {
+                        values = FormatDateInputValue(filter.Value);
+                    }
+
                     return (filter.Operation switch
                     {
-                        "==" => query.Where(x => DateTimeOffset.Parse((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) == values[0]),
+                        "==" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) == values[0]),
                         "<" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MaxValue) < values[0]),
                         ">" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) > values[0]),
                         "between" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) > values[0]
@@ -231,10 +287,6 @@ namespace EmbyStat.Repositories.Helpers
                         "startsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().StartsWith(filter.Value.ToLowerInvariant())),
                         "endsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().EndsWith(filter.Value.ToLowerInvariant())),
                         "null" => query.Where(x => typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
-                        "<" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < Convert.ToDouble(filter.Value)),
-                        ">" => query.Where(x => ((double?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > Convert.ToDouble(filter.Value)),
-                        "between" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > FormatInputValue(filter.Value)[0]
-                                                      && ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < FormatInputValue(filter.Value)[1]),
                         _ => query,
                     });
             }
@@ -257,6 +309,11 @@ namespace EmbyStat.Repositories.Helpers
                 }
 
                 return new[] { left, right };
+            }
+
+            if (decodedValue.Length == 0)
+            {
+                return new[] { 0d };
             }
 
             return new[] { Convert.ToDouble(decodedValue) * multiplier };

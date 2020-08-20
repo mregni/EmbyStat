@@ -12,7 +12,7 @@ import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { getLibraries } from '../../../shared/services/MediaServerService';
 import Loading from '../../../shared/components/loading';
 import LibrarySelector from '../../../shared/components/librarySelector';
-import getFullMediaServerUrl from '../../../shared/utils/GetFullMediaServerUtil';
+import getFullMediaServerUrl from '../../../shared/utils/MediaServerUrlUtil';
 
 interface Props {
   delay: number;

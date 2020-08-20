@@ -2,6 +2,7 @@
 using AutoMapper;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 namespace EmbyStat.Controllers.Log
 {
@@ -28,10 +29,15 @@ namespace EmbyStat.Controllers.Log
 
         [HttpGet]
         [Route("download/{fileName}")]
-        public FileResult GetZipFile(string fileName, bool anonymous)
+        public FileContentResult GetZipFile(string fileName, bool anonymous)
         {
-            var stream = _logService.GetLogStream(fileName, anonymous);
-            return File(stream, "application/octet-stream", fileName);
+            var fullFileName = $"{fileName}.log";
+            var stream = _logService.GetLogStream(fullFileName, anonymous);
+            stream.Position = 0;
+            HttpContext.Response.Headers.Add("Content-Disposition", $"Attachment; filename={fullFileName}");
+            HttpContext.Response.Headers.Add("Content-Length", stream.Length.ToString());
+            HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition, Request-Context");
+            return new FileContentResult(stream.ToArray(), "application/octet-stream");
         }
     }
 }

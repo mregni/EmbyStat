@@ -27,9 +27,7 @@ export const receivePingUpdate = (missedPings: number): AppThunk => async (
   getState: () => RootState
 ) => {
   const state = { ...getState().serverStatus };
-  console.log(state);
   state.missedPings = missedPings;
-  console.log(state);
   dispatch(serverStatusSlice.actions.updateState(state));
 };
 

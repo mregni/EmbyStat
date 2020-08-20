@@ -25,7 +25,6 @@ interface State {
 class SignalRConnectionProvider extends Component<Props, State> {
   componentDidMount() {
     if (this.state === null) {
-      console.log('*********CONNECTING********');
       const connectionHub = `${window.location.origin}/jobs-socket`;
       const protocol = new JsonHubProtocol();
       const transport =

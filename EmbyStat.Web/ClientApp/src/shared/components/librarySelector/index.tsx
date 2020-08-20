@@ -115,7 +115,7 @@ const LibrarySelector = (props: Props) => {
                     ),
                   })}
                   alt="library"
-                  src={`${address}/emby/Items/${
+                  src={`${address}/Items/${
                     lib.id
                     }/Images/Primary?maxHeight=212&maxWidth=377&tag=${
                     lib.primaryImage

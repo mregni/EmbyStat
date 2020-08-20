@@ -7,7 +7,6 @@ namespace EmbyStat.Common
         public static class Movies
         {
             public static string TotalMovies => "MOVIES.TOTALMOVIES";
-            public static string TotalGenres => "MOVIES.TOTALGENRES";
             public static string LowestRated => "MOVIES.LOWESTRATED";
             public static string HighestRated => "MOVIES.HIGHESTRATED";
             public static string OldestPremiered => "MOVIES.OLDESTPREMIERED";
@@ -36,6 +35,7 @@ namespace EmbyStat.Common
             public static string MostFeaturedDirector => "COMMON.MOSTFEATUREDDIRECTOR";
             public static string MostFeaturedWriter => "COMMON.MOSTFEATUREDWRITER";
             public static string TotalDiskSize => "COMMON.TOTALDISKSIZE";
+            public static string TotalGenres => "COMMON.TOTALGENRES";
         }
 
         public static class Shows

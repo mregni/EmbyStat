@@ -17,5 +17,6 @@ namespace EmbyStat.Repositories.Interfaces
         void AddSeason(Season season);
         void AddEpisode(Episode episode);
         void RemoveShows();
+        Dictionary<Show, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);
     }
 }

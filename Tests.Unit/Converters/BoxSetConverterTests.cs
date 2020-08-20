@@ -2,7 +2,9 @@
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Net;
+using EmbyStat.Logging;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace Tests.Unit.Converters
@@ -21,8 +23,9 @@ namespace Tests.Unit.Converters
                 ImageTags = new Dictionary<ImageType, string> { { ImageType.Primary, "primary" } }
             };
 
+            var logger = LogFactory.CreateLoggerForType(typeof(BoxSetConverterTests), string.Empty);
 
-            var boxSet = baseItem.ConvertToBoxSet();
+            var boxSet = baseItem.ConvertToBoxSet(logger);
             boxSet.Should().NotBeNull();
             boxSet.Id.Should().Be(baseItem.Id);
             boxSet.Name.Should().Be(baseItem.Name);

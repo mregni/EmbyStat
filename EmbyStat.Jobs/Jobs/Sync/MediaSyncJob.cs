@@ -86,7 +86,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(55);
 
             
-            //await ProcessShowsAsync(libraries, cancellationToken);
+            await ProcessShowsAsync(libraries, cancellationToken);
             await LogProgress(85);
 
             await CalculateStatistics();
@@ -146,7 +146,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var count = _httpClient.GetMovieCount(parentId);
             if (count == 0)
             {
-               await LogWarning($"0 movies found in parent with id {parentId}. Propably means something is wrong with the HTTP call.");
+               await LogWarning($"0 movies found in parent with id {parentId}. Probably means something is wrong with the HTTP call.");
             }
 
             return count;
@@ -369,33 +369,33 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             await LogProgress(93);
 
-            //await LogInformation("Calculating show statistics");
-            //var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
-            //var totalShowsToCalculate = showLibraries.Count + ((showLibraries.Count > 1) ? 1 : 0) + 1;
-            //currentCalculationCount = 0;
-            //for (var i = 0; i < showLibraries.Count; i++)
-            //{
-            //    _showService.CalculateShowStatistics(showLibraries[i]);
-            //    _showService.CalculateCollectedRows(showLibraries[i]);
+            await LogInformation("Calculating show statistics");
+            var showLibraries = _showService.GetShowLibraries().Select(x => x.Id).ToList();
+            var totalShowsToCalculate = showLibraries.Count + ((showLibraries.Count > 1) ? 1 : 0) + 1;
+            currentCalculationCount = 0;
+            for (var i = 0; i < showLibraries.Count; i++)
+            {
+                _showService.CalculateShowStatistics(showLibraries[i]);
+                _showService.CalculateCollectedRows(showLibraries[i]);
 
-            //    currentCalculationCount++;
-            //    await LogProgress(Math.Round(93 + 7 * (i + 1) / ((double)showLibraries.Count + 2), 1));
-            //    await LogInformation($"Calculation {currentCalculationCount}/{totalShowsToCalculate} done");
-            //}
+                currentCalculationCount++;
+                await LogProgress(Math.Round(93 + 7 * (i + 1) / ((double)showLibraries.Count + 2), 1));
+                await LogInformation($"Calculation {currentCalculationCount}/{totalShowsToCalculate} done");
+            }
 
-            //if (showLibraries.Count > 1)
-            //{
-            //    _showService.CalculateShowStatistics(showLibraries);
-            //    _showService.CalculateCollectedRows(showLibraries);
+            if (showLibraries.Count > 1)
+            {
+                _showService.CalculateShowStatistics(showLibraries);
+                _showService.CalculateCollectedRows(showLibraries);
 
-            //    currentCalculationCount++;
-            //    await LogProgress(Math.Round(93 + 7 * (showLibraries.Count + 1) / ((double)showLibraries.Count + 2), 1));
-            //    await LogInformation($"Calculation {currentCalculationCount}/{totalShowsToCalculate} done");
-            //}
+                currentCalculationCount++;
+                await LogProgress(Math.Round(93 + 7 * (showLibraries.Count + 1) / ((double)showLibraries.Count + 2), 1));
+                await LogInformation($"Calculation {currentCalculationCount}/{totalShowsToCalculate} done");
+            }
 
-            //_showService.CalculateShowStatistics(new List<string>());
-            //_showService.CalculateCollectedRows(new List<string>());
-            //await LogInformation($"Calculation {totalShowsToCalculate}/{totalShowsToCalculate} done");
+            _showService.CalculateShowStatistics(new List<string>());
+            _showService.CalculateCollectedRows(new List<string>());
+            await LogInformation($"Calculation {totalShowsToCalculate}/{totalShowsToCalculate} done");
         }
 
         private async Task<List<Library>> GetLibrariesAsync()

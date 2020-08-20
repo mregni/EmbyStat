@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { TopCard, TopCardItem } from '../../models/common';
 import { RootState } from '../../../store/RootReducer';
-import getFullMediaServerUrl from '../../utils/GetFullMediaServerUtil';
+import getFullMediaServerUrl from '../../utils/MediaServerUrlUtil';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -72,19 +72,25 @@ const TopListCard = (props: Props) => {
   const { t } = useTranslation();
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
 
-  console.log(data);
-
   const settings = useSelector((state: RootState) => state.settings);
   const getBackdropUrl = (): string => {
-    const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`;
+    console.log("DEBUG INFO FOR ISSUE #1295");
+    console.log(settings);
+    if (settings != null) {
+      const fullAddress = getFullMediaServerUrl(settings);
+      console.log(fullAddress);
+      console.log(`${fullAddress}/Items/${hoveredItem.mediaId}/Images/Backdrop?EnableImageEnhancers=false`);
+      return `${fullAddress}/Items/${hoveredItem?.mediaId ?? ''}/Images/Backdrop?EnableImageEnhancers=false`;
+    }
+
+    return '';
   };
 
   const classes = useStyles({ backdrop: getBackdropUrl() });
 
   const getPosterUrl = (): string => {
     const fullAddress = getFullMediaServerUrl(settings);
-    return `${fullAddress}/emby/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
+    return `${fullAddress}/Items/${hoveredItem.mediaId}/Images/Primary?maxHeight=200&tag=${hoveredItem.image}&quality=90&enableimageenhancers=false`;
   };
 
   const calculateTime = (date: string): string => {
@@ -142,7 +148,7 @@ const TopListCard = (props: Props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {t(pair.label)}
+                    {pair.label.length > 35 ? t(pair.label).substr(0, 32) + '...' : t(pair.label)}
                   </a>
                 </Grid>
                 <Grid item className={classes.secondaryColor}>

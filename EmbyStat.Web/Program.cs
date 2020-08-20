@@ -34,11 +34,13 @@ namespace EmbyStat.Web
                     return 0;
                 }
 
+                options = CheckEnvironmentVariables(options);
+                
                 var configArgs = CreateArgsArray(options);
                 _logger = SetupLogging(configArgs);
                 LogLevelChanger.SetNlogLogLevel(NLog.LogLevel.FromOrdinal(options.LogLevel));
 
-                LogStartupParameters(configArgs, options.LogLevel);
+                LogStartupParameters(configArgs, options.LogLevel, options.Service);
                 
                 var listeningUrl = string.Join(';', options.ListeningUrls.Split(';').Select(x => $"{x}:{options.Port}"));
                 var config = BuildConfigurationRoot(configArgs);
@@ -143,7 +145,7 @@ namespace EmbyStat.Web
             }
         }
 
-        private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel)
+        private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel, bool service)
         {
             var logLevelStr = logLevel == 1 ? "Debug" : "Information";
             var updatesEnabled = options["NoUpdates"] == "False";
@@ -156,6 +158,7 @@ namespace EmbyStat.Web
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tDataDir:\t\t{options["Dirs:Data"]}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tLogDir:\t\t\t{options["Dirs:Logs"]}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tUpdates enabled:\t{updatesEnabled}");
+            _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t\tRunning as service:\t{service}");
             _logger.Log(NLog.LogLevel.Info, $"{Constants.LogPrefix.System}\t--------------------------------------------------------------------");
         }
 
@@ -178,11 +181,7 @@ namespace EmbyStat.Web
             var dataDir = options.DataDir;
             if (string.IsNullOrWhiteSpace(dataDir))
             {
-                dataDir = Environment.GetEnvironmentVariable("EMBYSTAT_DATA_DIR");
-                if (string.IsNullOrWhiteSpace(dataDir))
-                {
-                    dataDir = Directory.GetCurrentDirectory();
-                }
+                dataDir = Directory.GetCurrentDirectory();
             }
 
             try
@@ -203,11 +202,7 @@ namespace EmbyStat.Web
             var configDir = options.ConfigDir;
             if (string.IsNullOrWhiteSpace(configDir))
             {
-                configDir = Environment.GetEnvironmentVariable("EMBYSTAT_CONFIG_DIR");
-                if (string.IsNullOrWhiteSpace(configDir))
-                {
-                    configDir = basePath;
-                }
+                configDir = basePath;
             }
 
             try
@@ -228,11 +223,7 @@ namespace EmbyStat.Web
             var logDir = options.LogDir;
             if (string.IsNullOrWhiteSpace(logDir))
             {
-                logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOG_DIR");
-                if (string.IsNullOrWhiteSpace(logDir))
-                {
-                    logDir = Path.Combine(basePath, "Logs");
-                }
+                logDir = Path.Combine(basePath, "logs");
             }
 
             try
@@ -246,6 +237,59 @@ namespace EmbyStat.Web
             }
 
             return logDir;
+        }
+
+        private static StartupOptions CheckEnvironmentVariables(StartupOptions options)
+        {
+            var portStr = Environment.GetEnvironmentVariable("EMBYSTAT_PORT");
+            if (portStr != null && int.TryParse(portStr, out var port))
+            {
+                options.Port = port;
+            }
+
+            var dataDir = Environment.GetEnvironmentVariable("EMBYSTAT_DATADIR");
+            if (dataDir != null)
+            {
+                options.DataDir = dataDir;
+            }
+
+            var configDir = Environment.GetEnvironmentVariable("EMBYSTAT_CONFIGDIR");
+            if (configDir != null)
+            {
+                options.ConfigDir = configDir;
+            }
+
+            var logDir = Environment.GetEnvironmentVariable("EMBYSTAT_LOGDIR");
+            if (logDir != null)
+            {
+                options.LogDir = logDir;
+            }
+
+            var logLevelStr = Environment.GetEnvironmentVariable("EMBYSTAT_LOGLEVEL");
+            if (logLevelStr != null && int.TryParse(logLevelStr, out var logLevel))
+            {
+                options.LogLevel = logLevel;
+            }
+
+            var listeningUrls = Environment.GetEnvironmentVariable("EMBYSTAT_LISTENURL");
+            if (listeningUrls != null)
+            {
+                options.ListeningUrls = listeningUrls;
+            }
+
+            var noUpdatesStr = Environment.GetEnvironmentVariable("EMBYSTAT_NOUPDATES");
+            if (noUpdatesStr != null && bool.TryParse(noUpdatesStr, out var noUpdates))
+            {
+                options.Service = noUpdates;
+            }
+
+            var serviceStr = Environment.GetEnvironmentVariable("EMBYSTAT_SERVICE");
+            if (serviceStr != null && bool.TryParse(serviceStr, out var service))
+            {
+                options.Service = service;
+            }
+
+            return options;
         }
     }
 }

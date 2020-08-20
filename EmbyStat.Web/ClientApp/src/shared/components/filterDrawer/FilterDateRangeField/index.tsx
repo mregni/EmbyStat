@@ -42,7 +42,6 @@ const FilterDateRangeField = (props: Props) => {
   });
 
   useEffect(() => {
-    console.log(betweenValue.right?.isValid());
     disableAdd(
       (!betweenValue.left?.isValid() ?? true) ||
       (!betweenValue.right?.isValid() ?? true)

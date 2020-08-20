@@ -62,7 +62,6 @@ const TestServer = (props: Props) => {
           setCurrentStep(2);
           setLoadingLabel('WIZARD.STEPTWO');
           const serverInfo = await getServerInfo(true);
-          console.log(serverInfo);
           if (serverInfo == null) {
             setIsLoading(false);
             return;

@@ -7,7 +7,7 @@ export interface MediaServerSettings {
   serverProtocol: number;
   serverType: number;
   userId: string;
-  serverBaseurl: string;
+  serverBaseUrl: string;
   serverId: string;
 }
 

@@ -2,7 +2,9 @@
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Logging;
 using FluentAssertions;
+using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 
@@ -13,6 +15,8 @@ namespace Tests.Unit.Converters
         [Fact]
         public void ConvertToMovie_Should_Return_Movie()
         {
+            var logger = LogFactory.CreateLoggerForType(typeof(MovieConverterTests), string.Empty);
+
             var baseItem = new MovieBuilder("123")
                 .AddAudioStream(new AudioStream
                 {
@@ -24,15 +28,15 @@ namespace Tests.Unit.Converters
                     Language = "en",
                     SampleRate = 123
                 })
-                .AddSubtitleStream(new SubtitleStream
+                .ReplaceSubtitleStream(new SubtitleStream
                 {
                     Codec = "codec",
                     DisplayTitle = "title",
                     Id = "123",
-                    Language = "en",
+                    Language = "nl",
                     IsDefault = true
                 })
-                .AddVideoStream(new VideoStream
+                .ReplaceVideoStreams(new VideoStream
                 {
                     Language = "en",
                     Channels = 12,
@@ -45,7 +49,7 @@ namespace Tests.Unit.Converters
                 })
                 .BuildBaseItemDto();
 
-            var movie = baseItem.ConvertToMovie("12");
+            var movie = baseItem.ConvertToMovie("12", logger);
 
             movie.Should().NotBeNull();
             movie.Id.Should().Be(baseItem.Id);

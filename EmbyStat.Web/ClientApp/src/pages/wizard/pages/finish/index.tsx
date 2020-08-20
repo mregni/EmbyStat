@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import React, { useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { Trans, useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../../store/RootReducer';
-import { useHistory } from 'react-router-dom'
+import Typography from '@material-ui/core/Typography';
 
-import { saveSettings } from '../../../../store/SettingsSlice';
 import { register } from '../../../../shared/services/AccountService';
 import { fireJob } from '../../../../shared/services/JobService';
+import { RootState } from '../../../../store/RootReducer';
+import { saveSettings } from '../../../../store/SettingsSlice';
 
 const useStyles = makeStyles((theme) => ({
   button__loading: {
-    color: '#d3d3d3'
+    color: "#d3d3d3",
   },
   button: {
     height: 36,
     width: 242,
-  }
+  },
 }));
 
 interface Props {
@@ -43,12 +44,12 @@ const Finish = (props: Props) => {
   const settings = useSelector((state: RootState) => state.settings);
   const wizard = useSelector((state: RootState) => state.wizard);
 
-  const serverType = wizard.serverType === 0 ? 'Emby' : 'Jellyfin';
+  const serverType = wizard.serverType === 0 ? "Emby" : "Jellyfin";
 
   const onFinish = async () => {
     setIsLoading(true);
     if (fireSync) {
-      await fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e');
+      await fireJob("be68900b-ee1d-41ef-b12f-60ef3106052e");
     }
 
     const loginView = {
@@ -62,10 +63,10 @@ const Finish = (props: Props) => {
     mediaServer.serverId = wizard.serverId;
     mediaServer.apiKey = wizard.apiKey;
     mediaServer.serverAddress = wizard.serverAddress;
-    mediaServer.serverBaseurl = wizard.serverBaseurl;
+    mediaServer.serverBaseUrl = wizard.serverBaseurl != null ? wizard.serverBaseurl : "";
     mediaServer.serverName = wizard.serverName;
     mediaServer.serverPort =
-      typeof wizard.serverPort === 'number'
+      typeof wizard.serverPort === "number"
         ? wizard.serverPort
         : parseInt(wizard.serverPort, 10);
     mediaServer.serverProtocol = wizard.serverProtocol;
@@ -79,10 +80,10 @@ const Finish = (props: Props) => {
     newSettings.wizardFinished = true;
     dispatch(saveSettings(newSettings));
     if (fireSync) {
-      history.push('/jobs');
+      history.push("/jobs");
     }
-    history.push('/');
-  }
+    history.push("/");
+  };
 
   useEffect(() => {
     disableNext(true);
@@ -107,8 +108,14 @@ const Finish = (props: Props) => {
         <Grid item>
           <FormGroup row>
             <FormControlLabel
-              control={<Checkbox checked={fireSync} onChange={(event) => setFireSync(event.target.checked)} color="primary" />}
-              label="run madia sync after wizard"
+              control={
+                <Checkbox
+                  checked={fireSync}
+                  onChange={(event) => setFireSync(event.target.checked)}
+                  color="primary"
+                />
+              }
+              label={t("WIZARD.RUNSYNC")}
             />
           </FormGroup>
         </Grid>
@@ -126,11 +133,11 @@ const Finish = (props: Props) => {
             className={classes.button}
             disabled={isLoading}
           >
-            {
-              isLoading
-                ? <CircularProgress size={16} className={classes.button__loading} />
-                : t('COMMON.FINISH')
-            }
+            {isLoading ? (
+              <CircularProgress size={16} className={classes.button__loading} />
+            ) : (
+                t("COMMON.FINISH")
+              )}
           </Button>
         </Grid>
       </Grid>
@@ -138,4 +145,4 @@ const Finish = (props: Props) => {
   );
 };
 
-export default Finish
+export default Finish;

@@ -13,7 +13,7 @@
     "HOURSABBR": "h",
     "MINUTESABBR": "m",
     "MIN": "min",
-    "GB": "Gb",
+    "GB": "GB",
     "AND": "and",
     "PIXELS": "px",
     "TITLE": "title",
@@ -61,7 +61,7 @@
     "OS": "Operating system",
     "WANADDRESS": "WAN address",
     "LANADDRESS": "LAN address",
-    "UPDATELEVEL": "Update level",
+    "UPDATELEVEL": "Update channel",
     "SELECTVALUE": "Select value",
     "ADD": "Add",
     "DATE": "date",
@@ -76,11 +76,20 @@
     "LIBRARYERROR": "Could not fetch libraries",
     "LOADING": "Loading {{item}}",
     "STATISTICS": "Statistics",
-    "NAME": "Name"
+    "NAME": "Name",
+    "COUNT": "Count",
+    "SIZE": "Size",
+    "HEIGHT": "Height",
+    "WIDTH": "Width",
+    "TOTALGENRES": "Total Genres",
+    "BITRATE": "Bitrate",
+    "SIZEINMB": "Size in MB",
+    "BITDEPTH": "Bit depth",
+    "CODEC": "Codec",
+    "VIDEORANGE": "Video range"
   },
   "LOGS": {
-    "ANONYMISED": "Anonymised",
-    "SIZE": "Size",
+    "ANONYMISED": "Anonymized",
     "CREATIONDATE": "Creation date",
     "ACTIONS": "Actions"
   },
@@ -118,6 +127,7 @@
     "USERS": "Users"
   },
   "WIZARD": {
+    "RUNSYNC": "Run media sync after the wizard is finished",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
@@ -145,11 +155,11 @@
     },
     "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
     "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>"
+    "APIKEYUSED": "API key: <i>{{api}}</i>",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total Movies",
-    "TOTALGENRES": "Total Genres",
     "TOTALPLAYLENGTH": "Total Watchable Time",
     "HIGHESTRATED": "Highest Rated",
     "LOWESTRATED": "Lowest Rated",
@@ -181,7 +191,8 @@
     "CONTINUING": "Continuing",
     "ENDED": "Ended",
     "OVERVIEW": "Overview",
-    "MISSINGEPISODES": "Missing episodes"
+    "MISSINGEPISODES": "Missing episodes",
+    "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
     "SAVED": "Settings saved",
@@ -191,11 +202,11 @@
       "EMBY": "Emby"
     },
     "TVDB": {
-      "TITLE": "Tvdb connection",
+      "TITLE": "TheTVDB connection",
       "APIKEYLABEL": "TheTVDB API key",
       "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "SAVING": "Saving TheTVDB API key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -205,7 +216,7 @@
     },
     "LANGUAGE": {
       "TITLE": "Language",
-      "LABEL": "Select your prefert language",
+      "LABEL": "Select your prefered language",
       "SAVING": "Updating language to {{lang}}"
     },
     "ACCOUNT": {
@@ -218,17 +229,17 @@
       "CURRENTPASSWORD": "Current password",
       "NOPASSWORD": "Password is required",
       "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
+      "PASSWORDMINLENGTH": "The password must be at least 6 characters long",
       "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
+      "WRONGPASSWORD": "Wrong password for current user",
       "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "USERNAMEUPDATEFAILED": "Username update failed, check logs for more info"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what you think is too short for a movie. The default is 10 minutes but you can change this setting below if needed.",
       "SAVING": "Saving all {{type}} statistic settings",
       "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "ENABLETOSHORTSCAN": "Enable short movies detection"
     },
     "MOVIE": {
       "LIBRARY": {
@@ -245,15 +256,15 @@
       "APIKEY": "API key",
       "NOAPIKEY": "API key is required",
       "PORT": "Port",
-      "NOPORT": "IP/domain is required",
-      "BASEURL": "Base Url",
-      "NOBASEURL": "String is required and should start with /",
+      "NOPORT": "Port is required",
+      "BASEURL": "Base URL",
+      "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
       "EMBYPORTREQUIRED": "{{type}} port required.",
       "EMBYAPIKEYREQUIRED": "{{type}} API key required",
       "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
       "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
+      "BASEURLNEEDED": "A base url is required",
       "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
       "WRONGAPIKEY": "Provided API key is not valid",
       "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
@@ -317,22 +328,23 @@
     "LASTRUN": "Last run",
     "BUTFAILED": "but failed after",
     "NORUN": "Not ran yet",
+    "PROCESSING": "Processing",
     "JOBLOGS": "Job logs",
     "CRONUPDATED": "Cron value updated",
     "OPENJOBPAGE": "Go to job page",
     "STARTMEDIASYNC": "Start media sync",
     "INFO": {
       "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "PINGDESCRIPTION": "Ping the Emby server to check if it is still online.",
+      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with the Emby server. This is only a fast and small system update.",
       "SYSTEM-SYNC": "Sync {{type}} info",
       "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This may take some time!",
       "MEDIA-SYNC": "Media synchronization",
       "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database of unnecessary data.",
       "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update channel."
     }
   },
   "DIALOGS": {
@@ -395,6 +407,34 @@
     }
   },
   "FILTERS": {
-    "WHEREMOVIES": "Movies where"
+    "CLEARALL": "Clear all",
+    "CONTAINS": "contains",
+    "NOTCONTAINS": "not contains",
+    "EQUAL": "equals",
+    "STARTSWITH": "starts with",
+    "ENDSWITH": "ends with",
+    "IS": "is",
+    "ISNULL": "is not set",
+    "ISNOT": "is not",
+    "HAS": "has",
+    "HASNO": "has no",
+    "HASNONE": "has none",
+    "BETWEEN": "between",
+    "SHORTER": "shorter",
+    "LONGER": "longer",
+    "ISZERO": "is 0",
+    "LARGER": "larger",
+    "SMALLER": "smaller",
+    "BEFORE": "before",
+    "AFTER": "after",
+    "TITLES": {
+      "TITLE": "Title",
+      "IMDB": "IMDb",
+      "TMDB": "TMDb",
+      "IMAGES": "Images",
+      "GENRES": "Genres",
+      "FRAMERATE": "Frame rate",
+      "CONTAINER": "Container"
+    }
   }
 }

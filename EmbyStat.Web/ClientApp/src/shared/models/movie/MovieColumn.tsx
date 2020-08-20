@@ -18,6 +18,11 @@ export interface MovieColumn {
   sortName: string;
   path: string;
   premiereDate: Date | string | null;
-  resolutions: string[];
   sizeInMb: number;
+  bitRate: number;
+  height: number | null;
+  width: number | null;
+  codec: string;
+  bitDepth: number | null;
+  videoRange: string;
 }
