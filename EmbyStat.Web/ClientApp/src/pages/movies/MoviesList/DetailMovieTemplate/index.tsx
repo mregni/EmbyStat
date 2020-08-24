@@ -12,7 +12,6 @@ import InboxRoundedIcon from '@material-ui/icons/InboxRounded';
 import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
 import SubtitlesRoundedIcon from '@material-ui/icons/SubtitlesRounded';
 import MusicNoteRoundedIcon from '@material-ui/icons/MusicNoteRounded';
-import PaletteRoundedIcon from '@material-ui/icons/PaletteRounded';
 
 import { RootState } from '../../../../store/RootReducer';
 import { getBackdropImageLink, getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';

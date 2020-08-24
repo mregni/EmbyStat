@@ -16,7 +16,7 @@ export const getItemDetailLink = (settings: Settings, itemId: string): string =>
     return `${getFullMediaServerUrl(settings)}/web/index.html#!/item?id=${itemId}&serverId=${settings.mediaServer.serverId}`;
   }
 
-  return `${getFullMediaServerUrl(settings)}/web/index.html#!/itemdetails.html?id=${itemId}&serverId=${settings.mediaServer.serverId}`;
+  return `${getFullMediaServerUrl(settings)}/web/index.html#!/details?id=${itemId}&serverId=${settings.mediaServer.serverId}`;
 }
 
 export const getPrimaryImageLink = (settings: Settings, itemId: string, tag: string): string => {
