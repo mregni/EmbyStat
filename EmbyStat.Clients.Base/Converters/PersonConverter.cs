@@ -30,7 +30,7 @@ namespace EmbyStat.Clients.Base.Converters
             catch (Exception e)
             {
                 logger.Error(e.Message);
-                logger.Debug("DTO object tried to convert");
+                logger.Debug("Tried to convert Person");
                 logger.Debug(JsonConvert.SerializeObject(dto));
                 return null;
             }
