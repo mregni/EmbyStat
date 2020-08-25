@@ -20,11 +20,7 @@ export const getItemDetailLink = (settings: Settings, itemId: string): string =>
 }
 
 export const getPrimaryImageLink = (settings: Settings, itemId: string, tag: string): string => {
-  if (settings.mediaServer.serverType === 0) {
-    return `${getFullMediaServerUrl(settings)}/Items/${itemId}/Images/Primary?maxHeight=350&tag=${tag}&quality=90&enableimageenhancers=false`;
-  }
-
-  return `${getFullMediaServerUrl(settings)}/Items/${itemId}/Images/Primary?maxWidth=350&tag=${tag}&quality=90`;
+  return `${getFullMediaServerUrl(settings)}/Items/${itemId}/Images/Primary?maxHeight=350&tag=${tag}&quality=90&enableimageenhancers=false`;
 }
 
 export const getBackdropImageLink = (settings: Settings, itemId: string): string => {

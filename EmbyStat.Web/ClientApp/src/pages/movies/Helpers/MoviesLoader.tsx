@@ -18,20 +18,12 @@ const MoviesLoader = (props: Props): ReactElement => {
   const [typePresentLoading, setTypePresentLoading] = useState(true);
   const [runningSync, setRunningSync] = useState(false);
   const [runningSyncLoading, setRunningSyncLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!statistics.isLoaded);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadStatistics());
-  }, [dispatch]);
-
-  useEffect(() => {
-    setIsLoading(!statistics.isLoaded);
-  }, [statistics.isLoaded]);
-
-  useEffect(() => {
     const checkType = async () => {
-      const result = await isTypePresent();;
+      const result = await isTypePresent();
       setTypePresent(result);
       setTypePresentLoading(false);
     }
@@ -42,10 +34,15 @@ const MoviesLoader = (props: Props): ReactElement => {
       setRunningSyncLoading(false);
     }
 
+    if (!statistics.isLoaded) {
+      dispatch(loadStatistics());
+    }
+
     checkRunningSync();
     checkType();
-  }, []);
 
+    setIsLoading(!statistics.isLoaded);
+  }, [statistics.isLoaded, dispatch]);
 
   return (
     <StatisticsLoader

@@ -48,9 +48,6 @@ const Finish = (props: Props) => {
 
   const onFinish = async () => {
     setIsLoading(true);
-    if (fireSync) {
-      await fireJob("be68900b-ee1d-41ef-b12f-60ef3106052e");
-    }
 
     const loginView = {
       username: wizard.username,
@@ -79,10 +76,13 @@ const Finish = (props: Props) => {
     newSettings.enableRollbarLogging = wizard.enableRollbarLogging;
     newSettings.wizardFinished = true;
     dispatch(saveSettings(newSettings));
+
     if (fireSync) {
+      await fireJob("be68900b-ee1d-41ef-b12f-60ef3106052e");
       history.push("/jobs");
+    } else {
+      history.push("/");
     }
-    history.push("/");
   };
 
   useEffect(() => {
