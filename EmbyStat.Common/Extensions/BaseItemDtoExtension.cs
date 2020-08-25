@@ -95,7 +95,7 @@ namespace EmbyStat.Common.Extensions
             if (dto?.People != null)
             {
                 extra.People = dto.People
-                    .Where(y => y.Name.Length > 1)
+                    .Where(y => !string.IsNullOrWhiteSpace(y.Name))
                     .Select(y => new ExtraPerson
                     {
                         Id = y.Id,
