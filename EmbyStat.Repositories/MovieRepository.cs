@@ -279,6 +279,19 @@ namespace EmbyStat.Repositories
                             x.MediaSources.All(y => y.SizeInMb < sizeValues[1])),
                         _ => query
                     });
+                case "BitDepth":
+                    var depthValues = FormatInputValue(filter.Value);
+                    return (filter.Operation switch
+                    {
+                        "<" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.All(y => y.BitDepth < depthValues[0])),
+                        ">" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.All(y => y.BitDepth > depthValues[0])),
+                        "null" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.All(y => Math.Abs(y.BitDepth ?? 0) < 0.1)),
+                        "between" => query.Where(x =>
+                            x.VideoStreams.Any() && 
+                            x.VideoStreams.All(y => y.BitDepth > depthValues[0]) &&
+                            x.VideoStreams.All(y => y.BitDepth < depthValues[1])),
+                        _ => query
+                    });
                 case "Height":
                     var heightValues = FormatInputValue(filter.Value);
                     return (filter.Operation switch
