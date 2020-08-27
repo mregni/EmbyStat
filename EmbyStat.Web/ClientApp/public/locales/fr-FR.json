@@ -334,8 +334,8 @@
     "OPENJOBPAGE": "Allez à la page des tâches",
     "STARTMEDIASYNC": "Démarrer la synchronisation des médias",
     "INFO": {
-      "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "PING": "Vérifier la connexion {{type}}",
+      "PINGDESCRIPTION": "Ping le serveur Emby pour vérifier s'il est toujours en ligne.",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SYSTEM-SYNC": "Sync {{type}} info",
       "SYSTEM-SYNCSTART": "Start small sync",
