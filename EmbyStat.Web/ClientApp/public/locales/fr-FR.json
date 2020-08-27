@@ -407,8 +407,8 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
+    "CLEARALL": "Tout enlever",
+    "CONTAINS": "contient",
     "NOTCONTAINS": "not contains",
     "EQUAL": "equals",
     "STARTSWITH": "starts with",
