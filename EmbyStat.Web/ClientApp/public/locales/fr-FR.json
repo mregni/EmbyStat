@@ -72,30 +72,30 @@
     "RATING": "Notation",
     "RESOLUTION": "Résolution",
     "RUNTIME": "Durée",
-    "TABLE": "Table",
-    "LIBRARYERROR": "Could not fetch libraries",
-    "LOADING": "Loading {{item}}",
-    "STATISTICS": "Statistics",
-    "NAME": "Name",
+    "TABLE": "Tableau",
+    "LIBRARYERROR": "Impossible de récupérer les médiathèques",
+    "LOADING": "Chargement {{item}}",
+    "STATISTICS": "Statistiques",
+    "NAME": "Nom",
     "COUNT": "Count",
-    "SIZE": "Size",
-    "HEIGHT": "Height",
-    "WIDTH": "Width",
-    "TOTALGENRES": "Total Genres",
-    "BITRATE": "Bitrate",
-    "SIZEINMB": "Size in MB",
+    "SIZE": "Taille",
+    "HEIGHT": "Hauteur",
+    "WIDTH": "Largeur",
+    "TOTALGENRES": "Nombre total des genres",
+    "BITRATE": "Débit",
+    "SIZEINMB": "Taille en MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
     "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
-    "CREATIONDATE": "Creation date",
+    "CREATIONDATE": "Date de création",
     "ACTIONS": "Actions"
   },
   "FORMERRORS": {
-    "EMPTY": "Field may not be empty",
-    "REQUIRED": "Required"
+    "EMPTY": "Le champ ne peut pas être vide",
+    "REQUIRED": "Obligatoire"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -127,11 +127,11 @@
     "USERS": "Utilisateurs"
   },
   "WIZARD": {
-    "RUNSYNC": "Run media sync after wizard",
-    "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Provide a username and password for your admin user",
-    "SERVERCONFIGURATION": "Server configuration",
-    "SERVERCONFIGURATIONTEST": "Server configuration test",
+    "RUNSYNC": "Exécutez la synchronisation des médias après l'assistant",
+    "WIZARDLABEL": "Assistant",
+    "USERDETAILTEXT": "Fournissez un nom d'utilisateur et un mot de passe pour votre utilisateur administrateur",
+    "SERVERCONFIGURATION": "Configuration du serveur",
+    "SERVERCONFIGURATIONTEST": "Test de configuration du serveur",
     "CONFIGURELIBRARIES": "Configure {{type}} libraries",
     "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
     "STEPTWO": "Fetching server information ({{step}}/{{total}})",
@@ -232,7 +232,7 @@
       "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
       "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
       "WRONGPASSWORD": "Wrong password for loggedin user",
-      "USERNAMEUPDATED": "Username updated succesfully",
+      "USERNAMEUPDATED": "Le nom d'utilisateur a été mis à jour avec succès",
       "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
     },
     "STATISTICS": {
