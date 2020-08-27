@@ -233,17 +233,17 @@
       "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
       "WRONGPASSWORD": "Wrong password for loggedin user",
       "USERNAMEUPDATED": "Le nom d'utilisateur a été mis à jour avec succès",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "USERNAMEUPDATEFAILED": "La mise à jour du nom d'utilisateur a échoué, vérifiez les journaux de log pour plus d'informations"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "SAVING": "Saving all {{type}} statistic settings",
+      "TOSHORTTEXT": "Pour trouver les films qui sont anormalement courts, nous devons savoir quelle est selon vous la durée minimum d'un film. Par défaut, ce paramètre est rréglé sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
+      "SAVING": "Enregistrement de tous les paramètres statistiques de {{type}}",
       "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "ENABLETOSHORTSCAN": "Activer la recherche de courts métrages"
     },
     "MOVIE": {
       "LIBRARY": {
-        "SAVING": "Saving movie libraries"
+        "SAVING": "Enregistrement des bibliothèques de films"
       },
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
@@ -251,23 +251,23 @@
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "MEDIASERVER": {
-      "ADDRESS": "IP/domain",
-      "NOADDRESS": "IP/domain is required",
-      "APIKEY": "API key",
-      "NOAPIKEY": "API key is required",
+      "ADDRESS": "IP/domaine",
+      "NOADDRESS": "IP/domaine est requis",
+      "APIKEY": "Clé API",
+      "NOAPIKEY": "La clé API est requise",
       "PORT": "Port",
-      "NOPORT": "Port is required",
-      "BASEURL": "Base URL",
-      "NOBASEURL": "Base URL is required and should start with /",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
-      "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
-      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "NOPORT": "Numéro de port requis",
+      "BASEURL": "URL de base",
+      "NOBASEURL": "L'URL de base est obligatoire et doit commencer par /",
+      "EMBYADDRESSREQUIRED": "IP/domaine {{type}} requis.",
+      "EMBYPORTREQUIRED": "Port {{type}} requis.",
+      "EMBYAPIKEYREQUIRED": "Clé API {{type}} requise",
+      "APIKEYHINT": "Accédez au menu avancé -> sécurité de votre serveur {{type}} pour générer un nouveau jeton API.",
+      "BASEURLHINT": "L'url de base doit commencer par un /",
+      "BASEURLNEEDED": "J'ai besoin de définir une url de base",
+      "BASEURLNEEDEDTOOLTIP": "Vous n'en avez probablement pas besoin si vous n'êtes pas derrière un proxy inversé!",
+      "WRONGAPIKEY": "La clé API fournie n'est pas valide",
+      "CHANGESERVERTYPE": "Vous avez configuré un serveur {{currentType}} , si vous souhaitez passer à {{newType}} vous devrez réinstaller l'application."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -286,13 +286,13 @@
     }
   },
   "LOGIN": {
-    "LOGIN": "Login",
-    "ERROR": "Username or password unknown",
-    "LOGOUT": "Log out",
-    "FORGOTPASSWORD": "Forgot password",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "LOGIN": "Se connecter",
+    "ERROR": "Nom d'utilisateur ou mot de passe inconnu",
+    "LOGOUT": "Se déconnecter",
+    "FORGOTPASSWORD": "Mot de passe oublié",
+    "RECOVERPASSWORD": "Récupérer le mot de passe",
+    "RESETCOMPLETED": "Vérifiez les journaux pour un nouveau mot de passe",
+    "RESETFAILED": "La réinitialisation du nom d'utilisateur a échouée"
   },
   "USERS": {
     "ISADMIN": "Est administrateur",
@@ -328,11 +328,11 @@
     "LASTRUN": "Dernière exécution",
     "BUTFAILED": "a échoué après",
     "NORUN": "Pas encore exécuté",
-    "PROCESSING": "Processing",
+    "PROCESSING": "Traitement en cours",
     "JOBLOGS": "Logs d'activités",
     "CRONUPDATED": "Valeur du cron mise à jour",
-    "OPENJOBPAGE": "Go to job page",
-    "STARTMEDIASYNC": "Start media sync",
+    "OPENJOBPAGE": "Allez à la page des tâches",
+    "STARTMEDIASYNC": "Démarrer la synchronisation des médias",
     "INFO": {
       "PING": "Check {{type}} connection",
       "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
