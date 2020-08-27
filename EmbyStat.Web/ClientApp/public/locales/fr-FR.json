@@ -337,14 +337,14 @@
       "PING": "Vérifier la connexion {{type}}",
       "PINGDESCRIPTION": "Ping le serveur Emby pour vérifier s'il est toujours en ligne.",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "SYSTEM-SYNC": "Synchroniser les informations de {{type}}",
+      "SYSTEM-SYNCSTART": "Démarrer une petite synchronisation",
+      "MEDIA-SYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle de votre collection de films. Cela peut prendre du temps!",
+      "MEDIA-SYNC": "Synchronisation des médias",
+      "DATABASE-CLEANUP": "Nettoyage de la base de données",
+      "DATABASE-CLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
+      "UPDATE-CHECKER": "Rechercher des mises à jour",
+      "UPDATE-CHECKERDESCRIPTION": "Vérifie les nouvelles mises à jour sur votre canal de mise à jour sélectionné."
     }
   },
   "DIALOGS": {
@@ -388,9 +388,9 @@
     "FOLDERS": "Dossiers"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "TITLE": "État de {{type}}",
+    "ONLINE": "Serveur en ligne",
+    "OFFLINE": "{{count}} pings manqués"
   },
   "ABOUT": {
     "SERVERINFO": "Infos sur le serveur",
