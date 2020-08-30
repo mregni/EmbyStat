@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "SERVERNAME": "Server name",
+    "SERVERNAME": "Nom du serveur",
     "DOWNLOAD": "télécharger",
     "NEXT": "suivant",
     "BACK": "retour",
@@ -14,7 +14,7 @@
     "MINUTESABBR": "m",
     "MIN": "min",
     "GB": "GB",
-    "AND": "and",
+    "AND": "et",
     "PIXELS": "px",
     "TITLE": "titre",
     "ADDEDON": "ajouté le",
@@ -25,7 +25,7 @@
     "BYIMDB": "même id imdb",
     "BYTITLE": "même titre",
     "MOVIES": "films",
-    "MOVIE": "movie",
+    "MOVIE": "film",
     "SHOW": "show",
     "GENRES": "Genres",
     "COMMUNITYRATING": "Community rating",
@@ -36,7 +36,7 @@
     "DURATION": "durée",
     "GRAPHS": "graphiques",
     "PEOPLE": "personnalité",
-    "FILTERS": "Filters",
+    "FILTERS": "Filtres",
     "SUSPICIOUS": "suspect",
     "SHOWS": "Séries",
     "TOTALACTORS": "Nombre d'acteurs",
@@ -58,44 +58,44 @@
     "TOTALDISKSIZE": "Utilisation du disque totale ",
     "EMBYSERVER": "Serveur Emby",
     "JELLYFINSERVER": "Serveur Jellyfin",
-    "OS": "Operating system",
-    "WANADDRESS": "WAN address",
-    "LANADDRESS": "LAN address",
+    "OS": "Système d'exploitation",
+    "WANADDRESS": "Adresse WAN",
+    "LANADDRESS": "Adresse LAN",
     "UPDATELEVEL": "Update level",
-    "SELECTVALUE": "Select value",
-    "ADD": "Add",
+    "SELECTVALUE": "Sélectionner une valeur",
+    "ADD": "Ajouter",
     "DATE": "date",
     "FPS": "fps",
-    "LINKS": "Links",
+    "LINKS": "Liens",
     "AUDIO": "Audio",
-    "SUBTITLES": "Subtitles",
-    "RATING": "Rating",
-    "RESOLUTION": "Resolution",
-    "RUNTIME": "Runtime",
-    "TABLE": "Table",
-    "LIBRARYERROR": "Could not fetch libraries",
-    "LOADING": "Loading {{item}}",
-    "STATISTICS": "Statistics",
-    "NAME": "Name",
+    "SUBTITLES": "Sous-titres",
+    "RATING": "Notation",
+    "RESOLUTION": "Résolution",
+    "RUNTIME": "Durée",
+    "TABLE": "Tableau",
+    "LIBRARYERROR": "Impossible de récupérer les médiathèques",
+    "LOADING": "Chargement {{item}}",
+    "STATISTICS": "Statistiques",
+    "NAME": "Nom",
     "COUNT": "Count",
-    "SIZE": "Size",
-    "HEIGHT": "Height",
-    "WIDTH": "Width",
-    "TOTALGENRES": "Total Genres",
-    "BITRATE": "Bitrate",
-    "SIZEINMB": "Size in MB",
+    "SIZE": "Taille",
+    "HEIGHT": "Hauteur",
+    "WIDTH": "Largeur",
+    "TOTALGENRES": "Nombre total des genres",
+    "BITRATE": "Débit",
+    "SIZEINMB": "Taille en MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
     "VIDEORANGE": "Video range"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
-    "CREATIONDATE": "Creation date",
+    "CREATIONDATE": "Date de création",
     "ACTIONS": "Actions"
   },
   "FORMERRORS": {
-    "EMPTY": "Field may not be empty",
-    "REQUIRED": "Required"
+    "EMPTY": "Le champ ne peut pas être vide",
+    "REQUIRED": "Obligatoire"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, nous avons eu une erreur interne, essayez à nouveau. Si le problème persiste, vérifiez les journaux pour plus de détails.",
@@ -127,11 +127,11 @@
     "USERS": "Utilisateurs"
   },
   "WIZARD": {
-    "RUNSYNC": "Run media sync after wizard",
-    "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Provide a username and password for your admin user",
-    "SERVERCONFIGURATION": "Server configuration",
-    "SERVERCONFIGURATIONTEST": "Server configuration test",
+    "RUNSYNC": "Exécutez la synchronisation des médias après l'assistant",
+    "WIZARDLABEL": "Assistant",
+    "USERDETAILTEXT": "Fournissez un nom d'utilisateur et un mot de passe pour votre utilisateur administrateur",
+    "SERVERCONFIGURATION": "Configuration du serveur",
+    "SERVERCONFIGURATIONTEST": "Test de configuration du serveur",
     "CONFIGURELIBRARIES": "Configure {{type}} libraries",
     "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
     "STEPTWO": "Fetching server information ({{step}}/{{total}})",
@@ -232,18 +232,18 @@
       "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
       "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
       "WRONGPASSWORD": "Wrong password for loggedin user",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "USERNAMEUPDATED": "Le nom d'utilisateur a été mis à jour avec succès",
+      "USERNAMEUPDATEFAILED": "La mise à jour du nom d'utilisateur a échoué, vérifiez les journaux de log pour plus d'informations"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "SAVING": "Saving all {{type}} statistic settings",
+      "TOSHORTTEXT": "Pour trouver les films qui sont anormalement courts, nous devons savoir quelle est selon vous la durée minimum d'un film. Par défaut, ce paramètre est rréglé sur 10 minutes, mais vous pouvez le modifier si nécessaire.",
+      "SAVING": "Enregistrement de tous les paramètres statistiques de {{type}}",
       "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "ENABLETOSHORTSCAN": "Activer la recherche de courts métrages"
     },
     "MOVIE": {
       "LIBRARY": {
-        "SAVING": "Saving movie libraries"
+        "SAVING": "Enregistrement des bibliothèques de films"
       },
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
@@ -251,23 +251,23 @@
       "COLLECTIONTYPES": "Sélectionnez tous les types de collection Emby que vous souhaitez pouvoir sélectionner dans la liste déroulante Collection de la page de statistiques du film."
     },
     "MEDIASERVER": {
-      "ADDRESS": "IP/domain",
-      "NOADDRESS": "IP/domain is required",
-      "APIKEY": "API key",
-      "NOAPIKEY": "API key is required",
+      "ADDRESS": "IP/domaine",
+      "NOADDRESS": "IP/domaine est requis",
+      "APIKEY": "Clé API",
+      "NOAPIKEY": "La clé API est requise",
       "PORT": "Port",
-      "NOPORT": "Port is required",
-      "BASEURL": "Base URL",
-      "NOBASEURL": "Base URL is required and should start with /",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
-      "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
-      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "NOPORT": "Numéro de port requis",
+      "BASEURL": "URL de base",
+      "NOBASEURL": "L'URL de base est obligatoire et doit commencer par /",
+      "EMBYADDRESSREQUIRED": "IP/domaine {{type}} requis.",
+      "EMBYPORTREQUIRED": "Port {{type}} requis.",
+      "EMBYAPIKEYREQUIRED": "Clé API {{type}} requise",
+      "APIKEYHINT": "Accédez au menu avancé -> sécurité de votre serveur {{type}} pour générer un nouveau jeton API.",
+      "BASEURLHINT": "L'url de base doit commencer par un /",
+      "BASEURLNEEDED": "J'ai besoin de définir une url de base",
+      "BASEURLNEEDEDTOOLTIP": "Vous n'en avez probablement pas besoin si vous n'êtes pas derrière un proxy inversé!",
+      "WRONGAPIKEY": "La clé API fournie n'est pas valide",
+      "CHANGESERVERTYPE": "Vous avez configuré un serveur {{currentType}} , si vous souhaitez passer à {{newType}} vous devrez réinstaller l'application."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -286,13 +286,13 @@
     }
   },
   "LOGIN": {
-    "LOGIN": "Login",
-    "ERROR": "Username or password unknown",
-    "LOGOUT": "Log out",
-    "FORGOTPASSWORD": "Forgot password",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "LOGIN": "Se connecter",
+    "ERROR": "Nom d'utilisateur ou mot de passe inconnu",
+    "LOGOUT": "Se déconnecter",
+    "FORGOTPASSWORD": "Mot de passe oublié",
+    "RECOVERPASSWORD": "Récupérer le mot de passe",
+    "RESETCOMPLETED": "Vérifiez les journaux pour un nouveau mot de passe",
+    "RESETFAILED": "La réinitialisation du nom d'utilisateur a échouée"
   },
   "USERS": {
     "ISADMIN": "Est administrateur",
@@ -328,23 +328,23 @@
     "LASTRUN": "Dernière exécution",
     "BUTFAILED": "a échoué après",
     "NORUN": "Pas encore exécuté",
-    "PROCESSING": "Processing",
+    "PROCESSING": "Traitement en cours",
     "JOBLOGS": "Logs d'activités",
     "CRONUPDATED": "Valeur du cron mise à jour",
-    "OPENJOBPAGE": "Go to job page",
-    "STARTMEDIASYNC": "Start media sync",
+    "OPENJOBPAGE": "Allez à la page des tâches",
+    "STARTMEDIASYNC": "Démarrer la synchronisation des médias",
     "INFO": {
-      "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
+      "PING": "Vérifier la connexion {{type}}",
+      "PINGDESCRIPTION": "Ping le serveur Emby pour vérifier s'il est toujours en ligne.",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "SYSTEM-SYNC": "Synchroniser les informations de {{type}}",
+      "SYSTEM-SYNCSTART": "Démarrer une petite synchronisation",
+      "MEDIA-SYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle de votre collection de films. Cela peut prendre du temps!",
+      "MEDIA-SYNC": "Synchronisation des médias",
+      "DATABASE-CLEANUP": "Nettoyage de la base de données",
+      "DATABASE-CLEANUPDESCRIPTION": "Nettoyer les données inutiles de la base de données.",
+      "UPDATE-CHECKER": "Rechercher des mises à jour",
+      "UPDATE-CHECKERDESCRIPTION": "Vérifie les nouvelles mises à jour sur votre canal de mise à jour sélectionné."
     }
   },
   "DIALOGS": {
@@ -388,9 +388,9 @@
     "FOLDERS": "Dossiers"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "TITLE": "État de {{type}}",
+    "ONLINE": "Serveur en ligne",
+    "OFFLINE": "{{count}} pings manqués"
   },
   "ABOUT": {
     "SERVERINFO": "Infos sur le serveur",
@@ -407,8 +407,8 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
+    "CLEARALL": "Tout enlever",
+    "CONTAINS": "contient",
     "NOTCONTAINS": "not contains",
     "EQUAL": "equals",
     "STARTSWITH": "starts with",
