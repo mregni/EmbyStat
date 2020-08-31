@@ -610,7 +610,7 @@ namespace Tests.Unit.Repository
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
                 var people = _movieRepository.GetMostFeaturedPersons(new string[0], PersonType.Actor, 5);
-
+                //TODO Fix test
 
             });
         }
@@ -929,6 +929,12 @@ namespace Tests.Unit.Repository
         [InlineData("PremiereDate", "1/01/1000 0:00:00", ">", 2)]
         [InlineData("PremiereDate", "1/01/900 0:00:00|1/01/1500 0:00:00", "between", 1)]
         [InlineData("PremiereDate", "", "null", 1)]
+        [InlineData("BitDepth", "9", "<", 3)]
+        [InlineData("BitDepth", "9", ">", 1)]
+        [InlineData("BitDepth", "0", "null", 1)]
+        [InlineData("BitDepth", "2|4", "between", 1)]
+        [InlineData("Codec", "h264", "any", 2)]
+        [InlineData("Codec", "h264", "!any", 3)]
         public void GetMediaCount_Should_Filter(string field, string value, string operation, int result)
         {
             RunTest(() =>
@@ -948,6 +954,8 @@ namespace Tests.Unit.Repository
                         new VideoStreamBuilder()
                             .AddWidth(1200)
                             .AddHeight(1200)
+                            .AddBitDepth(3)
+                            .AddCodec("h265")
                             .AddAverageFrameRate(50)
                             .Build())
                     .Build();
@@ -958,6 +966,8 @@ namespace Tests.Unit.Repository
                         new VideoStreamBuilder()
                             .AddWidth(100)
                             .AddHeight(100)
+                            .AddCodec("h265")
+                            .AddBitDepth(null)
                             .AddAverageFrameRate(3)
                             .Build())
                     .AddGenres("id2")
@@ -977,6 +987,8 @@ namespace Tests.Unit.Repository
                         new VideoStreamBuilder()
                             .AddWidth(null)
                             .AddHeight(null)
+                            .AddBitDepth(10)
+                            .AddCodec("h265")
                             .AddAverageFrameRate(null)
                             .Build())
                     .AddCommunityRating(9f)
