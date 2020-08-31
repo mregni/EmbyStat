@@ -1,6 +1,6 @@
 export interface MovieColumn {
   id: string;
-  originalTitle: string;
+  name: string;
   container: string;
   subtitles: string[];
   audioLanguages: string[];
