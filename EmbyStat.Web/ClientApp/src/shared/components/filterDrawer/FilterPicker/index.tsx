@@ -61,8 +61,8 @@ const FilterPicker = (props: Props) => {
           x.id !== id
             ? { ...x, open: false }
             : current.open !== state
-            ? { ...x, open: state }
-            : x
+              ? { ...x, open: state }
+              : x
         )
       );
     }
@@ -81,13 +81,14 @@ const FilterPicker = (props: Props) => {
         if (value.includes("|")) {
           return `${parseInt(value.split("|")[0], 10) * 600000000}|${
             parseInt(value.split("|")[1], 10) * 600000000
-          }`;
+            }`;
         }
         return parseInt(value, 10) * 600000000;
       case "Images":
       case "Genres":
       case "Container":
       case "Subtitles":
+      case "Codec":
         return `${value.split("|")[0]}`;
       default:
         return encodeURIComponent(value);
@@ -112,9 +113,9 @@ const FilterPicker = (props: Props) => {
       case "between":
         return `${value.split("|")[0]}${
           type.unit != null ? t(type.unit) : ""
-        } ${t("COMMON.AND")} ${value.split("|")[1]}${
+          } ${t("COMMON.AND")} ${value.split("|")[1]}${
           type.unit != null ? t(type.unit) : ""
-        }`;
+          }`;
       case "null":
         return "";
       default:

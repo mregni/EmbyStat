@@ -310,6 +310,33 @@ const movieFilters: FilterDefinition[] = [
     id: uuid(),
   },
   {
+    field: "Codec",
+    label: "Codec {0} {1}",
+    title: "COMMON.CODEC",
+    types: [
+      {
+        operation: "any",
+        label: "FILTERS.HAS",
+        type: "dropdown",
+        itemType: "url",
+        itemUrl: "1/codec",
+        open: false,
+        id: uuid(),
+      },
+      {
+        operation: "!any",
+        label: "FILTERS.HASNO",
+        type: "dropdown",
+        itemType: "url",
+        itemUrl: "1/codec",
+        open: false,
+        id: uuid(),
+      },
+    ],
+    open: false,
+    id: uuid(),
+  },
+  {
     field: "BitDepth",
     label: "Bit depth {0} {1}",
     title: "COMMON.BITDEPTH",

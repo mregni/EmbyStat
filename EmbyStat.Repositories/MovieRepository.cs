@@ -246,6 +246,20 @@ namespace EmbyStat.Repositories
             });
         }
 
+        public IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Movie>();
+                var query = GetWorkingLibrarySet(collection, libraryIds);
+                return query
+                    .Select(x => new LabelValuePair { Value = x.VideoStreams.FirstOrDefault()?.Codec ?? string.Empty, Label = x.VideoStreams.FirstOrDefault()?.Codec ?? string.Empty })
+                    .DistinctBy(x => x.Label)
+                    .OrderBy(x => x.Label);
+            });
+        }
+
         private IEnumerable<Movie> ApplyMovieFilters(IEnumerable<Movie> query, Filter filter)
         {
             switch (filter.Field)
@@ -259,7 +273,6 @@ namespace EmbyStat.Repositories
                         _ => query
                     });
                 case "Subtitles":
-                    var boe = query.ToList();
                     return (filter.Operation switch
                     {
                         "!any" => query.Where(x => x.SubtitleStreams.All(y => y.Language != filter.Value)),
@@ -290,6 +303,13 @@ namespace EmbyStat.Repositories
                             x.VideoStreams.Any() && 
                             x.VideoStreams.All(y => y.BitDepth > depthValues[0]) &&
                             x.VideoStreams.All(y => y.BitDepth < depthValues[1])),
+                        _ => query
+                    });
+                case "Codec":
+                    return (filter.Operation switch
+                    {
+                        "!any" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.Any(y => y.Codec != filter.Value)),
+                        "any" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.Any(y => y.Codec == filter.Value)),
                         _ => query
                     });
                 case "Height":
