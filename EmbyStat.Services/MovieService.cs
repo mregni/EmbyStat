@@ -101,7 +101,7 @@ namespace EmbyStat.Services
                 .Select(x => new MovieColumn
                 {
                     Id = x.Id,
-                    OriginalTitle = x.OriginalTitle,
+                    Name = x.Name,
                     AudioLanguages = x.AudioStreams.Select(y => y.Language).ToArray(),
                     Banner = x.Banner,
                     CommunityRating = x.CommunityRating,

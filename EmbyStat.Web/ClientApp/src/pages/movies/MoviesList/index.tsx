@@ -92,7 +92,7 @@ const MovieList = (props: Props) => {
   };
 
   const getTitleValue = (data) => {
-    return data.originalTitle;
+    return data.name;
   };
 
   const getGenresValues = (data) => {
