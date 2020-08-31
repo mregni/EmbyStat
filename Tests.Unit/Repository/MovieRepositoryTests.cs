@@ -935,6 +935,8 @@ namespace Tests.Unit.Repository
         [InlineData("BitDepth", "2|4", "between", 1)]
         [InlineData("Codec", "h264", "any", 2)]
         [InlineData("Codec", "h264", "!any", 3)]
+        [InlineData("VideoRange", "SDR", "any", 3)]
+        [InlineData("VideoRange", "SDR", "!any", 2)]
         public void GetMediaCount_Should_Filter(string field, string value, string operation, int result)
         {
             RunTest(() =>
@@ -956,6 +958,7 @@ namespace Tests.Unit.Repository
                             .AddHeight(1200)
                             .AddBitDepth(3)
                             .AddCodec("h265")
+                            .AddVideoRange("HDR")
                             .AddAverageFrameRate(50)
                             .Build())
                     .Build();
@@ -967,6 +970,7 @@ namespace Tests.Unit.Repository
                             .AddWidth(100)
                             .AddHeight(100)
                             .AddCodec("h265")
+                            .AddVideoRange("HDR")
                             .AddBitDepth(null)
                             .AddAverageFrameRate(3)
                             .Build())

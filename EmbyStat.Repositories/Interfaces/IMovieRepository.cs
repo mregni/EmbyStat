@@ -27,5 +27,6 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<LabelValuePair> CalculateGenreFilterValues(IReadOnlyList<string> libraryIds);
         IEnumerable<LabelValuePair> CalculateCollectionFilterValues();
         IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds);
+        IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds);
     }
 }

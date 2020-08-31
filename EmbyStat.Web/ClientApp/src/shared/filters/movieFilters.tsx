@@ -337,6 +337,33 @@ const movieFilters: FilterDefinition[] = [
     id: uuid(),
   },
   {
+    field: "VideoRange",
+    label: "Video range {0} {1}",
+    title: "COMMON.VIDEORANGE",
+    types: [
+      {
+        operation: "any",
+        label: "FILTERS.HAS",
+        type: "dropdown",
+        itemType: "url",
+        itemUrl: "1/videorange",
+        open: false,
+        id: uuid(),
+      },
+      {
+        operation: "!any",
+        label: "FILTERS.HASNO",
+        type: "dropdown",
+        itemType: "url",
+        itemUrl: "1/videorange",
+        open: false,
+        id: uuid(),
+      },
+    ],
+    open: false,
+    id: uuid(),
+  },
+  {
     field: "BitDepth",
     label: "Bit depth {0} {1}",
     title: "COMMON.BITDEPTH",

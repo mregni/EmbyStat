@@ -18,7 +18,8 @@ namespace Tests.Unit.Builders
                 Height = 1000,
                 Width = 1000,
                 Codec = "h264",
-                BitDepth = 8
+                BitDepth = 8,
+                VideoRange = "SDR"
             };
         }
 
@@ -30,6 +31,11 @@ namespace Tests.Unit.Builders
         public VideoStreamBuilder AddCodec(string codec)
         {
             _stream.Codec = codec;
+            return this;
+        }
+        public VideoStreamBuilder AddVideoRange(string videoRange)
+        {
+            _stream.VideoRange = videoRange;
             return this;
         }
 

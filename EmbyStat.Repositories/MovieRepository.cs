@@ -260,6 +260,20 @@ namespace EmbyStat.Repositories
             });
         }
 
+        public IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Movie>();
+                var query = GetWorkingLibrarySet(collection, libraryIds);
+                return query
+                    .Select(x => new LabelValuePair { Value = x.VideoStreams.FirstOrDefault()?.VideoRange ?? string.Empty, Label = x.VideoStreams.FirstOrDefault()?.VideoRange ?? string.Empty })
+                    .DistinctBy(x => x.Label)
+                    .OrderBy(x => x.Label);
+            });
+        }
+
         private IEnumerable<Movie> ApplyMovieFilters(IEnumerable<Movie> query, Filter filter)
         {
             switch (filter.Field)
@@ -310,6 +324,13 @@ namespace EmbyStat.Repositories
                     {
                         "!any" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.Any(y => y.Codec != filter.Value)),
                         "any" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.Any(y => y.Codec == filter.Value)),
+                        _ => query
+                    });
+                case "VideoRange":
+                    return (filter.Operation switch
+                    {
+                        "!any" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.Any(y => y.VideoRange != filter.Value)),
+                        "any" => query.Where(x => x.VideoStreams.Any() && x.VideoStreams.Any(y => y.VideoRange == filter.Value)),
                         _ => query
                     });
                 case "Height":

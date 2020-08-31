@@ -89,6 +89,7 @@ const FilterPicker = (props: Props) => {
       case "Container":
       case "Subtitles":
       case "Codec":
+      case "VideoRange":
         return `${value.split("|")[0]}`;
       default:
         return encodeURIComponent(value);
