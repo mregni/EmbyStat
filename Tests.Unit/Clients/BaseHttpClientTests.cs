@@ -379,52 +379,6 @@ namespace Tests.Unit.Clients
         }
 
         [Fact]
-        public void GetBoxSet_Should_Return_List_Of_BoxSets()
-        {
-            var resultObj = new QueryResult<BaseItemDto>
-            {
-                Items = new[]
-                {
-                    new BoxSetBuilder("123").ToBaseItemDto() 
-                }
-            };
-
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var result = client.GetBoxSet("123");
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
-
-            result[0].Id.Should().Be(resultObj.Items[0].Id);
-
-            _usedRequest.Should().NotBeNull();
-
-            _usedRequest?.Parameters.Count.Should().Be(13);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", "Primary", ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "Genres,DateCreated,MediaSources,ExternalUrls,OriginalTitle,Studios,MediaStreams,Path,Overview,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,RunTimeTicks", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "IncludeItemTypes", "BoxSet", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "LocationTypes", "FileSystem", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "ParentId", "123", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "recursive", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(9, "SeriesStatuses", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(10, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(11, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(12, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Items");
-        }
-
-        [Fact]
         public void GetShows_Should_Return_List_Of_Shows()
         {
             var resultObj = new QueryResult<BaseItemDto>
