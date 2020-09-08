@@ -117,25 +117,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
-                    _movieRepository.UpsertRange(movies);
+                    _movieRepository.UpsertRange(movies.Where(x => x.MediaType == "Video"));
 
                     processed += 100; 
                     j++;
                     var logProcessed = processed < totalCount ? processed : totalCount;
                     await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                 } while (processed < totalCount);
-
-
-                var boxSets = _httpClient.GetBoxSet(collectionId);
-                if (boxSets.Any())
-                {
-                    await LogInformation($"Found {boxSets.Count} box sets in {neededLibraries[i].Name} library");
-                    foreach (var parent in boxSets)
-                    {
-                        _movieRepository.UpsertRange(await PerformMovieSyncAsync(parent.Id, collectionId, 0, 1000));
-                    }
-                    await LogInformation("Processed all box sets");
-                }
 
                 await LogProgress(Math.Round(15 + 40 * (i + 1) / (double)neededLibraries.Count, 1));
             }

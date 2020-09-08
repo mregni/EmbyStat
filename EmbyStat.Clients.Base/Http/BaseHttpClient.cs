@@ -226,33 +226,6 @@ namespace EmbyStat.Clients.Base.Http
                 : new List<Movie>(0);
         }
 
-        public List<BoxSet> GetBoxSet(string parentId)
-        {
-            var query = new ItemQuery
-            {
-                EnableImageTypes = new[] { ImageType.Primary },
-                ParentId = parentId,
-                Recursive = true,
-                LocationTypes = new[] { LocationType.FileSystem },
-                IncludeItemTypes = new[] { nameof(BoxSet) },
-                Fields = new[]
-                {
-                    ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
-                    ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
-                    ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
-                    ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
-                    ItemFields.ProductionYear, ItemFields.RunTimeTicks
-                }
-            };
-
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToBoxSet(Logger)).ToList()
-                : new List<BoxSet>(0);
-        }
-
         public List<Show> GetShows(string parentId)
         {
             var query = new ItemQuery
