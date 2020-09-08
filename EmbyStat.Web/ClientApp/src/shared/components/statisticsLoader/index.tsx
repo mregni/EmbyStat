@@ -69,7 +69,7 @@ const StatisticsLoader = (props: Props) => {
     history.push('/jobs');
   }
 
-  if (!runningSyncLoading && runningSync) {
+  if (!typePresentLoading && !runningSyncLoading && runningSync) {
     return (
       <div
         className={classes.root}>
@@ -93,7 +93,7 @@ const StatisticsLoader = (props: Props) => {
     )
   }
 
-  if (!typePresentLoading && !typePresent) {
+  if (!runningSyncLoading && !typePresentLoading && !typePresent) {
     return (
       <div
         className={classes.root}>

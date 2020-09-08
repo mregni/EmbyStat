@@ -16,7 +16,10 @@ namespace Tests.Unit.Builders
             {
                 AverageFrameRate = 25,
                 Height = 1000,
-                Width = 1000
+                Width = 1000,
+                Codec = "h264",
+                BitDepth = 8,
+                VideoRange = "SDR"
             };
         }
 
@@ -25,10 +28,26 @@ namespace Tests.Unit.Builders
             _stream.Width = width;
             return this;
         }
+        public VideoStreamBuilder AddCodec(string codec)
+        {
+            _stream.Codec = codec;
+            return this;
+        }
+        public VideoStreamBuilder AddVideoRange(string videoRange)
+        {
+            _stream.VideoRange = videoRange;
+            return this;
+        }
 
         public VideoStreamBuilder AddHeight(int? height)
         {
             _stream.Height = height;
+            return this;
+        }
+
+        public VideoStreamBuilder AddBitDepth(int? depth)
+        {
+            _stream.BitDepth = depth;
             return this;
         }
 

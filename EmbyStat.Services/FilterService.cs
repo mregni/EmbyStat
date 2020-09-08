@@ -56,6 +56,12 @@ namespace EmbyStat.Services
                 case "collection":
                     values.Values = _movieRepository.CalculateCollectionFilterValues().ToArray();
                     break;
+                case "codec":
+                    values.Values = _movieRepository.CalculateCodecFilterValues(libraryIds).ToArray();
+                    break;
+                case "videorange":
+                    values.Values = _movieRepository.CalculateVideoRangeFilterValues(libraryIds).ToArray();
+                    break;
                 default: return null;
             }
 

@@ -5,7 +5,7 @@ namespace EmbyStat.Services.Models.DataGrid
     public class MovieColumn
     {
         public string Id { get; set; }
-        public string OriginalTitle { get; set; }
+        public string Name { get; set; }
         public string Container { get; set; }
         public string[] Subtitles { get; set; }
         public string[] AudioLanguages { get; set; }

@@ -21,7 +21,6 @@ namespace EmbyStat.Clients.Base.Http
         bool Ping();
         MediaServerUdpBroadcast SearchServer();
         List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit);
-        List<BoxSet> GetBoxSet(string parentId);
         List<Show> GetShows(string libraryId);
         List<Season> GetSeasons(string parentId);
         List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId);
