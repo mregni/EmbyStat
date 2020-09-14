@@ -77,17 +77,17 @@
     "LOADING": "Bezig met laden {{item}}",
     "STATISTICS": "Statistieken",
     "NAME": "Naam",
-    "COUNT": "Count",
+    "COUNT": "Hoeveelheid",
     "SIZE": "Grootte",
-    "HEIGHT": "Height",
-    "WIDTH": "Width",
-    "TOTALGENRES": "Total Genres",
+    "HEIGHT": "Hoogte",
+    "WIDTH": "Breedte",
+    "TOTALGENRES": "Totaal aantal genres",
     "BITRATE": "Bitrate",
     "BIT": "bit",
     "SIZEINMB": "Grootte in MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
-    "VIDEORANGE": "Video range"
+    "VIDEORANGE": "Videobereik"
   },
   "LOGS": {
     "ANONYMISED": "Geanonimiseerd",
@@ -128,7 +128,7 @@
     "USERS": "Gebruikers"
   },
   "WIZARD": {
-    "RUNSYNC": "Run media sync after wizard",
+    "RUNSYNC": "Media-synchronisatie uitvoeren na wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker",
     "SERVERCONFIGURATION": "Server configuratie",
@@ -157,7 +157,7 @@
     "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
     "ADDRESSUSED": "Adres: <i>{{address}}</i>",
     "APIKEYUSED": "API-sleutel: <i>{{api}}</i>",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
+    "LANWANCHOISE": "Kies het juiste adres voor uw verbinding met {{type}} server."
   },
   "MOVIES": {
     "TOTALMOVIES": "Totale Films",
@@ -193,7 +193,7 @@
     "ENDED": "Geëindigd",
     "OVERVIEW": "Overzicht",
     "MISSINGEPISODES": "Missende afleveringen",
-    "LOADER": "Loading show statistics"
+    "LOADER": "Seriestatistieken laden"
   },
   "SETTINGS": {
     "SAVED": "Instellingen opgeslagen",
@@ -257,7 +257,7 @@
       "APIKEY": "API sleutel",
       "NOAPIKEY": "API-sleutel is vereist",
       "PORT": "Poort",
-      "NOPORT": "Port is required",
+      "NOPORT": "Poort is vereist",
       "BASEURL": "Base URL",
       "NOBASEURL": "Base URL is required and should start with /",
       "EMBYADDRESSREQUIRED": "{{type}} IP / domein vereist.",
@@ -329,7 +329,7 @@
     "LASTRUN": "Laatst uitgevoerd",
     "BUTFAILED": "maar is gefaald na",
     "NORUN": "Nog niet gestart",
-    "PROCESSING": "Processing",
+    "PROCESSING": "Verwerken",
     "JOBLOGS": "Taaklogboeken",
     "CRONUPDATED": "Cron waarde bijgewerkt",
     "OPENJOBPAGE": "Ga naar job pagina",
@@ -408,33 +408,33 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
-    "NOTCONTAINS": "not contains",
-    "EQUAL": "equals",
-    "STARTSWITH": "starts with",
-    "ENDSWITH": "ends with",
+    "CLEARALL": "Alles wissen",
+    "CONTAINS": "bevat",
+    "NOTCONTAINS": "bevat niet",
+    "EQUAL": "gelijk aan",
+    "STARTSWITH": "begint met",
+    "ENDSWITH": "eindigt op",
     "IS": "is",
     "ISNULL": "is null",
-    "ISNOT": "is not",
-    "HAS": "has",
-    "HASNO": "has no",
-    "HASNONE": "has none",
-    "BETWEEN": "between",
-    "SHORTER": "shorter",
-    "LONGER": "longer",
+    "ISNOT": "is niet",
+    "HAS": "heeft",
+    "HASNO": "heeft geen",
+    "HASNONE": "heeft geen enkele",
+    "BETWEEN": "tussen",
+    "SHORTER": "korter",
+    "LONGER": "langer",
     "ISZERO": "is 0",
-    "LARGER": "larger",
-    "SMALLER": "smaller",
-    "BEFORE": "before",
-    "AFTER": "after",
+    "LARGER": "groter",
+    "SMALLER": "kleiner",
+    "BEFORE": "voor",
+    "AFTER": "na",
     "TITLES": {
       "TITLE": "Titel",
       "IMDB": "Imdb",
       "TMDB": "Tmdb",
-      "IMAGES": "Images",
+      "IMAGES": "Afbeeldingen",
       "GENRES": "Genres",
-      "FRAMERATE": "Frame rate",
+      "FRAMERATE": "Framerate",
       "CONTAINER": "Container"
     }
   }
