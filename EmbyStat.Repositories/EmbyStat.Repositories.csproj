@@ -10,7 +10,7 @@
     <ProjectGuid>{BA9CD238-9261-44C7-A90F-F3DA61ED0A41}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.7.0" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.7.2" />
     <PackageReference Include="LiteDB" Version="5.0.8" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MWKL.AspNetCore.Identity.LiteDB" Version="1.0.2" />
