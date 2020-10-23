@@ -81,13 +81,13 @@
     "SIZE": "Größe",
     "HEIGHT": "Höhe",
     "WIDTH": "Breite",
-    "TOTALGENRES": "Total Genres",
+    "TOTALGENRES": "Alle Genres",
     "BITRATE": "Bitrate",
     "BIT": "bit",
-    "SIZEINMB": "Size in MB",
-    "BITDEPTH": "Bit depth",
+    "SIZEINMB": "Größe in MB",
+    "BITDEPTH": "Bittiefe",
     "CODEC": "Codec",
-    "VIDEORANGE": "Video range"
+    "VIDEORANGE": "Videobereich"
   },
   "LOGS": {
     "ANONYMISED": "Anonymisiert",
@@ -193,7 +193,7 @@
     "ENDED": "Beendet",
     "OVERVIEW": "Übersicht",
     "MISSINGEPISODES": "Fehlende Episoden",
-    "LOADER": "Loading show statistics"
+    "LOADER": "lade Serien-Statistik"
   },
   "SETTINGS": {
     "SAVED": "Einstellungen gespeichert",
