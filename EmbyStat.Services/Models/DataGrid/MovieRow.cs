@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EmbyStat.Controllers.Movie
+namespace EmbyStat.Services.Models.DataGrid
 {
-    public class MovieColumnViewModel
+    public class MovieRow
     {
         public string Id { get; set; }
         public string Name { get; set; }

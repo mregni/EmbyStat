@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Controllers.Movie;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Controllers.Show
 {
@@ -44,6 +47,23 @@ namespace EmbyStat.Controllers.Show
             var result = _showService.GetCollectedRows(libraryIds, page);
             return Ok(_mapper.Map<ListContainer<ShowCollectionRowViewModel>>(result));
         }
+
+        [HttpGet]
+        [Route("list")]
+        public IActionResult GetShowPageList(int skip, int take, string sort, bool requireTotalCount, string filter, List<string> libraryIds)
+        {
+            var filtersObj = new Filter[0];
+            if (filter != null)
+            {
+                filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
+            }
+
+            var page = _showService.GetShowPage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
+
+            var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
+            return Ok(convert);
+        }
+
 
         [HttpGet]
         [Route("typepresent")]

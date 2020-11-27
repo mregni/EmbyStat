@@ -18,8 +18,8 @@ import uuid from 'react-uuid';
 import { useSelector } from 'react-redux';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
-
 import CustomStore from 'devextreme/data/custom_store';
+
 import DetailMovieTemplate from './DetailMovieTemplate';
 import Flag from '../../../shared/components/flag';
 import FilterDrawer from '../../../shared/components/filterDrawer';

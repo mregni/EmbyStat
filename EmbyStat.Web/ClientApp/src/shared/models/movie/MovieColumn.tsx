@@ -1,4 +1,4 @@
-export interface MovieColumn {
+export interface MovieRow {
   id: string;
   name: string;
   container: string;

@@ -7,6 +7,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
@@ -14,6 +15,7 @@ using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
@@ -82,6 +84,34 @@ namespace EmbyStat.Services
         public bool TypeIsPresent()
         {
             return _showRepository.Any();
+        }
+
+        public Page<ShowRow> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        {
+            var list = _showRepository
+                .GetShowPage(skip, take, sort, filters, libraryIds)
+                .Select(x => new ShowRow
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    SortName = x.SortName,
+                    CollectedEpisodeCount = x.CollectedEpisodeCount,
+                    MissingEpisodesCount = x.MissingEpisodesCount,
+                    SpecialEpisodeCount = x.SpecialEpisodeCount,
+                    Genres = x.Genres,
+                    OfficialRating = x.OfficialRating,
+                    CumulativeRunTimeTicks = x.CumulativeRunTimeTicks,
+                    RunTime = x.RunTimeTicks,
+                    Status = x.Status
+                });
+
+            var page = new Page<ShowRow> {Data = list};
+            if (requireTotalCount)
+            {
+                page.TotalCount = _showRepository.GetMediaCount(filters, libraryIds);
+            }
+
+            return page;
         }
 
         #region Cards

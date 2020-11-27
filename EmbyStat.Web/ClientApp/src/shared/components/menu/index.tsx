@@ -117,7 +117,12 @@ const Menu = (props: Props) => {
           title: t('COMMON.GRAPHS'),
           route: '/shows/graphs',
           roles: [UserRoles.Admin, UserRoles.User],
-        }
+        },
+        {
+          title: t('COMMON.TABLE'),
+          route: '/shows/list',
+          roles: [UserRoles.Admin, UserRoles.User],
+        },
       ],
     },
     {

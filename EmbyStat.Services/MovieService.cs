@@ -94,11 +94,11 @@ namespace EmbyStat.Services
             return _movieRepository.Any();
         }
 
-        public Page<MovieColumn> GetMoviePage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public Page<MovieRow> GetMoviePage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
             var list = _movieRepository
                 .GetMoviePage(skip, take, sort, filters, libraryIds)
-                .Select(x => new MovieColumn
+                .Select(x => new MovieRow
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -128,7 +128,7 @@ namespace EmbyStat.Services
                     VideoRange = x.VideoStreams.FirstOrDefault()?.VideoRange
                 });
 
-            var page = new Page<MovieColumn> { Data = list };
+            var page = new Page<MovieRow> { Data = list };
             if (requireTotalCount)
             {
                 page.TotalCount = _movieRepository.GetMediaCount(filters, libraryIds);

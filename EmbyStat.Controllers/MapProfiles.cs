@@ -97,12 +97,13 @@ namespace EmbyStat.Controllers
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
-            CreateMap<MovieColumn, MovieColumnViewModel>();
+            CreateMap<MovieRow, MovieRowViewModel>();
             CreateMap<TopCard, TopCardViewModel>();
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
+            CreateMap<ShowRow, ShowRowViewModel>();
         }
     }
 }

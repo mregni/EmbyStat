@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  data: any;
+  data: MovieRow;
 }
 
 const DetailMovieTemplate = (props: Props) => {

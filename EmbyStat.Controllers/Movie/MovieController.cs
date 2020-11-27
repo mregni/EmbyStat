@@ -42,7 +42,7 @@ namespace EmbyStat.Controllers.Movie
 
             var page = _movieService.GetMoviePage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
 
-            var convert = _mapper.Map<PageViewModel<MovieColumnViewModel>>(page);
+            var convert = _mapper.Map<PageViewModel<MovieRowViewModel>>(page);
             return Ok(convert);
         }
 
