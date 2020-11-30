@@ -32,6 +32,7 @@
     "notistack": "^0.9.17",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.7.2",
     "react-i18next": "^11.7.0",

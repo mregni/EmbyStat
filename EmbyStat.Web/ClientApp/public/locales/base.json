@@ -87,7 +87,8 @@
     "SIZEINMB": "Size in MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
-    "VIDEORANGE": "Video range"
+    "VIDEORANGE": "Video range",
+    "CONTAINER": "Container"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
@@ -437,5 +438,10 @@
       "FRAMERATE": "Frame rate",
       "CONTAINER": "Container"
     }
+  },
+  "PAGINATION": {
+    "NEXTPAGE": "Next page",
+    "PREVIOUSPAGE": "Previous page",
+    "ROWSPERPAGE": "Rows per page"
   }
 }

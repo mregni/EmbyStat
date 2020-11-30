@@ -93,11 +93,10 @@ namespace EmbyStat.Services
         {
             return _movieRepository.Any();
         }
-
-        public Page<MovieRow> GetMoviePage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public Page<MovieRow> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
             var list = _movieRepository
-                .GetMoviePage(skip, take, sort, filters, libraryIds)
+                .GetMoviePage(skip, take, sortField, sortOrder, filters, libraryIds)
                 .Select(x => new MovieRow
                 {
                     Id = x.Id,

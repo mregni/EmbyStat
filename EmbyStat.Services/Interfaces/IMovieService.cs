@@ -13,7 +13,7 @@ namespace EmbyStat.Services.Interfaces
         MovieStatistics CalculateMovieStatistics(List<string> libraryIds);
         MovieStatistics CalculateMovieStatistics(string libraryId);
         bool TypeIsPresent();
-        Page<MovieRow> GetMoviePage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
+        Page<MovieRow> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
         Movie GetMovie(string id);
     }
 }
