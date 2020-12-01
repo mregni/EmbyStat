@@ -148,15 +148,15 @@
     "FOUNDTEXT": "Nous avons trouvé un serveur {{type}} nommé {{name}} dans votre réseau et avons entré automatiquement l'Url dans le formulaire. N'hésitez pas à l'ajuster et à remplir le reste du formulaire.",
     "SERVERRUNNING": "Le serveur {{type}} est en cours d’exécution",
     "KEYISVALID": "La clé de l'API est valide",
-    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "SELECTLIBRARIES": "Sélectionnez toutes les bibliothèques que vous souhaitez inclure dans les statistiques des {{type}}. Toutes les bibliothèques de {{type}} sont sélectionnées par défaut. Si vous le souhaitez, vous pourrez le modifier plus tard dans la page des paramètres.",
     "FINISHED": "Tous les paramètres sont enregistrés. Vous pouvez commencer à utiliser le serveur Emby maintenant. Profitez de vos nouvelles statistiques!",
     "FINISHEXPLANATION": "La meilleure chose à faire est de démarrer une tâche de synchronisation multimédia. EmbyStat commencera à télécharger toutes les données de votre serveur Emby. Gardez à l'esprit que cette tâche peut prendre du temps en fonction de la taille de votre collection. Si vous ne voulez pas commencer la synchronisation maintenant, cliquez simplement sur Terminer. Vous pourez le démarrer manuellement plus tard en accédant à la page Tâches.",
     "JELLYFIN": {
       "ADMINTEXT": "Parce que vous utilisez Jellyfin, vous devez fournir un compte administrateur que vous souhaitez utiliser pour récupérer les données du serveur. Veuillez sélectionner l'administrateur souhaité dans la liste déroulante."
     },
-    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
+    "APIKEYFAILED": "Nous avons essayé de contacter votre serveur {{type}} mais cela semble échouer. Veuillez revenir en arrière, corriger la configuration et réessayer.",
     "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>",
+    "APIKEYUSED": "Clé API : <i>{{api}}</i>",
     "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
   "MOVIES": {
@@ -196,7 +196,7 @@
     "LOADER": "Loading show statistics"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
+    "SAVED": "Paramètres enregistrés",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TVDB": "TVDB",
