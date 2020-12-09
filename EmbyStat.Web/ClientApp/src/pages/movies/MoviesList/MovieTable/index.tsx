@@ -28,6 +28,7 @@ import SortLabel from '../../../../shared/components/tables/SortLabel';
 
 import { getMoviePage } from '../../../../shared/services/MovieService';
 import { TablePage } from '../../../../shared/models/common';
+import { ActiveFilter } from '../../../../shared/models/filter';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -47,10 +48,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-
+  filters: ActiveFilter[];
 }
 
 const MovieTable = (props: Props) => {
+  const { filters } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const settings = useSelector((state: RootState) => state.settings);
@@ -64,20 +66,31 @@ const MovieTable = (props: Props) => {
   type Order = 'asc' | 'desc';
   const [order, setOrder] = useState<Order>('asc');
 
-  const fetchRows = useCallback((page: number, rowsPerPage: number, order: string, orderedBy: string) => {
-    setLoading(true);
-    getMoviePage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, "")
-      .then((data: TablePage<MovieRow>) => {
-        setTableData(data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const fetchRows = useCallback(
+    (page: number, rowsPerPage: number, order: string, orderedBy: string, filters: string) => {
+      setLoading(true);
+      setTableData({ data: [], totalCount: 0 });
+      getMoviePage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
+        .then((data: TablePage<MovieRow>) => {
+          setTableData(data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, []);
 
   useEffect(() => {
-    fetchRows(page, rowsPerPage, order, orderedBy);
-  }, [page, rowsPerPage, order, orderedBy, fetchRows]);
+    console.log("row fetch triggered");
+    console.log(filters);
+    const filtersJson = JSON.stringify(
+      filters?.map((x) => ({
+        field: x.field,
+        operation: x.operation,
+        value: x.value,
+      })));
+    console.log(filtersJson);
+    fetchRows(page, rowsPerPage, order, orderedBy, filtersJson);
+  }, [page, rowsPerPage, order, orderedBy, fetchRows, filters]);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, tableData.totalCount - page * rowsPerPage);
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -162,7 +175,7 @@ const MovieTable = (props: Props) => {
   }
   const headers: head[] = [
     { label: "COMMON.TITLE", field: "sortName", sortable: true, width: 300, align: 'left' },
-    { label: "COMMON.GENRES", field: "", sortable: false, width: 180, align: 'right' },
+    { label: "COMMON.GENRES", field: "", sortable: false, width: 220, align: 'left' },
     { label: "COMMON.CONTAINER", field: "Container", sortable: true, align: 'right' },
     { label: "COMMON.RUNTIME", field: "runTimeTicks", sortable: true, align: 'right' },
     { label: "COMMON.OFFICIALRATING", field: "officielRating", sortable: true, align: 'right' },

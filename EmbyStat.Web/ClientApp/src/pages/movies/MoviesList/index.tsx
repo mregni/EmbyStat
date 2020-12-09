@@ -5,11 +5,13 @@ import Zoom from '@material-ui/core/Zoom';
 import Chip from '@material-ui/core/Chip';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
 import FilterDrawer from '../../../shared/components/filterDrawer';
 import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
 import MovieTable from './MovieTable';
+import MovieFilterDialog from './MovieFilterDialog';
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -21,6 +23,7 @@ const MovieList = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
+  const [filterDialogOpen, setFilterDialogOpen] = useState(false);
 
   const handleFilterHide = (id) => {
     const currentFilterIndex = activeFilters.findIndex((x) => x.id === id);
@@ -44,6 +47,10 @@ const MovieList = () => {
       .replace(/\{0\}/g, t(filter.operationLabel))
       .replace(/\{1\}/g, filter.valueLabel);
   };
+
+  const openFilterDialog = () => {
+    setFilterDialogOpen(true);
+  }
 
   return (
     <Grid container direction="column">
@@ -73,10 +80,23 @@ const MovieList = () => {
             </Zoom>
           </Grid>
         ))}
+        {/* <Grid item>
+          <Chip
+            icon={<AddRoundedIcon />}
+            label="Add filter"
+            clickable
+            color="primary"
+            onClick={openFilterDialog}
+          />
+        </Grid>*/}
       </Grid>
       <Grid item container direction="row" justify="center" alignItems="center" className="max-height max-width">
-        <MovieTable />
+        <MovieTable filters={activeFilters} />
       </Grid>
+      <MovieFilterDialog
+        setOpen={setFilterDialogOpen}
+        open={filterDialogOpen}
+      />
     </Grid>
   );
 };
