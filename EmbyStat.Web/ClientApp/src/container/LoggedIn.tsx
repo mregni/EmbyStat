@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import MenuIcon from '@material-ui/icons/Menu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import Home from '../pages/home';
 import Jobs from '../pages/jobs';
@@ -55,15 +57,12 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
-      marginRight: theme.spacing(4),
+      marginRight: theme.spacing(2),
     },
   },
   content: {
     padding: theme.spacing(3),
-    marginTop: 56,
-    [theme.breakpoints.up("sm")]: {
-      marginTop: 64,
-    },
+    marginTop: 48,
     width: "100%",
     zIndex: 1,
   },
@@ -75,7 +74,13 @@ const useStyles = makeStyles((theme) => ({
   },
   logout__button: {
     height: 36,
+    "&:hover": {
+      backgroundColor: "transparent"
+    }
   },
+  toolbar__root: {
+    backgroundColor: theme.palette.grey[800]
+  }
 }));
 
 type Props = RouteComponentProps<
@@ -130,7 +135,10 @@ const LoggedIn = (props: Props) => {
             [classes.appBar__closed]: !openHeader,
           })}
         >
-          <Toolbar>
+          <Toolbar
+          classes={{
+            root: classes.toolbar__root
+          }}>
             <Grid
               container
               direction="row"
@@ -145,22 +153,22 @@ const LoggedIn = (props: Props) => {
                 alignItems="center"
               >
                 <IconButton
-                  color="inherit"
+                  color="primary"
                   onClick={handleDrawerToggle}
                   edge="start"
                   className={classNames(classes.menuButton)}
                 >
                   {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
                 </IconButton>
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6" noWrap color="primary">
                   EmbyStat
                 </Typography>
               </Grid>
               <Grid item>
                 <Button
                   onClick={logoutUser}
-                  variant="contained"
-                  color="secondary"
+                  variant="text"
+                  color="primary"
                   disabled={isLoading}
                   className={classes.logout__button}
                 >
@@ -170,7 +178,10 @@ const LoggedIn = (props: Props) => {
                       className={classes.button__loading}
                     />
                   ) : (
-                      t("LOGIN.LOGOUT")
+                    <span>
+                      <FontAwesomeIcon icon={faSignOutAlt} className="m-r-8"/>
+                      {t("LOGIN.LOGOUT")}
+                    </span>
                     )}
                 </Button>
               </Grid>

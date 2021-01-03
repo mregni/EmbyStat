@@ -63,18 +63,22 @@ namespace EmbyStat.Clients.Tvdb
                 i++;
                 var url = string.Format(Constants.Tvdb.SerieEpisodesUrl, seriesId, i);
                 page = GetEpisodePage(url);
-                page.Data
-                    .ForEach(x =>
-                    {
-                        if (string.IsNullOrWhiteSpace(x.FirstAired) || !DateTime.TryParse(x.FirstAired, out _))
+
+                if (page?.Data != null && page.Data.Any())
+                {
+                    page.Data
+                        .ForEach(x =>
                         {
-                            x.FirstAired = DateTime.MaxValue.ToString("O");
-                        }
-                    });
-                tvdbEpisodes.AddRange(page.Data
-                    .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired, CultureInfo.InvariantCulture))
-                    .Select(x => x.ConvertToVirtualEpisode()));
-            } while (page.Links.Next != i && page.Links.Next != null);
+                            if (string.IsNullOrWhiteSpace(x.FirstAired) || !DateTime.TryParse(x.FirstAired, out _))
+                            {
+                                x.FirstAired = DateTime.MaxValue.ToString("O");
+                            }
+                        });
+                    tvdbEpisodes.AddRange(page.Data
+                        .Where(x => x.AiredSeason != 0 && !string.IsNullOrWhiteSpace(x.FirstAired) && DateTime.Now.Date >= Convert.ToDateTime(x.FirstAired, CultureInfo.InvariantCulture))
+                        .Select(x => x.ConvertToVirtualEpisode()));
+                }
+            } while (page != null && page.Links.Next != i && page.Links.Next != null);
 
             return tvdbEpisodes;
         }

@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Zoom from '@material-ui/core/Zoom';
-import Grid from '@material-ui/core/Grid';
-import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
-import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded';
-import classNames from 'classnames';
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Zoom from "@material-ui/core/Zoom";
+import Grid from "@material-ui/core/Grid";
+import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
+import RadioButtonUncheckedRoundedIcon from "@material-ui/icons/RadioButtonUncheckedRounded";
+import classNames from "classnames";
 
-import NoImage from '../../assets/images/no-image.png';
-import { Library } from '../../models/mediaServer';
+import NoImage from "../../assets/images/no-image.png";
+import { Library } from "../../models/mediaServer";
 
 const useStyles = makeStyles((theme) => ({
   library: {
     padding: 0,
-    position: 'relative',
-    '&:hover img': {
+    position: "relative",
+    "&:hover img": {
       opacity: 1,
     },
   },
@@ -23,16 +23,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 16,
   },
   library__image: {
-    cursor: 'pointer',
-    width: '100%',
+    cursor: "pointer",
+    width: "100%",
     borderRadius: 4,
     opacity: 0.25,
   },
-  'library__image--selected': {
-    opacity: '1 !important',
+  "library__image--selected": {
+    opacity: "1 !important",
   },
   library__buttons: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     borderRadius: 4,
     bottom: 0,
@@ -41,17 +41,20 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 5,
     paddingBottom: 2,
     marginRight: 16,
-    width: 'calc(100% - 16px)',
+    width: "calc(100% - 16px)",
     zIndex: 10,
-    display: 'flex',
+    display: "flex",
     flex: 1,
-    justifyContent: 'space-between',
-    background:
-      'linear-gradient(0deg, rgba(0, 0, 0, 1) 67%, rgba(255, 255, 255, 0) 100%)',
+    justifyContent: "space-between",
+    backgroundImage:
+      "linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0))",
 
-    '&:hover': {
-      cursor: 'pointer',
+    "&:hover": {
+      cursor: "pointer",
     },
+  },
+  library__name: {
+    fontWeight: 500,
   },
 }));
 
@@ -69,7 +72,7 @@ const LibrarySelector = (props: Props) => {
 
   useEffect(() => {
     setSelectedLibraries(libraries);
-  }, [libraries])
+  }, [libraries]);
 
   const librarySelected = (libraryId: string): boolean => {
     return selectedLibraries.indexOf(libraryId, 0) > -1;
@@ -85,7 +88,7 @@ const LibrarySelector = (props: Props) => {
     }
 
     setSelectedLibraries(newList);
-    saveList(newList)
+    saveList(newList);
   };
 
   return (
@@ -110,42 +113,38 @@ const LibrarySelector = (props: Props) => {
               {lib.primaryImage !== null ? (
                 <img
                   className={classNames(classes.library__image, {
-                    [classes['library__image--selected']]: librarySelected(
+                    [classes["library__image--selected"]]: librarySelected(
                       lib.id
                     ),
                   })}
                   alt="library"
-                  src={`${address}/Items/${
-                    lib.id
-                    }/Images/Primary?maxHeight=212&maxWidth=377&tag=${
-                    lib.primaryImage
-                    }&quality=90`}
+                  src={`${address}/Items/${lib.id}/Images/Primary?maxHeight=212&maxWidth=377&tag=${lib.primaryImage}&quality=90`}
                 />
               ) : (
-                  <img
-                    className={classNames(classes.library__image, {
-                      [classes['library__image--selected']]: librarySelected(
-                        lib.id
-                      ),
-                    })}
-                    alt="no tag found"
-                    src={NoImage}
-                  />
-                )}
+                <img
+                  className={classNames(classes.library__image, {
+                    [classes["library__image--selected"]]: librarySelected(
+                      lib.id
+                    ),
+                  })}
+                  alt="no tag found"
+                  src={NoImage}
+                />
+              )}
               <div className={classes.library__buttons}>
-                <span>{lib.name}</span>
+                <span className={classes.library__name}>{lib.name}</span>
                 {librarySelected(lib.id) ? (
-                  <CheckCircleOutlineRoundedIcon />
+                  <CheckCircleRoundedIcon />
                 ) : (
-                    <RadioButtonUncheckedRoundedIcon />
-                  )}
+                  <RadioButtonUncheckedRoundedIcon />
+                )}
               </div>
             </Paper>
           </Grid>
         </Zoom>
       ))}
     </Grid>
-  )
-}
+  );
+};
 
-export default LibrarySelector
+export default LibrarySelector;
