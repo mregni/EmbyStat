@@ -34,7 +34,7 @@ const SortLabel = (props: Props) => {
     <TableSortLabel
       active={orderedBy === field}
       direction={orderedBy === field ? order : 'asc'}
-      onClick={sortHandler(field)}
+      onClick={() => sortHandler(field)}
     >
       {t(label)}
       {orderedBy === field ? (

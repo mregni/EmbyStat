@@ -1,23 +1,23 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from './RootReducer';
-import { AppDispatch, AppThunk } from '.';
-import { Wizard } from '../shared/models/wizard';
-import { MediaServerUdpBroadcast, Library } from '../shared/models/mediaServer';
+import { RootState } from "./RootReducer";
+import { AppDispatch, AppThunk } from ".";
+import { Wizard } from "../shared/models/wizard";
+import { MediaServerUdpBroadcast, Library } from "../shared/models/mediaServer";
 
 const initialState: Wizard = {
-  serverAddress: '',
-  serverName: '',
-  serverPort: '',
+  serverAddress: "",
+  serverName: "",
+  serverPort: "",
   serverProtocol: 0,
-  apiKey: '',
+  apiKey: "",
   serverType: 0,
-  userId: '',
-  serverBaseurl: '',
+  userId: "",
+  serverBaseurl: "",
   serverBaseUrlNeeded: false,
-  username: '',
-  password: '',
-  language: '',
+  username: "",
+  password: "",
+  language: "",
   enableRollbarLogging: false,
   foundServers: [],
   searchedServers: false,
@@ -26,11 +26,11 @@ const initialState: Wizard = {
   showLibraries: [],
   loadedMovieLibraryStep: false,
   loadedShowLibraryStep: false,
-  serverId: '',
+  serverId: "",
 };
 
 const wizardSlice = createSlice({
-  name: 'wizard',
+  name: "wizard",
   initialState,
   reducers: {
     updateWizardState(state, action: PayloadAction<Wizard>) {
@@ -56,12 +56,12 @@ export const setUser = (username: string, password: string): AppThunk => async (
 
 export const setServerConfiguration = (
   address: string,
-  port: number,
+  port: number | string,
   baseUrl: string,
   apiKey: string,
   type: number,
   protocol: number,
-  baseUrlNeeded: boolean,
+  baseUrlNeeded: boolean
 ): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
   const wizard = { ...getState().wizard };
   wizard.serverAddress = address;
@@ -78,7 +78,7 @@ export const setServerConfiguration = (
 export const setServerAddress = (
   address: string,
   port: number,
-  protocol: number,
+  protocol: number
 ): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
   const wizard = { ...getState().wizard };
   wizard.serverAddress = address;
@@ -140,9 +140,9 @@ export const updateSelectedLibraries = (
   type: string
 ): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
   const wizard = { ...getState().wizard };
-  if (type === 'movie') {
+  if (type === "movie") {
     wizard.movieLibraries = libraries;
-  } else if (type === 'show') {
+  } else if (type === "show") {
     wizard.showLibraries = libraries;
   }
   dispatch(wizardSlice.actions.updateWizardState(wizard));

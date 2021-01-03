@@ -29,7 +29,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override async Task RunJobAsync()
         {
             _statisticsRepository.CleanupStatistics();
-            await LogProgress(50);
+            await LogProgressIncrement(50);
             await LogInformation("Removed old statistic results.");
         }
     }

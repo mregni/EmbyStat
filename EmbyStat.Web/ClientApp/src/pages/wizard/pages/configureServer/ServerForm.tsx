@@ -1,19 +1,19 @@
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import Button from '@material-ui/core/Button';
-import Fade from '@material-ui/core/Fade';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
+import Button from "@material-ui/core/Button";
+import Fade from "@material-ui/core/Fade";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import { makeStyles } from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 
-import { Wizard } from '../../../../shared/models/wizard';
+import { Wizard } from "../../../../shared/models/wizard";
 
 const useStyles = makeStyles((theme) => ({
   "input-field__padding": {
@@ -71,6 +71,7 @@ const ServerForm = (props: Props) => {
     setApiKey(wizard.apiKey);
     setType(wizard.serverType);
     setBaseUrlNeeded(wizard.serverBaseUrlNeeded);
+
     if (wizard.serverBaseUrlNeeded) {
       if (wizard.serverBaseurl.startsWith("/")) {
         setBaseUrl(wizard.serverBaseurl);
@@ -78,7 +79,7 @@ const ServerForm = (props: Props) => {
         setBaseUrl(`/${wizard.serverBaseurl}`);
       }
     } else {
-      setBaseUrl('');
+      setBaseUrl("");
     }
 
     setValue("protocol", wizard.serverProtocol);
@@ -119,7 +120,7 @@ const ServerForm = (props: Props) => {
     event.preventDefault();
     setBaseUrl(event.target.value);
     setValue("baseUrl", event.target.value);
-  }
+  };
 
   const openMediaServer = () => {
     const htmlPage = type === 0 ? "apikeys" : "apikeys.html";
@@ -193,9 +194,9 @@ const ServerForm = (props: Props) => {
             helperText={errors.address ? errors.address.message : ""}
             className={classes["input-field__padding"]}
             placeholder={t("SETTINGS.MEDIASERVER.ADDRESS")}
-            value={address}
             name="address"
             variant="standard"
+            defaultValue={address}
             onChange={(event) => setAddress(event.target.value)}
           />
         </Grid>
@@ -205,9 +206,9 @@ const ServerForm = (props: Props) => {
             error={!!errors.port}
             helperText={errors.port ? errors.port.message : ""}
             className={classes["input-field__padding"]}
-            value={port}
             name="port"
             type="number"
+            defaultValue={port}
             inputProps={{ min: 0, max: 65535, step: 1 }}
             placeholder={t("SETTINGS.MEDIASERVER.PORT")}
             variant="standard"
@@ -250,8 +251,8 @@ const ServerForm = (props: Props) => {
                   : t("SETTINGS.MEDIASERVER.BASEURLHINT")
               }
               className={classes["input-field__padding"]}
-              value={baseUrl}
               placeholder={t("SETTINGS.MEDIASERVER.BASEURL")}
+              defaultValue={baseUrl}
               name="baseUrl"
               variant="standard"
               onChange={baseUrlChanged}
@@ -290,12 +291,12 @@ const ServerForm = (props: Props) => {
             errors.apiKey
               ? errors.apiKey.message
               : t("SETTINGS.MEDIASERVER.APIKEYHINT", {
-                type: type === 0 ? "Emby" : "Jellyfin",
-              })
+                  type: type === 0 ? "Emby" : "Jellyfin",
+                })
           }
           className={classes["input-field__padding"]}
-          value={apiKey}
           placeholder={t("SETTINGS.MEDIASERVER.APIKEY")}
+          defaultValue={apiKey}
           name="apiKey"
           variant="standard"
           onChange={(event) => setApiKey(event.target.value)}

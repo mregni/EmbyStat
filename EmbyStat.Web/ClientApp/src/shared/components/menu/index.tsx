@@ -14,6 +14,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import uuid from 'react-uuid';
 import classNames from 'classnames';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome, faFilm, faTv, faServer, faBriefcase, faCogs, faFileAlt } from '@fortawesome/free-solid-svg-icons'
 
 import theme from '../../../styles/theme';
 import MenuItem from './MenuItem';
@@ -78,13 +80,13 @@ const Menu = (props: Props) => {
 
   const menuItems = [
     {
-      icon: <HomeRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faHome} />,
       title: t('MENU.DASHBOARD'),
       route: '/',
       roles: [UserRoles.Admin, UserRoles.User],
     },
     {
-      icon: <LocalMoviesRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faFilm} />,
       title: t('MENU.MOVIES'),
       children: [
         {
@@ -105,7 +107,7 @@ const Menu = (props: Props) => {
       ],
     },
     {
-      icon: <TvRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faTv} />,
       title: t('MENU.SHOWS'),
       children: [
         {
@@ -126,25 +128,19 @@ const Menu = (props: Props) => {
       ],
     },
     {
-      icon: <StorageRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faServer} />,
       title: t('MENU.SERVER'),
       route: '/mediaserver',
       roles: [UserRoles.Admin, UserRoles.User],
     },
     {
-      icon: <AssignmentRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faBriefcase} />,
       title: t('MENU.JOBS'),
       route: '/jobs',
       roles: [UserRoles.Admin, UserRoles.User],
     },
-    {
-      icon: <DescriptionRoundedIcon />,
-      title: t('MENU.LOGS'),
-      route: '/logs',
-      roles: [UserRoles.Admin, UserRoles.User],
-    },
-    {
-      icon: <SettingsIcon />,
+        {
+      icon: <FontAwesomeIcon icon={faCogs} />,
       title: t('MENU.SETTINGS'),
       children: [
         {
@@ -158,6 +154,12 @@ const Menu = (props: Props) => {
           roles: [UserRoles.Admin, UserRoles.User],
         },
       ],
+    },
+    {
+      icon: <FontAwesomeIcon icon={faFileAlt} />,
+      title: t('MENU.LOGS'),
+      route: '/logs',
+      roles: [UserRoles.Admin, UserRoles.User],
     },
   ];
 
@@ -195,7 +197,7 @@ const Menu = (props: Props) => {
                 />
               ))}
             </List>
-            <ServerStatus />
+            {/* <ServerStatus /> */}
           </div>
         </Grid>
         <Grid item container justify="center" direction="row" className={classes.version}>

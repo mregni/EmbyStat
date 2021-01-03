@@ -34,7 +34,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
             {
                 await LogInformation("Contacting Github now to see if new version is available.");
                 var update = _updateService.CheckForUpdate(Settings);
-                await LogProgress(20);
+                await LogProgressIncrement(20);
                 if (update.IsUpdateAvailable && Settings.AutoUpdate)
                 {
                     await LogInformation($"New version found: v{update.AvailableVersion}");
@@ -42,7 +42,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
                     await _settingsService.SetUpdateInProgressSettingAsync(true);
                     await HubHelper.BroadcastUpdateState(true);
                     Task.WaitAll(_updateService.DownloadZipAsync(update));
-                    await LogProgress(50);
+                    await LogProgressIncrement(50);
                     await _updateService.UpdateServerAsync();
                     await _settingsService.SetUpdateInProgressSettingAsync(false);
                     await HubHelper.BroadcastUpdateFinished(true);
