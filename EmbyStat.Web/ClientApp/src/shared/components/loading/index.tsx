@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Loading = ({ Component, loading, label, className, ...props }) => {
+const Loading = ({ Component, loading, label, className, ...props }): ReactElement => {
   const classes = useStyles();
   if (loading) {
     return (
