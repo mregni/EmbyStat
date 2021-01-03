@@ -24,6 +24,7 @@ import Flag from '../../../../shared/components/flag';
 import DetailMovieSkeleton from './DetailMovieSkeleton';
 import { getMovieDetails } from '../../../../shared/services/MovieService';
 import { Movie } from '../../../../shared/models/common';
+import { MovieRow } from '../../../../shared/models/movie';
 
 const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
@@ -64,14 +65,14 @@ const DetailMovieTemplate = (props: Props) => {
 
   useEffect(() => {
     const loadMovie = async () => {
-      setMovie(await getMovieDetails(data.data.id));
+      setMovie(await getMovieDetails(data.id));
     };
 
     loadMovie();
   }, [data]);
 
   const getPosterUrl = (): string => {
-    return getBackdropImageLink(settings, data.data.id);
+    return getBackdropImageLink(settings, data.id);
   };
 
   const classes = useStyles({ background: getPosterUrl() });

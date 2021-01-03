@@ -11,9 +11,6 @@ import SmallLogo from '../../shared/assets/images/logo-small.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
     width: '100%',
     height: '100%',
   },
