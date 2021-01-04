@@ -16,7 +16,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/webpack-env": "^1.15.2",
     "ahooks": "^2.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "devextreme": "20.1.4",
     "devextreme-aspnet-data-nojquery": "^2.6.2",
