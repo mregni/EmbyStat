@@ -140,7 +140,7 @@
     "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Type de serveur",
     "FINALLABEL": "Final",
-    "SEARCHSERVERS": "Searching servers",
+    "SEARCHSERVERS": "Recherche de serveurs",
     "OPENSERVERAPIPAGE": "Ouvrir la page {{type}} des Clés API",
     "CROWNDINHELP": "Si votre langue n'est pas mentionnée ou en cours de traduction, pensez à nous aider en vous connectant sur <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
@@ -203,8 +203,8 @@
       "EMBY": "Emby"
     },
     "TVDB": {
-      "TITLE": "Tvdb connection",
-      "APIKEYLABEL": "TheTVDB API key",
+      "TITLE": "Connexion à Tvdb",
+      "APIKEYLABEL": "Clé de l'API TheTVDB",
       "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
       "SAVING": "Saving TVDB key"
@@ -410,7 +410,7 @@
   "FILTERS": {
     "CLEARALL": "Tout enlever",
     "CONTAINS": "contient",
-    "NOTCONTAINS": "not contains",
+    "NOTCONTAINS": "ne contient pas",
     "EQUAL": "equals",
     "STARTSWITH": "commence par",
     "ENDSWITH": "finit par",
