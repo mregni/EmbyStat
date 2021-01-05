@@ -155,7 +155,7 @@
       "ADMINTEXT": "Parce que vous utilisez Jellyfin, vous devez fournir un compte administrateur que vous souhaitez utiliser pour récupérer les données du serveur. Veuillez sélectionner l'administrateur souhaité dans la liste déroulante."
     },
     "APIKEYFAILED": "Nous avons essayé de contacter votre serveur {{type}} mais cela semble échouer. Veuillez revenir en arrière, corriger la configuration et réessayer.",
-    "ADDRESSUSED": "Address: <i>{{address}}</i>",
+    "ADDRESSUSED": "Adresse: <i>{{address}}</i>",
     "APIKEYUSED": "Clé API : <i>{{api}}</i>",
     "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
   },
@@ -205,9 +205,9 @@
     "TVDB": {
       "TITLE": "Connexion à Tvdb",
       "APIKEYLABEL": "Clé de l'API TheTVDB",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "APIKEYWARNING": "Si vous le souhaitez, vous pouvez fournir à EmbyStat votre propre clé API TheTVDB ici. Assurez-vous de fournir une clé API fonctionnelle ! Si la clé est incorrecte, la tâche de synchronisation échouera.",
+      "NOAPIKEY": "La clé API ne peut pas être vide",
+      "SAVING": "Sauvegarde de la clé TVDB"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -337,7 +337,7 @@
     "INFO": {
       "PING": "Vérifier la connexion {{type}}",
       "PINGDESCRIPTION": "Ping le serveur Emby pour vérifier s'il est toujours en ligne.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SYSTEM-SYNCDESCRIPTION": "Effectuer une synchronisation rapide avec le serveur Emby. Ceci est une mise à jour système rapide.",
       "SYSTEM-SYNC": "Synchroniser les informations de {{type}}",
       "SYSTEM-SYNCSTART": "Démarrer une petite synchronisation",
       "MEDIA-SYNCDESCRIPTION": "Effectuez une synchronisation incrémentielle de votre collection de films. Cela peut prendre du temps!",
