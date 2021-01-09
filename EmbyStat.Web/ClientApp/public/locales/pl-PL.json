@@ -133,31 +133,31 @@
     "USERDETAILTEXT": "Podaj nazwę użytkownika i hasło dla administratora",
     "SERVERCONFIGURATION": "Konfiguracja serwera",
     "SERVERCONFIGURATIONTEST": "Test konfiguracji serwera",
-    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
-    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
-    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
-    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "CONFIGURELIBRARIES": "Skonfiguruj biblioteki {{type}}",
+    "STEPONE": "Sprawdzanie, czy klucz API jest prawidłowy ({{step}}/{{total}})",
+    "STEPTWO": "Pobieranie informacji o serwerze ({{step}}/{{total}})",
+    "STEPTHREE": "Pobieranie kont administratora ({{step}}/{{total}})",
+    "STEPFOUR": "Pobieranie bibliotek serwera ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Final",
-    "SEARCHSERVERS": "Searching servers",
-    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
+    "SEARCHSERVERS": "Wyszukiwanie serwerów",
+    "OPENSERVERAPIPAGE": "Otwórz stronę klucza API {{type}}",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
     "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
-    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "SELECTLIBRARIES": "Wybierz wszystkie biblioteki, które chcesz uwzględnić w obliczeniach statystyk {{type}} . Domyślnie wybrane są wszystkie {{type}} biblioteki. Jeśli chcesz, możesz to później zmienić na stronie ustawień.",
     "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
-    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
+    "APIKEYFAILED": "Próbowaliśmy skontaktować się z Twoim serwerem {{type}} , ale wygląda na to, że nie powiodło się. Proszę wrócić, poprawić konfigurację i spróbować ponownie.",
+    "ADDRESSUSED": "Adres: <i>{{address}}</i>",
+    "APIKEYUSED": "Klucz API: <i>{{api}}</i>",
+    "LANWANCHOISE": "Wybierz poprawny adres, który ma być używany do połączenia z serwerem {{type}}."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total Movies",
@@ -174,7 +174,7 @@
     "TOSHORTMOVIES": "Movies that are very short",
     "NOPOSTER": "Missing a poster",
     "NOIMDB": "Missing an IMDB id",
-    "LOADER": "Loading movie statistics"
+    "LOADER": "Ładowanie statystyk filmu"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total Shows",
@@ -288,12 +288,12 @@
   },
   "LOGIN": {
     "LOGIN": "Login",
-    "ERROR": "Username or password unknown",
-    "LOGOUT": "Log out",
-    "FORGOTPASSWORD": "Forgot password",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "ERROR": "Niepoprawna nazwa użytkownika i/lub hasło",
+    "LOGOUT": "Wyloguj",
+    "FORGOTPASSWORD": "Nie pamiętasz hasła?",
+    "RECOVERPASSWORD": "Przypomnij hasło",
+    "RESETCOMPLETED": "Sprawdź logi pod kątem nowego hasła",
+    "RESETFAILED": "Resetowanie nazwy użytkownika nie powiodło się"
   },
   "USERS": {
     "ISADMIN": "Is administrator",
@@ -329,23 +329,23 @@
     "LASTRUN": "Last run",
     "BUTFAILED": "but failed after",
     "NORUN": "Not ran yet",
-    "PROCESSING": "Processing",
+    "PROCESSING": "Przetwarzane",
     "JOBLOGS": "Job logs",
     "CRONUPDATED": "Cron value updated",
-    "OPENJOBPAGE": "Go to job page",
-    "STARTMEDIASYNC": "Start media sync",
+    "OPENJOBPAGE": "Przejdź do strony zadań",
+    "STARTMEDIASYNC": "Rozpocznij synchronizację multimediów",
     "INFO": {
-      "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "PING": "Sprawdź połączenie {{type}}",
+      "PINGDESCRIPTION": "Sprawdź połączenie do serwera Emby, aby sprawdzić, czy nadal jest online.",
+      "SYSTEM-SYNCDESCRIPTION": "Wykonaj małą synchronizację z serwerem Emby. Jest to tylko szybka i mała aktualizacja systemu.",
+      "SYSTEM-SYNC": "Synchronizuj informacje {{type}}",
+      "SYSTEM-SYNCSTART": "Rozpocznij małą synchronizację",
+      "MEDIA-SYNCDESCRIPTION": "Wykonaj przyrostową synchronizację dla swojej kolekcji filmów. To może chwilę potrwać!",
+      "MEDIA-SYNC": "Synchronizacja mediów",
+      "DATABASE-CLEANUP": "Oczyszczanie bazy danych",
+      "DATABASE-CLEANUPDESCRIPTION": "Oczyść bazę z niepotrzebnych danych.",
+      "UPDATE-CHECKER": "Sprawdź aktualizacje",
+      "UPDATE-CHECKERDESCRIPTION": "Sprawdza dostępność nowych aktualizacji w wybranym kanale aktualizacji."
     }
   },
   "DIALOGS": {
@@ -389,9 +389,9 @@
     "FOLDERS": "Folders"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "TITLE": "Stan {{type}}",
+    "ONLINE": "Serwer online",
+    "OFFLINE": "{{count}} pominiętych pingów"
   },
   "ABOUT": {
     "SERVERINFO": "Server info",
@@ -408,34 +408,34 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
-    "NOTCONTAINS": "not contains",
-    "EQUAL": "equals",
-    "STARTSWITH": "starts with",
-    "ENDSWITH": "ends with",
-    "IS": "is",
-    "ISNULL": "is null",
-    "ISNOT": "is not",
-    "HAS": "has",
-    "HASNO": "has no",
-    "HASNONE": "has none",
-    "BETWEEN": "between",
-    "SHORTER": "shorter",
-    "LONGER": "longer",
-    "ISZERO": "is 0",
-    "LARGER": "larger",
-    "SMALLER": "smaller",
-    "BEFORE": "before",
-    "AFTER": "after",
+    "CLEARALL": "Wyczyść wszystko",
+    "CONTAINS": "zawiera",
+    "NOTCONTAINS": "nie zawiera",
+    "EQUAL": "jest równe",
+    "STARTSWITH": "zaczyna się od",
+    "ENDSWITH": "kończy się z",
+    "IS": "jest",
+    "ISNULL": "jest zerem",
+    "ISNOT": "nie jest",
+    "HAS": "ma",
+    "HASNO": "nie ma",
+    "HASNONE": "nie zawiera nic",
+    "BETWEEN": "pomiędzy",
+    "SHORTER": "krótszy",
+    "LONGER": "dłuższy",
+    "ISZERO": "wynosi 0",
+    "LARGER": "większy",
+    "SMALLER": "mniejszy",
+    "BEFORE": "przed",
+    "AFTER": "po",
     "TITLES": {
       "TITLE": "Title",
-      "IMDB": "Imdb",
+      "IMDB": "IMDb",
       "TMDB": "Tmdb",
-      "IMAGES": "Images",
+      "IMAGES": "Obrazy",
       "GENRES": "Gatunki",
-      "FRAMERATE": "Frame rate",
-      "CONTAINER": "Container"
+      "FRAMERATE": "Klatek na sekundę",
+      "CONTAINER": "Kontener"
     }
   }
 }
