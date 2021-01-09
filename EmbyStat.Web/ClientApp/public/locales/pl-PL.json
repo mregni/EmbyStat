@@ -193,58 +193,58 @@
     "ENDED": "Ended",
     "OVERVIEW": "Overview",
     "MISSINGEPISODES": "Missing episodes",
-    "LOADER": "Loading show statistics"
+    "LOADER": "Ładowanie statystyk serialu"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
+    "SAVED": "Ustawienia zostały zapisane",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TVDB": "The TVDB",
       "EMBY": "Emby"
     },
     "TVDB": {
-      "TITLE": "Tvdb connection",
-      "APIKEYLABEL": "TheTVDB API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "TITLE": "Połączenie Tvdb",
+      "APIKEYLABEL": "Klucz API TVDB",
+      "APIKEYWARNING": "Jeśli chcesz, możesz podać EmbyStat własny klucz API TheTVDB tutaj. Upewnij się, że podałeś działający klucz API! Jeśli klucz jest nieprawidłowy, zadanie synchronizacji nie powiedzie się.",
+      "NOAPIKEY": "Klucz API nie może być pusty",
+      "SAVING": "Zapisywanie klucza TVDB"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Enable exception logging",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
-      "SAVING": "Saving Rollbar settings"
+      "ENABLEROLLBAR": "Włącz rejestrowanie wyjątków",
+      "EXCEPTIONLOGGING": "Włącz / wyłącz rejestrowanie wyjątków w internetowej usłudze Rollbar. Dzięki temu logowaniu mogę szybciej debugować i naprawiać aplikację. Żadne dane osobowe nigdy nie są rejestrowane, tylko wiadomości wyjątków, stacktrace, nazwa systemu operacyjnego i numer wersji.",
+      "SAVING": "Zapisywanie ustawień Rollbar"
     },
     "LANGUAGE": {
-      "TITLE": "Language",
-      "LABEL": "Select your prefert language",
-      "SAVING": "Updating language to {{lang}}"
+      "TITLE": "Język",
+      "LABEL": "Wybierz preferowany język",
+      "SAVING": "Aktualizowanie języka do {{lang}}"
     },
     "ACCOUNT": {
-      "TITLE": "User details",
-      "USERNAME": "Username",
-      "NOUSERNAME": "Username is required",
-      "PASSWORD": "Password",
-      "NEWPASSWORD": "New password",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "CURRENTPASSWORD": "Current password",
-      "NOPASSWORD": "Password is required",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "TITLE": "Dane użytkownika",
+      "USERNAME": "Nazwa użytkownika",
+      "NOUSERNAME": "Nazwa użytkownika jest wymagana",
+      "PASSWORD": "Hasło",
+      "NEWPASSWORD": "Nowe hasło",
+      "REPEATNEWPASSWORD": "Powtórz nowe hasło",
+      "CURRENTPASSWORD": "Aktualne hasło",
+      "NOPASSWORD": "Hasło jest wymagane",
+      "PASSWORDNOTEQUAL": "Hasła nie są takie same",
+      "PASSWORDMINLENGTH": "Hasło musi mieć co najmniej 6 znaków",
+      "PASSWORDWARNING": "Musisz tylko wpisać nowe hasło, jeśli chcesz zmienić swoje obecne hasło.",
+      "WRONGPASSWORD": "Nieprawidłowe hasło dla zalogowanego użytkownika",
+      "USERNAMEUPDATED": "Nazwa użytkownika została zaktualizowana pomyślnie",
+      "USERNAMEUPDATEFAILED": "Aktualizacja nazwy użytkownika nie powiodła się. Sprawdź logi, aby uzyskać więcej informacji"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "SAVING": "Saving all {{type}} statistic settings",
-      "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "TOSHORTTEXT": "Aby znaleźć filmy, które są podejrzanie krótkie, musimy wiedzieć - ile minut uważasz za krótkie dla filmu. Domyślnie jest ustawione na 10 minut, ale w razie potrzeby można to zmienić.",
+      "SAVING": "Zapisywanie wszystkich ustawień statystyk dla {{type}}",
+      "TOSHORTMINUTES": "Minuty",
+      "ENABLETOSHORTSCAN": "Włącz wyszukiwanie krótkich filmów"
     },
     "MOVIE": {
       "LIBRARY": {
-        "SAVING": "Saving movie libraries"
+        "SAVING": "Zapisywanie bibliotek filmów"
       },
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the movie statistics page."
     },
@@ -252,23 +252,23 @@
       "COLLECTIONTYPES": "Select all Emby collection types that you want to be able to select in the collection dropdown on the show statistics page."
     },
     "MEDIASERVER": {
-      "ADDRESS": "IP/domain",
-      "NOADDRESS": "IP/domain is required",
-      "APIKEY": "API key",
-      "NOAPIKEY": "API key is required",
+      "ADDRESS": "IP / domena",
+      "NOADDRESS": "Adres IP/domena jest wymagany",
+      "APIKEY": "Klucz API",
+      "NOAPIKEY": "Klucz API jest wymagany",
       "PORT": "Port",
-      "NOPORT": "Port is required",
-      "BASEURL": "Base URL",
-      "NOBASEURL": "Base URL is required and should start with /",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
-      "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
-      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "NOPORT": "Port jest wymagany",
+      "BASEURL": "Podstawowy adres URL",
+      "NOBASEURL": "Podstawowy adres URL jest wymagany i powinien zaczynać się od /",
+      "EMBYADDRESSREQUIRED": "{{type}} adres IP/domena jest wymagana.",
+      "EMBYPORTREQUIRED": "Wymagany port {{type}}.",
+      "EMBYAPIKEYREQUIRED": "{{type}} klucz API wymagany",
+      "APIKEYHINT": "Przejdź do zaawansowanych -> bezpieczeństwo na serwerze {{type}}, aby wygenerować nowy token API.",
+      "BASEURLHINT": "Podstawowy adres Url musi zaczynać się od /",
+      "BASEURLNEEDED": "Muszę ustawić bazowy adres URL",
+      "BASEURLNEEDEDTOOLTIP": "Prawdopodobnie nie potrzebujesz tego, jeśli nie korzystasz z reverse proxy!",
+      "WRONGAPIKEY": "Podany klucz API jest nieprawidłowy",
+      "CHANGESERVERTYPE": "Skonfigurowałeś serwer {{currentType}}, jeśli chcesz przełączyć się na {{newType}} musisz ponownie zainstalować aplikację."
     },
     "UPDATE": {
       "MASTER": "Master",
