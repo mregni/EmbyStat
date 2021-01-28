@@ -157,7 +157,7 @@
     "APIKEYFAILED": "Nous avons essayé de contacter votre serveur {{type}} mais cela semble échouer. Veuillez revenir en arrière, corriger la configuration et réessayer.",
     "ADDRESSUSED": "Adresse: <i>{{address}}</i>",
     "APIKEYUSED": "Clé API : <i>{{api}}</i>",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
+    "LANWANCHOISE": "Choisissez la bonne adresse à utiliser pour votre connexion au serveur {{type}}."
   },
   "MOVIES": {
     "TOTALMOVIES": "Nombre total de films",
@@ -211,9 +211,9 @@
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Enable exception logging",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
-      "SAVING": "Saving Rollbar settings"
+      "ENABLEROLLBAR": "Activer la journalisation des erreurs",
+      "EXCEPTIONLOGGING": "Activez / désactivez la journalisation des erreurs sur le service externe Rollbar. Avec ces informations je peux débugger l'application plus rapidement. Aucune information personnelle n'est enregistrée, seuls les messages d'erreurs, la trace d'appel, le nom du système d'exploitation et le numéro de version ne sont récoltés.",
+      "SAVING": "Enregistrement des paramètres Rollbar"
     },
     "LANGUAGE": {
       "TITLE": "Langue",
@@ -232,7 +232,7 @@
       "PASSWORDNOTEQUAL": "Les mots de passe ne sont pas identiques",
       "PASSWORDMINLENGTH": "Le mot de passe doit contenir 6 caractères minimum",
       "PASSWORDWARNING": "Vous devez entrer un nouveau mot de passe uniquement si vous voulez changer votre mot de passe actuel.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
+      "WRONGPASSWORD": "Mot de passe incorrect pour l'utilisateur connecté",
       "USERNAMEUPDATED": "Le nom d'utilisateur a été mis à jour avec succès",
       "USERNAMEUPDATEFAILED": "La mise à jour du nom d'utilisateur a échoué, vérifiez les journaux de log pour plus d'informations"
     },
@@ -411,7 +411,7 @@
     "CLEARALL": "Tout enlever",
     "CONTAINS": "contient",
     "NOTCONTAINS": "ne contient pas",
-    "EQUAL": "equals",
+    "EQUAL": "égale à",
     "STARTSWITH": "commence par",
     "ENDSWITH": "finit par",
     "IS": "est",
@@ -419,7 +419,7 @@
     "ISNOT": "n'est pas",
     "HAS": "sont",
     "HASNO": "ne sont pas",
-    "HASNONE": "has none",
+    "HASNONE": "n'en a pas",
     "BETWEEN": "compris entre",
     "SHORTER": "plus petit que",
     "LONGER": "plus long que",
