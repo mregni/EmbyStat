@@ -26,11 +26,11 @@
     "BYTITLE": "même titre",
     "MOVIES": "films",
     "MOVIE": "film",
-    "SHOW": "show",
+    "SHOW": "séries",
     "GENRES": "Genres",
-    "COMMUNITYRATING": "Community rating",
-    "OFFICIALRATING": "Official rating",
-    "COLLECTEDPERCENTAGE": "Collected percentage",
+    "COMMUNITYRATING": "Notation de la communauté",
+    "OFFICIALRATING": "Notation officielle",
+    "COLLECTEDPERCENTAGE": "Pourcentage collecté",
     "EMBY": "Emby",
     "GENERAL": "général",
     "DURATION": "durée",
@@ -61,7 +61,7 @@
     "OS": "Système d'exploitation",
     "WANADDRESS": "Adresse WAN",
     "LANADDRESS": "Adresse LAN",
-    "UPDATELEVEL": "Update level",
+    "UPDATELEVEL": "Canal de distribution",
     "SELECTVALUE": "Sélectionner une valeur",
     "ADD": "Ajouter",
     "DATE": "date",
@@ -85,12 +85,12 @@
     "BITRATE": "Débit",
     "BIT": "bit",
     "SIZEINMB": "Taille en MB",
-    "BITDEPTH": "Bit depth",
+    "BITDEPTH": "Profondeur de bits",
     "CODEC": "Codec",
     "VIDEORANGE": "Video range"
   },
   "LOGS": {
-    "ANONYMISED": "Anonymised",
+    "ANONYMISED": "Anonymisé",
     "CREATIONDATE": "Date de création",
     "ACTIONS": "Actions"
   },
@@ -133,11 +133,11 @@
     "USERDETAILTEXT": "Fournissez un nom d'utilisateur et un mot de passe pour votre utilisateur administrateur",
     "SERVERCONFIGURATION": "Configuration du serveur",
     "SERVERCONFIGURATIONTEST": "Test de configuration du serveur",
-    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
-    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
-    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
-    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "CONFIGURELIBRARIES": "Configurer la bibliothèque {{type}}",
+    "STEPONE": "Vérification de la validité de la clé API ({{step}}/{{total}})",
+    "STEPTWO": "Récupération des informations du serveur ({{step}}/{{total}})",
+    "STEPTHREE": "Récupération des comptes administrateur ({{step}}/{{total}})",
+    "STEPFOUR": "Récupération des bibliothèques du serveur ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Type de serveur",
     "FINALLABEL": "Final",
     "SEARCHSERVERS": "Recherche de serveurs",
@@ -174,7 +174,7 @@
     "TOSHORTMOVIES": "Films qui sont très courts",
     "NOPOSTER": "Manquer une affiche",
     "NOIMDB": "Manquant un identifiant IMDB",
-    "LOADER": "Loading movie statistics"
+    "LOADER": "Chargement des statistiques sur les films"
   },
   "SHOWS": {
     "TOTALSHOWS": "Nombre total de séries",
@@ -193,7 +193,7 @@
     "ENDED": "Terminée",
     "OVERVIEW": "Aperçu",
     "MISSINGEPISODES": "Épisodes manquants",
-    "LOADER": "Loading show statistics"
+    "LOADER": "Chargement des statistiques sur les séries"
   },
   "SETTINGS": {
     "SAVED": "Paramètres enregistrés",
