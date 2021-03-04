@@ -89,3 +89,7 @@ export interface Video extends Extra {
 export interface Movie extends Video {
   originalTitle: string;
 }
+
+export interface Show extends Video {
+  name: string;
+}

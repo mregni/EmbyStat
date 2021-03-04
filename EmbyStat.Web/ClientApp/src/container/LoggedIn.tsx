@@ -28,9 +28,11 @@ import MoviesList from '../pages/movies/MoviesList';
 import ShowsGeneral from '../pages/shows/ShowsGeneral';
 import ShowsGraphs from '../pages/shows/ShowsGraphs';
 import ShowsLoader from '../pages/shows/Helpers/ShowsLoader';
+import ShowsList from '../pages/shows/ShowsList';
 import NotFound from '../pages/notFound';
 import GeneralSettings from '../pages/settings/GeneralSettings';
 import MovieSettings from '../pages/settings/MovieSettings';
+import ShowSettings from '../pages/settings/ShowSettings';
 import Menu from '../shared/components/menu';
 import PrivateRoute from '../shared/components/privateRoute';
 import UpdateProvider from '../shared/providers/UpdateProvider';
@@ -193,11 +195,14 @@ const LoggedIn = (props: Props) => {
             <PrivateRoute path="/movies/list" exact>
               <MoviesLoader Component={MoviesList} />
             </PrivateRoute>
-            <PrivateRoute path="/shows/general" exact>
+            <PrivateRoute path={["/shows/general", "/shows"]} exact>
               <ShowsLoader Component={ShowsGeneral} />
             </PrivateRoute>
             <PrivateRoute path="/shows/graphs" exact>
               <ShowsLoader Component={ShowsGraphs} />
+            </PrivateRoute>
+            <PrivateRoute path="/shows/list" exact>
+              <ShowsLoader Component={ShowsList} />
             </PrivateRoute>
             <PrivateRoute path="/mediaserver" exact>
               <MediaServer />
@@ -213,6 +218,9 @@ const LoggedIn = (props: Props) => {
             </PrivateRoute>
             <PrivateRoute path="/settings/movie" exact>
               <MovieSettings />
+            </PrivateRoute>
+            <PrivateRoute path="/settings/show" exact>
+              <ShowSettings />
             </PrivateRoute>
             <Route path="/login">
               <Login />

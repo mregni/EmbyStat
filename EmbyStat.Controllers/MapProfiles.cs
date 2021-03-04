@@ -98,6 +98,7 @@ namespace EmbyStat.Controllers
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
             CreateMap<MovieColumn, MovieColumnViewModel>();
+            CreateMap<ShowColumn, ShowColumnViewModel>();
             CreateMap<TopCard, TopCardViewModel>();
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();

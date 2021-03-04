@@ -7,6 +7,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
@@ -14,6 +15,7 @@ using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
@@ -463,6 +465,31 @@ namespace EmbyStat.Services
                 Tvdb = show.TVDB,
                 Size = show.GetShowSize()
             };
+        }
+
+        public Page<ShowColumn> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        {
+            var list = _showRepository
+                .GetShowPage(skip, take, sort, filters, libraryIds)
+                .Select(x => new ShowColumn
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0
+                });
+
+            var page = new Page<ShowColumn> { Data = list };
+            if (requireTotalCount)
+            {
+                page.TotalCount = _showRepository.GetMediaCount(filters, libraryIds);
+            }
+
+            return page;
+        }
+
+        public Show GetShow(string id)
+        {
+            return _showRepository.GetShowById(id);
         }
 
         #endregion

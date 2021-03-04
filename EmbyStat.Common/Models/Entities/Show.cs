@@ -6,7 +6,8 @@ using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
-    public class Show : Extra
+    //public class Show : Extra
+    public class Show : Video
     {
         public long? CumulativeRunTimeTicks { get; set; }
         public string Status { get; set; }

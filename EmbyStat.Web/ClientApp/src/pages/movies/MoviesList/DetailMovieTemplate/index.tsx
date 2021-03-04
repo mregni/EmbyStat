@@ -232,10 +232,6 @@ const DetailMovieTemplate = (props: Props) => {
               lg={4}
               xl={3}
             >
-              <Grid item container alignItems="center">
-                <InboxRoundedIcon />
-                <p className="m-l-8">{movie.mediaSources[0].videoRange}</p>
-              </Grid>
             </Grid>
           </Grid>
         </Grid>

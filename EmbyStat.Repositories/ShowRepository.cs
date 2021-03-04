@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Repositories
 {
@@ -169,6 +172,54 @@ namespace EmbyStat.Repositories
                 var collection = database.GetCollection<Episode>();
                 return collection.Find(x => x.Id == id && x.ShowId == showId).SingleOrDefault();
             });
+        }
+
+        public IEnumerable<Show> GetShowPage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Show>();
+                var query = GetWorkingLibrarySet(collection, libraryIds);
+
+                query = filters.Aggregate(query, ApplyShowFilters);
+
+                if (!string.IsNullOrWhiteSpace(sort))
+                {
+                    var jObj = JsonConvert.DeserializeObject<JArray>(sort);
+                    var selector = jObj[0]["selector"].Value<string>().FirstCharToUpper();
+                    var desc = jObj[0]["desc"].Value<bool>();
+
+                    query = desc
+                        ? query.OrderByDescending(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null))
+                        : query.OrderBy(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null));
+                }
+
+                return query
+                    .Skip(skip)
+                    .Take(take);
+            });
+        }
+
+        private IEnumerable<Show> ApplyShowFilters(IEnumerable<Show> query, Filter filter)
+        {
+            switch (filter.Field)
+            {
+                case "SizeInMb":
+                    var sizeValues = FormatInputValue(filter.Value, 1024);
+                    return (filter.Operation switch
+                    {
+                        "<" => query.Where(x => x.MediaSources.All(y => y.SizeInMb < sizeValues[0])),
+                        ">" => query.Where(x => x.MediaSources.All(y => y.SizeInMb > sizeValues[0])),
+                        "null" => query.Where(x => x.MediaSources.All(y => Math.Abs(y.SizeInMb) < 0.1)),
+                        "between" => query.Where(x =>
+                            x.MediaSources.All(y => y.SizeInMb > sizeValues[0]) &&
+                            x.MediaSources.All(y => y.SizeInMb < sizeValues[1])),
+                        _ => query
+                    });
+                default:
+                    return ApplyFilter(query, filter);
+            }
         }
     }
 }

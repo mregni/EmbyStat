@@ -61,4 +61,4 @@ const ShowsLoader = (props: Props) => {
   );
 };
 
-export default ShowsLoader
+export default ShowsLoader;
