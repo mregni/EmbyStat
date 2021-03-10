@@ -25,6 +25,4 @@ export interface ShowColumn {
   codec: string;
   bitDepth: number | null;
   videoRange: string;
-  seasons: string[];
-  episodes: string[];
 }

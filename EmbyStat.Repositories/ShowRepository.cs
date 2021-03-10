@@ -191,8 +191,8 @@ namespace EmbyStat.Repositories
                     var desc = jObj[0]["desc"].Value<bool>();
 
                     query = desc
-                        ? query.OrderByDescending(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null))
-                        : query.OrderBy(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null));
+                        ? query.OrderByDescending(x => typeof(Show).GetProperty(selector)?.GetValue(x, null))
+                        : query.OrderBy(x => typeof(Show).GetProperty(selector)?.GetValue(x, null));
                 }
 
                 return query
@@ -205,18 +205,6 @@ namespace EmbyStat.Repositories
         {
             switch (filter.Field)
             {
-                case "SizeInMb":
-                    var sizeValues = FormatInputValue(filter.Value, 1024);
-                    return (filter.Operation switch
-                    {
-                        "<" => query.Where(x => x.MediaSources.All(y => y.SizeInMb < sizeValues[0])),
-                        ">" => query.Where(x => x.MediaSources.All(y => y.SizeInMb > sizeValues[0])),
-                        "null" => query.Where(x => x.MediaSources.All(y => Math.Abs(y.SizeInMb) < 0.1)),
-                        "between" => query.Where(x =>
-                            x.MediaSources.All(y => y.SizeInMb > sizeValues[0]) &&
-                            x.MediaSources.All(y => y.SizeInMb < sizeValues[1])),
-                        _ => query
-                    });
                 default:
                     return ApplyFilter(query, filter);
             }

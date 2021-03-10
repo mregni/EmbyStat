@@ -29,6 +29,7 @@ import { getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import { RootState } from '../../../store/RootReducer';
 import { useServerType } from '../../../shared/hooks';
 import calculateFileSize from '../../../shared/utils/CalculateFileSize';
+import { Show } from '../../../shared/models/common';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 interface Props { }
 
 const ShowList = (props: Props) => {
+  const show = useState<Show>({} as Show);
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
@@ -91,18 +93,20 @@ const ShowList = (props: Props) => {
     return data.name;
   };
 
+  const getSeasonsValue = (data) => {
+    return data.seasons;
+  };
+
+  const getEpisodesValue = (data) => {
+    return data.episodes;
+  };
+
+  const getMissingEpisodes = (data) => {
+    return data.missingEpisodes;
+  }
+
   const getSizeInMbValue = (data) => {
     return calculateFileSize(data.sizeInMb)
-  }
-
-  const getSeasons = (data) => {
-      //return data.seasons.join(', ');
-      return data.seasons;
-  }
-
-  const getEpisodes = (data) => {
-      //return data.episodes.join(', ');
-      return data.episodes;
   }
 
   const generateLabel = (filter: ActiveFilter): string => {
@@ -157,7 +161,6 @@ const ShowList = (props: Props) => {
           <Scrolling mode="virtual" rowRenderingMode="virtual" />
           <Paging pageSize="100" />
           <Sorting mode="single" />
-
           <Column
             dataField="sortName"
             caption={t('COMMON.TITLE')}
@@ -166,24 +169,30 @@ const ShowList = (props: Props) => {
             defaultSortIndex={0}
             defaultSortOrder="asc"
           />
-          <Column
-            caption={t('COMMON.SIZEINMB')}
-            calculateCellValue={getSizeInMbValue}
-            allowSorting={false}
-          />
-
           <Column caption={t('COMMON.RATING')} dataField="communityRating" />
           <Column
+            caption={t('SHOWS.SEASONS')}
             dataField="seasons"
-            caption={t('COMMON.SEASONS')}
-            calculateCellValue={getSeasons}
-            allowSorting={false}
+            calculateCellValue={getSeasonsValue}
+            allowSorting={true}
           />
           <Column
-            dataField="episodes"
             caption={t('COMMON.EPISODES')}
-            calculateCellValue={getEpisodes}
-            allowSorting={false}
+            dataField="episodes"
+            calculateCellValue={getEpisodesValue}
+            allowSorting={true}
+          />
+          <Column
+            caption={t('SHOWS.MISSINGEPISODES')}
+            dataField="missingepisodes"
+            calculateCellValue={getMissingEpisodes}
+            allowSorting={true}
+          />
+          <Column
+            caption={t('COMMON.SIZEINMB')}
+            dataField="sizeInMb"
+            calculateCellValue={getSizeInMbValue}
+            allowSorting={true}
           />
           <MasterDetail enabled={true} component={DetailShowTemplate} />
         </DataGrid>

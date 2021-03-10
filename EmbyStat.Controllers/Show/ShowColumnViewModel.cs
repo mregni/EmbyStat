@@ -30,5 +30,8 @@ namespace EmbyStat.Controllers.Show
         public string Codec { get; set; }
         public int? BitDepth { get; set; }
         public string VideoRange { get; set; }
+        public string Seasons { get; set; }
+        public string Episodes { get; set; }
+        public int MissingEpisodes { get; set; }
     }
 }

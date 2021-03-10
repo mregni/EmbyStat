@@ -137,6 +137,10 @@ const DetailShowTemplate = (props: Props) => {
             <Grid item>
                 <p className={classes.show__genres}>{show.genres.join(', ')}</p>
             </Grid>
+            <Grid item container alignItems="center">
+                <InsertDriveFileRoundedIcon />
+                <p className="m-l-8">{show.path}</p>
+            </Grid>
             </Grid>
           </Grid>
         </Grid>

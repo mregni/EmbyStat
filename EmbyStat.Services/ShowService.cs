@@ -466,7 +466,6 @@ namespace EmbyStat.Services
                 Size = show.GetShowSize()
             };
         }
-
         public Page<ShowColumn> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
             var list = _showRepository
@@ -475,8 +474,12 @@ namespace EmbyStat.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0
-                });
+                    CommunityRating = x.CommunityRating,
+                    Seasons = x.Seasons.Count(),
+                    Episodes = x.Episodes.Count(),
+                    SizeInMb = (int)x.Size,
+                    MissingEpisodes = (int)x.MissingEpisodes
+                }) ;;
 
             var page = new Page<ShowColumn> { Data = list };
             if (requireTotalCount)

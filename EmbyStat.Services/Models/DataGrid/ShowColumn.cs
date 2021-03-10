@@ -15,8 +15,10 @@ namespace EmbyStat.Services.Models.DataGrid
         public float? CommunityRating { get; set; }
         public string SortName { get; set; }
         public string Path { get; set; }
-        public double SizeInMb { get; set; }
-        public string[] Seasons { get; set; }
-        public string[] Episodes { get; set; }
+        public int Seasons { get; set; }
+        public int Episodes { get; set; }
+        public int EpisodesData { get; set; }
+        public int SizeInMb { get; set; }
+        public int MissingEpisodes { get; set; }
     }
 }

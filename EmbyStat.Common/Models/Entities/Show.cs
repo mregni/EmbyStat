@@ -6,8 +6,7 @@ using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
-    //public class Show : Extra
-    public class Show : Video
+    public class Show : Extra
     {
         public long? CumulativeRunTimeTicks { get; set; }
         public string Status { get; set; }
@@ -17,6 +16,8 @@ namespace EmbyStat.Common.Models.Entities
         public List<Season> Seasons { get; set; }
         [BsonRef(nameof(Episode))]
         public List<Episode> Episodes { get; set; }
+        public double Size { get; set; }
+        public double MissingEpisodes { get; set; }
 
         [BsonIgnore]
         public int MissingEpisodesCount
