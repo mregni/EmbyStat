@@ -193,9 +193,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     var seasons = _httpClient.GetSeasons(showDto.Id);
                     var episodes = _httpClient.GetEpisodes(seasons.Select(x => x.Id), show.Id);
+                    double size = 0;
 
                     show.Seasons.AddRange(seasons.Where(x => show.Seasons.All(y => y.Id != x.Id)));
                     show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
+
+                    size = show.GetShowSize();
+                    show.Size = size;
+
+                    await LogInformation($"Found {show.Seasons.Count} seasons and {show.Episodes.Count} episodes for {show.Name} (Size in GB: {Math.Round(size / 1024, 2)})");
                 }
 
                 show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);
@@ -281,6 +287,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             show.Episodes = show.Episodes.Where(x => show.Seasons.Any(y => y.Id.ToString() == x.ParentId)).ToList();
             show.TvdbSynced = true;
+            show.MissingEpisodes = missingEpisodesCount;
             return show;
         }
 

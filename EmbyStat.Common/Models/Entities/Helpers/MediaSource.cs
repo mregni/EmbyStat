@@ -12,5 +12,6 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public string Protocol { get; set; }
         public long? RunTimeTicks { get; set; }
         public double SizeInMb { get; set; }
+        public double MissingEpisodes { get; set; }
     }
 }

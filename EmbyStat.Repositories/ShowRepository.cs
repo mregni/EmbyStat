@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Repositories
 {
@@ -169,6 +172,42 @@ namespace EmbyStat.Repositories
                 var collection = database.GetCollection<Episode>();
                 return collection.Find(x => x.Id == id && x.ShowId == showId).SingleOrDefault();
             });
+        }
+
+        public IEnumerable<Show> GetShowPage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds)
+        {
+            return ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Show>();
+                var query = GetWorkingLibrarySet(collection, libraryIds);
+
+                query = filters.Aggregate(query, ApplyShowFilters);
+
+                if (!string.IsNullOrWhiteSpace(sort))
+                {
+                    var jObj = JsonConvert.DeserializeObject<JArray>(sort);
+                    var selector = jObj[0]["selector"].Value<string>().FirstCharToUpper();
+                    var desc = jObj[0]["desc"].Value<bool>();
+
+                    query = desc
+                        ? query.OrderByDescending(x => typeof(Show).GetProperty(selector)?.GetValue(x, null))
+                        : query.OrderBy(x => typeof(Show).GetProperty(selector)?.GetValue(x, null));
+                }
+
+                return query
+                    .Skip(skip)
+                    .Take(take);
+            });
+        }
+
+        private IEnumerable<Show> ApplyShowFilters(IEnumerable<Show> query, Filter filter)
+        {
+            switch (filter.Field)
+            {
+                default:
+                    return ApplyFilter(query, filter);
+            }
         }
     }
 }

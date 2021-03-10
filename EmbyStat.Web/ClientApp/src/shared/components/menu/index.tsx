@@ -117,7 +117,12 @@ const Menu = (props: Props) => {
           title: t('COMMON.GRAPHS'),
           route: '/shows/graphs',
           roles: [UserRoles.Admin, UserRoles.User],
-        }
+        },
+        {
+          title: t('COMMON.TABLE'),
+          route: '/shows/list',
+          roles: [UserRoles.Admin, UserRoles.User],
+        },
       ],
     },
     {
@@ -150,6 +155,11 @@ const Menu = (props: Props) => {
         {
           title: t('COMMON.MOVIES'),
           route: '/settings/movie',
+          roles: [UserRoles.Admin, UserRoles.User],
+        },
+        {
+          title: t('COMMON.SHOWS'),
+          route: '/settings/show',
           roles: [UserRoles.Admin, UserRoles.User],
         },
       ],

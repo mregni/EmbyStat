@@ -87,7 +87,9 @@
     "SIZEINMB": "Size in MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
-    "VIDEORANGE": "Video range"
+    "VIDEORANGE": "Video range",
+    "SEASONS": "Seasons",
+    "EPISODES": "Episodes"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
