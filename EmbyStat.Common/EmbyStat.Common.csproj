@@ -26,7 +26,7 @@
     <PackageReference Include="MWKL.AspNetCore.Identity.LiteDB" Version="1.0.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
     <PackageReference Include="RestSharp" Version="106.11.4" />
-    <PackageReference Include="Rollbar.NetCore.AspNet" Version="3.12.2" />
+    <PackageReference Include="Rollbar.NetCore.AspNet" Version="4.0.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
   </ItemGroup>
 
