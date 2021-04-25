@@ -85,7 +85,7 @@ namespace EmbyStat.Services.Abstract
             };
         }
 
-        internal Chart CalculatePremiereYearChart(IEnumerable<DateTimeOffset?> list)
+        internal Chart CalculatePremiereYearChart(IEnumerable<DateTime?> list)
         {
             var yearDataList = list
                 .GroupBy(x => x.RoundToFiveYear())
@@ -102,7 +102,7 @@ namespace EmbyStat.Services.Abstract
                 {
                     if (yearDataList.All(x => x.Key != i))
                     {
-                        yearDataList.Add(new ChartGrouping<int?, DateTimeOffset?> { Key = i, Capacity = 0 });
+                        yearDataList.Add(new ChartGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
                     }
                 }
             }

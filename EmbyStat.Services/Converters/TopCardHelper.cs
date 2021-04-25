@@ -62,15 +62,12 @@ namespace EmbyStat.Services.Converters
 
         public static TopCard ConvertToTopCard(this Dictionary<Show, int> list, string title, string unit)
         {
-            var values = list.Select(x =>
+            var values = list.Select(x => new TopCardItem
             {
-                return new TopCardItem
-                {
-                    Value = x.Value.ToString(),
-                    Label = x.Key.Name,
-                    MediaId = x.Key.Id,
-                    Image = x.Key.Primary
-                };
+                Value = x.Value.ToString(),
+                Label = x.Key.Name,
+                MediaId = x.Key.Id,
+                Image = x.Key.Primary
             }).ToArray();
 
 
@@ -84,25 +81,34 @@ namespace EmbyStat.Services.Converters
             };
         }
 
-        public static TopCard ConvertToTopCard(this Person[] list, string title, string unit, string valueSelector)
+        public static TopCard ConvertToTopCard(this Person[] list, string title, string unit, string valueSelector, int count = 5)
         {
-            var values = list.Select(x =>
-            {
-                var propertyInfo = typeof(Person).GetProperty(valueSelector);
-                var value = propertyInfo?.GetValue(x, null).ToString();
-                if (propertyInfo?.PropertyType == typeof(DateTimeOffset?))
+            var values = list
+                .Where(x => x != null)
+                .Select(x =>
                 {
-                    value = DateTimeOffset.Parse(value).ToString("O");
-                }
+                    var propertyInfo = typeof(Person).GetProperty(valueSelector);
+                    var value = propertyInfo?.GetValue(x, null).ToString();
+                    if (propertyInfo?.PropertyType == typeof(DateTime?))
+                    {
+                        value = DateTime.Parse(value).ToString("O");
+                    }
 
-                return new TopCardItem
-                {
-                    Value = value,
-                    Label = x.Name,
-                    MediaId = x.Id,
-                    Image = x.Primary
-                };
-            }).ToArray();
+                    return new TopCardItem
+                    {
+                        Value = value,
+                        Label = x.Name,
+                        MediaId = x.Id,
+                        Image = x.Primary
+                    };
+                })
+                .Take(count)
+                .ToArray();
+
+            if (!values.Any())
+            {
+                return null;
+            }
 
             return new TopCard
             {

@@ -42,7 +42,7 @@ const UserDetailCard = (props: Props) => {
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
 
-  const { register, errors, triggerValidation } = useForm({
+  const { register, errors, trigger } = useForm({
     mode: 'onBlur',
     defaultValues: {
       username: username,
@@ -70,7 +70,7 @@ const UserDetailCard = (props: Props) => {
 
   const updateUserName = async () => {
     if (username !== user?.username) {
-      const valid = await triggerValidation(['username', 'currentPassword']);
+      const valid = await trigger(['username', 'currentPassword']);
       if (valid) {
         const result = await changeUserName({ userName: user?.username ?? '', newUserName: username });
         if (result) {
@@ -92,7 +92,7 @@ const UserDetailCard = (props: Props) => {
 
   const updatePassword = async () => {
     if (password.length !== 0) {
-      const valid = await triggerValidation(['confirmedPassword', 'password', 'currentPassword']);
+      const valid = await trigger(['confirmedPassword', 'password', 'currentPassword']);
       if (valid) {
         const result = await changePassword(
           {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, ReactElement } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -16,6 +16,8 @@ import uuid from 'react-uuid';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
+import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
 import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
 import DetailMovieTemplate from '../DetailMovieTemplate';
@@ -29,6 +31,10 @@ import SortLabel from '../../../../shared/components/tables/SortLabel';
 import { getMoviePage } from '../../../../shared/services/MovieService';
 import { TablePage } from '../../../../shared/models/common';
 import { ActiveFilter } from '../../../../shared/models/filter';
+import Collapse from '@material-ui/core/Collapse';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -38,9 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: 'calc(100vh - 155px)',
     padding: 16,
-  },
-  button__padding: {
-    paddingTop: 5,
   },
   stickyHeader: {
     backgroundColor: theme.palette.background.paper,
@@ -55,8 +58,6 @@ const MovieTable = (props: Props) => {
   const { filters } = props;
   const classes = useStyles();
   const { t } = useTranslation();
-  const settings = useSelector((state: RootState) => state.settings);
-  const serverType = useServerType();
   const [rowsPerPage, setRowsPerPage] = useState<number>(100);
   const [page, setPage] = useState(0);
   const [orderedBy, setOrderedBy] = useState('sortName');
@@ -80,15 +81,12 @@ const MovieTable = (props: Props) => {
     }, []);
 
   useEffect(() => {
-    console.log("row fetch triggered");
-    console.log(filters);
     const filtersJson = JSON.stringify(
       filters?.map((x) => ({
         field: x.field,
         operation: x.operation,
         value: x.value,
       })));
-    console.log(filtersJson);
     fetchRows(page, rowsPerPage, order, orderedBy, filtersJson);
   }, [page, rowsPerPage, order, orderedBy, fetchRows, filters]);
 
@@ -102,62 +100,6 @@ const MovieTable = (props: Props) => {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const getSubtitleValues = (subtitles: string[]) => {
-    if (subtitles && subtitles.length) {
-      return (
-        <Grid container justify="flex-end" direction="row">
-          {subtitles?.slice(0, 5).map((x) => (
-            <Grid item key={uuid()} className="m-r-4">
-              <Flag language={x} />
-            </Grid>
-          ))}
-          {subtitles?.length > 5 ? (
-            <Grid item>+ {subtitles.length - 5}</Grid>
-          ) : null}
-        </Grid>
-      );
-    }
-    return (<div />);
-  };
-
-  const getAudioValues = (audioLanguages: string[]) => {
-    if (audioLanguages && audioLanguages.length) {
-      return (
-        <Grid container justify="flex-end">
-          {audioLanguages.slice(0, 5).map((x) => (
-            <Grid item key={uuid()} className="m-r-4">
-              <Flag language={x} />
-            </Grid>
-          ))}
-          {audioLanguages.length > 5 ? (
-            <Grid item>+ {audioLanguages.length - 5}</Grid>
-          ) : null}
-        </Grid>
-      );
-    }
-    return (<div />);
-  };
-
-  const renderLinks = (movieId: string) => {
-    return (
-      <Grid container direction="row" justify="flex-end" alignItems="center">
-        <Button
-          variant="outlined"
-          color="secondary"
-          size="small"
-          href={getItemDetailLink(settings, movieId)}
-          target="_blank"
-          startIcon={<OpenInNewIcon />}
-          classes={{
-            outlinedSizeSmall: classes.button__padding
-          }}
-        >
-          {serverType}
-        </Button>
-      </Grid>
-    );
   };
 
   const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
@@ -174,6 +116,7 @@ const MovieTable = (props: Props) => {
     align: 'right' | 'left',
   }
   const headers: head[] = [
+    { label: "", field: "", sortable: false, width: 30, align: 'left' },
     { label: "COMMON.TITLE", field: "sortName", sortable: true, width: 300, align: 'left' },
     { label: "COMMON.GENRES", field: "", sortable: false, width: 220, align: 'left' },
     { label: "COMMON.CONTAINER", field: "Container", sortable: true, align: 'right' },
@@ -241,24 +184,7 @@ const MovieTable = (props: Props) => {
                       <TableBody>
                         {
                           tableData.data.map((row) => (
-                            <TableRow key={row.id}>
-                              <TableCell component="th" scope="row">{row.name}</TableCell>
-                              <TableCell align="left">{row.genres.join(', ')}</TableCell>
-                              <TableCell align="right">{row.container}</TableCell>
-                              <TableCell align="right">{row.runTime} {t('COMMON.MIN')}</TableCell>
-                              <TableCell align="right">{row.officialRating}</TableCell>
-                              <TableCell align="right">{row.height}</TableCell>
-                              <TableCell align="right">{row.width}</TableCell>
-                              <TableCell align="right">{row.bitRate}</TableCell>
-                              <TableCell align="right">{calculateFileSize(row.sizeInMb)}</TableCell>
-                              <TableCell align="right">{row.bitDepth}</TableCell>
-                              <TableCell align="right">{row.codec}</TableCell>
-                              <TableCell align="right">{row.videoRange}</TableCell>
-                              <TableCell align="right">{row.communityRating}</TableCell>
-                              <TableCell align="right">{getSubtitleValues(row.subtitles)}</TableCell>
-                              <TableCell align="right">{getAudioValues(row.audioLanguages)}</TableCell>
-                              <TableCell align="right">{renderLinks(row.id)}</TableCell>
-                            </TableRow>
+                            <Row row={row} key={row.id} />
                           ))}
                         {emptyRows > 0 && (
                           <TableRow style={{ height: 53 * emptyRows }}>
@@ -293,6 +219,121 @@ const MovieTable = (props: Props) => {
       </Paper>
     </Grid>
   )
+}
+
+interface RowProps {
+  row: MovieRow;
+}
+
+const useRowStyles = makeStyles((theme: Theme) => ({
+  button__padding: {
+    paddingTop: 5,
+  },
+}));
+
+const Row = (props: RowProps): ReactElement => {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
+  const settings = useSelector((state: RootState) => state.settings);
+  const serverType = useServerType();
+  const classes = useRowStyles();
+
+  const getSubtitleValues = (subtitles: string[]) => {
+    if (subtitles && subtitles.length) {
+      return (
+        <Grid container justify="flex-end" direction="row">
+          {subtitles?.slice(0, 5).map((x) => (
+            <Grid item key={uuid()} className="m-r-4">
+              <Flag language={x} />
+            </Grid>
+          ))}
+          {subtitles?.length > 5 ? (
+            <Grid item>+ {subtitles.length - 5}</Grid>
+          ) : null}
+        </Grid>
+      );
+    }
+    return (<div />);
+  };
+
+  const getAudioValues = (audioLanguages: string[]) => {
+    if (audioLanguages && audioLanguages.length) {
+      return (
+        <Grid container justify="flex-end">
+          {audioLanguages.slice(0, 5).map((x) => (
+            <Grid item key={uuid()} className="m-r-4">
+              <Flag language={x} />
+            </Grid>
+          ))}
+          {audioLanguages.length > 5 ? (
+            <Grid item>+ {audioLanguages.length - 5}</Grid>
+          ) : null}
+        </Grid>
+      );
+    }
+    return (<div />);
+  };
+
+  const renderLinks = (movieId: string) => {
+    return (
+      <Grid container direction="row" justify="flex-end" alignItems="center">
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="small"
+          href={getItemDetailLink(settings, movieId)}
+          target="_blank"
+          startIcon={<OpenInNewIcon />}
+          classes={{
+            outlinedSizeSmall: classes.button__padding
+          }}
+        >
+          {serverType}
+        </Button>
+      </Grid>
+    );
+  };
+
+  return (
+    <>
+      <TableRow key={row.id} hover>
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpRoundedIcon /> : <KeyboardArrowDownRoundedIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">{row.name}</TableCell>
+        <TableCell align="left">{row.genres.join(', ')}</TableCell>
+        <TableCell align="right">{row.container}</TableCell>
+        <TableCell align="right">{row.runTime} {t('COMMON.MIN')}</TableCell>
+        <TableCell align="right">{row.officialRating}</TableCell>
+        <TableCell align="right">{row.height}</TableCell>
+        <TableCell align="right">{row.width}</TableCell>
+        <TableCell align="right">{row.bitRate}</TableCell>
+        <TableCell align="right">{calculateFileSize(row.sizeInMb)}</TableCell>
+        <TableCell align="right">{row.bitDepth}</TableCell>
+        <TableCell align="right">{row.codec}</TableCell>
+        <TableCell align="right">{row.videoRange}</TableCell>
+        <TableCell align="right">{row.communityRating}</TableCell>
+        <TableCell align="right">{getSubtitleValues(row.subtitles)}</TableCell>
+        <TableCell align="right">{getAudioValues(row.audioLanguages)}</TableCell>
+        <TableCell align="right">{renderLinks(row.id)}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={16}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+              <Typography variant="h6" gutterBottom component="div">
+                History
+              </Typography>
+              Testing
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </>
+  );
 }
 
 export default MovieTable

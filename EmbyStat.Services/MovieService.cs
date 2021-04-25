@@ -337,12 +337,25 @@ namespace EmbyStat.Services
                     TotalTypeCount(libraryIds, PersonType.Writer, Constants.Common.TotalWriters),
                 };
 
-                returnObj.GlobalCards = new List<TopCard>
+                returnObj.GlobalCards = new List<TopCard>();
+
+                var mostFeaturedActor = GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor);
+                if (mostFeaturedActor != null)
                 {
-                    GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
-                    GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
-                    GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
-                };
+                    returnObj.GlobalCards.Add(mostFeaturedActor);
+                }
+
+                var mostFeaturedDirector = GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector);
+                if (mostFeaturedDirector != null)
+                {
+                    returnObj.GlobalCards.Add(mostFeaturedDirector);
+                }
+
+                var mostFeaturedWriter = GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter);
+                if (mostFeaturedWriter != null)
+                {
+                    returnObj.GlobalCards.Add(mostFeaturedWriter);
+                }
 
                 returnObj.MostFeaturedActorsPerGenreCards = GetMostFeaturedActorsPerGenreAsync(libraryIds);
 
@@ -373,6 +386,7 @@ namespace EmbyStat.Services
             var people = _movieRepository
                     .GetMostFeaturedPersons(libraryIds, type, 5)
                     .Select(name => PersonService.GetPersonByNameForMovies(name))
+                    .Where(x => x != null)
                     .ToArray();
 
             return people.ConvertToTopCard(title, string.Empty, "MovieCount");
@@ -397,14 +411,15 @@ namespace EmbyStat.Services
                     .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
                     .OrderByDescending(x => x.Count)
                     .Select(x => x.Name)
-                    .Take(count)
                     .Select(name => PersonService.GetPersonByNameForMovies(name, genre))
+                    .Where(x => x != null)
+                    .Take(count * 4)
                     .ToArray();
 
                 list.Add(people.ConvertToTopCard(genre, string.Empty, valueSelector));
             }
 
-            return list;
+            return list.Where(x => x != null).ToList();
         }
 
         #endregion

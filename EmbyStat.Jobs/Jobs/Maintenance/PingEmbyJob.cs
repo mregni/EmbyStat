@@ -29,7 +29,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
         public override async Task RunJobAsync()
         {
             var result = _mediaServerService.PingMediaServer(Settings.MediaServer.FullMediaServerAddress);
-            await LogProgressIncrement(50);
+            await LogProgress(50);
             if (result)
             {
                 await LogInformation("We found your MediaServer server");

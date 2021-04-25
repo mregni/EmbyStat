@@ -8,7 +8,7 @@ import ServerCard from './ServerCard';
 interface Props {
   servers: MediaServerUdpBroadcast[];
   className: string;
-  setSelectedServer: Function;
+  setSelectedServer: (server: MediaServerUdpBroadcast) => void;
 }
 
 const ServerResult = (props: Props) => {

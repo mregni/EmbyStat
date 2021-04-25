@@ -72,8 +72,10 @@ const TopListCard = (props: Props) => {
   const { t } = useTranslation();
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
 
+  console.log(data);
+
   const settings = useSelector((state: RootState) => state.settings);
-  const classes = useStyles({ backdrop: getBackdropImageLink(settings, hoveredItem?.mediaId ?? data.values[0].mediaId) });
+  const classes = useStyles({ backdrop: getBackdropImageLink(settings, hoveredItem?.mediaId ?? data.values[0]?.mediaId ?? "") });
 
   const calculateTime = (date: string): string => {
     return moment(date).format('l');

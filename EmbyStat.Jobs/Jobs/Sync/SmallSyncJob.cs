@@ -30,15 +30,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             _mediaServerService.GetAndProcessServerInfo();
             await LogInformation("Server info downloaded");
-            await LogProgressIncrement(35);
+            await LogProgress(35);
 
             _mediaServerService.GetAndProcessPluginInfo();
             await LogInformation("Server plugins downloaded");
-            await LogProgressIncrement(55);
+            await LogProgress(55);
 
             _mediaServerService.GetAndProcessUsers();
             await LogInformation("Server users downloaded");
-            await LogProgressIncrement(80);
+            await LogProgress(80);
 
             _mediaServerService.GetAndProcessDevices();
             await LogInformation("Server devices downloaded");

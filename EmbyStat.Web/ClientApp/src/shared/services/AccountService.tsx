@@ -3,7 +3,7 @@ import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { axiosInstance } from './axiosInstance';
 
-import { LoginView, AuthenticateResponse, User, ChangeUserNameRequest, ChangePasswordRequest } from '../models/login';
+import { LoginView, AuthenticateResponse, User, ChangeUserNameRequest, ChangePasswordRequest, JwtPayloadCustom } from '../models/login';
 import { isNullOrUndefined } from 'util';
 
 const domain = 'account/';
@@ -103,18 +103,18 @@ export const changeUserName = (request: ChangeUserNameRequest): Promise<boolean>
 }
 
 export const isUserLoggedIn = async (): Promise<boolean> => {
-  let accessToken = localStorage.getItem(accessTokenStr);
+  let accessToken = localStorage.getItem(accessTokenStr) ?? "";
   let refreshToken = localStorage.getItem(refreshTokenStr);
 
   if (
-    ['undefined', undefined, null].includes(accessToken) ||
-    ['undefined', undefined, null].includes(refreshToken)
+    ['undefined', undefined, null, ""].includes(accessToken) ||
+    ['undefined', undefined, null, ""].includes(refreshToken)
   ) {
     userLoggedIn$.next(false);
     return false;
   }
 
-  let tokenExpiration = jwt(accessToken).exp;
+  let tokenExpiration = jwt<JwtPayloadCustom>(accessToken).exp ?? 0;
   let tokenExpirationTimeInSeconds = tokenExpiration - moment().unix();
 
   if (tokenExpirationTimeInSeconds < 250) {
@@ -127,9 +127,9 @@ export const isUserLoggedIn = async (): Promise<boolean> => {
       return false;
     }
 
-    accessToken = localStorage.getItem(accessTokenStr);
+    accessToken = localStorage.getItem(accessTokenStr) ?? "";
     refreshToken = localStorage.getItem(refreshTokenStr);
-    tokenExpiration = jwt(accessToken).exp;
+    tokenExpiration = jwt<JwtPayloadCustom>(accessToken).exp ?? 0;
     tokenExpirationTimeInSeconds = tokenExpiration - moment().unix();
 
     const newTokenIsValid = tokenExpirationTimeInSeconds > 120;
@@ -143,10 +143,10 @@ export const isUserLoggedIn = async (): Promise<boolean> => {
 
 export const getUserInfo = (): User | null => {
   if (isUserLoggedIn()) {
-    const accessToken = localStorage.getItem(accessTokenStr);
-    const tokenInfo = jwt(accessToken);
+    const accessToken = localStorage.getItem(accessTokenStr) ?? "";
+    const tokenInfo = jwt<JwtPayloadCustom>(accessToken);
     return {
-      username: tokenInfo.sub,
+      username: tokenInfo.sub ?? "",
     };
   }
 
@@ -154,12 +154,12 @@ export const getUserInfo = (): User | null => {
 };
 
 export const checkUserRoles = (roles: string[]): boolean => {
-  const accessToken = localStorage.getItem(accessTokenStr);
-  if (['undefined', undefined, null].includes(accessToken)) {
+  const accessToken = localStorage.getItem(accessTokenStr) ?? "";
+  if (['undefined', undefined, null, ""].includes(accessToken)) {
     return false;
   }
 
-  const userRoles = jwt(accessToken).roles as string[];
+  const userRoles = jwt<JwtPayloadCustom>(accessToken).roles as string[];
   const duplicates = userRoles.filter((x) => roles.includes(x));
   return duplicates.length > 0;
 };

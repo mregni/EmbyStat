@@ -27,7 +27,7 @@ namespace Tests.Unit.Builders
                 CollectionId = libraryId,
                 CommunityRating = 1.7f,
                 CumulativeRunTimeTicks = 19400287400000,
-                DateCreated = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
+                DateCreated = new DateTime(2001, 01, 01, 0, 0, 0),
                 IMDB = "12345",
                 Logo = "logo.jpg",
                 Name = "Chuck",
@@ -43,7 +43,7 @@ namespace Tests.Unit.Builders
                 Thumb = "thumb.jpg",
                 TvdbFailed = false,
                 TvdbSynced = false,
-                PremiereDate = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
+                PremiereDate = new DateTime(2001, 01, 01, 0, 0, 0),
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
                 Genres = new[] { "Action" },
                 Episodes = new List<Episode>

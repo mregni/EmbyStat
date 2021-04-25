@@ -21,7 +21,7 @@ namespace Tests.Unit.Extensions
         [InlineData(2010, 2010)]
         public void RoundToFiveYear_Should_Round_Year_Correctly(int input, int output)
         {
-            DateTimeOffset? offset = new DateTimeOffset(input, 1, 1, 1, 0, 0, 0, new TimeSpan());
+            DateTime? offset = new DateTime(input, 1, 1, 1, 0, 0, 0);
             var rounded = offset.RoundToFiveYear();
 
             rounded.Should().Be(output);
@@ -30,8 +30,7 @@ namespace Tests.Unit.Extensions
         [Fact]
         public void RoundToFiveYear_Should_Handle_Null_Values_Correctly()
         {
-            DateTimeOffset? offset = null;
-            var rounded = offset.RoundToFiveYear();
+            var rounded = ((DateTime?) null).RoundToFiveYear();
 
             rounded.Should().BeNull();
         }

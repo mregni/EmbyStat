@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Jellyfin",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Logging", "EmbyStat.Logging\EmbyStat.Logging.csproj", "{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Plugin", "EmbyStat.Plugin\EmbyStat.Plugin.csproj", "{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -336,6 +338,24 @@ Global
 		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x64.Build.0 = Release|Any CPU
 		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x86.ActiveCfg = Release|Any CPU
 		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x86.Build.0 = Release|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.DefaultBuild|x64.ActiveCfg = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.DefaultBuild|x64.Build.0 = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.DefaultBuild|x86.ActiveCfg = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.DefaultBuild|x86.Build.0 = Debug|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Release|x64.Build.0 = Release|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -75,6 +75,14 @@ const ConfigureServer = forwardRef<ValidationHandle, Props>(
     }, [dispatch]);
 
     const changeSeletctedServer = async (server: MediaServerUdpBroadcast) => {
+      setValue('address', server.address);
+      setValue('port', server.port);
+      setValue('baseUrl', server.baseUrl);
+      setValue('apiKey', "");
+      setValue('type', server.type);
+      setValue('protocol', server.protocol);
+      setValue('baseUrlNeeded', server.baseUrl != null ? true : false);
+
       dispatch(
         setServerConfiguration(
           server.address,
@@ -90,7 +98,7 @@ const ConfigureServer = forwardRef<ValidationHandle, Props>(
 
     const {
       register,
-      triggerValidation,
+      trigger,
       errors,
       setValue,
       getValues,
@@ -129,7 +137,7 @@ const ConfigureServer = forwardRef<ValidationHandle, Props>(
             baseUrlNeeded
           )
         );
-        return triggerValidation();
+        return trigger();
       },
     }));
 
@@ -150,7 +158,7 @@ const ConfigureServer = forwardRef<ValidationHandle, Props>(
           register={register}
           errors={errors}
           wizard={wizard}
-          triggerValidation={triggerValidation}
+          triggerValidation={trigger}
           className="m-t-32"
           setValue={setValue}
         />

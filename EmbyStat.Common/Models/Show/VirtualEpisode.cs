@@ -16,7 +16,7 @@ namespace EmbyStat.Common.Models.Show
             Name = episode.Name;
             SeasonNumber = season?.IndexNumber ?? 0;
             EpisodeNumber = episode.IndexNumber ?? 0;
-            FirstAired = episode.PremiereDate?.DateTime;
+            FirstAired = episode.PremiereDate;
         }
 
         public string Id { get; set; }

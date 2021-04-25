@@ -4,13 +4,6 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
-import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
-import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
-import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
-import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
-import TvRoundedIcon from '@material-ui/icons/TvRounded';
-import SettingsIcon from '@material-ui/icons/Settings';
 import uuid from 'react-uuid';
 import classNames from 'classnames';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -19,7 +12,6 @@ import { faHome, faFilm, faTv, faServer, faBriefcase, faCogs, faFileAlt } from '
 
 import theme from '../../../styles/theme';
 import MenuItem from './MenuItem';
-import ServerStatus from './ServerStatus';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/RootReducer';
 import { UserRoles } from '../../../shared/models/login';
@@ -139,7 +131,7 @@ const Menu = (props: Props) => {
       route: '/jobs',
       roles: [UserRoles.Admin, UserRoles.User],
     },
-        {
+    {
       icon: <FontAwesomeIcon icon={faCogs} />,
       title: t('MENU.SETTINGS'),
       children: [

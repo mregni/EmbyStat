@@ -46,11 +46,11 @@ const UserDetails = forwardRef<ValidationHandle, Props>(
     useImperativeHandle(ref, () => ({
       validate(): Promise<boolean> {
         dispatch(setUser(getValues("username"), getValues("password")));
-        return triggerValidation();
+        return trigger();
       },
     }));
 
-    const { register, triggerValidation, errors, getValues } = useForm({
+    const { register, trigger, errors, getValues } = useForm({
       mode: "onBlur",
       defaultValues: {
         username: wizard.username,

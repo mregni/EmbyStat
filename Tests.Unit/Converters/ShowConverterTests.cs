@@ -33,7 +33,7 @@ namespace Tests.Unit.Converters
                 ParentId = "123",
                 Path = "c:\\",
                 CommunityRating = 1.2f,
-                DateCreated = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                DateCreated = new DateTime(2000, 1, 1, 1, 1, 1),
                 ProviderIds = new Dictionary<string, string>
                 {
                     { "Imdb", "1234" },
@@ -41,7 +41,7 @@ namespace Tests.Unit.Converters
                     { "Tvdb", "1234" }
                 },
                 OfficialRating = "16TV",
-                PremiereDate = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                PremiereDate = new DateTime(2000, 1, 1, 1, 1, 1),
                 ProductionYear = 2001,
                 RunTimeTicks = 1000,
                 SortName = "2 broke girls",
@@ -95,10 +95,10 @@ namespace Tests.Unit.Converters
                 Name = "Season 01",
                 ParentId = "12",
                 Path = "C:\\",
-                DateCreated = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                DateCreated = new DateTime(2000, 1, 1, 1, 1, 1),
                 IndexNumber = 1,
                 IndexNumberEnd = null,
-                PremiereDate = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                PremiereDate = new DateTime(2000, 1, 1, 1, 1, 1),
                 ProductionYear = 2001,
                 SortName = "season 01",
                 ImageTags = new Dictionary<ImageType, string>

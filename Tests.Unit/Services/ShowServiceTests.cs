@@ -251,7 +251,7 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Shows.OldestPremiered);
             card.Unit.Should().Be("COMMON.DATE");
-            card.Values[0].Value.Should().Be(_showTwo.PremiereDate?.ToString("O"));
+            card.Values[0].Value.Should().Be(_showTwo.PremiereDate?.ToString());
             card.Values[0].Label.Should().Be(_showTwo.Name);
             card.UnitNeedsTranslation.Should().Be(true);
             card.ValueType.Should().Be(ValueTypeEnum.Date);
@@ -287,7 +287,7 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Shows.LatestAdded);
             card.Unit.Should().Be("COMMON.DATE");
-            card.Values[0].Value.Should().Be(_showThree.DateCreated?.ToString("O"));
+            card.Values[0].Value.Should().Be(_showThree.DateCreated?.ToString());
             card.Values[0].Label.Should().Be(_showThree.Name);
             card.UnitNeedsTranslation.Should().Be(true);
             card.ValueType.Should().Be(ValueTypeEnum.Date);
@@ -305,7 +305,7 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Shows.NewestPremiered);
             card.Unit.Should().Be("COMMON.DATE");
-            card.Values[0].Value.Should().Be(_showThree.PremiereDate?.ToString("O"));
+            card.Values[0].Value.Should().Be(_showThree.PremiereDate?.ToString());
             card.Values[0].Label.Should().Be(_showThree.Name);
             card.UnitNeedsTranslation.Should().Be(true);
             card.ValueType.Should().Be(ValueTypeEnum.Date);

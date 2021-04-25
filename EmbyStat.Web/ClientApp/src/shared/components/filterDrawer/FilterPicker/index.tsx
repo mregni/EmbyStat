@@ -79,8 +79,7 @@ const FilterPicker = (props: Props) => {
     switch (filterDefinition.field) {
       case "RunTimeTicks":
         if (value.includes("|")) {
-          return `${parseInt(value.split("|")[0], 10) * 600000000}|${
-            parseInt(value.split("|")[1], 10) * 600000000
+          return `${parseInt(value.split("|")[0], 10) * 600000000}|${parseInt(value.split("|")[1], 10) * 600000000
             }`;
         }
         return parseInt(value, 10) * 600000000;
@@ -112,10 +111,8 @@ const FilterPicker = (props: Props) => {
 
     switch (type.operation) {
       case "between":
-        return `${value.split("|")[0]}${
-          type.unit != null ? t(type.unit) : ""
-          } ${t("COMMON.AND")} ${value.split("|")[1]}${
-          type.unit != null ? t(type.unit) : ""
+        return `${value.split("|")[0]}${type.unit != null ? t(type.unit) : ""
+          } ${t("COMMON.AND")} ${value.split("|")[1]}${type.unit != null ? t(type.unit) : ""
           }`;
       case "null":
         return "";
@@ -124,7 +121,7 @@ const FilterPicker = (props: Props) => {
     }
   };
 
-  const { register, triggerValidation, errors, reset } = useForm({
+  const { register, trigger, errors, reset } = useForm({
     mode: "onBlur",
     defaultValues: {
       txt: "",
@@ -132,7 +129,7 @@ const FilterPicker = (props: Props) => {
   });
 
   const saveFilter = async () => {
-    if (await triggerValidation()) {
+    if (await trigger()) {
       const type = types.filter((x) => x.id === clickedTypeId)[0];
       const filter: ActiveFilter = {
         field: filterDefinition.field,

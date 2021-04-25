@@ -64,7 +64,6 @@ const Wizard = (props: Props): ReactElement => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { t } = useTranslation();
-  const wizard = useSelector((state: RootState) => state.wizard);
 
   const userDetailRef = useRef<React.ElementRef<typeof UserDetails>>(null);
   const configureServiceRef = useRef<React.ElementRef<typeof ConfigureServer>>(
@@ -108,93 +107,93 @@ const Wizard = (props: Props): ReactElement => {
       {isLoading ? (
         <PageLoader />
       ) : (
-        <div className={classes.root}>
-          <main className={classes.content}>
-            <Grid container direction="row" justify="center">
-              <Grid item xs={12} md={10} lg={8} className={classes.wizard}>
-                <Card>
-                  <CardContent>
-                    <Grid container direction="column">
-                      <Grid item className={classes.wizard__step}>
-                        {activeStep === 0 ? (
-                          <Intro disableBack={setDisableBack} />
-                        ) : null}
-                        {activeStep === 1 ? (
-                          <form autoComplete="off">
-                            <UserDetails
+          <div className={classes.root}>
+            <main className={classes.content}>
+              <Grid container direction="row" justify="center">
+                <Grid item xs={12} md={10} lg={8} className={classes.wizard}>
+                  <Card>
+                    <CardContent>
+                      <Grid container direction="column">
+                        <Grid item className={classes.wizard__step}>
+                          {activeStep === 0 ? (
+                            <Intro disableBack={setDisableBack} />
+                          ) : null}
+                          {activeStep === 1 ? (
+                            <form autoComplete="off">
+                              <UserDetails
+                                disableBack={setDisableBack}
+                                disableNext={setDisableNext}
+                                ref={userDetailRef}
+                              />
+                            </form>
+                          ) : null}
+                          {activeStep === 2 ? (
+                            <form autoComplete="off">
+                              <ConfigureServer
+                                disableBack={setDisableBack}
+                                disableNext={setDisableNext}
+                                ref={configureServiceRef}
+                              />
+                            </form>
+                          ) : null}
+                          {activeStep === 3 ? (
+                            <TestServer
                               disableBack={setDisableBack}
                               disableNext={setDisableNext}
-                              ref={userDetailRef}
                             />
-                          </form>
-                        ) : null}
-                        {activeStep === 2 ? (
-                          <form autoComplete="off">
-                            <ConfigureServer
-                              disableBack={setDisableBack}
+                          ) : null}
+                          {activeStep === 4 ? (
+                            <ConfigureLibraries type="movie" />
+                          ) : null}
+                          {activeStep === 5 ? (
+                            <ConfigureLibraries type="show" />
+                          ) : null}
+                          {activeStep === 6 ? (
+                            <Finish
                               disableNext={setDisableNext}
-                              ref={configureServiceRef}
+                              disableBack={setDisableBack}
                             />
-                          </form>
-                        ) : null}
-                        {activeStep === 3 ? (
-                          <TestServer
-                            disableBack={setDisableBack}
-                            disableNext={setDisableNext}
-                          />
-                        ) : null}
-                        {activeStep === 4 ? (
-                          <ConfigureLibraries type="movie" />
-                        ) : null}
-                        {activeStep === 5 ? (
-                          <ConfigureLibraries type="show" />
-                        ) : null}
-                        {activeStep === 6 ? (
-                          <Finish
-                            disableNext={setDisableNext}
-                            disableBack={setDisableBack}
-                          />
-                        ) : null}
-                      </Grid>
+                          ) : null}
+                        </Grid>
 
-                      <Grid item container direction="row" justify="center">
-                        <Grid item xs={12} className={classes.wizard__stepper}>
-                          <MobileStepper
-                            variant="dots"
-                            steps={7}
-                            position="static"
-                            activeStep={activeStep}
-                            nextButton={
-                              <Button
-                                size="small"
-                                onClick={handleNext}
-                                disabled={disableNext}
-                              >
-                                <Trans i18nKey="COMMON.NEXT" />
-                                <KeyboardArrowRight />
-                              </Button>
-                            }
-                            backButton={
-                              <Button
-                                size="small"
-                                onClick={handleBack}
-                                disabled={disableBack}
-                              >
-                                <KeyboardArrowLeft />
-                                {t("COMMON.BACK")}
-                              </Button>
-                            }
-                          />
+                        <Grid item container direction="row" justify="center">
+                          <Grid item xs={12} className={classes.wizard__stepper}>
+                            <MobileStepper
+                              variant="dots"
+                              steps={7}
+                              position="static"
+                              activeStep={activeStep}
+                              nextButton={
+                                <Button
+                                  size="small"
+                                  onClick={handleNext}
+                                  disabled={disableNext}
+                                >
+                                  <Trans i18nKey="COMMON.NEXT" />
+                                  <KeyboardArrowRight />
+                                </Button>
+                              }
+                              backButton={
+                                <Button
+                                  size="small"
+                                  onClick={handleBack}
+                                  disabled={disableBack}
+                                >
+                                  <KeyboardArrowLeft />
+                                  {t("COMMON.BACK")}
+                                </Button>
+                              }
+                            />
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </Grid>
               </Grid>
-            </Grid>
-          </main>
-        </div>
-      )}
+            </main>
+          </div>
+        )}
     </>
   );
 };
