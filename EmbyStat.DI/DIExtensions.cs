@@ -8,7 +8,7 @@ using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
-using EmbyStat.Clients.Tvdb;
+using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs;
@@ -104,7 +104,7 @@ namespace EmbyStat.DI
             services.TryAddSingleton<IEmbyHttpClient, EmbyHttpClient>();
             services.TryAddSingleton<IJellyfinHttpClient, JellyfinHttpClient>();
 
-            services.TryAddTransient<ITvdbClient, TvdbClient>();
+            services.TryAddTransient<ITmdbClient, TmdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
 
             services.TryAddSingleton<IWebSocketApi, WebSocketApi>();

@@ -10,7 +10,7 @@ namespace EmbyStat.Services.Models.DataGrid
         public string[] Subtitles { get; set; }
         public string[] AudioLanguages { get; set; }
         public string IMDB { get; set; }
-        public string TMDB { get; set; }
+        public int? TMDB { get; set; }
         public string TVDB { get; set; }
         public decimal RunTime { get; set; }
         public string OfficialRating { get; set; }

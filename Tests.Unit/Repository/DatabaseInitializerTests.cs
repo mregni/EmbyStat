@@ -522,8 +522,8 @@ namespace Tests.Unit.Repository
                     showCollection.EnsureIndex(x => x.Episodes).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Seasons).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Status).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.TvdbFailed).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.TvdbSynced).Should().BeTrue();
+                    showCollection.EnsureIndex(x => x.ExternalSyncFailed).Should().BeTrue();
+                    showCollection.EnsureIndex(x => x.ExternalSynced).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Name).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();

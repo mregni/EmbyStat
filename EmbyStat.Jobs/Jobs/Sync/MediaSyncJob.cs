@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
-using EmbyStat.Clients.Tvdb;
+using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
@@ -29,24 +29,24 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly ILibraryRepository _libraryRepository;
-        private readonly ITvdbClient _tvdbClient;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMovieService _movieService;
         private readonly IShowService _showService;
+        private readonly ITmdbClient _tmdbClient;
 
         public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IMovieRepository movieRepository, IShowRepository showRepository,
-            ILibraryRepository libraryRepository, ITvdbClient tvdbClient, IStatisticsRepository statisticsRepository,
-            IMovieService movieService, IShowService showService) : base(hubHelper, jobRepository, settingsService,
+            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository,
+            IMovieService movieService, IShowService showService, ITmdbClient tmdbClient) : base(hubHelper, jobRepository, settingsService,
             typeof(MediaSyncJob), Constants.LogPrefix.MediaSyncJob)
         {
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _libraryRepository = libraryRepository;
-            _tvdbClient = tvdbClient;
             _statisticsRepository = statisticsRepository;
             _movieService = movieService;
             _showService = showService;
+            _tmdbClient = tmdbClient;
             Title = jobRepository.GetById(Id).Title;
 
             var settings = settingsService.GetUserSettings();
@@ -162,23 +162,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Lets start processing show");
             var updateStartTime = DateTime.Now;
 
-            await LogInformation("Logging in on the Tvdb API.");
-            _tvdbClient.Login(Settings.Tvdb.ApiKey);
-            var showsThatNeedAnUpdate = _tvdbClient.GetShowsToUpdate(Settings.Tvdb.LastUpdate);
-
             var neededLibraries = libraries.Where(x => Settings.ShowLibraries.Any(y => y == x.Id)).ToList();
             var logIncrementBase = Math.Round(40 / (double)neededLibraries.Count, 1);
-            for (var i = 0; i < neededLibraries.Count; i++)
+            foreach (var library in neededLibraries)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                await PerformShowSyncAsync(showsThatNeedAnUpdate, neededLibraries[i], updateStartTime, logIncrementBase);
+                await PerformShowSyncAsync(library, updateStartTime, logIncrementBase);
             }
 
             await LogInformation("Removing shows that are no longer present on your server (if any)");
             _showRepository.RemoveShowsThatAreNotUpdated(updateStartTime);
         }
 
-        private async Task PerformShowSyncAsync(IReadOnlyList<string> showsThatNeedAnUpdate, Library library, DateTime updateStartTime, double logIncrementBase)
+        private async Task PerformShowSyncAsync(Library library, DateTime updateStartTime, double logIncrementBase)
         {
             var showList = _httpClient.GetShows(library.Id);
 
@@ -206,20 +202,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                 if (oldShow != null)
                 {
-                    show.TvdbFailed = oldShow.TvdbFailed;
-                    show.TvdbSynced = oldShow.TvdbSynced;
+                    show.ExternalSyncFailed = oldShow.ExternalSyncFailed;
+                    show.ExternalSynced = oldShow.ExternalSynced;
                 }
 
-                if (!string.IsNullOrWhiteSpace(show.TVDB))
+                if (show.TMDB.HasValue)
                 {
-                    if (!string.IsNullOrWhiteSpace(show.TVDB) &&
-                        (show.HasShowChangedEpisodes(oldShow) || showsThatNeedAnUpdate.Any(x => x == show.Id)))
+                    if (show.HasShowChangedEpisodes(oldShow) 
+                             || oldShow != null && oldShow.NeedsShowSync())
                     {
-                        show = await GetMissingEpisodesFromTvdbAsync(show);
-                    }
-                    else if (oldShow != null && oldShow.NeedsShowSync())
-                    {
-                        show = await GetMissingEpisodesFromTvdbAsync(show);
+                        show = await GetMissingEpisodesFromProviderAsync(show);
                     }
                 }
 
@@ -229,7 +221,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task<Show> GetMissingEpisodesFromTvdbAsync(Show show)
+        private async Task<Show> GetMissingEpisodesFromProviderAsync(Show show)
         {
             try
             {
@@ -237,11 +229,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
             catch (HttpException e)
             {
-                show.TvdbFailed = true;
+                show.ExternalSyncFailed = true;
 
                 if (e.Message.Contains("404 Not Found"))
                 {
-                    await LogWarning($"Can't seem to find {show.Name} on Tvdb, skipping show for now");
+                    await LogWarning($"Can't seem to find {show.Name} on Imdb, skipping show for now");
                 }
                 return show;
             }
@@ -249,7 +241,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             {
                 await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
                 Logger.Error(e);
-                show.TvdbFailed = true;
+                show.ExternalSyncFailed = true;
                 return show;
             }
         }
@@ -257,22 +249,22 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task<Show> ProcessMissingEpisodesAsync(Show show)
         {
             var missingEpisodesCount = 0;
-            var tvdbEpisodes = _tvdbClient.GetEpisodes(show.TVDB);
+            var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
 
-            foreach (var tvdbEpisode in tvdbEpisodes)
+            foreach (var externalEpisode in externalEpisodes)
             {
-                var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == tvdbEpisode.SeasonNumber);
+                var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == externalEpisode.SeasonNumber);
 
                 if (season == null)
                 {
-                    Logger.Debug($"No season with index {tvdbEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
-                    season = tvdbEpisode.SeasonNumber.ConvertToSeason(show);
+                    Logger.Debug($"No season with index {externalEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
+                    season = externalEpisode.SeasonNumber.ConvertToSeason(show);
                     show.Seasons.Add(season);
                 }
 
-                if (IsEpisodeMissing(show.Episodes, season, tvdbEpisode))
+                if (IsEpisodeMissing(show.Episodes, season, externalEpisode))
                 {
-                    var episode = tvdbEpisode.ConvertToEpisode(show, season);
+                    var episode = externalEpisode.ConvertToEpisode(show, season);
                     Logger.Debug($"Episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
                     show.Episodes.Add(episode);
                     missingEpisodesCount++;
@@ -282,7 +274,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation($"Found {missingEpisodesCount} missing episodes for show {show.Name}");
 
             show.Episodes = show.Episodes.Where(x => show.Seasons.Any(y => y.Id.ToString() == x.ParentId)).ToList();
-            show.TvdbSynced = true;
+            show.ExternalSynced = true;
             return show;
         }
 

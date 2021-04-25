@@ -51,7 +51,7 @@ namespace EmbyStat.Common.Extensions
 
         public static bool NeedsShowSync(this Show show)
         {
-            return !show.TvdbSynced || show.TvdbFailed;
+            return !show.ExternalSynced || show.ExternalSyncFailed;
         }
 
         public static bool HasShowChangedEpisodes(this Show show, Show oldShow)

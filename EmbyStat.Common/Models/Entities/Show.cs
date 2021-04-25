@@ -10,8 +10,8 @@ namespace EmbyStat.Common.Models.Entities
     {
         public long? CumulativeRunTimeTicks { get; set; }
         public string Status { get; set; }
-        public bool TvdbSynced { get; set; }
-        public bool TvdbFailed { get; set; }
+        public bool ExternalSynced { get; set; }
+        public bool ExternalSyncFailed { get; set; }
         [BsonRef(nameof(Season))]
         public List<Season> Seasons { get; set; }
         [BsonRef(nameof(Episode))]
