@@ -1,0 +1,115 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/EmbyStat.Web"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: MediaBrowser.Common
+    versions:
+    - "> 3.3.10, < 4"
+  - dependency-name: Hangfire.AspNetCore
+    versions:
+    - 1.7.19
+    - 1.7.20
+    - 1.7.21
+  - dependency-name: Swashbuckle.AspNetCore
+    versions:
+    - 5.6.3
+    - 6.0.2
+    - 6.0.4
+    - 6.0.5
+    - 6.0.7
+    - 6.1.0
+    - 6.1.1
+    - 6.1.2
+  - dependency-name: Rollbar.PlugIns.NLog
+    versions:
+    - 3.14.1
+    - 4.0.0
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: Rollbar.NetCore.AspNet
+    versions:
+    - 3.14.1
+    - 4.0.0
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: DevExtreme.AspNet.Data
+    versions:
+    - 2.8.0
+    - 2.8.1
+  - dependency-name: Microsoft.AspNetCore.Authentication.JwtBearer
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
+  - dependency-name: Microsoft.AspNetCore.SpaServices.Extensions
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
+- package-ecosystem: nuget
+  directory: "/Updater"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: NLog.Web.AspNetCore
+    versions:
+    - 4.10.0
+    - 4.11.0
+- package-ecosystem: nuget
+  directory: "/Tests.Unit"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: MediaBrowser.Common
+    versions:
+    - "> 3.3.10, < 4"
+  - dependency-name: Hangfire.AspNetCore
+    versions:
+    - 1.7.19
+    - 1.7.20
+    - 1.7.21
+  - dependency-name: Swashbuckle.AspNetCore
+    versions:
+    - 5.6.3
+    - 6.0.2
+    - 6.0.4
+    - 6.0.5
+    - 6.0.7
+    - 6.1.0
+    - 6.1.1
+    - 6.1.2
+  - dependency-name: Rollbar.NetCore.AspNet
+    versions:
+    - 3.14.1
+    - 4.0.0
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: Rollbar.PlugIns.NLog
+    versions:
+    - 3.14.1
+    - 4.0.0
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: DevExtreme.AspNet.Data
+    versions:
+    - 2.8.0
+    - 2.8.1
+  - dependency-name: Microsoft.AspNetCore.Authentication.JwtBearer
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
+  - dependency-name: Microsoft.AspNetCore.SpaServices.Extensions
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
