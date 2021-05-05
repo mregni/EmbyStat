@@ -93,7 +93,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         }
 
         #region Movies
-        private async Task ProcessMoviesAsync(IReadOnlyList<Library> libraries, CancellationToken cancellationToken)
+        private async Task ProcessMoviesAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing movies");
             _movieRepository.RemoveMovies();
@@ -250,6 +250,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             var missingEpisodesCount = 0;
             var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
+
+            if (externalEpisodes == null)
+            {
+                await LogWarning($"Could not find show {show.Name} with id {show.TMDB}");
+                return show;
+            }
+
 
             foreach (var externalEpisode in externalEpisodes)
             {

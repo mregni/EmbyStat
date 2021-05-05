@@ -15,9 +15,9 @@ namespace EmbyStat.Services.Converters
             {
                 var propertyInfo = typeof(T).GetProperty(valueSelector);
                 var value = propertyInfo?.GetValue(x, null)?.ToString();
-                if (propertyInfo?.PropertyType == typeof(DateTimeOffset?))
+                if (propertyInfo?.PropertyType == typeof(DateTime?) && !string.IsNullOrWhiteSpace(value))
                 {
-                    value = DateTimeOffset.Parse(value).ToString("O");
+                    value = DateTime.Parse(value).ToString("s");
                 }
 
                 return new TopCardItem

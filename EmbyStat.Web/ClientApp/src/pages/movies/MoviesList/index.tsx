@@ -12,6 +12,7 @@ import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
 import MovieTable from './MovieTable';
 import MovieFilterDialog from './MovieFilterDialog';
+import { FilterContainer } from "../../../shared/components/filter";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -66,7 +67,8 @@ const MovieList = () => {
             {t('COMMON.MOVIES')}
           </Typography>
         </Grid>
-        {activeFilters.map((filter: any) => (
+        <FilterContainer filters={movieFilters} />
+        {/* {activeFilters.map((filter: any) => (
           <Grid item key={filter.id}>
             <Zoom
               in={filter.visible}
@@ -79,7 +81,7 @@ const MovieList = () => {
               />
             </Zoom>
           </Grid>
-        ))}
+        ))} */}
         {/* <Grid item>
           <Chip
             icon={<AddRoundedIcon />}

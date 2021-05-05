@@ -51,7 +51,7 @@ const FilterRadioButton = (props: Props) => {
         <FormControlLabel
           key={type.id}
           value={type.id}
-          control={<Radio />}
+          control={<Radio color="primary" />}
           label={t(type.label)}
           onClick={handleClick}
         />

@@ -19,12 +19,17 @@ namespace EmbyStat.Clients.Tmdb
             var episodes = new List<VirtualEpisode>();
             if (!tmdbShowId.HasValue)
             {
-                return episodes;
+                return null;
             }
             
             var client = new TMDbClient("0ad9610e613fdbf0d62e71c96d903e0c");
             
             var show = await client.GetTvShowAsync(tmdbShowId.Value);
+            if (show == null)
+            {
+                return null;
+            }
+
             foreach (var tmdbSeason in show.Seasons)
             {
                 var season = await client.GetTvSeasonAsync(tmdbShowId.Value, tmdbSeason.SeasonNumber);
