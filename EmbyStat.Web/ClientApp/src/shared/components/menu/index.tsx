@@ -15,6 +15,7 @@ import MenuItem from './MenuItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/RootReducer';
 import { UserRoles } from '../../../shared/models/login';
+import { Typography } from '@material-ui/core';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -174,7 +175,13 @@ const Menu = (props: Props) => {
       <Grid container direction="column" justify="space-between" className="max-height">
         <Grid item>
           <div className={classes.drawerContainer}>
-            {small ? <div>EmbyStat</div> : null}
+            {small ? (
+              <Grid item container justify="center">
+                <Typography variant="h6" color="primary">
+                  EmbyStat
+                </Typography>
+              </Grid>
+            ) : null}
             <List classes={{ root: classes.menu__list }}>
               {menuItems.map((item) => (
                 <MenuItem
