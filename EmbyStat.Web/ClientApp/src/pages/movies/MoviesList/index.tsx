@@ -49,12 +49,6 @@ const MovieList = () => {
 
   return (
     <Grid container direction="column">
-      {/* <FilterDrawer
-        filterCount={activeFilters.length}
-        addFilter={addFilter}
-        filterDefinitions={movieFilters}
-        clearFilters={() => setActiveFilters([])}
-      /> */}
       <Grid item container direction="row" className="p-b-16">
         <Grid item>
           <Typography variant="h5" className={classes.title}>
@@ -67,29 +61,6 @@ const MovieList = () => {
           activeFilters={activeFilters}
           clearFilter={clearFilter}
         />
-        {/* {activeFilters.map((filter: any) => (
-          <Grid item key={filter.id}>
-            <Zoom
-              in={filter.visible}
-              onExited={() => handleFilterDelete(filter.id)}
-            >
-              <Chip
-                className="m-r-16"
-                label={generateLabel(filter)}
-                onDelete={() => handleFilterHide(filter.id)}
-              />
-            </Zoom>
-          </Grid>
-        ))} */}
-        {/* <Grid item>
-          <Chip
-            icon={<AddRoundedIcon />}
-            label="Add filter"
-            clickable
-            color="primary"
-            onClick={openFilterDialog}
-          />
-        </Grid>*/}
       </Grid>
       <Grid item container direction="row" justify="center" alignItems="center" className="max-height max-width">
         <MovieTable filters={activeFilters} />
