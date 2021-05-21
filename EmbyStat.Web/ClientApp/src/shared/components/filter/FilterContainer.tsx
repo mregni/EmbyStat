@@ -2,15 +2,18 @@
 import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 
-import { FilterDefinition } from '../../models/filter';
+import { ActiveFilter, FilterDefinition } from '../../models/filter';
 import { FilterItem } from '.';
 
 interface Props {
   filters: FilterDefinition[];
+  addFilter: (filter: ActiveFilter) => void;
+  activeFilters: ActiveFilter[];
+  clearFilter: (id: string) => void;
 }
 
 export const FilterContainer = (props: Props) => {
-  const { filters } = props;
+  const { filters, addFilter, activeFilters, clearFilter } = props;
   const [openedFilter, setOpenedFilter] = useState('');
 
   const openFilter = (id: string) => {
@@ -25,7 +28,10 @@ export const FilterContainer = (props: Props) => {
             opened={openedFilter}
             open={openFilter}
             filter={filter}
+            save={addFilter}
             key={filter.id}
+            activeFilter={activeFilters.filter(x => x.id === filter.id)[0]}
+            clearFilter={clearFilter}
           />
         ))
       }

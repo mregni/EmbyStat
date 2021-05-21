@@ -15,7 +15,7 @@ import { useServerType } from '../../../shared/hooks';
 import { Job } from '../../../shared/models/jobs';
 
 import { updateTrigger } from '../../../shared/services/JobService';
-import SaveButton from '../../../shared/components/buttons/SaveButton';
+import EsButton from '../../../shared/components/buttons/EsButton';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 
 const useStyles = makeStyles((theme) => ({
@@ -133,7 +133,7 @@ const JobSettingsDialog = (props: Props) => {
           >
             {changed ? t('COMMON.DISCARD') : t('COMMON.CANCEL')}
           </Button>
-          <SaveButton hasError={!!errors.cron} isSaving={isSaving} />
+          <EsButton disable={!!errors.cron} isSaving={isSaving} />
         </DialogActions>
       </form>
     </Dialog>

@@ -36,10 +36,12 @@ const FilterPicker = (props: Props) => {
   const [openState, setOpenState] = useState(false);
   const [clickedTypeId, setclickedTypeId] = useState();
   const [value, setValue] = useState<string>("");
+  const [selectedRadio, setSelectedRadio] = useState<string>('');
   const [types, setTypes] = useState(filterDefinition.types);
   const [intputInError, setIntputInError] = useState(false);
   useEffect(() => {
     setOpenState(filterDefinition.open);
+    setSelectedRadio('');
   }, [filterDefinition.open]);
 
   const handleClick = () => {
@@ -164,16 +166,21 @@ const FilterPicker = (props: Props) => {
       >
         <Grid container direction="column" spacing={1}>
           <Grid item>
-            <RadioGroup name="type">
+            <RadioGroup
+              name={filterDefinition.title}
+              value={selectedRadio}
+              onChange={(event) => setSelectedRadio(event.target.value)}
+            >
               {types.map((type) => (
                 <FilterRadioButton
                   key={type.id}
                   type={type}
+                  isOpen={type.id === selectedRadio}
                   open={changeFilterType}
                   setClickedTypeId={setclickedTypeId}
                 >
                   <>
-                    {type.type === "txt" ? (
+                    {type.type === "txt" && (
                       <FilterTextField
                         type={type}
                         onValueChanged={setValue}
@@ -181,8 +188,8 @@ const FilterPicker = (props: Props) => {
                         register={register}
                         disableAdd={setIntputInError}
                       />
-                    ) : null}
-                    {type.type === "number" ? (
+                    )}
+                    {type.type === "number" && (
                       <FilterNumberField
                         type={type}
                         onValueChanged={setValue}
@@ -190,8 +197,8 @@ const FilterPicker = (props: Props) => {
                         register={register}
                         disableAdd={setIntputInError}
                       />
-                    ) : null}
-                    {type.type === "range" ? (
+                    )}
+                    {type.type === "range" && (
                       <FilterBetweenField
                         type={type}
                         onValueChanged={setValue}
@@ -199,31 +206,31 @@ const FilterPicker = (props: Props) => {
                         register={register}
                         disableAdd={setIntputInError}
                       />
-                    ) : null}
-                    {type.type === "dropdown" ? (
+                    )}
+                    {type.type === "dropdown" && (
                       <FilterDropdownField
                         type={type}
                         onValueChanged={setValue}
                         field={filterDefinition.field}
                         disableAdd={setIntputInError}
                       />
-                    ) : null}
-                    {type.type === "date" ? (
+                    )}
+                    {type.type === "date" && (
                       <FilterDateField
                         onValueChanged={setValue}
                         errors={errors}
                         register={register}
                         disableAdd={setIntputInError}
                       />
-                    ) : null}
-                    {type.type === "dateRange" ? (
+                    )}
+                    {type.type === "dateRange" && (
                       <FilterDateRangeField
                         onValueChanged={setValue}
                         errors={errors}
                         register={register}
                         disableAdd={setIntputInError}
                       />
-                    ) : null}
+                    )}
                   </>
                 </FilterRadioButton>
               ))}

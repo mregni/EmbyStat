@@ -35,39 +35,38 @@ const MovieList = () => {
     }
   };
 
-  const handleFilterDelete = (id: string) => {
-    setActiveFilters(activeFilters.filter((x) => x.id !== id));
-  };
-
   const addFilter = (filter: ActiveFilter) => {
     setActiveFilters((state) => [...state, filter]);
-  };
-
-  const generateLabel = (filter: ActiveFilter): string => {
-    return filter.fieldLabel
-      .replace(/\{0\}/g, t(filter.operationLabel))
-      .replace(/\{1\}/g, filter.valueLabel);
   };
 
   const openFilterDialog = () => {
     setFilterDialogOpen(true);
   }
 
+  const clearFilter = (id: string) => {
+    setActiveFilters(prev => prev.filter((x) => x.id !== id));
+  }
+
   return (
     <Grid container direction="column">
-      <FilterDrawer
+      {/* <FilterDrawer
         filterCount={activeFilters.length}
         addFilter={addFilter}
         filterDefinitions={movieFilters}
         clearFilters={() => setActiveFilters([])}
-      />
+      /> */}
       <Grid item container direction="row" className="p-b-16">
         <Grid item>
           <Typography variant="h5" className={classes.title}>
             {t('COMMON.MOVIES')}
           </Typography>
         </Grid>
-        <FilterContainer filters={movieFilters} />
+        <FilterContainer
+          filters={movieFilters}
+          addFilter={addFilter}
+          activeFilters={activeFilters}
+          clearFilter={clearFilter}
+        />
         {/* {activeFilters.map((filter: any) => (
           <Grid item key={filter.id}>
             <Zoom
