@@ -29,9 +29,10 @@ import { MovieRow } from '../../../../shared/models/movie';
 const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
     backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("${props.background}")`,
-    backgroundSize: '100% auto',
+    backgroundSize: '100%',
     backgroundPositionY: 'center',
     position: 'relative',
+    padding: 16
   }),
   movie__title: {
     fontSize: '2rem',
@@ -77,8 +78,8 @@ const DetailMovieTemplate = (props: Props) => {
 
   const classes = useStyles({ background: getPosterUrl() });
   return movie.id != null ? (
-    <div className={classes.container}>
-      <Grid container className="p-16">
+    <div >
+      <Grid container className={classes.container}>
         <Grid item className="m-r-16">
           <PosterCard
             mediaId={movie.id}
@@ -164,10 +165,6 @@ const DetailMovieTemplate = (props: Props) => {
                 <p className="m-l-8">{movie.mediaSources[0].container}</p>
               </Grid>
               <Grid item container alignItems="center">
-                <InsertDriveFileRoundedIcon />
-                <p className="m-l-8">{movie.mediaSources[0].path}</p>
-              </Grid>
-              <Grid item container alignItems="center">
                 <Grid item>
                   <SubtitlesRoundedIcon />
                 </Grid>
@@ -230,9 +227,12 @@ const DetailMovieTemplate = (props: Props) => {
               direction="column"
               xs={12}
               md={6}
-              lg={4}
-              xl={3}
+              lg={8}
             >
+              <Grid item container alignItems="center">
+                <InsertDriveFileRoundedIcon />
+                <p className="m-l-8">{movie.mediaSources[0].path}</p>
+              </Grid>
               <Grid item container alignItems="center">
                 <InboxRoundedIcon />
                 <p className="m-l-8">{movie.mediaSources[0].videoRange}</p>

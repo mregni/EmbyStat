@@ -317,7 +317,9 @@ export const FilterItem = (props: Props) => {
                 color="primary"
                 onClick={() => addFilter()}
                 disabled={activeFilter !== undefined}
-              >Add</Button>
+              >
+                Add
+              </Button>
             </Grid>
           </Grid>
         </Collapse>

@@ -321,14 +321,9 @@ const Row = (props: RowProps): ReactElement => {
         <TableCell align="right">{renderLinks(row.id)}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={16}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={17}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              Testing
-            </Box>
+            <DetailMovieTemplate data={row} />
           </Collapse>
         </TableCell>
       </TableRow>
