@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   }),
   title: {
     fontSize: '2rem',
-    marginTop: 8,
     color: 'white',
     '&& p': {
       margin: 0,
