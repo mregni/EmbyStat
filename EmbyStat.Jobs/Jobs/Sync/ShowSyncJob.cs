@@ -23,28 +23,23 @@ using MediaBrowser.Model.Net;
 namespace EmbyStat.Jobs.Jobs.Sync
 {
     [DisableConcurrentExecution(60 * 60)]
-    public class MediaSyncJob : BaseJob, IMediaSyncJob
+    public class ShowSyncJob : BaseJob, IShowSyncJob
     {
         private readonly IHttpClient _httpClient;
-        private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
         private readonly ILibraryRepository _libraryRepository;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IMovieService _movieService;
         private readonly IShowService _showService;
         private readonly ITmdbClient _tmdbClient;
 
-        public MediaSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IClientStrategy clientStrategy, IMovieRepository movieRepository, IShowRepository showRepository,
-            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository,
-            IMovieService movieService, IShowService showService, ITmdbClient tmdbClient) : base(hubHelper, jobRepository, settingsService,
-            typeof(MediaSyncJob), Constants.LogPrefix.MediaSyncJob)
+        public ShowSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+            IClientStrategy clientStrategy, IShowRepository showRepository,
+            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient) : base(hubHelper, jobRepository, settingsService,
+            typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
         {
-            _movieRepository = movieRepository;
             _showRepository = showRepository;
             _libraryRepository = libraryRepository;
             _statisticsRepository = statisticsRepository;
-            _movieService = movieService;
             _showService = showService;
             _tmdbClient = tmdbClient;
             Title = jobRepository.GetById(Id).Title;
@@ -53,8 +48,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
 
-        public sealed override Guid Id => Constants.JobIds.MediaSyncId;
-        public override string JobPrefix => Constants.LogPrefix.MediaSyncJob;
+        public sealed override Guid Id => Constants.JobIds.ShowSyncId;
+        public override string JobPrefix => Constants.LogPrefix.ShowSyncJob;
         public override string Title { get; }
 
         public override async Task RunJobAsync()
@@ -82,79 +77,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
             await LogProgress(15);
 
-            await ProcessMoviesAsync(libraries, cancellationToken);
-            await LogProgress(55);
-
             await ProcessShowsAsync(libraries, cancellationToken);
             await LogProgress(95);
 
             await CalculateStatistics();
             await LogProgress(100);
         }
-
-        #region Movies
-        private async Task ProcessMoviesAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
-        {
-            await LogInformation("Lets start processing movies");
-            _movieRepository.RemoveMovies();
-
-            var neededLibraries = libraries.Where(x => Settings.MovieLibraries.Any(y => y == x.Id)).ToList();
-            var logIncrementBase = Math.Round(40 / (double)neededLibraries.Count, 1);
-            foreach (var library in neededLibraries)
-            {
-                var collectionId = library.Id;
-                var totalCount = await GetTotalLibraryMovieCount(collectionId);
-                if (totalCount == 0)
-                {
-                    continue; ;
-                }
-                var increment = logIncrementBase / (totalCount / (double)100);
-
-                await LogInformation($"Found {totalCount} movies in {library.Name} library");
-                var processed = 0;
-                var j = 0;
-                const int limit = 100;
-                do
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
-                    _movieRepository.UpsertRange(movies.Where(x => x.MediaType == "Video"));
-
-                    processed += 100;
-                    j++;
-                    var logProcessed = processed < totalCount ? processed : totalCount;
-                    await LogInformation($"Processed { logProcessed } / { totalCount } movies");
-                    await LogProgressIncrement(increment);
-                } while (processed < totalCount);
-
-            }
-        }
-
-        private async Task<int> GetTotalLibraryMovieCount(string parentId)
-        {
-            var count = _httpClient.GetMovieCount(parentId);
-            if (count == 0)
-            {
-                await LogWarning($"0 movies found in parent with id {parentId}. Probably means something is wrong with the HTTP call.");
-            }
-
-            return count;
-        }
-
-        private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, string collectionId, int startIndex, int limit)
-        {
-            try
-            {
-                return _httpClient.GetMovies(parentId, collectionId, startIndex, limit);
-            }
-            catch (Exception e)
-            {
-                await LogError($"Movie error: {e.Message}");
-                throw;
-            }
-        }
-
-        #endregion
 
         #region Shows
         private async Task ProcessShowsAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
@@ -192,6 +120,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     var episodes = _httpClient.GetEpisodes(seasons.Select(x => x.Id), show.Id);
 
                     show.Seasons.AddRange(seasons.Where(x => show.Seasons.All(y => y.Id != x.Id)));
+
+                    episodes.ForEach(x => x.SeasonIndexNumber = seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber );
                     show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
                 }
 
@@ -327,18 +257,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task CalculateStatistics()
         {
-            await LogInformation("Calculating movie statistics");
-            _statisticsRepository.MarkShowTypesAsInvalid();
-            _statisticsRepository.MarkMovieTypesAsInvalid();
-
-            _movieService.CalculateMovieStatistics(new List<string>(0));
-            await LogInformation($"Calculations done");
-
-            await LogProgress(97);
-
             await LogInformation("Calculating show statistics");
+            _statisticsRepository.MarkShowTypesAsInvalid();
             _showService.CalculateShowStatistics(new List<string>(0));
             _showService.CalculateCollectedRows(new List<string>(0));
+
             await LogInformation($"Calculations done");
             await LogProgress(100);
         }

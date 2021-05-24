@@ -189,11 +189,11 @@ namespace Tests.Unit.Controllers
             JobStorage.Current = new MemoryStorage();
             DeleteJobs();
 
-            RecurringJob.AddOrUpdate(Constants.JobIds.MediaSyncId.ToString(),
+            RecurringJob.AddOrUpdate(Constants.JobIds.ShowSyncId.ToString(),
                 () => DummyCall(),
                 "0 2 * * 1");
 
-            var jobOne = new Job { Id = Constants.JobIds.MediaSyncId, Trigger = "* * * * *" };
+            var jobOne = new Job { Id = Constants.JobIds.ShowSyncId, Trigger = "* * * * *" };
             var jobTwo = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
             var controller = CreateController(false, jobOne, jobTwo);
 
@@ -227,7 +227,7 @@ namespace Tests.Unit.Controllers
         [Fact]
         public void GetMediaSyncJob_Should_Return_MediaSyncJob_Job()
         {
-            var jobOne = new Job { Id = Constants.JobIds.MediaSyncId };
+            var jobOne = new Job { Id = Constants.JobIds.ShowSyncId };
             var jobTwo = new Job { Id = Guid.NewGuid() };
             var controller = CreateController(true, jobOne, jobTwo);
 
@@ -247,7 +247,7 @@ namespace Tests.Unit.Controllers
 
         private void DeleteJobs()
         {
-            RecurringJob.RemoveIfExists(Constants.JobIds.MediaSyncId.ToString());
+            RecurringJob.RemoveIfExists(Constants.JobIds.ShowSyncId.ToString());
         }
 
         public static string DummyCall()

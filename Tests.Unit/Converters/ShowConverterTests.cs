@@ -72,7 +72,7 @@ namespace Tests.Unit.Converters
             show.DateCreated.Should().Be(data.DateCreated);
             show.OfficialRating.Should().Be(data.OfficialRating);
             show.IMDB.Should().Be(data.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value);
-            show.TMDB.Should().Be(data.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value);
+            show.TMDB.Should().Be(int.Parse(data.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value));
             show.TVDB.Should().Be(data.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value);
             show.PremiereDate.Should().Be(data.PremiereDate);
             show.ProductionYear.Should().Be(data.ProductionYear);
@@ -170,7 +170,7 @@ namespace Tests.Unit.Converters
             var showEpisode = show.Episodes.First();
             var showSeason = show.Seasons.First();
 
-            var virtualEpisode = new VirtualEpisode(showEpisode, showSeason);
+            var virtualEpisode = new VirtualEpisode(showEpisode);
             var episode = virtualEpisode.ConvertToEpisode(show, showSeason);
 
             episode.ShowId.Should().Be(show.Id);
@@ -209,7 +209,7 @@ namespace Tests.Unit.Converters
             episode.Logo.Should().Be(baseItem.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value);
             episode.Banner.Should().Be(baseItem.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value);
             episode.IMDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value);
-            episode.TMDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value);
+            episode.TMDB.Should().Be(int.Parse(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value));
             episode.TVDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value);
             episode.AudioStreams.Count.Should().Be(1);
             episode.SubtitleStreams.Count.Should().Be(1);

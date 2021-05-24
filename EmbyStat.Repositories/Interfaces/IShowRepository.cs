@@ -10,12 +10,11 @@ namespace EmbyStat.Repositories.Interfaces
     {
         void InsertShow(Show show);
         List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
-        Episode GetEpisodeById(string showId, string id);
+        Show GetShowById(string showId, bool includeEpisodes);
         Season GetSeasonById(string id);
         List<Episode> GetAllEpisodesForShow(string showId);
         Show GetShowById(string showId);
         void RemoveShowsThatAreNotUpdated(DateTime startTime);
-        void AddSeason(Season season);
         void AddEpisode(Episode episode);
         void RemoveShows();
         Dictionary<Show, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);

@@ -10,11 +10,11 @@ namespace EmbyStat.Common.Models.Show
             
         }
 
-        public VirtualEpisode(Episode episode, Season season)
+        public VirtualEpisode(Episode episode)
         {
             Id = episode.Id;
             Name = episode.Name;
-            SeasonNumber = season?.IndexNumber ?? 0;
+            SeasonNumber = episode?.SeasonIndexNumber ?? 0;
             EpisodeNumber = episode.IndexNumber ?? 0;
             FirstAired = episode.PremiereDate;
         }

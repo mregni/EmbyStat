@@ -64,6 +64,19 @@ namespace EmbyStat.Controllers.Show
             return Ok(convert);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetShow(string id)
+        {
+            var show = _showService.GetShow(id);
+            if (show != null)
+            {
+                var result = _mapper.Map<ShowDetailViewModel>(show);
+                return Ok(result);
+            }
+
+            return NotFound(id);
+        }
 
         [HttpGet]
         [Route("typepresent")]

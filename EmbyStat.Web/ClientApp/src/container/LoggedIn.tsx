@@ -137,9 +137,9 @@ const LoggedIn = (props: Props) => {
           })}
         >
           <Toolbar
-          classes={{
-            root: classes.toolbar__root
-          }}>
+            classes={{
+              root: classes.toolbar__root
+            }}>
             <Grid
               container
               direction="row"
@@ -179,10 +179,10 @@ const LoggedIn = (props: Props) => {
                       className={classes.button__loading}
                     />
                   ) : (
-                    <span>
-                      <FontAwesomeIcon icon={faSignOutAlt} className="m-r-8"/>
-                      {t("LOGIN.LOGOUT")}
-                    </span>
+                      <span>
+                        <FontAwesomeIcon icon={faSignOutAlt} className="m-r-8" />
+                        {t("LOGIN.LOGOUT")}
+                      </span>
                     )}
                 </Button>
               </Grid>

@@ -176,10 +176,10 @@ namespace EmbyStat.Repositories
                     },
                     new Job
                     {
-                        Id = Constants.JobIds.MediaSyncId,
+                        Id = Constants.JobIds.ShowSyncId,
                         State = JobState.Idle,
-                        Description = $"{Constants.LogPrefix.MediaSyncJob}DESCRIPTION",
-                        Title = $"{Constants.LogPrefix.MediaSyncJob}",
+                        Description = $"{Constants.LogPrefix.ShowSyncJob}DESCRIPTION",
+                        Title = $"{Constants.LogPrefix.ShowSyncJob}",
                         Trigger = "0 3 * * *",
                         CurrentProgressPercentage = 0,
                         EndTimeUtc = null,
@@ -203,6 +203,17 @@ namespace EmbyStat.Repositories
                         Description = $"{Constants.LogPrefix.DatabaseCleanupJob}DESCRIPTION",
                         Title = $"{Constants.LogPrefix.DatabaseCleanupJob}",
                         Trigger = "0 4 * * *",
+                        CurrentProgressPercentage = 0,
+                        EndTimeUtc = null,
+                        StartTimeUtc = null
+                    },
+                    new Job
+                    {
+                        Id = Constants.JobIds.MovieSyncId,
+                        State = JobState.Idle,
+                        Description = $"{Constants.LogPrefix.MovieSyncJob}DESCRIPTION",
+                        Title = $"{Constants.LogPrefix.MovieSyncJob}",
+                        Trigger = "0 3 * * *",
                         CurrentProgressPercentage = 0,
                         EndTimeUtc = null,
                         StartTimeUtc = null

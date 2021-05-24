@@ -109,7 +109,7 @@ const DetailMovieTemplate = (props: Props) => {
             <Grid item>
               <Ratings
                 rating={(movie.communityRating ?? 0) / 2}
-                widgetRatedColors={theme.palette.secondary.main}
+                widgetRatedColors={theme.palette.primary.main}
                 widgetEmptyColors="black"
                 widgetDimensions="20px"
                 widgetSpacings="3px"

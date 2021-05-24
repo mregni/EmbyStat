@@ -153,7 +153,8 @@ namespace EmbyStat.Clients.Base.Converters
                 LocationType = LocationType.Virtual,
                 IndexNumber = episode.EpisodeNumber,
                 ParentId = season.Id,
-                PremiereDate = episode.FirstAired ?? new DateTime()
+                PremiereDate = episode.FirstAired ?? new DateTime(),
+                SeasonIndexNumber = season.IndexNumber
             };
         }
     }

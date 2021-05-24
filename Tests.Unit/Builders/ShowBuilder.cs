@@ -38,7 +38,7 @@ namespace Tests.Unit.Builders
                 RunTimeTicks = 12000000,
                 SortName = "Chuck",
                 Status = "Ended",
-                TMDB = "12345",
+                TMDB = 12345,
                 TVDB = "12345",
                 Thumb = "thumb.jpg",
                 ExternalSyncFailed = false,
@@ -48,8 +48,8 @@ namespace Tests.Unit.Builders
                 Genres = new[] { "Action" },
                 Episodes = new List<Episode>
                 {
-                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").Build(),
-                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithIndexNumber(1).Build(),
+                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithSeasonIndexNumber(1).Build(),
+                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithSeasonIndexNumber(1).WithIndexNumber(1).Build(),
                 },
                 Seasons = new List<Season>
                 {
@@ -122,14 +122,6 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddPerson(ExtraPerson person)
-        {
-            var list = _show.People.ToList();
-            list.Add(person);
-            _show.People = list.ToArray();
-            return this;
-        }
-
         public ShowBuilder ReplacePersons(ExtraPerson person)
         {
             _show.People = new[] { person };
@@ -143,6 +135,7 @@ namespace Tests.Unit.Builders
             {
                 _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, season.Id)
                     .WithIndexNumber(i)
+                    .WithSeasonIndexNumber(seasonIndex)
                     .WithLocationType(LocationType.Virtual)
                     .Build());
             }
@@ -155,9 +148,12 @@ namespace Tests.Unit.Builders
             var seasonId = Guid.NewGuid().ToString();
             _show.Seasons.Add(new SeasonBuilder(seasonId, _show.Id).WithIndexNumber(indexNumber).Build());
 
+            var season = _show.Seasons.First(x => x.Id == seasonId);
             for (var i = 0; i < extraEpisodes; i++)
             {
-                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, seasonId).Build());
+                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, seasonId)
+                    .WithSeasonIndexNumber(season.IndexNumber)
+                    .Build());
             }
 
             return this;
@@ -210,7 +206,7 @@ namespace Tests.Unit.Builders
                 ProviderIds = new Dictionary<string, string>
                 {
                     {"Imdb", _show.IMDB},
-                    {"Tmdb", _show.TMDB},
+                    {"Tmdb", _show.TMDB.ToString()},
                     {"Tvdb", _show.TVDB}
                 },
                 Genres = _show.Genres,

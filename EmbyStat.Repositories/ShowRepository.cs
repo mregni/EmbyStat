@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
@@ -20,10 +21,20 @@ namespace EmbyStat.Repositories
 
         public Show GetShowById(string showId)
         {
+            return GetShowById(showId, false);
+        }
+
+        public Show GetShowById(string showId, bool includeEpisodes)
+        {
             return ExecuteQuery(() =>
             {
                 using var database = Context.CreateDatabaseContext();
                 var collection = database.GetCollection<Show>();
+
+                if (includeEpisodes)
+                {
+                    collection = collection.Include(x => x.Episodes);
+                }
 
                 return collection.FindById(showId);
             });
@@ -43,16 +54,6 @@ namespace EmbyStat.Repositories
                 episodeCollection.DeleteMany(x => shows.Select(y => y.Id).Any(y => y == x.ShowId));
                 seasonCollection.DeleteMany(x => shows.Select(y => y.Id).Any(y => y == x.ParentId));
                 showCollection.DeleteMany(x => shows.Select(y => y.Id).Any(y => y == x.Id));
-            });
-        }
-
-        public void AddSeason(Season season)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Season>();
-                collection.Insert(season);
             });
         }
 
@@ -92,7 +93,7 @@ namespace EmbyStat.Repositories
 
                 var list = libraryIds.Any() ? query.Find(x => libraryIds.Any(y => y == x.CollectionId)) : query.FindAll();
                 return list
-                    .Select(x => new {Show = x, EpisodeCount = x.GetNonSpecialEpisodeCount(false)})
+                    .Select(x => new {Show = x, EpisodeCount = x.GetEpisodeCount(false)})
                     .OrderByDescending(x => x.EpisodeCount)
                     .Take(count)
                     .ToDictionary(x => x.Show, x => x.EpisodeCount);
@@ -105,7 +106,7 @@ namespace EmbyStat.Repositories
             return ExecuteQuery(() =>
             {
                 using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Show>();
+                var collection = database.GetCollection<Show>().Include(x => x.Episodes);
                 var query = GetWorkingLibrarySet(collection, libraryIds);
 
                 query = filters.Aggregate(query, ApplyShowFilters);
@@ -194,16 +195,6 @@ namespace EmbyStat.Repositories
                 using var database = Context.CreateDatabaseContext();
                 var collection = database.GetCollection<Episode>();
                 return collection.Find(x => x.ShowId == showId).OrderBy(x => x.IndexNumber).ToList();
-            });
-        }
-
-        public Episode GetEpisodeById(string showId, string id)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Episode>();
-                return collection.Find(x => x.Id == id && x.ShowId == showId).SingleOrDefault();
             });
         }
     }

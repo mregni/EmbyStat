@@ -95,9 +95,9 @@ namespace EmbyStat.Services
                     Id = x.Id,
                     Name = x.Name,
                     SortName = x.SortName,
-                    CollectedEpisodeCount = x.CollectedEpisodeCount,
-                    MissingEpisodesCount = x.MissingEpisodesCount,
-                    SpecialEpisodeCount = x.SpecialEpisodeCount,
+                    CollectedEpisodeCount = x.GetEpisodeCount(false, LocationType.Disk),
+                    MissingEpisodesCount = x.GetEpisodeCount(false, LocationType.Virtual),
+                    SpecialEpisodeCount = x.GetEpisodeCount(true, LocationType.Disk),
                     Genres = x.Genres,
                     OfficialRating = x.OfficialRating,
                     CumulativeRunTimeTicks = x.CumulativeRunTimeTicks,
@@ -105,13 +105,18 @@ namespace EmbyStat.Services
                     Status = x.Status
                 });
 
-            var page = new Page<ShowRow> {Data = list};
+            var page = new Page<ShowRow> { Data = list };
             if (requireTotalCount)
             {
                 page.TotalCount = _showRepository.GetMediaCount(filters, libraryIds);
             }
 
             return page;
+        }
+
+        public Show GetShow(string id)
+        {
+            return _showRepository.GetShowById(id, true);
         }
 
         #region Cards
@@ -148,7 +153,7 @@ namespace EmbyStat.Services
         {
             var sum = _showRepository
                 .GetAllShows(libraryIds, true, true)
-                .Sum(x => x.GetNonSpecialEpisodeCount(false))
+                .Sum(x => x.GetEpisodeCount(false, LocationType.Disk))
                 .ToString();
 
             return new Card<string>
@@ -176,7 +181,7 @@ namespace EmbyStat.Services
         {
             var sum = _showRepository
                 .GetAllShows(libraryIds, false, true)
-                .Sum(x => x.MissingEpisodesCount)
+                .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
                 .ToString();
 
             return new Card<string>
@@ -474,16 +479,16 @@ namespace EmbyStat.Services
 
         private ShowCollectionRow CreateShowCollectedRow(Show show)
         {
-            var seasonCount = show.GetNonSpecialSeasonCount();
+            var seasonCount = show.GetSeasonCount(false);
 
             return new ShowCollectionRow
             {
                 Title = show.Name,
                 SortName = show.SortName,
-                Episodes = show.CollectedEpisodeCount,
+                Episodes = show.GetEpisodeCount(false, LocationType.Disk),
                 Seasons = seasonCount,
-                Specials = show.SpecialEpisodeCount,
-                MissingEpisodeCount = show.GetMissingEpisodeCount(),
+                Specials = show.GetEpisodeCount(true, LocationType.Disk),
+                MissingEpisodeCount = show.GetEpisodeCount(false, LocationType.Virtual),
                 MissingEpisodes = show.GetMissingEpisodes().GroupBy(x => x.SeasonNumber, (index, episodes) => new VirtualSeason { Episodes = episodes, SeasonNumber = index }),
                 PremiereDate = show.PremiereDate,
                 Status = show.Status == "Continuing",

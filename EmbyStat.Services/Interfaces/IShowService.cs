@@ -19,5 +19,6 @@ namespace EmbyStat.Services.Interfaces
         List<ShowCollectionRow> CalculateCollectedRows(string libraryId);
         bool TypeIsPresent();
         Page<ShowRow> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
+        Show GetShow(string id);
     }
 }

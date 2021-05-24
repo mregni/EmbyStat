@@ -38,7 +38,7 @@ namespace Tests.Unit.Builders
                 Logo = "logo",
                 OfficialRating = "TV",
                 IMDB = "12345",
-                TMDB = "123456",
+                TMDB = 123456,
                 TVDB = "23456",
                 AudioStreams = new List<AudioStream>{
                     new AudioStream{ Id = "1", BitRate = 320000, ChannelLayout = "5.1", Channels = 6, Codec = "aac", Language = "en", SampleRate = 48000 }
@@ -76,6 +76,12 @@ namespace Tests.Unit.Builders
         public EpisodeBuilder WithIndexNumberEnd(int index)
         {
             _episode.IndexNumberEnd = index;
+            return this;
+        }
+
+        public EpisodeBuilder WithSeasonIndexNumber(int? index)
+        {
+            _episode.SeasonIndexNumber = index;
             return this;
         }
 
@@ -123,7 +129,7 @@ namespace Tests.Unit.Builders
                 ProviderIds = new Dictionary<string, string>
                 {
                     {"Imdb", _episode.IMDB},
-                    {"Tmdb", _episode.TMDB},
+                    {"Tmdb", _episode.TMDB.ToString()},
                     {"Tvdb", _episode.TVDB}
                 },
                 MediaStreams = _episode.AudioStreams.Select(x => new BaseMediaStream

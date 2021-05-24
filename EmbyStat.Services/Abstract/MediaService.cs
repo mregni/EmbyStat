@@ -29,7 +29,7 @@ namespace EmbyStat.Services.Abstract
 
         internal bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds)
         {
-            var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
+            var lastMediaSync = _jobRepository.GetById(Constants.JobIds.ShowSyncId);
 
             //We need to add 5 minutes here because the CalculationDateTime is ALWAYS just in front of the EndTimeUtc :( Ugly fix
             return statistic != null

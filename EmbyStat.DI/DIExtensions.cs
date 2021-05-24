@@ -88,7 +88,8 @@ namespace EmbyStat.DI
 
             services.TryAddTransient<IDatabaseCleanupJob, DatabaseCleanupJob>();
             services.TryAddTransient<IPingEmbyJob, PingEmbyJob>();
-            services.TryAddTransient<IMediaSyncJob, MediaSyncJob>();
+            services.TryAddTransient<IShowSyncJob, ShowSyncJob>();
+            services.TryAddTransient<IMovieSyncJob, MovieSyncJob>();
             services.TryAddTransient<ISmallSyncJob, SmallSyncJob>();
             services.TryAddTransient<ICheckUpdateJob, CheckUpdateJob>();
         }
