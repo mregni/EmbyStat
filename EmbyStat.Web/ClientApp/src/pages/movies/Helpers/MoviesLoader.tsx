@@ -56,6 +56,7 @@ const MoviesLoader = (props: Props): ReactElement => {
       isLoading={isLoading}
       statistics={statistics.statistics}
       label="MOVIES.LOADER"
+      jobId="c40555dc-ea57-4c6e-a225-905223d31c3c"
     />
   );
 };

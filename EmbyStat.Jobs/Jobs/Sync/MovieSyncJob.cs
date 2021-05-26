@@ -157,7 +157,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var rootItems = _httpClient.GetMediaFolders();
 
             return rootItems.Items
-                .Where(x => x.CollectionType.ToLibraryType() != LibraryType.Movies)
+                .Where(x => x.CollectionType.ToLibraryType() == LibraryType.Movies)
                 .Select(LibraryConverter.ConvertToLibrary)
                 .ToList();
         }

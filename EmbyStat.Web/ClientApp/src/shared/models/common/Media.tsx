@@ -105,4 +105,5 @@ export interface Show extends Extra {
   missingEpisodes: Episode[];
   collectedEpisodeCount: number;
   specialEpisodeCount: number;
+  sizeInMb: number;
 }

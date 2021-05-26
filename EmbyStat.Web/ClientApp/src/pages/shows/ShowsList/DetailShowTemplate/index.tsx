@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import Ratings from 'react-ratings-declarative';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
+import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
+import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 
 import { ShowRow } from '../../../../shared/models/show';
 import { useServerType } from '../../../../shared/hooks';
@@ -15,6 +17,8 @@ import { Show } from '../../../../shared/models/common';
 import { getShowDetails } from '../../../../shared/services/ShowService';
 import theme from '../../../../styles/theme';
 import PosterCard from '../../../../shared/components/cards/PosterCard';
+import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
+import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
 
 const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
@@ -140,6 +144,18 @@ export const DetailShowTemplate = (props: Props) => {
                 <p>{t('SHOWS.TOTALEPISODES')}: {show.collectedEpisodeCount}</p>
                 <p>{t('SHOWS.TOTALMISSINGEPISODES')}: {show.missingEpisodes.length}</p>
                 <p>{t('SHOWS.TOTALSPECIALEPISODES')}: {show.specialEpisodeCount}</p>
+              </Grid>
+              <Grid item container alignItems="center">
+                <StorageRoundedIcon />
+                <p className="m-l-8">
+                  {calculateFileSize(show.sizeInMb)}
+                </p>
+              </Grid>
+              <Grid item container alignItems="center">
+                <QueryBuilderRoundedIcon />
+                <p className="m-l-8">
+                  {calculateRunTime(show.runTimeTicks)}
+                </p>
               </Grid>
             </Grid>
             <Grid

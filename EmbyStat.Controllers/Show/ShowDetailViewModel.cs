@@ -27,6 +27,7 @@ namespace EmbyStat.Controllers.Show
         public int? ProductionYear { get; set; }
         public DateTime? PremiereDate { get; set; }
         public string Path { get; set; }
+        public double SizeInMb { get; set; }
 
     }
 }

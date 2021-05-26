@@ -106,7 +106,8 @@ namespace EmbyStat.Controllers
             CreateMap<FilterValues, FilterValuesViewModel>();
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
             CreateMap<ShowRow, ShowRowViewModel>();
-            CreateMap<Common.Models.Entities.Show, ShowDetailViewModel>()
+            _ = CreateMap<Common.Models.Entities.Show, ShowDetailViewModel>()
+                .ForMember(x => x.SizeInMb, x => x.MapFrom(y => y.Episodes.Sum(z => z.MediaSources.FirstOrDefault() != null ? z.MediaSources.First().SizeInMb : 0.0)))
                 .ForMember(x => x.CollectedEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(false, LocationType.Disk)))
                 .ForMember(x => x.MissingEpisodes, x => x.MapFrom(y => y.GetMissingEpisodes()))
                 .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.GetSeasonCount(false)))

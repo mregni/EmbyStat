@@ -272,6 +272,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             var rootItems = _httpClient.GetMediaFolders();
 
             return rootItems.Items
+                .Where(x => x.CollectionType.ToLibraryType() == LibraryType.TvShow)
                 .Select(LibraryConverter.ConvertToLibrary)
                 .Where(x => x.Type != LibraryType.BoxSets)
                 .ToList();

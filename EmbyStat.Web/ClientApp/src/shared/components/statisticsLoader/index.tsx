@@ -44,6 +44,7 @@ interface Props {
   isLoading: boolean;
   statistics: MovieStatistics | ShowStatistics;
   label: string;
+  jobId: string;
 }
 
 const StatisticsLoader = (props: Props) => {
@@ -57,7 +58,8 @@ const StatisticsLoader = (props: Props) => {
     runningSyncLoading,
     isLoading,
     statistics,
-    label
+    label,
+    jobId
   } = props;
   const history = useHistory();
   const classes = useStyles();
@@ -65,7 +67,7 @@ const StatisticsLoader = (props: Props) => {
   const settings = useSelector((state: RootState) => state.settings);
 
   const startSync = async () => {
-    await fireJob('be68900b-ee1d-41ef-b12f-60ef3106052e');
+    await fireJob(jobId);
     history.push('/jobs');
   }
 
