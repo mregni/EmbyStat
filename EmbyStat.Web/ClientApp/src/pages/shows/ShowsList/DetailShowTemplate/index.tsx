@@ -19,6 +19,7 @@ import theme from '../../../../styles/theme';
 import PosterCard from '../../../../shared/components/cards/PosterCard';
 import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
 import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
+import DetailMovieSkeleton from '../../../movies/MoviesList/DetailMovieTemplate/DetailMovieSkeleton';
 
 const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
@@ -72,10 +73,8 @@ export const DetailShowTemplate = (props: Props) => {
 
   const classes = useStyles({ background: getPosterUrl() });
   if (show === null || show == undefined) {
-    return (<></>);
+    return (<DetailMovieSkeleton />);
   }
-
-  console.log(show);
 
   return (
     <div >
