@@ -235,15 +235,27 @@ namespace EmbyStat.Services
 
         private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
-            return new List<TopCard>
-            {
-                CalculateNewestPremieredShow(libraryIds),
-                CalculateOldestPremieredShow(libraryIds),
-                CalculateLatestAddedShow(libraryIds),
-                CalculateHighestRatedShow(libraryIds),
-                CalculateLowestRatedShow(libraryIds),
-                CalculateShowWithMostEpisodes(libraryIds)
-            };
+            var list = new List<TopCard>();
+
+            var calculateNewestPremieredShow = CalculateNewestPremieredShow(libraryIds);
+            list.AddIfNotNull(calculateNewestPremieredShow);
+
+            var calculateOldestPremieredShow = CalculateOldestPremieredShow(libraryIds);
+            list.AddIfNotNull(calculateOldestPremieredShow);
+
+            var calculateLatestAddedShow = CalculateLatestAddedShow(libraryIds);
+            list.AddIfNotNull(calculateLatestAddedShow);
+
+            var calculateHighestRatedShow = CalculateHighestRatedShow(libraryIds);
+            list.AddIfNotNull(calculateHighestRatedShow);
+
+            var calculateLowestRatedShow = CalculateLowestRatedShow(libraryIds);
+            list.AddIfNotNull(calculateLowestRatedShow);
+
+            var calculateShowWithMostEpisodes = CalculateShowWithMostEpisodes(libraryIds);
+            list.AddIfNotNull(calculateShowWithMostEpisodes);
+
+            return list;
         }
 
         private TopCard CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)

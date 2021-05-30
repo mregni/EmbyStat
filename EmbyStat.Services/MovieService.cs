@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -210,16 +211,29 @@ namespace EmbyStat.Services
 
         private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
-            return new List<TopCard>
-            {
-                HighestRatedMovie(libraryIds),
-                LowestRatedMovie(libraryIds),
-                OldestPremieredMovie(libraryIds),
-                NewestPremieredMovie(libraryIds),
-                ShortestMovie(libraryIds),
-                LongestMovie(libraryIds),
-                LatestAddedMovie(libraryIds)
-            };
+            var list = new List<TopCard>();
+            var highestRatedMovie = HighestRatedMovie(libraryIds);
+            list.AddIfNotNull(highestRatedMovie);
+
+            var lowestRatedMovie = LowestRatedMovie(libraryIds);
+            list.AddIfNotNull(lowestRatedMovie);
+
+            var oldestPremieredMovie = OldestPremieredMovie(libraryIds);
+            list.AddIfNotNull(oldestPremieredMovie);
+
+            var newestPremieredMovie = NewestPremieredMovie(libraryIds);
+            list.AddIfNotNull(newestPremieredMovie);
+
+            var shortestMovie = ShortestMovie(libraryIds);
+            list.AddIfNotNull(shortestMovie);
+
+            var longestMovie = LongestMovie(libraryIds);
+            list.AddIfNotNull(longestMovie);
+
+            var latestAddedMovie = LatestAddedMovie(libraryIds);
+            list.AddIfNotNull(latestAddedMovie);
+
+            return list;
         }
 
         private TopCard HighestRatedMovie(IReadOnlyList<string> libraryIds)
