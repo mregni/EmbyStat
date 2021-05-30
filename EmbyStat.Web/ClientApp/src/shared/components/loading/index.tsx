@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Loading = ({ Component, loading, label, className, ...props }) => {
+const Loading = ({ Component, loading, label, className, ...props }): ReactElement => {
   const classes = useStyles();
   if (loading) {
     return (

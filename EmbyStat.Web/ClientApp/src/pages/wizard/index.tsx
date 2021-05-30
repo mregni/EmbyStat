@@ -1,41 +1,40 @@
-import React, { ReactElement, useState, useEffect } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import { useForm } from 'react-hook-form';
+import React, { ReactElement, useState, useEffect, useRef } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import MobileStepper from "@material-ui/core/MobileStepper";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
-import UserDetails from './pages/userDetails';
-import Intro from './pages/intro';
-import ConfigureServer from './pages/configureServer';
-import { anyAdmins } from '../../shared/services/AccountService';
-import { setUser, setServerConfiguration } from '../../store/WizardSlice';
-import TestServer from './pages/testServer';
-import ConfigureLibraries from './pages/configureLibraries';
-import Finish from './pages/finish';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Settings } from '../../shared/models/settings';
-import PageLoader from '../../shared/components/pageLoader';
-import { saveSettings } from '../../store/SettingsSlice';
+import UserDetails from "./pages/userDetails";
+import Intro from "./pages/intro";
+import ConfigureServer from "./pages/configureServer";
+import { anyAdmins } from "../../shared/services/AccountService";
+import TestServer from "./pages/testServer";
+import ConfigureLibraries from "./pages/configureLibraries";
+import Finish from "./pages/finish";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { Settings } from "../../shared/models/settings";
+import PageLoader from "../../shared/components/pageLoader";
+import { saveSettings } from "../../store/SettingsSlice";
+import { RootState } from "../../store/RootReducer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    height: '100vh',
+    display: "flex",
+    height: "100vh",
   },
   content: {
     padding: theme.spacing(3),
     marginTop: 56,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       marginTop: 64,
     },
-    width: '100%',
+    width: "100%",
     zIndex: 1,
   },
   wizard: {
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   wizard__step: {
     minHeight: 650,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       padding: 16,
     },
   },
@@ -66,6 +65,11 @@ const Wizard = (props: Props): ReactElement => {
   const classes = useStyles();
   const { t } = useTranslation();
 
+  const userDetailRef = useRef<React.ElementRef<typeof UserDetails>>(null);
+  const configureServiceRef = useRef<React.ElementRef<typeof ConfigureServer>>(
+    null
+  );
+
   useEffect(() => {
     const loadAnyAdmin = async () => {
       var result = await anyAdmins();
@@ -73,30 +77,23 @@ const Wizard = (props: Props): ReactElement => {
         const newSettings = { ...settings };
         newSettings.wizardFinished = true;
         dispatch(saveSettings(newSettings));
-        history.push('/login');
+        history.push("/login");
       }
       setIsLoading(false);
-    }
+    };
 
     loadAnyAdmin();
   }, [settings, history, dispatch]);
 
   const handleNext = async () => {
-    // User details form validation
+    let validated = true;
     if (activeStep === 1) {
-      if (await triggerValidation()) {
-        dispatch(setUser(getValues('username'), getValues('password')));
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      }
+      validated = (await userDetailRef.current?.validate()) ?? false;
     } else if (activeStep === 2) {
-      if (await triggerValidation()) {
-        const { address, port, baseUrl, apiKey, protocol, type, baseUrlNeeded } = getValues();
-        dispatch(
-          setServerConfiguration(address, parseInt(port, 10), baseUrl, apiKey, type, protocol, baseUrlNeeded)
-        );
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      }
-    } else {
+      validated = (await configureServiceRef.current?.validate()) ?? false;
+    }
+
+    if (validated) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
@@ -105,27 +102,11 @@ const Wizard = (props: Props): ReactElement => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const { register, triggerValidation, errors, getValues, setValue } = useForm({
-    mode: 'onBlur',
-    defaultValues: {
-      type: 0,
-      protocol: 0,
-      address: '',
-      port: '',
-      baseUrl: '',
-      apiKey: '',
-      username: '',
-      password: '',
-      baseUrlNeeded: false,
-    }
-  });
-
   return (
     <>
-      {
-        isLoading
-          ? <PageLoader />
-          :
+      {isLoading ? (
+        <PageLoader />
+      ) : (
           <div className={classes.root}>
             <main className={classes.content}>
               <Grid container direction="row" justify="center">
@@ -140,22 +121,18 @@ const Wizard = (props: Props): ReactElement => {
                           {activeStep === 1 ? (
                             <form autoComplete="off">
                               <UserDetails
-                                register={register}
-                                errors={errors}
                                 disableBack={setDisableBack}
                                 disableNext={setDisableNext}
+                                ref={userDetailRef}
                               />
                             </form>
                           ) : null}
                           {activeStep === 2 ? (
                             <form autoComplete="off">
                               <ConfigureServer
-                                register={register}
-                                errors={errors}
-                                setValue={setValue}
-                                triggerValidation={triggerValidation}
                                 disableBack={setDisableBack}
                                 disableNext={setDisableNext}
+                                ref={configureServiceRef}
                               />
                             </form>
                           ) : null}
@@ -165,8 +142,12 @@ const Wizard = (props: Props): ReactElement => {
                               disableNext={setDisableNext}
                             />
                           ) : null}
-                          {activeStep === 4 ? <ConfigureLibraries type="movie" /> : null}
-                          {activeStep === 5 ? <ConfigureLibraries type="show" /> : null}
+                          {activeStep === 4 ? (
+                            <ConfigureLibraries type="movie" />
+                          ) : null}
+                          {activeStep === 5 ? (
+                            <ConfigureLibraries type="show" />
+                          ) : null}
                           {activeStep === 6 ? (
                             <Finish
                               disableNext={setDisableNext}
@@ -199,7 +180,7 @@ const Wizard = (props: Props): ReactElement => {
                                   disabled={disableBack}
                                 >
                                   <KeyboardArrowLeft />
-                                  {t('COMMON.BACK')}
+                                  {t("COMMON.BACK")}
                                 </Button>
                               }
                             />
@@ -212,7 +193,7 @@ const Wizard = (props: Props): ReactElement => {
               </Grid>
             </main>
           </div>
-      }
+        )}
     </>
   );
 };

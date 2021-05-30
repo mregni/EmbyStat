@@ -73,7 +73,7 @@ const TopListCard = (props: Props) => {
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
 
   const settings = useSelector((state: RootState) => state.settings);
-  const classes = useStyles({ backdrop: getBackdropImageLink(settings, hoveredItem?.mediaId ?? data.values[0].mediaId) });
+  const classes = useStyles({ backdrop: getBackdropImageLink(settings, hoveredItem?.mediaId ?? data.values[0]?.mediaId ?? "") });
 
   const calculateTime = (date: string): string => {
     return moment(date).format('l');
@@ -126,7 +126,7 @@ const TopListCard = (props: Props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {pair.label.length > 35 ? t(pair.label).substr(0, 32) + '...' : t(pair.label)}
+                    {pair.label.length > 30 ? t(pair.label).substr(0, 29) + '...' : t(pair.label)}
                   </a>
                 </Grid>
                 <Grid item className={classes.secondaryColor}>

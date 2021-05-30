@@ -57,6 +57,7 @@ const ShowsLoader = (props: Props) => {
       isLoading={isLoading}
       statistics={statistics.statistics}
       label="SHOWS.LOADER"
+      jobId="be68900b-ee1d-41ef-b12f-60ef3106052e"
     />
   );
 };

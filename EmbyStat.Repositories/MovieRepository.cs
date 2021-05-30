@@ -159,7 +159,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public IEnumerable<Movie> GetMoviePage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds)
+        public IEnumerable<Movie> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds)
         {
             return ExecuteQuery(() =>
             {
@@ -169,15 +169,12 @@ namespace EmbyStat.Repositories
 
                 query = filters.Aggregate(query, ApplyMovieFilters);
 
-                if (!string.IsNullOrWhiteSpace(sort))
+                if (!string.IsNullOrWhiteSpace(sortField))
                 {
-                    var jObj = JsonConvert.DeserializeObject<JArray>(sort);
-                    var selector = jObj[0]["selector"].Value<string>().FirstCharToUpper();
-                    var desc = jObj[0]["desc"].Value<bool>();
-
-                    query = desc
-                        ? query.OrderByDescending(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null))
-                        : query.OrderBy(x => typeof(Movie).GetProperty(selector)?.GetValue(x, null));
+                    sortField = sortField.FirstCharToUpper();
+                    query = sortOrder == "desc"
+                        ? query.OrderByDescending(x => typeof(Movie).GetProperty(sortField)?.GetValue(x, null))
+                        : query.OrderBy(x => typeof(Movie).GetProperty(sortField)?.GetValue(x, null));
                 }
 
                 return query

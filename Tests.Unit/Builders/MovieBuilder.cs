@@ -26,7 +26,7 @@ namespace Tests.Unit.Builders
                 Primary = "primaryImage",
                 Logo = "logoImage",
                 Banner = "bannerImage",
-                TMDB = "0002",
+                TMDB = 1000,
                 IMDB = "0001",
                 TVDB = "0003",
                 Thumb = "thumbImage",
@@ -226,7 +226,7 @@ namespace Tests.Unit.Builders
                 ProviderIds = new Dictionary<string, string>
                 {
                     {"Imdb", _movie.IMDB},
-                    {"Tmdb", _movie.TMDB},
+                    {"Tmdb", _movie.TMDB.ToString()},
                     {"Tvdb", _movie.TVDB}
                 },
                 MediaStreams = _movie.AudioStreams.Select(x => new BaseMediaStream

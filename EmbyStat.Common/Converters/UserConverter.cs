@@ -30,12 +30,8 @@ namespace EmbyStat.Common.Converters
                 embyUser.Name = user["Name"].Value<string>();
                 embyUser.ServerId = user["ServerId"].Value<string>();
                 embyUser.SubtitleMode = user["Configuration"]["SubtitleMode"].Value<string>();
-                embyUser.LastActivityDate = user["LastActivityDate"] != null
-                    ? new DateTimeOffset(user["LastActivityDate"].Value<DateTime>())
-                    : (DateTimeOffset?)null;
-                embyUser.LastLoginDate = user["LastLoginDate"] != null
-                    ? new DateTimeOffset(user["LastLoginDate"].Value<DateTime>())
-                    : (DateTimeOffset?)null;
+                embyUser.LastActivityDate = user["LastActivityDate"].Value<DateTime?>();
+                embyUser.LastLoginDate = user["LastLoginDate"].Value<DateTime?>();
                 embyUser.BlockUnratedItems = user["Policy"]["BlockUnratedItems"]?.Values<string>().ToList() ??
                                              new List<string>();
                 embyUser.BlockedTags =

@@ -94,7 +94,7 @@ namespace EmbyStat.Controllers.Job
         [Route("mediasync")]
         public IActionResult GetMediaSyncJob()
         {
-            return Get(Constants.JobIds.MediaSyncId);
+            return Get(Constants.JobIds.ShowSyncId);
         }
     }
 }

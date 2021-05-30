@@ -10,11 +10,6 @@ interface Props {
   statistics: MovieStatistics;
 }
 
-interface Bar {
-  label: string;
-  [key: number]: any;
-}
-
 const MoviesGraphs = (props: Props) => {
   const { statistics } = props;
 

@@ -1,28 +1,28 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { useDispatch, useSelector } from 'react-redux';
-import i18next from 'i18next';
-import moment from 'moment';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Grid from "@material-ui/core/Grid";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { useDispatch, useSelector } from "react-redux";
+import i18next from "i18next";
+import moment from "moment";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { loadLanguages } from '../../../../store/LanguageSlice';
-import { RootState } from '../../../../store/RootReducer';
-import { Language } from '../../../../shared/models/language';
-import { setlanguage } from '../../../../store/WizardSlice';
+import { loadLanguages } from "../../../../store/LanguageSlice";
+import { RootState } from "../../../../store/RootReducer";
+import { Language } from "../../../../shared/models/language";
+import { setlanguage } from "../../../../store/WizardSlice";
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    fontStyle: 'italic',
-    fontSize: '0.8rem',
-    '& a': {
+    fontStyle: "italic",
+    fontSize: "0.8rem",
+    "& a": {
       color:
-        theme.palette.type === 'dark'
+        theme.palette.type === "dark"
           ? theme.palette.secondary.light
           : theme.palette.secondary.dark,
     },
@@ -62,16 +62,16 @@ const Intro = (props: Props): ReactElement => {
 
   const handelRollbarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRollbar(event.target.checked);
-  }
+  };
 
-  const crowdinText = { __html: t('WIZARD.CROWNDINHELP') };
-  const introText = { __html: t('WIZARD.INTROTEXT') };
+  const crowdinText = { __html: t("WIZARD.CROWNDINHELP") };
+  const introText = { __html: t("WIZARD.INTROTEXT") };
 
   return (
     <Grid container direction="column" spacing={7}>
       <Grid item>
         <Typography variant="h4" color="primary">
-          {t('WIZARD.WIZARDLABEL')}
+          {t("WIZARD.WIZARDLABEL")}
         </Typography>
       </Grid>
       <Grid item container direction="column" spacing={1}>
@@ -85,7 +85,7 @@ const Intro = (props: Props): ReactElement => {
               variant="standard"
               onChange={handleChange}
               value={language}
-              name='language'
+              name="language"
             >
               {languages.languages.map((x: Language) => (
                 <MenuItem key={x.code} value={x.code}>
@@ -96,19 +96,30 @@ const Intro = (props: Props): ReactElement => {
           ) : null}
         </Grid>
         <Grid item>
-          <Typography variant="body1" dangerouslySetInnerHTML={crowdinText} className={classes.link} />
+          <Typography
+            variant="body1"
+            dangerouslySetInnerHTML={crowdinText}
+            className={classes.link}
+          />
         </Grid>
       </Grid>
       <Grid item container direction="column" spacing={1}>
         <Grid item>
           <Typography variant="body1">
-            {t('SETTINGS.ROLLBAR.EXCEPTIONLOGGING')}
+            {t("SETTINGS.ROLLBAR.EXCEPTIONLOGGING")}
           </Typography>
         </Grid>
         <Grid item>
           <FormControlLabel
-            control={<Checkbox checked={rollbar} onChange={handelRollbarChange} color="primary" />}
-            label={t('SETTINGS.ROLLBAR.ENABLEROLLBAR')}
+            control={
+              <Checkbox
+                checked={rollbar}
+                disableRipple
+                onChange={handelRollbarChange}
+                color="primary"
+              />
+            }
+            label={t("SETTINGS.ROLLBAR.ENABLEROLLBAR")}
           />
         </Grid>
       </Grid>

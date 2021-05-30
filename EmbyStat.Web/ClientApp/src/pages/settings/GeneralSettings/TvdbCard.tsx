@@ -35,7 +35,7 @@ const TvdbCard = (props: Props) => {
   const dispatch = useDispatch();
 
   const saveForm = async () => {
-    var result = await triggerValidation();
+    var result = await trigger();
     if (result) {
       const newSettings = { ...settings };
       const tvdbSetting = { ...newSettings.tvdb };
@@ -46,7 +46,7 @@ const TvdbCard = (props: Props) => {
     }
   }
 
-  const { register, errors, triggerValidation } = useForm({
+  const { register, errors, trigger } = useForm({
     mode: 'onBlur',
     defaultValues: {
       key,

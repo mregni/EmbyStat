@@ -164,7 +164,7 @@ namespace Tests.Unit.Extensions
             var video = new Video();
             dto.MapProviderIds(video);
 
-            video.TMDB.Should().BeEmpty();
+            video.TMDB.Should().NotHaveValue();
             video.TVDB.Should().BeEmpty();
             video.IMDB.Should().BeEmpty();
         }
@@ -181,7 +181,7 @@ namespace Tests.Unit.Extensions
             var video = new Video();
             dto.MapProviderIds(video);
 
-            video.TMDB.Should().Be("1234");
+            video.TMDB.Should().Be(1234);
             video.TVDB.Should().Be("2345");
             video.IMDB.Should().Be("3456");
         }

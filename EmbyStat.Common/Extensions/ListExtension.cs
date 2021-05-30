@@ -69,5 +69,13 @@ namespace EmbyStat.Common.Extensions
 
             return bArray;
         }
+
+        public static void AddIfNotNull<T>(this List<T> items, T item)
+        {
+            if (item != null)
+            {
+                items.Add(item);
+            }
+        }
     }
 }

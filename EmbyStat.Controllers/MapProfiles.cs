@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -97,12 +99,19 @@ namespace EmbyStat.Controllers
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
-            CreateMap<MovieColumn, MovieColumnViewModel>();
+            CreateMap<MovieRow, MovieRowViewModel>();
             CreateMap<TopCard, TopCardViewModel>();
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
+            CreateMap<ShowRow, ShowRowViewModel>();
+            _ = CreateMap<Common.Models.Entities.Show, ShowDetailViewModel>()
+                .ForMember(x => x.SizeInMb, x => x.MapFrom(y => y.Episodes.Sum(z => z.MediaSources.FirstOrDefault() != null ? z.MediaSources.First().SizeInMb : 0.0)))
+                .ForMember(x => x.CollectedEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(false, LocationType.Disk)))
+                .ForMember(x => x.MissingEpisodes, x => x.MapFrom(y => y.GetMissingEpisodes()))
+                .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.GetSeasonCount(false)))
+                .ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(true, LocationType.Disk)));
         }
     }
 }

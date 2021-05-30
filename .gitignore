@@ -303,3 +303,4 @@ usersettings.json
 **/issues.json
 **/coverage/**
 **/ClientApp/build/**
+EmbyStat.Web/ClientApp/.eslintcache

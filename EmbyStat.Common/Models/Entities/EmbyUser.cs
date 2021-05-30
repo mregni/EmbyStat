@@ -13,8 +13,8 @@ namespace EmbyStat.Common.Models.Entities
         public bool HasPassword { get; set; }
         public bool HasConfiguredPassword { get; set; }
         public bool HasConfiguredEasyPassword { get; set; }
-        public DateTimeOffset? LastLoginDate { get; set; }
-        public DateTimeOffset? LastActivityDate { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+        public DateTime? LastActivityDate { get; set; }
         public bool PlayDefaultAudioTrack { get; set; }
         public string SubtitleMode { get; set; }
         public bool EnableLocalPassword { get; set; }

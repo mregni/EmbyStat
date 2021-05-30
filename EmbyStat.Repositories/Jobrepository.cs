@@ -18,11 +18,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Job>();
-                    return collection.FindAll().ToList();
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Job>();
+                return collection.FindAll().ToList();
             });
         }
 
@@ -30,11 +28,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Job>();
-                    return collection.FindById(id);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Job>();
+                return collection.FindById(id);
             });
         }
 
@@ -42,19 +38,17 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Job>();
-                    var jobDocument = collection.FindById(job.Id);
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Job>();
+                var jobDocument = collection.FindById(job.Id);
 
-                    if (jobDocument != null)
-                    {
-                        jobDocument.State = job.State;
-                        jobDocument.StartTimeUtc = job.StartTimeUtc;
-                        jobDocument.EndTimeUtc = job.EndTimeUtc;
-                        jobDocument.CurrentProgressPercentage = job.CurrentProgressPercentage;
-                        collection.Update(jobDocument);
-                    }
+                if (jobDocument != null)
+                {
+                    jobDocument.State = job.State;
+                    jobDocument.StartTimeUtc = job.StartTimeUtc;
+                    jobDocument.EndTimeUtc = job.EndTimeUtc;
+                    jobDocument.CurrentProgressPercentage = job.CurrentProgressPercentage;
+                    collection.Update(jobDocument);
                 }
             });
         }
@@ -63,18 +57,16 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Job>();
-                    var jobDocument = collection.FindById(id);
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Job>();
+                var jobDocument = collection.FindById(id);
 
-                    if (jobDocument != null)
-                    {
-                        jobDocument.EndTimeUtc = endTime;
-                        jobDocument.State = state;
-                        jobDocument.CurrentProgressPercentage = 100;
-                        collection.Update(jobDocument);
-                    }
+                if (jobDocument != null)
+                {
+                    jobDocument.EndTimeUtc = endTime;
+                    jobDocument.State = state;
+                    jobDocument.CurrentProgressPercentage = 100;
+                    collection.Update(jobDocument);
                 }
             });
         }
@@ -83,20 +75,18 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Job>();
+                var job = collection.FindById(id);
+
+                if (job != null)
                 {
-                    var collection = database.GetCollection<Job>();
-                    var job = collection.FindById(id);
-
-                    if (job != null)
-                    {
-                        job.Trigger = trigger;
-                        collection.Update(job);
-                        return true;
-                    }
-
-                    return false;
+                    job.Trigger = trigger;
+                    collection.Update(job);
+                    return true;
                 }
+
+                return false;
             });
             
         }
@@ -105,21 +95,19 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Job>();
+                var jobs = collection.FindAll().ToList();
+                jobs.ForEach(x =>
                 {
-                    var collection = database.GetCollection<Job>();
-                    var jobs = collection.FindAll().ToList();
-                    jobs.ForEach(x =>
+                    if (x.State == JobState.Running)
                     {
-                        if (x.State == JobState.Running)
-                        {
-                            x.State = JobState.Failed;
-                            x.EndTimeUtc = DateTime.Now;
-                        }
-                    });
+                        x.State = JobState.Failed;
+                        x.EndTimeUtc = DateTime.Now;
+                    }
+                });
 
-                    collection.Update(jobs);
-                }
+                collection.Update(jobs);
             });
         }
     }

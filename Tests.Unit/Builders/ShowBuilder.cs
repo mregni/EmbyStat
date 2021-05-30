@@ -27,7 +27,7 @@ namespace Tests.Unit.Builders
                 CollectionId = libraryId,
                 CommunityRating = 1.7f,
                 CumulativeRunTimeTicks = 19400287400000,
-                DateCreated = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
+                DateCreated = new DateTime(2001, 01, 01, 0, 0, 0),
                 IMDB = "12345",
                 Logo = "logo.jpg",
                 Name = "Chuck",
@@ -38,21 +38,22 @@ namespace Tests.Unit.Builders
                 RunTimeTicks = 12000000,
                 SortName = "Chuck",
                 Status = "Ended",
-                TMDB = "12345",
+                TMDB = 12345,
                 TVDB = "12345",
                 Thumb = "thumb.jpg",
-                TvdbFailed = false,
-                TvdbSynced = false,
-                PremiereDate = new DateTimeOffset(2001, 01, 01, 0, 0, 0, new TimeSpan(0)),
+                ExternalSyncFailed = false,
+                ExternalSynced = false,
+                PremiereDate = new DateTime(2001, 01, 01, 0, 0, 0),
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
                 Genres = new[] { "Action" },
                 Episodes = new List<Episode>
                 {
-                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").Build(),
-                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithIndexNumber(1).Build(),
+                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithSeasonIndexNumber(1).Build(),
+                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithSeasonIndexNumber(1).WithIndexNumber(1).Build(),
                 },
                 Seasons = new List<Season>
                 {
+                    new SeasonBuilder(Guid.NewGuid().ToString(), id).WithIndexNumber(0).Build(),
                     new SeasonBuilder(Guid.NewGuid().ToString(), id).Build()
                 }
             };
@@ -90,6 +91,14 @@ namespace Tests.Unit.Builders
             return this;
         }
 
+        public ShowBuilder AddSpecialEpisode(string id)
+        {
+            _show.Episodes.Add(new EpisodeBuilder(id, _show.Id, _show.Seasons.First(x => x.IndexNumber == 0).Id)
+                .WithSeasonIndexNumber(0)
+                .WithLocationType(LocationType.Disk).Build());
+            return this;
+        }
+
         public ShowBuilder ClearEpisodes()
         {
             _show.Episodes = new List<Episode>();
@@ -122,14 +131,6 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddPerson(ExtraPerson person)
-        {
-            var list = _show.People.ToList();
-            list.Add(person);
-            _show.People = list.ToArray();
-            return this;
-        }
-
         public ShowBuilder ReplacePersons(ExtraPerson person)
         {
             _show.People = new[] { person };
@@ -143,6 +144,7 @@ namespace Tests.Unit.Builders
             {
                 _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, season.Id)
                     .WithIndexNumber(i)
+                    .WithSeasonIndexNumber(seasonIndex)
                     .WithLocationType(LocationType.Virtual)
                     .Build());
             }
@@ -155,9 +157,12 @@ namespace Tests.Unit.Builders
             var seasonId = Guid.NewGuid().ToString();
             _show.Seasons.Add(new SeasonBuilder(seasonId, _show.Id).WithIndexNumber(indexNumber).Build());
 
+            var season = _show.Seasons.First(x => x.Id == seasonId);
             for (var i = 0; i < extraEpisodes; i++)
             {
-                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, seasonId).Build());
+                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, seasonId)
+                    .WithSeasonIndexNumber(season.IndexNumber)
+                    .Build());
             }
 
             return this;
@@ -165,13 +170,13 @@ namespace Tests.Unit.Builders
 
         public ShowBuilder AddFailedSync(bool state)
         {
-            _show.TvdbFailed = state;
+            _show.ExternalSyncFailed = state;
             return this;
         }
 
         public ShowBuilder AddTvdbSynced(bool state)
         {
-            _show.TvdbSynced = state;
+            _show.ExternalSynced = state;
             return this;
         }
 
@@ -210,7 +215,7 @@ namespace Tests.Unit.Builders
                 ProviderIds = new Dictionary<string, string>
                 {
                     {"Imdb", _show.IMDB},
-                    {"Tmdb", _show.TMDB},
+                    {"Tmdb", _show.TMDB.ToString()},
                     {"Tvdb", _show.TVDB}
                 },
                 Genres = _show.Genres,

@@ -11,6 +11,7 @@ using EmbyStat.Services.Models.Movie;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Tests.Unit.Builders;
 using Xunit;
 
 namespace Tests.Unit.Controllers
@@ -26,8 +27,8 @@ namespace Tests.Unit.Controllers
         {
             _collections = new List<Library>
             {
-                new Library{ Id = "id1", Name = "collection1", PrimaryImage = "image1", Type = LibraryType.Movies},
-                new Library{ Id = "id2", Name = "collection2", PrimaryImage = "image2", Type = LibraryType.Movies}
+                new LibraryBuilder(1, LibraryType.Movies).Build(),
+                new LibraryBuilder(2, LibraryType.Movies).Build()
             };
 
             _movieCards = new List<TopCard>

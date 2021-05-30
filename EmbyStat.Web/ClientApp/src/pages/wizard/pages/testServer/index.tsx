@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { Trans, useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import Loading from '../../../../shared/components/loading';
+import React, { useState, useEffect } from "react";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core";
 
 import {
   testApiKey,
   getServerInfo,
   getAdministrators,
   getLibraries,
-} from '../../../../shared/services/MediaServerService';
-import { RootState } from '../../../../store/RootReducer';
+} from "../../../../shared/services/MediaServerService";
+import { RootState } from "../../../../store/RootReducer";
 import {
   MediaServerLogin,
   MediaServerInfo,
   MediaServerUser,
   Library,
-} from '../../../../shared/models/mediaServer';
-import TestFailed from './TestFailed';
-import TestSuccessful from './TestSuccessFul';
+} from "../../../../shared/models/mediaServer";
+import TestFailed from "./TestFailed";
+import TestSuccessful from "./TestSuccessFul";
+import Loading from "../../../../shared/components/loading";
+
+const useStyles = makeStyles((theme) => ({
+  full_height: {
+    height: "100%",
+  },
+}));
 
 interface Props {
   disableBack: Function;
@@ -28,11 +35,12 @@ interface Props {
 
 const TestServer = (props: Props) => {
   const { disableBack, disableNext } = props;
+  const classes = useStyles();
   const { t } = useTranslation();
-  const [loadingLabel, setLoadingLabel] = useState('WIZARD.STEPONE');
+  const [loadingLabel, setLoadingLabel] = useState("WIZARD.STEPONE");
   const [isLoading, setIsLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [serverInfo, setServerInfo] = useState({} as MediaServerInfo);
   const [administrators, setAdministrators] = useState({} as MediaServerUser[]);
   const [libraries, setLibraries] = useState({} as Library[]);
@@ -40,10 +48,10 @@ const TestServer = (props: Props) => {
   const wizard = useSelector((state: RootState) => state.wizard);
   useEffect(() => {
     const performSteps = async () => {
-      const protocolTxt = wizard.serverProtocol === 0 ? 'https://' : 'http://';
+      const protocolTxt = wizard.serverProtocol === 0 ? "https://" : "http://";
       const address = wizard.serverAddress;
       const port = wizard.serverPort;
-      const baseUrl = wizard?.serverBaseurl ?? '';
+      const baseUrl = wizard?.serverBaseurl ?? "";
       const fullAddress = `${protocolTxt}${address}:${port}${baseUrl}`;
 
       if (currentStep === 1) {
@@ -60,7 +68,7 @@ const TestServer = (props: Props) => {
 
         if (result) {
           setCurrentStep(2);
-          setLoadingLabel('WIZARD.STEPTWO');
+          setLoadingLabel("WIZARD.STEPTWO");
           const serverInfo = await getServerInfo(true);
           if (serverInfo == null) {
             setIsLoading(false);
@@ -69,7 +77,7 @@ const TestServer = (props: Props) => {
           setServerInfo(serverInfo);
 
           setCurrentStep(3);
-          setLoadingLabel('WIZARD.STEPTHREE');
+          setLoadingLabel("WIZARD.STEPTHREE");
           const admins = await getAdministrators();
           if (admins == null) {
             setIsLoading(false);
@@ -78,7 +86,7 @@ const TestServer = (props: Props) => {
           setAdministrators(admins);
 
           setCurrentStep(4);
-          setLoadingLabel('WIZARD.STEPFOUR');
+          setLoadingLabel("WIZARD.STEPFOUR");
           const libs = await getLibraries();
           if (libs == null) {
             setIsLoading(false);
@@ -87,7 +95,7 @@ const TestServer = (props: Props) => {
           setLibraries(libs);
           setIsLoading(false);
         } else {
-          setErrorMessage('WIZARD.APIKEYFAILED');
+          setErrorMessage("WIZARD.APIKEYFAILED");
           setIsLoading(false);
         }
       }
@@ -100,11 +108,11 @@ const TestServer = (props: Props) => {
   }, [isLoading, disableBack]);
 
   useEffect(() => {
-    disableNext(isLoading || errorMessage !== '');
+    disableNext(isLoading || errorMessage !== "");
   }, [isLoading, disableNext, errorMessage]);
 
   return (
-    <Grid container direction="column">
+    <>
       <Typography variant="h4" color="primary">
         <Trans i18nKey="WIZARD.SERVERCONFIGURATIONTEST" />
       </Typography>
@@ -117,9 +125,9 @@ const TestServer = (props: Props) => {
         administrators={administrators}
         wizard={wizard}
         libraries={libraries}
-        Component={errorMessage === '' ? TestSuccessful : TestFailed}
+        Component={errorMessage === "" ? TestSuccessful : TestFailed}
       />
-    </Grid>
+    </>
   );
 };
 

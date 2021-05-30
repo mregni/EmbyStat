@@ -89,3 +89,21 @@ export interface Video extends Extra {
 export interface Movie extends Video {
   originalTitle: string;
 }
+
+export interface Episode {
+  seasonNumber: number;
+  episodeNumber: number;
+  name: string;
+  id: string;
+  firstAired: Date;
+}
+
+export interface Show extends Extra {
+  cumulativeRunTimeTicks?: number;
+  status: string;
+  seasonCount: number;
+  missingEpisodes: Episode[];
+  collectedEpisodeCount: number;
+  specialEpisodeCount: number;
+  sizeInMb: number;
+}

@@ -13,7 +13,7 @@ namespace EmbyStat.Clients.Jellyfin.Http
 
         public bool Ping()
         {
-            return Ping("Jellyfin Server");
+            return Ping("\"Jellyfin Server\"");
         }
 
         public MediaServerUdpBroadcast SearchServer()

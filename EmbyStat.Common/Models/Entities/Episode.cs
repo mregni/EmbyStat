@@ -11,6 +11,7 @@ namespace EmbyStat.Common.Models.Entities
 	    public int? IndexNumberEnd { get; set; }
         public string ShowName { get; set; }
         public string ShowId { get; set; }
+        public int? SeasonIndexNumber { get; set; }
         public LocationType LocationType { get; set; }
     }
 }

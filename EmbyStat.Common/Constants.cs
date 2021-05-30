@@ -75,7 +75,8 @@ namespace EmbyStat.Common
 
         public static class LogPrefix
         {
-            public static string MediaSyncJob => "MEDIA-SYNC";
+            public static string ShowSyncJob => "SHOW-SYNC";
+            public static string MovieSyncJob => "MOVIE-SYNC";
             public static string CheckUpdateJob => "UPDATE-CHECKER";
             public static string PingMediaServerJob => "PING";
             public static string SmallMediaServerSyncJob => "SYSTEM-SYNC";
@@ -85,7 +86,8 @@ namespace EmbyStat.Common
 
         public static class JobIds
         {
-            public static Guid MediaSyncId => new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e");
+            public static Guid ShowSyncId => new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e");
+            public static Guid MovieSyncId => new Guid("c40555dc-ea57-4c6e-a225-905223d31c3c");
             public static Guid SmallSyncId => new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f");
             public static Guid CheckUpdateId => new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a");
             public static Guid PingEmbyId => new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e");

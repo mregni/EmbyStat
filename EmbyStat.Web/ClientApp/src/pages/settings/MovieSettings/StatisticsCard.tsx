@@ -26,7 +26,7 @@ const StatisticsCard = (props: Props) => {
   const [enabled, setEnabled] = useState(settings.toShortMovieEnabled)
 
   const saveForm = async () => {
-    var result = await triggerValidation();
+    var result = await trigger();
     if (result) {
       const newSettings = { ...settings };
       newSettings.toShortMovie = value;
@@ -36,7 +36,7 @@ const StatisticsCard = (props: Props) => {
     }
   }
 
-  const { register, errors, triggerValidation } = useForm({
+  const { register, errors, trigger } = useForm({
     mode: 'onBlur',
     defaultValues: {
       toShortEnabled: settings.toShortMovieEnabled,

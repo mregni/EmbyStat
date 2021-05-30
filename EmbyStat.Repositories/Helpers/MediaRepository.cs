@@ -230,7 +230,7 @@ namespace EmbyStat.Repositories.Helpers
             switch (filter.Field)
             {
                 case "PremiereDate":
-                    var values = new DateTimeOffset[0];
+                    var values = new DateTime[0];
                     if (filter.Operation != "null")
                     {
                         values = FormatDateInputValue(filter.Value);
@@ -238,12 +238,12 @@ namespace EmbyStat.Repositories.Helpers
 
                     return (filter.Operation switch
                     {
-                        "==" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) == values[0]),
-                        "<" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MaxValue) < values[0]),
-                        ">" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) > values[0]),
-                        "between" => query.Where(x => ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) > values[0]
-                                                      && ((DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTimeOffset.MinValue) < values[1]),
-                        "null" => query.Where(x => (DateTimeOffset?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
+                        "==" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) == values[0]),
+                        "<" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MaxValue) < values[0]),
+                        ">" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) > values[0]),
+                        "between" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) > values[0]
+                                                      && ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) < values[1]),
+                        "null" => query.Where(x => (DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
                         _ => query
                     });
                 case "Genres":
@@ -319,12 +319,12 @@ namespace EmbyStat.Repositories.Helpers
             return new[] { Convert.ToDouble(decodedValue) * multiplier };
         }
 
-        protected DateTimeOffset[] FormatDateInputValue(string value)
+        protected DateTime[] FormatDateInputValue(string value)
         {
             if (value.Contains('|'))
             {
-                var left = DateTimeOffset.Parse(value.Split('|')[0]);
-                var right = DateTimeOffset.Parse(value.Split('|')[1]);
+                var left = DateTime.Parse(value.Split('|')[0]);
+                var right = DateTime.Parse(value.Split('|')[1]);
 
                 //switching sides if user put the biggest number on the left side.
                 if (right < left)
@@ -338,7 +338,7 @@ namespace EmbyStat.Repositories.Helpers
             }
             else
             {
-                return new[] { DateTimeOffset.Parse(value) };
+                return new[] { DateTime.Parse(value) };
             }
         }
 

@@ -4,23 +4,18 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
-import LocalMoviesRoundedIcon from '@material-ui/icons/LocalMoviesRounded';
-import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
-import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
-import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
-import TvRoundedIcon from '@material-ui/icons/TvRounded';
-import SettingsIcon from '@material-ui/icons/Settings';
 import uuid from 'react-uuid';
 import classNames from 'classnames';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome, faFilm, faTv, faServer, faBriefcase, faCogs, faFileAlt } from '@fortawesome/free-solid-svg-icons'
 
 import theme from '../../../styles/theme';
 import MenuItem from './MenuItem';
-import ServerStatus from './ServerStatus';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/RootReducer';
 import { UserRoles } from '../../../shared/models/login';
+import { Typography } from '@material-ui/core';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -78,13 +73,13 @@ const Menu = (props: Props) => {
 
   const menuItems = [
     {
-      icon: <HomeRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faHome} />,
       title: t('MENU.DASHBOARD'),
       route: '/',
       roles: [UserRoles.Admin, UserRoles.User],
     },
     {
-      icon: <LocalMoviesRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faFilm} />,
       title: t('MENU.MOVIES'),
       children: [
         {
@@ -105,7 +100,7 @@ const Menu = (props: Props) => {
       ],
     },
     {
-      icon: <TvRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faTv} />,
       title: t('MENU.SHOWS'),
       children: [
         {
@@ -117,29 +112,28 @@ const Menu = (props: Props) => {
           title: t('COMMON.GRAPHS'),
           route: '/shows/graphs',
           roles: [UserRoles.Admin, UserRoles.User],
-        }
+        },
+        {
+          title: t('COMMON.TABLE'),
+          route: '/shows/list',
+          roles: [UserRoles.Admin, UserRoles.User],
+        },
       ],
     },
     {
-      icon: <StorageRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faServer} />,
       title: t('MENU.SERVER'),
       route: '/mediaserver',
       roles: [UserRoles.Admin, UserRoles.User],
     },
     {
-      icon: <AssignmentRoundedIcon />,
+      icon: <FontAwesomeIcon icon={faBriefcase} />,
       title: t('MENU.JOBS'),
       route: '/jobs',
       roles: [UserRoles.Admin, UserRoles.User],
     },
     {
-      icon: <DescriptionRoundedIcon />,
-      title: t('MENU.LOGS'),
-      route: '/logs',
-      roles: [UserRoles.Admin, UserRoles.User],
-    },
-    {
-      icon: <SettingsIcon />,
+      icon: <FontAwesomeIcon icon={faCogs} />,
       title: t('MENU.SETTINGS'),
       children: [
         {
@@ -153,6 +147,12 @@ const Menu = (props: Props) => {
           roles: [UserRoles.Admin, UserRoles.User],
         },
       ],
+    },
+    {
+      icon: <FontAwesomeIcon icon={faFileAlt} />,
+      title: t('MENU.LOGS'),
+      route: '/logs',
+      roles: [UserRoles.Admin, UserRoles.User],
     },
   ];
 
@@ -175,7 +175,13 @@ const Menu = (props: Props) => {
       <Grid container direction="column" justify="space-between" className="max-height">
         <Grid item>
           <div className={classes.drawerContainer}>
-            {small ? <div>EmbyStat</div> : null}
+            {small ? (
+              <Grid item container justify="center">
+                <Typography variant="h6" color="primary">
+                  EmbyStat
+                </Typography>
+              </Grid>
+            ) : null}
             <List classes={{ root: classes.menu__list }}>
               {menuItems.map((item) => (
                 <MenuItem
@@ -190,7 +196,7 @@ const Menu = (props: Props) => {
                 />
               ))}
             </List>
-            <ServerStatus />
+            {/* <ServerStatus /> */}
           </div>
         </Grid>
         <Grid item container justify="center" direction="row" className={classes.version}>

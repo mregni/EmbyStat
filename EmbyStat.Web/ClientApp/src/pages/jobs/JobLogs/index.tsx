@@ -16,7 +16,7 @@ import { EnhancedJobLogLine } from '../../../shared/models/jobs';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    minHeight: 432,
+    minHeight: 482,
     [theme.breakpoints.up('lg')]: {
       marginLeft: '16px',
     },

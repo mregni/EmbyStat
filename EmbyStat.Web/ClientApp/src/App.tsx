@@ -15,46 +15,44 @@ import { loadJobs } from './store/JobSlice';
 import SignalRConnectionProvider from './shared/providers/SignalRConnectionProvider';
 import Wizard from './pages/wizard';
 
-import 'devextreme/dist/css/dx.common.css';
-import './styles/theme/dx.material.blue-yellow.css';
 import PageLoader from './shared/components/pageLoader';
 
 function App(): ReactElement {
-  const dispatch = useDispatch();
-  const store = useStore();
+    const dispatch = useDispatch();
+    const store = useStore();
 
-  useEffect(() => {
-    dispatch(loadSettings());
-    dispatch(loadJobs());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(loadSettings());
+        dispatch(loadJobs());
+    }, [dispatch]);
 
-  const settings = useSelector((state: RootState) => state.settings);
-  useEffect(() => {
-    i18next.changeLanguage(settings.language);
-    moment.locale(settings.language);
-  }, [settings]);
+    const settings = useSelector((state: RootState) => state.settings);
+    useEffect(() => {
+        i18next.changeLanguage(settings.language);
+        moment.locale(settings.language);
+    }, [settings]);
 
-  return (
-    <ThemeProvider theme={theme}>
-      <StylesProvider injectFirst>
-        <SignalRConnectionProvider store={store}>
-          <CssBaseline />
-          <SnackbarProvider
-            maxSnack={3}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-          >
-            <SnackbarUtilsConfigurator />
-            {!settings.isLoaded ? <PageLoader /> : null}
-            {settings.isLoaded && !settings.wizardFinished ? <Wizard settings={settings} /> : null}
-            {settings.isLoaded && settings.wizardFinished ? <LoggedIn /> : null}
-          </SnackbarProvider>
-        </SignalRConnectionProvider>
-      </StylesProvider>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <StylesProvider injectFirst>
+                <SignalRConnectionProvider store={store}>
+                    <CssBaseline />
+                    <SnackbarProvider
+                        maxSnack={3}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                    >
+                        <SnackbarUtilsConfigurator />
+                        {!settings.isLoaded ? <PageLoader /> : null}
+                        {settings.isLoaded && !settings.wizardFinished ? <Wizard settings={settings} /> : null}
+                        {settings.isLoaded && settings.wizardFinished ? <LoggedIn /> : null}
+                    </SnackbarProvider>
+                </SignalRConnectionProvider>
+            </StylesProvider>
+        </ThemeProvider>
+    );
 }
 
 export default App;
