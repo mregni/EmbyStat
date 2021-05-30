@@ -53,6 +53,7 @@ namespace Tests.Unit.Builders
                 },
                 Seasons = new List<Season>
                 {
+                    new SeasonBuilder(Guid.NewGuid().ToString(), id).WithIndexNumber(0).Build(),
                     new SeasonBuilder(Guid.NewGuid().ToString(), id).Build()
                 }
             };
@@ -87,6 +88,14 @@ namespace Tests.Unit.Builders
         public ShowBuilder AddEpisode(Episode episode)
         {
             _show.Episodes.Add(episode);
+            return this;
+        }
+
+        public ShowBuilder AddSpecialEpisode(string id)
+        {
+            _show.Episodes.Add(new EpisodeBuilder(id, _show.Id, _show.Seasons.First(x => x.IndexNumber == 0).Id)
+                .WithSeasonIndexNumber(0)
+                .WithLocationType(LocationType.Disk).Build());
             return this;
         }
 

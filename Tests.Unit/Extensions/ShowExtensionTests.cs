@@ -94,7 +94,7 @@ namespace Tests.Unit.Extensions
         public void GetNonSpecialSeasonCount_Should_Include_All_Seasons()
         {
             var count = _show.GetSeasonCount(true);
-            count.Should().Be(4);
+            count.Should().Be(5);
         }
 
         [Fact]

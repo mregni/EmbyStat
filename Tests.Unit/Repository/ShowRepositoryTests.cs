@@ -169,9 +169,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().BeNull();
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().BeNull();
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().BeNull();
             });
         }
 
@@ -198,9 +200,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showThree.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().BeNull();
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showThree.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().BeNull();
+                shows[0].Seasons[1].Id.Should().Be(showThree.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().BeNull();
             });
         }
 
@@ -222,9 +226,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().Be(showOne.Episodes[1].Name);
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().BeNull();
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().BeNull();
             });
         }
 
@@ -246,9 +252,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().BeNull();
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().Be(showOne.Seasons[0].Name);
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().Be(showOne.Seasons[1].Name);
             });
         }
 
@@ -270,9 +278,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().Be(showOne.Episodes[1].Name);
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().Be(showOne.Seasons[0].Name);
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().Be(showOne.Seasons[1].Name);
             });
         }
 

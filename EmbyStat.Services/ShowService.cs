@@ -184,6 +184,11 @@ namespace EmbyStat.Services
                 .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
                 .ToString();
 
+            var boe = _showRepository.GetAllShows(libraryIds, false, true).ToList();
+            var epi = boe.SelectMany(x => x.Episodes);
+
+            var epiw = epi.Where(x => x.LocationType == LocationType.Virtual).ToList();
+
             return new Card<string>
             {
                 Title = Constants.Shows.TotalMissingEpisodes,

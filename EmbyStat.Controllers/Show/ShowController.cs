@@ -28,7 +28,8 @@ namespace EmbyStat.Controllers.Show
         public IActionResult GetLibraries()
         {
             var result = _showService.GetShowLibraries();
-            return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
+            var convert = _mapper.Map<IList<LibraryViewModel>>(result);
+            return Ok(convert);
         }
 
         [HttpGet]
@@ -59,7 +60,6 @@ namespace EmbyStat.Controllers.Show
             }
 
             var page = _showService.GetShowPage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
-
             var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
             return Ok(convert);
         }
