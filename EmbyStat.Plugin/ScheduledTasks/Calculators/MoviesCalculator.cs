@@ -106,8 +106,7 @@ namespace EmbyStat.Plugin.ScheduledTasks.Calculators
             {
                 TopParentIds = internalIds,
                 IncludeItemTypes = new[] { "Movie" },
-                Recursive = true,
-                AllowDuplicateListItems = false
+                Recursive = true
             };;
         }
     }

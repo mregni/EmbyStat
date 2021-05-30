@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -10,7 +10,6 @@
     <ProjectGuid>{BA9CD238-9261-44C7-A90F-F3DA61ED0A41}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.0" />
     <PackageReference Include="LiteDB" Version="5.0.10" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MWKL.AspNetCore.Identity.LiteDB" Version="1.0.2" />

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\logo.png" />
@@ -20,7 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MediaBrowser.Server.Core" Version="4.5.0.28" />
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.6.0.50" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
