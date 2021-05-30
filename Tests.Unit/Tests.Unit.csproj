@@ -15,7 +15,7 @@
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="14.0.0" />  
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="16.10.0" />  
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.4" />
