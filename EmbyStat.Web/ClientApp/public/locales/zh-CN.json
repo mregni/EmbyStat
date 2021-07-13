@@ -69,7 +69,7 @@
     "LINKS": "链接",
     "AUDIO": "音频",
     "SUBTITLES": "字幕",
-    "RATING": "评分",
+    "RATING": "等级",
     "RESOLUTION": "分辨率",
     "RUNTIME": "时长",
     "TABLE": "列表",
@@ -86,7 +86,7 @@
     "BIT": "比特",
     "SIZEINMB": "大小（MB）",
     "BITDEPTH": "位深",
-    "CODEC": "视频编解码器",
+    "CODEC": "编码器",
     "VIDEORANGE": "视频范围"
   },
   "LOGS": {
