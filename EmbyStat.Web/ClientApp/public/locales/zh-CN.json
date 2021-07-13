@@ -69,10 +69,10 @@
     "LINKS": "链接",
     "AUDIO": "音频",
     "SUBTITLES": "字幕",
-    "RATING": "等级",
+    "RATING": "评分",
     "RESOLUTION": "分辨率",
-    "RUNTIME": "运行时长",
-    "TABLE": "表",
+    "RUNTIME": "时长",
+    "TABLE": "列表",
     "LIBRARYERROR": "无法获取库",
     "LOADING": "正在载入 {{item}}",
     "STATISTICS": "统计信息",
@@ -210,41 +210,41 @@
       "SAVING": "正在保存 TVDB 密钥"
     },
     "ROLLBAR": {
-      "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Enable exception logging",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
-      "SAVING": "Saving Rollbar settings"
+      "TITLE": "Rollbar 日志",
+      "ENABLEROLLBAR": "启用异常日志",
+      "EXCEPTIONLOGGING": "启用/禁用到在线Rollbar服务的异常日志记录。通过此日志记录，开发者可以更快地调试和修复应用程序。日志中不包含任何个人数据，仅记录了异常消息，堆栈跟踪，操作系统名称和版本号。",
+      "SAVING": "正在保存Rollbar日志设置"
     },
     "LANGUAGE": {
-      "TITLE": "Language",
-      "LABEL": "Select your prefert language",
-      "SAVING": "Updating language to {{lang}}"
+      "TITLE": "语言",
+      "LABEL": "选择您的偏好语言",
+      "SAVING": "将更新语言为 {{lang}}"
     },
     "ACCOUNT": {
-      "TITLE": "User details",
-      "USERNAME": "Username",
-      "NOUSERNAME": "Username is required",
-      "PASSWORD": "Password",
-      "NEWPASSWORD": "New password",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "CURRENTPASSWORD": "Current password",
-      "NOPASSWORD": "Password is required",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "TITLE": "用户详情",
+      "USERNAME": "用户名",
+      "NOUSERNAME": "需要用户名",
+      "PASSWORD": "密码",
+      "NEWPASSWORD": "新密码",
+      "REPEATNEWPASSWORD": "重复新密码",
+      "CURRENTPASSWORD": "当前密码",
+      "NOPASSWORD": "密码（必填）",
+      "PASSWORDNOTEQUAL": "密码不一致",
+      "PASSWORDMINLENGTH": "密码长度最少 6 个字符",
+      "PASSWORDWARNING": "如果您想更改当前密码，您只需填写一个新密码。",
+      "WRONGPASSWORD": "密码错误或用户无效",
+      "USERNAMEUPDATED": "用户名更新成功",
+      "USERNAMEUPDATEFAILED": "用户名更新失败，请检查日志获取更多信息"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "SAVING": "Saving all {{type}} statistic settings",
-      "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "TOSHORTTEXT": "要查找可疑短片，我们需要知道您对短电影分钟数的定义。默认设置为10分钟，但您可以根据需要进行更改。",
+      "SAVING": "正在保存所有 {{type}} 统计设置",
+      "TOSHORTMINUTES": "分钟",
+      "ENABLETOSHORTSCAN": "启用短片搜索"
     },
     "MOVIE": {
       "LIBRARY": {
-        "SAVING": "Saving movie libraries"
+        "SAVING": "保存电影库"
       },
       "COLLECTIONTYPES": "选择您希望能够在电影统计页面的集合下拉列表中选择的所有Emby集合类型。"
     },
@@ -252,9 +252,9 @@
       "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
     },
     "MEDIASERVER": {
-      "ADDRESS": "IP/domain",
-      "NOADDRESS": "IP/domain is required",
-      "APIKEY": "API key",
+      "ADDRESS": "IP/域名",
+      "NOADDRESS": "需要 IP/域名",
+      "APIKEY": "API密钥",
       "NOAPIKEY": "需要API密钥",
       "PORT": "端口",
       "NOPORT": "需要端口号",
