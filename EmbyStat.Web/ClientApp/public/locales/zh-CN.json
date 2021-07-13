@@ -132,32 +132,32 @@
     "WIZARDLABEL": "向导",
     "USERDETAILTEXT": "提供您的管理员用户名和密码",
     "SERVERCONFIGURATION": "服务器参数设置",
-    "SERVERCONFIGURATIONTEST": "Server configuration test",
-    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
-    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
-    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
-    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "SERVERCONFIGURATIONTEST": "服务器配置测试",
+    "CONFIGURELIBRARIES": "配置 {{type}} 库",
+    "STEPONE": "检查API密钥是否有效 ({{step}}/{{total}})",
+    "STEPTWO": "获取服务器信息 ({{step}}/{{total}})",
+    "STEPTHREE": "获取管理员账户 ({{step}}/{{total}})",
+    "STEPFOUR": "获取资料库 ({{step}}/{{total}})",
     "SERVERTYPELABEL": "服务器类型",
     "FINALLABEL": "最后",
-    "SEARCHSERVERS": "Searching servers",
-    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
+    "SEARCHSERVERS": "正在搜索服务器",
+    "OPENSERVERAPIPAGE": "打开 {{type}} API 密钥页面",
     "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
     "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
     "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
     "FOUNDTEXT": "我们在您的网络中找到了一个名为 {{name}} 的 {{type}} 服务器，并已经在表格中输入了网址。随时进行调整，并填写表格的其余部分。",
     "SERVERRUNNING": "{{type}} 服务器正在运行",
     "KEYISVALID": "API密钥有效",
-    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "SELECTLIBRARIES": "选择您想要在 {{type}} 统计计算中包含的所有库。 所有 {{type}} 库是默认选择的。如果您想要在设置页面稍后更改它。",
     "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
     "FINISHEXPLANATION": "首先最好是启动一个媒体同步任务。EmbyStat将开始从您的 Emby 服务器下载所有数据。 请记住，这个任务可能需要很长时间，取决于您的收藏大小。 如果您不想现在只需点击完成即可开始同步。您可以稍后通过导航到任务页面手动启动。",
     "JELLYFIN": {
       "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
     },
-    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
+    "APIKEYFAILED": "访问 {{type}} 服务器失败，请检查配置并重试。",
+    "ADDRESSUSED": "地址： <i>{{address}}</i>",
+    "APIKEYUSED": "API密钥： <i>{{api}}</i>",
+    "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。"
   },
   "MOVIES": {
     "TOTALMOVIES": "电影总数",
@@ -174,7 +174,7 @@
     "TOSHORTMOVIES": "非常短的电影",
     "NOPOSTER": "缺少海报",
     "NOIMDB": "缺少IMDB ID",
-    "LOADER": "Loading movie statistics"
+    "LOADER": "加载电影统计"
   },
   "SHOWS": {
     "TOTALSHOWS": "总演出数",
@@ -193,21 +193,21 @@
     "ENDED": "结束",
     "OVERVIEW": "概览",
     "MISSINGEPISODES": "缺少剧集",
-    "LOADER": "Loading show statistics"
+    "LOADER": "加载节目统计"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
+    "SAVED": "设置已保存",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TVDB": "TVDB",
       "EMBY": "Emby"
     },
     "TVDB": {
-      "TITLE": "Tvdb connection",
-      "APIKEYLABEL": "TheTVDB API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "TITLE": "Tvdb 连接",
+      "APIKEYLABEL": "TheTVDB API 密钥",
+      "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
+      "NOAPIKEY": "API 密钥不能为空",
+      "SAVING": "正在保存 TVDB 密钥"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
