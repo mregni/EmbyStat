@@ -11,11 +11,6 @@ interface Props {
   statistics: ShowStatistics;
 }
 
-interface Bar {
-  label: string;
-  [key: number]: any;
-}
-
 const ShowsGraphs = (props: Props) => {
   const { statistics } = props;
 

@@ -7,7 +7,6 @@ import { TopCard, Card } from '../../../shared/models/common';
 import BasicCard from '../../../shared/components/cards/BasicCard';
 import TopListCard from '../../../shared/components/cards/TopListCard';
 import NoPosterHigh from '../../../shared/assets/images/no-poster.png';
-import NoProfileHigh from '../../../shared/assets/images/no-profile-high.png';
 
 interface Props {
   statistics: ShowStatistics;

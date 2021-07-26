@@ -7,7 +7,6 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { useTransition, config, animated } from 'react-spring'
 
 import { RootState } from '../../../../store/RootReducer';
 import { useServerType } from '../../../../shared/hooks';

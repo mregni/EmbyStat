@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { useSelector } from 'react-redux';
 import Ratings from 'react-ratings-declarative';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
@@ -13,7 +12,6 @@ import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounde
 import SubtitlesRoundedIcon from '@material-ui/icons/SubtitlesRounded';
 import MusicNoteRoundedIcon from '@material-ui/icons/MusicNoteRounded';
 
-import { RootState } from '../../../../store/RootReducer';
 import { getBackdropImageLink, getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
 import PosterCard from '../../../../shared/components/cards/PosterCard';
 import theme from '../../../../styles/theme';
@@ -27,7 +25,7 @@ import { Movie } from '../../../../shared/models/common';
 import { MovieRow } from '../../../../shared/models/movie';
 import { SettingsContext } from '../../../../shared/context/settings';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: (props: any) => ({
     backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("${props.background}")`,
     backgroundSize: '100%',

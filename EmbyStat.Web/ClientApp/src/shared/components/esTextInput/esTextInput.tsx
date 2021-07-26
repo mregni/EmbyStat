@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import { FieldError } from 'react-hook-form';

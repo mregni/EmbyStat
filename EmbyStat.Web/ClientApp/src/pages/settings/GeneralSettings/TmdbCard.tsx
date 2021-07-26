@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import SettingsCard from '../SettingsCard';

@@ -8,10 +8,8 @@ import uuid from 'react-uuid';
 import moment from 'moment';
 import classNames from 'classnames';
 
-import { useSelector } from 'react-redux';
 import { TopCard, TopCardItem } from '../../models/common';
-import { RootState } from '../../../store/RootReducer';
-import getFullMediaServerUrl, { getItemDetailLink, getBackdropImageLink, getPrimaryImageLink } from '../../utils/MediaServerUrlUtil';
+import { getItemDetailLink, getBackdropImageLink, getPrimaryImageLink } from '../../utils/MediaServerUrlUtil';
 import { SettingsContext } from '../../context/settings';
 
 const useStyles = makeStyles((theme) => ({

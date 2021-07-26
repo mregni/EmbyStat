@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   loader: {

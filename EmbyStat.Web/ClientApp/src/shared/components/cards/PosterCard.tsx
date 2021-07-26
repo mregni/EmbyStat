@@ -4,11 +4,9 @@ import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { RootState } from '../../../store/RootReducer';
 
 import { getItemDetailLink, getPrimaryImageLink } from '../../utils/MediaServerUrlUtil';
 import { SettingsContext } from '../../context/settings';

@@ -4,7 +4,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
 import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
@@ -13,7 +12,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { ActiveFilter } from '../../../../shared/models/filter';
 import { getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
-import { RootState } from '../../../../store/RootReducer';
 import { useServerType } from '../../../../shared/hooks';
 import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
 import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, IconButton, Collapse } from '@material-ui/core';
@@ -91,7 +89,7 @@ export const ShowsTable = (props: Props) => {
     setPage(0);
   };
 
-  const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: string) => () => {
     const isAsc = orderedBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderedBy(property);
@@ -236,7 +234,6 @@ const renderEpisodesCount = (data: ShowRow) => {
 const Row = (props: RowProps): ReactElement => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-  const { t } = useTranslation();
   const { settings } = useContext(SettingsContext);
   const serverType = useServerType();
   const classes = useRowStyles();

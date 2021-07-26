@@ -20,7 +20,7 @@ import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
 import DetailMovieSkeleton from '../../../movies/MoviesList/DetailMovieTemplate/DetailMovieSkeleton';
 import { SettingsContext } from '../../../../shared/context/settings';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: (props: any) => ({
     backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("${props.background}")`,
     backgroundSize: '100%',
@@ -71,7 +71,7 @@ export const DetailShowTemplate = (props: Props) => {
   };
 
   const classes = useStyles({ background: getPosterUrl() });
-  if (show === null || show == undefined) {
+  if (show === null || show === undefined) {
     return (<DetailMovieSkeleton />);
   }
 

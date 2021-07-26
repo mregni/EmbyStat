@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import SettingsCard from '../SettingsCard';
-import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { EsTextInput } from '../../../shared/components/esTextInput';

@@ -63,7 +63,6 @@ export const ServerForm = (props: Props) => {
   const { t } = useTranslation();
   const [address, setAddress] = useState(wizard.serverAddress);
   const [port, setPort] = useState(wizard.serverPort);
-  const [apiKey, setApiKey] = useState(wizard.apiKey);
   const [baseUrl, setBaseUrl] = useState<string>(wizard.serverBaseurl);
   const [baseUrlNeeded, setBaseUrlNeeded] = useState<boolean>(
     wizard.serverBaseUrlNeeded

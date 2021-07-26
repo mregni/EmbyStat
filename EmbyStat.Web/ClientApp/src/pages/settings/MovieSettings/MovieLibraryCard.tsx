@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 import SettingsCard from '../SettingsCard';
 import { Library } from '../../../shared/models/mediaServer';
-import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { getLibraries } from '../../../shared/services/MediaServerService';

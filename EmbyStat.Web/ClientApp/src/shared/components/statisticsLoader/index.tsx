@@ -1,7 +1,6 @@
-import React, { ReactElement, ReactNode, useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,14 +9,11 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom'
 
 import { Loading } from '../../components/loading';
-import { RootState } from '../../../store/RootReducer';
 import getMediaServerTypeString from '../../utils/GetMediaServerTypeString';
 import { fireJob } from '../../services/JobService';
-import { MovieStatistics } from '../../models/movie';
-import { ShowStatistics } from '../../models/show';
 import { SettingsContext } from '../../context/settings';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   'full-height': {
     height: '100%',
   },

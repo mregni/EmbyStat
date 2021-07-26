@@ -6,7 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { MediaServerUdpBroadcast } from '../../../../shared/models/mediaServer';
 import Emby from '../../../../shared/assets/images/emby.png';

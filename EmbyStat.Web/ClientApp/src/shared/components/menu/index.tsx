@@ -12,8 +12,6 @@ import { faHome, faFilm, faTv, faServer, faBriefcase, faCogs, faFileAlt } from '
 
 import theme from '../../../styles/theme';
 import MenuItem from './MenuItem';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/RootReducer';
 import { UserRoles } from '../../../shared/models/login';
 import { Typography } from '@material-ui/core';
 import { SettingsContext } from '../../context/settings';

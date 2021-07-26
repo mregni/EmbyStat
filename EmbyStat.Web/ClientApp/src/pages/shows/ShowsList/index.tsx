@@ -4,10 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 
-import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
 import ShowsTable from './ShowsTable';
-import { FilterContainer } from "../../../shared/components/filter";
 
 const useStyles = makeStyles(() => ({
   title: {
