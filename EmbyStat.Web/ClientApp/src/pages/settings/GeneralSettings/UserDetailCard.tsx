@@ -32,11 +32,14 @@ export const UserDetailCard = (props: Props) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const us = getUserInfo();
-    setUser(us);
+    const name = getUserInfo();
+    setUser(name);
+    if (name !== null) {
+      setValue('username', name.username);
+    }
   }, []);
 
-  const { register, trigger, getValues, formState: { errors } } = useForm({
+  const { register, trigger, getValues, setValue, formState: { errors } } = useForm({
     mode: 'onBlur',
     defaultValues: {
       username: user?.username ?? '',
