@@ -3,15 +3,15 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import uuid from 'react-uuid';
 
-import { ShowStatistics } from '../../../shared/models/show';
-import BarGraph from '../../../shared/components/graphs/BarGraph';
-import PieGraph from '../../../shared/components/graphs/PieGraph';
+import { ShowStatistics } from '../../shared/models/show';
+import BarGraph from '../../shared/components/graphs/BarGraph';
+import PieGraph from '../../shared/components/graphs/PieGraph';
 
 interface Props {
   statistics: ShowStatistics;
 }
 
-const ShowsGraphs = (props: Props) => {
+export const ShowsGraphs = (props: Props) => {
   const { statistics } = props;
 
   return (
@@ -37,5 +37,3 @@ const ShowsGraphs = (props: Props) => {
     </Grid>
   );
 };
-
-export default ShowsGraphs;

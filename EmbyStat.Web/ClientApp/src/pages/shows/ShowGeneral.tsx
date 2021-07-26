@@ -2,17 +2,17 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import uuid from 'react-uuid';
 
-import { ShowStatistics } from '../../../shared/models/show'
-import { TopCard, Card } from '../../../shared/models/common';
-import BasicCard from '../../../shared/components/cards/BasicCard';
-import TopListCard from '../../../shared/components/cards/TopListCard';
-import NoPosterHigh from '../../../shared/assets/images/no-poster.png';
+import { ShowStatistics } from '../../shared/models/show'
+import { TopCard, Card } from '../../shared/models/common';
+import BasicCard from '../../shared/components/cards/BasicCard';
+import TopListCard from '../../shared/components/cards/TopListCard';
+import NoPosterHigh from '../../shared/assets/images/no-poster.png';
 
 interface Props {
   statistics: ShowStatistics;
 }
 
-const ShowsGeneral = (props: Props) => {
+export const ShowsGeneral = (props: Props) => {
   const { statistics } = props;
 
   return (
@@ -42,5 +42,3 @@ const ShowsGeneral = (props: Props) => {
     </Grid>
   )
 }
-
-export default ShowsGeneral
