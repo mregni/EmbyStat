@@ -156,7 +156,7 @@ namespace EmbyStat.Services
             var result = await _userManager.SetUserNameAsync(user, request.NewUserName);
             if (!result.Succeeded)
             {
-                _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+                _logger.Warn($"Username update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
             }
 
             return result.Succeeded;
@@ -180,12 +180,12 @@ namespace EmbyStat.Services
             return false;
         }
 
-        private static readonly Random Random = new Random();
         private static string RandomString(int length)
         {
+            var random = new Random();
             const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[Random.Next(s.Length)]).ToArray());
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

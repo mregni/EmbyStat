@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Grid from '@material-ui/core/Grid'
 import { useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +15,7 @@ import getFullMediaServerUrl from '../../../utils/MediaServerUrlUtil';
 import GreenCircle from '../../../../shared/assets/images/circle-green.png';
 import OrangeCircle from '../../../../shared/assets/images/circle-orange.png';
 import RedCircle from '../../../../shared/assets/images/circle-red.png';
+import { SettingsContext } from '../../../context/settings';
 
 const useStyles = makeStyles((theme) => ({
   status__text: {
@@ -40,20 +41,10 @@ const ServerStatus = (props: Props) => {
   const { t } = useTranslation();
 
   const status = useSelector((state: RootState) => state.serverStatus);
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
 
   const [index, openPage] = useState(0);
   const [image, setImage] = useState(OrangeCircle);
-  const pages = [
-    ({ style }) => <animated.div style={{ ...style }}><img src={image} alt="server missing" width="20" height="20" /></animated.div>,
-    ({ style }) => <animated.div style={{ ...style }}></animated.div>,
-  ];
-  const transitions = useTransition(index, p => p, {
-    from: { position: 'absolute', opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    config: config.default,
-  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -89,10 +80,10 @@ const ServerStatus = (props: Props) => {
         </Grid>
         : <Grid item container direction="row" align-items="center" spacing={1}>
           <Grid item className={classes.first__column}>
-            {transitions.map(({ item, props, key }) => {
+            {/* {transitions.map(({ item, props, key }) => {
               const Page = pages[item]
               return <Page key={key} style={props} />
-            })}
+            })} */}
           </Grid>
           <Grid item container direction="column" className={classes.second__column}>
             <Grid item className={classNames(classes.status__text, classes.second__column)}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, ReactElement } from 'react';
+import React, { useState, useEffect, useCallback, ReactElement, useContext } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -14,27 +14,23 @@ import TablePaginationActions from '@material-ui/core/TablePagination/TablePagin
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import uuid from 'react-uuid';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
 
 import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
 import DetailMovieTemplate from '../DetailMovieTemplate';
 import { getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
 import Flag from '../../../../shared/components/flag';
-import { RootState } from '../../../../store/RootReducer';
 import { useServerType } from '../../../../shared/hooks';
 import { MovieRow } from '../../../../shared/models/movie';
 import SortLabel from '../../../../shared/components/tables/SortLabel';
-
 import { getMoviePage } from '../../../../shared/services/MovieService';
 import { TablePage } from '../../../../shared/models/common';
 import { ActiveFilter } from '../../../../shared/models/filter';
-import Collapse from '@material-ui/core/Collapse';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { SettingsContext } from '../../../../shared/context/settings';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -225,7 +221,7 @@ interface RowProps {
   row: MovieRow;
 }
 
-const useRowStyles = makeStyles((theme: Theme) => ({
+const useRowStyles = makeStyles(() => ({
   button__padding: {
     paddingTop: 5,
   },
@@ -235,7 +231,7 @@ const Row = (props: RowProps): ReactElement => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const serverType = useServerType();
   const classes = useRowStyles();
 

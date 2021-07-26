@@ -17,7 +17,7 @@ import RoundIconButton from "../../../shared/components/buttons/RoundIconButton"
 import { useServerType } from "../../../shared/hooks";
 import { Job } from "../../../shared/models/jobs";
 import { fireJob } from "../../../shared/services/JobService";
-import JobSettingsDialog from "../JobSettingsDialog";
+import { JobSettingsDialog } from "../JobSettingsDialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -182,13 +182,13 @@ const JobItem = (props: Props) => {
                 value={job.currentProgressPercentage}
                 className={classes.progress}
               />
-               <div className={classes.progress__percentage}>
-                  {job.state === 1 ? job.currentProgressPercentage : 0 } %
+              <div className={classes.progress__percentage}>
+                {job.state === 1 ? job.currentProgressPercentage : 0} %
                 </div>
             </div>
           ) : (
-            <div className={classes.progess__height} />
-          )}
+              <div className={classes.progess__height} />
+            )}
         </div>
       </Paper>
     </Zoom>

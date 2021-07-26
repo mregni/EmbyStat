@@ -2,18 +2,18 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import uuid from 'react-uuid';
 
-import { MovieStatistics } from '../../../shared/models/movie';
-import { TopCard, Card } from '../../../shared/models/common';
-import BasicCard from '../../../shared/components/cards/BasicCard';
-import TopListCard from '../../../shared/components/cards/TopListCard';
-import NoProfileHigh from '../../../shared/assets/images/no-profile-high.png';
-import NoPosterHigh from '../../../shared/assets/images/no-poster.png';
+import { MovieStatistics } from '../../shared/models/movie';
+import { TopCard, Card } from '../../shared/models/common';
+import BasicCard from '../../shared/components/cards/BasicCard';
+import TopListCard from '../../shared/components/cards/TopListCard';
+import NoProfileHigh from '../../shared/assets/images/no-profile-high.png';
+import NoPosterHigh from '../../shared/assets/images/no-poster.png';
 
 interface Props {
   statistics: MovieStatistics;
 }
 
-const MoviesGeneral = (props: Props) => {
+export const MoviesGeneral = (props: Props) => {
   const { statistics } = props;
 
   return (
@@ -62,5 +62,3 @@ const MoviesGeneral = (props: Props) => {
     </Grid>
   );
 };
-
-export default MoviesGeneral;

@@ -4,7 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 import { axiosInstance } from './axiosInstance';
 
 import { LoginView, AuthenticateResponse, User, ChangeUserNameRequest, ChangePasswordRequest, JwtPayloadCustom } from '../models/login';
-import { isNullOrUndefined } from 'util';
+import { AxiosResponse } from 'axios';
+import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
+import i18n from '../../i18n';
 
 const domain = 'account/';
 const accessTokenStr = 'accessToken';
@@ -37,6 +39,12 @@ export const register = (register: LoginView): Promise<boolean> => {
     .post<boolean>(`${domain}register`, register)
     .then((response) => {
       return response.data;
+    })
+    .catch((response) => {
+      if (response.status === 401) {
+        SnackbarUtils.error(i18n.t('WIZARD.ADMINCREATEFAILED'));
+      }
+      return Promise.reject();
     });
 };
 
@@ -59,7 +67,8 @@ export const refreshLogin = (
   return axiosInstance
     .post<AuthenticateResponse>(`${domain}refreshtoken`, refresh)
     .then((response) => {
-      if (isNullOrUndefined(response.data) || isNullOrUndefined(response.data.accessToken)) {
+      if (response.data === null || response.data === undefined
+        || response.data.accessToken === null || response.data.accessToken === undefined) {
         return false;
       }
       setLocalStorage(response.data);
@@ -70,15 +79,8 @@ export const refreshLogin = (
     });
 };
 
-export const anyAdmins = (): Promise<boolean> => {
-  return axiosInstance
-    .get<boolean>(`${domain}any`)
-    .then(response => {
-      return response.data;
-    })
-    .catch(() => {
-      return true;
-    });
+export const anyAdmins = (): Promise<AxiosResponse<boolean>> => {
+  return axiosInstance.get<boolean>(`${domain}any`);
 }
 
 export const resetPassword = (username: string): Promise<boolean> => {

@@ -20,7 +20,7 @@ import {
 } from "../../../../shared/models/mediaServer";
 import TestFailed from "./TestFailed";
 import TestSuccessful from "./TestSuccessFul";
-import Loading from "../../../../shared/components/loading";
+import { Loading } from "../../../../shared/components/loading";
 
 const useStyles = makeStyles((theme) => ({
   full_height: {
@@ -120,13 +120,14 @@ const TestServer = (props: Props) => {
         className="m-t-32"
         loading={isLoading}
         label={t(loadingLabel, { step: currentStep, total: 4 })}
-        errorMessage={errorMessage}
-        serverInfo={serverInfo}
-        administrators={administrators}
-        wizard={wizard}
-        libraries={libraries}
-        Component={errorMessage === "" ? TestSuccessful : TestFailed}
-      />
+      >
+        {errorMessage === "" ? <TestSuccessful
+          serverInfo={serverInfo}
+          administrators={administrators}
+          wizard={wizard}
+          libraries={libraries}
+        /> : <TestFailed wizard={wizard} errorMessage={errorMessage} />}
+      </Loading>
     </>
   );
 };

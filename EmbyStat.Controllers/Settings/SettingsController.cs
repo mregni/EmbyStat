@@ -3,9 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace EmbyStat.Controllers.Settings
 {
@@ -16,22 +18,22 @@ namespace EmbyStat.Controllers.Settings
         private readonly ISettingsService _settingsService;
         private readonly ILanguageService _languageService;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IMediaServerService _mediaServerService;
         private readonly IMapper _mapper;
+        private readonly Logger _logger;
 
-        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper, IMediaServerService mediaServerService)
+        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper)
         {
             _languageService = languageService;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
-            _mediaServerService = mediaServerService;
             _mapper = mapper;
+            _logger = LogFactory.CreateLoggerForType(typeof(SettingsController), "SETTINGS");
         }
 
 	    [HttpGet]
 	    public IActionResult Get()
         {
-	        var settings = _settingsService.GetUserSettings();
+            var settings = _settingsService.GetUserSettings();
             var appSettings = _settingsService.GetAppSettings();
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
             settingsViewModel.Version = appSettings.Version;
@@ -48,6 +50,7 @@ namespace EmbyStat.Controllers.Settings
 	    {
             if (userSettings == null)
             {
+                _logger.Info("Settings object was NULL while calling the PUT API.");
                 return BadRequest();
             }
             var settings = _mapper.Map<UserSettings>(userSettings);

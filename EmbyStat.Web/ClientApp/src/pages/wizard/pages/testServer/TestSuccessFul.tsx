@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
@@ -17,7 +17,6 @@ import {
 } from '../../../../shared/models/mediaServer';
 import { Wizard } from '../../../../shared/models/wizard';
 
-import EmbyStatSelect from '../../../../shared/components/inputs/select/EmbyStatSelect';
 import MediaServerHeader from '../../../../shared/components/mediaServerHeader';
 import {
   setAdminId,
@@ -25,6 +24,8 @@ import {
   setMediaServerId,
   setServerAddress,
 } from '../../../../store/WizardSlice';
+import { useForm } from 'react-hook-form';
+import { EsTextInput } from '../../../../shared/components/esTextInput';
 
 interface Props {
   serverInfo: MediaServerInfo;
@@ -38,6 +39,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     padding: '8px',
     position: 'relative',
+  },
+  "input-field__padding": {
+    marginTop: 16,
+    [theme.breakpoints.up("md")]: {
+      marginTop: 0,
+    },
   },
   content: {
     flex: '1 0 auto',
@@ -77,6 +84,7 @@ const TestSuccessFul = (props: Props) => {
   const [selectedAdmin, setSelectedAdmin] = useState(administrators[0].id);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     dispatch(setAdminId(selectedAdmin));
@@ -94,20 +102,38 @@ const TestSuccessFul = (props: Props) => {
     setSelectedAdmin(event.target.value);
   };
 
-  const generateServerAddress = (): string => {
+  const fullServerAddress = useMemo((): string => {
     const protocol = wizard.serverProtocol === 0 ? 'https://' : 'http://';
     return `${protocol}${wizard.serverAddress}:${wizard.serverPort}${wizard?.serverBaseurl ?? ''}`
-  };
+  }, [wizard.serverProtocol, wizard.serverAddress, wizard.serverPort, wizard?.serverBaseurl]);
 
-  const [selectedAddress, setSelectedAddress] = useState(generateServerAddress());
-  const handleAddressChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedAddress(event.target.value as string);
-    var addressArray = (event.target.value as string).split('://');
+  const [selectedAddress, setSelectedAddress] = useState(fullServerAddress);
+  const handleAddressChange = (value: string) => {
+    if (value === "other") {
+      //TODO value van input field moet nu nog dispatched worden naar setserveraddress
+      return;
+    }
+
+    setSelectedAddress(value);
+    var addressArray = (value).split('://');
     const protocol = addressArray[0] === 'https' ? 0 : 1;
     const address = addressArray[1].split(':')[0];
     const port = parseInt(addressArray[1].split(':')[1].split('/')[0], 10);
     dispatch(setServerAddress(address, port, protocol));
   };
+
+  const {
+    register,
+    getValues,
+    formState: { errors }
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      address: '',
+    },
+  });
+
+  const addressRegister = register('address', { required: true });
 
   return (
     <Grid item container xs={12} className="m-t-32" direction="column">
@@ -115,7 +141,7 @@ const TestSuccessFul = (props: Props) => {
         <MediaServerHeader
           serverType={wizard.serverType}
           serverInfo={serverInfo}
-          serverAddress={generateServerAddress()} />
+          serverAddress={fullServerAddress} />
       </Grid>
       <Grid item>
         <Zoom in={true} style={{ transitionDelay: '300ms' }}>
@@ -134,16 +160,36 @@ const TestSuccessFul = (props: Props) => {
                     className="m-t-16"
                     value={selectedAddress}
                     variant="standard"
-                    onChange={handleAddressChange}
+                    onChange={(event) => handleAddressChange(event.target.value as string)}
                   >
                     {
-                      generateServerAddress() !== serverInfo.wanAddress && generateServerAddress() !== serverInfo.localAddress
-                        ? <MenuItem value={generateServerAddress()}>Current&nbsp;<span className={classes.italic}>({generateServerAddress()})</span></MenuItem>
+                      fullServerAddress !== serverInfo.wanAddress
+                        && fullServerAddress !== serverInfo.localAddress
+                        ? <MenuItem value={fullServerAddress}>
+                          {t('COMMON.CURRENT')}&nbsp;<span className={classes.italic}>({fullServerAddress})</span>
+                        </MenuItem>
                         : null
                     }
-                    <MenuItem value={serverInfo.wanAddress}>WAN&nbsp;<span className={classes.italic}>({serverInfo.wanAddress})</span></MenuItem>
-                    <MenuItem value={serverInfo.localAddress}>LAN&nbsp;<span className={classes.italic}>({serverInfo.localAddress})</span></MenuItem>
+                    <MenuItem value={serverInfo.wanAddress}>
+                      WAN&nbsp;<span className={classes.italic}>({serverInfo.wanAddress})</span>
+                    </MenuItem>
+                    <MenuItem value={serverInfo.localAddress}>
+                      LAN&nbsp;<span className={classes.italic}>({serverInfo.localAddress})</span>
+                    </MenuItem>
+                    <MenuItem value="other">{t('COMMON.OTHER')}</MenuItem>
                   </Select>
+                </Grid>
+                <Grid item>
+                  <EsTextInput
+                    readonly={selectedAddress === "other"}
+                    inputRef={addressRegister}
+                    defaultValue={getValues('address')}
+                    error={errors.address}
+                    errorText={{ required: t('SETTINGS.MEDIASERVER.NOADDRESS') }}
+                    label={("SETTINGS.MEDIASERVER.ADDRESS")}
+                    onChange={(value) => setAddress(value)}
+                    className={classes["input-field__padding"]}
+                  />
                 </Grid>
               </Grid>
             </CardContent>
@@ -160,15 +206,7 @@ const TestSuccessFul = (props: Props) => {
             >
               <CardContent>
                 {t('WIZARD.JELLYFIN.ADMINTEXT')}
-                <EmbyStatSelect
-                  className="m-t-16"
-                  value={selectedAdmin}
-                  variant="standard"
-                  onChange={adminChanged}
-                  menuItems={administrators.map((admin) => {
-                    return { id: admin.id, value: admin.id, label: admin.name };
-                  })}
-                />
+
               </CardContent>
             </Card>
           </Zoom>

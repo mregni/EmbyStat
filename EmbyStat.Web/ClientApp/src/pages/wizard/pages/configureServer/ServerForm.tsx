@@ -2,6 +2,8 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
 import Fade from "@material-ui/core/Fade";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -10,10 +12,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
-import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import { Wizard } from "../../../../shared/models/wizard";
+import { EsTextInput } from "../../../../shared/components/esTextInput";
+import { Controller } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
   "input-field__padding": {
@@ -41,72 +44,58 @@ interface Props {
   wizard: Wizard;
   triggerValidation: Function;
   setValue: Function;
+  getValues: Function;
+  control: any
 }
 
-const ServerForm = (props: Props) => {
+export const ServerForm = (props: Props) => {
   const {
-    className,
+    className = '',
     register,
     errors,
     wizard,
     triggerValidation,
     setValue,
+    getValues,
+    control
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
-  const [protocol, setProtocol] = useState(wizard.serverProtocol);
   const [address, setAddress] = useState(wizard.serverAddress);
   const [port, setPort] = useState(wizard.serverPort);
   const [apiKey, setApiKey] = useState(wizard.apiKey);
-  const [type, setType] = useState<number>(wizard.serverType);
   const [baseUrl, setBaseUrl] = useState<string>(wizard.serverBaseurl);
   const [baseUrlNeeded, setBaseUrlNeeded] = useState<boolean>(
     wizard.serverBaseUrlNeeded
   );
 
   useEffect(() => {
-    setPort(wizard.serverPort);
-    setAddress(wizard.serverAddress);
-    setProtocol(wizard.serverProtocol);
-    setApiKey(wizard.apiKey);
-    setType(wizard.serverType);
     setBaseUrlNeeded(wizard.serverBaseUrlNeeded);
 
     if (wizard.serverBaseUrlNeeded) {
       if (wizard.serverBaseurl.startsWith("/")) {
-        setBaseUrl(wizard.serverBaseurl);
+        setValue("baseUrl", wizard.serverBaseurl);
       } else {
-        setBaseUrl(`/${wizard.serverBaseurl}`);
+        setValue("baseUrl", `/${wizard.serverBaseurl}`);
       }
     } else {
-      setBaseUrl("");
+      setValue("baseUrl", "");
     }
 
-    setValue("protocol", wizard.serverProtocol);
+    //TODO => Wizard state werkt hier voor geen meter. Misschien toch zien om useForm in deze component te zetten al
+    // => Nog meer refactoring :(
     setValue("type", wizard.serverType);
+    setValue("protocol", wizard.serverProtocol);
+    setValue("port", wizard.serverPort);
+    setValue("address", wizard.serverAddress);
     setValue("baseUrlNeeded", wizard.serverBaseUrlNeeded);
+    setValue("apiKey", wizard.apiKey);
 
     if (address !== wizard.serverAddress && address !== "") {
       triggerValidation(["address", "port"]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wizard]);
-
-  useEffect(() => {
-    register({ name: "protocol" }, { required: true });
-    register({ name: "type" }, { required: true });
-    register({ name: "baseUrlNeeded" });
-  }, [register]);
-
-  const protocolChanged = (event) => {
-    setValue("protocol", event.target.value);
-    setProtocol(event.target.value);
-  };
-
-  const typeChanged = (event) => {
-    setValue("type", event.target.value);
-    setType(event.target.value);
-  };
 
   const baseUrlNeededChanged = (event) => {
     event.preventDefault();
@@ -116,14 +105,14 @@ const ServerForm = (props: Props) => {
     setValue("baseUrl", "");
   };
 
-  const baseUrlChanged = (event) => {
-    event.preventDefault();
-    setBaseUrl(event.target.value);
-    setValue("baseUrl", event.target.value);
+  const baseUrlChanged = (value: string) => {
+    setBaseUrl(value);
   };
 
   const openMediaServer = () => {
+    const { type } = getValues('type');
     const htmlPage = type === 0 ? "apikeys" : "apikeys.html";
+    const { protocol } = getValues('protocol');
     const protocolTxt = protocol === 0 ? "https://" : "http://";
     window.open(
       `${protocolTxt}${address}:${port}${baseUrl}/web/index.html#!/${htmlPage}`,
@@ -141,6 +130,13 @@ const ServerForm = (props: Props) => {
     { id: 1, value: 1, label: "Jellyfin" },
   ];
 
+  const typeRegister = register('type');
+  const protocolRegister = register('protocol');
+  const addressRegister = register('address', { required: true });
+  const portRegister = register('port', { required: true });
+  const baseUrlRegister = register('baseUrl', { required: baseUrlNeeded, pattern: /^\// });
+  const apiKeyRegister = register('apiKey', { required: true });
+
   return (
     <Grid
       container
@@ -155,64 +151,69 @@ const ServerForm = (props: Props) => {
         justify="flex-end"
         className="m-t-16"
       >
-        <Select
-          className={classNames(classes["input-field__padding"], "max-width")}
-          variant="standard"
-          onChange={typeChanged}
-          value={type}
-          name="type"
-        >
-          {serverTypeList.map((x) => (
-            <MenuItem key={x.id} value={x.value}>
-              {x.label}
-            </MenuItem>
-          ))}
-        </Select>
+        <FormControl style={{ width: '100%' }}>
+          <Controller
+            name="type"
+            control={control}
+            render={() => (
+              <Select
+                className={classNames(classes["input-field__padding"], "max-width")}
+                variant="standard"
+                inputRef={typeRegister}
+              >
+                {serverTypeList.map((x) => (
+                  <MenuItem key={x.id} value={x.value}>
+                    {x.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          <FormHelperText>{t('WIZARD.SERVERTYPEGHELPER')}</FormHelperText>
+        </FormControl>
       </Grid>
       <Grid item container direction="row" className="m-t-16">
         <Grid item xs={12} md={2}>
-          <Select
-            className={classNames(classes["input-field__padding"], "max-width")}
-            variant="standard"
-            onChange={protocolChanged}
-            value={protocol}
-            name="protocol"
-          >
-            {protocolList.map((x) => (
-              <MenuItem key={x.id} value={x.value}>
-                {x.label}
-              </MenuItem>
-            ))}
-          </Select>
+          <FormControl fullWidth style={{ marginTop: 23 }}>
+            <Controller
+              name="protocol"
+              control={control}
+              render={() => (
+                <Select
+                  className={classNames(classes["input-field__padding"], "max-width")}
+                  variant="standard"
+                  inputRef={protocolRegister}
+                >
+                  {protocolList.map((x) => (
+                    <MenuItem key={x.id} value={x.value}>
+                      {x.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </FormControl>
         </Grid>
         <Grid item xs={12} md={8} className={classes["input-field__container"]}>
-          <TextField
-            inputRef={register({
-              required: t("SETTINGS.MEDIASERVER.NOADDRESS"),
-            })}
-            error={!!errors.address}
-            helperText={errors.address ? errors.address.message : ""}
+          <EsTextInput
+            inputRef={addressRegister}
+            defaultValue={getValues('address')}
+            error={errors.address}
             className={classes["input-field__padding"]}
-            placeholder={t("SETTINGS.MEDIASERVER.ADDRESS")}
-            name="address"
-            variant="standard"
-            defaultValue={address}
-            onChange={(event) => setAddress(event.target.value)}
+            label={t("SETTINGS.MEDIASERVER.ADDRESS")}
+            errorText={{ required: t("SETTINGS.MEDIASERVER.NOADDRESS") }}
+            onChange={(value: string) => setAddress(value)}
           />
         </Grid>
         <Grid item xs={12} md={2} className={classes["input-field__container"]}>
-          <TextField
-            inputRef={register({ required: t("SETTINGS.MEDIASERVER.NOPORT") })}
-            error={!!errors.port}
-            helperText={errors.port ? errors.port.message : ""}
+          <EsTextInput
+            inputRef={portRegister}
+            defaultValue={getValues('port')}
+            error={errors.port}
             className={classes["input-field__padding"]}
-            name="port"
-            type="number"
-            defaultValue={port}
-            inputProps={{ min: 0, max: 65535, step: 1 }}
-            placeholder={t("SETTINGS.MEDIASERVER.PORT")}
-            variant="standard"
-            onChange={(event) => setPort(event.target.value)}
+            label={t("SETTINGS.MEDIASERVER.PORT")}
+            errorText={{ required: t("SETTINGS.MEDIASERVER.NOPORT") }}
+            onChange={(value: string) => setPort(0)}
           />
         </Grid>
       </Grid>
@@ -242,19 +243,14 @@ const ServerForm = (props: Props) => {
         </Grid>
         {baseUrlNeeded ? (
           <Grid item xs={12}>
-            <TextField
-              inputRef={register({ required: baseUrlNeeded, pattern: /^\// })}
-              error={!!errors.baseUrl}
-              helperText={
-                errors.baseUrl
-                  ? t("SETTINGS.MEDIASERVER.NOBASEURL")
-                  : t("SETTINGS.MEDIASERVER.BASEURLHINT")
-              }
+            <EsTextInput
+              inputRef={baseUrlRegister}
+              defaultValue={getValues('baseUrl')}
+              error={errors.baseUrl}
               className={classes["input-field__padding"]}
-              placeholder={t("SETTINGS.MEDIASERVER.BASEURL")}
-              defaultValue={baseUrl}
-              name="baseUrl"
-              variant="standard"
+              label={t("SETTINGS.MEDIASERVER.BASEURL")}
+              errorText={{ required: t("SETTINGS.MEDIASERVER.NOBASEURL") }}
+              helperText={t("SETTINGS.MEDIASERVER.BASEURLHINT")}
               onChange={baseUrlChanged}
             />
           </Grid>
@@ -279,35 +275,24 @@ const ServerForm = (props: Props) => {
           onClick={openMediaServer}
         >
           {t("WIZARD.OPENSERVERAPIPAGE", {
-            type: type === 0 ? "Emby" : "Jellyfin",
+            type: getValues('type') === 0 ? "Emby" : "Jellyfin",
           })}
         </Button>
       </Grid>
       <Grid item xs={12} className="m-t-16">
-        <TextField
-          inputRef={register({ required: t("SETTINGS.MEDIASERVER.NOAPIKEY") })}
-          error={!!errors.apiKey}
-          helperText={
-            errors.apiKey
-              ? errors.apiKey.message
-              : t("SETTINGS.MEDIASERVER.APIKEYHINT", {
-                  type: type === 0 ? "Emby" : "Jellyfin",
-                })
-          }
+        <EsTextInput
+          inputRef={apiKeyRegister}
+          defaultValue={getValues('apiKey')}
+          error={errors.apiKey}
           className={classes["input-field__padding"]}
-          placeholder={t("SETTINGS.MEDIASERVER.APIKEY")}
-          defaultValue={apiKey}
-          name="apiKey"
-          variant="standard"
-          onChange={(event) => setApiKey(event.target.value)}
+          label={t("SETTINGS.MEDIASERVER.APIKEY")}
+          errorText={{ required: t("SETTINGS.MEDIASERVER.NOAPIKEY") }}
+          helperText={t("SETTINGS.MEDIASERVER.APIKEYHINT", {
+            type: getValues('type') === 0 ? "Emby" : "Jellyfin",
+          })}
+          onChange={(value: string) => setApiKey(value)}
         />
       </Grid>
     </Grid>
   );
 };
-
-ServerForm.defaultProps = {
-  className: "",
-};
-
-export default ServerForm;

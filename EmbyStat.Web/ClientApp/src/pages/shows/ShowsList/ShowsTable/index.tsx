@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactElement, useCallback } from 'react';
+import React, { useState, useEffect, ReactElement, useCallback, useContext } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import Grid from '@material-ui/core/Grid';
@@ -23,6 +23,7 @@ import { DetailShowTemplate } from '../DetailShowTemplate';
 import { ShowRow } from '../../../../shared/models/show';
 import { TablePage } from '../../../../shared/models/common';
 import { getShowPage } from '../../../../shared/services/ShowService';
+import { SettingsContext } from '../../../../shared/context/settings';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -236,7 +237,7 @@ const Row = (props: RowProps): ReactElement => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const serverType = useServerType();
   const classes = useRowStyles();
 

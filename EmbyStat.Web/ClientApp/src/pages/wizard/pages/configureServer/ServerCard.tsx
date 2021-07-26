@@ -54,15 +54,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ServerCard = (props: Props) => {
+export const ServerCard = (props: Props) => {
   const { server, onClick } = props;
   const [elevation, setElevation] = useState(7);
   const classes = useStyles();
 
   const openServer = () => {
     window.open(
-      `${server.protocol === 0 ? 'https://' : 'http://'}${server.address}:${
-      server.port
+      `${server.protocol === 0 ? 'https://' : 'http://'}${server.address}:${server.port
       }`,
       '_blank'
     );
@@ -108,5 +107,3 @@ const ServerCard = (props: Props) => {
     </Grid>
   );
 };
-
-export default ServerCard;

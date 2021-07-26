@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/RootReducer';
 import { UserRoles } from '../../../shared/models/login';
 import { Typography } from '@material-ui/core';
+import { SettingsContext } from '../../context/settings';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -68,8 +69,7 @@ const Menu = (props: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const small = useMediaQuery(theme.breakpoints.down('md'));
-  const settings = useSelector((state: RootState) => state.settings);
-
+  const { settings } = useContext(SettingsContext);
 
   const menuItems = [
     {

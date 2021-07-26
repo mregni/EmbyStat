@@ -8,6 +8,7 @@ using EmbyStat.Common.Net;
 using FluentAssertions;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -34,7 +35,9 @@ namespace Tests.Unit.Clients
                 .Returns(response);
             _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
 
-            return new EmbyHttpClient(_restClientMock.Object);
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+
+            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
         }
 
         private EmbyHttpClient CreateStringClient(string returnObject)
@@ -50,7 +53,9 @@ namespace Tests.Unit.Clients
                 .Returns(response);
             _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
 
-            return new EmbyHttpClient(_restClientMock.Object);
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+
+            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
         }
 
         [Fact]

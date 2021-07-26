@@ -7,20 +7,20 @@ import Collapse from '@material-ui/core/Collapse';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import classNames from 'classnames';
+import moment from 'moment';
+import { useForm } from 'react-hook-form';
 
 import { ActiveFilter, FilterDefinition, FilterType } from '../../models/filter';
 import { FilterDropdownButton } from './FilterDropdownButton';
 import Button from '@material-ui/core/Button';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FilterRadioButton from '../filterDrawer/FilterRadioButton';
-import FilterTextField from '../filterDrawer/FilterTextField';
+import { FilterTextField } from '../filterDrawer/FilterTextField';
 import FilterNumberField from '../filterDrawer/FilterNumberField';
 import FilterBetweenField from '../filterDrawer/FilterBetweenField';
 import FilterDateField from '../filterDrawer/FilterDateField';
 import FilterDropdownField from '../filterDrawer/FilterDropdownField';
 import FilterDateRangeField from '../filterDrawer/FilterDateRangeField';
-import { useForm } from 'react-hook-form';
-import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,7 +80,7 @@ export const FilterItem = (props: Props) => {
 
   const id = opened ? 'transitions-popper' : undefined;
 
-  const { register, trigger, errors, reset } = useForm({
+  const { register, trigger, reset, formState: { errors } } = useForm({
     mode: "onBlur",
     defaultValues: {
       txt: "",

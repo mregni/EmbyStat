@@ -45,6 +45,7 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
+    "CURRENT": "Current",
     "TOTALRUNTIME": "Total runtime",
     "LIBRARIES": "libraries",
     "PREMIEREDATE": "Premiere date",
@@ -67,8 +68,10 @@
     "SELECTVALUE": "Select value",
     "ADD": "Add",
     "DATE": "date",
+    "OTHER": "other",
     "FPS": "fps",
     "LINKS": "Links",
+    "PROTOCOL": "Protocol",
     "AUDIO": "Audio",
     "SUBTITLES": "Subtitles",
     "RATING": "Rating",
@@ -144,11 +147,12 @@
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Final",
     "SEARCHSERVERS": "Searching servers",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "Open {{type}} API key page",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.",
     "NOTFOUNDTEXT": "We could not detect media server in your network. Fill in your server details manually in the form.",
-    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to and enter your API key. Feel free to adjust the server configuration in the form.",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
     "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
@@ -158,9 +162,10 @@
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Select the preferred administrator from the dropdown list."
     },
     "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYUSED": "API key: {{api}}",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server.",
+    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total Movies",
@@ -201,17 +206,18 @@
   },
   "SETTINGS": {
     "SAVED": "Settings saved",
+    "SAVEFAILED": "Saving settings failed, check log files for more info.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
-    "TVDB": {
-      "TITLE": "Tvdb connection",
-      "APIKEYLABEL": "TheTVDB API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+    "TMDB": {
+      "TITLE": "TMDb connection",
+      "APIKEYLABEL": "TMDb API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "SAVING": "Saving TMDb key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",

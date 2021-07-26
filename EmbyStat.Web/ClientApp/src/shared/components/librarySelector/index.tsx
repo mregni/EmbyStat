@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     right: 0,
     borderRadius: 4,
-    bottom: 0,
+    bottom: 5,
     paddingTop: 5,
     paddingRight: 5,
     paddingLeft: 5,
-    paddingBottom: 2,
+    paddingBottom: 4,
     marginRight: 16,
     width: "calc(100% - 16px)",
     zIndex: 10,
@@ -104,12 +104,10 @@ const LibrarySelector = (props: Props) => {
             xs={6}
             sm={4}
             md={3}
-            lg={3}
-            xl={2}
             className={classes.library}
             onClick={() => selectLibrary(lib.id)}
           >
-            <Paper elevation={5} className={classes.library__paper}>
+            <Paper elevation={0} className={classes.library__paper}>
               {lib.primaryImage !== null ? (
                 <img
                   className={classNames(classes.library__image, {
@@ -121,23 +119,23 @@ const LibrarySelector = (props: Props) => {
                   src={`${address}/Items/${lib.id}/Images/Primary?maxHeight=212&maxWidth=377&tag=${lib.primaryImage}&quality=90`}
                 />
               ) : (
-                <img
-                  className={classNames(classes.library__image, {
-                    [classes["library__image--selected"]]: librarySelected(
-                      lib.id
-                    ),
-                  })}
-                  alt="no tag found"
-                  src={NoImage}
-                />
-              )}
+                  <img
+                    className={classNames(classes.library__image, {
+                      [classes["library__image--selected"]]: librarySelected(
+                        lib.id
+                      ),
+                    })}
+                    alt="no tag found"
+                    src={NoImage}
+                  />
+                )}
               <div className={classes.library__buttons}>
                 <span className={classes.library__name}>{lib.name}</span>
                 {librarySelected(lib.id) ? (
                   <CheckCircleRoundedIcon />
                 ) : (
-                  <RadioButtonUncheckedRoundedIcon />
-                )}
+                    <RadioButtonUncheckedRoundedIcon />
+                  )}
               </div>
             </Paper>
           </Grid>

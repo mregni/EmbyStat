@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState, useCallback, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -11,7 +10,6 @@ import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 
 import { ShowRow } from '../../../../shared/models/show';
 import { useServerType } from '../../../../shared/hooks';
-import { RootState } from '../../../../store/RootReducer';
 import { getBackdropImageLink, getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
 import { Show } from '../../../../shared/models/common';
 import { getShowDetails } from '../../../../shared/services/ShowService';
@@ -20,6 +18,7 @@ import PosterCard from '../../../../shared/components/cards/PosterCard';
 import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
 import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
 import DetailMovieSkeleton from '../../../movies/MoviesList/DetailMovieTemplate/DetailMovieSkeleton';
+import { SettingsContext } from '../../../../shared/context/settings';
 
 const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
@@ -56,7 +55,7 @@ export const DetailShowTemplate = (props: Props) => {
   const { data } = props;
   const { t } = useTranslation();
   const [show, setShow] = useState<Show | null>(null);
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const serverType = useServerType();
 
   const loadShow = useCallback(async () => {

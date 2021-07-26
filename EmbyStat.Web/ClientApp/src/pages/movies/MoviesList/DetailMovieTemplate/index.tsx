@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -25,6 +25,7 @@ import DetailMovieSkeleton from './DetailMovieSkeleton';
 import { getMovieDetails } from '../../../../shared/services/MovieService';
 import { Movie } from '../../../../shared/models/common';
 import { MovieRow } from '../../../../shared/models/movie';
+import { SettingsContext } from '../../../../shared/context/settings';
 
 const useStyles = makeStyles((theme) => ({
   container: (props: any) => ({
@@ -61,7 +62,7 @@ interface Props {
 const DetailMovieTemplate = (props: Props) => {
   const { data } = props;
   const [movie, setMovie] = useState<Movie>({} as Movie);
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const serverType = useServerType();
 
   useEffect(() => {
@@ -155,8 +156,8 @@ const DetailMovieTemplate = (props: Props) => {
                 <AspectRatioRoundedIcon />
                 <p className="m-l-8">
                   {movie.videoStreams[0]?.height ?? 0}x
-              {movie.videoStreams[0]?.width ?? 0}
-              &nbsp;({movie.videoStreams[0]?.aspectRatio}) @{' '}
+                  {movie.videoStreams[0]?.width ?? 0}
+                  &nbsp;({movie.videoStreams[0]?.aspectRatio}) @{' '}
                   {Math.round(movie.videoStreams[0]?.averageFrameRate ?? 0)}fps
             </p>
               </Grid>

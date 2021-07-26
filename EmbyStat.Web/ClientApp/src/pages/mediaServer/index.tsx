@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -12,6 +12,7 @@ import { RootState } from '../../store/RootReducer';
 import construction from '../../shared/assets/images/under-construction.webp';
 import getFullMediaServerUrl from "../../shared/utils/MediaServerUrlUtil";
 import fallbackImg from "../../shared/assets/images/no-image.png";
+import { SettingsContext } from '../../shared/context/settings';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -32,7 +33,7 @@ interface Props {
 const MediaServer = (props: Props) => {
   const [serverInfo, setServerInfo] = useState<MediaServerInfo | null>(null);
   const [plugins, setPlugins] = useState<MediaServerPlugin[] | null>(null);
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const classes = useStyles();
 
   useEffect(() => {

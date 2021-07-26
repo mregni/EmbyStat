@@ -32,7 +32,7 @@ namespace EmbyStat.Migrator.Migrations
                     {
                         AuthorizationScheme = "MediaBrowser"
                     },
-                    Tvdb = new TvdbSettings
+                    Tmdb = new TmdbSettings
                     {
                         ApiKey = "BWLRSNRC0AQUIEYX"
                     },

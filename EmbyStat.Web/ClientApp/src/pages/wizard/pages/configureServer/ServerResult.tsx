@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Trans } from 'react-i18next';
 import { MediaServerUdpBroadcast } from '../../../../shared/models/mediaServer';
-import ServerCard from './ServerCard';
+import { ServerCard } from '.';
 
 interface Props {
   servers: MediaServerUdpBroadcast[];
@@ -11,7 +11,7 @@ interface Props {
   setSelectedServer: (server: MediaServerUdpBroadcast) => void;
 }
 
-const ServerResult = (props: Props) => {
+export const ServerResult = (props: Props) => {
   const { servers, className, setSelectedServer } = props;
 
   const onServerCardClick = (server: MediaServerUdpBroadcast) => {
@@ -40,5 +40,3 @@ const ServerResult = (props: Props) => {
     </Grid>
   );
 };
-
-export default ServerResult;

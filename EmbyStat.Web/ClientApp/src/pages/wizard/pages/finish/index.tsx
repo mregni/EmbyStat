@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { register } from '../../../../shared/services/AccountService';
 import { fireJob } from '../../../../shared/services/JobService';
 import { RootState } from '../../../../store/RootReducer';
 import { saveSettings } from '../../../../store/SettingsSlice';
+import { SettingsContext } from '../../../../shared/context/settings';
 
 const useStyles = makeStyles((theme) => ({
   button__loading: {
@@ -41,7 +42,7 @@ const Finish = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [fireSync, setFireSync] = useState(false);
 
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const wizard = useSelector((state: RootState) => state.wizard);
 
   const serverType = wizard.serverType === 0 ? "Emby" : "Jellyfin";
@@ -65,7 +66,7 @@ const Finish = (props: Props) => {
     mediaServer.serverPort =
       typeof wizard.serverPort === "number"
         ? wizard.serverPort
-        : parseInt(wizard.serverPort, 10);
+        : 8096;
     mediaServer.serverProtocol = wizard.serverProtocol;
     mediaServer.serverType = wizard.serverType;
     mediaServer.userId = wizard.userId;

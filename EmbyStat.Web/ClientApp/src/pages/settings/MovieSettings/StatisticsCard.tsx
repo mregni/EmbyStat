@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,16 +11,18 @@ import SettingsCard from '../SettingsCard';
 import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
+import { EsTextInput } from '../../../shared/components/esTextInput';
+import { SettingsContext } from '../../../shared/context/settings';
 
 interface Props {
   delay: number;
 }
 
-const StatisticsCard = (props: Props) => {
+export const StatisticsCard = (props: Props) => {
   const { delay } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const [value, setValue] = useState(settings.toShortMovie);
   const [enabled, setEnabled] = useState(settings.toShortMovieEnabled)
 
@@ -36,7 +37,7 @@ const StatisticsCard = (props: Props) => {
     }
   }
 
-  const { register, errors, trigger } = useForm({
+  const { register, trigger, getValues, formState: { errors } } = useForm({
     mode: 'onBlur',
     defaultValues: {
       toShortEnabled: settings.toShortMovieEnabled,
@@ -50,6 +51,8 @@ const StatisticsCard = (props: Props) => {
       setValue(0);
     }
   };
+
+  const toShortValueRegister = register('toShortValue');
 
   return (
     <SettingsCard
@@ -69,22 +72,17 @@ const StatisticsCard = (props: Props) => {
         />
       </Grid>
       <Grid item>
-        <TextField
-          inputRef={register({ required: t('FORMERRORS.REQUIRED').toString() })}
+        <EsTextInput
+          inputRef={toShortValueRegister}
+          defaultValue={getValues('toShortValue')}
           label={t('SETTINGS.STATISTICS.TOSHORTMINUTES')}
-          size="small"
-          name="key"
+          error={errors.toShortValue}
+          errorText={{ required: t('FORMERRORS.REQUIRED') }}
+          readonly={!enabled}
           type="number"
-          error={!!errors.toShortValue}
-          helperText={errors.toShortValue ? errors.toShortValue.message : ''}
-          color="primary"
-          value={value}
-          disabled={!enabled}
-          onChange={(event) => setValue(parseInt(event.target.value as string, 10))}
+          onChange={(value: string) => setValue(parseInt(value, 10))}
         />
       </Grid>
     </SettingsCard>
   )
 }
-
-export default StatisticsCard

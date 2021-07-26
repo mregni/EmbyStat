@@ -20,20 +20,18 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import Home from '../pages/home';
 import Jobs from '../pages/jobs';
-import Login from '../pages/login';
+import { Login } from '../pages/login';
 import Logs from '../pages/logs';
 import MediaServer from '../pages/mediaServer';
 import MoviesLoader from '../pages/movies/Helpers/MoviesLoader';
-import MoviesGeneral from '../pages/movies/MoviesGeneral';
-import MoviesGraphs from '../pages/movies/MoviesGraphs';
-import MoviesList from '../pages/movies/MoviesList';
+import { MoviesGeneral, MoviesList, MoviesGraphs } from '../pages/movies';
 import ShowsGeneral from '../pages/shows/ShowsGeneral';
 import ShowsGraphs from '../pages/shows/ShowsGraphs';
 import ShowsList from '../pages/shows/ShowsList';
 import ShowsLoader from '../pages/shows/Helpers/ShowsLoader';
 import NotFound from '../pages/notFound';
-import GeneralSettings from '../pages/settings/GeneralSettings';
-import MovieSettings from '../pages/settings/MovieSettings';
+import { GeneralSettings } from '../pages/settings/GeneralSettings';
+import { MovieSettings } from '../pages/settings/MovieSettings';
 import Menu from '../shared/components/menu';
 import PrivateRoute from '../shared/components/privateRoute';
 import UpdateProvider from '../shared/providers/UpdateProvider';

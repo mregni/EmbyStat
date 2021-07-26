@@ -1,32 +1,32 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
-import EsButton, { Props } from '../shared/components/buttons/EsButton';
+import { EsSaveButton, Props } from '../shared/components/buttons/EsSaveButton';
 
 export default {
-  title: 'Example/Button',
-  component: EsButton,
+  title: 'Example/SaveButton',
+  component: EsSaveButton,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
 } as Meta;
 
-const Template: Story<Props> = (args) => <EsButton {...args} />;
+const Template: Story<Props> = (args) => <EsSaveButton {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  disable: false,
+  disabled: false,
   isSaving: false
 };
 
 export const Saving = Template.bind({});
 Saving.args = {
-  disable: false,
+  disabled: false,
   isSaving: true
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-  disable: true,
+  disabled: true,
   isSaving: false
 };

@@ -49,7 +49,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, libraryIds);
 
             MovieStatistics statistics;
-            if (StatisticsAreValid(statistic, libraryIds))
+            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.MovieSyncId))
             {
                 statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
 

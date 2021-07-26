@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extensions;
@@ -14,6 +18,8 @@ using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -22,12 +28,12 @@ namespace EmbyStat.Clients.Base.Http
 {
     public abstract class BaseHttpClient
     {
+        private readonly IHttpContextAccessor _accessor;
         protected readonly Logger Logger;
         protected string DeviceName { get; set; }
         protected string ApplicationVersion { get; set; }
         protected string DeviceId { get; set; }
         protected string UserId { get; set; }
-
         protected string apiKey { get; set; }
         public string ApiKey
         {
@@ -46,10 +52,11 @@ namespace EmbyStat.Clients.Base.Http
 
         protected readonly IRestClient RestClient;
 
-        protected BaseHttpClient(IRestClient client)
+        protected BaseHttpClient(IRestClient client, IHttpContextAccessor accessor)
         {
-            Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
+            _accessor = accessor;
             RestClient = client.Initialize();
+            Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
         }
 
         public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId)
@@ -103,35 +110,83 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteCall<T>(request);
         }
 
-        protected MediaServerUdpBroadcast SearchServer(string message)
+
+        protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
         {
-            using var client = new UdpClient();
-            var requestData = Encoding.ASCII.GetBytes(message);
-            var serverEp = new IPEndPoint(IPAddress.Any, 7359);
-
-            client.EnableBroadcast = true;
-            client.Send(requestData, requestData.Length, new IPEndPoint(IPAddress.Broadcast, 7359));
-
-            var timeToWait = TimeSpan.FromSeconds(3);
-
-            var asyncResult = client.BeginReceive(null, null);
-            asyncResult.AsyncWaitHandle.WaitOne(timeToWait);
-            if (asyncResult.IsCompleted)
+            var list = new List<MediaServerUdpBroadcast>();
+            foreach (var ip in GetBroadCastIps())
             {
-                try
+                await Task.Run(async () =>
                 {
-                    var receivedData = client.EndReceive(asyncResult, ref serverEp);
-                    var serverResponse = Encoding.ASCII.GetString(receivedData);
-                    var udpBroadcastResult = JsonConvert.DeserializeObject<MediaServerUdpBroadcast>(serverResponse);
-                    return udpBroadcastResult;
-                }
-                catch (Exception)
-                {
-                    // No data received, swallow exception and return empty object
-                }
+                    var to = new IPEndPoint(ip, 7359);
+                    using var client = new ServerSearcher(to);
+
+                    client.MediaServerFound += (sender, broadcast) =>
+                    {
+                        list.Add(broadcast);
+                    };
+
+                    client.Send(message);
+                    await Task.Run(() => Task.Delay(3000));
+                });
             }
 
-            return null;
+            return list;
+        }
+
+        private IEnumerable<IPAddress> GetBroadCastIps()
+        {
+            var ip = _accessor.HttpContext?.Connection.RemoteIpAddress;
+            ip = IPAddress.Parse("192.168.72.181");
+            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var adapter in interfaces)
+            {
+                foreach (var unicastInfo in adapter.GetIPProperties().UnicastAddresses)
+                {
+                    if (unicastInfo.Address.AddressFamily != AddressFamily.InterNetwork
+                    || unicastInfo.Address.MapToIPv4().Equals(IPAddress.Parse("127.0.0.1")))
+                    {
+                        continue;
+                    }
+
+                    if(CheckWhetherInSameNetwork(unicastInfo.Address, unicastInfo.IPv4Mask, ip))
+                        yield return GetBroadcastAddress(unicastInfo);
+                }
+            }
+        }
+
+        private bool CheckWhetherInSameNetwork(IPAddress firstIp, IPAddress subNet, IPAddress secondIp)
+        {
+            var subnetmaskInInt = ConvertIpToUint(subNet);
+            var firstIpInInt = ConvertIpToUint(firstIp);
+            var secondIpInInt = ConvertIpToUint(secondIp);
+            var networkPortionofFirstIp = firstIpInInt & subnetmaskInInt;
+            var networkPortionofSecondIp = secondIpInInt & subnetmaskInInt;
+            return networkPortionofFirstIp == networkPortionofSecondIp;
+        }
+
+        private static uint ConvertIpToUint(IPAddress ipAddress)
+        {
+            var byteIp = ipAddress.GetAddressBytes();
+            var ipInUint = (uint)byteIp[3] << 24;
+            ipInUint += (uint)byteIp[2] << 16;
+            ipInUint += (uint)byteIp[1] << 8;
+            ipInUint += byteIp[0];
+            return ipInUint;
+        }
+
+        private IPAddress GetBroadcastAddress(UnicastIPAddressInformation unicastAddress)
+        {
+            return GetBroadcastAddress(unicastAddress.Address, unicastAddress.IPv4Mask);
+        }
+
+        private IPAddress GetBroadcastAddress(IPAddress address, IPAddress mask)
+        {
+            var ipAddress = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
+            var ipMaskV4 = BitConverter.ToUInt32(mask.GetAddressBytes(), 0);
+            var broadCastIpAddress = ipAddress | ~ipMaskV4;
+
+            return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
         }
 
         public bool Ping(string message)
@@ -221,8 +276,8 @@ namespace EmbyStat.Clients.Base.Http
             var request = new RestRequest($"Items", Method.GET);
             request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null 
-                ? baseItems.Items.Select(x => x.ConvertToMovie(collectionId, Logger)).ToList() 
+            return baseItems?.Items != null
+                ? baseItems.Items.Select(x => x.ConvertToMovie(collectionId, Logger)).ToList()
                 : new List<Movie>(0);
         }
 

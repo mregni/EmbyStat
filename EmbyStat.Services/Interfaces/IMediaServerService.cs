@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -10,8 +11,7 @@ namespace EmbyStat.Services.Interfaces
     public interface IMediaServerService
     {
         #region Server
-
-        MediaServerUdpBroadcast SearchMediaServer(ServerType type);
+        Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type);
         ServerInfo GetServerInfo(bool forceReSync);
         bool TestNewApiKey(string url, string apiKey, ServerType type);
         EmbyStatus GetMediaServerStatus();

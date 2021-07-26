@@ -49,7 +49,7 @@ namespace EmbyStat.Services
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
 
-            if (StatisticsAreValid(statistic, libraryIds))
+            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.ShowSyncId))
             {
                 return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
@@ -461,7 +461,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
             ListContainer<ShowCollectionRow> rows = new ListContainer<ShowCollectionRow>();
-            if (StatisticsAreValid(statistic, libraryIds))
+            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.ShowSyncId))
             {
                 rows.Data = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
             }

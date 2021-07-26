@@ -36,14 +36,14 @@ const ConfigureLibraries = (props: Props) => {
     if (!listLoaded) {
       let list: string[] = [];
       if (typeNumber === 1) {
-        list = wizard.loadedMovieLibraryStep
+        list = false
           ? wizard.movieLibraries
           : wizard.allLibraries
             .filter((x) => x.type === typeNumber)
             .map((x) => x.id);
         dispatch(setMovieLibraryStepLoaded(true));
       } else if (typeNumber === 2) {
-        list = wizard.loadedShowLibraryStep
+        list = false
           ? wizard.showLibraries
           : wizard.allLibraries
             .filter((x) => x.type === typeNumber)

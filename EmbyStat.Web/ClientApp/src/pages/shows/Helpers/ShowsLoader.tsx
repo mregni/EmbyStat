@@ -8,7 +8,7 @@ import StatisticsLoader from '../../../shared/components/statisticsLoader';
 import { getMediaSyncJob } from '../../../shared/services/JobService';
 
 interface Props {
-  Component: ReactNode;
+  Component: Function;
 }
 
 const ShowsLoader = (props: Props) => {
@@ -47,7 +47,6 @@ const ShowsLoader = (props: Props) => {
 
   return (
     <StatisticsLoader
-      Component={Component}
       noMediaTypeTitle="DIALOGS.NOSHOWTYPEFOUND.TITLE"
       noMediaTypeBody="DIALOGS.NOSHOWTYPEFOUND.BODY"
       typePresent={typePresent}
@@ -55,10 +54,11 @@ const ShowsLoader = (props: Props) => {
       runningSync={runningSync}
       runningSyncLoading={runningSyncLoading}
       isLoading={isLoading}
-      statistics={statistics.statistics}
       label="SHOWS.LOADER"
       jobId="be68900b-ee1d-41ef-b12f-60ef3106052e"
-    />
+    >
+      <Component statistics={statistics.statistics} />
+    </StatisticsLoader>
   );
 };
 

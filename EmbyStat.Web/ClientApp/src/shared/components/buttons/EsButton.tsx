@@ -1,32 +1,31 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { useTranslation } from 'react-i18next';
 
 export interface Props {
-  disable: boolean;
-  isSaving?: boolean;
-
+  disabled?: boolean;
+  onClick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
+  children: ReactElement | ReactElement[];
+  fullWidth?: boolean;
 }
 
-const EsButton = (props: Props) => {
-  const { disable, isSaving = false } = props;
-  const { t } = useTranslation();
+export const EsButton = (props: Props) => {
+  const {
+    disabled = false,
+    fullWidth = true,
+    children,
+    onClick
+  } = props;
 
   return (
     <Button
       type="submit"
       color="primary"
       variant="contained"
-      disabled={disable}
+      disabled={disabled}
+      onClick={onClick}
+      fullWidth={fullWidth}
     >
-      {isSaving ? (
-        <CircularProgress color="inherit" size={22} />
-      ) : (
-          t('COMMON.SAVE')
-        )}
+      {children}
     </Button>
   );
 };
-
-export default EsButton;

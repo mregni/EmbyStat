@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -10,14 +10,15 @@ import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import SettingsCard from '../SettingsCard';
+import { SettingsContext } from '../../../shared/context/settings';
 
 interface Props {
   delay: number
 }
 
-const RollbarCard = (props: Props) => {
+export const RollbarCard = (props: Props) => {
   const { delay } = props;
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const [rollbar, setRollbar] = useState(settings.enableRollbarLogging);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -53,5 +54,3 @@ const RollbarCard = (props: Props) => {
     </SettingsCard>
   )
 }
-
-export default RollbarCard

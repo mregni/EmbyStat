@@ -212,7 +212,7 @@ namespace EmbyStat.Web
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseRollbarMiddleware();
+            //app.UseRollbarMiddleware();
 
             app.UseHangfireServer(new BackgroundJobServerOptions
             {

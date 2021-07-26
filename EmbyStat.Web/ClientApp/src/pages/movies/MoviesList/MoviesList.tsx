@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MovieList = () => {
+export const MoviesList = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
@@ -55,5 +55,3 @@ const MovieList = () => {
     </Grid>
   );
 };
-
-export default MovieList;

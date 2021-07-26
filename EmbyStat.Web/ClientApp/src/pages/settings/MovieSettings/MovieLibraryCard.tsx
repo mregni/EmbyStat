@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
@@ -10,19 +10,19 @@ import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { getLibraries } from '../../../shared/services/MediaServerService';
-import Loading from '../../../shared/components/loading';
+import { Loading } from '../../../shared/components/loading';
 import LibrarySelector from '../../../shared/components/librarySelector';
 import getFullMediaServerUrl from '../../../shared/utils/MediaServerUrlUtil';
-
+import { SettingsContext } from '../../../shared/context/settings';
 interface Props {
   delay: number;
 }
 
-const MovieLibraryCard = (props: Props) => {
+export const MovieLibraryCard = (props: Props) => {
   const { delay } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([] as Library[]);
   const [selectedLibraries, setSelectedLibraries] = useState(settings.movieLibraries);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,14 +66,14 @@ const MovieLibraryCard = (props: Props) => {
         className="m-t-32"
         loading={isLoading}
         label={t('COMMON.LOADING', { item: t('COMMON.LIBRARIES') })}
-        allLibraries={libraries}
-        libraries={settings.movieLibraries}
-        address={getFullMediaServerUrl(settings)}
-        saveList={(libraries) => setSelectedLibraries(libraries)}
-        Component={LibrarySelector}
-      />
+      >
+        <LibrarySelector
+          allLibraries={libraries}
+          libraries={settings.movieLibraries}
+          address={getFullMediaServerUrl(settings)}
+          saveList={(libraries) => setSelectedLibraries(libraries)}
+        />
+      </Loading>
     </SettingsCard>
   )
 }
-
-export default MovieLibraryCard

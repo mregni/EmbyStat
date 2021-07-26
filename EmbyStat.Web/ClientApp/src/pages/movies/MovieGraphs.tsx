@@ -3,14 +3,14 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import uuid from 'react-uuid';
 
-import { MovieStatistics } from '../../../shared/models/movie';
-import BarGraph from '../../../shared/components/graphs/BarGraph';
+import { MovieStatistics } from '../../shared/models/movie';
+import BarGraph from '../../shared/components/graphs/BarGraph';
 
 interface Props {
   statistics: MovieStatistics;
 }
 
-const MoviesGraphs = (props: Props) => {
+export const MoviesGraphs = (props: Props) => {
   const { statistics } = props;
 
   return (
@@ -27,5 +27,3 @@ const MoviesGraphs = (props: Props) => {
     </Grid>
   );
 };
-
-export default MoviesGraphs;

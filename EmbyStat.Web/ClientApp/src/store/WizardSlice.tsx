@@ -3,12 +3,43 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./RootReducer";
 import { AppDispatch, AppThunk } from ".";
 import { Wizard } from "../shared/models/wizard";
-import { MediaServerUdpBroadcast, Library } from "../shared/models/mediaServer";
+import { MediaServerUdpBroadcast, Library, MediaServerInfo } from "../shared/models/mediaServer";
+
+const initialMediaServerInfoState: MediaServerInfo = {
+  id: '',
+  systemUpdateLevel: 0,
+  operatingSystemDisplayName: '',
+  hasPendingRestart: false,
+  isShuttingDown: false,
+  supportsLibraryMonitor: false,
+  webSocketPortNumber: '',
+  canSelfRestart: false,
+  canSelfUpdate: false,
+  canLaunchWebBrowser: false,
+  programDataPath: '',
+  itemsByNamePath: '',
+  cachePath: '',
+  logPath: '',
+  internalMetadataPath: '',
+  transcodingTempPath: '',
+  httpServerPortNumber: 0,
+  supportsHttps: false,
+  httpsPortNumber: '',
+  hasUpdateAvailable: false,
+  supportsAutoRunAtStartup: false,
+  hardwareAccelerationRequiresPremiere: false,
+  localAddress: '',
+  wanAddress: '',
+  serverName: '',
+  version: '',
+  operatingSystem: '',
+  isLoaded: false
+}
 
 const initialState: Wizard = {
   serverAddress: "",
   serverName: "",
-  serverPort: "",
+  serverPort: null,
   serverProtocol: 0,
   apiKey: "",
   serverType: 0,
@@ -18,15 +49,17 @@ const initialState: Wizard = {
   username: "",
   password: "",
   language: "",
+  languages: [],
   enableRollbarLogging: false,
   foundServers: [],
   searchedServers: false,
   allLibraries: [],
   movieLibraries: [],
   showLibraries: [],
-  loadedMovieLibraryStep: false,
-  loadedShowLibraryStep: false,
   serverId: "",
+  administrators: [],
+  mediaServerInfo: initialMediaServerInfoState,
+  fireSync: false,
 };
 
 const wizardSlice = createSlice({
@@ -56,7 +89,7 @@ export const setUser = (username: string, password: string): AppThunk => async (
 
 export const setServerConfiguration = (
   address: string,
-  port: number | string,
+  port: number | null,
   baseUrl: string,
   apiKey: string,
   type: number,
@@ -69,8 +102,8 @@ export const setServerConfiguration = (
   wizard.apiKey = apiKey;
   wizard.serverBaseurl = baseUrl;
   wizard.serverBaseUrlNeeded = baseUrlNeeded;
-  wizard.serverProtocol = protocol;
-  wizard.serverType = type;
+  // wizard.serverProtocol = protocol;
+  // wizard.serverType = type;
 
   dispatch(wizardSlice.actions.updateWizardState(wizard));
 };
@@ -83,7 +116,7 @@ export const setServerAddress = (
   const wizard = { ...getState().wizard };
   wizard.serverAddress = address;
   wizard.serverPort = port;
-  wizard.serverProtocol = protocol;
+  // wizard.serverProtocol = protocol;
 
   dispatch(wizardSlice.actions.updateWizardState(wizard));
 };
@@ -153,7 +186,6 @@ export const setMovieLibraryStepLoaded = (loaded: boolean): AppThunk => async (
   getState: () => RootState
 ) => {
   const wizard = { ...getState().wizard };
-  wizard.loadedMovieLibraryStep = loaded;
   dispatch(wizardSlice.actions.updateWizardState(wizard));
 };
 
@@ -162,7 +194,6 @@ export const setShowLibraryStepLoaded = (loaded: boolean): AppThunk => async (
   getState: () => RootState
 ) => {
   const wizard = { ...getState().wizard };
-  wizard.loadedShowLibraryStep = loaded;
   dispatch(wizardSlice.actions.updateWizardState(wizard));
 };
 

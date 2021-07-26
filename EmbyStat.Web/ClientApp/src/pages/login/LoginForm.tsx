@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import { animated } from 'react-spring';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { StaticContext } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { useForm } from 'react-hook-form';
 import classNames from "classnames";
+import { animated } from 'react-spring';
 
 import { LoginView } from '../../shared/models/login';
 import { login } from '../../shared/services/AccountService';
+import { EsTextInput } from '../../shared/components/esTextInput';
+import { EsButton } from '../../shared/components/buttons/EsButton';
 
 const useStyles = makeStyles((theme) => ({
   card__content: {
@@ -31,11 +31,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     height: 20,
   },
-  button: {
-    marginTop: 15,
-    height: 36,
-    width: '100%',
-  },
   login__button: {
     color: "#d3d3d3",
   },
@@ -47,18 +42,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-type Props = RouteComponentProps<
-  {},
-  StaticContext,
-  { referer: { pathname: string } }
-> & {
+interface Props {
   style: any,
   openForgotPasswordForm: () => void,
 };
 
-const LoginForm = (props: Props) => {
-  const { style, history, openForgotPasswordForm } = props;
+export const LoginForm = (props: Props) => {
+  const { style, openForgotPasswordForm } = props;
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
   const { t } = useTranslation();
   const [failedLogin, setFailedLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,21 +59,19 @@ const LoginForm = (props: Props) => {
     username: '',
     password: '',
   });
-  const { referer } = props.location.state || { referer: { pathname: '/' } };
+  const referer = location || '/';
 
-  const usernameChanged = (event) => {
-    event.persist();
-    setLoginView((state) => ({
-      ...state,
-      username: event.target.value as string,
+  const usernameChanged = (value: string) => {
+    setLoginView((prev) => ({
+      ...prev,
+      username: value,
     }));
   };
 
-  const passwordChanged = (event) => {
-    event.persist();
-    setLoginView((state) => ({
-      ...state,
-      password: event.target.value as string,
+  const passwordChanged = (value: string) => {
+    setLoginView((prev) => ({
+      ...prev,
+      password: value,
     }));
   };
 
@@ -96,7 +87,7 @@ const LoginForm = (props: Props) => {
     setFailedLogin(true);
   };
 
-  const { register } = useForm({
+  const { register, getValues } = useForm({
     mode: 'onBlur',
     defaultValues: {
       username: '',
@@ -104,56 +95,51 @@ const LoginForm = (props: Props) => {
     },
   });
 
+  const usernameRegister = register('username');
+  const passwordRegister = register('password');
+
   return (
     <animated.div style={{ ...style }}>
-      <Grid container direction="column" justify="flex-end" spacing={1} className={classes.card__content}>
-        <form>
-          <Grid item>
-            <TextField
-              inputRef={register()}
-              label={t('SETTINGS.ACCOUNT.USERNAME')}
-              onChange={usernameChanged}
-              value={loginView.username}
-              color="primary"
-              size="small"
-              name="username"
-              className="p-b-8" />
-          </Grid>
-          <Grid item className={classNames({ [classes.input__padding]: !failedLogin })}>
-            <TextField
-              inputRef={register()}
-              label={t('SETTINGS.ACCOUNT.PASSWORD')}
-              type="password"
-              size="small"
-              color="primary"
-              name="password"
-              onChange={passwordChanged}
-              value={loginView.password} />
-          </Grid>
-          {
-            failedLogin ? <Grid item className={classes.error_message}>{t('LOGIN.ERROR')}</Grid> : null
-          }
-          <Grid item container justify="center">
-            <Button variant="text" onClick={() => openForgotPasswordForm()} className={classes["forgot-password__button"]}>
-              {t('LOGIN.FORGOTPASSWORD')}
-            </Button>
-          </Grid>
-          <Button
-            variant="contained"
+      <Grid container direction="column" justify="flex-end" alignItems="center" spacing={0} className={classes.card__content}>
+        <Grid item container>
+          <EsTextInput
+            inputRef={usernameRegister}
+            label={t('SETTINGS.ACCOUNT.USERNAME')}
+            onChange={usernameChanged}
+            defaultValue={getValues('username')}
+            className="p-b-8"
+          />
+        </Grid>
+        <Grid item container className={classNames({ [classes.input__padding]: !failedLogin })}>
+          <EsTextInput
+            inputRef={passwordRegister}
+            label={t('SETTINGS.ACCOUNT.PASSWORD')}
+            onChange={passwordChanged}
+            defaultValue={getValues('password')}
+            type="password"
+          />
+        </Grid>
+        {
+          failedLogin ? <Grid item className={classes.error_message}>{t('LOGIN.ERROR')}</Grid> : null
+        }
+        <Grid item className="p-b-8">
+          <Button variant="text" onClick={() => openForgotPasswordForm()} className={classes["forgot-password__button"]}>
+            {t('LOGIN.FORGOTPASSWORD')}
+          </Button>
+        </Grid>
+        <Grid item container>
+          <EsButton
             onClick={loginUser}
-            className={classes.button}
             disabled={isLoading}
-            color="primary">
+          >
             {
               isLoading
-                ? <CircularProgress size={16} className={classes.login__button} />
+                ? <CircularProgress size={21} className={classes.login__button} />
                 : t('LOGIN.LOGIN')
             }
-          </Button>
-        </form>
+          </EsButton>
+        </Grid>
       </Grid>
     </animated.div>
   )
 }
-
-export default withRouter(LoginForm);

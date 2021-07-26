@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Zoom from '@material-ui/core/Zoom';
 import Paper from '@material-ui/core/Paper';
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { TopCard, TopCardItem } from '../../models/common';
 import { RootState } from '../../../store/RootReducer';
 import getFullMediaServerUrl, { getItemDetailLink, getBackdropImageLink, getPrimaryImageLink } from '../../utils/MediaServerUrlUtil';
+import { SettingsContext } from '../../context/settings';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     height: 138,
   },
   container__background: (props: any) => ({
-    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url(${props.backdrop})`,
+    backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 85%, rgba(0,0,0,0.95) 100%), url(${props.backdrop})`,
     backgroundPosition: 'top',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
@@ -71,8 +72,8 @@ const TopListCard = (props: Props) => {
   const { data, fallbackImg, enableBackground } = props;
   const { t } = useTranslation();
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
+  const { settings } = useContext(SettingsContext);
 
-  const settings = useSelector((state: RootState) => state.settings);
   const classes = useStyles({ backdrop: getBackdropImageLink(settings, hoveredItem?.mediaId ?? data.values[0]?.mediaId ?? "") });
 
   const calculateTime = (date: string): string => {
@@ -89,7 +90,10 @@ const TopListCard = (props: Props) => {
 
   return (
     <Zoom in={true}>
-      <Paper elevation={5} className={classNames(classes.container, { [classes.container__background]: enableBackground })}>
+      <Paper
+        elevation={5}
+        className={classNames(classes.container, { [classes.container__background]: enableBackground })}
+      >
         <Grid container direction="row">
           <Grid item className={classes.poster}>
             <img
@@ -126,7 +130,7 @@ const TopListCard = (props: Props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {pair.label.length > 30 ? t(pair.label).substr(0, 29) + '...' : t(pair.label)}
+                    {pair.label.length > 27 ? t(pair.label).substr(0, 24) + '...' : t(pair.label)}
                   </a>
                 </Grid>
                 <Grid item className={classes.secondaryColor}>
