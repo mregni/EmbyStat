@@ -24,10 +24,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface Props {
-
-}
-
 const MediaServer = () => {
   const [serverInfo, setServerInfo] = useState<MediaServerInfo | null>(null);
   const [plugins, setPlugins] = useState<MediaServerPlugin[] | null>(null);

@@ -11,7 +11,7 @@ interface Props {
   Component: Function;
 }
 
-const ShowsLoader = (props: Props) => {
+export const ShowsLoader = (props: Props) => {
   const { Component } = props;
   const statistics = useSelector((state: RootState) => state.shows);
   const [typePresent, setTypePresent] = useState(false);
@@ -61,5 +61,3 @@ const ShowsLoader = (props: Props) => {
     </StatisticsLoader>
   );
 };
-
-export default ShowsLoader

@@ -4,9 +4,9 @@ import HttpApi from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 let translationFilePath = '/locales/{{lng}}.json';
-if (process.env.NODE_ENV === 'development' && module.hot) {
-  translationFilePath = '/locales/base.json';
-}
+// if (process.env.NODE_ENV === 'development' && module.hot) {
+//   translationFilePath = '/locales/base.json';
+// }
 
 i18n
   .use(HttpApi)

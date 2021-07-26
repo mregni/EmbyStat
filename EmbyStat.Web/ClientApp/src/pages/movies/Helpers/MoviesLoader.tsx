@@ -11,7 +11,7 @@ interface Props {
   Component: Function;
 }
 
-const MoviesLoader = (props: Props): ReactElement => {
+export const MoviesLoader = (props: Props): ReactElement => {
   const { Component } = props;
   const statistics = useSelector((state: RootState) => state.movies);
   const [typePresent, setTypePresent] = useState(false);
@@ -61,5 +61,3 @@ const MoviesLoader = (props: Props): ReactElement => {
     </StatisticsLoader>
   );
 };
-
-export default MoviesLoader;
