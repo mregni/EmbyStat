@@ -114,8 +114,10 @@ namespace EmbyStat.Clients.Base.Http
         protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
         {
             var list = new List<MediaServerUdpBroadcast>();
+            Logger.Debug($"Checking following broadcast IPs (own IP: ");
             foreach (var ip in GetBroadCastIps())
             {
+                Logger.Debug($"\t{ip}");
                 await Task.Run(async () =>
                 {
                     var to = new IPEndPoint(ip, 7359);
@@ -137,6 +139,7 @@ namespace EmbyStat.Clients.Base.Http
         private IEnumerable<IPAddress> GetBroadCastIps()
         {
             var ip = _accessor.HttpContext?.Connection.RemoteIpAddress;
+            Logger.Debug($"{ip})");
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var adapter in interfaces)
             {
@@ -148,7 +151,7 @@ namespace EmbyStat.Clients.Base.Http
                         continue;
                     }
 
-                    if(CheckWhetherInSameNetwork(unicastInfo.Address, unicastInfo.IPv4Mask, ip))
+                    if (CheckWhetherInSameNetwork(unicastInfo.Address, unicastInfo.IPv4Mask, ip))
                         yield return GetBroadcastAddress(unicastInfo);
                 }
             }
