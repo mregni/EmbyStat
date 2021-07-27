@@ -55,32 +55,16 @@ export const LoginForm = (props: Props) => {
   const { t } = useTranslation();
   const [failedLogin, setFailedLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loginView, setLoginView] = useState<LoginView>({
-    username: '',
-    password: '',
-  });
   const referer = location || '/';
-
-  const usernameChanged = (value: string) => {
-    setLoginView((prev) => ({
-      ...prev,
-      username: value,
-    }));
-  };
-
-  const passwordChanged = (value: string) => {
-    setLoginView((prev) => ({
-      ...prev,
-      password: value,
-    }));
-  };
 
   const loginUser = async () => {
     setFailedLogin(false);
     setIsLoading(true);
-    const result = await login(loginView);
+    var { username, password } = getValues();
+    const result = await login({ username, password });
     if (result) {
       history.push(referer.pathname, { referer: { pathname: '/login' } });
+      return;
     }
 
     setIsLoading(false);
@@ -100,21 +84,24 @@ export const LoginForm = (props: Props) => {
 
   return (
     <animated.div style={{ ...style }}>
-      <Grid container direction="column" justify="flex-end" alignItems="center" spacing={0} className={classes.card__content}>
+      <Grid container
+        direction="column"
+        justify="flex-end"
+        alignItems="center"
+        spacing={1}
+        className={classes.card__content}
+      >
         <Grid item container>
           <EsTextInput
             inputRef={usernameRegister}
             label={t('SETTINGS.ACCOUNT.USERNAME')}
-            onChange={usernameChanged}
             defaultValue={getValues('username')}
-            className="p-b-8"
           />
         </Grid>
         <Grid item container className={classNames({ [classes.input__padding]: !failedLogin })}>
           <EsTextInput
             inputRef={passwordRegister}
             label={t('SETTINGS.ACCOUNT.PASSWORD')}
-            onChange={passwordChanged}
             defaultValue={getValues('password')}
             type="password"
           />

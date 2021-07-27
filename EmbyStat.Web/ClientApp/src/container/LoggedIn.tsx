@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StaticContext } from 'react-router';
+import { Redirect, StaticContext } from 'react-router';
 import { Route, RouteComponentProps, Switch, useHistory, withRouter } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -91,6 +91,7 @@ const LoggedIn = (props: Props) => {
   const history = useHistory();
   const [openMenu, setOpenMenu] = useState(false);
   const [openHeader, setOpenHeader] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const small = useMediaQuery(theme.breakpoints.down("md"));
@@ -100,9 +101,13 @@ const LoggedIn = (props: Props) => {
   }, [small]);
 
   useEffect(() => {
+    setOpenMenu(isAuthenticated);
+    setOpenHeader(isAuthenticated);
+  }, [isAuthenticated])
+
+  useEffect(() => {
     userLoggedIn$.subscribe((value: boolean) => {
-      setOpenMenu(value);
-      setOpenHeader(value);
+      setIsAuthenticated(value);
     });
     return () => {
       userLoggedIn$.unsubscribe();
@@ -224,7 +229,11 @@ const LoggedIn = (props: Props) => {
               <MovieSettings />
             </PrivateRoute>
             <Route path="/login">
-              <Login />
+              {
+                isAuthenticated
+                  ? <Redirect to="/" />
+                  : <Login />
+              }
             </Route>
             <Route path="*">
               <NotFound />
