@@ -137,7 +137,6 @@ namespace EmbyStat.Clients.Base.Http
         private IEnumerable<IPAddress> GetBroadCastIps()
         {
             var ip = _accessor.HttpContext?.Connection.RemoteIpAddress;
-            ip = IPAddress.Parse("192.168.72.181");
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var adapter in interfaces)
             {
