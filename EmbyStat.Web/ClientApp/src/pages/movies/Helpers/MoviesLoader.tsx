@@ -5,7 +5,8 @@ import { RootState } from '../../../store/RootReducer';
 import { loadStatistics } from '../../../store/MovieSlice';
 import { isTypePresent } from '../../../shared/services/MovieService';
 import StatisticsLoader from '../../../shared/components/statisticsLoader';
-import { getMediaSyncJob } from '../../../shared/services/JobService';
+import { getJobById } from '../../../shared/services/JobService';
+import { movieJobId } from '../../../shared/utils';
 
 interface Props {
   Component: Function;
@@ -16,10 +17,19 @@ export const MoviesLoader = (props: Props): ReactElement => {
   const statistics = useSelector((state: RootState) => state.movies);
   const [typePresent, setTypePresent] = useState(false);
   const [typePresentLoading, setTypePresentLoading] = useState(true);
-  const [runningSync, setRunningSync] = useState(false);
+  const [runningSync, setRunningSync] = useState(true);
   const [runningSyncLoading, setRunningSyncLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(!statistics.isLoaded);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!runningSync && !statistics.isLoaded) {
+      console.log(runningSync);
+      dispatch(loadStatistics());
+    }
+
+    setIsLoading(!statistics.isLoaded);
+  }, [dispatch, runningSync, statistics.isLoaded])
 
   useEffect(() => {
     const checkType = async () => {
@@ -29,19 +39,13 @@ export const MoviesLoader = (props: Props): ReactElement => {
     }
 
     const checkRunningSync = async () => {
-      const result = await getMediaSyncJob();
+      const result = await getJobById(movieJobId);
       setRunningSync(result.state === 1);
       setRunningSyncLoading(false);
     }
 
-    if (!statistics.isLoaded) {
-      dispatch(loadStatistics());
-    }
-
     checkRunningSync();
     checkType();
-
-    setIsLoading(!statistics.isLoaded);
   }, [statistics.isLoaded, dispatch]);
 
   return (
@@ -53,9 +57,8 @@ export const MoviesLoader = (props: Props): ReactElement => {
       runningSync={runningSync}
       runningSyncLoading={runningSyncLoading}
       isLoading={isLoading}
-
       label="MOVIES.LOADER"
-      jobId="c40555dc-ea57-4c6e-a225-905223d31c3c"
+      jobId={movieJobId}
     >
       <Component statistics={statistics.statistics} />
     </StatisticsLoader>

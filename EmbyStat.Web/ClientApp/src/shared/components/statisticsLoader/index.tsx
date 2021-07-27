@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom'
 
 import { Loading } from '../../components/loading';
-import getMediaServerTypeString from '../../utils/GetMediaServerTypeString';
+import { getMediaServerTypeString } from '../../utils';
 import { fireJob } from '../../services/JobService';
 import { SettingsContext } from '../../context/settings';
 

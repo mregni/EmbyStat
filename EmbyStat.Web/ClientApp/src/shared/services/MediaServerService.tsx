@@ -20,13 +20,11 @@ export const searchMediaServers = async (): Promise<MediaServerUdpBroadcast[]> =
       axios.spread((...responses) => {
         let servers: MediaServerUdpBroadcast[] = [];
         responses.forEach((response) => {
-          console.log(response.data);
           if (response.status === 200) {
             servers = [...servers, ...response.data];
           }
         });
 
-        console.log(servers);
         return servers;
       })
     );

@@ -5,7 +5,8 @@ import { RootState } from '../../../store/RootReducer';
 import { loadStatistics } from '../../../store/ShowSlice';
 import { isTypePresent } from '../../../shared/services/ShowService';
 import StatisticsLoader from '../../../shared/components/statisticsLoader';
-import { getMediaSyncJob } from '../../../shared/services/JobService';
+import { getJobById } from '../../../shared/services/JobService';
+import { showJobId } from '../../../shared/utils';
 
 interface Props {
   Component: Function;
@@ -29,7 +30,7 @@ export const ShowsLoader = (props: Props) => {
     }
 
     const checkRunningSync = async () => {
-      const result = await getMediaSyncJob();
+      const result = await getJobById(showJobId);
       setRunningSync(result.state === 1);
       setRunningSyncLoading(false);
     }
@@ -55,7 +56,7 @@ export const ShowsLoader = (props: Props) => {
       runningSyncLoading={runningSyncLoading}
       isLoading={isLoading}
       label="SHOWS.LOADER"
-      jobId="be68900b-ee1d-41ef-b12f-60ef3106052e"
+      jobId={showJobId}
     >
       <Component statistics={statistics.statistics} />
     </StatisticsLoader>

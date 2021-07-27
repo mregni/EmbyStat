@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, StaticContext } from 'react-router';
 import { Route, RouteComponentProps, Switch, useHistory, withRouter } from 'react-router-dom';
@@ -33,6 +33,8 @@ import PrivateRoute from '../shared/components/privateRoute';
 import UpdateProvider from '../shared/providers/UpdateProvider';
 import { logout, userLoggedIn$ } from '../shared/services/AccountService';
 import theme from '../styles/theme';
+import { SettingsContext } from '../shared/context/settings';
+import { WizardContainer } from '../pages/wizard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,17 +80,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-type Props = RouteComponentProps<
-  {},
-  StaticContext,
-  { referer: { pathname: string } }
->;
-
-const LoggedIn = (props: Props) => {
-  const { location } = props;
+const LoggedIn = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
+  const { settings } = useContext(SettingsContext);
   const [openMenu, setOpenMenu] = useState(false);
   const [openHeader, setOpenHeader] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -104,6 +100,13 @@ const LoggedIn = (props: Props) => {
     setOpenMenu(isAuthenticated);
     setOpenHeader(isAuthenticated);
   }, [isAuthenticated])
+
+  useEffect(() => {
+    console.log(settings.wizardFinished);
+    if (!settings.wizardFinished) {
+      history.replace('/wizard');
+    }
+  }, [history, settings.wizardFinished])
 
   useEffect(() => {
     userLoggedIn$.subscribe((value: boolean) => {
@@ -129,69 +132,75 @@ const LoggedIn = (props: Props) => {
   return (
     <div className={classes.root}>
       <UpdateProvider>
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBar__closed]: !openHeader,
-          })}
-        >
-          <Toolbar
-            classes={{
-              root: classes.toolbar__root
-            }}>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justify="space-between"
-            >
-              <Grid
-                item
-                className={classes.header__buttons}
-                container
-                direction="row"
-                alignItems="center"
+        {
+          settings.wizardFinished && (
+            <>
+              <AppBar
+                position="fixed"
+                className={classNames(classes.appBar, {
+                  [classes.appBar__closed]: !openHeader,
+                })}
               >
-                <IconButton
-                  color="primary"
-                  onClick={handleDrawerToggle}
-                  edge="start"
-                  className={classNames(classes.menuButton)}
-                >
-                  {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
-                </IconButton>
-                <Typography variant="h6" noWrap color="primary">
-                  EmbyStat
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button
-                  onClick={logoutUser}
-                  variant="text"
-                  color="primary"
-                  disabled={isLoading}
-                  className={classes.logout__button}
-                >
-                  {isLoading ? (
-                    <CircularProgress
-                      size={16}
-                      className={classes.button__loading}
-                    />
-                  ) : (
-                      <span>
-                        <FontAwesomeIcon icon={faSignOutAlt} className="m-r-8" />
-                        {t("LOGIN.LOGOUT")}
-                      </span>
-                    )}
-                </Button>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <Menu open={openMenu} setOpen={setOpenMenu} />
+                <Toolbar
+                  classes={{
+                    root: classes.toolbar__root
+                  }}>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justify="space-between"
+                  >
+                    <Grid
+                      item
+                      className={classes.header__buttons}
+                      container
+                      direction="row"
+                      alignItems="center"
+                    >
+                      <IconButton
+                        color="primary"
+                        onClick={handleDrawerToggle}
+                        edge="start"
+                        className={classNames(classes.menuButton)}
+                      >
+                        {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
+                      </IconButton>
+                      <Typography variant="h6" noWrap color="primary">
+                        EmbyStat
+                  </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        onClick={logoutUser}
+                        variant="text"
+                        color="primary"
+                        disabled={isLoading}
+                        className={classes.logout__button}
+                      >
+                        {isLoading ? (
+                          <CircularProgress
+                            size={16}
+                            className={classes.button__loading}
+                          />
+                        ) : (
+                            <span>
+                              <FontAwesomeIcon icon={faSignOutAlt} className="m-r-8" />
+                              {t("LOGIN.LOGOUT")}
+                            </span>
+                          )}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Toolbar>
+              </AppBar>
+              <Menu open={openMenu} setOpen={setOpenMenu} />
+            </>
+          )
+        }
 
         <main className={classes.content}>
-          <Switch location={location}>
+          <Switch>
             <PrivateRoute path="/" exact>
               <Home />
             </PrivateRoute>
@@ -235,6 +244,9 @@ const LoggedIn = (props: Props) => {
                   : <Login />
               }
             </Route>
+            <Route path="/wizard">
+              <WizardContainer />
+            </Route>
             <Route path="*">
               <NotFound />
             </Route>
@@ -245,4 +257,4 @@ const LoggedIn = (props: Props) => {
   );
 };
 
-export default withRouter(LoggedIn);
+export default LoggedIn;

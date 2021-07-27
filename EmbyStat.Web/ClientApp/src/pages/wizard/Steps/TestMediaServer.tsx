@@ -105,7 +105,6 @@ const TestSuccessFul = forwardRef<ValidationHandleWithSave>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     async validate(): Promise<boolean> {
-      console.log("boe success");
       const { address, selectedAddress } = getValues();
 
       if (selectedAddress !== 'other') {
@@ -333,7 +332,6 @@ export const TestMediaServer = forwardRef<ValidationHandleWithSave, StepProps>((
           setCurrentStep(2);
           setLoadingLabel("WIZARD.STEPTWO");
           const serverInfo = await getServerInfo(true);
-          console.log(serverInfo);
           if (serverInfo == null) {
             setIsLoading(false);
             return;

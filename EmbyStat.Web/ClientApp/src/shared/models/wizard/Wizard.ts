@@ -24,7 +24,6 @@ export interface Wizard {
   showLibraries: string[];
   mediaServerInfo: MediaServerInfo;
   administrators: MediaServerUser[];
-  fireSync: boolean;
 }
 
 export const initialWizardState: Wizard = {
@@ -49,6 +48,5 @@ export const initialWizardState: Wizard = {
   showLibraries: [],
   serverId: "",
   mediaServerInfo: initialMediaServerInfoState,
-  administrators: [],
-  fireSync: false
+  administrators: []
 };

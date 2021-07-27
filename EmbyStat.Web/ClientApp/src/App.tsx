@@ -12,7 +12,6 @@ import { SnackbarUtilsConfigurator } from './shared/utils/SnackbarUtilsConfigura
 import LoggedIn from './container/LoggedIn';
 import { loadJobs } from './store/JobSlice';
 import SignalRConnectionProvider from './shared/providers/SignalRConnectionProvider';
-import { WizardContainer } from './pages/wizard';
 import PageLoader from './shared/components/pageLoader';
 import { SettingsContext } from './shared/context/settings';
 
@@ -55,8 +54,7 @@ function App(): ReactElement {
           >
             <SnackbarUtilsConfigurator />
             {!settings.isLoaded && <PageLoader />}
-            {settings.isLoaded && !settings.wizardFinished && <WizardContainer />}
-            {settings.isLoaded && settings.wizardFinished && <LoggedIn />}
+            {settings.isLoaded && <LoggedIn />}
           </SnackbarProvider>
         </SignalRConnectionProvider>
       </StylesProvider>

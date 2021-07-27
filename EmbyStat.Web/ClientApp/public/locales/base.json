@@ -134,7 +134,6 @@
     "USERS": "Users"
   },
   "WIZARD": {
-    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
@@ -156,8 +155,8 @@
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
     "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
-    "FINISHED": "All settings are saved and you can start using {{type}} server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Jobs page.",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Select the preferred administrator from the dropdown list."
     },

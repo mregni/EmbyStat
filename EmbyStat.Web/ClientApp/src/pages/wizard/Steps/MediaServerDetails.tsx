@@ -29,8 +29,6 @@ export const MediaServerDetails = forwardRef<ValidationHandleWithSave, StepProps
   useImperativeHandle(ref, () => ({
     async validate(): Promise<boolean> {
       await trigger();
-      console.log(errors);
-      console.log(isValid);
       return Promise.resolve(isValid);
     },
     saveChanges(): void {

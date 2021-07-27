@@ -15,8 +15,8 @@ import PageLoader from "../../shared/components/pageLoader";
 import { Intro, MediaServerDetails, SearchMediaServer, UserDetails, TestMediaServer, ConfigureLibrary, Finish } from './Steps';
 import { EsButton } from '../../shared/components/buttons';
 import { WizardContext } from './Context/WizardState';
-import { fireJob } from '../../shared/services/JobService';
 import { SettingsContext } from '../../shared/context/settings';
+import { updateSettings } from '../../shared/services/SettingsService';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,8 +58,8 @@ const Wizard = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const theme = useTheme();
-  const { wizard, finishWizard } = useContext(WizardContext);
-  const { settings } = useContext(SettingsContext);
+  const { finishWizard } = useContext(WizardContext);
+  const { settings, loadSettings } = useContext(SettingsContext);
 
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
   const { hasAdmins, isLoading } = useHasAnyAdmins();
@@ -69,10 +69,10 @@ const Wizard = () => {
 
   useEffect(() => {
     if (!isLoading && hasAdmins) {
-      //TODO: Set Wizard finished boolean here
+      updateSettings({ ...settings, wizardFinished: true });
       history.push("/login");
     }
-  }, [isLoading, hasAdmins, history]);
+  }, [isLoading, hasAdmins, history, settings]);
 
   const goToNextStep = () => {
     window.scrollTo(0, 0);
@@ -86,7 +86,6 @@ const Wizard = () => {
   const testMediaServerRef = useRef<React.ElementRef<typeof TestMediaServer>>(null);
   const configureMovieLibraryRef = useRef<React.ElementRef<typeof ConfigureLibrary>>(null);
   const configureShowLibraryRef = useRef<React.ElementRef<typeof ConfigureLibrary>>(null);
-  const finishRef = useRef<React.ElementRef<typeof Finish>>(null);
 
   const handleNext = async () => {
     setDisableControls(true);
@@ -115,13 +114,9 @@ const Wizard = () => {
     //Last step
     if (activeStep === steps - 1) {
       const result = await finishWizard(settings);
+      await loadSettings();
       if (result) {
-        if (wizard.fireSync) {
-          await fireJob("be68900b-ee1d-41ef-b12f-60ef3106052e");
-          history.push("/jobs");
-        } else {
-          history.push("/");
-        }
+        history.push("/");
         return;
       }
     }
@@ -162,7 +157,7 @@ const Wizard = () => {
                     {activeStep === 4 && <TestMediaServer ref={testMediaServerRef} />}
                     {activeStep === 5 && <ConfigureLibrary type="movie" ref={configureMovieLibraryRef} />}
                     {activeStep === 6 && <ConfigureLibrary type="show" ref={configureShowLibraryRef} />}
-                    {activeStep === 7 && <Finish ref={finishRef} />}
+                    {activeStep === 7 && <Finish />}
                   </Grid>
                   <Grid item>
                     <MobileStepper
@@ -197,7 +192,7 @@ const Wizard = () => {
                         <EsButton
                           onClick={handleBack}
                           fullWidth={false}
-                          disabled={disableControls || [0, 4].includes(activeStep)}
+                          disabled={disableControls || [0, 4, 7].includes(activeStep)}
                         >
                           <KeyboardArrowLeft />
                           {t('back')}

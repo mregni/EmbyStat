@@ -19,7 +19,6 @@ export interface WizardContextProps {
   setAdministrator: (userId: string) => void;
   setMovieLibraries: (libraries: string[]) => void;
   setShowLibraries: (libraries: string[]) => void;
-  setFireSyncOnEnd: (fire: boolean) => void;
   finishWizard: (settings: Settings) => Promise<boolean>;
   fullServerUrl: string;
   mediaServersLoading: boolean;
@@ -38,7 +37,6 @@ export const WizardContext = createContext<WizardContextProps>({
   setAdministrator: () => { },
   setMovieLibraries: () => { },
   setShowLibraries: () => { },
-  setFireSyncOnEnd: () => { },
   finishWizard: () => Promise.resolve(false),
   fullServerUrl: "",
   mediaServersLoading: true,
@@ -99,17 +97,11 @@ export const useWizardContext = (): WizardContextProps => {
   }
 
   const setMovieLibraries = (libraries: string[]): void => {
-    console.log(libraries);
     setWizard((prev: Wizard) => ({ ...prev, movieLibraries: libraries, movieLibrariesChanged: true }));
   }
 
   const setShowLibraries = (libraries: string[]): void => {
-    console.log(libraries);
     setWizard((prev: Wizard) => ({ ...prev, showLibraries: libraries, showLibrariesChanged: true }));
-  }
-
-  const setFireSyncOnEnd = (fire: boolean): void => {
-    setWizard((prev: Wizard) => ({ ...prev, fireSync: fire }));
   }
 
   const fullServerUrl = useMemo((): string => {
@@ -161,6 +153,6 @@ export const useWizardContext = (): WizardContextProps => {
     setMonitoring, setUserDetails, setMediaServerNetworkInfo,
     setMediaServerInfo, setAdministrators, setLibraries,
     setAdministrator, setMovieLibraries, setShowLibraries,
-    setFireSyncOnEnd, fullServerUrl, finishWizard, wizard
+    fullServerUrl, finishWizard, wizard
   };
 } 

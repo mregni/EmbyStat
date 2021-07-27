@@ -58,8 +58,7 @@ const initialState: Wizard = {
   showLibraries: [],
   serverId: "",
   administrators: [],
-  mediaServerInfo: initialMediaServerInfoState,
-  fireSync: false,
+  mediaServerInfo: initialMediaServerInfoState
 };
 
 const wizardSlice = createSlice({
