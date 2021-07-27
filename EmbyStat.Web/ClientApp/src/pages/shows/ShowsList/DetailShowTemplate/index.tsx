@@ -60,7 +60,7 @@ export const DetailShowTemplate = (props: Props) => {
 
   const loadShow = useCallback(async () => {
     setShow(await getShowDetails(data.id));
-  }, []);
+  }, [data.id]);
 
   useEffect(() => {
     loadShow();

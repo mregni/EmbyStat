@@ -6,7 +6,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import { useTranslation } from 'react-i18next';
 
 import { MediaServerUdpBroadcast } from '../../../../shared/models/mediaServer';
 import Emby from '../../../../shared/assets/images/emby.png';
@@ -57,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 export const ServerCard = (props: Props) => {
   const { server, onClick } = props;
   const [elevation, setElevation] = useState(7);
-  const { t } = useTranslation();
   const classes = useStyles();
 
   const openServer = () => {
