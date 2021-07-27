@@ -224,27 +224,6 @@ namespace Tests.Unit.Controllers
             jobHubHelperMock.Verify(x => x.BroadCastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Never);
         }
 
-        [Fact]
-        public void GetMediaSyncJob_Should_Return_MediaSyncJob_Job()
-        {
-            var jobOne = new Job { Id = Constants.JobIds.ShowSyncId };
-            var jobTwo = new Job { Id = Guid.NewGuid() };
-            var controller = CreateController(true, jobOne, jobTwo);
-
-            var result = controller.GetMediaSyncJob();
-            var jobObject = result as OkObjectResult;
-            jobObject.Should().NotBeNull();
-
-            // ReSharper disable once PossibleNullReferenceException
-            var job = jobObject.Value as JobViewModel;
-            job.Should().NotBeNull();
-            // ReSharper disable once PossibleNullReferenceException
-            job.Id.Should().Be(jobOne.Id);
-
-            _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Once);
-            _jobServiceMock.Verify(x => x.GetById(jobTwo.Id), Times.Never);
-        }
-
         private void DeleteJobs()
         {
             RecurringJob.RemoveIfExists(Constants.JobIds.ShowSyncId.ToString());
