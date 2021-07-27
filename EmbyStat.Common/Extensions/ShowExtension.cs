@@ -38,7 +38,7 @@ namespace EmbyStat.Common.Extensions
         public static int GetSeasonCount(this Show show, bool includeSpecial)
         {
             return includeSpecial
-                ? show.Seasons.Count()
+                ? show.Seasons.Count
                 : show.Seasons.Count(x => x.IndexNumber != 0);
         }
 

@@ -33,7 +33,7 @@ namespace EmbyStat.Clients.Base.Http
             {
                 _client.Send(requestData, requestData.Length, _to);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //swallowing failed calls
             }
