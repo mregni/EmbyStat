@@ -237,15 +237,19 @@ const Row = (props: RowProps): ReactElement => {
 
   const getSubtitleValues = (subtitles: string[]) => {
     if (subtitles && subtitles.length) {
+      const normalSubtitlesCount = subtitles.filter(x => x !== 'und' && x !== null).length;
+      const extraSubtitlesCount = subtitles.filter(x => x === 'und' || x === null).length
+        + (normalSubtitlesCount > 5 ? normalSubtitlesCount - 5 : 0);
+
       return (
         <Grid container justify="flex-end" direction="row">
-          {subtitles?.slice(0, 5).map((x) => (
+          {subtitles?.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
             <Grid item key={uuid()} className="m-r-4">
               <Flag language={x} />
             </Grid>
           ))}
-          {subtitles?.length > 5 ? (
-            <Grid item>+ {subtitles.length - 5}</Grid>
+          {extraSubtitlesCount > 0 ? (
+            <Grid item>+ {extraSubtitlesCount}</Grid>
           ) : null}
         </Grid>
       );
@@ -255,15 +259,19 @@ const Row = (props: RowProps): ReactElement => {
 
   const getAudioValues = (audioLanguages: string[]) => {
     if (audioLanguages && audioLanguages.length) {
+      const normalAudioCount = audioLanguages.filter(x => x !== 'und' && x !== null).length;
+      const extraAudioCount = audioLanguages.filter(x => x === 'und' || x === null).length
+        + (normalAudioCount > 5 ? normalAudioCount - 5 : 0);
+
       return (
         <Grid container justify="flex-end">
-          {audioLanguages.slice(0, 5).map((x) => (
+          {audioLanguages.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
             <Grid item key={uuid()} className="m-r-4">
               <Flag language={x} />
             </Grid>
           ))}
-          {audioLanguages.length > 5 ? (
-            <Grid item>+ {audioLanguages.length - 5}</Grid>
+          {extraAudioCount > 0 ? (
+            <Grid item>+ {extraAudioCount}</Grid>
           ) : null}
         </Grid>
       );
