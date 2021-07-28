@@ -19,14 +19,12 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Statistic>();
-                    return collection.Find(x => x.IsValid && x.Type == type)
-                        .GetStatisticsWithCollectionIds(collectionIds)
-                        .OrderByDescending(x => x.CalculationDateTime)
-                        .FirstOrDefault();
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Statistic>();
+                return collection.Find(x => x.IsValid && x.Type == type)
+                    .GetStatisticsWithCollectionIds(collectionIds)
+                    .OrderByDescending(x => x.CalculationDateTime)
+                    .FirstOrDefault();
             });
         }
 
@@ -34,28 +32,26 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Statistic>();
+                var statistics = collection
+                    .Find(x => x.Type == type)
+                    .GetStatisticsWithCollectionIds(collectionIds)
+                    .ToList();
+
+                statistics.ForEach(x => x.IsValid = false);
+                collection.Update(statistics);
+
+                var statistic = new Statistic
                 {
-                    var collection = database.GetCollection<Statistic>();
-                    var statistics = collection
-                        .Find(x => x.Type == type)
-                        .GetStatisticsWithCollectionIds(collectionIds)
-                        .ToList();
+                    CalculationDateTime = calculationDateTime,
+                    CollectionIds = collectionIds,
+                    Type = type,
+                    JsonResult = json,
+                    IsValid = true
+                };
 
-                    statistics.ForEach(x => x.IsValid = false);
-                    collection.Update(statistics);
-
-                    var statistic = new Statistic
-                    {
-                        CalculationDateTime = calculationDateTime,
-                        CollectionIds = collectionIds,
-                        Type = type,
-                        JsonResult = json,
-                        IsValid = true
-                    };
-
-                    collection.Insert(statistic);
-                }
+                collection.Insert(statistic);
             });
         }
 
@@ -63,11 +59,9 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Statistic>();
-                    collection.DeleteMany(x => !x.IsValid);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Statistic>();
+                collection.DeleteMany(x => !x.IsValid);
             });
         }
 
@@ -75,13 +69,11 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Statistic>();
-                    var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Movie).ToList();
-                    statistics.ForEach(x => x.IsValid = false);
-                    collection.Update(statistics);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Statistic>();
+                var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Movie).ToList();
+                statistics.ForEach(x => x.IsValid = false);
+                collection.Update(statistics);
             });
         }
 
@@ -89,13 +81,11 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Statistic>();
-                    var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Show).ToList();
-                    statistics.ForEach(x => x.IsValid = false);
-                    collection.Update(statistics);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Statistic>();
+                var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Show).ToList();
+                statistics.ForEach(x => x.IsValid = false);
+                collection.Update(statistics);
             });
         }
     }

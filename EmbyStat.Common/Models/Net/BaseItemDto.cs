@@ -7,13 +7,13 @@ namespace EmbyStat.Common.Models.Net
     public class BaseItemDto
     {
         public string Id { get; set; }
-        public DateTimeOffset? DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
         public Dictionary<ImageType, string> ImageTags { get; set; }
         public string[] BackdropImageTags { get; set; }
         public string Name { get; set; }
         public string ParentId { get; set; }
         public string Path { get; set; }
-        public DateTimeOffset? PremiereDate { get; set; }
+        public DateTime? PremiereDate { get; set; }
         public int? ProductionYear { get; set; }
         public string SortName { get; set; }
         public string Status { get; set; }

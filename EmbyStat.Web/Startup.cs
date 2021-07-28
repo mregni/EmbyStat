@@ -212,7 +212,7 @@ namespace EmbyStat.Web
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseRollbarMiddleware();
+            //app.UseRollbarMiddleware();
 
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
@@ -258,8 +258,8 @@ namespace EmbyStat.Web
             {
                 if (env.IsDevelopment())
                 {
-                    spa.Options.SourcePath = "ClientApp/build";
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.UseReactDevelopmentServer("start");
                 }
                 else
                 {

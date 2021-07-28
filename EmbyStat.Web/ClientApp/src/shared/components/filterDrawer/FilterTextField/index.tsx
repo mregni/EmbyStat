@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
+import { EsTextInput } from '../../esTextInput';
 
 interface Props {
   onValueChanged: (val0: string) => void;
@@ -12,7 +12,7 @@ interface Props {
   disableAdd: (disable: boolean) => void;
 }
 
-const FilterTextField = (props: Props) => {
+export const FilterTextField = (props: Props) => {
   const { onValueChanged, type, errors, register, disableAdd } = props;
   const { t } = useTranslation();
   const [value, setValue] = useState('');
@@ -21,28 +21,27 @@ const FilterTextField = (props: Props) => {
     disableAdd(value === '');
   }, [disableAdd, value]);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const handleChange = (value: string) => {
+    setValue(value);
     disableAdd(errors.txt);
     if (!errors.txt) {
-      onValueChanged(event.target.value);
+      onValueChanged(value);
     }
   };
 
+  const registerInput = register(type.type, { required: true });
+
   return (
     <form autoComplete="off">
-      <TextField
-        inputRef={register({ required: t('FORMERRORS.EMPTY') })}
+      <EsTextInput
+        inputRef={registerInput}
+        defaultValue={value}
         color="secondary"
-        name={type.type}
-        value={value}
-        placeholder={t(type.placeholder ?? '')}
-        error={!!errors.txt}
-        helperText={errors.txt ? errors.txt.message : ''}
+        error={errors.txt}
+        errorText={{ required: t('FORMERRORS.EMPTY') }}
+        label={t(type.placeholder ?? '')}
         onChange={handleChange}
       />
     </form>
   );
 };
-
-export default FilterTextField;

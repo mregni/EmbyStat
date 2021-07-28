@@ -22,7 +22,7 @@ namespace EmbyStat.Common.Models.Settings
         public UpdateTrain UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
         public MediaServerSettings MediaServer { get; set; }
-        public TvdbSettings Tvdb { get; set; }
+        public TmdbSettings Tmdb { get; set; }
         public bool EnableRollbarLogging { get; set; }
     }
 
@@ -62,7 +62,7 @@ namespace EmbyStat.Common.Models.Settings
         }
     }
 
-    public class TvdbSettings
+    public class TmdbSettings
     {
         public DateTime? LastUpdate { get; set; }
         public string ApiKey { get; set; }

@@ -95,7 +95,7 @@ namespace Tests.Unit.Services
             Directory.CreateDirectory(Path.Combine("config", "Logs-test3").GetLocalPath());
 
             var settings = new AppSettings { Dirs = new Dirs { Logs = "Logs-test3", Config = "config" } };
-            var userSettings = new UserSettings { MediaServer = new MediaServerSettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001 }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
+            var userSettings = new UserSettings { MediaServer = new MediaServerSettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001 }, Tmdb = new TmdbSettings { ApiKey = "0000" } };
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 
@@ -126,7 +126,7 @@ namespace Tests.Unit.Services
             Directory.CreateDirectory(Path.Combine("config", "Logs-test4").GetLocalPath());
 
             var settings = new AppSettings { Dirs = new Dirs { Logs = "Logs-test4", Config = "config" } };
-            var userSettings = new UserSettings { MediaServer = new MediaServerSettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001, ApiKey = "123456" }, Tvdb = new TvdbSettings { ApiKey = "0000" } };
+            var userSettings = new UserSettings { MediaServer = new MediaServerSettings { ServerProtocol = ConnectionProtocol.Http, ServerAddress = "192.168.1.1", ServerPort = 8001, ApiKey = "123456" }, Tmdb = new TmdbSettings { ApiKey = "0000" } };
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
 

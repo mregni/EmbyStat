@@ -24,7 +24,7 @@ jobs:
     - template: './templates/version.variables.yml'
     - template: './templates/update.version.yml'
     - template: './templates/sonarcloud.start.yml'
-  
+
     - task: PowerShell@2
       displayName: 'Update appsettings.json file'
       inputs:
@@ -32,6 +32,12 @@ jobs:
         filePath: $(paths.script)/appsettings.ps1
         arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
   
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore NuGet packages'
+      inputs:
+        command: 'restore'
+        projects: '$(webapp.project)'
+
     - task: DotNetCoreCLI@2
       displayName: 'Build web app'
       inputs:

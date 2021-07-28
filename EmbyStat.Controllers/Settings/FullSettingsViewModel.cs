@@ -8,7 +8,6 @@ namespace EmbyStat.Controllers.Settings
         public Guid? Id { get; set; }
         public string AppName { get; set; }
         public bool WizardFinished { get; set; }
-        public string Username { get; set; }
         public string Language { get; set; }
         public int ToShortMovie { get; set; }
         public bool ToShortMovieEnabled { get; set; }
@@ -19,7 +18,7 @@ namespace EmbyStat.Controllers.Settings
         public int UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
         public MediaServerSettingsViewModel MediaServer { get; set; }
-        public TvdbSettingsViewModel Tvdb { get; set; }
+        public TmdbSettingsViewModel Tmdb { get; set; }
         public string Version { get; set; }
         public bool NoUpdates { get; set; }
         public bool EnableRollbarLogging { get; set; }
@@ -41,7 +40,7 @@ namespace EmbyStat.Controllers.Settings
             public string ServerBaseUrl { get; set; }
         }
 
-        public class TvdbSettingsViewModel
+        public class TmdbSettingsViewModel
         {
             public DateTime? LastUpdate { get; set; }
             public string ApiKey { get; set; }

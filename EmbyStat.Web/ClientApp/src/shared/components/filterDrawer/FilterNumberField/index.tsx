@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
+import { EsTextInput } from '../../esTextInput';
 
 interface Props {
   onValueChanged: (value: string) => void;
@@ -22,26 +22,26 @@ const FilterNumberField = (props: Props) => {
     disableAdd(value === '');
   }, [disableAdd, value]);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const handleChange = (value: string) => {
+    setValue(value);
     disableAdd(errors.number);
     if (!errors.number) {
-      onValueChanged(event.target.value);
+      onValueChanged(value);
     }
   };
 
+  const registerInput = register(type.type, { required: true });
+
   return (
-    <TextField
-      inputRef={register({ required: t('FORMERRORS.EMPTY') })}
+    <EsTextInput
+      inputRef={registerInput}
+      defaultValue={value}
       color="secondary"
       type="number"
-      name={type.type}
-      value={value}
-      error={!!errors.number}
-      helperText={errors.number ? errors.number.message : ''}
-      fullWidth
+      error={errors.number}
       onChange={handleChange}
-      InputProps={{
+      errorText={{ required: t('FORMERRORS.EMPTY') }}
+      inputProps={{
         endAdornment: (
           <InputAdornment position="end">{t(type.unit ?? '')}</InputAdornment>
         ),

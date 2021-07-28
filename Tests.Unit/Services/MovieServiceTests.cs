@@ -262,7 +262,7 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Movies.OldestPremiered);
             card.Unit.Should().Be("COMMON.DATE");
-            card.Values[0].Value.Should().Be(_movieOne.PremiereDate?.ToString("O"));
+            card.Values[0].Value.Should().Be(_movieOne.PremiereDate?.ToString("s"));
             card.Values[0].Label.Should().Be(_movieOne.Name);
             card.UnitNeedsTranslation.Should().Be(true);
             card.ValueType.Should().Be(ValueTypeEnum.Date);
@@ -280,7 +280,7 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Movies.NewestPremiered);
             card.Unit.Should().Be("COMMON.DATE");
-            card.Values[0].Value.Should().Be(_movieThree.PremiereDate?.ToString("O"));
+            card.Values[0].Value.Should().Be(_movieThree.PremiereDate?.ToString("s"));
             card.Values[0].Label.Should().Be(_movieThree.Name);
             card.UnitNeedsTranslation.Should().Be(true);
             card.ValueType.Should().Be(ValueTypeEnum.Date);
@@ -334,7 +334,7 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Movies.LatestAdded);
             card.Unit.Should().Be("COMMON.DATE");
-            card.Values[0].Value.Should().Be(_movieOne.DateCreated?.ToString("O"));
+            card.Values[0].Value.Should().Be(_movieOne.DateCreated?.ToString("s"));
             card.Values[0].Label.Should().Be(_movieOne.Name);
             card.UnitNeedsTranslation.Should().Be(true);
             card.ValueType.Should().Be(ValueTypeEnum.Date);

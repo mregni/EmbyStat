@@ -10,22 +10,24 @@ namespace EmbyStat.Jobs
     {
         private readonly IDatabaseCleanupJob _databaseCleanupJob;
         private readonly IPingEmbyJob _pingEmbyJob;
-        private readonly IMediaSyncJob _mediaSyncJob;
+        private readonly IShowSyncJob _showSyncJob;
         private readonly ISmallSyncJob _smallSyncJob;
         private readonly ICheckUpdateJob _checkUpdateJob;
         private readonly IJobService _jobService;
+        private readonly IMovieSyncJob _movieSyncJob;
         private readonly IRecurringJobManager _recurringJobManager;
 
-        public JobInitializer(IDatabaseCleanupJob databaseCleanupJob, IPingEmbyJob pingEmbyJob, IMediaSyncJob mediaSyncJob,
-            ISmallSyncJob smallSyncJob, ICheckUpdateJob checkUpdateJob, IJobService jobService, IRecurringJobManager recurringJobManager)
+        public JobInitializer(IDatabaseCleanupJob databaseCleanupJob, IPingEmbyJob pingEmbyJob, IShowSyncJob showSyncJob,
+            ISmallSyncJob smallSyncJob, ICheckUpdateJob checkUpdateJob, IJobService jobService, IRecurringJobManager recurringJobManager, IMovieSyncJob movieSyncJob)
         {
             _databaseCleanupJob = databaseCleanupJob;
             _pingEmbyJob = pingEmbyJob;
-            _mediaSyncJob = mediaSyncJob;
+            _showSyncJob = showSyncJob;
             _smallSyncJob = smallSyncJob;
             _checkUpdateJob = checkUpdateJob;
             _jobService = jobService;
             _recurringJobManager = recurringJobManager;
+            _movieSyncJob = movieSyncJob;
         }
 
         public void Setup(bool disableUpdates)
@@ -39,9 +41,13 @@ namespace EmbyStat.Jobs
 
         public void UpdateTrigger(Guid id, string trigger, bool disableUpdates)
         {
-            if (id == Constants.JobIds.MediaSyncId)
+            if (id == Constants.JobIds.ShowSyncId)
             {
-                _recurringJobManager.AddOrUpdate(id.ToString(), () => _mediaSyncJob.Execute(), trigger);
+                _recurringJobManager.AddOrUpdate(id.ToString(), () => _showSyncJob.Execute(), trigger);
+            }
+            else if (id == Constants.JobIds.MovieSyncId)
+            {
+                _recurringJobManager.AddOrUpdate(id.ToString(), () => _movieSyncJob.Execute(), trigger);
             }
             else if (id == Constants.JobIds.CheckUpdateId && !disableUpdates)
             {

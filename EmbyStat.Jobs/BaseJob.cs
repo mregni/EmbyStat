@@ -24,6 +24,7 @@ namespace EmbyStat.Jobs
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
         protected bool EnableUiLogging { get; set; }
+        private double Progress { get; set; }
 
         protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, bool enableUiLogging, Type type, string prefix)
         {
@@ -33,6 +34,7 @@ namespace EmbyStat.Jobs
             SettingsService = settingsService;
             EnableUiLogging = enableUiLogging;
             Logger = LogFactory.CreateLoggerForType(type, prefix);
+            Progress = 0;
         }
 
         protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, Type type, string prefix)
@@ -74,7 +76,7 @@ namespace EmbyStat.Jobs
                 throw new WizardNotFinishedException("Job not running because wizard is not finished");
             }
 
-            await SendLogProgressToFront(0);
+            await BroadcastProgress(0);
             await LogInformation("Starting job");
 
             State = JobState.Running;
@@ -89,13 +91,12 @@ namespace EmbyStat.Jobs
             var now = DateTime.UtcNow;
             State = JobState.Completed;
             _jobRepository.EndJob(Id, now, State);
-            await SendLogProgressToFront(100, now);
+            await BroadcastProgress(100, now);
 
             var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
             await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
                 ? "Job finished after 1 minute."
                 : $"Job finished after {Math.Ceiling(runTime)} minutes.");
-            await LogProgress(100);
         }
 
         private async Task FailExecution()
@@ -112,12 +113,19 @@ namespace EmbyStat.Jobs
             {
                 await LogError(message);
             }
-            await SendLogProgressToFront(100, now);
+            await BroadcastProgress(100, now);
         }
 
-        public async Task LogProgress(double progress)
+        public async Task LogProgressIncrement(double increment)
         {
-            await SendLogProgressToFront(progress);
+            Progress += increment;
+            await BroadcastProgress(Math.Floor(Progress * 10) / 10);
+        }
+
+        public async Task LogProgress(double increment)
+        {
+            Progress = increment;
+            await BroadcastProgress(Progress);
         }
 
         public async Task LogInformation(string message)
@@ -146,7 +154,7 @@ namespace EmbyStat.Jobs
             await HubHelper.BroadCastJobLog(JobPrefix, message, type);
         }
 
-        private async Task SendLogProgressToFront(double progress, DateTime? EndTimeUtc = null)
+        private async Task BroadcastProgress(double progress, DateTime? endTimeUtc = null)
         {
             var info = new JobProgress
             {
@@ -154,7 +162,7 @@ namespace EmbyStat.Jobs
                 CurrentProgressPercentage = progress,
                 State = State,
                 StartTimeUtc = StartTimeUtc ?? DateTime.UtcNow,
-                EndTimeUtc = EndTimeUtc,
+                EndTimeUtc = endTimeUtc,
                 Title = Title
             };
             await HubHelper.BroadcastJobProgress(info);

@@ -11,28 +11,23 @@ import {
 
 const domain = 'mediaserver/';
 
-export const searchMediaServers = async (): Promise<
-  MediaServerUdpBroadcast[]
-> => {
-  const embySearch = axiosInstance.get<MediaServerUdpBroadcast>(
-    `${domain}server/search?serverType=0`
-  );
-  const jellyfinSearch = axiosInstance.get<MediaServerUdpBroadcast>(
-    `${domain}server/search?serverType=1`
-  );
+export const searchMediaServers = async (): Promise<MediaServerUdpBroadcast[]> => {
+  const embySearch = axiosInstance.get<MediaServerUdpBroadcast[]>(`${domain}server/search?serverType=0`);
+  const jellyfinSearch = axiosInstance.get<MediaServerUdpBroadcast[]>(`${domain}server/search?serverType=1`);
 
-  return axios.all([embySearch, jellyfinSearch]).then(
-    axios.spread((...responses) => {
-      const servers: MediaServerUdpBroadcast[] = [];
-      responses.forEach((response) => {
-        if (response.status === 200) {
-          servers.push(response.data);
-        }
-      });
+  return axios.all([embySearch, jellyfinSearch])
+    .then(
+      axios.spread((...responses) => {
+        let servers: MediaServerUdpBroadcast[] = [];
+        responses.forEach((response) => {
+          if (response.status === 200) {
+            servers = [...servers, ...response.data];
+          }
+        });
 
-      return servers;
-    })
-  );
+        return servers;
+      })
+    );
 };
 
 export const testApiKey = (login: MediaServerLogin): Promise<boolean | null> => {

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Zoom from '@material-ui/core/Zoom';
@@ -8,12 +7,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { getServerInfo, getPlugins } from '../../shared/services/MediaServerService';
 import { MediaServerInfo, MediaServerPlugin } from '../../shared/models/mediaServer';
 import MediaServerHeader from '../../shared/components/mediaServerHeader';
-import { RootState } from '../../store/RootReducer';
 import construction from '../../shared/assets/images/under-construction.webp';
 import getFullMediaServerUrl from "../../shared/utils/MediaServerUrlUtil";
 import fallbackImg from "../../shared/assets/images/no-image.png";
+import { SettingsContext } from '../../shared/context/settings';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   image: {
     borderTopRightRadius: 4,
     borderTopLeftRadius: 4,
@@ -25,14 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props {
-
-}
-
-const MediaServer = (props: Props) => {
+const MediaServer = () => {
   const [serverInfo, setServerInfo] = useState<MediaServerInfo | null>(null);
   const [plugins, setPlugins] = useState<MediaServerPlugin[] | null>(null);
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const classes = useStyles();
 
   useEffect(() => {

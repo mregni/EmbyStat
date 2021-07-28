@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -48,7 +49,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, libraryIds);
 
             MovieStatistics statistics;
-            if (StatisticsAreValid(statistic, libraryIds))
+            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.MovieSyncId))
             {
                 statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
 
@@ -93,12 +94,11 @@ namespace EmbyStat.Services
         {
             return _movieRepository.Any();
         }
-
-        public Page<MovieColumn> GetMoviePage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public Page<MovieRow> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
             var list = _movieRepository
-                .GetMoviePage(skip, take, sort, filters, libraryIds)
-                .Select(x => new MovieColumn
+                .GetMoviePage(skip, take, sortField, sortOrder, filters, libraryIds)
+                .Select(x => new MovieRow
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -128,7 +128,7 @@ namespace EmbyStat.Services
                     VideoRange = x.VideoStreams.FirstOrDefault()?.VideoRange
                 });
 
-            var page = new Page<MovieColumn> { Data = list };
+            var page = new Page<MovieRow> { Data = list };
             if (requireTotalCount)
             {
                 page.TotalCount = _movieRepository.GetMediaCount(filters, libraryIds);
@@ -211,16 +211,29 @@ namespace EmbyStat.Services
 
         private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
-            return new List<TopCard>
-            {
-                HighestRatedMovie(libraryIds),
-                LowestRatedMovie(libraryIds),
-                OldestPremieredMovie(libraryIds),
-                NewestPremieredMovie(libraryIds),
-                ShortestMovie(libraryIds),
-                LongestMovie(libraryIds),
-                LatestAddedMovie(libraryIds)
-            };
+            var list = new List<TopCard>();
+            var highestRatedMovie = HighestRatedMovie(libraryIds);
+            list.AddIfNotNull(highestRatedMovie);
+
+            var lowestRatedMovie = LowestRatedMovie(libraryIds);
+            list.AddIfNotNull(lowestRatedMovie);
+
+            var oldestPremieredMovie = OldestPremieredMovie(libraryIds);
+            list.AddIfNotNull(oldestPremieredMovie);
+
+            var newestPremieredMovie = NewestPremieredMovie(libraryIds);
+            list.AddIfNotNull(newestPremieredMovie);
+
+            var shortestMovie = ShortestMovie(libraryIds);
+            list.AddIfNotNull(shortestMovie);
+
+            var longestMovie = LongestMovie(libraryIds);
+            list.AddIfNotNull(longestMovie);
+
+            var latestAddedMovie = LatestAddedMovie(libraryIds);
+            list.AddIfNotNull(latestAddedMovie);
+
+            return list;
         }
 
         private TopCard HighestRatedMovie(IReadOnlyList<string> libraryIds)
@@ -338,12 +351,25 @@ namespace EmbyStat.Services
                     TotalTypeCount(libraryIds, PersonType.Writer, Constants.Common.TotalWriters),
                 };
 
-                returnObj.GlobalCards = new List<TopCard>
+                returnObj.GlobalCards = new List<TopCard>();
+
+                var mostFeaturedActor = GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor);
+                if (mostFeaturedActor != null)
                 {
-                    GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor),
-                    GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector),
-                    GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter),
-                };
+                    returnObj.GlobalCards.Add(mostFeaturedActor);
+                }
+
+                var mostFeaturedDirector = GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector);
+                if (mostFeaturedDirector != null)
+                {
+                    returnObj.GlobalCards.Add(mostFeaturedDirector);
+                }
+
+                var mostFeaturedWriter = GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter);
+                if (mostFeaturedWriter != null)
+                {
+                    returnObj.GlobalCards.Add(mostFeaturedWriter);
+                }
 
                 returnObj.MostFeaturedActorsPerGenreCards = GetMostFeaturedActorsPerGenreAsync(libraryIds);
 
@@ -374,6 +400,7 @@ namespace EmbyStat.Services
             var people = _movieRepository
                     .GetMostFeaturedPersons(libraryIds, type, 5)
                     .Select(name => PersonService.GetPersonByNameForMovies(name))
+                    .Where(x => x != null)
                     .ToArray();
 
             return people.ConvertToTopCard(title, string.Empty, "MovieCount");
@@ -398,14 +425,15 @@ namespace EmbyStat.Services
                     .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
                     .OrderByDescending(x => x.Count)
                     .Select(x => x.Name)
-                    .Take(count)
                     .Select(name => PersonService.GetPersonByNameForMovies(name, genre))
+                    .Where(x => x != null)
+                    .Take(count * 4)
                     .ToArray();
 
                 list.Add(people.ConvertToTopCard(genre, string.Empty, valueSelector));
             }
 
-            return list;
+            return list.Where(x => x != null).ToList();
         }
 
         #endregion
