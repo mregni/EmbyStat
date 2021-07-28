@@ -16,7 +16,7 @@
     "GB": "GB",
     "AND": "en",
     "PIXELS": "px",
-    "TITLE": "titel",
+    "TITLE": "Titel",
     "ADDEDON": "toegevoegd op",
     "QUALITY": "kwaliteit",
     "NEVER": "nooit",
@@ -45,9 +45,12 @@
     "MOSTFEATUREDACTOR": "Meest Uitgelichte Acteur",
     "MOSTFEATUREDDIRECTOR": "Meest Uitgelichte directeur",
     "MOSTFEATUREDWRITER": "Meest Uitgelichte schrijver",
+    "CURRENT": "Current",
+    "TOTALRUNTIME": "Total runtime",
     "LIBRARIES": "Bibliotheken",
     "PREMIEREDATE": "première datum",
-    "STATUS": "status",
+    "STATUS": "Status",
+    "EPISODES": "Episodes",
     "PERCENTAGE": "percentage",
     "COLLECTED": "verzameld",
     "UPDATES": "Updates",
@@ -65,8 +68,10 @@
     "SELECTVALUE": "Selecteer waarde",
     "ADD": "Toevoegen",
     "DATE": "datum",
+    "OTHER": "other",
     "FPS": "fps",
     "LINKS": "Links",
+    "PROTOCOL": "Protocol",
     "AUDIO": "Audio",
     "SUBTITLES": "Ondertitels",
     "RATING": "Beoordeling",
@@ -87,7 +92,8 @@
     "SIZEINMB": "Grootte in MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
-    "VIDEORANGE": "Videobereik"
+    "VIDEORANGE": "Videobereik",
+    "CONTAINER": "Container"
   },
   "LOGS": {
     "ANONYMISED": "Geanonimiseerd",
@@ -128,7 +134,6 @@
     "USERS": "Gebruikers"
   },
   "WIZARD": {
-    "RUNSYNC": "Media-synchronisatie uitvoeren na wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker",
     "SERVERCONFIGURATION": "Server configuratie",
@@ -141,23 +146,25 @@
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Laatste",
     "SEARCHSERVERS": "Servers zoeken",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "Open {{type}} API-sleutelpagina",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API-sleutel is geldig",
     "SELECTLIBRARIES": "Selecteer alle bibliotheken die u wilt opnemen in de berekeningen met {{type}} statistieken. Alle {{type}} bibliotheken zijn standaard geselecteerd. Als je wilt, kun je dit later op de instellingenpagina wijzigen.",
-    "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
-    "FINISHEXPLANATION": "Het beste is om eerst een mediasynchronisatietaak te starten. EmbyStat begint met het downloaden van alle gegevens van uw Emby-server. Houd er rekening mee dat deze taak lang kan duren, afhankelijk van uw collectiegrootte. Als u nu geen synchronisatie taak wilt starten, klikt u op Voltooien. U kunt het later handmatig starten door naar de pagina Taken te navigeren.",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
     "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
-    "ADDRESSUSED": "Adres: <i>{{address}}</i>",
-    "APIKEYUSED": "API-sleutel: <i>{{api}}</i>",
-    "LANWANCHOISE": "Kies het juiste adres voor uw verbinding met {{type}} server."
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYUSED": "API key: {{api}}",
+    "LANWANCHOISE": "Kies het juiste adres voor uw verbinding met {{type}} server.",
+    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
   "MOVIES": {
     "TOTALMOVIES": "Totale Films",
@@ -178,8 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "Totale Series",
-    "TOTALEPISODES": "Totaal afleveringen",
-    "TOTALMISSINGEPISODES": "Totaal ontbrekende afleveringen",
+    "TOTALEPISODES": "Total episodes",
+    "TOTALMISSINGEPISODES": "Total missing episodes",
+    "TOTALSPECIALEPISODES": "Total special episodes",
     "TOTALPLAYLENGTH": "Totale Kijk Duur",
     "HIGHESTRATEDSHOW": "Hoogste Score",
     "LOWESTRATEDSHOW": "Laagste Score",
@@ -197,17 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "Instellingen opgeslagen",
+    "SAVEFAILED": "Saving settings failed, check log files for more info.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
-    "TVDB": {
-      "TITLE": "Tvdb-aansluiting",
-      "APIKEYLABEL": "TheTVDB API-sleutel",
-      "APIKEYWARNING": "Als u wilt, kunt u EmbyStat hier voorzien van uw eigen TheTVDB API-sleutel. Zorg ervoor dat u een werkende API-sleutel opgeeft! Als de sleutel onjuist is, mislukt de synchronisatietaak.",
-      "NOAPIKEY": "API-sleutel mag niet leeg zijn",
-      "SAVING": "TVDB-sleutel opslaan"
+    "TMDB": {
+      "TITLE": "TMDb connection",
+      "APIKEYLABEL": "TMDb API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "NOAPIKEY": "API key can not be empty",
+      "SAVING": "Saving TMDb key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -340,8 +349,10 @@
       "SYSTEM-SYNCDESCRIPTION": "Voer een kleine synchronisatie uit met de Emby-server. Dit is alleen een snelle en kleine systeemupdate.",
       "SYSTEM-SYNC": "Synchroniseer {{type}} info",
       "SYSTEM-SYNCSTART": "Start kleine synchronisatie",
-      "MEDIA-SYNCDESCRIPTION": "Voer een incrementele synchronisatie uit voor uw filmverzameling. Dit kan even duren om te rennen!",
-      "MEDIA-SYNC": "Media synchronisatie",
+      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNC": "Show synchronization",
+      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MOVIE-SYNC": "Movie synchronization",
       "DATABASE-CLEANUP": "Database opschonen",
       "DATABASE-CLEANUPDESCRIPTION": "Database opschonen met onnodige gegevens.",
       "UPDATE-CHECKER": "Controleer op nieuwe updates",
@@ -437,5 +448,10 @@
       "FRAMERATE": "Framerate",
       "CONTAINER": "Container"
     }
+  },
+  "PAGINATION": {
+    "NEXTPAGE": "Next page",
+    "PREVIOUSPAGE": "Previous page",
+    "ROWSPERPAGE": "Rows per page"
   }
 }
