@@ -16,7 +16,7 @@
     "GB": "GB",
     "AND": "and",
     "PIXELS": "px",
-    "TITLE": "title",
+    "TITLE": "Title",
     "ADDEDON": "added on",
     "QUALITY": "quality",
     "NEVER": "never",
@@ -45,9 +45,12 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
+    "CURRENT": "Current",
+    "TOTALRUNTIME": "Total runtime",
     "LIBRARIES": "Libraries",
     "PREMIEREDATE": "premiere date",
-    "STATUS": "status",
+    "STATUS": "Status",
+    "EPISODES": "Episodes",
     "PERCENTAGE": "percentage",
     "COLLECTED": "collected",
     "UPDATES": "Updates",
@@ -65,8 +68,10 @@
     "SELECTVALUE": "Select value",
     "ADD": "Add",
     "DATE": "date",
+    "OTHER": "other",
     "FPS": "fps",
     "LINKS": "Links",
+    "PROTOCOL": "Protocol",
     "AUDIO": "Audio",
     "SUBTITLES": "Subtitles",
     "RATING": "Rating",
@@ -87,7 +92,8 @@
     "SIZEINMB": "Size in MB",
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
-    "VIDEORANGE": "Video range"
+    "VIDEORANGE": "Video range",
+    "CONTAINER": "Container"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",
@@ -128,7 +134,6 @@
     "USERS": "Users"
   },
   "WIZARD": {
-    "RUNSYNC": "Run media sync after wizard",
     "WIZARDLABEL": "Wizard",
     "USERDETAILTEXT": "Provide a username and password for your admin user",
     "SERVERCONFIGURATION": "Server configuration",
@@ -141,23 +146,25 @@
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Final",
     "SEARCHSERVERS": "Searching servers",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "Open {{type}} API key page",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
     "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page.",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
     "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: <i>{{address}}</i>",
-    "APIKEYUSED": "API key: <i>{{api}}</i>",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server."
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYUSED": "API key: {{api}}",
+    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server.",
+    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total Movies",
@@ -178,8 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "Total Shows",
-    "TOTALEPISODES": "Total Episodes",
-    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALEPISODES": "Total episodes",
+    "TOTALMISSINGEPISODES": "Total missing episodes",
+    "TOTALSPECIALEPISODES": "Total special episodes",
     "TOTALPLAYLENGTH": "Total Watchable Time",
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
@@ -197,17 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "Settings saved",
+    "SAVEFAILED": "Saving settings failed, check log files for more info.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
-    "TVDB": {
-      "TITLE": "Tvdb connection",
-      "APIKEYLABEL": "TheTVDB API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TheTVDB API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+    "TMDB": {
+      "TITLE": "TMDb connection",
+      "APIKEYLABEL": "TMDb API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TVDB key"
+      "SAVING": "Saving TMDb key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -340,8 +349,10 @@
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SYSTEM-SYNC": "Sync {{type}} info",
       "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
+      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNC": "Show synchronization",
+      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MOVIE-SYNC": "Movie synchronization",
       "DATABASE-CLEANUP": "Database cleanup",
       "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
       "UPDATE-CHECKER": "Check for new updates",
@@ -437,5 +448,10 @@
       "FRAMERATE": "Frame rate",
       "CONTAINER": "Container"
     }
+  },
+  "PAGINATION": {
+    "NEXTPAGE": "Next page",
+    "PREVIOUSPAGE": "Previous page",
+    "ROWSPERPAGE": "Rows per page"
   }
 }
