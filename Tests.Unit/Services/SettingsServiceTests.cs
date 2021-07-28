@@ -19,7 +19,7 @@ namespace Tests.Unit.Services
         {
             DeviceId = Guid.NewGuid();
 
-            var rollbar = new EmbyStat.Common.Models.Settings.Rollbar()
+            var rollbar = new EmbyStat.Common.Models.Settings.Rollbar
             {
                 AccessToken = "aaaaaaa",
                 Environment = "dev"
@@ -82,6 +82,28 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
+        public async void SaveUserSettings_Should_Reset_Base_Url()
+        {
+            SetupSettingsFile();
+            var settings = new UserSettings
+            {
+                MediaServer = new MediaServerSettings
+                {
+                    ServerBaseUrl = "/"
+                }
+            };
+
+            _subject.LoadUserSettingsFromFile();
+            await _subject.SaveUserSettingsAsync(settings);
+
+            var settingsFilePath = Path.Combine("config", "usersettings.json");
+            File.Exists(settingsFilePath).Should().BeTrue();
+            var loadedSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(settingsFilePath));
+
+            loadedSettings.MediaServer.ServerBaseUrl.Should().BeEmpty();
+        }
+
+        [Fact]
         public void GetUserSettings()
         {
             SetupSettingsFile();
@@ -92,6 +114,16 @@ namespace Tests.Unit.Services
             settings.AutoUpdate.Should().BeFalse();
             settings.KeepLogsCount.Should().Be(10);
             settings.Language.Should().Be("en-US");
+        }
+
+        [Fact]
+        public void GetAppSettings_Should_Return_App_Settings()
+        {
+            var settings = _subject.GetAppSettings();
+            settings.Should().NotBeNull();
+
+            settings.Version.Should().Be("0.0.0.0");
+            settings.Dirs.Config.Should().Be("config");
         }
 
         [Fact]

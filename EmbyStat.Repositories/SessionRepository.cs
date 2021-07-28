@@ -18,11 +18,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Session>();
-                    return collection.Exists(x => x.Id == sessionId);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Session>();
+                return collection.Exists(x => x.Id == sessionId);
             });
         }
 
@@ -30,11 +28,9 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Session>();
-                    collection.Update(session);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Session>();
+                collection.Update(session);
             });
         }
 
@@ -42,11 +38,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Session>();
-                    return collection.Include(x => x.Plays).FindById(sessionId);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Session>();
+                return collection.Include(x => x.Plays).FindById(sessionId);
             });
         }
 
@@ -54,11 +48,9 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Session>();
-                    collection.Insert(session);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Session>();
+                collection.Insert(session);
             });
         }
 
@@ -66,11 +58,9 @@ namespace EmbyStat.Repositories
         {
             ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Play>();
-                    collection.InsertBulk(sessionPlays);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Play>();
+                collection.InsertBulk(sessionPlays);
             });
         }
 
@@ -78,13 +68,11 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Play>();
-                    return collection.Find(x => x.UserId == userId && x.Type == type)
-                        .DistinctBy(x => x.MediaId)
-                        .Select(x => x.MediaId);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Play>();
+                return collection.Find(x => x.UserId == userId && x.Type == type)
+                    .DistinctBy(x => x.MediaId)
+                    .Select(x => x.MediaId);
             });
         }
 
@@ -92,11 +80,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Session>();
-                    return collection.Find(x => x.UserId == userId);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Session>();
+                return collection.Find(x => x.UserId == userId);
             });
         }
 
@@ -104,11 +90,9 @@ namespace EmbyStat.Repositories
         {
             return ExecuteQuery(() =>
             {
-                using (var database = Context.CreateDatabaseContext())
-                {
-                    var collection = database.GetCollection<Play>();
-                    return collection.Count(x => x.UserId == userId);
-                }
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Play>();
+                return collection.Count(x => x.UserId == userId);
             });
         }
     }

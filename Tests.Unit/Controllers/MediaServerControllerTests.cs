@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
@@ -49,7 +50,7 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
-        public void SearchEmby_Should_Return_Emby_Instance()
+        public async Task SearchEmby_Should_Return_Emby_Instance()
         {
             var mediaServer = new MediaServerUdpBroadcast
             {
@@ -61,18 +62,21 @@ namespace Tests.Unit.Controllers
             };
 
             var mediaServerServiceMock = new Mock<IMediaServerService>();
-            mediaServerServiceMock.Setup(x => x.SearchMediaServer(It.IsAny<ServerType>())).Returns(mediaServer);
+            mediaServerServiceMock
+                .Setup(x => x.SearchMediaServer(It.IsAny<ServerType>()))
+                .ReturnsAsync(new[] { mediaServer });
             var controller = new MediaServerController(mediaServerServiceMock.Object, _mapper);
-            var result = controller.SearchMediaServer(0);
+            var result = await controller.SearchMediaServer(0);
 
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var mediaServerUdpBroadcast = resultObject.Should().BeOfType<UdpBroadcastViewModel>().Subject;
+            var mediaServerUdpBroadcasts = resultObject.Should().BeOfType<List<UdpBroadcastViewModel>>().Subject;
 
-            mediaServerUdpBroadcast.Address.Should().Be(mediaServer.Address);
-            mediaServerUdpBroadcast.Port.Should().Be(mediaServer.Port);
-            mediaServerUdpBroadcast.Protocol.Should().Be(mediaServer.Protocol);
-            mediaServerUdpBroadcast.Id.Should().Be(mediaServer.Id);
-            mediaServerUdpBroadcast.Name.Should().Be(mediaServer.Name);
+            mediaServerUdpBroadcasts.Count.Should().Be(1);
+            mediaServerUdpBroadcasts[0].Address.Should().Be(mediaServer.Address);
+            mediaServerUdpBroadcasts[0].Port.Should().Be(mediaServer.Port);
+            mediaServerUdpBroadcasts[0].Protocol.Should().Be(mediaServer.Protocol);
+            mediaServerUdpBroadcasts[0].Id.Should().Be(mediaServer.Id);
+            mediaServerUdpBroadcasts[0].Name.Should().Be(mediaServer.Name);
 
             mediaServerServiceMock.Verify(x => x.SearchMediaServer(ServerType.Emby), Times.Once);
             controller.Dispose();

@@ -1,25 +1,35 @@
-import React, { ReactElement, ReactNode, useState, useEffect } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../../store/RootReducer';
 import { loadStatistics } from '../../../store/MovieSlice';
 import { isTypePresent } from '../../../shared/services/MovieService';
 import StatisticsLoader from '../../../shared/components/statisticsLoader';
-import { getMediaSyncJob } from '../../../shared/services/JobService';
+import { getJobById } from '../../../shared/services/JobService';
+import { movieJobId } from '../../../shared/utils';
 
 interface Props {
-  Component: ReactNode;
+  Component: Function;
 }
 
-const MoviesLoader = (props: Props): ReactElement => {
+export const MoviesLoader = (props: Props): ReactElement => {
   const { Component } = props;
   const statistics = useSelector((state: RootState) => state.movies);
   const [typePresent, setTypePresent] = useState(false);
   const [typePresentLoading, setTypePresentLoading] = useState(true);
-  const [runningSync, setRunningSync] = useState(false);
+  const [runningSync, setRunningSync] = useState(true);
   const [runningSyncLoading, setRunningSyncLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(!statistics.isLoaded);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!runningSync && !statistics.isLoaded) {
+      console.log(runningSync);
+      dispatch(loadStatistics());
+    }
+
+    setIsLoading(!statistics.isLoaded);
+  }, [dispatch, runningSync, statistics.isLoaded])
 
   useEffect(() => {
     const checkType = async () => {
@@ -29,24 +39,17 @@ const MoviesLoader = (props: Props): ReactElement => {
     }
 
     const checkRunningSync = async () => {
-      const result = await getMediaSyncJob();
+      const result = await getJobById(movieJobId);
       setRunningSync(result.state === 1);
       setRunningSyncLoading(false);
     }
 
-    if (!statistics.isLoaded) {
-      dispatch(loadStatistics());
-    }
-
     checkRunningSync();
     checkType();
-
-    setIsLoading(!statistics.isLoaded);
   }, [statistics.isLoaded, dispatch]);
 
   return (
     <StatisticsLoader
-      Component={Component}
       noMediaTypeTitle="DIALOGS.NOMOVIETYPEFOUND.TITLE"
       noMediaTypeBody="DIALOGS.NOMOVIETYPEFOUND.BODY"
       typePresent={typePresent}
@@ -54,10 +57,10 @@ const MoviesLoader = (props: Props): ReactElement => {
       runningSync={runningSync}
       runningSyncLoading={runningSyncLoading}
       isLoading={isLoading}
-      statistics={statistics.statistics}
       label="MOVIES.LOADER"
-    />
+      jobId={movieJobId}
+    >
+      <Component statistics={statistics.statistics} />
+    </StatisticsLoader>
   );
 };
-
-export default MoviesLoader;

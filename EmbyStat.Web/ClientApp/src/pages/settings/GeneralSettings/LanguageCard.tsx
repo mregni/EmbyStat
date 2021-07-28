@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
@@ -14,14 +14,15 @@ import { Language } from '../../../shared/models/language';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import SettingsCard from '../SettingsCard';
+import { SettingsContext } from '../../../shared/context/settings';
 
 interface Props {
   delay: number
 }
 
-const LanguageCard = (props: Props) => {
+export const LanguageCard = (props: Props) => {
   const { delay } = props;
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const [language, setLanguage] = useState(i18next.language);
   const languages = useSelector((state: RootState) => state.languages);
   const { t } = useTranslation();
@@ -76,5 +77,3 @@ const LanguageCard = (props: Props) => {
     </SettingsCard>
   )
 }
-
-export default LanguageCard

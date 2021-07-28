@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { animated } from 'react-spring';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,6 +9,7 @@ import { useForm } from 'react-hook-form';
 
 import { resetPassword } from '../../shared/services/AccountService';
 import SnackbarUtils from '../../shared/utils/SnackbarUtilsConfigurator';
+import { EsTextInput } from '../../shared/components/esTextInput';
 
 const useStyles = makeStyles((theme) => ({
   card__content: {
@@ -43,22 +43,21 @@ interface Props {
   openLoginForm: () => void;
 }
 
-const PasswordRecoveryForm = (props: Props) => {
+export const RecoverPasswordForm = (props: Props) => {
   const { style, openLoginForm } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState<string>('');
 
-  const usernameChanged = (event) => {
-    event.persist();
-    setUsername(event.target.value as string);
+  const usernameChanged = (value: string) => {
+    setUsername(value);
   };
 
-  const { register } = useForm({
+  const { register, getValues } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      username: undefined,
+      username: '',
     },
   });
 
@@ -78,19 +77,19 @@ const PasswordRecoveryForm = (props: Props) => {
       })
   }
 
+  const usernameRegister = register('username');
+
   return (
     <animated.div style={{ ...style }}>
       <Grid container direction="column" justify="flex-end" spacing={1} className={classes.card__content}>
         <form>
           <Grid item>
-            <TextField
-              inputRef={register({ required: true })}
+            <EsTextInput
+              inputRef={usernameRegister}
               label={t('SETTINGS.ACCOUNT.USERNAME')}
               onChange={usernameChanged}
-              value={username}
-              color="primary"
-              size="small"
-              name="username" />
+              defaultValue={getValues('username')}
+            />
           </Grid>
           <Grid item xs={12}>
             <Button
@@ -121,5 +120,3 @@ const PasswordRecoveryForm = (props: Props) => {
     </animated.div>
   )
 }
-
-export default PasswordRecoveryForm;

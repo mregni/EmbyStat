@@ -1,24 +1,28 @@
-﻿using EmbyStat.Clients.Base.Http;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using RestSharp;
 
 namespace EmbyStat.Clients.Emby.Http
 {
     public class EmbyHttpClient : BaseHttpClient, IEmbyHttpClient
     {
-        public EmbyHttpClient(IRestClient client) : base(client)
+        public EmbyHttpClient(IRestClient client, IHttpContextAccessor accessor) : base(client, accessor)
         {
             
-        }
-
-        public MediaServerUdpBroadcast SearchServer()
-        {
-            return SearchServer("who is EmbyServer?");
         }
 
         public bool Ping()
         {
             return Ping("Emby Server");
+        }
+
+        public Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer()
+        {
+            return SearchServer("who is EmbyServer?");
         }
     }
 }

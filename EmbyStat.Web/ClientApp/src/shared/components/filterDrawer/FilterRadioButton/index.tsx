@@ -19,23 +19,28 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   type: FilterType;
+  isOpen: boolean;
   open: Function;
   setClickedTypeId: Function;
   children: ReactNode;
 }
 
 const FilterRadioButton = (props: Props) => {
-  const { type, open, setClickedTypeId, children } = props;
+  const { type, open, setClickedTypeId, children, isOpen } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const [openState, setOpenState] = useState(false);
+
+  useEffect(() => {
+    setOpenState(isOpen);
+  }, [isOpen])
 
   useEffect(() => {
     setOpenState(type.open);
   }, [type.open]);
 
   const handleClick = () => {
-    setOpenState(true);
+    setOpenState(prev => !prev);
     setClickedTypeId(type.id);
   };
 
@@ -51,7 +56,7 @@ const FilterRadioButton = (props: Props) => {
         <FormControlLabel
           key={type.id}
           value={type.id}
-          control={<Radio />}
+          control={<Radio color="primary" />}
           label={t(type.label)}
           onClick={handleClick}
         />

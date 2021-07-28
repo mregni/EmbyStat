@@ -11,8 +11,7 @@ import {
   Margin,
   Series,
   Title,
-  ValueAxis,
-  Tooltip
+  ValueAxis
 } from 'devextreme-react/chart';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

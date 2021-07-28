@@ -6,13 +6,18 @@ import { UserRoles } from '../../models/login';
 
 interface Props {
   children: React.ReactNode;
-  roles: string[];
+  roles?: string[];
   path: string | string[];
-  exact: boolean;
+  exact?: boolean;
 }
 
 const PrivateRoute = (props: Props) => {
-  const { children, roles, path, exact } = props;
+  const {
+    children,
+    roles = [UserRoles.User],
+    path,
+    exact = false
+  } = props;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,28 +35,20 @@ const PrivateRoute = (props: Props) => {
     };
 
     checkUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [roles]);
 
   return (
     <Route
       path={path}
       exact={exact}
       render={(props) =>
-        isLoading ? null : isAuthenticated ? (
-          children
-        ) : (
-            <Redirect
-              to={{ pathname: '/login', state: { referer: props.location } }}
-            />
-          )}
+        isLoading
+          ? null
+          : isAuthenticated
+            ? (children)
+            : (<Redirect to={{ pathname: '/login', state: { referer: props.location } }} />)}
     />
   );
-};
-
-PrivateRoute.defaultProps = {
-  exact: false,
-  roles: [UserRoles.User],
 };
 
 export default PrivateRoute;

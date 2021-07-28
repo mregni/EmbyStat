@@ -57,7 +57,6 @@ i18n
     },
   });
 
-export const getLanguage = () =>
-  i18n.language || window.localStorage.i18nextLng;
+export const getLanguage = () => i18n.language || window.localStorage.i18nextLng;
 
 export default i18n;

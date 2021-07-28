@@ -51,7 +51,7 @@ namespace Tests.Unit.Controllers
                     ServerPort = 8097,
                     ServerProtocol = ConnectionProtocol.Https,
                 },
-                Tvdb = new TvdbSettings
+                Tmdb = new TmdbSettings
                 {
                     LastUpdate = new DateTime(2019, 1, 1),
                     ApiKey = "ABCDE"
@@ -91,9 +91,7 @@ namespace Tests.Unit.Controllers
                 new Language {Code = "EN", Id = "2", Name = "English"}
             });
 
-            var mediaServerServiceMock = new Mock<IMediaServerService>();
-
-            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object, mediaServerServiceMock.Object);
+            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object);
         }
 
         public void Dispose()
@@ -155,7 +153,6 @@ namespace Tests.Unit.Controllers
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = 0,
-                Username = "reggi",
                 WizardFinished = true,
                 MediaServer = new FullSettingsViewModel.MediaServerSettingsViewModel
                 {
@@ -166,7 +163,7 @@ namespace Tests.Unit.Controllers
                     ServerPort = 8097,
                     ServerProtocol = 1,
                 },
-                Tvdb = new FullSettingsViewModel.TvdbSettingsViewModel
+                Tmdb = new FullSettingsViewModel.TmdbSettingsViewModel
                 {
                     LastUpdate = new DateTime(2019, 1, 1),
                     ApiKey = "ABCDE"

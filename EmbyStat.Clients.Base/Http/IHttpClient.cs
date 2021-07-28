@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
@@ -19,7 +20,7 @@ namespace EmbyStat.Clients.Base.Http
         JArray GetUsers();
         JObject GetDevices();
         bool Ping();
-        MediaServerUdpBroadcast SearchServer();
+        Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer();
         List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit);
         List<Show> GetShows(string libraryId);
         List<Season> GetSeasons(string parentId);

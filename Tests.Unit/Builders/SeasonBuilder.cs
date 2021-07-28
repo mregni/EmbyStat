@@ -16,13 +16,13 @@ namespace Tests.Unit.Builders
             {
                 Id = id,
                 Path = "path/to/season",
-                PremiereDate = new DateTimeOffset(2001, 1, 1, 0, 0, 0, new TimeSpan(0)),
+                PremiereDate = new DateTime(2001, 1, 1, 0, 0, 0),
                 Name = "Season 01",
                 IndexNumber = 1,
                 ParentId = showId,
                 ProductionYear = 2001,
                 SortName = "0001",
-                DateCreated = new DateTimeOffset(2001, 1, 1, 0, 0, 0, new TimeSpan(0)),
+                DateCreated = new DateTime(2001, 1, 1, 0, 0, 0),
                 Primary = "primary.jpg"
             };
         }

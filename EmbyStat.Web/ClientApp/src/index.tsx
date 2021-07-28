@@ -27,16 +27,19 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 import PageLoader from './shared/components/pageLoader';
+import { SettingsContextProvider } from './shared/context/settings';
 
 function render() {
   ReactDOM.render(
     // <React.StrictMode>
     <Provider store={store}>
-      <Suspense fallback={PageLoader}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Suspense>
+      <SettingsContextProvider>
+        <Suspense fallback={PageLoader}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Suspense>
+      </SettingsContextProvider>
     </Provider>,
     // </React.StrictMode>,
     document.getElementById('root')

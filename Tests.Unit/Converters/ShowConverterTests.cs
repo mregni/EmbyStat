@@ -33,7 +33,7 @@ namespace Tests.Unit.Converters
                 ParentId = "123",
                 Path = "c:\\",
                 CommunityRating = 1.2f,
-                DateCreated = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                DateCreated = new DateTime(2000, 1, 1, 1, 1, 1),
                 ProviderIds = new Dictionary<string, string>
                 {
                     { "Imdb", "1234" },
@@ -41,7 +41,7 @@ namespace Tests.Unit.Converters
                     { "Tvdb", "1234" }
                 },
                 OfficialRating = "16TV",
-                PremiereDate = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                PremiereDate = new DateTime(2000, 1, 1, 1, 1, 1),
                 ProductionYear = 2001,
                 RunTimeTicks = 1000,
                 SortName = "2 broke girls",
@@ -72,7 +72,7 @@ namespace Tests.Unit.Converters
             show.DateCreated.Should().Be(data.DateCreated);
             show.OfficialRating.Should().Be(data.OfficialRating);
             show.IMDB.Should().Be(data.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value);
-            show.TMDB.Should().Be(data.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value);
+            show.TMDB.Should().Be(int.Parse(data.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value));
             show.TVDB.Should().Be(data.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value);
             show.PremiereDate.Should().Be(data.PremiereDate);
             show.ProductionYear.Should().Be(data.ProductionYear);
@@ -95,10 +95,10 @@ namespace Tests.Unit.Converters
                 Name = "Season 01",
                 ParentId = "12",
                 Path = "C:\\",
-                DateCreated = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                DateCreated = new DateTime(2000, 1, 1, 1, 1, 1),
                 IndexNumber = 1,
                 IndexNumberEnd = null,
-                PremiereDate = new DateTimeOffset(2000, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                PremiereDate = new DateTime(2000, 1, 1, 1, 1, 1),
                 ProductionYear = 2001,
                 SortName = "season 01",
                 ImageTags = new Dictionary<ImageType, string>
@@ -170,7 +170,7 @@ namespace Tests.Unit.Converters
             var showEpisode = show.Episodes.First();
             var showSeason = show.Seasons.First();
 
-            var virtualEpisode = new VirtualEpisode(showEpisode, showSeason);
+            var virtualEpisode = new VirtualEpisode(showEpisode);
             var episode = virtualEpisode.ConvertToEpisode(show, showSeason);
 
             episode.ShowId.Should().Be(show.Id);
@@ -209,7 +209,7 @@ namespace Tests.Unit.Converters
             episode.Logo.Should().Be(baseItem.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value);
             episode.Banner.Should().Be(baseItem.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value);
             episode.IMDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value);
-            episode.TMDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value);
+            episode.TMDB.Should().Be(int.Parse(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value));
             episode.TVDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value);
             episode.AudioStreams.Count.Should().Be(1);
             episode.SubtitleStreams.Count.Should().Be(1);

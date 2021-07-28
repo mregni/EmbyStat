@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Assets\logo.png" />
+    <None Remove="Assets\logo_white.png" />
+    <None Remove="Configuration\embystat.html" />
+    <None Remove="Configuration\embystat.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\logo.png" />
+    <EmbeddedResource Include="Assets\logo_white.png" />
+    <EmbeddedResource Include="Configuration\embystat.html" />
+    <EmbeddedResource Include="Configuration\embystat.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="5.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.6.0.50" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
+  </ItemGroup>
+
+</Project>
