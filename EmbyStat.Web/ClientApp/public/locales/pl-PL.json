@@ -16,7 +16,7 @@
     "GB": "GB",
     "AND": "i",
     "PIXELS": "px",
-    "TITLE": "title",
+    "TITLE": "Title",
     "ADDEDON": "added on",
     "QUALITY": "quality",
     "NEVER": "never",
@@ -45,9 +45,12 @@
     "MOSTFEATUREDACTOR": "Most Featured Actor",
     "MOSTFEATUREDDIRECTOR": "Most Featured Director",
     "MOSTFEATUREDWRITER": "Most Featured Writer",
+    "CURRENT": "Current",
+    "TOTALRUNTIME": "Total runtime",
     "LIBRARIES": "Libraries",
     "PREMIEREDATE": "premiere date",
-    "STATUS": "status",
+    "STATUS": "Status",
+    "EPISODES": "Episodes",
     "PERCENTAGE": "percentage",
     "COLLECTED": "collected",
     "UPDATES": "Updates",
@@ -65,8 +68,10 @@
     "SELECTVALUE": "Wybierz wartość",
     "ADD": "Dodaj",
     "DATE": "data",
+    "OTHER": "other",
     "FPS": "kl./s",
     "LINKS": "Łącza",
+    "PROTOCOL": "Protocol",
     "AUDIO": "Dźwięk",
     "SUBTITLES": "Napisy",
     "RATING": "Ocena",
@@ -87,7 +92,8 @@
     "SIZEINMB": "Rozmiar w MB",
     "BITDEPTH": "Ilość bitów",
     "CODEC": "Kodek",
-    "VIDEORANGE": "Zakres wideo"
+    "VIDEORANGE": "Zakres wideo",
+    "CONTAINER": "Kontener"
   },
   "LOGS": {
     "ANONYMISED": "Zanonimizowane",
@@ -128,7 +134,6 @@
     "USERS": "Users"
   },
   "WIZARD": {
-    "RUNSYNC": "Uruchom synchronizację multimediów po kreatorze",
     "WIZARDLABEL": "Kreator",
     "USERDETAILTEXT": "Podaj nazwę użytkownika i hasło dla administratora",
     "SERVERCONFIGURATION": "Konfiguracja serwera",
@@ -141,23 +146,25 @@
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Final",
     "SEARCHSERVERS": "Wyszukiwanie serwerów",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "Otwórz stronę klucza API {{type}}",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Welcome to the EmbyStat server wizard.<br/><br/>With this wizard we will setup the basic settings so you can start working with EmbyStat without to much headache. When the wizard is completed you can enjoy all features of the server. If you want to tweak the server some more you can always go to the settings page.<br/><br/>For now we just need to know how we may call you and in what language you want view the UI.",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found an {{type}} server named {{name}} in your network and entered the url already in the form. Feel free to adjust this and fill in the rest of the form.",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "API key is valid",
     "SELECTLIBRARIES": "Wybierz wszystkie biblioteki, które chcesz uwzględnić w obliczeniach statystyk {{type}} . Domyślnie wybrane są wszystkie {{type}} biblioteki. Jeśli chcesz, możesz to później zmienić na stronie ustawień.",
-    "FINISHED": "All settings are saved and you can start using Emby server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a media synchronization task. EmbyStat will start downloading all data from your Emby server. Keep in mind that this task can take a long time depending on your collection size. If you don't want to start a syncronisation ride now just click finish. You can start it manually later by navigating to the Tasks page.",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
     "APIKEYFAILED": "Próbowaliśmy skontaktować się z Twoim serwerem {{type}} , ale wygląda na to, że nie powiodło się. Proszę wrócić, poprawić konfigurację i spróbować ponownie.",
-    "ADDRESSUSED": "Adres: <i>{{address}}</i>",
-    "APIKEYUSED": "Klucz API: <i>{{api}}</i>",
-    "LANWANCHOISE": "Wybierz poprawny adres, który ma być używany do połączenia z serwerem {{type}}."
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYUSED": "API key: {{api}}",
+    "LANWANCHOISE": "Wybierz poprawny adres, który ma być używany do połączenia z serwerem {{type}}.",
+    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total Movies",
@@ -178,8 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "Total Shows",
-    "TOTALEPISODES": "Total Episodes",
-    "TOTALMISSINGEPISODES": "Total Missing Episodes",
+    "TOTALEPISODES": "Total episodes",
+    "TOTALMISSINGEPISODES": "Total missing episodes",
+    "TOTALSPECIALEPISODES": "Total special episodes",
     "TOTALPLAYLENGTH": "Total Watchable Time",
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
@@ -197,17 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "Ustawienia zostały zapisane",
+    "SAVEFAILED": "Saving settings failed, check log files for more info.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
-    "TVDB": {
-      "TITLE": "Połączenie Tvdb",
-      "APIKEYLABEL": "Klucz API TVDB",
-      "APIKEYWARNING": "Jeśli chcesz, możesz podać EmbyStat własny klucz API TheTVDB tutaj. Upewnij się, że podałeś działający klucz API! Jeśli klucz jest nieprawidłowy, zadanie synchronizacji nie powiedzie się.",
-      "NOAPIKEY": "Klucz API nie może być pusty",
-      "SAVING": "Zapisywanie klucza TVDB"
+    "TMDB": {
+      "TITLE": "TMDb connection",
+      "APIKEYLABEL": "TMDb API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "NOAPIKEY": "API key can not be empty",
+      "SAVING": "Saving TMDb key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -340,8 +349,10 @@
       "SYSTEM-SYNCDESCRIPTION": "Wykonaj małą synchronizację z serwerem Emby. Jest to tylko szybka i mała aktualizacja systemu.",
       "SYSTEM-SYNC": "Synchronizuj informacje {{type}}",
       "SYSTEM-SYNCSTART": "Rozpocznij małą synchronizację",
-      "MEDIA-SYNCDESCRIPTION": "Wykonaj przyrostową synchronizację dla swojej kolekcji filmów. To może chwilę potrwać!",
-      "MEDIA-SYNC": "Synchronizacja mediów",
+      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNC": "Show synchronization",
+      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MOVIE-SYNC": "Movie synchronization",
       "DATABASE-CLEANUP": "Oczyszczanie bazy danych",
       "DATABASE-CLEANUPDESCRIPTION": "Oczyść bazę z niepotrzebnych danych.",
       "UPDATE-CHECKER": "Sprawdź aktualizacje",
@@ -437,5 +448,10 @@
       "FRAMERATE": "Klatek na sekundę",
       "CONTAINER": "Kontener"
     }
+  },
+  "PAGINATION": {
+    "NEXTPAGE": "Next page",
+    "PREVIOUSPAGE": "Previous page",
+    "ROWSPERPAGE": "Rows per page"
   }
 }
