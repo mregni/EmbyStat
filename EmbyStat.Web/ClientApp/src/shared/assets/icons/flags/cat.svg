@@ -1,8 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-<rect y="85.331" style="fill:#FCDD09;" width="512" height="341.326"/>
-<rect y="123.256" style="fill:#DA121A;" width="512" height="37.925"/>
-<rect y="199.106" style="fill:#DA121A;" width="512" height="37.925"/>
-<rect y="274.956" style="fill:#DA121A;" width="512" height="37.925"/>
-<rect y="350.806" style="fill:#DA121A;" width="512" height="37.925"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Capa_1" x="0" y="0" version="1.1" viewBox="0 0 512 512" xml:space="preserve" style="enable-background:new 0 0 512 512"><rect style="fill:#fcdd09" width="512" height="341.326" y="85.331"/><rect style="fill:#da121a" width="512" height="37.925" y="123.256"/><rect style="fill:#da121a" width="512" height="37.925" y="199.106"/><rect style="fill:#da121a" width="512" height="37.925" y="274.956"/><rect style="fill:#da121a" width="512" height="37.925" y="350.806"/></svg>
