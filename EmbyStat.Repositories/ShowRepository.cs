@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
@@ -93,7 +94,7 @@ namespace EmbyStat.Repositories
 
                 var list = libraryIds.Any() ? query.Find(x => libraryIds.Any(y => y == x.CollectionId)) : query.FindAll();
                 return list
-                    .Select(x => new {Show = x, EpisodeCount = x.GetEpisodeCount(false)})
+                    .Select(x => new {Show = x, EpisodeCount = x.GetEpisodeCount(false, LocationType.Disk)}).ToList()
                     .OrderByDescending(x => x.EpisodeCount)
                     .Take(count)
                     .ToDictionary(x => x.Show, x => x.EpisodeCount);
