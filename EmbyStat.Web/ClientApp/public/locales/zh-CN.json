@@ -45,9 +45,12 @@
     "MOSTFEATUREDACTOR": "最具特色的演员",
     "MOSTFEATUREDDIRECTOR": "最具特色的导演",
     "MOSTFEATUREDWRITER": "最具特色的作家",
+    "CURRENT": "Current",
+    "TOTALRUNTIME": "Total runtime",
     "LIBRARIES": "库",
     "PREMIEREDATE": "首播日期",
-    "STATUS": "状态",
+    "STATUS": "Status",
+    "EPISODES": "Episodes",
     "PERCENTAGE": "百分比",
     "COLLECTED": "已收藏",
     "UPDATES": "更新",
@@ -65,8 +68,10 @@
     "SELECTVALUE": "选择数值",
     "ADD": "添加",
     "DATE": "日期",
+    "OTHER": "other",
     "FPS": "帧/秒",
     "LINKS": "链接",
+    "PROTOCOL": "Protocol",
     "AUDIO": "音频",
     "SUBTITLES": "字幕",
     "RATING": "等级",
@@ -87,7 +92,8 @@
     "SIZEINMB": "大小（MB）",
     "BITDEPTH": "位深",
     "CODEC": "编码器",
-    "VIDEORANGE": "视频范围"
+    "VIDEORANGE": "视频范围",
+    "CONTAINER": "Container"
   },
   "LOGS": {
     "ANONYMISED": "匿名的",
@@ -128,7 +134,6 @@
     "USERS": "用户"
   },
   "WIZARD": {
-    "RUNSYNC": "向导后运行媒体同步",
     "WIZARDLABEL": "向导",
     "USERDETAILTEXT": "提供您的管理员用户名和密码",
     "SERVERCONFIGURATION": "服务器参数设置",
@@ -141,23 +146,25 @@
     "SERVERTYPELABEL": "服务器类型",
     "FINALLABEL": "最后",
     "SEARCHSERVERS": "正在搜索服务器",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "打开 {{type}} API 密钥页面",
-    "CROWNDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a>",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
     "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
-    "FOUNDTEXT": "我们在您的网络中找到了一个名为 {{name}} 的 {{type}} 服务器，并已经在表格中输入了网址。随时进行调整，并填写表格的其余部分。",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "SERVERRUNNING": "{{type}} 服务器正在运行",
     "KEYISVALID": "API密钥有效",
     "SELECTLIBRARIES": "选择您想要在 {{type}} 统计计算中包含的所有库。 所有 {{type}} 库是默认选择的。如果您想要在设置页面稍后更改它。",
-    "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
-    "FINISHEXPLANATION": "首先最好是启动一个媒体同步任务。EmbyStat将开始从您的 Emby 服务器下载所有数据。 请记住，这个任务可能需要很长时间，取决于您的收藏大小。 如果您不想现在只需点击完成即可开始同步。您可以稍后通过导航到任务页面手动启动。",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
     },
     "APIKEYFAILED": "访问 {{type}} 服务器失败，请检查配置并重试。",
-    "ADDRESSUSED": "地址： <i>{{address}}</i>",
-    "APIKEYUSED": "API密钥： <i>{{api}}</i>",
-    "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。"
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYUSED": "API key: {{api}}",
+    "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。",
+    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
   "MOVIES": {
     "TOTALMOVIES": "电影总数",
@@ -178,8 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "总演出数",
-    "TOTALEPISODES": "总剧集数",
-    "TOTALMISSINGEPISODES": "缺少剧集总数",
+    "TOTALEPISODES": "Total episodes",
+    "TOTALMISSINGEPISODES": "Total missing episodes",
+    "TOTALSPECIALEPISODES": "Total special episodes",
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATEDSHOW": "评分最高",
     "LOWESTRATEDSHOW": "评分最低",
@@ -197,17 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "设置已保存",
+    "SAVEFAILED": "Saving settings failed, check log files for more info.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "TVDB",
+      "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
-    "TVDB": {
-      "TITLE": "Tvdb 连接",
-      "APIKEYLABEL": "TheTVDB API 密钥",
-      "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
-      "NOAPIKEY": "API 密钥不能为空",
-      "SAVING": "正在保存 TVDB 密钥"
+    "TMDB": {
+      "TITLE": "TMDb connection",
+      "APIKEYLABEL": "TMDb API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "NOAPIKEY": "API key can not be empty",
+      "SAVING": "Saving TMDb key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar 日志",
@@ -340,8 +349,10 @@
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "SYSTEM-SYNC": "Sync {{type}} info",
       "SYSTEM-SYNCSTART": "Start small sync",
-      "MEDIA-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MEDIA-SYNC": "Media synchronization",
+      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNC": "Show synchronization",
+      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MOVIE-SYNC": "Movie synchronization",
       "DATABASE-CLEANUP": "Database cleanup",
       "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
       "UPDATE-CHECKER": "Check for new updates",
@@ -437,5 +448,10 @@
       "FRAMERATE": "Frame rate",
       "CONTAINER": "Container"
     }
+  },
+  "PAGINATION": {
+    "NEXTPAGE": "Next page",
+    "PREVIOUSPAGE": "Previous page",
+    "ROWSPERPAGE": "Rows per page"
   }
 }
