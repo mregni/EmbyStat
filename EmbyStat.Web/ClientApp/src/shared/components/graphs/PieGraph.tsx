@@ -2,7 +2,6 @@ import PieChart, {
   Legend,
   Series,
   Tooltip,
-  Format,
   Label,
   Connector,
   Title,

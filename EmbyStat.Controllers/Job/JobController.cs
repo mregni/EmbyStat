@@ -89,12 +89,5 @@ namespace EmbyStat.Controllers.Job
             await _jobHubHelper.BroadCastJobLog("JOBS", $"{job.Title} job queued", ProgressLogType.Information);
             return Ok();
         }
-
-        [HttpGet]
-        [Route("mediasync")]
-        public IActionResult GetMediaSyncJob()
-        {
-            return Get(Constants.JobIds.MediaSyncId);
-        }
     }
 }

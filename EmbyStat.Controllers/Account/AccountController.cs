@@ -1,7 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
+using EmbyStat.Logging;
+using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
+using MediaBrowser.Model.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +14,12 @@ namespace EmbyStat.Controllers.Account
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
+        private readonly Logger _logger;
 
         public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
+            _logger = LogFactory.CreateLoggerForType(typeof(AccountController), "ACCOUNT");
         }
 
         [HttpPost]
@@ -31,8 +36,10 @@ namespace EmbyStat.Controllers.Account
                 {
                     return Ok(result);
                 }
+                _logger.Info($"Username {login.Username} was used for login.");
             }
 
+            _logger.Info($"Invalid username or password. ");
             return BadRequest("Invalid username or password");
         }
 
@@ -55,8 +62,10 @@ namespace EmbyStat.Controllers.Account
             var user = Request.HttpContext.User;
             var identities = user?.Identities.ToArray();
             // We need a check if user is an admin here!
-            if (identities == null || identities.Length != 1 || !identities[0].IsAuthenticated)
+            if (identities.Length != 1 || !identities[0].IsAuthenticated)
             {
+                _logger.Warn("User registration not allowed");
+                _logger.Warn("This is because there is already an admin user in the database but the identity is not authenticated. (You can't create a second admin user via the wizard flow, this is probably what happened)");
                 return Unauthorized("User registration not allowed");
             }
 

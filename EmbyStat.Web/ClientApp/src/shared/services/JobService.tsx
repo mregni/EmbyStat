@@ -21,6 +21,6 @@ export const updateTrigger = (id: string, cron: string): Promise<void> => {
   );
 };
 
-export const getMediaSyncJob = (): Promise<Job> => {
-  return axiosInstance.get<Job>(`${domain}mediasync`).then((response) => response.data);
-};
+export const getJobById = (id: string): Promise<Job> => {
+  return axiosInstance.get<Job>(`${domain}${id}`).then((response) => response.data);
+}

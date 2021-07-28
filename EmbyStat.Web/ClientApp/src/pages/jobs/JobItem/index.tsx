@@ -1,29 +1,29 @@
-import classNames from 'classnames';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import classNames from "classnames";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import IconButton from '@material-ui/core/IconButton';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Zoom from '@material-ui/core/Zoom';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PlayCircleOutlineRoundedIcon from '@material-ui/icons/PlayCircleOutlineRounded';
+import IconButton from "@material-ui/core/IconButton";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import Zoom from "@material-ui/core/Zoom";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
 
-import RoundIconButton from '../../../shared/components/buttons/RoundIconButton';
-import { useServerType } from '../../../shared/hooks';
-import { Job } from '../../../shared/models/jobs';
-import { fireJob } from '../../../shared/services/JobService';
-import JobSettingsDialog from '../JobSettingsDialog';
+import RoundIconButton from "../../../shared/components/buttons/RoundIconButton";
+import { useServerType } from "../../../shared/hooks";
+import { Job } from "../../../shared/models/jobs";
+import { fireJob } from "../../../shared/services/JobService";
+import { JobSettingsDialog } from "../JobSettingsDialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
     position: "relative",
-    padding: 8,
+    padding: 16,
     "&:not(:first-child)": {
       marginTop: 16,
     },
@@ -53,8 +53,11 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
   },
   progress: {
-    width: "calc(100% - 65px)",
-    marginRight: 20,
+    width: "calc(100% - 45px)",
+  },
+  progress__percentage: {
+    color: theme.palette.grey[400],
+    fontSize: "0.8rem",
   },
   title: {
     fontWeight: "bold",
@@ -70,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
   },
   progess__height: {
     height: 22,
+  },
+  state__text: {
+    color: theme.palette.grey[400],
+    fontSize: "0.8rem",
   },
 }));
 
@@ -99,9 +106,6 @@ const JobItem = (props: Props) => {
       case 1:
         return t("JOB.PROCESSING");
       case 2:
-        return `${t("JOB.LASTRUN")} ${moment(job.endTimeUtcIso).from(
-          moment()
-        )}`;
       case 3:
         return `${t("JOB.LASTRUN")} ${moment(job.endTimeUtcIso).from(
           moment()
@@ -134,7 +138,7 @@ const JobItem = (props: Props) => {
         <div className="m-r-16">
           <RoundIconButton
             onClick={fireJobAction}
-            Icon={<PlayCircleOutlineRoundedIcon />}
+            Icon={<PlayArrowRoundedIcon />}
             disabled={loading}
           />
         </div>
@@ -164,41 +168,24 @@ const JobItem = (props: Props) => {
             <div className={classes.title}>
               {t(`JOB.INFO.${job.title}`, { type: serverType })}
             </div>
-            <div>{stateSwitch(job)}</div>
+            <div className={classes.state__text}>{stateSwitch(job)}</div>
           </div>
           {loading ? (
-            job.state === 1 ? (
-              <div
-                className={classNames(classes["paper__details--bottom"], [
-                  classes.progess__height,
-                ])}
-              >
-                <LinearProgress
-                  color="secondary"
-                  variant="determinate"
-                  value={job.currentProgressPercentage}
-                  className={classes.progress}
-                />
-                <div>
-                  <i>{job.currentProgressPercentage} %</i>
+            <div
+              className={classNames(classes["paper__details--bottom"], [
+                classes.progess__height,
+              ])}
+            >
+              <LinearProgress
+                color="primary"
+                variant={job.state === 1 ? "determinate" : "indeterminate"}
+                value={job.currentProgressPercentage}
+                className={classes.progress}
+              />
+              <div className={classes.progress__percentage}>
+                {job.state === 1 ? job.currentProgressPercentage : 0} %
                 </div>
-              </div>
-            ) : (
-                <div
-                  className={classNames(classes["paper__details--bottom"], [
-                    classes.progess__height,
-                  ])}
-                >
-                  <LinearProgress
-                    color="secondary"
-                    variant="indeterminate"
-                    className={classes.progress}
-                  />
-                  <div>
-                    <i>0 %</i>
-                  </div>
-                </div>
-              )
+            </div>
           ) : (
               <div className={classes.progess__height} />
             )}

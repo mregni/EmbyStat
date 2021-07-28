@@ -32,7 +32,7 @@ export const loadLanguages = (): AppThunk => async (
 ) => {
   if (!getState().languages.isLoaded) {
     const languages = await getLanguages();
-    dispatch(languageSlice.actions.receiveLanguages(languages));
+    dispatch(languageSlice.actions.receiveLanguages(languages.data));
   } else {
     dispatch(languageSlice.actions.alreadyLoaded());
   }

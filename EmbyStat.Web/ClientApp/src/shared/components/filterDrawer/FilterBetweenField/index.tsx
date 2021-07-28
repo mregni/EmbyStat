@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 
 import { FilterType } from '../../../models/filter';
+import { EsTextInput } from '../../esTextInput';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   small__fields: {
     width: 60,
   },
@@ -42,10 +42,9 @@ const FilterBetweenField = (props: Props) => {
     disableAdd(betweenValue.left === '' || betweenValue.right === '');
   }, [disableAdd, betweenValue]);
 
-  const leftChanged = (event) => {
-    event.persist();
+  const leftChanged = (value: string) => {
     if (!errors.betweenLeft) {
-      setBetweenValue((state) => ({ ...state, left: event.target.value }));
+      setBetweenValue((state) => ({ ...state, left: value }));
     }
   };
 
@@ -56,26 +55,27 @@ const FilterBetweenField = (props: Props) => {
     }
   };
 
+  const registerInputFrom = register(type.type, { required: true });
+  const registerInputUntil = register(type.type, { required: true });
+
   return (
     <Grid container direction="row" spacing={1}>
       <Grid item>
-        <TextField
-          inputRef={register({ required: t('FORMERRORS.REQUIRED') })}
+        <EsTextInput
+          inputRef={registerInputFrom}
           color="secondary"
+          defaultValue=""
           type="number"
-          name="betweenLeft"
-          value={betweenValue.left}
-          error={!!errors.betweenLeft}
-          helperText={errors.betweenLeft ? errors.betweenLeft.message : ''}
-          fullWidth
+          errorText={{ required: t('FORMERRORS.REQUIRED') }}
+          error={errors.betweenLeft}
           className={classes.small__fields}
           onChange={leftChanged}
-          InputProps={{
+          inputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 {t(type.unit ?? '')}
               </InputAdornment>
-            ),
+            )
           }}
         />
       </Grid>
@@ -83,23 +83,21 @@ const FilterBetweenField = (props: Props) => {
         <div className={classes['sub-text__padding']}>{t('COMMON.AND')}</div>
       </Grid>
       <Grid item>
-        <TextField
-          inputRef={register({ required: t('FORMERRORS.REQUIRED') })}
+        <EsTextInput
+          inputRef={registerInputUntil}
           color="secondary"
+          defaultValue=""
           type="number"
-          name="betweenRight"
-          value={betweenValue.right}
-          error={!!errors.betweenRight}
-          helperText={errors.betweenRight ? errors.betweenRight.message : ''}
-          fullWidth
+          errorText={{ required: t('FORMERRORS.REQUIRED') }}
+          error={errors.betweenRight}
           className={classes.small__fields}
           onChange={rightChanged}
-          InputProps={{
+          inputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 {t(type.unit ?? '')}
               </InputAdornment>
-            ),
+            )
           }}
         />
       </Grid>

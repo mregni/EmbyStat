@@ -30,49 +30,46 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.SeedAsync();
-                using (var context = _context.LiteDatabase)
-                {
-                    var collection = context.GetCollection<Language>();
-                    var languages = collection.FindAll().ToList();
+                using var context = _context.LiteDatabase;
+                var collection = context.GetCollection<Language>();
+                var languages = collection.FindAll().ToList();
 
-                    languages.Count.Should().Be(17);
-                    languages.Count(x => x.Name == "Nederlands").Should().Be(1);
-                    languages.Count(x => x.Name == "English").Should().Be(1);
-                    languages.Count(x => x.Name == "Deutsch").Should().Be(1);
-                    languages.Count(x => x.Name == "Dansk").Should().Be(1);
-                    languages.Count(x => x.Name == "Ελληνικά").Should().Be(1);
-                    languages.Count(x => x.Name == "Español").Should().Be(1);
-                    languages.Count(x => x.Name == "Suomi").Should().Be(1);
-                    languages.Count(x => x.Name == "Français").Should().Be(1);
-                    languages.Count(x => x.Name == "Magyar").Should().Be(1);
-                    languages.Count(x => x.Name == "Italiano").Should().Be(1);
-                    languages.Count(x => x.Name == "Norsk").Should().Be(1);
-                    languages.Count(x => x.Name == "Polski").Should().Be(1);
-                    languages.Count(x => x.Name == "Brasileiro").Should().Be(1);
-                    languages.Count(x => x.Name == "Português").Should().Be(1);
-                    languages.Count(x => x.Name == "Românesc").Should().Be(1);
-                    languages.Count(x => x.Name == "Svenska").Should().Be(1);
-                    languages.Count(x => x.Name == "简体中文").Should().Be(1);
+                languages.Count.Should().Be(17);
+                languages.Count(x => x.Name == "Nederlands").Should().Be(1);
+                languages.Count(x => x.Name == "English").Should().Be(1);
+                languages.Count(x => x.Name == "Deutsch").Should().Be(1);
+                languages.Count(x => x.Name == "Dansk").Should().Be(1);
+                languages.Count(x => x.Name == "Ελληνικά").Should().Be(1);
+                languages.Count(x => x.Name == "Español").Should().Be(1);
+                languages.Count(x => x.Name == "Suomi").Should().Be(1);
+                languages.Count(x => x.Name == "Français").Should().Be(1);
+                languages.Count(x => x.Name == "Magyar").Should().Be(1);
+                languages.Count(x => x.Name == "Italiano").Should().Be(1);
+                languages.Count(x => x.Name == "Norsk").Should().Be(1);
+                languages.Count(x => x.Name == "Polski").Should().Be(1);
+                languages.Count(x => x.Name == "Brasileiro").Should().Be(1);
+                languages.Count(x => x.Name == "Português").Should().Be(1);
+                languages.Count(x => x.Name == "Românesc").Should().Be(1);
+                languages.Count(x => x.Name == "Svenska").Should().Be(1);
+                languages.Count(x => x.Name == "简体中文").Should().Be(1);
 
-                    languages.Count(x => x.Code == "nl-NL").Should().Be(1);
-                    languages.Count(x => x.Code == "en-US").Should().Be(1);
-                    languages.Count(x => x.Code == "de-DE").Should().Be(1);
-                    languages.Count(x => x.Code == "da-DK").Should().Be(1);
-                    languages.Count(x => x.Code == "el-GR").Should().Be(1);
-                    languages.Count(x => x.Code == "es-ES").Should().Be(1);
-                    languages.Count(x => x.Code == "fi-FI").Should().Be(1);
-                    languages.Count(x => x.Code == "fr-FR").Should().Be(1);
-                    languages.Count(x => x.Code == "hu-HU").Should().Be(1);
-                    languages.Count(x => x.Code == "it-IT").Should().Be(1);
-                    languages.Count(x => x.Code == "no-NO").Should().Be(1);
-                    languages.Count(x => x.Code == "pl-PL").Should().Be(1);
-                    languages.Count(x => x.Code == "pt-BR").Should().Be(1);
-                    languages.Count(x => x.Code == "pt-PT").Should().Be(1);
-                    languages.Count(x => x.Code == "ro-RO").Should().Be(1);
-                    languages.Count(x => x.Code == "sv-SE").Should().Be(1);
-                    languages.Count(x => x.Code == "cs-CZ").Should().Be(1);
-
-                }
+                languages.Count(x => x.Code == "nl-NL").Should().Be(1);
+                languages.Count(x => x.Code == "en-US").Should().Be(1);
+                languages.Count(x => x.Code == "de-DE").Should().Be(1);
+                languages.Count(x => x.Code == "da-DK").Should().Be(1);
+                languages.Count(x => x.Code == "el-GR").Should().Be(1);
+                languages.Count(x => x.Code == "es-ES").Should().Be(1);
+                languages.Count(x => x.Code == "fi-FI").Should().Be(1);
+                languages.Count(x => x.Code == "fr-FR").Should().Be(1);
+                languages.Count(x => x.Code == "hu-HU").Should().Be(1);
+                languages.Count(x => x.Code == "it-IT").Should().Be(1);
+                languages.Count(x => x.Code == "no-NO").Should().Be(1);
+                languages.Count(x => x.Code == "pl-PL").Should().Be(1);
+                languages.Count(x => x.Code == "pt-BR").Should().Be(1);
+                languages.Count(x => x.Code == "pt-PT").Should().Be(1);
+                languages.Count(x => x.Code == "ro-RO").Should().Be(1);
+                languages.Count(x => x.Code == "sv-SE").Should().Be(1);
+                languages.Count(x => x.Code == "cs-CZ").Should().Be(1);
             });
         }
 
@@ -82,15 +79,13 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.SeedAsync();
-                using (var context = _context.LiteDatabase)
-                {
-                    var collection = context.GetCollection<EmbyStatus>();
-                    var status = collection.FindAll().FirstOrDefault();
+                using var context = _context.LiteDatabase;
+                var collection = context.GetCollection<EmbyStatus>();
+                var status = collection.FindAll().FirstOrDefault();
 
-                    status.Should().NotBeNull();
-                    // ReSharper disable once PossibleNullReferenceException
-                    status.MissedPings = 0;
-                }
+                status.Should().NotBeNull();
+                // ReSharper disable once PossibleNullReferenceException
+                status.MissedPings = 0;
             });
         }
 
@@ -100,18 +95,17 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.SeedAsync();
-                using (var context = _context.LiteDatabase)
-                {
-                    var collection = context.GetCollection<Job>();
-                    var jobs = collection.FindAll().ToList();
+                using var context = _context.LiteDatabase;
+                var collection = context.GetCollection<Job>();
+                var jobs = collection.FindAll().ToList();
 
-                    jobs.Count.Should().Be(5);
-                    jobs.Count(x => x.Id == Constants.JobIds.CheckUpdateId).Should().Be(1);
-                    jobs.Count(x => x.Id == Constants.JobIds.SmallSyncId).Should().Be(1);
-                    jobs.Count(x => x.Id == Constants.JobIds.MediaSyncId).Should().Be(1);
-                    jobs.Count(x => x.Id == Constants.JobIds.PingEmbyId).Should().Be(1);
-                    jobs.Count(x => x.Id == Constants.JobIds.DatabaseCleanupId).Should().Be(1);
-                }
+                jobs.Count.Should().Be(6);
+                jobs.Count(x => x.Id == Constants.JobIds.CheckUpdateId).Should().Be(1);
+                jobs.Count(x => x.Id == Constants.JobIds.SmallSyncId).Should().Be(1);
+                jobs.Count(x => x.Id == Constants.JobIds.MovieSyncId).Should().Be(1);
+                jobs.Count(x => x.Id == Constants.JobIds.ShowSyncId).Should().Be(1);
+                jobs.Count(x => x.Id == Constants.JobIds.PingEmbyId).Should().Be(1);
+                jobs.Count(x => x.Id == Constants.JobIds.DatabaseCleanupId).Should().Be(1);
             });
         }
 
@@ -522,8 +516,8 @@ namespace Tests.Unit.Repository
                     showCollection.EnsureIndex(x => x.Episodes).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Seasons).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Status).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.TvdbFailed).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.TvdbSynced).Should().BeTrue();
+                    showCollection.EnsureIndex(x => x.ExternalSyncFailed).Should().BeTrue();
+                    showCollection.EnsureIndex(x => x.ExternalSynced).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Name).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
                     showCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();

@@ -27,9 +27,9 @@ namespace EmbyStat.Services.Abstract
             PersonService = personService;
         }
 
-        internal bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds)
+        internal bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds, Guid jobId)
         {
-            var lastMediaSync = _jobRepository.GetById(Constants.JobIds.MediaSyncId);
+            var lastMediaSync = _jobRepository.GetById(jobId);
 
             //We need to add 5 minutes here because the CalculationDateTime is ALWAYS just in front of the EndTimeUtc :( Ugly fix
             return statistic != null
@@ -85,7 +85,7 @@ namespace EmbyStat.Services.Abstract
             };
         }
 
-        internal Chart CalculatePremiereYearChart(IEnumerable<DateTimeOffset?> list)
+        internal Chart CalculatePremiereYearChart(IEnumerable<DateTime?> list)
         {
             var yearDataList = list
                 .GroupBy(x => x.RoundToFiveYear())
@@ -102,7 +102,7 @@ namespace EmbyStat.Services.Abstract
                 {
                     if (yearDataList.All(x => x.Key != i))
                     {
-                        yearDataList.Add(new ChartGrouping<int?, DateTimeOffset?> { Key = i, Capacity = 0 });
+                        yearDataList.Add(new ChartGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
                     }
                 }
             }

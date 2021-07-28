@@ -48,24 +48,6 @@ namespace Tests.Unit.Repository
         }
 
         [Fact]
-        public void AddSeason_Should_Add_The_Season()
-        {
-            RunTest(() =>
-            {
-                var seasonOne = new SeasonBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.AddSeason(seasonOne);
-
-                using (var database = _context.LiteDatabase)
-                {
-                    var collection = database.GetCollection<Season>();
-                    var season = collection.FindById(seasonOne.Id);
-                    season.Should().NotBeNull();
-                    season.Id.Should().Be(seasonOne.Id);
-                }
-            });
-        }
-
-        [Fact]
         public void AddEpisode_Should_Add_The_Episode()
         {
             RunTest(() =>
@@ -187,9 +169,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().BeNull();
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().BeNull();
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().BeNull();
             });
         }
 
@@ -216,9 +200,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showThree.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().BeNull();
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showThree.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().BeNull();
+                shows[0].Seasons[1].Id.Should().Be(showThree.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().BeNull();
             });
         }
 
@@ -240,9 +226,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().Be(showOne.Episodes[1].Name);
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().BeNull();
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().BeNull();
             });
         }
 
@@ -264,9 +252,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().BeNull();
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().Be(showOne.Seasons[0].Name);
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().Be(showOne.Seasons[1].Name);
             });
         }
 
@@ -288,9 +278,11 @@ namespace Tests.Unit.Repository
                 shows[0].Episodes[1].Id.Should().Be(showOne.Episodes[1].Id);
                 shows[0].Episodes[1].Name.Should().Be(showOne.Episodes[1].Name);
 
-                shows[0].Seasons.Count.Should().Be(1);
+                shows[0].Seasons.Count.Should().Be(2);
                 shows[0].Seasons[0].Id.Should().Be(showOne.Seasons[0].Id);
                 shows[0].Seasons[0].Name.Should().Be(showOne.Seasons[0].Name);
+                shows[0].Seasons[1].Id.Should().Be(showOne.Seasons[1].Id);
+                shows[0].Seasons[1].Name.Should().Be(showOne.Seasons[1].Name);
             });
         }
 
@@ -306,21 +298,6 @@ namespace Tests.Unit.Repository
                 season.Should().NotBeNull();
                 season.Id.Should().Be(showOne.Seasons.First().Id);
                 season.ParentId.Should().Be(showOne.Id);
-            });
-        }
-
-        [Fact]
-        public void Should_Return_Correct_Episode()
-        {
-            RunTest(() =>
-            {
-                var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(showOne);
-
-                var episode = _showRepository.GetEpisodeById(showOne.Id, showOne.Episodes.First().Id);
-                episode.Should().NotBeNull();
-                episode.Id.Should().Be(showOne.Episodes.First().Id);
-                episode.ParentId.Should().Be("1");
             });
         }
 

@@ -59,7 +59,7 @@ namespace EmbyStat.Services
                 {
                     line = line.Replace(configuration.MediaServer.FullMediaServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.MediaServer.FullSocketAddress, "wss://xxx.xxx.xxx.xxx:xxxx");
-                    line = line.Replace(configuration.Tvdb.ApiKey, "xxxxxxxxxxxxxx");
+                    line = line.Replace(configuration.Tmdb.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(configuration.MediaServer.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(serverInfo.Id, "xxxxxxxxxxxxxx");
                     writer.WriteLine(line);

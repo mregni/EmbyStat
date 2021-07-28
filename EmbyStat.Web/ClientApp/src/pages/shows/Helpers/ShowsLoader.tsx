@@ -1,17 +1,18 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../../store/RootReducer';
 import { loadStatistics } from '../../../store/ShowSlice';
 import { isTypePresent } from '../../../shared/services/ShowService';
 import StatisticsLoader from '../../../shared/components/statisticsLoader';
-import { getMediaSyncJob } from '../../../shared/services/JobService';
+import { getJobById } from '../../../shared/services/JobService';
+import { showJobId } from '../../../shared/utils';
 
 interface Props {
-  Component: ReactNode;
+  Component: Function;
 }
 
-const ShowsLoader = (props: Props) => {
+export const ShowsLoader = (props: Props) => {
   const { Component } = props;
   const statistics = useSelector((state: RootState) => state.shows);
   const [typePresent, setTypePresent] = useState(false);
@@ -29,7 +30,7 @@ const ShowsLoader = (props: Props) => {
     }
 
     const checkRunningSync = async () => {
-      const result = await getMediaSyncJob();
+      const result = await getJobById(showJobId);
       setRunningSync(result.state === 1);
       setRunningSyncLoading(false);
     }
@@ -47,7 +48,6 @@ const ShowsLoader = (props: Props) => {
 
   return (
     <StatisticsLoader
-      Component={Component}
       noMediaTypeTitle="DIALOGS.NOSHOWTYPEFOUND.TITLE"
       noMediaTypeBody="DIALOGS.NOSHOWTYPEFOUND.BODY"
       typePresent={typePresent}
@@ -55,10 +55,10 @@ const ShowsLoader = (props: Props) => {
       runningSync={runningSync}
       runningSyncLoading={runningSyncLoading}
       isLoading={isLoading}
-      statistics={statistics.statistics}
       label="SHOWS.LOADER"
-    />
+      jobId={showJobId}
+    >
+      <Component statistics={statistics.statistics} />
+    </StatisticsLoader>
   );
 };
-
-export default ShowsLoader

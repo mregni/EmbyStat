@@ -113,25 +113,33 @@ namespace EmbyStat.Common.Extensions
 
         public static T MapProviderIds<T>(this BaseItemDto dto, T extra) where T : Extra
         {
-            if (dto.ProviderIds != null)
+            if (dto.ProviderIds == null)
             {
-                extra.IMDB = dto.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value ?? string.Empty;
-                extra.TMDB = dto.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value ?? string.Empty;
-                extra.TVDB = dto.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value ?? string.Empty;
+                return extra;
             }
+
+            if (int.TryParse(dto.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value ?? string.Empty, out var tmdbValue))
+            {
+                extra.TMDB = tmdbValue;
+            }
+
+            extra.IMDB = dto.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value ?? string.Empty;
+            extra.TVDB = dto.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value ?? string.Empty;
 
             return extra;
         }
 
         public static T MapImageTags<T>(this BaseItemDto dto, T extra) where T : Media
         {
-            if (dto.ImageTags != null)
+            if (dto.ImageTags == null)
             {
-                extra.Primary = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value ?? string.Empty;
-                extra.Thumb = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value ?? string.Empty;
-                extra.Logo = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value ?? string.Empty;
-                extra.Banner = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value ?? string.Empty;
+                return extra;
             }
+
+            extra.Primary = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Primary).Value ?? string.Empty;
+            extra.Thumb = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value ?? string.Empty;
+            extra.Logo = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value ?? string.Empty;
+            extra.Banner = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value ?? string.Empty;
 
             return extra;
         }

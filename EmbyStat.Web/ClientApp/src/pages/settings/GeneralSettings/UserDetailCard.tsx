@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from 'react-hook-form';
-import TextField from '@material-ui/core/TextField';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -11,6 +10,7 @@ import { getUserInfo, changePassword, changeUserName, login } from '../../../sha
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { User } from '../../../shared/models/login';
 import SettingsCard from '../SettingsCard';
+import { EsTextInput } from '../../../shared/components/esTextInput';
 
 const useStyles = makeStyles({
   normall__input: {
@@ -25,43 +25,29 @@ interface Props {
   delay: number
 }
 
-const UserDetailCard = (props: Props) => {
+export const UserDetailCard = (props: Props) => {
   const { delay } = props;
   const classes = useStyles();
   const [user, setUser] = useState<User | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
-    const us = getUserInfo();
-    setUser(us);
-    setUsername(us?.username ?? '');
+    const name = getUserInfo();
+    setUser(name);
+    if (name !== null) {
+      setValue('username', name.username);
+    }
   }, []);
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmedPassword, setConfirmedPassword] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-
-  const { register, errors, triggerValidation } = useForm({
+  const { register, trigger, getValues, setValue, formState: { errors } } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      username: username,
+      username: user?.username ?? '',
       password: '',
       confirmedPassword: '',
       currentPassword: '',
     }
   });
-
-  const getPasswordErrorMessage = (): string => {
-    switch (errors.password?.type) {
-      case 'required':
-        return t('SETTINGS.ACCOUNT.NOPASSWORD');
-      case 'minLength':
-        return t('SETTINGS.ACCOUNT.PASSWORDMINLENGTH');
-      default:
-        return '';
-    }
-  };
 
   const saveUser = async () => {
     await updateUserName();
@@ -69,8 +55,9 @@ const UserDetailCard = (props: Props) => {
   }
 
   const updateUserName = async () => {
+    const { username, currentPassword } = getValues();
     if (username !== user?.username) {
-      const valid = await triggerValidation(['username', 'currentPassword']);
+      const valid = await trigger(['username', 'currentPassword']);
       if (valid) {
         const result = await changeUserName({ userName: user?.username ?? '', newUserName: username });
         if (result) {
@@ -91,8 +78,9 @@ const UserDetailCard = (props: Props) => {
   }
 
   const updatePassword = async () => {
+    const { password, currentPassword, username } = getValues();
     if (password.length !== 0) {
-      const valid = await triggerValidation(['confirmedPassword', 'password', 'currentPassword']);
+      const valid = await trigger(['confirmedPassword', 'password', 'currentPassword']);
       if (valid) {
         const result = await changePassword(
           {
@@ -108,7 +96,12 @@ const UserDetailCard = (props: Props) => {
     }
   }
 
-  const isEqual = (value: string) => value === password;
+  const isEqual = (value: string) => value === getValues('password');
+
+  const usernameRegister = register('username', { required: true });
+  const passwordRegister = register('password', { required: true, minLength: 6 });
+  const confirmPasswordRegister = register('confirmedPassword', { validate: isEqual });
+  const currentPasswordRegister = register('currentPassword', { required: true });
 
   return (
     <SettingsCard
@@ -120,33 +113,28 @@ const UserDetailCard = (props: Props) => {
         [classes.normall__input]: !errors.username,
         [classes.error__input]: errors.username,
       })}>
-        <TextField
-          inputRef={register({ required: t('SETTINGS.ACCOUNT.NOUSERNAME').toString() })}
+        <EsTextInput
+          inputRef={usernameRegister}
+          defaultValue={getValues('username')}
           label={t('SETTINGS.ACCOUNT.USERNAME')}
-          size="small"
-          name="username"
-          error={!!errors.username}
-          helperText={errors.username ? errors.username.message : ''}
-          color="primary"
-          value={username}
-          onChange={(event) => setUsername(event.target.value as string)}
+          errorText={{
+            required: t('SETTINGS.ACCOUNT.NOUSERNAME')
+          }}
+          error={errors.username}
         />
       </Grid>
       <Grid item className={classNames({
         [classes.normall__input]: !errors.currentPassword,
         [classes.error__input]: errors.currentPassword,
       })}>
-        <TextField
-          inputRef={register({ required: true })}
+        <EsTextInput
+          inputRef={currentPasswordRegister}
+          defaultValue={getValues('currentPassword')}
           label={t('SETTINGS.ACCOUNT.CURRENTPASSWORD')}
-          size="small"
-          type="password"
-          color="primary"
-          name="currentPassword"
-          error={!!errors.currentPassword}
-          helperText={errors.currentPassword ? t('SETTINGS.ACCOUNT.NOPASSWORD') : ''}
-          value={currentPassword}
-          onChange={(event) => setCurrentPassword(event.target.value as string)}
+          errorText={{
+            required: t('SETTINGS.ACCOUNT.NOPASSWORD')
+          }}
+          error={errors.currentPassword}
         />
       </Grid>
       <Grid item className="m-t-32">
@@ -158,38 +146,33 @@ const UserDetailCard = (props: Props) => {
         [classes.normall__input]: !errors.password,
         [classes.error__input]: errors.password
       })}>
-        <TextField
-          inputRef={register({ required: true, minLength: 6 })}
+        <EsTextInput
+          inputRef={passwordRegister}
+          defaultValue={getValues('password')}
           label={t('SETTINGS.ACCOUNT.NEWPASSWORD')}
-          size="small"
+          errorText={{
+            required: t('SETTINGS.ACCOUNT.NOPASSWORD'),
+            minLength: t('SETTINGS.ACCOUNT.PASSWORDMINLENGTH')
+          }}
           type="password"
-          color="primary"
-          name="password"
-          error={!!errors.password}
-          helperText={errors.password ? getPasswordErrorMessage() : ''}
-          value={password}
-          onChange={(event) => setPassword(event.target.value as string)}
+          error={errors.currentPassword}
         />
       </Grid>
       <Grid item className={classNames({
         [classes.normall__input]: !errors.confirmedPassword,
         [classes.error__input]: errors.confirmedPassword
       })}>
-        <TextField
-          inputRef={register({ validate: isEqual })}
+        <EsTextInput
+          inputRef={confirmPasswordRegister}
+          defaultValue={getValues('confirmedPassword')}
           label={t('SETTINGS.ACCOUNT.REPEATNEWPASSWORD')}
-          size="small"
+          errorText={{
+            validate: t('SETTINGS.ACCOUNT.PASSWORDNOTEQUAL')
+          }}
           type="password"
-          color="primary"
-          name="confirmedPassword"
-          error={!!errors.confirmedPassword}
-          helperText={errors.confirmedPassword ? t('SETTINGS.ACCOUNT.PASSWORDNOTEQUAL') : ''}
-          value={confirmedPassword}
-          onChange={(event) => setConfirmedPassword(event.target.value as string)}
+          error={errors.confirmedPassword}
         />
       </Grid>
     </SettingsCard>
   )
 }
-
-export default UserDetailCard

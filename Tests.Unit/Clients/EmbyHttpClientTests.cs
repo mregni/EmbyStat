@@ -2,6 +2,7 @@
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Net;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using RestSharp;
 using RestSharp.Serialization;
@@ -25,8 +26,9 @@ namespace Tests.Unit.Clients
                 })
                 .Returns(response);
             _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
 
-            return new EmbyHttpClient(_restClientMock.Object);
+            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
         }
 
         private EmbyHttpClient CreateStringClient(string returnObject)
@@ -41,8 +43,9 @@ namespace Tests.Unit.Clients
                 })
                 .Returns(response);
             _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
 
-            return new EmbyHttpClient(_restClientMock.Object);
+            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
         }
 
         [Fact]
@@ -61,8 +64,9 @@ namespace Tests.Unit.Clients
             _restClientMock.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
                 .Throws<Exception>();
             _restClientMock.Setup(x => x.UseSerializer(It.IsAny<IRestSerializer>)).Returns(_restClientMock.Object);
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
 
-            var client = new EmbyHttpClient(_restClientMock.Object);
+            var client = new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
             var result = client.Ping();
 
             result.Should().Be(false);
