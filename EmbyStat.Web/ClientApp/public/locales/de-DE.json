@@ -45,9 +45,12 @@
     "MOSTFEATUREDACTOR": "Häufigster Schauspieler",
     "MOSTFEATUREDDIRECTOR": "Häufigster Regisseur",
     "MOSTFEATUREDWRITER": "Häufigster Autor",
+    "CURRENT": "Current",
+    "TOTALRUNTIME": "Total runtime",
     "LIBRARIES": "Bibliotheken",
     "PREMIEREDATE": "Premierendatum",
     "STATUS": "Status",
+    "EPISODES": "Episodes",
     "PERCENTAGE": "prozentualer Anteil",
     "COLLECTED": "Gesammelt",
     "UPDATES": "Updates",
@@ -65,8 +68,10 @@
     "SELECTVALUE": "Wert auswählen",
     "ADD": "Hinzufügen",
     "DATE": "Datum",
+    "OTHER": "other",
     "FPS": "FPS",
     "LINKS": "Links",
+    "PROTOCOL": "Protocol",
     "AUDIO": "Sprache",
     "SUBTITLES": "Untertitel",
     "RATING": "Bewertung",
@@ -87,7 +92,8 @@
     "SIZEINMB": "Größe in MB",
     "BITDEPTH": "Bittiefe",
     "CODEC": "Codec",
-    "VIDEORANGE": "Videobereich"
+    "VIDEORANGE": "Videobereich",
+    "CONTAINER": "Container"
   },
   "LOGS": {
     "ANONYMISED": "Anonymisiert",
@@ -128,7 +134,6 @@
     "USERS": "Benutzer"
   },
   "WIZARD": {
-    "RUNSYNC": "Führen Sie die Mediensynchronisierung nach Beendigung des Assistenten aus",
     "WIZARDLABEL": "Assistent",
     "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein",
     "SERVERCONFIGURATION": "Server-Konfiguration",
@@ -141,23 +146,25 @@
     "SERVERTYPELABEL": "Servertyp",
     "FINALLABEL": "Fertig",
     "SEARCHSERVERS": "Nach Servern suchen",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "Öffne {{type}} API-Schlüsselseite",
-    "CROWNDINHELP": "Sollte Ihre Sprache nicht oder nur unvollständig vorhanden sein, dann können Sie helfen die App auf <a href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowndin</a> in Ihre Sprache zu übersetzen",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
     "NOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu {{type}} einrichten. Wir haben versucht deinen {{type}} Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen {{type}} Server finden kann.",
-    "FOUNDTEXT": "Wir haben einen {{type}} Server mit dem Namen {{name}} in Ihrem Netzwerk gefunden und die URL eingetragen. Passen Sie diese bei Bedarf an und füllen Sie bitte die restlichen Felder aus.",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "SERVERRUNNING": "Der {{type}} Server läuft",
     "KEYISVALID": "Der API-Schlüssel ist gültig",
     "SELECTLIBRARIES": "Wählen Sie alle Bibliotheken aus, die Sie in die {{type}} Statistikberechnungen einbeziehen möchten. Alle {{type}} Bibliotheken sind standardmäßig ausgewählt. Wenn Sie möchten, können Sie das später auf der Einstellungsseite ändern.",
-    "FINISHED": "Alle Einstellungen sind gespeichert und Sie können den Server jetzt nutzen. Genießen Sie Ihre neuen Statistiken!",
-    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Mediensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem Emby-Server. Beachten Sie, dass diese Aufgabe je nach Größe Ihrer Sammlung sehr lange dauern kann. Wenn Sie jetzt keine Synchronisation starten wollen, klicken Sie einfach auf Fertig stellen. Sie können es später manuell starten indem Sie zu den Aufgaben navigieren.",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "Da Sie Jellyfin verwenden, müssen Sie ein Administratorkonto angeben, mit dem Sie Daten vom Server abrufen möchten. Bitte wählen Sie den gewünschten Administrator aus der Dropdown-Liste aus."
     },
     "APIKEYFAILED": "Wir haben versucht, Ihren {{type}} Server zu kontaktieren, aber es scheint fehlzuschlagen. Bitte gehen Sie zurück, korrigieren Sie die Konfiguration und versuchen Sie es erneut.",
-    "ADDRESSUSED": "Adresse: <i>{{address}}</i>",
-    "APIKEYUSED": "API-Schlüssel: <i>{{api}}</i>",
-    "LANWANCHOISE": "Wählen Sie die richtige Adresse für Ihre Verbindung zum {{type}} Server."
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYUSED": "API key: {{api}}",
+    "LANWANCHOISE": "Wählen Sie die richtige Adresse für Ihre Verbindung zum {{type}} Server.",
+    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
   "MOVIES": {
     "TOTALMOVIES": "Gesamtanzahl Filme",
@@ -178,8 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "Gesamtanzahl Serien",
-    "TOTALEPISODES": "Anzahl Episoden",
-    "TOTALMISSINGEPISODES": "Anzahl fehlender Episoden",
+    "TOTALEPISODES": "Total episodes",
+    "TOTALMISSINGEPISODES": "Total missing episodes",
+    "TOTALSPECIALEPISODES": "Total special episodes",
     "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
     "HIGHESTRATEDSHOW": "Beste Bewertung",
     "LOWESTRATEDSHOW": "Schlechteste Bewertung",
@@ -197,17 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "Einstellungen gespeichert",
+    "SAVEFAILED": "Saving settings failed, check log files for more info.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TVDB": "The TVDB",
+      "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
-    "TVDB": {
-      "TITLE": "TVDB-Verbindung",
-      "APIKEYLABEL": "TheTVDB-API-Schlüssel",
-      "APIKEYWARNING": "Wenn Sie möchten, können Sie EmbyStat hier mit Ihrem eigenen TheTVDB-API-Schlüssel versorgen. Stellen Sie sicher, dass Sie einen funktionierenden API-Schlüssel angeben! Wenn der Schlüssel falsch ist, schlägt die Synchronisierungsaufgabe fehl.",
-      "NOAPIKEY": "Der API-Schlüssel darf nicht leer sein",
-      "SAVING": "TVDB Schlüssel speichern"
+    "TMDB": {
+      "TITLE": "TMDb connection",
+      "APIKEYLABEL": "TMDb API key",
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "NOAPIKEY": "API key can not be empty",
+      "SAVING": "Saving TMDb key"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -340,8 +349,10 @@
       "SYSTEM-SYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
       "SYSTEM-SYNC": "Synchronisiere {{type}} Info",
       "SYSTEM-SYNCSTART": "Kleine Synchronisierung starten",
-      "MEDIA-SYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
-      "MEDIA-SYNC": "Medien-Synchronisierung",
+      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNC": "Show synchronization",
+      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MOVIE-SYNC": "Movie synchronization",
       "DATABASE-CLEANUP": "Datenbankbereinigung",
       "DATABASE-CLEANUPDESCRIPTION": "Datenbank von unnötigen Daten bereinigen.",
       "UPDATE-CHECKER": "Nach neuen Aktualisierungen suchen",
@@ -437,5 +448,10 @@
       "FRAMERATE": "Bildrate",
       "CONTAINER": "Container"
     }
+  },
+  "PAGINATION": {
+    "NEXTPAGE": "Next page",
+    "PREVIOUSPAGE": "Previous page",
+    "ROWSPERPAGE": "Rows per page"
   }
 }
