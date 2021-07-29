@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import { getUserInfo, changePassword, changeUserName, login } from '../../../shared/services/AccountService';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { User } from '../../../shared/models/login';
-import SettingsCard from '../SettingsCard';
+import { SettingsCard } from '../Helpers';
 import { EsTextInput } from '../../../shared/components/esTextInput';
 
 const useStyles = makeStyles({

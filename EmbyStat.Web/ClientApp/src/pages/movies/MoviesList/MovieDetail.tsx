@@ -12,18 +12,18 @@ import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounde
 import SubtitlesRoundedIcon from '@material-ui/icons/SubtitlesRounded';
 import MusicNoteRoundedIcon from '@material-ui/icons/MusicNoteRounded';
 
-import { getBackdropImageLink, getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
-import PosterCard from '../../../../shared/components/cards/PosterCard';
-import theme from '../../../../styles/theme';
-import { useServerType } from '../../../../shared/hooks';
-import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
-import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
-import Flag from '../../../../shared/components/flag';
-import DetailMovieSkeleton from './DetailMovieSkeleton';
-import { getMovieDetails } from '../../../../shared/services/MovieService';
-import { Movie } from '../../../../shared/models/common';
-import { MovieRow } from '../../../../shared/models/movie';
-import { SettingsContext } from '../../../../shared/context/settings';
+import { getBackdropImageLink, getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
+import PosterCard from '../../../shared/components/cards/PosterCard';
+import theme from '../../../styles/theme';
+import { useServerType } from '../../../shared/hooks';
+import calculateFileSize from '../../../shared/utils/CalculateFileSize';
+import calculateRunTime from '../../../shared/utils/CalculateRunTime';
+import Flag from '../../../shared/components/flag';
+import { MovieDetailSkeleton } from './MovieDetailSkeleton';
+import { getMovieDetails } from '../../../shared/services/MovieService';
+import { Movie } from '../../../shared/models/common';
+import { MovieRow } from '../../../shared/models/movie';
+import { SettingsContext } from '../../../shared/context/settings';
 
 const useStyles = makeStyles(() => ({
   container: (props: any) => ({
@@ -57,7 +57,7 @@ interface Props {
   data: MovieRow;
 }
 
-const DetailMovieTemplate = (props: Props) => {
+export const DetailMovieTemplate = (props: Props) => {
   const { data } = props;
   const [movie, setMovie] = useState<Movie>({} as Movie);
   const { settings } = useContext(SettingsContext);
@@ -285,8 +285,6 @@ const DetailMovieTemplate = (props: Props) => {
       </Grid>
     </div>
   ) : (
-      <DetailMovieSkeleton />
+      <MovieDetailSkeleton />
     );
 };
-
-export default DetailMovieTemplate;

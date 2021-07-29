@@ -26,8 +26,7 @@ import MediaServer from '../pages/mediaServer';
 import { MoviesGeneral, MoviesList, MoviesGraphs, MoviesLoader } from '../pages/movies';
 import { ShowsGeneral, ShowsGraphs, ShowsList, ShowsLoader } from '../pages/shows';
 import NotFound from '../pages/notFound';
-import { GeneralSettings } from '../pages/settings/GeneralSettings';
-import { MovieSettings } from '../pages/settings/MovieSettings';
+import { GeneralSettings, MovieSettings, ShowSettings } from '../pages/settings';
 import Menu from '../shared/components/menu';
 import PrivateRoute from '../shared/components/privateRoute';
 import UpdateProvider from '../shared/providers/UpdateProvider';
@@ -213,7 +212,7 @@ const LoggedIn = () => {
             <PrivateRoute path="/movies/list" exact>
               <MoviesLoader Component={MoviesList} />
             </PrivateRoute>
-            <PrivateRoute path="/shows/general" exact>
+            <PrivateRoute path={["/shows/general", "/shows"]} exact>
               <ShowsLoader Component={ShowsGeneral} />
             </PrivateRoute>
             <PrivateRoute path="/shows/graphs" exact>
@@ -236,6 +235,9 @@ const LoggedIn = () => {
             </PrivateRoute>
             <PrivateRoute path="/settings/movie" exact>
               <MovieSettings />
+            </PrivateRoute>
+            <PrivateRoute path="/settings/show" exact>
+              <ShowSettings />
             </PrivateRoute>
             <Route path="/login">
               {

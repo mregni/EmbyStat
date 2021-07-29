@@ -144,6 +144,11 @@ const Menu = (props: Props) => {
           route: '/settings/movie',
           roles: [UserRoles.Admin, UserRoles.User],
         },
+        {
+          title: t('COMMON.SHOWS'),
+          route: '/settings/show',
+          roles: [UserRoles.Admin, UserRoles.User],
+        },
       ],
     },
     {

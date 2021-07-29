@@ -1,7 +1,8 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
 
-import { MovieLibraryCard, StatisticsCard } from '.';
+import { MovieLibraryCard } from './MovieLibraryCard';
+import { StatisticsCard } from './StatisticsCard';
 
 export const MovieSettings = () => {
   return (

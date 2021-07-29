@@ -59,7 +59,7 @@ const Wizard = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { finishWizard } = useContext(WizardContext);
-  const { settings, loadSettings } = useContext(SettingsContext);
+  const { settings, load } = useContext(SettingsContext);
 
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
   const { hasAdmins, isLoading } = useHasAnyAdmins();
@@ -114,7 +114,7 @@ const Wizard = () => {
     //Last step
     if (activeStep === steps - 1) {
       const result = await finishWizard(settings);
-      await loadSettings();
+      await load();
       if (result) {
         history.push("/");
         return;

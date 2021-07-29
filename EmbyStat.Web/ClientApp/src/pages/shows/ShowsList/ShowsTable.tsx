@@ -1,36 +1,27 @@
-import React, { useState, useEffect, useCallback, ReactElement, useContext } from 'react';
+import React, { useState, useEffect, ReactElement, useCallback, useContext } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import uuid from 'react-uuid';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
 import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
-import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
-import DetailMovieTemplate from '../DetailMovieTemplate';
-import { getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
-import Flag from '../../../../shared/components/flag';
-import { useServerType } from '../../../../shared/hooks';
-import { MovieRow } from '../../../../shared/models/movie';
-import SortLabel from '../../../../shared/components/tables/SortLabel';
-import { getMoviePage } from '../../../../shared/services/MovieService';
-import { TablePage } from '../../../../shared/models/common';
-import { ActiveFilter } from '../../../../shared/models/filter';
-import { SettingsContext } from '../../../../shared/context/settings';
+import { ActiveFilter } from '../../../shared/models/filter';
+import { getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
+import { useServerType } from '../../../shared/hooks';
+import calculateRunTime from '../../../shared/utils/CalculateRunTime';
+import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, IconButton, Collapse } from '@material-ui/core';
+import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions';
+import SortLabel from '../../../shared/components/tables/SortLabel';
+import { ShowDetail } from './ShowDetail';
+import { ShowRow } from '../../../shared/models/show';
+import { TablePage } from '../../../shared/models/common';
+import { getShowPage } from '../../../shared/services/ShowService';
+import { SettingsContext } from '../../../shared/context/settings';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -50,14 +41,14 @@ interface Props {
   filters: ActiveFilter[];
 }
 
-const MovieTable = (props: Props) => {
+export const ShowsTable = (props: Props) => {
   const { filters } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const [rowsPerPage, setRowsPerPage] = useState<number>(100);
   const [page, setPage] = useState(0);
   const [orderedBy, setOrderedBy] = useState('sortName');
-  const [tableData, setTableData] = useState<TablePage<MovieRow>>({ data: [], totalCount: 0 });
+  const [tableData, setTableData] = useState<TablePage<ShowRow>>({ data: [], totalCount: 0 });
   const [loading, setLoading] = useState(false);
 
   type Order = 'asc' | 'desc';
@@ -67,8 +58,8 @@ const MovieTable = (props: Props) => {
     (page: number, rowsPerPage: number, order: string, orderedBy: string, filters: string) => {
       setLoading(true);
       setTableData({ data: [], totalCount: 0 });
-      getMoviePage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
-        .then((data: TablePage<MovieRow>) => {
+      getShowPage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
+        .then((data: TablePage<ShowRow>) => {
           setTableData(data);
         })
         .finally(() => {
@@ -98,7 +89,7 @@ const MovieTable = (props: Props) => {
     setPage(0);
   };
 
-  const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: string) => () => {
     const isAsc = orderedBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderedBy(property);
@@ -111,23 +102,16 @@ const MovieTable = (props: Props) => {
     width?: number | undefined,
     align: 'right' | 'left',
   }
+
   const headers: head[] = [
     { label: "", field: "", sortable: false, width: 30, align: 'left' },
     { label: "COMMON.TITLE", field: "sortName", sortable: true, width: 300, align: 'left' },
     { label: "COMMON.GENRES", field: "", sortable: false, width: 220, align: 'left' },
-    { label: "COMMON.CONTAINER", field: "Container", sortable: true, align: 'right' },
+    { label: "COMMON.STATUS", field: "", sortable: false, width: 220, align: 'right' },
     { label: "COMMON.RUNTIME", field: "runTimeTicks", sortable: true, align: 'right' },
+    { label: "COMMON.TOTALRUNTIME", field: "runTimeTicks", sortable: false, align: 'right' },
+    { label: "COMMON.EPISODES", field: "", sortable: false, align: 'right' },
     { label: "COMMON.OFFICIALRATING", field: "officielRating", sortable: true, align: 'right' },
-    { label: "COMMON.HEIGHT", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.WIDTH", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.BITRATE", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.SIZEINMB", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.BITDEPTH", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.CODEC", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.VIDEORANGE", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.RATING", field: "communityRating", sortable: true, align: 'right' },
-    { label: "COMMON.SUBTITLES", field: "", sortable: false, width: 180, align: 'right' },
-    { label: "COMMON.AUDIO", field: "", sortable: false, width: 100, align: 'right' },
     { label: "COMMON.LINKS", field: "", sortable: false, align: 'right' },
   ]
 
@@ -218,7 +202,7 @@ const MovieTable = (props: Props) => {
 }
 
 interface RowProps {
-  row: MovieRow;
+  row: ShowRow;
 }
 
 const useRowStyles = makeStyles(() => ({
@@ -227,66 +211,41 @@ const useRowStyles = makeStyles(() => ({
   },
 }));
 
+const renderEpisodesCount = (data: ShowRow) => {
+  let value = `${data.collectedEpisodeCount} / ${data.collectedEpisodeCount + data.missingEpisodesCount}`;
+  if (data.specialEpisodeCount > 0) {
+    value += ` (${data.specialEpisodeCount})`
+  }
+
+  const percentage = data.collectedEpisodeCount / (data.collectedEpisodeCount + data.missingEpisodesCount) * 100;
+
+  return (
+    <Grid container direction="column">
+      <Grid item>
+        {value}
+      </Grid>
+      <Grid item>
+        <LinearProgress value={percentage} variant="determinate" color={percentage >= 90 ? "primary" : "secondary"} />
+      </Grid>
+    </Grid>
+  )
+}
+
 const Row = (props: RowProps): ReactElement => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-  const { t } = useTranslation();
   const { settings } = useContext(SettingsContext);
   const serverType = useServerType();
   const classes = useRowStyles();
 
-  const getSubtitleValues = (subtitles: string[]) => {
-    if (subtitles && subtitles.length) {
-      const normalSubtitlesCount = subtitles.filter(x => x !== 'und' && x !== null).length;
-      const extraSubtitlesCount = subtitles.filter(x => x === 'und' || x === null).length
-        + (normalSubtitlesCount > 5 ? normalSubtitlesCount - 5 : 0);
-
-      return (
-        <Grid container justify="flex-end" direction="row">
-          {subtitles?.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
-            <Grid item key={uuid()} className="m-r-4">
-              <Flag language={x} />
-            </Grid>
-          ))}
-          {extraSubtitlesCount > 0 ? (
-            <Grid item>+ {extraSubtitlesCount}</Grid>
-          ) : null}
-        </Grid>
-      );
-    }
-    return (<div />);
-  };
-
-  const getAudioValues = (audioLanguages: string[]) => {
-    if (audioLanguages && audioLanguages.length) {
-      const normalAudioCount = audioLanguages.filter(x => x !== 'und' && x !== null).length;
-      const extraAudioCount = audioLanguages.filter(x => x === 'und' || x === null).length
-        + (normalAudioCount > 5 ? normalAudioCount - 5 : 0);
-
-      return (
-        <Grid container justify="flex-end">
-          {audioLanguages.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
-            <Grid item key={uuid()} className="m-r-4">
-              <Flag language={x} />
-            </Grid>
-          ))}
-          {extraAudioCount > 0 ? (
-            <Grid item>+ {extraAudioCount}</Grid>
-          ) : null}
-        </Grid>
-      );
-    }
-    return (<div />);
-  };
-
-  const renderLinks = (movieId: string) => {
+  const renderLinks = (showId: string) => {
     return (
       <Grid container direction="row" justify="flex-end" alignItems="center">
         <Button
           variant="outlined"
           color="secondary"
           size="small"
-          href={getItemDetailLink(settings, movieId)}
+          href={getItemDetailLink(settings, showId)}
           target="_blank"
           startIcon={<OpenInNewIcon />}
           classes={{
@@ -309,25 +268,17 @@ const Row = (props: RowProps): ReactElement => {
         </TableCell>
         <TableCell component="th" scope="row">{row.name}</TableCell>
         <TableCell align="left">{row.genres.join(', ')}</TableCell>
-        <TableCell align="right">{row.container}</TableCell>
-        <TableCell align="right">{row.runTime} {t('COMMON.MIN')}</TableCell>
+        <TableCell align="right">{row.status}</TableCell>
+        <TableCell align="right">{calculateRunTime(row.runTime)}</TableCell>
+        <TableCell align="right">{calculateRunTime(row.cumulativeRunTimeTicks)}</TableCell>
+        <TableCell align="right">{renderEpisodesCount(row)}</TableCell>
         <TableCell align="right">{row.officialRating}</TableCell>
-        <TableCell align="right">{row.height}</TableCell>
-        <TableCell align="right">{row.width}</TableCell>
-        <TableCell align="right">{row.bitRate}</TableCell>
-        <TableCell align="right">{calculateFileSize(row.sizeInMb)}</TableCell>
-        <TableCell align="right">{row.bitDepth}</TableCell>
-        <TableCell align="right">{row.codec}</TableCell>
-        <TableCell align="right">{row.videoRange}</TableCell>
-        <TableCell align="right">{row.communityRating}</TableCell>
-        <TableCell align="right">{getSubtitleValues(row.subtitles)}</TableCell>
-        <TableCell align="right">{getAudioValues(row.audioLanguages)}</TableCell>
         <TableCell align="right">{renderLinks(row.id)}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={17}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <DetailMovieTemplate data={row} />
+            <ShowDetail data={row} />
           </Collapse>
         </TableCell>
       </TableRow>
@@ -335,4 +286,4 @@ const Row = (props: RowProps): ReactElement => {
   );
 }
 
-export default MovieTable
+export default ShowsTable
