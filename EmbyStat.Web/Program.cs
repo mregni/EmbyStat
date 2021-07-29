@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MoreLinq.Extensions;
 using NLog.Web;
 using NLog;
 using NLog.Targets;
@@ -26,22 +27,34 @@ namespace EmbyStat.Web
         {
             try
             {
-                StartupOptions options = null;
-                Parser.Default.ParseArguments<StartupOptions>(args).MapResult(opts => options = opts, NotParedOptions);
+                var parseResult = Parser.Default.ParseArguments<StartupOptions>(args)
+                    .WithParsed(startupOptions =>
+                    {
+                        if (startupOptions.LogLevel == 1)
+                        {
+                            Console.WriteLine("------------------------------");
+                            Console.WriteLine("!Application is in Debug mode!");
+                            Console.WriteLine("------------------------------");
+                        }
+                    })
+                    ;
 
-                if (options == null)
+                if (parseResult.Tag == ParserResultType.NotParsed)
                 {
                     return 0;
                 }
 
+                StartupOptions options = null;
+                parseResult.MapResult(opt => options = opt, NotParedOptions);
+
                 options = CheckEnvironmentVariables(options);
-                
+
                 var configArgs = CreateArgsArray(options);
                 _logger = SetupLogging(configArgs);
                 LogLevelChanger.SetNlogLogLevel(NLog.LogLevel.FromOrdinal(options.LogLevel));
 
                 LogStartupParameters(configArgs, options.LogLevel, options.Service);
-                
+
                 var listeningUrl = string.Join(';', options.ListeningUrls.Split(';').Select(x => $"{x}:{options.Port}"));
                 var config = BuildConfigurationRoot(configArgs);
                 var host = BuildWebHost(args, listeningUrl, config);
