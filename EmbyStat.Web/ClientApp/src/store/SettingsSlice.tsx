@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   MediaServerSettings,
   Settings,
-  TvdbSettings,
+  TmdbSettings,
 } from '../shared/models/settings';
 import {
   getSettings,
@@ -25,7 +25,7 @@ const mediaServerSettings: MediaServerSettings = {
   serverId: '',
 };
 
-const tvdbSettings: TvdbSettings = {
+const tmdbSettings: TmdbSettings = {
   apiKey: '',
   lastUpdate: null,
 };
@@ -44,7 +44,7 @@ const initialState: Settings = {
   updateInProgress: false,
   version: '0.0.0',
   mediaServer: mediaServerSettings,
-  tvdb: tvdbSettings,
+  tmdb: tmdbSettings,
   enableRollbarLogging: false,
   isLoaded: false,
   toShortMovieEnabled: false,

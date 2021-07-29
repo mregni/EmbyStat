@@ -3,7 +3,7 @@ export interface MediaServerUdpBroadcast {
   id: string;
   name: string;
   port: number;
-  protocol: number;
-  type: number;
+  protocol: 0 | 1;
+  type: 0 | 1;
   baseUrl: string;
 }

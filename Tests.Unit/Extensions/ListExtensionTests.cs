@@ -111,5 +111,26 @@ namespace Tests.Unit.Extensions
             bsonArray[1].AsString.Should().Be(list[1].ToString());
             bsonArray[2].AsString.Should().Be(list[2].ToString());
         }
+
+        [Fact]
+        public void MaybeAdd_Should_Add_Item_To_List()
+        {
+            var list = new List<int?> {1};
+            list.AddIfNotNull(2);
+
+            list.Count.Should().Be(2);
+            list[0].Should().Be(1);
+            list[1].Should().Be(2);
+        }
+
+        [Fact]
+        public void MaybeAdd_Should_Not_Add_Null_Item_To_List()
+        {
+            var list = new List<int?> { 1 };
+            list.AddIfNotNull(null);
+
+            list.Count.Should().Be(1);
+            list[0].Should().Be(1);
+        }
     }
 }

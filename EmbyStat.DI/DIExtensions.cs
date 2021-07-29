@@ -8,7 +8,7 @@ using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
-using EmbyStat.Clients.Tvdb;
+using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Jobs;
@@ -21,6 +21,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using RestSharp;
@@ -88,7 +89,8 @@ namespace EmbyStat.DI
 
             services.TryAddTransient<IDatabaseCleanupJob, DatabaseCleanupJob>();
             services.TryAddTransient<IPingEmbyJob, PingEmbyJob>();
-            services.TryAddTransient<IMediaSyncJob, MediaSyncJob>();
+            services.TryAddTransient<IShowSyncJob, ShowSyncJob>();
+            services.TryAddTransient<IMovieSyncJob, MovieSyncJob>();
             services.TryAddTransient<ISmallSyncJob, SmallSyncJob>();
             services.TryAddTransient<ICheckUpdateJob, CheckUpdateJob>();
         }
@@ -104,7 +106,7 @@ namespace EmbyStat.DI
             services.TryAddSingleton<IEmbyHttpClient, EmbyHttpClient>();
             services.TryAddSingleton<IJellyfinHttpClient, JellyfinHttpClient>();
 
-            services.TryAddTransient<ITvdbClient, TvdbClient>();
+            services.TryAddTransient<ITmdbClient, TmdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();
 
             services.TryAddSingleton<IWebSocketApi, WebSocketApi>();
@@ -114,6 +116,7 @@ namespace EmbyStat.DI
         private static void RegisterHttp(this IServiceCollection services)
         {
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
 
         private static void RegisterSignalR(this IServiceCollection services)

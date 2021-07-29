@@ -34,8 +34,7 @@ namespace EmbyStat.Common.Converters
                     SupportsAutoRunAtStartup = info.SupportsAutoRunAtStartup,
                     SupportsHttps = info.SupportsHttps,
                     SupportsLibraryMonitor = info.SupportsLibraryMonitor,
-                    SystemUpdateLevel = info.SystemUpdateLevel == "Release" ? UpdateLevel.Release :
-                        info.SystemUpdateLevel == "beta" ? UpdateLevel.Beta : UpdateLevel.Dev,
+                    SystemUpdateLevel = MapStringToUpdateLevel(info.SystemUpdateLevel),
                     TranscodingTempPath = info.TranscodingTempPath,
                     Version = info.Version,
                     WanAddress = info.WanAddress,
@@ -44,6 +43,16 @@ namespace EmbyStat.Common.Converters
             }
 
             return null;
+        }
+
+        private static UpdateLevel MapStringToUpdateLevel(string level)
+        {
+            return level switch
+            {
+                "Release" => UpdateLevel.Release,
+                "beta" => UpdateLevel.Beta,
+                _ => UpdateLevel.Dev
+            };
         }
     }
 }

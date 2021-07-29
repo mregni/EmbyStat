@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
@@ -50,21 +51,10 @@ namespace EmbyStat.Services
         }
 
         #region Server
-        public MediaServerUdpBroadcast SearchMediaServer(ServerType type)
+        public Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type)
         {
             ChangeClientType(type);
-            var result = _httpClient.SearchServer();
-            if (result != null)
-            {
-                result.Type = (int) type;
-                if (!string.IsNullOrWhiteSpace(result.Address))
-                {
-                    var serverType = type == ServerType.Emby ? "Emby" : "jellyfin";
-                    _logger.Info($"{serverType} server found at: " + result.Address);
-                }
-            }
-
-            return result;
+            return _httpClient.SearchServer();
         }
 
         public ServerInfo GetServerInfo(bool forceReSync)

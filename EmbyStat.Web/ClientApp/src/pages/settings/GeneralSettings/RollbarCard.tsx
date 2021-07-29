@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { RootState } from '../../../store/RootReducer';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
-import SettingsCard from '../SettingsCard';
+import { SettingsCard } from '../Helpers';
+import { SettingsContext } from '../../../shared/context/settings';
 
 interface Props {
   delay: number
 }
 
-const RollbarCard = (props: Props) => {
+export const RollbarCard = (props: Props) => {
   const { delay } = props;
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
   const [rollbar, setRollbar] = useState(settings.enableRollbarLogging);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -53,5 +53,3 @@ const RollbarCard = (props: Props) => {
     </SettingsCard>
   )
 }
-
-export default RollbarCard

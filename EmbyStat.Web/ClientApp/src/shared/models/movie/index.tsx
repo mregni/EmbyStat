@@ -3,4 +3,4 @@ export * from './MovieStatistics';
 export * from './ShortMovie';
 export * from './SuspiciousMovie';
 export * from './MovieStatisticsContainer';
-export * from './MovieColumn';
+export * from './MovieRow';

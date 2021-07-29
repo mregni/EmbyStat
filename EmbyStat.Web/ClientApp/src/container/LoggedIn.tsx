@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StaticContext } from 'react-router';
+import { Redirect, StaticContext } from 'react-router';
 import { Route, RouteComponentProps, Switch, useHistory, withRouter } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -15,27 +15,25 @@ import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import MenuIcon from '@material-ui/icons/Menu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import Home from '../pages/home';
 import Jobs from '../pages/jobs';
-import Login from '../pages/login';
+import { Login } from '../pages/login';
 import Logs from '../pages/logs';
 import MediaServer from '../pages/mediaServer';
-import MoviesLoader from '../pages/movies/Helpers/MoviesLoader';
-import MoviesGeneral from '../pages/movies/MoviesGeneral';
-import MoviesGraphs from '../pages/movies/MoviesGraphs';
-import MoviesList from '../pages/movies/MoviesList';
-import ShowsGeneral from '../pages/shows/ShowsGeneral';
-import ShowsGraphs from '../pages/shows/ShowsGraphs';
-import ShowsLoader from '../pages/shows/Helpers/ShowsLoader';
+import { MoviesGeneral, MoviesList, MoviesGraphs, MoviesLoader } from '../pages/movies';
+import { ShowsGeneral, ShowsGraphs, ShowsList, ShowsLoader } from '../pages/shows';
 import NotFound from '../pages/notFound';
-import GeneralSettings from '../pages/settings/GeneralSettings';
-import MovieSettings from '../pages/settings/MovieSettings';
+import { GeneralSettings, MovieSettings, ShowSettings } from '../pages/settings';
 import Menu from '../shared/components/menu';
 import PrivateRoute from '../shared/components/privateRoute';
 import UpdateProvider from '../shared/providers/UpdateProvider';
 import { logout, userLoggedIn$ } from '../shared/services/AccountService';
 import theme from '../styles/theme';
+import { SettingsContext } from '../shared/context/settings';
+import { WizardContainer } from '../pages/wizard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,15 +53,12 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
-      marginRight: theme.spacing(4),
+      marginRight: theme.spacing(2),
     },
   },
   content: {
     padding: theme.spacing(3),
-    marginTop: 56,
-    [theme.breakpoints.up("sm")]: {
-      marginTop: 64,
-    },
+    marginTop: 48,
     width: "100%",
     zIndex: 1,
   },
@@ -75,22 +70,23 @@ const useStyles = makeStyles((theme) => ({
   },
   logout__button: {
     height: 36,
+    "&:hover": {
+      backgroundColor: "transparent"
+    }
   },
+  toolbar__root: {
+    backgroundColor: theme.palette.grey[800]
+  }
 }));
 
-type Props = RouteComponentProps<
-  {},
-  StaticContext,
-  { referer: { pathname: string } }
->;
-
-const LoggedIn = (props: Props) => {
-  const { location } = props;
+const LoggedIn = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
+  const { settings } = useContext(SettingsContext);
   const [openMenu, setOpenMenu] = useState(false);
   const [openHeader, setOpenHeader] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const small = useMediaQuery(theme.breakpoints.down("md"));
@@ -100,9 +96,20 @@ const LoggedIn = (props: Props) => {
   }, [small]);
 
   useEffect(() => {
+    setOpenMenu(isAuthenticated);
+    setOpenHeader(isAuthenticated);
+  }, [isAuthenticated])
+
+  useEffect(() => {
+    console.log(settings.wizardFinished);
+    if (!settings.wizardFinished) {
+      history.replace('/wizard');
+    }
+  }, [history, settings.wizardFinished])
+
+  useEffect(() => {
     userLoggedIn$.subscribe((value: boolean) => {
-      setOpenMenu(value);
-      setOpenHeader(value);
+      setIsAuthenticated(value);
     });
     return () => {
       userLoggedIn$.unsubscribe();
@@ -124,63 +131,75 @@ const LoggedIn = (props: Props) => {
   return (
     <div className={classes.root}>
       <UpdateProvider>
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBar__closed]: !openHeader,
-          })}
-        >
-          <Toolbar>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justify="space-between"
-            >
-              <Grid
-                item
-                className={classes.header__buttons}
-                container
-                direction="row"
-                alignItems="center"
+        {
+          settings.wizardFinished && (
+            <>
+              <AppBar
+                position="fixed"
+                className={classNames(classes.appBar, {
+                  [classes.appBar__closed]: !openHeader,
+                })}
               >
-                <IconButton
-                  color="inherit"
-                  onClick={handleDrawerToggle}
-                  edge="start"
-                  className={classNames(classes.menuButton)}
-                >
-                  {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
-                </IconButton>
-                <Typography variant="h6" noWrap>
-                  EmbyStat
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button
-                  onClick={logoutUser}
-                  variant="contained"
-                  color="secondary"
-                  disabled={isLoading}
-                  className={classes.logout__button}
-                >
-                  {isLoading ? (
-                    <CircularProgress
-                      size={16}
-                      className={classes.button__loading}
-                    />
-                  ) : (
-                      t("LOGIN.LOGOUT")
-                    )}
-                </Button>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <Menu open={openMenu} setOpen={setOpenMenu} />
+                <Toolbar
+                  classes={{
+                    root: classes.toolbar__root
+                  }}>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justify="space-between"
+                  >
+                    <Grid
+                      item
+                      className={classes.header__buttons}
+                      container
+                      direction="row"
+                      alignItems="center"
+                    >
+                      <IconButton
+                        color="primary"
+                        onClick={handleDrawerToggle}
+                        edge="start"
+                        className={classNames(classes.menuButton)}
+                      >
+                        {openMenu ? <ArrowBackRoundedIcon /> : <MenuIcon />}
+                      </IconButton>
+                      <Typography variant="h6" noWrap color="primary">
+                        EmbyStat
+                  </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        onClick={logoutUser}
+                        variant="text"
+                        color="primary"
+                        disabled={isLoading}
+                        className={classes.logout__button}
+                      >
+                        {isLoading ? (
+                          <CircularProgress
+                            size={16}
+                            className={classes.button__loading}
+                          />
+                        ) : (
+                            <span>
+                              <FontAwesomeIcon icon={faSignOutAlt} className="m-r-8" />
+                              {t("LOGIN.LOGOUT")}
+                            </span>
+                          )}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Toolbar>
+              </AppBar>
+              <Menu open={openMenu} setOpen={setOpenMenu} />
+            </>
+          )
+        }
 
         <main className={classes.content}>
-          <Switch location={location}>
+          <Switch>
             <PrivateRoute path="/" exact>
               <Home />
             </PrivateRoute>
@@ -193,11 +212,14 @@ const LoggedIn = (props: Props) => {
             <PrivateRoute path="/movies/list" exact>
               <MoviesLoader Component={MoviesList} />
             </PrivateRoute>
-            <PrivateRoute path="/shows/general" exact>
+            <PrivateRoute path={["/shows/general", "/shows"]} exact>
               <ShowsLoader Component={ShowsGeneral} />
             </PrivateRoute>
             <PrivateRoute path="/shows/graphs" exact>
               <ShowsLoader Component={ShowsGraphs} />
+            </PrivateRoute>
+            <PrivateRoute path="/shows/list" exact>
+              <ShowsLoader Component={ShowsList} />
             </PrivateRoute>
             <PrivateRoute path="/mediaserver" exact>
               <MediaServer />
@@ -214,8 +236,18 @@ const LoggedIn = (props: Props) => {
             <PrivateRoute path="/settings/movie" exact>
               <MovieSettings />
             </PrivateRoute>
+            <PrivateRoute path="/settings/show" exact>
+              <ShowSettings />
+            </PrivateRoute>
             <Route path="/login">
-              <Login />
+              {
+                isAuthenticated
+                  ? <Redirect to="/" />
+                  : <Login />
+              }
+            </Route>
+            <Route path="/wizard">
+              <WizardContainer />
             </Route>
             <Route path="*">
               <NotFound />
@@ -227,4 +259,4 @@ const LoggedIn = (props: Props) => {
   );
 };
 
-export default withRouter(LoggedIn);
+export default LoggedIn;

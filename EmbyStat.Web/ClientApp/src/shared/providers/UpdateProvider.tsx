@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -6,6 +6,7 @@ import { RootState } from '../../store/RootReducer';
 import { useTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import { UpdateSuccessFull } from '../models/embystat';
+import { SettingsContext } from '../context/settings';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +40,7 @@ const UpdateProvider = (props: Props) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const status = useSelector((state: RootState) => state.serverStatus);
-  const settings = useSelector((state: RootState) => state.settings);
+  const { settings } = useContext(SettingsContext);
 
   useEffect(() => {
     if (status.updateSuccesfull === UpdateSuccessFull.SuccesFull) {

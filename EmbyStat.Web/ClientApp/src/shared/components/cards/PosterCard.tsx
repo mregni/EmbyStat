@@ -1,16 +1,15 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { RootState } from '../../../store/RootReducer';
 
 import { getItemDetailLink, getPrimaryImageLink } from '../../utils/MediaServerUrlUtil';
+import { SettingsContext } from '../../context/settings';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -74,28 +73,27 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   mediaId: string;
   tag: string;
-  name: string;
-  title: string;
-  height: number;
-  details: ReactNode;
-  noGradient: boolean;
-  noOpen: boolean;
+  name?: string;
+  title?: string;
+  height?: number;
+  details?: ReactNode;
+  noGradient?: boolean;
+  noOpen?: boolean;
 }
 
 const PosterCard = (props: Props) => {
   const {
     mediaId,
     tag,
-    name,
-    title,
-    details,
-    height,
-    noGradient,
-    noOpen,
+    name = null,
+    title = null,
+    details = null,
+    height = 175,
+    noGradient = false,
+    noOpen = false,
   } = props;
   const { t } = useTranslation();
-  const settings = useSelector((state: RootState) => state.settings);
-
+  const { settings } = useContext(SettingsContext);
   const getPosterUrl = (): string => {
     return getPrimaryImageLink(settings, mediaId, tag);
   };
@@ -167,15 +165,6 @@ const PosterCard = (props: Props) => {
       </Paper>
     </Zoom>
   );
-};
-
-PosterCard.defaultProps = {
-  height: 175,
-  details: null,
-  title: null,
-  name: null,
-  noGradient: false,
-  noOpen: false,
 };
 
 export default PosterCard;

@@ -7,6 +7,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
@@ -14,6 +15,7 @@ using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
@@ -47,7 +49,7 @@ namespace EmbyStat.Services
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
 
-            if (StatisticsAreValid(statistic, libraryIds))
+            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.ShowSyncId))
             {
                 return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
@@ -84,6 +86,39 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
+        public Page<ShowRow> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        {
+            var list = _showRepository
+                .GetShowPage(skip, take, sort, filters, libraryIds)
+                .Select(x => new ShowRow
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    SortName = x.SortName,
+                    CollectedEpisodeCount = x.GetEpisodeCount(false, LocationType.Disk),
+                    MissingEpisodesCount = x.GetEpisodeCount(false, LocationType.Virtual),
+                    SpecialEpisodeCount = x.GetEpisodeCount(true, LocationType.Disk),
+                    Genres = x.Genres,
+                    OfficialRating = x.OfficialRating,
+                    CumulativeRunTimeTicks = x.CumulativeRunTimeTicks,
+                    RunTime = x.RunTimeTicks,
+                    Status = x.Status
+                });
+
+            var page = new Page<ShowRow> { Data = list };
+            if (requireTotalCount)
+            {
+                page.TotalCount = _showRepository.GetMediaCount(filters, libraryIds);
+            }
+
+            return page;
+        }
+
+        public Show GetShow(string id)
+        {
+            return _showRepository.GetShowById(id, true);
+        }
+
         #region Cards
 
         private List<Card<string>> CalculateCards(IReadOnlyList<string> libraryIds)
@@ -118,7 +153,7 @@ namespace EmbyStat.Services
         {
             var sum = _showRepository
                 .GetAllShows(libraryIds, true, true)
-                .Sum(x => x.GetNonSpecialEpisodeCount(false))
+                .Sum(x => x.GetEpisodeCount(false, LocationType.Disk))
                 .ToString();
 
             return new Card<string>
@@ -146,8 +181,13 @@ namespace EmbyStat.Services
         {
             var sum = _showRepository
                 .GetAllShows(libraryIds, false, true)
-                .Sum(x => x.MissingEpisodesCount)
+                .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
                 .ToString();
+
+            var boe = _showRepository.GetAllShows(libraryIds, false, true).ToList();
+            var epi = boe.SelectMany(x => x.Episodes);
+
+            var epiw = epi.Where(x => x.LocationType == LocationType.Virtual).ToList();
 
             return new Card<string>
             {
@@ -195,15 +235,27 @@ namespace EmbyStat.Services
 
         private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
-            return new List<TopCard>
-            {
-                CalculateNewestPremieredShow(libraryIds),
-                CalculateOldestPremieredShow(libraryIds),
-                CalculateLatestAddedShow(libraryIds),
-                CalculateHighestRatedShow(libraryIds),
-                CalculateLowestRatedShow(libraryIds),
-                CalculateShowWithMostEpisodes(libraryIds)
-            };
+            var list = new List<TopCard>();
+
+            var calculateNewestPremieredShow = CalculateNewestPremieredShow(libraryIds);
+            list.AddIfNotNull(calculateNewestPremieredShow);
+
+            var calculateOldestPremieredShow = CalculateOldestPremieredShow(libraryIds);
+            list.AddIfNotNull(calculateOldestPremieredShow);
+
+            var calculateLatestAddedShow = CalculateLatestAddedShow(libraryIds);
+            list.AddIfNotNull(calculateLatestAddedShow);
+
+            var calculateHighestRatedShow = CalculateHighestRatedShow(libraryIds);
+            list.AddIfNotNull(calculateHighestRatedShow);
+
+            var calculateLowestRatedShow = CalculateLowestRatedShow(libraryIds);
+            list.AddIfNotNull(calculateLowestRatedShow);
+
+            var calculateShowWithMostEpisodes = CalculateShowWithMostEpisodes(libraryIds);
+            list.AddIfNotNull(calculateShowWithMostEpisodes);
+
+            return list;
         }
 
         private TopCard CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)
@@ -409,7 +461,7 @@ namespace EmbyStat.Services
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
             ListContainer<ShowCollectionRow> rows = new ListContainer<ShowCollectionRow>();
-            if (StatisticsAreValid(statistic, libraryIds))
+            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.ShowSyncId))
             {
                 rows.Data = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
             }
@@ -444,16 +496,16 @@ namespace EmbyStat.Services
 
         private ShowCollectionRow CreateShowCollectedRow(Show show)
         {
-            var seasonCount = show.GetNonSpecialSeasonCount();
+            var seasonCount = show.GetSeasonCount(false);
 
             return new ShowCollectionRow
             {
                 Title = show.Name,
                 SortName = show.SortName,
-                Episodes = show.CollectedEpisodeCount,
+                Episodes = show.GetEpisodeCount(false, LocationType.Disk),
                 Seasons = seasonCount,
-                Specials = show.SpecialEpisodeCount,
-                MissingEpisodeCount = show.GetMissingEpisodeCount(),
+                Specials = show.GetEpisodeCount(true, LocationType.Disk),
+                MissingEpisodeCount = show.GetEpisodeCount(false, LocationType.Virtual),
                 MissingEpisodes = show.GetMissingEpisodes().GroupBy(x => x.SeasonNumber, (index, episodes) => new VirtualSeason { Episodes = episodes, SeasonNumber = index }),
                 PremiereDate = show.PremiereDate,
                 Status = show.Status == "Continuing",
@@ -461,7 +513,7 @@ namespace EmbyStat.Services
                 Banner = show.Banner,
                 Imdb = show.IMDB,
                 Tvdb = show.TVDB,
-                Size = show.GetShowSize()
+                Size = show.SizeInMb
             };
         }
 

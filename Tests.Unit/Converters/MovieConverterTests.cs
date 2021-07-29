@@ -74,7 +74,7 @@ namespace Tests.Unit.Converters
             movie.Logo.Should().Be(baseItem.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value);
             movie.Banner.Should().Be(baseItem.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value);
             movie.IMDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Imdb").Value);
-            movie.TMDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value);
+            movie.TMDB.Should().Be(int.Parse(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tmdb").Value));
             movie.TVDB.Should().Be(baseItem.ProviderIds.FirstOrDefault(y => y.Key == "Tvdb").Value);
             movie.AudioStreams.Count.Should().Be(1);
             movie.SubtitleStreams.Count.Should().Be(1);

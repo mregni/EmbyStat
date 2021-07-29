@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Helpers;
@@ -44,14 +45,14 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("server/search")]
-        public IActionResult SearchMediaServer(int serverType)
+        public async Task<IActionResult> SearchMediaServer(int serverType)
         {
             var type = (ServerType)serverType;
-            var result = _mediaServerService.SearchMediaServer(type);
+            var result = await _mediaServerService.SearchMediaServer(type);
             if (result != null)
             {
-                var boe = _mapper.Map<UdpBroadcastViewModel>(result);
-                return Ok(boe);
+                var mapped = _mapper.Map<IList<UdpBroadcastViewModel>>(result);
+                return Ok(mapped);
             }
 
             return NoContent();

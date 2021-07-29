@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       paddingLeft: props.isChild ? 48 + theme.spacing(3) : theme.spacing(3),
     },
+    textTransform: 'capitalize'
   }),
   menu__icon: {
     minWidth: 0,
