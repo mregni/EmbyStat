@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
-import SettingsCard from '../SettingsCard';
+import { SettingsCard } from '../Helpers';
 import { EsTextInput } from '../../../shared/components/esTextInput';
 import { SettingsContext } from '../../../shared/context/settings';
 

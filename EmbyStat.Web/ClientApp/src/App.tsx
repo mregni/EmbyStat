@@ -19,16 +19,16 @@ function App(): ReactElement {
   const dispatch = useDispatch();
   const history = useHistory();
   const store = useStore();
-  const { settings, loadSettings } = useContext(SettingsContext);
+  const { settings, load } = useContext(SettingsContext);
 
   useEffect(() => {
     if (!settings.isLoaded) {
-      loadSettings();
+      load();
     } else {
       i18n.changeLanguage(settings.language);
       moment.locale(settings.language);
     }
-  }, [loadSettings, settings]);
+  }, [load, settings]);
 
   useEffect(() => {
     dispatch(loadJobs());

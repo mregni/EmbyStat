@@ -1,7 +1,10 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 
-import { UserDetailCard, RollbarCard, TmdbCard, LanguageCard } from '.';
+import { LanguageCard } from './LanguageCard';
+import { RollbarCard } from './RollbarCard';
+import { TmdbCard } from './TmdbCard';
+import { UserDetailCard } from './UserDetailCard';
 
 export const GeneralSettings = () => {
   return (

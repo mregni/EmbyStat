@@ -8,17 +8,17 @@ import { useTranslation } from 'react-i18next';
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 
-import { ShowRow } from '../../../../shared/models/show';
-import { useServerType } from '../../../../shared/hooks';
-import { getBackdropImageLink, getItemDetailLink } from '../../../../shared/utils/MediaServerUrlUtil';
-import { Show } from '../../../../shared/models/common';
-import { getShowDetails } from '../../../../shared/services/ShowService';
-import theme from '../../../../styles/theme';
-import PosterCard from '../../../../shared/components/cards/PosterCard';
-import calculateFileSize from '../../../../shared/utils/CalculateFileSize';
-import calculateRunTime from '../../../../shared/utils/CalculateRunTime';
-import DetailMovieSkeleton from '../../../movies/MoviesList/DetailMovieTemplate/DetailMovieSkeleton';
-import { SettingsContext } from '../../../../shared/context/settings';
+import { ShowRow } from '../../../shared/models/show';
+import { useServerType } from '../../../shared/hooks';
+import { getBackdropImageLink, getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
+import { Show } from '../../../shared/models/common';
+import { getShowDetails } from '../../../shared/services/ShowService';
+import theme from '../../../styles/theme';
+import PosterCard from '../../../shared/components/cards/PosterCard';
+import calculateFileSize from '../../../shared/utils/CalculateFileSize';
+import calculateRunTime from '../../../shared/utils/CalculateRunTime';
+import { ShowDetailSkeleton } from './ShowDetailSkeleton';
+import { SettingsContext } from '../../../shared/context/settings';
 
 const useStyles = makeStyles(() => ({
   container: (props: any) => ({
@@ -51,7 +51,7 @@ interface Props {
   data: ShowRow
 }
 
-export const DetailShowTemplate = (props: Props) => {
+export const ShowDetail = (props: Props) => {
   const { data } = props;
   const { t } = useTranslation();
   const [show, setShow] = useState<Show | null>(null);
@@ -72,7 +72,7 @@ export const DetailShowTemplate = (props: Props) => {
 
   const classes = useStyles({ background: getPosterUrl() });
   if (show === null || show === undefined) {
-    return (<DetailMovieSkeleton />);
+    return (<ShowDetailSkeleton />);
   }
 
   return (

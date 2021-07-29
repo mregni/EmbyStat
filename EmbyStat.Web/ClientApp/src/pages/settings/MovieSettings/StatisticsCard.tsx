@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import SettingsCard from '../SettingsCard';
+import { SettingsCard } from '../Helpers';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { EsTextInput } from '../../../shared/components/esTextInput';

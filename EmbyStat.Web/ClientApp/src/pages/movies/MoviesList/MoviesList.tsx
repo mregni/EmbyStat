@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import movieFilters from '../../../shared/filters/movieFilters';
 import { ActiveFilter } from '../../../shared/models/filter';
-import MovieTable from './MovieTable';
-import MovieFilterDialog from './MovieFilterDialog';
+import MovieTable from './MoviesTable';
+import { MovieFilterDialog } from './MovieFilterDialog';
 import { FilterContainer } from "../../../shared/components/filter";
 
 const useStyles = makeStyles(() => ({

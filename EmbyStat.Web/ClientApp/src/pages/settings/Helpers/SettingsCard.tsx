@@ -21,7 +21,7 @@ interface Props {
   saveForm: () => void;
 }
 
-const SettingsCard = (props: Props) => {
+export const SettingsCard = (props: Props) => {
   const classes = useStyles();
   const { delay, title, children, saveForm } = props;
   const { t } = useTranslation();
@@ -48,5 +48,3 @@ const SettingsCard = (props: Props) => {
     </Zoom>
   )
 }
-
-export default SettingsCard
