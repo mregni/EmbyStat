@@ -513,7 +513,7 @@ namespace EmbyStat.Services
                 Banner = show.Banner,
                 Imdb = show.IMDB,
                 Tvdb = show.TVDB,
-                Size = show.GetShowSize()
+                Size = show.SizeInMb
             };
         }
 

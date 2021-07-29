@@ -2,9 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { Skeleton } from '@material-ui/lab';
 
-interface Props { }
-
-const DetailMovieSkeleton = (props: Props) => {
+export const ShowDetailSkeleton = () => {
   return (
     <Grid container>
       <Grid item className="m-r-16">
@@ -109,5 +107,3 @@ const DetailMovieSkeleton = (props: Props) => {
     </Grid>
   );
 };
-
-export default DetailMovieSkeleton;

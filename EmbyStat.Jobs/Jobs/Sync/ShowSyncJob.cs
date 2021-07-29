@@ -123,10 +123,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                     episodes.ForEach(x => x.SeasonIndexNumber = seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber );
                     show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
+
                 }
 
                 show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);
                 show.LastUpdated = updateStartTime;
+                show.SizeInMb = show.GetShowSize();
 
                 var oldShow = _showRepository.GetShowById(show.Id);
 
@@ -146,7 +148,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
 
                 _showRepository.InsertShow(show);
-                await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name}");
+                await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name} => {show.Seasons.Count} seasons, {show.GetEpisodeCount(true, LocationType.Disk)} episodes, (Size in GB: {Math.Round(show.SizeInMb / 1024, 2)})");
                 await LogProgressIncrement(logIncrementBase / grouped.Count);
             }
         }

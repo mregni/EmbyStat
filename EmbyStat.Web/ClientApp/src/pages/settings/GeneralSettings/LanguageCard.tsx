@@ -13,7 +13,7 @@ import { loadLanguages } from '../../../store/LanguageSlice';
 import { Language } from '../../../shared/models/language';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
-import SettingsCard from '../SettingsCard';
+import { SettingsCard } from '../Helpers';
 import { SettingsContext } from '../../../shared/context/settings';
 
 interface Props {

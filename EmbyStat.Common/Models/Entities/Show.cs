@@ -16,5 +16,7 @@ namespace EmbyStat.Common.Models.Entities
         public List<Season> Seasons { get; set; }
         [BsonRef(nameof(Episode))]
         public List<Episode> Episodes { get; set; }
+        public double SizeInMb { get; set; }
+
     }
 }

@@ -11,7 +11,7 @@ interface Props {
   open: boolean;
 }
 
-const MovieFilterDialog = (props: Props) => {
+export const MovieFilterDialog = (props: Props) => {
   const { setOpen, open } = props;
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('sm');
@@ -37,5 +37,3 @@ const MovieFilterDialog = (props: Props) => {
     </Dialog>
   )
 }
-
-export default MovieFilterDialog
