@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Converters;
@@ -19,8 +16,6 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -202,7 +197,7 @@ namespace EmbyStat.Clients.Base.Http
                 Logger.Debug($"Ping returned: {result}");
                 return result == message;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Logger.Error(e, "Ping failed");
                 return false;

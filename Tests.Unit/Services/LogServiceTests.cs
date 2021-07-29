@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using Newtonsoft.Json;
-using Rollbar.DTOs;
 
 namespace EmbyStat.Common.Models.Settings
 {

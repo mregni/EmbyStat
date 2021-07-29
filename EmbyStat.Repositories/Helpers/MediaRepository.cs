@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Web;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;

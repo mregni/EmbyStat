@@ -3,7 +3,6 @@ using AutoMapper;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Controllers.Movie;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

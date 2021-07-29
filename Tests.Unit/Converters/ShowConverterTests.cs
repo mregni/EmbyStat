@@ -8,7 +8,6 @@ using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Logging;
 using FluentAssertions;
-using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 

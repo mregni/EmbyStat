@@ -15,7 +15,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.LiteDB;
-using AutoMapper;
 using EmbyStat.Clients.Base;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;

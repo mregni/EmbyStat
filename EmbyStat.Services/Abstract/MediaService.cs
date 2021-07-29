@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
-using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services.Abstract
