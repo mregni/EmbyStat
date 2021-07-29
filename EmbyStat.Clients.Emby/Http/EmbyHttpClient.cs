@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using RestSharp;
 
 namespace EmbyStat.Clients.Emby.Http

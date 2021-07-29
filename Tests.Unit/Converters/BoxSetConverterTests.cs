@@ -4,7 +4,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Logging;
 using FluentAssertions;
-using Moq;
 using Xunit;
 
 namespace Tests.Unit.Converters

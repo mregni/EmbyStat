@@ -192,7 +192,7 @@ const Wizard = () => {
                         <EsButton
                           onClick={handleBack}
                           fullWidth={false}
-                          disabled={disableControls || [0, 4, 7].includes(activeStep)}
+                          disabled={disableControls || [0, 7].includes(activeStep)}
                         >
                           <KeyboardArrowLeft />
                           {t('back')}

@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Logging;
-using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
-using MediaBrowser.Model.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
