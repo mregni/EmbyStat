@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Tmdb.Converter;
-using EmbyStat.Common;
 using EmbyStat.Common.Models.Show;
 using TMDbLib.Client;
-using TMDbLib.Objects.TvShows;
 
 namespace EmbyStat.Clients.Tmdb
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
@@ -122,7 +121,7 @@ namespace EmbyStat.Repositories
                         ? query.OrderByDescending(x => typeof(Show).GetProperty(selector)?.GetValue(x, null))
                         : query.OrderBy(x => typeof(Show).GetProperty(selector)?.GetValue(x, null));
                 }
-
+                 
                 return query
                     .Skip(skip)
                     .Take(take);

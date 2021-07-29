@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using EmbyStat.Common.Models.Entities.Helpers;
 
 namespace Tests.Unit.Builders

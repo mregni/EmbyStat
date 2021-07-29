@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Converters;
@@ -19,8 +16,6 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -114,10 +109,12 @@ namespace EmbyStat.Clients.Base.Http
         protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
         {
             var list = new List<MediaServerUdpBroadcast>();
-            Logger.Debug($"Checking following broadcast IPs (own IP: ");
-            foreach (var ip in GetBroadCastIps())
+            var ownIp = _accessor.HttpContext?.Connection.RemoteIpAddress ?? IPAddress.Any;
+            Logger.Debug($"Own IP detected: {ownIp.MapToIPv4()}");
+            Logger.Debug($"Sending \"{message}\" to following broadcast IPs:");
+            foreach (var ip in GetBroadCastIps(ownIp))
             {
-                Logger.Debug($"\t{ip}");
+                Logger.Debug($"\t{ip.MapToIPv4()}");
                 await Task.Run(async () =>
                 {
                     var to = new IPEndPoint(ip, 7359);
@@ -136,10 +133,9 @@ namespace EmbyStat.Clients.Base.Http
             return list;
         }
 
-        private IEnumerable<IPAddress> GetBroadCastIps()
+        private IEnumerable<IPAddress> GetBroadCastIps(IPAddress ip)
         {
-            var ip = _accessor.HttpContext?.Connection.RemoteIpAddress;
-            Logger.Debug($"{ip})");
+            Logger.Debug($"{ip.MapToIPv4()})");
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var adapter in interfaces)
             {
@@ -201,7 +197,7 @@ namespace EmbyStat.Clients.Base.Http
                 Logger.Debug($"Ping returned: {result}");
                 return result == message;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Logger.Error(e, "Ping failed");
                 return false;

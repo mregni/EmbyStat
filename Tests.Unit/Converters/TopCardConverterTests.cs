@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Models.Cards;

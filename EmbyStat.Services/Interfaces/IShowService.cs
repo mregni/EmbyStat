@@ -4,7 +4,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Show;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EmbyStat.Services.Interfaces
 {
