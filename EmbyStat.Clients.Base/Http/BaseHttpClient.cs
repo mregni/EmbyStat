@@ -114,10 +114,12 @@ namespace EmbyStat.Clients.Base.Http
         protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
         {
             var list = new List<MediaServerUdpBroadcast>();
-            Logger.Debug($"Checking following broadcast IPs (own IP: ");
-            foreach (var ip in GetBroadCastIps())
+            var ownIp = _accessor.HttpContext?.Connection.RemoteIpAddress ?? IPAddress.Any;
+            Logger.Debug($"Own IP detected: {ownIp.MapToIPv4()}");
+            Logger.Debug($"Sending \"{message}\" to following broadcast IPs:");
+            foreach (var ip in GetBroadCastIps(ownIp))
             {
-                Logger.Debug($"\t{ip}");
+                Logger.Debug($"\t{ip.MapToIPv4()}");
                 await Task.Run(async () =>
                 {
                     var to = new IPEndPoint(ip, 7359);
@@ -136,10 +138,9 @@ namespace EmbyStat.Clients.Base.Http
             return list;
         }
 
-        private IEnumerable<IPAddress> GetBroadCastIps()
+        private IEnumerable<IPAddress> GetBroadCastIps(IPAddress ip)
         {
-            var ip = _accessor.HttpContext?.Connection.RemoteIpAddress;
-            Logger.Debug($"{ip})");
+            Logger.Debug($"{ip.MapToIPv4()})");
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var adapter in interfaces)
             {
