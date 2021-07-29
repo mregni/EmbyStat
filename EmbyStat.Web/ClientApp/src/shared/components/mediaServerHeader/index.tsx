@@ -89,7 +89,7 @@ const MediaServerHeader = (props: Props) => {
                 container
                 direction="column"
                 justify="flex-start"
-                className="m-l-32"
+                className="m-l-32 m-r-8"
               >
                 <Typography
                   variant="body1"
