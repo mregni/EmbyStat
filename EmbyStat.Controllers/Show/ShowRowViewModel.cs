@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmbyStat.Controllers.Show
+﻿namespace EmbyStat.Controllers.Show
 {
     public class ShowRowViewModel
     {

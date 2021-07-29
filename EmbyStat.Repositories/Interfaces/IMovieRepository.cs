@@ -1,6 +1,5 @@
 ﻿using EmbyStat.Common.Models.Entities;
 using System.Collections.Generic;
-using EmbyStat.Common.Enums;
 using EmbyStat.Repositories.Interfaces.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Query;

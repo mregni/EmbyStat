@@ -2,7 +2,6 @@
 using AutoMapper;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 
 namespace EmbyStat.Controllers.Log
 {

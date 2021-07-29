@@ -1,6 +1,4 @@
-﻿using System;
-using EmbyStat.Common.Models.Show;
-using Rollbar.DTOs;
+﻿using EmbyStat.Common.Models.Show;
 using TMDbLib.Objects.Search;
 
 namespace EmbyStat.Clients.Tmdb.Converter
