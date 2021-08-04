@@ -75,11 +75,12 @@ export const MediaServerDetails = forwardRef<ValidationHandleWithSave, StepProps
 
   const openMediaServer = async () => {
     try {
-      const { protocol, address, port, baseUrl, baseUrlNeeded } = getValues();
+      const { protocol, address, port, baseUrl, baseUrlNeeded, type } = getValues();
       const protocolTxt = protocol === 0 ? "https://" : "http://";
+      const htmlSuffix = type === 1 ? ".html" : '';
       const baseUrlTxt = baseUrlNeeded ? baseUrl : '';
       window.open(
-        `${protocolTxt}${address}:${port}${baseUrlTxt}/web/index.html#!/apikeys.html`,
+        `${protocolTxt}${address}:${port}${baseUrlTxt}/web/index.html#!/apikeys${htmlSuffix}`,
         "_blank"
       );
     }
