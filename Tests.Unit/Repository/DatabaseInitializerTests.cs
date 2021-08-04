@@ -177,27 +177,9 @@ namespace Tests.Unit.Repository
                     var embyUserCollection = context.GetCollection<EmbyUser>();
                     embyUserCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
                     embyUserCollection.EnsureIndex(x => x.IsAdministrator).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.AccessSchedules).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.BlockUnratedItems).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.BlockedTags).Should().BeTrue();
                     embyUserCollection.EnsureIndex(x => x.Deleted).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.DisablePremiumFeatures).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.EnableLocalPassword).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.HasConfiguredEasyPassword).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.HasConfiguredPassword).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.HasPassword).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.InvalidLoginAttemptCount).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.IsDisabled).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.IsHidden).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.LastActivityDate).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.LastLoginDate).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.MaxParentalRating).Should().BeTrue();
                     embyUserCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.PlayDefaultAudioTrack).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.PrimaryImageTag).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.RemoteClientBitRateLimit).Should().BeTrue();
                     embyUserCollection.EnsureIndex(x => x.ServerId).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.SubtitleMode).Should().BeTrue();
                 }
             });
         }

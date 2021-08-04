@@ -89,7 +89,6 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyUser, UserIdViewModel>();
             CreateMap<EmbyUser, UserOverviewViewModel>();
             CreateMap<EmbyUser, UserFullViewModel>();
-            CreateMap<UserAccessSchedule, UserAccessScheduleViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
             CreateMap<VirtualSeason, VirtualSeasonViewModel>();
             CreateMap<VirtualEpisode, VirtualEpisodeViewModel>();
