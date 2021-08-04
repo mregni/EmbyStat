@@ -15,6 +15,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using MoreLinq;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -101,7 +102,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
-                    _movieRepository.UpsertRange(movies.Where(x => x.MediaType == "Video"));
+                    _movieRepository.UpsertRange(movies.Where(x => x != null && x.MediaType == "Video"));
 
                     processed += 100;
                     j++;
@@ -154,6 +155,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             await LogInformation("Asking MediaServer for all movie root folders");
             var rootItems = _httpClient.GetMediaFolders();
+
+            Logger.Debug("Following root items are found:");
+            rootItems.Items.ForEach(x => Logger.Debug(x.ToString()));
 
             return rootItems.Items
                 .Where(x => x.CollectionType.ToLibraryType() == LibraryType.Movies)

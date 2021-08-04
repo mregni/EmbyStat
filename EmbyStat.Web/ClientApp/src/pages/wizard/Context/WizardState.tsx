@@ -70,6 +70,8 @@ export const useWizardContext = (): WizardContextProps => {
   const setMediaServerNetworkInfo = (server: MediaServer): void => {
     setWizard((prev: Wizard) => ({
       ...prev,
+      serverId: server.id,
+      serverName: server.name,
       serverAddress: server.address,
       serverBaseUrlNeeded: server.baseUrlNeeded,
       serverBaseurl: server.baseUrl,
@@ -81,7 +83,7 @@ export const useWizardContext = (): WizardContextProps => {
   }
 
   const setMediaServerInfo = (info: MediaServerInfo): void => {
-    setWizard((prev: Wizard) => ({ ...prev, mediaServerInfo: info }));
+    setWizard((prev: Wizard) => ({ ...prev, mediaServerInfo: info, serverId: info.id, serverName: info.serverName }));
   }
 
   const setAdministrators = (administrators: MediaServerUser[]): void => {
@@ -110,6 +112,7 @@ export const useWizardContext = (): WizardContextProps => {
   }, [wizard.serverProtocol, wizard.serverAddress, wizard.serverPort, wizard?.serverBaseurl]);
 
   const finishWizard = async (settings: Settings): Promise<boolean> => {
+    console.log(settings);
     const newSettings: Settings = {
       ...settings,
       mediaServer: {

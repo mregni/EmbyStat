@@ -19,6 +19,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Net;
+using MoreLinq;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -34,8 +35,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public ShowSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IShowRepository showRepository,
-            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient) : base(hubHelper, jobRepository, settingsService,
-            typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
+            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient) 
+            : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
         {
             _showRepository = showRepository;
             _libraryRepository = libraryRepository;
@@ -272,6 +273,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             await LogInformation("Asking MediaServer for all root folders");
             var rootItems = _httpClient.GetMediaFolders();
+
+            Logger.Debug("Following root items are found:");
+            rootItems.Items.ForEach(x => Logger.Debug(x.ToString()));
 
             return rootItems.Items
                 .Where(x => x.CollectionType.ToLibraryType() == LibraryType.TvShow)
