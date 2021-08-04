@@ -6,6 +6,6 @@ export interface MediaServer {
   baseUrl: string;
   apiKey: string;
   type: 0 | 1;
-  name: string | null;
-  id: string | null;
+  name: string;
+  id: string;
 }
