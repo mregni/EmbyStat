@@ -36,5 +36,10 @@ namespace EmbyStat.Common.Models.Net
         public string CollectionType { get; set; }
         public string Etag { get; set; }
         public string Overview { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id} - {Name}";
+        }
     }
 }
