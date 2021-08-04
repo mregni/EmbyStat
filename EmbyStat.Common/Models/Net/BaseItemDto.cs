@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 
 namespace EmbyStat.Common.Models.Net
 {
@@ -36,5 +37,10 @@ namespace EmbyStat.Common.Models.Net
         public string CollectionType { get; set; }
         public string Etag { get; set; }
         public string Overview { get; set; }
+
+        public override string ToString()
+        {
+            return $"id: {Id} - Name:{Name} - Type:{CollectionType.ToLibraryType()}";
+        }
     }
 }
