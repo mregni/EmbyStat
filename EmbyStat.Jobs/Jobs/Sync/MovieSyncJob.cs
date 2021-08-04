@@ -101,7 +101,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
-                    _movieRepository.UpsertRange(movies.Where(x => x.MediaType == "Video"));
+                    _movieRepository.UpsertRange(movies.Where(x => x != null && x.MediaType == "Video"));
 
                     processed += 100;
                     j++;
