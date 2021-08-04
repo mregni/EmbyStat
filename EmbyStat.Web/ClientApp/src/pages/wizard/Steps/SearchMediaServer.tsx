@@ -55,8 +55,8 @@ export const SearchMediaServer = forwardRef<ValidationHandleWithSave, StepProps>
       apiKey: '',
       type: 0,
       baseUrlNeeded: false,
-      name: null,
-      id: null
+      name: '',
+      id: ''
     };
 
     setMediaServerNetworkInfo(mediaServer);
