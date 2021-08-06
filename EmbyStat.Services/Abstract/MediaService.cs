@@ -5,6 +5,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
@@ -16,11 +17,13 @@ namespace EmbyStat.Services.Abstract
     {
         private readonly IJobRepository _jobRepository;
         internal readonly IPersonService PersonService;
+        internal readonly Logger Logger;
 
-        protected MediaService(IJobRepository jobRepository, IPersonService personService)
+        protected MediaService(IJobRepository jobRepository, IPersonService personService, Type type, string logPrefix)
         {
             _jobRepository = jobRepository;
             PersonService = personService;
+            Logger = LogFactory.CreateLoggerForType(type, logPrefix);
         }
 
         internal bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds, Guid jobId)
@@ -32,6 +35,34 @@ namespace EmbyStat.Services.Abstract
                    && lastMediaSync != null
                    && statistic.CalculationDateTime.AddMinutes(5) > lastMediaSync.EndTimeUtc
                    && collectionIds.AreListEqual(statistic.CollectionIds);
+        }
+
+        internal T CalculateStat<T>(Func<IReadOnlyList<string>, T> action, IReadOnlyList<string> libraryIds, string errorMessage)
+        {
+            try
+            {
+                return action(libraryIds);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, errorMessage);
+            }
+
+            return default;
+        }
+
+        internal T CalculateStat<T>(Func<T> action, string errorMessage)
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, errorMessage);
+            }
+
+            return default;
         }
 
         #region Chart
