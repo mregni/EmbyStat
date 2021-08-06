@@ -37,20 +37,6 @@ namespace EmbyStat.Services.Abstract
                    && collectionIds.AreListEqual(statistic.CollectionIds);
         }
 
-        internal T CalculateStat<T>(Func<IReadOnlyList<string>, T> action, IReadOnlyList<string> libraryIds, string errorMessage)
-        {
-            try
-            {
-                return action(libraryIds);
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, errorMessage);
-            }
-
-            return default;
-        }
-
         internal T CalculateStat<T>(Func<T> action, string errorMessage)
         {
             try
@@ -69,82 +55,91 @@ namespace EmbyStat.Services.Abstract
 
         internal Chart CalculateGenreChart(IEnumerable<Extra> media)
         {
-            var genresData = media
-                .SelectMany(x => x.Genres)
-                .GroupBy(x => x)
-                .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                .OrderBy(x => x.Label)
-                .ToList();
-
-            return new Chart
+            return CalculateStat(() =>
             {
-                Title = Constants.CountPerGenre,
-                DataSets = JsonConvert.SerializeObject(genresData),
-                SeriesCount = 1
-            };
+                var genresData = media
+                    .SelectMany(x => x.Genres)
+                    .GroupBy(x => x)
+                    .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                    .OrderBy(x => x.Label)
+                    .ToList();
+
+                return new Chart
+                {
+                    Title = Constants.CountPerGenre,
+                    DataSets = JsonConvert.SerializeObject(genresData),
+                    SeriesCount = 1
+                };
+            }, "Calculate genre chart failed:");
         }
 
         internal Chart CalculateRatingChart(IEnumerable<float?> list)
         {
-            var ratingDataList = list
-                .GroupBy(x => x.RoundToHalf())
-                .OrderBy(x => x.Key)
-                .ToList();
-
-            for (double i = 0; i < 10; i += 0.5)
+            return CalculateStat(() =>
             {
-                if (!ratingDataList.Any(x => x.Key == i))
+                var ratingDataList = list
+                    .GroupBy(x => x.RoundToHalf())
+                    .OrderBy(x => x.Key)
+                    .ToList();
+
+                for (double i = 0; i < 10; i += 0.5)
                 {
-                    ratingDataList.Add(new ChartGrouping<double?, float?> { Key = i, Capacity = 0 });
+                    if (!ratingDataList.Any(x => x.Key == i))
+                    {
+                        ratingDataList.Add(new ChartGrouping<double?, float?> { Key = i, Capacity = 0 });
+                    }
                 }
-            }
 
-            var ratingData = ratingDataList
-                .Select(x => new { Label = x.Key?.ToString() ?? Constants.Unknown, Val0 = x.Count() })
-                .OrderBy(x => x.Label)
-                .ToList();
+                var ratingData = ratingDataList
+                    .Select(x => new { Label = x.Key?.ToString() ?? Constants.Unknown, Val0 = x.Count() })
+                    .OrderBy(x => x.Label)
+                    .ToList();
 
-            return new Chart
-            {
-                Title = Constants.CountPerCommunityRating,
-                DataSets = JsonConvert.SerializeObject(ratingData),
-                SeriesCount = 1
-            };
+                return new Chart
+                {
+                    Title = Constants.CountPerCommunityRating,
+                    DataSets = JsonConvert.SerializeObject(ratingData),
+                    SeriesCount = 1
+                };
+            }, "Calculate rating chart failed:");
         }
 
         internal Chart CalculatePremiereYearChart(IEnumerable<DateTime?> list)
         {
-            var yearDataList = list
-                .GroupBy(x => x.RoundToFiveYear())
-                .Where(x => x.Key != null)
-                .OrderBy(x => x.Key)
-                .ToList();
-
-            if (yearDataList.Any())
+            return CalculateStat(() =>
             {
-                var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
-                var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
+                var yearDataList = list
+                    .GroupBy(x => x.RoundToFiveYear())
+                    .Where(x => x.Key != null)
+                    .OrderBy(x => x.Key)
+                    .ToList();
 
-                for (var i = lowestYear; i < highestYear; i += 5)
+                if (yearDataList.Any())
                 {
-                    if (yearDataList.All(x => x.Key != i))
+                    var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
+                    var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
+
+                    for (var i = lowestYear; i < highestYear; i += 5)
                     {
-                        yearDataList.Add(new ChartGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
+                        if (yearDataList.All(x => x.Key != i))
+                        {
+                            yearDataList.Add(new ChartGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
+                        }
                     }
                 }
-            }
 
-            var yearData = yearDataList
-                .Select(x => new { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Val0 = x.Count() })
-                .OrderBy(x => x.Label)
-                .ToList();
+                var yearData = yearDataList
+                    .Select(x => new { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Val0 = x.Count() })
+                    .OrderBy(x => x.Label)
+                    .ToList();
 
-            return new Chart
-            {
-                Title = Constants.CountPerPremiereYear,
-                DataSets = JsonConvert.SerializeObject(yearData),
-                SeriesCount = 1
-            };
+                return new Chart
+                {
+                    Title = Constants.CountPerPremiereYear,
+                    DataSets = JsonConvert.SerializeObject(yearData),
+                    SeriesCount = 1
+                };
+            }, "Calculate premiered year chart failed:");
         }
 
         #endregion

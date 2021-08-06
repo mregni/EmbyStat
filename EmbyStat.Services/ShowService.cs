@@ -31,7 +31,8 @@ namespace EmbyStat.Services
         private readonly ISettingsService _settingsService;
 
         public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ILibraryRepository libraryRepository,
-            IPersonService personService, IStatisticsRepository statisticsRepository, ISettingsService settingsService) : base(jobRepository, personService)
+            IPersonService personService, IStatisticsRepository statisticsRepository, ISettingsService settingsService) 
+            : base(jobRepository, personService, typeof(ShowService), "SHOW")
         {
             _showRepository = showRepository;
             _libraryRepository = libraryRepository;
@@ -42,7 +43,7 @@ namespace EmbyStat.Services
         public IEnumerable<Library> GetShowLibraries()
         {
             var settings = _settingsService.GetUserSettings();
-            return _libraryRepository.GetLibrariesById(settings.ShowLibraries);
+            return _libraryRepository.GetLibrariesById(settings.ShowLibraries.Select(x => x.Id));
         }
 
         public ShowStatistics GetStatistics(List<string> libraryIds)
@@ -123,110 +124,121 @@ namespace EmbyStat.Services
 
         private List<Card<string>> CalculateCards(IReadOnlyList<string> libraryIds)
         {
-            return new List<Card<string>>
-            {
-                CalculateTotalShowCount(libraryIds),
-                CalculateTotalEpisodeCount(libraryIds),
-                CalculateTotalMissingEpisodeCount(libraryIds),
-                CalculatePlayableTime(libraryIds),
-                CalculateTotalShowGenres(libraryIds),
-                CalculateTotalDiskSize(libraryIds)
-            };
+            var list = new List<Card<string>>();
+            list.AddIfNotNull(CalculateTotalShowCount(libraryIds));
+            list.AddIfNotNull(CalculateTotalEpisodeCount(libraryIds));
+            list.AddIfNotNull(CalculateTotalMissingEpisodeCount(libraryIds));
+            list.AddIfNotNull(CalculatePlayableTime(libraryIds));
+            list.AddIfNotNull(CalculateTotalShowGenres(libraryIds));
+            list.AddIfNotNull(CalculateTotalDiskSpace(libraryIds));
+
+            return list;
         }
 
         private Card<string> CalculateTotalShowCount(IReadOnlyList<string> libraryIds)
         {
-            var count = _showRepository
-                .GetMediaCount(libraryIds)
-                .ToString();
-
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Title = Constants.Shows.TotalShows,
-                Value = count,
-                Type = CardType.Text,
-                Icon = Constants.Icons.TheatersRoundedIcon
-            };
+                var count = _showRepository.GetMediaCount(libraryIds).ToString();
+
+                return new Card<string>
+                {
+                    Title = Constants.Shows.TotalShows,
+                    Value = count,
+                    Type = CardType.Text,
+                    Icon = Constants.Icons.TheatersRoundedIcon
+                };
+            }, "Calculate total show count failed:");
         }
 
         private Card<string> CalculateTotalEpisodeCount(IReadOnlyList<string> libraryIds)
         {
-            var sum = _showRepository
-                .GetAllShows(libraryIds, true, true)
-                .Sum(x => x.GetEpisodeCount(false, LocationType.Disk))
-                .ToString();
-
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Title = Constants.Shows.TotalEpisodes,
-                Value = sum,
-                Type = CardType.Text,
-                Icon = Constants.Icons.TheatersRoundedIcon
-            };
+                var sum = _showRepository
+                    .GetAllShows(libraryIds, true, true)
+                    .Sum(x => x.GetEpisodeCount(false, LocationType.Disk))
+                    .ToString();
+
+                return new Card<string>
+                {
+                    Title = Constants.Shows.TotalEpisodes,
+                    Value = sum,
+                    Type = CardType.Text,
+                    Icon = Constants.Icons.TheatersRoundedIcon
+                };
+            }, "Calculate total episode count failed:");
         }
 
         private Card<string> CalculateTotalShowGenres(IReadOnlyList<string> libraryIds)
         {
-            var totalGenres = _showRepository.GetGenreCount(libraryIds);
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Title = Constants.Common.TotalGenres,
-                Value = totalGenres.ToString(),
-                Type = CardType.Text,
-                Icon = Constants.Icons.PoundRoundedIcon
-            };
+                var totalGenres = _showRepository.GetGenreCount(libraryIds);
+                return new Card<string>
+                {
+                    Title = Constants.Common.TotalGenres,
+                    Value = totalGenres.ToString(),
+                    Type = CardType.Text,
+                    Icon = Constants.Icons.PoundRoundedIcon
+                };
+            }, "Calculate total show genres count failed:");
         }
 
         private Card<string> CalculateTotalMissingEpisodeCount(IReadOnlyList<string> libraryIds)
         {
-            var sum = _showRepository
-                .GetAllShows(libraryIds, false, true)
-                .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
-                .ToString();
-
-            var boe = _showRepository.GetAllShows(libraryIds, false, true).ToList();
-            var epi = boe.SelectMany(x => x.Episodes);
-
-            var epiw = epi.Where(x => x.LocationType == LocationType.Virtual).ToList();
-
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Title = Constants.Shows.TotalMissingEpisodes,
-                Value = sum,
-                Type = CardType.Text,
-                Icon = Constants.Icons.TheatersRoundedIcon
-            };
+                var sum = _showRepository
+                    .GetAllShows(libraryIds, false, true)
+                    .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
+                    .ToString();
+
+                return new Card<string>
+                {
+                    Title = Constants.Shows.TotalMissingEpisodes,
+                    Value = sum,
+                    Type = CardType.Text,
+                    Icon = Constants.Icons.TheatersRoundedIcon
+                };
+            }, "Calculate total missing episodes failed:");
         }
 
         private Card<string> CalculatePlayableTime(IReadOnlyList<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(libraryIds, false, false);
-            var playLength = new TimeSpan(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
-
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Title = Constants.Shows.TotalPlayLength,
-                Value = $"{playLength.Days}|{playLength.Hours}|{playLength.Minutes}",
-                Type = CardType.Time,
-                Icon = Constants.Icons.QueryBuilderRoundedIcon
-            };
+                var shows = _showRepository.GetAllShows(libraryIds, false, false);
+                var playLength = new TimeSpan(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
+
+                return new Card<string>
+                {
+                    Title = Constants.Shows.TotalPlayLength,
+                    Value = $"{playLength.Days}|{playLength.Hours}|{playLength.Minutes}",
+                    Type = CardType.Time,
+                    Icon = Constants.Icons.QueryBuilderRoundedIcon
+                };
+            }, "Calculate total playable time failed:");
         }
 
-        private Card<string> CalculateTotalDiskSize(IReadOnlyList<string> libraryIds)
+        private Card<string> CalculateTotalDiskSpace(IReadOnlyList<string> libraryIds)
         {
-            var sum = _showRepository
-                .GetAllShows(libraryIds, false, true)
-                .SelectMany(x => x.Episodes)
-                .Where(x => x.LocationType == LocationType.Disk)
-                .Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
-
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Value = sum.ToString(CultureInfo.InvariantCulture),
-                Title = Constants.Common.TotalDiskSize,
-                Type = CardType.Size,
-                Icon = Constants.Icons.StorageRoundedIcon
-            };
+                var sum = _showRepository
+                    .GetAllShows(libraryIds, false, true)
+                    .SelectMany(x => x.Episodes)
+                    .Where(x => x.LocationType == LocationType.Disk)
+                    .Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
+
+                return new Card<string>
+                {
+                    Value = sum.ToString(CultureInfo.InvariantCulture),
+                    Title = Constants.Common.TotalDiskSpace,
+                    Type = CardType.Size,
+                    Icon = Constants.Icons.StorageRoundedIcon
+                };
+            }, "Calculate total disk space failed:");
         }
 
         #endregion
@@ -236,80 +248,86 @@ namespace EmbyStat.Services
         private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
             var list = new List<TopCard>();
-
-            var calculateNewestPremieredShow = CalculateNewestPremieredShow(libraryIds);
-            list.AddIfNotNull(calculateNewestPremieredShow);
-
-            var calculateOldestPremieredShow = CalculateOldestPremieredShow(libraryIds);
-            list.AddIfNotNull(calculateOldestPremieredShow);
-
-            var calculateLatestAddedShow = CalculateLatestAddedShow(libraryIds);
-            list.AddIfNotNull(calculateLatestAddedShow);
-
-            var calculateHighestRatedShow = CalculateHighestRatedShow(libraryIds);
-            list.AddIfNotNull(calculateHighestRatedShow);
-
-            var calculateLowestRatedShow = CalculateLowestRatedShow(libraryIds);
-            list.AddIfNotNull(calculateLowestRatedShow);
-
-            var calculateShowWithMostEpisodes = CalculateShowWithMostEpisodes(libraryIds);
-            list.AddIfNotNull(calculateShowWithMostEpisodes);
+            list.AddIfNotNull(CalculateNewestPremieredShow(libraryIds));
+            list.AddIfNotNull(CalculateOldestPremieredShow(libraryIds));
+            list.AddIfNotNull(CalculateLatestAddedShow(libraryIds));
+            list.AddIfNotNull(CalculateHighestRatedShow(libraryIds));
+            list.AddIfNotNull(CalculateLowestRatedShow(libraryIds));
+            list.AddIfNotNull(CalculateShowWithMostEpisodes(libraryIds));
 
             return list;
         }
 
         private TopCard CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)
         {
-            var list = _showRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
+            return CalculateStat(() =>
+            {
+                var list = _showRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
 
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
-                : null;
+                return list.Length > 0
+                    ? list.ConvertToTopCard(Constants.Shows.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
+                    : null;
+            }, "Calculate newest premiered shows failed:");
         }
 
         private TopCard CalculateOldestPremieredShow(IReadOnlyList<string> libraryIds)
         {
-            var list = _showRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
+            return CalculateStat(() =>
+            {
+                var list = _showRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
 
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
-                : null;
+                return list.Length > 0
+                    ? list.ConvertToTopCard(Constants.Shows.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
+                    : null;
+            }, "Calculate oldest premiered shows failed:");
         }
 
         private TopCard CalculateLatestAddedShow(IReadOnlyList<string> libraryIds)
         {
-            var list = _showRepository.GetLatestAddedMedia(libraryIds, 5).ToArray();
+            return CalculateStat(() =>
+            {
+                var list = _showRepository.GetLatestAddedMedia(libraryIds, 5).ToArray();
 
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.LatestAdded, "COMMON.DATE", "DateCreated", ValueTypeEnum.Date)
-                : null;
+                return list.Length > 0
+                    ? list.ConvertToTopCard(Constants.Shows.LatestAdded, "COMMON.DATE", "DateCreated", ValueTypeEnum.Date)
+                    : null;
+            }, "Calculate latest added shows failed:");
         }
 
         private TopCard CalculateHighestRatedShow(IReadOnlyList<string> libraryIds)
         {
-            var list = _showRepository.GetHighestRatedMedia(libraryIds, 5).ToArray();
+            return CalculateStat(() =>
+            {
+                var list = _showRepository.GetHighestRatedMedia(libraryIds, 5).ToArray();
 
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.HighestRatedShow, "/10", "CommunityRating", false)
-                : null;
+                return list.Length > 0
+                    ? list.ConvertToTopCard(Constants.Shows.HighestRatedShow, "/10", "CommunityRating", false)
+                    : null;
+            }, "Calculate highest rated shows failed:");
         }
 
         private TopCard CalculateLowestRatedShow(IReadOnlyList<string> libraryIds)
         {
-            var list = _showRepository.GetLowestRatedMedia(libraryIds, 5).ToArray();
+            return CalculateStat(() =>
+            {
+                var list = _showRepository.GetLowestRatedMedia(libraryIds, 5).ToArray();
 
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.LowestRatedShow, "/10", "CommunityRating", false)
-                : null;
+                return list.Length > 0
+                    ? list.ConvertToTopCard(Constants.Shows.LowestRatedShow, "/10", "CommunityRating", false)
+                    : null;
+            }, "Calculate lowest rated shows failed:");
         }
 
         private TopCard CalculateShowWithMostEpisodes(IReadOnlyList<string> libraryIds)
         {
-            var list = _showRepository.GetShowsWithMostEpisodes(libraryIds, 5);
+            return CalculateStat(() =>
+            {
+                var list = _showRepository.GetShowsWithMostEpisodes(libraryIds, 5);
 
-            return list.Count > 0
-                ? list.ConvertToTopCard(Constants.Shows.MostEpisodes, "#")
-                : null;
+                return list.Count > 0
+                    ? list.ConvertToTopCard(Constants.Shows.MostEpisodes, "#")
+                    : null;
+            }, "Calculate shows with most episodes failed:");
         }
 
         #endregion
@@ -318,56 +336,62 @@ namespace EmbyStat.Services
 
         private List<Chart> CalculateBarCharts(IReadOnlyList<Show> shows)
         {
-            return new List<Chart>
-            {
-                CalculateGenreChart(shows),
-                CalculateRatingChart(shows.Select(x => x.CommunityRating)),
-                CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)),
-                CalculateCollectedRateChart(shows)
-            };
+            var list = new List<Chart>();
+            list.AddIfNotNull(CalculateGenreChart(shows));
+            list.AddIfNotNull(CalculateRatingChart(shows.Select(x => x.CommunityRating)));
+            list.AddIfNotNull(CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)));
+            list.AddIfNotNull(CalculateCollectedRateChart(shows));
+
+            return list;
         }
 
         private List<Chart> CalculatePieChars(IReadOnlyList<Show> shows)
         {
-            return new List<Chart>
-            {
-                CalculateOfficialRatingChart(shows),
-                CalculateShowStateChart(shows)
-            };
+            var list = new List<Chart>();
+            list.AddIfNotNull(CalculateOfficialRatingChart(shows));
+            list.AddIfNotNull(CalculateShowStateChart(shows));
+
+            return list;
         }
 
         private Chart CalculateShowStateChart(IReadOnlyList<Show> shows)
         {
-            var list = shows
-                .GroupBy(x => x.Status)
-                .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                .OrderByDescending(x => x.Val0)
-                .ToList();
-
-            return new Chart
+            return CalculateStat(() =>
             {
-                Title = Constants.Shows.ShowStatusChart,
-                DataSets = JsonConvert.SerializeObject(list),
-                SeriesCount = 1
+                var list = shows
+                    .GroupBy(x => x.Status)
+                    .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                    .OrderByDescending(x => x.Val0)
+                    .ToList();
 
-            };
+                return new Chart
+                {
+                    Title = Constants.Shows.ShowStatusChart,
+                    DataSets = JsonConvert.SerializeObject(list),
+                    SeriesCount = 1
+
+                };
+            }, "Calculate show state chart failed:");
         }
 
         private Chart CalculateOfficialRatingChart(IReadOnlyList<Show> shows)
         {
-            var ratingData = shows
-                .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
-                .GroupBy(x => x.OfficialRating.ToUpper())
-                .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                .OrderByDescending(x => x.Val0)
-                .ToList();
-
-            return new Chart
+            return CalculateStat(() =>
             {
-                Title = Constants.CountPerOfficialRating,
-                DataSets = JsonConvert.SerializeObject(ratingData),
-                SeriesCount = 1
-            };
+                var ratingData = shows
+                    .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
+                    .GroupBy(x => x.OfficialRating.ToUpper())
+                    .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                    .OrderByDescending(x => x.Val0)
+                    .ToList();
+
+                return new Chart
+                {
+                    Title = Constants.CountPerOfficialRating,
+                    DataSets = JsonConvert.SerializeObject(ratingData),
+                    SeriesCount = 1
+                };
+            }, "Calculate official show rating chart failed:");
         }
 
         private Chart CalculateCollectedRateChart(IReadOnlyList<Show> shows)
@@ -423,33 +447,24 @@ namespace EmbyStat.Services
         public PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
         {
             var returnObj = new PersonStats();
-            try
-            {
-                returnObj.Cards = new List<Card<string>>
-                {
-                    TotalTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors)
-                };
-
-                return returnObj;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            returnObj.Cards.AddIfNotNull(TotalTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors));
+            return returnObj;
         }
 
 
         private Card<string> TotalTypeCount(IReadOnlyList<string> libraryIds, PersonType type, string title)
         {
-            var value = _showRepository.GetPeopleCount(libraryIds, type);
-            return new Card<string>
+            return CalculateStat(() =>
             {
-                Value = value.ToString(),
-                Title = title,
-                Icon = Constants.Icons.PeopleAltRoundedIcon,
-                Type = CardType.Text
-            };
+                var value = _showRepository.GetPeopleCount(libraryIds, type);
+                return new Card<string>
+                {
+                    Value = value.ToString(),
+                    Title = title,
+                    Icon = Constants.Icons.PeopleAltRoundedIcon,
+                    Type = CardType.Text
+                };
+            }, $"Calculate total {type} count failed::");
         }
 
         #endregion
