@@ -376,7 +376,7 @@ namespace EmbyStat.Clients.Base.Http
             {
                 ParentId = parentId,
                 Recursive = true,
-                IncludeItemTypes = new[] { nameof(Movie), nameof(BoxSet) },
+                IncludeItemTypes = new[] { nameof(Movie) },
                 StartIndex = 0,
                 Limit = 1,
                 EnableTotalRecordCount = true

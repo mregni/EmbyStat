@@ -70,23 +70,22 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
             await LogProgress(15);
 
-            await ProcessMoviesAsync(libraries, cancellationToken);
+            await ProcessMoviesAsync(cancellationToken);
             await LogProgress(55);
 
             await CalculateStatistics();
             await LogProgress(100);
         }
 
-        private async Task ProcessMoviesAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
+        private async Task ProcessMoviesAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing movies");
             _movieRepository.RemoveMovies();
-
-            var neededLibraries = libraries.Where(x => Settings.MovieLibraries.Any(y => y == x.Id)).ToList();
-            var logIncrementBase = Math.Round(40 / (double)neededLibraries.Count, 1);
-            foreach (var library in neededLibraries)
+            
+            var logIncrementBase = Math.Round(40 / (double)Settings.MovieLibraries.Count, 1);
+            foreach (var libraryId in Settings.MovieLibraries)
             {
-                var collectionId = library.Id;
+                var collectionId = libraryId;
                 var totalCount = await GetTotalLibraryMovieCount(collectionId);
                 if (totalCount == 0)
                 {
@@ -94,7 +93,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 }
                 var increment = logIncrementBase / (totalCount / (double)100);
 
-                await LogInformation($"Found {totalCount} movies in {library.Name} library");
+                await LogInformation($"Found {totalCount} movies in (NAME REMOVED FOR DEV VERSION) library");
                 var processed = 0;
                 var j = 0;
                 const int limit = 100;
