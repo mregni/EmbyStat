@@ -5,12 +5,13 @@ import { useTranslation } from 'react-i18next'
 
 import { LibraryStepProps, ValidationHandleWithSave } from '.'
 import LibrarySelector from '../../../shared/components/librarySelector'
+import { LibraryContainer } from '../../../shared/models/settings'
 import { WizardContext } from '../Context/WizardState'
 
 export const ConfigureLibrary = forwardRef<ValidationHandleWithSave, LibraryStepProps>((props, ref) => {
   const { type } = props;
   const [typeNumber, setTypeNumber] = useState(0);
-  const [selectedLibraries, setSelectedLibraries] = useState<string[]>([]);
+  const [selectedLibraries, setSelectedLibraries] = useState<LibraryContainer[]>([]);
   const { wizard, fullServerUrl, setMovieLibraries, setShowLibraries } = useContext(WizardContext);
   const { t } = useTranslation();
 
@@ -27,7 +28,7 @@ export const ConfigureLibrary = forwardRef<ValidationHandleWithSave, LibraryStep
     }
   }, [type, typeNumber, wizard.allLibraries, wizard.movieLibraries, wizard.showLibraries]);
 
-  const saveLibrariesToWizard = (libraries: string[]): void => {
+  const saveLibrariesToWizard = (libraries: LibraryContainer[]): void => {
     if (type === 'movie') {
       setMovieLibraries(libraries);
       return;

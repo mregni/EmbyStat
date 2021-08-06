@@ -9,6 +9,7 @@ import classNames from "classnames";
 
 import NoImage from "../../assets/images/no-image.png";
 import { Library } from "../../models/mediaServer";
+import { LibraryContainer } from "../../models/settings";
 
 const useStyles = makeStyles((theme) => ({
   library: {
@@ -60,35 +61,39 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   allLibraries: Library[];
-  libraries: string[];
+  libraries: LibraryContainer[];
   address: string;
-  saveList: (libraries: string[]) => void;
+  saveList: (libraries: LibraryContainer[]) => void;
 }
 
 const LibrarySelector = (props: Props) => {
   const classes = useStyles();
   const { allLibraries, libraries, address, saveList } = props;
-  const [selectedLibraries, setSelectedLibraries] = useState<string[]>([]);
+  const [selectedLibraries, setSelectedLibraries] = useState<LibraryContainer[]>([]);
 
   useEffect(() => {
     setSelectedLibraries(libraries);
   }, [libraries]);
 
   const librarySelected = (libraryId: string): boolean => {
-    return selectedLibraries.indexOf(libraryId, 0) > -1;
+    return selectedLibraries.some((x) => x.id === libraryId);
   };
 
   const selectLibrary = (libraryId: string): void => {
-    const index = selectedLibraries.indexOf(libraryId, 0);
-    let newList = [...selectedLibraries];
-    if (index > -1) {
-      newList = selectedLibraries.filter((x) => x !== libraryId);
-    } else {
-      newList.push(libraryId);
-    }
+    var library = allLibraries.find(x => x.id === libraryId);
+    if (library !== undefined) {
+      var index = selectedLibraries.findIndex((x) => x.id === library?.id);
+      let newList = [...selectedLibraries];
+      if (index > -1) {
+        newList = selectedLibraries.filter((x) => x.id !== library?.id);
+      } else {
+        const newLibraryContainer = { id: library.id, lastSynced: null, name: library.name };
+        newList.push(newLibraryContainer);
+      }
 
-    setSelectedLibraries(newList);
-    saveList(newList);
+      setSelectedLibraries(newList);
+      saveList(newList);
+    }
   };
 
   return (

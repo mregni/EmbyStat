@@ -130,7 +130,7 @@ namespace Tests.Unit.Services
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock
                 .Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ShowLibraries = new List<string> { _collections[0].Id, _collections[1].Id } });
+                .Returns(new UserSettings { ShowLibraries = new List<LibraryContainer> { new() { Id = _collections[0].Id}, new() { Id = _collections[1].Id } } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
             return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);
@@ -317,11 +317,11 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSize).Should().Be(1);
+            stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSpace).Should().Be(1);
 
-            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSize);
+            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSpace);
             card.Should().NotBeNull();
-            card.Title.Should().Be(Constants.Common.TotalDiskSize);
+            card.Title.Should().Be(Constants.Common.TotalDiskSpace);
             card.Value.Should().Be("909");
         }
 

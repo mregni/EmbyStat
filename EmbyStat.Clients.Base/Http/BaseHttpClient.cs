@@ -85,6 +85,7 @@ namespace EmbyStat.Clients.Base.Http
             Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}{request.Resource}");
             var result = RestClient.Execute<T>(request);
 
+            var boe = RestClient.BuildUri(request);
             if (!result.IsSuccessful)
             {
                 Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
@@ -250,7 +251,7 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteAuthenticatedCall<JObject>(request);
         }
 
-        public List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit)
+        public List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -262,6 +263,7 @@ namespace EmbyStat.Clients.Base.Http
                 StartIndex = startIndex,
                 Limit = limit,
                 EnableImages = true,
+                MinDateLastSaved = lastSynced,
                 Fields = new[] {
                     ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
                     ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
@@ -370,16 +372,17 @@ namespace EmbyStat.Clients.Base.Http
             return episodes;
         }
 
-        public int GetMovieCount(string parentId)
+        public int GetMovieCount(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
                 ParentId = parentId,
                 Recursive = true,
                 IncludeItemTypes = new[] { nameof(Movie) },
-                StartIndex = 0,
-                Limit = 1,
-                EnableTotalRecordCount = true
+                ExcludeLocationTypes = new [] {LocationType.Virtual},
+                Limit = 0,
+                EnableTotalRecordCount = true,
+                MinDateLastSaved = lastSynced
             };
 
             var request = new RestRequest($"Items", Method.GET);

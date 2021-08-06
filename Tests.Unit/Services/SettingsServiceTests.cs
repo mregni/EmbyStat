@@ -41,8 +41,8 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<string>(),
-                ShowLibraries = new List<string>()
+                MovieLibraries = new List<LibraryContainer>(),
+                ShowLibraries = new List<LibraryContainer>()
             };
 
             var strJson = JsonConvert.SerializeObject(fileSettings, Formatting.Indented);
@@ -62,8 +62,8 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<string>(),
-                ShowLibraries = new List<string>(),
+                MovieLibraries = new List<LibraryContainer>(),
+                ShowLibraries = new List<LibraryContainer>(),
                 MediaServer = new MediaServerSettings()
             };
 

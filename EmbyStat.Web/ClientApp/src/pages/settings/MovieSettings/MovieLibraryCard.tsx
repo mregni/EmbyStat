@@ -6,6 +6,7 @@ import { LibraryCard } from '../Helpers';
 import { saveSettings } from '../../../store/SettingsSlice';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { SettingsContext } from '../../../shared/context/settings';
+import { LibraryContainer } from '../../../shared/models/settings';
 interface Props {
   delay: number;
 }
@@ -16,7 +17,7 @@ export const MovieLibraryCard = (props: Props) => {
   const dispatch = useDispatch();
   const { settings } = useContext(SettingsContext);
 
-  const saveList = (selectedLibraries: string[]): void => {
+  const saveList = (selectedLibraries: LibraryContainer[]): void => {
     const newSettings = { ...settings };
     newSettings.movieLibraries = selectedLibraries;
     dispatch(saveSettings(newSettings));

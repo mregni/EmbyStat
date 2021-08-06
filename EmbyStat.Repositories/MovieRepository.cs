@@ -76,7 +76,7 @@ namespace EmbyStat.Repositories
             });
         }
 
-        public double GetTotalDiskSize(IReadOnlyList<string> libraryIds)
+        public double GetTotalDiskSpace(IReadOnlyList<string> libraryIds)
         {
             return ExecuteQuery(() =>
             {

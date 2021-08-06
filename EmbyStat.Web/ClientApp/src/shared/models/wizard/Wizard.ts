@@ -1,5 +1,6 @@
 import { Language } from "../language";
 import { MediaServerUdpBroadcast, Library, MediaServerInfo, MediaServerUser, initialMediaServerInfoState } from "../mediaServer";
+import { LibraryContainer } from "../settings";
 
 export interface Wizard {
   serverName: string;
@@ -20,8 +21,8 @@ export interface Wizard {
   foundServers: MediaServerUdpBroadcast[];
   searchedServers: boolean;
   allLibraries: Library[];
-  movieLibraries: string[];
-  showLibraries: string[];
+  movieLibraries: LibraryContainer[];
+  showLibraries: LibraryContainer[];
   mediaServerInfo: MediaServerInfo;
   administrators: MediaServerUser[];
 }

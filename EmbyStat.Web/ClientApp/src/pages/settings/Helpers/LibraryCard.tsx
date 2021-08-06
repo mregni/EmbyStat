@@ -12,11 +12,12 @@ import LibrarySelector from '../../../shared/components/librarySelector';
 import getFullMediaServerUrl from '../../../shared/utils/MediaServerUrlUtil';
 import { SettingsContext } from '../../../shared/context/settings';
 import { getMediaServerTypeString } from '../../../shared/utils';
+import { LibraryContainer } from '../../../shared/models/settings';
 
 interface Props {
   delay: number;
-  list: string[];
-  saveList: (selectedLibraries: string[]) => void;
+  list: LibraryContainer[];
+  saveList: (selectedLibraries: LibraryContainer[]) => void;
 }
 
 export const LibraryCard = (props: Props) => {
@@ -24,7 +25,7 @@ export const LibraryCard = (props: Props) => {
   const { t } = useTranslation();
   const { settings } = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([] as Library[]);
-  const [selectedLibraries, setSelectedLibraries] = useState<string[]>([]);
+  const [selectedLibraries, setSelectedLibraries] = useState<LibraryContainer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

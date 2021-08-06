@@ -240,7 +240,7 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var count = _movieRepository.GetTotalDiskSize(new string[0]);
+                var count = _movieRepository.GetTotalDiskSpace(new string[0]);
                 count.Should().Be(6000);
             });
         }
@@ -255,7 +255,7 @@ namespace Tests.Unit.Repository
                 var movieThree = new MovieBuilder(Guid.NewGuid().ToString()).AddCollectionId("2").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo, movieThree });
 
-                var count = _movieRepository.GetTotalDiskSize(new[] { "1" });
+                var count = _movieRepository.GetTotalDiskSpace(new[] { "1" });
                 count.Should().Be(4000);
             });
         }

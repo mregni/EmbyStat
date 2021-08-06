@@ -78,7 +78,7 @@ namespace Tests.Unit.Services
             _settingsServiceMock = new Mock<ISettingsService>();
             _settingsServiceMock
                 .Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraries = new List<string> { _collections[0].Id, _collections[1].Id }, ToShortMovieEnabled = true });
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraries = new List<LibraryContainer> { new() { Id = _collections[0].Id }, new() { Id = _collections[1].Id } }, ToShortMovieEnabled = true });
             _subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree);
         }
 
@@ -129,7 +129,7 @@ namespace Tests.Unit.Services
                 .Setup(x => x.GetShortestMovie(It.IsAny<IReadOnlyList<string>>(), It.IsAny<long>(), 5))
                 .Returns(movies.OrderBy(x => x.RunTimeTicks));
             movieRepositoryMock
-                .Setup(x => x.GetTotalDiskSize(It.IsAny<IReadOnlyList<string>>()))
+                .Setup(x => x.GetTotalDiskSpace(It.IsAny<IReadOnlyList<string>>()))
                 .Returns(movies.Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0));
             movieRepositoryMock
                 .Setup(x => x.GetTotalRuntime(It.IsAny<IReadOnlyList<string>>()))
@@ -346,11 +346,11 @@ namespace Tests.Unit.Services
             var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
 
             stat.Should().NotBeNull();
-            stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSize).Should().Be(1);
+            stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSpace).Should().Be(1);
 
-            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSize);
+            var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSpace);
             card.Should().NotBeNull();
-            card.Title.Should().Be(Constants.Common.TotalDiskSize);
+            card.Title.Should().Be(Constants.Common.TotalDiskSpace);
             card.Value.Should().Be("6000");
         }
 
@@ -619,7 +619,7 @@ namespace Tests.Unit.Services
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock
                 .Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraries = new List<string> { _collections[0].Id, _collections[1].Id }, ToShortMovieEnabled = false });
+                .Returns(new UserSettings { ToShortMovie = 10, MovieLibraries = new List<LibraryContainer> { new () { Id = _collections[0].Id}, new() { Id = _collections[1].Id } }, ToShortMovieEnabled = false });
             var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(0, 1, 0).Build();
             var service = CreateMovieService(settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
             var stat = service.GetStatistics(_collections.Select(x => x.Id).ToList());

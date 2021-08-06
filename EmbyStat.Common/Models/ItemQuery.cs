@@ -59,6 +59,7 @@ namespace EmbyStat.Common.Models
         public int? ImageTypeLimit { get; set; }
         public ImageType[] EnableImageTypes { get; set; }
         public bool EnableTotalRecordCount { get; set; }
+        public DateTime? MinDateLastSaved { get; set; }
 
         public ItemQuery()
         {

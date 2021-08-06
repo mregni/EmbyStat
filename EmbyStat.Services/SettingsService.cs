@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
@@ -57,6 +58,16 @@ namespace EmbyStat.Services
 
             OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
             return _userSettings;
+        }
+
+        public async Task UpdateLibrarySyncDate(string libraryId, DateTime date)
+        {
+            var library = _userSettings.MovieLibraries.FirstOrDefault(x => x.Id == libraryId);
+            if (library != null)
+            {
+                library.LastSynced = date;
+                await SaveUserSettingsAsync(_userSettings);
+            }
         }
 
         public void CreateRollbarLogger()

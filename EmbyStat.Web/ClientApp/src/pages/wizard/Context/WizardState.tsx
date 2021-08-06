@@ -3,7 +3,7 @@ import { createContext, useEffect, useMemo, useState } from 'react';
 import { Wizard, initialWizardState } from '../../../shared/models/wizard';
 import { Library, MediaServer, MediaServerInfo, MediaServerUser } from '../../../shared/models/mediaServer';
 import { useSearchMediaServers } from '../../../shared/hooks';
-import { Settings } from '../../../shared/models/settings';
+import { LibraryContainer, Settings } from '../../../shared/models/settings';
 import { register } from '../../../shared/services/AccountService';
 import { updateSettings } from '../../../shared/services/SettingsService';
 
@@ -17,8 +17,8 @@ export interface WizardContextProps {
   setAdministrators: (administrators: MediaServerUser[]) => void;
   setLibraries: (libraries: Library[]) => void;
   setAdministrator: (userId: string) => void;
-  setMovieLibraries: (libraries: string[]) => void;
-  setShowLibraries: (libraries: string[]) => void;
+  setMovieLibraries: (libraries: LibraryContainer[]) => void;
+  setShowLibraries: (libraries: LibraryContainer[]) => void;
   finishWizard: (settings: Settings) => Promise<boolean>;
   fullServerUrl: string;
   mediaServersLoading: boolean;
@@ -98,11 +98,11 @@ export const useWizardContext = (): WizardContextProps => {
     setWizard((prev: Wizard) => ({ ...prev, allLibraries: libraries }));
   }
 
-  const setMovieLibraries = (libraries: string[]): void => {
+  const setMovieLibraries = (libraries: LibraryContainer[]): void => {
     setWizard((prev: Wizard) => ({ ...prev, movieLibraries: libraries, movieLibrariesChanged: true }));
   }
 
-  const setShowLibraries = (libraries: string[]): void => {
+  const setShowLibraries = (libraries: LibraryContainer[]): void => {
     setWizard((prev: Wizard) => ({ ...prev, showLibraries: libraries, showLibrariesChanged: true }));
   }
 
@@ -112,7 +112,6 @@ export const useWizardContext = (): WizardContextProps => {
   }, [wizard.serverProtocol, wizard.serverAddress, wizard.serverPort, wizard?.serverBaseurl]);
 
   const finishWizard = async (settings: Settings): Promise<boolean> => {
-    console.log(settings);
     const newSettings: Settings = {
       ...settings,
       mediaServer: {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -21,11 +22,11 @@ namespace EmbyStat.Clients.Base.Http
         JObject GetDevices();
         bool Ping();
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer();
-        List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit);
+        List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit, DateTime? lastSynced);
         List<Show> GetShows(string libraryId);
         List<Season> GetSeasons(string parentId);
         List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId);
-        int GetMovieCount(string parentId);
+        int GetMovieCount(string parentId, DateTime? lastSynced);
         Person GetPersonByName(string personName);
         QueryResult<BaseItemDto> GetMediaFolders();
     }

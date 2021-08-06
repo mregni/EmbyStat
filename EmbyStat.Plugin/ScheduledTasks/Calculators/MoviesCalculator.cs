@@ -92,7 +92,7 @@ namespace EmbyStat.Plugin.ScheduledTasks.Calculators
             return new Card<string>
             {
                 Value = sum.ToString(CultureInfo.InvariantCulture),
-                Title = Constants.Common.TotalDiskSize,
+                Title = Constants.Common.TotalDiskSpace,
                 Type = CardType.Size,
                 Icon = Constants.Icons.StorageRoundedIcon
             };

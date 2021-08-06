@@ -74,7 +74,7 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetServerInfo_Should_Return_Emby_Server_Info_And_Fetch_It_From_Emby()
+        public void GetServerInfo_Should_Return_Emby_Server_Info_And_Fetch_It_From_Emby()
         {
             _httpClientMock = new Mock<IHttpClient>();
             _embyRepositoryMock = new Mock<IMediaServerRepository>();

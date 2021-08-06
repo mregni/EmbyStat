@@ -34,7 +34,7 @@ namespace EmbyStat.Common
             public static string MostFeaturedActor => "COMMON.MOSTFEATUREDACTOR";
             public static string MostFeaturedDirector => "COMMON.MOSTFEATUREDDIRECTOR";
             public static string MostFeaturedWriter => "COMMON.MOSTFEATUREDWRITER";
-            public static string TotalDiskSize => "COMMON.TOTALDISKSIZE";
+            public static string TotalDiskSpace => "COMMON.TOTALDISKSIZE";
             public static string TotalGenres => "COMMON.TOTALGENRES";
         }
 

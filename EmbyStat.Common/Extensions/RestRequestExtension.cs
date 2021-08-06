@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using EmbyStat.Common.Models;
 using RestSharp;
 
@@ -22,49 +23,51 @@ namespace EmbyStat.Common.Extensions
 
             if (query.SortOrder.HasValue)
             {
-                request.AddQueryParameter("sortOrder", query.SortOrder.ToString());
+                request.AddQueryParameter("sortOrder", query.SortOrder?.ToString());
             }
 
-            if (query.SeriesStatuses != null)
+            if (query.SeriesStatuses != null && query.SeriesStatuses.Any())
             {
                 request.AddQueryParameter("SeriesStatuses", string.Join(',',query.SeriesStatuses));
             }
 
-            if (query.Fields != null)
+            if (query.Fields != null && query.Fields.Any())
             {
                 request.AddQueryParameter("fields", string.Join(',', query.Fields));
             }
 
-            if (query.Filters != null)
+            if (query.Filters != null && query.Filters.Any())
             {
                 request.AddQueryParameter("Filters", string.Join(',', query.Filters));
             }
 
-            if (query.ImageTypes != null)
+            if (query.ImageTypes != null && query.ImageTypes.Any())
             {
                 request.AddQueryParameter("ImageTypes", string.Join(',', query.ImageTypes));
             }
 
-            if (query.AirDays != null)
+            if (query.AirDays != null && query.AirDays.Any())
             {
                 request.AddQueryParameter("AirDays", string.Join(',', query.AirDays));
             }
 
-            if (query.EnableImageTypes != null)
+            if (query.EnableImageTypes != null && query.EnableImageTypes.Any())
             {
                 request.AddQueryParameter("EnableImageTypes", string.Join(',', query.EnableImageTypes));
             }
 
-            if (query.LocationTypes != null && query.LocationTypes.Length > 0)
+            if (query.LocationTypes != null && query.LocationTypes.Any())
             {
                 request.AddQueryParameter("LocationTypes", string.Join(',', query.LocationTypes));
             }
 
-            if (query.ExcludeLocationTypes != null && query.ExcludeLocationTypes.Length > 0)
+            if (query.ExcludeLocationTypes != null && query.ExcludeLocationTypes.Any())
             {
                 request.AddQueryParameter("ExcludeLocationTypes", string.Join(',', query.ExcludeLocationTypes));
             }
 
+            request.AddIfNotNull("MinDateLastSaved", query.MinDateLastSaved);
+            request.AddIfNotNull("MinDateLastSavedForUser", query.MinDateLastSaved);
             request.AddIfNotNullOrEmpty("ParentId", query.ParentId);
             request.AddIfNotNull("StartIndex", query.StartIndex);
             request.AddIfNotNull("Limit", query.Limit);
@@ -125,6 +128,14 @@ namespace EmbyStat.Common.Extensions
             if (value.HasValue)
             {
                 request.AddQueryParameter(key, value.Value.ToString());
+            }
+        }
+
+        private static void AddIfNotNull(this IRestRequest request, string key, DateTime? value)
+        {
+            if (value.HasValue)
+            {
+                request.AddQueryParameter(key, value.Value.ToString("O"));
             }
         }
 

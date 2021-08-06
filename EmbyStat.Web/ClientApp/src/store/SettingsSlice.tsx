@@ -70,18 +70,6 @@ const settingsSlice = createSlice({
   },
 });
 
-export const loadSettings = (): AppThunk => async (
-  dispatch,
-  getState
-) => {
-  if (!getState().settings.isLoaded) {
-    const settings = await getSettings();
-    dispatch(settingsSlice.actions.receiveSettings(settings));
-  } else {
-    dispatch(settingsSlice.actions.alreadyLoaded());
-  }
-};
-
 export const saveSettings = (settings: Settings): AppThunk => async (
   dispatch,
   getState

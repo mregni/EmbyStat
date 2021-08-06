@@ -36,8 +36,8 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<string>(),
-                ShowLibraries = new List<string>(),
+                MovieLibraries = new List<LibraryContainer>(),
+                ShowLibraries = new List<LibraryContainer>(),
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = UpdateTrain.Beta,
@@ -70,14 +70,18 @@ namespace Tests.Unit.Controllers
             _settingsServiceMock.Setup(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()))
                 .Returns(Task.FromResult(_userSettings));
 
+            var useSettings = new FullSettingsViewModelBuilder(_userSettings)
+                .AddMovieLibraries(_userSettings.MovieLibraries)
+                .AddShowLibraries(_userSettings.ShowLibraries)
+                .Build();
             var mapperMock = new Mock<IMapper>();
             mapperMock.Setup(x => x.Map<FullSettingsViewModel>(It.IsAny<UserSettings>()))
-                .Returns(new FullSettingsViewModelBuilder(_userSettings).Build);
+                .Returns(useSettings);
             mapperMock.Setup(x => x.Map<UserSettings>(It.IsAny<FullSettingsViewModel>()))
                 .Returns(new UserSettings
                 {
-                    MovieLibraries = new List<string>(),
-                    ShowLibraries = new List<string>()
+                    MovieLibraries = new List<LibraryContainer>(),
+                    ShowLibraries = new List<LibraryContainer>()
                 });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
@@ -148,13 +152,13 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<string>(),
-                ShowLibraries = new List<string>(),
+                MovieLibraries = new List<LibraryContainerViewModel>(),
+                ShowLibraries = new List<LibraryContainerViewModel>(),
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = 0,
                 WizardFinished = true,
-                MediaServer = new FullSettingsViewModel.MediaServerSettingsViewModel
+                MediaServer = new MediaServerSettingsViewModel
                 {
                     ApiKey = "1234567980",
                     ServerName = "ServerName",
@@ -163,7 +167,7 @@ namespace Tests.Unit.Controllers
                     ServerPort = 8097,
                     ServerProtocol = 1,
                 },
-                Tmdb = new FullSettingsViewModel.TmdbSettingsViewModel
+                Tmdb = new TmdbSettingsViewModel
                 {
                     LastUpdate = new DateTime(2019, 1, 1),
                     ApiKey = "ABCDE"

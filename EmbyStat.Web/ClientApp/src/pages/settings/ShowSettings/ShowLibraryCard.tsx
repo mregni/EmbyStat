@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { LibraryCard } from '../Helpers';
 import SnackbarUtils from '../../../shared/utils/SnackbarUtilsConfigurator';
 import { SettingsContext } from '../../../shared/context/settings';
+import { LibraryContainer } from '../../../shared/models/settings';
 
 interface Props {
   delay: number;
@@ -14,7 +15,7 @@ export const ShowLibraryCard = (props: Props) => {
   const { t } = useTranslation();
   const { settings, save } = useContext(SettingsContext);
 
-  const saveList = (selectedLibraries: string[]): void => {
+  const saveList = (selectedLibraries: LibraryContainer[]): void => {
     settings.showLibraries = selectedLibraries;
     save(settings)
     SnackbarUtils.info(t('SETTINGS.SHOWS.LIBRARY.SAVING'));

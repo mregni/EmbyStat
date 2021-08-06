@@ -91,7 +91,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Lets start processing show");
             var updateStartTime = DateTime.Now;
 
-            var neededLibraries = libraries.Where(x => Settings.ShowLibraries.Any(y => y == x.Id)).ToList();
+            var neededLibraries = libraries.Where(x => Settings.ShowLibraries.Any(y => y.Id == x.Id)).ToList();
             var logIncrementBase = Math.Round(40 / (double)neededLibraries.Count, 1);
             foreach (var library in neededLibraries)
             {

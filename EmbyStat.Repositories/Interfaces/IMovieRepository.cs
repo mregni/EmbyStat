@@ -16,7 +16,7 @@ namespace EmbyStat.Repositories.Interfaces
         long GetTotalRuntime(IReadOnlyList<string> libraryIds);
         IEnumerable<Movie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count);
         IEnumerable<Movie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count);
-        double GetTotalDiskSize(IReadOnlyList<string> libraryIds);
+        double GetTotalDiskSpace(IReadOnlyList<string> libraryIds);
         List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes);
         List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds);
         List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds);

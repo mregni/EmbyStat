@@ -58,8 +58,6 @@ namespace EmbyStat.Controllers.Settings
             settings = await _settingsService.SaveUserSettingsAsync(settings);
             var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
             settingsViewModel.Version = _settingsService.GetAppSettings().Version;
-
-            //TODO, check if user checked the new to implement checkbox to reset the database.
             
             return Ok(settingsViewModel);
         }

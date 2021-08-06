@@ -24,8 +24,8 @@ export interface Settings {
   toShortMovie: number;
   toShortMovieEnabled: boolean;
   keepLogsCount: number;
-  movieLibraries: string[];
-  showLibraries: string[];
+  movieLibraries: LibraryContainer[];
+  showLibraries: LibraryContainer[];
   autoUpdate: boolean;
   updateTrain: number;
   updateInProgress: boolean;
@@ -38,6 +38,12 @@ export interface Settings {
   logDir: string;
   configDir: string;
   isLoaded: boolean;
+}
+
+export interface LibraryContainer {
+  id: string;
+  lastSynced: Date | null;
+  name: string;
 }
 
 export const initialTmdbSettings: TmdbSettings = {

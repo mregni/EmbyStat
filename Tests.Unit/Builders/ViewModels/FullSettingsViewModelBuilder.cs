@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.Settings;
-using static EmbyStat.Controllers.Settings.FullSettingsViewModel;
 
 namespace Tests.Unit.Builders.ViewModels
 {
@@ -19,8 +19,6 @@ namespace Tests.Unit.Builders.ViewModels
                 Id = settings.Id,
                 KeepLogsCount = settings.KeepLogsCount,
                 Language = settings.Language,
-                MovieLibraries = settings.MovieLibraries.ToList(),
-                ShowLibraries = settings.ShowLibraries.ToList(),
                 ToShortMovie = settings.ToShortMovie,
                 ToShortMovieEnabled = settings.ToShortMovieEnabled,
                 UpdateInProgress = settings.UpdateInProgress,
@@ -37,6 +35,25 @@ namespace Tests.Unit.Builders.ViewModels
                 }
             };
         }
+
+        public FullSettingsViewModelBuilder AddMovieLibraries(IEnumerable<LibraryContainer> libraries)
+        {
+            _model.MovieLibraries = libraries
+                .Select(x => new LibraryContainerViewModel {Id = x.Id, Name = x.Name, LastSynced = x.LastSynced})
+                .ToList();
+
+            return this;
+        }
+
+        public FullSettingsViewModelBuilder AddShowLibraries(IEnumerable<LibraryContainer> libraries)
+        {
+            _model.ShowLibraries = libraries
+                .Select(x => new LibraryContainerViewModel { Id = x.Id, Name = x.Name, LastSynced = x.LastSynced })
+                .ToList();
+
+            return this;
+        }
+
         public FullSettingsViewModel Build()
         {
             return _model;

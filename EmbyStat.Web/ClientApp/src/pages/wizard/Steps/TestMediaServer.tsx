@@ -353,8 +353,12 @@ export const TestMediaServer = forwardRef<ValidationHandleWithSave, StepProps>((
             return;
           }
           setLibraries(libs);
-          setMovieLibraries(libs.filter((x) => x.type === 1).map((x) => x.id));
-          setShowLibraries(libs.filter((x) => x.type === 2).map((x) => x.id));
+          setMovieLibraries(libs
+            .filter((x) => x.type === 1)
+            .map((x) => { return { id: x.id, name: x.name, lastSynced: null } }));
+          setShowLibraries(libs
+            .filter((x) => x.type === 2)
+            .map((x) => { return { id: x.id, name: x.name, lastSynced: null } }));
           setMediaServerInfo(serverInfo);
           setAdministrators(admins);
           setIsLoading(false);

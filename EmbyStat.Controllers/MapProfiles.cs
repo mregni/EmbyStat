@@ -41,8 +41,9 @@ namespace EmbyStat.Controllers
                 .ReverseMap()
                 .ForMember(x => x.Version, x => x.Ignore())
                 .AfterMap((src, dest) => dest.MediaServer.ApiKey = src.MediaServer.ApiKey.Trim());
-            CreateMap<MediaServerSettings, FullSettingsViewModel.MediaServerSettingsViewModel>().ReverseMap();
-            CreateMap<TmdbSettings, FullSettingsViewModel.TmdbSettingsViewModel>().ReverseMap();
+            CreateMap<LibraryContainer, LibraryContainerViewModel>().ReverseMap();
+            CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
+            CreateMap<TmdbSettings, TmdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
 		    CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
             CreateMap<PluginInfo, PluginViewModel>();

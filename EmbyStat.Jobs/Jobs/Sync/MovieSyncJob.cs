@@ -11,6 +11,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -62,12 +63,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 return;
             }
 
-            await LogInformation("First delete all existing movie and root media libraries from database so we have a clean start.");
-            await LogProgress(3);
-
-            var libraries = await GetLibrariesAsync();
-            _libraryRepository.AddOrUpdateRange(libraries);
-            await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
             await LogProgress(15);
 
             await ProcessMoviesAsync(cancellationToken);
@@ -80,27 +75,26 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task ProcessMoviesAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing movies");
-            _movieRepository.RemoveMovies();
-            
+            await LogInformation($"{Settings.MovieLibraries.Count} libraries are selected, getting ready for processing");
+
             var logIncrementBase = Math.Round(40 / (double)Settings.MovieLibraries.Count, 1);
-            foreach (var libraryId in Settings.MovieLibraries)
+            foreach (var library in Settings.MovieLibraries)
             {
-                var collectionId = libraryId;
-                var totalCount = await GetTotalLibraryMovieCount(collectionId);
+                var totalCount = _httpClient.GetMovieCount(library.Id, library.LastSynced);
                 if (totalCount == 0)
                 {
-                    continue; ;
+                    continue;
                 }
                 var increment = logIncrementBase / (totalCount / (double)100);
 
-                await LogInformation($"Found {totalCount} movies in (NAME REMOVED FOR DEV VERSION) library");
+                await LogInformation($"Found {totalCount} changed movies since last sync in {library.Name}");
                 var processed = 0;
                 var j = 0;
                 const int limit = 100;
                 do
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
+                    var movies = await FetchMoviesAsync(library.Id, library, j * limit, limit);
                     _movieRepository.UpsertRange(movies.Where(x => x != null && x.MediaType == "Video"));
 
                     processed += 100;
@@ -109,26 +103,15 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                     await LogProgressIncrement(increment);
                 } while (processed < totalCount);
-
+                await SettingsService.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
             }
         }
 
-        private async Task<int> GetTotalLibraryMovieCount(string parentId)
-        {
-            var count = _httpClient.GetMovieCount(parentId);
-            if (count == 0)
-            {
-                await LogWarning($"0 movies found in parent with id {parentId}. Probably means something is wrong with the HTTP call.");
-            }
-
-            return count;
-        }
-
-        private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, string collectionId, int startIndex, int limit)
+        private async Task<List<Movie>> FetchMoviesAsync(string parentId, LibraryContainer library, int startIndex, int limit)
         {
             try
             {
-                return _httpClient.GetMovies(parentId, collectionId, startIndex, limit);
+                return _httpClient.GetMovies(parentId, library.Id, startIndex, limit, library.LastSynced);
             }
             catch (Exception e)
             {
@@ -141,6 +124,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             await LogInformation("Calculating movie statistics");
             _statisticsRepository.MarkMovieTypesAsInvalid();
+            await LogProgress(67);
             _movieService.CalculateMovieStatistics(new List<string>(0));
 
             await LogInformation($"Calculations done");
@@ -149,20 +133,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
 
         #region Helpers
-
-        private async Task<List<Library>> GetLibrariesAsync()
-        {
-            await LogInformation("Asking MediaServer for all movie root folders");
-            var rootItems = _httpClient.GetMediaFolders();
-
-            Logger.Debug("Following root items are found:");
-            rootItems.Items.ForEach(x => Logger.Debug(x.ToString()));
-
-            return rootItems.Items
-                .Where(x => x.CollectionType.ToLibraryType() == LibraryType.Movies)
-                .Select(LibraryConverter.ConvertToLibrary)
-                .ToList();
-        }
 
         private bool IsMediaServerOnline()
         {
