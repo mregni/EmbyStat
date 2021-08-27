@@ -72,7 +72,7 @@ namespace Tests.Unit.Repository
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
 
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShows(showOne);
 
                 var showList = _showRepository.GetAllShows(new string[0], false, false);
                 showList.Should().NotBeNull();
@@ -94,8 +94,8 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
 
                 var count = _showRepository.GetMediaCount(new string[0]);
                 count.Should().Be(2);
@@ -111,9 +111,9 @@ namespace Tests.Unit.Repository
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var count = _showRepository.GetMediaCount(new[] { "2" });
                 count.Should().Be(1);
@@ -129,8 +129,8 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddUpdateState(now.AddDays(-1)).Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddUpdateState(now.AddDays(1)).Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
 
                 var count = _showRepository.GetMediaCount(new string[0]);
                 count.Should().Be(2);
@@ -157,7 +157,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShows(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], false, false);
                 shows.Should().NotContainNulls();
@@ -186,9 +186,9 @@ namespace Tests.Unit.Repository
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository.GetAllShows(new[] { "2" }, false, false);
                 shows.Should().NotContainNulls();
@@ -214,7 +214,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShows(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], false, true);
                 shows.Should().NotContainNulls();
@@ -240,7 +240,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShows(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], true, false);
                 shows.Should().NotContainNulls();
@@ -266,7 +266,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShows(showOne);
 
                 var shows = _showRepository.GetAllShows(new string[0], true, true);
                 shows.Should().NotContainNulls();
@@ -292,7 +292,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(showOne);
+                _showRepository.UpsertShows(showOne);
 
                 var season = _showRepository.GetSeasonById(showOne.Seasons.First().Id);
                 season.Should().NotBeNull();
@@ -307,7 +307,7 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 var movieOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-                _showRepository.InsertShow(movieOne);
+                _showRepository.UpsertShows(movieOne);
 
                 var result = _showRepository.Any();
                 result.Should().BeTrue();
@@ -333,9 +333,9 @@ namespace Tests.Unit.Repository
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").ReplacePersons(new ExtraPerson { Id = showOne.People.First().Id, Type = PersonType.Actor, Name = "Test" }).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var count = _showRepository.GetMediaCountForPerson(showOne.People.First().Name);
 
@@ -351,8 +351,8 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
 
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
 
                 var episodes = _showRepository.GetAllEpisodesForShow(showOne.Id);
                 episodes.Should().NotContainNulls();
@@ -371,9 +371,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetNewestPremieredMedia(new string[0], 1)
@@ -394,9 +394,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetNewestPremieredMedia(new[] { "1" }, 1)
@@ -417,9 +417,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetOldestPremieredMedia(new string[0], 1)
@@ -440,9 +440,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddPremiereDate(new DateTime(2019, 1, 2)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddPremiereDate(new DateTime(1920, 1, 2)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetOldestPremieredMedia(new[] {"1"}, 1)
@@ -463,9 +463,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCommunityRating(1).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCommunityRating(9).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetHighestRatedMedia(new string[0], 1)
@@ -486,9 +486,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCommunityRating(1).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCommunityRating(9).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetHighestRatedMedia(new[] { "1" }, 1)
@@ -509,9 +509,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCommunityRating(9).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCommunityRating(1).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetLowestRatedMedia(new string[0], 1)
@@ -532,9 +532,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCommunityRating(9).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCommunityRating(1).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetLowestRatedMedia(new[] {"1"}, 1)
@@ -555,9 +555,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCreateDate(new DateTime(2000, 1, 1)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCreateDate(new DateTime(2017, 1, 1)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetLatestAddedMedia(new string[0], 1)
@@ -578,9 +578,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCreateDate(new DateTime(2000, 1, 1)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCreateDate(new DateTime(2017, 1, 1)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 var shows = _showRepository
                     .GetLatestAddedMedia(new[] { "1" }, 1)
@@ -602,9 +602,9 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 var showTwo = new ShowBuilder(Guid.NewGuid().ToString(), "1").AddCreateDate(new DateTime(2000, 1, 1)).Build();
                 var showThree = new ShowBuilder(Guid.NewGuid().ToString(), "2").AddCreateDate(new DateTime(2017, 1, 1)).Build();
-                _showRepository.InsertShow(showOne);
-                _showRepository.InsertShow(showTwo);
-                _showRepository.InsertShow(showThree);
+                _showRepository.UpsertShows(showOne);
+                _showRepository.UpsertShows(showTwo);
+                _showRepository.UpsertShows(showThree);
 
                 _showRepository.RemoveShows();
 

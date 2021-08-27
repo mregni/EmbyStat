@@ -24,18 +24,16 @@ namespace EmbyStat.Jobs.Jobs.Sync
     public class MovieSyncJob : BaseJob, IMovieSyncJob
     {
         private readonly IHttpClient _httpClient;
-        private readonly ILibraryRepository _libraryRepository;
         private readonly IMovieRepository _movieRepository;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMovieService _movieService;
 
         public MovieSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
-            ISettingsService settingsService, ILibraryRepository libraryRepository, IClientStrategy clientStrategy,
+            ISettingsService settingsService, IClientStrategy clientStrategy,
             IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
             IMovieService movieService) 
             : base(hubHelper, jobRepository, settingsService, typeof(MovieSyncJob), Constants.LogPrefix.MovieSyncJob)
         {
-            _libraryRepository = libraryRepository;
             _movieRepository = movieRepository;
             _statisticsRepository = statisticsRepository;
             _movieService = movieService;

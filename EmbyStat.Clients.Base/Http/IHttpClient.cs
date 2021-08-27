@@ -23,9 +23,9 @@ namespace EmbyStat.Clients.Base.Http
         bool Ping();
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer();
         List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit, DateTime? lastSynced);
-        List<Show> GetShows(string libraryId);
-        List<Season> GetSeasons(string parentId);
-        List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId);
+        List<Show> GetShows(string libraryId, DateTime? lastSynced);
+        List<Season> GetSeasons(string parentId, DateTime? lastSynced);
+        List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId, DateTime? lastSynced);
         int GetMovieCount(string parentId, DateTime? lastSynced);
         Person GetPersonByName(string personName);
         QueryResult<BaseItemDto> GetMediaFolders();

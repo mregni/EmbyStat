@@ -281,7 +281,7 @@ namespace EmbyStat.Clients.Base.Http
                 : new List<Movie>(0);
         }
 
-        public List<Show> GetShows(string parentId)
+        public List<Show> GetShows(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -292,6 +292,7 @@ namespace EmbyStat.Clients.Base.Http
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
                 IncludeItemTypes = new[] { "Series" },
+                MinDateLastSaved = lastSynced,
                 Fields = new[] {
                     ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                     ItemFields.Studios, ItemFields.Path, ItemFields.ProviderIds,
@@ -309,7 +310,7 @@ namespace EmbyStat.Clients.Base.Http
                 : new List<Show>(0);
         }
 
-        public List<Season> GetSeasons(string parentId)
+        public List<Season> GetSeasons(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -318,6 +319,7 @@ namespace EmbyStat.Clients.Base.Http
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
                 IncludeItemTypes = new[] { nameof(Season) },
+                MinDateLastSaved = lastSynced,
                 Fields = new[]
                 {
                     ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
@@ -336,7 +338,7 @@ namespace EmbyStat.Clients.Base.Http
                 : new List<Season>(0);
         }
 
-        public List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId)
+        public List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId, DateTime? lastSynced)
         {
             var episodes = new List<Episode>();
             foreach (var parentId in parentIds)
@@ -348,6 +350,7 @@ namespace EmbyStat.Clients.Base.Http
                     LocationTypes = new[] { LocationType.FileSystem },
                     Recursive = true,
                     IncludeItemTypes = new[] { nameof(Episode) },
+                    MinDateLastSaved = lastSynced,
                     Fields = new[]
                     {
                         ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,

@@ -67,6 +67,14 @@ namespace EmbyStat.Services
             {
                 library.LastSynced = date;
                 await SaveUserSettingsAsync(_userSettings);
+                return;
+            }
+
+            library = _userSettings.ShowLibraries.FirstOrDefault(x => x.Id == libraryId);
+            if (library != null)
+            {
+                library.LastSynced = date;
+                await SaveUserSettingsAsync(_userSettings);
             }
         }
 

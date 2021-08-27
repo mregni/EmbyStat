@@ -13,6 +13,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
@@ -73,58 +74,89 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("First delete all existing media and root media libraries from database so we have a clean start.");
             await LogProgress(3);
 
-            var libraries = await GetLibrariesAsync();
-            _libraryRepository.AddOrUpdateRange(libraries);
-            await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
-            await LogProgress(15);
+            var libraries = Settings.ShowLibraries;
+            await ProcessShowAsyncNew(libraries, cancellationToken);
+            //STEP1: Shows
+            //STEP2: Seasons
+            //STEP3: Episodes
 
-            await ProcessShowsAsync(libraries, cancellationToken);
+            await ProcessShowsAsync(cancellationToken);
             await LogProgress(95);
 
             await CalculateStatistics();
             await LogProgress(100);
         }
 
+        private async Task ProcessShowAsyncNew(IEnumerable<LibraryContainer> libraries, CancellationToken cancellationToken)
+        {
+            await LogInformation("Processing shows");
+            foreach (var library in libraries)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var rawShowList = _httpClient.GetShows(library.Id, library.LastSynced);
+                var showList = rawShowList.GroupBy(x => x.TVDB).ToList();
+                await LogInformation($"Found {showList.Count} changed shows since last sync in {library.Name}");
+
+                _showRepository.UpsertShows(showList.Select(x => x.First()));
+            }
+        }
+
+        private async Task ProcessSeasonsAsync(IEnumerable<LibraryContainer> libraries, CancellationToken cancellationToken)
+        {
+            await LogInformation("Processing seasons");
+            foreach (var library in libraries)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var rawShowList = _httpClient.GetShows(library.Id, library.LastSynced);
+                var showList = rawShowList.GroupBy(x => x.TVDB).ToList();
+                await LogInformation($"Found {showList.Count} changed shows since last sync in {library.Name}");
+
+                _showRepository.UpsertShows(showList.Select(x => x.First()));
+            }
+        }
+
         #region Shows
-        private async Task ProcessShowsAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
+        private async Task ProcessShowsAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Lets start processing show");
             var updateStartTime = DateTime.Now;
 
-            var neededLibraries = libraries.Where(x => Settings.ShowLibraries.Any(y => y.Id == x.Id)).ToList();
+            var neededLibraries = Settings.ShowLibraries;
             var logIncrementBase = Math.Round(40 / (double)neededLibraries.Count, 1);
             foreach (var library in neededLibraries)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                await PerformShowSyncAsync(library, updateStartTime, logIncrementBase);
-            }
 
-            await LogInformation("Removing shows that are no longer present on your server (if any)");
-            _showRepository.RemoveShowsThatAreNotUpdated(updateStartTime);
+                var showList = _httpClient.GetShows(library.Id, library.LastSynced);
+                var grouped = showList.GroupBy(x => x.TVDB).ToList();
+                await LogInformation($"Found {grouped.Count} changed shows since last sync in {library.Name}");
+
+                await PerformShowSyncAsync(grouped, updateStartTime, logIncrementBase, library.LastSynced);
+                await SettingsService.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
+;            }
+
+            //await LogInformation("Removing shows that are no longer present on your server (if any)");
+            //_showRepository.RemoveShowsThatAreNotUpdated(updateStartTime);
         }
 
-        private async Task PerformShowSyncAsync(Library library, DateTime updateStartTime, double logIncrementBase)
+        private async Task PerformShowSyncAsync(IReadOnlyList<IGrouping<string, Show>> grouped, DateTime updateStartTime, double logIncrementBase, DateTime? lastSynced)
         {
-            var showList = _httpClient.GetShows(library.Id);
-
-            var grouped = showList.GroupBy(x => x.TVDB).ToList();
-            await LogInformation($"Found {grouped.Count} show for {library.Name} library");
-
             for (var i = 0; i < grouped.Count; i++)
             {
                 var showGroup = grouped[i];
-
                 var show = showGroup.First();
+                
                 foreach (var showDto in showGroup)
                 {
-                    var seasons = _httpClient.GetSeasons(showDto.Id);
-                    var episodes = _httpClient.GetEpisodes(seasons.Select(x => x.Id), show.Id);
-
+                    var seasons = _httpClient.GetSeasons(showDto.Id, lastSynced);
+                    await LogInformation($"Receiving {seasons.Count} seasons for {show.Name} )");
                     show.Seasons.AddRange(seasons.Where(x => show.Seasons.All(y => y.Id != x.Id)));
 
+                    var episodes = _httpClient.GetEpisodes(seasons.Select(x => x.Id), show.Id, lastSynced);
+                    await LogInformation($"Receiving {episodes.Count} seasons for {show.Name} )");
                     episodes.ForEach(x => x.SeasonIndexNumber = seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber );
                     show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
-
                 }
 
                 show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);
@@ -148,7 +180,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     }
                 }
 
-                _showRepository.InsertShow(show);
+                //_showRepository.UpsertShows(show);
                 await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name} => {show.Seasons.Count} seasons, {show.GetEpisodeCount(true, LocationType.Disk)} episodes, (Size in GB: {Math.Round(show.SizeInMb / 1024, 2)})");
                 await LogProgressIncrement(logIncrementBase / grouped.Count);
             }

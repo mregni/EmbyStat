@@ -133,23 +133,33 @@ namespace EmbyStat.Repositories
             return ApplyFilter(query, filter);
         }
 
-        public void InsertShow(Show show)
+        public void UpsertShows(IEnumerable<Show> shows)
         {
             ExecuteQuery(() =>
             {
                 using var database = Context.CreateDatabaseContext();
-                var episodeCollection = database.GetCollection<Episode>();
-                var seasonCollection = database.GetCollection<Season>();
-                var showCollection = database.GetCollection<Show>();
+                var collection = database.GetCollection<Show>();
+                collection.Upsert(shows);
+            });
+        }
 
-                episodeCollection.DeleteMany(x => x.ShowId == show.Id);
-                seasonCollection.DeleteMany(x =>  x.ParentId == show.Id);
-                showCollection.DeleteMany(x => x.Id == show.Id);
-                database.Commit();
+        public void InsertSeasons(IEnumerable<Season> seasons)
+        {
+            ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Season>();
+                collection.Upsert(seasons);
+            });
+        }
 
-                episodeCollection.Upsert(show.Episodes);
-                seasonCollection.Upsert(show.Seasons);
-                showCollection.Upsert(show);
+        public void InsertEpisodes(IEnumerable<Episode> episodes)
+        {
+            ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Episode>();
+                collection.Upsert(episodes);
             });
         }
 
