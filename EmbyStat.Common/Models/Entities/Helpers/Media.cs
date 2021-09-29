@@ -19,5 +19,20 @@ namespace EmbyStat.Common.Models.Entities.Helpers
         public int? ProductionYear { get; set; }
         public string SortName { get; set; }
         public string CollectionId { get; set; }
+
+        public override bool Equals(object? other)
+        {
+            if (other is Media media)
+            {
+                return Id == media.Id;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }

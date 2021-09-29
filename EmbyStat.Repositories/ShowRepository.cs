@@ -143,6 +143,16 @@ namespace EmbyStat.Repositories
             });
         }
 
+        public void UpsertShow(Show show)
+        {
+            ExecuteQuery(() =>
+            {
+                using var database = Context.CreateDatabaseContext();
+                var collection = database.GetCollection<Show>();
+                collection.Upsert(show);
+            });
+        }
+
         public void InsertSeasons(IEnumerable<Season> seasons)
         {
             ExecuteQuery(() =>

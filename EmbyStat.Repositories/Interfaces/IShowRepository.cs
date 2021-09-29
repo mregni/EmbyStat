@@ -9,6 +9,7 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IShowRepository : IMediaRepository<Show>
     {
         void UpsertShows(IEnumerable<Show> shows);
+        void UpsertShow(Show updatedShow);
         void InsertSeasons(IEnumerable<Season> seasons);
         void InsertEpisodes(IEnumerable<Episode> episodes);
         List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);

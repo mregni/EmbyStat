@@ -136,16 +136,10 @@ namespace Tests.Unit.Extensions
 
             var query = new ItemQuery();
             request.AddItemQueryAsParameters(query, "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            request.Parameters.Count.Should().Be(8);
+            request.Parameters.Count.Should().Be(2);
 
             var parameters = request.Parameters;
             parameters.Single(x => x.Name == "UserId").Value.As<string>().Should().Be("fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            parameters.Single(x => x.Name == "SeriesStatuses").Value.As<string>().Should().Be(string.Empty);
-            parameters.Single(x => x.Name == "fields").Value.As<string>().Should().Be(string.Empty);
-            parameters.Single(x => x.Name == "Filters").Value.As<string>().Should().Be(string.Empty);
-            parameters.Single(x => x.Name == "ImageTypes").Value.As<string>().Should().Be(string.Empty);
-            parameters.Single(x => x.Name == "AirDays").Value.As<string>().Should().Be(string.Empty);
-            parameters.Single(x => x.Name == "EnableImageTypes").Value.As<string>().Should().Be(string.Empty);
             parameters.Single(x => x.Name == "recursive").Value.As<string>().Should().Be("False");
 
         }

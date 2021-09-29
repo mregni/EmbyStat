@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using FluentAssertions;
 using Tests.Unit.Builders;
 using Xunit;
@@ -127,61 +129,46 @@ namespace Tests.Unit.Extensions
         }
 
         [Fact]
-        public void NeedsShowSync_Should_Return_True_If_Show_Needs_Syncing()
+        public void Upsert_Should_Add_Extra_Items()
         {
-            var show = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-            var needsUpdate = show.NeedsShowSync();
+            var list = new List<Media>
+            {
+                new() {Id = "1", Name = "Title 1"},
+                new() {Id = "2", Name = "Title 2"}
+            };
 
-            needsUpdate.Should().BeTrue();
+            var listToAdd = new List<Media>
+            {
+                new() {Id = "3", Name = "Title 3"},
+            };
+
+            list.Upsert(listToAdd);
+            list.Count.Should().Be(3);
+            list.Count(x => x.Id == "1").Should().Be(1);
+            list.Count(x => x.Id == "2").Should().Be(1);
+            list.Count(x => x.Id == "3").Should().Be(1);
         }
 
         [Fact]
-        public void NeedsShowSync_Should_Return_True_If_Show_Failed_Sync()
+        public void Upsert_Should_Add_Update_IExisting_tem()
         {
-            var show = new ShowBuilder(Guid.NewGuid().ToString(), "1")
-                .AddTvdbSynced(true)
-                .AddFailedSync(true).Build();
-            var needsUpdate = show.NeedsShowSync();
+            var list = new List<Media>
+            {
+                new() {Id = "1", Name = "Title 1"},
+                new() {Id = "2", Name = "Title 2"}
+            };
 
-            needsUpdate.Should().BeTrue();
-        }
+            var listToAdd = new List<Media>
+            {
+                new() {Id = "2", Name = "Title 3"},
+            };
 
-        [Fact]
-        public void NeedsShowSync_Should_Return_False_If_Show_Already_Synced()
-        {
-            var show = new ShowBuilder(Guid.NewGuid().ToString(), "1")
-                .AddTvdbSynced(true).Build();
-            var needsUpdate = show.NeedsShowSync();
-
-            needsUpdate.Should().BeFalse();
-        }
-
-        [Fact]
-        public void HasShowChangedEpisode_Should_Return_True_If_Show_Has_Changed_Episodes()
-        {
-            var oldShow = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-            var newShow = new ShowBuilder(Guid.NewGuid().ToString(), oldShow.Id)
-                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), oldShow.Id, "1").Build())
-                .Build();
-
-            var changed = newShow.HasShowChangedEpisodes(oldShow);
-            changed.Should().BeTrue();
-        }
-
-        [Fact]
-        public void HasShowChangedEpisode_Should_Return_True_If_Show_Is_New()
-        {
-            var newShow = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-            var changed = newShow.HasShowChangedEpisodes(null);
-            changed.Should().BeTrue();
-        }
-
-        [Fact]
-        public void HasShowChangedEpisode_Should_Return_False_If_Shows_Are_Equal()
-        {
-            var oldShow = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
-            var changed = oldShow.HasShowChangedEpisodes(oldShow);
-            changed.Should().BeFalse();
+            list.Upsert(listToAdd);
+            list.Count.Should().Be(2);
+            list.Count(x => x.Id == "1").Should().Be(1);
+            list.Count(x => x.Name == "Title 2").Should().Be(0);
+            list.Count(x => x.Name == "Title 3").Should().Be(1);
+            list.Count(x => x.Id == "2").Should().Be(1);
         }
     }
 }

@@ -75,19 +75,24 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(3);
 
             var libraries = Settings.ShowLibraries;
-            await ProcessShowAsyncNew(libraries, cancellationToken);
+
+            _showRepository.RemoveShows();
+
+            await ProcessShowsAsyncNew(libraries, cancellationToken);
+            await ProcessSeasonsAsync(libraries, cancellationToken); 
+            await ProcessEpisodesAsync(libraries, cancellationToken);
             //STEP1: Shows
             //STEP2: Seasons
             //STEP3: Episodes
 
-            await ProcessShowsAsync(cancellationToken);
+            //await ProcessShowsAsync(cancellationToken);
             await LogProgress(95);
 
             await CalculateStatistics();
             await LogProgress(100);
         }
 
-        private async Task ProcessShowAsyncNew(IEnumerable<LibraryContainer> libraries, CancellationToken cancellationToken)
+        private async Task ProcessShowsAsyncNew(IEnumerable<LibraryContainer> libraries, CancellationToken cancellationToken)
         {
             await LogInformation("Processing shows");
             foreach (var library in libraries)
@@ -106,13 +111,47 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Processing seasons");
             foreach (var library in libraries)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                var shows = _showRepository.GetAllShows(new List<string> {library.Id}, true, false);
+                foreach (var show in shows)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var rawSeasons = _httpClient.GetSeasons(show.Id, library.LastSynced);
+                    show.Seasons.Upsert(rawSeasons);
+                    _showRepository.InsertSeasons(rawSeasons);
+                    _showRepository.UpsertShow(show); 
+                    await LogInformation($"Found {rawSeasons.Count} changed seasons since last sync for show {show.SortName}");
+                }
+            }
+        }
 
-                var rawShowList = _httpClient.GetShows(library.Id, library.LastSynced);
-                var showList = rawShowList.GroupBy(x => x.TVDB).ToList();
-                await LogInformation($"Found {showList.Count} changed shows since last sync in {library.Name}");
+        private async Task ProcessEpisodesAsync(IEnumerable<LibraryContainer> libraries, CancellationToken cancellationToken)
+        {
+            await LogInformation("Processing seasons");
+            foreach (var library in libraries)
+            {
+                var shows = _showRepository.GetAllShows(new List<string> { library.Id }, true, false);
+                foreach (var showObj in shows)
+                {
+                    var show = showObj;
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var rawEpisodes = _httpClient.GetEpisodes(showObj.Seasons.Select(x => x.Id), show.Id, library.LastSynced);
+                    rawEpisodes.ForEach(x => x.SeasonIndexNumber = showObj.Seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber);
+                    show.Episodes.Upsert(rawEpisodes);
+                    await LogInformation($"Found {rawEpisodes.Count} changed episodes since last sync for show {show.SortName}");
 
-                _showRepository.UpsertShows(showList.Select(x => x.First()));
+                    show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);
+                    show.SizeInMb = show.GetShowSize();
+
+                    if (show.TMDB.HasValue)
+                    {
+                        if (rawEpisodes.Any() || show.ExternalSyncFailed)
+                        {
+                            show = await GetMissingEpisodesFromProviderAsync(show);
+                        }
+                    }
+
+                    _showRepository.UpsertShow(show);
+                }
             }
         }
 
@@ -165,22 +204,22 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
                 var oldShow = _showRepository.GetShowById(show.Id);
 
-                if (oldShow != null)
-                {
-                    show.ExternalSyncFailed = oldShow.ExternalSyncFailed;
-                    show.ExternalSynced = oldShow.ExternalSynced;
-                }
+                //if (oldShow != null)
+                //{
+                //    show.ExternalSyncFailed = oldShow.ExternalSyncFailed;
+                //    show.ExternalSynced = oldShow.ExternalSynced;
+                //}
 
-                if (show.TMDB.HasValue)
-                {
-                    if (show.HasShowChangedEpisodes(oldShow) 
-                             || oldShow != null && oldShow.NeedsShowSync())
-                    {
-                        show = await GetMissingEpisodesFromProviderAsync(show);
-                    }
-                }
+                //if (show.TMDB.HasValue)
+                //{
+                //    if (show.HasShowChangedEpisodes(oldShow) 
+                //             || oldShow != null && oldShow.NeedsShowSync())
+                //    {
+                //        show = await GetMissingEpisodesFromProviderAsync(show);
+                //    }
+                //}
 
-                //_showRepository.UpsertShows(show);
+                _showRepository.UpsertShow(show);
                 await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name} => {show.Seasons.Count} seasons, {show.GetEpisodeCount(true, LocationType.Disk)} episodes, (Size in GB: {Math.Round(show.SizeInMb / 1024, 2)})");
                 await LogProgressIncrement(logIncrementBase / grouped.Count);
             }
@@ -246,7 +285,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation($"Found {missingEpisodesCount} missing episodes for show {show.Name}");
 
             show.Episodes = show.Episodes.Where(x => show.Seasons.Any(y => y.Id.ToString() == x.ParentId)).ToList();
-            show.ExternalSynced = true;
+            show.ExternalSyncFailed = false;
             return show;
         }
 

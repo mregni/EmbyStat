@@ -42,7 +42,6 @@ namespace Tests.Unit.Builders
                 TVDB = "12345",
                 Thumb = "thumb.jpg",
                 ExternalSyncFailed = false,
-                ExternalSynced = false,
                 PremiereDate = new DateTime(2001, 01, 01, 0, 0, 0),
                 People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
                 Genres = new[] { "Action" },
@@ -165,18 +164,6 @@ namespace Tests.Unit.Builders
                     .Build());
             }
 
-            return this;
-        }
-
-        public ShowBuilder AddFailedSync(bool state)
-        {
-            _show.ExternalSyncFailed = state;
-            return this;
-        }
-
-        public ShowBuilder AddTvdbSynced(bool state)
-        {
-            _show.ExternalSynced = state;
             return this;
         }
 

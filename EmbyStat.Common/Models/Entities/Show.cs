@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities.Helpers;
 using LiteDB;
 
@@ -8,7 +8,6 @@ namespace EmbyStat.Common.Models.Entities
     {
         public long? CumulativeRunTimeTicks { get; set; }
         public string Status { get; set; }
-        public bool ExternalSynced { get; set; }
         public bool ExternalSyncFailed { get; set; }
         [BsonRef(nameof(Season))]
         public List<Season> Seasons { get; set; }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Show;
 
 namespace EmbyStat.Common.Extensions
@@ -68,29 +70,35 @@ namespace EmbyStat.Common.Extensions
         }
 
         /// <summary>
-        /// Checks if the show needs a resync when external sync is failed or never happened
+        /// Adds new items to current list or if Id is already present in the list, it will update all properties to new values.
         /// </summary>
-        /// <param name="show">Show for which the check is performed</param>
-        /// <returns>True or false if the a resync is needed or not</returns>
-        public static bool NeedsShowSync(this Show show)
+        /// <typeparam name="T">Media type</typeparam>
+        /// <param name="list1">Base list</param>
+        /// <param name="list2">List that will be merged to the base list</param>
+        public static void Upsert<T>(this List<T> list1, List<T> list2) where T : Media
         {
-            return !show.ExternalSynced || show.ExternalSyncFailed;
-        }
-
-        /// <summary>
-        /// Checks if any episodes are changed since the last sync for a show
-        /// </summary>
-        /// <param name="show">New show data from the external server</param>
-        /// <param name="oldShow">Internal show data on which a comparison is required</param>
-        /// <returns>True or false if episodes have changed</returns>
-        public static bool HasShowChangedEpisodes(this Show show, Show oldShow)
-        {
-            if (oldShow == null)
+            foreach (var item in list2)
             {
-                return true;
+                if (list1.Any(n => n.Equals(item)))
+                {
+                    var obj = list1.First(n => n.Equals(item));
+                    foreach (var pi in obj.GetType().GetProperties())
+                    {
+                        var v1 = pi.GetValue(obj, null);
+                        var v2 = pi.GetValue(item, null);
+                        var value = v1;
+                        if (v2 != null && v1 != v2)
+                        {
+                            value = v2;
+                        }
+                        pi.SetValue(obj, value, null);
+                    }
+                }
+                else
+                {
+                    list1.Add(item);
+                }
             }
-
-            return !oldShow.Episodes.Select(x => x.Id).AreListEqual(show.Episodes.Select(x => x.Id));
         }
     }
 }

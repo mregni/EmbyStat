@@ -350,7 +350,7 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var result = client.GetMovies("123", "0", 1000, 100);
+            var result = client.GetMovies("123", "0", 1000, 100, DateTime.MinValue);
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
 
@@ -399,7 +399,7 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var result = client.GetShows("123");
+            var result = client.GetShows("123", DateTime.MinValue);
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
 
@@ -447,7 +447,7 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var result = client.GetSeasons("123");
+            var result = client.GetSeasons("123", DateTime.MinValue);
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
 
@@ -493,7 +493,7 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var result = client.GetEpisodes(new []{ "123" }, "12");
+            var result = client.GetEpisodes(new []{ "123" }, "12", DateTime.MinValue);
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
 
