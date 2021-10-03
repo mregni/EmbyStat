@@ -105,7 +105,7 @@ namespace EmbyStat.Common.Extensions
             }
             else
             {
-                extra.People = new ExtraPerson[0];
+                extra.People = Array.Empty<ExtraPerson>();
             }
 
             return extra;

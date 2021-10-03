@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Enums;
+﻿using System;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
@@ -205,7 +206,7 @@ namespace Tests.Unit.Services
         public void Get_With_Show_Libraries_Should_Return_Null_For_Now()
         {
             var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = new string[0];
+            var usedCollectionIds = Array.Empty<string>();
             var filterService = CreateFilterService(LibraryType.Movies, "subtitle", collectionIds);
             var values = filterService.GetFilterValues(LibraryType.TvShow, "subtitle", usedCollectionIds);
             values.Should().BeNull();

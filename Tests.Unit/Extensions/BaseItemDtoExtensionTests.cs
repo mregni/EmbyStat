@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -199,7 +200,7 @@ namespace Tests.Unit.Extensions
         [Fact]
         public void MapMediaSources_Should_Map_To_Empty_MediaSources()
         {
-            var dto = new BaseItemDto { MediaSources = new BaseMediaSourceInfo[0] };
+            var dto = new BaseItemDto { MediaSources = Array.Empty<BaseMediaSourceInfo>() };
             var video = new Video();
             dto.MapMediaSources(video);
 

@@ -22,171 +22,135 @@ namespace EmbyStat.Repositories.Helpers
 
         public IEnumerable<T> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.PremiereDate != null)
-                    .OrderByDescending(x => x.PremiereDate)
-                    .Take(count);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.PremiereDate != null)
+                .OrderByDescending(x => x.PremiereDate)
+                .Take(count);
         }
 
         public IEnumerable<T> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.PremiereDate != null)
-                    .OrderBy(x => x.PremiereDate)
-                    .Take(count);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.PremiereDate != null)
+                .OrderBy(x => x.PremiereDate)
+                .Take(count);
         }
 
         public IEnumerable<T> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.CommunityRating != null)
-                    .OrderByDescending(x => x.CommunityRating)
-                    .Take(count);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.CommunityRating != null)
+                .OrderByDescending(x => x.CommunityRating)
+                .Take(count);
         }
 
         public IEnumerable<T> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.CommunityRating != null)
-                    .OrderBy(x => x.CommunityRating)
-                    .Take(count);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.CommunityRating != null)
+                .OrderBy(x => x.CommunityRating)
+                .Take(count);
         }
 
         public IEnumerable<T> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
 
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .OrderByDescending(x => x.DateCreated)
-                    .Take(count);
-            });
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .OrderByDescending(x => x.DateCreated)
+                .Take(count);
         }
 
         public virtual int GetMediaCount(Filter[] filters, IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            foreach (var filter in filters)
             {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                foreach (var filter in filters)
-                {
-                    query = ApplyFilter(query, filter);
-                }
+                query = ApplyFilter(query, filter);
+            }
 
-                return query.Count();
-            });
+            return query.Count();
         }
 
         public int GetMediaCount(IReadOnlyList<string> libraryIds)
         {
-            return GetMediaCount(new Filter[0], libraryIds);
+            return GetMediaCount(Array.Empty<Filter>(), libraryIds);
         }
 
         public bool Any()
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return collection.Exists(Query.All());
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return collection.Exists(Query.All());
         }
 
         public int GetMediaCountForPerson(string name, string genre)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return collection
-                    .FindAll()
-                    .Where(x => x.Genres.Any(y => y == genre))
-                    .Count(x => x.People.Any(y => name == y.Name));
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return collection
+                .FindAll()
+                .Where(x => x.Genres.Any(y => y == genre))
+                .Count(x => x.People.Any(y => name == y.Name));
         }
 
         public int GetMediaCountForPerson(string name)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                return collection
-                    .FindAll()
-                    .Count(x => x.People.Any(y => name == y.Name));
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            return collection
+                .FindAll()
+                .Count(x => x.People.Any(y => name == y.Name));
         }
 
         public int GetGenreCount(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                var genres = GetWorkingLibrarySet(collection, libraryIds)
-                    .Select(x => x.Genres);
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            var genres = GetWorkingLibrarySet(collection, libraryIds)
+                .Select(x => x.Genres);
 
-                return genres.SelectMany(x => x)
-                    .Distinct()
-                    .Count();
-            });
+            return genres.SelectMany(x => x)
+                .Distinct()
+                .Count();
         }
 
         #region People
 
         public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
 
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .SelectMany(x => x.People)
-                    .DistinctBy(x => x.Id)
-                    .Count(x => x.Type == type);
-            });
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .SelectMany(x => x.People)
+                .DistinctBy(x => x.Id)
+                .Count(x => x.Type == type);
         }
 
         public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
 
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .SelectMany(x => x.People)
-                    .Where(x => x.Type == type)
-                    .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
-                    .OrderByDescending(x => x.Count)
-                    .Select(x => x.Name)
-                    .Take(count);
-            });
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .SelectMany(x => x.People)
+                .Where(x => x.Type == type)
+                .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
+                .OrderByDescending(x => x.Count)
+                .Select(x => x.Name)
+                .Take(count);
         }
 
         #endregion
@@ -195,33 +159,27 @@ namespace EmbyStat.Repositories.Helpers
 
         public IEnumerable<LabelValuePair> CalculateGenreFilterValues(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                return query
-                    .SelectMany(x => x.Genres)
-                    .Select(x => new LabelValuePair { Value = x, Label = x })
-                    .DistinctBy(x => x.Label)
-                    .OrderBy(x => x.Label);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            return query
+                .SelectMany(x => x.Genres)
+                .Select(x => new LabelValuePair { Value = x, Label = x })
+                .DistinctBy(x => x.Label)
+                .OrderBy(x => x.Label);
         }
 
         public IEnumerable<LabelValuePair> CalculateCollectionFilterValues()
         {
-            return ExecuteQuery(() =>
-            {
-                //TODO: safe collections somewhere so we can display names in the dropdown
-                //not working at the moment, will display Id's
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<T>();
-                var query = collection.FindAll();
-                return query
-                    .Select(x => new LabelValuePair { Value = x.CollectionId, Label = x.CollectionId })
-                    .DistinctBy(x => x.Label)
-                    .OrderBy(x => x.Label);
-            });
+            //TODO: safe collections somewhere so we can display names in the dropdown
+            //not working at the moment, will display Id's
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<T>();
+            var query = collection.FindAll();
+            return query
+                .Select(x => new LabelValuePair { Value = x.CollectionId, Label = x.CollectionId })
+                .DistinctBy(x => x.Label)
+                .OrderBy(x => x.Label);
         }
 
         protected IEnumerable<T> ApplyFilter(IEnumerable<T> query, Filter filter)
@@ -229,7 +187,7 @@ namespace EmbyStat.Repositories.Helpers
             switch (filter.Field)
             {
                 case "PremiereDate":
-                    var values = new DateTime[0];
+                    var values = Array.Empty<DateTime>();
                     if (filter.Operation != "null")
                     {
                         values = FormatDateInputValue(filter.Value);

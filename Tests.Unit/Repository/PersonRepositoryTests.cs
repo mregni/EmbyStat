@@ -30,18 +30,16 @@ namespace Tests.Unit.Repository
                 var person = new Person{ Id = Guid.NewGuid().ToString(), Name = "reggi", IMDB = "t0000001"};
                 _personRepository.Upsert(person);
 
-                using (var database = _context.LiteDatabase)
-                {
-                    var collection = database.GetCollection<Person>();
-                    var people = collection.FindAll().ToList();
+                using var database = _context.LiteDatabase;
+                var collection = database.GetCollection<Person>();
+                var people = collection.FindAll().ToList();
 
-                    people.Should().NotContainNulls();
-                    people.Count.Should().Be(1);
+                people.Should().NotContainNulls();
+                people.Count.Should().Be(1);
 
-                    people[0].Id.Should().Be(person.Id);
-                    people[0].Name.Should().Be(person.Name);
-                    people[0].IMDB.Should().Be(person.IMDB);
-                }
+                people[0].Id.Should().Be(person.Id);
+                people[0].Name.Should().Be(person.Name);
+                people[0].IMDB.Should().Be(person.IMDB);
             });
         }
 

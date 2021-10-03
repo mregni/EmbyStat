@@ -69,7 +69,7 @@ namespace EmbyStat.Services
 
         public UpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
         {
-            ReleaseObject[] correctTrainReleases = new ReleaseObject[0];
+            ReleaseObject[] correctTrainReleases = Array.Empty<ReleaseObject>();
             if (updateTrain == UpdateTrain.Release)
             {
                 correctTrainReleases = obj.Where(i => !i.PreRelease).ToArray();

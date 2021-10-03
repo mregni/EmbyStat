@@ -14,25 +14,19 @@ namespace EmbyStat.Repositories
 
         public List<Library> GetLibrariesById(IEnumerable<string> ids)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Library>();
-                return collection
-                    .Find(x => ids.Contains(x.Id))
-                    .OrderBy(x => x.Name)
-                    .ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Library>();
+            return collection
+                .Find(x => ids.Contains(x.Id))
+                .OrderBy(x => x.Name)
+                .ToList();
         }
 
         public void AddOrUpdateRange(IEnumerable<Library> collections)
         {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Library>();
-                collection.Upsert(collections);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Library>();
+            collection.Upsert(collections);
         }
     }
 }

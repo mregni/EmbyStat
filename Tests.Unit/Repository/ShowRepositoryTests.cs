@@ -55,13 +55,11 @@ namespace Tests.Unit.Repository
                 var episodeOne = new EpisodeBuilder(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.AddEpisode(episodeOne);
 
-                using (var database = _context.LiteDatabase)
-                {
-                    var collection = database.GetCollection<Episode>();
-                    var episode = collection.FindById(episodeOne.Id);
-                    episode.Should().NotBeNull();
-                    episode.Id.Should().Be(episodeOne.Id);
-                }
+                using var database = _context.LiteDatabase;
+                var collection = database.GetCollection<Episode>();
+                var episode = collection.FindById(episodeOne.Id);
+                episode.Should().NotBeNull();
+                episode.Id.Should().Be(episodeOne.Id);
             });
         }
 
@@ -74,14 +72,14 @@ namespace Tests.Unit.Repository
 
                 _showRepository.UpsertShow(showOne);
 
-                var showList = _showRepository.GetAllShows(new string[0], false, false);
+                var showList = _showRepository.GetAllShows(Array.Empty<string>(), false, false);
                 showList.Should().NotBeNull();
                 showList.Should().NotContainNulls();
                 showList.Count.Should().Be(1);
 
                 showList.First().Id.Should().Be(showOne.Id);
 
-                var count = _showRepository.GetMediaCount(new string[0]);
+                var count = _showRepository.GetMediaCount(Array.Empty<string>());
                 count.Should().Be(1);
             });
         }
@@ -97,7 +95,7 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showOne);
                 _showRepository.UpsertShow(showTwo);
 
-                var count = _showRepository.GetMediaCount(new string[0]);
+                var count = _showRepository.GetMediaCount(Array.Empty<string>());
                 count.Should().Be(2);
             });
         }
@@ -132,12 +130,12 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showOne);
                 _showRepository.UpsertShow(showTwo);
 
-                var count = _showRepository.GetMediaCount(new string[0]);
+                var count = _showRepository.GetMediaCount(Array.Empty<string>());
                 count.Should().Be(2);
 
                 _showRepository.RemoveShowsThatAreNotUpdated(now);
 
-                var shows = _showRepository.GetAllShows(new string[0], true, true);
+                var shows = _showRepository.GetAllShows(Array.Empty<string>(), true, true);
                 shows.Should().NotContainNulls();
                 shows.Count.Should().Be(1);
 
@@ -159,7 +157,7 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.UpsertShow(showOne);
 
-                var shows = _showRepository.GetAllShows(new string[0], false, false);
+                var shows = _showRepository.GetAllShows(Array.Empty<string>(), false, false);
                 shows.Should().NotContainNulls();
                 shows.Count.Should().Be(1);
 
@@ -216,7 +214,7 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.UpsertShow(showOne);
 
-                var shows = _showRepository.GetAllShows(new string[0], false, true);
+                var shows = _showRepository.GetAllShows(Array.Empty<string>(), false, true);
                 shows.Should().NotContainNulls();
                 shows.Count.Should().Be(1);
 
@@ -242,7 +240,7 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.UpsertShow(showOne);
 
-                var shows = _showRepository.GetAllShows(new string[0], true, false);
+                var shows = _showRepository.GetAllShows(Array.Empty<string>(), true, false);
                 shows.Should().NotContainNulls();
                 shows.Count.Should().Be(1);
 
@@ -268,7 +266,7 @@ namespace Tests.Unit.Repository
                 var showOne = new ShowBuilder(Guid.NewGuid().ToString(), "1").Build();
                 _showRepository.UpsertShow(showOne);
 
-                var shows = _showRepository.GetAllShows(new string[0], true, true);
+                var shows = _showRepository.GetAllShows(Array.Empty<string>(), true, true);
                 shows.Should().NotContainNulls();
                 shows.Count.Should().Be(1);
 
@@ -376,7 +374,7 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showThree);
 
                 var shows = _showRepository
-                    .GetNewestPremieredMedia(new string[0], 1)
+                    .GetNewestPremieredMedia(Array.Empty<string>(), 1)
                     .ToList();
 
                 shows.Should().NotBeNull();
@@ -422,7 +420,7 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showThree);
 
                 var shows = _showRepository
-                    .GetOldestPremieredMedia(new string[0], 1)
+                    .GetOldestPremieredMedia(Array.Empty<string>(), 1)
                     .ToList();
 
                 shows.Should().NotBeNull();
@@ -468,7 +466,7 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showThree);
 
                 var shows = _showRepository
-                    .GetHighestRatedMedia(new string[0], 1)
+                    .GetHighestRatedMedia(Array.Empty<string>(), 1)
                     .ToList();
 
                 shows.Should().NotBeNull();
@@ -514,7 +512,7 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showThree);
 
                 var shows = _showRepository
-                    .GetLowestRatedMedia(new string[0], 1)
+                    .GetLowestRatedMedia(Array.Empty<string>(), 1)
                     .ToList();
 
                 shows.Should().NotBeNull();
@@ -560,7 +558,7 @@ namespace Tests.Unit.Repository
                 _showRepository.UpsertShow(showThree);
 
                 var shows = _showRepository
-                    .GetLatestAddedMedia(new string[0], 1)
+                    .GetLatestAddedMedia(Array.Empty<string>(), 1)
                     .ToList();
 
                 shows.Should().NotBeNull();

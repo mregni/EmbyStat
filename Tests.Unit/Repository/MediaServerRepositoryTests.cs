@@ -224,15 +224,12 @@ namespace Tests.Unit.Repository
                 var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
                 _mediaServerRepository.UpsertServerInfo(serverInfo);
 
-                using (var database = _context.LiteDatabase)
-                {
-                    var collection = database.GetCollection<ServerInfo>();
-                    var serverInfoDb = collection.FindById(serverInfo.Id);
+                using var database = _context.LiteDatabase;
+                var collection = database.GetCollection<ServerInfo>();
+                var serverInfoDb = collection.FindById(serverInfo.Id);
 
-                    serverInfoDb.Should().NotBeNull();
-                    serverInfoDb.Id.Should().Be(serverInfo.Id);
-                }
-
+                serverInfoDb.Should().NotBeNull();
+                serverInfoDb.Id.Should().Be(serverInfo.Id);
             });
         }
 
@@ -324,20 +321,18 @@ namespace Tests.Unit.Repository
                 var embyUserTwo = new EmbyUser { Id = Guid.NewGuid().ToString(), Name = "tom" };
                 _mediaServerRepository.UpsertUsers(new[] { embyUserOne, embyUserTwo });
 
-                using (var database = _context.LiteDatabase)
-                {
-                    var collection = database.GetCollection<EmbyUser>();
-                    var users = collection.FindAll().OrderBy(x => x.Name).ToList();
+                using var database = _context.LiteDatabase;
+                var collection = database.GetCollection<EmbyUser>();
+                var users = collection.FindAll().OrderBy(x => x.Name).ToList();
 
-                    users.Should().NotContainNulls();
-                    users.Count.Should().Be(2);
+                users.Should().NotContainNulls();
+                users.Count.Should().Be(2);
 
-                    users[0].Id.Should().Be(embyUserOne.Id);
-                    users[0].Name.Should().Be(embyUserOne.Name);
+                users[0].Id.Should().Be(embyUserOne.Id);
+                users[0].Name.Should().Be(embyUserOne.Name);
 
-                    users[1].Id.Should().Be(embyUserTwo.Id);
-                    users[1].Name.Should().Be(embyUserTwo.Name);
-                }
+                users[1].Id.Should().Be(embyUserTwo.Id);
+                users[1].Name.Should().Be(embyUserTwo.Name);
             });
         }
 
@@ -481,20 +476,18 @@ namespace Tests.Unit.Repository
                 var serverTwo = new Device { Id = Guid.NewGuid().ToString(), Name = "server2" };
                 _mediaServerRepository.UpsertDevices(new[] { serverOne, serverTwo });
 
-                using (var database = _context.LiteDatabase)
-                {
-                    var collection = database.GetCollection<Device>();
-                    var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
+                using var database = _context.LiteDatabase;
+                var collection = database.GetCollection<Device>();
+                var devices = collection.FindAll().OrderBy(x => x.Name).ToList();
 
-                    devices.Should().NotContainNulls();
-                    devices.Count.Should().Be(2);
+                devices.Should().NotContainNulls();
+                devices.Count.Should().Be(2);
 
-                    devices[0].Id.Should().Be(serverOne.Id);
-                    devices[0].Name.Should().Be(serverOne.Name);
+                devices[0].Id.Should().Be(serverOne.Id);
+                devices[0].Name.Should().Be(serverOne.Name);
 
-                    devices[1].Id.Should().Be(serverTwo.Id);
-                    devices[1].Name.Should().Be(serverTwo.Name);
-                }
+                devices[1].Id.Should().Be(serverTwo.Id);
+                devices[1].Name.Should().Be(serverTwo.Name);
             });
         }
 

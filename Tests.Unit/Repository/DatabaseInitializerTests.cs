@@ -119,14 +119,12 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var collectionCollection = context.GetCollection<Library>();
-                    collectionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    collectionCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    collectionCollection.EnsureIndex(x => x.Type).Should().BeTrue();
-                    collectionCollection.EnsureIndex(x => x.PrimaryImage).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var collectionCollection = context.GetCollection<Library>();
+                collectionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                collectionCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                collectionCollection.EnsureIndex(x => x.Type).Should().BeTrue();
+                collectionCollection.EnsureIndex(x => x.PrimaryImage).Should().BeTrue();
             });
         }
 
@@ -136,18 +134,16 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var deviceCollection = context.GetCollection<Device>();
-                    deviceCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    deviceCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    deviceCollection.EnsureIndex(x => x.AppName).Should().BeTrue();
-                    deviceCollection.EnsureIndex(x => x.AppVersion).Should().BeTrue();
-                    deviceCollection.EnsureIndex(x => x.DateLastActivity).Should().BeTrue();
-                    deviceCollection.EnsureIndex(x => x.Deleted).Should().BeTrue();
-                    deviceCollection.EnsureIndex(x => x.IconUrl).Should().BeTrue();
-                    deviceCollection.EnsureIndex(x => x.LastUserId).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var deviceCollection = context.GetCollection<Device>();
+                deviceCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                deviceCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                deviceCollection.EnsureIndex(x => x.AppName).Should().BeTrue();
+                deviceCollection.EnsureIndex(x => x.AppVersion).Should().BeTrue();
+                deviceCollection.EnsureIndex(x => x.DateLastActivity).Should().BeTrue();
+                deviceCollection.EnsureIndex(x => x.Deleted).Should().BeTrue();
+                deviceCollection.EnsureIndex(x => x.IconUrl).Should().BeTrue();
+                deviceCollection.EnsureIndex(x => x.LastUserId).Should().BeTrue();
             });
         }
 
@@ -157,12 +153,10 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var embyStatusCollection = context.GetCollection<EmbyStatus>();
-                    embyStatusCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    embyStatusCollection.EnsureIndex(x => x.MissedPings).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var embyStatusCollection = context.GetCollection<EmbyStatus>();
+                embyStatusCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                embyStatusCollection.EnsureIndex(x => x.MissedPings).Should().BeTrue();
             });
         }
 
@@ -172,15 +166,13 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var embyUserCollection = context.GetCollection<EmbyUser>();
-                    embyUserCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    embyUserCollection.EnsureIndex(x => x.IsAdministrator).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.Deleted).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    embyUserCollection.EnsureIndex(x => x.ServerId).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var embyUserCollection = context.GetCollection<EmbyUser>();
+                embyUserCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                embyUserCollection.EnsureIndex(x => x.IsAdministrator).Should().BeTrue();
+                embyUserCollection.EnsureIndex(x => x.Deleted).Should().BeTrue();
+                embyUserCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                embyUserCollection.EnsureIndex(x => x.ServerId).Should().BeTrue();
             });
         }
 
@@ -190,46 +182,44 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var episodeCollection = context.GetCollection<Episode>();
-                    episodeCollection.EnsureIndex(x => x.Id).Should().BeFalse();
-                    episodeCollection.EnsureIndex(x => x.ShowId).Should().BeFalse();
-                    episodeCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.IndexNumber).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.DvdEpisodeNumber).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.IndexNumberEnd).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.LocationType).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.ShowName).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.DvdSeasonNumber).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.AudioStreams).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.CommunityRating).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Container).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Genres).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.IMDB).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.TVDB).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.LastUpdated).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.MediaSources).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.MediaType).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.OfficialRating).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Path).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.People).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.RunTimeTicks).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.SubtitleStreams).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Thumb).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.Video3DFormat).Should().BeTrue();
-                    episodeCollection.EnsureIndex(x => x.VideoStreams).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var episodeCollection = context.GetCollection<Episode>();
+                episodeCollection.EnsureIndex(x => x.Id).Should().BeFalse();
+                episodeCollection.EnsureIndex(x => x.ShowId).Should().BeFalse();
+                episodeCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.IndexNumber).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.DvdEpisodeNumber).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.IndexNumberEnd).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.LocationType).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.ShowName).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.DvdSeasonNumber).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.AudioStreams).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.CommunityRating).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Container).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Genres).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.IMDB).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.TVDB).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.LastUpdated).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.MediaSources).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.MediaType).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.OfficialRating).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Path).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.People).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.RunTimeTicks).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.SubtitleStreams).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Thumb).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.Video3DFormat).Should().BeTrue();
+                episodeCollection.EnsureIndex(x => x.VideoStreams).Should().BeTrue();
             });
         }
 
@@ -239,11 +229,9 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var filtersCollection = context.GetCollection<FilterValues>();
-                    filtersCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                }
+                using var context = _context.LiteDatabase;
+                var filtersCollection = context.GetCollection<FilterValues>();
+                filtersCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
             });
         }
 
@@ -253,12 +241,10 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var genreCollection = context.GetCollection<Genre>();
-                    genreCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    genreCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var genreCollection = context.GetCollection<Genre>();
+                genreCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                genreCollection.EnsureIndex(x => x.Name).Should().BeTrue();
             });
         }
 
@@ -268,19 +254,17 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var jobsCollection = context.GetCollection<Job>();
-                    jobsCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    jobsCollection.EnsureIndex(x => x.Description).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.CurrentProgressPercentage).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.EndTimeUtc).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.LogName).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.StartTimeUtc).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.State).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.Title).Should().BeTrue();
-                    jobsCollection.EnsureIndex(x => x.Trigger).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var jobsCollection = context.GetCollection<Job>();
+                jobsCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                jobsCollection.EnsureIndex(x => x.Description).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.CurrentProgressPercentage).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.EndTimeUtc).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.LogName).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.StartTimeUtc).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.State).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.Title).Should().BeTrue();
+                jobsCollection.EnsureIndex(x => x.Trigger).Should().BeTrue();
             });
         }
 
@@ -290,13 +274,11 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var languageCollection = context.GetCollection<Language>();
-                    languageCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    languageCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    languageCollection.EnsureIndex(x => x.Code).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var languageCollection = context.GetCollection<Language>();
+                languageCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                languageCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                languageCollection.EnsureIndex(x => x.Code).Should().BeTrue();
             });
         }
 
@@ -306,29 +288,27 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var playCollection = context.GetCollection<Play>();
-                    playCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    playCollection.EnsureIndex(x => x.UserId).Should().BeFalse();
-                    playCollection.EnsureIndex(x => x.Type).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.AudioChannelLayout).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.AudioCodec).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.AudioLanguage).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.MediaId).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.PlayStates).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.SessionId).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.SubtitleCodec).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.SubtitleDisplayTitle).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.SubtitleLanguage).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.VideoAspectRatio).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.VideoAverageFrameRate).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.VideoCodec).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.VideoHeight).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.VideoRealFrameRate).Should().BeTrue();
-                    playCollection.EnsureIndex(x => x.VideoWidth).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var playCollection = context.GetCollection<Play>();
+                playCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                playCollection.EnsureIndex(x => x.UserId).Should().BeFalse();
+                playCollection.EnsureIndex(x => x.Type).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.AudioChannelLayout).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.AudioCodec).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.AudioLanguage).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.MediaId).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.PlayStates).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.SessionId).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.SubtitleCodec).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.SubtitleDisplayTitle).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.SubtitleLanguage).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.VideoAspectRatio).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.VideoAverageFrameRate).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.VideoCodec).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.VideoHeight).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.VideoRealFrameRate).Should().BeTrue();
+                playCollection.EnsureIndex(x => x.VideoWidth).Should().BeTrue();
             });
         }
 
@@ -338,33 +318,31 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var movieCollection = context.GetCollection<Movie>();
-                    movieCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.CollectionId).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.RunTimeTicks).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.SortName).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.IMDB).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.Primary).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.CommunityRating).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    movieCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.Genres).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.LastUpdated).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.OfficialRating).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.Path).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.People).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.Thumb).Should().BeTrue();
-                    movieCollection.EnsureIndex(x => x.OriginalTitle).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var movieCollection = context.GetCollection<Movie>();
+                movieCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.CollectionId).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.RunTimeTicks).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.SortName).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.IMDB).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.Primary).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.CommunityRating).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                movieCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.Genres).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.LastUpdated).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.OfficialRating).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.Path).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.People).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.Thumb).Should().BeTrue();
+                movieCollection.EnsureIndex(x => x.OriginalTitle).Should().BeTrue();
             });
         }
 
@@ -374,22 +352,20 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var personCollection = context.GetCollection<Person>();
-                    personCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    personCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.BirthDate).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.Etag).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.HomePageUrl).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.IMDB).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.MovieCount).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.OverView).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.ShowCount).Should().BeTrue();
-                    personCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var personCollection = context.GetCollection<Person>();
+                personCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                personCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.BirthDate).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.Etag).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.HomePageUrl).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.IMDB).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.MovieCount).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.OverView).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.ShowCount).Should().BeTrue();
+                personCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
             });
         }
 
@@ -399,16 +375,14 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var pluginInfoCollection = context.GetCollection<PluginInfo>();
-                    pluginInfoCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    pluginInfoCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    pluginInfoCollection.EnsureIndex(x => x.ConfigurationFileName).Should().BeTrue();
-                    pluginInfoCollection.EnsureIndex(x => x.Description).Should().BeTrue();
-                    pluginInfoCollection.EnsureIndex(x => x.ImageTag).Should().BeTrue();
-                    pluginInfoCollection.EnsureIndex(x => x.Version).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var pluginInfoCollection = context.GetCollection<PluginInfo>();
+                pluginInfoCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                pluginInfoCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                pluginInfoCollection.EnsureIndex(x => x.ConfigurationFileName).Should().BeTrue();
+                pluginInfoCollection.EnsureIndex(x => x.Description).Should().BeTrue();
+                pluginInfoCollection.EnsureIndex(x => x.ImageTag).Should().BeTrue();
+                pluginInfoCollection.EnsureIndex(x => x.Version).Should().BeTrue();
             });
         }
 
@@ -418,25 +392,23 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var seasonCollection = context.GetCollection<Season>();
-                    seasonCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    seasonCollection.EnsureIndex(x => x.ParentId).Should().BeFalse();
-                    seasonCollection.EnsureIndex(x => x.IndexNumberEnd).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.IndexNumber).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.LocationType).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.Path).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
-                    seasonCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var seasonCollection = context.GetCollection<Season>();
+                seasonCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                seasonCollection.EnsureIndex(x => x.ParentId).Should().BeFalse();
+                seasonCollection.EnsureIndex(x => x.IndexNumberEnd).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.IndexNumber).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.LocationType).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.Path).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
+                seasonCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
             });
         }
 
@@ -446,20 +418,18 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var serverInfoCollection = context.GetCollection<ServerInfo>();
-                    serverInfoCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    serverInfoCollection.EnsureIndex(x => x.CachePath).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.CanLaunchWebBrowser).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.CanSelfRestart).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.CanSelfUpdate).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.HasPendingRestart).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.HasUpdateAvailable).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.HttpServerPortNumber).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.HttpsPortNumber).Should().BeTrue();
-                    serverInfoCollection.EnsureIndex(x => x.InternalMetadataPath).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var serverInfoCollection = context.GetCollection<ServerInfo>();
+                serverInfoCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                serverInfoCollection.EnsureIndex(x => x.CachePath).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.CanLaunchWebBrowser).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.CanSelfRestart).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.CanSelfUpdate).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.HasPendingRestart).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.HasUpdateAvailable).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.HttpServerPortNumber).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.HttpsPortNumber).Should().BeTrue();
+                serverInfoCollection.EnsureIndex(x => x.InternalMetadataPath).Should().BeTrue();
             });
         }
 
@@ -469,18 +439,16 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var sessionCollection = context.GetCollection<Session>();
-                    sessionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    sessionCollection.EnsureIndex(x => x.UserId).Should().BeFalse();
-                    sessionCollection.EnsureIndex(x => x.Client).Should().BeTrue();
-                    sessionCollection.EnsureIndex(x => x.AppIconUrl).Should().BeTrue();
-                    sessionCollection.EnsureIndex(x => x.ApplicationVersion).Should().BeTrue();
-                    sessionCollection.EnsureIndex(x => x.DeviceId).Should().BeTrue();
-                    sessionCollection.EnsureIndex(x => x.Plays).Should().BeTrue();
-                    sessionCollection.EnsureIndex(x => x.ServerId).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var sessionCollection = context.GetCollection<Session>();
+                sessionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                sessionCollection.EnsureIndex(x => x.UserId).Should().BeFalse();
+                sessionCollection.EnsureIndex(x => x.Client).Should().BeTrue();
+                sessionCollection.EnsureIndex(x => x.AppIconUrl).Should().BeTrue();
+                sessionCollection.EnsureIndex(x => x.ApplicationVersion).Should().BeTrue();
+                sessionCollection.EnsureIndex(x => x.DeviceId).Should().BeTrue();
+                sessionCollection.EnsureIndex(x => x.Plays).Should().BeTrue();
+                sessionCollection.EnsureIndex(x => x.ServerId).Should().BeTrue();
             });
         }
 
@@ -490,35 +458,33 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var showCollection = context.GetCollection<Show>();
-                    showCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    showCollection.EnsureIndex(x => x.CumulativeRunTimeTicks).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Episodes).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Seasons).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Status).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.ExternalSyncFailed).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Name).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.CommunityRating).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Genres).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.IMDB).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.LastUpdated).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.OfficialRating).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Path).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.People).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.RunTimeTicks).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
-                    showCollection.EnsureIndex(x => x.Thumb).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var showCollection = context.GetCollection<Show>();
+                showCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                showCollection.EnsureIndex(x => x.CumulativeRunTimeTicks).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Episodes).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Seasons).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Status).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.ExternalSyncFailed).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Name).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Banner).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.CollectionId).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.CommunityRating).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.DateCreated).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Genres).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.IMDB).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.LastUpdated).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Logo).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.OfficialRating).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.ParentId).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Path).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.People).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.PremiereDate).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.ProductionYear).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.RunTimeTicks).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.SortName).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.TMDB).Should().BeTrue();
+                showCollection.EnsureIndex(x => x.Thumb).Should().BeTrue();
             });
         }
 
@@ -528,16 +494,14 @@ namespace Tests.Unit.Repository
             RunTest(() =>
             {
                 _databaseInitializer.CreateIndexes();
-                using (var context = _context.LiteDatabase)
-                {
-                    var statisticsCollection = context.GetCollection<Statistic>();
-                    statisticsCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
-                    statisticsCollection.EnsureIndex(x => x.Type).Should().BeTrue();
-                    statisticsCollection.EnsureIndex(x => x.IsValid).Should().BeTrue();
-                    statisticsCollection.EnsureIndex(x => x.CalculationDateTime).Should().BeTrue();
-                    statisticsCollection.EnsureIndex(x => x.CollectionIds).Should().BeTrue();
-                    statisticsCollection.EnsureIndex(x => x.JsonResult).Should().BeTrue();
-                }
+                using var context = _context.LiteDatabase;
+                var statisticsCollection = context.GetCollection<Statistic>();
+                statisticsCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
+                statisticsCollection.EnsureIndex(x => x.Type).Should().BeTrue();
+                statisticsCollection.EnsureIndex(x => x.IsValid).Should().BeTrue();
+                statisticsCollection.EnsureIndex(x => x.CalculationDateTime).Should().BeTrue();
+                statisticsCollection.EnsureIndex(x => x.CollectionIds).Should().BeTrue();
+                statisticsCollection.EnsureIndex(x => x.JsonResult).Should().BeTrue();
             });
         }
 

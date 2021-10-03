@@ -12,22 +12,16 @@ namespace EmbyStat.Repositories
 
         public void Upsert(Person person)
         {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Person>();
-                collection.Upsert(person);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Person>();
+            collection.Upsert(person);
         }
 
         public Person GetPersonByName(string name)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Person>();
-                return collection.FindOne(x => x.Name == name);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Person>();
+            return collection.FindOne(x => x.Name == name);
         }
     }
 }

@@ -21,250 +21,193 @@ namespace EmbyStat.Repositories
 
         public void UpsertRange(IEnumerable<Movie> movies)
         {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                collection.Upsert(movies);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            collection.Upsert(movies);
         }
 
         public List<Movie> GetAll(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .OrderBy(x => x.SortName)
-                    .ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .OrderBy(x => x.SortName)
+                .ToList();
         }
 
         public List<Movie> GetAllWithImdbId(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.IMDB != null)
-                    .OrderBy(x => x.SortName)
-                    .ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.IMDB != null)
+                .OrderBy(x => x.SortName)
+                .ToList();
         }
 
         public Movie GetMovieById(string id)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return collection.FindById(id);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return collection.FindById(id);
         }
 
         public long GetTotalRuntime(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Select(x => x.RunTimeTicks)
-                    .Sum(x => x ?? 0);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Select(x => x.RunTimeTicks)
+                .Sum(x => x ?? 0);
         }
 
         public double GetTotalDiskSpace(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Select(x => x.MediaSources.FirstOrDefault())
-                    .Sum(x => x?.SizeInMb ?? 0);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Select(x => x.MediaSources.FirstOrDefault())
+                .Sum(x => x?.SizeInMb ?? 0);
         }
 
         public IEnumerable<Movie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
-                    .OrderBy(x => x.RunTimeTicks)
-                    .Take(count);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
+                .OrderBy(x => x.RunTimeTicks)
+                .Take(count);
         }
 
         public IEnumerable<Movie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.RunTimeTicks != null)
-                    .OrderByDescending(x => x.RunTimeTicks)
-                    .Take(count);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.RunTimeTicks != null)
+                .OrderByDescending(x => x.RunTimeTicks)
+                .Take(count);
         }
 
         #region Suspicious
 
         public List<Movie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
-                    .OrderBy(x => x.SortName)
-                    .ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
+                .OrderBy(x => x.SortName)
+                .ToList();
         }
 
         public List<Movie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.IMDB == null)
-                    .OrderBy(x => x.SortName)
-                    .ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.IMDB == null)
+                .OrderBy(x => x.SortName)
+                .ToList();
         }
 
         public List<Movie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                return GetWorkingLibrarySet(collection, libraryIds)
-                    .Where(x => x.Primary == null)
-                    .OrderBy(x => x.SortName)
-                    .ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            return GetWorkingLibrarySet(collection, libraryIds)
+                .Where(x => x.Primary == null)
+                .OrderBy(x => x.SortName)
+                .ToList();
         }
 
         public IEnumerable<Movie> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds)
         {
-            return ExecuteQuery(() =>
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+
+            query = filters.Aggregate(query, ApplyMovieFilters);
+
+            if (!string.IsNullOrWhiteSpace(sortField))
             {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
+                sortField = sortField.FirstCharToUpper();
+                query = sortOrder == "desc"
+                    ? query.OrderByDescending(x => typeof(Movie).GetProperty(sortField)?.GetValue(x, null))
+                    : query.OrderBy(x => typeof(Movie).GetProperty(sortField)?.GetValue(x, null));
+            }
 
-                query = filters.Aggregate(query, ApplyMovieFilters);
-
-                if (!string.IsNullOrWhiteSpace(sortField))
-                {
-                    sortField = sortField.FirstCharToUpper();
-                    query = sortOrder == "desc"
-                        ? query.OrderByDescending(x => typeof(Movie).GetProperty(sortField)?.GetValue(x, null))
-                        : query.OrderBy(x => typeof(Movie).GetProperty(sortField)?.GetValue(x, null));
-                }
-
-                return query
-                    .Skip(skip)
-                    .Take(take);
-            });
-        }
+            return query
+                .Skip(skip)
+                .Take(take);
+            }
 
         #endregion
 
         public void RemoveMovies()
         {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                collection.DeleteMany("1=1");
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            collection.DeleteMany("1=1");
         }
 
         public override int GetMediaCount(Filter[] filters, IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                foreach (var filter in filters)
-                {
-                    query = ApplyMovieFilters(query, filter);
-                }
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            query = filters.Aggregate(query, ApplyMovieFilters);
 
-                return query.Count();
-            });
+            return query.Count();
         }
 
         #region Filters
         public IEnumerable<LabelValuePair> CalculateSubtitleFilterValues(IReadOnlyList<string> libraryIds)
         {
             var re = new Regex(@"\ \([0-9a-zA-Z -_]*\)$");
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                return query
-                    .SelectMany(x => x.SubtitleStreams)
-                    .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null)
-                    .Select(x => new LabelValuePair {Value = x.Language, Label = re.Replace(x.DisplayTitle, string.Empty) })
-                    .DistinctBy(x => x.Label)
-                    .OrderBy(x => x.Label);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            return query
+                .SelectMany(x => x.SubtitleStreams)
+                .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null)
+                .Select(x => new LabelValuePair { Value = x.Language, Label = re.Replace(x.DisplayTitle, string.Empty) })
+                .DistinctBy(x => x.Label)
+                .OrderBy(x => x.Label);
         }
 
         public IEnumerable<LabelValuePair> CalculateContainerFilterValues(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                return query
-                    .Select(x => new LabelValuePair { Value = x.Container, Label = x.Container })
-                    .DistinctBy(x => x.Label)
-                    .OrderBy(x => x.Label);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            return query
+                .Select(x => new LabelValuePair { Value = x.Container, Label = x.Container })
+                .DistinctBy(x => x.Label)
+                .OrderBy(x => x.Label);
         }
 
         public IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                return query
-                    .Select(x => new LabelValuePair { Value = x.VideoStreams.FirstOrDefault()?.Codec ?? string.Empty, Label = x.VideoStreams.FirstOrDefault()?.Codec ?? string.Empty })
-                    .DistinctBy(x => x.Label)
-                    .OrderBy(x => x.Label);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            return query
+                .Select(x => new LabelValuePair { Value = x.VideoStreams.FirstOrDefault()?.Codec ?? string.Empty, Label = x.VideoStreams.FirstOrDefault()?.Codec ?? string.Empty })
+                .DistinctBy(x => x.Label)
+                .OrderBy(x => x.Label);
         }
 
         public IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Movie>();
-                var query = GetWorkingLibrarySet(collection, libraryIds);
-                return query
-                    .Select(x => new LabelValuePair { Value = x.VideoStreams.FirstOrDefault()?.VideoRange ?? string.Empty, Label = x.VideoStreams.FirstOrDefault()?.VideoRange ?? string.Empty })
-                    .DistinctBy(x => x.Label)
-                    .OrderBy(x => x.Label);
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Movie>();
+            var query = GetWorkingLibrarySet(collection, libraryIds);
+            return query
+                .Select(x => new LabelValuePair { Value = x.VideoStreams.FirstOrDefault()?.VideoRange ?? string.Empty, Label = x.VideoStreams.FirstOrDefault()?.VideoRange ?? string.Empty })
+                .DistinctBy(x => x.Label)
+                .OrderBy(x => x.Label);
         }
 
         private IEnumerable<Movie> ApplyMovieFilters(IEnumerable<Movie> query, Filter filter)

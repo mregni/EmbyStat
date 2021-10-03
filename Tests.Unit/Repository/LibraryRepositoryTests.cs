@@ -33,24 +33,22 @@ namespace Tests.Unit.Repository
                    var libraryTwo = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows", PrimaryImage = "image.png", Type = LibraryType.TvShow };
                    _libraryRepository.AddOrUpdateRange(new[] { libraryOne, libraryTwo });
 
-                   using (var database = _context.LiteDatabase)
-                   {
-                       var collection = database.GetCollection<Library>();
-                       var libraries = collection.FindAll().OrderBy(x => x.Name).ToList();
+                   using var database = _context.LiteDatabase;
+                   var collection = database.GetCollection<Library>();
+                   var libraries = collection.FindAll().OrderBy(x => x.Name).ToList();
 
-                       libraries.Should().NotContainNulls();
-                       libraries.Count.Should().Be(2);
+                   libraries.Should().NotContainNulls();
+                   libraries.Count.Should().Be(2);
 
-                       libraries[0].Id.Should().Be(libraryOne.Id);
-                       libraries[0].Name.Should().Be(libraryOne.Name);
-                       libraries[0].PrimaryImage.Should().Be(libraryOne.PrimaryImage);
-                       libraries[0].Type.Should().Be(libraryOne.Type);
+                   libraries[0].Id.Should().Be(libraryOne.Id);
+                   libraries[0].Name.Should().Be(libraryOne.Name);
+                   libraries[0].PrimaryImage.Should().Be(libraryOne.PrimaryImage);
+                   libraries[0].Type.Should().Be(libraryOne.Type);
 
-                       libraries[1].Id.Should().Be(libraryTwo.Id);
-                       libraries[1].Name.Should().Be(libraryTwo.Name);
-                       libraries[1].PrimaryImage.Should().Be(libraryTwo.PrimaryImage);
-                       libraries[1].Type.Should().Be(libraryTwo.Type);
-                   }
+                   libraries[1].Id.Should().Be(libraryTwo.Id);
+                   libraries[1].Name.Should().Be(libraryTwo.Name);
+                   libraries[1].PrimaryImage.Should().Be(libraryTwo.PrimaryImage);
+                   libraries[1].Type.Should().Be(libraryTwo.Type);
                });
         }
 

@@ -13,12 +13,9 @@ namespace EmbyStat.Repositories
 
         public List<Language> GetLanguages()
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Language>();
-                return collection.FindAll().ToList();
-            });
+            using var database = Context.CreateDatabaseContext();
+            var collection = database.GetCollection<Language>();
+            return collection.FindAll().ToList();
         }
     }
 }

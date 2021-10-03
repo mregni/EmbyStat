@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
@@ -34,7 +35,7 @@ namespace EmbyStat.Controllers.Movie
         [Route("list")]
         public IActionResult GetMoviePageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter, List<string> libraryIds)
         {
-            var filtersObj = new Filter[0];
+            var filtersObj = Array.Empty<Filter>();
             if (filter != null)
             {
                 filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
