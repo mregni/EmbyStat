@@ -45,12 +45,12 @@
     "MOSTFEATUREDACTOR": "最具特色的演员",
     "MOSTFEATUREDDIRECTOR": "最具特色的导演",
     "MOSTFEATUREDWRITER": "最具特色的作家",
-    "CURRENT": "Current",
-    "TOTALRUNTIME": "Total runtime",
+    "CURRENT": "当前",
+    "TOTALRUNTIME": "总运行时间",
     "LIBRARIES": "库",
     "PREMIEREDATE": "首播日期",
-    "STATUS": "Status",
-    "EPISODES": "Episodes",
+    "STATUS": "状态",
+    "EPISODES": "集",
     "PERCENTAGE": "百分比",
     "COLLECTED": "已收藏",
     "UPDATES": "更新",
@@ -68,10 +68,10 @@
     "SELECTVALUE": "选择数值",
     "ADD": "添加",
     "DATE": "日期",
-    "OTHER": "other",
+    "OTHER": "其他",
     "FPS": "帧/秒",
     "LINKS": "链接",
-    "PROTOCOL": "Protocol",
+    "PROTOCOL": "协议",
     "AUDIO": "音频",
     "SUBTITLES": "字幕",
     "RATING": "等级",
@@ -93,7 +93,7 @@
     "BITDEPTH": "位深",
     "CODEC": "编码器",
     "VIDEORANGE": "视频范围",
-    "CONTAINER": "Container"
+    "CONTAINER": "容器"
   },
   "LOGS": {
     "ANONYMISED": "匿名的",
@@ -146,7 +146,7 @@
     "SERVERTYPELABEL": "服务器类型",
     "FINALLABEL": "最后",
     "SEARCHSERVERS": "正在搜索服务器",
-    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
+    "SERVERTYPEGHELPER": "选择正确的服务器类型（Emby/Jellyfin）。",
     "OPENSERVERAPIPAGE": "打开 {{type}} API 密钥页面",
     "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
@@ -161,8 +161,8 @@
       "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
     },
     "APIKEYFAILED": "访问 {{type}} 服务器失败，请检查配置并重试。",
-    "ADDRESSUSED": "Address: {{address}}",
-    "APIKEYUSED": "API key: {{api}}",
+    "ADDRESSUSED": "地址： {{address}}",
+    "APIKEYUSED": "API密钥： {{api}}",
     "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。",
     "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
   },
@@ -185,9 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "总演出数",
-    "TOTALEPISODES": "Total episodes",
-    "TOTALMISSINGEPISODES": "Total missing episodes",
-    "TOTALSPECIALEPISODES": "Total special episodes",
+    "TOTALEPISODES": "总剧集数",
+    "TOTALMISSINGEPISODES": "缺少剧集总数",
+    "TOTALSPECIALEPISODES": "总特别剧集数",
     "TOTALPLAYLENGTH": "总可观看时间",
     "HIGHESTRATEDSHOW": "评分最高",
     "LOWESTRATEDSHOW": "评分最低",
@@ -205,18 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "设置已保存",
-    "SAVEFAILED": "Saving settings failed, check log files for more info.",
+    "SAVEFAILED": "保存设置失败，请检查日志文件以获取更多信息。",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TMDB": "The Movie Database",
+      "TMDB": "电影数据库",
       "EMBY": "Emby"
     },
     "TMDB": {
-      "TITLE": "TMDb connection",
-      "APIKEYLABEL": "TMDb API key",
+      "TITLE": "TMDb 连接",
+      "APIKEYLABEL": "TMDb API 密钥",
       "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
       "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TMDb key"
+      "SAVING": "正在保存 TVDB 密钥"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar 日志",
@@ -347,7 +347,7 @@
       "PING": "检查 {{type}} 连接",
       "PINGDESCRIPTION": "Ping Emby服务器来检查他是否仍然在线。",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
+      "SYSTEM-SYNC": "同步 {{type}} 信息",
       "SYSTEM-SYNCSTART": "Start small sync",
       "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
       "SHOW-SYNC": "Show synchronization",
@@ -355,7 +355,7 @@
       "MOVIE-SYNC": "Movie synchronization",
       "DATABASE-CLEANUP": "Database cleanup",
       "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
+      "UPDATE-CHECKER": "检查更新",
       "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
@@ -400,9 +400,9 @@
     "FOLDERS": "文件夹"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "TITLE": "{{type}} 状态",
+    "ONLINE": "服务器在线",
+    "OFFLINE": "{{count}} 错过的 ping"
   },
   "ABOUT": {
     "SERVERINFO": "服务器信息",
@@ -419,39 +419,39 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
-    "NOTCONTAINS": "not contains",
-    "EQUAL": "equals",
-    "STARTSWITH": "starts with",
-    "ENDSWITH": "ends with",
-    "IS": "is",
-    "ISNULL": "is null",
-    "ISNOT": "is not",
-    "HAS": "has",
-    "HASNO": "has no",
+    "CLEARALL": "全部清除",
+    "CONTAINS": "包含",
+    "NOTCONTAINS": "不包含",
+    "EQUAL": "相等",
+    "STARTSWITH": "开头是",
+    "ENDSWITH": "结尾是",
+    "IS": "是",
+    "ISNULL": "为空",
+    "ISNOT": "不是",
+    "HAS": "包含",
+    "HASNO": "不包含",
     "HASNONE": "has none",
-    "BETWEEN": "between",
-    "SHORTER": "shorter",
-    "LONGER": "longer",
-    "ISZERO": "is 0",
-    "LARGER": "larger",
-    "SMALLER": "smaller",
-    "BEFORE": "before",
-    "AFTER": "after",
+    "BETWEEN": "之间",
+    "SHORTER": "更短",
+    "LONGER": "更长",
+    "ISZERO": "为 0",
+    "LARGER": "大于",
+    "SMALLER": "小于",
+    "BEFORE": "早于",
+    "AFTER": "之后",
     "TITLES": {
       "TITLE": "标题",
-      "IMDB": "Imdb",
+      "IMDB": "IMDB",
       "TMDB": "Tmdb",
-      "IMAGES": "Images",
+      "IMAGES": "图片",
       "GENRES": "类型",
-      "FRAMERATE": "Frame rate",
-      "CONTAINER": "Container"
+      "FRAMERATE": "帧速率",
+      "CONTAINER": "容器"
     }
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
-    "ROWSPERPAGE": "Rows per page"
+    "NEXTPAGE": "下一页",
+    "PREVIOUSPAGE": "上一页",
+    "ROWSPERPAGE": "每页行数"
   }
 }
