@@ -26,7 +26,7 @@
     "BYTITLE": "相同的标题",
     "MOVIES": "*电影*",
     "MOVIE": "电影",
-    "SHOW": "显示",
+    "SHOW": "节目",
     "GENRES": "类型",
     "COMMUNITYRATING": "社区评分",
     "OFFICIALRATING": "官方评分",
@@ -148,15 +148,15 @@
     "SEARCHSERVERS": "正在搜索服务器",
     "SERVERTYPEGHELPER": "选择正确的服务器类型（Emby/Jellyfin）。",
     "OPENSERVERAPIPAGE": "打开 {{type}} API 密钥页面",
-    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "CROWDINHELP": "如果您的语言未提及或不完整，请随时帮助我在 <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
     "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
-    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
+    "FOUNDTEXT": "我们在您的网络中找到了以下服务器。请选择您想要连接的服务器。 如果您的服务器未显示，您可以手动创建服务器连接。",
     "SERVERRUNNING": "{{type}} 服务器正在运行",
     "KEYISVALID": "API密钥有效",
     "SELECTLIBRARIES": "选择您想要在 {{type}} 统计计算中包含的所有库。 所有 {{type}} 库是默认选择的。如果您想要在设置页面稍后更改它。",
-    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
+    "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
+    "FINISHEXPLANATION": "首先做的事情是开始电影和节目的同步任务。EmbyStat将开始从您的 {{type}} 服务器下载所有数据。 请记住，这些任务可能需要很长时间，取决于您的媒体库大小。 您可以在登录后通过导航到任务页面手动启动任务。",
     "JELLYFIN": {
       "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
     },
@@ -164,7 +164,7 @@
     "ADDRESSUSED": "地址： {{address}}",
     "APIKEYUSED": "API密钥： {{api}}",
     "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。",
-    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
+    "ADMINCREATEFAILED": "创建管理员帐户失败，请检查日志获取更多详情。"
   },
   "MOVIES": {
     "TOTALMOVIES": "电影总数",
@@ -214,8 +214,8 @@
     "TMDB": {
       "TITLE": "TMDb 连接",
       "APIKEYLABEL": "TMDb API 密钥",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
+      "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
+      "NOAPIKEY": "API 密钥不能为空",
       "SAVING": "正在保存 TVDB 密钥"
     },
     "ROLLBAR": {
@@ -346,17 +346,17 @@
     "INFO": {
       "PING": "检查 {{type}} 连接",
       "PINGDESCRIPTION": "Ping Emby服务器来检查他是否仍然在线。",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
+      "SYSTEM-SYNCDESCRIPTION": "与 Emby 服务器执行小型同步。这只是一个快速而小型的系统更新。",
       "SYSTEM-SYNC": "同步 {{type}} 信息",
-      "SYSTEM-SYNCSTART": "Start small sync",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SHOW-SYNC": "Show synchronization",
-      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MOVIE-SYNC": "Movie synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
+      "SYSTEM-SYNCSTART": "开始小同步",
+      "SHOW-SYNCDESCRIPTION": "为您的媒体进行增量同步。这可能需要一些时间才能运行！",
+      "SHOW-SYNC": "节目同步",
+      "MOVIE-SYNCDESCRIPTION": "为您的电影收藏进行增量同步。这可能需要一些时间才能运行！",
+      "MOVIE-SYNC": "影片同步",
+      "DATABASE-CLEANUP": "数据库清理",
+      "DATABASE-CLEANUPDESCRIPTION": "清理数据库中不必要的数据。",
       "UPDATE-CHECKER": "检查更新",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "UPDATE-CHECKERDESCRIPTION": "检查所选更新列上的新更新。"
     }
   },
   "DIALOGS": {
@@ -430,7 +430,7 @@
     "ISNOT": "不是",
     "HAS": "包含",
     "HASNO": "不包含",
-    "HASNONE": "has none",
+    "HASNONE": "不包含",
     "BETWEEN": "之间",
     "SHORTER": "更短",
     "LONGER": "更长",
