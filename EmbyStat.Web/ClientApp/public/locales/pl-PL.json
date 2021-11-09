@@ -161,10 +161,10 @@
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
     "APIKEYFAILED": "Próbowaliśmy skontaktować się z Twoim serwerem {{type}} , ale wygląda na to, że nie powiodło się. Proszę wrócić, poprawić konfigurację i spróbować ponownie.",
-    "ADDRESSUSED": "Address: {{address}}",
-    "APIKEYUSED": "API key: {{api}}",
+    "ADDRESSUSED": "Adres: {{address}}",
+    "APIKEYUSED": "Klucz API: {{api}}",
     "LANWANCHOISE": "Wybierz poprawny adres, który ma być używany do połączenia z serwerem {{type}}.",
-    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
+    "ADMINCREATEFAILED": "Utworzenie konta administratora nie powiodło się, sprawdź logi, aby uzyskać więcej informacji."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total Movies",
@@ -185,9 +185,9 @@
   },
   "SHOWS": {
     "TOTALSHOWS": "Total Shows",
-    "TOTALEPISODES": "Total episodes",
-    "TOTALMISSINGEPISODES": "Total missing episodes",
-    "TOTALSPECIALEPISODES": "Total special episodes",
+    "TOTALEPISODES": "Całkowita liczba odcinków",
+    "TOTALMISSINGEPISODES": "Całkowita liczba brakujących odcinków",
+    "TOTALSPECIALEPISODES": "Całkowita liczba odcinków specjalnych",
     "TOTALPLAYLENGTH": "Total Watchable Time",
     "HIGHESTRATEDSHOW": "Highest Rated",
     "LOWESTRATEDSHOW": "Lowest Rated",
@@ -205,7 +205,7 @@
   },
   "SETTINGS": {
     "SAVED": "Ustawienia zostały zapisane",
-    "SAVEFAILED": "Saving settings failed, check log files for more info.",
+    "SAVEFAILED": "Zapisywanie ustawień nie powiodło się, sprawdź pliki dziennika, aby uzyskać więcej informacji.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TMDB": "The Movie Database",
@@ -213,10 +213,10 @@
     },
     "TMDB": {
       "TITLE": "TMDb connection",
-      "APIKEYLABEL": "TMDb API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TMDb key"
+      "APIKEYLABEL": "Klucz API TMDb",
+      "APIKEYWARNING": "Jeśli chcesz, możesz podać EmbyStat własny klucz API TMDb tutaj. Upewnij się, że podałeś działający klucz API! Jeśli klucz jest nieprawidłowy, zadanie synchronizacji nie powiedzie się.",
+      "NOAPIKEY": "Klucz API nie może być pusty",
+      "SAVING": "Zapisywanie klucza TMDb"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -450,8 +450,8 @@
     }
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
+    "NEXTPAGE": "Następna strona",
+    "PREVIOUSPAGE": "Poprzednia strona",
     "ROWSPERPAGE": "Rows per page"
   }
 }
