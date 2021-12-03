@@ -148,7 +148,7 @@
     "SEARCHSERVERS": "Nach Servern suchen",
     "SERVERTYPEGHELPER": "Wählen Sie den richtigen Servertyp aus (Emby/Jellyfin).",
     "OPENSERVERAPIPAGE": "Öffne {{type}} API-Schlüsselseite",
-    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "CROWDINHELP": "Falls deine Sprache fehlt oder nicht vollständig ist, kannst du gerne helfen die App zu übersetzen auf <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Willkommen beim EmbyStat Einrichtungsassistenten.<br/><br/>Mit diesem Assistenten werden wir die grundlegenden Einstellungen für EmbyStat vornehmen. Wenn der Assistent abgeschlossen ist, genießen Sie alle Funktionen des Servers. Weitere Optionen um den Server zu optimieren finden Sie auf der Seite \"Einstellungen\".<br/><br/>Jetzt müssen wir nur noch wissen, wie wir Sie ansprechen sollen und in welcher Sprache Sie die Benutzeroberfläche haben möchten.",
     "NOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu {{type}} einrichten. Wir haben versucht deinen {{type}} Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen {{type}} Server finden kann.",
     "FOUNDTEXT": "Wir haben die folgenden Server in Ihrem Netzwerk gefunden. Wählen Sie diejenige aus, mit der Sie eine Verbindung herstellen möchten. Wenn Ihr Server nicht angezeigt wird, können Sie manuell eine Serververbindung erstellen.",
@@ -156,13 +156,13 @@
     "KEYISVALID": "Der API-Schlüssel ist gültig",
     "SELECTLIBRARIES": "Wählen Sie alle Bibliotheken aus, die Sie in die {{type}} Statistikberechnungen einbeziehen möchten. Alle {{type}} Bibliotheken sind standardmäßig ausgewählt. Wenn Sie möchten, können Sie das später auf der Einstellungsseite ändern.",
     "FINISHED": "Alle Einstellungen wurden gespeichert und Sie können Ihren EmbyStat-Server jetzt verwenden. Viel Spaß mit Ihren neuen Statistiken!",
-    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
+    "FINISHEXPLANATION": "Am besten starten Sie zuerst die Film- und Seriensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem {{type}}-Server. Beachten Sie, dass diese Aufgaben je nach Größe Ihrer Sammlung sehr lange dauern kann. Nach Ihrer Anmeldung können Sie diese Aufgaben manuell auf der Aufgaben-Seite starten.",
     "JELLYFIN": {
       "ADMINTEXT": "Da Sie Jellyfin verwenden, müssen Sie ein Administratorkonto angeben, mit dem Sie Daten vom Server abrufen möchten. Bitte wählen Sie den gewünschten Administrator aus der Dropdown-Liste aus."
     },
     "APIKEYFAILED": "Wir haben versucht, Ihren {{type}} Server zu kontaktieren, aber es scheint fehlzuschlagen. Bitte gehen Sie zurück, korrigieren Sie die Konfiguration und versuchen Sie es erneut.",
-    "ADDRESSUSED": "Address: {{address}}",
-    "APIKEYUSED": "API key: {{api}}",
+    "ADDRESSUSED": "Adresse: {{address}}",
+    "APIKEYUSED": "API-Schlüssel: {{api}}",
     "LANWANCHOISE": "Wählen Sie die richtige Adresse für Ihre Verbindung zum {{type}} Server.",
     "ADMINCREATEFAILED": "Das Erstellen des Administratorkontos ist fehlgeschlagen. Weitere Informationen finden Sie in den Protokollen."
   },
