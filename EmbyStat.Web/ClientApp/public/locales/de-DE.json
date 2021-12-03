@@ -187,7 +187,7 @@
     "TOTALSHOWS": "Gesamtanzahl Serien",
     "TOTALEPISODES": "Anzahl Episoden",
     "TOTALMISSINGEPISODES": "Anzahl fehlender Episoden",
-    "TOTALSPECIALEPISODES": "Total special episodes",
+    "TOTALSPECIALEPISODES": "Anzahl Special Folgen",
     "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
     "HIGHESTRATEDSHOW": "Beste Bewertung",
     "LOWESTRATEDSHOW": "Schlechteste Bewertung",
@@ -205,18 +205,18 @@
   },
   "SETTINGS": {
     "SAVED": "Einstellungen gespeichert",
-    "SAVEFAILED": "Saving settings failed, check log files for more info.",
+    "SAVEFAILED": "Speichern der Einstellungen fehlgeschlagen, überprüfen Sie die Log-Dateien für weitere Informationen.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
       "TMDB": "The Movie Database",
       "EMBY": "Emby"
     },
     "TMDB": {
-      "TITLE": "TMDb connection",
-      "APIKEYLABEL": "TMDb API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TMDb key"
+      "TITLE": "TMDb Verbindung",
+      "APIKEYLABEL": "TMDb API Schlüssel",
+      "APIKEYWARNING": "Wenn Sie möchten, können Sie EmbyStat hier mit Ihrem eigenen TMDb-API-Schlüssel versorgen. Stellen Sie sicher, dass Sie einen funktionierenden API-Schlüssel angeben! Wenn der Schlüssel falsch ist, schlägt die Synchronisierungsaufgabe fehl.",
+      "NOAPIKEY": "Der API-Schlüssel darf nicht leer sein",
+      "SAVING": "TMDb Schlüssel speichern"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
@@ -349,10 +349,10 @@
       "SYSTEM-SYNCDESCRIPTION": "Kleine Synchronisierung mit dem Emby Server durchführen. Dies ist nur ein kleines und schnelles Update des Systems.",
       "SYSTEM-SYNC": "Synchronisiere {{type}} Info",
       "SYSTEM-SYNCSTART": "Kleine Synchronisierung starten",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SHOW-SYNC": "Show synchronization",
-      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MOVIE-SYNC": "Movie synchronization",
+      "SHOW-SYNCDESCRIPTION": "Inkrementelle Synchronisierung der Serien-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
+      "SHOW-SYNC": "Serien Synchronisation",
+      "MOVIE-SYNCDESCRIPTION": "Inkrementelle Synchronisierung der Film-Sammlung durchführen. Dies kann einige Zeit in Anspruch nehmen!",
+      "MOVIE-SYNC": "Film Synchronisation",
       "DATABASE-CLEANUP": "Datenbankbereinigung",
       "DATABASE-CLEANUPDESCRIPTION": "Datenbank von unnötigen Daten bereinigen.",
       "UPDATE-CHECKER": "Nach neuen Aktualisierungen suchen",
@@ -450,8 +450,8 @@
     }
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
-    "ROWSPERPAGE": "Rows per page"
+    "NEXTPAGE": "Nächste Seite",
+    "PREVIOUSPAGE": "Vorherige Seite",
+    "ROWSPERPAGE": "Zeilen pro Seite"
   }
 }
