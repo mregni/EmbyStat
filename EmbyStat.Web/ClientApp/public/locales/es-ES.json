@@ -246,7 +246,7 @@
       "USERNAMEUPDATEFAILED": "Error al actualizar el nombre de usuario, compruebe el registro para más información"
     },
     "STATISTICS": {
-      "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
+      "TOSHORTTEXT": "Para encontrar las películas que son sospechosamente cortas, necesitamos saber la cantidad de minutos que le parecen demasiado cortos para una película. Por defecto, esto está configurado en 10 minutos, pero puede cambiarlo si es necesario.",
       "SAVING": "Guardando todos los ajustes de estadísticas de {{type}}",
       "TOSHORTMINUTES": "Minutos",
       "ENABLETOSHORTSCAN": "Habilitar búsqueda de cortometrajes"
@@ -422,36 +422,36 @@
     "CLEARALL": "Limpiar todo",
     "CONTAINS": "contiene",
     "NOTCONTAINS": "no contiene",
-    "EQUAL": "equals",
-    "STARTSWITH": "starts with",
-    "ENDSWITH": "ends with",
-    "IS": "is",
-    "ISNULL": "is null",
-    "ISNOT": "is not",
-    "HAS": "has",
-    "HASNO": "has no",
-    "HASNONE": "has none",
-    "BETWEEN": "between",
-    "SHORTER": "shorter",
-    "LONGER": "longer",
-    "ISZERO": "is 0",
-    "LARGER": "larger",
-    "SMALLER": "smaller",
-    "BEFORE": "before",
-    "AFTER": "after",
+    "EQUAL": "es Igual a",
+    "STARTSWITH": "comienza con",
+    "ENDSWITH": "termina con",
+    "IS": "es",
+    "ISNULL": "es nulo",
+    "ISNOT": "no es",
+    "HAS": "tiene",
+    "HASNO": "no tiene",
+    "HASNONE": "no tiene ninguno",
+    "BETWEEN": "entre",
+    "SHORTER": "más corto",
+    "LONGER": "más tiempo",
+    "ISZERO": "es 0",
+    "LARGER": "más grande",
+    "SMALLER": "menor",
+    "BEFORE": "antes",
+    "AFTER": "después",
     "TITLES": {
       "TITLE": "Título",
       "IMDB": "Imdb",
       "TMDB": "Tmdb",
-      "IMAGES": "Images",
+      "IMAGES": "Imágenes",
       "GENRES": "Géneros",
-      "FRAMERATE": "Frame rate",
-      "CONTAINER": "Container"
+      "FRAMERATE": "Cuadros por segundo",
+      "CONTAINER": "Contenedor"
     }
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
-    "ROWSPERPAGE": "Rows per page"
+    "NEXTPAGE": "Página siguiente",
+    "PREVIOUSPAGE": "Página anterior",
+    "ROWSPERPAGE": "Filas por página"
   }
 }
