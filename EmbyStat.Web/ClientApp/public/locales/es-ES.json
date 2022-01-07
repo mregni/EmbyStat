@@ -141,30 +141,30 @@
     "CONFIGURELIBRARIES": "Configurar {{type}} bibliotecas",
     "STEPONE": "Verificando si la clave de API es válida ({{step}}/{{total}})",
     "STEPTWO": "Obteniendo información del servidor ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
-    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "STEPTHREE": "Recuperando cuentas de administrador ({{step}}/{{total}})",
+    "STEPFOUR": "Obteniendo información del servidor ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Server type",
     "FINALLABEL": "Final",
-    "SEARCHSERVERS": "Searching servers",
-    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
-    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
-    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "SEARCHSERVERS": "Buscando servidores",
+    "SERVERTYPEGHELPER": "Seleccione el tipo de servidor correcto (Emby/Jellyfin).",
+    "OPENSERVERAPIPAGE": "Abrir {{type}} página de clave de API",
+    "CROWDINHELP": "Si su idioma no se menciona o no está completo, no dude en ayudarme a traducir la aplicación a su idioma en <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Bienvenido al asistente del servidor EmbyStat.<br/><br/>Con este asistente configuraremos la configuración básica para que pueda comenzar a trabajar con EmbyStat sin demasiados dolores de cabeza. Cuando se completa el asistente, puede disfrutar de todas las características del servidor. Si desea ajustar el servidor un poco más, siempre puede ir a la página de configuración.<br/><br/>Por ahora solo necesitamos saber cómo podemos llamarlo y en qué idioma desea ver la IU.",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
+    "FOUNDTEXT": "Encontramos los siguientes servidores en su red. Seleccione el que desea conectar. Si su servidor no se muestra puede crear una conexión del servidor manualmente.",
     "SERVERRUNNING": "{{type}} server is running",
     "KEYISVALID": "La clave API no es válida",
-    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
-    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
+    "SELECTLIBRARIES": "Seleccione todas las bibliotecas que desea incluir en los cálculos de estadísticas {{type}} Las {{type}} bibliotecas están seleccionadas de forma predeterminada. Si lo desea, puede cambiarlo más tarde en la página de configuración.",
+    "FINISHED": "Todas las configuraciones se guardan y puede comenzar a usar su servidor EmbyStat ahora. ¡Disfruta de tus nuevas estadísticas!",
+    "FINISHEXPLANATION": "Lo mejor que puede hacer primero es iniciar una película y mostrar el trabajo de sincronización. EmbyStat comenzará a descargar todos los datos de su servidor {{type}} Tenga en cuenta que estas tareas pueden llevar mucho tiempo dependiendo del tamaño de su colección. Puede iniciar los trabajos manualmente navegando a la página Trabajos después de iniciar sesión.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
     },
-    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: {{address}}",
-    "APIKEYUSED": "API key: {{api}}",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server.",
-    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
+    "APIKEYFAILED": "Intentamos contactar con tu servidor {{type}} pero parece fallar. Por favor, vuelve atrás, corrige la configuración e inténtalo de nuevo.",
+    "ADDRESSUSED": "Dirección: {{address}}",
+    "APIKEYUSED": "Clave API: {{api}}",
+    "LANWANCHOISE": "Elija la dirección correcta para usar en su conexión con el servidor {{type}}.",
+    "ADMINCREATEFAILED": "No se pudo crear la cuenta de administrador, consulte los registros para obtener más detalles."
   },
   "MOVIES": {
     "TOTALMOVIES": "Peliculas Totales",
@@ -181,13 +181,13 @@
     "TOSHORTMOVIES": "Peliculas muy cortas",
     "NOPOSTER": "Falta un poster",
     "NOIMDB": "Falta ID de IMDB",
-    "LOADER": "Loading movie statistics"
+    "LOADER": "Cargando estadísticas de películas"
   },
   "SHOWS": {
     "TOTALSHOWS": "Series Totales",
-    "TOTALEPISODES": "Total episodes",
-    "TOTALMISSINGEPISODES": "Total missing episodes",
-    "TOTALSPECIALEPISODES": "Total special episodes",
+    "TOTALEPISODES": "Episodios totales",
+    "TOTALMISSINGEPISODES": "Total de episodios perdidos",
+    "TOTALSPECIALEPISODES": "Episodios especiales totales",
     "TOTALPLAYLENGTH": "Tiempo de Visualización",
     "HIGHESTRATEDSHOW": "Mejor Valorada",
     "LOWESTRATEDSHOW": "Peor Valorada",
@@ -201,49 +201,49 @@
     "ENDED": "Finalizado",
     "OVERVIEW": "Resumen",
     "MISSINGEPISODES": "Episodios Faltantes",
-    "LOADER": "Loading show statistics"
+    "LOADER": "Cargando estadísticas de series"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
-    "SAVEFAILED": "Saving settings failed, check log files for more info.",
+    "SAVED": "Ajustes guardados",
+    "SAVEFAILED": "Error al guardar los ajustes, compruebe los archivos de registro para más información.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TMDB": "The Movie Database",
+      "TMDB": "La base de datos de películas",
       "EMBY": "Emby"
     },
     "TMDB": {
-      "TITLE": "TMDb connection",
-      "APIKEYLABEL": "TMDb API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TMDb key"
+      "TITLE": "Conexión TMDb",
+      "APIKEYLABEL": "Clave API TMDb",
+      "APIKEYWARNING": "Si lo desea, puede proporcionar a EmbyStat su propia clave API TMDb aquí. ¡Asegúrese de proporcionar una clave API funcional! Si la clave es incorrecta la tarea de sincronización fallará.",
+      "NOAPIKEY": "La clave API no puede estar vacía",
+      "SAVING": "Guardar clave TMDb"
     },
     "ROLLBAR": {
       "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Enable exception logging",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
-      "SAVING": "Saving Rollbar settings"
+      "ENABLEROLLBAR": "Habilitar el registro de excepciones",
+      "EXCEPTIONLOGGING": "Habilite/desactive el registro de excepciones en el servicio Rollbar en línea. Con este registro puedo depurar y arreglar la aplicación más rápido. Nunca se registran datos personales, solo mensajes de excepción, seguimiento de pila, nombre del sistema operativo y número de versión.",
+      "SAVING": "Guardando configuración de Rollbar"
     },
     "LANGUAGE": {
-      "TITLE": "Language",
-      "LABEL": "Select your prefert language",
-      "SAVING": "Updating language to {{lang}}"
+      "TITLE": "Idioma",
+      "LABEL": "Seleccione su idioma preferido",
+      "SAVING": "Actualizando idioma a {{lang}}"
     },
     "ACCOUNT": {
-      "TITLE": "User details",
-      "USERNAME": "Username",
-      "NOUSERNAME": "Username is required",
-      "PASSWORD": "Password",
-      "NEWPASSWORD": "New password",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "CURRENTPASSWORD": "Current password",
-      "NOPASSWORD": "Password is required",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDWARNING": "You only need to fill in a new password if you want to change your current password.",
-      "WRONGPASSWORD": "Wrong password for loggedin user",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check logging for more info"
+      "TITLE": "Detalles de usuario",
+      "USERNAME": "Nombre de usuario",
+      "NOUSERNAME": "Se requiere nombre de usuario",
+      "PASSWORD": "Contraseña",
+      "NEWPASSWORD": "Nueva contraseña",
+      "REPEATNEWPASSWORD": "Repita la nueva contraseña",
+      "CURRENTPASSWORD": "Contraseña actual",
+      "NOPASSWORD": "Se requiere contraseña",
+      "PASSWORDNOTEQUAL": "Las contraseñas no son iguales",
+      "PASSWORDMINLENGTH": "La longitud de la contraseña debe tener un mínimo de 6 caracteres",
+      "PASSWORDWARNING": "Sólo necesita rellenar una nueva contraseña si desea cambiar su contraseña actual.",
+      "WRONGPASSWORD": "Contraseña incorrecta para el usuario conectado",
+      "USERNAMEUPDATED": "Nombre de usuario actualizado con éxito",
+      "USERNAMEUPDATEFAILED": "Error al actualizar el nombre de usuario, compruebe el registro para más información"
     },
     "STATISTICS": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
@@ -356,7 +356,7 @@
       "DATABASE-CLEANUP": "Limpieza de la base de datos",
       "DATABASE-CLEANUPDESCRIPTION": "Limpia los datos innecesarios de la base de datos.",
       "UPDATE-CHECKER": "Buscar Actualizaciones",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "UPDATE-CHECKERDESCRIPTION": "Comprueba actualizaciones en la versión seleccionada."
     }
   },
   "DIALOGS": {
@@ -400,9 +400,9 @@
     "FOLDERS": "Carpetas"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "TITLE": "{{type}} estado",
+    "ONLINE": "Servidores en línea",
+    "OFFLINE": "{{count}} pings perdidos"
   },
   "ABOUT": {
     "SERVERINFO": "Información del servidor",
@@ -419,9 +419,9 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
-    "NOTCONTAINS": "not contains",
+    "CLEARALL": "Limpiar todo",
+    "CONTAINS": "contiene",
+    "NOTCONTAINS": "no contiene",
     "EQUAL": "equals",
     "STARTSWITH": "starts with",
     "ENDSWITH": "ends with",
