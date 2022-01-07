@@ -91,18 +91,18 @@
     "BIT": "bit",
     "SIZEINMB": "Tamaño en MB",
     "BITDEPTH": "Profundidad de bit",
-    "CODEC": "Codec",
-    "VIDEORANGE": "Video range",
-    "CONTAINER": "Container"
+    "CODEC": "Códec",
+    "VIDEORANGE": "Rango de video",
+    "CONTAINER": "Contenedor"
   },
   "LOGS": {
-    "ANONYMISED": "Anonymised",
-    "CREATIONDATE": "Creation date",
-    "ACTIONS": "Actions"
+    "ANONYMISED": "Anonimizar",
+    "CREATIONDATE": "Fecha de creación",
+    "ACTIONS": "Acciones"
   },
   "FORMERRORS": {
-    "EMPTY": "Field may not be empty",
-    "REQUIRED": "Required"
+    "EMPTY": "El campo no puede estar vacío",
+    "REQUIRED": "Requerido"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Woops, tenemos un error en el backend, por favor intente de nuevo. Si sigue fallando, verifique los registros para más detalles.",
@@ -134,13 +134,13 @@
     "USERS": "Usuarios"
   },
   "WIZARD": {
-    "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Provide a username and password for your admin user",
-    "SERVERCONFIGURATION": "Server configuration",
-    "SERVERCONFIGURATIONTEST": "Server configuration test",
-    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
-    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
-    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
+    "WIZARDLABEL": "Asistente",
+    "USERDETAILTEXT": "Proporcione un nombre de usuario y contraseña para su usuario administrador",
+    "SERVERCONFIGURATION": "Configuración del servidor",
+    "SERVERCONFIGURATIONTEST": "Prueba de configuración del servidor",
+    "CONFIGURELIBRARIES": "Configurar {{type}} bibliotecas",
+    "STEPONE": "Verificando si la clave de API es válida ({{step}}/{{total}})",
+    "STEPTWO": "Obteniendo información del servidor ({{step}}/{{total}})",
     "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
     "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Server type",
@@ -247,13 +247,13 @@
     },
     "STATISTICS": {
       "TOSHORTTEXT": "To find the movies that are suspiciously short we need to know what the amount of minutes you find too short for a movie. Default this is set to 10 minutes but you can change it if needed.",
-      "SAVING": "Saving all {{type}} statistic settings",
-      "TOSHORTMINUTES": "Minutes",
-      "ENABLETOSHORTSCAN": "Enable search for short movies"
+      "SAVING": "Guardando todos los ajustes de estadísticas de {{type}}",
+      "TOSHORTMINUTES": "Minutos",
+      "ENABLETOSHORTSCAN": "Habilitar búsqueda de cortometrajes"
     },
     "MOVIE": {
       "LIBRARY": {
-        "SAVING": "Saving movie libraries"
+        "SAVING": "Guardar bibliotecas de películas"
       },
       "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú desplegable situado en la página de películas."
     },
@@ -261,23 +261,23 @@
       "COLLECTIONTYPES": "Selecciona todas las colecciones de Emby que deseas ver en el menú desplegable situado en la página de series."
     },
     "MEDIASERVER": {
-      "ADDRESS": "IP/domain",
-      "NOADDRESS": "IP/domain is required",
+      "ADDRESS": "IP/dominio",
+      "NOADDRESS": "IP/dominio obligatorio",
       "APIKEY": "API key",
-      "NOAPIKEY": "API key is required",
-      "PORT": "Port",
-      "NOPORT": "Port is required",
+      "NOAPIKEY": "Clave API requerida",
+      "PORT": "Puerto",
+      "NOPORT": "Puerto requerido",
       "BASEURL": "Base URL",
-      "NOBASEURL": "Base URL is required and should start with /",
-      "EMBYADDRESSREQUIRED": "{{type}} IP/domain required.",
-      "EMBYPORTREQUIRED": "{{type}} port required.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API key required",
-      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
-      "BASEURLHINT": "Base url needs to start with a /",
-      "BASEURLNEEDED": "I need to set a base url",
-      "BASEURLNEEDEDTOOLTIP": "You probably don't need this if you are not behind a reverse proxy!",
-      "WRONGAPIKEY": "Provided API key is not valid",
-      "CHANGESERVERTYPE": "You configured a {{currentType}} server, if you want to switch to {{newType}} you will have to reinstall the application."
+      "NOBASEURL": "La URL base es obligatoria y debe comenzar con /",
+      "EMBYADDRESSREQUIRED": "{{type}} IP/dominio requerido.",
+      "EMBYPORTREQUIRED": "{{type}} puerto requerido.",
+      "EMBYAPIKEYREQUIRED": "{{type}} clave API requerida",
+      "APIKEYHINT": "Vaya a seguridad avanzada -> en su servidor {{type}} para generar un nuevo token API.",
+      "BASEURLHINT": "La url base debe comenzar con un /",
+      "BASEURLNEEDED": "Necesito establecer una url base",
+      "BASEURLNEEDEDTOOLTIP": "¡Probablemente no lo necesites si no estás detrás de un proxy inverso!",
+      "WRONGAPIKEY": "La clave API proporcionada no es válida",
+      "CHANGESERVERTYPE": "Configuraste un {{currentType}}, si quieres cambiar a {{newType}} tendrás que reinstalar la aplicación."
     },
     "UPDATE": {
       "MASTER": "Master",
@@ -296,13 +296,13 @@
     }
   },
   "LOGIN": {
-    "LOGIN": "Login",
-    "ERROR": "Username or password unknown",
-    "LOGOUT": "Log out",
-    "FORGOTPASSWORD": "Forgot password",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "LOGIN": "Iniciar sesión",
+    "ERROR": "Nombre de usuario o contraseña incorrecta",
+    "LOGOUT": "Cerrar sesión",
+    "FORGOTPASSWORD": "He olvidado mi contraseña",
+    "RECOVERPASSWORD": "Recuperar contraseña",
+    "RESETCOMPLETED": "Comprobar registros para una nueva contraseña",
+    "RESETFAILED": "Error al restablecer el nombre de usuario"
   },
   "USERS": {
     "ISADMIN": "Administrador",
@@ -338,24 +338,24 @@
     "LASTRUN": "Último inicio",
     "BUTFAILED": "pero falló después",
     "NORUN": "Aún no ejecutado",
-    "PROCESSING": "Processing",
+    "PROCESSING": "Procesando",
     "JOBLOGS": "Registro de tareas",
     "CRONUPDATED": "Valor de Cron actualizado",
-    "OPENJOBPAGE": "Go to job page",
-    "STARTMEDIASYNC": "Start media sync",
+    "OPENJOBPAGE": "Ir a la página de tareas",
+    "STARTMEDIASYNC": "Inicia la sincronización de medios",
     "INFO": {
-      "PING": "Check {{type}} connection",
-      "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCSTART": "Start small sync",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SHOW-SYNC": "Show synchronization",
-      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MOVIE-SYNC": "Movie synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
+      "PING": "Comprobar {{type}} conexión",
+      "PINGDESCRIPTION": "Realiza un ping al servidor Emby para comprobar si esta en linea.",
+      "SYSTEM-SYNCDESCRIPTION": "Realizar una pequeña sincronización con el servidor Emby. Esta es una actualización rápida y pequeña del sistema.",
+      "SYSTEM-SYNC": "Sincronizar {{type}} información",
+      "SYSTEM-SYNCSTART": "Iniciar sincronización rápida",
+      "SHOW-SYNCDESCRIPTION": "Realice una sincronización incremental para su colección de medios. ¡Esto puede tardar algún tiempo en ejecutarse!",
+      "SHOW-SYNC": "Mostrar sincronización",
+      "MOVIE-SYNCDESCRIPTION": "Realice una sincronización incremental para su colección de películas. ¡Esto puede tardar algún tiempo en ejecutarse!",
+      "MOVIE-SYNC": "Sincronización de películas",
+      "DATABASE-CLEANUP": "Limpieza de la base de datos",
+      "DATABASE-CLEANUPDESCRIPTION": "Limpia los datos innecesarios de la base de datos.",
+      "UPDATE-CHECKER": "Buscar Actualizaciones",
       "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
