@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Logging;
 using Newtonsoft.Json;
 
@@ -11,11 +13,11 @@ namespace EmbyStat.Clients.Base.Converters
 {
     public static class MovieConverter
     {
-        public static Movie ConvertToMovie(this BaseItemDto dto, string collectionId, Logger logger)
+        public static SqlMovie ConvertToMovie(this BaseItemDto dto, string collectionId, List<SqlGenre> genres, Logger logger)
         {
             try
             {
-                var movie = new Movie
+                var movie = new SqlMovie
                 {
                     Id = dto.Id,
                     CollectionId = collectionId,
@@ -25,16 +27,6 @@ namespace EmbyStat.Clients.Base.Converters
                     DateCreated = dto.DateCreated,
                     Path = dto.Path,
                     SortName = dto.SortName,
-                    MediaSources = dto.MediaSources.Select(y => new MediaSource
-                    {
-                        Id = y.Id,
-                        Path = y.Path,
-                        BitRate = y.Bitrate,
-                        Container = y.Container,
-                        Protocol = y.Protocol.ToString(),
-                        RunTimeTicks = y.RunTimeTicks,
-                        SizeInMb = Math.Round(y.Size / (double)1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)
-                    }).ToList(),
                     RunTimeTicks = dto.RunTimeTicks,
                     Container = dto.Container,
                     CommunityRating = dto.CommunityRating,
@@ -42,15 +34,15 @@ namespace EmbyStat.Clients.Base.Converters
                     OfficialRating = dto.OfficialRating,
                     PremiereDate = dto.PremiereDate,
                     ProductionYear = dto.ProductionYear,
-                    Video3DFormat = dto.Video3DFormat ?? 0,
-                    Genres = dto.Genres,
+                    Video3DFormat = dto.Video3DFormat ?? 0
                 };
 
                 dto.MapImageTags(movie);
-                dto.MapPeople(movie);
                 dto.MapProviderIds(movie);
                 dto.MapStreams(movie);
                 dto.MapMediaSources(movie);
+                dto.MapGenres(movie, genres);
+                dto.MapPeople(movie);
 
                 return movie;
             }

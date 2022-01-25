@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EmbyStat.Controllers.HelperClasses.Streams;
 
 namespace EmbyStat.Controllers.Movie
 {
@@ -24,11 +26,6 @@ namespace EmbyStat.Controllers.Movie
         public string Path { get; set; }
         public DateTimeOffset? PremiereDate { get; set; }
         public double SizeInMb { get; set; }
-        public double BitRate { get; set; }
-        public int? Height { get; set; }
-        public int? Width { get; set; }
-        public string Codec { get; set; }
-        public int? BitDepth { get; set; }
-        public string VideoRange { get; set; }
+        public List<VideoStreamViewModel> VideoStreams { get; set; }
     }
 }

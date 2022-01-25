@@ -12,10 +12,10 @@ namespace EmbyStat.Repositories.Interfaces
         void UpsertShow(Show updatedShow);
         void InsertSeasons(IEnumerable<Season> seasons);
         void InsertEpisodes(IEnumerable<Episode> episodes);
-        List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
+        IEnumerable<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
         Show GetShowById(string showId, bool includeEpisodes);
         Season GetSeasonById(string id);
-        List<Episode> GetAllEpisodesForShow(string showId);
+        IEnumerable<Episode> GetAllEpisodesForShow(string showId);
         Show GetShowById(string showId);
         void RemoveShowsThatAreNotUpdated(DateTime startTime);
         void AddEpisode(Episode episode);

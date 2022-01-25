@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EmbyStat.Common.SqLite;
 using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
@@ -18,5 +20,6 @@ namespace EmbyStat.Common.Models.Entities
         public int? ShowCount { get; set; }
         public string SortName { get; set; }
         public string Primary { get; set; }
+        public ICollection<SqlMoviePerson> MoviePeople { get; set; }
     }
 }

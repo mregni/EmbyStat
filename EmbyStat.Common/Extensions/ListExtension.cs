@@ -37,6 +37,11 @@ namespace EmbyStat.Common.Extensions
             }
         }
 
+        public static bool AnyNotNull<TSource>(this IEnumerable<TSource> source)
+        {
+            return source != null && source.Any();
+        }
+
         public static BsonArray ConvertToBsonArray(this IEnumerable<string> items)
         {
             var bArray = new BsonArray();
@@ -68,6 +73,16 @@ namespace EmbyStat.Common.Extensions
             }
 
             return bArray;
+        }
+
+        public static string AddLibraryIdFilter(this IEnumerable<string> libraryIds, string collectionAbr)
+        {
+            return libraryIds.Any() ? $"{collectionAbr}.CollectionId IN @Ids" : string.Empty;
+        }
+
+        public static string AddLibraryIdFilterAsAnd(this IEnumerable<string> libraryIds, string collectionAbr)
+        {
+            return libraryIds.Any() ? $"AND {collectionAbr}.CollectionId IN @Ids" : string.Empty;
         }
 
         public static void AddIfNotNull<T>(this List<T> items, T item)

@@ -51,8 +51,11 @@ export interface VideoStream {
   aspectRatio: string;
   averageFrameRate: number | null;
   bitRate: number | null;
+  BitDepth: number | null;
   channels: number | null;
   height: number | null;
+  codec: string | null;
+  videoRange: string | null;
   language: string;
   width: number | null;
 }
@@ -80,9 +83,9 @@ export interface Video extends Extra {
   container: string;
   mediaType: string;
   mediaSources: MediaSource[];
-  videoStreams: VideoStream[];
   audioStreams: AudioStream[];
   subtitleStreams: SubtitleStream[];
+  videoStreams: VideoStream[];
   video3DFormat: number;
 }
 

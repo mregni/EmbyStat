@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -23,63 +24,93 @@ namespace EmbyStat.Repositories.Helpers
         public IEnumerable<T> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            return GetWorkingLibrarySet(collection, libraryIds)
-                .Where(x => x.PremiereDate != null)
+            var ids = database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
+                .Where(x => x.PremiereDate.HasValue)
                 .OrderByDescending(x => x.PremiereDate)
-                .Take(count);
+                .Select(x => x.Id)
+                .Limit(count)
+                .ToEnumerable();
+
+            return database.GetCollection<T>()
+                .Query()
+                .Where(x => ids.Any(y => y == x.Id))
+                .ToEnumerable();
         }
 
         public IEnumerable<T> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            return GetWorkingLibrarySet(collection, libraryIds)
-                .Where(x => x.PremiereDate != null)
+            var ids = database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
+                .Where(x => x.PremiereDate.HasValue)
                 .OrderBy(x => x.PremiereDate)
-                .Take(count);
+                .Select(x => x.Id)
+                .Limit(count)
+                .ToEnumerable();
+
+            return database.GetCollection<T>()
+                .Query()
+                .Where(x => ids.Any(y => y == x.Id))
+                .ToEnumerable();
         }
 
         public IEnumerable<T> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            return GetWorkingLibrarySet(collection, libraryIds)
+            return database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
                 .Where(x => x.CommunityRating != null)
                 .OrderByDescending(x => x.CommunityRating)
-                .Take(count);
+                .Limit(count)
+                .ToEnumerable();
         }
 
         public IEnumerable<T> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            return GetWorkingLibrarySet(collection, libraryIds)
+            var ids = database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
                 .Where(x => x.CommunityRating != null)
                 .OrderBy(x => x.CommunityRating)
-                .Take(count);
+                .Select(x => x.Id)
+                .Limit(count)
+                .ToEnumerable();
+
+            return database.GetCollection<T>()
+                .Query()
+                .Where(x => ids.Any(y => y == x.Id))
+                .ToEnumerable();
         }
 
         public IEnumerable<T> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-
-            return GetWorkingLibrarySet(collection, libraryIds)
+            var ids = database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
                 .OrderByDescending(x => x.DateCreated)
-                .Take(count);
+                .Select(x => x.Id)
+                .Limit(count)
+                .ToEnumerable();
+
+            return database.GetCollection<T>()
+                .Query()
+                .Where(x => ids.Any(y => y == x.Id))
+                .ToEnumerable();
         }
 
         public virtual int GetMediaCount(Filter[] filters, IReadOnlyList<string> libraryIds)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            var query = GetWorkingLibrarySet(collection, libraryIds);
-            foreach (var filter in filters)
-            {
-                query = ApplyFilter(query, filter);
-            }
-
+            var query = database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds);
+            query = filters.Aggregate(query, ApplyFilter);
             return query.Count();
         }
 
@@ -98,30 +129,30 @@ namespace EmbyStat.Repositories.Helpers
         public int GetMediaCountForPerson(string name, string genre)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            return collection
-                .FindAll()
-                .Where(x => x.Genres.Any(y => y == genre))
-                .Count(x => x.People.Any(y => name == y.Name));
+            return database.GetCollection<T>()
+                .Query()
+                .Where(x => x.Genres.Any(y => y == genre) && x.People.Any(y => name == y.Name))
+                .Count();
         }
 
         public int GetMediaCountForPerson(string name)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            return collection
-                .FindAll()
-                .Count(x => x.People.Any(y => name == y.Name));
+            return database.GetCollection<T>()
+                .Query()
+                .Where(x => x.People.Any(y => name == y.Name))
+                .Count();
         }
 
         public int GetGenreCount(IReadOnlyList<string> libraryIds)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            var genres = GetWorkingLibrarySet(collection, libraryIds)
-                .Select(x => x.Genres);
-
-            return genres.SelectMany(x => x)
+            return database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
+                .Select(x => x.Genres)
+                .ToEnumerable()
+                .SelectMany(x => x)
                 .Distinct()
                 .Count();
         }
@@ -131,9 +162,10 @@ namespace EmbyStat.Repositories.Helpers
         public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-
-            return GetWorkingLibrarySet(collection, libraryIds)
+            return database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
+                .ToEnumerable()
                 .SelectMany(x => x.People)
                 .DistinctBy(x => x.Id)
                 .Count(x => x.Type == type);
@@ -142,9 +174,10 @@ namespace EmbyStat.Repositories.Helpers
         public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-
-            return GetWorkingLibrarySet(collection, libraryIds)
+            return database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
+                .ToEnumerable()
                 .SelectMany(x => x.People)
                 .Where(x => x.Type == type)
                 .GroupBy(x => x.Name, (name, people) => new { Name = name, Count = people.Count() })
@@ -160,9 +193,10 @@ namespace EmbyStat.Repositories.Helpers
         public IEnumerable<LabelValuePair> CalculateGenreFilterValues(IReadOnlyList<string> libraryIds)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            var query = GetWorkingLibrarySet(collection, libraryIds);
-            return query
+            return database.GetCollection<T>()
+                .Query()
+                .FilterOnLibrary(libraryIds)
+                .ToEnumerable()
                 .SelectMany(x => x.Genres)
                 .Select(x => new LabelValuePair { Value = x, Label = x })
                 .DistinctBy(x => x.Label)
@@ -174,15 +208,15 @@ namespace EmbyStat.Repositories.Helpers
             //TODO: safe collections somewhere so we can display names in the dropdown
             //not working at the moment, will display Id's
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<T>();
-            var query = collection.FindAll();
-            return query
+            return database.GetCollection<T>()
+                .Query()
                 .Select(x => new LabelValuePair { Value = x.CollectionId, Label = x.CollectionId })
+                .ToEnumerable()
                 .DistinctBy(x => x.Label)
                 .OrderBy(x => x.Label);
         }
 
-        protected IEnumerable<T> ApplyFilter(IEnumerable<T> query, Filter filter)
+        protected ILiteQueryable<T> ApplyFilter(ILiteQueryable<T> query, Filter filter)
         {
             switch (filter.Field)
             {
@@ -193,63 +227,77 @@ namespace EmbyStat.Repositories.Helpers
                         values = FormatDateInputValue(filter.Value);
                     }
 
-                    return (filter.Operation switch
+                    return filter.Operation switch
                     {
-                        "==" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) == values[0]),
-                        "<" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MaxValue) < values[0]),
-                        ">" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) > values[0]),
-                        "between" => query.Where(x => ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) > values[0]
-                                                      && ((DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? DateTime.MinValue) < values[1]),
-                        "null" => query.Where(x => (DateTime?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
+                        "==" => query.Where(x => (x.PremiereDate ?? DateTime.MinValue) == values[0]),
+                        "<" => query.Where(x => (x.PremiereDate ?? DateTime.MaxValue) < values[0]),
+                        ">" => query.Where(x => (x.PremiereDate ?? DateTime.MinValue) > values[0]),
+                        "between" => query.Where(x => (x.PremiereDate ?? DateTime.MinValue) > values[0] && (x.PremiereDate ?? DateTime.MinValue) < values[1]),
+                        "null" => query.Where(x => x.PremiereDate == null),
                         _ => query
-                    });
+                    };
                 case "Genres":
-                    return (filter.Operation switch
+                    return filter.Operation switch
                     {
                         "!any" => query.Where(x => x.Genres.All(y => y != filter.Value)),
                         "any" => query.Where(x => x.Genres.Any(y => y == filter.Value)),
                         _ => query
-                    });
+                    };
                 case "Images":
-                    return (filter.Operation switch
+                    return filter.Value switch
                     {
-                        "!null" => query.Where(x => ((string)typeof(T).GetProperty(filter.Value)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
-                        "null" => query.Where(x => string.IsNullOrWhiteSpace((string)typeof(T).GetProperty(filter.Value)?.GetValue(x, null) ?? string.Empty)),
+                        "Primary" => filter.Operation switch
+                        {
+                            "!null" => query.Where(x => !string.IsNullOrWhiteSpace(x.Primary)),
+                            "null" => query.Where(x => string.IsNullOrWhiteSpace(x.Primary)),
+                            _ => query
+                        },
+                        "Logo" => filter.Operation switch
+                        {
+                            "!null" => query.Where(x => !string.IsNullOrWhiteSpace(x.Primary)),
+                            "null" => query.Where(x => string.IsNullOrWhiteSpace(x.Primary)),
+                            _ => query
+                        },
                         _ => query
-                    });
+                    };
                 case "CommunityRating":
-                    return (filter.Operation switch
+                    return filter.Operation switch
                     {
-                        "==" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) == Convert.ToDouble(filter.Value)),
-                        "between" => query.Where(x => ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) > FormatInputValue(filter.Value)[0]
-                                                      && ((float?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0d) < FormatInputValue(filter.Value)[1]),
+                        "==" => query.Where(x => (x.CommunityRating ?? 0d) == Convert.ToDouble(filter.Value)),
+                        "between" => query.Where(x => (x.CommunityRating ?? 0d) > FormatInputValue(filter.Value)[0]
+                                                      && (x.CommunityRating ?? 0d) < FormatInputValue(filter.Value)[1]),
                         _ => query
-                    });
+                    };
                 case "RunTimeTicks":
-                    return (filter.Operation switch
+                    return filter.Operation switch
                     {
-                        "<" => query.Where(x => ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < Convert.ToInt64(filter.Value)),
-                        ">" => query.Where(x => ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > Convert.ToInt64(filter.Value)),
-                        "between" => query.Where(x => ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) > FormatInputValue(filter.Value)[0]
-                                                      && ((long?)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? 0) < FormatInputValue(filter.Value)[1]),
+                        "<" => query.Where(x => (x.RunTimeTicks ?? 0) < Convert.ToInt64(filter.Value)),
+                        ">" => query.Where(x => (x.RunTimeTicks ?? 0) > Convert.ToInt64(filter.Value)),
+                        "between" => query.Where(x => (x.RunTimeTicks ?? 0) > FormatInputValue(filter.Value)[0]
+                                                      && (x.RunTimeTicks ?? 0) < FormatInputValue(filter.Value)[1]),
                         _ => query
-                    });
+                    };
                 default:
-                    return (filter.Operation switch
+                    return filter.Operation switch
                     {
-                        "==" => query.Where(x => (string)(typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) == filter.Value),
-                        "!=" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty) != filter.Value),
-                        "contains" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
-                        "!contains" => query.Where(x => !((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
-                        "startsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().StartsWith(filter.Value.ToLowerInvariant())),
-                        "endsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field)?.GetValue(x, null) ?? string.Empty).ToLowerInvariant().EndsWith(filter.Value.ToLowerInvariant())),
-                        "null" => query.Where(x => typeof(T).GetProperty(filter.Field)?.GetValue(x, null) == null),
+                        "==" => query.Where(x => (string)(typeof(T).GetProperty(filter.Field).GetValue(x, null) ?? string.Empty) == filter.Value),
+                        "!=" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field).GetValue(x, null) ?? string.Empty) != filter.Value),
+                        "contains" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field).GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
+                        "!contains" => query.Where(x => !((string)typeof(T).GetProperty(filter.Field).GetValue(x, null) ?? string.Empty).ToLowerInvariant().Contains(filter.Value.ToLowerInvariant())),
+                        "startsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field).GetValue(x, null) ?? string.Empty).ToLowerInvariant().StartsWith(filter.Value.ToLowerInvariant())),
+                        "endsWith" => query.Where(x => ((string)typeof(T).GetProperty(filter.Field).GetValue(x, null) ?? string.Empty).ToLowerInvariant().EndsWith(filter.Value.ToLowerInvariant())),
+                        "null" => query.Where(x => typeof(T).GetProperty(filter.Field).GetValue(x, null) == null),
                         _ => query,
-                    });
+                    };
             }
         }
 
-        protected double[] FormatInputValue(string value, int multiplier = 1)
+        protected double[] FormatInputValue(string value)
+        {
+            return FormatInputValue(value, 1);
+        }
+
+        protected double[] FormatInputValue(string value, int multiplier)
         {
             var decodedValue = HttpUtility.UrlDecode(value);
             if (decodedValue.Contains('|'))
@@ -260,9 +308,7 @@ namespace EmbyStat.Repositories.Helpers
                 //switching sides if user put the biggest number on the left side.
                 if (right < left)
                 {
-                    var temp = left;
-                    left = right;
-                    right = temp;
+                    (left, right) = (right, left);
                 }
 
                 return new[] { left, right };
@@ -286,9 +332,7 @@ namespace EmbyStat.Repositories.Helpers
                 //switching sides if user put the biggest number on the left side.
                 if (right < left)
                 {
-                    var temp = left;
-                    left = right;
-                    right = temp;
+                    (left, right) = (right, left);
                 }
 
                 return new[] { left, right };

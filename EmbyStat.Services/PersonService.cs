@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common.Enums;
@@ -36,19 +37,17 @@ namespace EmbyStat.Services
                 var person = _personRepository.GetPersonByName(name);
                 if (person == null)
                 {
-                    person = _httpClient.GetPersonByName(name);
+                    //TODO fix
+                    var boe = _httpClient.GetPersonByName(name);
+                    person = new Person
+                    {
+                        Id = boe.Id,
+                        Name = boe.Name,
+                        Primary = boe.Primary,
+                        BirthDate = boe.BirthDate
+                    };
 
-                    if (person != null)
-                    {
-                        _personRepository.Upsert(person);
-                    }
-                    else
-                    {
-                        person = new Person
-                        {
-                            Name = name
-                        };
-                    }
+                    _personRepository.Upsert(person);
                 }
 
                 return person;

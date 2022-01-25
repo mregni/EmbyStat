@@ -9,7 +9,8 @@ namespace EmbyStat.Clients.Emby.Http
 {
     public class EmbyHttpClient : BaseHttpClient, IEmbyHttpClient
     {
-        public EmbyHttpClient(IRestClient client, IHttpContextAccessor accessor) : base(client, accessor)
+        public EmbyHttpClient(IRestClient client, IHttpContextAccessor accessor, IRefitHttpClientFactory<INewBaseClient> refitClient) 
+            : base(client, accessor, refitClient)
         {
             
         }

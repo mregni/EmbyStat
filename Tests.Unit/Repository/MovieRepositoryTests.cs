@@ -52,7 +52,8 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var movieOne = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
+                var movieOne = 
+                    new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("A").Build();
                 var movieTwo = new MovieBuilder(Guid.NewGuid().ToString()).AddSortName("B").Build();
                 _movieRepository.UpsertRange(new[] { movieOne, movieTwo });
 

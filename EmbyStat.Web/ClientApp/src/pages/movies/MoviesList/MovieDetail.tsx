@@ -11,6 +11,7 @@ import InboxRoundedIcon from '@material-ui/icons/InboxRounded';
 import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
 import SubtitlesRoundedIcon from '@material-ui/icons/SubtitlesRounded';
 import MusicNoteRoundedIcon from '@material-ui/icons/MusicNoteRounded';
+import Chip from '@material-ui/core/Chip';
 
 import { getBackdropImageLink, getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import PosterCard from '../../../shared/components/cards/PosterCard';
@@ -24,6 +25,9 @@ import { getMovieDetails } from '../../../shared/services/MovieService';
 import { Movie } from '../../../shared/models/common';
 import { MovieRow } from '../../../shared/models/movie';
 import { SettingsContext } from '../../../shared/context/settings';
+import generateStreamChipLabel from '../../../shared/utils/GenerateVideoStreamLabel';
+import { MultipleItem } from '../../../shared/components/detailComponents';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   container: (props: any) => ({
@@ -130,49 +134,54 @@ export const DetailMovieTemplate = (props: Props) => {
               item
               container
               direction="column"
+              spacing={1}
               xs={12}
               md={6}
               lg={4}
               xl={3}
             >
               <Grid item>
-                <p className={classes.movie__genres}>{movie.genres.join(', ')}</p>
+                <Grid container spacing={1}>
+                  {movie.genres.map(genre =>
+                    <Grid key={genre} item>
+                      <Chip label={genre} size="small"></Chip>
+                    </Grid>)}
+                </Grid>
               </Grid>
-              <Grid item container alignItems="center">
-                <StorageRoundedIcon />
-                <p className="m-l-8">
-                  {calculateFileSize(movie.mediaSources[0].sizeInMb)}
-                </p>
+              <Grid item container alignItems="flex-start" spacing={1}>
+                <Grid item>
+                  <StorageRoundedIcon />
+                </Grid>
+                <Grid item>
+                  <Typography>{calculateFileSize(movie.mediaSources[0].sizeInMb)}</Typography>
+                </Grid>
               </Grid>
-              <Grid item container alignItems="center">
-                <QueryBuilderRoundedIcon />
-                <p className="m-l-8">
-                  {calculateRunTime(movie.mediaSources[0].runTimeTicks)}
-                </p>
+              <Grid item container alignItems="flex-start" spacing={1}>
+                <Grid item>
+                  <QueryBuilderRoundedIcon />
+                </Grid>
+                <Grid item>
+                  <Typography>{calculateRunTime(movie.runTimeTicks)}</Typography>
+                </Grid>
               </Grid>
-              <Grid item container alignItems="center">
-                <AspectRatioRoundedIcon />
-                <p className="m-l-8">
-                  {movie.videoStreams[0]?.height ?? 0}x
-                  {movie.videoStreams[0]?.width ?? 0}
-                  &nbsp;({movie.videoStreams[0]?.aspectRatio}) @{' '}
-                  {Math.round(movie.videoStreams[0]?.averageFrameRate ?? 0)}fps
-            </p>
+              <Grid item container alignItems="flex-start" spacing={1}>
+                <Grid item>
+                  <InboxRoundedIcon />
+                </Grid>
+                <Grid item>
+                  <Typography>{movie.container}</Typography>
+                </Grid>
               </Grid>
-              <Grid item container alignItems="center">
-                <InboxRoundedIcon />
-                <p className="m-l-8">{movie.mediaSources[0].container}</p>
-              </Grid>
-              <Grid item container alignItems="center">
+              <Grid item container alignItems="flex-start" spacing={1}>
                 <Grid item>
                   <SubtitlesRoundedIcon />
                 </Grid>
-                <Grid item container xs>
+                <Grid item container xs spacing={1}>
                   {movie.subtitleStreams
                     .filter((x) => x.language != null && x.language !== 'src')
                     .map((x) =>
                       x.language != null ? (
-                        <Grid item key={x.id} className="m-l-8">
+                        <Grid item key={x.id}>
                           <Flag language={x.language} isDefault={x.isDefault} />
                         </Grid>
                       ) : null
@@ -180,18 +189,13 @@ export const DetailMovieTemplate = (props: Props) => {
                   {movie.subtitleStreams.some(
                     (x) => x.language == null || x.language === 'src'
                   ) ? (
-                      <Grid item className="m-l-8">
-                        +
-                        {
-                          movie.subtitleStreams.filter(
-                            (x) => x.language == null || x.language === 'src'
-                          ).length
-                        }
-                      </Grid>
-                    ) : null}
+                    <Grid item>
+                      <Chip size="small" label={`+${movie.subtitleStreams.filter((x) => x.language == null || x.language === 'src').length}`}></Chip>
+                    </Grid>
+                  ) : null}
                 </Grid>
               </Grid>
-              <Grid item container alignItems="center">
+              <Grid item container alignItems="flex-start">
                 <Grid item>
                   <MusicNoteRoundedIcon />
                 </Grid>
@@ -208,15 +212,15 @@ export const DetailMovieTemplate = (props: Props) => {
                   {movie.audioStreams.some(
                     (x) => x.language == null || x.language === 'src'
                   ) ? (
-                      <Grid item className="m-l-8">
-                        +
-                        {
-                          movie.audioStreams.filter(
-                            (x) => x.language == null || x.language === 'src'
-                          ).length
-                        }
-                      </Grid>
-                    ) : null}
+                    <Grid item className="m-l-8">
+                      +
+                      {
+                        movie.audioStreams.filter(
+                          (x) => x.language == null || x.language === 'src'
+                        ).length
+                      }
+                    </Grid>
+                  ) : null}
                 </Grid>
               </Grid>
             </Grid>
@@ -224,18 +228,19 @@ export const DetailMovieTemplate = (props: Props) => {
               item
               container
               direction="column"
+              spacing={1}
               xs={12}
               md={6}
               lg={8}
             >
-              <Grid item container alignItems="center">
-                <InsertDriveFileRoundedIcon />
-                <p className="m-l-8">{movie.mediaSources[0].path}</p>
-              </Grid>
-              <Grid item container alignItems="center">
-                <InboxRoundedIcon />
-                <p className="m-l-8">{movie.mediaSources[0].videoRange}</p>
-              </Grid>
+              <MultipleItem
+                items={movie.mediaSources.map(source => source.path)}
+                icon={<InsertDriveFileRoundedIcon />}
+              />
+              <MultipleItem
+                items={movie.videoStreams.map(stream => generateStreamChipLabel(stream))}
+                icon={<AspectRatioRoundedIcon />}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -285,6 +290,6 @@ export const DetailMovieTemplate = (props: Props) => {
       </Grid>
     </div>
   ) : (
-      <MovieDetailSkeleton />
-    );
+    <MovieDetailSkeleton />
+  );
 };

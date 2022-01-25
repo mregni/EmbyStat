@@ -14,6 +14,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -131,7 +132,7 @@ namespace EmbyStat.Services
         {
             var settings = _settingsService.GetUserSettings();
             ChangeClientType(settings.MediaServer.ServerType);
-            _movieRepository.RemoveMovies();
+            _movieRepository.RemoveAll();
             _showRepository.RemoveShows();
             _mediaServerRepository.ResetMissedPings();
             _mediaServerRepository.RemoveAllMediaServerData();
@@ -269,7 +270,7 @@ namespace EmbyStat.Services
 
         private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
         {
-            var movie = _movieRepository.GetMovieById(play.MediaId);
+            var movie = _movieRepository.GetById(play.MediaId);
             if (movie == null)
             {
                 throw new BusinessException("MOVIENOTFOUND");
@@ -328,18 +329,27 @@ namespace EmbyStat.Services
             };
         }
 
-        private decimal? CalculateWatchedPercentage(Play play, Extra media)
+        private decimal? CalculateWatchedPercentage(Play play, long? runTimeTicks)
         {
             decimal? watchedPercentage = null;
-            if (media.RunTimeTicks.HasValue)
+            if (runTimeTicks.HasValue)
             {
                 var playStates = play.PlayStates.Where(x => x.PositionTicks.HasValue).ToList();
                 var watchedTicks = playStates.Max(x => x.PositionTicks) -
                                    playStates.Min(x => x.PositionTicks);
-                watchedPercentage = Math.Round((watchedTicks.Value / (decimal)media.RunTimeTicks.Value) * 1000) / 10;
+                watchedPercentage = Math.Round((watchedTicks.Value / (decimal)runTimeTicks) * 1000) / 10;
             }
 
             return watchedPercentage;
+        }
+        private decimal? CalculateWatchedPercentage(Play play, SqlMovie movie)
+        {
+            return CalculateWatchedPercentage(play, movie.RunTimeTicks);
+        }
+
+        private decimal? CalculateWatchedPercentage(Play play, Episode episode)
+        {
+            return CalculateWatchedPercentage(play, episode.RunTimeTicks);
         }
 
         private void ChangeClientType(ServerType? type)

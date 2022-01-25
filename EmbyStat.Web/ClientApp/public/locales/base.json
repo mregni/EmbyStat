@@ -93,7 +93,8 @@
     "BITDEPTH": "Bit depth",
     "CODEC": "Codec",
     "VIDEORANGE": "Video range",
-    "CONTAINER": "Container"
+    "CONTAINER": "Container",
+    "STREAMS": "Video streams"
   },
   "LOGS": {
     "ANONYMISED": "Anonymised",

@@ -19,6 +19,8 @@
     <AssemblyName>EmbyStat</AssemblyName>
 
     <ProjectGuid>{1D5D997D-34AE-45BE-9935-13E0D63EAC02}</ProjectGuid>
+
+    <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,11 +35,17 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.11" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
     <PackageReference Include="MWKL.AspNetCore.Identity.LiteDB" Version="1.0.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="6.0.94" />
     <PackageReference Include="Rollbar.NetCore.AspNet" Version="4.0.3" />
     <PackageReference Include="Rollbar.PlugIns.NLog" Version="4.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
@@ -46,6 +54,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
+    <ProjectReference Include="..\EmbyStat.Migrations\EmbyStat.Migrations.csproj" />
     <ProjectReference Include="..\EmbyStat.Migrator\EmbyStat.Migrator.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />

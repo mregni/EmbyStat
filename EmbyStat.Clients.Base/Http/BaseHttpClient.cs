@@ -11,6 +11,7 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
@@ -24,6 +25,7 @@ namespace EmbyStat.Clients.Base.Http
     public abstract class BaseHttpClient
     {
         private readonly IHttpContextAccessor _accessor;
+        private readonly IRefitHttpClientFactory<INewBaseClient> _refitClient;
         protected readonly Logger Logger;
         protected string DeviceName { get; set; }
         protected string ApplicationVersion { get; set; }
@@ -38,18 +40,20 @@ namespace EmbyStat.Clients.Base.Http
 
         public string BaseUrl
         {
-            get => RestClient.BaseUrl?.ToString() ?? string.Empty;
+            get => RestClient?.BaseUrl?.ToString() ?? string.Empty;
             set => RestClient.BaseUrl = string.IsNullOrWhiteSpace(value) ? null : new Uri(value);
         }
 
         protected string AuthorizationScheme { get; set; }
         protected string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+        private string AuthorizationString => "{AuthorizationScheme} {AuthorizationParameter}";
 
         protected readonly IRestClient RestClient;
 
-        protected BaseHttpClient(IRestClient client, IHttpContextAccessor accessor)
+        protected BaseHttpClient(IRestClient client, IHttpContextAccessor accessor, IRefitHttpClientFactory<INewBaseClient> refitClient)
         {
             _accessor = accessor;
+            _refitClient = refitClient;
             RestClient = client.Initialize();
             Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
         }
@@ -85,7 +89,6 @@ namespace EmbyStat.Clients.Base.Http
             Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}{request.Resource}");
             var result = RestClient.Execute<T>(request);
 
-            var boe = RestClient.BuildUri(request);
             if (!result.IsSuccessful)
             {
                 Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
@@ -213,12 +216,40 @@ namespace EmbyStat.Clients.Base.Http
             return result.ConvertToInfo();
         }
 
-        public Person GetPersonByName(string personName)
+        public SqlPerson GetPersonByName(string personName)
         {
             var request = new RestRequest($"persons/{personName}", Method.GET);
-            request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } }, UserId);
+            //request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } }, UserId);
             var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return baseItem != null ? PersonConverter.Convert(baseItem, Logger) : null;
+            return baseItem?.ConvertToPeople(Logger);
+        }
+
+        public async Task<QueryResult<BaseItemDto>> GetPeople(int startIndex, int limit)
+        {
+            var query = new ItemQuery
+            {
+                StartIndex = startIndex,
+                Limit = limit,
+                Fields = new[] { ItemFields.PremiereDate }
+            };
+
+            var client = _refitClient.CreateClient(BaseUrl);
+            return await client.GetPeople(apiKey, AuthorizationString, query);
+        }
+
+        public async Task<int> GetPeopleCount()
+        {
+            var query = new ItemQuery
+            {
+                Recursive = true,
+                Limit = 0,
+                EnableTotalRecordCount = true,
+            };
+
+            var paramList = query.ConvertToStringDictionary(UserId);
+            var client = _refitClient.CreateClient(BaseUrl);
+            var result = await client.GetPeople(apiKey, AuthorizationString, query);
+            return result.TotalRecordCount;
         }
 
         public QueryResult<BaseItemDto> GetMediaFolders()
@@ -251,7 +282,17 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteAuthenticatedCall<JObject>(request);
         }
 
-        public List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit, DateTime? lastSynced)
+        public async Task<IEnumerable<SqlGenre>> GetGenres()
+        {
+            var query = new ItemQuery();
+            var client = _refitClient.CreateClient(BaseUrl);
+            var baseItems = await client.GetGenres(apiKey, AuthorizationString, query);
+            return baseItems?.Items != null
+                ? baseItems.Items.Select(x => x.ConvertToGenre(Logger)).ToList()
+                : new List<SqlGenre>(0);
+        }
+
+        public async Task<QueryResult<BaseItemDto>> GetMovies(string parentId, string collectionId, int startIndex, int limit, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -273,12 +314,10 @@ namespace EmbyStat.Clients.Base.Http
                 }
             };
 
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToMovie(collectionId, Logger)).ToList()
-                : new List<Movie>(0);
+            var paramList = query.ConvertToStringDictionary(UserId);
+            var client = _refitClient.CreateClient(BaseUrl);
+            var result = await client.GetMovies(apiKey, AuthorizationString, paramList);
+            return result;
         }
 
         public List<Show> GetShows(string parentId, DateTime? lastSynced)
@@ -303,7 +342,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
+            //request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems?.Items != null
                 ? baseItems.Items.Select(x => x.ConvertToShow(parentId, Logger)).ToList()
@@ -331,7 +370,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
+            //request.AddItemQueryAsParameters(query, UserId);
             var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
             return baseItems?.Items != null
                 ? baseItems.Items.Select(x => x.ConvertToSeason(Logger)).ToList()
@@ -362,7 +401,7 @@ namespace EmbyStat.Clients.Base.Http
                 };
 
                 var request = new RestRequest($"Items", Method.GET);
-                request.AddItemQueryAsParameters(query, UserId);
+                //request.AddItemQueryAsParameters(query, UserId);
                 var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
                 if (baseItems?.Items != null)
                 {
@@ -375,23 +414,23 @@ namespace EmbyStat.Clients.Base.Http
             return episodes;
         }
 
-        public int GetMovieCount(string parentId, DateTime? lastSynced)
+        public async Task<int> GetMovieCount(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
                 ParentId = parentId,
                 Recursive = true,
                 IncludeItemTypes = new[] { nameof(Movie) },
-                ExcludeLocationTypes = new [] {LocationType.Virtual},
+                ExcludeLocationTypes = new[] { LocationType.Virtual },
                 Limit = 0,
                 EnableTotalRecordCount = true,
                 MinDateLastSaved = lastSynced
             };
 
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.TotalRecordCount ?? 0;
+            var paramList = query.ConvertToStringDictionary(UserId);
+            var client = _refitClient.CreateClient(BaseUrl);
+            var result = await client.GetMovies(apiKey, AuthorizationString, paramList);
+            return result.TotalRecordCount;
         }
     }
 }

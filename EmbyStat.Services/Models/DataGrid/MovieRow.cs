@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EmbyStat.Common.SqLite;
 
 namespace EmbyStat.Services.Models.DataGrid
 {
@@ -15,7 +17,7 @@ namespace EmbyStat.Services.Models.DataGrid
         public decimal RunTime { get; set; }
         public string OfficialRating { get; set; }
         public float? CommunityRating { get; set; }
-        public string[] Genres { get; set; }
+        public List<SqlGenre> Genres { get; set; }
         public string Banner { get; set; }
         public string Logo { get; set; }
         public string Primary { get; set; }
@@ -24,11 +26,6 @@ namespace EmbyStat.Services.Models.DataGrid
         public string Path { get; set; }
         public DateTimeOffset? PremiereDate { get; set; }
         public double SizeInMb { get; set; }
-        public double BitRate { get; set; }
-        public int? Height { get; set; }
-        public int? Width { get; set; }
-        public string Codec { get; set; }
-        public int? BitDepth { get; set; }
-        public string VideoRange { get; set; }
+        public List<SqlVideoStream> VideoStreams { get; set; }
     }
 }

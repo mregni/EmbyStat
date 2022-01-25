@@ -5,7 +5,7 @@ namespace Tests.Unit.Builders
 {
     public class LibraryBuilder
     {
-        private Library _library;
+        private readonly Library _library;
 
         public LibraryBuilder(int index, LibraryType type)
         {

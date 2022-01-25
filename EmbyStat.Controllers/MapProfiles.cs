@@ -9,9 +9,11 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Controllers.About;
 using EmbyStat.Controllers.Filters;
 using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Controllers.HelperClasses.Streams;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Controllers.Log;
 using EmbyStat.Controllers.Movie;
@@ -62,13 +64,13 @@ namespace EmbyStat.Controllers
 	        CreateMap( typeof(Card<>), typeof(CardViewModel<>))
                 .ForMember("Type", src => src.MapFrom((org, x) =>
                 {
-                    switch (((Card<string>)org).Type)
+                    return ((Card<string>) org).Type switch
                     {
-                        case CardType.Text: return "text";
-                        case CardType.Size: return "size";
-                        case CardType.Time: return "time";
-                        default: return "text";
-                    }
+                        CardType.Text => "text",
+                        CardType.Size => "size",
+                        CardType.Time => "time",
+                        _ => "text"
+                    };
                 }));
 
 	        CreateMap<MoviePoster, MoviePosterViewModel>();
@@ -100,7 +102,8 @@ namespace EmbyStat.Controllers
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
-            CreateMap<MovieRow, MovieRowViewModel>();
+            CreateMap<MovieRow, MovieRowViewModel>()
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name)));
             CreateMap<TopCard, TopCardViewModel>();
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
@@ -113,6 +116,13 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.MissingEpisodes, x => x.MapFrom(y => y.GetMissingEpisodes()))
                 .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.GetSeasonCount(false)))
                 .ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(true, LocationType.Disk)));
+
+            CreateMap<SqlMovie, MovieViewModel>()
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name)));
+            CreateMap<SqlAudioStream, AudioStreamViewModel>();
+            CreateMap<SqlMediaSource, MediaSourceViewModel>();
+            CreateMap<SqlSubtitleStream, SubtitleStreamViewModel>();
+            CreateMap<SqlVideoStream, VideoStreamViewModel>();
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using AspNetCore.Identity.LiteDB.Data;
+using EmbyStat.BackgroundTasks;
+using EmbyStat.BackgroundTasks.Interfaces;
+using EmbyStat.BackgroundTasks.Tasks;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;
@@ -11,6 +15,7 @@ using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Maintenance;
@@ -39,6 +44,7 @@ namespace EmbyStat.DI
             services.RegisterHttp();
             services.RegisterSignalR();
             services.RegisterUserHandlers();
+            services.RegisterTasks();
         }
 
         private static void RegisterUserHandlers(this IServiceCollection services)
@@ -65,13 +71,14 @@ namespace EmbyStat.DI
 
         private static void RegisterRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<ILiteDbContext, DbContext>();
-            services.AddSingleton<IDbContext, DbContext>();
+            services.TryAddTransient<ILiteDbContext, DbContext>();
+            services.TryAddTransient<IDbContext, DbContext>();
             services.TryAddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            services.TryAddTransient<ISqliteBootstrap, SqliteBootstrap>();
 
-            services.TryAddTransient<IMovieRepository, MovieRepository>();
+            services.TryAddTransient<IMovieRepository, SqlMovieRepository>();
             services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
-            services.TryAddTransient<IPersonRepository, PersonRepository>();
+            services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
             services.TryAddTransient<IFilterRepository, FilterRepository>();
             services.TryAddTransient<IShowRepository, ShowRepository>();
             services.TryAddTransient<ILibraryRepository, LibraryRepository>();
@@ -79,6 +86,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IJobRepository, JobRepository>();
             services.TryAddTransient<ISessionRepository, SessionRepository>();
+            services.TryAddTransient<IGenreRepository, GenreRepository>();
         }
 
         private static void RegisterJobs(this IServiceCollection services)
@@ -93,6 +101,15 @@ namespace EmbyStat.DI
             services.TryAddTransient<IMovieSyncJob, MovieSyncJob>();
             services.TryAddTransient<ISmallSyncJob, SmallSyncJob>();
             services.TryAddTransient<ICheckUpdateJob, CheckUpdateJob>();
+        }
+
+        private static void RegisterTasks(this IServiceCollection services)
+        {
+            services.AddScoped<IBackgroundTask, MovieSyncTask>();
+            services.AddTransient<Monitor>();
+            services.AddHostedService<QueuedHostedService>();
+
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
         }
 
         private static void RegisterClients(this IServiceCollection services)
@@ -117,6 +134,8 @@ namespace EmbyStat.DI
         {
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.TryAddTransient<IRefitHttpClientFactory<INewBaseClient>, RefitHttpClientFactory<INewBaseClient>>();
         }
 
         private static void RegisterSignalR(this IServiceCollection services)

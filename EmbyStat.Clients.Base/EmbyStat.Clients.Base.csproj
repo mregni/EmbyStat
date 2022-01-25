@@ -6,20 +6,20 @@
 
   <ItemGroup>
     <Compile Remove="Http\Model\**" />
+    <Compile Remove="Models\**" />
     <EmbeddedResource Remove="Http\Model\**" />
+    <EmbeddedResource Remove="Models\**" />
     <None Remove="Http\Model\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Refit" Version="6.0.94" />
     <PackageReference Include="WebSocket4Net" Version="0.15.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,8 @@ namespace EmbyStat.Clients.Jellyfin.Http
 {
     public class JellyfinHttpClient : BaseHttpClient, IJellyfinHttpClient
     {
-        public JellyfinHttpClient(IRestClient client, IHttpContextAccessor accessor) : base(client, accessor)
+        public JellyfinHttpClient(IRestClient client, IHttpContextAccessor accessor, IRefitHttpClientFactory<INewBaseClient> refitClient)
+            : base(client, accessor, refitClient)
         {
             
         }

@@ -6,9 +6,11 @@ using CommandLine;
 using EmbyStat.Common;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
+using EmbyStat.Repositories;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -155,6 +157,9 @@ namespace EmbyStat.Web
                 _logger.Fatal(ex);
                 throw;
             }
+
+            var db = scope.ServiceProvider.GetRequiredService<SqlLiteDbContext>();
+            db.Database.Migrate();
         }
 
         private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel, bool service)

@@ -14,19 +14,22 @@ using Hangfire;
 namespace EmbyStat.Jobs
 {
     [Queue("main")]
-    public abstract class BaseJob : IBaseJob
+    public abstract class BaseJob : IBaseJob, IDisposable
     {
         protected readonly IJobHubHelper HubHelper;
         protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
         protected readonly Logger Logger;
+        private bool _disposed;
+
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
         protected bool EnableUiLogging { get; set; }
         private double Progress { get; set; }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, bool enableUiLogging, Type type, string prefix)
+        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+            bool enableUiLogging, Type type, string prefix)
         {
             HubHelper = hubHelper;
             _jobRepository = jobRepository;
@@ -166,6 +169,29 @@ namespace EmbyStat.Jobs
                 Title = Title
             };
             await HubHelper.BroadcastJobProgress(info);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                
+            }
+
+            _disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~BaseJob()
+        {
+            Dispose(false);
         }
     }
 }

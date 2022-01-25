@@ -1,4 +1,7 @@
-﻿using EmbyStat.Common.Models.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Repositories.Interfaces;
 
 namespace EmbyStat.Repositories
@@ -15,6 +18,11 @@ namespace EmbyStat.Repositories
             using var database = Context.CreateDatabaseContext();
             var collection = database.GetCollection<Person>();
             collection.Upsert(person);
+        }
+
+        public Task UpsertRange(IEnumerable<Common.SqLite.SqlPerson> people)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Person GetPersonByName(string name)

@@ -36,9 +36,9 @@ namespace EmbyStat.Clients.Base.Converters
                     Episodes = new List<Episode>()
                 };
 
-                dto.MapPeople(show);
-                dto.MapImageTags(show);
-                dto.MapProviderIds(show);
+                //dto.MapPeople(show);
+                //dto.MapImageTags(show);
+                //dto.MapProviderIds(show);
 
                 return show;
             }
@@ -70,7 +70,7 @@ namespace EmbyStat.Clients.Base.Converters
                     LocationType = LocationType.Disk
                 };
 
-                dto.MapImageTags(season);
+                //dto.MapImageTags(season);
 
                 return season;
             }
@@ -126,10 +126,10 @@ namespace EmbyStat.Clients.Base.Converters
                     ShowName = dto.SeriesName
                 };
 
-                dto.MapImageTags(episode);
-                dto.MapProviderIds(episode);
-                dto.MapStreams(episode);
-                dto.MapMediaSources(episode);
+                //dto.MapImageTags(episode);
+                //dto.MapProviderIds(episode);
+                //dto.MapStreams(episode);
+                //dto.MapMediaSources(episode);
 
                 return episode;
             }

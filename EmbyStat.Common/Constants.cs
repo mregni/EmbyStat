@@ -4,6 +4,18 @@ namespace EmbyStat.Common
 {
     public static class Constants
     {
+        public static class Tables
+        {
+            public static string Movies => "Movies";
+            public static string MediaSources => "MediaSources";
+            public static string VideoStreams => "VideoStreams";
+            public static string AudioStreams => "AudioStreams";
+            public static string SubtitleStreams => "SubtitleStreams";
+            public static string GenreMovie => "SqlGenreSqlMovie";
+            public static string PeopleMovie => "SqlMovieSqlPerson";
+            public static string People => "People";
+            public static string Genres => "Genres";
+        }
         public static class Movies
         {
             public static string TotalMovies => "MOVIES.TOTALMOVIES";

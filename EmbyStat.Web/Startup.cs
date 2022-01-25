@@ -15,7 +15,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.LiteDB;
+using EmbyStat.BackgroundTasks;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
@@ -27,6 +29,7 @@ using EmbyStat.DI;
 using EmbyStat.Migrator;
 using EmbyStat.Migrator.Interfaces;
 using EmbyStat.Migrator.Migrations;
+using EmbyStat.Repositories;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
@@ -34,10 +37,12 @@ using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Refit;
 
 namespace EmbyStat.Web
 {
@@ -120,12 +125,28 @@ namespace EmbyStat.Web
                 });
             });
 
+            services.AddRefitClient<INewBaseClient>();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "dist";
             });
 
             services.AddSignalR();
+
+            services.AddDbContext<SqlLiteDbContext>(options =>
+                options.UseSqlite("Data Source=SqliteData.db", 
+                    x => x.MigrationsAssembly("EmbyStat.Migrations")));
+
+            //var host = Configuration.GetValue<string>("Postgress:Host");
+            //var port = Configuration.GetValue<string>("Postgress:Port");
+            //var user = Configuration.GetValue<string>("Postgress:UserName");
+            //var password = Configuration.GetValue<string>("Postgress:Password");
+
+            //services.AddDbContext<SqlLiteDbContext>(options =>
+            //    options.UseNpgsql(
+            //        $"Host={host};Port={port};Database=EmbyStat;Username={user};Password={password}",
+            //    x => x.MigrationsAssembly("EmbyStat.Migrations")));
 
             services.AddAuthorization(options =>
             {
@@ -296,6 +317,9 @@ namespace EmbyStat.Web
             jobService.ResetAllJobs();
             SetEmbyClientConfiguration(settingsService, clientStrategy);
             jobInitializer.Setup(settings.NoUpdates);
+
+            var monitor = serviceScope.ServiceProvider.GetService<Monitor>();
+            //monitor.StartMonitorLoop();
         }
 
         private void PerformPreShutdownFunctions()

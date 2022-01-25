@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Models.Entities;
+﻿using System.Threading.Tasks;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Services.Interfaces
 {

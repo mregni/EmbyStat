@@ -7,6 +7,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Helpers;
 using EmbyStat.Repositories.Interfaces;
+using LiteDB;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -27,14 +28,14 @@ namespace EmbyStat.Repositories
         public Show GetShowById(string showId, bool includeEpisodes)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<Show>();
+            var query = database.GetCollection<Show>();
 
             if (includeEpisodes)
             {
-                collection = collection.Include(x => x.Episodes);
+                query = query.Include(x => x.Episodes);
             }
 
-            return collection.FindById(showId);
+            return query.FindById(showId);
         }
 
         public void RemoveShowsThatAreNotUpdated(DateTime startTime)
@@ -73,24 +74,27 @@ namespace EmbyStat.Repositories
         public Dictionary<Show, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count)
         {
             using var database = Context.CreateDatabaseContext();
-            var query = database.GetCollection<Show>()
-                .Include(x => x.Seasons)
-                .Include(x => x.Episodes);
 
-            var list = libraryIds.Any() ? query.Find(x => libraryIds.Any(y => y == x.CollectionId)) : query.FindAll();
-            return list
+            var query = database.GetCollection<Show>()
+                .Query()
+                .Include(x => x.Seasons)
+                .Include(x => x.Episodes)
+                .FilterOnLibrary(libraryIds)
                 .Select(x => new { Show = x, EpisodeCount = x.GetEpisodeCount(false, LocationType.Disk) }).ToList()
                 .OrderByDescending(x => x.EpisodeCount)
-                .Take(count)
-                .ToDictionary(x => x.Show, x => x.EpisodeCount);
+                .Take(count);
+
+            return query.ToDictionary(x => x.Show, x => x.EpisodeCount);
         }
 
         public IEnumerable<Show> GetShowPage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds)
         {
 
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<Show>().Include(x => x.Episodes);
-            var query = GetWorkingLibrarySet(collection, libraryIds);
+            var query = database.GetCollection<Show>()
+                .Query()
+                .Include(x => x.Episodes)
+                .FilterOnLibrary(libraryIds);
 
             query = filters.Aggregate(query, ApplyShowFilters);
 
@@ -101,16 +105,17 @@ namespace EmbyStat.Repositories
                 var desc = jObj[0]["desc"].Value<bool>();
 
                 query = desc
-                    ? query.OrderByDescending(x => typeof(Show).GetProperty(selector)?.GetValue(x, null))
-                    : query.OrderBy(x => typeof(Show).GetProperty(selector)?.GetValue(x, null));
+                    ? query.OrderByDescending(x => typeof(Show).GetProperty(selector).GetValue(x, null))
+                    : query.OrderBy(x => typeof(Show).GetProperty(selector).GetValue(x, null));
             }
 
             return query
                 .Skip(skip)
-                .Take(take);
+                .Limit(take)
+                .ToEnumerable();
         }
 
-        private IEnumerable<Show> ApplyShowFilters(IEnumerable<Show> query, Filter filter)
+        private ILiteQueryable<Show> ApplyShowFilters(ILiteQueryable<Show> query, Filter filter)
         {
             return ApplyFilter(query, filter);
         }
@@ -143,26 +148,24 @@ namespace EmbyStat.Repositories
             collection.Upsert(episodes);
         }
 
-        public List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes)
+        public IEnumerable<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<Show>();
+            var query = database.GetCollection<Show>()
+                .Query()
+                .FilterOnLibrary(libraryIds);
+
             if (includeSeasons)
             {
-                collection = collection.Include(x => x.Seasons);
+                query = query.Include(x => x.Seasons);
             }
 
             if (includeEpisodes)
             {
-                collection = collection.Include(x => x.Episodes);
+                query = query.Include(x => x.Episodes);
             }
 
-            if (libraryIds.Any())
-            {
-                return collection.Find(x => libraryIds.Any(y => y == x.CollectionId)).ToList();
-            }
-
-            return collection.FindAll().ToList();
+            return query.ToEnumerable();
         }
 
         public Season GetSeasonById(string id)
@@ -172,14 +175,14 @@ namespace EmbyStat.Repositories
             return collection.FindById(id);
         }
 
-        public List<Episode> GetAllEpisodesForShow(string showId)
+        public IEnumerable<Episode> GetAllEpisodesForShow(string showId)
         {
             using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<Episode>();
-            return collection
-                .Find(x => x.ShowId == showId)
+            return database.GetCollection<Episode>()
+                .Query()
+                .Where(x => x.ShowId == showId)
                 .OrderBy(x => x.IndexNumber)
-                .ToList();
+                .ToEnumerable();
         }
     }
 }

@@ -91,7 +91,7 @@ namespace Tests.Unit.Repository
                     job.CurrentProgressPercentage.Should().Be(10);
                     job.StartTimeUtc.Should().HaveValue();
                     // ReSharper disable once PossibleInvalidOperationException
-                    job.StartTimeUtc.Value.Should().BeCloseTo(DateTime.Now, 1000);
+                    job.StartTimeUtc.Value.Should().BeCloseTo(DateTime.Now, new TimeSpan(0,0,0,1));
                     job.EndTimeUtc.Should().BeNull();
                     job.State.Should().Be(JobState.Running);
                 }
@@ -124,7 +124,7 @@ namespace Tests.Unit.Repository
                     job.CurrentProgressPercentage.Should().Be(100);
                     job.EndTimeUtc.Should().HaveValue();
                     // ReSharper disable once PossibleInvalidOperationException
-                    job.EndTimeUtc.Value.Should().BeCloseTo(DateTime.Now, 1000);
+                    job.EndTimeUtc.Value.Should().BeCloseTo(DateTime.Now, new TimeSpan(0, 0, 0, 1));
                     job.State.Should().Be(JobState.Completed);
                 }
             });

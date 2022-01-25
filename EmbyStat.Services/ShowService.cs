@@ -65,7 +65,7 @@ namespace EmbyStat.Services
 
         public ShowStatistics CalculateShowStatistics(List<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(libraryIds, true, true);
+            var shows = _showRepository.GetAllShows(libraryIds, true, true).ToList();
 
             var statistics = new ShowStatistics
             {
@@ -334,7 +334,7 @@ namespace EmbyStat.Services
 
         #region Charts
 
-        private List<Chart> CalculateBarCharts(IReadOnlyList<Show> shows)
+        private List<Chart> CalculateBarCharts(IEnumerable<Show> shows)
         {
             var list = new List<Chart>();
             list.AddIfNotNull(CalculateGenreChart(shows));
@@ -345,7 +345,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private List<Chart> CalculatePieChars(IReadOnlyList<Show> shows)
+        private List<Chart> CalculatePieChars(IEnumerable<Show> shows)
         {
             var list = new List<Chart>();
             list.AddIfNotNull(CalculateOfficialRatingChart(shows));
@@ -354,7 +354,7 @@ namespace EmbyStat.Services
             return list;
         }
 
-        private Chart CalculateShowStateChart(IReadOnlyList<Show> shows)
+        private Chart CalculateShowStateChart(IEnumerable<Show> shows)
         {
             return CalculateStat(() =>
             {
@@ -374,7 +374,7 @@ namespace EmbyStat.Services
             }, "Calculate show state chart failed:");
         }
 
-        private Chart CalculateOfficialRatingChart(IReadOnlyList<Show> shows)
+        private Chart CalculateOfficialRatingChart(IEnumerable<Show> shows)
         {
             return CalculateStat(() =>
             {
@@ -394,7 +394,7 @@ namespace EmbyStat.Services
             }, "Calculate official show rating chart failed:");
         }
 
-        private Chart CalculateCollectedRateChart(IReadOnlyList<Show> shows)
+        private Chart CalculateCollectedRateChart(IEnumerable<Show> shows)
         {
             var percentageList = new List<double>();
             foreach (var show in shows)

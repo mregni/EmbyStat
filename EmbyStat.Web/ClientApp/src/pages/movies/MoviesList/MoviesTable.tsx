@@ -19,6 +19,7 @@ import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounde
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
 
 import calculateFileSize from '../../../shared/utils/CalculateFileSize';
 import { DetailMovieTemplate } from './MovieDetail';
@@ -28,9 +29,10 @@ import { useServerType } from '../../../shared/hooks';
 import { MovieRow } from '../../../shared/models/movie';
 import SortLabel from '../../../shared/components/tables/SortLabel';
 import { getMoviePage } from '../../../shared/services/MovieService';
-import { TablePage } from '../../../shared/models/common';
+import { TablePage, VideoStream } from '../../../shared/models/common';
 import { ActiveFilter } from '../../../shared/models/filter';
 import { SettingsContext } from '../../../shared/context/settings';
+import generateStreamChipLabel from '../../../shared/utils/GenerateVideoStreamLabel';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -114,20 +116,15 @@ const MovieTable = (props: Props) => {
   const headers: head[] = [
     { label: "", field: "", sortable: false, width: 30, align: 'left' },
     { label: "COMMON.TITLE", field: "sortName", sortable: true, width: 300, align: 'left' },
-    { label: "COMMON.GENRES", field: "", sortable: false, width: 220, align: 'left' },
-    { label: "COMMON.CONTAINER", field: "Container", sortable: true, align: 'right' },
-    { label: "COMMON.RUNTIME", field: "runTimeTicks", sortable: true, align: 'right' },
-    { label: "COMMON.OFFICIALRATING", field: "officielRating", sortable: true, align: 'right' },
-    { label: "COMMON.HEIGHT", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.WIDTH", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.BITRATE", field: "", sortable: false, align: 'right' },
+    { label: "COMMON.GENRES", field: "", sortable: false, align: 'left' },
+    { label: "COMMON.CONTAINER", field: "Container", width: 60, sortable: true, align: 'right' },
+    { label: "COMMON.RUNTIME", field: "runTimeTicks", width: 60, sortable: true, align: 'right' },
+    { label: "COMMON.OFFICIALRATING", field: "officielRating", width: 160, sortable: true, align: 'right' },
+    { label: "COMMON.STREAMS", field: "", sortable: false, align: 'right' },
     { label: "COMMON.SIZEINMB", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.BITDEPTH", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.CODEC", field: "", sortable: false, align: 'right' },
-    { label: "COMMON.VIDEORANGE", field: "", sortable: false, align: 'right' },
     { label: "COMMON.RATING", field: "communityRating", sortable: true, align: 'right' },
-    { label: "COMMON.SUBTITLES", field: "", sortable: false, width: 180, align: 'right' },
-    { label: "COMMON.AUDIO", field: "", sortable: false, width: 100, align: 'right' },
+    { label: "COMMON.SUBTITLES", field: "", sortable: false, width: 210, align: 'right' },
+    { label: "COMMON.AUDIO", field: "", sortable: false, width: 150, align: 'right' },
     { label: "COMMON.LINKS", field: "", sortable: false, align: 'right' },
   ]
 
@@ -244,12 +241,14 @@ const Row = (props: RowProps): ReactElement => {
       return (
         <Grid container justify="flex-end" direction="row">
           {subtitles?.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
-            <Grid item key={uuid()} className="m-r-4">
+            <Grid item key={uuid()} className="m-r-4 m-t-6">
               <Flag language={x} />
             </Grid>
           ))}
           {extraSubtitlesCount > 0 ? (
-            <Grid item>+ {extraSubtitlesCount}</Grid>
+            <Grid item>
+              <Chip size='small' label={`+${extraSubtitlesCount}`} className="m-r-4 m-t-4"></Chip>
+            </Grid>
           ) : null}
         </Grid>
       );
@@ -261,17 +260,19 @@ const Row = (props: RowProps): ReactElement => {
     if (audioLanguages && audioLanguages.length) {
       const normalAudioCount = audioLanguages.filter(x => x !== 'und' && x !== null).length;
       const extraAudioCount = audioLanguages.filter(x => x === 'und' || x === null).length
-        + (normalAudioCount > 5 ? normalAudioCount - 5 : 0);
+        + (normalAudioCount > 3 ? normalAudioCount - 3 : 0);
 
       return (
         <Grid container justify="flex-end">
-          {audioLanguages.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
-            <Grid item key={uuid()} className="m-r-4">
+          {audioLanguages.filter(x => x !== 'und' && x !== null).slice(0, 3).map((x) => (
+            <Grid item key={uuid()} className="m-r-4 m-t-6">
               <Flag language={x} />
             </Grid>
           ))}
           {extraAudioCount > 0 ? (
-            <Grid item>+ {extraAudioCount}</Grid>
+            <Grid item>
+              <Chip size='small' label={`+${extraAudioCount}`} className="m-r-4 m-t-4"></Chip>
+            </Grid>
           ) : null}
         </Grid>
       );
@@ -299,6 +300,24 @@ const Row = (props: RowProps): ReactElement => {
     );
   };
 
+  const renderVideoStreams = (streams: VideoStream[]) => {
+    if (streams && streams.length) {
+      const count = streams.length;
+      return (
+        <Grid container justify="flex-end">
+          {row.videoStreams.slice(0, 1).map(stream => <Chip key={stream.id} size='small' label={generateStreamChipLabel(stream)} className="m-r-4 m-t-4"></Chip>)}
+          {count > 1 ? (
+            <Grid item>
+              <Chip size='small' label={`+${count - 1}`} className="m-r-4 m-t-4"></Chip>
+            </Grid>
+          ) : null}
+        </Grid>
+      );
+    }
+
+    return <div />
+  }
+
   return (
     <>
       <TableRow key={row.id} hover>
@@ -308,17 +327,17 @@ const Row = (props: RowProps): ReactElement => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">{row.name}</TableCell>
-        <TableCell align="left">{row.genres.join(', ')}</TableCell>
+        <TableCell align="left">
+          {row.genres.slice(0, 2).map(genre => <Chip size='small' key={genre} label={genre} className="m-r-4 m-t-4"></Chip>)}
+          {
+            row.genres.length > 2 ? <Chip size='small' label={`+${row.genres.length - 2}`} className="m-r-4 m-t-4"></Chip> : null
+          }
+        </TableCell>
         <TableCell align="right">{row.container}</TableCell>
         <TableCell align="right">{row.runTime} {t('COMMON.MIN')}</TableCell>
         <TableCell align="right">{row.officialRating}</TableCell>
-        <TableCell align="right">{row.height}</TableCell>
-        <TableCell align="right">{row.width}</TableCell>
-        <TableCell align="right">{row.bitRate}</TableCell>
+        <TableCell align="right">{renderVideoStreams(row.videoStreams)}</TableCell>
         <TableCell align="right">{calculateFileSize(row.sizeInMb)}</TableCell>
-        <TableCell align="right">{row.bitDepth}</TableCell>
-        <TableCell align="right">{row.codec}</TableCell>
-        <TableCell align="right">{row.videoRange}</TableCell>
         <TableCell align="right">{row.communityRating}</TableCell>
         <TableCell align="right">{getSubtitleValues(row.subtitles)}</TableCell>
         <TableCell align="right">{getAudioValues(row.audioLanguages)}</TableCell>

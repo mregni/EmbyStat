@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using MoreLinq;
 
 namespace EmbyStat.Services
 {
@@ -45,7 +47,9 @@ namespace EmbyStat.Services
             switch (field.ToLowerInvariant())
             {
                 case "subtitle":
+                    var re = new Regex(@"\ \([0-9a-zA-Z -_]*\)$");
                     values.Values = _movieRepository.CalculateSubtitleFilterValues(libraryIds).ToArray();
+                    values.Values.ForEach(x => re.Replace(x.Label, string.Empty));
                     break;
                 case "genre":
                     values.Values = _movieRepository.CalculateGenreFilterValues(libraryIds).ToArray();

@@ -137,6 +137,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     var rawEpisodes = _httpClient.GetEpisodes(showObj.Seasons.Select(x => x.Id), show.Id, library.LastSynced);
                     rawEpisodes.ForEach(x => x.SeasonIndexNumber = showObj.Seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber);
                     show.Episodes.Upsert(rawEpisodes);
+                    _showRepository.InsertEpisodes(rawEpisodes);
+
                     await LogInformation($"Found {rawEpisodes.Count} changed episodes since last sync for show {show.SortName}");
 
                     show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);

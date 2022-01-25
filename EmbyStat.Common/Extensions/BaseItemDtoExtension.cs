@@ -4,20 +4,20 @@ using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
+using EmbyStat.Common.SqLite;
 
 namespace EmbyStat.Common.Extensions
 {
     public static class BaseItemDtoExtension
     {
-        public static T MapStreams<T>(this BaseItemDto dto, T video) where T : Video
+        public static T MapStreams<T>(this BaseItemDto dto, T video) where T : SqlMovie
         {
             if (dto.MediaStreams != null)
             {
                 video.AudioStreams = dto.MediaStreams
                     .Where(y => y.Type == MediaStreamType.Audio)
-                    .Select(y => new AudioStream
+                    .Select(y => new SqlAudioStream
                     {
-                        Id = Guid.NewGuid().ToString(),
                         BitRate = y.BitRate,
                         ChannelLayout = y.ChannelLayout,
                         Channels = y.Channels,
@@ -25,24 +25,24 @@ namespace EmbyStat.Common.Extensions
                         Language = y.Language,
                         SampleRate = y.SampleRate,
                         IsDefault = y.IsDefault,
+                        MovieId = video.Id
                     }).ToList();
 
                 video.SubtitleStreams = dto.MediaStreams
                     .Where(y => y.Type == MediaStreamType.Subtitle)
-                    .Select(y => new SubtitleStream
+                    .Select(y => new SqlSubtitleStream
                     {
-                        Id = Guid.NewGuid().ToString(),
                         Language = y.Language,
                         Codec = y.Codec,
                         DisplayTitle = y.DisplayTitle,
-                        IsDefault = y.IsDefault
+                        IsDefault = y.IsDefault,
+                        MovieId = video.Id
                     }).ToList();
 
                 video.VideoStreams = dto.MediaStreams
                     .Where(y => y.Type == MediaStreamType.Video)
-                    .Select(y => new VideoStream
+                    .Select(y => new SqlVideoStream
                     {
-                        Id = Guid.NewGuid().ToString(),
                         Language = y.Language,
                         BitRate = y.BitRate,
                         AspectRatio = y.AspectRatio,
@@ -53,65 +53,66 @@ namespace EmbyStat.Common.Extensions
                         BitDepth = y.BitDepth,
                         Codec = y.Codec,
                         IsDefault = y.IsDefault,
-                        VideoRange = y.VideoRange
+                        VideoRange = y.VideoRange,
+                        MovieId = video.Id
                     }).ToList();
             }
             else
             {
-                video.AudioStreams = new List<AudioStream>(0);
-                video.SubtitleStreams = new List<SubtitleStream>(0);
-                video.VideoStreams = new List<VideoStream>(0);
+                video.AudioStreams = new List<SqlAudioStream>(0);
+                video.SubtitleStreams = new List<SqlSubtitleStream>(0);
+                video.VideoStreams = new List<SqlVideoStream>(0);
             }
 
             return video;
         }
 
-        public static T MapMediaSources<T>(this BaseItemDto dto, T video) where T : Video
+        public static T MapMediaSources<T>(this BaseItemDto dto, T video) where T : SqlMovie
         {
             if (dto.MediaSources != null)
             {
                 video.MediaSources = dto.MediaSources
-                    .Select(y => new MediaSource
+                    .Select(y => new SqlMediaSource
                     {
-                        Id = Guid.NewGuid().ToString(),
                         Path = y.Path,
                         BitRate = y.Bitrate,
                         Container = y.Container,
                         Protocol = y.Protocol.ToString(),
                         RunTimeTicks = y.RunTimeTicks,
-                        SizeInMb = Math.Round(y.Size / (double) 1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)
+                        SizeInMb = Math.Round(y.Size / (double) 1024 / 1024 ?? 0, MidpointRounding.AwayFromZero),
+                        MovieId = video.Id
                     }).ToList();
             }
             else
             {
-                video.MediaSources = new List<MediaSource>(0);
+                video.MediaSources = new List<SqlMediaSource>(0);
             }
 
             return video;
         }
 
-        public static T MapPeople<T>(this BaseItemDto dto, T extra) where T : Extra
+        public static T MapPeople<T>(this BaseItemDto dto, T extra) where T : SqlMovie
         {
-            if (dto?.People != null)
+            if (dto.People == null || !dto.People.Any())
             {
-                extra.People = dto.People
-                    .Where(y => !string.IsNullOrWhiteSpace(y.Name))
-                    .Select(y => new ExtraPerson
-                    {
-                        Id = y.Id,
-                        Name = y.Name,
-                        Type = y.Type
-                    }).ToArray();
+                return extra;
             }
-            else
+
+            extra.MoviePeople ??= new List<SqlMoviePerson>();
+            foreach (var person in dto.People)
             {
-                extra.People = Array.Empty<ExtraPerson>();
+                extra.MoviePeople.Add(new SqlMoviePerson
+                {
+                    MovieId = extra.Id,
+                    PersonId = person.Id,
+                    Type = person.Type,
+                });
             }
 
             return extra;
         }
 
-        public static T MapProviderIds<T>(this BaseItemDto dto, T extra) where T : Extra
+        public static T MapProviderIds<T>(this BaseItemDto dto, T extra) where T : SqlMovie
         {
             if (dto.ProviderIds == null)
             {
@@ -129,7 +130,7 @@ namespace EmbyStat.Common.Extensions
             return extra;
         }
 
-        public static T MapImageTags<T>(this BaseItemDto dto, T extra) where T : Media
+        public static T MapImageTags<T>(this BaseItemDto dto, T extra) where T : SqlMovie
         {
             if (dto.ImageTags == null)
             {
@@ -140,6 +141,23 @@ namespace EmbyStat.Common.Extensions
             extra.Thumb = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Thumb).Value ?? string.Empty;
             extra.Logo = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Logo).Value ?? string.Empty;
             extra.Banner = dto.ImageTags.FirstOrDefault(y => y.Key == ImageType.Banner).Value ?? string.Empty;
+
+            return extra;
+        }
+
+        public static T MapGenres<T>(this BaseItemDto dto, T extra, List<SqlGenre> genres) where T : SqlMovie
+        {
+            if (dto.Genres == null || !dto.Genres.Any())
+            {
+                return extra;
+            }
+
+            extra.Genres ??= new List<SqlGenre>();
+            foreach (var dtoGenre in dto.Genres)
+            {
+                var localGenre = genres.FirstOrDefault(x => x.Name == dtoGenre);
+                extra.Genres.Add(localGenre);
+            }
 
             return extra;
         }
