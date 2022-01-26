@@ -1,0 +1,4 @@
+add migration:
+
+cd ./EmbyStat.Migrations
+dotnet ef migrations add Init --project ../EmbyStat.Migrations --startup-project ../EmbyStat.Web --output-dir PostgreSQL

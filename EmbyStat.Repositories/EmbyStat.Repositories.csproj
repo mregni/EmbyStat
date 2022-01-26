@@ -11,7 +11,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" Version="5.0.0" />
     <PackageReference Include="LiteDB" Version="5.0.11" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.11" />
@@ -21,7 +20,6 @@
     </PackageReference>
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MWKL.AspNetCore.Identity.LiteDB" Version="1.0.2" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="NpgsqlBulk.EFCore" Version="0.9.0" />
   </ItemGroup>
