@@ -156,15 +156,15 @@
     "KEYISVALID": "A chave da API é válida",
     "SELECTLIBRARIES": "Selecione todas as bibliotecas que você deseja incluir nos cálculos de estatísticas do {{type}} . Todas as {{type}} bibliotecas são selecionadas por padrão. Se você quiser, você pode alterá-lo mais tarde na página de configurações.",
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor EmbyStat agora. Aproveite suas novas estatísticas!",
-    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
+    "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar um filme e mostrar a tarefa de sincronização. O EmbyStat começará a baixar todos os dados do seu servidor {{type}} . Tenha em mente que estas tarefas podem levar um longo tempo dependendo do tamanho da sua coleção. Você pode iniciar as tarefas manualmente, navegando na página de Tarefas após o login.",
     "JELLYFIN": {
       "ADMINTEXT": "Como você está usando o Jellyfin, é necessário fornecer uma conta de administrador que você deseja usar para buscar dados do servidor. Selecione o administrador desejado na lista suspensa."
     },
-    "APIKEYFAILED": "We tried to contact your {{type}} server but it seems to fail. Please go back, correct the configuration and try again.",
-    "ADDRESSUSED": "Address: {{address}}",
-    "APIKEYUSED": "API key: {{api}}",
-    "LANWANCHOISE": "Choose the correct address to use for your connection to the {{type}} server.",
-    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
+    "APIKEYFAILED": "Tentamos contatar o seu servidor {{type}} , mas parece que ele falhou. Por favor volte, corrija a configuração e tente novamente.",
+    "ADDRESSUSED": "Endereço Usado:",
+    "APIKEYUSED": "Chave da API: {{api}}",
+    "LANWANCHOISE": "Escolha o endereço correto a ser usado para sua conexão com o servidor {{type}}.",
+    "ADMINCREATEFAILED": "Falha ao criar a conta de administração, verifique os logs para mais detalhes."
   },
   "MOVIES": {
     "TOTALMOVIES": "Total de filmes",
@@ -181,13 +181,13 @@
     "TOSHORTMOVIES": "Filmes muito curtos",
     "NOPOSTER": "Faltando um pôster",
     "NOIMDB": "Faltando um ID IMDB",
-    "LOADER": "Loading movie statistics"
+    "LOADER": "Carregando estatísticas de filmes"
   },
   "SHOWS": {
     "TOTALSHOWS": "Total de séries",
-    "TOTALEPISODES": "Total episodes",
-    "TOTALMISSINGEPISODES": "Total missing episodes",
-    "TOTALSPECIALEPISODES": "Total special episodes",
+    "TOTALEPISODES": "Total de episódios",
+    "TOTALMISSINGEPISODES": "Total de episódios faltantes",
+    "TOTALSPECIALEPISODES": "Total de episódios especiais",
     "TOTALPLAYLENGTH": "Tempo total de assistibilidade",
     "HIGHESTRATEDSHOW": "Melhor avaliado",
     "LOWESTRATEDSHOW": "Classificação mais baixa",
@@ -201,26 +201,26 @@
     "ENDED": "Terminado",
     "OVERVIEW": "Visão geral",
     "MISSINGEPISODES": "Episódios ausentes",
-    "LOADER": "Loading show statistics"
+    "LOADER": "Carregando estatísticas de séries"
   },
   "SETTINGS": {
-    "SAVED": "Settings saved",
-    "SAVEFAILED": "Saving settings failed, check log files for more info.",
+    "SAVED": "Configurações salvas",
+    "SAVEFAILED": "Falha ao salvar as configurações. Verifique os arquivos de log para mais informações.",
     "TITLES": {
       "EMBYSTAT": "Embystat",
-      "TMDB": "The Movie Database",
+      "TMDB": "Base de Dados de Filmes",
       "EMBY": "Emby"
     },
     "TMDB": {
-      "TITLE": "TMDb connection",
-      "APIKEYLABEL": "TMDb API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TMDb key"
+      "TITLE": "Conexão TMDb",
+      "APIKEYLABEL": "Chave API do TMDb",
+      "APIKEYWARNING": "Se você quiser, você pode fornecer ao EmbyStat sua própria chave de API TMDb aqui. Certifique-se de fornecer uma chave de API funcionando! Se a chave estiver incorreta, a tarefa de sincronização irá falhar.",
+      "NOAPIKEY": "Chave da API não pode estar vazia",
+      "SAVING": "Salvando chave do TMDb"
     },
     "ROLLBAR": {
-      "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Enable exception logging",
+      "TITLE": "Barra de rolagem",
+      "ENABLEROLLBAR": "Habilitar o registo de excepções",
       "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
       "SAVING": "Saving Rollbar settings"
     },
