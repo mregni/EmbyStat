@@ -221,16 +221,16 @@
     "ROLLBAR": {
       "TITLE": "Barra de rolagem",
       "ENABLEROLLBAR": "Habilitar o registo de excepções",
-      "EXCEPTIONLOGGING": "Enable/disable the exception logging to the online Rollbar service. With this logging I can debug and fix the application faster. No personal data is ever recorded, only exception messages, stacktrace, OS name and version number.",
-      "SAVING": "Saving Rollbar settings"
+      "EXCEPTIONLOGGING": "Ativar / desativar o log de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão.",
+      "SAVING": "Salvando configurações do Rollbar"
     },
     "LANGUAGE": {
-      "TITLE": "Language",
-      "LABEL": "Select your prefert language",
-      "SAVING": "Updating language to {{lang}}"
+      "TITLE": "Linguagem",
+      "LABEL": "Selecione o idioma preferido",
+      "SAVING": "Atualizando o idioma para {{lang}}"
     },
     "ACCOUNT": {
-      "TITLE": "User details",
+      "TITLE": "Detalhes do usuario",
       "USERNAME": "Nome de Usuário",
       "NOUSERNAME": "Username is required",
       "PASSWORD": "Password",
@@ -350,12 +350,12 @@
       "SYSTEM-SYNC": "Sync {{type}} info",
       "SYSTEM-SYNCSTART": "Start small sync",
       "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SHOW-SYNC": "Show synchronization",
-      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MOVIE-SYNC": "Movie synchronization",
-      "DATABASE-CLEANUP": "Database cleanup",
-      "DATABASE-CLEANUPDESCRIPTION": "Cleanup database with unnecessary data.",
-      "UPDATE-CHECKER": "Check for new updates",
+      "SHOW-SYNC": "Mostrar sincronização",
+      "MOVIE-SYNCDESCRIPTION": "Execute uma sincronização incremental para sua coleção de filmes. Isso pode levar algum tempo para ser executado!",
+      "MOVIE-SYNC": "Sincronização de filmes",
+      "DATABASE-CLEANUP": "Limpeza de banco de dados",
+      "DATABASE-CLEANUPDESCRIPTION": "Limpar banco de dados com dados desnecessários.",
+      "UPDATE-CHECKER": "Verificar se há atualizações",
       "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
     }
   },
