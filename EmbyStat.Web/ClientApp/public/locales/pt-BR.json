@@ -155,7 +155,7 @@
     "SERVERRUNNING": "O Servidor está em execução",
     "KEYISVALID": "A chave da API é válida",
     "SELECTLIBRARIES": "Selecione todas as bibliotecas que você deseja incluir nos cálculos de estatísticas do {{type}} . Todas as {{type}} bibliotecas são selecionadas por padrão. Se você quiser, você pode alterá-lo mais tarde na página de configurações.",
-    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor EmbyStat agora. Aproveite suas novas estatísticas!",
     "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
       "ADMINTEXT": "Como você está usando o Jellyfin, é necessário fornecer uma conta de administrador que você deseja usar para buscar dados do servidor. Selecione o administrador desejado na lista suspensa."
