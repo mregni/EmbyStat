@@ -151,10 +151,10 @@
     "CROWDINHELP": "Se o seu idioma não for mencionado ou não estiver completo, sinta-se à vontade para me ajudar a traduzir o aplicativo em seu idioma em <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Bem-vindo ao assistente EmbyStat.<br/><br/>Com este assistente vamos processar as configurações básicas para que você possa começar a trabalhar. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
     "NOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
-    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
+    "FOUNDTEXT": "Encontramos os seguintes servidores em sua rede. Selecione aquele ao qual você deseja se conectar. Se seu servidor não for exibido, você poderá criar uma conexão de servidor manualmente.",
     "SERVERRUNNING": "O Servidor está em execução",
     "KEYISVALID": "A chave da API é válida",
-    "SELECTLIBRARIES": "Select all libraries you want to include in the {{type}} statistics calculations. All {{type}} libraries are selected by default. If you want you can change it later in the settings page.",
+    "SELECTLIBRARIES": "Selecione todas as bibliotecas que você deseja incluir nos cálculos de estatísticas do {{type}} . Todas as {{type}} bibliotecas são selecionadas por padrão. Se você quiser, você pode alterá-lo mais tarde na página de configurações.",
     "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
     "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "JELLYFIN": {
