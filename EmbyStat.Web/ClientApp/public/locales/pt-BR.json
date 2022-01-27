@@ -1,6 +1,6 @@
 {
   "COMMON": {
-    "SERVERNAME": "Server name",
+    "SERVERNAME": "Nome do servidor",
     "DOWNLOAD": "baixar",
     "NEXT": "Próximo",
     "BACK": "Voltar",
@@ -14,7 +14,7 @@
     "MINUTESABBR": "m",
     "MIN": "mínimo",
     "GB": "GB",
-    "AND": "and",
+    "AND": "e",
     "PIXELS": "px",
     "TITLE": "Título",
     "ADDEDON": "Adicionado em",
@@ -98,11 +98,11 @@
   "LOGS": {
     "ANONYMISED": "Anônimo",
     "CREATIONDATE": "Data de criação",
-    "ACTIONS": "Actions"
+    "ACTIONS": "Ações."
   },
   "FORMERRORS": {
-    "EMPTY": "Field may not be empty",
-    "REQUIRED": "Required"
+    "EMPTY": "Campo não pode ser vazio",
+    "REQUIRED": "Obrigatório"
   },
   "EXCEPTIONS": {
     "INTERNAL_ERROR": "Opa, recebemos um erro no backend, por favor, tente novamente. Se continuar a falhar, por favor, verifique os logs para mais detalhes.",
@@ -134,21 +134,21 @@
     "USERS": "Usuários"
   },
   "WIZARD": {
-    "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Provide a username and password for your admin user",
-    "SERVERCONFIGURATION": "Server configuration",
-    "SERVERCONFIGURATIONTEST": "Server configuration test",
-    "CONFIGURELIBRARIES": "Configure {{type}} libraries",
-    "STEPONE": "Checking if API key is valid ({{step}}/{{total}})",
-    "STEPTWO": "Fetching server information ({{step}}/{{total}})",
-    "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
-    "STEPFOUR": "Fetching server libraries ({{step}}/{{total}})",
+    "WIZARDLABEL": "Assistente",
+    "USERDETAILTEXT": "Forneça um nome de usuário e senha para seu administrador",
+    "SERVERCONFIGURATION": "Configurações do Servidor",
+    "SERVERCONFIGURATIONTEST": "Configurações do Servidor",
+    "CONFIGURELIBRARIES": "Configurar bibliotecas {{type}}",
+    "STEPONE": "Verificando se a chave de API é válida ({{step}}/{{total}})",
+    "STEPTWO": "Buscando informações do servidor ({{step}}/{{total}})",
+    "STEPTHREE": "Buscando contas de administrador ({{step}}/{{total}})",
+    "STEPFOUR": "Buscando bibliotecas de servidor ({{step}}/{{total}})",
     "SERVERTYPELABEL": "Tipo de Servidor",
     "FINALLABEL": "Final",
-    "SEARCHSERVERS": "Searching servers",
-    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
-    "OPENSERVERAPIPAGE": "Open {{type}} API key page",
-    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "SEARCHSERVERS": "Procurando servidores",
+    "SERVERTYPEGHELPER": "Selecione o tipo de servidor correto (Emby/Jellyfin).",
+    "OPENSERVERAPIPAGE": "Abrir {{type}} Página de Chave API",
+    "CROWDINHELP": "Se o seu idioma não for mencionado ou não estiver completo, sinta-se à vontade para me ajudar a traduzir o aplicativo em seu idioma em <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "INTROTEXT": "Bem-vindo ao assistente EmbyStat.<br/><br/>Com este assistente vamos processar as configurações básicas para que você possa começar a trabalhar. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
     "NOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
     "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
