@@ -356,7 +356,7 @@
       "DATABASE-CLEANUP": "Limpeza de banco de dados",
       "DATABASE-CLEANUPDESCRIPTION": "Limpar banco de dados com dados desnecessários.",
       "UPDATE-CHECKER": "Verificar se há atualizações",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "UPDATE-CHECKERDESCRIPTION": "Verifica se há novas atualizações no tempo de atualização selecionado."
     }
   },
   "DIALOGS": {
@@ -400,9 +400,9 @@
     "FOLDERS": "Pastas"
   },
   "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} missed pings"
+    "TITLE": "Status de {{type}}",
+    "ONLINE": "Servidor online",
+    "OFFLINE": "{{count}} pings perdidos"
   },
   "ABOUT": {
     "SERVERINFO": "Informações do Servidor",
@@ -419,39 +419,39 @@
     }
   },
   "FILTERS": {
-    "CLEARALL": "Clear all",
-    "CONTAINS": "contains",
-    "NOTCONTAINS": "not contains",
-    "EQUAL": "equals",
-    "STARTSWITH": "starts with",
-    "ENDSWITH": "ends with",
-    "IS": "is",
-    "ISNULL": "is null",
-    "ISNOT": "is not",
-    "HAS": "has",
-    "HASNO": "has no",
-    "HASNONE": "has none",
-    "BETWEEN": "between",
-    "SHORTER": "shorter",
-    "LONGER": "longer",
-    "ISZERO": "is 0",
-    "LARGER": "larger",
-    "SMALLER": "smaller",
-    "BEFORE": "before",
-    "AFTER": "after",
+    "CLEARALL": "Limpar tudo",
+    "CONTAINS": "contém",
+    "NOTCONTAINS": "não contém",
+    "EQUAL": "igual a",
+    "STARTSWITH": "começando com",
+    "ENDSWITH": "terminando com",
+    "IS": "é",
+    "ISNULL": "é nulo",
+    "ISNOT": "não é",
+    "HAS": "tem",
+    "HASNO": "Não tem",
+    "HASNONE": "não tem nenhum",
+    "BETWEEN": "entre",
+    "SHORTER": "Mais curto",
+    "LONGER": "mais longo",
+    "ISZERO": "é 0",
+    "LARGER": "Maior",
+    "SMALLER": "Menor",
+    "BEFORE": "antes de",
+    "AFTER": "depois",
     "TITLES": {
       "TITLE": "Título",
-      "IMDB": "Imdb",
+      "IMDB": "IMDB",
       "TMDB": "Tmdb",
-      "IMAGES": "Images",
+      "IMAGES": "Imagens",
       "GENRES": "Gêneros",
-      "FRAMERATE": "Frame rate",
-      "CONTAINER": "Container"
+      "FRAMERATE": "Taxa de quadros",
+      "CONTAINER": "Contêiner"
     }
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
-    "ROWSPERPAGE": "Rows per page"
+    "NEXTPAGE": "Próxima página",
+    "PREVIOUSPAGE": "Página Anterior ",
+    "ROWSPERPAGE": "Linhas por página"
   }
 }
