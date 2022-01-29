@@ -10,7 +10,6 @@ using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Repositories.Interfaces.Helpers;
 using LiteDB;
-using MediaBrowser.Model.Extensions;
 
 namespace EmbyStat.Repositories.Helpers
 {

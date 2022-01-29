@@ -1,8 +1,11 @@
-﻿using EmbyStat.Services.Interfaces;
+﻿using System;
+using System.Runtime.InteropServices;
+using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.About;
 using EmbyStat.Common.Models.Settings;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.Options;
+using RuntimeEnvironment = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment;
 
 namespace EmbyStat.Services
 {

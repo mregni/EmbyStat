@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
+    <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="MWKL.AspNetCore.Identity.LiteDB" Version="1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Rollbar.NetCore.AspNet" Version="4.0.3" />

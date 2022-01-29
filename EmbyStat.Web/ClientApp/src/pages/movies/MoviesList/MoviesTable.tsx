@@ -234,13 +234,14 @@ const Row = (props: RowProps): ReactElement => {
 
   const getSubtitleValues = (subtitles: string[]) => {
     if (subtitles && subtitles.length) {
-      const normalSubtitlesCount = subtitles.filter(x => x !== 'und' && x !== null).length;
-      const extraSubtitlesCount = subtitles.filter(x => x === 'und' || x === null).length
+      let uniqueSubtitles = Array.from(new Set(subtitles));
+      const normalSubtitlesCount = uniqueSubtitles.filter(x => x !== 'und' && x !== null).length;
+      const extraSubtitlesCount = uniqueSubtitles.filter(x => x === 'und' || x === null).length
         + (normalSubtitlesCount > 5 ? normalSubtitlesCount - 5 : 0);
 
       return (
         <Grid container justify="flex-end" direction="row">
-          {subtitles?.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
+          {uniqueSubtitles?.filter(x => x !== 'und' && x !== null).slice(0, 5).map((x) => (
             <Grid item key={uuid()} className="m-r-4 m-t-6">
               <Flag language={x} />
             </Grid>
@@ -258,13 +259,14 @@ const Row = (props: RowProps): ReactElement => {
 
   const getAudioValues = (audioLanguages: string[]) => {
     if (audioLanguages && audioLanguages.length) {
-      const normalAudioCount = audioLanguages.filter(x => x !== 'und' && x !== null).length;
-      const extraAudioCount = audioLanguages.filter(x => x === 'und' || x === null).length
+      let uniqueAudio = Array.from(new Set(audioLanguages));
+      const normalAudioCount = uniqueAudio.filter(x => x !== 'und' && x !== null).length;
+      const extraAudioCount = uniqueAudio.filter(x => x === 'und' || x === null).length
         + (normalAudioCount > 3 ? normalAudioCount - 3 : 0);
 
       return (
         <Grid container justify="flex-end">
-          {audioLanguages.filter(x => x !== 'und' && x !== null).slice(0, 3).map((x) => (
+          {uniqueAudio.filter(x => x !== 'und' && x !== null).slice(0, 3).map((x) => (
             <Grid item key={uuid()} className="m-r-4 m-t-6">
               <Flag language={x} />
             </Grid>

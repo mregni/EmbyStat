@@ -592,44 +592,7 @@ const movieFilters: FilterDefinition[] = [
     ],
     open: false,
     id: uuid(),
-  },
-  {
-    field: "PremiereDate",
-    label: "Premiere Date {0} {1}",
-    title: "COMMON.PREMIEREDATE",
-    types: [
-      {
-        operation: "<",
-        label: "FILTERS.BEFORE",
-        type: "date",
-        open: false,
-        id: uuid(),
-      },
-      {
-        operation: ">",
-        label: "FILTERS.AFTER",
-        type: "date",
-        open: false,
-        id: uuid(),
-      },
-      {
-        operation: "between",
-        label: "FILTERS.BETWEEN",
-        type: "dateRange",
-        open: false,
-        id: uuid(),
-      },
-      {
-        operation: "null",
-        label: "FILTERS.ISNULL",
-        type: "none",
-        open: false,
-        id: uuid(),
-      },
-    ],
-    open: false,
-    id: uuid(),
-  },
+  }
 ];
 
 export default movieFilters;

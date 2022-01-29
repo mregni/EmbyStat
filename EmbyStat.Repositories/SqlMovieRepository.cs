@@ -13,7 +13,7 @@ using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using MoreLinq;
+using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories
 {
@@ -56,7 +56,7 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@ParentId,@Path,@Pr
                     {
                         var mediaSourceQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,MovieId) 
 VALUES (@BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@MovieId)";
-                        MoreEnumerable.ForEach(movie.MediaSources, x => x.MovieId = movie.Id);
+                        movie.MediaSources.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(mediaSourceQuery, movie.MediaSources, transaction);
                     }
 
@@ -64,7 +64,7 @@ VALUES (@BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@MovieId)";
                     {
                         var videoStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,MovieId) 
 VALUES (@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@MovieId)";
-                        MoreEnumerable.ForEach(movie.VideoStreams, x => x.MovieId = movie.Id);
+                        movie.VideoStreams.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(videoStreamQuery, movie.VideoStreams, transaction);
                     }
 
@@ -72,7 +72,7 @@ VALUES (@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Wid
                     {
                         var audioStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,MovieId)
 VALUES (@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@MovieId)";
-                        MoreEnumerable.ForEach(movie.AudioStreams, x => x.MovieId = movie.Id);
+                        movie.AudioStreams.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(audioStreamQuery, movie.AudioStreams, transaction);
                     }
 
@@ -80,7 +80,7 @@ VALUES (@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefaul
                     {
                         var subtitleStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Codec,DisplayTitle,IsDefault,Language,MovieId)
 VALUES (@Codec,@DisplayTitle,@IsDefault,@Language,@MovieId)";
-                        MoreEnumerable.ForEach(movie.SubtitleStreams, x => x.MovieId = movie.Id);
+                        movie.SubtitleStreams.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(subtitleStreamQuery, movie.SubtitleStreams, transaction);
                     }
 
@@ -96,7 +96,7 @@ VALUES ((SELECT Id FROM Genres WHERE name = @GenreName), @MovieId)";
                     {
                         var peopleQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.PeopleMovie} (Type, MovieId, PersonId)
 VALUES (@Type, @MovieId, @PersonId)";
-                        MoreEnumerable.ForEach(movie.MoviePeople, x => x.MovieId = movie.Id);
+                        movie.MoviePeople.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(peopleQuery, movie.MoviePeople, transaction);
                     }
 
@@ -211,7 +211,7 @@ VALUES (@Type, @MovieId, @PersonId)";
 SELECT m.*, g.*, aus.*, vis.*, sus.*, mes.*
 FROM {Constants.Tables.Movies} as m
 LEFT JOIN {Constants.Tables.GenreMovie} AS gm ON (gm.MoviesId = m.Id)
-LEFT JOIN {Constants.Tables.Genres} AS g ON (gm.GenresId = g.Id)
+INNER JOIN {Constants.Tables.Genres} AS g ON (gm.GenresId = g.Id)
 LEFT JOIN {Constants.Tables.AudioStreams} AS aus ON (aus.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.VideoStreams} AS vis ON (vis.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.SubtitleStreams} AS sus ON (sus.MovieId = m.Id)
@@ -250,11 +250,11 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                 .Select(g =>
             {
                 var groupedMovie = g.First();
-                groupedMovie.Genres = g.Select(p => p.Genres.Single()).Where(x => x != null).DistinctBy(x => x.Id).ToList();
-                groupedMovie.AudioStreams = g.Select(p => p.AudioStreams.Single()).Where(x => x != null).DistinctBy(x => x.Id).ToList();
-                groupedMovie.VideoStreams = g.Select(p => p.VideoStreams.Single()).Where(x => x != null).DistinctBy(x => x.Id).ToList();
-                groupedMovie.SubtitleStreams = g.Select(p => p.SubtitleStreams.Single()).Where(x => x != null).DistinctBy(x => x.Id).ToList();
-                groupedMovie.MediaSources = g.Select(p => p.MediaSources.Single()).Where(x => x != null).DistinctBy(x => x.Id).ToList();
+                groupedMovie.Genres = Enumerable.DistinctBy(g.Select(p => p.Genres.Single()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.AudioStreams = Enumerable.DistinctBy(g.Select(p => p.AudioStreams.Single()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.VideoStreams = Enumerable.DistinctBy(g.Select(p => p.VideoStreams.Single()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.SubtitleStreams = Enumerable.DistinctBy(g.Select(p => p.SubtitleStreams.Single()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.MediaSources = Enumerable.DistinctBy(g.Select(p => p.MediaSources.Single()).Where(x => x != null), x => x.Id).ToList();
                 return groupedMovie;
             })
                 .Skip(skip)
@@ -267,14 +267,13 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
 
         public IEnumerable<LabelValuePair> CalculateSubtitleFilterValues(IReadOnlyList<string> libraryIds)
         {
-            return _context.Movies
-                .Include(x => x.SubtitleStreams)
-                .FilterOnLibrary(libraryIds)
-                .SelectMany(x => x.SubtitleStreams)
-                .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null)
-                .AsEnumerable()
-                .Select(x => new LabelValuePair { Value = x.Language, Label = x.DisplayTitle.Split('(')[0] })
-                .DistinctBy(x => x.Label)
+            return Enumerable.DistinctBy(_context.Movies
+                    .Include(x => x.SubtitleStreams)
+                    .FilterOnLibrary(libraryIds)
+                    .SelectMany(x => x.SubtitleStreams)
+                    .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null)
+                    .AsEnumerable()
+                    .Select(x => new LabelValuePair { Value = x.Language, Label = x.DisplayTitle.Split('(')[0] }), x => x.Label)
                 .OrderBy(x => x.Label);
         }
 
@@ -613,22 +612,6 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)
                         "between" => GenerateExistsLine(Constants.Tables.VideoStreams, $"s0.AverageFrameRate > {heightFps[0]} AND s0.AverageFrameRate < {heightFps[1]}"),
                         _ => string.Empty
                     });
-                case "PremiereDate":
-                    var values = Array.Empty<DateTime>();
-                    if (filter.Operation != "null")
-                    {
-                        values = FormatDateInputValue(filter.Value);
-                    }
-
-                    return (filter.Operation switch
-                    {
-                        "==" => $"m.PremiereDate = '{values[0]}'",
-                        "<" => $"m.PremiereDate < '{values[0]}'",
-                        ">" => $"m.PremiereDate > '{values[0]}'",
-                        "null" => $"m.PremiereDate IS NULL",
-                        "between" => $"m.PremiereDate > '{values[0]}' AND m.PremiereDate < '{values[1]}'",
-                        _ => string.Empty
-                    });
                 case "Genres":
                     {
                         return filter.Operation switch
@@ -731,27 +714,6 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)
             }
 
             return new[] { Convert.ToDouble(decodedValue) * multiplier };
-        }
-
-        protected DateTime[] FormatDateInputValue(string value)
-        {
-            if (value.Contains('|'))
-            {
-                var left = DateTime.Parse(value.Split('|')[0]);
-                var right = DateTime.Parse(value.Split('|')[1]);
-
-                //switching sides if user put the biggest number on the left side.
-                if (right < left)
-                {
-                    (left, right) = (right, left);
-                }
-
-                return new[] { left, right };
-            }
-            else
-            {
-                return new[] { DateTime.Parse(value) };
-            }
         }
 
         #endregion
