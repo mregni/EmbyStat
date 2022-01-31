@@ -85,7 +85,7 @@ namespace EmbyStat.Common.Extensions
             return libraryIds.Any() ? $"AND {collectionAbr}.CollectionId IN @Ids" : string.Empty;
         }
 
-        public static void AddIfNotNull<T>(this List<T> items, T item)
+        public static void AddIfNotNull<T>(this ICollection<T> items, T item)
         {
             if (item != null)
             {

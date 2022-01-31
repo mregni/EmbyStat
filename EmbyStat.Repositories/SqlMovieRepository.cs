@@ -211,7 +211,7 @@ VALUES (@Type, @MovieId, @PersonId)";
 SELECT m.*, g.*, aus.*, vis.*, sus.*, mes.*
 FROM {Constants.Tables.Movies} as m
 LEFT JOIN {Constants.Tables.GenreMovie} AS gm ON (gm.MoviesId = m.Id)
-INNER JOIN {Constants.Tables.Genres} AS g ON (gm.GenresId = g.Id)
+LEFT JOIN {Constants.Tables.Genres} AS g ON (gm.GenresId = g.Id)
 LEFT JOIN {Constants.Tables.AudioStreams} AS aus ON (aus.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.VideoStreams} AS vis ON (vis.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.SubtitleStreams} AS sus ON (sus.MovieId = m.Id)
@@ -237,11 +237,11 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                 m.SubtitleStreams ??= new List<SqlSubtitleStream>();
                 m.MediaSources ??= new List<SqlMediaSource>();
 
-                m.Genres.Add(g);
-                m.AudioStreams.Add(aus);
-                m.VideoStreams.Add(vis);
-                m.SubtitleStreams.Add(sus);
-                m.MediaSources.Add(mes);
+                m.Genres.AddIfNotNull(g);
+                m.AudioStreams.AddIfNotNull(aus);
+                m.VideoStreams.AddIfNotNull(vis);
+                m.SubtitleStreams.AddIfNotNull(sus);
+                m.MediaSources.AddIfNotNull(mes);
                 return m;
             }, new { Ids = libraryIds });
 
@@ -250,11 +250,11 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                 .Select(g =>
             {
                 var groupedMovie = g.First();
-                groupedMovie.Genres = Enumerable.DistinctBy(g.Select(p => p.Genres.Single()).Where(x => x != null), x => x.Id).ToList();
-                groupedMovie.AudioStreams = Enumerable.DistinctBy(g.Select(p => p.AudioStreams.Single()).Where(x => x != null), x => x.Id).ToList();
-                groupedMovie.VideoStreams = Enumerable.DistinctBy(g.Select(p => p.VideoStreams.Single()).Where(x => x != null), x => x.Id).ToList();
-                groupedMovie.SubtitleStreams = Enumerable.DistinctBy(g.Select(p => p.SubtitleStreams.Single()).Where(x => x != null), x => x.Id).ToList();
-                groupedMovie.MediaSources = Enumerable.DistinctBy(g.Select(p => p.MediaSources.Single()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.Genres = Enumerable.DistinctBy(g.Select(p => p.Genres.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.AudioStreams = Enumerable.DistinctBy(g.Select(p => p.AudioStreams.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.VideoStreams = Enumerable.DistinctBy(g.Select(p => p.VideoStreams.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.SubtitleStreams = Enumerable.DistinctBy(g.Select(p => p.SubtitleStreams.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
+                groupedMovie.MediaSources = Enumerable.DistinctBy(g.Select(p => p.MediaSources.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
                 return groupedMovie;
             })
                 .Skip(skip)
@@ -528,14 +528,6 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)
         {
             switch (filter.Field)
             {
-                case "Container":
-                    return (filter.Operation switch
-                    {
-                        "==" => $"m.Container = '{filter.Value}'",
-                        "!=" => $"m.Container != '{filter.Value}'",
-                        "null" => $"m.Container IS NULL OR m.Container = ''",
-                        _ => string.Empty
-                    });
                 case "Subtitles":
                     return (filter.Operation switch
                     {
@@ -669,13 +661,13 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)
                 default:
                     return filter.Operation switch
                     {
-                        "==" => $"m.{filter.Field} = {filter.Value}",
-                        "!=" => $"m.{filter.Field} != {filter.Value}",
+                        "==" => $"m.{filter.Field} = '{filter.Value}'",
+                        "!=" => $"m.{filter.Field} != '{filter.Value}'",
                         "contains" => $"m.{filter.Field} LIKE '%{filter.Value}%'",
                         "!contains" => $"m.{filter.Field} NOT LIKE '%{filter.Value}%'",
                         "startsWith" => $"m.{filter.Field} LIKE '{filter.Value}%')",
                         "endsWith" => $"m.{filter.Field} LIKE '%{filter.Value}')",
-                        "null" => $"m.{filter.Field} IS NULL",
+                        "null" => $"m.{filter.Field} IS NULL OR m.{filter.Field} = ''",
                         _ => string.Empty
                     };
             }
