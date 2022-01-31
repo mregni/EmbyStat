@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
@@ -87,7 +88,7 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        public Page<ShowRow> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public async Task<Page<ShowRow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
             var list = _showRepository
                 .GetShowPage(skip, take, sort, filters, libraryIds)
@@ -109,7 +110,7 @@ namespace EmbyStat.Services
             var page = new Page<ShowRow> { Data = list };
             if (requireTotalCount)
             {
-                page.TotalCount = _showRepository.GetMediaCount(filters, libraryIds);
+                page.TotalCount = await _showRepository.Count(filters, libraryIds);
             }
 
             return page;
@@ -139,7 +140,7 @@ namespace EmbyStat.Services
         {
             return CalculateStat(() =>
             {
-                var count = _showRepository.GetMediaCount(libraryIds).ToString();
+                var count = _showRepository.Count(libraryIds).ToString();
 
                 return new Card<string>
                 {

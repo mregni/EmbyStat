@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Query;
@@ -51,7 +52,7 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("list")]
-        public IActionResult GetShowPageList(int skip, int take, string sort, bool requireTotalCount, string filter, List<string> libraryIds)
+        public async Task<IActionResult> GetShowPageList(int skip, int take, string sort, bool requireTotalCount, string filter, List<string> libraryIds)
         {
             var filtersObj = Array.Empty<Filter>();
             if (filter != null)
@@ -59,7 +60,7 @@ namespace EmbyStat.Controllers.Show
                 filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
             }
 
-            var page = _showService.GetShowPage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
+            var page = await _showService.GetShowPage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
             var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
             return Ok(convert);
         }

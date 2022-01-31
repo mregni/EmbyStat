@@ -8,19 +8,17 @@ using EmbyStat.Repositories.Interfaces.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 
 namespace EmbyStat.Repositories.Interfaces
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IMediaRepository
     {
         SqlMovie GetById(string id);
         void RemoveAll();
         Task UpsertRange(IEnumerable<SqlMovie> movies);
         IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds);
         IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds, bool includeGenres);
-        Task<int> Count(IReadOnlyList<string> libraryIds);
-        Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds);
-        bool Any();
 
         Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds);
         Task<Dictionary<string, int>> GetMovieGenreChartValues(IReadOnlyList<string> libraryIds);
@@ -39,18 +37,7 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<LabelValuePair> CalculateCollectionFilterValues();
         IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds);
         IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<SqlMovie> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlMovie> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlMovie> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlMovie> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlMovie> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count);
         IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds);
         IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds);
-
-        int GetMediaCountForPerson(string name, string genre);
-        int GetMediaCountForPerson(string name);
-        Task<int> GetGenreCount(IReadOnlyList<string> libraryIds);
-        int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
-        IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count);
     }
 }

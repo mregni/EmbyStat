@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 

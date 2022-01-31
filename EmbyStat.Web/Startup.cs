@@ -134,9 +134,7 @@ namespace EmbyStat.Web
 
             services.AddSignalR();
 
-            services.AddDbContext<SqlLiteDbContext>(options =>
-                options.UseSqlite("Data Source=SqliteData.db", 
-                    x => x.MigrationsAssembly("EmbyStat.Migrations")));
+            services.AddDbContext<SqlLiteDbContext>();
 
             //var host = Configuration.GetValue<string>("Postgress:Host");
             //var port = Configuration.GetValue<string>("Postgress:Port");

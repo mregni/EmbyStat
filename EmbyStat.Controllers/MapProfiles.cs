@@ -10,6 +10,8 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
+using EmbyStat.Common.SqLite.Streams;
 using EmbyStat.Controllers.About;
 using EmbyStat.Controllers.Filters;
 using EmbyStat.Controllers.HelperClasses;

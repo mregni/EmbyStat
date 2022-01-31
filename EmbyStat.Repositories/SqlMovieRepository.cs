@@ -11,6 +11,9 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
+using EmbyStat.Common.SqLite.Movies;
+using EmbyStat.Common.SqLite.Streams;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
@@ -318,49 +321,29 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .OrderBy(x => x.Label);
         }
 
-        public IEnumerable<SqlMovie> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies
-                .FilterOnLibrary(libraryIds)
-                .Where(x => x.DateCreated.HasValue)
-                .OrderByDescending(x => x.DateCreated)
-                .Take(count);
+            return _context.Shows.GetLatestAddedMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMovie> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies
-                .FilterOnLibrary(libraryIds)
-                .Where(x => x.PremiereDate.HasValue)
-                .OrderByDescending(x => x.CommunityRating)
-                .Take(count);
+            return _context.Movies.GetNewestPremieredMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMovie> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies
-                .FilterOnLibrary(libraryIds)
-                .Where(x => x.PremiereDate.HasValue)
-                .OrderBy(x => x.CommunityRating)
-                .Take(count);
+            return _context.Movies.GetOldestPremieredMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMovie> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies
-                .FilterOnLibrary(libraryIds)
-                .Where(x => x.CommunityRating.HasValue)
-                .OrderByDescending(x => x.CommunityRating)
-                .Take(count);
+            return _context.Shows.GetHighestRatedMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMovie> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies
-                .FilterOnLibrary(libraryIds)
-                .Where(x => x.CommunityRating.HasValue)
-                .OrderBy(x => x.CommunityRating)
-                .Take(count);
+            return _context.Shows.GetLowestRatedMedia(libraryIds, count);
         }
 
         public async Task<Dictionary<string, int>> GetMovieGenreChartValues(IReadOnlyList<string> libraryIds)

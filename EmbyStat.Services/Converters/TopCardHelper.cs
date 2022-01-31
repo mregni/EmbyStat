@@ -4,13 +4,15 @@ using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Services.Models.Cards;
 
 namespace EmbyStat.Services.Converters
 {
     public static class TopCardHelper
     {
-        public static TopCard ConvertToTopCard<T>(T[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation) where T : Extra
+        public static TopCard ConvertToTopCard<T>(T[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation) where T : SqlMedia
         {
             var values = list.Select(x =>
             {
@@ -41,27 +43,27 @@ namespace EmbyStat.Services.Converters
             };
         }
 
-        public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
+        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
         }
 
-        public static TopCard ConvertToTopCard(this Movie[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
+        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
 
-        public static TopCard ConvertToSqlTopCard(this SqlMovie[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
+        public static TopCard ConvertToSqlTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
         {
             return ConvertToSqlTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
         }
 
-        public static TopCard ConvertToSqlTopCard(this SqlMovie[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
+        public static TopCard ConvertToSqlTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
         {
             return ConvertToSqlTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
 
-        public static TopCard ConvertToSqlTopCard<T>(T[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation) where T : SqlMovie
+        public static TopCard ConvertToSqlTopCard<T>(T[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation) where T : SqlMedia
         {
             var values = list.Select(x =>
             {
@@ -90,16 +92,6 @@ namespace EmbyStat.Services.Converters
                 UnitNeedsTranslation = unitNeedsTranslation,
                 ValueType = valueTypeEnum
             };
-        }
-
-        public static TopCard ConvertToTopCard(this Show[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
-        {
-            return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
-        }
-
-        public static TopCard ConvertToTopCard(this Show[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
-        {
-            return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
 
         public static TopCard ConvertToTopCard(this Dictionary<Show, int> list, string title, string unit)

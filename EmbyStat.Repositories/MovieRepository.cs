@@ -27,7 +27,7 @@
 //            collection.Upsert(movies);
 //        }
 
-//        public IEnumerable<Movie> GetAll(IReadOnlyList<string> libraryIds)
+//        public IEnumerable<Movie> GTetAll(IReadOnlyList<string> libraryIds)
 //        {
 //            using var database = Context.CreateDatabaseContext();
 //            return database.GetCollection<Movie>()

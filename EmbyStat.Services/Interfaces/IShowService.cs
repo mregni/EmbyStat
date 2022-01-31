@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
@@ -17,7 +18,7 @@ namespace EmbyStat.Services.Interfaces
         List<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds);
         List<ShowCollectionRow> CalculateCollectedRows(string libraryId);
         bool TypeIsPresent();
-        Page<ShowRow> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
+        Task<Page<ShowRow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
         Show GetShow(string id);
     }
 }

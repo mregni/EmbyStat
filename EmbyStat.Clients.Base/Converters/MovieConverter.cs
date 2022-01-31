@@ -6,6 +6,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Logging;
 using Newtonsoft.Json;
 

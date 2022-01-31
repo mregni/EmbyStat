@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Common.Extensions

@@ -7,6 +7,9 @@ using System.Web;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
+using EmbyStat.Common.SqLite.Movies;
+using EmbyStat.Common.SqLite.Shows;
 using LiteDB;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +27,7 @@ namespace EmbyStat.Common.Extensions
             return query;
         }
 
-        public static IQueryable<T> FilterOnLibrary<T>(this IQueryable<T> query, IReadOnlyList<string> libraryIds) where T : SqlMovie
+        public static IQueryable<T> FilterOnLibrary<T>(this IQueryable<T> query, IReadOnlyList<string> libraryIds) where T : SqlMedia
         {
             if (libraryIds.Any())
             {

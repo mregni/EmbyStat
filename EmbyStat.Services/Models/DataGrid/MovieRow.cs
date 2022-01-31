@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Streams;
 
 namespace EmbyStat.Services.Models.DataGrid
 {

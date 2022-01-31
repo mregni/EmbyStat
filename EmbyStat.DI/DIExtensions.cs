@@ -80,7 +80,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
             services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
             services.TryAddTransient<IFilterRepository, FilterRepository>();
-            services.TryAddTransient<IShowRepository, ShowRepository>();
+            services.TryAddTransient<IShowRepository, SqlShowRepository>();
             services.TryAddTransient<ILibraryRepository, LibraryRepository>();
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();

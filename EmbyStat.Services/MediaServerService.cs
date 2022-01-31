@@ -15,6 +15,7 @@ using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
