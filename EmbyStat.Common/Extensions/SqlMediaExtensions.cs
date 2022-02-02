@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +54,27 @@ namespace EmbyStat.Common.Extensions
                 .Where(x => x.CommunityRating.HasValue)
                 .OrderBy(x => x.CommunityRating)
                 .Take(count);
+        }
+
+        public static void AddGenres<T>(this IEnumerable<T> items, IEnumerable<SqlGenre> genres) where T : SqlExtra
+        {
+            var genreList = genres.ToList();
+            foreach (var item in items)
+            {
+                if (item.Genres == null || !item.Genres.Any())
+                {
+                    continue;
+                }
+
+                foreach (var dtoGenre in item.Genres)
+                {
+                    var localGenre = genreList.FirstOrDefault(x => x.Name == dtoGenre.Name);
+                    if (localGenre != null)
+                    {
+                        dtoGenre.Id = localGenre.Id;
+                    }
+                }
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ namespace EmbyStat.Common.SqLite.Streams
 {
     public class SqlAudioStream
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int? BitRate { get; set; }
         public string ChannelLayout { get; set; }
         public int? Channels { get; set; }

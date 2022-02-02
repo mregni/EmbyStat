@@ -16,7 +16,7 @@ namespace EmbyStat.Services.Interfaces
         Task<MovieStatistics> CalculateMovieStatistics(List<string> libraryIds);
         Task<MovieStatistics> CalculateMovieStatistics(string libraryId);
         bool TypeIsPresent();
-        Task<Page<MovieRow>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
+        Task<Page<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
         SqlMovie GetMovie(string id);
     }
 }

@@ -298,7 +298,7 @@ namespace EmbyStat.Clients.Base.Http
                 : new List<SqlGenre>(0);
         }
 
-        public async Task<QueryResult<SqlMovie>> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced)
+        public async Task<SqlMovie[]> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -310,6 +310,7 @@ namespace EmbyStat.Clients.Base.Http
                 StartIndex = startIndex,
                 Limit = limit,
                 EnableImages = true,
+                MediaTypes = new []{"Video"},
                 MinDateLastSaved = lastSynced,
                 Fields = new[] {
                     ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
@@ -324,8 +325,8 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitClient.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var movieQueryResult = Mapper.Map<QueryResult<SqlMovie>>(result);
-            return movieQueryResult;
+            var movies = Mapper.Map<SqlMovie[]>(result.Items);
+            return movies;
         }
 
         public async Task<QueryResult<SqlShow>> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)

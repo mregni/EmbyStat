@@ -5,7 +5,7 @@ namespace EmbyStat.Common.SqLite.Streams
 {
     public class SqlMediaSource
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int? BitRate { get; set; }
         public string Container { get; set; }
         public string Path { get; set; }

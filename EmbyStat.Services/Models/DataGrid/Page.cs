@@ -6,5 +6,10 @@ namespace EmbyStat.Services.Models.DataGrid
     {
         public IEnumerable<T> Data { get; set; }
         public int TotalCount { get; set; }
+
+        public Page(IEnumerable<T> data)
+        {
+            Data = data;
+        }
     }
 }

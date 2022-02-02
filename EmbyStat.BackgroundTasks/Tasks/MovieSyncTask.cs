@@ -14,6 +14,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Hubs.Job;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Querying;
@@ -137,12 +138,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
                 do
                 {
                     token.ThrowIfCancellationRequested();
-                    var result = await FetchMoviesAsync(library, j * limit, limit);
-
-                    var movies = result.Items
-                        .Where(x => x is { MediaType: "Video" })
-                        .Select(x => x.ConvertToMovie(library.Id, genres.ToList(), Logger))
-                        .ToList();
+                    var movies = await FetchMoviesAsync(library, j * limit, limit);
 
                     try
                     {
@@ -163,7 +159,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
             }
         }
 
-        private async Task<QueryResult<BaseItemDto>> FetchMoviesAsync(LibraryContainer library, int startIndex, int limit)
+        private async Task<SqlMovie[]> FetchMoviesAsync(LibraryContainer library, int startIndex, int limit)
         {
             try
             {

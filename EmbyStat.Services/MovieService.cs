@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
@@ -31,15 +32,17 @@ namespace EmbyStat.Services
         private readonly ILibraryRepository _libraryRepository;
         private readonly ISettingsService _settingsService;
         private readonly IStatisticsRepository _statisticsRepository;
+        private readonly IMapper _mapper;
 
         public MovieService(IMovieRepository movieRepository, ILibraryRepository libraryRepository,
             IPersonService personService, ISettingsService settingsService,
-            IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(jobRepository, personService, typeof(MovieService), "MOVIE")
+            IStatisticsRepository statisticsRepository, IJobRepository jobRepository, IMapper mapper) : base(jobRepository, personService, typeof(MovieService), "MOVIE")
         {
             _movieRepository = movieRepository;
             _libraryRepository = libraryRepository;
             _settingsService = settingsService;
             _statisticsRepository = statisticsRepository;
+            _mapper = mapper;
         }
 
         public IEnumerable<Library> GetMovieLibraries()
@@ -98,37 +101,12 @@ namespace EmbyStat.Services
             return _movieRepository.Any();
         }
 
-        public async Task<Page<MovieRow>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public async Task<Page<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
-            var rawList = await _movieRepository
+            var list = await _movieRepository
                 .GetMoviePage(skip, take, sortField, sortOrder, filters, libraryIds);
-                
-                var list = rawList.Select(x => new MovieRow
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    AudioLanguages = x.AudioStreams.Select(y => y.Language).ToArray(),
-                    Banner = x.Banner,
-                    CommunityRating = x.CommunityRating,
-                    Container = x.Container,
-                    Genres = x.Genres.ToList(),
-                    IMDB = x.IMDB,
-                    TVDB = x.TVDB,
-                    Logo = x.Logo,
-                    OfficialRating = x.OfficialRating,
-                    Path = x.Path,
-                    PremiereDate = x.PremiereDate,
-                    Primary = x.Primary,
-                    RunTime = Math.Round((decimal)(x.RunTimeTicks ?? 0) / 600000000),
-                    SortName = x.SortName,
-                    Subtitles = x.SubtitleStreams.Select(y => y.Language).ToArray(),
-                    TMDB = x.TMDB,
-                    Thumb = x.Thumb,
-                    SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0,
-                    VideoStreams = x.VideoStreams.ToList(),
-                });
 
-            var page = new Page<MovieRow> { Data = list };
+            var page = new Page<SqlMovie>(list);
             if (requireTotalCount)
             {
                 page.TotalCount = await _movieRepository.Count(filters, libraryIds);

@@ -42,7 +42,6 @@ namespace EmbyStat.Clients.Base.Converters
                 dto.MapProviderIds(movie);
                 dto.MapStreams(movie);
                 dto.MapMediaSources(movie);
-                dto.MapGenres(movie, genres);
                 dto.MapPeople(movie);
 
                 return movie;

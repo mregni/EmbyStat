@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
+using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Show;
 
@@ -19,6 +20,6 @@ namespace EmbyStat.Services.Interfaces
         List<ShowCollectionRow> CalculateCollectedRows(string libraryId);
         bool TypeIsPresent();
         Task<Page<ShowRow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
-        Show GetShow(string id);
+        SqlShow GetShow(string id);
     }
 }

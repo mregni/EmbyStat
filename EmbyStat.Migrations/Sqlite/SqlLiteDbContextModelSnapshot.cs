@@ -191,12 +191,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<int?>("SeasonIndexNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ShowId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShowName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("SortName")
                         .HasColumnType("TEXT");
 
@@ -426,9 +420,8 @@ namespace EmbyStat.Repositories.Migrations
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Streams.SqlAudioStream", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("BitRate")
                         .HasColumnType("INTEGER");
@@ -468,9 +461,8 @@ namespace EmbyStat.Repositories.Migrations
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Streams.SqlMediaSource", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("BitRate")
                         .HasColumnType("INTEGER");
@@ -507,9 +499,8 @@ namespace EmbyStat.Repositories.Migrations
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Streams.SqlSubtitleStream", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Codec")
                         .HasColumnType("TEXT");
@@ -540,9 +531,8 @@ namespace EmbyStat.Repositories.Migrations
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Streams.SqlVideoStream", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("AspectRatio")
                         .HasColumnType("TEXT");
@@ -676,7 +666,7 @@ namespace EmbyStat.Repositories.Migrations
                         .IsRequired();
 
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", null)
-                        .WithMany("MoviePeople")
+                        .WithMany("ShowPeople")
                         .HasForeignKey("SqlEpisodeId");
 
                     b.Navigation("Person");
@@ -810,7 +800,7 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Navigation("MediaSources");
 
-                    b.Navigation("MoviePeople");
+                    b.Navigation("ShowPeople");
 
                     b.Navigation("SubtitleStreams");
 

@@ -57,32 +57,32 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@ParentId,@Path,@Pr
 
                     if (movie.MediaSources.AnyNotNull())
                     {
-                        var mediaSourceQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,MovieId) 
-VALUES (@BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@MovieId)";
+                        var mediaSourceQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,MovieId) 
+VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@MovieId)";
                         movie.MediaSources.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(mediaSourceQuery, movie.MediaSources, transaction);
                     }
 
                     if (movie.VideoStreams.AnyNotNull())
                     {
-                        var videoStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,MovieId) 
-VALUES (@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@MovieId)";
+                        var videoStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,MovieId) 
+VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@MovieId)";
                         movie.VideoStreams.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(videoStreamQuery, movie.VideoStreams, transaction);
                     }
 
                     if (movie.AudioStreams.AnyNotNull())
                     {
-                        var audioStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,MovieId)
-VALUES (@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@MovieId)";
+                        var audioStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,MovieId)
+VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@MovieId)";
                         movie.AudioStreams.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(audioStreamQuery, movie.AudioStreams, transaction);
                     }
 
                     if (movie.SubtitleStreams.AnyNotNull())
                     {
-                        var subtitleStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Codec,DisplayTitle,IsDefault,Language,MovieId)
-VALUES (@Codec,@DisplayTitle,@IsDefault,@Language,@MovieId)";
+                        var subtitleStreamQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,MovieId)
+VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@MovieId)";
                         movie.SubtitleStreams.ForEach(x => x.MovieId = movie.Id);
                         await connection.ExecuteAsync(subtitleStreamQuery, movie.SubtitleStreams, transaction);
                     }

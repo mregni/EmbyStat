@@ -5,6 +5,7 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
@@ -15,12 +16,12 @@ namespace EmbyStat.Clients.Base.Http
     public interface IHttpClient
     {
         Task<int> GetMovieCount(string parentId, DateTime? lastSynced);
-        Task<QueryResult<BaseItemDto>> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced);
+        Task<SqlMovie[]> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced);
 
         Task<QueryResult<BaseItemDto>> GetPeople(int startIndex, int limit);
         Task<int> GetPeopleCount();
 
-        QueryResult<SqlShow> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
+        Task<QueryResult<SqlShow>> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
         List<Season> GetSeasons(string parentId, DateTime? lastSynced);
         List<Episode> GetEpisodes(string parentId, string showId, DateTime? lastSynced);
 

@@ -146,22 +146,5 @@ namespace EmbyStat.Common.Extensions
 
             return extra;
         }
-
-        public static T MapGenres<T>(this BaseItemDto dto, T extra, List<SqlGenre> genres) where T : SqlMovie
-        {
-            if (dto.Genres == null || !dto.Genres.Any())
-            {
-                return extra;
-            }
-
-            extra.Genres ??= new List<SqlGenre>();
-            foreach (var dtoGenre in dto.Genres)
-            {
-                var localGenre = genres.FirstOrDefault(x => x.Name == dtoGenre);
-                extra.Genres.Add(localGenre);
-            }
-
-            return extra;
-        }
     }
 }

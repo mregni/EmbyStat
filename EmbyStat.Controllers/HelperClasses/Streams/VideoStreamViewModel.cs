@@ -8,7 +8,7 @@ namespace EmbyStat.Controllers.HelperClasses.Streams
 {
     public class VideoStreamViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string AspectRatio { get; set; }
         public float? AverageFrameRate { get; set; }
         public int? BitRate { get; set; }

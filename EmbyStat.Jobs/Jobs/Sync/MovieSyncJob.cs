@@ -15,6 +15,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -136,12 +137,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 do
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    var result = await FetchMoviesAsync(library, j * limit, limit);
+                    var movies = await FetchMoviesAsync(library, j * limit, limit);
 
-                    var movies = result.Items
-                        .Where(x => x is {MediaType: "Video"})
-                        .Select(x => x.ConvertToMovie(library.Id, genres.ToList(), Logger))
-                        .ToList();
+                    movies.AddGenres(genres);
 
                     try
                     {
@@ -162,11 +160,11 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task<QueryResult<BaseItemDto>> FetchMoviesAsync(LibraryContainer library, int startIndex, int limit)
+        private async Task<SqlMovie[]> FetchMoviesAsync(LibraryContainer library, int startIndex, int limit)
         {
             try
             { 
-                return await _httpClient.GetMovies(library.Id, library.Id, startIndex, limit, library.LastSynced);
+                return await _httpClient.GetMovies(library.Id, startIndex, limit, library.LastSynced);
             }
             catch (Exception e)
             {

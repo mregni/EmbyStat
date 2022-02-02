@@ -8,7 +8,7 @@ namespace EmbyStat.Controllers.HelperClasses.Streams
 {
     public class AudioStreamViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int? BitRate { get; set; }
         public string ChannelLayout { get; set; }
         public int? Channels { get; set; }

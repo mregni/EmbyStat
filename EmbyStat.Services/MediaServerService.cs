@@ -306,24 +306,24 @@ namespace EmbyStat.Services
                 throw new BusinessException("EPISODENOTFOUND");
             }
 
-            var season = _showRepository.GetSeasonById(play.ParentId);
-            var seasonNumber = season.IndexNumber;
-            var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
+            //var season = _showRepository.GetSeasonById(play.ParentId);
+            //var seasonNumber = season.IndexNumber;
+            //var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
 
-            var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
-            var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
-            var watchedTime = endedPlaying - startedPlaying;
+            //var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
+            //var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
+            //var watchedTime = endedPlaying - startedPlaying;
 
 
             return new UserMediaView
             {
                 Id = episode.Id,
-                Name = name,
-                ParentId = episode.ParentId,
-                Primary = episode.Primary,
-                StartedWatching = startedPlaying,
-                EndedWatching = endedPlaying,
-                WatchedTime = Math.Round(watchedTime.TotalSeconds),
+                //Name = name,
+                //ParentId = episode.ParentId,
+                //Primary = episode.Primary,
+                //StartedWatching = startedPlaying,
+                //EndedWatching = endedPlaying,
+                //WatchedTime = Math.Round(watchedTime.TotalSeconds),
                 WatchedPercentage = CalculateWatchedPercentage(play, episode),
                 DeviceId = device.Id,
                 DeviceLogo = device?.IconUrl ?? ""
