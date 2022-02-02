@@ -13,13 +13,13 @@ namespace EmbyStat.Clients.Base.Http
     public interface INewBaseClient
     {
         [Get("/items")]
-        Task<QueryResult<BaseItemDto>> GetMovies(
+        Task<QueryResult<BaseItemDto>> GetItems(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization,
             [Query] Dictionary<string, string> param);
 
         [Get("/items")]
-        Task<QueryResult<BaseItemDto>> GetMovies(
+        Task<QueryResult<BaseItemDto>> GetItems(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization,
             [Query] ItemQuery param,

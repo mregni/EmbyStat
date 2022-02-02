@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmbyStat.Common.SqLite.Helpers
 {
-    public class SqlMedia
+    public abstract class SqlMedia
     {
         public string Id { get; set; }
         public DateTime? DateCreated { get; set; }

@@ -52,11 +52,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
         }
 
         public sealed override Guid Id => Constants.JobIds.MovieSyncId;
-        public override string Title { get; }
         public override string JobPrefix => Constants.LogPrefix.MovieSyncJob;
+        public override string Title { get; }
+        
         public override async Task RunJobAsync()
         {
             var cancellationToken = new CancellationToken(false);
+
             if (!Settings.WizardFinished)
             {
                 await LogWarning("Media sync task not running because wizard is not yet finished!");
@@ -71,15 +73,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
 
             await ProcessGenresAsync(cancellationToken);
-            Console.WriteLine("GENRES DONE");
             await ProcessPeopleAsync(cancellationToken);
-            Console.WriteLine("PEOPLE DONE");
-
             await LogProgress(15);
 
             await ProcessMoviesAsync(cancellationToken);
-            Console.WriteLine("MOVIES DONE");
-
             await LogProgress(55);
 
             await CalculateStatistics();

@@ -167,7 +167,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
         {
             try
             {
-                return await _httpClient.GetMovies(library.Id, library.Id, startIndex, limit, library.LastSynced);
+                return await _httpClient.GetMovies(library.Id, startIndex, limit, library.LastSynced);
             }
             catch (Exception e)
             {

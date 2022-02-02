@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmbyStat.Common.SqLite.Helpers
 {
-    public class SqlExtra : SqlMedia
+    public abstract class SqlExtra : SqlMedia
     {
         public float? CommunityRating { get; set; }
         public string IMDB { get; set; }

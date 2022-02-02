@@ -20,7 +20,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Net;
-using MoreLinq;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -29,23 +28,21 @@ namespace EmbyStat.Jobs.Jobs.Sync
     {
         private readonly IHttpClient _httpClient;
         private readonly IShowRepository _showRepository;
-        private readonly ILibraryRepository _libraryRepository;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IShowService _showService;
         private readonly ITmdbClient _tmdbClient;
 
         public ShowSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IShowRepository showRepository,
-            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient) 
+            IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient) 
             : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
         {
             _showRepository = showRepository;
-            _libraryRepository = libraryRepository;
             _statisticsRepository = statisticsRepository;
             _showService = showService;
             _tmdbClient = tmdbClient;
-            Title = jobRepository.GetById(Id).Title;
 
+            Title = jobRepository.GetById(Id).Title;
             var settings = settingsService.GetUserSettings();
             _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
@@ -57,7 +54,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         public override async Task RunJobAsync()
         {
             var cancellationToken = new CancellationToken(false);
-
 
             if (!Settings.WizardFinished)
             {
@@ -74,13 +70,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("First delete all existing media and root media libraries from database so we have a clean start.");
             await LogProgress(3);
 
-            var libraries = Settings.ShowLibraries;
-
-            _showRepository.RemoveShows();
-
-            await ProcessShowsAsyncNew(libraries, cancellationToken);
-            await ProcessSeasonsAsync(libraries, cancellationToken); 
-            await ProcessEpisodesAsync(libraries, cancellationToken);
+            await ProcessShowsAsync(cancellationToken);
+            await ProcessSeasonsAsync(cancellationToken); 
+            await ProcessEpisodesAsync(cancellationToken);
             //STEP1: Shows
             //STEP2: Seasons
             //STEP3: Episodes
@@ -92,17 +84,32 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogProgress(100);
         }
 
-        private async Task ProcessShowsAsyncNew(IEnumerable<LibraryContainer> libraries, CancellationToken cancellationToken)
+        private async Task ProcessShowsAsync(CancellationToken cancellationToken)
         {
             await LogInformation("Processing shows");
-            foreach (var library in libraries)
+            foreach (var library in Settings.ShowLibraries)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var rawShowList = _httpClient.GetShows(library.Id, library.LastSynced);
-                var showList = rawShowList.GroupBy(x => x.TVDB).ToList();
-                await LogInformation($"Found {showList.Count} changed shows since last sync in {library.Name}");
+                var showList = _httpClient.GetShows(library.Id, library.LastSynced);
+                var shows = showList.DistinctBy(x => x.TVDB).ToList();
+                await LogInformation($"Found {shows.Count} changed shows since last sync in {library.Name}");
 
-                _showRepository.UpsertShows(showList.Select(x => x.First()));
+                //TODO: remove all shows that are in shows list (on ID) because we will completely sync them again.
+
+                foreach (var show in shows)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var seasons = _httpClient.GetSeasons(show.Id, library.LastSynced);
+                    show.Seasons = seasons;
+
+                    foreach (var season in show.Seasons)
+                    {
+                        var rawEpisodes = _httpClient.GetEpisodes(season.Id, show.Id, library.LastSynced);
+                        rawEpisodes.ForEach(x => x.SeasonIndexNumber = showObj.Seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber);
+                    }
+                }
+
+                _showRepository.UpsertShows(shows.Select(x => x.First()));
             }
         }
 

@@ -6,15 +6,11 @@ using EmbyStat.Common.SqLite.Streams;
 
 namespace EmbyStat.Common.SqLite.Movies
 {
-    public class SqlMovie : SqlExtra
+    public class SqlMovie : SqlVideo
     {
         public string OriginalTitle { get; set; }
         public string Container { get; set; }
         public string MediaType { get; set; }
-        public ICollection<SqlMediaSource> MediaSources { get; set; }
-        public ICollection<SqlVideoStream> VideoStreams { get; set; }
-        public ICollection<SqlAudioStream> AudioStreams { get; set; }
-        public ICollection<SqlSubtitleStream> SubtitleStreams { get; set; }
         public ICollection<SqlMoviePerson> MoviePeople { get; set; }
         public Video3DFormat Video3DFormat { get; set; }
 
