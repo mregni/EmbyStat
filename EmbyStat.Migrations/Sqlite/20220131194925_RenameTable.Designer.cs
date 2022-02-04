@@ -98,7 +98,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMoviePerson", b =>
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMediaPerson", b =>
                 {
                     b.Property<string>("MovieId")
                         .HasColumnType("TEXT");
@@ -624,7 +624,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.ToTable("SqlGenreSqlShow");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMoviePerson", b =>
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMediaPerson", b =>
                 {
                     b.HasOne("EmbyStat.Common.SqLite.Movies.SqlMovie", "Movie")
                         .WithMany("MoviePeople")

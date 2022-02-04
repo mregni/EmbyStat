@@ -123,7 +123,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             foreach (var library in Settings.MovieLibraries)
             {
-                var totalCount = await _httpClient.GetMovieCount(library.Id, library.LastSynced);
+                var totalCount = await _httpClient.GetMediaCount(library.Id, library.LastSynced, "Movie");
                 if (totalCount == 0)
                 {
                     continue;
@@ -140,15 +140,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     var movies = await FetchMoviesAsync(library, j * limit, limit);
 
                     movies.AddGenres(genres);
-
-                    try
-                    {
-                        await _movieRepository.UpsertRange(movies);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e, "Failed to save or update movies");
-                    }
+                    await _movieRepository.UpsertRange(movies);
 
                     processed += limit;
                     j++;
@@ -164,7 +156,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             try
             { 
-                return await _httpClient.GetMovies(library.Id, startIndex, limit, library.LastSynced);
+                return await _httpClient.GetMedia<SqlMovie>(library.Id, startIndex, limit, library.LastSynced, "Movie");
             }
             catch (Exception e)
             {

@@ -2,6 +2,7 @@
 using System.Linq;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
+using EmbyStat.Common.SqLite.Movies;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Common.Extensions

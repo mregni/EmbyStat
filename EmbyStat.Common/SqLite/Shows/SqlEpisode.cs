@@ -11,7 +11,7 @@ namespace EmbyStat.Common.SqLite.Shows
 {
     public class SqlEpisode : SqlVideo
     {
-        public ICollection<SqlShowSqlPerson> ShowPeople { get; set; }
+        public ICollection<SqlMediaPerson> People { get; set; }
         public float? DvdEpisodeNumber { get; set; }
         public int? DvdSeasonNumber { get; set; }
         public int? IndexNumber { get; set; }

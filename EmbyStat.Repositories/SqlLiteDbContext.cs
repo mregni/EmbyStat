@@ -8,6 +8,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Common.SqLite.Streams;
@@ -26,7 +27,7 @@ namespace EmbyStat.Repositories
         public DbSet<SqlVideoStream> VideoStreams { get; set; }
         public DbSet<SqlAudioStream> AudioStreams { get; set; }
         public DbSet<SqlSubtitleStream> SubtitleStreams { get; set; }
-        public DbSet<SqlMoviePerson> SqlMovieSqlPerson { get; set; }
+        public DbSet<SqlMediaPerson> MediaPerson { get; set; }
         public DbSet<SqlGenre> Genres { get; set; }
         public DbSet<SqlPerson> People { get; set; }
         public DbSet<SqlShow> Shows { get; set; }
@@ -57,8 +58,48 @@ namespace EmbyStat.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            BuildPeople(modelBuilder);
             BuildMovies(modelBuilder);
             BuildShows(modelBuilder);
+        }
+
+        private void BuildPeople(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SqlMediaPerson>().HasKey(x => x.Id);
+            modelBuilder.Entity<SqlMediaPerson>()
+                .Property(x => x.Id)
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.EpisodeId);
+            modelBuilder.Entity<SqlMediaPerson>().Property(x => x.EpisodeId).IsRequired(false);
+            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.ShowId);
+            modelBuilder.Entity<SqlMediaPerson>().Property(x => x.ShowId).IsRequired(false);
+            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.MovieId);
+            modelBuilder.Entity<SqlMediaPerson>().Property(x => x.MovieId).IsRequired(false);
+            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.PersonId);
+
+            modelBuilder.Entity<SqlShow>()
+                .HasMany(x => x.People)
+                .WithOne(x => x.Show)
+                .IsRequired()
+                .HasForeignKey(x => x.ShowId);
+            modelBuilder.Entity<SqlMovie>()
+                .HasMany(x => x.People)
+                .WithOne(x => x.Movie)
+                .IsRequired()
+                .HasForeignKey(x => x.MovieId);
+            modelBuilder.Entity<SqlEpisode>()
+                .HasMany(x => x.People)
+                .WithOne(x => x.Episode)
+                .IsRequired()
+                .HasForeignKey(x => x.EpisodeId);
+
+            modelBuilder.Entity<SqlPerson>()
+                .HasMany(x => x.MediaPeople)
+                .WithOne(x => x.Person)
+                .IsRequired()
+                .HasForeignKey(x => x.PersonId);
         }
 
         private void BuildShows(ModelBuilder modelBuilder)
@@ -96,18 +137,6 @@ namespace EmbyStat.Repositories
                 .HasForeignKey(x => x.EpisodeId)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
-            modelBuilder.Entity<SqlShowSqlPerson>().HasKey(p => new { p.ShowId, p.PersonId, p.Type });
-            modelBuilder.Entity<SqlShow>()
-                .HasMany(x => x.ShowPeople)
-                .WithOne(x => x.Show)
-                .IsRequired()
-                .HasForeignKey(x => x.ShowId);
-            modelBuilder.Entity<SqlPerson>()
-                .HasMany(x => x.ShowPeople)
-                .WithOne(x => x.Person)
-                .IsRequired()
-                .HasForeignKey(x => x.PersonId);
-
             modelBuilder.Entity<SqlGenre>()
                 .HasMany(x => x.Shows)
                 .WithMany(x => x.Genres);
@@ -138,18 +167,6 @@ namespace EmbyStat.Repositories
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
                 .OnDelete(DeleteBehavior.ClientCascade);
-
-            modelBuilder.Entity<SqlMoviePerson>().HasKey(p => new { p.MovieId, p.PersonId, p.Type });
-            modelBuilder.Entity<SqlMovie>()
-                .HasMany(x => x.MoviePeople)
-                .WithOne(x => x.Movie)
-                .IsRequired()
-                .HasForeignKey(x => x.MovieId);
-            modelBuilder.Entity<SqlPerson>()
-                .HasMany(x => x.MoviePeople)
-                .WithOne(x => x.Person)
-                .IsRequired()
-                .HasForeignKey(x => x.PersonId);
 
             modelBuilder.Entity<SqlGenre>()
                 .HasMany(x => x.Movies)

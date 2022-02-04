@@ -298,7 +298,7 @@ namespace EmbyStat.Clients.Base.Http
                 : new List<SqlGenre>(0);
         }
 
-        public async Task<SqlMovie[]> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced)
+        public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType)
         {
             var query = new ItemQuery
             {
@@ -306,7 +306,7 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 Recursive = true,
                 LocationTypes = new[] { LocationType.FileSystem },
-                IncludeItemTypes = new[] { nameof(Movie) },
+                IncludeItemTypes = new[] { itemType },
                 StartIndex = startIndex,
                 Limit = limit,
                 EnableImages = true,
@@ -325,7 +325,7 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitClient.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var movies = Mapper.Map<SqlMovie[]>(result.Items);
+            var movies = Mapper.Map<T[]>(result.Items);
             return movies;
         }
 
@@ -418,13 +418,13 @@ namespace EmbyStat.Clients.Base.Http
             return episodes;
         }
 
-        public async Task<int> GetMovieCount(string parentId, DateTime? lastSynced)
+        public async Task<int> GetMediaCount(string parentId, DateTime? lastSynced, string mediaType)
         {
             var query = new ItemQuery
             {
                 ParentId = parentId,
                 Recursive = true,
-                IncludeItemTypes = new[] { nameof(Movie) },
+                IncludeItemTypes = new[] { mediaType },
                 ExcludeLocationTypes = new[] { LocationType.Virtual },
                 Limit = 0,
                 EnableTotalRecordCount = true,

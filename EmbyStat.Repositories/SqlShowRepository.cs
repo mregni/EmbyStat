@@ -43,12 +43,12 @@ namespace EmbyStat.Repositories
             return _context.Shows.GetOldestPremieredMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMedia> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlExtra> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return _context.Shows.GetHighestRatedMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMedia> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlExtra> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return _context.Shows.GetLowestRatedMedia(libraryIds, count);
         }
@@ -94,9 +94,9 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
         public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
         {
             return _context.Shows
-                .Include(x => x.ShowPeople)
+                .Include(x => x.People)
                 .FilterOnLibrary(libraryIds)
-                .SelectMany(x => x.ShowPeople)
+                .SelectMany(x => x.People)
                 .Distinct()
                 .Count(x => x.Type == type);
         }
@@ -104,10 +104,10 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
         public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
         {
             return _context.Shows
-                .Include(x => x.ShowPeople)
+                .Include(x => x.People)
                 .ThenInclude(x => x.Person)
                 .FilterOnLibrary(libraryIds)
-                .SelectMany(x => x.ShowPeople)
+                .SelectMany(x => x.People)
                 .Where(x => x.Type == type)
                 .GroupBy(x => x.Person.Name, (name, people) => new { Name = name, Count = people.Count() })
                 .OrderByDescending(x => x.Count)

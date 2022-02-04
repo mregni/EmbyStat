@@ -9,7 +9,7 @@ namespace EmbyStat.Common.SqLite.Movies
     public class SqlMovie : SqlVideo
     {
         public string OriginalTitle { get; set; }
-        public ICollection<SqlMoviePerson> MoviePeople { get; set; }
+        
 
         public override bool Equals(object? other)
         {

@@ -10,6 +10,6 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IGenreRepository
     {
         Task UpsertRange(IEnumerable<SqlGenre> genres);
-        Task<IEnumerable<SqlGenre>> GetAll();
+        Task<SqlGenre[]> GetAll();
     }
 }

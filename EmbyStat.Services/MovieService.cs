@@ -11,6 +11,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
@@ -217,7 +218,7 @@ namespace EmbyStat.Services
             {
                 var list = _movieRepository.GetHighestRatedMedia(libraryIds, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.HighestRated, "/10", "CommunityRating", false)
+                    ? list.ConvertToTopCard(Constants.Movies.HighestRated, "/10", "CommunityRating", false)
                     : null;
             }, "Calculate highest rated movies failed:");
         }
@@ -228,7 +229,7 @@ namespace EmbyStat.Services
             {
                 var list = _movieRepository.GetLowestRatedMedia(libraryIds, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.LowestRated, "/10", "CommunityRating", false)
+                    ? list.ConvertToTopCard(Constants.Movies.LowestRated, "/10", "CommunityRating", false)
                     : null;
             }, "Calculate oldest premiered movies failed:");
         }
@@ -240,7 +241,7 @@ namespace EmbyStat.Services
             {
                 var list = _movieRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
+                    ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                     : null;
             }, "Calculate oldest premiered movies failed:");
         }
@@ -251,7 +252,7 @@ namespace EmbyStat.Services
             {
                 var list = _movieRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
+                    ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                     : null;
             }, "Calculate newest premiered movies failed:");
         }
@@ -264,7 +265,7 @@ namespace EmbyStat.Services
                 var toShortMovieTicks = TimeSpan.FromMinutes(settings.ToShortMovie).Ticks;
                 var list = _movieRepository.GetShortestMovie(libraryIds, toShortMovieTicks, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
+                    ? list.ConvertToTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
                     : null;
             }, "Calculate shortest movies failed:");
         }
@@ -275,7 +276,7 @@ namespace EmbyStat.Services
             {
                 var list = _movieRepository.GetLongestMovie(libraryIds, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
+                    ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
                     : null;
             }, "Calculate longest movies failed:");
         }
@@ -286,7 +287,7 @@ namespace EmbyStat.Services
             {
                 var list = _movieRepository.GetLatestAddedMedia(libraryIds, 5).ToArray();
                 return list.Length > 0
-                    ? list.ConvertToSqlTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated",
+                    ? list.ConvertToTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated",
                         ValueTypeEnum.Date)
                     : null;
             }, "Calculate latest added movies failed:");
@@ -455,7 +456,7 @@ namespace EmbyStat.Services
                     .Where(x => x != null)
                     .ToArray();
 
-                return people.ConvertToTopCard(title, string.Empty, "MovieCount");
+                return people.ConvertPersonToTopCard(title, string.Empty, "MovieCount");
             }, $"Calculate most featured {type} count failed:");
         }
 
@@ -475,7 +476,7 @@ namespace EmbyStat.Services
                 {
                     var selectedMovies = movies.Where(x => x.Genres.Any(y => y == genre));
                     var people = selectedMovies
-                        .SelectMany(x => x.MoviePeople)
+                        .SelectMany(x => x.People)
                         .Where(x => x.Type == PersonType.Actor)
                         .GroupBy(x => x.Person.Name, (name, p) => new { Name = name, Count = p.Count() })
                         .OrderByDescending(x => x.Count)
@@ -485,7 +486,7 @@ namespace EmbyStat.Services
                         .Take(count * 4)
                         .ToArray();
 
-                    list.Add(people.ConvertToTopCard(genre.Name, string.Empty, valueSelector));
+                    list.Add(people.ConvertPersonToTopCard(genre.Name, string.Empty, valueSelector));
                 }
 
                 return list.Where(x => x != null).ToList();

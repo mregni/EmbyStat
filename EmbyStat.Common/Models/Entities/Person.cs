@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using LiteDB;
 
@@ -21,6 +22,6 @@ namespace EmbyStat.Common.Models.Entities
         public int? ShowCount { get; set; }
         public string SortName { get; set; }
         public string Primary { get; set; }
-        public ICollection<SqlMoviePerson> MoviePeople { get; set; }
+        public ICollection<SqlMediaPerson> MoviePeople { get; set; }
     }
 }

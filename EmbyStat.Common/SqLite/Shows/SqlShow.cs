@@ -14,6 +14,5 @@ namespace EmbyStat.Common.SqLite.Shows
         public bool ExternalSyncFailed { get; set; }
         public double SizeInMb { get; set; }
         public ICollection<SqlSeason> Seasons { get; set; }
-        public ICollection<SqlShowSqlPerson> ShowPeople { get; set; }
     }
 }

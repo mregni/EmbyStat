@@ -124,7 +124,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
 
             foreach (var library in Settings.MovieLibraries)
             {
-                var totalCount = await _httpClient.GetMovieCount(library.Id, library.LastSynced);
+                var totalCount = await _httpClient.GetMediaCount(library.Id, library.LastSynced, "Movies");
                 if (totalCount == 0)
                 {
                     continue;
@@ -163,7 +163,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
         {
             try
             {
-                return await _httpClient.GetMovies(library.Id, startIndex, limit, library.LastSynced);
+                return await _httpClient.GetMedia<SqlMovie>(library.Id, startIndex, limit, library.LastSynced, "Movie");
             }
             catch (Exception e)
             {

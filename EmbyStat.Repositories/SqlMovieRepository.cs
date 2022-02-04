@@ -95,12 +95,12 @@ VALUES ((SELECT Id FROM Genres WHERE name = @GenreName), @MovieId)";
                         await connection.ExecuteAsync(genreQuery, genreList, transaction);
                     }
 
-                    if (movie.MoviePeople.AnyNotNull())
+                    if (movie.People.AnyNotNull())
                     {
-                        var peopleQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.PeopleMovie} (Type, MovieId, PersonId)
+                        var peopleQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, MovieId, PersonId)
 VALUES (@Type, @MovieId, @PersonId)";
-                        movie.MoviePeople.ForEach(x => x.MovieId = movie.Id);
-                        await connection.ExecuteAsync(peopleQuery, movie.MoviePeople, transaction);
+                        movie.People.ForEach(x => x.MovieId = movie.Id);
+                        await connection.ExecuteAsync(peopleQuery, movie.People, transaction);
                     }
 
                     await transaction.CommitAsync();
@@ -323,7 +323,7 @@ VALUES (@Type, @MovieId, @PersonId)";
 
         public IEnumerable<SqlMedia> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Shows.GetLatestAddedMedia(libraryIds, count);
+            return _context.Movies.GetLatestAddedMedia(libraryIds, count);
         }
 
         public IEnumerable<SqlMedia> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
@@ -336,14 +336,14 @@ VALUES (@Type, @MovieId, @PersonId)";
             return _context.Movies.GetOldestPremieredMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMedia> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlExtra> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Shows.GetHighestRatedMedia(libraryIds, count);
+            return _context.Movies.GetHighestRatedMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMedia> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlExtra> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Shows.GetLowestRatedMedia(libraryIds, count);
+            return _context.Movies.GetLowestRatedMedia(libraryIds, count);
         }
 
         public async Task<Dictionary<string, int>> GetMovieGenreChartValues(IReadOnlyList<string> libraryIds)
@@ -418,26 +418,26 @@ ORDER BY Count";
         {
             return _context.Movies
                 .Include(x => x.Genres)
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .ThenInclude(x => x.Person)
-                .Count(x => x.Genres.Any(y => y.Name == genre) && x.MoviePeople.Any(y => name == y.Person.Name));
+                .Count(x => x.Genres.Any(y => y.Name == genre) && x.People.Any(y => name == y.Person.Name));
         }
 
         public int GetMediaCountForPerson(string name)
         {
             return _context.Movies
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .ThenInclude(x => x.Person)
-                .Count(x => x.MoviePeople.Any(y => name == y.Person.Name));
+                .Count(x => x.People.Any(y => name == y.Person.Name));
         }
 
         public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
         {
             return _context.Movies
-                    .Include(x => x.MoviePeople)
+                    .Include(x => x.People)
                     .ThenInclude(x => x.Person)
                     .FilterOnLibrary(libraryIds)
-                    .SelectMany(x => x.MoviePeople)
+                    .SelectMany(x => x.People)
                     .Where(x => x.Type == type)
                     .GroupBy(x => x.Person.Name, (name, people) => new { Name = name, Count = people.Count() })
                     .OrderByDescending(x => x.Count)
@@ -448,9 +448,9 @@ ORDER BY Count";
         public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
         {
             return _context.Movies
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .FilterOnLibrary(libraryIds)
-                .SelectMany(x => x.MoviePeople)
+                .SelectMany(x => x.People)
                 .Distinct()
                 .Count(x => x.Type == type);
         }

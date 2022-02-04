@@ -20,7 +20,7 @@ namespace Tests.Unit.Converters
                 new MovieBuilder("2").AddName("The Hobbit").Build()
             };
 
-            var topCard = movies.ConvertToTopCard("Longest movie", "MIN", "Name", ValueTypeEnum.Ticks);
+            var topCard = movies.ConvertExtraToTopCard("Longest movie", "MIN", "Name", ValueTypeEnum.Ticks);
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("Longest movie");
@@ -41,7 +41,7 @@ namespace Tests.Unit.Converters
                 new MovieBuilder("2").Build()
             };
 
-            var topCard = movies.ConvertToTopCard("Longest movie", "MIN", "PremiereDate", ValueTypeEnum.Date);
+            var topCard = movies.ConvertExtraToTopCard("Longest movie", "MIN", "PremiereDate", ValueTypeEnum.Date);
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("Longest movie");
@@ -62,7 +62,7 @@ namespace Tests.Unit.Converters
                 new MovieBuilder("2").AddName("The Hobbit").Build()
             };
 
-            var topCard = movies.ConvertToTopCard("Longest movie", "MIN", "Name", false);
+            var topCard = movies.ConvertExtraToTopCard("Longest movie", "MIN", "Name", false);
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("Longest movie");
@@ -83,7 +83,7 @@ namespace Tests.Unit.Converters
                 new ShowBuilder("2", "0").AddName("The Hobbit").Build()
             };
 
-            var topCard = shows.ConvertToTopCard("Longest show", "MIN", "Name", ValueTypeEnum.Ticks);
+            var topCard = shows.ConvertExtraToTopCard("Longest show", "MIN", "Name", ValueTypeEnum.Ticks);
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("Longest show");
@@ -104,7 +104,7 @@ namespace Tests.Unit.Converters
                 new ShowBuilder("2", "0").AddName("The Hobbit").Build()
             };
 
-            var topCard = shows.ConvertToTopCard("Longest show", "MIN", "Name", false);
+            var topCard = shows.ConvertExtraToTopCard("Longest show", "MIN", "Name", false);
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("Longest show");
@@ -125,7 +125,7 @@ namespace Tests.Unit.Converters
                 { new ShowBuilder("2", "0").Build(), 2 }
             };
 
-            var topCard = shows.ConvertToTopCard("Longest show", "Title");
+            var topCard = shows.ConvertShowToTopCard("Longest show", "Title");
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("Longest show");
@@ -146,7 +146,7 @@ namespace Tests.Unit.Converters
                 new Person { Name= "Tim"},
             };
 
-            var topCard = people.ConvertToTopCard("people", "", "Name");
+            var topCard = people.ConvertPersonToTopCard("people", "", "Name");
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("people");
@@ -167,7 +167,7 @@ namespace Tests.Unit.Converters
                 new Person { Name= "Tim", BirthDate = DateTime.MinValue},
             };
 
-            var topCard = people.ConvertToTopCard("people", "", "BirthDate");
+            var topCard = people.ConvertPersonToTopCard("people", "", "BirthDate");
 
             topCard.Should().NotBeNull();
             topCard.Title.Should().Be("people");
@@ -183,7 +183,7 @@ namespace Tests.Unit.Converters
         public void ConvertToTopCard_Should_Return_TopCard_From_Person_Array_Without_Values()
         {
             var people = new Person[] {};
-            var topCard = people.ConvertToTopCard("people", "", "BirthDate");
+            var topCard = people.ConvertPersonToTopCard("people", "", "BirthDate");
 
             topCard.Should().BeNull();
         }

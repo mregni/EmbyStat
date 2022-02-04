@@ -15,8 +15,9 @@ namespace EmbyStat.Clients.Base.Http
 {
     public interface IHttpClient
     {
-        Task<int> GetMovieCount(string parentId, DateTime? lastSynced);
-        Task<SqlMovie[]> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced);
+        Task<int> GetMediaCount(string parentId, DateTime? lastSynced, string mediaType);
+
+        Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType);
 
         Task<QueryResult<BaseItemDto>> GetPeople(int startIndex, int limit);
         Task<int> GetPeopleCount();
@@ -24,6 +25,8 @@ namespace EmbyStat.Clients.Base.Http
         Task<QueryResult<SqlShow>> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
         List<Season> GetSeasons(string parentId, DateTime? lastSynced);
         List<Episode> GetEpisodes(string parentId, string showId, DateTime? lastSynced);
+
+
 
         void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId);
         string BaseUrl { get; set; }

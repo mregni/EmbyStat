@@ -17,6 +17,41 @@ namespace EmbyStat.Repositories.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Helpers.SqlMediaPerson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("EpisodeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MovieId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ShowId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("ShowId");
+
+                    b.ToTable("MediaPerson");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMovie", b =>
                 {
                     b.Property<string>("Id")
@@ -94,24 +129,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMoviePerson", b =>
-                {
-                    b.Property<string>("MovieId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PersonId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MovieId", "PersonId", "Type");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("SqlMovieSqlPerson");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlEpisode", b =>
@@ -352,29 +369,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("Shows");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlShowSqlPerson", b =>
-                {
-                    b.Property<string>("ShowId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PersonId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SqlEpisodeId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ShowId", "PersonId", "Type");
-
-                    b.HasIndex("PersonId");
-
-                    b.HasIndex("SqlEpisodeId");
-
-                    b.ToTable("SqlShowSqlPerson");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.SqLite.SqlGenre", b =>
                 {
                     b.Property<string>("Id")
@@ -612,23 +606,39 @@ namespace EmbyStat.Repositories.Migrations
                     b.ToTable("SqlGenreSqlShow");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMoviePerson", b =>
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Helpers.SqlMediaPerson", b =>
                 {
+                    b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", "Episode")
+                        .WithMany("People")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EmbyStat.Common.SqLite.Movies.SqlMovie", "Movie")
-                        .WithMany("MoviePeople")
+                        .WithMany("People")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EmbyStat.Common.SqLite.SqlPerson", "Person")
-                        .WithMany("MoviePeople")
+                        .WithMany("MediaPeople")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EmbyStat.Common.SqLite.Shows.SqlShow", "Show")
+                        .WithMany("People")
+                        .HasForeignKey("ShowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Episode");
+
                     b.Navigation("Movie");
 
                     b.Navigation("Person");
+
+                    b.Navigation("Show");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlEpisode", b =>
@@ -647,29 +657,6 @@ namespace EmbyStat.Repositories.Migrations
                         .WithMany("Seasons")
                         .HasForeignKey("ShowId")
                         .OnDelete(DeleteBehavior.ClientCascade);
-
-                    b.Navigation("Show");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlShowSqlPerson", b =>
-                {
-                    b.HasOne("EmbyStat.Common.SqLite.SqlPerson", "Person")
-                        .WithMany("ShowPeople")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EmbyStat.Common.SqLite.Shows.SqlShow", "Show")
-                        .WithMany("ShowPeople")
-                        .HasForeignKey("ShowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", null)
-                        .WithMany("ShowPeople")
-                        .HasForeignKey("SqlEpisodeId");
-
-                    b.Navigation("Person");
 
                     b.Navigation("Show");
                 });
@@ -785,7 +772,7 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Navigation("MediaSources");
 
-                    b.Navigation("MoviePeople");
+                    b.Navigation("People");
 
                     b.Navigation("SubtitleStreams");
 
@@ -800,7 +787,7 @@ namespace EmbyStat.Repositories.Migrations
 
                     b.Navigation("MediaSources");
 
-                    b.Navigation("ShowPeople");
+                    b.Navigation("People");
 
                     b.Navigation("SubtitleStreams");
 
@@ -814,16 +801,14 @@ namespace EmbyStat.Repositories.Migrations
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlShow", b =>
                 {
-                    b.Navigation("Seasons");
+                    b.Navigation("People");
 
-                    b.Navigation("ShowPeople");
+                    b.Navigation("Seasons");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.SqlPerson", b =>
                 {
-                    b.Navigation("MoviePeople");
-
-                    b.Navigation("ShowPeople");
+                    b.Navigation("MediaPeople");
                 });
 #pragma warning restore 612, 618
         }

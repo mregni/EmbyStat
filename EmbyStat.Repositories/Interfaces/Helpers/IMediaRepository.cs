@@ -11,8 +11,8 @@ namespace EmbyStat.Repositories.Interfaces.Helpers
         IEnumerable<SqlMedia> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
         IEnumerable<SqlMedia> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count);
         IEnumerable<SqlMedia> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlMedia> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlMedia> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count);
+        IEnumerable<SqlExtra> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count);
+        IEnumerable<SqlExtra> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count);
         Task<int> Count(IReadOnlyList<string> libraryIds);
         Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds);
         bool Any();

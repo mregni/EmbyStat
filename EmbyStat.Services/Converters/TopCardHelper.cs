@@ -10,64 +10,28 @@ using EmbyStat.Services.Models.Cards;
 
 namespace EmbyStat.Services.Converters
 {
-    public static class TopCardHelper
+    public static class MediaTopCardHelper
     {
-        public static TopCard ConvertToTopCard<T>(T[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation) where T : SqlMedia
-        {
-            var values = list.Select(x =>
-            {
-                var propertyInfo = typeof(T).GetProperty(valueSelector);
-                var value = propertyInfo?.GetValue(x, null)?.ToString();
-                if (propertyInfo?.PropertyType == typeof(DateTime?) && !string.IsNullOrWhiteSpace(value))
-                {
-                    value = DateTime.Parse(value).ToString("s");
-                }
+        #region Media
 
-                return new TopCardItem
-                {
-                    Value = value,
-                    Label = x.Name,
-                    MediaId = x.Id,
-                    Image = x.Primary
-                };
-            }).ToArray();
-
-
-            return new TopCard
-            {
-                Title = title,
-                Values = values,
-                Unit = unit,
-                UnitNeedsTranslation = unitNeedsTranslation,
-                ValueType = valueTypeEnum
-            };
-        }
-
-        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
+        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit,
+            string valueSelector, ValueTypeEnum valueTypeEnum)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
         }
 
-        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
+        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit,
+            string valueSelector, bool unitNeedsTranslation)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
 
-        public static TopCard ConvertToSqlTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum)
-        {
-            return ConvertToSqlTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
-        }
-
-        public static TopCard ConvertToSqlTopCard(this SqlMedia[] list, string title, string unit, string valueSelector, bool unitNeedsTranslation)
-        {
-            return ConvertToSqlTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
-        }
-
-        public static TopCard ConvertToSqlTopCard<T>(T[] list, string title, string unit, string valueSelector, ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation) where T : SqlMedia
+        public static TopCard ConvertToTopCard(SqlMedia[] list, string title, string unit, string valueSelector,
+            ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
         {
             var values = list.Select(x =>
             {
-                var propertyInfo = typeof(T).GetProperty(valueSelector);
+                var propertyInfo = typeof(SqlMedia).GetProperty(valueSelector);
                 var value = propertyInfo?.GetValue(x, null)?.ToString();
                 if (propertyInfo?.PropertyType == typeof(DateTime?) && !string.IsNullOrWhiteSpace(value))
                 {
@@ -94,7 +58,66 @@ namespace EmbyStat.Services.Converters
             };
         }
 
-        public static TopCard ConvertToTopCard(this Dictionary<Show, int> list, string title, string unit)
+        #endregion
+    }
+
+    public static class ExtraTopCardHelper
+    {
+
+        #region Extra
+
+        public static TopCard ConvertToTopCard(this SqlExtra[] list, string title, string unit, string valueSelector,
+            ValueTypeEnum valueTypeEnum)
+        {
+            return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
+        }
+
+        public static TopCard ConvertToTopCard(this SqlExtra[] list, string title, string unit,
+            string valueSelector, bool unitNeedsTranslation)
+        {
+            return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
+        }
+
+        public static TopCard ConvertToTopCard(SqlExtra[] list, string title, string unit, string valueSelector,
+            ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
+        {
+            var values = list.Select(x =>
+            {
+                var propertyInfo = typeof(SqlExtra).GetProperty(valueSelector);
+                var value = propertyInfo?.GetValue(x, null)?.ToString();
+                if (propertyInfo?.PropertyType == typeof(DateTime?) && !string.IsNullOrWhiteSpace(value))
+                {
+                    value = DateTime.Parse(value).ToString("s");
+                }
+
+                return new TopCardItem
+                {
+                    Value = value,
+                    Label = x.Name,
+                    MediaId = x.Id,
+                    Image = x.Primary
+                };
+            }).ToArray();
+
+
+            return new TopCard
+            {
+                Title = title,
+                Values = values,
+                Unit = unit,
+                UnitNeedsTranslation = unitNeedsTranslation,
+                ValueType = valueTypeEnum
+            };
+        }
+
+        #endregion
+    }
+
+    public static class ShowTopCardHelper
+    {
+
+
+        public static TopCard ConvertShowToTopCard(this Dictionary<Show, int> list, string title, string unit)
         {
             var values = list.Select(x => new TopCardItem
             {
@@ -114,8 +137,12 @@ namespace EmbyStat.Services.Converters
                 ValueType = ValueTypeEnum.None
             };
         }
+    }
 
-        public static TopCard ConvertToTopCard(this Person[] list, string title, string unit, string valueSelector, int count = 5)
+    public static class PersonTopCardHelper
+    {
+
+        public static TopCard ConvertPersonToTopCard(this Person[] list, string title, string unit, string valueSelector, int count = 5)
         {
             var values = list
                 .Where(x => x != null)

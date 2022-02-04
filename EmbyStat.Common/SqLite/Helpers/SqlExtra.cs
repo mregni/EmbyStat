@@ -16,5 +16,6 @@ namespace EmbyStat.Common.SqLite.Helpers
         public string OfficialRating { get; set; }
         public ICollection<SqlGenre> Genres { get; set; }
         public DateTime LastUpdated { get; set; }
+        public ICollection<SqlMediaPerson> People { get; set; }
     }
 }

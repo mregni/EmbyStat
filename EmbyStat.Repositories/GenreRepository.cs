@@ -32,14 +32,15 @@ namespace EmbyStat.Repositories
             await transaction.CommitAsync();
         }
 
-        public async Task<IEnumerable<SqlGenre>> GetAll()
+        public async Task<SqlGenre[]> GetAll()
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
             await using var transaction = connection.BeginTransaction();
 
             var query = $"SELECT * FROM {Constants.Tables.Genres}";
-            return await connection.QueryAsync<SqlGenre>(query);
+            var result = await connection.QueryAsync<SqlGenre>(query);
+            return result.ToArray();
         }
     }
 }

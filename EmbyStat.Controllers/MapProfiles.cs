@@ -46,6 +46,7 @@ namespace EmbyStat.Controllers
             CreateShowMappings();
             CreateMovieMappings();
             CreateVideoMappings();
+            CreatePeopleMappings();
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
 
@@ -131,12 +132,24 @@ namespace EmbyStat.Controllers
             CreateMap<SqlVideoStream, VideoStreamViewModel>();
         }
 
+        private void CreatePeopleMappings()
+        {
+            CreateMap<BaseItemPerson, SqlMediaPerson>()
+                .ForMember(x => x.PersonId, x => x.MapFrom(y => y.Id))
+                .ForMember(x => x.Id, x => x.Ignore())
+                .ForMember(x => x.MovieId, x => x.Ignore())
+                .ForMember(x => x.Movie, x => x.Ignore())
+                .ForMember(x => x.ShowId, x => x.Ignore())
+                .ForMember(x => x.Show, x => x.Ignore())
+                .ForMember(x => x.EpisodeId, x => x.Ignore())
+                .ForMember(x => x.Episode, x => x.Ignore());
+        }
+
         private void CreateShowMappings()
         {
             CreateMap<BaseItemDto, SqlShow>()
                 .ForMember(x => x.CollectionId, x => x.MapFrom(y => y.ParentId))
                 .ForMember(x => x.Seasons, x => x.Ignore())
-                .ForMember(x => x.ShowPeople, x => x.Ignore())
                 .ForMember(x => x.CumulativeRunTimeTicks, x => x.Ignore())
                 .ForMember(x => x.ExternalSyncFailed, x => x.Ignore())
                 .ForMember(x => x.SizeInMb, x => x.Ignore())

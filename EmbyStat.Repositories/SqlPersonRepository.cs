@@ -50,25 +50,25 @@ namespace EmbyStat.Repositories
         {
             return _context.Movies
                 .Include(x => x.Genres)
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .ThenInclude(x => x.Person)
-                .Count(x => x.Genres.Any(y => y.Name == genre) && x.MoviePeople.Any(y => name == y.Person.Name));
+                .Count(x => x.Genres.Any(y => y.Name == genre) && x.People.Any(y => name == y.Person.Name));
         }
 
         public int GetMovieCountForPerson(string name)
         {
             return _context.Movies
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .ThenInclude(x => x.Person)
-                .Count(x => x.MoviePeople.Any(y => name == y.Person.Name));
+                .Count(x => x.People.Any(y => name == y.Person.Name));
         }
 
         public int GetMoviePeopleCountForType(IReadOnlyList<string> libraryIds, PersonType type)
         {
             return _context.Movies
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .FilterOnLibrary(libraryIds)
-                .SelectMany(x => x.MoviePeople)
+                .SelectMany(x => x.People)
                 .Distinct()
                 .Count(x => x.Type == type);
         }
@@ -76,10 +76,10 @@ namespace EmbyStat.Repositories
         public IEnumerable<string> GetMovieMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
         {
             return _context.Movies
-                .Include(x => x.MoviePeople)
+                .Include(x => x.People)
                 .ThenInclude(x => x.Person)
                 .FilterOnLibrary(libraryIds)
-                .SelectMany(x => x.MoviePeople)
+                .SelectMany(x => x.People)
                 .Where(x => x.Type == type)
                 .GroupBy(x => x.Person.Name, (name, people) => new { Name = name, Count = people.Count() })
                 .OrderByDescending(x => x.Count)

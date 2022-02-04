@@ -5,6 +5,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Streams;
 
@@ -93,17 +94,17 @@ namespace EmbyStat.Common.Extensions
             return video;
         }
 
-        public static T MapPeople<T>(this BaseItemDto dto, T extra) where T : SqlMovie
+        public static SqlMovie MapPeople(this BaseItemDto dto, SqlMovie extra)
         {
             if (dto.People == null || !dto.People.Any())
             {
                 return extra;
             }
 
-            extra.MoviePeople ??= new List<SqlMoviePerson>();
+            extra.People ??= new List<SqlMediaPerson>();
             foreach (var person in dto.People)
             {
-                extra.MoviePeople.Add(new SqlMoviePerson
+                extra.People.Add(new SqlMediaPerson
                 {
                     MovieId = extra.Id,
                     PersonId = person.Id,
