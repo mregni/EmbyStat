@@ -10,16 +10,12 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IShowRepository : IMediaRepository
     {
-        void UpsertShows(IEnumerable<SqlShow> shows);
-        void UpsertShow(SqlShow show);
-        void InsertSeasons(IEnumerable<SqlSeason> seasons);
-        void InsertEpisodes(IEnumerable<SqlEpisode> episodes);
-        IEnumerable<SqlShow> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
-        SqlShow GetShowById(string showId, bool includeEpisodes);
-        Task<SqlSeason> GetSeasonById(string id);
+        Task UpsertShows(IEnumerable<SqlShow> shows);
+        IEnumerable<SqlShow> GetAllShows(IReadOnlyList<string> libraryIds);
+        Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds);
+        Task<SqlShow> GetShowByIdWithEpisodes(string showId);
         IEnumerable<SqlEpisode> GetAllEpisodesForShow(string showId);
         SqlShow GetShowById(string showId);
-        void RemoveShowsThatAreNotUpdated(DateTime startTime);
         void AddEpisode(SqlEpisode episode);
         void RemoveShows();
         Dictionary<SqlShow, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);

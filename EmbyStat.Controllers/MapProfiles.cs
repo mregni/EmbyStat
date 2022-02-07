@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
@@ -124,8 +125,6 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
             CreateMap<ShowRow, ShowRowViewModel>();
 
-            CreateMap<SqlMovie, MovieViewModel>()
-                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name)));
             CreateMap<SqlAudioStream, AudioStreamViewModel>();
             CreateMap<SqlMediaSource, MediaSourceViewModel>();
             CreateMap<SqlSubtitleStream, SubtitleStreamViewModel>();
@@ -148,13 +147,14 @@ namespace EmbyStat.Controllers
         private void CreateShowMappings()
         {
             CreateMap<BaseItemDto, SqlShow>()
-                .ForMember(x => x.CollectionId, x => x.MapFrom(y => y.ParentId))
                 .ForMember(x => x.Seasons, x => x.Ignore())
                 .ForMember(x => x.CumulativeRunTimeTicks, x => x.Ignore())
-                .ForMember(x => x.ExternalSyncFailed, x => x.Ignore())
+                .ForMember(x => x.ExternalSynced, x => x.Ignore())
                 .ForMember(x => x.SizeInMb, x => x.Ignore())
+                .ForMember(x => x.Seasons, x => x.MapFrom((y => new List<SqlSeason>())))
                 .AddImageMappings()
                 .AddProviderMappings()
+                .AddCommunityRatingMappings()
                 .AddGenreMappings();
 
             CreateMap<SqlShow, ShowDetailViewModel>();
@@ -164,6 +164,18 @@ namespace EmbyStat.Controllers
             //.ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.GetSeasonCount(false)))
             //.ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(true, LocationType.Disk)));
 
+
+            CreateMap<BaseItemDto, SqlSeason>()
+                .ForMember(x => x.Episodes, x => x.MapFrom((y => new List<SqlEpisode>())))
+                .ForMember(x => x.ShowId, x => x.MapFrom(y => y.ParentId))
+                .AddImageMappings();
+            CreateMap<BaseItemDto, SqlEpisode>()
+                .ForMember(x => x.SeasonId, x => x.MapFrom(y => y.ParentId))
+                .AddImageMappings()
+                .AddGenreMappings()
+                .AddProviderMappings()
+                .AddCommunityRatingMappings()
+                .AddStreamMappings();
         }
 
         private void CreateMovieMappings()
@@ -183,7 +195,10 @@ namespace EmbyStat.Controllers
                 .AddImageMappings()
                 .AddProviderMappings()
                 .AddGenreMappings()
+                .AddCommunityRatingMappings()
                 .AddStreamMappings();
+            CreateMap<SqlMovie, MovieViewModel>()
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()));
         }
 
         private void CreateVideoMappings()
@@ -203,10 +218,18 @@ namespace EmbyStat.Controllers
 
     public static class SqlExtraMapperExtensions
     {
-        public static IMappingExpression<T1, T2> AddGenreMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
+        public static IMappingExpression<T1, T2> AddCommunityRatingMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
+        where T1 : BaseItemDto where T2 : SqlExtra
+        {
+            return mapping.ForMember(x => x.CommunityRating,
+                x => x.MapFrom(y =>
+                    y.CommunityRating != null ? (float) Math.Round(y.CommunityRating.Value, 1) : (float?) null));
+
+        }
+    public static IMappingExpression<T1, T2> AddGenreMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
             where T1 : BaseItemDto where T2 : SqlExtra
         {
-            return mapping.ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => new SqlGenre() { Name = z })));
+            return mapping.ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => new SqlGenre { Name = z })));
         }
 
         public static IMappingExpression<T1, T2> AddImageMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)

@@ -58,18 +58,6 @@ namespace EmbyStat.Common.Extensions
         }
 
         /// <summary>
-        /// Calculates the total Mb size of a show by making the total SUM of the first MediaSource for each Episode
-        /// </summary>
-        /// <param name="show">Show for which the total size needs to be calculated</param>
-        /// <returns>Total space used for the show in Mb </returns>
-        public static double GetShowSize(this Show show)
-        {
-            return show.Episodes
-                .Where(x => x.LocationType == LocationType.Disk)
-                .Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
-        }
-
-        /// <summary>
         /// Adds new items to current list or if Id is already present in the list, it will update all properties to new values.
         /// </summary>
         /// <typeparam name="T">Media type</typeparam>

@@ -11,7 +11,7 @@ namespace EmbyStat.Common.SqLite.Shows
     {
         public long? CumulativeRunTimeTicks { get; set; }
         public string Status { get; set; }
-        public bool ExternalSyncFailed { get; set; }
+        public bool ExternalSynced { get; set; }
         public double SizeInMb { get; set; }
         public ICollection<SqlSeason> Seasons { get; set; }
     }

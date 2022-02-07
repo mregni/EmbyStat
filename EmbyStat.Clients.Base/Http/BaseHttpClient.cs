@@ -325,11 +325,11 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitClient.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var movies = Mapper.Map<T[]>(result.Items);
-            return movies;
+            var media = Mapper.Map<T[]>(result.Items);
+            return media;
         }
 
-        public async Task<QueryResult<SqlShow>> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
+        public async Task<SqlShow[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -337,6 +337,8 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
+                StartIndex = startIndex,
+                Limit = limit,
                 IncludeItemTypes = new[] { "Series" },
                 MinDateLastSaved = lastSynced,
                 Fields = new[] {
@@ -352,15 +354,15 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitClient.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var showQueryResult = Mapper.Map<QueryResult<SqlShow>>(result);
-            return showQueryResult;
+            var shows = Mapper.Map<SqlShow[]>(result.Items);
+            return shows;
         }
 
-        public List<Season> GetSeasons(string parentId, DateTime? lastSynced)
+        public async Task<SqlSeason[]> GetSeasons(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+                EnableImageTypes = new[] { ImageType.Primary },
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
@@ -376,17 +378,16 @@ namespace EmbyStat.Clients.Base.Http
                 }
             };
 
-            var request = new RestRequest($"Items", Method.GET);
-            //request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToSeason(Logger)).ToList()
-                : new List<Season>(0);
+            var paramList = query.ConvertToStringDictionary(UserId);
+            var client = _refitClient.CreateClient(BaseUrl);
+            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
+
+            var seasons = Mapper.Map<SqlSeason[]>(result.Items);
+            return seasons;
         }
 
-        public List<Episode> GetEpisodes(string parentId, string showId, DateTime? lastSynced)
+        public async Task<SqlEpisode[]> GetEpisodes(string parentId, DateTime? lastSynced)
         {
-            var episodes = new List<Episode>();
             var query = new ItemQuery
             {
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
@@ -405,16 +406,11 @@ namespace EmbyStat.Clients.Base.Http
                     }
             };
 
-            var request = new RestRequest($"Items", Method.GET);
-            //request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            if (baseItems?.Items != null)
-            {
-                episodes
-                    .AddRange(baseItems.Items.Select(x => x.ConvertToEpisode(showId, Logger))
-                    .Where(x => x != null));
-            }
+            var paramList = query.ConvertToStringDictionary(UserId);
+            var client = _refitClient.CreateClient(BaseUrl);
+            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
+            var episodes = Mapper.Map<SqlEpisode[]>(result.Items);
             return episodes;
         }
 

@@ -15,11 +15,11 @@ namespace EmbyStat.Services.Interfaces
         ShowStatistics GetStatistics(List<string> libraryIds);
         ShowStatistics CalculateShowStatistics(List<string> libraryIds);
         ShowStatistics CalculateShowStatistics(string libraryId);
-        ListContainer<ShowCollectionRow> GetCollectedRows(List<string> libraryIds, int page);
-        List<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds);
-        List<ShowCollectionRow> CalculateCollectedRows(string libraryId);
+        Task<ListContainer<ShowCollectionRow>> GetCollectedRows(IReadOnlyList<string> libraryIds, int page);
+        Task<List<ShowCollectionRow>> CalculateCollectedRows(IReadOnlyList<string> libraryIds);
+        Task<List<ShowCollectionRow>> CalculateCollectedRows(string libraryId);
         bool TypeIsPresent();
         Task<Page<ShowRow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
-        SqlShow GetShow(string id);
+        Task<SqlShow> GetShow(string id);
     }
 }

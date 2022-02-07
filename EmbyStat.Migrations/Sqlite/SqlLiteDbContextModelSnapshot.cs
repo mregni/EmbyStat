@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EmbyStat.Repositories.Migrations
+namespace EmbyStat.Migrations.Sqlite
 {
     [DbContext(typeof(SqlLiteDbContext))]
     partial class SqlLiteDbContextModelSnapshot : ModelSnapshot
@@ -75,13 +75,7 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("IMDB")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Logo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaType")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -91,9 +85,6 @@ namespace EmbyStat.Repositories.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OriginalTitle")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ParentId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Path")
@@ -166,25 +157,16 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<int?>("IndexNumberEnd")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("LocationType")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Logo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OfficialRating")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ParentId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Path")
@@ -203,10 +185,8 @@ namespace EmbyStat.Repositories.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SeasonId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("SeasonIndexNumber")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SortName")
                         .HasColumnType("TEXT");
@@ -259,9 +239,6 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ParentId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Path")
                         .HasColumnType("TEXT");
 
@@ -275,6 +252,7 @@ namespace EmbyStat.Repositories.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ShowId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SortName")
@@ -310,13 +288,10 @@ namespace EmbyStat.Repositories.Migrations
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("ExternalSyncFailed")
+                    b.Property<bool>("ExternalSynced")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("IMDB")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Logo")
@@ -326,9 +301,6 @@ namespace EmbyStat.Repositories.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OfficialRating")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ParentId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Path")
@@ -646,7 +618,8 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlSeason", "Season")
                         .WithMany("Episodes")
                         .HasForeignKey("SeasonId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Season");
                 });
@@ -656,7 +629,8 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlShow", "Show")
                         .WithMany("Seasons")
                         .HasForeignKey("ShowId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Show");
                 });
@@ -673,12 +647,12 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", "Episode")
                         .WithMany("AudioStreams")
                         .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EmbyStat.Common.SqLite.Movies.SqlMovie", "Movie")
                         .WithMany("AudioStreams")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Episode");
 
@@ -690,12 +664,12 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", "Episode")
                         .WithMany("MediaSources")
                         .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EmbyStat.Common.SqLite.Movies.SqlMovie", "Movie")
                         .WithMany("MediaSources")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Episode");
 
@@ -707,12 +681,12 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", "Episode")
                         .WithMany("SubtitleStreams")
                         .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EmbyStat.Common.SqLite.Movies.SqlMovie", "Movie")
                         .WithMany("SubtitleStreams")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Episode");
 
@@ -724,12 +698,12 @@ namespace EmbyStat.Repositories.Migrations
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlEpisode", "Episode")
                         .WithMany("VideoStreams")
                         .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EmbyStat.Common.SqLite.Movies.SqlMovie", "Movie")
                         .WithMany("VideoStreams")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Episode");
 

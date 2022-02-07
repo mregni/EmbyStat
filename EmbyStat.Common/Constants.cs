@@ -19,7 +19,6 @@ namespace EmbyStat.Common
             public static string Seasons => "Seasons";
             public static string Episodes => "Episodes";
             public static string GenreShow => "SqlGenreSqlShow";
-            public static string PeopleShow => "SqlMovieSqlPerson";
         }
         public static class Movies
         {

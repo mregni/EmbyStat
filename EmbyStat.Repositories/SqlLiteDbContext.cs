@@ -108,34 +108,36 @@ namespace EmbyStat.Repositories
                 .HasMany(x => x.Seasons)
                 .WithOne(x => x.Show)
                 .HasForeignKey(x => x.ShowId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SqlSeason>()
                 .HasMany(x => x.Episodes)
                 .WithOne(x => x.Season)
                 .HasForeignKey(x => x.SeasonId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SqlEpisode>()
                 .HasMany(x => x.SubtitleStreams)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SqlEpisode>()
                 .HasMany(x => x.MediaSources)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SqlEpisode>()
                 .HasMany(x => x.AudioStreams)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SqlEpisode>()
                 .HasMany(x => x.VideoStreams)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SqlGenre>()
                 .HasMany(x => x.Shows)
@@ -151,22 +153,22 @@ namespace EmbyStat.Repositories
                 .HasMany(x => x.SubtitleStreams)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SqlMovie>()
                 .HasMany(x => x.MediaSources)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SqlMovie>()
                 .HasMany(x => x.AudioStreams)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SqlMovie>()
                 .HasMany(x => x.VideoStreams)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SqlGenre>()
                 .HasMany(x => x.Movies)

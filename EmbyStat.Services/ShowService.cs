@@ -67,7 +67,7 @@ namespace EmbyStat.Services
 
         public ShowStatistics CalculateShowStatistics(List<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(libraryIds, true, true).ToList();
+            //var shows = await _showRepository.GetAllShowsWithEpisodes(libraryIds, true, true);
 
             var statistics = new ShowStatistics
             {
@@ -117,9 +117,9 @@ namespace EmbyStat.Services
             return page;
         }
 
-        public SqlShow GetShow(string id)
+        public Task<SqlShow> GetShow(string id)
         {
-            return _showRepository.GetShowById(id, true);
+            return _showRepository.GetShowByIdWithEpisodes(id);
         }
 
         #region Cards
@@ -158,7 +158,7 @@ namespace EmbyStat.Services
             return CalculateStat(() =>
             {
                 //var sum = _showRepository
-                //    .GetAllShows(libraryIds, true, true)
+                //    .GetAllShowsWithEpisodes(libraryIds, true, true)
                 //    .Sum(x => x.GetEpisodeCount(false, LocationType.Disk))
                 //    .ToString();
 
@@ -192,7 +192,7 @@ namespace EmbyStat.Services
             return CalculateStat(() =>
             {
                 //var sum = _showRepository
-                //    .GetAllShows(libraryIds, false, true)
+                //    .GetAllShowsWithEpisodes(libraryIds, false, true)
                 //    .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
                 //    .ToString();
 
@@ -210,7 +210,7 @@ namespace EmbyStat.Services
         {
             return CalculateStat(() =>
             {
-                var shows = _showRepository.GetAllShows(libraryIds, false, false);
+                var shows = _showRepository.GetAllShows(libraryIds);
                 var playLength = new TimeSpan(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
 
                 return new Card<string>
@@ -228,7 +228,7 @@ namespace EmbyStat.Services
             return CalculateStat(() =>
             {
                 //var sum = _showRepository
-                //    .GetAllShows(libraryIds, false, true)
+                //    .GetAllShowsWithEpisodes(libraryIds, false, true)
                 //    .SelectMany(x => x.Episodes)
                 //    .Where(x => x.LocationType == LocationType.Disk)
                 //    .Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
@@ -473,7 +473,7 @@ namespace EmbyStat.Services
 
         #region Collected Rows
 
-        public ListContainer<ShowCollectionRow> GetCollectedRows(List<string> libraryIds, int page)
+        public async Task<ListContainer<ShowCollectionRow>> GetCollectedRows(IReadOnlyList<string> libraryIds, int page)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
 
@@ -484,7 +484,7 @@ namespace EmbyStat.Services
             }
             else
             {
-                rows.Data = CalculateCollectedRows(libraryIds);
+                rows.Data = await CalculateCollectedRows(libraryIds);
             }
 
             rows.TotalCount = rows.Data.Count();
@@ -492,14 +492,14 @@ namespace EmbyStat.Services
             return rows;
         }
 
-        public List<ShowCollectionRow> CalculateCollectedRows(string libraryId)
+        public Task<List<ShowCollectionRow>> CalculateCollectedRows(string libraryId)
         {
             return CalculateCollectedRows(new List<string> { libraryId });
         }
 
-        public List<ShowCollectionRow> CalculateCollectedRows(List<string> libraryIds)
+        public async Task<List<ShowCollectionRow>> CalculateCollectedRows(IReadOnlyList<string> libraryIds)
         {
-            var shows = _showRepository.GetAllShows(libraryIds, true, true);
+            var shows = await _showRepository.GetAllShowsWithEpisodes(libraryIds);
 
             //var stats = shows
             //    .Select(CreateShowCollectedRow)

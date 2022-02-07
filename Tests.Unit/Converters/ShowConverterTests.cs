@@ -134,7 +134,7 @@ namespace Tests.Unit.Converters
                 Id = "1",
             };
 
-            var season = seasonIndex.ConvertToSeason(show);
+            var season = seasonIndex.ConvertToVirtualSeason(show);
             season.Id.Should().NotBeNullOrWhiteSpace();
             season.Name.Should().Be($"Season {seasonIndex}");
             season.ParentId.Should().Be(show.Id);
@@ -157,7 +157,7 @@ namespace Tests.Unit.Converters
                 Id = "1",
             };
 
-            var season = seasonIndex.ConvertToSeason(show);
+            var season = seasonIndex.ConvertToVirtualSeason(show);
             season.Id.Should().NotBeNullOrWhiteSpace();
             season.Name.Should().Be($"Special");
         }
@@ -170,7 +170,7 @@ namespace Tests.Unit.Converters
             var showSeason = show.Seasons.First();
 
             var virtualEpisode = new VirtualEpisode(showEpisode);
-            var episode = virtualEpisode.ConvertToEpisode(show, showSeason);
+            var episode = virtualEpisode.ConvertToVirtualEpisode(show, showSeason);
 
             episode.ShowId.Should().Be(show.Id);
             episode.ShowName.Should().Be(show.Name);

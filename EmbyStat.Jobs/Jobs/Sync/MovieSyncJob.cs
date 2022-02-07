@@ -58,14 +58,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
         
         public override async Task RunJobAsync()
         {
-            var cancellationToken = new CancellationToken(false);
-
-            if (!Settings.WizardFinished)
-            {
-                await LogWarning("Media sync task not running because wizard is not yet finished!");
-                return;
-            }
-
             if (!IsMediaServerOnline())
             {
                 await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.FullMediaServerAddress}, please check the connection and try again.");
@@ -73,28 +65,30 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
 
 
-            await ProcessGenresAsync(cancellationToken);
-            await ProcessPeopleAsync(cancellationToken);
+            await ProcessGenresAsync();
+            await LogProgress(7);
+            await ProcessPeopleAsync();
             await LogProgress(15);
 
-            await ProcessMoviesAsync(cancellationToken);
+            await ProcessMoviesAsync();
             await LogProgress(55);
 
             await CalculateStatistics();
             await LogProgress(100);
         }
 
-        private async Task ProcessGenresAsync(CancellationToken cancellationToken)
+        private async Task ProcessGenresAsync()
         {
             var genres = await _httpClient.GetGenres();
-            cancellationToken.ThrowIfCancellationRequested();
+            await LogInformation("Processing genres");
             await _genreRepository.UpsertRange(genres);
         }
 
-        private async Task ProcessPeopleAsync(CancellationToken cancellationToken)
+        private async Task ProcessPeopleAsync()
         {
             var totalCount = await _httpClient.GetPeopleCount();
-            
+            await LogInformation($"Fetching information from {totalCount} people");
+
             const int limit = 25000;
             var processed = 0;
             var j = 0;
@@ -105,7 +99,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 var people = result.Items
                     .Select(x => x.ConvertToPeople(Logger))
                     .ToList();
-                cancellationToken.ThrowIfCancellationRequested();
                 await _personRepository.UpsertRange(people);
 
                 processed += limit;
@@ -113,7 +106,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             } while (processed < totalCount);
         }
 
-        private async Task ProcessMoviesAsync(CancellationToken cancellationToken)
+        private async Task ProcessMoviesAsync()
         {
             await LogInformation("Lets start processing movies");
             await LogInformation($"{Settings.MovieLibraries.Count} libraries are selected, getting ready for processing");
@@ -136,8 +129,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 const int limit = 50;
                 do
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    var movies = await FetchMoviesAsync(library, j * limit, limit);
+                    var movies = await _httpClient.GetMedia<SqlMovie>(library.Id, j * limit, limit, library.LastSynced, "Movie");
 
                     movies.AddGenres(genres);
                     await _movieRepository.UpsertRange(movies);
@@ -149,19 +141,6 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     await LogProgressIncrement(increment);
                 } while (processed < totalCount);
                 await SettingsService.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
-            }
-        }
-
-        private async Task<SqlMovie[]> FetchMoviesAsync(LibraryContainer library, int startIndex, int limit)
-        {
-            try
-            { 
-                return await _httpClient.GetMedia<SqlMovie>(library.Id, startIndex, limit, library.LastSynced, "Movie");
-            }
-            catch (Exception e)
-            {
-                await LogError($"Movie error: {e.Message}");
-                throw;
             }
         }
 

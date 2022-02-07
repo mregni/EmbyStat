@@ -51,8 +51,8 @@ namespace EmbyStat.Repositories
                     await connection.ExecuteAsync($"DELETE FROM {Constants.Tables.AudioStreams} WHERE MovieId = @Id", movie, transaction);
                     await connection.ExecuteAsync($"DELETE FROM {Constants.Tables.SubtitleStreams} WHERE MovieId = @Id", movie, transaction);
 
-                    var movieQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.Movies} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,ParentId,Path,PremiereDate,ProductionYear,SortName,CollectionId,OriginalTitle,Container,MediaType,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@ParentId,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@OriginalTitle,@Container,@MediaType,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat)";
+                    var movieQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.Movies} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,OriginalTitle,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@OriginalTitle,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat)";
                     await connection.ExecuteAsync(movieQuery, movie, transaction);
 
                     if (movie.MediaSources.AnyNotNull())
@@ -109,7 +109,6 @@ VALUES (@Type, @MovieId, @PersonId)";
                 {
                     Console.WriteLine(e);
                 }
-
             }
         }
 

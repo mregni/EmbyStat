@@ -22,9 +22,9 @@ namespace EmbyStat.Clients.Base.Http
         Task<QueryResult<BaseItemDto>> GetPeople(int startIndex, int limit);
         Task<int> GetPeopleCount();
 
-        Task<QueryResult<SqlShow>> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
-        List<Season> GetSeasons(string parentId, DateTime? lastSynced);
-        List<Episode> GetEpisodes(string parentId, string showId, DateTime? lastSynced);
+        Task<SqlShow[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
+        Task<SqlSeason[]> GetSeasons(string parentId, DateTime? lastSynced);
+        Task<SqlEpisode[]> GetEpisodes(string parentId, DateTime? lastSynced);
 
 
 

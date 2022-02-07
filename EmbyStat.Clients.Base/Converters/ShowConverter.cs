@@ -4,6 +4,7 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Logging;
 using Newtonsoft.Json;
 using LocationType = EmbyStat.Common.Enums.LocationType;
@@ -83,13 +84,13 @@ namespace EmbyStat.Clients.Base.Converters
             }
         }
 
-        public static Season ConvertToSeason(this int indexNumber, Show show)
+        public static SqlSeason ConvertToVirtualSeason(this int indexNumber, SqlShow show)
         {
-            return new Season
+            return new SqlSeason
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = indexNumber == 0 ? "Special" : $"Season {indexNumber}",
-                ParentId = show.Id,
+                ShowId = show.Id,
                 Path = string.Empty,
                 DateCreated = null,
                 IndexNumber = indexNumber,
@@ -97,7 +98,8 @@ namespace EmbyStat.Clients.Base.Converters
                 PremiereDate = null,
                 ProductionYear = null,
                 SortName = indexNumber.ToString("0000"),
-                LocationType = LocationType.Virtual
+                LocationType = LocationType.Virtual,
+                Episodes = new List<SqlEpisode>()
             };
         }
 
@@ -142,19 +144,16 @@ namespace EmbyStat.Clients.Base.Converters
             }
         }
 
-        public static Episode ConvertToEpisode(this VirtualEpisode episode, Show show, Season season)
+        public static SqlEpisode ConvertToVirtualEpisode(this VirtualEpisode episode, SqlSeason season)
         {
-            return new Episode
+            return new SqlEpisode
             {
                 Id = Guid.NewGuid().ToString(),
-                ShowId = show.Id,
-                ShowName = show.Name,
                 Name = episode.Name,
                 LocationType = LocationType.Virtual,
                 IndexNumber = episode.EpisodeNumber,
-                ParentId = season.Id,
-                PremiereDate = episode.FirstAired ?? new DateTime(),
-                SeasonIndexNumber = season.IndexNumber
+                SeasonId = season.Id,
+                PremiereDate = episode.FirstAired ?? new DateTime()
             };
         }
     }

@@ -11,7 +11,6 @@ namespace EmbyStat.Common.SqLite.Helpers
     public abstract class SqlVideo : SqlExtra
     {
         public string Container { get; set; }
-        public string MediaType { get; set; }
         public Video3DFormat Video3DFormat { get; set; }
         public ICollection<SqlMediaSource> MediaSources { get; set; }
         public ICollection<SqlVideoStream> VideoStreams { get; set; }

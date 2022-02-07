@@ -20,12 +20,12 @@ namespace EmbyStat.Repositories
 
     //    }
 
-    //    public Show GetShowById(string showId)
+    //    public Show GetShowByIdWithEpisodes(string showId)
     //    {
-    //        return GetShowById(showId, false);
+    //        return GetShowByIdWithEpisodes(showId, false);
     //    }
 
-    //    public Show GetShowById(string showId, bool includeEpisodes)
+    //    public Show GetShowByIdWithEpisodes(string showId, bool includeEpisodes)
     //    {
     //        using var database = Context.CreateDatabaseContext();
     //        var query = database.GetCollection<Show>();
@@ -148,7 +148,7 @@ namespace EmbyStat.Repositories
     //        collection.Upsert(episodes);
     //    }
 
-    //    public IEnumerable<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes)
+    //    public IEnumerable<Show> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes)
     //    {
     //        using var database = Context.CreateDatabaseContext();
     //        var query = database.GetCollection<Show>()

@@ -285,7 +285,7 @@ namespace EmbyStat.Services
             {
                 Id = movie.Id,
                 Name = movie.Name,
-                ParentId = movie.ParentId,
+                ParentId = movie.CollectionId,
                 Primary = movie.Primary,
                 StartedWatching = startedPlaying,
                 EndedWatching = endedPlaying,

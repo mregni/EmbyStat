@@ -67,9 +67,9 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetShow(string id)
+        public async Task<IActionResult> GetShow(string id)
         {
-            var show = _showService.GetShow(id);
+            var show = await _showService.GetShow(id);
             if (show != null)
             {
                 var result = _mapper.Map<ShowDetailViewModel>(show);
