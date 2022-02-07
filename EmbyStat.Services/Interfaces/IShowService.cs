@@ -12,12 +12,10 @@ namespace EmbyStat.Services.Interfaces
     public interface IShowService
     {
         IEnumerable<Library> GetShowLibraries();
-        ShowStatistics GetStatistics(List<string> libraryIds);
-        ShowStatistics CalculateShowStatistics(List<string> libraryIds);
-        ShowStatistics CalculateShowStatistics(string libraryId);
+        Task<ShowStatistics> GetStatistics(List<string> libraryIds);
+        Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds);
         Task<ListContainer<ShowCollectionRow>> GetCollectedRows(IReadOnlyList<string> libraryIds, int page);
         Task<List<ShowCollectionRow>> CalculateCollectedRows(IReadOnlyList<string> libraryIds);
-        Task<List<ShowCollectionRow>> CalculateCollectedRows(string libraryId);
         bool TypeIsPresent();
         Task<Page<ShowRow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
         Task<SqlShow> GetShow(string id);

@@ -48,7 +48,7 @@ namespace EmbyStat.Services
             return _libraryRepository.GetLibrariesById(settings.ShowLibraries.Select(x => x.Id));
         }
 
-        public ShowStatistics GetStatistics(List<string> libraryIds)
+        public async Task<ShowStatistics> GetStatistics(List<string> libraryIds)
         {
             var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
 
@@ -57,21 +57,16 @@ namespace EmbyStat.Services
                 return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
 
-            return CalculateShowStatistics(libraryIds);
+            return await CalculateShowStatistics(libraryIds);
         }
 
-        public ShowStatistics CalculateShowStatistics(string libraryId)
-        {
-            return CalculateShowStatistics(new List<string> { libraryId });
-        }
-
-        public ShowStatistics CalculateShowStatistics(List<string> libraryIds)
+        public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
         {
             //var shows = await _showRepository.GetAllShowsWithEpisodes(libraryIds, true, true);
 
             var statistics = new ShowStatistics
             {
-                Cards = CalculateCards(libraryIds),
+                Cards = await CalculateCards(libraryIds),
                 TopCards = CalculateTopCards(libraryIds),
                 People = CalculatePeopleStatistics(libraryIds),
                 //BarCharts = CalculateBarCharts(shows),
@@ -124,59 +119,56 @@ namespace EmbyStat.Services
 
         #region Cards
 
-        private List<Card<string>> CalculateCards(IReadOnlyList<string> libraryIds)
+        private async Task<List<Card<string>>> CalculateCards(IReadOnlyList<string> libraryIds)
         {
             var list = new List<Card<string>>();
-            list.AddIfNotNull(CalculateTotalShowCount(libraryIds));
-            list.AddIfNotNull(CalculateTotalEpisodeCount(libraryIds));
-            list.AddIfNotNull(CalculateTotalMissingEpisodeCount(libraryIds));
-            list.AddIfNotNull(CalculatePlayableTime(libraryIds));
-            list.AddIfNotNull(CalculateTotalShowGenres(libraryIds));
-            list.AddIfNotNull(CalculateTotalDiskSpace(libraryIds));
+            list.AddIfNotNull(await CalculateTotalShowCount(libraryIds));
+            list.AddIfNotNull(await CalculateTotalEpisodeCount(libraryIds));
+            list.AddIfNotNull(await CalculateTotalMissingEpisodeCount(libraryIds));
+            list.AddIfNotNull(await CalculatePlayableTime(libraryIds));
+            list.AddIfNotNull(await CalculateTotalShowGenres(libraryIds));
+            list.AddIfNotNull(await CalculateTotalDiskSpace(libraryIds));
 
             return list;
         }
 
-        private Card<string> CalculateTotalShowCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalShowCount(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var count = _showRepository.Count(libraryIds).ToString();
+                var count = await _showRepository.Count(libraryIds);
 
                 return new Card<string>
                 {
                     Title = Constants.Shows.TotalShows,
-                    Value = count,
+                    Value = count.ToString(),
                     Type = CardType.Text,
                     Icon = Constants.Icons.TheatersRoundedIcon
                 };
             }, "Calculate total show count failed:");
         }
 
-        private Card<string> CalculateTotalEpisodeCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalEpisodeCount(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                //var sum = _showRepository
-                //    .GetAllShowsWithEpisodes(libraryIds, true, true)
-                //    .Sum(x => x.GetEpisodeCount(false, LocationType.Disk))
-                //    .ToString();
+                var total = await _showRepository.GetEpisodeCount(libraryIds, LocationType.Disk);
 
                 return new Card<string>
                 {
                     Title = Constants.Shows.TotalEpisodes,
-                    Value = "0",
+                    Value = total.ToString(),
                     Type = CardType.Text,
                     Icon = Constants.Icons.TheatersRoundedIcon
                 };
             }, "Calculate total episode count failed:");
         }
 
-        private Card<string> CalculateTotalShowGenres(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalShowGenres(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var totalGenres = _showRepository.GetGenreCount(libraryIds);
+                var totalGenres = await _showRepository.GetGenreCount(libraryIds);
                 return new Card<string>
                 {
                     Title = Constants.Common.TotalGenres,
@@ -187,31 +179,28 @@ namespace EmbyStat.Services
             }, "Calculate total show genres count failed:");
         }
 
-        private Card<string> CalculateTotalMissingEpisodeCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalMissingEpisodeCount(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                //var sum = _showRepository
-                //    .GetAllShowsWithEpisodes(libraryIds, false, true)
-                //    .Sum(x => x.GetEpisodeCount(false, LocationType.Virtual))
-                //    .ToString();
+                var total = await _showRepository.GetEpisodeCount(libraryIds, LocationType.Virtual);
 
                 return new Card<string>
                 {
                     Title = Constants.Shows.TotalMissingEpisodes,
-                    Value = "sum",
+                    Value = total.ToString(),
                     Type = CardType.Text,
                     Icon = Constants.Icons.TheatersRoundedIcon
                 };
             }, "Calculate total missing episodes failed:");
         }
 
-        private Card<string> CalculatePlayableTime(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculatePlayableTime(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var shows = _showRepository.GetAllShows(libraryIds);
-                var playLength = new TimeSpan(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
+                var totalRunTimeTicks = await _showRepository.GetTotalRunTimeTicks(libraryIds);
+                var playLength = new TimeSpan(totalRunTimeTicks);
 
                 return new Card<string>
                 {
@@ -223,19 +212,15 @@ namespace EmbyStat.Services
             }, "Calculate total playable time failed:");
         }
 
-        private Card<string> CalculateTotalDiskSpace(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalDiskSpace(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                //var sum = _showRepository
-                //    .GetAllShowsWithEpisodes(libraryIds, false, true)
-                //    .SelectMany(x => x.Episodes)
-                //    .Where(x => x.LocationType == LocationType.Disk)
-                //    .Sum(x => x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0);
+                var total = await _showRepository.GetTotalDiskSpaceUsed(libraryIds);
 
                 return new Card<string>
                 {
-                    Value = "sum.ToString(CultureInfo.InvariantCulture)",
+                    Value = total.ToString(CultureInfo.InvariantCulture),
                     Title = Constants.Common.TotalDiskSpace,
                     Type = CardType.Size,
                     Icon = Constants.Icons.StorageRoundedIcon

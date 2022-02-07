@@ -89,7 +89,7 @@ namespace EmbyStat.Repositories
         {
             var query = $@"SELECT COUNT(DISTINCT g.Name)
 FROM {Constants.Tables.Shows} AS s
-INNER JOIN {Constants.Tables.MediaGenre} AS gs ON (s.Id = gs.ShowsId)
+INNER JOIN {Constants.Tables.GenreShow} AS gs ON (s.Id = gs.ShowsId)
 INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenreId)
 WHERE 1=1 {libraryIds.AddLibraryIdFilter("s")}";
 
@@ -137,100 +137,98 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilter("s")}";
 
             foreach (var show in showList)
             {
-                try
-                {
-                    await using var transaction = connection.BeginTransaction();
+                await using var transaction = connection.BeginTransaction();
 
-                    var showQuery = $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb)
+                var showQuery =
+                    $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@CumulativeRunTimeTicks,@Status,@ExternalSynced,@SizeInMb)";
-                    await connection.ExecuteAsync(showQuery, show, transaction);
+                await connection.ExecuteAsync(showQuery, show, transaction);
 
-                    if (show.Seasons.AnyNotNull())
-                    {
-                        var seasonQuery = $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,IndexNumber,IndexNumberEnd,LocationType,ShowId)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
-                        await connection.ExecuteAsync(seasonQuery, show.Seasons, transaction);
-                    }
-
-                    if (show.Genres.AnyNotNull())
-                    {
-                        var genreQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.GenreShow} (GenresId, ShowsId) 
-VALUES ((SELECT Id FROM Genres WHERE name = @GenreName), @ShowsId)";
-                        var genreList = show.Genres.Select(x => new { GenreName = x.Name, ShowsId = show.Id });
-                        await connection.ExecuteAsync(genreQuery, genreList, transaction);
-                    }
-
-                    if (show.People.AnyNotNull())
-                    {
-                        var peopleQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, ShowId, PersonId)
-VALUES (@Type, @ShowId, @PersonId)";
-                        show.People.ForEach(x => x.ShowId = show.Id);
-                        await connection.ExecuteAsync(peopleQuery, show.People, transaction);
-                    }
-                    
-                    var episodes = show.Seasons.SelectMany(x => x.Episodes).ToList();
-                    if (episodes.AnyNotNull())
-                    {
-                        var episodeQuery =
-                            @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@DvdEpisodeNumber,@DvdSeasonNumber,@IndexNumber,@IndexNumberEnd,@SeasonId,@LocationType)";
-                        await connection.ExecuteAsync(episodeQuery, episodes, transaction);
-
-                        foreach (var episode in episodes)
-                        {
-                            if (episode.People.AnyNotNull())
-                            {
-                                var peopleQuery =
-                                    @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, EpisodeId, PersonId)
-VALUES (@Type, @EpisodeId, @PersonId)";
-                                episode.People.ForEach(x => x.EpisodeId = episode.Id);
-                                await connection.ExecuteAsync(peopleQuery, show.People, transaction);
-                            }
-
-                            if (episode.MediaSources.AnyNotNull())
-                            {
-                                var mediaSourceQuery =
-                                    @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
-VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@EpisodeId)";
-                                episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
-                                await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
-                            }
-
-                            if (episode.VideoStreams.AnyNotNull())
-                            {
-                                var videoStreamQuery =
-                                    @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
-VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@EpisodeId)";
-                                episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
-                                await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
-                            }
-
-                            if (episode.AudioStreams.AnyNotNull())
-                            {
-                                var audioStreamQuery =
-                                    @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
-VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@EpisodeId)";
-                                episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
-                                await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
-                            }
-
-                            if (episode.SubtitleStreams.AnyNotNull())
-                            {
-                                var subtitleStreamQuery =
-                                    @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
-VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
-                                episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
-                                await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
-                                    transaction);
-                            }
-                        }
-                        await transaction.CommitAsync();
-                    }
-            }
-                catch (Exception e)
+                if (show.Seasons.AnyNotNull())
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    var seasonQuery =
+                        $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,IndexNumber,IndexNumberEnd,LocationType,ShowId)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
+                    await connection.ExecuteAsync(seasonQuery, show.Seasons, transaction);
+                }
+
+                if (show.Genres.AnyNotNull())
+                {
+                    var genreQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.GenreShow} (GenresId, ShowsId) 
+VALUES ((SELECT Id FROM Genres WHERE name = @GenreName), @ShowsId)";
+                    var genreList = show.Genres.Select(x => new { GenreName = x.Name, ShowsId = show.Id });
+                    await connection.ExecuteAsync(genreQuery, genreList, transaction);
+                }
+
+                if (show.People.AnyNotNull())
+                {
+                    var peopleQuery =
+                        @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, ShowId, PersonId)
+VALUES (@Type, @ShowId, @PersonId)";
+                    show.People.ForEach(x => x.ShowId = show.Id);
+                    await connection.ExecuteAsync(peopleQuery, show.People, transaction);
+                }
+
+                var episodes = show.Seasons.SelectMany(x => x.Episodes).ToList();
+                if (episodes.AnyNotNull())
+                {
+                    var episodeQuery =
+                        @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@DvdEpisodeNumber,@DvdSeasonNumber,@IndexNumber,@IndexNumberEnd,@SeasonId,@LocationType)";
+                    await connection.ExecuteAsync(episodeQuery, episodes, transaction);
+
+                    foreach (var episode in episodes)
+                    {
+                        if (episode.People.AnyNotNull())
+                        {
+                            var peopleQuery =
+                                @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, EpisodeId, PersonId)
+VALUES (@Type, @EpisodeId, @PersonId)";
+                            episode.People.ForEach(x => x.EpisodeId = episode.Id);
+                            await connection.ExecuteAsync(peopleQuery, show.People, transaction);
+                        }
+
+                        if (episode.MediaSources.AnyNotNull())
+                        {
+                            var mediaSourceQuery =
+                                @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
+VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@EpisodeId)";
+                            episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
+                            await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
+                        }
+
+                        if (episode.VideoStreams.AnyNotNull())
+                        {
+                            var videoStreamQuery =
+                                @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
+VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@EpisodeId)";
+                            episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
+                            await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
+                        }
+
+                        if (episode.AudioStreams.AnyNotNull())
+                        {
+                            var audioStreamQuery =
+                                @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
+VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@EpisodeId)";
+                            episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
+                            await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
+                        }
+
+                        if (episode.SubtitleStreams.AnyNotNull())
+                        {
+                            var subtitleStreamQuery =
+                                @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
+VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
+                            episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
+                            await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
+                                transaction);
+                        }
+                    }
+
+                    await transaction.CommitAsync();
+                }
+            }
         }
 
         public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds)
