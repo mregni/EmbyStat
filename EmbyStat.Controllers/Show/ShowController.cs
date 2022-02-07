@@ -35,18 +35,18 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("statistics")]
-        public IActionResult GetStatistics(List<string> libraryIds)
+        public async Task<IActionResult> GetStatistics(List<string> libraryIds)
         {
-            var result = _showService.GetStatistics(libraryIds);
+            var result = await _showService.GetStatistics(libraryIds);
             var convert = _mapper.Map<ShowStatisticsViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
         [Route("collectedlist")]
-        public IActionResult GetCollectedRows(List<string> libraryIds, int page)
+        public async Task<IActionResult> GetCollectedRows(List<string> libraryIds, int page)
         {
-            var result = _showService.GetCollectedRows(libraryIds, page);
+            var result = await _showService.GetCollectedRows(libraryIds, page);
             return Ok(_mapper.Map<ListContainer<ShowCollectionRowViewModel>>(result));
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +28,7 @@ namespace EmbyStat.Repositories
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;
         }
-        
+
         public IEnumerable<SqlMedia> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
             return _context.Shows.GetNewestPremieredMedia(libraryIds, count);
@@ -61,7 +61,13 @@ namespace EmbyStat.Repositories
 
         public async Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds)
         {
-            throw new NotImplementedException();
+            var query = _context.Shows.GenerateCountQuery(filters, libraryIds);
+
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            var result = await connection.QueryFirstAsync<int>(query, new { Ids = libraryIds });
+
+            return result;
         }
 
         public bool Any()
@@ -83,9 +89,9 @@ namespace EmbyStat.Repositories
         {
             var query = $@"SELECT COUNT(DISTINCT g.Name)
 FROM {Constants.Tables.Shows} AS s
-INNER JOIN {Constants.Tables.GenreShow} AS gs ON (s.Id = gs.ShowsId)
-INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
-{libraryIds.AddLibraryIdFilter("m")}";
+INNER JOIN {Constants.Tables.MediaGenre} AS gs ON (s.Id = gs.ShowsId)
+INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenreId)
+WHERE 1=1 {libraryIds.AddLibraryIdFilter("s")}";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
@@ -116,6 +122,8 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
                 .Take(count);
         }
 
+        #region Shows
+
         public async Task UpsertShows(IEnumerable<SqlShow> shows)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
@@ -124,7 +132,7 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
             var showList = shows.ToList();
             await using var deleteTransaction = connection.BeginTransaction();
             var deleteQuery = "DELETE FROM Shows WHERE Id IN @Ids";
-            await connection.ExecuteAsync(deleteQuery, new {Ids = showList.Select(x => x.Id)}, deleteTransaction);
+            await connection.ExecuteAsync(deleteQuery, new { Ids = showList.Select(x => x.Id) }, deleteTransaction);
             await deleteTransaction.CommitAsync();
 
             foreach (var show in showList)
@@ -218,13 +226,30 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                         }
                         await transaction.CommitAsync();
                     }
-                }
+            }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                     throw;
-                }
-            }
+        }
+
+        public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds)
+        {
+            var query = _context.Shows.GenerateFullShowQuery(libraryIds, true);
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+
+            var list = await connection.QueryAsync<SqlShow, SqlSeason, SqlEpisode, SqlShow>(query, (s, se, e) =>
+            {
+                s.Seasons ??= new List<SqlSeason>();
+                se.Episodes ??= new List<SqlEpisode>();
+
+                se.Episodes.AddIfNotNull(e);
+                s.Seasons.AddIfNotNull(se);
+                return s;
+            }, new { Ids = libraryIds });
+
+            return MapShows(list);
         }
 
         private IEnumerable<SqlShow> MapShows(IEnumerable<SqlShow> list)
@@ -253,30 +278,6 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return result;
         }
 
-        public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds)
-        {
-            var query = _context.Shows.GenerateFullShowQuery(libraryIds, true);
-            await using var connection = _sqliteBootstrap.CreateConnection();
-            await connection.OpenAsync();
-
-            var list = await connection.QueryAsync<SqlShow, SqlSeason, SqlEpisode, SqlShow>(query, (s, se, e) =>
-            {
-                s.Seasons ??= new List<SqlSeason>();
-                se.Episodes ??= new List<SqlEpisode>();
-
-                se.Episodes.AddIfNotNull(e);
-                s.Seasons.AddIfNotNull(se);
-                return s;
-            }, new { Ids = libraryIds });
-
-            return MapShows(list);
-        }
-
-        public IEnumerable<SqlShow> GetAllShows(IReadOnlyList<string> libraryIds)
-        {
-            return _context.Shows.FilterOnLibrary(libraryIds);
-        }
-
         public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
         {
             var query = _context.Shows.GenerateFullShowQuery(true);
@@ -297,26 +298,6 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return MapShows(list).FirstOrDefault();
         }
 
-        public IEnumerable<SqlEpisode> GetAllEpisodesForShow(string showId)
-        {
-            return _context.Shows
-                .Include(x => x.Seasons)
-                .ThenInclude(x => x.Episodes)
-                .Where(x => x.Id == showId)
-                .SelectMany(x => x.Seasons)
-                .SelectMany(x => x.Episodes);
-        }
-
-        public SqlShow GetShowById(string showId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddEpisode(SqlEpisode episode)
-        {
-            throw new NotImplementedException();
-        }
-
         public void RemoveShows()
         {
             _context.Shows.RemoveRange(_context.Shows);
@@ -331,5 +312,41 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region Episodes
+
+        public IEnumerable<SqlEpisode> GetAllEpisodesForShow(string showId)
+        {
+            return _context.Shows
+                .Include(x => x.Seasons)
+                .ThenInclude(x => x.Episodes)
+                .Where(x => x.Id == showId)
+                .SelectMany(x => x.Seasons)
+                .SelectMany(x => x.Episodes);
+        }
+
+        public Task<int> GetEpisodeCount(IReadOnlyList<string> libraryIds, LocationType locationType)
+        {
+            return _context.Episodes.CountAsync(x => x.LocationType == locationType);
+        }
+
+        public Task<long> GetTotalRunTimeTicks(IReadOnlyList<string> libraryIds)
+        {
+            return _context.Episodes
+                .Where(x => x.LocationType == LocationType.Disk)
+                .SumAsync(x => x.RunTimeTicks ?? 0);
+        }
+
+        public Task<double> GetTotalDiskSpaceUsed(IReadOnlyList<string> libraryIds)
+        {
+            return _context.Episodes
+                .Include(x => x.MediaSources)
+                .Where(x => x.LocationType == LocationType.Disk)
+                .SumAsync(x => x.MediaSources.Any() ? x.MediaSources.First().SizeInMb : 0d);
+        }
+
+        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -204,8 +204,8 @@ namespace EmbyStat.Services
             var list = new List<TopCard>();
             list.AddIfNotNull(HighestRatedMovie(libraryIds));
             list.AddIfNotNull(LowestRatedMovie(libraryIds));
-            list.AddIfNotNull(OldestPremieredMovie(libraryIds)); // TODO <-- high memory
-            list.AddIfNotNull(NewestPremieredMovie(libraryIds)); // TODO <-- high memory
+            list.AddIfNotNull(OldestPremieredMovie(libraryIds));
+            list.AddIfNotNull(NewestPremieredMovie(libraryIds));
             list.AddIfNotNull(ShortestMovie(libraryIds));
             list.AddIfNotNull(LongestMovie(libraryIds));
             list.AddIfNotNull(LatestAddedMovie(libraryIds));

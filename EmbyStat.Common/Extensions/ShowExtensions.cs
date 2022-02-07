@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite.Shows;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,49 @@ namespace EmbyStat.Common.Extensions
             return show.Seasons.SelectMany(x => x.Episodes)
                 .Where(x => x.LocationType == LocationType.Disk)
                 .Sum(x => x.RunTimeTicks ?? 0);
+        }
+
+        /// <summary>
+        /// Generates a COUNT(*) query for the show table
+        /// </summary>
+        /// <param name="list">Db set on which to create the query on</param>
+        /// <param name="filters">Filters that need to be applied in the query</param>
+        /// <param name="libraryIds">libraries for which the query should filter</param>
+        /// <returns>Sqlite query that can query the count of shows</returns>
+        public static string GenerateCountQuery(this DbSet<SqlShow> list, Filter[] filters, IReadOnlyList<string> libraryIds)
+        {
+            var query = $@"
+SELECT COUNT() AS Count
+FROM {Constants.Tables.Shows} as s
+WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
+";
+            query = filters.Aggregate(query, (current, filter) => current + AddShowFilter(filter));
+
+            return query;
+        }
+
+        private static string AddShowFilter(Filter filter)
+        {
+            return $"AND {GenerateFilterString(filter)}\n";
+        }
+
+        private static string GenerateFilterString(Filter filter)
+        {
+            switch (filter.Field)
+            {
+                default:
+                    return filter.Operation switch
+                    {
+                        "==" => $"m.{filter.Field} = '{filter.Value}'",
+                        "!=" => $"m.{filter.Field} != '{filter.Value}'",
+                        "contains" => $"m.{filter.Field} LIKE '%{filter.Value}%'",
+                        "!contains" => $"m.{filter.Field} NOT LIKE '%{filter.Value}%'",
+                        "startsWith" => $"m.{filter.Field} LIKE '{filter.Value}%')",
+                        "endsWith" => $"m.{filter.Field} LIKE '%{filter.Value}')",
+                        "null" => $"m.{filter.Field} IS NULL OR m.{filter.Field} = ''",
+                        _ => string.Empty
+                    };
+            }
         }
 
         public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, IEnumerable<string> libraryIds, bool includeEpisodes)

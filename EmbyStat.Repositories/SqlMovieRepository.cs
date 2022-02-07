@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -397,7 +397,7 @@ ORDER BY Count";
 
         public async Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds)
         {
-            var query = MovieExtensions.GenerateCountQuery(filters, libraryIds);
+            var query = _context.Movies.GenerateCountQuery(filters, libraryIds);
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();

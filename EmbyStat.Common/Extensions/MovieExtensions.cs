@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,7 +55,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
         /// <param name="filters">Filters that need to be applied in the query</param>
         /// <param name="libraryIds">libraries for which the query should filter</param>
         /// <returns>Sqlite query that can query the count of movies</returns>
-        public static string GenerateCountQuery(Filter[] filters, IReadOnlyList<string> libraryIds)
+        public static string GenerateCountQuery(this DbSet<SqlMovie> list, Filter[] filters, IReadOnlyList<string> libraryIds)
         {
             var query = $@"
 SELECT COUNT() AS Count
