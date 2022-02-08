@@ -345,7 +345,7 @@ VALUES (@Type, @MovieId, @PersonId)";
             return _context.Movies.GetLowestRatedMedia(libraryIds, count);
         }
 
-        public async Task<Dictionary<string, int>> GetMovieGenreChartValues(IReadOnlyList<string> libraryIds)
+        public async Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds)
         {
             var query = $@"SELECT g.Name G, COUNT(*) Count
 FROM {Constants.Tables.Movies} AS m

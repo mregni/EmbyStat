@@ -113,6 +113,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation($"{Settings.ShowLibraries.Count} libraries are selected, getting ready for processing");
 
             var logIncrementBase = Math.Round(60 / (double)Settings.MovieLibraries.Count, 1);
+            var genres = await _genreRepository.GetAll();
 
             foreach (var library in Settings.ShowLibraries)
             {
@@ -132,6 +133,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     var shows = await _httpClient.GetShows(library.Id, j * limit, limit, library.LastSynced); 
 
                     shows.ForEach(x => x.CollectionId = library.Id);
+                    shows.AddGenres(genres);
+
                     foreach (var show in shows)
                     {
                         var seasons = await _httpClient.GetSeasons(show.Id, library.LastSynced);
@@ -149,7 +152,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                         var localShow = await _showRepository.GetShowByIdWithEpisodes(show.Id);
                         if (show.TMDB.HasValue)
                         {
-                            if (show.HasShowChangedEpisodes(localShow) || localShow is {ExternalSynced: false})
+                            if (show.HasShowChangedEpisodes(localShow) || localShow is { ExternalSynced: false })
                             {
                                 await GetMissingEpisodesFromProviderAsync(show);
                             }

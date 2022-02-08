@@ -54,6 +54,82 @@ namespace EmbyStat.Repositories
             return _context.Shows.GetLowestRatedMedia(libraryIds, count);
         }
 
+        public async Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds)
+        {
+            var query = $@"SELECT g.Name G, COUNT(*) Count
+FROM {Constants.Tables.Shows} AS s
+INNER JOIN {Constants.Tables.GenreShow} as gs ON (s.Id = gs.ShowsId)
+INNER JOIN {Constants.Tables.Genres} as g ON (g.Id = gs.GenresId)
+GROUP BY g.Name
+ORDER BY Count";
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            return connection.Query(query, new { Ids = libraryIds })
+                .ToDictionary(
+                    row => (string)row.G,
+                    row => (int)row.Count);
+        }
+
+        public IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
+        {
+            return _context.Shows
+                .FilterOnLibrary(libraryIds)
+                .Select(x => x.CommunityRating);
+        }
+
+        public IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds)
+        {
+            return _context.Shows
+                .FilterOnLibrary(libraryIds)
+                .Select(x => x.PremiereDate);
+        }
+
+        public async Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds)
+        {
+            var query = $@"SELECT upper(s.OfficialRating) OfficialRating, COUNT(*) Count
+FROM {Constants.Tables.Shows} AS s
+WHERE s.OfficialRating IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("s")}
+GROUP BY upper(s.OfficialRating)
+ORDER BY Count";
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            return connection.Query(query, new { Ids = libraryIds })
+                .ToDictionary(
+                    row => (string)row.OfficialRating,
+                    row => (int)row.Count);
+        }
+
+        public async Task<Dictionary<string, int>> GetShowStatusCharValues(IReadOnlyList<string> libraryIds)
+        {
+            var query = $@"SELECT s.Status Status, COUNT(*) Count
+FROM {Constants.Tables.Shows} AS s
+WHERE s.Status IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("s")}
+GROUP BY s.Status
+ORDER BY Count";
+
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            return connection.Query(query, new { Ids = libraryIds })
+                .ToDictionary(
+                    row => (string)row.Status,
+                    row => (int)row.Count);
+        }
+
+        public async Task<IEnumerable<double>> GetCollectedRateChart(IReadOnlyList<string> libraryIds)
+        {
+            var query = $@"SELECT ROUND(CAST(COUNT(*) FILTER(WHERE e.LocationType = 0) AS FLOAT) / COUNT(*), 2) AS pct
+FROM {Constants.Tables.Shows} AS s
+INNER JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
+INNER JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
+WHERE se.IndexNumber != 0 {libraryIds.AddLibraryIdFilterAsAnd("s")}
+GROUP BY s.Id
+ORDER BY s.Id";
+
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            return connection.Query<double>(query, new {Ids = libraryIds});
+        }
+
         public Task<int> Count(IReadOnlyList<string> libraryIds)
         {
             return Count(Array.Empty<Filter>(), libraryIds);
@@ -90,7 +166,7 @@ namespace EmbyStat.Repositories
             var query = $@"SELECT COUNT(DISTINCT g.Name)
 FROM {Constants.Tables.Shows} AS s
 INNER JOIN {Constants.Tables.GenreShow} AS gs ON (s.Id = gs.ShowsId)
-INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenreId)
+INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
 WHERE 1=1 {libraryIds.AddLibraryIdFilter("s")}";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
@@ -155,8 +231,8 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
                 if (show.Genres.AnyNotNull())
                 {
                     var genreQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.GenreShow} (GenresId, ShowsId) 
-VALUES ((SELECT Id FROM Genres WHERE name = @GenreName), @ShowsId)";
-                    var genreList = show.Genres.Select(x => new { GenreName = x.Name, ShowsId = show.Id });
+VALUES (@GenreId, @ShowsId)";
+                    var genreList = show.Genres.Select(x => new { GenreId = x.Id, ShowsId = show.Id });
                     await connection.ExecuteAsync(genreQuery, genreList, transaction);
                 }
 
@@ -179,15 +255,6 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
 
                     foreach (var episode in episodes)
                     {
-                        if (episode.People.AnyNotNull())
-                        {
-                            var peopleQuery =
-                                @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, EpisodeId, PersonId)
-VALUES (@Type, @EpisodeId, @PersonId)";
-                            episode.People.ForEach(x => x.EpisodeId = episode.Id);
-                            await connection.ExecuteAsync(peopleQuery, show.People, transaction);
-                        }
-
                         if (episode.MediaSources.AnyNotNull())
                         {
                             var mediaSourceQuery =

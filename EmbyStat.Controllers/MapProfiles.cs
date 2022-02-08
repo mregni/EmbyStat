@@ -139,9 +139,7 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.MovieId, x => x.Ignore())
                 .ForMember(x => x.Movie, x => x.Ignore())
                 .ForMember(x => x.ShowId, x => x.Ignore())
-                .ForMember(x => x.Show, x => x.Ignore())
-                .ForMember(x => x.EpisodeId, x => x.Ignore())
-                .ForMember(x => x.Episode, x => x.Ignore());
+                .ForMember(x => x.Show, x => x.Ignore());
         }
 
         private void CreateShowMappings()
@@ -172,7 +170,6 @@ namespace EmbyStat.Controllers
             CreateMap<BaseItemDto, SqlEpisode>()
                 .ForMember(x => x.SeasonId, x => x.MapFrom(y => y.ParentId))
                 .AddImageMappings()
-                .AddGenreMappings()
                 .AddProviderMappings()
                 .AddCommunityRatingMappings()
                 .AddStreamMappings();
@@ -227,7 +224,7 @@ namespace EmbyStat.Controllers
 
         }
     public static IMappingExpression<T1, T2> AddGenreMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
-            where T1 : BaseItemDto where T2 : SqlExtra
+            where T1 : BaseItemDto where T2 : ISqlLinked
         {
             return mapping.ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => new SqlGenre { Name = z })));
         }

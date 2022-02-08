@@ -19,9 +19,6 @@ namespace EmbyStat.Repositories.Interfaces
         Task UpsertRange(IEnumerable<SqlMovie> movies);
         IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds);
         IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds, bool includeGenres);
-
-        Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds);
-        Task<Dictionary<string, int>> GetMovieGenreChartValues(IReadOnlyList<string> libraryIds);
         IEnumerable<SqlMovie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
         long? GetTotalRuntime(IReadOnlyList<string> libraryIds);
         IEnumerable<SqlMovie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count);
@@ -37,7 +34,5 @@ namespace EmbyStat.Repositories.Interfaces
         IEnumerable<LabelValuePair> CalculateCollectionFilterValues();
         IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds);
         IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds);
-        IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds);
     }
 }

@@ -62,15 +62,13 @@ namespace EmbyStat.Services
 
         public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
         {
-            //var shows = await _showRepository.GetAllShowsWithEpisodes(libraryIds, true, true);
-
             var statistics = new ShowStatistics
             {
                 Cards = await CalculateCards(libraryIds),
                 TopCards = CalculateTopCards(libraryIds),
                 People = CalculatePeopleStatistics(libraryIds),
-                //BarCharts = CalculateBarCharts(shows),
-                //PieCharts = CalculatePieChars(shows)
+                BarCharts = await CalculateBarCharts(libraryIds),
+                PieCharts = await CalculatePieChars(libraryIds)
             };
 
             var json = JsonConvert.SerializeObject(statistics);
@@ -321,84 +319,84 @@ namespace EmbyStat.Services
 
         #region Charts
 
-        private List<Chart> CalculateBarCharts(IEnumerable<Show> shows)
+        private async Task<List<Chart>> CalculateBarCharts(IReadOnlyList<string> libraryIds)
         {
             var list = new List<Chart>();
-            list.AddIfNotNull(CalculateGenreChart(shows));
-            list.AddIfNotNull(CalculateRatingChart(shows.Select(x => x.CommunityRating)));
-            list.AddIfNotNull(CalculatePremiereYearChart(shows.Select(x => x.PremiereDate)));
-            list.AddIfNotNull(CalculateCollectedRateChart(shows));
-
+            list.AddIfNotNull(await CalculateGenreChart(libraryIds));
+            list.AddIfNotNull(CalculateRatingChart(libraryIds));
+            list.AddIfNotNull(CalculatePremiereYearChart(libraryIds));
+            list.AddIfNotNull(await CalculateCollectedRateChart(libraryIds));
+            list.AddIfNotNull(await CalculateOfficialRatingChart(libraryIds));
             return list;
         }
 
-        private List<Chart> CalculatePieChars(IEnumerable<Show> shows)
+        private Task<Chart> CalculateGenreChart(IReadOnlyList<string> libraryIds)
         {
-            var list = new List<Chart>();
-            list.AddIfNotNull(CalculateOfficialRatingChart(shows));
-            list.AddIfNotNull(CalculateShowStateChart(shows));
-
-            return list;
+            return CalculateStat(async () =>
+            {
+                var genres = await _showRepository.GetGenreChartValues(libraryIds);
+                return CreateGenreChart(genres);
+            }, "Calculate genre chart failed:");
         }
 
-        private Chart CalculateShowStateChart(IEnumerable<Show> shows)
+        private Chart CalculateRatingChart(IReadOnlyList<string> libraryIds)
         {
             return CalculateStat(() =>
             {
-                var list = shows
-                    .GroupBy(x => x.Status)
-                    .Select(x => new { Label = x.Key, Val0 = x.Count() })
+                var items = _showRepository.GetCommunityRatings(libraryIds);
+                return CreateRatingChart(items);
+            }, "Calculate rating chart failed:");
+        }
+
+        internal Chart CalculatePremiereYearChart(IReadOnlyList<string> libraryIds)
+        {
+            return CalculateStat(() =>
+            {
+                var yearDataList = _showRepository.GetPremiereYears(libraryIds);
+                return CalculatePremiereYearChart(yearDataList);
+            }, "Calculate premiered year chart failed:");
+        }
+
+        private Task<Chart> CalculateOfficialRatingChart(IReadOnlyList<string> libraryIds)
+        {
+            return CalculateStat(async () =>
+            {
+                var ratings = await _showRepository.GetOfficialRatingChartValues(libraryIds);
+                return CalculateOfficialRatingChart(ratings);
+            }, "Calculate official movie rating chart failed:");
+        }
+
+        private async Task<List<Chart>> CalculatePieChars(IReadOnlyList<string> libraryIds)
+        {
+            var list = new List<Chart>();
+            list.AddIfNotNull(await CalculateShowStateChart(libraryIds));
+
+            return list;
+        }
+
+        private Task<Chart> CalculateShowStateChart(IReadOnlyList<string> libraryIds)
+        {
+            return CalculateStat(async () =>
+            {
+                var list = await _showRepository.GetShowStatusCharValues(libraryIds);
+                var results = list
+                    .Select(x => new { Label = x.Key, Val0 = x.Value })
                     .OrderByDescending(x => x.Val0)
                     .ToList();
 
                 return new Chart
                 {
                     Title = Constants.Shows.ShowStatusChart,
-                    DataSets = JsonConvert.SerializeObject(list),
+                    DataSets = JsonConvert.SerializeObject(results),
                     SeriesCount = 1
 
                 };
             }, "Calculate show state chart failed:");
         }
 
-        private Chart CalculateOfficialRatingChart(IEnumerable<Show> shows)
+        private async Task<Chart> CalculateCollectedRateChart(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
-            {
-                var ratingData = shows
-                    .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
-                    .GroupBy(x => x.OfficialRating.ToUpper())
-                    .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                    .OrderByDescending(x => x.Val0)
-                    .ToList();
-
-                return new Chart
-                {
-                    Title = Constants.CountPerOfficialRating,
-                    DataSets = JsonConvert.SerializeObject(ratingData),
-                    SeriesCount = 1
-                };
-            }, "Calculate official show rating chart failed:");
-        }
-
-        private Chart CalculateCollectedRateChart(IEnumerable<Show> shows)
-        {
-            var percentageList = new List<double>();
-            foreach (var show in shows)
-            {
-                var specialSeasonId = show.Seasons.FirstOrDefault(x => x.IndexNumber == 0)?.Id.ToString() ?? "0";
-                var episodeCount = show.Episodes.Count(x => x.LocationType == LocationType.Disk && x.ParentId != specialSeasonId);
-                var missingEpisodeCount = show.Episodes.Count(x => x.LocationType == LocationType.Virtual && x.ParentId != specialSeasonId);
-
-                if (episodeCount + missingEpisodeCount == 0)
-                {
-                    percentageList.Add(0);
-                }
-                else
-                {
-                    percentageList.Add((double)episodeCount / (episodeCount + missingEpisodeCount));
-                }
-            }
+            var percentageList = await _showRepository.GetCollectedRateChart(libraryIds);
 
             var groupedList = percentageList
                 .GroupBy(x => x.RoundToFive())

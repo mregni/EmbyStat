@@ -57,7 +57,7 @@ namespace EmbyStat.Common.Extensions
                 .Take(count);
         }
 
-        public static void AddGenres<T>(this IEnumerable<T> items, IEnumerable<SqlGenre> genres) where T : SqlExtra
+        public static void AddGenres<T>(this IEnumerable<T> items, IEnumerable<SqlGenre> genres) where T : ISqlLinked
         {
             var genreList = genres.ToList();
             foreach (var item in items)

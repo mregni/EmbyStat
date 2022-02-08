@@ -6,10 +6,9 @@ using EmbyStat.Common.SqLite.Streams;
 
 namespace EmbyStat.Common.SqLite.Movies
 {
-    public class SqlMovie : SqlVideo
+    public class SqlMovie : SqlVideo, ISqlLinked
     {
         public string OriginalTitle { get; set; }
-        
 
         public override bool Equals(object? other)
         {
@@ -25,5 +24,11 @@ namespace EmbyStat.Common.SqLite.Movies
         {
             return HashCode.Combine(Id);
         }
+
+        #region Inherited props
+        public ICollection<SqlMediaPerson> People { get; set; }
+        public ICollection<SqlGenre> Genres { get; set; }
+
+        #endregion
     }
 }

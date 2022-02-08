@@ -400,7 +400,7 @@ namespace EmbyStat.Clients.Base.Http
                 {
                         ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                         ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                        ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
+                        ItemFields.SortName, ItemFields.ParentId, ItemFields.MediaSources,
                         ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
                         ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
                     }

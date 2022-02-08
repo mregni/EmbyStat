@@ -71,8 +71,6 @@ namespace EmbyStat.Repositories
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.EpisodeId);
-            modelBuilder.Entity<SqlMediaPerson>().Property(x => x.EpisodeId).IsRequired(false);
             modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.ShowId);
             modelBuilder.Entity<SqlMediaPerson>().Property(x => x.ShowId).IsRequired(false);
             modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.MovieId);
@@ -89,11 +87,6 @@ namespace EmbyStat.Repositories
                 .WithOne(x => x.Movie)
                 .IsRequired()
                 .HasForeignKey(x => x.MovieId);
-            modelBuilder.Entity<SqlEpisode>()
-                .HasMany(x => x.People)
-                .WithOne(x => x.Episode)
-                .IsRequired()
-                .HasForeignKey(x => x.EpisodeId);
 
             modelBuilder.Entity<SqlPerson>()
                 .HasMany(x => x.MediaPeople)
@@ -110,6 +103,10 @@ namespace EmbyStat.Repositories
                 .HasForeignKey(x => x.ShowId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SqlGenre>()
+                .HasMany(x => x.Shows)
+                .WithMany(x => x.Genres);
 
             modelBuilder.Entity<SqlSeason>()
                 .HasMany(x => x.Episodes)
@@ -138,10 +135,6 @@ namespace EmbyStat.Repositories
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<SqlGenre>()
-                .HasMany(x => x.Shows)
-                .WithMany(x => x.Genres);
         }
 
         private void BuildMovies(ModelBuilder modelBuilder)
@@ -169,10 +162,6 @@ namespace EmbyStat.Repositories
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<SqlGenre>()
-                .HasMany(x => x.Movies)
-                .WithMany(x => x.Genres);
         }
     }
 }

@@ -13,8 +13,6 @@ namespace EmbyStat.Common.SqLite.Helpers
         public string MovieId { get; set; }
         public SqlShow Show { get; set; }
         public string ShowId { get; set; }
-        public SqlEpisode Episode { get; set; }
-        public string EpisodeId { get; set; }
         public SqlPerson Person { get; set; }
         public string PersonId { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Query;
@@ -13,6 +14,14 @@ namespace EmbyStat.Repositories.Interfaces.Helpers
         IEnumerable<SqlMedia> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
         IEnumerable<SqlExtra> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count);
         IEnumerable<SqlExtra> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count);
+
+        #region Charts
+        Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds);
+        IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds);
+        IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds);
+        Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds);
+        #endregion
+
         Task<int> Count(IReadOnlyList<string> libraryIds);
         Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds);
         bool Any();

@@ -300,97 +300,38 @@ namespace EmbyStat.Services
         private async Task<List<Chart>> CalculateCharts(IReadOnlyList<string> libraryIds)
         {
             var list = new List<Chart>();
-            list.AddIfNotNull(await CalculateMovieGenreChart(libraryIds));
-            list.AddIfNotNull(CalculateMovieRatingChart(libraryIds));
-            list.AddIfNotNull(CalculateMoviePremiereYearChart(libraryIds));
+            list.AddIfNotNull(await CalculateGenreChart(libraryIds));
+            list.AddIfNotNull(CalculateRatingChart(libraryIds));
+            list.AddIfNotNull(CalculatePremiereYearChart(libraryIds));
             list.AddIfNotNull(await CalculateOfficialRatingChart(libraryIds));
 
             return list;
         }
 
-        private Task<Chart> CalculateMovieGenreChart(IReadOnlyList<string> libraryIds)
+        private Task<Chart> CalculateGenreChart(IReadOnlyList<string> libraryIds)
         {
             return CalculateStat(async () =>
             {
-                var genres = await _movieRepository.GetMovieGenreChartValues(libraryIds);
-                var genresData = genres.Select(x => new {Label = x.Key, Val0 = x.Value});
-
-                return new Chart
-                {
-                    Title = Constants.CountPerGenre,
-                    DataSets = JsonConvert.SerializeObject(genresData),
-                    SeriesCount = 1
-                };
+                var genres = await _movieRepository.GetGenreChartValues(libraryIds);
+                return CreateGenreChart(genres);
             }, "Calculate genre chart failed:");
         }
 
-        private Chart CalculateMovieRatingChart(IReadOnlyList<string> libraryIds)
+        private Chart CalculateRatingChart(IReadOnlyList<string> libraryIds)
         {
             return CalculateStat(() =>
             {
-                var ratingDataList = _movieRepository.GetCommunityRatings(libraryIds)
-                    .GroupBy(x => x.RoundToHalf())
-                    .OrderBy(x => x.Key)
-                    .ToList();
-
-                for (double i = 0; i < 10; i += 0.5)
-                {
-                    if (!ratingDataList.Any(x => x.Key == i))
-                    {
-                        ratingDataList.Add(new ChartGrouping<double?, float?> { Key = i, Capacity = 0 });
-                    }
-                }
-
-                var ratingData = ratingDataList
-                    .Select(x => new { Label = x.Key?.ToString() ?? Constants.Unknown, Val0 = x.Count() })
-                    .OrderBy(x => x.Label)
-                    .ToList();
-
-                return new Chart
-                {
-                    Title = Constants.CountPerCommunityRating,
-                    DataSets = JsonConvert.SerializeObject(ratingData),
-                    SeriesCount = 1
-                };
+                var items = _movieRepository.GetCommunityRatings(libraryIds);
+                return CreateRatingChart(items);
             }, "Calculate rating chart failed:");
         }
 
-        internal Chart CalculateMoviePremiereYearChart(IReadOnlyList<string> libraryIds)
+        internal Chart CalculatePremiereYearChart(IReadOnlyList<string> libraryIds)
         {
             return CalculateStat(() =>
             {
-                var yearDataList = _movieRepository
-                    .GetPremiereYears(libraryIds)
-                    .GroupBy(x => x.RoundToFiveYear())
-                    .Where(x => x.Key != null)
-                    .OrderBy(x => x.Key)
-                    .ToList();
-
-                if (yearDataList.Any())
-                {
-                    var lowestYear = yearDataList.Where(x => x.Key.HasValue).Min(x => x.Key);
-                    var highestYear = yearDataList.Where(x => x.Key.HasValue).Max(x => x.Key);
-
-                    for (var i = lowestYear; i < highestYear; i += 5)
-                    {
-                        if (yearDataList.All(x => x.Key != i))
-                        {
-                            yearDataList.Add(new ChartGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
-                        }
-                    }
-                }
-
-                var yearData = yearDataList
-                    .Select(x => new { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Val0 = x.Count() })
-                    .OrderBy(x => x.Label)
-                    .ToList();
-
-                return new Chart
-                {
-                    Title = Constants.CountPerPremiereYear,
-                    DataSets = JsonConvert.SerializeObject(yearData),
-                    SeriesCount = 1
-                };
+                var yearDataList = _movieRepository.GetPremiereYears(libraryIds);
+                return CalculatePremiereYearChart(yearDataList);
             }, "Calculate premiered year chart failed:");
         }
 
@@ -399,14 +340,7 @@ namespace EmbyStat.Services
             return CalculateStat(async () =>
             {
                 var ratings = await _movieRepository.GetOfficialRatingChartValues(libraryIds);
-                var ratingData = ratings.Select(x => new { Label = x.Key, Val0 = x.Value });
-
-                return new Chart
-                {
-                    Title = Constants.CountPerOfficialRating,
-                    DataSets = JsonConvert.SerializeObject(ratingData),
-                    SeriesCount = 1
-                };
+                return CalculateOfficialRatingChart(ratings);
             }, "Calculate official movie rating chart failed:");
         }
 
