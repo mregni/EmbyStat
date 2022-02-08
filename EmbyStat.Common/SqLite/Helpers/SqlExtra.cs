@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EmbyStat.Common.SqLite.Helpers
+﻿namespace EmbyStat.Common.SqLite.Helpers
 {
     public abstract class SqlExtra : SqlMedia
     {

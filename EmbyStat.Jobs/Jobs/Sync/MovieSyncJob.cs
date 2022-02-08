@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using MediaBrowser.Model.Querying;
-using MoreLinq;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {

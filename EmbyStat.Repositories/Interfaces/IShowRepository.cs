@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Repositories.Interfaces.Helpers;
@@ -17,7 +15,7 @@ namespace EmbyStat.Repositories.Interfaces
         Task<SqlShow> GetShowByIdWithEpisodes(string showId);
         void RemoveShows();
         Dictionary<SqlShow, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<SqlShow> GetShowPage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds);
+        Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds);
         #endregion
 
         #region Charts

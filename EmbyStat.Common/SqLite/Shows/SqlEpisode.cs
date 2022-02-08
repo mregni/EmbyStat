@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EmbyStat.Common.Enums;
+﻿using EmbyStat.Common.Enums;
 using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Streams;
 
 namespace EmbyStat.Common.SqLite.Shows
 {

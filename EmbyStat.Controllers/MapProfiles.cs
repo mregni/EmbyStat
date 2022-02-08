@@ -4,7 +4,6 @@ using System.Linq;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -123,7 +122,7 @@ namespace EmbyStat.Controllers
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
-            CreateMap<ShowRow, ShowRowViewModel>();
+            
 
             CreateMap<SqlAudioStream, AudioStreamViewModel>();
             CreateMap<SqlMediaSource, MediaSourceViewModel>();
@@ -155,13 +154,22 @@ namespace EmbyStat.Controllers
                 .AddCommunityRatingMappings()
                 .AddGenreMappings();
 
-            CreateMap<SqlShow, ShowDetailViewModel>();
-            //.ForMember(x => x.SizeInMb, x => x.MapFrom(y => y.Episodes.Sum(z => z.MediaSources.FirstOrDefault() != null ? z.MediaSources.First().SizeInMb : 0.0)))
-            //.ForMember(x => x.CollectedEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(false, LocationType.Disk)))
-            //.ForMember(x => x.MissingEpisodes, x => x.MapFrom(y => y.GetMissingEpisodes()))
-            //.ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.GetSeasonCount(false)))
-            //.ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.GetEpisodeCount(true, LocationType.Disk)));
-
+            CreateMap<SqlShow, ShowRowViewModel>()
+                .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.Seasons.Count))
+                .ForMember(x => x.EpisodeCount, x => x.MapFrom(y => y.Seasons
+                    .Where(z => z.IndexNumber != 0)
+                    .SelectMany(z => z.Episodes)
+                    .Where(z => z.LocationType == LocationType.Disk)))
+                .ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.Seasons
+                    .Where(z => z.IndexNumber == 0)
+                    .SelectMany(z => z.Episodes)
+                    .Where(z => z.LocationType == LocationType.Disk)))
+                .ForMember(x => x.MissingEpisodeCount, x => x.MapFrom(y => y.Seasons
+                    .Where(z => z.IndexNumber != 0)
+                    .SelectMany(z => z.Episodes)
+                    .Where(z => z.LocationType == LocationType.Virtual)))
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(x => x.Name).Distinct()))
+                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)));
 
             CreateMap<BaseItemDto, SqlSeason>()
                 .ForMember(x => x.Episodes, x => x.MapFrom((y => new List<SqlEpisode>())))

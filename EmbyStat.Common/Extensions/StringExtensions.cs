@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Common.Extensions
@@ -47,5 +46,35 @@ namespace EmbyStat.Common.Extensions
                 "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
                 _ => input.First().ToString().ToUpper() + input.Substring(1)
             };
+
+        public static double[] FormatInputValue(this string value)
+        {
+            return FormatInputValue(value, 1);
+        }
+
+        public static double[] FormatInputValue(this string value, int multiplier)
+        {
+            var decodedValue = HttpUtility.UrlDecode(value);
+            if (decodedValue.Contains('|'))
+            {
+                var left = Convert.ToDouble(decodedValue.Split('|')[0]) * multiplier;
+                var right = Convert.ToDouble(decodedValue.Split('|')[1]) * multiplier;
+
+                //switching sides if user put the biggest number on the left side.
+                if (right < left)
+                {
+                    (left, right) = (right, left);
+                }
+
+                return new[] { left, right };
+            }
+
+            if (decodedValue.Length == 0)
+            {
+                return new[] { 0d };
+            }
+
+            return new[] { Convert.ToDouble(decodedValue) * multiplier };
+        }
     }
 }

@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EmbyStat.Common.Enums;
-using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Query;
-using EmbyStat.Repositories.Helpers;
-using EmbyStat.Repositories.Interfaces;
-using LiteDB;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace EmbyStat.Repositories
+﻿namespace EmbyStat.Repositories
 {
     //public class ShowRepository : MediaRepository<Show>, IShowRepository
     //{

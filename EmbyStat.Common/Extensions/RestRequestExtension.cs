@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using EmbyStat.Common.Models;
-using RestSharp;
 
 namespace EmbyStat.Common.Extensions
 {

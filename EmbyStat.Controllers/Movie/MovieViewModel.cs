@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
-using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.HelperClasses.Streams;
 
 namespace EmbyStat.Controllers.Movie

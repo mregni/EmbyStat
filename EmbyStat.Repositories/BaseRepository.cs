@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Repositories.Interfaces;
 using LiteDB;
-using Microsoft.Data.Sqlite;
 
 namespace EmbyStat.Repositories
 {

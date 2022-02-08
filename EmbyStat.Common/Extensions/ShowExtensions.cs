@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite.Shows;
@@ -62,43 +60,21 @@ namespace EmbyStat.Common.Extensions
         /// <param name="filters">Filters that need to be applied in the query</param>
         /// <param name="libraryIds">libraries for which the query should filter</param>
         /// <returns>Sqlite query that can query the count of shows</returns>
-        public static string GenerateCountQuery(this DbSet<SqlShow> list, Filter[] filters, IReadOnlyList<string> libraryIds)
+        public static string GenerateCountQuery(this DbSet<SqlShow> list, Filter[] filters,
+            IReadOnlyList<string> libraryIds)
         {
             var query = $@"
 SELECT COUNT() AS Count
 FROM {Constants.Tables.Shows} as s
 WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
 ";
-            query = filters.Aggregate(query, (current, filter) => current + AddShowFilter(filter));
+            query = filters.Aggregate(query, (current, filter) => current + AddShowFilters(filter));
 
             return query;
         }
 
-        private static string AddShowFilter(Filter filter)
-        {
-            return $"AND {GenerateFilterString(filter)}\n";
-        }
-
-        private static string GenerateFilterString(Filter filter)
-        {
-            switch (filter.Field)
-            {
-                default:
-                    return filter.Operation switch
-                    {
-                        "==" => $"m.{filter.Field} = '{filter.Value}'",
-                        "!=" => $"m.{filter.Field} != '{filter.Value}'",
-                        "contains" => $"m.{filter.Field} LIKE '%{filter.Value}%'",
-                        "!contains" => $"m.{filter.Field} NOT LIKE '%{filter.Value}%'",
-                        "startsWith" => $"m.{filter.Field} LIKE '{filter.Value}%')",
-                        "endsWith" => $"m.{filter.Field} LIKE '%{filter.Value}')",
-                        "null" => $"m.{filter.Field} IS NULL OR m.{filter.Field} = ''",
-                        _ => string.Empty
-                    };
-            }
-        }
-
-        public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, IEnumerable<string> libraryIds, bool includeEpisodes)
+        public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, bool includeEpisodes,
+            IEnumerable<string> libraryIds)
         {
             var queryBuilder = new StringBuilder("SELECT s.*");
 
@@ -113,24 +89,119 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
             return queryBuilder.ToString();
         }
 
-        public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, bool includeEpisodes)
+        public static string GenerateShowPageQuery(this DbSet<SqlShow> shows, Filter[] filters, List<string> libraryIds,
+            string sortField, string sortOrder)
         {
-            var queryBuilder = new StringBuilder("SELECT s.*");
+            var query = $@"
+SELECT s.*, g.*, se.*, e.*
+FROM {Constants.Tables.Shows} as s
+LEFT JOIN {Constants.Tables.GenreShow} AS gs ON (gs.ShowsId = s.Id)
+LEFT JOIN {Constants.Tables.Genres} AS g ON (gs.GenresId = g.Id)
+LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
+LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
+WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}";
 
-            queryBuilder.Append(AddString(includeEpisodes, ", se.*, e.*"));
-            queryBuilder.Append($" FROM {Constants.Tables.Shows} AS s");
+            query = filters.Aggregate(query, (current, filter) => current + AddShowFilters(filter));
 
-            var seasonTable = $" LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)";
-            var episodeTable = $" LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)";
-            queryBuilder.Append(AddString(includeEpisodes, $"{seasonTable}{episodeTable}"));
+            if (string.IsNullOrWhiteSpace(sortField))
+            {
+                return query;
+            }
 
-            queryBuilder.Append($" WHERE s.Id = @Id");
-            return queryBuilder.ToString();
+            sortField = sortField.FirstCharToUpper();
+            query += $"ORDER BY {sortField} {sortOrder.ToUpper()} ";
+
+            return query;
         }
 
-        private static string AddString(bool includeEpisodes, string value)
+        private static string AddString(bool add, string value)
         {
-            return includeEpisodes ? value : string.Empty;
+            return add ? value : string.Empty;
+        }
+
+        private static string AddShowFilters(Filter filter)
+        {
+            return $"AND {GenerateFilterString(filter)}\n";
+        }
+
+        private static string GenerateFilterString(Filter filter)
+        {
+            switch (filter.Field)
+            {
+                case "Genres":
+                {
+                    return filter.Operation switch
+                    {
+                        "!any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'", true),
+                        "any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'"),
+                        _ => string.Empty
+                    };
+                }
+                case "Images":
+                    return filter.Value switch
+                    {
+                        "Primary" => filter.Operation switch
+                        {
+                            "!null" => $"s.Primary IS NOT NULL",
+                            "null" => $"s.Primary IS NOT NULL",
+                            _ => string.Empty
+                        },
+                        "Logo" => filter.Operation switch
+                        {
+                            "!null" => $"s.Logo IS NOT NULL",
+                            "null" => $"s.Logo IS NOT NULL",
+                            _ => string.Empty
+                        },
+                        _ => string.Empty
+                    };
+                case "CommunityRating":
+                    var ratingValues = filter.Value.FormatInputValue();
+                    return filter.Operation switch
+                    {
+                        "==" => $"s.CommunityRating = {filter.Value}",
+                        "between" => $"s.CommunityRating > {ratingValues[0]} s.CommunityRating < {ratingValues[1]}",
+                        _ => string.Empty
+                    };
+                case "RunTimeTicks":
+                    var runTimeValues = filter.Value.FormatInputValue();
+                    return filter.Operation switch
+                    {
+                        "<" => $"s.RunTimeTicks < {filter.Value}",
+                        ">" => $"s.RunTimeTicks > {filter.Value}",
+                        "between" =>
+                            $"s.RunTimeTicks > {runTimeValues[0]} s.RunTimeTicks < {runTimeValues[1]}",
+                        _ => string.Empty
+                    };
+                case "Name":
+                    return filter.Operation switch
+                    {
+                        "==" => $"(s.SortName = '{filter.Value}' OR s.Name = '{filter.Value}')",
+                        "contains" => $"(s.SortName LIKE '%{filter.Value}%' OR s.Name LIKE '%{filter.Value}%')",
+                        "!contains" =>
+                            $"(s.SortName NOT LIKE '%{filter.Value}%' OR s.Name NOT LIKE '%{filter.Value}%')",
+                        "startsWith" => $"(s.SortName LIKE '{filter.Value}%' OR s.Name LIKE '{filter.Value}%')",
+                        "endsWith" => $"(s.SortName LIKE '%{filter.Value}' OR s.Name LIKE '%{filter.Value}')",
+                        _ => string.Empty
+                    };
+                default:
+                    return filter.Operation switch
+                    {
+                        "==" => $"s.{filter.Field} = '{filter.Value}'",
+                        "!=" => $"s.{filter.Field} != '{filter.Value}'",
+                        "contains" => $"s.{filter.Field} LIKE '%{filter.Value}%'",
+                        "!contains" => $"s.{filter.Field} NOT LIKE '%{filter.Value}%'",
+                        "startsWith" => $"s.{filter.Field} LIKE '{filter.Value}%')",
+                        "endsWith" => $"s.{filter.Field} LIKE '%{filter.Value}')",
+                        "null" => $"s.{filter.Field} IS NULL OR s.{filter.Field} = ''",
+                        _ => string.Empty
+                    };
+            }
+        }
+
+        private static string GenerateExistsGenreLine(string query, bool invert = false)
+        {
+            var prefix = invert ? "NOT " : string.Empty;
+            return $"{prefix}EXISTS (SELECT 1 FROM {Constants.Tables.GenreMovie} AS s0 INNER JOIN {Constants.Tables.Genres} AS g0 ON s0.GenresId = g0.Id WHERE (s.Id = s0.GenresId) AND ({query}))";
         }
     }
 }

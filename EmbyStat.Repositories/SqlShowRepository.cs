@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Repositories.Interfaces.Helpers;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
 
@@ -300,7 +298,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
 
         public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds)
         {
-            var query = _context.Shows.GenerateFullShowQuery(libraryIds, true);
+            var query = _context.Shows.GenerateFullShowQuery(true, libraryIds);
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
@@ -317,7 +315,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return MapShows(list);
         }
 
-        private IEnumerable<SqlShow> MapShows(IEnumerable<SqlShow> list)
+        private static IEnumerable<SqlShow> MapShows(IEnumerable<SqlShow> list)
         {
             var result = list
                 .GroupBy(s => s.Id)
@@ -338,6 +336,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                         });
 
                     groupedShow.Seasons = groupedSeasons.ToList();
+                    groupedShow.Genres = Enumerable.DistinctBy(g.Select(p => p.Genres.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
                     return groupedShow;
                 });
             return result;
@@ -345,7 +344,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
 
         public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
         {
-            var query = _context.Shows.GenerateFullShowQuery(true);
+            var query = _context.Shows.GenerateFullShowQuery(true, Array.Empty<string>());
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
@@ -373,9 +372,25 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SqlShow> GetShowPage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds)
+        public async Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds)
         {
-            throw new NotImplementedException();
+            var query = _context.Shows.GenerateShowPageQuery(filters, libraryIds, sortField, sortOrder);
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+
+            var list = await connection.QueryAsync<SqlShow, SqlGenre, SqlSeason, SqlEpisode, SqlShow>(query, (s, g, se, e) =>
+            {
+                s.Genres ??= new List<SqlGenre>();
+                s.Seasons ??= new List<SqlSeason>();
+                se.Episodes ??= new List<SqlEpisode>();
+
+                s.Genres.AddIfNotNull(g);
+                se.Episodes.AddIfNotNull(e);
+                s.Seasons.AddIfNotNull(se);
+                return s;
+            }, new { Ids = libraryIds });
+
+            return MapShows(list);
         }
 
         #endregion

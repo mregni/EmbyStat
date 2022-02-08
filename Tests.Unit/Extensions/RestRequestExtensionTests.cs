@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using FluentAssertions;
 using MediaBrowser.Model.Entities;

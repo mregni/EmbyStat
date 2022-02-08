@@ -1,13 +1,8 @@
-﻿using System;
-using EmbyStat.Common.Models.Entities;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmbyStat.Common.Enums;
 using EmbyStat.Repositories.Interfaces.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Movies;
 
 namespace EmbyStat.Repositories.Interfaces

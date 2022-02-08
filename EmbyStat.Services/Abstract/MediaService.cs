@@ -4,7 +4,6 @@ using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;

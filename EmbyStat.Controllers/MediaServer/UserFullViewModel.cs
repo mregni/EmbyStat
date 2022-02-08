@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EmbyStat.Controllers.HelperClasses;
 
 namespace EmbyStat.Controllers.MediaServer

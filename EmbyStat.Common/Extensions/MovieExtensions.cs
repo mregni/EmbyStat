@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Movies;
 using Microsoft.EntityFrameworkCore;
 
@@ -86,7 +81,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     });
                 case "SizeInMb":
-                    var sizeValues = FormatInputValue(filter.Value, 1024);
+                    var sizeValues = filter.Value.FormatInputValue(1024);
                     return (filter.Operation switch
                     {
                         "<" => GenerateExistsLine(Constants.Tables.MediaSources, $"s0.SizeInMb < {sizeValues[0]}"),
@@ -96,7 +91,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     });
                 case "BitDepth":
-                    var depthValues = FormatInputValue(filter.Value);
+                    var depthValues = filter.Value.FormatInputValue();
                     return (filter.Operation switch
                     {
                         "<" => GenerateExistsLine(Constants.Tables.VideoStreams, $"s0.BitDepth < {depthValues[0]}"),
@@ -120,7 +115,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     });
                 case "Height":
-                    var heightValues = FormatInputValue(filter.Value);
+                    var heightValues = filter.Value.FormatInputValue();
                     return (filter.Operation switch
                     {
                         "==" => GenerateExistsLine(Constants.Tables.VideoStreams, $"s0.Height = {heightValues[0]}"),
@@ -131,7 +126,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     });
                 case "Width":
-                    var heightWidths = FormatInputValue(filter.Value);
+                    var heightWidths = filter.Value.FormatInputValue();
                     return (filter.Operation switch
                     {
                         "==" => GenerateExistsLine(Constants.Tables.VideoStreams, $"s0.Width = {heightWidths[0]}"),
@@ -142,7 +137,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     });
                 case "AverageFrameRate":
-                    var heightFps = FormatInputValue(filter.Value);
+                    var heightFps = filter.Value.FormatInputValue();
                     return (filter.Operation switch
                     {
                         "==" => GenerateExistsLine(Constants.Tables.VideoStreams, $"s0.AverageFrameRate = {heightFps[0]}"),
@@ -156,8 +151,8 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                     {
                         return filter.Operation switch
                         {
-                            "!any" => GenerateExistsGenreLine(Constants.Tables.GenreMovie, Constants.Tables.Genres, $"g0.Name = '{filter.Value}'", true),
-                            "any" => GenerateExistsGenreLine(Constants.Tables.GenreMovie, Constants.Tables.Genres, $"g0.Name = '{filter.Value}'"),
+                            "!any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'", true),
+                            "any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'"),
                             _ => string.Empty
                         };
                     }
@@ -179,7 +174,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     };
                 case "CommunityRating":
-                    var ratingValues = FormatInputValue(filter.Value);
+                    var ratingValues = filter.Value.FormatInputValue();
                     return filter.Operation switch
                     {
                         "==" => $"m.CommunityRating = {filter.Value}",
@@ -187,7 +182,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         _ => string.Empty
                     };
                 case "RunTimeTicks":
-                    var runTimeValues = FormatInputValue(filter.Value);
+                    var runTimeValues = filter.Value.FormatInputValue();
                     return filter.Operation switch
                     {
                         "<" => $"m.RunTimeTicks < {filter.Value}",
@@ -221,40 +216,10 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
             }
         }
 
-        public static double[] FormatInputValue(string value)
-        {
-            return FormatInputValue(value, 1);
-        }
-
-        public static double[] FormatInputValue(string value, int multiplier)
-        {
-            var decodedValue = HttpUtility.UrlDecode(value);
-            if (decodedValue.Contains('|'))
-            {
-                var left = Convert.ToDouble(decodedValue.Split('|')[0]) * multiplier;
-                var right = Convert.ToDouble(decodedValue.Split('|')[1]) * multiplier;
-
-                //switching sides if user put the biggest number on the left side.
-                if (right < left)
-                {
-                    (left, right) = (right, left);
-                }
-
-                return new[] { left, right };
-            }
-
-            if (decodedValue.Length == 0)
-            {
-                return new[] { 0d };
-            }
-
-            return new[] { Convert.ToDouble(decodedValue) * multiplier };
-        }
-
-        private static string GenerateExistsGenreLine(string tableLeft, string tableRight, string query, bool invert = false)
+        private static string GenerateExistsGenreLine(string query, bool invert = false)
         {
             var prefix = invert ? "NOT " : string.Empty;
-            return $"{prefix}EXISTS (SELECT 1 FROM {tableLeft} AS s0 INNER JOIN {tableRight} AS g0 ON s0.GenresId = g0.Id WHERE (m.Id = s0.MoviesId) AND ({query}))";
+            return $"{prefix}EXISTS (SELECT 1 FROM {Constants.Tables.GenreMovie} AS s0 INNER JOIN {Constants.Tables.Genres} AS g0 ON s0.GenresId = g0.Id WHERE (m.Id = s0.MoviesId) AND ({query}))";
         }
 
         private static string GenerateExistsLine(string table, string query, bool invert = false)

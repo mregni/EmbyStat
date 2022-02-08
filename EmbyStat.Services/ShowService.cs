@@ -82,26 +82,11 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        public async Task<Page<ShowRow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public async Task<Page<SqlShow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
-            var list = _showRepository
-                .GetShowPage(skip, take, sort, filters, libraryIds)
-                .Select(x => new ShowRow
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    SortName = x.SortName,
-                    //CollectedEpisodeCount = x.Co(false, LocationType.Disk),
-                    //MissingEpisodesCount = x.GetEpisodeCount(false, LocationType.Virtual),
-                    //SpecialEpisodeCount = x.GetEpisodeCount(true, LocationType.Disk),
-                    //Genres = x.Genres,
-                    OfficialRating = x.OfficialRating,
-                    CumulativeRunTimeTicks = x.CumulativeRunTimeTicks,
-                    RunTime = x.RunTimeTicks,
-                    Status = x.Status
-                });
+            var list = await _showRepository.GetShowPage(skip, take, sort, filters, libraryIds);
 
-            var page = new Page<ShowRow>(list);
+            var page = new Page<SqlShow>(list);
             if (requireTotalCount)
             {
                 page.TotalCount = await _showRepository.Count(filters, libraryIds);

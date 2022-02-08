@@ -15,7 +15,6 @@ using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.SqLite;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Maintenance;

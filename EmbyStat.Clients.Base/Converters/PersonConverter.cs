@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.SqLite;
 using EmbyStat.Logging;
 using Newtonsoft.Json;
 using SqlPerson = EmbyStat.Common.SqLite.SqlPerson;

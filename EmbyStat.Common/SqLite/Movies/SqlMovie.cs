@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Streams;
 
 namespace EmbyStat.Common.SqLite.Movies
 {

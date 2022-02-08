@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Common.SqLite;
+﻿using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Common.SqLite.Streams;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Options;
 using SqlPerson = EmbyStat.Common.SqLite.SqlPerson;
 
 namespace EmbyStat.Repositories

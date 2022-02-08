@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.BackgroundTasks.Interfaces;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
-using MediaBrowser.Model.Querying;
 
 namespace EmbyStat.BackgroundTasks.Tasks
 {

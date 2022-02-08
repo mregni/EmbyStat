@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using EmbyStat.Common.Enums;
-using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Query;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Repositories.Interfaces.Helpers;
-using LiteDB;
-
-namespace EmbyStat.Repositories.Helpers
+﻿namespace EmbyStat.Repositories.Helpers
 {
     //public abstract class MediaRepository<T> : BaseRepository, IMediaRepository<T> where T : Extra
     //{

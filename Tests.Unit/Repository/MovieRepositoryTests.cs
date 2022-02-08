@@ -3,8 +3,6 @@ using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Repositories;
-using FluentAssertions;
 using Tests.Unit.Builders;
 using Xunit;
 

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Movies;
-using EmbyStat.Common.SqLite.Shows;
 
 namespace EmbyStat.Common.SqLite
 {
