@@ -9,13 +9,13 @@ namespace EmbyStat.Controllers.Show
         public long? CumulativeRunTimeTicks { get; set; }
         public string Status { get; set; }
         public int SeasonCount { get; set; }
-        public List<VirtualEpisodeViewModel> MissingEpisodes { get; set; }
-        public int CollectedEpisodeCount { get; set; }
+        public IEnumerable<VirtualSeasonViewModel> MissingSeasons { get; set; }
+        public int EpisodeCount { get; set; }
         public int SpecialEpisodeCount { get; set; }
         public string[] Genres { get; set; }
-        public string IMDB { get; set; }
-        public int? TMDB { get; set; }
-        public string TVDB { get; set; }
+        public string Imdb { get; set; }
+        public int? Tmdb { get; set; }
+        public string Tvdb { get; set; }
         public float? CommunityRating { get; set; }
         public long? RunTimeTicks { get; set; }
         public string Banner { get; set; }

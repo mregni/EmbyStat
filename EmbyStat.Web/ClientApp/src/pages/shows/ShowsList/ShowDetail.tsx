@@ -139,8 +139,8 @@ export const ShowDetail = (props: Props) => {
             >
 
               <Grid item>
-                <p>{t('SHOWS.TOTALEPISODES')}: {show.collectedEpisodeCount}</p>
-                <p>{t('SHOWS.TOTALMISSINGEPISODES')}: {show.missingEpisodes.length}</p>
+                <p>{t('SHOWS.TOTALEPISODES')}: {show.episodeCount}</p>
+                <p>{t('SHOWS.TOTALMISSINGEPISODES')}: {show.missingSeasons.flatMap(x => x.episodes).length}</p>
                 <p>{t('SHOWS.TOTALSPECIALEPISODES')}: {show.specialEpisodeCount}</p>
               </Grid>
               <Grid item container alignItems="center">
@@ -165,10 +165,12 @@ export const ShowDetail = (props: Props) => {
               lg={8}
             >
               {
-                show.missingEpisodes.map(x => (
-                  <Grid item key={x.id}>
-                    <p>S{x.seasonNumber < 10 && "0"}{x.seasonNumber}xE{x.episodeNumber < 10 && "0"}{x.episodeNumber} - {x.name}</p>
-                  </Grid>
+                show.missingSeasons.map(season => (
+                  season.episodes.map(episode => (
+                    <Grid item key={`${season.indexNumber}${episode.indexNumber}`}>
+                      <p>S{season.indexNumber < 10 && "0"}{season.indexNumber}xE{episode.indexNumber < 10 && "0"}{episode.indexNumber} - {episode.name}</p>
+                    </Grid>
+                  ))
                 ))
               }
             </Grid>
@@ -203,7 +205,7 @@ export const ShowDetail = (props: Props) => {
             startIcon={<OpenInNewIcon />}
           >
             IMDB
-        </Button>
+          </Button>
         </Grid>
         <Grid item>
           <Button
@@ -215,7 +217,7 @@ export const ShowDetail = (props: Props) => {
             startIcon={<OpenInNewIcon />}
           >
             TMDB
-        </Button>
+          </Button>
         </Grid>
       </Grid>
     </div>

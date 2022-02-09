@@ -10,7 +10,6 @@ namespace EmbyStat.Clients.Tmdb.Converter
             var virtualEpisode = new VirtualEpisode
             {
                 Id = episode.Id.ToString(),
-                FirstAired = episode.AirDate,
                 Name = episode.Name,
                 EpisodeNumber = episode.EpisodeNumber,
                 SeasonNumber = episode.SeasonNumber

@@ -298,7 +298,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
 
         public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds)
         {
-            var query = _context.Shows.GenerateFullShowQuery(true, libraryIds);
+            var query = _context.Shows.GenerateFullShowQuery(libraryIds);
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
@@ -313,6 +313,48 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             }, new { Ids = libraryIds });
 
             return MapShows(list);
+        }
+
+        public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
+        {
+            var query = _context.Shows.GenerateFullShowWithGenresQuery(Array.Empty<string>());
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+
+            var list = await connection.QueryAsync<SqlShow, SqlGenre, SqlSeason, SqlEpisode, SqlShow>(query, (s, g, se, e) =>
+            {
+                s.Genres ??= new List<SqlGenre>();
+                s.Seasons ??= new List<SqlSeason>();
+                se.Episodes ??= new List<SqlEpisode>();
+
+                s.Genres.AddIfNotNull(g);
+                se.Episodes.AddIfNotNull(e);
+                s.Seasons.AddIfNotNull(se);
+                return s;
+            }, new { Id = showId });
+
+            return MapShows(list).FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds)
+        {
+            var query = _context.Shows.GenerateShowPageQuery(filters, libraryIds, sortField, sortOrder);
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+
+            var list = await connection.QueryAsync<SqlShow, SqlGenre, SqlSeason, SqlEpisode, SqlShow>(query, (s, g, se, e) =>
+            {
+                s.Genres ??= new List<SqlGenre>();
+                s.Seasons ??= new List<SqlSeason>();
+                se.Episodes ??= new List<SqlEpisode>();
+
+                s.Genres.AddIfNotNull(g);
+                se.Episodes.AddIfNotNull(e);
+                s.Seasons.AddIfNotNull(se);
+                return s;
+            }, new { Ids = libraryIds });
+
+            return MapShows(list).Skip(skip).Take(take); ;
         }
 
         private static IEnumerable<SqlShow> MapShows(IEnumerable<SqlShow> list)
@@ -346,26 +388,6 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return result;
         }
 
-        public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
-        {
-            var query = _context.Shows.GenerateFullShowQuery(true, Array.Empty<string>());
-            await using var connection = _sqliteBootstrap.CreateConnection();
-            await connection.OpenAsync();
-
-            var list = await connection.QueryAsync<SqlShow, SqlSeason, SqlEpisode, SqlShow>(query, (s, se, e) =>
-            {
-                s.Seasons ??= new List<SqlSeason>();
-                se.Episodes ??= new List<SqlEpisode>();
-
-                se.Episodes.AddIfNotNull(e);
-                s.Seasons.AddIfNotNull(se);
-                return s;
-            }, new { Id = showId });
-
-
-            return MapShows(list).FirstOrDefault();
-        }
-
         public void RemoveShows()
         {
             _context.Shows.RemoveRange(_context.Shows);
@@ -374,27 +396,6 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
         public Dictionary<SqlShow, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count)
         {
             throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds)
-        {
-            var query = _context.Shows.GenerateShowPageQuery(filters, libraryIds, sortField, sortOrder);
-            await using var connection = _sqliteBootstrap.CreateConnection();
-            await connection.OpenAsync();
-
-            var list = await connection.QueryAsync<SqlShow, SqlGenre, SqlSeason, SqlEpisode, SqlShow>(query, (s, g, se, e) =>
-            {
-                s.Genres ??= new List<SqlGenre>();
-                s.Seasons ??= new List<SqlSeason>();
-                se.Episodes ??= new List<SqlEpisode>();
-
-                s.Genres.AddIfNotNull(g);
-                se.Episodes.AddIfNotNull(e);
-                s.Seasons.AddIfNotNull(se);
-                return s;
-            }, new { Ids = libraryIds });
-
-            return MapShows(list).Skip(skip).Take(take); ;
         }
 
         #endregion

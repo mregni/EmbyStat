@@ -93,20 +93,23 @@ export interface Movie extends Video {
   originalTitle: string;
 }
 
-export interface Episode {
-  seasonNumber: number;
-  episodeNumber: number;
+export interface VirtualEpisode {
+  indexNumber: number;
   name: string;
   id: string;
-  firstAired: Date;
+  premiereDate: Date;
+}
+export interface VirtualSeason {
+  indexNumber: number;
+  episodes: VirtualEpisode[];
 }
 
 export interface Show extends Extra {
   cumulativeRunTimeTicks?: number;
   status: string;
   seasonCount: number;
-  missingEpisodes: Episode[];
-  collectedEpisodeCount: number;
+  missingSeasons: VirtualSeason[];
+  episodeCount: number;
   specialEpisodeCount: number;
   sizeInMb: number;
 }

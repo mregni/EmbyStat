@@ -109,8 +109,7 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyUser, UserOverviewViewModel>();
             CreateMap<EmbyUser, UserFullViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
-            CreateMap<VirtualSeason, VirtualSeasonViewModel>();
-            CreateMap<VirtualEpisode, VirtualEpisodeViewModel>();
+
             CreateMap<SystemInfo, ServerInfo>()
                 .ForMember(x => x.Id, y => Guid.NewGuid())
                 .ReverseMap()
@@ -122,7 +121,7 @@ namespace EmbyStat.Controllers
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
-            
+
 
             CreateMap<SqlAudioStream, AudioStreamViewModel>();
             CreateMap<SqlMediaSource, MediaSourceViewModel>();
@@ -154,6 +153,17 @@ namespace EmbyStat.Controllers
                 .AddCommunityRatingMappings()
                 .AddGenreMappings();
 
+            CreateMap<BaseItemDto, SqlSeason>()
+                .ForMember(x => x.Episodes, x => x.MapFrom((y => new List<SqlEpisode>())))
+                .ForMember(x => x.ShowId, x => x.MapFrom(y => y.ParentId))
+                .AddImageMappings();
+            CreateMap<BaseItemDto, SqlEpisode>()
+                .ForMember(x => x.SeasonId, x => x.MapFrom(y => y.ParentId))
+                .AddImageMappings()
+                .AddProviderMappings()
+                .AddCommunityRatingMappings()
+                .AddStreamMappings();
+
             CreateMap<SqlShow, ShowRowViewModel>()
                 .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.Seasons.Count))
                 .ForMember(x => x.EpisodeCount, x => x.MapFrom(y => y.Seasons
@@ -170,16 +180,22 @@ namespace EmbyStat.Controllers
                     .Count(z => z.LocationType == LocationType.Virtual)))
                 .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()));
 
-            CreateMap<BaseItemDto, SqlSeason>()
-                .ForMember(x => x.Episodes, x => x.MapFrom((y => new List<SqlEpisode>())))
-                .ForMember(x => x.ShowId, x => x.MapFrom(y => y.ParentId))
-                .AddImageMappings();
-            CreateMap<BaseItemDto, SqlEpisode>()
-                .ForMember(x => x.SeasonId, x => x.MapFrom(y => y.ParentId))
-                .AddImageMappings()
-                .AddProviderMappings()
-                .AddCommunityRatingMappings()
-                .AddStreamMappings();
+            CreateMap<SqlShow, ShowDetailViewModel>()
+                .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.Seasons.Count))
+                .ForMember(x => x.EpisodeCount, x => x.MapFrom(y => y.Seasons
+                    .Where(z => z.IndexNumber != 0)
+                    .SelectMany(z => z.Episodes)
+                    .Count(z => z.LocationType == LocationType.Disk)))
+                .ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.Seasons
+                    .Where(z => z.IndexNumber == 0)
+                    .SelectMany(z => z.Episodes)
+                    .Count(z => z.LocationType == LocationType.Disk)))
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()))
+                .ForMember(x => x.MissingSeasons, x => x.MapFrom(y => y.Seasons.Where(s => s.IndexNumber != 0 && s.Episodes.Any(e => e.LocationType == LocationType.Virtual))));
+
+            CreateMap<SqlSeason, VirtualSeasonViewModel>()
+                .ForMember(x => x.Episodes, x => x.MapFrom(y => y.Episodes.Where(z => z.LocationType == LocationType.Virtual)));
+            CreateMap<SqlEpisode, VirtualEpisodeViewModel>();
         }
 
         private void CreateMovieMappings()
@@ -189,7 +205,7 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.AudioLanguages,
                     x => x.MapFrom(y => y.AudioStreams.Select(x => x.Language).Distinct()))
                 .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(x => x.Name).Distinct()))
-                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal) (y.RunTimeTicks ?? 0) / 600000000)))
+                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
                 .ForMember(x => x.Subtitles, x => x.MapFrom(y => y.SubtitleStreams.Select(z => z.Language).Distinct()))
                 .ForMember(x => x.SizeInMb,
                     x => x.MapFrom(y => y.MediaSources.FirstOrDefault() != null ? y.MediaSources.First().SizeInMb : 0));
@@ -213,7 +229,7 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()));
             CreateMap<BaseMediaStream, SqlVideoStream>()
                 .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()))
-                .ForMember(x => x.AverageFrameRate, x => x.MapFrom(y => y.AverageFrameRate.HasValue ? (float)Math.Round(y.AverageFrameRate.Value, 2): (float?)null));
+                .ForMember(x => x.AverageFrameRate, x => x.MapFrom(y => y.AverageFrameRate.HasValue ? (float)Math.Round(y.AverageFrameRate.Value, 2) : (float?)null));
             CreateMap<BaseMediaSourceInfo, SqlMediaSource>()
                 .ForMember(x => x.Protocol, x => x.MapFrom(y => y.ToString()))
                 .ForMember(x => x.SizeInMb, x => x.MapFrom(y => Math.Round(y.Size / (double)1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)));
@@ -227,11 +243,11 @@ namespace EmbyStat.Controllers
         {
             return mapping.ForMember(x => x.CommunityRating,
                 x => x.MapFrom(y =>
-                    y.CommunityRating != null ? (float) Math.Round(y.CommunityRating.Value, 1) : (float?) null));
+                    y.CommunityRating != null ? (float)Math.Round(y.CommunityRating.Value, 1) : (float?)null));
 
         }
-    public static IMappingExpression<T1, T2> AddGenreMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
-            where T1 : BaseItemDto where T2 : ISqlLinked
+        public static IMappingExpression<T1, T2> AddGenreMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
+                where T1 : BaseItemDto where T2 : ISqlLinked
         {
             return mapping.ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => new SqlGenre { Name = z })));
         }

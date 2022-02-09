@@ -61,17 +61,8 @@ namespace EmbyStat.Controllers.Show
             }
 
             var page = await _showService.GetShowPage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount, libraryIds);
-            try
-            {
-                var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
-                return Ok(convert);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
+            var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
+            return Ok(convert);
         }
 
         [HttpGet]
@@ -81,8 +72,15 @@ namespace EmbyStat.Controllers.Show
             var show = await _showService.GetShow(id);
             if (show != null)
             {
-                var result = _mapper.Map<ShowDetailViewModel>(show);
-                return Ok(result);
+                try
+                {
+                    var result = _mapper.Map<ShowDetailViewModel>(show);
+                    return Ok(result);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
             }
 
             return NotFound(id);

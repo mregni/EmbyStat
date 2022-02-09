@@ -491,7 +491,6 @@ namespace EmbyStat.Services
                 Seasons = seasonCount,
                 Specials = show.GetEpisodeCount(true, LocationType.Disk),
                 MissingEpisodeCount = show.GetEpisodeCount(false, LocationType.Virtual),
-                MissingEpisodes = show.GetMissingEpisodes().GroupBy(x => x.SeasonNumber, (index, episodes) => new VirtualSeason { Episodes = episodes, SeasonNumber = index }),
                 PremiereDate = show.PremiereDate,
                 Status = show.Status == "Continuing",
                 Id = show.Id,

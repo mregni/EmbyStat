@@ -5,8 +5,6 @@
         public string Id { get; set; }
         public string Name { get; set; }
         public string SortName { get; set; }
-        public string Tvdb { get; set; }
-        public string Imdb { get; set; }
         public int SeasonCount { get; set; }
         public int EpisodeCount { get; set; }
         public int SpecialEpisodeCount { get; set; }

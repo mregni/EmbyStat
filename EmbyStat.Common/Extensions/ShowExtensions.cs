@@ -80,34 +80,32 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
         /// <param name="includeEpisodes">Includes seasons and episodes in the query if set to True</param>
         /// <param name="libraryIds">Libraries for which the query should filter</param>
         /// <returns>Sqlite query that can query shows</returns>
-        public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, bool includeEpisodes,
-            IEnumerable<string> libraryIds)
+        public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, IEnumerable<string> libraryIds)
         {
-            var queryBuilder = new StringBuilder("SELECT s.*");
-
-            queryBuilder.Append(AddString(includeEpisodes, ", se.*, e.*"));
-            queryBuilder.Append($" FROM {Constants.Tables.Shows} AS s");
-
-            var seasonTable = $" LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)";
-            var episodeTable = $" LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)";
-            queryBuilder.Append(AddString(includeEpisodes, $"{seasonTable}{episodeTable}"));
-
-            queryBuilder.Append($" WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}");
-            return queryBuilder.ToString();
+            return $@"
+SELECT s.*, g.*, se.*, e.*
+FROM {Constants.Tables.Shows} as s
+LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
+LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
+WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
         }
 
-        public static string GenerateShowPageQuery(this DbSet<SqlShow> shows, Filter[] filters, List<string> libraryIds,
-            string sortField, string sortOrder)
+        public static string GenerateFullShowWithGenresQuery(this DbSet<SqlShow> shows, IEnumerable<string> libraryIds)
         {
-            var query = $@"
+            return $@"
 SELECT s.*, g.*, se.*, e.*
 FROM {Constants.Tables.Shows} as s
 LEFT JOIN {Constants.Tables.GenreShow} AS gs ON (gs.ShowsId = s.Id)
 LEFT JOIN {Constants.Tables.Genres} AS g ON (gs.GenresId = g.Id)
 LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
 LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
-WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}";
+WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
+        }
 
+        public static string GenerateShowPageQuery(this DbSet<SqlShow> shows, Filter[] filters, IEnumerable<string> libraryIds,
+            string sortField, string sortOrder)
+        {
+            var query = shows.GenerateFullShowWithGenresQuery(libraryIds);
             query = filters.Aggregate(query, (current, filter) => current + AddShowFilters(filter));
 
             if (string.IsNullOrWhiteSpace(sortField))
@@ -121,11 +119,6 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}";
             return query;
         }
 
-        private static string AddString(bool add, string value)
-        {
-            return add ? value : string.Empty;
-        }
-
         private static string AddShowFilters(Filter filter)
         {
             return $"AND {GenerateFilterString(filter)}\n";
@@ -136,14 +129,14 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}";
             switch (filter.Field)
             {
                 case "Genres":
-                {
-                    return filter.Operation switch
                     {
-                        "!any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'", true),
-                        "any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'"),
-                        _ => string.Empty
-                    };
-                }
+                        return filter.Operation switch
+                        {
+                            "!any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'", true),
+                            "any" => GenerateExistsGenreLine($"g0.Name = '{filter.Value}'"),
+                            _ => string.Empty
+                        };
+                    }
                 case "Images":
                     return filter.Value switch
                     {
