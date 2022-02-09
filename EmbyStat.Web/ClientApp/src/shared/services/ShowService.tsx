@@ -20,7 +20,7 @@ export const isTypePresent = (): Promise<boolean> => {
   return axiosInstance.get<boolean>(`${domain}typepresent`).then(response => response.data);
 }
 
-export const getShowPage =
+export const getPage =
   (skip: number, take: number, sortField: string, sortOrder: string, requireTotalCount: boolean, filter: string)
     : Promise<TablePage<ShowRow>> => {
     return axiosInstance

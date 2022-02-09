@@ -159,17 +159,16 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.EpisodeCount, x => x.MapFrom(y => y.Seasons
                     .Where(z => z.IndexNumber != 0)
                     .SelectMany(z => z.Episodes)
-                    .Where(z => z.LocationType == LocationType.Disk)))
+                    .Count(z => z.LocationType == LocationType.Disk)))
                 .ForMember(x => x.SpecialEpisodeCount, x => x.MapFrom(y => y.Seasons
                     .Where(z => z.IndexNumber == 0)
                     .SelectMany(z => z.Episodes)
-                    .Where(z => z.LocationType == LocationType.Disk)))
+                    .Count(z => z.LocationType == LocationType.Disk)))
                 .ForMember(x => x.MissingEpisodeCount, x => x.MapFrom(y => y.Seasons
                     .Where(z => z.IndexNumber != 0)
                     .SelectMany(z => z.Episodes)
-                    .Where(z => z.LocationType == LocationType.Virtual)))
-                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(x => x.Name).Distinct()))
-                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)));
+                    .Count(z => z.LocationType == LocationType.Virtual)))
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()));
 
             CreateMap<BaseItemDto, SqlSeason>()
                 .ForMember(x => x.Episodes, x => x.MapFrom((y => new List<SqlEpisode>())))

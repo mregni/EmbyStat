@@ -28,7 +28,7 @@ import Flag from '../../../shared/components/flag';
 import { useServerType } from '../../../shared/hooks';
 import { MovieRow } from '../../../shared/models/movie';
 import SortLabel from '../../../shared/components/tables/SortLabel';
-import { getMoviePage } from '../../../shared/services/MovieService';
+import { getPage } from '../../../shared/services/MovieService';
 import { TablePage, VideoStream } from '../../../shared/models/common';
 import { ActiveFilter } from '../../../shared/models/filter';
 import { SettingsContext } from '../../../shared/context/settings';
@@ -69,7 +69,7 @@ const MovieTable = (props: Props) => {
     (page: number, rowsPerPage: number, order: string, orderedBy: string, filters: string) => {
       setLoading(true);
       setTableData({ data: [], totalCount: 0 });
-      getMoviePage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
+      getPage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
         .then((data: TablePage<MovieRow>) => {
           setTableData(data);
         })

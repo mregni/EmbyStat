@@ -12,7 +12,7 @@
         public int SpecialEpisodeCount { get; set; }
         public int MissingEpisodeCount { get; set; }
         public string Status { get; set; }
-        public long? RunTime { get; set; }
+        public long? RunTimeTicks { get; set; }
         public long? CumulativeRunTimeTicks { get; set; }
         public string[] Genres { get; set; }
         public string OfficialRating { get; set; }

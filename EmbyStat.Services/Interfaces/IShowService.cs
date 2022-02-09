@@ -17,7 +17,7 @@ namespace EmbyStat.Services.Interfaces
         Task<ListContainer<ShowCollectionRow>> GetCollectedRows(IReadOnlyList<string> libraryIds, int page);
         Task<List<ShowCollectionRow>> CalculateCollectedRows(IReadOnlyList<string> libraryIds);
         bool TypeIsPresent();
-        Task<Page<SqlShow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
+        Task<Page<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
         Task<SqlShow> GetShow(string id);
     }
 }

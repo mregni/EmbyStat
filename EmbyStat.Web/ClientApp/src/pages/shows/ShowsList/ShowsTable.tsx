@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactElement, useCallback, useContext } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-
+import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -9,18 +9,19 @@ import { useTranslation } from 'react-i18next';
 import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Chip from '@material-ui/core/Chip';
 
+import calculateFileSize from '../../../shared/utils/CalculateFileSize';
 import { ActiveFilter } from '../../../shared/models/filter';
 import { getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import { useServerType } from '../../../shared/hooks';
 import calculateRunTime from '../../../shared/utils/CalculateRunTime';
 import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, IconButton, Collapse } from '@material-ui/core';
-import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions';
 import SortLabel from '../../../shared/components/tables/SortLabel';
 import { ShowDetail } from './ShowDetail';
 import { ShowRow } from '../../../shared/models/show';
 import { TablePage } from '../../../shared/models/common';
-import { getShowPage } from '../../../shared/services/ShowService';
+import { getPage } from '../../../shared/services/ShowService';
 import { SettingsContext } from '../../../shared/context/settings';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -58,7 +59,7 @@ export const ShowsTable = (props: Props) => {
     (page: number, rowsPerPage: number, order: string, orderedBy: string, filters: string) => {
       setLoading(true);
       setTableData({ data: [], totalCount: 0 });
-      getShowPage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
+      getPage(page * rowsPerPage, rowsPerPage, orderedBy, order, true, filters)
         .then((data: TablePage<ShowRow>) => {
           setTableData(data);
         })
@@ -106,8 +107,9 @@ export const ShowsTable = (props: Props) => {
   const headers: head[] = [
     { label: "", field: "", sortable: false, width: 30, align: 'left' },
     { label: "COMMON.TITLE", field: "sortName", sortable: true, width: 300, align: 'left' },
-    { label: "COMMON.GENRES", field: "", sortable: false, width: 220, align: 'left' },
+    { label: "COMMON.GENRES", field: "", sortable: false, align: 'left' },
     { label: "COMMON.STATUS", field: "", sortable: false, width: 220, align: 'right' },
+    { label: "COMMON.SIZEINMB", field: "", sortable: false, align: 'right' },
     { label: "COMMON.RUNTIME", field: "runTimeTicks", sortable: true, align: 'right' },
     { label: "COMMON.TOTALRUNTIME", field: "runTimeTicks", sortable: false, align: 'right' },
     { label: "COMMON.EPISODES", field: "", sortable: false, align: 'right' },
@@ -212,12 +214,12 @@ const useRowStyles = makeStyles(() => ({
 }));
 
 const renderEpisodesCount = (data: ShowRow) => {
-  let value = `${data.collectedEpisodeCount} / ${data.collectedEpisodeCount + data.missingEpisodesCount}`;
+  let value = `${data.episodeCount} / ${data.episodeCount + data.missingEpisodeCount}`;
   if (data.specialEpisodeCount > 0) {
-    value += ` (${data.specialEpisodeCount})`
+    value += ` +${data.specialEpisodeCount}`
   }
 
-  const percentage = data.collectedEpisodeCount / (data.collectedEpisodeCount + data.missingEpisodesCount) * 100;
+  const percentage = data.episodeCount / (data.episodeCount + data.missingEpisodeCount) * 100;
 
   return (
     <Grid container direction="column">
@@ -267,9 +269,15 @@ const Row = (props: RowProps): ReactElement => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">{row.name}</TableCell>
-        <TableCell align="left">{row.genres.join(', ')}</TableCell>
+        <TableCell align="left">
+          {row.genres.slice(0, 2).map(genre => <Chip size='small' key={genre} label={genre} className="m-r-4 m-t-4"></Chip>)}
+          {
+            row.genres.length > 2 ? <Chip size='small' label={`+${row.genres.length - 2}`} className="m-r-4 m-t-4"></Chip> : null
+          }
+        </TableCell>
         <TableCell align="right">{row.status}</TableCell>
-        <TableCell align="right">{calculateRunTime(row.runTime)}</TableCell>
+        <TableCell align="right">{calculateFileSize(row.sizeInMb)}</TableCell>
+        <TableCell align="right">{calculateRunTime(row.runTimeTicks)}</TableCell>
         <TableCell align="right">{calculateRunTime(row.cumulativeRunTimeTicks)}</TableCell>
         <TableCell align="right">{renderEpisodesCount(row)}</TableCell>
         <TableCell align="right">{row.officialRating}</TableCell>

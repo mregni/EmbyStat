@@ -336,7 +336,11 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                         });
 
                     groupedShow.Seasons = groupedSeasons.ToList();
-                    groupedShow.Genres = Enumerable.DistinctBy(g.Select(p => p.Genres.SingleOrDefault()).Where(x => x != null), x => x.Id).ToList();
+                    var genres = g.Select(p => p.Genres?.SingleOrDefault()).Where(x => x != null).ToList();
+                    if (genres.Any())
+                    {
+                        groupedShow.Genres = Enumerable.DistinctBy(genres, x => x.Id).ToList();
+                    }
                     return groupedShow;
                 });
             return result;
@@ -390,7 +394,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                 return s;
             }, new { Ids = libraryIds });
 
-            return MapShows(list);
+            return MapShows(list).Skip(skip).Take(take); ;
         }
 
         #endregion

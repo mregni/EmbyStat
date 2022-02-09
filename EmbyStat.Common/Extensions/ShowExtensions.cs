@@ -58,7 +58,7 @@ namespace EmbyStat.Common.Extensions
         /// </summary>
         /// <param name="list">Db set on which to create the query on</param>
         /// <param name="filters">Filters that need to be applied in the query</param>
-        /// <param name="libraryIds">libraries for which the query should filter</param>
+        /// <param name="libraryIds">Libraries for which the query should filter</param>
         /// <returns>Sqlite query that can query the count of shows</returns>
         public static string GenerateCountQuery(this DbSet<SqlShow> list, Filter[] filters,
             IReadOnlyList<string> libraryIds)
@@ -73,6 +73,13 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
             return query;
         }
 
+        /// <summary>
+        /// Generates a full LEFT JOIN sql query for shows, seasons and episodes. Genres or streams are not included in the query
+        /// </summary>
+        /// <param name="shows">Db set on which to create the query on</param>
+        /// <param name="includeEpisodes">Includes seasons and episodes in the query if set to True</param>
+        /// <param name="libraryIds">Libraries for which the query should filter</param>
+        /// <returns>Sqlite query that can query shows</returns>
         public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, bool includeEpisodes,
             IEnumerable<string> libraryIds)
         {

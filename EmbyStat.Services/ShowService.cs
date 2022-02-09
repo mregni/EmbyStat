@@ -82,9 +82,9 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        public async Task<Page<SqlShow>> GetShowPage(int skip, int take, string sort, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public async Task<Page<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
         {
-            var list = await _showRepository.GetShowPage(skip, take, sort, filters, libraryIds);
+            var list = await _showRepository.GetShowPage(skip, take, sortField, sortOrder, filters, libraryIds);
 
             var page = new Page<SqlShow>(list);
             if (requireTotalCount)

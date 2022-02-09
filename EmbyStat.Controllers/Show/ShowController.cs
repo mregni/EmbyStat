@@ -52,7 +52,7 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("list")]
-        public async Task<IActionResult> GetShowPageList(int skip, int take, string sort, bool requireTotalCount, string filter, List<string> libraryIds)
+        public async Task<IActionResult> GetShowPageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter, List<string> libraryIds)
         {
             var filtersObj = Array.Empty<Filter>();
             if (filter != null)
@@ -60,9 +60,18 @@ namespace EmbyStat.Controllers.Show
                 filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
             }
 
-            var page = await _showService.GetShowPage(skip, take, sort, filtersObj, requireTotalCount, libraryIds);
-            var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
-            return Ok(convert);
+            var page = await _showService.GetShowPage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount, libraryIds);
+            try
+            {
+                var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
+                return Ok(convert);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
         [HttpGet]
