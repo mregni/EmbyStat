@@ -8,9 +8,9 @@ using RestSharp;
 
 namespace EmbyStat.Clients.Jellyfin.Http
 {
-    public class JellyfinHttpClient : BaseHttpClient, IJellyfinHttpClient
+    public class JellyfinBaseHttpClient : BaseHttpClient, IJellyfinBaseHttpClient
     {
-        public JellyfinHttpClient(IRestClient client, IHttpContextAccessor accessor, 
+        public JellyfinBaseHttpClient(IRestClient client, IHttpContextAccessor accessor, 
             IRefitHttpClientFactory<INewBaseClient> refitClient, IMapper mapper)
             : base(client, accessor, refitClient, mapper)
         {

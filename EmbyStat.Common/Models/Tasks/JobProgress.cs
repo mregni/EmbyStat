@@ -10,6 +10,5 @@ namespace EmbyStat.Common.Models.Tasks
         public double? CurrentProgressPercentage { get; set; }
         public DateTime StartTimeUtc { get; set; }
         public DateTime? EndTimeUtc { get; set; }
-        public string Title { get; set; }
     }
 }

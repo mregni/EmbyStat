@@ -30,7 +30,7 @@ namespace EmbyStat.Repositories
             await connection.OpenAsync();
             await using var transaction = connection.BeginTransaction();
 
-            var query = $"INSERT OR REPLACE INTO {Constants.Tables.People} (Id,Name,BirthDate,\"Primary\") VALUES (@Id, @Name, @BirthDate, @Primary)";
+            var query = $"INSERT OR IGNORE INTO {Constants.Tables.People} (Id,Name,BirthDate,\"Primary\") VALUES (@Id, @Name, @BirthDate, @Primary)";
             await connection.ExecuteAsync(query, people, transaction);
             await transaction.CommitAsync();
         }

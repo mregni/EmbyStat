@@ -3,10 +3,9 @@
     public class ServerInfoViewModel
     {
         public string Id { get; set; }
-        public int SystemUpdateLevel { get; set; }
+        public string SystemUpdateLevel { get; set; }
         public string OperatingSystemDisplayName { get; set; }
         public bool HasPendingRestart { get; set; }
-        public bool IsShuttingDown { get; set; }
         public bool SupportsLibraryMonitor { get; set; }
         public int WebSocketPortNumber { get; set; }
         public bool CanSelfRestart { get; set; }
@@ -29,5 +28,14 @@
         public string ServerName { get; set; }
         public string Version { get; set; }
         public string OperatingSystem { get; set; }
+        
+        #region ExtraProps
+
+        public int ActiveUserCount { get; set; }
+        public int IdleUserCount { get; set; }
+        public int ActiveDeviceCount { get; set; }
+        public int IdleDeviceCount { get; set; }
+        
+        #endregion
 	}
 }

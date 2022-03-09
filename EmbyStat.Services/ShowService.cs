@@ -33,8 +33,8 @@ namespace EmbyStat.Services
         private readonly ISettingsService _settingsService;
 
         public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ILibraryRepository libraryRepository,
-            IPersonService personService, IStatisticsRepository statisticsRepository, ISettingsService settingsService) 
-            : base(jobRepository, personService, typeof(ShowService), "SHOW")
+            IStatisticsRepository statisticsRepository, ISettingsService settingsService) 
+            : base(jobRepository, typeof(ShowService), "SHOW")
         {
             _showRepository = showRepository;
             _libraryRepository = libraryRepository;
@@ -66,7 +66,6 @@ namespace EmbyStat.Services
             {
                 Cards = await CalculateCards(libraryIds),
                 TopCards = CalculateTopCards(libraryIds),
-                People = CalculatePeopleStatistics(libraryIds),
                 BarCharts = await CalculateBarCharts(libraryIds),
                 PieCharts = await CalculatePieChars(libraryIds)
             };
@@ -106,11 +105,13 @@ namespace EmbyStat.Services
         {
             var list = new List<Card<string>>();
             list.AddIfNotNull(await CalculateTotalShowCount(libraryIds));
+            list.AddIfNotNull(await CalculateCompleteCollectedShowCount(libraryIds));
             list.AddIfNotNull(await CalculateTotalEpisodeCount(libraryIds));
             list.AddIfNotNull(await CalculateTotalMissingEpisodeCount(libraryIds));
-            list.AddIfNotNull(await CalculatePlayableTime(libraryIds));
             list.AddIfNotNull(await CalculateTotalShowGenres(libraryIds));
+            list.AddIfNotNull(await CalculatePlayableTime(libraryIds));
             list.AddIfNotNull(await CalculateTotalDiskSpace(libraryIds));
+            list.AddIfNotNull(TotalPersonTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors));
 
             return list;
         }
@@ -129,6 +130,21 @@ namespace EmbyStat.Services
                     Icon = Constants.Icons.TheatersRoundedIcon
                 };
             }, "Calculate total show count failed:");
+        }
+
+        private Task<Card<string>> CalculateCompleteCollectedShowCount(IReadOnlyList<string> libraryIds)
+        {
+            return CalculateStat(async () =>
+            {
+                var count = await _showRepository.CompleteCollectedCount(libraryIds);
+                return new Card<string>
+                {
+                    Title = Constants.Shows.TotalCompleteCollectedShows,
+                    Value = count.ToString(),
+                    Type = CardType.Text,
+                    Icon = Constants.Icons.TheatersRoundedIcon
+                };
+            }, "Calculate total completed collected show count failed:");
         }
 
         private Task<Card<string>> CalculateTotalEpisodeCount(IReadOnlyList<string> libraryIds)
@@ -209,6 +225,21 @@ namespace EmbyStat.Services
                     Icon = Constants.Icons.StorageRoundedIcon
                 };
             }, "Calculate total disk space failed:");
+        }
+        
+        private Card<string> TotalPersonTypeCount(IReadOnlyList<string> libraryIds, PersonType type, string title)
+        {
+            return CalculateStat(() =>
+            {
+                var value = _showRepository.GetPeopleCount(libraryIds, type);
+                return new Card<string>
+                {
+                    Value = value.ToString(),
+                    Title = title,
+                    Icon = Constants.Icons.PeopleAltRoundedIcon,
+                    Type = CardType.Text
+                };
+            }, $"Calculate total {type} count failed::");
         }
 
         #endregion
@@ -333,7 +364,7 @@ namespace EmbyStat.Services
             }, "Calculate rating chart failed:");
         }
 
-        internal Chart CalculatePremiereYearChart(IReadOnlyList<string> libraryIds)
+        private Chart CalculatePremiereYearChart(IReadOnlyList<string> libraryIds)
         {
             return CalculateStat(() =>
             {
@@ -365,14 +396,14 @@ namespace EmbyStat.Services
             {
                 var list = await _showRepository.GetShowStatusCharValues(libraryIds);
                 var results = list
-                    .Select(x => new { Label = x.Key, Val0 = x.Value })
-                    .OrderByDescending(x => x.Val0)
-                    .ToList();
+                    .Select(x => new SimpleChartData { Label = x.Key, Value=x.Value })
+                    .OrderByDescending(x => x.Value)
+                    .ToArray();
 
                 return new Chart
                 {
                     Title = Constants.Shows.ShowStatusChart,
-                    DataSets = JsonConvert.SerializeObject(results),
+                    DataSets = results,
                     SeriesCount = 1
 
                 };
@@ -396,48 +427,20 @@ namespace EmbyStat.Services
             }
 
             var rates = groupedList
-                .Where(x => x.Key != 100)
                 .OrderBy(x => x.Key)
-                .Select(x => new { Label = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Val0 = x.Count() })
-                .Select(x => new { x.Label, x.Val0 })
-                .ToList();
+                .Select(x => new SimpleChartData { Label = x.Key != 100 ? $"{x.Key}% - {x.Key + 4}%" : $"{x.Key}%", Value = x.Count() })
+                .ToArray();
 
             return new Chart
             {
                 Title = Constants.CountPerCollectedPercentage,
-                DataSets = JsonConvert.SerializeObject(rates),
+                DataSets = rates,
                 SeriesCount = 1
             };
         }
 
         #endregion
 
-        #region People
-
-        public PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
-        {
-            var returnObj = new PersonStats();
-            returnObj.Cards.AddIfNotNull(TotalTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors));
-            return returnObj;
-        }
-
-
-        private Card<string> TotalTypeCount(IReadOnlyList<string> libraryIds, PersonType type, string title)
-        {
-            return CalculateStat(() =>
-            {
-                var value = _showRepository.GetPeopleCount(libraryIds, type);
-                return new Card<string>
-                {
-                    Value = value.ToString(),
-                    Title = title,
-                    Icon = Constants.Icons.PeopleAltRoundedIcon,
-                    Type = CardType.Text
-                };
-            }, $"Calculate total {type} count failed::");
-        }
-
-        #endregion
 
         #region Collected Rows
 
@@ -474,7 +477,7 @@ namespace EmbyStat.Services
             //    .OrderBy(x => x.SortName)
             //    .ToList();
             //var json = JsonConvert.SerializeObject(stats);
-            //_statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
+            //_statisticsRepository.AddStatistic(json, DateTimeUtc.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
 
             return new List<ShowCollectionRow>();
         }

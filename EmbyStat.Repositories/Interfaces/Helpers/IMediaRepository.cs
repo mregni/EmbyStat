@@ -17,7 +17,7 @@ namespace EmbyStat.Repositories.Interfaces.Helpers
 
         #region Charts
         Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds);
+        IEnumerable<decimal?> GetCommunityRatings(IReadOnlyList<string> libraryIds);
         IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds);
         Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds);
         #endregion

@@ -7,7 +7,6 @@ namespace EmbyStat.Common.Models.Net
         public string SystemUpdateLevel { get; set; }
         public string OperatingSystemDisplayName { get; set; }
         public bool HasPendingRestart { get; set; }
-        public bool IsShuttingDown { get; set; }
         public bool SupportsLibraryMonitor { get; set; }
         public int WebSocketPortNumber { get; set; }
         public bool CanSelfRestart { get; set; }

@@ -12,6 +12,7 @@ import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounde
 import SubtitlesRoundedIcon from '@material-ui/icons/SubtitlesRounded';
 import MusicNoteRoundedIcon from '@material-ui/icons/MusicNoteRounded';
 import Chip from '@material-ui/core/Chip';
+import { Typography } from '@material-ui/core';
 
 import { getBackdropImageLink, getItemDetailLink } from '../../../shared/utils/MediaServerUrlUtil';
 import PosterCard from '../../../shared/components/cards/PosterCard';
@@ -27,7 +28,6 @@ import { MovieRow } from '../../../shared/models/movie';
 import { SettingsContext } from '../../../shared/context/settings';
 import generateStreamChipLabel from '../../../shared/utils/GenerateVideoStreamLabel';
 import { MultipleItem } from '../../../shared/components/detailComponents';
-import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   container: (props: any) => ({
@@ -145,7 +145,8 @@ export const DetailMovieTemplate = (props: Props) => {
                   {movie.genres.map(genre =>
                     <Grid key={genre} item>
                       <Chip label={genre} size="small"></Chip>
-                    </Grid>)}
+                    </Grid>)
+                  }
                 </Grid>
               </Grid>
               <Grid item container alignItems="flex-start" spacing={1}>

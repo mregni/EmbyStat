@@ -14,6 +14,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Shows;
+using EmbyStat.Common.SqLite.Users;
 using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
@@ -27,7 +28,7 @@ namespace EmbyStat.Clients.Base.Http
     public abstract class BaseHttpClient
     {
         private readonly IHttpContextAccessor _accessor;
-        private readonly IRefitHttpClientFactory<INewBaseClient> _refitClient;
+        private readonly IRefitHttpClientFactory<INewBaseClient> _refitFactory;
         protected readonly Logger Logger;
         protected string DeviceName { get; set; }
         protected string ApplicationVersion { get; set; }
@@ -54,10 +55,10 @@ namespace EmbyStat.Clients.Base.Http
         protected readonly IMapper Mapper;
 
         protected BaseHttpClient(IRestClient client, IHttpContextAccessor accessor, 
-            IRefitHttpClientFactory<INewBaseClient> refitClient, IMapper mapper)
+            IRefitHttpClientFactory<INewBaseClient> refitFactory, IMapper mapper)
         {
             _accessor = accessor;
-            _refitClient = refitClient;
+            _refitFactory = refitFactory;
             Mapper = mapper;
             RestClient = client.Initialize();
             Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
@@ -213,12 +214,10 @@ namespace EmbyStat.Clients.Base.Http
             }
         }
 
-        public ServerInfo GetServerInfo()
+        public async Task<ServerInfoDto> GetServerInfo()
         {
-            var request = new RestRequest("System/Info", Method.GET);
-            var result = ExecuteAuthenticatedCall<ServerInfoDto>(request);
-
-            return result.ConvertToInfo();
+            var client = _refitFactory.CreateClient(BaseUrl);
+            return await client.GetServerInfo(apiKey, AuthorizationString);
         }
 
         public SqlPerson GetPersonByName(string personName)
@@ -238,7 +237,7 @@ namespace EmbyStat.Clients.Base.Http
                 Fields = new[] { ItemFields.PremiereDate }
             };
 
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             return await client.GetPeople(apiKey, AuthorizationString, query);
         }
 
@@ -252,7 +251,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var paramList = query.ConvertToStringDictionary(UserId);
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetPeople(apiKey, AuthorizationString, query);
             return result.TotalRecordCount;
         }
@@ -263,10 +262,10 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
         }
 
-        public List<PluginInfo> GetInstalledPlugins()
+        public Task<List<SqlPluginInfo>> GetInstalledPlugins()
         {
-            var request = new RestRequest("Plugins", Method.GET);
-            return ExecuteAuthenticatedCall<List<PluginInfo>>(request);
+            var client = _refitFactory.CreateClient(BaseUrl);
+            return client.GetPlugins(apiKey, AuthorizationString);
         }
 
         public List<FileSystemEntryInfo> GetLocalDrives()
@@ -275,22 +274,23 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteAuthenticatedCall<List<FileSystemEntryInfo>>(request);
         }
 
-        public JArray GetUsers()
+        public Task<List<SqlUser>> GetUsers()
         {
-            var request = new RestRequest("Users", Method.GET);
-            return ExecuteAuthenticatedCall<JArray>(request);
+            var client = _refitFactory.CreateClient(BaseUrl);
+            return client.GetUsers(apiKey, AuthorizationString);
         }
 
-        public JObject GetDevices()
+        public async Task<IEnumerable<SqlDevice>> GetDevices()
         {
-            var request = new RestRequest("Devices", Method.GET);
-            return ExecuteAuthenticatedCall<JObject>(request);
+            var client = _refitFactory.CreateClient(BaseUrl);
+            var response = await client.GetDevices(apiKey, AuthorizationString);
+            return response.Content?.Items;
         }
 
         public async Task<IEnumerable<SqlGenre>> GetGenres()
         {
             var query = new ItemQuery();
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var baseItems = await client.GetGenres(apiKey, AuthorizationString, query);
             return baseItems?.Items != null
                 ? baseItems.Items.Select(x => x.ConvertToGenre(Logger)).ToList()
@@ -321,7 +321,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var paramList = query.ConvertToStringDictionary(UserId);
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
             var media = Mapper.Map<T[]>(result.Items);
@@ -350,7 +350,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var paramList = query.ConvertToStringDictionary(UserId);
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
             var shows = Mapper.Map<SqlShow[]>(result.Items);
@@ -378,7 +378,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var paramList = query.ConvertToStringDictionary(UserId);
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
             var seasons = Mapper.Map<SqlSeason[]>(result.Items);
@@ -406,7 +406,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var paramList = query.ConvertToStringDictionary(UserId);
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
             var episodes = Mapper.Map<SqlEpisode[]>(result.Items);
@@ -427,7 +427,7 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var paramList = query.ConvertToStringDictionary(UserId);
-            var client = _refitClient.CreateClient(BaseUrl);
+            var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
             return result.TotalRecordCount;
         }

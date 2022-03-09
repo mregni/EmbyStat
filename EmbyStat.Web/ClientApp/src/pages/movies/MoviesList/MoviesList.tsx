@@ -20,7 +20,7 @@ export const MoviesList = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
-  const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+  const [filterDialogOpen, setFilterDialogOpen] = useState(true);
 
   const addFilter = (filter: ActiveFilter) => {
     setActiveFilters((state) => [...state, filter]);

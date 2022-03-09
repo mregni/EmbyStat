@@ -19,7 +19,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
 {
     public class MovieSyncTask : BaseTask
     {
-        private readonly IHttpClient _httpClient;
+        private readonly IBaseHttpClient _baseHttpClient;
         private readonly IMovieRepository _movieRepository;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMovieService _movieService;
@@ -45,7 +45,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
             _mapper = mapper;
 
             var settings = settingsService.GetUserSettings();
-            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
+            _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -83,14 +83,14 @@ namespace EmbyStat.BackgroundTasks.Tasks
 
         private async Task ProcessGenresAsync(CancellationToken token)
         {
-            var genres = await _httpClient.GetGenres();
+            var genres = await _baseHttpClient.GetGenres();
             token.ThrowIfCancellationRequested();
             await _genreRepository.UpsertRange(genres);
         }
 
         private async Task ProcessPeopleAsync(CancellationToken token)
         {
-            var totalCount = await _httpClient.GetPeopleCount();
+            var totalCount = await _baseHttpClient.GetPeopleCount();
 
             const int limit = 25000;
             var processed = 0;
@@ -98,7 +98,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
 
             do
             {
-                var result = await _httpClient.GetPeople(j * limit, limit);
+                var result = await _baseHttpClient.GetPeople(j * limit, limit);
                 var people = result.Items
                     .Select(x => x.ConvertToPeople(Logger))
                     .ToList();
@@ -120,7 +120,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
 
             foreach (var library in Settings.MovieLibraries)
             {
-                var totalCount = await _httpClient.GetMediaCount(library.Id, library.LastSynced, "Movies");
+                var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Movies");
                 if (totalCount == 0)
                 {
                     continue;
@@ -159,7 +159,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
         {
             try
             {
-                return await _httpClient.GetMedia<SqlMovie>(library.Id, startIndex, limit, library.LastSynced, "Movie");
+                return await _baseHttpClient.GetMedia<SqlMovie>(library.Id, startIndex, limit, library.LastSynced, "Movie");
             }
             catch (Exception e)
             {
@@ -183,8 +183,8 @@ namespace EmbyStat.BackgroundTasks.Tasks
 
         private bool IsMediaServerOnline()
         {
-            _httpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
-            return _httpClient.Ping();
+            _baseHttpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
+            return _baseHttpClient.Ping();
         }
 
         #endregion

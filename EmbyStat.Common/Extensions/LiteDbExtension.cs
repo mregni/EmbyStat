@@ -84,9 +84,9 @@ namespace EmbyStat.Common.Extensions
                 case "CommunityRating":
                     return filter.Operation switch
                     {
-                        "==" => query.Where(x => (x.CommunityRating ?? 0d) == Convert.ToDouble(filter.Value)),
-                        "between" => query.Where(x => (x.CommunityRating ?? 0d) > FormatInputValue(filter.Value)[0]
-                                                      && (x.CommunityRating ?? 0d) < FormatInputValue(filter.Value)[1]),
+                        "==" => query.Where(x => (x.CommunityRating ?? 0M) == Convert.ToDecimal(filter.Value)),
+                        "between" => query.Where(x => (x.CommunityRating ?? 0M) > FormatInputValue(filter.Value)[0]
+                                                      && (x.CommunityRating ?? 0M) < FormatInputValue(filter.Value)[1]),
                         _ => query
                     };
                 case "RunTimeTicks":
@@ -113,18 +113,18 @@ namespace EmbyStat.Common.Extensions
             }
         }
 
-        private static double[] FormatInputValue(string value)
+        private static decimal[] FormatInputValue(string value)
         {
             return FormatInputValue(value, 1);
         }
 
-        private static double[] FormatInputValue(string value, int multiplier)
+        private static decimal[] FormatInputValue(string value, int multiplier)
         {
             var decodedValue = HttpUtility.UrlDecode(value);
             if (decodedValue.Contains('|'))
             {
-                var left = Convert.ToDouble(decodedValue.Split('|')[0]) * multiplier;
-                var right = Convert.ToDouble(decodedValue.Split('|')[1]) * multiplier;
+                var left = Convert.ToDecimal(decodedValue.Split('|')[0]) * multiplier;
+                var right = Convert.ToDecimal(decodedValue.Split('|')[1]) * multiplier;
 
                 //switching sides if user put the biggest number on the left side.
                 if (right < left)
@@ -137,10 +137,10 @@ namespace EmbyStat.Common.Extensions
 
             if (decodedValue.Length == 0)
             {
-                return new[] { 0d };
+                return new[] { 0M };
             }
 
-            return new[] { Convert.ToDouble(decodedValue) * multiplier };
+            return new[] { Convert.ToDecimal(decodedValue) * multiplier };
         }
 
         private static DateTime[] FormatDateInputValue(string value)

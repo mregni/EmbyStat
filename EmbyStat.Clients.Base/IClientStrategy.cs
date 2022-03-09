@@ -6,7 +6,7 @@ namespace EmbyStat.Clients.Base
 {
     public interface IClientStrategy
     {
-        IHttpClient CreateHttpClient(ServerType type);
+        IBaseHttpClient CreateHttpClient(ServerType type);
         IWebSocketClient CreateWebSocketClient(ServerType type);
     }
 }

@@ -47,13 +47,11 @@ namespace EmbyStat.Controllers
             CreateMovieMappings();
             CreateVideoMappings();
             CreatePeopleMappings();
+            CreateMediaServerMappings();
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
 
-
-
-
-            CreateMap<MediaBrowser.Model.Plugins.PluginInfo, PluginInfo>();
+            
             CreateMap<UserSettings, FullSettingsViewModel>()
                 .ForMember(x => x.Version, x => x.Ignore())
                 .ReverseMap()
@@ -64,8 +62,6 @@ namespace EmbyStat.Controllers
             CreateMap<TmdbSettings, TmdbSettingsViewModel>().ReverseMap();
             CreateMap<Language, LanguageViewModel>();
             CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
-            CreateMap<PluginInfo, PluginViewModel>();
-            CreateMap<ServerInfo, ServerInfoViewModel>();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 
             CreateMap<Common.Models.Entities.Job, JobViewModel>()
@@ -89,15 +85,13 @@ namespace EmbyStat.Controllers
                     };
                 }));
 
-            CreateMap<MoviePoster, MoviePosterViewModel>();
-            CreateMap<ShowPoster, ShowPosterViewModel>();
+            
+            
             CreateMap<PersonPoster, PersonPosterViewModel>();
-            CreateMap<MovieStatistics, MovieStatisticsViewModel>();
-            CreateMap<ShowStatistics, ShowStatisticsViewModel>();
-            CreateMap<PersonStats, PersonStatsViewModel>();
+            
             CreateMap<Library, LibraryViewModel>();
             CreateMap<Chart, ChartViewModel>();
-            CreateMap<ShowCharts, ShowChartsViewModel>();
+            
             CreateMap<ShortMovie, ShortMovieViewModel>();
             CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
             CreateMap<ShowGeneral, ShowGeneralViewModel>();
@@ -178,7 +172,9 @@ namespace EmbyStat.Controllers
                     .Where(z => z.IndexNumber != 0)
                     .SelectMany(z => z.Episodes)
                     .Count(z => z.LocationType == LocationType.Virtual)))
-                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()));
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()))
+                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+                .ForMember(x => x.CumulativeRunTime, x => x.MapFrom(y => Math.Round((decimal)(y.CumulativeRunTimeTicks ?? 0) / 600000000)));
 
             CreateMap<SqlShow, ShowDetailViewModel>()
                 .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.Seasons.Count))
@@ -191,11 +187,18 @@ namespace EmbyStat.Controllers
                     .SelectMany(z => z.Episodes)
                     .Count(z => z.LocationType == LocationType.Disk)))
                 .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()))
+                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+                .ForMember(x => x.CumulativeRunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+
                 .ForMember(x => x.MissingSeasons, x => x.MapFrom(y => y.Seasons.Where(s => s.IndexNumber != 0 && s.Episodes.Any(e => e.LocationType == LocationType.Virtual))));
 
             CreateMap<SqlSeason, VirtualSeasonViewModel>()
                 .ForMember(x => x.Episodes, x => x.MapFrom(y => y.Episodes.Where(z => z.LocationType == LocationType.Virtual)));
             CreateMap<SqlEpisode, VirtualEpisodeViewModel>();
+            
+            CreateMap<ShowCharts, ShowChartsViewModel>();
+            CreateMap<ShowStatistics, ShowStatisticsViewModel>();
+            CreateMap<ShowPoster, ShowPosterViewModel>();
         }
 
         private void CreateMovieMappings()
@@ -218,7 +221,24 @@ namespace EmbyStat.Controllers
                 .AddCommunityRatingMappings()
                 .AddStreamMappings();
             CreateMap<SqlMovie, MovieViewModel>()
-                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()));
+                .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()))
+                .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+                ;
+            
+            CreateMap<MoviePoster, MoviePosterViewModel>();
+            CreateMap<MovieStatistics, MovieStatisticsViewModel>();
+        }
+
+
+        private void CreateMediaServerMappings()
+        {
+            CreateMap<ServerInfoDto, SqlServerInfo>();
+            CreateMap<SqlPluginInfo, PluginViewModel>();
+            CreateMap<SqlServerInfo, ServerInfoViewModel>()
+                .ForMember(x => x.ActiveUserCount, x => x.Ignore())
+                .ForMember(x => x.IdleUserCount, x => x.Ignore())
+                .ForMember(x => x.ActiveDeviceCount, x => x.Ignore())
+                .ForMember(x => x.IdleDeviceCount, x => x.Ignore());
         }
 
         private void CreateVideoMappings()
@@ -293,11 +313,8 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.SubtitleStreams,
                     x => x.MapFrom(y => y.MediaStreams.Where(z => z.Type == MediaStreamType.Subtitle)));
         }
-
-
-
-
-        public static int? MapInt(string input)
+        
+        private static int? MapInt(string input)
         {
             if (int.TryParse(input, out var tmdbValue))
             {
@@ -306,6 +323,5 @@ namespace EmbyStat.Controllers
 
             return null;
         }
-
     }
 }

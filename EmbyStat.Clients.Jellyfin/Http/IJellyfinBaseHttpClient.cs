@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Clients.Jellyfin.Http
 {
-    public interface IJellyfinHttpClient : IHttpClient
+    public interface IJellyfinBaseHttpClient : IBaseHttpClient
     {
     }
 }

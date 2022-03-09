@@ -70,6 +70,14 @@ namespace EmbyStat.Controllers.Settings
             return Ok(_mapper.Map<IList<LanguageViewModel>>(result));
         }
 
+        [HttpGet]
+        [Route("wizard/state")]
+        public IActionResult GetWizardState()
+        {
+            var result = _settingsService.GetUserSettings();
+            return Ok(result.WizardFinished);
+        }
+
         private void MarkStatisticsAsInvalidIfNeeded(UserSettings configuration)
         {
             var useSettings = _settingsService.GetUserSettings();

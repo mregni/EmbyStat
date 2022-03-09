@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
@@ -13,7 +14,9 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Settings;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Movies;
+using EmbyStat.Common.SqLite.Users;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -24,7 +27,7 @@ namespace EmbyStat.Services
 {
     public class MediaServerService : IMediaServerService
     {
-        private IHttpClient _httpClient;
+        private IBaseHttpClient _baseHttpClient;
         private readonly IMediaServerRepository _mediaServerRepository;
         private readonly ISessionService _sessionService;
         private readonly ILibraryRepository _libraryRepository;
@@ -33,9 +36,10 @@ namespace EmbyStat.Services
         private readonly IShowRepository _showRepository;
         private readonly IClientStrategy _clientStrategy;
         private readonly Logger _logger;
+        private readonly IMapper _mapper;
 
         public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, ILibraryRepository libraryRepository)
+            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, ILibraryRepository libraryRepository, IMapper mapper)
         {
             _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
@@ -44,6 +48,7 @@ namespace EmbyStat.Services
             _showRepository = showRepository;
             _clientStrategy = clientStrategy;
             _libraryRepository = libraryRepository;
+            _mapper = mapper;
             _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
 
             var settings = _settingsService.GetUserSettings();
@@ -54,17 +59,17 @@ namespace EmbyStat.Services
         public Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type)
         {
             ChangeClientType(type);
-            return _httpClient.SearchServer();
+            return _baseHttpClient.SearchServer();
         }
 
-        public ServerInfo GetServerInfo(bool forceReSync)
+        public async Task<SqlServerInfo> GetServerInfo(bool forceReSync)
         {
             if (forceReSync)
             {
-                return GetAndProcessServerInfo();
+                return await GetAndProcessServerInfo();
             }
 
-            return _mediaServerRepository.GetServerInfo() ?? GetAndProcessServerInfo();
+            return await _mediaServerRepository.GetServerInfo() ?? await GetAndProcessServerInfo();
         }
 
         public bool TestNewApiKey(string url, string apiKey, ServerType type)
@@ -72,20 +77,20 @@ namespace EmbyStat.Services
             _logger.Debug($"Testing new API key on {url}");
             _logger.Debug($"API key used: {apiKey}");
             ChangeClientType(type);
-            var oldApiKey = _httpClient.ApiKey;
-            var oldUrl = _httpClient.BaseUrl;
-            _httpClient.ApiKey = apiKey;
-            _httpClient.BaseUrl = url;
+            var oldApiKey = _baseHttpClient.ApiKey;
+            var oldUrl = _baseHttpClient.BaseUrl;
+            _baseHttpClient.ApiKey = apiKey;
+            _baseHttpClient.BaseUrl = url;
 
-            var info = _httpClient.GetServerInfo();
+            var info = _baseHttpClient.GetServerInfo();
             if (info != null)
             {
                 _logger.Debug("new API key works!");
                 return true;
             }
 
-            _httpClient.ApiKey = oldApiKey;
-            _httpClient.BaseUrl = oldUrl;
+            _baseHttpClient.ApiKey = oldApiKey;
+            _baseHttpClient.BaseUrl = oldUrl;
 
             _logger.Debug("new API key not working!");
             return false;
@@ -98,7 +103,7 @@ namespace EmbyStat.Services
 
         public IEnumerable<Library> GetMediaServerLibraries()
         {
-            var rootItems = _httpClient.GetMediaFolders();
+            var rootItems = _baseHttpClient.GetMediaFolders();
 
             var libraries = rootItems.Items
                 .Select(LibraryConverter.ConvertToLibrary)
@@ -112,8 +117,8 @@ namespace EmbyStat.Services
         public bool PingMediaServer(string url)
         {
             _logger.Debug($"Pinging server on {url}");
-            _httpClient.BaseUrl = url;
-            return _httpClient.Ping();
+            _baseHttpClient.BaseUrl = url;
+            return _baseHttpClient.Ping();
         }
 
         public void ResetMissedPings()
@@ -141,7 +146,7 @@ namespace EmbyStat.Services
 
         #region Plugin
 
-        public List<PluginInfo> GetAllPlugins()
+        public Task<List<SqlPluginInfo>> GetAllPlugins()
         {
             return _mediaServerRepository.GetAllPlugins();
         }
@@ -150,22 +155,22 @@ namespace EmbyStat.Services
 
         #region Users
 
-        public List<EmbyUser> GetAllUsers()
+        public Task<List<SqlUser>> GetAllUsers()
         {
             return _mediaServerRepository.GetAllUsers();
         }
 
-        public List<EmbyUser> GetAllAdministrators()
+        public async Task<List<SqlUser>> GetAllAdministrators()
         {
-            var administrators = _mediaServerRepository.GetAllAdministrators();
+            var administrators = await _mediaServerRepository.GetAllAdministrators();
 
             if (administrators.Any())
             {
                 return administrators;
             }
 
-            GetAndProcessUsers();
-            return _mediaServerRepository.GetAllAdministrators();
+            await GetAndProcessUsers();
+            return await _mediaServerRepository.GetAllAdministrators();
         }
 
         public EmbyUser GetUserById(string id)
@@ -195,30 +200,32 @@ namespace EmbyStat.Services
 
         public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
         {
-            var skip = page * size;
-            var sessions = _sessionService.GetSessionsForUser(id).ToList();
-            var plays = sessions.SelectMany(x => x.Plays).Skip(skip).Take(size).ToList();
-            var deviceIds = sessions.Where(x => plays.Any(y => x.Plays.Any(z => z.Id == y.Id))).Select(x => x.DeviceId);
-
-            var devices = _mediaServerRepository.GetDeviceById(deviceIds).ToList();
-
-            foreach (var play in plays)
-            {
-                var currentSession = sessions.Single(x => x.Plays.Any(y => y.Id == play.Id));
-                var device = devices.SingleOrDefault(x => x.Id == currentSession.DeviceId);
-
-                if (play.Type == PlayType.Movie)
-                {
-                    yield return CreateUserMediaViewFromMovie(play, device);
-                }
-                else if (play.Type == PlayType.Episode)
-                {
-                    yield return CreateUserMediaViewFromEpisode(play, device);
-                }
-
-                //if media is null this means a user has watched something that is not yet in our DB
-                //TODO: try starting a sync here
-            }
+            throw new NotImplementedException();
+            // var skip = page * size;
+            // var sessions = _sessionService.GetSessionsForUser(id).ToList();
+            // var plays = sessions.SelectMany(x => x.Plays).Skip(skip).Take(size).ToList();
+            // var deviceIds = sessions.Where(x => plays.Any(y => x.Plays.Any(z => z.Id == y.Id))).Select(x => x.DeviceId);
+            //
+            // var devices = await _mediaServerRepository.GetDeviceById(deviceIds);
+            //
+            // var list = new List<UserMediaView>();
+            // foreach (var play in plays)
+            // {
+            //     var currentSession = sessions.Single(x => x.Plays.Any(y => y.Id == play.Id));
+            //     var device = devices.SingleOrDefault(x => x.Id == currentSession.DeviceId);
+            //
+            //     if (play.Type == PlayType.Movie)
+            //     {
+            //         list(CreateUserMediaViewFromMovie(play, device));
+            //     }
+            //     else if (play.Type == PlayType.Episode)
+            //     {
+            //         yield return CreateUserMediaViewFromEpisode(play, device);
+            //     }
+            //
+            //     //if media is null this means a user has watched something that is not yet in our DB
+            //     //TODO: try starting a sync here
+            // }
         }
 
         public int GetUserViewCount(string id)
@@ -228,41 +235,42 @@ namespace EmbyStat.Services
 
         #endregion
 
+        #region Devices
+        
+        public Task<List<SqlDevice>> GetAllDevices()
+        {
+            return _mediaServerRepository.GetAllDevices();
+        }
+        
+        #endregion
+        
         #region JobHelpers
 
-        public ServerInfo GetAndProcessServerInfo()
+        public async Task<SqlServerInfo> GetAndProcessServerInfo()
         {
-            var server = _httpClient.GetServerInfo();
-            _mediaServerRepository.UpsertServerInfo(server);
+            var serverDto = await _baseHttpClient.GetServerInfo();
+            var server = _mapper.Map<SqlServerInfo>(serverDto);
+            await _mediaServerRepository.UpsertServerInfo(server);
             return server;
         }
 
-        public void GetAndProcessPluginInfo()
+        public async Task GetAndProcessPluginInfo()
         {
-            var plugins = _httpClient.GetInstalledPlugins();
-            _mediaServerRepository.RemoveAllAndInsertPluginRange(plugins);
+            var plugins = await _baseHttpClient.GetInstalledPlugins();
+            await _mediaServerRepository.DeleteAllPlugins();
+            await _mediaServerRepository.InsertPlugins(plugins);
         }
 
-        public void GetAndProcessUsers()
+        public async Task GetAndProcessUsers()
         {
-            var usersJson = _httpClient.GetUsers();
-            var users = usersJson.ConvertToUserList();
-            _mediaServerRepository.UpsertUsers(users);
-
-            var localUsers = _mediaServerRepository.GetAllUsers();
-            var removedUsers = localUsers.Where(u => users.All(u2 => u2.Id != u.Id));
-            _mediaServerRepository.MarkUsersAsDeleted(removedUsers);
+            var users = await _baseHttpClient.GetUsers();
+            await _mediaServerRepository.UpsertUsers(users);
         }
 
-        public void GetAndProcessDevices()
+        public async Task GetAndProcessDevices()
         {
-            var devicesJson = _httpClient.GetDevices();
-            var devices = devicesJson.ConvertToDeviceList();
-            _mediaServerRepository.UpsertDevices(devices);
-
-            var localDevices = _mediaServerRepository.GetAllDevices();
-            var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
-            _mediaServerRepository.MarkDevicesAsDeleted(removedDevices);
+            var devices = await _baseHttpClient.GetDevices();
+            await _mediaServerRepository.UpsertDevices(devices);
         }
 
         #endregion
@@ -354,16 +362,13 @@ namespace EmbyStat.Services
         private void ChangeClientType(ServerType? type)
         {
             var realType = type ?? ServerType.Emby;
-            _httpClient = _clientStrategy.CreateHttpClient(realType);
+            _baseHttpClient = _clientStrategy.CreateHttpClient(realType);
             var settings = _settingsService.GetUserSettings();
             var appSettings = _settingsService.GetAppSettings();
 
-            if (settings.MediaServer == null)
-            {
-                settings.MediaServer = new MediaServerSettings();
-            }
+            settings.MediaServer ??= new MediaServerSettings();
 
-            _httpClient.SetDeviceInfo(
+            _baseHttpClient.SetDeviceInfo(
                 settings.AppName, 
                 settings.MediaServer.AuthorizationScheme, 
                 appSettings.Version.ToCleanVersionString(), 

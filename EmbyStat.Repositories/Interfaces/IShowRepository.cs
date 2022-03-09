@@ -16,13 +16,12 @@ namespace EmbyStat.Repositories.Interfaces
         void RemoveShows();
         Dictionary<SqlShow, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);
         Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds);
+        Task<int> CompleteCollectedCount(IReadOnlyList<string> libraryIds);
         #endregion
 
         #region Charts
-
         Task<Dictionary<string, int>> GetShowStatusCharValues(IReadOnlyList<string> libraryIds);
         Task<IEnumerable<double>> GetCollectedRateChart(IReadOnlyList<string> libraryIds);
-
         #endregion
 
         #region Episodes
@@ -31,5 +30,7 @@ namespace EmbyStat.Repositories.Interfaces
         Task<long> GetTotalRunTimeTicks(IReadOnlyList<string> libraryIds);
         Task<double> GetTotalDiskSpaceUsed(IReadOnlyList<string> libraryIds);
         #endregion
+
+        
     }
 }

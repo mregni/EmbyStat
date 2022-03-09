@@ -5,6 +5,7 @@
         Idle = 0,
         Running = 1,
         Failed = 2,
-        Completed = 3
+        Completed = 3,
+        Preparing = 4
     }
 }

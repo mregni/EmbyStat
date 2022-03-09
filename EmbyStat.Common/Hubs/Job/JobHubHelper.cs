@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
 using Microsoft.AspNetCore.SignalR;
@@ -24,11 +25,9 @@ namespace EmbyStat.Common.Hubs.Job
             await _jobHubContext.Clients.All.SendAsync(JobReportProgressMethod, info);
         }
 
-        public async Task BroadCastJobLog(string prefix, string message, ProgressLogType type)
+        public async Task BroadCastJobLog(string jobName, string message, ProgressLogType type)
         {
-            var text = $"{prefix} => {message}";
-            var log = new JobLog { Type = type, Value = text };
-
+            var log = new JobLog { Type = type, Value = message, JobName = jobName, DateTimeUtc = DateTime.UtcNow};
             await _jobHubContext.Clients.All.SendAsync(JobReportLogMethod, log);
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -27,11 +28,18 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("server/info")]
-        public IActionResult GetServerInfo(bool forceReSync = false)
+        public async Task<IActionResult> GetServerInfo(bool forceReSync = false)
         {
-            var result = _mediaServerService.GetServerInfo(forceReSync);
-
+            var result = await _mediaServerService.GetServerInfo(forceReSync);
             var serverInfo = _mapper.Map<ServerInfoViewModel>(result);
+
+            var users = await _mediaServerService.GetAllUsers();
+            serverInfo.ActiveUserCount = users.Count(x => x.LastActivityDate > DateTime.Now.AddMonths(-6));
+            serverInfo.IdleUserCount = users.Count(x => x.LastActivityDate <= DateTime.Now.AddMonths(-6));
+            var devices = await _mediaServerService.GetAllDevices();
+            serverInfo.ActiveDeviceCount = devices.Count(x => x.DateLastActivity > DateTime.Now.AddMonths(-6));
+            serverInfo.IdleDeviceCount = devices.Count(x => x.DateLastActivity <= DateTime.Now.AddMonths(-6));
+            
             return Ok(serverInfo);
         }
 
@@ -88,9 +96,9 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("plugins")]
-        public IActionResult GetPlugins()
+        public async Task<IActionResult> GetPlugins()
         {
-            var result = _mediaServerService.GetAllPlugins();
+            var result = await _mediaServerService.GetAllPlugins();
             return Ok(_mapper.Map<IList<PluginViewModel>>(result));
         }
 
@@ -100,17 +108,17 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("users")]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var result = _mediaServerService.GetAllUsers();
+            var result = await _mediaServerService.GetAllUsers();
             return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
         }
 
         [HttpGet]
         [Route("administrators")]
-        public IActionResult GetAdministrators()
+        public async Task<IActionResult> GetAdministrators()
         {
-            var result = _mediaServerService.GetAllAdministrators();
+            var result = await _mediaServerService.GetAllAdministrators();
             return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
         }
 

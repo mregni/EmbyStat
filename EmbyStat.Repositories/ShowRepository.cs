@@ -25,7 +25,7 @@
     //        return query.FindById(showId);
     //    }
 
-    //    public void RemoveShowsThatAreNotUpdated(DateTime startTime)
+    //    public void RemoveShowsThatAreNotUpdated(DateTimeUtc startTime)
     //    {
     //        using var database = Context.CreateDatabaseContext();
     //        var episodeCollection = database.GetCollection<Episode>();

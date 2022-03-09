@@ -3,6 +3,7 @@ using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Common.SqLite.Streams;
+using EmbyStat.Common.SqLite.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SqlPerson = EmbyStat.Common.SqLite.SqlPerson;
@@ -22,6 +23,15 @@ namespace EmbyStat.Repositories
         public DbSet<SqlShow> Shows { get; set; }
         public DbSet<SqlSeason> Seasons { get; set; }
         public DbSet<SqlEpisode> Episodes { get; set; }
+
+        public DbSet<SqlPluginInfo> Plugins { get; set; }
+        public DbSet<SqlServerInfo> ServerInfo { get; set; }
+
+        public DbSet<SqlUser> Users { get; set; }
+        public DbSet<SqlUserConfiguration> UserConfigurations { get; set; }
+        public DbSet<SqlUserPolicy> UserPolicies { get; set; }
+        
+        public DbSet<SqlDevice> Devices { get; set; }
 
         public static readonly ILoggerFactory LoggerFactory = 
             Microsoft.Extensions.Logging.LoggerFactory.Create(builder => { builder.AddConsole(); });
@@ -50,9 +60,24 @@ namespace EmbyStat.Repositories
             BuildPeople(modelBuilder);
             BuildMovies(modelBuilder);
             BuildShows(modelBuilder);
+            BuildUsers(modelBuilder);
         }
 
-        private void BuildPeople(ModelBuilder modelBuilder)
+        private static void BuildUsers(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SqlUser>().HasKey(x => x.Id);
+            modelBuilder.Entity<SqlUser>()
+                .HasOne<SqlUserConfiguration>()
+                .WithOne(x => x.User)
+                .OnDelete(DeleteBehavior.ClientCascade);
+            
+            modelBuilder.Entity<SqlUser>()
+                .HasOne<SqlUserPolicy>()
+                .WithOne(x => x.User)
+                .OnDelete(DeleteBehavior.ClientCascade);
+        }
+
+        private static void BuildPeople(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SqlMediaPerson>().HasKey(x => x.Id);
             modelBuilder.Entity<SqlMediaPerson>()
@@ -84,7 +109,7 @@ namespace EmbyStat.Repositories
                 .HasForeignKey(x => x.PersonId);
         }
 
-        private void BuildShows(ModelBuilder modelBuilder)
+        private static void BuildShows(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SqlShow>()
                 .HasMany(x => x.Seasons)
@@ -126,7 +151,7 @@ namespace EmbyStat.Repositories
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
-        private void BuildMovies(ModelBuilder modelBuilder)
+        private static void BuildMovies(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SqlMovie>()
                 .HasMany(x => x.Genres)

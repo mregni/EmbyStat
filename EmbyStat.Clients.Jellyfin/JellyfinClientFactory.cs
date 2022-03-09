@@ -9,16 +9,16 @@ namespace EmbyStat.Clients.Jellyfin
 {
     public class JellyfinClientFactory : IClientFactory
     {
-        private readonly IHttpClient _httpClient;
+        private readonly IBaseHttpClient _baseHttpClient;
 
-        public JellyfinClientFactory(IJellyfinHttpClient httpClient)
+        public JellyfinClientFactory(IJellyfinBaseHttpClient baseHttpClient)
         {
-            _httpClient = httpClient;
+            _baseHttpClient = baseHttpClient;
         }
 
-        public IHttpClient CreateHttpClient()
+        public IBaseHttpClient CreateHttpClient()
         {
-            return _httpClient;
+            return _baseHttpClient;
         }
 
         public IWebSocketClient CreateWebSocketClient()

@@ -263,8 +263,8 @@ namespace Tests.Unit.Services
 
             var request = new ChangeUserNameRequest
             {
-                UserName = "test",
-                NewUserName = "test2"
+                OldUserName = "test",
+                UserName = "test2"
             };
             var result = await accountService.ChangeUserName(request);
             result.Should().BeTrue();
@@ -290,8 +290,8 @@ namespace Tests.Unit.Services
 
             var request = new ChangeUserNameRequest
             {
-                UserName = "test",
-                NewUserName = "test2"
+                OldUserName = "test",
+                UserName = "test2"
             };
             var result = await accountService.ChangeUserName(request);
             result.Should().BeFalse();
@@ -320,8 +320,8 @@ namespace Tests.Unit.Services
 
             var request = new ChangeUserNameRequest
             {
-                UserName = "test",
-                NewUserName = "test2"
+                OldUserName = "test",
+                UserName = "test2"
             };
             var result = await accountService.ChangeUserName(request);
             result.Should().BeFalse();

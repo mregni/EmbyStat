@@ -72,15 +72,8 @@ namespace EmbyStat.Controllers.Show
             var show = await _showService.GetShow(id);
             if (show != null)
             {
-                try
-                {
-                    var result = _mapper.Map<ShowDetailViewModel>(show);
-                    return Ok(result);
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
+                var result = _mapper.Map<ShowDetailViewModel>(show);
+                return Ok(result);
             }
 
             return NotFound(id);

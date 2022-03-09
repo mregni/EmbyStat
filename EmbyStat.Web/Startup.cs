@@ -11,8 +11,10 @@ using Rollbar.NetCore.AspNet;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AspNetCore.Identity.LiteDB;
 using EmbyStat.BackgroundTasks;
@@ -71,12 +73,14 @@ namespace EmbyStat.Web
                 loggerOptions.Filter = (loggerName, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
             });
 
-            services.AddCors(b => b.AddPolicy("default", builder =>
-            {
-                builder.AllowAnyOrigin()
+            services.AddCors(b => b.AddPolicy("default"
+                , builder => {
+                builder
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true)
+                    .AllowCredentials();
+        }));
 
             services
                 .AddMvcCore(options => {
@@ -137,7 +141,7 @@ namespace EmbyStat.Web
 
             //var host = Configuration.GetValue<string>("Postgress:Host");
             //var port = Configuration.GetValue<string>("Postgress:Port");
-            //var user = Configuration.GetValue<string>("Postgress:UserName");
+            //var user = Configuration.GetValue<string>("Postgress:OldUserName");
             //var password = Configuration.GetValue<string>("Postgress:Password");
 
             //services.AddDbContext<SqlLiteDbContext>(options =>
@@ -260,7 +264,7 @@ namespace EmbyStat.Web
 
             app.UseEndpoints(routes =>
             {
-                routes.MapHub<JobHub>("/jobs-socket");
+                routes.MapHub<JobHub>("/hub");
             });
 
             app.UseSwagger();

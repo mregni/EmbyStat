@@ -23,7 +23,7 @@ namespace EmbyStat.Repositories
             await connection.OpenAsync();
             await using var transaction = connection.BeginTransaction();
 
-            var query = @$"INSERT OR REPLACE INTO {Constants.Tables.Genres} (Id, Name) VALUES (@Id, @Name)";
+            var query = @$"INSERT OR IGNORE INTO {Constants.Tables.Genres} (Id, Name) VALUES (@Id, @Name)";
             await connection.ExecuteAsync(query, genres, transaction);
 
             await transaction.CommitAsync();

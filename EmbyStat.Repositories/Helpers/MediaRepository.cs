@@ -207,7 +207,7 @@
     //        switch (filter.Field)
     //        {
     //            case "PremiereDate":
-    //                var values = Array.Empty<DateTime>();
+    //                var values = Array.Empty<DateTimeUtc>();
     //                if (filter.Operation != "null")
     //                {
     //                    values = FormatDateInputValue(filter.Value);
@@ -215,10 +215,10 @@
 
     //                return filter.Operation switch
     //                {
-    //                    "==" => query.Where(x => (x.PremiereDate ?? DateTime.MinValue) == values[0]),
-    //                    "<" => query.Where(x => (x.PremiereDate ?? DateTime.MaxValue) < values[0]),
-    //                    ">" => query.Where(x => (x.PremiereDate ?? DateTime.MinValue) > values[0]),
-    //                    "between" => query.Where(x => (x.PremiereDate ?? DateTime.MinValue) > values[0] && (x.PremiereDate ?? DateTime.MinValue) < values[1]),
+    //                    "==" => query.Where(x => (x.PremiereDate ?? DateTimeUtc.MinValue) == values[0]),
+    //                    "<" => query.Where(x => (x.PremiereDate ?? DateTimeUtc.MaxValue) < values[0]),
+    //                    ">" => query.Where(x => (x.PremiereDate ?? DateTimeUtc.MinValue) > values[0]),
+    //                    "between" => query.Where(x => (x.PremiereDate ?? DateTimeUtc.MinValue) > values[0] && (x.PremiereDate ?? DateTimeUtc.MinValue) < values[1]),
     //                    "null" => query.Where(x => x.PremiereDate == null),
     //                    _ => query
     //                };
@@ -308,12 +308,12 @@
     //        return new[] { Convert.ToDouble(decodedValue) * multiplier };
     //    }
 
-    //    protected DateTime[] FormatDateInputValue(string value)
+    //    protected DateTimeUtc[] FormatDateInputValue(string value)
     //    {
     //        if (value.Contains('|'))
     //        {
-    //            var left = DateTime.Parse(value.Split('|')[0]);
-    //            var right = DateTime.Parse(value.Split('|')[1]);
+    //            var left = DateTimeUtc.Parse(value.Split('|')[0]);
+    //            var right = DateTimeUtc.Parse(value.Split('|')[1]);
 
     //            //switching sides if user put the biggest number on the left side.
     //            if (right < left)
@@ -325,7 +325,7 @@
     //        }
     //        else
     //        {
-    //            return new[] { DateTime.Parse(value) };
+    //            return new[] { DateTimeUtc.Parse(value) };
     //        }
     //    }
 

@@ -11,7 +11,10 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
@@ -25,7 +28,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
     [DisableConcurrentExecution(60 * 60)]
     public class ShowSyncJob : BaseJob, IShowSyncJob
     {
-        private readonly IHttpClient _httpClient;
+        private readonly IBaseHttpClient _baseHttpClient;
         private readonly IShowRepository _showRepository;
         private readonly IStatisticsRepository _statisticsRepository;
         private readonly IShowService _showService;
@@ -47,7 +50,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             Title = jobRepository.GetById(Id).Title;
             var settings = settingsService.GetUserSettings();
-            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
+            _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
         }
 
         public sealed override Guid Id => Constants.JobIds.ShowSyncId;
@@ -76,14 +79,14 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task ProcessGenresAsync()
         {
-            var genres = await _httpClient.GetGenres();
+            var genres = await _baseHttpClient.GetGenres();
             await LogInformation("Processing genres");
             await _genreRepository.UpsertRange(genres);
         }
 
         private async Task ProcessPeopleAsync()
         {
-            var totalCount = await _httpClient.GetPeopleCount();
+            var totalCount = await _baseHttpClient.GetPeopleCount();
             await LogInformation($"Processing information from {totalCount} people");
 
             const int limit = 25000;
@@ -92,7 +95,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             do
             {
-                var result = await _httpClient.GetPeople(j * limit, limit);
+                var result = await _baseHttpClient.GetPeople(j * limit, limit);
                 var people = result.Items
                     .Select(x => x.ConvertToPeople(Logger))
                     .ToList();
@@ -113,7 +116,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             foreach (var library in Settings.ShowLibraries)
             {
-                var totalCount = await _httpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
+                var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
                 if (totalCount == 0)
                 {
                     continue;
@@ -126,36 +129,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 const int limit = 50;
                 do
                 {
-                    var shows = await _httpClient.GetShows(library.Id, j * limit, limit, library.LastSynced); 
-
-                    shows.ForEach(x => x.CollectionId = library.Id);
-                    shows.AddGenres(genres);
-
-                    foreach (var show in shows)
-                    {
-                        var seasons = await _httpClient.GetSeasons(show.Id, library.LastSynced);
-                        var episodes = await _httpClient.GetEpisodes(show.Id, library.LastSynced);
-
-                        foreach (var season in seasons)
-                        {
-                            season.Episodes.AddRange(episodes.Where(x => x.SeasonId == season.Id));
-                        }
-
-                        show.Seasons = seasons.ToList();
-                        show.CumulativeRunTimeTicks = show.GetShowRunTimeTicks();
-                        show.SizeInMb = show.GetShowSize();
-
-                        var localShow = await _showRepository.GetShowByIdWithEpisodes(show.Id);
-                        if (show.TMDB.HasValue)
-                        {
-                            if (show.HasShowChangedEpisodes(localShow) || localShow is { ExternalSynced: false })
-                            {
-                                await GetMissingEpisodesFromProviderAsync(show);
-                            }
-                        }
-                    }
-
-                    await _showRepository.UpsertShows(shows);
+                    await ProcessShowBlock(library, genres, j, limit);
 
                     processed += limit;
                     j++;
@@ -166,6 +140,42 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 } while (processed < totalCount);
                 await SettingsService.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
             }
+        }
+
+        private async Task ProcessShowBlock(LibraryContainer library, SqlGenre[] genres, int index, int limit)
+        {
+            var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced); 
+
+            shows.ForEach(x => x.CollectionId = library.Id);
+            shows.AddGenres(genres);
+
+            foreach (var show in shows)
+            {
+                var seasons = await _baseHttpClient.GetSeasons(show.Id, library.LastSynced);
+                var episodes = await _baseHttpClient.GetEpisodes(show.Id, library.LastSynced);
+
+                foreach (var season in seasons)
+                {
+                    season.Episodes.AddRange(episodes.Where(x => x.SeasonId == season.Id));
+                }
+
+                show.Seasons = seasons.ToList();
+                show.CumulativeRunTimeTicks = show.GetShowRunTimeTicks();
+                show.SizeInMb = show.GetShowSize();
+
+                var localShow = await _showRepository.GetShowByIdWithEpisodes(show.Id);
+                if (!show.TMDB.HasValue)
+                {
+                    continue;
+                }
+                
+                if (show.HasShowChangedEpisodes(localShow) || localShow is { ExternalSynced: false })
+                {
+                    await GetMissingEpisodesFromProviderAsync(show);
+                }
+            }
+
+            await _showRepository.UpsertShows(shows);
         }
 
         private async Task GetMissingEpisodesFromProviderAsync(SqlShow show)
@@ -201,7 +211,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 throw new NotFoundException($"Could not find show {show.Name} with id {show.TMDB}");
             }
 
-            foreach (var externalEpisode in externalEpisodes)
+            foreach (var externalEpisode in externalEpisodes.Where(x => x.SeasonNumber != 0))
             {
                 var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == externalEpisode.SeasonNumber);
                 if (season == null)
@@ -262,8 +272,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private bool IsMediaServerOnline()
         {
-            _httpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
-            return _httpClient.Ping();
+            _baseHttpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
+            return _baseHttpClient.Ping();
         }
 
         private async Task CalculateStatistics()

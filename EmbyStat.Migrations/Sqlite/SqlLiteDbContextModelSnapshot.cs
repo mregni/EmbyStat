@@ -58,8 +58,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("CollectionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<float?>("CommunityRating")
-                        .HasColumnType("REAL");
+                    b.Property<decimal?>("CommunityRating")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Container")
                         .HasColumnType("TEXT");
@@ -128,8 +128,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("CollectionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<float?>("CommunityRating")
-                        .HasColumnType("REAL");
+                    b.Property<decimal?>("CommunityRating")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Container")
                         .HasColumnType("TEXT");
@@ -274,8 +274,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("CollectionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<float?>("CommunityRating")
-                        .HasColumnType("REAL");
+                    b.Property<decimal?>("CommunityRating")
+                        .HasColumnType("TEXT");
 
                     b.Property<long?>("CumulativeRunTimeTicks")
                         .HasColumnType("INTEGER");
@@ -336,6 +336,37 @@ namespace EmbyStat.Migrations.Sqlite
                     b.ToTable("Shows");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.SqLite.SqlDevice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AppName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AppVersion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateLastActivity")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IconUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastUserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Devices");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.SqLite.SqlGenre", b =>
                 {
                     b.Property<string>("Id")
@@ -357,21 +388,119 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("MovieCount")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Primary")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ShowCount")
+                    b.HasKey("Id");
+
+                    b.ToTable("People");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.SqlPluginInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plugins");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.SqlServerInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CachePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("CanLaunchWebBrowser")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("CanSelfRestart")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("CanSelfUpdate")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HardwareAccelerationRequiresPremiere")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasPendingRestart")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasUpdateAvailable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HttpServerPortNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HttpsPortNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("InternalMetadataPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ItemsByNamePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LocalAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LogPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OperatingSystem")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OperatingSystemDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProgramDataPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("SupportsAutoRunAtStartup")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SupportsHttps")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SupportsLibraryMonitor")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SystemUpdateLevel")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TranscodingTempPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WanAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WebSocketPortNumber")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.ToTable("ServerInfo");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Streams.SqlAudioStream", b =>
@@ -538,6 +667,198 @@ namespace EmbyStat.Migrations.Sqlite
                     b.ToTable("VideoStreams");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ConfigurationId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("HasConfiguredEasyPassword")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasConfiguredPassword")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasPassword")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LastActivityDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("LastLoginDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PolicyId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConfigurationId");
+
+                    b.HasIndex("PolicyId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUserConfiguration", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("DisplayMissingEpisodes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableLocalPassword")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableNextEpisodeAutoPlay")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HidePlayedInLatest")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("PlayDefaultAudioTrack")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("RememberAudioSelections")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("RememberSubtitleSelections")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SubtitleLanguagePreference")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SubtitleMode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserConfigurations");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUserPolicy", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AuthenticationProviderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EnableAllChannels")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableAllDevices")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableAllFolders")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableAudioPlaybackTranscoding")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableContentDeletion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableContentDownloading")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableLiveTvAccess")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableLiveTvManagement")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableMediaConversion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableMediaPlayback")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnablePlaybackRemuxing")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnablePublicSharing")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableRemoteAccess")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableRemoteControlOfOtherUsers")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableSharedDeviceControl")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableSubtitleDownloading")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableSubtitleManagement")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableSyncTranscoding")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableUserPreferenceAccess")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableVideoPlaybackTranscoding")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InvalidLoginAttemptCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAdministrator")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDisabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsHiddenFromUnusedDevices")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsHiddenRemotely")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsTagBlockingModeInclusive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RemoteClientBitrateLimit")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SimultaneousStreamLimit")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserPolicies");
+                });
+
             modelBuilder.Entity("SqlGenreSqlMovie", b =>
                 {
                     b.Property<string>("GenresId")
@@ -683,6 +1004,45 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Episode");
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUser", b =>
+                {
+                    b.HasOne("EmbyStat.Common.SqLite.Users.SqlUserConfiguration", "Configuration")
+                        .WithMany()
+                        .HasForeignKey("ConfigurationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EmbyStat.Common.SqLite.Users.SqlUserPolicy", "Policy")
+                        .WithMany()
+                        .HasForeignKey("PolicyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Configuration");
+
+                    b.Navigation("Policy");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUserConfiguration", b =>
+                {
+                    b.HasOne("EmbyStat.Common.SqLite.Users.SqlUser", "User")
+                        .WithOne()
+                        .HasForeignKey("EmbyStat.Common.SqLite.Users.SqlUserConfiguration", "UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUserPolicy", b =>
+                {
+                    b.HasOne("EmbyStat.Common.SqLite.Users.SqlUser", "User")
+                        .WithOne()
+                        .HasForeignKey("EmbyStat.Common.SqLite.Users.SqlUserPolicy", "UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SqlGenreSqlMovie", b =>

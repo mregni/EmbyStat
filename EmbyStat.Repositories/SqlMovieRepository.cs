@@ -350,7 +350,7 @@ FROM {Constants.Tables.Movies} AS m
 INNER JOIN {Constants.Tables.GenreMovie} as gm ON (m.Id = gm.MoviesId)
 INNER JOIN {Constants.Tables.Genres} as g ON (g.Id = gm.GenresId)
 GROUP BY g.Name
-ORDER BY Count";
+ORDER BY g.Name";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
             return connection.Query(query, new { Ids = libraryIds })
@@ -359,7 +359,7 @@ ORDER BY Count";
                 row => (int)row.Count);
         }
 
-        public IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
+        public IEnumerable<decimal?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
         {
             return _context.Movies
                 .FilterOnLibrary(libraryIds)
@@ -379,7 +379,7 @@ ORDER BY Count";
 FROM {Constants.Tables.Movies} AS m
 WHERE m.OfficialRating IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("m")}
 GROUP BY upper(m.OfficialRating)
-ORDER BY Count";
+ORDER BY OfficialRating";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
             return connection.Query(query, new { Ids = libraryIds })

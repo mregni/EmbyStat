@@ -17,7 +17,7 @@ namespace Tests.Unit.Services
     {
         private readonly Person _basePerson;
 
-        private Mock<IEmbyHttpClient> EmbyClientMock { get; set; }
+        private Mock<IEmbyBaseHttpClient> EmbyClientMock { get; set; }
         private Mock<IPersonRepository> PersonRepositoryMock { get; set; }
         public PersonServiceTests()
         {
@@ -40,7 +40,7 @@ namespace Tests.Unit.Services
             PersonRepositoryMock = new Mock<IPersonRepository>();
             PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns(person);
 
-            EmbyClientMock = new Mock<IEmbyHttpClient>();
+            EmbyClientMock = new Mock<IEmbyBaseHttpClient>();
             EmbyClientMock.Setup(x => x.GetPersonByName(It.IsAny<string>()))
                 .Returns(_basePerson);
 
@@ -88,7 +88,7 @@ namespace Tests.Unit.Services
             PersonRepositoryMock = new Mock<IPersonRepository>();
             PersonRepositoryMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Returns((Person) null);
 
-            EmbyClientMock = new Mock<IEmbyHttpClient>();
+            EmbyClientMock = new Mock<IEmbyBaseHttpClient>();
             EmbyClientMock.Setup(x => x.GetPersonByName(It.IsAny<string>())).Throws(new Exception());
 
             var movieRepositoryMock = new Mock<IMovieRepository>();

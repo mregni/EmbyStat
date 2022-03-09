@@ -47,9 +47,6 @@ namespace EmbyStat.Common
             public static string TotalActors => "COMMON.TOTALACTORS";
             public static string TotalDirectors => "COMMON.TOTALDIRECTORS";
             public static string TotalWriters => "COMMON.TOTALWRITERS";
-            public static string MostFeaturedActor => "COMMON.MOSTFEATUREDACTOR";
-            public static string MostFeaturedDirector => "COMMON.MOSTFEATUREDDIRECTOR";
-            public static string MostFeaturedWriter => "COMMON.MOSTFEATUREDWRITER";
             public static string TotalDiskSpace => "COMMON.TOTALDISKSIZE";
             public static string TotalGenres => "COMMON.TOTALGENRES";
         }
@@ -57,16 +54,17 @@ namespace EmbyStat.Common
         public static class Shows
         {
             public static string TotalShows => "SHOWS.TOTALSHOWS";
+            public static string TotalCompleteCollectedShows => "SHOWS.COMPLETECOLLECTEDSHOWS";
             public static string TotalEpisodes => "SHOWS.TOTALEPISODES";
             public static string TotalMissingEpisodes => "SHOWS.TOTALMISSINGEPISODES";
             public static string TotalPlayLength => "SHOWS.TOTALPLAYLENGTH";
-            public static string HighestRatedShow => "SHOWS.HIGHESTRATEDSHOW";
-            public static string LowestRatedShow => "SHOWS.LOWESTRATEDSHOW";
+            public static string HighestRatedShow => "SHOWS.HIGHESTRATED";
+            public static string LowestRatedShow => "SHOWS.LOWESTRATED";
             public static string OldestPremiered => "SHOWS.OLDESTPREMIERED";
             public static string NewestPremiered => "SHOWS.NEWESTPREMIERED";
             public static string LatestAdded => "SHOWS.LATESTADDED";
             public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
-            public static string ShowStatusChart => "SHOWS.SHOWSTATUSGRAPH";
+            public static string ShowStatusChart => "SHOWS.SHOWSTATUS";
         }
 
         public static class Users

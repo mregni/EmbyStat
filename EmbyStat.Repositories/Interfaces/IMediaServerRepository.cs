@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.SqLite;
+using EmbyStat.Common.SqLite.Users;
 using Device = EmbyStat.Common.Models.Entities.Device;
 
 namespace EmbyStat.Repositories.Interfaces
@@ -11,34 +14,31 @@ namespace EmbyStat.Repositories.Interfaces
         void IncreaseMissedPings();
         void ResetMissedPings();
         void RemoveAllMediaServerData();
-
         #endregion
 
         #region MediaServer Plugins
-        List<PluginInfo> GetAllPlugins();
-        void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins);
+        Task<List<SqlPluginInfo>>  GetAllPlugins();
+        Task InsertPlugins(IEnumerable<SqlPluginInfo> plugins);
+        Task DeleteAllPlugins();
         #endregion
 
         #region MediaServer Server Info
-        ServerInfo GetServerInfo();
-        void UpsertServerInfo(ServerInfo entity);
+        Task<SqlServerInfo> GetServerInfo();
+        Task UpsertServerInfo(SqlServerInfo entity);
         #endregion
 
         #region MediaServer Users
-        void UpsertUsers(IEnumerable<EmbyUser> users);
-        List<EmbyUser> GetAllUsers();
-        List<EmbyUser> GetAllAdministrators();
-        void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);
+        Task UpsertUsers(IEnumerable<SqlUser> users);
+        Task<List<SqlUser>>  GetAllUsers();
+        Task<List<SqlUser>>  GetAllAdministrators();
         EmbyUser GetUserById(string id);
 
         #endregion
 
         #region Devices
-        List<Device> GetAllDevices();
-        List<Device> GetDeviceById(IEnumerable<string> ids);
-        void MarkDevicesAsDeleted(IEnumerable<Device> devices);
-        void UpsertDevices(IEnumerable<Device> devices);
-
+        Task<List<SqlDevice>> GetAllDevices();
+        Task<List<SqlDevice>> GetDeviceById(IEnumerable<string> ids);
+        Task UpsertDevices(IEnumerable<SqlDevice> devices);
         #endregion
 
     }

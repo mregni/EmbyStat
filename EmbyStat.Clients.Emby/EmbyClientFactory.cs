@@ -2,23 +2,23 @@
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Enums;
-using IEmbyHttpClient = EmbyStat.Clients.Emby.Http.IEmbyHttpClient;
 
 namespace EmbyStat.Clients.Emby
 {
     public class EmbyClientFactory : IClientFactory
     {
-        private readonly IEmbyHttpClient _httpClient;
+        private readonly IEmbyBaseHttpClient _baseHttpClient;
 
-        public EmbyClientFactory(IEmbyHttpClient httpClient)
+        public EmbyClientFactory(IEmbyBaseHttpClient baseHttpClient)
         {
-            _httpClient = httpClient;
+            _baseHttpClient = baseHttpClient;
         }
 
-        public IHttpClient CreateHttpClient()
+        public IBaseHttpClient CreateHttpClient()
         {
-            return _httpClient;
+            return _baseHttpClient;
         }
 
         public IWebSocketClient CreateWebSocketClient()

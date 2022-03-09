@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Logs;
@@ -28,15 +29,14 @@ namespace EmbyStat.Services
                 var file = new FileInfo(filePath);
                 list.Add(new LogFile
                 {
-                    FileName = Path.GetFileNameWithoutExtension(file.Name),
-                    CreatedDate = file.CreationTime,
+                    FileName = Path.GetFileName(file.Name),
                     Size = file.Length
                 });
             }
-            return list.OrderByDescending(x => x.CreatedDate).Take(settings.KeepLogsCount).ToList();
+            return list.OrderByDescending(x => x.FileName).Take(settings.KeepLogsCount).ToList();
         }
 
-        public MemoryStream GetLogStream(string fileName, bool anonymous)
+        public async Task<MemoryStream> GetLogStream(string fileName, bool anonymous)
         {
             var dirs = _settingsService.GetAppSettings().Dirs;
             var logStream = new FileStream(Path.Combine(dirs.Config, dirs.Logs, fileName).GetLocalPath(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -52,7 +52,7 @@ namespace EmbyStat.Services
             {
                 var writer = new StreamWriter(newLogStream);
                 var configuration = _settingsService.GetUserSettings();
-                var serverInfo = _mediaServerService.GetServerInfo(false);
+                var serverInfo = await _mediaServerService.GetServerInfo(false);
 
                 string line;
                 while ((line = reader.ReadLine()) != null)

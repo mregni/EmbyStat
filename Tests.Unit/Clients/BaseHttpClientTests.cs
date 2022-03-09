@@ -22,7 +22,7 @@ namespace Tests.Unit.Clients
     {
         private Mock<IRestClient> _restClientMock;
         private IRestRequest _usedRequest;
-        private EmbyHttpClient CreateClient<T>(T returnObject) where T : new()
+        private EmbyBaseHttpClient CreateClient<T>(T returnObject) where T : new()
         {
             var response = new RestResponse<T> { Data = returnObject };
 
@@ -37,10 +37,10 @@ namespace Tests.Unit.Clients
 
             var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
 
-            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
+            return new EmbyBaseHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
         }
 
-        private EmbyHttpClient CreateStringClient(string returnObject)
+        private EmbyBaseHttpClient CreateStringClient(string returnObject)
         {
             var response = new RestResponse { Content = returnObject };
 
@@ -55,7 +55,7 @@ namespace Tests.Unit.Clients
 
             var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
 
-            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
+            return new EmbyBaseHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
         }
 
         [Fact]

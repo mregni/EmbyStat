@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Clients.Emby.Http
 {
-    public interface IEmbyHttpClient : IHttpClient
+    public interface IEmbyBaseHttpClient : IBaseHttpClient
     {
 
     }

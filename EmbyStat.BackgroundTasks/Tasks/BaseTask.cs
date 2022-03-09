@@ -147,8 +147,7 @@ namespace EmbyStat.BackgroundTasks.Tasks
                 CurrentProgressPercentage = progress,
                 State = State,
                 StartTimeUtc = StartTimeUtc ?? DateTime.UtcNow,
-                EndTimeUtc = endTimeUtc,
-                Title = Title
+                EndTimeUtc = endTimeUtc
             };
             await HubHelper.BroadcastJobProgress(info);
         }

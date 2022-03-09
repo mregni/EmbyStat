@@ -24,7 +24,7 @@ namespace EmbyStat.Common.Models.Net
         public BaseMediaSourceInfo[] MediaSources { get; set; }
         public BaseMediaStream[] MediaStreams { get; set; }
         public Video3DFormat? Video3DFormat { get; set; }
-        public float? CommunityRating { get; set; }
+        public decimal? CommunityRating { get; set; }
         public Dictionary<string, string> ProviderIds { get; set; }
         public long? RunTimeTicks { get; set; }
         public string OfficialRating { get; set; }

@@ -77,7 +77,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
 
                         "!any" => GenerateExistsLine(Constants.Tables.SubtitleStreams, $"s0.Language = '{filter.Value}'", true),
                         "any" => GenerateExistsLine(Constants.Tables.SubtitleStreams, $"s0.Language = '{filter.Value}'"),
-                        "empty" => GenerateExistsLine(Constants.Tables.SubtitleStreams, $"s0.Language IS NULL"),
+                        "empty" => GenerateExistsLine(Constants.Tables.SubtitleStreams, "s0.Id IS NOT NULL", true),
                         _ => string.Empty
                     });
                 case "SizeInMb":
@@ -161,26 +161,21 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                     {
                         "Primary" => filter.Operation switch
                         {
-                            "!null" => $"m.Primary IS NOT NULL",
-                            "null" => $"m.Primary IS NOT NULL",
+                            "!null" => $"m.[Primary] != ''",
+                            "null" => $"m.[Primary] == ''",
                             _ => string.Empty
                         },
                         "Logo" => filter.Operation switch
                         {
-                            "!null" => $"m.Logo IS NOT NULL",
-                            "null" => $"m.Logo IS NOT NULL",
+                            "!null" => $"m.Logo != ''",
+                            "null" => $"m.Logo == ''",
                             _ => string.Empty
                         },
                         _ => string.Empty
                     };
                 case "CommunityRating":
                     var ratingValues = filter.Value.FormatInputValue();
-                    return filter.Operation switch
-                    {
-                        "==" => $"m.CommunityRating = {filter.Value}",
-                        "between" => $"m.CommunityRating > {ratingValues[0]} m.CommunityRating < {ratingValues[1]}",
-                        _ => string.Empty
-                    };
+                    return $"s.CommunityRating > {ratingValues[0]} AND s.CommunityRating < {ratingValues[1]}";
                 case "RunTimeTicks":
                     var runTimeValues = filter.Value.FormatInputValue();
                     return filter.Operation switch
@@ -188,7 +183,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
                         "<" => $"m.RunTimeTicks < {filter.Value}",
                         ">" => $"m.RunTimeTicks > {filter.Value}",
                         "between" =>
-                            $"m.RunTimeTicks > {runTimeValues[0]} m.RunTimeTicks < {runTimeValues[1]}",
+                            $"m.RunTimeTicks > {runTimeValues[0]} AND m.RunTimeTicks < {runTimeValues[1]}",
                         _ => string.Empty
                     };
                 case "Name":

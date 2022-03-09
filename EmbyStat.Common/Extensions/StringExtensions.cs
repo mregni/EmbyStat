@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -47,18 +48,21 @@ namespace EmbyStat.Common.Extensions
                 _ => input.First().ToString().ToUpper() + input.Substring(1)
             };
 
-        public static double[] FormatInputValue(this string value)
-        {
-            return FormatInputValue(value, 1);
-        }
-
-        public static double[] FormatInputValue(this string value, int multiplier)
+        public static string[] FormatInputValue(this string value, int multiplier = 1)
         {
             var decodedValue = HttpUtility.UrlDecode(value);
+            var decimalSymbol = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            decodedValue = decimalSymbol switch
+            {
+                "." => decodedValue.Replace(",", decimalSymbol),
+                "," => decodedValue.Replace(".", decimalSymbol),
+                _ => decodedValue
+            };
+
             if (decodedValue.Contains('|'))
             {
-                var left = Convert.ToDouble(decodedValue.Split('|')[0]) * multiplier;
-                var right = Convert.ToDouble(decodedValue.Split('|')[1]) * multiplier;
+                var left = Convert.ToDouble(decodedValue.Split('|')[0], CultureInfo.CurrentCulture) * multiplier;
+                var right = Convert.ToDouble(decodedValue.Split('|')[1], CultureInfo.CurrentCulture) * multiplier;
 
                 //switching sides if user put the biggest number on the left side.
                 if (right < left)
@@ -66,15 +70,16 @@ namespace EmbyStat.Common.Extensions
                     (left, right) = (right, left);
                 }
 
-                return new[] { left, right };
+                return new[] { left.FormatToDotDecimalString(), right.FormatToDotDecimalString() };
             }
 
             if (decodedValue.Length == 0)
             {
-                return new[] { 0d };
+                return new[] { "0" };
             }
 
-            return new[] { Convert.ToDouble(decodedValue) * multiplier };
+            var result = Convert.ToDouble(decodedValue, CultureInfo.CurrentCulture) * multiplier;
+            return new[] { result.FormatToDotDecimalString() };
         }
     }
 }

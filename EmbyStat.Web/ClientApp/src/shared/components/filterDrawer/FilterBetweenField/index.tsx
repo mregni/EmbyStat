@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from 'react-i18next';
+import {makeStyles} from '@material-ui/core/styles';
 
-import { FilterType } from '../../../models/filter';
-import { EsTextInput } from '../../esTextInput';
+import {FilterType} from '../../../models/filter';
+import {EsTextInput} from '../../esTextInput';
 
 const useStyles = makeStyles(() => ({
   small__fields: {

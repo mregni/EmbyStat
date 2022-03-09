@@ -61,7 +61,6 @@ namespace EmbyStat.DI
             services.TryAddTransient<ILanguageService, LanguageService>();
             services.TryAddTransient<ILogService, LogService>();
             services.TryAddTransient<IMovieService, MovieService>();
-            services.TryAddTransient<IPersonService, PersonService>();
             services.TryAddTransient<ISessionService, SessionService>();
             services.TryAddSingleton<ISettingsService, SettingsService>();
             services.TryAddTransient<IShowService, ShowService>();
@@ -76,7 +75,7 @@ namespace EmbyStat.DI
             services.TryAddTransient<ISqliteBootstrap, SqliteBootstrap>();
 
             services.TryAddTransient<IMovieRepository, SqlMovieRepository>();
-            services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
+            services.TryAddTransient<IMediaServerRepository, SqlMediaServerRepository>();
             services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
             services.TryAddTransient<IFilterRepository, FilterRepository>();
             services.TryAddTransient<IShowRepository, SqlShowRepository>();
@@ -119,8 +118,8 @@ namespace EmbyStat.DI
             services.AddSingleton<IClientFactory, EmbyClientFactory>();
             services.AddSingleton<IClientFactory, JellyfinClientFactory>();
             
-            services.TryAddSingleton<IEmbyHttpClient, EmbyHttpClient>();
-            services.TryAddSingleton<IJellyfinHttpClient, JellyfinHttpClient>();
+            services.TryAddSingleton<IEmbyBaseHttpClient, EmbyBaseHttpClient>();
+            services.TryAddSingleton<IJellyfinBaseHttpClient, JellyfinBaseHttpClient>();
 
             services.TryAddTransient<ITmdbClient, TmdbClient>();
             services.TryAddTransient<IGithubClient, GithubClient>();

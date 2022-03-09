@@ -15,13 +15,11 @@ namespace EmbyStat.Services.Abstract
     public abstract class MediaService
     {
         private readonly IJobRepository _jobRepository;
-        internal readonly IPersonService PersonService;
         internal readonly Logger Logger;
 
-        protected MediaService(IJobRepository jobRepository, IPersonService personService, Type type, string logPrefix)
+        protected MediaService(IJobRepository jobRepository, Type type, string logPrefix)
         {
             _jobRepository = jobRepository;
-            PersonService = personService;
             Logger = LogFactory.CreateLoggerForType(type, logPrefix);
         }
 
@@ -52,19 +50,21 @@ namespace EmbyStat.Services.Abstract
 
         #region Chart
 
-        internal Chart CreateGenreChart(Dictionary<string, int> items)
+        internal static Chart CreateGenreChart(Dictionary<string, int> items)
         {
-            var genresData = items.Select(x => new { Label = x.Key, Val0 = x.Value });
+            var genresData = items
+                .Select(x => new SimpleChartData{Label = x.Key, Value = x.Value})
+                .ToArray();
 
             return new Chart
             {
                 Title = Constants.CountPerGenre,
-                DataSets = JsonConvert.SerializeObject(genresData),
+                DataSets = genresData,
                 SeriesCount = 1
             };
         }
 
-        internal Chart CreateRatingChart(IEnumerable<float?> items)
+        internal Chart CreateRatingChart(IEnumerable<decimal?> items)
         {
             var ratingDataList = items.GroupBy(x => x.RoundToHalf())
                 .OrderBy(x => x.Key)
@@ -74,19 +74,19 @@ namespace EmbyStat.Services.Abstract
             {
                 if (!ratingDataList.Any(x => x.Key == i))
                 {
-                    ratingDataList.Add(new ChartGrouping<double?, float?> { Key = i, Capacity = 0 });
+                    ratingDataList.Add(new ChartGrouping<double?, decimal?> { Key = i, Capacity = 0 });
                 }
             }
 
             var ratingData = ratingDataList
-                .Select(x => new { Label = x.Key?.ToString() ?? Constants.Unknown, Val0 = x.Count() })
+                .Select(x => new SimpleChartData { Label = x.Key?.ToString() ?? Constants.Unknown, Value = x.Count() })
                 .OrderBy(x => x.Label)
-                .ToList();
+                .ToArray();
 
             return new Chart
             {
                 Title = Constants.CountPerCommunityRating,
-                DataSets = JsonConvert.SerializeObject(ratingData),
+                DataSets = ratingData,
                 SeriesCount = 1
             };
         }
@@ -113,26 +113,28 @@ namespace EmbyStat.Services.Abstract
             }
 
             var yearData = yearDataList
-                .Select(x => new { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Val0 = x.Count() })
+                .Select(x => new SimpleChartData { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Value = x.Count() })
                 .OrderBy(x => x.Label)
-                .ToList();
+                .ToArray();
 
             return new Chart
             {
                 Title = Constants.CountPerPremiereYear,
-                DataSets = JsonConvert.SerializeObject(yearData),
+                DataSets = yearData,
                 SeriesCount = 1
             };
         }
 
         internal Chart CalculateOfficialRatingChart(Dictionary<string, int> items)
         {
-            var ratingData = items.Select(x => new { Label = x.Key, Val0 = x.Value });
+            var ratingData = items
+                .Select(x => new SimpleChartData { Label = x.Key, Value = x.Value })
+                .ToArray();
 
             return new Chart
             {
                 Title = Constants.CountPerOfficialRating,
-                DataSets = JsonConvert.SerializeObject(ratingData),
+                DataSets = ratingData,
                 SeriesCount = 1
             };
         }

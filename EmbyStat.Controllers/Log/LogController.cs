@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -28,12 +29,11 @@ namespace EmbyStat.Controllers.Log
 
         [HttpGet]
         [Route("download/{fileName}")]
-        public FileContentResult GetZipFile(string fileName, bool anonymous)
+        public async Task<FileContentResult> GetZipFile(string fileName, bool anonymous)
         {
-            var fullFileName = $"{fileName}.log";
-            var stream = _logService.GetLogStream(fullFileName, anonymous);
+            var stream = await _logService.GetLogStream(fileName, anonymous);
             stream.Position = 0;
-            HttpContext.Response.Headers.Add("Content-Disposition", $"Attachment; filename={fullFileName}");
+            HttpContext.Response.Headers.Add("Content-Disposition", $"Attachment; filename={fileName}");
             HttpContext.Response.Headers.Add("Content-Length", stream.Length.ToString());
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition, Request-Context");
             return new FileContentResult(stream.ToArray(), "application/octet-stream");

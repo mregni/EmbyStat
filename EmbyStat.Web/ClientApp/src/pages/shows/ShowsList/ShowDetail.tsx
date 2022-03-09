@@ -7,6 +7,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useTranslation } from 'react-i18next';
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
+import Chip from '@material-ui/core/Chip';
 
 import { ShowRow } from '../../../shared/models/show';
 import { useServerType } from '../../../shared/hooks';
@@ -39,12 +40,7 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     top: 8,
     right: 8,
-  },
-  genres: {
-    textTransform: 'uppercase',
-    fontSize: '0.75rem',
-    marginTop: 0,
-  },
+  }
 }));
 
 interface Props {
@@ -121,7 +117,13 @@ export const ShowDetail = (props: Props) => {
             </Grid>
           </Grid>
           <Grid item>
-            <p className={classes.genres}>{show.genres.join(', ')}</p>
+            <Grid container spacing={1}>
+              {show.genres.map(genre =>
+                <Grid key={genre} item>
+                  <Chip label={genre} size="small"></Chip>
+                </Grid>)
+              }
+            </Grid>
           </Grid>
           <Grid
             item

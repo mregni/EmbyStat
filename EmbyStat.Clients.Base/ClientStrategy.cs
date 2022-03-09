@@ -16,7 +16,7 @@ namespace EmbyStat.Clients.Base
             _httpFactories = httpFactories;
         }
 
-        public IHttpClient CreateHttpClient(ServerType type)
+        public IBaseHttpClient CreateHttpClient(ServerType type)
         {
             var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
 

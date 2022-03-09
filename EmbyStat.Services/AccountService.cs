@@ -147,13 +147,13 @@ namespace EmbyStat.Services
 
         public async Task<bool> ChangeUserName(ChangeUserNameRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.UserName);
+            var user = await _userManager.FindByNameAsync(request.OldUserName);
             if (user == null)
             {
                 return false;
             }
 
-            var result = await _userManager.SetUserNameAsync(user, request.NewUserName);
+            var result = await _userManager.SetUserNameAsync(user, request.UserName);
             if (!result.Succeeded)
             {
                 _logger.Warn($"Username update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");

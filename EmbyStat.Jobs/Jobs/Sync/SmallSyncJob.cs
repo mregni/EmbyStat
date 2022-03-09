@@ -28,19 +28,19 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public override async Task RunJobAsync()
         {
-            _mediaServerService.GetAndProcessServerInfo();
+            await _mediaServerService.GetAndProcessServerInfo();
             await LogInformation("Server info downloaded");
             await LogProgress(35);
 
-            _mediaServerService.GetAndProcessPluginInfo();
+            await _mediaServerService.GetAndProcessPluginInfo();
             await LogInformation("Server plugins downloaded");
             await LogProgress(55);
 
-            _mediaServerService.GetAndProcessUsers();
+            await _mediaServerService.GetAndProcessUsers();
             await LogInformation("Server users downloaded");
             await LogProgress(80);
 
-            _mediaServerService.GetAndProcessDevices();
+            await _mediaServerService.GetAndProcessDevices();
             await LogInformation("Server devices downloaded");
         }
     }

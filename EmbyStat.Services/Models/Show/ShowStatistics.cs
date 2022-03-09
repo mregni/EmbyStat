@@ -11,6 +11,5 @@ namespace EmbyStat.Services.Models.Show
         public List<TopCard> TopCards { get; set; }
         public List<Chart> BarCharts { get; set; }
         public List<Chart> PieCharts { get; set; }
-        public PersonStats People { get; set; }
     }
 }

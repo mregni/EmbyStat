@@ -8,9 +8,9 @@ using RestSharp;
 
 namespace EmbyStat.Clients.Emby.Http
 {
-    public class EmbyHttpClient : BaseHttpClient, IEmbyHttpClient
+    public class EmbyBaseHttpClient : BaseHttpClient, IEmbyBaseHttpClient
     {
-        public EmbyHttpClient(IRestClient client, IHttpContextAccessor accessor, 
+        public EmbyBaseHttpClient(IRestClient client, IHttpContextAccessor accessor, 
             IRefitHttpClientFactory<INewBaseClient> refitClient, IMapper mapper) 
             : base(client, accessor, refitClient, mapper)
         {

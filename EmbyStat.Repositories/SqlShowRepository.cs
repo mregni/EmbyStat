@@ -59,7 +59,7 @@ FROM {Constants.Tables.Shows} AS s
 INNER JOIN {Constants.Tables.GenreShow} as gs ON (s.Id = gs.ShowsId)
 INNER JOIN {Constants.Tables.Genres} as g ON (g.Id = gs.GenresId)
 GROUP BY g.Name
-ORDER BY Count";
+ORDER BY g.Name";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
             return connection.Query(query, new { Ids = libraryIds })
@@ -68,7 +68,7 @@ ORDER BY Count";
                     row => (int)row.Count);
         }
 
-        public IEnumerable<float?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
+        public IEnumerable<decimal?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
         {
             return _context.Shows
                 .FilterOnLibrary(libraryIds)
@@ -88,7 +88,7 @@ ORDER BY Count";
 FROM {Constants.Tables.Shows} AS s
 WHERE s.OfficialRating IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("s")}
 GROUP BY upper(s.OfficialRating)
-ORDER BY Count";
+ORDER BY OfficialRating";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
             return connection.Query(query, new { Ids = libraryIds })
@@ -103,7 +103,7 @@ ORDER BY Count";
 FROM {Constants.Tables.Shows} AS s
 WHERE s.Status IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("s")}
 GROUP BY s.Status
-ORDER BY Count";
+ORDER BY s.Status";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
@@ -142,6 +142,18 @@ ORDER BY s.Id";
             var result = await connection.QueryFirstAsync<int>(query, new { Ids = libraryIds });
 
             return result;
+        }
+        
+        public async Task<int> CompleteCollectedCount(IReadOnlyList<string> libraryIds)
+        {
+            var query = $@"SELECT COUNT(*) Count 
+FROM {Constants.Tables.Shows} AS s 
+WHERE NOT EXISTS (SELECT 1 FROM {Constants.Tables.Seasons} AS se INNER JOIN {Constants.Tables.Episodes} AS ep ON (se.Id = ep.SeasonId) 
+    WHERE se.ShowId = s.Id AND ep.LocationType = 1) {libraryIds.AddLibraryIdFilterAsAnd("s")}";
+            
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            return connection.QueryFirst<int>(query, new {Ids = libraryIds});
         }
 
         public bool Any()
@@ -318,6 +330,8 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
         public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
         {
             var query = _context.Shows.GenerateFullShowWithGenresQuery(Array.Empty<string>());
+            query += $" AND s.Id = {showId}";
+            
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 

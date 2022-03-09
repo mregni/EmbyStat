@@ -20,7 +20,7 @@ namespace EmbyStat.Common.Extensions
             return (int)Math.Floor(count * 20) * 5;
         }
 
-        public static double? RoundToHalf(this float? rating)
+        public static double? RoundToHalf(this decimal? rating)
         {
             if (rating.HasValue)
             {

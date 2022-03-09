@@ -142,14 +142,14 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
                     {
                         "Primary" => filter.Operation switch
                         {
-                            "!null" => $"s.Primary IS NOT NULL",
-                            "null" => $"s.Primary IS NOT NULL",
+                            "!null" => "s.[Primary] != ''",
+                            "null" => "s.[Primary] == ''",
                             _ => string.Empty
                         },
                         "Logo" => filter.Operation switch
                         {
-                            "!null" => $"s.Logo IS NOT NULL",
-                            "null" => $"s.Logo IS NOT NULL",
+                            "!null" => $"s.Logo != ''",
+                            "null" => $"s.Logo == ''",
                             _ => string.Empty
                         },
                         _ => string.Empty
@@ -158,8 +158,8 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
                     var ratingValues = filter.Value.FormatInputValue();
                     return filter.Operation switch
                     {
-                        "==" => $"s.CommunityRating = {filter.Value}",
-                        "between" => $"s.CommunityRating > {ratingValues[0]} s.CommunityRating < {ratingValues[1]}",
+                        "==" => $"s.CommunityRating == {ratingValues[0]}",
+                        "between" => $"s.CommunityRating > {ratingValues[0]} AND s.CommunityRating < {ratingValues[1]}",
                         _ => string.Empty
                     };
                 case "RunTimeTicks":
@@ -169,7 +169,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
                         "<" => $"s.RunTimeTicks < {filter.Value}",
                         ">" => $"s.RunTimeTicks > {filter.Value}",
                         "between" =>
-                            $"s.RunTimeTicks > {runTimeValues[0]} s.RunTimeTicks < {runTimeValues[1]}",
+                            $"s.RunTimeTicks > {runTimeValues[0]} AND s.RunTimeTicks < {runTimeValues[1]}",
                         _ => string.Empty
                     };
                 case "Name":
@@ -201,7 +201,7 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
         private static string GenerateExistsGenreLine(string query, bool invert = false)
         {
             var prefix = invert ? "NOT " : string.Empty;
-            return $"{prefix}EXISTS (SELECT 1 FROM {Constants.Tables.GenreMovie} AS s0 INNER JOIN {Constants.Tables.Genres} AS g0 ON s0.GenresId = g0.Id WHERE (s.Id = s0.GenresId) AND ({query}))";
+            return $"{prefix}EXISTS (SELECT 1 FROM {Constants.Tables.GenreShow} AS s0 INNER JOIN {Constants.Tables.Genres} AS g0 ON s0.GenresId = g0.Id WHERE (s.Id = s0.ShowsId) AND ({query}))";
         }
     }
 }

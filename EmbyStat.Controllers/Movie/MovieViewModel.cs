@@ -27,7 +27,7 @@ namespace EmbyStat.Controllers.Movie
         public string IMDB { get; set; }
         public int? TMDB { get; set; }
         public string TVDB { get; set; }
-        public long? RunTimeTicks { get; set; }
+        public long? RunTime { get; set; }
         public string OfficialRating { get; set; }
         public Video3DFormat Video3DFormat { get; set; }
         public IList<MediaSourceViewModel> MediaSources { get; set; }
