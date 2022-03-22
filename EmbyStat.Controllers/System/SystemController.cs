@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Aiursoft.XelNaga.Services;
 using AutoMapper;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +13,13 @@ namespace EmbyStat.Controllers.System
     {
         private readonly IUpdateService _updateService;
         private readonly IMapper _mapper;
+        private readonly CannonService _cannonService;
 
-        public SystemController(IUpdateService updateService, IMapper mapper)
+        public SystemController(IUpdateService updateService, IMapper mapper, CannonService cannonService)
         {
             _updateService = updateService;
             _mapper = mapper;
+            _cannonService = cannonService;
         }
 
         [HttpGet]
@@ -45,6 +49,14 @@ namespace EmbyStat.Controllers.System
         [Route("ping")]
         public IActionResult Ping()
         {
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("reset")]
+        public IActionResult ResetStatistics()
+        {
+            _cannonService.FireAsync<ISystemService>(s => s.ResetEmbyStatTables());
             return Ok();
         }
     }

@@ -118,7 +118,7 @@ namespace Tests.Unit.Repository
                     statistics.Count.Should().Be(4);
                 }
 
-                _statisticsRepository.CleanupStatistics();
+                _statisticsRepository.DeleteStatistics();
 
                 using (var database = _context.LiteDatabase)
                 {

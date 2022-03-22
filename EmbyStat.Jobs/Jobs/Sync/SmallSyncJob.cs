@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -14,7 +14,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
     {
         private readonly IMediaServerService _mediaServerService;
 
-        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+        public SmallSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IMediaServerService mediaServerService) 
             : base(hubHelper, jobRepository, settingsService, typeof(SmallSyncJob), Constants.LogPrefix.SmallMediaServerSyncJob)
         {

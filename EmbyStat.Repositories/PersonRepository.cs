@@ -24,6 +24,11 @@ namespace EmbyStat.Repositories
             throw new System.NotImplementedException();
         }
 
+        public Task DeleteAll()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Person GetPersonByName(string name)
         {
             using var database = Context.CreateDatabaseContext();

@@ -69,12 +69,12 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<SqlUser>()
                 .HasOne<SqlUserConfiguration>()
                 .WithOne(x => x.User)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             
             modelBuilder.Entity<SqlUser>()
                 .HasOne<SqlUserPolicy>()
                 .WithOne(x => x.User)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         private static void BuildPeople(ModelBuilder modelBuilder)

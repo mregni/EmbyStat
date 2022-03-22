@@ -65,7 +65,7 @@ namespace EmbyStat.Services
             var statistics = new ShowStatistics
             {
                 Cards = await CalculateCards(libraryIds),
-                TopCards = CalculateTopCards(libraryIds),
+                TopCards = await CalculateTopCards(libraryIds),
                 BarCharts = await CalculateBarCharts(libraryIds),
                 PieCharts = await CalculatePieChars(libraryIds)
             };
@@ -246,36 +246,39 @@ namespace EmbyStat.Services
 
         #region TopCards
 
-        private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
+        private async Task<List<TopCard>> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
             var list = new List<TopCard>();
-            list.AddIfNotNull(CalculateNewestPremieredShow(libraryIds));
-            list.AddIfNotNull(CalculateOldestPremieredShow(libraryIds));
+            list.AddIfNotNull(await CalculateNewestPremieredShow(libraryIds));
+            list.AddIfNotNull(await CalculateOldestPremieredShow(libraryIds));
             list.AddIfNotNull(CalculateLatestAddedShow(libraryIds));
-            list.AddIfNotNull(CalculateHighestRatedShow(libraryIds));
-            list.AddIfNotNull(CalculateLowestRatedShow(libraryIds));
-            list.AddIfNotNull(CalculateShowWithMostEpisodes(libraryIds));
+            list.AddIfNotNull(await CalculateHighestRatedShow(libraryIds));
+            list.AddIfNotNull(await CalculateLowestRatedShow(libraryIds));
+            list.AddIfNotNull(await CalculateShowWithMostEpisodes(libraryIds));
+            list.AddIfNotNull(CalculateMostDiskSpaceUsedShow(libraryIds));
 
             return list;
         }
 
-        private TopCard CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _showRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
-
+                var data = await _showRepository.GetNewestPremieredMedia(libraryIds, 5);
+                var list = data.ToArray();
+                
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Shows.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                     : null;
             }, "Calculate newest premiered shows failed:");
         }
 
-        private TopCard CalculateOldestPremieredShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateOldestPremieredShow(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _showRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
+                var data = await _showRepository.GetOldestPremieredMedia(libraryIds, 5);
+                var list = data.ToArray();
 
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Shows.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
@@ -295,23 +298,25 @@ namespace EmbyStat.Services
             }, "Calculate latest added shows failed:");
         }
 
-        private TopCard CalculateHighestRatedShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateHighestRatedShow(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _showRepository.GetHighestRatedMedia(libraryIds, 5).ToArray();
-
+                var data = await _showRepository.GetHighestRatedMedia(libraryIds, 5);
+                var list = data.ToArray();
+                
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Shows.HighestRatedShow, "/10", "CommunityRating", false)
                     : null;
             }, "Calculate highest rated shows failed:");
         }
 
-        private TopCard CalculateLowestRatedShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateLowestRatedShow(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _showRepository.GetLowestRatedMedia(libraryIds, 5).ToArray();
+                var data = await _showRepository.GetLowestRatedMedia(libraryIds, 5);
+                var list = data.ToArray();
 
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Shows.LowestRatedShow, "/10", "CommunityRating", false)
@@ -319,14 +324,26 @@ namespace EmbyStat.Services
             }, "Calculate lowest rated shows failed:");
         }
 
-        private TopCard CalculateShowWithMostEpisodes(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateShowWithMostEpisodes(IReadOnlyList<string> libraryIds)
+        {
+            return CalculateStat(async () =>
+            {
+                var list = await _showRepository.GetShowsWithMostEpisodes(libraryIds, 5);
+
+                return list.Count > 0
+                    ? list.ConvertToTopCard(Constants.Shows.MostEpisodes, "#", false)
+                    : null;
+            }, "Calculate shows with most episodes failed:");
+        }
+        
+        private TopCard CalculateMostDiskSpaceUsedShow(IReadOnlyList<string> libraryIds)
         {
             return CalculateStat(() =>
             {
-                var list = _showRepository.GetShowsWithMostEpisodes(libraryIds, 5);
+                var list = _showRepository.GetShowsWithMostDiskSpaceUsed(libraryIds, 5).ToArray();
 
-                return list.Count > 0
-                    ? new TopCard()
+                return list.Length > 0
+                    ? list.ConvertToTopCard(Constants.Shows.MostDiskSpace, "#", false, ValueTypeEnum.SizeInMb)
                     : null;
             }, "Calculate shows with most episodes failed:");
         }

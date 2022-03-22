@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Enum;
@@ -27,7 +27,7 @@ namespace Tests.Unit.Controllers
         private Mock<IJobService> _jobServiceMock;
         private Mock<IJobInitializer> _jobInitializerMock;
         private Mock<ISettingsService> _settingsServiceMock;
-        private Mock<IJobHubHelper> jobHubHelperMock;
+        private Mock<IHubHelper> jobHubHelperMock;
 
         private JobController CreateController(bool disableUpdateJob, params Job[] jobs)
         {
@@ -38,7 +38,7 @@ namespace Tests.Unit.Controllers
             _jobServiceMock = new Mock<IJobService>();
             _jobInitializerMock = new Mock<IJobInitializer>();
             _settingsServiceMock = new Mock<ISettingsService>();
-            jobHubHelperMock = new Mock<IJobHubHelper>();
+            jobHubHelperMock = new Mock<IHubHelper>();
 
             _jobServiceMock.Setup(x => x.GetAll()).Returns(jobs);
             foreach (var job in jobs)
@@ -47,7 +47,7 @@ namespace Tests.Unit.Controllers
                 _jobServiceMock.Setup(x => x.UpdateTrigger(job.Id, It.IsAny<string>())).Returns(true);
             }
 
-            jobHubHelperMock.Setup(x => x.BroadCastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()));
+            jobHubHelperMock.Setup(x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()));
             _jobInitializerMock.Setup(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>()));
 
             _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings { NoUpdates = disableUpdateJob });
@@ -203,7 +203,7 @@ namespace Tests.Unit.Controllers
             res.StatusCode.Should().Be((int)HttpStatusCode.OK);
 
             _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Once);
-            jobHubHelperMock.Verify(x => x.BroadCastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Once);
+            jobHubHelperMock.Verify(x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Once);
         }
 
         [Fact]
@@ -221,7 +221,7 @@ namespace Tests.Unit.Controllers
 
             _jobServiceMock.Verify(x => x.GetById(randomId), Times.Once);
             _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Never);
-            jobHubHelperMock.Verify(x => x.BroadCastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Never);
+            jobHubHelperMock.Verify(x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Never);
         }
 
         private void DeleteJobs()

@@ -42,11 +42,6 @@ namespace EmbyStat.Services
 
         public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings, long version)
         {
-            if (userSettings.MediaServer.ServerBaseUrl == "/")
-            {
-                userSettings.MediaServer.ServerBaseUrl = "";
-            }
-
             _userSettings = userSettings;
             _userSettings.Version = version;
 

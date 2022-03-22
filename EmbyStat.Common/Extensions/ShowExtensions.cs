@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EmbyStat.Common.Enums;
@@ -79,11 +80,11 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
         /// <param name="shows">Db set on which to create the query on</param>
         /// <param name="includeEpisodes">Includes seasons and episodes in the query if set to True</param>
         /// <param name="libraryIds">Libraries for which the query should filter</param>
-        /// <returns>Sqlite query that can query shows</returns>
+        /// <returns>Sqlite query <see cref="string"/> that can query shows</returns>
         public static string GenerateFullShowQuery(this DbSet<SqlShow> shows, IEnumerable<string> libraryIds)
         {
             return $@"
-SELECT s.*, g.*, se.*, e.*
+SELECT s.*, se.*, e.*
 FROM {Constants.Tables.Shows} as s
 LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
 LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
@@ -102,6 +103,15 @@ LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
 WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}";
         }
 
+        /// <summary>
+        /// Generates a Show page including filters and sorting. GEnres are included in the result list
+        /// </summary>
+        /// <param name="shows">Db set on which to create the query on</param>
+        /// <param name="filters"><see cref="Array"/> of type <see cref="Filter"/> containing all the filters needed to be applied on the page.</param>
+        /// <param name="libraryIds">Libraries for which the query should filter</param>
+        /// <param name="sortField">Column on witch to sort</param>
+        /// <param name="sortOrder">asc or desc depending on the sorting needed</param>
+        /// <returns>Sqlite query <see cref="string"/> that can query shows</returns>
         public static string GenerateShowPageQuery(this DbSet<SqlShow> shows, Filter[] filters, IEnumerable<string> libraryIds,
             string sortField, string sortOrder)
         {

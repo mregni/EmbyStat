@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -15,7 +15,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
         private readonly IUpdateService _updateService;
         private readonly ISettingsService _settingsService;
 
-        public CheckUpdateJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
+        public CheckUpdateJob(IHubHelper hubHelper, IJobRepository jobRepository,
             ISettingsService settingsService, IUpdateService updateService) 
             : base(hubHelper, jobRepository, settingsService, typeof(CheckUpdateJob), Constants.LogPrefix.CheckUpdateJob)
         {

@@ -21,6 +21,7 @@
     {
         None = 0,
         Ticks = 1,
-        Date = 2
+        Date = 2,
+        SizeInMb = 3
     }
 }

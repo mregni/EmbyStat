@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -14,7 +14,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     {
         private readonly IStatisticsRepository _statisticsRepository;
 
-        public DatabaseCleanupJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+        public DatabaseCleanupJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IStatisticsRepository statisticsRepository)
             : base(hubHelper, jobRepository, settingsService, typeof(DatabaseCleanupJob), Constants.LogPrefix.DatabaseCleanupJob)
         {
@@ -28,7 +28,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJobAsync()
         {
-            _statisticsRepository.CleanupStatistics();
+            _statisticsRepository.DeleteStatistics();
             await LogProgress(50);
             await LogInformation("Removed old statistic results.");
         }

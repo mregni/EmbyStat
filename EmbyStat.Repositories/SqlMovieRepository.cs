@@ -109,6 +109,12 @@ VALUES (@Type, @MovieId, @PersonId)";
                 }
             }
         }
+        
+        public async Task DeleteAll()
+        {
+            _context.Movies.RemoveRange(_context.Movies);
+            await _context.SaveChangesAsync();
+        }
 
         public IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds)
         {
@@ -245,8 +251,6 @@ VALUES (@Type, @MovieId, @PersonId)";
             return result;
         }
 
-
-
         public IEnumerable<LabelValuePair> CalculateSubtitleFilterValues(IReadOnlyList<string> libraryIds)
         {
             return Enumerable.DistinctBy(_context.Movies
@@ -323,24 +327,28 @@ VALUES (@Type, @MovieId, @PersonId)";
             return _context.Movies.GetLatestAddedMedia(libraryIds, count);
         }
 
-        public IEnumerable<SqlMedia> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies.GetNewestPremieredMedia(libraryIds, count);
+            var query = _context.Movies.GenerateGetPremieredListQuery(libraryIds, count, "DESC");
+            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
         }
 
-        public IEnumerable<SqlMedia> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies.GetOldestPremieredMedia(libraryIds, count);
+            var query = _context.Movies.GenerateGetPremieredListQuery(libraryIds, count, "ASC");
+            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
+        }
+        
+        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        {
+            var query = _context.Movies.GenerateGetCommunityRatingListQuery(libraryIds, count, "DESC");
+            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
         }
 
-        public IEnumerable<SqlExtra> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlExtra>>  GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
         {
-            return _context.Movies.GetHighestRatedMedia(libraryIds, count);
-        }
-
-        public IEnumerable<SqlExtra> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
-        {
-            return _context.Movies.GetLowestRatedMedia(libraryIds, count);
+            var query = _context.Movies.GenerateGetCommunityRatingListQuery(libraryIds, count, "ASC");
+            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
         }
 
         public async Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds)
@@ -469,7 +477,12 @@ INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)
 
         #region Helpers
 
-      
+        private async Task<IEnumerable<T>> ExecuteListQueryWithLibraryIds<T>(string query, IEnumerable<string> libraryIds)
+        {
+            await using var connection = _sqliteBootstrap.CreateConnection();
+            await connection.OpenAsync();
+            return connection.Query<T>(query, new { Ids = libraryIds });
+        }
 
         #endregion
     }

@@ -20,6 +20,7 @@ using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
+using Rollbar.DTOs;
 
 namespace EmbyStat.Services
 {
@@ -75,7 +76,7 @@ namespace EmbyStat.Services
             var statistics = new MovieStatistics();
 
             statistics.Cards = await CalculateCards(libraryIds);
-            statistics.TopCards = CalculateTopCards(libraryIds);
+            statistics.TopCards = await CalculateTopCards(libraryIds);
             statistics.Charts = await CalculateCharts(libraryIds);
             statistics.Shorts = CalculateShorts(libraryIds);
             statistics.NoImdb = CalculateNoImdbs(libraryIds);
@@ -213,58 +214,61 @@ namespace EmbyStat.Services
 
         #region TopCards
 
-        private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
+        private async Task<List<TopCard>> CalculateTopCards(IReadOnlyList<string> libraryIds)
         {
             var list = new List<TopCard>();
-            list.AddIfNotNull(HighestRatedMovie(libraryIds));
-            list.AddIfNotNull(LowestRatedMovie(libraryIds));
-            list.AddIfNotNull(OldestPremieredMovie(libraryIds));
-            list.AddIfNotNull(NewestPremieredMovie(libraryIds));
+            list.AddIfNotNull(await HighestRatedMovie(libraryIds));
+            list.AddIfNotNull(await LowestRatedMovie(libraryIds));
+            list.AddIfNotNull(await OldestPremieredMovie(libraryIds));
+            list.AddIfNotNull(await NewestPremieredMovie(libraryIds));
             list.AddIfNotNull(ShortestMovie(libraryIds));
             list.AddIfNotNull(LongestMovie(libraryIds));
             list.AddIfNotNull(LatestAddedMovie(libraryIds));
             return list;
         }
 
-        private TopCard HighestRatedMovie(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> HighestRatedMovie(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _movieRepository.GetHighestRatedMedia(libraryIds, 5).ToArray();
+                var data = await _movieRepository.GetHighestRatedMedia(libraryIds, 5);
+                var list = data.ToArray();
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Movies.HighestRated, "/10", "CommunityRating", false)
                     : null;
             }, "Calculate highest rated movies failed:");
         }
 
-        private TopCard LowestRatedMovie(IReadOnlyList<string> libraryIds)
+        private Task<TopCard>  LowestRatedMovie(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _movieRepository.GetLowestRatedMedia(libraryIds, 5).ToArray();
+                var data = await _movieRepository.GetLowestRatedMedia(libraryIds, 5);
+                var list = data.ToArray();
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Movies.LowestRated, "/10", "CommunityRating", false)
                     : null;
             }, "Calculate oldest premiered movies failed:");
         }
 
-
-        private TopCard OldestPremieredMovie(IReadOnlyList<string> libraryIds)
+        private Task<TopCard>  OldestPremieredMovie(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _movieRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
+                var data = await _movieRepository.GetOldestPremieredMedia(libraryIds, 5);
+                var list = data.ToArray();
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                     : null;
             }, "Calculate oldest premiered movies failed:");
         }
 
-        private TopCard NewestPremieredMovie(IReadOnlyList<string> libraryIds)
+        private Task<TopCard>  NewestPremieredMovie(IReadOnlyList<string> libraryIds)
         {
-            return CalculateStat(() =>
+            return CalculateStat(async () =>
             {
-                var list = _movieRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
+                var data = await _movieRepository.GetNewestPremieredMedia(libraryIds, 5);
+                var list = data.ToArray();
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
                     : null;

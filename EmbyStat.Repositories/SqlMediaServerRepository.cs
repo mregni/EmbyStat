@@ -61,7 +61,6 @@ public class SqlMediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Server Info
-    
     public Task<SqlServerInfo> GetServerInfo()
     {
         return _context.ServerInfo.SingleOrDefaultAsync();
@@ -81,7 +80,12 @@ public class SqlMediaServerRepository : IMediaServerRepository
         
         await _context.SaveChangesAsync();
     }
-    
+
+    public async Task DeleteServerInfo()
+    {
+        _context.ServerInfo.RemoveRange(_context.ServerInfo);
+        await _context.SaveChangesAsync();
+    }
     #endregion
 
     #region MediaServer Users
@@ -113,6 +117,12 @@ public class SqlMediaServerRepository : IMediaServerRepository
     {
         throw new System.NotImplementedException();
     }
+
+    public async Task DeleteAllUsers()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        await _context.SaveChangesAsync();
+    }
     #endregion
 
     #region Devices
@@ -130,6 +140,12 @@ public class SqlMediaServerRepository : IMediaServerRepository
     {
         _context.Devices.RemoveRange(_context.Devices);
         await _context.Devices.AddRangeAsync(devices);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAllDevices()
+    {
+        _context.Devices.RemoveRange(_context.Devices);
         await _context.SaveChangesAsync();
     }
     #endregion

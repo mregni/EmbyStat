@@ -49,7 +49,7 @@ namespace EmbyStat.Repositories
             collection.Insert(statistic);
         }
 
-        public void CleanupStatistics()
+        public void DeleteStatistics()
         {
             using var database = Context.CreateDatabaseContext();
             var collection = database.GetCollection<Statistic>();

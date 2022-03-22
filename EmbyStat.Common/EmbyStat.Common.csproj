@@ -35,4 +35,8 @@
     <ProjectReference Include="..\EmbyStat.Logging\EmbyStat.Logging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Hubs\Job" />
+  </ItemGroup>
+
 </Project>

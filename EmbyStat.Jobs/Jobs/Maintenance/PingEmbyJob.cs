@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -14,7 +14,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     {
         private readonly IMediaServerService _mediaServerService;
 
-        public PingEmbyJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+        public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             IMediaServerService mediaServerService) 
             : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob), Constants.LogPrefix.PingMediaServerJob)
         {
@@ -28,7 +28,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJobAsync()
         {
-            var result = _mediaServerService.PingMediaServer(Settings.MediaServer.FullMediaServerAddress);
+            var result = _mediaServerService.PingMediaServer(Settings.MediaServer.Address);
             await LogProgress(50);
             if (result)
             {

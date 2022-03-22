@@ -5,16 +5,19 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
 {
     public class GenreRepository : IGenreRepository
     {
         private readonly ISqliteBootstrap _sqliteBootstrap;
+        private readonly SqlLiteDbContext _context;
 
-        public GenreRepository(ISqliteBootstrap sqliteBootstrap)
+        public GenreRepository(ISqliteBootstrap sqliteBootstrap, SqlLiteDbContext context)
         {
             _sqliteBootstrap = sqliteBootstrap;
+            _context = context;
         }
 
         public async Task UpsertRange(IEnumerable<SqlGenre> genres)
@@ -29,15 +32,15 @@ namespace EmbyStat.Repositories
             await transaction.CommitAsync();
         }
 
-        public async Task<SqlGenre[]> GetAll()
+        public Task<SqlGenre[]> GetAll()
         {
-            await using var connection = _sqliteBootstrap.CreateConnection();
-            await connection.OpenAsync();
-            await using var transaction = connection.BeginTransaction();
+            return _context.Genres.ToArrayAsync();
+        }
 
-            var query = $"SELECT * FROM {Constants.Tables.Genres}";
-            var result = await connection.QueryAsync<SqlGenre>(query);
-            return result.ToArray();
+        public async Task DeleteAll()
+        {
+            _context.Genres.RemoveRange(_context.Genres);
+            await _context.SaveChangesAsync();
         }
     }
 }

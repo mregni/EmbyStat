@@ -48,15 +48,8 @@ namespace EmbyStat.Controllers
             CreateVideoMappings();
             CreatePeopleMappings();
             CreateMediaServerMappings();
+            CreateSettingMappings();
 
-            CreateMap(typeof(Page<>), typeof(PageViewModel<>));
-
-            
-            CreateMap<UserSettings, FullSettingsViewModel>()
-                .ForMember(x => x.Version, x => x.Ignore())
-                .ReverseMap()
-                .ForMember(x => x.Version, x => x.Ignore())
-                .AfterMap((src, dest) => dest.MediaServer.ApiKey = src.MediaServer.ApiKey.Trim());
             CreateMap<LibraryContainer, LibraryContainerViewModel>().ReverseMap();
             CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
             CreateMap<TmdbSettings, TmdbSettingsViewModel>().ReverseMap();
@@ -84,8 +77,6 @@ namespace EmbyStat.Controllers
                         _ => "text"
                     };
                 }));
-
-            
             
             CreateMap<PersonPoster, PersonPosterViewModel>();
             
@@ -117,10 +108,20 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyStatus, EmbyStatusViewModel>();
 
 
+            CreateMap(typeof(Page<>), typeof(PageViewModel<>));
             CreateMap<SqlAudioStream, AudioStreamViewModel>();
             CreateMap<SqlMediaSource, MediaSourceViewModel>();
             CreateMap<SqlSubtitleStream, SubtitleStreamViewModel>();
             CreateMap<SqlVideoStream, VideoStreamViewModel>();
+        }
+
+        private void CreateSettingMappings()
+        {
+            CreateMap<UserSettings, FullSettingsViewModel>()
+                .ForMember(x => x.Version, x => x.Ignore())
+                .ReverseMap()
+                .ForMember(x => x.Version, x => x.Ignore())
+                .AfterMap((src, dest) => dest.MediaServer.ApiKey = src.MediaServer.ApiKey.Trim());
         }
 
         private void CreatePeopleMappings()

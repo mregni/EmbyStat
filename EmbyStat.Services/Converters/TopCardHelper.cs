@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.SqLite.Helpers;
+using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Services.Models.Cards;
 
 namespace EmbyStat.Services.Converters
@@ -63,6 +65,46 @@ namespace EmbyStat.Services.Converters
 
         #region Extra
 
+        public static TopCard ConvertToTopCard<T>(this Dictionary<T, int> list, string title, string unit, bool unitNeedsTranslation) where T : SqlExtra
+        {
+            var values = list.Select(x => new TopCardItem
+            {
+                Value = x.Value.ToString(),
+                Label = x.Key.SortName,
+                MediaId = x.Key.Id,
+                Image = x.Key.Primary
+            }).ToArray();
+
+            return new TopCard
+            {
+                Title = title,
+                Values = values,
+                Unit = unit,
+                UnitNeedsTranslation = unitNeedsTranslation,
+                ValueType = ValueTypeEnum.None
+            };
+        }
+        
+        public static TopCard ConvertToTopCard(this SqlShow[] list, string title, string unit, bool unitNeedsTranslation, ValueTypeEnum type)
+        {
+            var values = list.Select(x => new TopCardItem
+            {
+                Value = x.SizeInMb.ToString(CultureInfo.CurrentCulture),
+                Label = x.SortName,
+                MediaId = x.Id,
+                Image = x.Primary
+            }).ToArray();
+
+            return new TopCard
+            {
+                Title = title,
+                Values = values,
+                Unit = unit,
+                UnitNeedsTranslation = unitNeedsTranslation,
+                ValueType = type
+            };
+        }
+        
         public static TopCard ConvertToTopCard(this SqlExtra[] list, string title, string unit, string valueSelector,
             ValueTypeEnum valueTypeEnum)
         {

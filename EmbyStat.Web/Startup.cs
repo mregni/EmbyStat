@@ -11,20 +11,17 @@ using Rollbar.NetCore.AspNet;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AspNetCore.Identity.LiteDB;
-using EmbyStat.BackgroundTasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
 using EmbyStat.DI;
@@ -136,18 +133,7 @@ namespace EmbyStat.Web
             });
 
             services.AddSignalR();
-
             services.AddDbContext<SqlLiteDbContext>();
-
-            //var host = Configuration.GetValue<string>("Postgress:Host");
-            //var port = Configuration.GetValue<string>("Postgress:Port");
-            //var user = Configuration.GetValue<string>("Postgress:OldUserName");
-            //var password = Configuration.GetValue<string>("Postgress:Password");
-
-            //services.AddDbContext<SqlLiteDbContext>(options =>
-            //    options.UseNpgsql(
-            //        $"Host={host};Port={port};Database=EmbyStat;Username={user};Password={password}",
-            //    x => x.MigrationsAssembly("EmbyStat.Migrations")));
 
             services.AddAuthorization(options =>
             {
@@ -264,7 +250,7 @@ namespace EmbyStat.Web
 
             app.UseEndpoints(routes =>
             {
-                routes.MapHub<JobHub>("/hub");
+                routes.MapHub<EmbyStatHub>("/hub");
             });
 
             app.UseSwagger();
@@ -318,9 +304,6 @@ namespace EmbyStat.Web
             jobService.ResetAllJobs();
             SetEmbyClientConfiguration(settingsService, clientStrategy);
             jobInitializer.Setup(settings.NoUpdates);
-
-            var monitor = serviceScope.ServiceProvider.GetService<Monitor>();
-            //monitor.StartMonitorLoop();
         }
 
         private void PerformPreShutdownFunctions()
@@ -354,7 +337,7 @@ namespace EmbyStat.Web
             settingsService.SetUpdateInProgressSettingAsync(false);
             var settings = settingsService.GetUserSettings();
 
-            var mediaServerType = settings.MediaServer?.ServerType ?? ServerType.Emby;
+            var mediaServerType = settings.MediaServer?.Type ?? ServerType.Emby;
             var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
 
             mediaServerClient.SetDeviceInfo(
@@ -366,7 +349,7 @@ namespace EmbyStat.Web
 
             if (!string.IsNullOrWhiteSpace(settings.MediaServer?.ApiKey))
             {
-                mediaServerClient.BaseUrl = settings.MediaServer.FullMediaServerAddress;
+                mediaServerClient.BaseUrl = settings.MediaServer.Address;
                 mediaServerClient.ApiKey = settings.MediaServer.ApiKey;
             }
         }

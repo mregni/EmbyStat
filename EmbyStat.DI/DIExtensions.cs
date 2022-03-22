@@ -1,8 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Aiursoft.XelNaga.Services;
 using AspNetCore.Identity.LiteDB.Data;
-using EmbyStat.BackgroundTasks;
-using EmbyStat.BackgroundTasks.Interfaces;
-using EmbyStat.BackgroundTasks.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
@@ -14,7 +12,7 @@ using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Maintenance;
@@ -43,7 +41,6 @@ namespace EmbyStat.DI
             services.RegisterHttp();
             services.RegisterSignalR();
             services.RegisterUserHandlers();
-            services.RegisterTasks();
         }
 
         private static void RegisterUserHandlers(this IServiceCollection services)
@@ -64,7 +61,10 @@ namespace EmbyStat.DI
             services.TryAddTransient<ISessionService, SessionService>();
             services.TryAddSingleton<ISettingsService, SettingsService>();
             services.TryAddTransient<IShowService, ShowService>();
+            services.TryAddTransient<ISystemService, SystemService>();
             services.TryAddTransient<IUpdateService, UpdateService>();
+
+            services.TryAddTransient<CannonService>();
         }
 
         private static void RegisterRepositories(this IServiceCollection services)
@@ -101,15 +101,6 @@ namespace EmbyStat.DI
             services.TryAddTransient<ICheckUpdateJob, CheckUpdateJob>();
         }
 
-        private static void RegisterTasks(this IServiceCollection services)
-        {
-            services.AddScoped<IBackgroundTask, MovieSyncTask>();
-            services.AddTransient<Monitor>();
-            services.AddHostedService<QueuedHostedService>();
-
-            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
-        }
-
         private static void RegisterClients(this IServiceCollection services)
         {
             services.AddTransient<IRestClient, RestClient>();
@@ -138,7 +129,7 @@ namespace EmbyStat.DI
 
         private static void RegisterSignalR(this IServiceCollection services)
         {
-            services.TryAddSingleton<IJobHubHelper, JobHubHelper>();
+            services.TryAddSingleton<IHubHelper, HubHelper>();
         }
     }
 }

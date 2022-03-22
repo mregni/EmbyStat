@@ -27,38 +27,18 @@ namespace EmbyStat.Common.Models.Settings
 
     public class MediaServerSettings
     {
-        public string ServerName { get; set; }
+        public string Name { get; set; }
         public string ApiKey { get; set; }
-        public string ServerAddress { get; set; }
-        public int ServerPort { get; set; }
+        public string Address { get; set; }
         public string AuthorizationScheme { get; set; }
-        public ConnectionProtocol ServerProtocol { get; set; }
-        public ServerType ServerType { get; set; }
+        public ServerType Type { get; set; }
         public string UserId { get; set; }
-        public string ServerBaseUrl { get; set; }
-        public string ServerId { get; set; }
+        public string Id { get; set; }
 
         [JsonIgnore]
-        public string FullMediaServerAddress
-        {
-            get
-            {
-                var protocol = ServerProtocol == ConnectionProtocol.Https ? "https" : "http";
-                var baseUrl = ServerBaseUrl == "/" ? string.Empty : ServerBaseUrl;
-                return $"{protocol}://{ServerAddress}:{ServerPort}{baseUrl}";
-            }
-        }
-
-        [JsonIgnore]
-        public string FullSocketAddress
-        {
-            get
-            {
-                var protocol = ServerProtocol == ConnectionProtocol.Https ? "wss" : "ws";
-                var baseUrl = ServerBaseUrl == "/" ? string.Empty : ServerBaseUrl;
-                return $"{protocol}://{ServerAddress}:{ServerPort}{baseUrl}";
-            }
-        }
+        public string FullSocketAddress => Address
+            .Replace("https://", "wss://")
+            .Replace("http://", "ws://");
     }
 
     public class TmdbSettings

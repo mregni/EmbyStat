@@ -29,16 +29,13 @@ namespace EmbyStat.Controllers.Settings
 
     public class MediaServerSettingsViewModel
     {
-        public string ServerName { get; set; }
-        public string ServerAddress { get; set; }
+        public string Name { get; set; }
         public string ApiKey { get; set; }
-        public int ServerPort { get; set; }
+        public string Address { get; set; }
         public string AuthorizationScheme { get; set; }
-        public int ServerProtocol { get; set; }
-        public int ServerType { get; set; }
+        public int Type { get; set; }
         public string UserId { get; set; }
-        public string ServerId { get; set; }
-        public string ServerBaseUrl { get; set; }
+        public string Id { get; set; }
     }
 
     public class TmdbSettingsViewModel

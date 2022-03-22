@@ -25,6 +25,7 @@ namespace EmbyStat.Repositories.Interfaces
         #region MediaServer Server Info
         Task<SqlServerInfo> GetServerInfo();
         Task UpsertServerInfo(SqlServerInfo entity);
+        Task DeleteServerInfo();
         #endregion
 
         #region MediaServer Users
@@ -32,13 +33,14 @@ namespace EmbyStat.Repositories.Interfaces
         Task<List<SqlUser>>  GetAllUsers();
         Task<List<SqlUser>>  GetAllAdministrators();
         EmbyUser GetUserById(string id);
-
+        Task DeleteAllUsers();
         #endregion
 
         #region Devices
         Task<List<SqlDevice>> GetAllDevices();
         Task<List<SqlDevice>> GetDeviceById(IEnumerable<string> ids);
         Task UpsertDevices(IEnumerable<SqlDevice> devices);
+        Task DeleteAllDevices();
         #endregion
 
     }

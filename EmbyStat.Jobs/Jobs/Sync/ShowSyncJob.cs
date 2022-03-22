@@ -10,7 +10,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
@@ -36,7 +36,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
         
-        public ShowSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+        public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IShowRepository showRepository,
             IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient, IGenreRepository genreRepository, IPersonRepository personRepository) 
             : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
@@ -50,7 +50,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             Title = jobRepository.GetById(Id).Title;
             var settings = settingsService.GetUserSettings();
-            _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
+            _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
         }
 
         public sealed override Guid Id => Constants.JobIds.ShowSyncId;
@@ -61,7 +61,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             if (!IsMediaServerOnline())
             {
-                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.FullMediaServerAddress}, please check the connection and try again.");
+                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
                 return;
             }
 
@@ -272,7 +272,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private bool IsMediaServerOnline()
         {
-            _baseHttpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
+            _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
             return _baseHttpClient.Ping();
         }
 
@@ -280,7 +280,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             await LogInformation("Calculating show statistics");
             _statisticsRepository.MarkShowTypesAsInvalid();
-            _showService.CalculateShowStatistics(new List<string>(0));
+            await _showService.CalculateShowStatistics(new List<string>(0));
             await _showService.CalculateCollectedRows(new List<string>(0));
 
             await LogInformation($"Calculations done");

@@ -44,7 +44,7 @@ namespace EmbyStat.Services
             var newLogStream = new MemoryStream();
             if (!anonymous)
             {
-                logStream.CopyTo(newLogStream);
+                await logStream.CopyToAsync(newLogStream);
                 return newLogStream;
             }
 
@@ -55,17 +55,17 @@ namespace EmbyStat.Services
                 var serverInfo = await _mediaServerService.GetServerInfo(false);
 
                 string line;
-                while ((line = reader.ReadLine()) != null)
+                while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    line = line.Replace(configuration.MediaServer.FullMediaServerAddress, "http://xxx.xxx.xxx.xxx:xxxx");
+                    line = line.Replace(configuration.MediaServer.Address, "https://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.MediaServer.FullSocketAddress, "wss://xxx.xxx.xxx.xxx:xxxx");
                     line = line.Replace(configuration.Tmdb.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(configuration.MediaServer.ApiKey, "xxxxxxxxxxxxxx");
                     line = line.Replace(serverInfo.Id, "xxxxxxxxxxxxxx");
-                    writer.WriteLine(line);
+                    await writer.WriteLineAsync(line);
                 }
 
-                writer.Flush();
+                await writer.FlushAsync();
             }
 
             newLogStream.Seek(0, SeekOrigin.Begin);

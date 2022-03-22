@@ -1030,7 +1030,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasOne("EmbyStat.Common.SqLite.Users.SqlUser", "User")
                         .WithOne()
                         .HasForeignKey("EmbyStat.Common.SqLite.Users.SqlUserConfiguration", "UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -1040,7 +1040,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasOne("EmbyStat.Common.SqLite.Users.SqlUser", "User")
                         .WithOne()
                         .HasForeignKey("EmbyStat.Common.SqLite.Users.SqlUserPolicy", "UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });

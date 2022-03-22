@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
@@ -16,7 +16,7 @@ namespace EmbyStat.Jobs
     [Queue("main")]
     public abstract class BaseJob : IBaseJob, IDisposable
     {
-        protected readonly IJobHubHelper HubHelper;
+        protected readonly IHubHelper HubHelper;
         protected readonly ISettingsService SettingsService;
         private readonly IJobRepository _jobRepository;
         protected readonly Logger Logger;
@@ -25,10 +25,10 @@ namespace EmbyStat.Jobs
         private JobState State { get; set; }
         private DateTime? StartTimeUtc { get; set; }
         protected UserSettings Settings { get; set; }
-        protected bool EnableUiLogging { get; set; }
+        private bool EnableUiLogging { get; set; }
         private double Progress { get; set; }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+        protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
             bool enableUiLogging, Type type, string prefix)
         {
             HubHelper = hubHelper;
@@ -40,7 +40,7 @@ namespace EmbyStat.Jobs
             Progress = 0;
         }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, Type type, string prefix)
+        protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, Type type, string prefix)
             :this(hubHelper, jobRepository, settingsService, true, type, prefix)
         {
             
@@ -154,7 +154,7 @@ namespace EmbyStat.Jobs
 
         private async Task SendLogUpdateToFront(string message, ProgressLogType type)
         {
-            await HubHelper.BroadCastJobLog(JobPrefix, message, type);
+            await HubHelper.BroadcastJobLog(JobPrefix, message, type);
         }
 
         private async Task BroadcastProgress(double progress, DateTime? endTimeUtc = null)

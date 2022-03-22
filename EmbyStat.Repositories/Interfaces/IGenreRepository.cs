@@ -8,5 +8,6 @@ namespace EmbyStat.Repositories.Interfaces
     {
         Task UpsertRange(IEnumerable<SqlGenre> genres);
         Task<SqlGenre[]> GetAll();
+        Task DeleteAll();
     }
 }

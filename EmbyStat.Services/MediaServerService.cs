@@ -52,7 +52,7 @@ namespace EmbyStat.Services
             _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
 
             var settings = _settingsService.GetUserSettings();
-            ChangeClientType(settings.MediaServer?.ServerType);
+            ChangeClientType(settings.MediaServer?.Type);
         }
 
         #region Server
@@ -77,8 +77,6 @@ namespace EmbyStat.Services
             _logger.Debug($"Testing new API key on {url}");
             _logger.Debug($"API key used: {apiKey}");
             ChangeClientType(type);
-            var oldApiKey = _baseHttpClient.ApiKey;
-            var oldUrl = _baseHttpClient.BaseUrl;
             _baseHttpClient.ApiKey = apiKey;
             _baseHttpClient.BaseUrl = url;
 
@@ -88,9 +86,6 @@ namespace EmbyStat.Services
                 _logger.Debug("new API key works!");
                 return true;
             }
-
-            _baseHttpClient.ApiKey = oldApiKey;
-            _baseHttpClient.BaseUrl = oldUrl;
 
             _logger.Debug("new API key not working!");
             return false;
@@ -135,7 +130,7 @@ namespace EmbyStat.Services
         public void ResetMediaServerData()
         {
             var settings = _settingsService.GetUserSettings();
-            ChangeClientType(settings.MediaServer.ServerType);
+            ChangeClientType(settings.MediaServer.Type);
             _movieRepository.RemoveAll();
             _showRepository.RemoveShows();
             _mediaServerRepository.ResetMissedPings();
@@ -375,7 +370,7 @@ namespace EmbyStat.Services
                 settings.Id.ToString(),
                 settings.MediaServer.UserId);
 
-            settings.MediaServer.ServerType = realType;
+            settings.MediaServer.Type = realType;
             _settingsService.SaveUserSettingsAsync(settings);
         }
     }

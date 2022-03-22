@@ -49,7 +49,7 @@ namespace Tests.Unit.Services
             var showRepositoryMock = new Mock<IShowRepository>();
             showRepositoryMock.Setup(x => x.GetMediaCountForPerson(It.IsAny<string>())).Returns(2);
             var settingsServiceMock = new Mock<ISettingsService>();
-            settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { MediaServer = new MediaServerSettings { ServerType = ServerType.Emby } });
+            settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { MediaServer = new MediaServerSettings { Type = ServerType.Emby } });
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(EmbyClientMock.Object);
@@ -94,7 +94,7 @@ namespace Tests.Unit.Services
             var movieRepositoryMock = new Mock<IMovieRepository>();
             var showRepositoryMock = new Mock<IShowRepository>();
             var settingsServiceMock = new Mock<ISettingsService>();
-            settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { MediaServer = new MediaServerSettings { ServerType = ServerType.Emby }});
+            settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings { MediaServer = new MediaServerSettings { Type = ServerType.Emby }});
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(EmbyClientMock.Object);

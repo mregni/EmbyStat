@@ -8,7 +8,7 @@ using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
@@ -27,7 +27,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
 
-        public MovieSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
+        public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
             ISettingsService settingsService, IClientStrategy clientStrategy,
             IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
             IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository) 
@@ -40,7 +40,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _personRepository = personRepository;
 
             var settings = settingsService.GetUserSettings();
-            _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
+            _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
             Title = jobRepository.GetById(Id).Title;
         }
 
@@ -52,10 +52,9 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             if (!IsMediaServerOnline())
             {
-                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.FullMediaServerAddress}, please check the connection and try again.");
+                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
                 return;
             }
-
 
             await ProcessGenresAsync();
             await LogProgress(7);
@@ -151,7 +150,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private bool IsMediaServerOnline()
         {
-            _baseHttpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
+            _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
             return _baseHttpClient.Ping();
         }
 

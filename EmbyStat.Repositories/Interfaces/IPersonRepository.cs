@@ -7,8 +7,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IPersonRepository
     {
-        void Upsert(Person person);
         Task UpsertRange(IEnumerable<SqlPerson> people);
-        Person GetPersonByName(string name);
+        Task DeleteAll();
     }
 }

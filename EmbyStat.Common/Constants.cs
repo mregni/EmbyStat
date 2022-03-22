@@ -65,6 +65,7 @@ namespace EmbyStat.Common
             public static string LatestAdded => "SHOWS.LATESTADDED";
             public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
             public static string ShowStatusChart => "SHOWS.SHOWSTATUS";
+            public static string MostDiskSpace => "SHOWS.MOSTDISKSPACE";
         }
 
         public static class Users

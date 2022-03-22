@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Jobs;
 using EmbyStat.Services.Interfaces;
@@ -19,16 +19,16 @@ namespace EmbyStat.Controllers.Job
     {
         private readonly IMapper _mapper;
         private readonly IJobService _jobService;
-        private readonly IJobHubHelper _jobHubHelper;
+        private readonly IHubHelper _hubHelper;
         private readonly IJobInitializer _jobInitializer;
         private readonly ISettingsService _settingsService;
 
-        public JobController(IMapper mapper, IJobService jobService, IJobHubHelper jobHubHelper,
+        public JobController(IMapper mapper, IJobService jobService, IHubHelper hubHelper,
             IJobInitializer jobInitializer, ISettingsService settingsService)
         {
             _mapper = mapper;
             _jobService = jobService;
-            _jobHubHelper = jobHubHelper;
+            _hubHelper = hubHelper;
             _jobInitializer = jobInitializer;
             _settingsService = settingsService;
         }
@@ -86,7 +86,7 @@ namespace EmbyStat.Controllers.Job
             }
 
             await Task.Run(() => { RecurringJob.Trigger(job.Id.ToString()); });
-            await _jobHubHelper.BroadCastJobLog("JOBS", $"{job.Title} job queued", ProgressLogType.Information);
+            await _hubHelper.BroadcastJobLog("JOBS", $"{job.Title} job queued", ProgressLogType.Information);
             return Ok();
         }
     }
