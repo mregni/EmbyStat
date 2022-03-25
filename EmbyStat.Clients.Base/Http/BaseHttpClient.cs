@@ -228,7 +228,7 @@ namespace EmbyStat.Clients.Base.Http
             return baseItem?.ConvertToPeople(Logger);
         }
 
-        public async Task<QueryResult<BaseItemDto>> GetPeople(int startIndex, int limit)
+        public async Task<IEnumerable<SqlPerson>> GetPeople(int startIndex, int limit)
         {
             var query = new ItemQuery
             {
@@ -238,7 +238,8 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var client = _refitFactory.CreateClient(BaseUrl);
-            return await client.GetPeople(apiKey, AuthorizationString, query);
+            var people = await client.GetPeople(apiKey, AuthorizationString, query);
+            return Mapper.Map<IList<SqlPerson>>(people.Items);
         }
 
         public async Task<int> GetPeopleCount()
@@ -250,16 +251,16 @@ namespace EmbyStat.Clients.Base.Http
                 EnableTotalRecordCount = true,
             };
 
-            var paramList = query.ConvertToStringDictionary(UserId);
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetPeople(apiKey, AuthorizationString, query);
             return result.TotalRecordCount;
         }
 
-        public QueryResult<BaseItemDto> GetMediaFolders()
+        public async Task<Library[]> GetLibraries()
         {
-            var request = new RestRequest("Library/MediaFolders", Method.GET);
-            return ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
+            var client = _refitFactory.CreateClient(BaseUrl);
+            var result = await client.GetMediaFolders(apiKey, AuthorizationString);
+            return Mapper.Map<Library[]>(result.Items);
         }
 
         public Task<List<SqlPluginInfo>> GetInstalledPlugins()
@@ -324,8 +325,7 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var media = Mapper.Map<T[]>(result.Items);
-            return media;
+            return Mapper.Map<T[]>(result.Items);
         }
 
         public async Task<SqlShow[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)

@@ -21,7 +21,7 @@ namespace EmbyStat.Services.Interfaces
         void ResetMissedPings();
         void IncreaseMissedPings();
         void ResetMediaServerData();
-        IEnumerable<Library> GetMediaServerLibraries();
+        Task<Library[]> GetMediaServerLibraries();
 
         #endregion
 
@@ -55,6 +55,7 @@ namespace EmbyStat.Services.Interfaces
         Task GetAndProcessPluginInfo();
         Task GetAndProcessUsers();
         Task GetAndProcessDevices();
+        Task GetAndProcessLibraries();
 
         #endregion
     }

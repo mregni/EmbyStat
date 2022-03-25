@@ -7,7 +7,6 @@ namespace EmbyStat.Services.Models.Emby
         public string Id { get; set; }
         public string Primary { get; set; }
         public string Name { get; set; }
-        public string ParentId { get; set; }
         public decimal? WatchedPercentage { get; set; }
         public double WatchedTime { get; set; }
         public DateTimeOffset StartedWatching { get; set; }

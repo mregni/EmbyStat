@@ -27,36 +27,36 @@ namespace EmbyStat.Repositories
             _sqliteBootstrap = sqliteBootstrap;
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(int count)
         {
-            var query = _context.Shows.GenerateGetPremieredListQuery(libraryIds, count, "DESC");
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query, libraryIds);
+            var query = _context.Shows.GenerateGetPremieredListQuery(count, "DESC", Constants.Tables.Shows);
+            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(int count)
         {
-            var query = _context.Shows.GenerateGetPremieredListQuery(libraryIds, count, "ASC");
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query, libraryIds);
+            var query = _context.Shows.GenerateGetPremieredListQuery(count, "ASC", Constants.Tables.Shows);
+            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
         }
 
-        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(int count)
         {
-            var query = _context.Shows.GenerateGetCommunityRatingListQuery(libraryIds, count, "DESC");
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query, libraryIds);
+            var query = _context.Shows.GenerateGetCommunityRatingListQuery(count, "DESC", Constants.Tables.Shows);
+            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
         }
 
-        public async Task<IEnumerable<SqlExtra>> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlExtra>> GetLowestRatedMedia(int count)
         {
-            var query = _context.Shows.GenerateGetCommunityRatingListQuery(libraryIds, count, "ASC");
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query, libraryIds);
+            var query = _context.Shows.GenerateGetCommunityRatingListQuery(count, "ASC", Constants.Tables.Shows);
+            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
         }
 
-        public IEnumerable<SqlMedia> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetLatestAddedMedia(int count)
         {
-            return _context.Shows.GetLatestAddedMedia(libraryIds, count);
+            return _context.Shows.GetLatestAddedMedia(count);
         }
 
-        public async Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds)
+        public async Task<Dictionary<string, int>> GetGenreChartValues()
         {
             var query = $@"SELECT g.Name G, COUNT(*) Count
 FROM {Constants.Tables.Shows} AS s
@@ -66,106 +66,103 @@ GROUP BY g.Name
 ORDER BY g.Name";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query(query, new {Ids = libraryIds})
+            return connection.Query(query)
                 .ToDictionary(
                     row => (string) row.G,
                     row => (int) row.Count);
         }
 
-        public IEnumerable<decimal?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
+        public IEnumerable<decimal?> GetCommunityRatings()
         {
             return _context.Shows
-                .FilterOnLibrary(libraryIds)
                 .Select(x => x.CommunityRating);
         }
 
-        public IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds)
+        public IEnumerable<DateTime?> GetPremiereYears()
         {
             return _context.Shows
-                .FilterOnLibrary(libraryIds)
                 .Select(x => x.PremiereDate);
         }
 
-        public async Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds)
+        public async Task<Dictionary<string, int>> GetOfficialRatingChartValues()
         {
             var query = $@"SELECT upper(s.OfficialRating) OfficialRating, COUNT(*) Count
 FROM {Constants.Tables.Shows} AS s
-WHERE s.OfficialRating IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("s")}
+WHERE s.OfficialRating IS NOT NULL 
 GROUP BY upper(s.OfficialRating)
 ORDER BY OfficialRating";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query(query, new {Ids = libraryIds})
+            return connection.Query(query)
                 .ToDictionary(
                     row => (string) row.OfficialRating,
                     row => (int) row.Count);
         }
 
-        public async Task<Dictionary<string, int>> GetShowStatusCharValues(IReadOnlyList<string> libraryIds)
+        public async Task<Dictionary<string, int>> GetShowStatusCharValues()
         {
             var query = $@"SELECT s.Status Status, COUNT(*) Count
 FROM {Constants.Tables.Shows} AS s
-WHERE s.Status IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("s")}
+WHERE s.Status IS NOT NULL 
 GROUP BY s.Status
 ORDER BY s.Status";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query(query, new {Ids = libraryIds})
+            return connection.Query(query)
                 .ToDictionary(
                     row => (string) row.Status,
                     row => (int) row.Count);
         }
 
-        public async Task<IEnumerable<double>> GetCollectedRateChart(IReadOnlyList<string> libraryIds)
+        public async Task<IEnumerable<double>> GetCollectedRateChart()
         {
             var query = $@"SELECT ROUND(CAST(COUNT(*) FILTER(WHERE e.LocationType = 0) AS FLOAT) / COUNT(*), 2) AS pct
 FROM {Constants.Tables.Shows} AS s
 INNER JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
 INNER JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
-WHERE se.IndexNumber != 0 {libraryIds.AddLibraryIdFilterAsAnd("s")}
+WHERE se.IndexNumber != 0 
 GROUP BY s.Id
 ORDER BY s.Id";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query<double>(query, new {Ids = libraryIds});
+            return connection.Query<double>(query);
         }
 
-        public Task<int> Count(IReadOnlyList<string> libraryIds)
+        public Task<int> Count()
         {
-            return Count(Array.Empty<Filter>(), libraryIds);
+            return Count(Array.Empty<Filter>());
         }
 
-        public async Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds)
+        public async Task<int> Count(Filter[] filters)
         {
-            var query = _context.Shows.GenerateCountQuery(filters, libraryIds);
+            var query = _context.Shows.GenerateCountQuery(filters);
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            var result = await connection.QueryFirstAsync<int>(query, new {Ids = libraryIds});
+            var result = await connection.QueryFirstAsync<int>(query);
 
             return result;
         }
 
-        public IEnumerable<SqlShow> GetShowsWithMostDiskSpaceUsed(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlShow> GetShowsWithMostDiskSpaceUsed(int count)
         {
             return _context.Shows
-                .FilterOnLibrary(libraryIds)
                 .OrderByDescending(x => x.SizeInMb)
                 .Take(count);
         }
 
-        public async Task<int> CompleteCollectedCount(IReadOnlyList<string> libraryIds)
+        public async Task<int> CompleteCollectedCount()
         {
             var query = $@"SELECT COUNT(*) Count 
 FROM {Constants.Tables.Shows} AS s 
 WHERE NOT EXISTS (SELECT 1 FROM {Constants.Tables.Seasons} AS se INNER JOIN {Constants.Tables.Episodes} AS ep ON (se.Id = ep.SeasonId) 
-    WHERE se.ShowId = s.Id AND ep.LocationType = 1) {libraryIds.AddLibraryIdFilterAsAnd("s")}";
+    WHERE se.ShowId = s.Id AND ep.LocationType = 1) ";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.QueryFirst<int>(query, new {Ids = libraryIds});
+            return connection.QueryFirst<int>(query);
         }
 
         public bool Any()
@@ -183,35 +180,33 @@ WHERE NOT EXISTS (SELECT 1 FROM {Constants.Tables.Seasons} AS se INNER JOIN {Con
             throw new NotImplementedException();
         }
 
-        public async Task<int> GetGenreCount(IReadOnlyList<string> libraryIds)
+        public async Task<int> GetGenreCount()
         {
             var query = $@"SELECT COUNT(DISTINCT g.Name)
 FROM {Constants.Tables.Shows} AS s
 INNER JOIN {Constants.Tables.GenreShow} AS gs ON (s.Id = gs.ShowsId)
 INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
-WHERE 1=1 {libraryIds.AddLibraryIdFilter("s")}";
+WHERE 1=1 ";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return await connection.QueryFirstAsync<int>(query, new {Ids = libraryIds});
+            return await connection.QueryFirstAsync<int>(query);
         }
 
-        public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
+        public int GetPeopleCount(PersonType type)
         {
             return _context.Shows
                 .Include(x => x.People)
-                .FilterOnLibrary(libraryIds)
                 .SelectMany(x => x.People)
                 .Distinct()
                 .Count(x => x.Type == type);
         }
 
-        public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
+        public IEnumerable<string> GetMostFeaturedPersons(PersonType type, int count)
         {
             return _context.Shows
                 .Include(x => x.People)
                 .ThenInclude(x => x.Person)
-                .FilterOnLibrary(libraryIds)
                 .SelectMany(x => x.People)
                 .Where(x => x.Type == type)
                 .GroupBy(x => x.Person.Name, (name, people) => new {Name = name, Count = people.Count()})
@@ -320,9 +315,9 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             }
         }
 
-        public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds)
+        public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes()
         {
-            var query = _context.Shows.GenerateFullShowQuery(libraryIds);
+            var query = _context.Shows.GenerateFullShowQuery();
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
@@ -334,14 +329,14 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                 se.Episodes.AddIfNotNull(e);
                 s.Seasons.AddIfNotNull(se);
                 return s;
-            }, new {Ids = libraryIds});
+            });
 
             return MapShows(list);
         }
 
         public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
         {
-            var query = _context.Shows.GenerateFullShowWithGenresQuery(Array.Empty<string>());
+            var query = _context.Shows.GenerateFullShowWithGenresQuery();
             query += $" AND s.Id = {showId}";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
@@ -364,9 +359,9 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
         }
 
         public async Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder,
-            Filter[] filters, List<string> libraryIds)
+            Filter[] filters)
         {
-            var query = _context.Shows.GenerateShowPageQuery(filters, libraryIds, sortField, sortOrder);
+            var query = _context.Shows.GenerateShowPageQuery(filters, sortField, sortOrder);
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
@@ -381,7 +376,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                     se.Episodes.AddIfNotNull(e);
                     s.Seasons.AddIfNotNull(se);
                     return s;
-                }, new {Ids = libraryIds});
+                });
 
             return MapShows(list).Skip(skip).Take(take);
         }
@@ -423,8 +418,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             _context.Shows.RemoveRange(_context.Shows);
         }
 
-        public async Task<Dictionary<SqlShow, int>> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds,
-            int count)
+        public async Task<Dictionary<SqlShow, int>> GetShowsWithMostEpisodes(int count)
         {
             var query = $@"SELECT s.*, (
 	SELECT COUNT(*)
@@ -432,7 +426,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
 	INNER JOIN {Constants.Tables.Episodes} AS e0 ON s1.Id = e0.SeasonId
 	WHERE (s.Id = s1.ShowId) AND (e0.LocationType = 0)) AS c
 FROM {Constants.Tables.Shows} AS s
-WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("s")}
+WHERE 1=1 
 ORDER BY c DESC
 LIMIT {count}";
 
@@ -440,12 +434,7 @@ LIMIT {count}";
             await connection.OpenAsync();
 
             var list = await connection.QueryAsync<SqlShow, long, (SqlShow, int)>(query,
-                (show, c) =>
-                {
-                    return new ValueTuple<SqlShow, int>(show, Convert.ToInt32(c));
-                },
-                new {Ids = libraryIds},
-                splitOn: "c");
+                (show, c) => new ValueTuple<SqlShow, int>(show, Convert.ToInt32(c)), splitOn: "c");
 
             return list.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -470,19 +459,19 @@ LIMIT {count}";
                 .SelectMany(x => x.Episodes);
         }
 
-        public Task<int> GetEpisodeCount(IReadOnlyList<string> libraryIds, LocationType locationType)
+        public Task<int> GetEpisodeCount(LocationType locationType)
         {
             return _context.Episodes.CountAsync(x => x.LocationType == locationType);
         }
 
-        public Task<long> GetTotalRunTimeTicks(IReadOnlyList<string> libraryIds)
+        public Task<long> GetTotalRunTimeTicks()
         {
             return _context.Episodes
                 .Where(x => x.LocationType == LocationType.Disk)
                 .SumAsync(x => x.RunTimeTicks ?? 0);
         }
 
-        public Task<double> GetTotalDiskSpaceUsed(IReadOnlyList<string> libraryIds)
+        public Task<double> GetTotalDiskSpaceUsed()
         {
             return _context.Episodes
                 .Include(x => x.MediaSources)
@@ -494,12 +483,11 @@ LIMIT {count}";
 
         #region Helpers
 
-        private async Task<IEnumerable<T>> ExecuteListQueryWithLibraryIds<T>(string query,
-            IEnumerable<string> libraryIds)
+        private async Task<IEnumerable<T>> ExecuteListQueryWithLibraryIds<T>(string query)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query<T>(query, new {Ids = libraryIds});
+            return connection.Query<T>(query);
         }
 
         #endregion

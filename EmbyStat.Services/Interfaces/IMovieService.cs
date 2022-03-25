@@ -10,12 +10,11 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IMovieService
     {
-        IEnumerable<Library> GetMovieLibraries();
-        Task<MovieStatistics> GetStatistics(List<string> libraryIds);
-        Task<MovieStatistics> CalculateMovieStatistics(List<string> libraryIds);
-        Task<MovieStatistics> CalculateMovieStatistics(string libraryId);
+        Task<List<Library>> GetMovieLibraries();
+        Task<MovieStatistics> GetStatistics();
+        Task<MovieStatistics> CalculateMovieStatistics();
         bool TypeIsPresent();
-        Task<Page<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds);
+        Task<Page<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount);
         SqlMovie GetMovie(string id);
     }
 }

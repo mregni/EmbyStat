@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Users;
@@ -17,7 +19,6 @@ public class SqlMediaServerRepository : IMediaServerRepository
     {
         _context = context;
     }
-
 
     #region MediaServer Status
     public EmbyStatus GetEmbyStatus()
@@ -66,18 +67,10 @@ public class SqlMediaServerRepository : IMediaServerRepository
         return _context.ServerInfo.SingleOrDefaultAsync();
     }
 
-    public async Task UpsertServerInfo(SqlServerInfo entity)
+    public async Task DeleteAndInsertServerInfo(SqlServerInfo entity)
     {
-        var info = await _context.ServerInfo.AsNoTracking().SingleOrDefaultAsync();
-        if (info == null)
-        {
-            await _context.ServerInfo.AddAsync(entity);
-        }
-        else
-        {
-            _context.ServerInfo.Update(entity);
-        }
-        
+        _context.ServerInfo.RemoveRange(_context.ServerInfo);
+        await _context.ServerInfo.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
@@ -89,7 +82,7 @@ public class SqlMediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Users
-    public async Task UpsertUsers(IEnumerable<SqlUser> users)
+    public async Task DeleteAndInsertUsers(IEnumerable<SqlUser> users)
     {
         _context.Users.RemoveRange(_context.Users);
         await _context.Users.AddRangeAsync(users);
@@ -136,7 +129,7 @@ public class SqlMediaServerRepository : IMediaServerRepository
         throw new System.NotImplementedException();
     }
 
-    public async Task UpsertDevices(IEnumerable<SqlDevice> devices)
+    public async Task DeleteAndInsertDevices(IEnumerable<SqlDevice> devices)
     {
         _context.Devices.RemoveRange(_context.Devices);
         await _context.Devices.AddRangeAsync(devices);
@@ -148,5 +141,51 @@ public class SqlMediaServerRepository : IMediaServerRepository
         _context.Devices.RemoveRange(_context.Devices);
         await _context.SaveChangesAsync();
     }
+    #endregion
+    
+    #region Libraries
+    public Task<List<Library>> GetAllLibraries()
+    {
+        return _context.Libraries.ToListAsync();
+    }
+
+    public Task<List<Library>> GetAllLibraries(LibraryType type)
+    {
+        return _context.Libraries.Where(x => x.Type == type).ToListAsync();
+    }
+    
+    public Task<List<Library>> GetAllLibraries(LibraryType type, bool synced)
+    {
+        return _context.Libraries
+            .Where(x => x.Type == type && x.Sync == synced)
+            .ToListAsync();
+    }
+
+    public async Task DeleteAndInsertLibraries(Library[] libraries)
+    {
+        _context.Libraries.RemoveRange(_context.Libraries);
+        await _context.Libraries.AddRangeAsync(libraries);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAllLibraries()
+    {
+        _context.Libraries.RemoveRange(_context.Libraries);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateLibrarySyncDate(string libraryId, DateTime date)
+    {
+        var library = await _context.Libraries
+            .Where(x => x.Id == libraryId)
+            .FirstOrDefaultAsync();
+        
+        if (library != null)
+        {
+            library.LastSynced = date;
+            await _context.SaveChangesAsync();
+        }
+    }
+
     #endregion
 }

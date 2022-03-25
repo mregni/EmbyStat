@@ -35,10 +35,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly ITmdbClient _tmdbClient;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
-        
+        private readonly IMediaServerRepository _mediaServerRepository;
+
         public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IShowRepository showRepository,
-            IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient, IGenreRepository genreRepository, IPersonRepository personRepository) 
+            IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
+            IGenreRepository genreRepository, IPersonRepository personRepository, 
+            IMediaServerRepository mediaServerRepository)
             : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
         {
             _showRepository = showRepository;
@@ -47,6 +50,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _tmdbClient = tmdbClient;
             _genreRepository = genreRepository;
             _personRepository = personRepository;
+            _mediaServerRepository = mediaServerRepository;
 
             Title = jobRepository.GetById(Id).Title;
             var settings = settingsService.GetUserSettings();
@@ -61,7 +65,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             if (!IsMediaServerOnline())
             {
-                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
+                await LogWarning(
+                    $"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
                 return;
             }
 
@@ -95,10 +100,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             do
             {
-                var result = await _baseHttpClient.GetPeople(j * limit, limit);
-                var people = result.Items
-                    .Select(x => x.ConvertToPeople(Logger))
-                    .ToList();
+                var people = await _baseHttpClient.GetPeople(j * limit, limit);
                 await _personRepository.UpsertRange(people);
 
                 processed += limit;
@@ -108,20 +110,23 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task ProcessShowsAsync()
         {
+            var librariesToProcess = await _mediaServerRepository.GetAllLibraries(LibraryType.TvShow, true);
             await LogInformation("Processing shows");
-            await LogInformation($"{Settings.ShowLibraries.Count} libraries are selected, getting ready for processing");
+            await LogInformation(
+                $"{librariesToProcess.Count} libraries are selected, getting ready for processing");
 
-            var logIncrementBase = Math.Round(60 / (double)Settings.MovieLibraries.Count, 1);
+            var logIncrementBase = Math.Round(60 / (double) librariesToProcess.Count, 1);
             var genres = await _genreRepository.GetAll();
 
-            foreach (var library in Settings.ShowLibraries)
+            foreach (var library in librariesToProcess)
             {
                 var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
                 if (totalCount == 0)
                 {
                     continue;
                 }
-                var increment = logIncrementBase / (totalCount / (double)100);
+
+                var increment = logIncrementBase / (totalCount / (double) 100);
 
                 await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
                 var processed = 0;
@@ -135,18 +140,17 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     j++;
 
                     var logProcessed = processed < totalCount ? processed : totalCount;
-                    await LogInformation($"Processed { logProcessed } / { totalCount } shows");
+                    await LogInformation($"Processed {logProcessed} / {totalCount} shows");
                     await LogProgressIncrement(increment);
                 } while (processed < totalCount);
-                await SettingsService.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
+
+                await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
             }
         }
 
-        private async Task ProcessShowBlock(LibraryContainer library, SqlGenre[] genres, int index, int limit)
+        private async Task ProcessShowBlock(Library library, IEnumerable<SqlGenre> genres, int index, int limit)
         {
-            var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced); 
-
-            shows.ForEach(x => x.CollectionId = library.Id);
+            var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced);
             shows.AddGenres(genres);
 
             foreach (var show in shows)
@@ -168,8 +172,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 {
                     continue;
                 }
-                
-                if (show.HasShowChangedEpisodes(localShow) || localShow is { ExternalSynced: false })
+
+                if (show.HasShowChangedEpisodes(localShow) || localShow is {ExternalSynced: false})
                 {
                     await GetMissingEpisodesFromProviderAsync(show);
                 }
@@ -216,7 +220,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == externalEpisode.SeasonNumber);
                 if (season == null)
                 {
-                    Logger.Debug($"No season with index {externalEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
+                    Logger.Debug(
+                        $"No season with index {externalEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
                     season = externalEpisode.SeasonNumber.ConvertToVirtualSeason(show);
                     show.Seasons.Add(season);
                 }
@@ -227,7 +232,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 if (IsEpisodeMissing(localEpisodes, season, externalEpisode))
                 {
                     var episode = externalEpisode.ConvertToVirtualEpisode(season);
-                    Logger.Debug($"Episode missing: { episode.Id } - {season.Id} - {show.Id} - {show.Name}");
+                    Logger.Debug($"Episode missing: {episode.Id} - {season.Id} - {show.Id} - {show.Name}");
                     show.Seasons.Single(x => x.Id == season.Id).Episodes.Add(episode);
                     missingEpisodesCount++;
                 }
@@ -238,7 +243,8 @@ namespace EmbyStat.Jobs.Jobs.Sync
             show.ExternalSynced = true;
         }
 
-        private static bool IsEpisodeMissing(IEnumerable<SqlEpisode> localEpisodes, SqlSeason season, VirtualEpisode tvdbEpisode)
+        private static bool IsEpisodeMissing(IEnumerable<SqlEpisode> localEpisodes, SqlSeason season,
+            VirtualEpisode tvdbEpisode)
         {
             if (season == null || localEpisodes == null)
             {
@@ -280,8 +286,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         {
             await LogInformation("Calculating show statistics");
             _statisticsRepository.MarkShowTypesAsInvalid();
-            await _showService.CalculateShowStatistics(new List<string>(0));
-            await _showService.CalculateCollectedRows(new List<string>(0));
+            await _showService.CalculateShowStatistics();
 
             await LogInformation($"Calculations done");
             await LogProgress(100);

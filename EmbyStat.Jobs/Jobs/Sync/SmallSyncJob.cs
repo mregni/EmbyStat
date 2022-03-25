@@ -42,6 +42,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             await _mediaServerService.GetAndProcessDevices();
             await LogInformation("Server devices downloaded");
+            await LogProgress(90);
+
+            await _mediaServerService.GetAndProcessLibraries();
+            await LogInformation("Server libraries downloaded");
         }
     }
 }

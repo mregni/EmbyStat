@@ -15,23 +15,21 @@ namespace EmbyStat.Repositories
         {
         }
 
-        public Statistic GetLastResultByType(StatisticType type, IReadOnlyList<string> collectionIds)
+        public Statistic GetLastResultByType(StatisticType type)
         {
             using var database = Context.CreateDatabaseContext();
             var collection = database.GetCollection<Statistic>();
             return collection.Find(x => x.IsValid && x.Type == type)
-                .GetStatisticsWithCollectionIds(collectionIds)
                 .OrderByDescending(x => x.CalculationDateTime)
                 .FirstOrDefault();
         }
 
-        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IReadOnlyList<string> collectionIds)
+        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type)
         {
             using var database = Context.CreateDatabaseContext();
             var collection = database.GetCollection<Statistic>();
             var statistics = collection
                 .Find(x => x.Type == type)
-                .GetStatisticsWithCollectionIds(collectionIds)
                 .ToList();
 
             statistics.ForEach(x => x.IsValid = false);
@@ -40,7 +38,6 @@ namespace EmbyStat.Repositories
             var statistic = new Statistic
             {
                 CalculationDateTime = calculationDateTime,
-                CollectionIds = collectionIds,
                 Type = type,
                 JsonResult = json,
                 IsValid = true

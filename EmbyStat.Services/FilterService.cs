@@ -20,51 +20,50 @@ namespace EmbyStat.Services
             _movieRepository = movieRepository;
         }
 
-        public FilterValues GetFilterValues(LibraryType type, string field, string[] libraryIds)
+        public FilterValues GetFilterValues(LibraryType type, string field)
         {
-            var values = _filterRepository.Get(field, libraryIds);
-            return values ?? CalculateFilterValues(type, field, libraryIds);
+            var values = _filterRepository.Get(field);
+            return values ?? CalculateFilterValues(type, field);
         }
 
-        public FilterValues CalculateFilterValues(LibraryType type, string field, string[] libraryIds)
+        public FilterValues CalculateFilterValues(LibraryType type, string field)
         {
             switch (type)
             {
-                case LibraryType.Movies: return CalculateMovieFilterValues(field, libraryIds);
+                case LibraryType.Movies: return CalculateMovieFilterValues(field);
                 //TODO Add show filters here
                 default: return null;
             }
         }
 
-        private FilterValues CalculateMovieFilterValues(string field, string[] libraryIds)
+        private FilterValues CalculateMovieFilterValues(string field)
         {
             var values = new FilterValues
             {
                 Id = Guid.NewGuid().ToString(),
-                Field = field,
-                Libraries = libraryIds
+                Field = field
             };
             switch (field.ToLowerInvariant())
             {
                 case "subtitle":
                     var re = new Regex(@"\ \([0-9a-zA-Z -_]*\)$");
-                    values.Values = _movieRepository.CalculateSubtitleFilterValues(libraryIds).ToArray();
+                    values.Values = _movieRepository.CalculateSubtitleFilterValues().ToArray();
                     values.Values.ForEach(x => re.Replace(x.Label, string.Empty));
                     break;
                 case "genre":
-                    values.Values = _movieRepository.CalculateGenreFilterValues(libraryIds).ToArray();
+                    values.Values = _movieRepository.CalculateGenreFilterValues().ToArray();
                     break;
                 case "container":
-                    values.Values = _movieRepository.CalculateContainerFilterValues(libraryIds).ToArray();
+                    values.Values = _movieRepository.CalculateContainerFilterValues().ToArray();
                     break;
                 case "collection":
                     values.Values = _movieRepository.CalculateCollectionFilterValues().ToArray();
                     break;
                 case "codec":
-                    values.Values = _movieRepository.CalculateCodecFilterValues(libraryIds).ToArray();
+                    values.Values = _movieRepository.CalculateCodecFilterValues().ToArray();
                     break;
                 case "videorange":
-                    values.Values = _movieRepository.CalculateVideoRangeFilterValues(libraryIds).ToArray();
+                    values.Values = _movieRepository.CalculateVideoRangeFilterValues().ToArray();
                     break;
                 default: return null;
             }

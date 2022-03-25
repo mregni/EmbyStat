@@ -123,5 +123,14 @@ namespace EmbyStat.Clients.Base.Http
 
 
         #endregion
+
+        #region MediaFolders
+
+        [Get("/Library/MediaFolders")]
+        Task<QueryResult<BaseItemDto>> GetMediaFolders(
+            [Header("X-Emby-Token")] string apiKey,
+            [Header("X-Emby-Authorization")] string authorization);
+
+        #endregion
     }
 }

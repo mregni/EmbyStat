@@ -55,24 +55,6 @@ namespace EmbyStat.Services
             return _userSettings;
         }
 
-        public async Task UpdateLibrarySyncDate(string libraryId, DateTime date)
-        {
-            var library = _userSettings.MovieLibraries.FirstOrDefault(x => x.Id == libraryId);
-            if (library != null)
-            {
-                library.LastSynced = date;
-                await SaveUserSettingsAsync(_userSettings);
-                return;
-            }
-
-            library = _userSettings.ShowLibraries.FirstOrDefault(x => x.Id == libraryId);
-            if (library != null)
-            {
-                library.LastSynced = date;
-                await SaveUserSettingsAsync(_userSettings);
-            }
-        }
-
         public void CreateRollbarLogger()
         {
             var rollbarConfig = new RollbarConfig(_appSettings.Rollbar.AccessToken)

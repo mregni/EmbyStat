@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EmbyStat.Common.Models.Entities;
 
 namespace EmbyStat.Common.SqLite.Helpers
 {
@@ -6,5 +7,6 @@ namespace EmbyStat.Common.SqLite.Helpers
     {
         ICollection<SqlMediaPerson> People { get; set; }
         ICollection<SqlGenre> Genres { get; set; }
+        Library Library { get; set; }
     }
 }

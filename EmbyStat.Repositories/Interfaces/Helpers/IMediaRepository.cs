@@ -9,24 +9,24 @@ namespace EmbyStat.Repositories.Interfaces.Helpers
 {
     public interface IMediaRepository
     {
-        IEnumerable<SqlMedia> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count);
-        Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
-        Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count);
-        Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count);
-        Task<IEnumerable<SqlExtra>> GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count);
+        IEnumerable<SqlMedia> GetLatestAddedMedia(int count);
+        Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(int count);
+        Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(int count);
+        Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(int count);
+        Task<IEnumerable<SqlExtra>> GetLowestRatedMedia(int count);
 
         #region Charts
-        Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<decimal?> GetCommunityRatings(IReadOnlyList<string> libraryIds);
-        IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds);
-        Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds);
+        Task<Dictionary<string, int>> GetGenreChartValues();
+        IEnumerable<decimal?> GetCommunityRatings();
+        IEnumerable<DateTime?> GetPremiereYears();
+        Task<Dictionary<string, int>> GetOfficialRatingChartValues();
         #endregion
 
-        Task<int> Count(IReadOnlyList<string> libraryIds);
-        Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds);
+        Task<int> Count();
+        Task<int> Count(Filter[] filters);
         bool Any();
         int GetMediaCountForPerson(string name);
-        Task<int> GetGenreCount(IReadOnlyList<string> libraryIds);
-        int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type);
+        Task<int> GetGenreCount();
+        int GetPeopleCount(PersonType type);
     }
 }

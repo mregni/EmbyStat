@@ -8,6 +8,5 @@ namespace EmbyStat.Common.Models.Entities
         public string Id { get; set; }
         public string Field { get; set; }
         public LabelValuePair[] Values { get; set; }
-        public string[] Libraries { get; set; }
     }
 }

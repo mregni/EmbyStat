@@ -124,7 +124,7 @@ namespace Tests.Unit.Repository
                 collectionCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
                 collectionCollection.EnsureIndex(x => x.Name).Should().BeTrue();
                 collectionCollection.EnsureIndex(x => x.Type).Should().BeTrue();
-                collectionCollection.EnsureIndex(x => x.PrimaryImage).Should().BeTrue();
+                collectionCollection.EnsureIndex(x => x.Primary).Should().BeTrue();
             });
         }
 

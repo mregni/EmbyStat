@@ -15,23 +15,23 @@ namespace EmbyStat.Services.Abstract
     public abstract class MediaService
     {
         private readonly IJobRepository _jobRepository;
-        internal readonly Logger Logger;
+        private readonly Logger _logger;
 
         protected MediaService(IJobRepository jobRepository, Type type, string logPrefix)
         {
             _jobRepository = jobRepository;
-            Logger = LogFactory.CreateLoggerForType(type, logPrefix);
+            _logger = LogFactory.CreateLoggerForType(type, logPrefix);
         }
 
-        internal bool StatisticsAreValid(Statistic statistic, IEnumerable<string> collectionIds, Guid jobId)
+        internal bool StatisticsAreValid(Statistic statistic, Guid jobId)
         {
             var lastMediaSync = _jobRepository.GetById(jobId);
 
-            //We need to add 5 minutes here because the CalculationDateTime is ALWAYS just in front of the EndTimeUtc :( Ugly fix
+            //We need to add 5 minutes here because the CalculationDateTime is ALWAYS just in front of the EndTimeUtc
+            //(Ugly fix for now)
             return statistic != null
-                   && lastMediaSync != null
-                   && statistic.CalculationDateTime.AddMinutes(5) > lastMediaSync.EndTimeUtc
-                   && collectionIds.AreListEqual(statistic.CollectionIds);
+               && lastMediaSync != null
+               && statistic.CalculationDateTime.AddMinutes(5) > lastMediaSync.EndTimeUtc;
         }
 
         internal T CalculateStat<T>(Func<T> action, string errorMessage)
@@ -42,7 +42,7 @@ namespace EmbyStat.Services.Abstract
             }
             catch (Exception e)
             {
-                Logger.Error(e, errorMessage);
+                _logger.Error(e, errorMessage);
             }
 
             return default;
@@ -53,7 +53,7 @@ namespace EmbyStat.Services.Abstract
         internal static Chart CreateGenreChart(Dictionary<string, int> items)
         {
             var genresData = items
-                .Select(x => new SimpleChartData{Label = x.Key, Value = x.Value})
+                .Select(x => new SimpleChartData {Label = x.Key, Value = x.Value})
                 .ToArray();
 
             return new Chart
@@ -74,12 +74,12 @@ namespace EmbyStat.Services.Abstract
             {
                 if (!ratingDataList.Any(x => x.Key == i))
                 {
-                    ratingDataList.Add(new ChartGrouping<double?, decimal?> { Key = i, Capacity = 0 });
+                    ratingDataList.Add(new ChartGrouping<double?, decimal?> {Key = i, Capacity = 0});
                 }
             }
 
             var ratingData = ratingDataList
-                .Select(x => new SimpleChartData { Label = x.Key?.ToString() ?? Constants.Unknown, Value = x.Count() })
+                .Select(x => new SimpleChartData {Label = x.Key?.ToString() ?? Constants.Unknown, Value = x.Count()})
                 .OrderBy(x => x.Label)
                 .ToArray();
 
@@ -107,13 +107,14 @@ namespace EmbyStat.Services.Abstract
                 {
                     if (yearDataList.All(x => x.Key != i))
                     {
-                        yearDataList.Add(new ChartGrouping<int?, DateTime?> { Key = i, Capacity = 0 });
+                        yearDataList.Add(new ChartGrouping<int?, DateTime?> {Key = i, Capacity = 0});
                     }
                 }
             }
 
             var yearData = yearDataList
-                .Select(x => new SimpleChartData { Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Value = x.Count() })
+                .Select(x => new SimpleChartData
+                    {Label = x.Key != null ? $"{x.Key} - {x.Key + 4}" : Constants.Unknown, Value = x.Count()})
                 .OrderBy(x => x.Label)
                 .ToArray();
 
@@ -128,7 +129,7 @@ namespace EmbyStat.Services.Abstract
         internal Chart CalculateOfficialRatingChart(Dictionary<string, int> items)
         {
             var ratingData = items
-                .Select(x => new SimpleChartData { Label = x.Key, Value = x.Value })
+                .Select(x => new SimpleChartData {Label = x.Key, Value = x.Value})
                 .ToArray();
 
             return new Chart

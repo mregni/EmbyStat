@@ -83,7 +83,7 @@ namespace Tests.Unit.Services
             _sessionServiceMock = new Mock<ISessionService>();
 
             _embyRepositoryMock.Setup(x => x.GetServerInfo()).Returns((ServerInfo)null);
-            _embyRepositoryMock.Setup(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()));
+            _embyRepositoryMock.Setup(x => x.DeleteAndInsertServerInfo(It.IsAny<ServerInfo>()));
 
             var serverInfo = new ServerInfo { Id = Guid.NewGuid().ToString() };
             _httpClientMock.Setup(x => x.GetServerInfo()).Returns(serverInfo);
@@ -99,7 +99,7 @@ namespace Tests.Unit.Services
             result.Id.Should().Be(serverInfo.Id);
 
             _embyRepositoryMock.Verify(x => x.GetServerInfo(), Times.Once);
-            _embyRepositoryMock.Verify(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()), Times.Once);
+            _embyRepositoryMock.Verify(x => x.DeleteAndInsertServerInfo(It.IsAny<ServerInfo>()), Times.Once);
             _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
         }
 
@@ -438,7 +438,7 @@ namespace Tests.Unit.Services
 
             var serverInfo = new ServerInfo { Id = "1234" };
             _httpClientMock.Setup(x => x.GetServerInfo()).Returns(serverInfo);
-            _embyRepositoryMock.Setup(x => x.UpsertServerInfo(It.IsAny<ServerInfo>()));
+            _embyRepositoryMock.Setup(x => x.DeleteAndInsertServerInfo(It.IsAny<ServerInfo>()));
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
@@ -452,7 +452,7 @@ namespace Tests.Unit.Services
             result.Id.Should().Be(serverInfo.Id);
 
             _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
-            _embyRepositoryMock.Verify(x => x.UpsertServerInfo(serverInfo), Times.Once);
+            _embyRepositoryMock.Verify(x => x.DeleteAndInsertServerInfo(serverInfo), Times.Once);
 
         }
 

@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.SqLite;
+﻿using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
@@ -30,6 +31,8 @@ namespace EmbyStat.Repositories
         public DbSet<SqlUser> Users { get; set; }
         public DbSet<SqlUserConfiguration> UserConfigurations { get; set; }
         public DbSet<SqlUserPolicy> UserPolicies { get; set; }
+
+        public DbSet<Library> Libraries { get; set; }
         
         public DbSet<SqlDevice> Devices { get; set; }
 

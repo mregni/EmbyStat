@@ -4,7 +4,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IFilterRepository
     {
-        FilterValues Get(string field, string[] libraryIds);
+        FilterValues Get(string field);
         void Insert(FilterValues values);
     }
 }

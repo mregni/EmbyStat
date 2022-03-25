@@ -13,7 +13,7 @@ namespace Tests.Unit.Builders
             {
                 Id = $"id{index}",
                 Name = $"collection{index}",
-                PrimaryImage = $"image{index}",
+                Primary = $"image{index}",
                 Type = type
             };
         }

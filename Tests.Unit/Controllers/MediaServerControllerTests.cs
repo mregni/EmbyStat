@@ -130,7 +130,7 @@ namespace Tests.Unit.Controllers
                 Type = LibraryType.Movies,
                 Id = "000",
                 Name = "Movies",
-                PrimaryImage = "image1"
+                Primary = "image1"
             };
 
             var mediaServerServiceMock = new Mock<IMediaServerService>();
@@ -146,7 +146,7 @@ namespace Tests.Unit.Controllers
             libraryViewModel[0].Type.Should().Be((int)library.Type);
             libraryViewModel[0].Id.Should().Be(library.Id);
             libraryViewModel[0].Name.Should().Be(library.Name);
-            libraryViewModel[0].PrimaryImage.Should().Be(library.PrimaryImage);
+            libraryViewModel[0].PrimaryImage.Should().Be(library.Primary);
 
             mediaServerServiceMock.Verify(x => x.GetMediaServerLibraries(), Times.Once);
         }

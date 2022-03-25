@@ -12,22 +12,22 @@ namespace EmbyStat.Repositories.Interfaces
         SqlMovie GetById(string id);
         void RemoveAll();
         Task UpsertRange(IEnumerable<SqlMovie> movies);
-        IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds);
-        IEnumerable<SqlMovie> GetAllWithImdbId(IReadOnlyList<string> libraryIds);
-        long? GetTotalRuntime(IReadOnlyList<string> libraryIds);
-        IEnumerable<SqlMovie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count);
-        IEnumerable<SqlMovie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count);
-        double GetTotalDiskSpace(IReadOnlyList<string> libraryIds);
-        IEnumerable<SqlMovie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes);
-        IEnumerable<SqlMovie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds);
-        IEnumerable<SqlMovie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds);
-        Task<IEnumerable<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds);
-        IEnumerable<LabelValuePair> CalculateSubtitleFilterValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<LabelValuePair> CalculateContainerFilterValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<LabelValuePair> CalculateGenreFilterValues(IReadOnlyList<string> libraryIds);
+        IEnumerable<SqlMovie> GetAll();
+        IEnumerable<SqlMovie> GetAllWithImdbId();
+        long? GetTotalRuntime();
+        IEnumerable<SqlMovie> GetShortestMovie(long toShortMovieTicks, int count);
+        IEnumerable<SqlMovie> GetLongestMovie(int count);
+        double GetTotalDiskSpace();
+        IEnumerable<SqlMovie> GetToShortMovieList(int toShortMovieMinutes);
+        IEnumerable<SqlMovie> GetMoviesWithoutImdbId();
+        IEnumerable<SqlMovie> GetMoviesWithoutPrimaryImage();
+        Task<IEnumerable<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters);
+        IEnumerable<LabelValuePair> CalculateSubtitleFilterValues();
+        IEnumerable<LabelValuePair> CalculateContainerFilterValues();
+        IEnumerable<LabelValuePair> CalculateGenreFilterValues();
         IEnumerable<LabelValuePair> CalculateCollectionFilterValues();
-        IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds);
-        IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds);
+        IEnumerable<LabelValuePair> CalculateCodecFilterValues();
+        IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues();
         Task DeleteAll();
     }
 }

@@ -116,14 +116,14 @@ VALUES (@Type, @MovieId, @PersonId)";
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds)
+        public IEnumerable<SqlMovie> GetAll()
         {
-            return GetAll(libraryIds, false);
+            return GetAll(false);
         }
 
-        public IEnumerable<SqlMovie> GetAll(IReadOnlyList<string> libraryIds, bool includeGenres)
+        public IEnumerable<SqlMovie> GetAll(bool includeGenres)
         {
-            var query = _context.Movies.FilterOnLibrary(libraryIds);
+            var query = _context.Movies.AsQueryable();
 
             if (includeGenres)
             {
@@ -133,10 +133,9 @@ VALUES (@Type, @MovieId, @PersonId)";
             return query.OrderBy(x => x.SortName);
         }
 
-        public IEnumerable<SqlMovie> GetAllWithImdbId(IReadOnlyList<string> libraryIds)
+        public IEnumerable<SqlMovie> GetAllWithImdbId()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.IMDB != null)
                 .OrderBy(x => x.SortName);
         }
@@ -154,66 +153,59 @@ VALUES (@Type, @MovieId, @PersonId)";
         }
 
 
-        public long? GetTotalRuntime(IReadOnlyList<string> libraryIds)
+        public long? GetTotalRuntime()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Sum(x => x.RunTimeTicks);
         }
 
-        public IEnumerable<SqlMovie> GetShortestMovie(IReadOnlyList<string> libraryIds, long toShortMovieTicks, int count)
+        public IEnumerable<SqlMovie> GetShortestMovie(long toShortMovieTicks, int count)
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
                 .OrderBy(x => x.RunTimeTicks)
                 .Take(count);
         }
 
-        public IEnumerable<SqlMovie> GetLongestMovie(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMovie> GetLongestMovie(int count)
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.RunTimeTicks != null)
                 .OrderByDescending(x => x.RunTimeTicks)
                 .Take(count);
         }
 
-        public double GetTotalDiskSpace(IReadOnlyList<string> libraryIds)
+        public double GetTotalDiskSpace()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .SelectMany(x => x.MediaSources)
                 .Sum(x => x.SizeInMb);
         }
 
-        public IEnumerable<SqlMovie> GetToShortMovieList(IReadOnlyList<string> libraryIds, int toShortMovieMinutes)
+        public IEnumerable<SqlMovie> GetToShortMovieList(int toShortMovieMinutes)
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
                 .OrderBy(x => x.SortName);
         }
 
-        public IEnumerable<SqlMovie> GetMoviesWithoutImdbId(IReadOnlyList<string> libraryIds)
+        public IEnumerable<SqlMovie> GetMoviesWithoutImdbId()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.IMDB == null)
                 .OrderBy(x => x.SortName);
         }
 
-        public IEnumerable<SqlMovie> GetMoviesWithoutPrimaryImage(IReadOnlyList<string> libraryIds)
+        public IEnumerable<SqlMovie> GetMoviesWithoutPrimaryImage()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.Primary == null)
                 .OrderBy(x => x.SortName);
         }
-
-        public async Task<IEnumerable<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds)
+        
+        public async Task<IEnumerable<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters)
         {
-            var query = _context.Movies.GenerateFullMovieQuery(filters, libraryIds, sortField, sortOrder);
+            var query = _context.Movies.GenerateFullMovieQuery(filters, sortField, sortOrder);
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
@@ -231,7 +223,7 @@ VALUES (@Type, @MovieId, @PersonId)";
                 m.SubtitleStreams.AddIfNotNull(sus);
                 m.MediaSources.AddIfNotNull(mes);
                 return m;
-            }, new { Ids = libraryIds });
+            });
 
             var result = list
                 .GroupBy(m => m.Id)
@@ -251,11 +243,10 @@ VALUES (@Type, @MovieId, @PersonId)";
             return result;
         }
 
-        public IEnumerable<LabelValuePair> CalculateSubtitleFilterValues(IReadOnlyList<string> libraryIds)
+        public IEnumerable<LabelValuePair> CalculateSubtitleFilterValues()
         {
             return Enumerable.DistinctBy(_context.Movies
                     .Include(x => x.SubtitleStreams)
-                    .FilterOnLibrary(libraryIds)
                     .SelectMany(x => x.SubtitleStreams)
                     .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null)
                     .AsEnumerable()
@@ -263,19 +254,17 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .OrderBy(x => x.Label);
         }
 
-        public IEnumerable<LabelValuePair> CalculateContainerFilterValues(IReadOnlyList<string> libraryIds)
+        public IEnumerable<LabelValuePair> CalculateContainerFilterValues()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Select(x => new LabelValuePair { Value = x.Container, Label = x.Container })
                 .Distinct()
                 .OrderBy(x => x.Label);
         }
 
-        public IEnumerable<LabelValuePair> CalculateGenreFilterValues(IReadOnlyList<string> libraryIds)
+        public IEnumerable<LabelValuePair> CalculateGenreFilterValues()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .SelectMany(x => x.Genres)
                 .Select(x => new LabelValuePair { Value = x.Name, Label = x.Name })
                 .Distinct()
@@ -284,19 +273,13 @@ VALUES (@Type, @MovieId, @PersonId)";
 
         public IEnumerable<LabelValuePair> CalculateCollectionFilterValues()
         {
-            //TODO: safe collections somewhere so we can display names in the dropdown
-            //not working at the moment, will display Id's
-            return _context.Movies
-                .Select(x => new LabelValuePair { Value = x.CollectionId, Label = x.CollectionId })
-                .Distinct()
-                .OrderBy(x => x.Label);
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<LabelValuePair> CalculateCodecFilterValues(IReadOnlyList<string> libraryIds)
+        public IEnumerable<LabelValuePair> CalculateCodecFilterValues()
         {
             return _context.Movies
                 .Include(x => x.VideoStreams)
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.VideoStreams.Any())
                 .Select(x => new LabelValuePair
                 {
@@ -307,11 +290,10 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .OrderBy(x => x.Label);
         }
 
-        public IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues(IReadOnlyList<string> libraryIds)
+        public IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues()
         {
             return _context.Movies
                 .Include(x => x.VideoStreams)
-                .FilterOnLibrary(libraryIds)
                 .Where(x => x.VideoStreams.Any())
                 .Select(x => new LabelValuePair
                 {
@@ -322,36 +304,36 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .OrderBy(x => x.Label);
         }
 
-        public IEnumerable<SqlMedia> GetLatestAddedMedia(IReadOnlyList<string> libraryIds, int count)
+        public IEnumerable<SqlMedia> GetLatestAddedMedia(int count)
         {
-            return _context.Movies.GetLatestAddedMedia(libraryIds, count);
+            return _context.Movies.GetLatestAddedMedia(count);
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(int count)
         {
-            var query = _context.Movies.GenerateGetPremieredListQuery(libraryIds, count, "DESC");
-            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
+            var query = _context.Movies.GenerateGetPremieredListQuery(count, "DESC", Constants.Tables.Movies);
+            return await ExecuteListQuery<SqlMovie>(query);
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(int count)
         {
-            var query = _context.Movies.GenerateGetPremieredListQuery(libraryIds, count, "ASC");
-            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
+            var query = _context.Movies.GenerateGetPremieredListQuery(count, "ASC", Constants.Tables.Movies);
+            return await ExecuteListQuery<SqlMovie>(query);
         }
         
-        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(int count)
         {
-            var query = _context.Movies.GenerateGetCommunityRatingListQuery(libraryIds, count, "DESC");
-            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
+            var query = _context.Movies.GenerateGetCommunityRatingListQuery(count, "DESC", Constants.Tables.Movies);
+            return await ExecuteListQuery<SqlMovie>(query);
         }
 
-        public async Task<IEnumerable<SqlExtra>>  GetLowestRatedMedia(IReadOnlyList<string> libraryIds, int count)
+        public async Task<IEnumerable<SqlExtra>>  GetLowestRatedMedia(int count)
         {
-            var query = _context.Movies.GenerateGetCommunityRatingListQuery(libraryIds, count, "ASC");
-            return await ExecuteListQueryWithLibraryIds<SqlMovie>(query, libraryIds);
+            var query = _context.Movies.GenerateGetCommunityRatingListQuery(count, "ASC", Constants.Tables.Movies);
+            return await ExecuteListQuery<SqlMovie>(query);
         }
 
-        public async Task<Dictionary<string, int>> GetGenreChartValues(IReadOnlyList<string> libraryIds)
+        public async Task<Dictionary<string, int>> GetGenreChartValues()
         {
             var query = $@"SELECT g.Name G, COUNT(*) Count
 FROM {Constants.Tables.Movies} AS m
@@ -361,53 +343,51 @@ GROUP BY g.Name
 ORDER BY g.Name";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query(query, new { Ids = libraryIds })
+            return connection.Query(query)
                 .ToDictionary(
                 row => (string)row.G,
                 row => (int)row.Count);
         }
 
-        public IEnumerable<decimal?> GetCommunityRatings(IReadOnlyList<string> libraryIds)
+        public IEnumerable<decimal?> GetCommunityRatings()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Select(x => x.CommunityRating);
         }
 
-        public IEnumerable<DateTime?> GetPremiereYears(IReadOnlyList<string> libraryIds)
+        public IEnumerable<DateTime?> GetPremiereYears()
         {
             return _context.Movies
-                .FilterOnLibrary(libraryIds)
                 .Select(x => x.PremiereDate);
         }
 
-        public async Task<Dictionary<string, int>> GetOfficialRatingChartValues(IReadOnlyList<string> libraryIds)
+        public async Task<Dictionary<string, int>> GetOfficialRatingChartValues()
         {
             var query = $@"SELECT upper(m.OfficialRating) OfficialRating, COUNT(*) Count
 FROM {Constants.Tables.Movies} AS m
-WHERE m.OfficialRating IS NOT NULL {libraryIds.AddLibraryIdFilterAsAnd("m")}
+WHERE m.OfficialRating IS NOT NULL
 GROUP BY upper(m.OfficialRating)
 ORDER BY OfficialRating";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query(query, new { Ids = libraryIds })
+            return connection.Query(query)
                 .ToDictionary(
                 row => (string)row.OfficialRating,
                 row => (int)row.Count);
         }
 
-        public Task<int> Count(IReadOnlyList<string> libraryIds)
+        public Task<int> Count()
         {
-            return Count(Array.Empty<Filter>(), libraryIds);
+            return Count(Array.Empty<Filter>());
         }
 
-        public async Task<int> Count(Filter[] filters, IReadOnlyList<string> libraryIds)
+        public async Task<int> Count(Filter[] filters)
         {
-            var query = _context.Movies.GenerateCountQuery(filters, libraryIds);
+            var query = _context.Movies.GenerateCountQuery(filters);
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            var result = await connection.QueryFirstAsync<int>(query, new { Ids = libraryIds });
+            var result = await connection.QueryFirstAsync<int>(query);
 
             return result;
         }
@@ -436,12 +416,11 @@ ORDER BY OfficialRating";
                 .Count(x => x.People.Any(y => name == y.Person.Name));
         }
 
-        public IEnumerable<string> GetMostFeaturedPersons(IReadOnlyList<string> libraryIds, PersonType type, int count)
+        public IEnumerable<string> GetMostFeaturedPersons(PersonType type, int count)
         {
             return _context.Movies
                     .Include(x => x.People)
                     .ThenInclude(x => x.Person)
-                    .FilterOnLibrary(libraryIds)
                     .SelectMany(x => x.People)
                     .Where(x => x.Type == type)
                     .GroupBy(x => x.Person.Name, (name, people) => new { Name = name, Count = people.Count() })
@@ -450,38 +429,36 @@ ORDER BY OfficialRating";
                     .Take(count);
         }
 
-        public int GetPeopleCount(IReadOnlyList<string> libraryIds, PersonType type)
+        public int GetPeopleCount(PersonType type)
         {
             return _context.Movies
                 .Include(x => x.People)
-                .FilterOnLibrary(libraryIds)
                 .SelectMany(x => x.People)
                 .Distinct()
                 .Count(x => x.Type == type);
         }
 
-        public async Task<int> GetGenreCount(IReadOnlyList<string> libraryIds)
+        public async Task<int> GetGenreCount()
         {
             var query = $@"SELECT COUNT(DISTINCT g.Name)
 FROM {Constants.Tables.Movies} AS m
 INNER JOIN {Constants.Tables.GenreMovie} AS gm ON (m.Id = gm.MoviesId)
-INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)
-{libraryIds.AddLibraryIdFilter("m")}";
+INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gm.GenresId)";
 
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return await connection.QueryFirstAsync<int>(query, new { Ids = libraryIds });
+            return await connection.QueryFirstAsync<int>(query);
         }
 
         #endregion
 
         #region Helpers
 
-        private async Task<IEnumerable<T>> ExecuteListQueryWithLibraryIds<T>(string query, IEnumerable<string> libraryIds)
+        private async Task<IEnumerable<T>> ExecuteListQuery<T>(string query)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
-            return connection.Query<T>(query, new { Ids = libraryIds });
+            return connection.Query<T>(query);
         }
 
         #endregion

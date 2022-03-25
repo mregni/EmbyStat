@@ -34,8 +34,8 @@ namespace Tests.Unit.Services
 
             _collections = new List<Library>
             {
-                new Library{ Id = string.Empty, Name = "collection1", PrimaryImage = "image1", Type = LibraryType.TvShow},
-                new Library{ Id = string.Empty, Name = "collection2", PrimaryImage = "image2", Type = LibraryType.TvShow}
+                new Library{ Id = string.Empty, Name = "collection1", Primary = "image1", Type = LibraryType.TvShow},
+                new Library{ Id = string.Empty, Name = "collection2", Primary = "image2", Type = LibraryType.TvShow}
             };
 
             var showOneId = Guid.NewGuid().ToString();

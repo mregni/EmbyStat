@@ -61,32 +61,29 @@ public class SystemService : ISystemService
         await _hub.BroadcastResetLogLine("Deleting people");
         await _personRepository.DeleteAll();
 
-        var userSettings = _settingsService.GetUserSettings();
-        userSettings.MovieLibraries = new List<LibraryContainer>();
-        userSettings.ShowLibraries = new List<LibraryContainer>();
+        await _hub.BroadcastResetLogLine("Deleting libraries");
+        await _mediaServerRepository.DeleteAllLibraries();
+        
+        await _hub.BroadcastResetLogLine("Deleting devices");
+        await _mediaServerRepository.DeleteAllDevices();
+        
+        await _hub.BroadcastResetLogLine("Deleting plugins");
+        await _mediaServerRepository.DeleteAllPlugins();
+        
+        await _hub.BroadcastResetLogLine("Deleting users");
+        await _mediaServerRepository.DeleteAllUsers();
 
+        await _hub.BroadcastResetLogLine("Testing new media server info");
+        var userSettings = _settingsService.GetUserSettings();
         var url = userSettings.MediaServer.Address;
         var apiKey = userSettings.MediaServer.ApiKey;
         var type = userSettings.MediaServer.Type;
-        await _hub.BroadcastResetLogLine("Testing new media server info");
-
         var result = _mediaServerService.TestNewApiKey(url, apiKey, type);
         if (result)
         {
-            var libraries = _mediaServerService.GetMediaServerLibraries().ToList();
-            userSettings.MovieLibraries = libraries
-                .Where(x => x.Type == LibraryType.Movies)
-                .Select(x => new LibraryContainer { Id = x.Id, Name = x.Name})
-                .ToList();
-            userSettings.ShowLibraries = libraries
-                .Where(x => x.Type == LibraryType.TvShow)
-                .Select(x => new LibraryContainer { Id = x.Id, Name = x.Name})
-                .ToList();
+            await _mediaServerService.GetAndProcessLibraries();
             await _hub.BroadcastResetLogLine("Setting new libraries");
-
         }
-        await _settingsService.SaveUserSettingsAsync(userSettings);
-        await _hub.BroadcastResetLogLine("Saving new configuration");
 
         await _hub.BroadcastResetFinished();
     }

@@ -29,8 +29,8 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
                {
-                   var libraryOne = new Library { Id = Guid.NewGuid().ToString(), Name = "Movies", PrimaryImage = "image.png", Type = LibraryType.Movies };
-                   var libraryTwo = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows", PrimaryImage = "image.png", Type = LibraryType.TvShow };
+                   var libraryOne = new Library { Id = Guid.NewGuid().ToString(), Name = "Movies", Primary = "image.png", Type = LibraryType.Movies };
+                   var libraryTwo = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows", Primary = "image.png", Type = LibraryType.TvShow };
                    _libraryRepository.AddOrUpdateRange(new[] { libraryOne, libraryTwo });
 
                    using var database = _context.LiteDatabase;
@@ -42,12 +42,12 @@ namespace Tests.Unit.Repository
 
                    libraries[0].Id.Should().Be(libraryOne.Id);
                    libraries[0].Name.Should().Be(libraryOne.Name);
-                   libraries[0].PrimaryImage.Should().Be(libraryOne.PrimaryImage);
+                   libraries[0].Primary.Should().Be(libraryOne.Primary);
                    libraries[0].Type.Should().Be(libraryOne.Type);
 
                    libraries[1].Id.Should().Be(libraryTwo.Id);
                    libraries[1].Name.Should().Be(libraryTwo.Name);
-                   libraries[1].PrimaryImage.Should().Be(libraryTwo.PrimaryImage);
+                   libraries[1].Primary.Should().Be(libraryTwo.Primary);
                    libraries[1].Type.Should().Be(libraryTwo.Type);
                });
         }
@@ -57,10 +57,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var libraryOne = new Library { Id = Guid.NewGuid().ToString(), Name = "Movies", PrimaryImage = "image.png", Type = LibraryType.Movies };
-                var libraryTwo = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows", PrimaryImage = "image.png", Type = LibraryType.TvShow };
-                var libraryThree = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows2", PrimaryImage = "image2.png", Type = LibraryType.TvShow };
-                var libraryFour = new Library { Id = Guid.NewGuid().ToString(), Name = "Folder", PrimaryImage = "image2.png", Type = LibraryType.Folders };
+                var libraryOne = new Library { Id = Guid.NewGuid().ToString(), Name = "Movies", Primary = "image.png", Type = LibraryType.Movies };
+                var libraryTwo = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows", Primary = "image.png", Type = LibraryType.TvShow };
+                var libraryThree = new Library { Id = Guid.NewGuid().ToString(), Name = "Shows2", Primary = "image2.png", Type = LibraryType.TvShow };
+                var libraryFour = new Library { Id = Guid.NewGuid().ToString(), Name = "Folder", Primary = "image2.png", Type = LibraryType.Folders };
 
                 using (var database = _context.LiteDatabase)
                 {
@@ -74,17 +74,17 @@ namespace Tests.Unit.Repository
 
                 libraries[0].Id.Should().Be(libraryOne.Id);
                 libraries[0].Name.Should().Be(libraryOne.Name);
-                libraries[0].PrimaryImage.Should().Be(libraryOne.PrimaryImage);
+                libraries[0].Primary.Should().Be(libraryOne.Primary);
                 libraries[0].Type.Should().Be(libraryOne.Type);
 
                 libraries[1].Id.Should().Be(libraryTwo.Id);
                 libraries[1].Name.Should().Be(libraryTwo.Name);
-                libraries[1].PrimaryImage.Should().Be(libraryTwo.PrimaryImage);
+                libraries[1].Primary.Should().Be(libraryTwo.Primary);
                 libraries[1].Type.Should().Be(libraryTwo.Type);
 
                 libraries[2].Id.Should().Be(libraryThree.Id);
                 libraries[2].Name.Should().Be(libraryThree.Name);
-                libraries[2].PrimaryImage.Should().Be(libraryThree.PrimaryImage);
+                libraries[2].Primary.Should().Be(libraryThree.Primary);
                 libraries[2].Type.Should().Be(libraryThree.Type);
             });
         }

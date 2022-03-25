@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Users;
@@ -24,12 +26,12 @@ namespace EmbyStat.Repositories.Interfaces
 
         #region MediaServer Server Info
         Task<SqlServerInfo> GetServerInfo();
-        Task UpsertServerInfo(SqlServerInfo entity);
+        Task DeleteAndInsertServerInfo(SqlServerInfo entity);
         Task DeleteServerInfo();
         #endregion
 
         #region MediaServer Users
-        Task UpsertUsers(IEnumerable<SqlUser> users);
+        Task DeleteAndInsertUsers(IEnumerable<SqlUser> users);
         Task<List<SqlUser>>  GetAllUsers();
         Task<List<SqlUser>>  GetAllAdministrators();
         EmbyUser GetUserById(string id);
@@ -39,8 +41,17 @@ namespace EmbyStat.Repositories.Interfaces
         #region Devices
         Task<List<SqlDevice>> GetAllDevices();
         Task<List<SqlDevice>> GetDeviceById(IEnumerable<string> ids);
-        Task UpsertDevices(IEnumerable<SqlDevice> devices);
+        Task DeleteAndInsertDevices(IEnumerable<SqlDevice> devices);
         Task DeleteAllDevices();
+        #endregion
+
+        #region Libraries
+        Task<List<Library>> GetAllLibraries();
+        Task<List<Library>> GetAllLibraries(LibraryType type);
+        Task<List<Library>> GetAllLibraries(LibraryType type, bool synced);
+        Task DeleteAndInsertLibraries(Library[] libraries);
+        Task DeleteAllLibraries();
+        Task UpdateLibrarySyncDate(string libraryId, DateTime utcNow);
         #endregion
 
     }

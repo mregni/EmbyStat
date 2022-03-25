@@ -20,9 +20,9 @@ namespace EmbyStat.Controllers.Filters
 
         [HttpGet]
         [Route("{type}/{field}")]
-        public IActionResult Get(LibraryType type, string field, string[] libraryIds)
+        public IActionResult Get(LibraryType type, string field)
         {
-            var filters = _filterService.GetFilterValues(type, field, libraryIds);
+            var filters = _filterService.GetFilterValues(type, field);
             var convert = _mapper.Map<FilterValuesViewModel>(filters);
             return Ok(convert);
         }

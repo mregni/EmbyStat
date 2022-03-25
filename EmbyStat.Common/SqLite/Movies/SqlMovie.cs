@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.SqLite.Helpers;
 
 namespace EmbyStat.Common.SqLite.Movies
@@ -26,7 +27,7 @@ namespace EmbyStat.Common.SqLite.Movies
         #region Inherited props
         public ICollection<SqlMediaPerson> People { get; set; }
         public ICollection<SqlGenre> Genres { get; set; }
-
+        public Library Library { get; set; }
         #endregion
     }
 }

@@ -11,27 +11,27 @@ namespace EmbyStat.Repositories.Interfaces
     {
         #region Shows
         Task UpsertShows(IEnumerable<SqlShow> shows);
-        Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes(IReadOnlyList<string> libraryIds);
+        Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes();
         Task<SqlShow> GetShowByIdWithEpisodes(string showId);
         void RemoveShows();
-        Task<Dictionary<SqlShow, int>> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);
-        Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, List<string> libraryIds);
-        IEnumerable<SqlShow> GetShowsWithMostDiskSpaceUsed(IReadOnlyList<string> libraryIds, int i);
+        Task<Dictionary<SqlShow, int>> GetShowsWithMostEpisodes(int count);
+        Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters);
+        IEnumerable<SqlShow> GetShowsWithMostDiskSpaceUsed(int i);
 
-        Task<int> CompleteCollectedCount(IReadOnlyList<string> libraryIds);
+        Task<int> CompleteCollectedCount();
         Task DeleteAll();
         #endregion
 
         #region Charts
-        Task<Dictionary<string, int>> GetShowStatusCharValues(IReadOnlyList<string> libraryIds);
-        Task<IEnumerable<double>> GetCollectedRateChart(IReadOnlyList<string> libraryIds);
+        Task<Dictionary<string, int>> GetShowStatusCharValues();
+        Task<IEnumerable<double>> GetCollectedRateChart();
         #endregion
 
         #region Episodes
         IEnumerable<SqlEpisode> GetAllEpisodesForShow(string showId);
-        Task<int> GetEpisodeCount(IReadOnlyList<string> libraryIds, LocationType locationType);
-        Task<long> GetTotalRunTimeTicks(IReadOnlyList<string> libraryIds);
-        Task<double> GetTotalDiskSpaceUsed(IReadOnlyList<string> libraryIds);
+        Task<int> GetEpisodeCount(LocationType locationType);
+        Task<long> GetTotalRunTimeTicks();
+        Task<double> GetTotalDiskSpaceUsed();
         #endregion
     }
 }

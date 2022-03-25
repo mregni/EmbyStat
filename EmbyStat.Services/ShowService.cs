@@ -28,50 +28,47 @@ namespace EmbyStat.Services
     public class ShowService : MediaService, IShowService
     {
         private readonly IShowRepository _showRepository;
-        private readonly ILibraryRepository _libraryRepository;
         private readonly IStatisticsRepository _statisticsRepository;
-        private readonly ISettingsService _settingsService;
+        private readonly IMediaServerRepository _mediaServerRepository;
 
-        public ShowService(IJobRepository jobRepository, IShowRepository showRepository, ILibraryRepository libraryRepository,
-            IStatisticsRepository statisticsRepository, ISettingsService settingsService) 
+        public ShowService(IJobRepository jobRepository, IShowRepository showRepository,
+            IStatisticsRepository statisticsRepository, IMediaServerRepository mediaServerRepository) 
             : base(jobRepository, typeof(ShowService), "SHOW")
         {
             _showRepository = showRepository;
-            _libraryRepository = libraryRepository;
             _statisticsRepository = statisticsRepository;
-            _settingsService = settingsService;
+            _mediaServerRepository = mediaServerRepository;
         }
 
-        public IEnumerable<Library> GetShowLibraries()
+        public Task<List<Library>> GetShowLibraries()
         {
-            var settings = _settingsService.GetUserSettings();
-            return _libraryRepository.GetLibrariesById(settings.ShowLibraries.Select(x => x.Id));
+            return _mediaServerRepository.GetAllLibraries(LibraryType.TvShow);
         }
 
-        public async Task<ShowStatistics> GetStatistics(List<string> libraryIds)
+        public async Task<ShowStatistics> GetStatistics()
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show, libraryIds);
+            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show);
 
-            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.ShowSyncId))
+            if (StatisticsAreValid(statistic, Constants.JobIds.ShowSyncId))
             {
                 return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
             }
 
-            return await CalculateShowStatistics(libraryIds);
+            return await CalculateShowStatistics();
         }
 
-        public async Task<ShowStatistics> CalculateShowStatistics(List<string> libraryIds)
+        public async Task<ShowStatistics> CalculateShowStatistics()
         {
             var statistics = new ShowStatistics
             {
-                Cards = await CalculateCards(libraryIds),
-                TopCards = await CalculateTopCards(libraryIds),
-                BarCharts = await CalculateBarCharts(libraryIds),
-                PieCharts = await CalculatePieChars(libraryIds)
+                Cards = await CalculateCards(),
+                TopCards = await CalculateTopCards(),
+                BarCharts = await CalculateBarCharts(),
+                PieCharts = await CalculatePieChars()
             };
 
             var json = JsonConvert.SerializeObject(statistics);
-            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show, libraryIds);
+            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show);
 
             return statistics;
         }
@@ -81,14 +78,14 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        public async Task<Page<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
+        public async Task<Page<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount)
         {
-            var list = await _showRepository.GetShowPage(skip, take, sortField, sortOrder, filters, libraryIds);
+            var list = await _showRepository.GetShowPage(skip, take, sortField, sortOrder, filters);
 
             var page = new Page<SqlShow>(list);
             if (requireTotalCount)
             {
-                page.TotalCount = await _showRepository.Count(filters, libraryIds);
+                page.TotalCount = await _showRepository.Count(filters);
             }
 
             return page;
@@ -101,26 +98,26 @@ namespace EmbyStat.Services
 
         #region Cards
 
-        private async Task<List<Card<string>>> CalculateCards(IReadOnlyList<string> libraryIds)
+        private async Task<List<Card<string>>> CalculateCards()
         {
             var list = new List<Card<string>>();
-            list.AddIfNotNull(await CalculateTotalShowCount(libraryIds));
-            list.AddIfNotNull(await CalculateCompleteCollectedShowCount(libraryIds));
-            list.AddIfNotNull(await CalculateTotalEpisodeCount(libraryIds));
-            list.AddIfNotNull(await CalculateTotalMissingEpisodeCount(libraryIds));
-            list.AddIfNotNull(await CalculateTotalShowGenres(libraryIds));
-            list.AddIfNotNull(await CalculatePlayableTime(libraryIds));
-            list.AddIfNotNull(await CalculateTotalDiskSpace(libraryIds));
-            list.AddIfNotNull(TotalPersonTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors));
+            list.AddIfNotNull(await CalculateTotalShowCount());
+            list.AddIfNotNull(await CalculateCompleteCollectedShowCount());
+            list.AddIfNotNull(await CalculateTotalEpisodeCount());
+            list.AddIfNotNull(await CalculateTotalMissingEpisodeCount());
+            list.AddIfNotNull(await CalculateTotalShowGenres());
+            list.AddIfNotNull(await CalculatePlayableTime());
+            list.AddIfNotNull(await CalculateTotalDiskSpace());
+            list.AddIfNotNull(TotalPersonTypeCount(PersonType.Actor, Constants.Common.TotalActors));
 
             return list;
         }
 
-        private Task<Card<string>> CalculateTotalShowCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalShowCount()
         {
             return CalculateStat(async () =>
             {
-                var count = await _showRepository.Count(libraryIds);
+                var count = await _showRepository.Count();
 
                 return new Card<string>
                 {
@@ -132,11 +129,11 @@ namespace EmbyStat.Services
             }, "Calculate total show count failed:");
         }
 
-        private Task<Card<string>> CalculateCompleteCollectedShowCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateCompleteCollectedShowCount()
         {
             return CalculateStat(async () =>
             {
-                var count = await _showRepository.CompleteCollectedCount(libraryIds);
+                var count = await _showRepository.CompleteCollectedCount();
                 return new Card<string>
                 {
                     Title = Constants.Shows.TotalCompleteCollectedShows,
@@ -147,11 +144,11 @@ namespace EmbyStat.Services
             }, "Calculate total completed collected show count failed:");
         }
 
-        private Task<Card<string>> CalculateTotalEpisodeCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalEpisodeCount()
         {
             return CalculateStat(async () =>
             {
-                var total = await _showRepository.GetEpisodeCount(libraryIds, LocationType.Disk);
+                var total = await _showRepository.GetEpisodeCount(LocationType.Disk);
 
                 return new Card<string>
                 {
@@ -163,11 +160,11 @@ namespace EmbyStat.Services
             }, "Calculate total episode count failed:");
         }
 
-        private Task<Card<string>> CalculateTotalShowGenres(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalShowGenres()
         {
             return CalculateStat(async () =>
             {
-                var totalGenres = await _showRepository.GetGenreCount(libraryIds);
+                var totalGenres = await _showRepository.GetGenreCount();
                 return new Card<string>
                 {
                     Title = Constants.Common.TotalGenres,
@@ -178,11 +175,11 @@ namespace EmbyStat.Services
             }, "Calculate total show genres count failed:");
         }
 
-        private Task<Card<string>> CalculateTotalMissingEpisodeCount(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalMissingEpisodeCount()
         {
             return CalculateStat(async () =>
             {
-                var total = await _showRepository.GetEpisodeCount(libraryIds, LocationType.Virtual);
+                var total = await _showRepository.GetEpisodeCount(LocationType.Virtual);
 
                 return new Card<string>
                 {
@@ -194,11 +191,11 @@ namespace EmbyStat.Services
             }, "Calculate total missing episodes failed:");
         }
 
-        private Task<Card<string>> CalculatePlayableTime(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculatePlayableTime()
         {
             return CalculateStat(async () =>
             {
-                var totalRunTimeTicks = await _showRepository.GetTotalRunTimeTicks(libraryIds);
+                var totalRunTimeTicks = await _showRepository.GetTotalRunTimeTicks();
                 var playLength = new TimeSpan(totalRunTimeTicks);
 
                 return new Card<string>
@@ -211,11 +208,11 @@ namespace EmbyStat.Services
             }, "Calculate total playable time failed:");
         }
 
-        private Task<Card<string>> CalculateTotalDiskSpace(IReadOnlyList<string> libraryIds)
+        private Task<Card<string>> CalculateTotalDiskSpace()
         {
             return CalculateStat(async () =>
             {
-                var total = await _showRepository.GetTotalDiskSpaceUsed(libraryIds);
+                var total = await _showRepository.GetTotalDiskSpaceUsed();
 
                 return new Card<string>
                 {
@@ -227,11 +224,11 @@ namespace EmbyStat.Services
             }, "Calculate total disk space failed:");
         }
         
-        private Card<string> TotalPersonTypeCount(IReadOnlyList<string> libraryIds, PersonType type, string title)
+        private Card<string> TotalPersonTypeCount(PersonType type, string title)
         {
             return CalculateStat(() =>
             {
-                var value = _showRepository.GetPeopleCount(libraryIds, type);
+                var value = _showRepository.GetPeopleCount(type);
                 return new Card<string>
                 {
                     Value = value.ToString(),
@@ -246,25 +243,25 @@ namespace EmbyStat.Services
 
         #region TopCards
 
-        private async Task<List<TopCard>> CalculateTopCards(IReadOnlyList<string> libraryIds)
+        private async Task<List<TopCard>> CalculateTopCards()
         {
             var list = new List<TopCard>();
-            list.AddIfNotNull(await CalculateNewestPremieredShow(libraryIds));
-            list.AddIfNotNull(await CalculateOldestPremieredShow(libraryIds));
-            list.AddIfNotNull(CalculateLatestAddedShow(libraryIds));
-            list.AddIfNotNull(await CalculateHighestRatedShow(libraryIds));
-            list.AddIfNotNull(await CalculateLowestRatedShow(libraryIds));
-            list.AddIfNotNull(await CalculateShowWithMostEpisodes(libraryIds));
-            list.AddIfNotNull(CalculateMostDiskSpaceUsedShow(libraryIds));
+            list.AddIfNotNull(await CalculateNewestPremieredShow());
+            list.AddIfNotNull(await CalculateOldestPremieredShow());
+            list.AddIfNotNull(CalculateLatestAddedShow());
+            list.AddIfNotNull(await CalculateHighestRatedShow());
+            list.AddIfNotNull(await CalculateLowestRatedShow());
+            list.AddIfNotNull(await CalculateShowWithMostEpisodes());
+            list.AddIfNotNull(CalculateMostDiskSpaceUsedShow());
 
             return list;
         }
 
-        private Task<TopCard> CalculateNewestPremieredShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateNewestPremieredShow()
         {
             return CalculateStat(async () =>
             {
-                var data = await _showRepository.GetNewestPremieredMedia(libraryIds, 5);
+                var data = await _showRepository.GetNewestPremieredMedia(5);
                 var list = data.ToArray();
                 
                 return list.Length > 0
@@ -273,11 +270,11 @@ namespace EmbyStat.Services
             }, "Calculate newest premiered shows failed:");
         }
 
-        private Task<TopCard> CalculateOldestPremieredShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateOldestPremieredShow()
         {
             return CalculateStat(async () =>
             {
-                var data = await _showRepository.GetOldestPremieredMedia(libraryIds, 5);
+                var data = await _showRepository.GetOldestPremieredMedia(5);
                 var list = data.ToArray();
 
                 return list.Length > 0
@@ -286,11 +283,11 @@ namespace EmbyStat.Services
             }, "Calculate oldest premiered shows failed:");
         }
 
-        private TopCard CalculateLatestAddedShow(IReadOnlyList<string> libraryIds)
+        private TopCard CalculateLatestAddedShow()
         {
             return CalculateStat(() =>
             {
-                var list = _showRepository.GetLatestAddedMedia(libraryIds, 5).ToArray();
+                var list = _showRepository.GetLatestAddedMedia(5).ToArray();
 
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Shows.LatestAdded, "COMMON.DATE", "DateCreated", ValueTypeEnum.Date)
@@ -298,11 +295,11 @@ namespace EmbyStat.Services
             }, "Calculate latest added shows failed:");
         }
 
-        private Task<TopCard> CalculateHighestRatedShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateHighestRatedShow()
         {
             return CalculateStat(async () =>
             {
-                var data = await _showRepository.GetHighestRatedMedia(libraryIds, 5);
+                var data = await _showRepository.GetHighestRatedMedia(5);
                 var list = data.ToArray();
                 
                 return list.Length > 0
@@ -311,11 +308,11 @@ namespace EmbyStat.Services
             }, "Calculate highest rated shows failed:");
         }
 
-        private Task<TopCard> CalculateLowestRatedShow(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateLowestRatedShow()
         {
             return CalculateStat(async () =>
             {
-                var data = await _showRepository.GetLowestRatedMedia(libraryIds, 5);
+                var data = await _showRepository.GetLowestRatedMedia(5);
                 var list = data.ToArray();
 
                 return list.Length > 0
@@ -324,11 +321,11 @@ namespace EmbyStat.Services
             }, "Calculate lowest rated shows failed:");
         }
 
-        private Task<TopCard> CalculateShowWithMostEpisodes(IReadOnlyList<string> libraryIds)
+        private Task<TopCard> CalculateShowWithMostEpisodes()
         {
             return CalculateStat(async () =>
             {
-                var list = await _showRepository.GetShowsWithMostEpisodes(libraryIds, 5);
+                var list = await _showRepository.GetShowsWithMostEpisodes(5);
 
                 return list.Count > 0
                     ? list.ConvertToTopCard(Constants.Shows.MostEpisodes, "#", false)
@@ -336,11 +333,11 @@ namespace EmbyStat.Services
             }, "Calculate shows with most episodes failed:");
         }
         
-        private TopCard CalculateMostDiskSpaceUsedShow(IReadOnlyList<string> libraryIds)
+        private TopCard CalculateMostDiskSpaceUsedShow()
         {
             return CalculateStat(() =>
             {
-                var list = _showRepository.GetShowsWithMostDiskSpaceUsed(libraryIds, 5).ToArray();
+                var list = _showRepository.GetShowsWithMostDiskSpaceUsed(5).ToArray();
 
                 return list.Length > 0
                     ? list.ConvertToTopCard(Constants.Shows.MostDiskSpace, "#", false, ValueTypeEnum.SizeInMb)
@@ -352,66 +349,66 @@ namespace EmbyStat.Services
 
         #region Charts
 
-        private async Task<List<Chart>> CalculateBarCharts(IReadOnlyList<string> libraryIds)
+        private async Task<List<Chart>> CalculateBarCharts()
         {
             var list = new List<Chart>();
-            list.AddIfNotNull(await CalculateGenreChart(libraryIds));
-            list.AddIfNotNull(CalculateRatingChart(libraryIds));
-            list.AddIfNotNull(CalculatePremiereYearChart(libraryIds));
-            list.AddIfNotNull(await CalculateCollectedRateChart(libraryIds));
-            list.AddIfNotNull(await CalculateOfficialRatingChart(libraryIds));
+            list.AddIfNotNull(await CalculateGenreChart());
+            list.AddIfNotNull(CalculateRatingChart());
+            list.AddIfNotNull(CalculatePremiereYearChart());
+            list.AddIfNotNull(await CalculateCollectedRateChart());
+            list.AddIfNotNull(await CalculateOfficialRatingChart());
             return list;
         }
 
-        private Task<Chart> CalculateGenreChart(IReadOnlyList<string> libraryIds)
+        private Task<Chart> CalculateGenreChart()
         {
             return CalculateStat(async () =>
             {
-                var genres = await _showRepository.GetGenreChartValues(libraryIds);
+                var genres = await _showRepository.GetGenreChartValues();
                 return CreateGenreChart(genres);
             }, "Calculate genre chart failed:");
         }
 
-        private Chart CalculateRatingChart(IReadOnlyList<string> libraryIds)
+        private Chart CalculateRatingChart()
         {
             return CalculateStat(() =>
             {
-                var items = _showRepository.GetCommunityRatings(libraryIds);
+                var items = _showRepository.GetCommunityRatings();
                 return CreateRatingChart(items);
             }, "Calculate rating chart failed:");
         }
 
-        private Chart CalculatePremiereYearChart(IReadOnlyList<string> libraryIds)
+        private Chart CalculatePremiereYearChart()
         {
             return CalculateStat(() =>
             {
-                var yearDataList = _showRepository.GetPremiereYears(libraryIds);
+                var yearDataList = _showRepository.GetPremiereYears();
                 return CalculatePremiereYearChart(yearDataList);
             }, "Calculate premiered year chart failed:");
         }
 
-        private Task<Chart> CalculateOfficialRatingChart(IReadOnlyList<string> libraryIds)
+        private Task<Chart> CalculateOfficialRatingChart()
         {
             return CalculateStat(async () =>
             {
-                var ratings = await _showRepository.GetOfficialRatingChartValues(libraryIds);
+                var ratings = await _showRepository.GetOfficialRatingChartValues();
                 return CalculateOfficialRatingChart(ratings);
             }, "Calculate official movie rating chart failed:");
         }
 
-        private async Task<List<Chart>> CalculatePieChars(IReadOnlyList<string> libraryIds)
+        private async Task<List<Chart>> CalculatePieChars()
         {
             var list = new List<Chart>();
-            list.AddIfNotNull(await CalculateShowStateChart(libraryIds));
+            list.AddIfNotNull(await CalculateShowStateChart());
 
             return list;
         }
 
-        private Task<Chart> CalculateShowStateChart(IReadOnlyList<string> libraryIds)
+        private Task<Chart> CalculateShowStateChart()
         {
             return CalculateStat(async () =>
             {
-                var list = await _showRepository.GetShowStatusCharValues(libraryIds);
+                var list = await _showRepository.GetShowStatusCharValues();
                 var results = list
                     .Select(x => new SimpleChartData { Label = x.Key, Value=x.Value })
                     .OrderByDescending(x => x.Value)
@@ -427,9 +424,9 @@ namespace EmbyStat.Services
             }, "Calculate show state chart failed:");
         }
 
-        private async Task<Chart> CalculateCollectedRateChart(IReadOnlyList<string> libraryIds)
+        private async Task<Chart> CalculateCollectedRateChart()
         {
-            var percentageList = await _showRepository.GetCollectedRateChart(libraryIds);
+            var percentageList = await _showRepository.GetCollectedRateChart();
 
             var groupedList = percentageList
                 .GroupBy(x => x.RoundToFive())
@@ -453,71 +450,6 @@ namespace EmbyStat.Services
                 Title = Constants.CountPerCollectedPercentage,
                 DataSets = rates,
                 SeriesCount = 1
-            };
-        }
-
-        #endregion
-
-
-        #region Collected Rows
-
-        public async Task<ListContainer<ShowCollectionRow>> GetCollectedRows(IReadOnlyList<string> libraryIds, int page)
-        {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.ShowCollectedRows, libraryIds);
-
-            ListContainer<ShowCollectionRow> rows = new ListContainer<ShowCollectionRow>();
-            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.ShowSyncId))
-            {
-                rows.Data = JsonConvert.DeserializeObject<List<ShowCollectionRow>>(statistic.JsonResult);
-            }
-            else
-            {
-                rows.Data = await CalculateCollectedRows(libraryIds);
-            }
-
-            rows.TotalCount = rows.Data.Count();
-            rows.Data = rows.Data.Skip(page * 30).Take(30);
-            return rows;
-        }
-
-        public Task<List<ShowCollectionRow>> CalculateCollectedRows(string libraryId)
-        {
-            return CalculateCollectedRows(new List<string> { libraryId });
-        }
-
-        public async Task<List<ShowCollectionRow>> CalculateCollectedRows(IReadOnlyList<string> libraryIds)
-        {
-            var shows = await _showRepository.GetAllShowsWithEpisodes(libraryIds);
-
-            //var stats = shows
-            //    .Select(CreateShowCollectedRow)
-            //    .OrderBy(x => x.SortName)
-            //    .ToList();
-            //var json = JsonConvert.SerializeObject(stats);
-            //_statisticsRepository.AddStatistic(json, DateTimeUtc.UtcNow, StatisticType.ShowCollectedRows, libraryIds);
-
-            return new List<ShowCollectionRow>();
-        }
-
-        private ShowCollectionRow CreateShowCollectedRow(Show show)
-        {
-            var seasonCount = show.GetSeasonCount(false);
-
-            return new ShowCollectionRow
-            {
-                Title = show.Name,
-                SortName = show.SortName,
-                Episodes = show.GetEpisodeCount(false, LocationType.Disk),
-                Seasons = seasonCount,
-                Specials = show.GetEpisodeCount(true, LocationType.Disk),
-                MissingEpisodeCount = show.GetEpisodeCount(false, LocationType.Virtual),
-                PremiereDate = show.PremiereDate,
-                Status = show.Status == "Continuing",
-                Id = show.Id,
-                Banner = show.Banner,
-                Imdb = show.IMDB,
-                Tvdb = show.TVDB,
-                Size = show.SizeInMb
             };
         }
 

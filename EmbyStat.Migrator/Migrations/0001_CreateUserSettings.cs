@@ -20,8 +20,6 @@ namespace EmbyStat.Migrator.Migrations
                     AutoUpdate = true,
                     KeepLogsCount = 10,
                     Language = "en-US",
-                    MovieLibraries = new List<LibraryContainer>(),
-                    ShowLibraries = new List<LibraryContainer>(),
                     ToShortMovieEnabled = true,
                     ToShortMovie = 10,
                     UpdateInProgress = false,

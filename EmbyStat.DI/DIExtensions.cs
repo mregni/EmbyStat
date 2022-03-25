@@ -79,7 +79,6 @@ namespace EmbyStat.DI
             services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
             services.TryAddTransient<IFilterRepository, FilterRepository>();
             services.TryAddTransient<IShowRepository, SqlShowRepository>();
-            services.TryAddTransient<ILibraryRepository, LibraryRepository>();
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IJobRepository, JobRepository>();

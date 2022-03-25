@@ -13,11 +13,10 @@ namespace EmbyStat.Common.Extensions
         /// </summary>
         /// <param name="movies">movie db set</param>
         /// <param name="filters">Filters that need to be applied in the query</param>
-        /// <param name="libraryIds">libraries for which the query should filter</param>
         /// <param name="sortField">Sorting results on a certain column</param>
         /// <param name="sortOrder">Sorting order (asc, desc)</param>
         /// <returns>Sqlite query that can query for all movies with its relations</returns>
-        public static string GenerateFullMovieQuery(this DbSet<SqlMovie> movies, Filter[] filters, List<string> libraryIds, string sortField, string sortOrder)
+        public static string GenerateFullMovieQuery(this DbSet<SqlMovie> movies, Filter[] filters,string sortField, string sortOrder)
         {
             var query = $@"
 SELECT m.*, g.*, aus.*, vis.*, sus.*, mes.*
@@ -28,8 +27,7 @@ LEFT JOIN {Constants.Tables.AudioStreams} AS aus ON (aus.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.VideoStreams} AS vis ON (vis.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.SubtitleStreams} AS sus ON (sus.MovieId = m.Id)
 LEFT JOIN {Constants.Tables.MediaSources} AS mes ON (mes.MovieId = m.Id)
-WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
-";
+WHERE 1=1 ";
 
             query = filters.Aggregate(query, (current, filter) => current + AddMovieFilters(filter));
 
@@ -48,14 +46,13 @@ WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
         /// Generates a COUNT(*) query for the movie table
         /// </summary>
         /// <param name="filters">Filters that need to be applied in the query</param>
-        /// <param name="libraryIds">libraries for which the query should filter</param>
         /// <returns>Sqlite query that can query the count of movies</returns>
-        public static string GenerateCountQuery(this DbSet<SqlMovie> list, Filter[] filters, IReadOnlyList<string> libraryIds)
+        public static string GenerateCountQuery(this DbSet<SqlMovie> list, Filter[] filters)
         {
             var query = $@"
 SELECT COUNT() AS Count
 FROM {Constants.Tables.Movies} as m
-WHERE 1=1 {libraryIds.AddLibraryIdFilterAsAnd("m")}
+WHERE 1=1 
 ";
             query = filters.Aggregate(query, (current, filter) => current + AddMovieFilters(filter));
 

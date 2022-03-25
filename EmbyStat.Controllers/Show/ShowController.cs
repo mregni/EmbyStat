@@ -35,24 +35,16 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("statistics")]
-        public async Task<IActionResult> GetStatistics(List<string> libraryIds)
+        public async Task<IActionResult> GetStatistics()
         {
-            var result = await _showService.GetStatistics(libraryIds);
+            var result = await _showService.GetStatistics();
             var convert = _mapper.Map<ShowStatisticsViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
-        [Route("collectedlist")]
-        public async Task<IActionResult> GetCollectedRows(List<string> libraryIds, int page)
-        {
-            var result = await _showService.GetCollectedRows(libraryIds, page);
-            return Ok(_mapper.Map<ListContainer<ShowCollectionRowViewModel>>(result));
-        }
-
-        [HttpGet]
         [Route("list")]
-        public async Task<IActionResult> GetShowPageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter, List<string> libraryIds)
+        public async Task<IActionResult> GetShowPageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter)
         {
             var filtersObj = Array.Empty<Filter>();
             if (filter != null)
@@ -60,7 +52,7 @@ namespace EmbyStat.Controllers.Show
                 filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
             }
 
-            var page = await _showService.GetShowPage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount, libraryIds);
+            var page = await _showService.GetShowPage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount);
             var convert = _mapper.Map<PageViewModel<ShowRowViewModel>>(page);
             return Ok(convert);
         }

@@ -22,16 +22,6 @@ namespace EmbyStat.Common.Extensions
             return query;
         }
 
-        public static IQueryable<T> FilterOnLibrary<T>(this IQueryable<T> query, IReadOnlyList<string> libraryIds) where T : SqlMedia
-        {
-            if (libraryIds.Any())
-            {
-                query = query.Where(x => libraryIds.Any(y => y == x.CollectionId));
-            }
-
-            return query;
-        }
-
         public static IQueryable<T> ApplyFilters<T>(this IQueryable<T> query, Filter[] filters) where T : SqlMovie
         {
             return filters.Aggregate(query, (current, filter) => current.ApplyFilter(filter));

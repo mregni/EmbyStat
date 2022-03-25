@@ -26,11 +26,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IMovieService _movieService;
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
+        private readonly IMediaServerRepository _mediaServerRepository;
 
         public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
             ISettingsService settingsService, IClientStrategy clientStrategy,
             IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
-            IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository) 
+            IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, IMediaServerRepository mediaServerRepository) 
             : base(hubHelper, jobRepository, settingsService, typeof(MovieSyncJob), Constants.LogPrefix.MovieSyncJob)
         {
             _movieRepository = movieRepository;
@@ -38,6 +39,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _movieService = movieService;
             _genreRepository = genreRepository;
             _personRepository = personRepository;
+            _mediaServerRepository = mediaServerRepository;
 
             var settings = settingsService.GetUserSettings();
             _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
@@ -86,10 +88,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
             do
             {
-                var result = await _baseHttpClient.GetPeople(j * limit, limit);
-                var people = result.Items
-                    .Select(x => x.ConvertToPeople(Logger))
-                    .ToList();
+                var people = await _baseHttpClient.GetPeople(j * limit, limit);
                 await _personRepository.UpsertRange(people);
 
                 processed += limit;
@@ -99,13 +98,14 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         private async Task ProcessMoviesAsync()
         {
+            var librariesToProcess = await _mediaServerRepository.GetAllLibraries(LibraryType.Movies, true);
             await LogInformation("Lets start processing movies");
-            await LogInformation($"{Settings.MovieLibraries.Count} libraries are selected, getting ready for processing");
+            await LogInformation($"{librariesToProcess.Count} libraries are selected, getting ready for processing");
 
-            var logIncrementBase = Math.Round(40 / (double)Settings.MovieLibraries.Count, 1);
+            var logIncrementBase = Math.Round(40 / (double)librariesToProcess.Count, 1);
             var genres = await _genreRepository.GetAll();
 
-            foreach (var library in Settings.MovieLibraries)
+            foreach (var library in librariesToProcess)
             {
                 var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Movie");
                 if (totalCount == 0)
@@ -131,7 +131,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                     await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                     await LogProgressIncrement(increment);
                 } while (processed < totalCount);
-                await SettingsService.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
+                await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
             }
         }
 
@@ -140,7 +140,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Calculating movie statistics");
             _statisticsRepository.MarkMovieTypesAsInvalid();
             await LogProgress(67);
-            await _movieService.CalculateMovieStatistics(new List<string>(0));
+            await _movieService.CalculateMovieStatistics();
 
             await LogInformation($"Calculations done");
             await LogProgress(100);

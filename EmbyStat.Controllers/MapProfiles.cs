@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using EmbyStat.Clients.GitHub.Models;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -49,6 +50,7 @@ namespace EmbyStat.Controllers
             CreatePeopleMappings();
             CreateMediaServerMappings();
             CreateSettingMappings();
+            CreateLibraryMappings();
 
             CreateMap<LibraryContainer, LibraryContainerViewModel>().ReverseMap();
             CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
@@ -214,7 +216,6 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.SizeInMb,
                     x => x.MapFrom(y => y.MediaSources.FirstOrDefault() != null ? y.MediaSources.First().SizeInMb : 0));
             CreateMap<BaseItemDto, SqlMovie>()
-                .ForMember(x => x.CollectionId, x => x.MapFrom(y => y.ParentId))
                 .ForMember(x => x.Video3DFormat, x => x.MapFrom(y => y.Video3DFormat ?? 0))
                 .AddImageMappings()
                 .AddProviderMappings()
@@ -254,6 +255,23 @@ namespace EmbyStat.Controllers
             CreateMap<BaseMediaSourceInfo, SqlMediaSource>()
                 .ForMember(x => x.Protocol, x => x.MapFrom(y => y.ToString()))
                 .ForMember(x => x.SizeInMb, x => x.MapFrom(y => Math.Round(y.Size / (double)1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)));
+        }
+
+        private void CreateLibraryMappings()
+        {
+            CreateMap<BaseItemDto, Library>()
+                .ForMember(x => x.Type, x => x.MapFrom(y => y.CollectionType.ToLibraryType()))
+                .ForMember(x => x.Primary, x => x.MapFrom(y => y.ImageTags.ConvertToImageTag(ImageType.Primary)));
+        }
+    }
+
+    public static class DictionaryMappingExtensions
+    {
+        public static string ConvertToImageTag(this Dictionary<ImageType, string> tags, ImageType type)
+        {
+            return tags.ContainsKey(ImageType.Primary)
+                ? tags.FirstOrDefault(y => y.Key == ImageType.Primary).Value
+                : default;
         }
     }
 

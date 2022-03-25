@@ -15,6 +15,5 @@ namespace EmbyStat.Common.SqLite.Helpers
         public DateTime? PremiereDate { get; set; }
         public int? ProductionYear { get; set; }
         public string SortName { get; set; }
-        public string CollectionId { get; set; }
     }
 }

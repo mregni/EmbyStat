@@ -25,16 +25,16 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("statistics")]
-        public async Task<IActionResult> GetGeneralStats(List<string> libraryIds)
+        public async Task<IActionResult> GetGeneralStats()
         {
-            var result = await _movieService.GetStatistics(libraryIds);
+            var result = await _movieService.GetStatistics();
             var convert = _mapper.Map<MovieStatisticsViewModel>(result);
             return Ok(convert);
         }
 
         [HttpGet]
         [Route("list")]
-        public async Task<IActionResult> GetMoviePageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter, List<string> libraryIds)
+        public async Task<IActionResult> GetMoviePageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter)
         {
             var filtersObj = Array.Empty<Filter>();
             if (filter != null)
@@ -42,7 +42,7 @@ namespace EmbyStat.Controllers.Movie
                 filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
             }
 
-            var page = await _movieService.GetMoviePage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount, libraryIds);
+            var page = await _movieService.GetMoviePage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount);
 
             var convert = _mapper.Map<PageViewModel<MovieRowViewModel>>(page);
             return Ok(convert);

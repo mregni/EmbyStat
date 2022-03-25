@@ -161,7 +161,7 @@ namespace Tests.Unit.Clients
             client.BaseUrl = "localhost:9000";
             client.ApiKey = "apikey";
 
-            var result = client.GetMediaFolders();
+            var result = client.GetLibraries();
             result.Should().NotBeNull();
             result.Items.Length.Should().Be(1);
 

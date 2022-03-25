@@ -30,7 +30,6 @@ namespace EmbyStat.Services
         private IBaseHttpClient _baseHttpClient;
         private readonly IMediaServerRepository _mediaServerRepository;
         private readonly ISessionService _sessionService;
-        private readonly ILibraryRepository _libraryRepository;
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
         private readonly IShowRepository _showRepository;
@@ -39,7 +38,7 @@ namespace EmbyStat.Services
         private readonly IMapper _mapper;
 
         public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, ILibraryRepository libraryRepository, IMapper mapper)
+            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, IMapper mapper)
         {
             _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
@@ -47,7 +46,6 @@ namespace EmbyStat.Services
             _movieRepository = movieRepository;
             _showRepository = showRepository;
             _clientStrategy = clientStrategy;
-            _libraryRepository = libraryRepository;
             _mapper = mapper;
             _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
 
@@ -96,16 +94,14 @@ namespace EmbyStat.Services
             return _mediaServerRepository.GetEmbyStatus();
         }
 
-        public IEnumerable<Library> GetMediaServerLibraries()
+        public async Task<Library[]> GetMediaServerLibraries()
         {
-            var rootItems = _baseHttpClient.GetMediaFolders();
-
-            var libraries = rootItems.Items
-                .Select(LibraryConverter.ConvertToLibrary)
+            var items = await _baseHttpClient.GetLibraries();
+            var libraries = items
                 .Where(x => x.Type != LibraryType.BoxSets)
-                .ToList();
+                .ToArray();
 
-            _libraryRepository.AddOrUpdateRange(libraries);
+            await _mediaServerRepository.DeleteAndInsertLibraries(libraries);
             return libraries;
         }
 
@@ -245,7 +241,7 @@ namespace EmbyStat.Services
         {
             var serverDto = await _baseHttpClient.GetServerInfo();
             var server = _mapper.Map<SqlServerInfo>(serverDto);
-            await _mediaServerRepository.UpsertServerInfo(server);
+            await _mediaServerRepository.DeleteAndInsertServerInfo(server);
             return server;
         }
 
@@ -259,13 +255,27 @@ namespace EmbyStat.Services
         public async Task GetAndProcessUsers()
         {
             var users = await _baseHttpClient.GetUsers();
-            await _mediaServerRepository.UpsertUsers(users);
+            await _mediaServerRepository.DeleteAndInsertUsers(users);
         }
 
         public async Task GetAndProcessDevices()
         {
             var devices = await _baseHttpClient.GetDevices();
-            await _mediaServerRepository.UpsertDevices(devices);
+            await _mediaServerRepository.DeleteAndInsertDevices(devices);
+        }
+
+        public async Task GetAndProcessLibraries()
+        {
+            var libraries = await _baseHttpClient.GetLibraries();
+            var currentLibraries = await _mediaServerRepository.GetAllLibraries();
+            
+            foreach (var library in libraries)
+            {
+                library.Sync = currentLibraries
+                    .FirstOrDefault(x => x.Id == library.Id)?
+                    .Sync ?? false;
+            }
+            await _mediaServerRepository.DeleteAndInsertLibraries(libraries);
         }
 
         #endregion
@@ -286,7 +296,6 @@ namespace EmbyStat.Services
             {
                 Id = movie.Id,
                 Name = movie.Name,
-                ParentId = movie.CollectionId,
                 Primary = movie.Primary,
                 StartedWatching = startedPlaying,
                 EndedWatching = endedPlaying,

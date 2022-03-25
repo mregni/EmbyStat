@@ -22,7 +22,7 @@ namespace EmbyStat.Clients.Base.Http
         Task<int> GetMediaCount(string parentId, DateTime? lastSynced, string mediaType);
         Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType);
 
-        Task<QueryResult<BaseItemDto>> GetPeople(int startIndex, int limit);
+        Task<IEnumerable<SqlPerson>> GetPeople(int startIndex, int limit);
         Task<int> GetPeopleCount();
         SqlPerson GetPersonByName(string personName);
         
@@ -35,7 +35,7 @@ namespace EmbyStat.Clients.Base.Http
         List<FileSystemEntryInfo> GetLocalDrives();
         Task<List<SqlUser>> GetUsers();
         Task<IEnumerable<SqlDevice>> GetDevices();
-        QueryResult<BaseItemDto> GetMediaFolders();
+        Task<Library[]> GetLibraries();
 
         bool Ping();
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer();

@@ -17,6 +17,31 @@ namespace EmbyStat.Migrations.Sqlite
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Library", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastSynced")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Primary")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Sync")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Libraries");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.SqLite.Helpers.SqlMediaPerson", b =>
                 {
                     b.Property<int>("Id")
@@ -55,9 +80,6 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("Banner")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CollectionId")
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal?>("CommunityRating")
                         .HasColumnType("TEXT");
 
@@ -68,6 +90,9 @@ namespace EmbyStat.Migrations.Sqlite
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IMDB")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LibraryId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Logo")
@@ -114,6 +139,8 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LibraryId");
+
                     b.ToTable("Movies");
                 });
 
@@ -123,9 +150,6 @@ namespace EmbyStat.Migrations.Sqlite
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Banner")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CollectionId")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal?>("CommunityRating")
@@ -213,9 +237,6 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("Banner")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CollectionId")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("TEXT");
 
@@ -271,9 +292,6 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("Banner")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CollectionId")
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal?>("CommunityRating")
                         .HasColumnType("TEXT");
 
@@ -287,6 +305,9 @@ namespace EmbyStat.Migrations.Sqlite
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("IMDB")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LibraryId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Logo")
@@ -332,6 +353,8 @@ namespace EmbyStat.Migrations.Sqlite
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
 
                     b.ToTable("Shows");
                 });
@@ -916,6 +939,15 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Show");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMovie", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Entities.Library", "Library")
+                        .WithMany("Movies")
+                        .HasForeignKey("LibraryId");
+
+                    b.Navigation("Library");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlEpisode", b =>
                 {
                     b.HasOne("EmbyStat.Common.SqLite.Shows.SqlSeason", "Season")
@@ -936,6 +968,15 @@ namespace EmbyStat.Migrations.Sqlite
                         .IsRequired();
 
                     b.Navigation("Show");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.Shows.SqlShow", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Entities.Library", "Library")
+                        .WithMany("Shows")
+                        .HasForeignKey("LibraryId");
+
+                    b.Navigation("Library");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Streams.SqlAudioStream", b =>
@@ -1073,6 +1114,13 @@ namespace EmbyStat.Migrations.Sqlite
                         .HasForeignKey("ShowsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Library", b =>
+                {
+                    b.Navigation("Movies");
+
+                    b.Navigation("Shows");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Movies.SqlMovie", b =>
