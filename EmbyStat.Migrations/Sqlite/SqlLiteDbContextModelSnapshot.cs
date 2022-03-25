@@ -17,6 +17,27 @@ namespace EmbyStat.Migrations.Sqlite
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.FilterValues", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Field")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("_Values")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Values");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filters");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Library", b =>
                 {
                     b.Property<string>("Id")
@@ -139,7 +160,19 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CommunityRating");
+
                     b.HasIndex("LibraryId");
+
+                    b.HasIndex("Logo");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Primary");
+
+                    b.HasIndex("RunTimeTicks");
+
+                    b.HasIndex("SortName");
 
                     b.ToTable("Movies");
                 });
@@ -354,7 +387,19 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CommunityRating");
+
                     b.HasIndex("LibraryId");
+
+                    b.HasIndex("Logo");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Primary");
+
+                    b.HasIndex("RunTimeTicks");
+
+                    b.HasIndex("SortName");
 
                     b.ToTable("Shows");
                 });
@@ -400,15 +445,102 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name");
+
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.SqLite.SqlJob", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double?>("CurrentProgressPercentage")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("EndTimeUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("StartTimeUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Trigger")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a"),
+                            CurrentProgressPercentage = 0.0,
+                            Description = "UPDATE-CHECKERDESCRIPTION",
+                            State = 0,
+                            Title = "UPDATE-CHECKER",
+                            Trigger = "0 */12 * * *"
+                        },
+                        new
+                        {
+                            Id = new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f"),
+                            CurrentProgressPercentage = 0.0,
+                            Description = "SYSTEM-SYNCDESCRIPTION",
+                            State = 0,
+                            Title = "SYSTEM-SYNC",
+                            Trigger = "0 2 * * *"
+                        },
+                        new
+                        {
+                            Id = new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e"),
+                            CurrentProgressPercentage = 0.0,
+                            Description = "SHOW-SYNCDESCRIPTION",
+                            State = 0,
+                            Title = "SHOW-SYNC",
+                            Trigger = "0 3 * * *"
+                        },
+                        new
+                        {
+                            Id = new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e"),
+                            CurrentProgressPercentage = 0.0,
+                            Description = "PINGDESCRIPTION",
+                            State = 0,
+                            Title = "PING",
+                            Trigger = "*/5 * * * *"
+                        },
+                        new
+                        {
+                            Id = new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9"),
+                            CurrentProgressPercentage = 0.0,
+                            Description = "DATABASE-CLEANUPDESCRIPTION",
+                            State = 0,
+                            Title = "DATABASE-CLEANUP",
+                            Trigger = "0 4 * * *"
+                        },
+                        new
+                        {
+                            Id = new Guid("c40555dc-ea57-4c6e-a225-905223d31c3c"),
+                            CurrentProgressPercentage = 0.0,
+                            Description = "MOVIE-SYNCDESCRIPTION",
+                            State = 0,
+                            Title = "MOVIE-SYNC",
+                            Trigger = "0 32 * * *"
+                        });
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.SqlPerson", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -602,6 +734,8 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MovieId");
 
+                    b.HasIndex("SizeInMb");
+
                     b.ToTable("MediaSources");
                 });
 
@@ -631,6 +765,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasKey("Id");
 
                     b.HasIndex("EpisodeId");
+
+                    b.HasIndex("Language");
 
                     b.HasIndex("MovieId");
 
@@ -683,9 +819,21 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AverageFrameRate");
+
+                    b.HasIndex("BitDepth");
+
+                    b.HasIndex("Codec");
+
                     b.HasIndex("EpisodeId");
 
+                    b.HasIndex("Height");
+
                     b.HasIndex("MovieId");
+
+                    b.HasIndex("VideoRange");
+
+                    b.HasIndex("Width");
 
                     b.ToTable("VideoStreams");
                 });

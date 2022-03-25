@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Aiursoft.XelNaga.Services;
 using AutoMapper;
 using EmbyStat.Services.Interfaces;

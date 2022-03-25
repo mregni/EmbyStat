@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Controllers.Log
+﻿namespace EmbyStat.Controllers.Log
 {
     public class LogFileViewModel
     {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite.Shows;

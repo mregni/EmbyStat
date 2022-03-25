@@ -8,9 +8,9 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Common.Models.Show;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
@@ -59,7 +59,7 @@ namespace EmbyStat.Controllers
             CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
             CreateMap<UpdateResult, UpdateResultViewModel>();
 
-            CreateMap<Common.Models.Entities.Job, JobViewModel>()
+            CreateMap<SqlJob, JobViewModel>()
                 .ForMember(dest => dest.StartTimeUtcIso,
                     src => src.MapFrom((org, x) =>
                         org.StartTimeUtc?.ToString("O") ?? string.Empty))
@@ -128,6 +128,9 @@ namespace EmbyStat.Controllers
 
         private void CreatePeopleMappings()
         {
+            CreateMap<BaseItemDto, SqlPerson>()
+                .ForMember(x => x.Primary, x => x.MapFrom(y => y.ImageTags.ConvertToImageTag(ImageType.Primary)));
+            
             CreateMap<BaseItemPerson, SqlMediaPerson>()
                 .ForMember(x => x.PersonId, x => x.MapFrom(y => y.Id))
                 .ForMember(x => x.Id, x => x.Ignore())

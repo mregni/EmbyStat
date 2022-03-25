@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using Newtonsoft.Json;
 

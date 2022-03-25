@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite.Movies;

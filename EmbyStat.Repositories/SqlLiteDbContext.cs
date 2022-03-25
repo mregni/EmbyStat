@@ -5,9 +5,9 @@ using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Common.SqLite.Streams;
 using EmbyStat.Common.SqLite.Users;
+using EmbyStat.Repositories.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SqlPerson = EmbyStat.Common.SqLite.SqlPerson;
 
 namespace EmbyStat.Repositories
 {
@@ -33,8 +33,9 @@ namespace EmbyStat.Repositories
         public DbSet<SqlUserPolicy> UserPolicies { get; set; }
 
         public DbSet<Library> Libraries { get; set; }
-        
         public DbSet<SqlDevice> Devices { get; set; }
+        public DbSet<FilterValues> Filters { get; set; }
+        public DbSet<SqlJob> Jobs { get; set; }
 
         public static readonly ILoggerFactory LoggerFactory = 
             Microsoft.Extensions.Logging.LoggerFactory.Create(builder => { builder.AddConsole(); });
@@ -64,6 +65,20 @@ namespace EmbyStat.Repositories
             BuildMovies(modelBuilder);
             BuildShows(modelBuilder);
             BuildUsers(modelBuilder);
+            BuildFilterValues(modelBuilder);
+            AddExtraIndexes(modelBuilder);
+
+            SeedJobs(modelBuilder);
+        }
+
+        #region Builders
+
+        private static void BuildFilterValues(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FilterValues>().HasKey(x => x.Id);
+            modelBuilder.Entity<FilterValues>()
+                .Property(x => x._Values)
+                .HasColumnName("Values");
         }
 
         private static void BuildUsers(ModelBuilder modelBuilder)
@@ -114,6 +129,13 @@ namespace EmbyStat.Repositories
 
         private static void BuildShows(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SqlShow>().HasIndex(x => x.Primary);
+            modelBuilder.Entity<SqlShow>().HasIndex(x => x.Logo);
+            modelBuilder.Entity<SqlShow>().HasIndex(x => x.SortName);
+            modelBuilder.Entity<SqlShow>().HasIndex(x => x.Name);
+            modelBuilder.Entity<SqlShow>().HasIndex(x => x.RunTimeTicks);
+            modelBuilder.Entity<SqlShow>().HasIndex(x => x.CommunityRating);
+            
             modelBuilder.Entity<SqlShow>()
                 .HasMany(x => x.Seasons)
                 .WithOne(x => x.Show)
@@ -156,6 +178,13 @@ namespace EmbyStat.Repositories
 
         private static void BuildMovies(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.RunTimeTicks);
+            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.SortName);
+            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.Name);
+            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.CommunityRating);
+            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.Primary);
+            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.Logo);
+            
             modelBuilder.Entity<SqlMovie>()
                 .HasMany(x => x.Genres)
                 .WithMany(x => x.Movies);
@@ -180,5 +209,29 @@ namespace EmbyStat.Repositories
                 .HasForeignKey(x => x.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+
+        private static void AddExtraIndexes(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Width);
+            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Height);
+            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.AverageFrameRate);
+            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.VideoRange);
+            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Codec);
+            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.BitDepth);
+            
+            modelBuilder.Entity<SqlMediaSource>().HasIndex(x => x.SizeInMb);
+            
+            modelBuilder.Entity<SqlSubtitleStream>().HasIndex(x => x.Language);
+
+            modelBuilder.Entity<SqlGenre>().HasIndex(x => x.Name);
+        }
+        #endregion
+
+        #region Seeders
+        private static void SeedJobs(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SqlJob>().HasData(JobSeed.Jobs);
+        }
+        #endregion
     }
 }

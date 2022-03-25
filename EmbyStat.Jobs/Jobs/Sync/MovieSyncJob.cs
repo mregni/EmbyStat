@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
-using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
@@ -27,11 +24,12 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
         private readonly IMediaServerRepository _mediaServerRepository;
+        private readonly IFilterRepository _filterRepository;
 
         public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
             ISettingsService settingsService, IClientStrategy clientStrategy,
             IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
-            IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, IMediaServerRepository mediaServerRepository) 
+            IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository) 
             : base(hubHelper, jobRepository, settingsService, typeof(MovieSyncJob), Constants.LogPrefix.MovieSyncJob)
         {
             _movieRepository = movieRepository;
@@ -40,6 +38,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _genreRepository = genreRepository;
             _personRepository = personRepository;
             _mediaServerRepository = mediaServerRepository;
+            _filterRepository = filterRepository;
 
             var settings = settingsService.GetUserSettings();
             _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
@@ -141,6 +140,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _statisticsRepository.MarkMovieTypesAsInvalid();
             await LogProgress(67);
             await _movieService.CalculateMovieStatistics();
+            await _filterRepository.DeleteAll(LibraryType.Movies);
 
             await LogInformation($"Calculations done");
             await LogProgress(100);

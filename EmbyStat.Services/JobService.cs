@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
+using System.Threading.Tasks;
+using EmbyStat.Common.SqLite;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 
@@ -15,24 +16,24 @@ namespace EmbyStat.Services
             _jobRepository = jobRepository;
         }
 
-        public IEnumerable<Job> GetAll()
+        public IEnumerable<SqlJob> GetAll()
         {
             return _jobRepository.GetAll();
         }
 
-        public Job GetById(Guid id)
+        public SqlJob GetById(Guid id)
         {
             return _jobRepository.GetById(id);
         }
 
-        public bool UpdateTrigger(Guid id, string trigger)
+        public Task<bool> UpdateTrigger(Guid id, string trigger)
         {
             return _jobRepository.UpdateTrigger(id, trigger);
         }
 
-        public void ResetAllJobs()
+        public Task ResetAllJobs()
         {
-            _jobRepository.ResetAllJobs();
+            return _jobRepository.ResetAllJobs();
         }
     }
 }

@@ -5,7 +5,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Users;
-using Device = EmbyStat.Common.Models.Entities.Device;
 
 namespace EmbyStat.Repositories.Interfaces
 {

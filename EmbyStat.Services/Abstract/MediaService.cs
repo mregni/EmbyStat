@@ -6,9 +6,7 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Charts;
-using Newtonsoft.Json;
 
 namespace EmbyStat.Services.Abstract
 {

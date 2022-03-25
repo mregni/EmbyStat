@@ -1,17 +1,18 @@
-﻿using EmbyStat.Common.Models.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
+using EmbyStat.Common.SqLite;
 
 namespace EmbyStat.Repositories.Interfaces
 {
     public interface IJobRepository
     {
-        List<Job> GetAll();
-        Job GetById(Guid id);
-        void StartJob(Job job);
-        void EndJob(Guid id, DateTime endTime, JobState state);
-        bool UpdateTrigger(Guid id, string trigger);
-        void ResetAllJobs();
+        IEnumerable<SqlJob> GetAll();
+        SqlJob GetById(Guid id);
+        Task StartJob(Guid id);
+        Task EndJob(Guid id, DateTime endTime, JobState state);
+        Task<bool> UpdateTrigger(Guid id, string trigger);
+        Task ResetAllJobs();
     }
 }

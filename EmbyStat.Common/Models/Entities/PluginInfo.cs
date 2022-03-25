@@ -1,6 +1,4 @@
-﻿using LiteDB;
-
-namespace EmbyStat.Common.Models.Entities
+﻿namespace EmbyStat.Common.Models.Entities
 {
     public class PluginInfo
     {

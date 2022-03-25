@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer
 {
     public class PluginViewModel
     {

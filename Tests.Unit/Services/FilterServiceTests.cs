@@ -1,7 +1,7 @@
 ﻿using System;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;

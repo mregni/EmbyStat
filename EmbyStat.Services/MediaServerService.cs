@@ -6,7 +6,6 @@ using AutoMapper;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;

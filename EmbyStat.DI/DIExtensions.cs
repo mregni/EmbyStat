@@ -77,11 +77,11 @@ namespace EmbyStat.DI
             services.TryAddTransient<IMovieRepository, SqlMovieRepository>();
             services.TryAddTransient<IMediaServerRepository, SqlMediaServerRepository>();
             services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
-            services.TryAddTransient<IFilterRepository, FilterRepository>();
+            services.TryAddTransient<IFilterRepository, SqlFilterRepository>();
             services.TryAddTransient<IShowRepository, SqlShowRepository>();
             services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
-            services.TryAddTransient<IJobRepository, JobRepository>();
+            services.TryAddTransient<IJobRepository, SqlJobRepository>();
             services.TryAddTransient<ISessionRepository, SessionRepository>();
             services.TryAddTransient<IGenreRepository, GenreRepository>();
         }

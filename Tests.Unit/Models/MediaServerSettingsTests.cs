@@ -1,5 +1,4 @@
-﻿using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Settings;
+﻿using EmbyStat.Common.Models.Settings;
 using FluentAssertions;
 using Xunit;
 

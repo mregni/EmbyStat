@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,9 @@ namespace EmbyStat.Controllers.Filters
 
         [HttpGet]
         [Route("{type}/{field}")]
-        public IActionResult Get(LibraryType type, string field)
+        public async Task<IActionResult> Get(LibraryType type, string field)
         {
-            var filters = _filterService.GetFilterValues(type, field);
+            var filters = await _filterService.GetFilterValues(type, field);
             var convert = _mapper.Map<FilterValuesViewModel>(filters);
             return Ok(convert);
         }

@@ -1,7 +1,5 @@
-﻿using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Repositories;
-using FluentAssertions;
+﻿using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using Xunit;
 
 namespace Tests.Unit.Repository

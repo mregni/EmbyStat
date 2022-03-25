@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Logging;
-using FluentAssertions;
 using Tests.Unit.Builders;
 using Xunit;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbyStat.Services.Models.Logs
+﻿namespace EmbyStat.Services.Models.Logs
 {
     public class LogFile
     {

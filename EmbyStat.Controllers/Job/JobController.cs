@@ -63,9 +63,9 @@ namespace EmbyStat.Controllers.Job
 
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult UpdateTrigger(Guid id, string cron)
+        public async Task<IActionResult> UpdateTrigger(Guid id, string cron)
         {
-            if (_jobService.UpdateTrigger(id, cron))
+            if (await _jobService.UpdateTrigger(id, cron))
             {
                 var settings = _settingsService.GetAppSettings();
                 _jobInitializer.UpdateTrigger(id, cron, settings.NoUpdates);

@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using EmbyStat.Common.Enums;
+﻿using System.Threading.Tasks;
 using EmbyStat.Common.Hubs;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 
@@ -21,11 +16,12 @@ public class SystemService : ISystemService
     private readonly IHubHelper _hub;
     private readonly ISettingsService _settingsService;
     private readonly IMediaServerService _mediaServerService;
+    private readonly IFilterRepository _filterRepository;
 
     public SystemService(IMovieRepository movieRepository, IShowRepository showRepository,
         IStatisticsRepository statisticsRepository, IMediaServerRepository mediaServerRepository,
         IGenreRepository genreRepository, IPersonRepository personRepository, IHubHelper hub,
-        ISettingsService settingsService, IMediaServerService mediaServerService)
+        ISettingsService settingsService, IMediaServerService mediaServerService, IFilterRepository filterRepository)
     {
         _movieRepository = movieRepository;
         _showRepository = showRepository;
@@ -36,6 +32,7 @@ public class SystemService : ISystemService
         _hub = hub;
         _settingsService = settingsService;
         _mediaServerService = mediaServerService;
+        _filterRepository = filterRepository;
     }
 
     public async Task ResetEmbyStatTables()
@@ -72,6 +69,9 @@ public class SystemService : ISystemService
         
         await _hub.BroadcastResetLogLine("Deleting users");
         await _mediaServerRepository.DeleteAllUsers();
+
+        await _hub.BroadcastResetLogLine("Deleting filters");
+        await _filterRepository.DeleteAll();
 
         await _hub.BroadcastResetLogLine("Testing new media server info");
         var userSettings = _settingsService.GetUserSettings();

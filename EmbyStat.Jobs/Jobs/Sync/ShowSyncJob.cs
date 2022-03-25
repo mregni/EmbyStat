@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
-using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common;
@@ -12,7 +11,6 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Shows;
@@ -21,7 +19,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Net;
-using MoreLinq;
 
 namespace EmbyStat.Jobs.Jobs.Sync
 {
@@ -36,12 +33,13 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private readonly IGenreRepository _genreRepository;
         private readonly IPersonRepository _personRepository;
         private readonly IMediaServerRepository _mediaServerRepository;
+        private readonly IFilterRepository _filterRepository;
 
         public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
             IClientStrategy clientStrategy, IShowRepository showRepository,
             IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
             IGenreRepository genreRepository, IPersonRepository personRepository, 
-            IMediaServerRepository mediaServerRepository)
+            IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository)
             : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
         {
             _showRepository = showRepository;
@@ -51,6 +49,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             _genreRepository = genreRepository;
             _personRepository = personRepository;
             _mediaServerRepository = mediaServerRepository;
+            _filterRepository = filterRepository;
 
             Title = jobRepository.GetById(Id).Title;
             var settings = settingsService.GetUserSettings();
@@ -287,6 +286,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await LogInformation("Calculating show statistics");
             _statisticsRepository.MarkShowTypesAsInvalid();
             await _showService.CalculateShowStatistics();
+            await _filterRepository.DeleteAll(LibraryType.TvShow);
 
             await LogInformation($"Calculations done");
             await LogProgress(100);

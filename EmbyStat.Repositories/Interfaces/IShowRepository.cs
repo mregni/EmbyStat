@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Repositories.Interfaces.Helpers;
@@ -33,5 +34,7 @@ namespace EmbyStat.Repositories.Interfaces
         Task<long> GetTotalRunTimeTicks();
         Task<double> GetTotalDiskSpaceUsed();
         #endregion
+
+        IEnumerable<LabelValuePair> CalculateGenreFilterValues();
     }
 }

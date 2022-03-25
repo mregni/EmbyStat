@@ -8,8 +8,6 @@ using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Common.SqLite.Users;
 using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Querying;
-using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Clients.Base.Http
 {

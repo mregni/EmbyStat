@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;

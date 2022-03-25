@@ -6,7 +6,7 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
@@ -49,8 +49,8 @@ namespace EmbyStat.Repositories
                     await connection.ExecuteAsync($"DELETE FROM {Constants.Tables.AudioStreams} WHERE MovieId = @Id", movie, transaction);
                     await connection.ExecuteAsync($"DELETE FROM {Constants.Tables.SubtitleStreams} WHERE MovieId = @Id", movie, transaction);
 
-                    var movieQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.Movies} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,OriginalTitle,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@OriginalTitle,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat)";
+                    var movieQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.Movies} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,OriginalTitle,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@OriginalTitle,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat)";
                     await connection.ExecuteAsync(movieQuery, movie, transaction);
 
                     if (movie.MediaSources.AnyNotNull())
@@ -245,10 +245,11 @@ VALUES (@Type, @MovieId, @PersonId)";
 
         public IEnumerable<LabelValuePair> CalculateSubtitleFilterValues()
         {
-            return Enumerable.DistinctBy(_context.Movies
+            return Enumerable.DistinctBy(
+                    _context.Movies
                     .Include(x => x.SubtitleStreams)
                     .SelectMany(x => x.SubtitleStreams)
-                    .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null)
+                    .Where(x => x.Language != "und" && x.Language != "Und" && x.Language != null && x.Language != "Scr" && x.Language != "scr")
                     .AsEnumerable()
                     .Select(x => new LabelValuePair { Value = x.Language, Label = x.DisplayTitle.Split('(')[0] }), x => x.Label)
                 .OrderBy(x => x.Label);
@@ -269,11 +270,6 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .Select(x => new LabelValuePair { Value = x.Name, Label = x.Name })
                 .Distinct()
                 .OrderBy(x => x.Label);
-        }
-
-        public IEnumerable<LabelValuePair> CalculateCollectionFilterValues()
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<LabelValuePair> CalculateCodecFilterValues()

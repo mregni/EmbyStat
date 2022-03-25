@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite.Helpers;
 using EmbyStat.Common.SqLite.Movies;
 using LiteDB;
 

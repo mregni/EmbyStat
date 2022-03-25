@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Clients.Base.Converters;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -20,7 +19,6 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace EmbyStat.Clients.Base.Http
@@ -223,9 +221,8 @@ namespace EmbyStat.Clients.Base.Http
         public SqlPerson GetPersonByName(string personName)
         {
             var request = new RestRequest($"persons/{personName}", Method.GET);
-            //request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } }, UserId);
             var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return baseItem?.ConvertToPeople(Logger);
+            return Mapper.Map<SqlPerson>(baseItem);
         }
 
         public async Task<IEnumerable<SqlPerson>> GetPeople(int startIndex, int limit)

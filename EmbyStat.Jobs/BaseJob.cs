@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Hubs;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
@@ -67,6 +66,7 @@ namespace EmbyStat.Jobs
             catch (Exception e)
             {
                 Logger.Error(e, "Error while running job");
+                await FailExecution(e.Message);
                 await FailExecution("Job failed, check logs for more info.");
                 throw;
             }
@@ -81,19 +81,14 @@ namespace EmbyStat.Jobs
 
             await BroadcastProgress(0);
             await LogInformation("Starting job");
-
-            State = JobState.Running;
-            StartTimeUtc = DateTime.UtcNow;
-            var job = new Job { CurrentProgressPercentage = 0, Id = Id, State = State, StartTimeUtc = StartTimeUtc, EndTimeUtc = null };
-
-            _jobRepository.StartJob(job);
+            await _jobRepository.StartJob(Id);
         }
 
         private async Task PostJobExecution()
         {
             var now = DateTime.UtcNow;
             State = JobState.Completed;
-            _jobRepository.EndJob(Id, now, State);
+            await _jobRepository.EndJob(Id, now, State);
             await BroadcastProgress(100, now);
 
             var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
@@ -111,7 +106,7 @@ namespace EmbyStat.Jobs
         {
             var now = DateTime.UtcNow;
             State = JobState.Failed;
-            _jobRepository.EndJob(Id, now, State);
+            await _jobRepository.EndJob(Id, now, State);
             if (!string.IsNullOrWhiteSpace(message))
             {
                 await LogError(message);

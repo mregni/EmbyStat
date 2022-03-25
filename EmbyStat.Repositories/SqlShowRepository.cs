@@ -6,6 +6,7 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Helpers;
@@ -233,15 +234,15 @@ WHERE 1=1 ";
                 await using var transaction = connection.BeginTransaction();
 
                 var showQuery =
-                    $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@CumulativeRunTimeTicks,@Status,@ExternalSynced,@SizeInMb)";
+                    $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@CumulativeRunTimeTicks,@Status,@ExternalSynced,@SizeInMb)";
                 await connection.ExecuteAsync(showQuery, show, transaction);
 
                 if (show.Seasons.AnyNotNull())
                 {
                     var seasonQuery =
-                        $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,IndexNumber,IndexNumberEnd,LocationType,ShowId)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
+                        $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,IndexNumber,IndexNumberEnd,LocationType,ShowId)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
                     await connection.ExecuteAsync(seasonQuery, show.Seasons, transaction);
                 }
 
@@ -266,8 +267,8 @@ VALUES (@Type, @ShowId, @PersonId)";
                 if (episodes.AnyNotNull())
                 {
                     var episodeQuery =
-                        @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CollectionId,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CollectionId,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@DvdEpisodeNumber,@DvdSeasonNumber,@IndexNumber,@IndexNumberEnd,@SeasonId,@LocationType)";
+                        @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@DvdEpisodeNumber,@DvdSeasonNumber,@IndexNumber,@IndexNumberEnd,@SeasonId,@LocationType)";
                     await connection.ExecuteAsync(episodeQuery, episodes, transaction);
 
                     foreach (var episode in episodes)
@@ -477,6 +478,15 @@ LIMIT {count}";
                 .Include(x => x.MediaSources)
                 .Where(x => x.LocationType == LocationType.Disk)
                 .SumAsync(x => x.MediaSources.Any() ? x.MediaSources.First().SizeInMb : 0d);
+        }
+
+        public IEnumerable<LabelValuePair> CalculateGenreFilterValues()
+        {
+            return _context.Shows
+                .SelectMany(x => x.Genres)
+                .Select(x => new LabelValuePair { Value = x.Name, Label = x.Name })
+                .Distinct()
+                .OrderBy(x => x.Label);
         }
 
         #endregion

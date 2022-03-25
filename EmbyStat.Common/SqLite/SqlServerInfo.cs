@@ -1,6 +1,4 @@
-﻿using EmbyStat.Common.Enums;
-
-namespace EmbyStat.Common.SqLite;
+﻿namespace EmbyStat.Common.SqLite;
 
 public class SqlServerInfo
 {

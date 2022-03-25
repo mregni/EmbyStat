@@ -5,7 +5,6 @@ using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.SqLite;
 using EmbyStat.Common.SqLite.Users;
 using MediaBrowser.Model.Querying;
-using Newtonsoft.Json.Linq;
 using Refit;
 
 namespace EmbyStat.Clients.Base.Http

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
@@ -20,7 +19,6 @@ using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using Newtonsoft.Json;
-using Rollbar.DTOs;
 
 namespace EmbyStat.Services
 {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Filters;
 using EmbyStat.Services.Interfaces;

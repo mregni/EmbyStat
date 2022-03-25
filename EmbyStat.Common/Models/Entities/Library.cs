@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Common.SqLite.Shows;
-using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities
 {
