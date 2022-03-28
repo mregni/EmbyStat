@@ -14,7 +14,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using AspNetCore.Identity.LiteDB;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
@@ -33,6 +32,8 @@ using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -133,16 +134,15 @@ namespace EmbyStat.Web
             });
 
             services.AddSignalR();
-            services.AddDbContext<SqlLiteDbContext>();
+            services.AddDbContext<DbContext>();
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Roles, Constants.JwtClaims.User));
-                options.AddPolicy("ApiAdmin", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Roles, Constants.JwtClaims.Admin));
+                options.AddPolicy("ApiUser", policy => policy.RequireRole(Constants.Roles.User));
+                options.AddPolicy("ApiAdmin", policy => policy.RequireRole(Constants.Roles.Admin));
             });
-
-            services.AddIdentity<EmbyStatUser, AspNetCore.Identity.LiteDB.IdentityRole>(options =>
-                {
+            
+            services.AddIdentity<EmbyStatUser, IdentityRole>(options => {
                     options.Password.RequireDigit = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
@@ -154,9 +154,10 @@ namespace EmbyStat.Web
                     options.SignIn.RequireConfirmedAccount = false;
                     options.User.RequireUniqueEmail = false;
                 })
-                .AddUserStore<LiteDbUserStore<EmbyStatUser>>()
-                .AddRoleStore<LiteDbRoleStore<AspNetCore.Identity.LiteDB.IdentityRole>>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<DbContext>()
                 .AddDefaultTokenProviders();
+            
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
                 {
@@ -196,6 +197,7 @@ namespace EmbyStat.Web
                         }
                     };
                 });
+            
             services.AddHttpContextAccessor();
 
             //services.AddHostedService<WebSocketService>();
@@ -291,12 +293,14 @@ namespace EmbyStat.Web
             migrationRunner.Migrate();
                 
             var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+            var accountService = serviceScope.ServiceProvider.GetService<IAccountService>();
             var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
             var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
             var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
             var settings = settingsService.GetAppSettings();
-            
+
+            accountService.CreateRoles();
             settingsService.LoadUserSettingsFromFile();
             settingsService.CreateRollbarLogger();
             AddDeviceIdToConfig(settingsService);

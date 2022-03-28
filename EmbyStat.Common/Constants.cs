@@ -110,7 +110,7 @@ namespace EmbyStat.Common
             public static Guid DatabaseCleanupId => new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
         }
 
-        public static class JwtClaims
+        public static class Roles
         {
             public static string Admin => "admin";
             public static string User => "user";

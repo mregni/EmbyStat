@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AspNetCore.Identity.LiteDB.Models;
 using EmbyStat.Common;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Account;
@@ -21,18 +19,20 @@ namespace EmbyStat.Services
     {
         private readonly SignInManager<EmbyStatUser> _signInManager;
         private readonly UserManager<EmbyStatUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppSettings _appSettings;
         private readonly Logger _logger;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
         public AccountService(SignInManager<EmbyStatUser> signInManager, UserManager<EmbyStatUser> userManager, 
-            ISettingsService settingsService, JwtSecurityTokenHandler jwtSecurityTokenHandler)
+            ISettingsService settingsService, JwtSecurityTokenHandler jwtSecurityTokenHandler, RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
+            _roleManager = roleManager;
             _userManager = userManager;
             _userManager.Options.User.RequireUniqueEmail = false;
-
+            
             _appSettings = settingsService.GetAppSettings();
             _logger = LogFactory.CreateLoggerForType(typeof(AccountService), "ACCOUNT");
         }
@@ -41,6 +41,8 @@ namespace EmbyStat.Services
         {
             var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, false);
 
+            var temp = await _userManager.FindByNameAsync(login.Username);
+            var canSignIn = await _signInManager.CanSignInAsync(temp);
             if (!result.Succeeded)
             {
                 return null;
@@ -50,7 +52,7 @@ namespace EmbyStat.Services
             var token = AuthenticationHelper.GenerateAccessToken(user, _appSettings.Jwt, _jwtSecurityTokenHandler);
 
             var refreshToken = AuthenticationHelper.GenerateRefreshToken();
-            user.AddRefreshToken(refreshToken, user.Id, remoteIp);
+            user.SetRefreshToken(refreshToken, user.Id, remoteIp);
             await _userManager.UpdateAsync(user);
 
             return new AuthenticateResponse
@@ -72,7 +74,8 @@ namespace EmbyStat.Services
             };
 
             var principal = _jwtSecurityTokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
-            if (!(securityToken is JwtSecurityToken jwtSecurityToken) || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (!(securityToken is JwtSecurityToken jwtSecurityToken) 
+                || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid token");
             }
@@ -89,8 +92,7 @@ namespace EmbyStat.Services
             {
                 var token = AuthenticationHelper.GenerateAccessToken(user, _appSettings.Jwt, _jwtSecurityTokenHandler);
                 var newRefreshToken = AuthenticationHelper.GenerateRefreshToken();
-                user.RemoveRefreshToken(refreshToken);
-                user.AddRefreshToken(newRefreshToken, user.Id, remoteIp);
+                user.SetRefreshToken(newRefreshToken, user.Id, remoteIp);
                 await _userManager.UpdateAsync(user);
 
                 return new AuthenticateResponse
@@ -105,15 +107,21 @@ namespace EmbyStat.Services
 
         public async Task Register(AuthenticateRequest login)
         {
-            var user = new EmbyStatUser
+            var newUser = new EmbyStatUser
             {
                 UserName = login.Username,
-                Roles = new List<string> { Constants.JwtClaims.Admin, Constants.JwtClaims.User  },
-                Email = new EmailInfo(),
-                EmailConfirmed = false
+                Email = "dummy@example.com"
             };
 
-            await _userManager.CreateAsync(user, login.Password);
+            var result = await _userManager.CreateAsync(newUser, login.Password);
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByNameAsync(newUser.UserName);
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                await _userManager.ConfirmEmailAsync(user, token);
+                await _userManager.SetLockoutEnabledAsync(user, false);
+                await _userManager.AddToRolesAsync(user,new []{ Constants.Roles.Admin, Constants.Roles.User });
+            }
         }
 
         public async Task LogOut()
@@ -121,10 +129,10 @@ namespace EmbyStat.Services
             await _signInManager.SignOutAsync();
         }
 
-        public bool AnyAdmins()
+        public async Task<bool> AnyAdmins()
         {
-            var boe = _userManager.Users.ToList();
-            return _userManager.Users.Any(x => x.Roles.Contains(Constants.JwtClaims.Admin));
+            var users = await _userManager.GetUsersInRoleAsync(Constants.Roles.Admin);
+            return users.Any();
         }
 
         public async Task<bool> ChangePassword(ChangePasswordRequest request)
@@ -180,10 +188,23 @@ namespace EmbyStat.Services
             return false;
         }
 
+        public async Task CreateRoles()
+        {
+            if (!await _roleManager.RoleExistsAsync(Constants.Roles.Admin))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(Constants.Roles.Admin));
+            }
+
+            if (!await _roleManager.RoleExistsAsync(Constants.Roles.User))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(Constants.Roles.User));
+            }
+        }
+
         private static string RandomString(int length)
         {
             var random = new Random();
-            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const string chars = "  abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }

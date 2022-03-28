@@ -1,9 +1,6 @@
-﻿using System.Linq;
-using EmbyStat.Common;
+﻿using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
-using EmbyStat.Repositories;
-using FluentAssertions;
 using Xunit;
 
 namespace Tests.Unit.Repository
@@ -80,7 +77,7 @@ namespace Tests.Unit.Repository
             {
                 _databaseInitializer.SeedAsync();
                 using var context = _context.LiteDatabase;
-                var collection = context.GetCollection<EmbyStatus>();
+                var collection = context.GetCollection<MediaServerStatus>();
                 var status = collection.FindAll().FirstOrDefault();
 
                 status.Should().NotBeNull();
@@ -154,7 +151,7 @@ namespace Tests.Unit.Repository
             {
                 _databaseInitializer.CreateIndexes();
                 using var context = _context.LiteDatabase;
-                var embyStatusCollection = context.GetCollection<EmbyStatus>();
+                var embyStatusCollection = context.GetCollection<MediaServerStatus>();
                 embyStatusCollection.EnsureIndex(x => x.Id, true).Should().BeFalse();
                 embyStatusCollection.EnsureIndex(x => x.MissedPings).Should().BeTrue();
             });

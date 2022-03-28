@@ -13,15 +13,15 @@ namespace EmbyStat.Repositories;
 
 public class SqlMediaServerRepository : IMediaServerRepository
 {
-    private readonly SqlLiteDbContext _context;
+    private readonly DbContext _context;
 
-    public SqlMediaServerRepository(SqlLiteDbContext context)
+    public SqlMediaServerRepository(DbContext context)
     {
         _context = context;
     }
 
     #region MediaServer Status
-    public EmbyStatus GetEmbyStatus()
+    public MediaServerStatus GetEmbyStatus()
     {
         throw new System.NotImplementedException();
     }
@@ -84,14 +84,14 @@ public class SqlMediaServerRepository : IMediaServerRepository
     #region MediaServer Users
     public async Task DeleteAndInsertUsers(IEnumerable<SqlUser> users)
     {
-        _context.Users.RemoveRange(_context.Users);
-        await _context.Users.AddRangeAsync(users);
+        _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
+        await _context.MediaServerUsers.AddRangeAsync(users);
         await _context.SaveChangesAsync();
     }
 
     public Task<List<SqlUser>> GetAllUsers()
     {
-        return _context.Users
+        return _context.MediaServerUsers
             .Include(x => x.Configuration)
             .Include(x => x.Policy)
             .ToListAsync();
@@ -99,7 +99,7 @@ public class SqlMediaServerRepository : IMediaServerRepository
 
     public Task<List<SqlUser>> GetAllAdministrators()
     {
-        return _context.Users
+        return _context.MediaServerUsers
             .Include(x => x.Configuration)
             .Include(x => x.Policy)
             .Where(x => x.Policy.IsAdministrator)
@@ -113,7 +113,7 @@ public class SqlMediaServerRepository : IMediaServerRepository
 
     public async Task DeleteAllUsers()
     {
-        _context.Users.RemoveRange(_context.Users);
+        _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
         await _context.SaveChangesAsync();
     }
     #endregion

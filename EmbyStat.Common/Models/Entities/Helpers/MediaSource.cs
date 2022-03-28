@@ -1,10 +1,7 @@
-﻿using LiteDB;
-
-namespace EmbyStat.Common.Models.Entities.Helpers
+﻿namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class MediaSource
     {
-        [BsonId]
         public string Id { get; set; }
         public int? BitRate { get; set; }
         public string Container { get; set; }

@@ -85,7 +85,7 @@ namespace Tests.Unit.Controllers
                 });
 
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            statisticsRepositoryMock.Setup(x => x.MarkMovieTypesAsInvalid());
+            statisticsRepositoryMock.Setup(x => x.MarkTypesAsInvalid());
             statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
 
             var languageServiceMock = new Mock<ILanguageService>();

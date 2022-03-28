@@ -45,7 +45,7 @@ namespace EmbyStat.Services
 
         public async Task<ShowStatistics> GetStatistics()
         {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Show);
+            var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.Show);
 
             if (StatisticsAreValid(statistic, Constants.JobIds.ShowSyncId))
             {
@@ -66,7 +66,7 @@ namespace EmbyStat.Services
             };
 
             var json = JsonConvert.SerializeObject(statistics);
-            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Show);
+            _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.Show);
 
             return statistics;
         }

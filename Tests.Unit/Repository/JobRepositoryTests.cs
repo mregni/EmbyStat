@@ -1,8 +1,6 @@
 ﻿using System;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks.Enum;
-using EmbyStat.Repositories;
-using FluentAssertions;
 using Xunit;
 
 namespace Tests.Unit.Repository

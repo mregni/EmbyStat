@@ -107,7 +107,7 @@ namespace Tests.Unit.Controllers
         [Fact]
         public void GetMediaServerStatus_Should_Return_MediaServer_Status()
         {
-            var status = new EmbyStatus { MissedPings = 0, Id = Guid.NewGuid() };
+            var status = new MediaServerStatus { MissedPings = 0, Id = Guid.NewGuid() };
             var mediaServerServiceMock = new Mock<IMediaServerService>();
             mediaServerServiceMock.Setup(x => x.GetMediaServerStatus()).Returns(status);
             var controller = new MediaServerController(mediaServerServiceMock.Object, _mapper);

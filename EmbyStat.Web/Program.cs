@@ -7,7 +7,6 @@ using EmbyStat.Common;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
 using EmbyStat.Repositories;
-using EmbyStat.Repositories.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using NLog;
 using NLog.Targets;
+using DbContext = EmbyStat.Repositories.DbContext;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace EmbyStat.Web
@@ -145,20 +145,7 @@ namespace EmbyStat.Web
         private static void SetupDatabase(IWebHost host)
         {
             using var scope = host.Services.CreateScope();
-            var services = scope.ServiceProvider;
-            try
-            {
-                var databaseInitializer = services.GetRequiredService<IDatabaseInitializer>();
-                databaseInitializer.CreateIndexes();
-                databaseInitializer.SeedAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.Fatal(ex);
-                throw;
-            }
-
-            var db = scope.ServiceProvider.GetRequiredService<SqlLiteDbContext>();
+            var db = scope.ServiceProvider.GetRequiredService<DbContext>();
             db.Database.Migrate();
         }
 

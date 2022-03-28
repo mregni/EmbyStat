@@ -1,33 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using AspNetCore.Identity.LiteDB.Models;
 using EmbyStat.Common.Models.Entities.Helpers;
+using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Models.Entities
 {
-    public class EmbyStatUser : ApplicationUser
+    public class EmbyStatUser : IdentityUser
     {
-        public List<RefreshToken> RefreshTokens { get; set; }
+        [Column("RefreshTokens")]
+        public string _refreshToken { get; set; }
+
+        [NotMapped]
+        public RefreshToken RefreshTokens
+        {
+            get => JsonConvert.DeserializeObject<RefreshToken>(_refreshToken);
+            set => _refreshToken = JsonConvert.SerializeObject(value);
+        }
 
         public bool HasValidRefreshToken(string refreshToken)
         {
-            return RefreshTokens.Any(rt => rt.Token == refreshToken && rt.Active);
+            return RefreshTokens.Token == refreshToken && RefreshTokens.Active;
         }
 
-        public void AddRefreshToken(string token, string userId, string remoteIpAddress, double daysToExpire = 5)
+        public void SetRefreshToken(string token, string userId, string remoteIpAddress, double daysToExpire = 5)
         {
-            RefreshTokens.Add(new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId, remoteIpAddress));
-        }
-
-        public void RemoveRefreshToken(string refreshToken)
-        {
-            RefreshTokens.Remove(RefreshTokens.First(t => t.Token == refreshToken));
-        }
-
-        public EmbyStatUser()
-        {
-            RefreshTokens = new List<RefreshToken>();
+            RefreshTokens = new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId, remoteIpAddress);
         }
     }
 }

@@ -4,18 +4,75 @@ using EmbyStat.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using DbContext = EmbyStat.Repositories.DbContext;
 
 #nullable disable
 
 namespace EmbyStat.Migrations.Sqlite
 {
-    [DbContext(typeof(SqlLiteDbContext))]
+    [DbContext(typeof(DbContext))]
     partial class SqlLiteDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.EmbyStatUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_refreshToken")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("RefreshTokens");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.FilterValues", b =>
                 {
@@ -36,6 +93,126 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasKey("Id");
 
                     b.ToTable("Filters");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Language", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "082d8aaf-f86a-4401-bf0f-c315b3c9d904",
+                            Code = "nl-NL",
+                            Name = "Nederlands"
+                        },
+                        new
+                        {
+                            Id = "62fe1b5e-3328-450b-b24b-fa16bea58870",
+                            Code = "en-US",
+                            Name = "English"
+                        },
+                        new
+                        {
+                            Id = "c9df5e5c-75f3-46c2-8095-97fde33531d8",
+                            Code = "de-DE",
+                            Name = "Deutsch"
+                        },
+                        new
+                        {
+                            Id = "e1940bfd-00c4-46f9-b9ac-a87a5d92e8ca",
+                            Code = "da-DK",
+                            Name = "Dansk"
+                        },
+                        new
+                        {
+                            Id = "d6401f6b-becf-49e2-b82e-1018b3bf607f",
+                            Code = "el-GR",
+                            Name = "Ελληνικά"
+                        },
+                        new
+                        {
+                            Id = "c0a60a3b-282e-46f5-aa7f-661c88f2edb0",
+                            Code = "es-ES",
+                            Name = "Español"
+                        },
+                        new
+                        {
+                            Id = "91cca672-af55-4d55-899a-798826a43773",
+                            Code = "fi-FI",
+                            Name = "Suomi"
+                        },
+                        new
+                        {
+                            Id = "99142c2f-379e-4a25-879b-ecfe25ee9e7c",
+                            Code = "fr-FR",
+                            Name = "Français"
+                        },
+                        new
+                        {
+                            Id = "a48a2ef9-3b64-4069-8e31-252abb6d07a3",
+                            Code = "hu-HU",
+                            Name = "Magyar"
+                        },
+                        new
+                        {
+                            Id = "282182b9-9332-4266-a093-5ff5b7f927a9",
+                            Code = "it-IT",
+                            Name = "Italiano"
+                        },
+                        new
+                        {
+                            Id = "d8b0ae7b-9ba7-4a51-9d7c-94402b51265d",
+                            Code = "no-NO",
+                            Name = "Norsk"
+                        },
+                        new
+                        {
+                            Id = "f3966f43-3ec6-456e-850f-a2ebfc0b539b",
+                            Code = "pl-PL",
+                            Name = "Polski"
+                        },
+                        new
+                        {
+                            Id = "b21074db-74b9-4e24-8867-34e82c265256",
+                            Code = "pt-BR",
+                            Name = "Brasileiro"
+                        },
+                        new
+                        {
+                            Id = "490c1cb5-b711-4514-aa97-d22ddff2b2fa",
+                            Code = "pt-PT",
+                            Name = "Português"
+                        },
+                        new
+                        {
+                            Id = "6b103b14-20d1-49c0-b7ce-8d701399b64d",
+                            Code = "ro-RO",
+                            Name = "Românesc"
+                        },
+                        new
+                        {
+                            Id = "3e8d27e9-e314-4d57-967f-cf5d84144acf",
+                            Code = "sv-SE",
+                            Name = "Svenska"
+                        },
+                        new
+                        {
+                            Id = "97616a9b-60f9-407a-9a87-b4518da5e5f4",
+                            Code = "cs-CZ",
+                            Name = "简体中文"
+                        });
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Library", b =>
@@ -61,6 +238,50 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasKey("Id");
 
                     b.ToTable("Libraries");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MissedPings")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MediaServerStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e55668a1-6a81-47ba-882d-738347e7e9cd"),
+                            MissedPings = 0
+                        });
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Statistic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CalculationDateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("JsonResult")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statistics");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Helpers.SqlMediaPerson", b =>
@@ -534,7 +755,7 @@ namespace EmbyStat.Migrations.Sqlite
                             Description = "MOVIE-SYNCDESCRIPTION",
                             State = 0,
                             Title = "MOVIE-SYNC",
-                            Trigger = "0 32 * * *"
+                            Trigger = "0 2 * * *"
                         });
                 });
 
@@ -876,7 +1097,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("PolicyId");
 
-                    b.ToTable("Users");
+                    b.ToTable("MediaServerUsers");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUserConfiguration", b =>
@@ -920,7 +1141,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserConfigurations");
+                    b.ToTable("MediaServerUserConfigurations");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.SqLite.Users.SqlUserPolicy", b =>
@@ -1027,7 +1248,117 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserPolicies");
+                    b.ToTable("MediaServerUserPolicies");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.ToTable("UserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("SqlGenreSqlMovie", b =>

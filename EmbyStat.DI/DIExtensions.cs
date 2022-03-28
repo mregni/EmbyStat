@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Aiursoft.XelNaga.Services;
-using AspNetCore.Identity.LiteDB.Data;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
@@ -69,9 +68,6 @@ namespace EmbyStat.DI
 
         private static void RegisterRepositories(this IServiceCollection services)
         {
-            services.TryAddTransient<ILiteDbContext, DbContext>();
-            services.TryAddTransient<IDbContext, DbContext>();
-            services.TryAddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.TryAddTransient<ISqliteBootstrap, SqliteBootstrap>();
 
             services.TryAddTransient<IMovieRepository, SqlMovieRepository>();
@@ -79,10 +75,9 @@ namespace EmbyStat.DI
             services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
             services.TryAddTransient<IFilterRepository, SqlFilterRepository>();
             services.TryAddTransient<IShowRepository, SqlShowRepository>();
-            services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
+            services.TryAddTransient<IStatisticsRepository, SqlStatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
             services.TryAddTransient<IJobRepository, SqlJobRepository>();
-            services.TryAddTransient<ISessionRepository, SessionRepository>();
             services.TryAddTransient<IGenreRepository, GenreRepository>();
         }
 

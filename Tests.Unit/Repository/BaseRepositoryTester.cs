@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories;
 using Microsoft.Extensions.Options;
 using Moq;
 

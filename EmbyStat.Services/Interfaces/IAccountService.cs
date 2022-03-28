@@ -9,9 +9,10 @@ namespace EmbyStat.Services.Interfaces
         Task Register(AuthenticateRequest login);
         Task LogOut();
         Task<AuthenticateResponse> RefreshToken(string accessToken, string refreshToken, string remoteIp);
-        bool AnyAdmins();
+        Task<bool> AnyAdmins();
         Task<bool> ResetPassword(string username);
         Task<bool> ChangePassword(ChangePasswordRequest request);
         Task<bool> ChangeUserName(ChangeUserNameRequest request);
+        Task CreateRoles();
     }
 }

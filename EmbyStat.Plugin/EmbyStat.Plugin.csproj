@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediaBrowser.Server.Core" Version="4.7.0.10" />
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.7.0.30" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 

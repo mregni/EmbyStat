@@ -1,11 +1,9 @@
 ﻿using System;
-using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class Media
     {
-        [BsonId]
         public string Id { get; set; }
         public DateTime? DateCreated { get; set; }
         public string Banner { get; set; }

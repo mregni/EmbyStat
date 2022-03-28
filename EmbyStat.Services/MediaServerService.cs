@@ -88,7 +88,7 @@ namespace EmbyStat.Services
             return false;
         }
 
-        public EmbyStatus GetMediaServerStatus()
+        public MediaServerStatus GetMediaServerStatus()
         {
             return _mediaServerRepository.GetEmbyStatus();
         }

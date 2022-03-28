@@ -137,7 +137,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task CalculateStatistics()
         {
             await LogInformation("Calculating movie statistics");
-            _statisticsRepository.MarkMovieTypesAsInvalid();
+            await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Movie);
             await LogProgress(67);
             await _movieService.CalculateMovieStatistics();
             await _filterRepository.DeleteAll(LibraryType.Movies);

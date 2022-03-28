@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -14,7 +15,7 @@ namespace EmbyStat.Services
             _languageRepository = languageRepository;
         }
 
-        public IEnumerable<Language> GetLanguages()
+        public Task<List<Language>> GetLanguages()
         {
             return _languageRepository.GetLanguages();
         }

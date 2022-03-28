@@ -1,10 +1,7 @@
-﻿using LiteDB;
-
-namespace EmbyStat.Common.Models.Entities.Helpers
+﻿namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class VideoStream
     {
-        [BsonId]
         public string Id { get; set; }
         public string AspectRatio { get; set; }
         public float? AverageFrameRate { get; set; }

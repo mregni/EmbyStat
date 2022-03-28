@@ -1,10 +1,7 @@
-﻿using LiteDB;
-
-namespace EmbyStat.Common.Models.Entities.Helpers
+﻿namespace EmbyStat.Common.Models.Entities.Helpers
 {
     public class AudioStream
     {
-        [BsonId]
         public string Id { get; set; }
         public int? BitRate { get; set; }
         public string ChannelLayout { get; set; }

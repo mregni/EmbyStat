@@ -16,7 +16,7 @@ namespace EmbyStat.Services.Interfaces
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type);
         Task<SqlServerInfo> GetServerInfo(bool forceReSync);
         bool TestNewApiKey(string url, string apiKey, ServerType type);
-        EmbyStatus GetMediaServerStatus();
+        MediaServerStatus GetMediaServerStatus();
         bool PingMediaServer(string url);
         void ResetMissedPings();
         void IncreaseMissedPings();

@@ -11,9 +11,9 @@ namespace EmbyStat.Repositories;
 
 public class SqlJobRepository : IJobRepository
 {
-    private readonly SqlLiteDbContext _context;
+    private readonly DbContext _context;
 
-    public SqlJobRepository(SqlLiteDbContext context)
+    public SqlJobRepository(DbContext context)
     {
         _context = context;
     }

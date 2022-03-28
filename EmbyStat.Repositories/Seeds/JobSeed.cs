@@ -12,6 +12,6 @@ public static class JobSeed
         new(Constants.JobIds.ShowSyncId, Constants.LogPrefix.ShowSyncJob, "0 3 * * *"),
         new(Constants.JobIds.PingEmbyId, Constants.LogPrefix.PingMediaServerJob, "*/5 * * * *"),
         new(Constants.JobIds.DatabaseCleanupId, Constants.LogPrefix.DatabaseCleanupJob, "0 4 * * *"),
-        new(Constants.JobIds.MovieSyncId, Constants.LogPrefix.MovieSyncJob, "0 32 * * *")
+        new(Constants.JobIds.MovieSyncId, Constants.LogPrefix.MovieSyncJob, "0 2 * * *")
     };
 }

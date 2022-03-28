@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
-using AspNetCore.Identity.LiteDB.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EmbyStat.Common.Helpers
 {
     public static class AuthenticationHelper
     {
-        public static string GenerateAccessToken(EmbyStatUser user, Jwt jwt, JwtSecurityTokenHandler tokenHandler)
+        public static string GenerateAccessToken(IdentityUser user, Jwt jwt, JwtSecurityTokenHandler tokenHandler)
         {
             var identity = GenerateClaimsIdentity(user);
 
@@ -40,7 +39,7 @@ namespace EmbyStat.Common.Helpers
             return Convert.ToBase64String(randomNumber);
         }
 
-        private static ClaimsIdentity GenerateClaimsIdentity(ApplicationUser user)
+        private static ClaimsIdentity GenerateClaimsIdentity(IdentityUser user)
         {
             var claimsIdentity = new ClaimsIdentity(
                 new GenericIdentity(user.UserName, "AccessToken"), new[]
@@ -48,8 +47,9 @@ namespace EmbyStat.Common.Helpers
                         new Claim(Constants.JwtClaimIdentifiers.Id, user.Id)
                     });
 
-            var roleClaims = user.Roles.Select(x => new Claim(Constants.JwtClaimIdentifiers.Roles, x));
-            claimsIdentity.AddClaims(roleClaims);
+            //TODO: fix this!!
+            // var roleClaims = user.Roles.Select(x => new Claim(Constants.JwtClaimIdentifiers.Roles, x));
+            // claimsIdentity.AddClaims(roleClaims);
 
             return claimsIdentity;
         }

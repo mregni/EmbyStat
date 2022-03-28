@@ -19,10 +19,10 @@ namespace EmbyStat.Repositories
 {
     public class SqlShowRepository : IShowRepository
     {
-        private readonly SqlLiteDbContext _context;
+        private readonly DbContext _context;
         private readonly ISqliteBootstrap _sqliteBootstrap;
 
-        public SqlShowRepository(SqlLiteDbContext context, ISqliteBootstrap sqliteBootstrap)
+        public SqlShowRepository(DbContext context, ISqliteBootstrap sqliteBootstrap)
         {
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;

@@ -3,7 +3,6 @@
     public enum StatisticType
     {
         Movie = 0,
-        Show = 1,
-        ShowCollectedRows = 2
+        Show = 1
     }
 }

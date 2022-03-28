@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
-using LiteDB;
 
 namespace EmbyStat.Common.Models.Entities.Events
 {
     public class Play
     {
-        [BsonId]
         public Guid Id { get; set; }
         public string SessionId { get; set; }
         public string UserId { get; set; }

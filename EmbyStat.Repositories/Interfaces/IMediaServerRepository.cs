@@ -11,7 +11,7 @@ namespace EmbyStat.Repositories.Interfaces
     public interface IMediaServerRepository
     {
         #region MediaServer Status
-        EmbyStatus GetEmbyStatus();
+        MediaServerStatus GetEmbyStatus();
         void IncreaseMissedPings();
         void ResetMissedPings();
         void RemoveAllMediaServerData();

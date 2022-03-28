@@ -48,10 +48,10 @@ namespace EmbyStat.Controllers.Account
         {
             if (register == null)
             {
-                return Unauthorized("User registration not allowed");
+                return BadRequest("No authentication request provided");
             }
 
-            if (!_accountService.AnyAdmins())
+            if (!await _accountService.AnyAdmins())
             {
                 await _accountService.Register(register);
                 return Ok(true);
@@ -63,7 +63,7 @@ namespace EmbyStat.Controllers.Account
             if (identities.Length != 1 || !identities[0].IsAuthenticated)
             {
                 _logger.Warn("User registration not allowed");
-                _logger.Warn("This is because there is already an admin user in the database but the identity is not authenticated. (You can't create a second admin user via the wizard flow, this is probably what happened)");
+                _logger.Warn("This is because there is already an admin user in the database but the identity is not authenticated. (You can't create a second user for the moment)");
                 return Unauthorized("User registration not allowed");
             }
 

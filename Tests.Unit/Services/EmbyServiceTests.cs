@@ -112,7 +112,7 @@ namespace Tests.Unit.Services
             _embyRepositoryMock = new Mock<IMediaServerRepository>();
             _sessionServiceMock = new Mock<ISessionService>();
 
-            var embyStatus = new EmbyStatus() { Id = Guid.NewGuid() };
+            var embyStatus = new MediaServerStatus() { Id = Guid.NewGuid() };
             _embyRepositoryMock.Setup(x => x.GetEmbyStatus()).Returns(embyStatus);
 
             var strategy = new Mock<IClientStrategy>();

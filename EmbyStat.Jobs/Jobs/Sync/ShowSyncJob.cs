@@ -284,7 +284,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
         private async Task CalculateStatistics()
         {
             await LogInformation("Calculating show statistics");
-            _statisticsRepository.MarkShowTypesAsInvalid();
+            await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Show);
             await _showService.CalculateShowStatistics();
             await _filterRepository.DeleteAll(LibraryType.TvShow);
 

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Linq;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Repositories;
-using FluentAssertions;
 using Xunit;
 
 namespace Tests.Unit.Repository
@@ -28,8 +25,8 @@ namespace Tests.Unit.Repository
             {
                 using (var database = _context.LiteDatabase)
                 {
-                    var collection = database.GetCollection<EmbyStatus>();
-                    collection.Insert(new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 });
+                    var collection = database.GetCollection<MediaServerStatus>();
+                    collection.Insert(new MediaServerStatus { Id = Guid.NewGuid(), MissedPings = 0 });
                 }
 
                 var status = _mediaServerRepository.GetEmbyStatus();
@@ -43,10 +40,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var status = new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 0 };
+                var status = new MediaServerStatus { Id = Guid.NewGuid(), MissedPings = 0 };
                 using (var database = _context.LiteDatabase)
                 {
-                    var collection = database.GetCollection<EmbyStatus>();
+                    var collection = database.GetCollection<MediaServerStatus>();
                     collection.Insert(status);
                 }
 
@@ -54,7 +51,7 @@ namespace Tests.Unit.Repository
 
                 using (var database = _context.LiteDatabase)
                 {
-                    var collection = database.GetCollection<EmbyStatus>();
+                    var collection = database.GetCollection<MediaServerStatus>();
                     var dbStatus = collection.FindById(status.Id);
                     dbStatus.Should().NotBeNull();
                     dbStatus.Id.Should().Be(status.Id);
@@ -69,10 +66,10 @@ namespace Tests.Unit.Repository
         {
             RunTest(() =>
             {
-                var status = new EmbyStatus { Id = Guid.NewGuid(), MissedPings = 10 };
+                var status = new MediaServerStatus { Id = Guid.NewGuid(), MissedPings = 10 };
                 using (var database = _context.LiteDatabase)
                 {
-                    var collection = database.GetCollection<EmbyStatus>();
+                    var collection = database.GetCollection<MediaServerStatus>();
                     collection.Insert(status);
                 }
 
@@ -80,7 +77,7 @@ namespace Tests.Unit.Repository
 
                 using (var database = _context.LiteDatabase)
                 {
-                    var collection = database.GetCollection<EmbyStatus>();
+                    var collection = database.GetCollection<MediaServerStatus>();
                     var dbStatus = collection.FindById(status.Id);
                     dbStatus.Should().NotBeNull();
                     dbStatus.Id.Should().Be(status.Id);

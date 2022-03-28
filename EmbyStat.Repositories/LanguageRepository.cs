@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories
 {
-    public class LanguageRepository : BaseRepository, ILanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
-        public LanguageRepository(IDbContext context) : base(context)
+        private readonly DbContext _context;
+        public LanguageRepository(DbContext context)
         {
+            _context = context;
         }
 
-        public List<Language> GetLanguages()
+        public Task<List<Language>> GetLanguages()
         {
-            using var database = Context.CreateDatabaseContext();
-            var collection = database.GetCollection<Language>();
-            return collection.FindAll().ToList();
+            return _context.Languages.ToListAsync();
         }
     }
 }

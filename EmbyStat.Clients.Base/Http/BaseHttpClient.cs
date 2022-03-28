@@ -362,7 +362,7 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
-                IncludeItemTypes = new[] { nameof(Season) },
+                IncludeItemTypes = new[] { nameof(SqlSeason) },
                 MinDateLastSaved = lastSynced,
                 Fields = new[]
                 {

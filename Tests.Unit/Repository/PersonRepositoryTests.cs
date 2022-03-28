@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Linq;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Repositories;
-using FluentAssertions;
 using Xunit;
 
 namespace Tests.Unit.Repository

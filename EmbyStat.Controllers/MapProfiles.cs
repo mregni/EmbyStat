@@ -97,8 +97,7 @@ namespace EmbyStat.Controllers
             CreateMap<EmbyUser, UserFullViewModel>();
             CreateMap<UserMediaView, UserMediaViewViewModel>();
 
-            CreateMap<SystemInfo, ServerInfo>()
-                .ForMember(x => x.Id, y => Guid.NewGuid())
+            CreateMap<SystemInfo, SqlServerInfo>()
                 .ReverseMap()
                 .ForMember(x => x.CompletedInstallations, y => y.Ignore());
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
@@ -107,8 +106,7 @@ namespace EmbyStat.Controllers
             CreateMap<TopCardItem, TopCardItemViewModel>();
             CreateMap<LabelValuePair, LabelValuePairViewModel>();
             CreateMap<FilterValues, FilterValuesViewModel>();
-            CreateMap<EmbyStatus, EmbyStatusViewModel>();
-
+            CreateMap<MediaServerStatus, EmbyStatusViewModel>();
 
             CreateMap(typeof(Page<>), typeof(PageViewModel<>));
             CreateMap<SqlAudioStream, AudioStreamViewModel>();
