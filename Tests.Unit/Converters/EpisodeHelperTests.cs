@@ -1,6 +1,4 @@
 ﻿using System;
-using EmbyStat.Clients.Tmdb.Converter;
-using FluentAssertions;
 using TMDbLib.Objects.Search;
 using Xunit;
 

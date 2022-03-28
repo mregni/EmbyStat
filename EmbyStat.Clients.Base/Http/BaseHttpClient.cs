@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Shows;
-using EmbyStat.Common.SqLite.Users;
 using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
@@ -218,14 +215,14 @@ namespace EmbyStat.Clients.Base.Http
             return await client.GetServerInfo(apiKey, AuthorizationString);
         }
 
-        public SqlPerson GetPersonByName(string personName)
+        public Person GetPersonByName(string personName)
         {
             var request = new RestRequest($"persons/{personName}", Method.GET);
             var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return Mapper.Map<SqlPerson>(baseItem);
+            return Mapper.Map<Person>(baseItem);
         }
 
-        public async Task<IEnumerable<SqlPerson>> GetPeople(int startIndex, int limit)
+        public async Task<IEnumerable<Person>> GetPeople(int startIndex, int limit)
         {
             var query = new ItemQuery
             {
@@ -236,7 +233,7 @@ namespace EmbyStat.Clients.Base.Http
 
             var client = _refitFactory.CreateClient(BaseUrl);
             var people = await client.GetPeople(apiKey, AuthorizationString, query);
-            return Mapper.Map<IList<SqlPerson>>(people.Items);
+            return Mapper.Map<IList<Person>>(people.Items);
         }
 
         public async Task<int> GetPeopleCount()
@@ -260,7 +257,7 @@ namespace EmbyStat.Clients.Base.Http
             return Mapper.Map<Library[]>(result.Items);
         }
 
-        public Task<List<SqlPluginInfo>> GetInstalledPlugins()
+        public Task<List<PluginInfo>> GetInstalledPlugins()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
             return client.GetPlugins(apiKey, AuthorizationString);
@@ -272,27 +269,25 @@ namespace EmbyStat.Clients.Base.Http
             return ExecuteAuthenticatedCall<List<FileSystemEntryInfo>>(request);
         }
 
-        public Task<List<SqlUser>> GetUsers()
+        public Task<List<MediaServerUser>> GetUsers()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
             return client.GetUsers(apiKey, AuthorizationString);
         }
 
-        public async Task<IEnumerable<SqlDevice>> GetDevices()
+        public async Task<IEnumerable<Device>> GetDevices()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
             var response = await client.GetDevices(apiKey, AuthorizationString);
             return response.Content?.Items;
         }
 
-        public async Task<IEnumerable<SqlGenre>> GetGenres()
+        public async Task<IEnumerable<Genre>> GetGenres()
         {
             var query = new ItemQuery();
             var client = _refitFactory.CreateClient(BaseUrl);
             var baseItems = await client.GetGenres(apiKey, AuthorizationString, query);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToGenre(Logger)).ToList()
-                : new List<SqlGenre>(0);
+            return Mapper.Map<IList<Genre>>(baseItems.Items);
         }
 
         public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType)
@@ -325,7 +320,7 @@ namespace EmbyStat.Clients.Base.Http
             return Mapper.Map<T[]>(result.Items);
         }
 
-        public async Task<SqlShow[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
+        public async Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -350,11 +345,11 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var shows = Mapper.Map<SqlShow[]>(result.Items);
+            var shows = Mapper.Map<Show[]>(result.Items);
             return shows;
         }
 
-        public async Task<SqlSeason[]> GetSeasons(string parentId, DateTime? lastSynced)
+        public async Task<Season[]> GetSeasons(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -362,7 +357,7 @@ namespace EmbyStat.Clients.Base.Http
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
                 Recursive = true,
-                IncludeItemTypes = new[] { nameof(SqlSeason) },
+                IncludeItemTypes = new[] { nameof(Season) },
                 MinDateLastSaved = lastSynced,
                 Fields = new[]
                 {
@@ -378,11 +373,11 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var seasons = Mapper.Map<SqlSeason[]>(result.Items);
+            var seasons = Mapper.Map<Season[]>(result.Items);
             return seasons;
         }
 
-        public async Task<SqlEpisode[]> GetEpisodes(string parentId, DateTime? lastSynced)
+        public async Task<Episode[]> GetEpisodes(string parentId, DateTime? lastSynced)
         {
             var query = new ItemQuery
             {
@@ -406,7 +401,7 @@ namespace EmbyStat.Clients.Base.Http
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(apiKey, AuthorizationString, paramList);
 
-            var episodes = Mapper.Map<SqlEpisode[]>(result.Items);
+            var episodes = Mapper.Map<Episode[]>(result.Items);
             return episodes;
         }
 

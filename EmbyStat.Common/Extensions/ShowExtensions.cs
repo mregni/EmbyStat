@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.Models.Show;
-using EmbyStat.Common.SqLite.Shows;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Common.Extensions
@@ -19,7 +15,7 @@ namespace EmbyStat.Common.Extensions
         /// <param name="show">New show data from the external server</param>
         /// <param name="oldShow">Internal show data on which a comparison is required</param>
         /// <returns>True or false if episodes have changed</returns>
-        public static bool HasShowChangedEpisodes(this SqlShow show, SqlShow oldShow)
+        public static bool HasShowChangedEpisodes(this Show show, Show oldShow)
         {
             if (oldShow == null)
             {
@@ -37,7 +33,7 @@ namespace EmbyStat.Common.Extensions
         /// </summary>
         /// <param name="show">Show for which the total size needs to be calculated</param>
         /// <returns>Total space used for the show in Mb </returns>
-        public static double GetShowSize(this SqlShow show)
+        public static double GetShowSize(this Show show)
         {
             return show.Seasons.SelectMany(x => x.Episodes)
                 .Where(x => x.LocationType == LocationType.Disk)
@@ -49,7 +45,7 @@ namespace EmbyStat.Common.Extensions
         /// </summary>
         /// <param name="show">Show for which the total runtime needs to be calculated</param>
         /// <returns>Total runtime ticks for the show</returns>
-        public static long GetShowRunTimeTicks(this SqlShow show)
+        public static long GetShowRunTimeTicks(this Show show)
         {
             return show.Seasons.SelectMany(x => x.Episodes)
                 .Where(x => x.LocationType == LocationType.Disk)
@@ -62,7 +58,7 @@ namespace EmbyStat.Common.Extensions
         /// <param name="list">Db set on which to create the query on</param>
         /// <param name="filters">Filters that need to be applied in the query</param>
         /// <returns>Sqlite query that can query the count of shows</returns>
-        public static string GenerateCountQuery(this DbSet<SqlShow> list, Filter[] filters)
+        public static string GenerateCountQuery(this DbSet<Show> list, Filter[] filters)
         {
             var query = $@"
 SELECT COUNT() AS Count
@@ -78,7 +74,7 @@ WHERE 1=1";
         /// </summary>
         /// <param name="shows">Db set on which to create the query on</param>
         /// <returns>Sqlite query <see cref="string"/> that can query shows</returns>
-        public static string GenerateFullShowQuery(this DbSet<SqlShow> shows)
+        public static string GenerateFullShowQuery(this DbSet<Show> shows)
         {
             return $@"
 SELECT s.*, se.*, e.*
@@ -88,7 +84,7 @@ LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
 WHERE 1=1";
         }
 
-        public static string GenerateFullShowWithGenresQuery(this DbSet<SqlShow> shows)
+        public static string GenerateFullShowWithGenresQuery(this DbSet<Show> shows)
         {
             return $@"
 SELECT s.*, g.*, se.*, e.*
@@ -108,7 +104,7 @@ WHERE 1=1 ";
         /// <param name="sortField">Column on witch to sort</param>
         /// <param name="sortOrder">asc or desc depending on the sorting needed</param>
         /// <returns>Sqlite query <see cref="string"/> that can query shows</returns>
-        public static string GenerateShowPageQuery(this DbSet<SqlShow> shows, Filter[] filters,
+        public static string GenerateShowPageQuery(this DbSet<Show> shows, Filter[] filters,
             string sortField, string sortOrder)
         {
             var query = shows.GenerateFullShowWithGenresQuery();

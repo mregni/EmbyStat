@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Dapper;
 using EmbyStat.Common;
-using EmbyStat.Common.SqLite;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 
 namespace EmbyStat.Repositories
@@ -18,7 +18,7 @@ namespace EmbyStat.Repositories
             _sqliteBootstrap = sqliteBootstrap;
         }
 
-        public async Task UpsertRange(IEnumerable<SqlPerson> people)
+        public async Task UpsertRange(IEnumerable<Person> people)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();

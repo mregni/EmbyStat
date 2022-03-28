@@ -6,7 +6,6 @@ using CommandLine;
 using EmbyStat.Common;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
-using EmbyStat.Repositories;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

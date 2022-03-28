@@ -7,8 +7,8 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -90,13 +90,13 @@ namespace EmbyStat.Services
             return _movieRepository.Any();
         }
 
-        public async Task<Page<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder,
+        public async Task<Page<Movie>> GetMoviePage(int skip, int take, string sortField, string sortOrder,
             Filter[] filters, bool requireTotalCount)
         {
             var list = await _movieRepository
                 .GetMoviePage(skip, take, sortField, sortOrder, filters);
 
-            var page = new Page<SqlMovie>(list);
+            var page = new Page<Movie>(list);
             if (requireTotalCount)
             {
                 page.TotalCount = await _movieRepository.Count(filters);
@@ -105,7 +105,7 @@ namespace EmbyStat.Services
             return page;
         }
 
-        public SqlMovie GetMovie(string id)
+        public Movie GetMovie(string id)
         {
             return _movieRepository.GetById(id);
         }

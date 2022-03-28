@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Movies;
 
 namespace EmbyStat.Common.Models.Entities
 {
     public class Genre
     {
-        [Key]
         public string Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Media> Media { get; set; }
+        public ICollection<Movie> Movies { get; set; }
+        public ICollection<Shows.Show> Shows { get; set; }
     }
 }

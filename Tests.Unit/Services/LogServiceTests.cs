@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;

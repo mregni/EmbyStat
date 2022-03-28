@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Users;
 using MediaBrowser.Model.Querying;
 using Refit;
 
@@ -69,9 +69,9 @@ namespace EmbyStat.Clients.Base.Http
         /// </summary>
         /// <param name="apiKey">Server API key</param>
         /// <param name="authorization">Fixed authentication string</param>
-        /// <returns><see cref="List{T}"/> where T is of type <see cref="SqlPluginInfo"/></returns>
+        /// <returns><see cref="List{T}"/> where T is of type <see cref="PluginInfo"/></returns>
         [Get("/plugins")]
-        Task<List<SqlPluginInfo>> GetPlugins(
+        Task<List<PluginInfo>> GetPlugins(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
 
@@ -99,9 +99,9 @@ namespace EmbyStat.Clients.Base.Http
         /// </summary>
         /// <param name="apiKey">Server API key</param>
         /// <param name="authorization">Fixed authentication string</param>
-        /// <returns><see cref="List{T}"/> where T is of type <see cref="SqlUser"/></returns>
+        /// <returns><see cref="List{T}"/> where T is of type <see cref="MediaServerUser"/></returns>
         [Get("/Users")]
-        Task<List<SqlUser>> GetUsers(
+        Task<List<MediaServerUser>> GetUsers(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
         
@@ -114,9 +114,9 @@ namespace EmbyStat.Clients.Base.Http
         /// </summary>
         /// <param name="apiKey">Server API key</param>
         /// <param name="authorization">Fixed authentication string</param>
-        /// <returns><see cref="List{T}"/> where T is of type <see cref="SqlDevice"/></returns>
+        /// <returns><see cref="List{T}"/> where T is of type <see cref="Device"/></returns>
         [Get("/Devices")]
-        Task<ApiResponse<QueryResult<SqlDevice>>> GetDevices(
+        Task<ApiResponse<QueryResult<Device>>> GetDevices(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
 

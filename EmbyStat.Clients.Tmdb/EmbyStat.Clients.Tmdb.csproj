@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
+    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,9 +11,8 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Show;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -147,7 +146,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task ProcessShowBlock(Library library, IEnumerable<SqlGenre> genres, int index, int limit)
+        private async Task ProcessShowBlock(Library library, IEnumerable<Genre> genres, int index, int limit)
         {
             var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced);
             shows.AddGenres(genres);
@@ -181,7 +180,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             await _showRepository.UpsertShows(shows);
         }
 
-        private async Task GetMissingEpisodesFromProviderAsync(SqlShow show)
+        private async Task GetMissingEpisodesFromProviderAsync(Show show)
         {
             try
             {
@@ -204,7 +203,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
         }
 
-        private async Task ProcessMissingEpisodesAsync(SqlShow show)
+        private async Task ProcessMissingEpisodesAsync(Show show)
         {
             var missingEpisodesCount = 0;
             var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
@@ -242,7 +241,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             show.ExternalSynced = true;
         }
 
-        private static bool IsEpisodeMissing(IEnumerable<SqlEpisode> localEpisodes, SqlSeason season,
+        private static bool IsEpisodeMissing(IEnumerable<Episode> localEpisodes, Season season,
             VirtualEpisode tvdbEpisode)
         {
             if (season == null || localEpisodes == null)

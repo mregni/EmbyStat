@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.SqLite.Shows;
+using EmbyStat.Common.Models.Entities.Shows;
 
 namespace EmbyStat.Common.Extensions;
 
 public static class IntExtensions
 {
-    public static SqlSeason ConvertToVirtualSeason(this int indexNumber, SqlShow show)
+    public static Season ConvertToVirtualSeason(this int indexNumber, Show show)
     {
-        return new SqlSeason
+        return new Season
         {
             Id = Guid.NewGuid().ToString(),
             Name = indexNumber == 0 ? "Special" : $"Season {indexNumber}",
@@ -22,7 +22,7 @@ public static class IntExtensions
             ProductionYear = null,
             SortName = indexNumber.ToString("0000"),
             LocationType = LocationType.Virtual,
-            Episodes = new List<SqlEpisode>()
+            Episodes = new List<Episode>()
         };
     }
 }

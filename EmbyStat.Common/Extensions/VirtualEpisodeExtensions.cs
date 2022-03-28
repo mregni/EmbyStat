@@ -1,15 +1,15 @@
 ﻿using System;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Show;
-using EmbyStat.Common.SqLite.Shows;
 
 namespace EmbyStat.Common.Extensions;
 
 public static class VirtualEpisodeExtensions
 {
-    public static SqlEpisode ConvertToVirtualEpisode(this VirtualEpisode episode, SqlSeason season)
+    public static Episode ConvertToVirtualEpisode(this VirtualEpisode episode, Season season)
     {
-        return new SqlEpisode
+        return new Episode
         {
             Id = Guid.NewGuid().ToString(),
             Name = episode.Name,

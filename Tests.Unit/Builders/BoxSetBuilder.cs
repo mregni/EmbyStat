@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 
 namespace Tests.Unit.Builders

@@ -1,6 +1,6 @@
 using System.Linq;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite.Movies;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Common.Extensions
@@ -15,7 +15,7 @@ namespace EmbyStat.Common.Extensions
         /// <param name="sortField">Sorting results on a certain column</param>
         /// <param name="sortOrder">Sorting order (asc, desc)</param>
         /// <returns>Sqlite query that can query for all movies with its relations</returns>
-        public static string GenerateFullMovieQuery(this DbSet<SqlMovie> movies, Filter[] filters,string sortField, string sortOrder)
+        public static string GenerateFullMovieQuery(this DbSet<Movie> movies, Filter[] filters,string sortField, string sortOrder)
         {
             var query = $@"
 SELECT m.*, g.*, aus.*, vis.*, sus.*, mes.*
@@ -46,7 +46,7 @@ WHERE 1=1 ";
         /// </summary>
         /// <param name="filters">Filters that need to be applied in the query</param>
         /// <returns>Sqlite query that can query the count of movies</returns>
-        public static string GenerateCountQuery(this DbSet<SqlMovie> list, Filter[] filters)
+        public static string GenerateCountQuery(this DbSet<Movie> list, Filter[] filters)
         {
             var query = $@"
 SELECT COUNT() AS Count

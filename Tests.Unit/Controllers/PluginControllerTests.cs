@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.MediaServer;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;

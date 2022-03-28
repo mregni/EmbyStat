@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Shows;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Services.Models.Cards;
 
 namespace EmbyStat.Services.Converters
@@ -13,24 +12,24 @@ namespace EmbyStat.Services.Converters
     {
         #region Media
 
-        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit,
+        public static TopCard ConvertToTopCard(this Media[] list, string title, string unit,
             string valueSelector, ValueTypeEnum valueTypeEnum)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
         }
 
-        public static TopCard ConvertToTopCard(this SqlMedia[] list, string title, string unit,
+        public static TopCard ConvertToTopCard(this Media[] list, string title, string unit,
             string valueSelector, bool unitNeedsTranslation)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
 
-        public static TopCard ConvertToTopCard(SqlMedia[] list, string title, string unit, string valueSelector,
+        public static TopCard ConvertToTopCard(Media[] list, string title, string unit, string valueSelector,
             ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
         {
             var values = list.Select(x =>
             {
-                var propertyInfo = typeof(SqlMedia).GetProperty(valueSelector);
+                var propertyInfo = typeof(Media).GetProperty(valueSelector);
                 var value = propertyInfo?.GetValue(x, null)?.ToString();
                 if (propertyInfo?.PropertyType == typeof(DateTime?) && !string.IsNullOrWhiteSpace(value))
                 {
@@ -65,7 +64,7 @@ namespace EmbyStat.Services.Converters
 
         #region Extra
 
-        public static TopCard ConvertToTopCard<T>(this Dictionary<T, int> list, string title, string unit, bool unitNeedsTranslation) where T : SqlExtra
+        public static TopCard ConvertToTopCard<T>(this Dictionary<T, int> list, string title, string unit, bool unitNeedsTranslation) where T : Extra
         {
             var values = list.Select(x => new TopCardItem
             {
@@ -85,7 +84,7 @@ namespace EmbyStat.Services.Converters
             };
         }
         
-        public static TopCard ConvertToTopCard(this SqlShow[] list, string title, string unit, bool unitNeedsTranslation, ValueTypeEnum type)
+        public static TopCard ConvertToTopCard(this Show[] list, string title, string unit, bool unitNeedsTranslation, ValueTypeEnum type)
         {
             var values = list.Select(x => new TopCardItem
             {
@@ -105,24 +104,24 @@ namespace EmbyStat.Services.Converters
             };
         }
         
-        public static TopCard ConvertToTopCard(this SqlExtra[] list, string title, string unit, string valueSelector,
+        public static TopCard ConvertToTopCard(this Extra[] list, string title, string unit, string valueSelector,
             ValueTypeEnum valueTypeEnum)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
         }
 
-        public static TopCard ConvertToTopCard(this SqlExtra[] list, string title, string unit,
+        public static TopCard ConvertToTopCard(this Extra[] list, string title, string unit,
             string valueSelector, bool unitNeedsTranslation)
         {
             return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
         }
 
-        public static TopCard ConvertToTopCard(SqlExtra[] list, string title, string unit, string valueSelector,
+        public static TopCard ConvertToTopCard(Extra[] list, string title, string unit, string valueSelector,
             ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
         {
             var values = list.Select(x =>
             {
-                var propertyInfo = typeof(SqlExtra).GetProperty(valueSelector);
+                var propertyInfo = typeof(Extra).GetProperty(valueSelector);
                 var value = propertyInfo?.GetValue(x, null)?.ToString();
                 if (propertyInfo?.PropertyType == typeof(DateTime?) && !string.IsNullOrWhiteSpace(value))
                 {

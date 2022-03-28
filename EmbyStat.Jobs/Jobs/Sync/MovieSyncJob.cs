@@ -6,7 +6,7 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs;
-using EmbyStat.Common.SqLite.Movies;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -119,7 +119,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
                 const int limit = 50;
                 do
                 {
-                    var movies = await _baseHttpClient.GetMedia<SqlMovie>(library.Id, j * limit, limit, library.LastSynced, "Movie");
+                    var movies = await _baseHttpClient.GetMedia<Movie>(library.Id, j * limit, limit, library.LastSynced, "Movie");
 
                     movies.AddGenres(genres);
                     await _movieRepository.UpsertRange(movies);

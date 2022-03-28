@@ -6,7 +6,6 @@ using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Moq;
 using Xunit;
-using Job = EmbyStat.Common.Models.Entities.Job;
 
 namespace Tests.Unit.Jobs
 {

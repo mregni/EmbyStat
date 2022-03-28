@@ -6,12 +6,11 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Movies;
-using EmbyStat.Common.SqLite.Streams;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
@@ -34,7 +33,7 @@ namespace EmbyStat.Repositories
             _context.SaveChanges();
         }
 
-        public async Task UpsertRange(IEnumerable<SqlMovie> movies)
+        public async Task UpsertRange(IEnumerable<Movie> movies)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
@@ -116,12 +115,12 @@ VALUES (@Type, @MovieId, @PersonId)";
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<SqlMovie> GetAll()
+        public IEnumerable<Movie> GetAll()
         {
             return GetAll(false);
         }
 
-        public IEnumerable<SqlMovie> GetAll(bool includeGenres)
+        public IEnumerable<Movie> GetAll(bool includeGenres)
         {
             var query = _context.Movies.AsQueryable();
 
@@ -133,14 +132,14 @@ VALUES (@Type, @MovieId, @PersonId)";
             return query.OrderBy(x => x.SortName);
         }
 
-        public IEnumerable<SqlMovie> GetAllWithImdbId()
+        public IEnumerable<Movie> GetAllWithImdbId()
         {
             return _context.Movies
                 .Where(x => x.IMDB != null)
                 .OrderBy(x => x.SortName);
         }
 
-        public SqlMovie GetById(string id)
+        public Movie GetById(string id)
         {
             return _context.Movies
                 .Include(x => x.Genres)
@@ -159,7 +158,7 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .Sum(x => x.RunTimeTicks);
         }
 
-        public IEnumerable<SqlMovie> GetShortestMovie(long toShortMovieTicks, int count)
+        public IEnumerable<Movie> GetShortestMovie(long toShortMovieTicks, int count)
         {
             return _context.Movies
                 .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
@@ -167,7 +166,7 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .Take(count);
         }
 
-        public IEnumerable<SqlMovie> GetLongestMovie(int count)
+        public IEnumerable<Movie> GetLongestMovie(int count)
         {
             return _context.Movies
                 .Where(x => x.RunTimeTicks != null)
@@ -182,40 +181,40 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .Sum(x => x.SizeInMb);
         }
 
-        public IEnumerable<SqlMovie> GetToShortMovieList(int toShortMovieMinutes)
+        public IEnumerable<Movie> GetToShortMovieList(int toShortMovieMinutes)
         {
             return _context.Movies
                 .Where(x => x.RunTimeTicks < TimeSpan.FromMinutes(toShortMovieMinutes).Ticks)
                 .OrderBy(x => x.SortName);
         }
 
-        public IEnumerable<SqlMovie> GetMoviesWithoutImdbId()
+        public IEnumerable<Movie> GetMoviesWithoutImdbId()
         {
             return _context.Movies
                 .Where(x => x.IMDB == null)
                 .OrderBy(x => x.SortName);
         }
 
-        public IEnumerable<SqlMovie> GetMoviesWithoutPrimaryImage()
+        public IEnumerable<Movie> GetMoviesWithoutPrimaryImage()
         {
             return _context.Movies
                 .Where(x => x.Primary == null)
                 .OrderBy(x => x.SortName);
         }
         
-        public async Task<IEnumerable<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters)
+        public async Task<IEnumerable<Movie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters)
         {
             var query = _context.Movies.GenerateFullMovieQuery(filters, sortField, sortOrder);
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
-            var list = await connection.QueryAsync<SqlMovie, SqlGenre, SqlAudioStream, SqlVideoStream, SqlSubtitleStream, SqlMediaSource, SqlMovie>(query, (m, g, aus, vis, sus, mes) =>
+            var list = await connection.QueryAsync<Movie, Genre, AudioStream, SqlVideoStream, SubtitleStream, MediaSource, Movie>(query, (m, g, aus, vis, sus, mes) =>
             {
-                m.Genres ??= new List<SqlGenre>();
-                m.AudioStreams ??= new List<SqlAudioStream>();
+                m.Genres ??= new List<Genre>();
+                m.AudioStreams ??= new List<AudioStream>();
                 m.VideoStreams ??= new List<SqlVideoStream>();
-                m.SubtitleStreams ??= new List<SqlSubtitleStream>();
-                m.MediaSources ??= new List<SqlMediaSource>();
+                m.SubtitleStreams ??= new List<SubtitleStream>();
+                m.MediaSources ??= new List<MediaSource>();
 
                 m.Genres.AddIfNotNull(g);
                 m.AudioStreams.AddIfNotNull(aus);
@@ -300,33 +299,33 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .OrderBy(x => x.Label);
         }
 
-        public IEnumerable<SqlMedia> GetLatestAddedMedia(int count)
+        public IEnumerable<Media> GetLatestAddedMedia(int count)
         {
             return _context.Movies.GetLatestAddedMedia(count);
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(int count)
+        public async Task<IEnumerable<Media>> GetNewestPremieredMedia(int count)
         {
             var query = _context.Movies.GenerateGetPremieredListQuery(count, "DESC", Constants.Tables.Movies);
-            return await ExecuteListQuery<SqlMovie>(query);
+            return await ExecuteListQuery<Movie>(query);
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(int count)
+        public async Task<IEnumerable<Media>> GetOldestPremieredMedia(int count)
         {
             var query = _context.Movies.GenerateGetPremieredListQuery(count, "ASC", Constants.Tables.Movies);
-            return await ExecuteListQuery<SqlMovie>(query);
+            return await ExecuteListQuery<Movie>(query);
         }
         
-        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(int count)
+        public async Task<IEnumerable<Extra>> GetHighestRatedMedia(int count)
         {
             var query = _context.Movies.GenerateGetCommunityRatingListQuery(count, "DESC", Constants.Tables.Movies);
-            return await ExecuteListQuery<SqlMovie>(query);
+            return await ExecuteListQuery<Movie>(query);
         }
 
-        public async Task<IEnumerable<SqlExtra>>  GetLowestRatedMedia(int count)
+        public async Task<IEnumerable<Extra>>  GetLowestRatedMedia(int count)
         {
             var query = _context.Movies.GenerateGetCommunityRatingListQuery(count, "ASC", Constants.Tables.Movies);
-            return await ExecuteListQuery<SqlMovie>(query);
+            return await ExecuteListQuery<Movie>(query);
         }
 
         public async Task<Dictionary<string, int>> GetGenreChartValues()

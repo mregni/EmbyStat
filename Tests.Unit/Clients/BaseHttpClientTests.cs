@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Net;
 using FluentAssertions;

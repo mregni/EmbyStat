@@ -6,11 +6,10 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
@@ -28,31 +27,31 @@ namespace EmbyStat.Repositories
             _sqliteBootstrap = sqliteBootstrap;
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(int count)
+        public async Task<IEnumerable<Media>> GetNewestPremieredMedia(int count)
         {
             var query = _context.Shows.GenerateGetPremieredListQuery(count, "DESC", Constants.Tables.Shows);
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
+            return await ExecuteListQueryWithLibraryIds<Show>(query);
         }
 
-        public async Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(int count)
+        public async Task<IEnumerable<Media>> GetOldestPremieredMedia(int count)
         {
             var query = _context.Shows.GenerateGetPremieredListQuery(count, "ASC", Constants.Tables.Shows);
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
+            return await ExecuteListQueryWithLibraryIds<Show>(query);
         }
 
-        public async Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(int count)
+        public async Task<IEnumerable<Extra>> GetHighestRatedMedia(int count)
         {
             var query = _context.Shows.GenerateGetCommunityRatingListQuery(count, "DESC", Constants.Tables.Shows);
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
+            return await ExecuteListQueryWithLibraryIds<Show>(query);
         }
 
-        public async Task<IEnumerable<SqlExtra>> GetLowestRatedMedia(int count)
+        public async Task<IEnumerable<Extra>> GetLowestRatedMedia(int count)
         {
             var query = _context.Shows.GenerateGetCommunityRatingListQuery(count, "ASC", Constants.Tables.Shows);
-            return await ExecuteListQueryWithLibraryIds<SqlShow>(query);
+            return await ExecuteListQueryWithLibraryIds<Show>(query);
         }
 
-        public IEnumerable<SqlMedia> GetLatestAddedMedia(int count)
+        public IEnumerable<Media> GetLatestAddedMedia(int count)
         {
             return _context.Shows.GetLatestAddedMedia(count);
         }
@@ -147,7 +146,7 @@ ORDER BY s.Id";
             return result;
         }
 
-        public IEnumerable<SqlShow> GetShowsWithMostDiskSpaceUsed(int count)
+        public IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int count)
         {
             return _context.Shows
                 .OrderByDescending(x => x.SizeInMb)
@@ -218,7 +217,7 @@ WHERE 1=1 ";
 
         #region Shows
 
-        public async Task UpsertShows(IEnumerable<SqlShow> shows)
+        public async Task UpsertShows(IEnumerable<Show> shows)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
@@ -316,16 +315,16 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             }
         }
 
-        public async Task<IEnumerable<SqlShow>> GetAllShowsWithEpisodes()
+        public async Task<IEnumerable<Show>> GetAllShowsWithEpisodes()
         {
             var query = _context.Shows.GenerateFullShowQuery();
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
-            var list = await connection.QueryAsync<SqlShow, SqlSeason, SqlEpisode, SqlShow>(query, (s, se, e) =>
+            var list = await connection.QueryAsync<Show, Season, Episode, Show>(query, (s, se, e) =>
             {
-                s.Seasons ??= new List<SqlSeason>();
-                se.Episodes ??= new List<SqlEpisode>();
+                s.Seasons ??= new List<Season>();
+                se.Episodes ??= new List<Episode>();
 
                 se.Episodes.AddIfNotNull(e);
                 s.Seasons.AddIfNotNull(se);
@@ -335,7 +334,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return MapShows(list);
         }
 
-        public async Task<SqlShow> GetShowByIdWithEpisodes(string showId)
+        public async Task<Show> GetShowByIdWithEpisodes(string showId)
         {
             var query = _context.Shows.GenerateFullShowWithGenresQuery();
             query += $" AND s.Id = {showId}";
@@ -343,12 +342,12 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
-            var list = await connection.QueryAsync<SqlShow, SqlGenre, SqlSeason, SqlEpisode, SqlShow>(query,
+            var list = await connection.QueryAsync<Show, Genre, Season, Episode, Show>(query,
                 (s, g, se, e) =>
                 {
-                    s.Genres ??= new List<SqlGenre>();
-                    s.Seasons ??= new List<SqlSeason>();
-                    se.Episodes ??= new List<SqlEpisode>();
+                    s.Genres ??= new List<Genre>();
+                    s.Seasons ??= new List<Season>();
+                    se.Episodes ??= new List<Episode>();
 
                     s.Genres.AddIfNotNull(g);
                     se.Episodes.AddIfNotNull(e);
@@ -359,19 +358,19 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return MapShows(list).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder,
+        public async Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder,
             Filter[] filters)
         {
             var query = _context.Shows.GenerateShowPageQuery(filters, sortField, sortOrder);
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
-            var list = await connection.QueryAsync<SqlShow, SqlGenre, SqlSeason, SqlEpisode, SqlShow>(query,
+            var list = await connection.QueryAsync<Show, Genre, Season, Episode, Show>(query,
                 (s, g, se, e) =>
                 {
-                    s.Genres ??= new List<SqlGenre>();
-                    s.Seasons ??= new List<SqlSeason>();
-                    se.Episodes ??= new List<SqlEpisode>();
+                    s.Genres ??= new List<Genre>();
+                    s.Seasons ??= new List<Season>();
+                    se.Episodes ??= new List<Episode>();
 
                     s.Genres.AddIfNotNull(g);
                     se.Episodes.AddIfNotNull(e);
@@ -382,7 +381,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             return MapShows(list).Skip(skip).Take(take);
         }
 
-        private static IEnumerable<SqlShow> MapShows(IEnumerable<SqlShow> list)
+        private static IEnumerable<Show> MapShows(IEnumerable<Show> list)
         {
             var result = list
                 .GroupBy(s => s.Id)
@@ -419,7 +418,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
             _context.Shows.RemoveRange(_context.Shows);
         }
 
-        public async Task<Dictionary<SqlShow, int>> GetShowsWithMostEpisodes(int count)
+        public async Task<Dictionary<Show, int>> GetShowsWithMostEpisodes(int count)
         {
             var query = $@"SELECT s.*, (
 	SELECT COUNT(*)
@@ -434,8 +433,8 @@ LIMIT {count}";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
-            var list = await connection.QueryAsync<SqlShow, long, (SqlShow, int)>(query,
-                (show, c) => new ValueTuple<SqlShow, int>(show, Convert.ToInt32(c)), splitOn: "c");
+            var list = await connection.QueryAsync<Show, long, (Show, int)>(query,
+                (show, c) => new ValueTuple<Show, int>(show, Convert.ToInt32(c)), splitOn: "c");
 
             return list.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -450,7 +449,7 @@ LIMIT {count}";
 
         #region Episodes
 
-        public IEnumerable<SqlEpisode> GetAllEpisodesForShow(string showId)
+        public IEnumerable<Episode> GetAllEpisodesForShow(string showId)
         {
             return _context.Shows
                 .Include(x => x.Seasons)

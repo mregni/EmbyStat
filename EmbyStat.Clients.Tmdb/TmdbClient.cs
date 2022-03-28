@@ -1,23 +1,30 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Tmdb.Converter;
+using AutoMapper;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Services.Interfaces;
 using TMDbLib.Client;
 
 namespace EmbyStat.Clients.Tmdb
 {
     public class TmdbClient : ITmdbClient
     {
+        private readonly ISettingsService _settingsService;
+        private readonly IMapper _mapper;
+        public TmdbClient(ISettingsService settingsService, IMapper mapper)
+        {
+            _settingsService = settingsService;
+            _mapper = mapper;
+        }
         public async Task<IEnumerable<VirtualEpisode>> GetEpisodesAsync(int? tmdbShowId)
         {
-            var episodes = new List<VirtualEpisode>();
             if (!tmdbShowId.HasValue)
             {
                 return null;
             }
-            
-            var client = new TMDbClient("0ad9610e613fdbf0d62e71c96d903e0c");
+
+            var settings = _settingsService.GetUserSettings();
+            var client = new TMDbClient(settings.Tmdb.ApiKey);
             
             var show = await client.GetTvShowAsync(tmdbShowId.Value);
             if (show == null)
@@ -25,10 +32,11 @@ namespace EmbyStat.Clients.Tmdb
                 return null;
             }
 
+            var episodes = new List<VirtualEpisode>();
             foreach (var tmdbSeason in show.Seasons)
             {
                 var season = await client.GetTvSeasonAsync(tmdbShowId.Value, tmdbSeason.SeasonNumber);
-                episodes.AddRange(season.Episodes.Select(x => x.ConvertToVirtualEpisode()));
+                episodes.AddRange(_mapper.Map<IList<VirtualEpisode>>(season.Episodes));
             }
 
             return episodes;

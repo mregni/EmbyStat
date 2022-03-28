@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Movies;
-using EmbyStat.Common.SqLite.Streams;
 
 namespace EmbyStat.Common.Extensions
 {
     public static class BaseItemDtoExtension
     {
-        public static T MapStreams<T>(this BaseItemDto dto, T video) where T : SqlMovie
+        public static T MapStreams<T>(this BaseItemDto dto, T video) where T : Movie
         {
             if (dto.MediaStreams != null)
             {
                 video.AudioStreams = dto.MediaStreams
                     .Where(y => y.Type == MediaStreamType.Audio)
-                    .Select(y => new SqlAudioStream
+                    .Select(y => new AudioStream
                     {
                         BitRate = y.BitRate,
                         ChannelLayout = y.ChannelLayout,
@@ -31,7 +31,7 @@ namespace EmbyStat.Common.Extensions
 
                 video.SubtitleStreams = dto.MediaStreams
                     .Where(y => y.Type == MediaStreamType.Subtitle)
-                    .Select(y => new SqlSubtitleStream
+                    .Select(y => new SubtitleStream
                     {
                         Language = y.Language,
                         Codec = y.Codec,
@@ -60,20 +60,20 @@ namespace EmbyStat.Common.Extensions
             }
             else
             {
-                video.AudioStreams = new List<SqlAudioStream>(0);
-                video.SubtitleStreams = new List<SqlSubtitleStream>(0);
+                video.AudioStreams = new List<AudioStream>(0);
+                video.SubtitleStreams = new List<SubtitleStream>(0);
                 video.VideoStreams = new List<SqlVideoStream>(0);
             }
 
             return video;
         }
 
-        public static T MapMediaSources<T>(this BaseItemDto dto, T video) where T : SqlMovie
+        public static T MapMediaSources<T>(this BaseItemDto dto, T video) where T : Movie
         {
             if (dto.MediaSources != null)
             {
                 video.MediaSources = dto.MediaSources
-                    .Select(y => new SqlMediaSource
+                    .Select(y => new MediaSource
                     {
                         Path = y.Path,
                         BitRate = y.Bitrate,
@@ -86,23 +86,23 @@ namespace EmbyStat.Common.Extensions
             }
             else
             {
-                video.MediaSources = new List<SqlMediaSource>(0);
+                video.MediaSources = new List<MediaSource>(0);
             }
 
             return video;
         }
 
-        public static SqlMovie MapPeople(this BaseItemDto dto, SqlMovie extra)
+        public static Movie MapPeople(this BaseItemDto dto, Movie extra)
         {
             if (dto.People == null || !dto.People.Any())
             {
                 return extra;
             }
 
-            extra.People ??= new List<SqlMediaPerson>();
+            extra.People ??= new List<MediaPerson>();
             foreach (var person in dto.People)
             {
-                extra.People.Add(new SqlMediaPerson
+                extra.People.Add(new MediaPerson
                 {
                     MovieId = extra.Id,
                     PersonId = person.Id,
@@ -113,7 +113,7 @@ namespace EmbyStat.Common.Extensions
             return extra;
         }
 
-        public static T MapProviderIds<T>(this BaseItemDto dto, T extra) where T : SqlMovie
+        public static T MapProviderIds<T>(this BaseItemDto dto, T extra) where T : Movie
         {
             if (dto.ProviderIds == null)
             {
@@ -131,7 +131,7 @@ namespace EmbyStat.Common.Extensions
             return extra;
         }
 
-        public static T MapImageTags<T>(this BaseItemDto dto, T extra) where T : SqlMovie
+        public static T MapImageTags<T>(this BaseItemDto dto, T extra) where T : Movie
         {
             if (dto.ImageTags == null)
             {

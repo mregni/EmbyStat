@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Dapper;
 using EmbyStat.Common;
-using EmbyStat.Common.SqLite;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ namespace EmbyStat.Repositories
             _context = context;
         }
 
-        public async Task UpsertRange(IEnumerable<SqlGenre> genres)
+        public async Task UpsertRange(IEnumerable<Genre> genres)
         {
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
@@ -31,7 +31,7 @@ namespace EmbyStat.Repositories
             await transaction.CommitAsync();
         }
 
-        public Task<SqlGenre[]> GetAll()
+        public Task<Genre[]> GetAll()
         {
             return _context.Genres.ToArrayAsync();
         }

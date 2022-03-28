@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using EmbyStat.Common.Models.Entities.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;

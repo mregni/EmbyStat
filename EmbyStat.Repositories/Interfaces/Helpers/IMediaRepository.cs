@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite.Helpers;
 
 namespace EmbyStat.Repositories.Interfaces.Helpers
 {
     public interface IMediaRepository
     {
-        IEnumerable<SqlMedia> GetLatestAddedMedia(int count);
-        Task<IEnumerable<SqlMedia>> GetNewestPremieredMedia(int count);
-        Task<IEnumerable<SqlMedia>> GetOldestPremieredMedia(int count);
-        Task<IEnumerable<SqlExtra>> GetHighestRatedMedia(int count);
-        Task<IEnumerable<SqlExtra>> GetLowestRatedMedia(int count);
+        IEnumerable<Media> GetLatestAddedMedia(int count);
+        Task<IEnumerable<Media>> GetNewestPremieredMedia(int count);
+        Task<IEnumerable<Media>> GetOldestPremieredMedia(int count);
+        Task<IEnumerable<Extra>> GetHighestRatedMedia(int count);
+        Task<IEnumerable<Extra>> GetLowestRatedMedia(int count);
 
         #region Charts
         Task<Dictionary<string, int>> GetGenreChartValues();

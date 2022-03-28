@@ -1,10 +1,9 @@
 ﻿using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Helpers;
-using EmbyStat.Common.SqLite.Movies;
-using EmbyStat.Common.SqLite.Shows;
-using EmbyStat.Common.SqLite.Streams;
-using EmbyStat.Common.SqLite.Users;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Streams;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Repositories.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,29 +14,29 @@ namespace EmbyStat.Repositories
 {
     public class DbContext : IdentityDbContext<EmbyStatUser>
     {
-        public DbSet<SqlMovie> Movies { get; set; }
-        public DbSet<SqlMediaSource> MediaSources { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<MediaSource> MediaSources { get; set; }
         public DbSet<SqlVideoStream> VideoStreams { get; set; }
-        public DbSet<SqlAudioStream> AudioStreams { get; set; }
-        public DbSet<SqlSubtitleStream> SubtitleStreams { get; set; }
-        public DbSet<SqlMediaPerson> MediaPerson { get; set; }
-        public DbSet<SqlGenre> Genres { get; set; }
-        public DbSet<SqlPerson> People { get; set; }
-        public DbSet<SqlShow> Shows { get; set; }
-        public DbSet<SqlSeason> Seasons { get; set; }
-        public DbSet<SqlEpisode> Episodes { get; set; }
+        public DbSet<AudioStream> AudioStreams { get; set; }
+        public DbSet<SubtitleStream> SubtitleStreams { get; set; }
+        public DbSet<MediaPerson> MediaPerson { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Show> Shows { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Episode> Episodes { get; set; }
 
-        public DbSet<SqlPluginInfo> Plugins { get; set; }
-        public DbSet<SqlServerInfo> ServerInfo { get; set; }
+        public DbSet<PluginInfo> Plugins { get; set; }
+        public DbSet<MediaServerInfo> MediaServerInfo { get; set; }
 
-        public DbSet<SqlUser> MediaServerUsers { get; set; }
-        public DbSet<SqlUserConfiguration> MediaServerUserConfigurations { get; set; }
-        public DbSet<SqlUserPolicy> MediaServerUserPolicies { get; set; }
+        public DbSet<MediaServerUser> MediaServerUsers { get; set; }
+        public DbSet<MediaServerUserConfiguration> MediaServerUserConfigurations { get; set; }
+        public DbSet<MediaServerUserPolicy> MediaServerUserPolicies { get; set; }
 
         public DbSet<Library> Libraries { get; set; }
-        public DbSet<SqlDevice> Devices { get; set; }
+        public DbSet<Device> Devices { get; set; }
         public DbSet<FilterValues> Filters { get; set; }
-        public DbSet<SqlJob> Jobs { get; set; }
+        public DbSet<Job> Jobs { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<MediaServerStatus> MediaServerStatus { get; set; }
         public DbSet<Statistic> Statistics { get; set; }
@@ -92,44 +91,44 @@ namespace EmbyStat.Repositories
 
         private static void BuildUsers(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SqlUser>().HasKey(x => x.Id);
-            modelBuilder.Entity<SqlUser>()
-                .HasOne<SqlUserConfiguration>()
+            modelBuilder.Entity<MediaServerUser>().HasKey(x => x.Id);
+            modelBuilder.Entity<MediaServerUser>()
+                .HasOne<MediaServerUserConfiguration>()
                 .WithOne(x => x.User)
                 .OnDelete(DeleteBehavior.Cascade);
             
-            modelBuilder.Entity<SqlUser>()
-                .HasOne<SqlUserPolicy>()
+            modelBuilder.Entity<MediaServerUser>()
+                .HasOne<MediaServerUserPolicy>()
                 .WithOne(x => x.User)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
         private static void BuildPeople(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SqlMediaPerson>().HasKey(x => x.Id);
-            modelBuilder.Entity<SqlMediaPerson>()
+            modelBuilder.Entity<MediaPerson>().HasKey(x => x.Id);
+            modelBuilder.Entity<MediaPerson>()
                 .Property(x => x.Id)
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.ShowId);
-            modelBuilder.Entity<SqlMediaPerson>().Property(x => x.ShowId).IsRequired(false);
-            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.MovieId);
-            modelBuilder.Entity<SqlMediaPerson>().Property(x => x.MovieId).IsRequired(false);
-            modelBuilder.Entity<SqlMediaPerson>().HasIndex(p => p.PersonId);
+            modelBuilder.Entity<MediaPerson>().HasIndex(p => p.ShowId);
+            modelBuilder.Entity<MediaPerson>().Property(x => x.ShowId).IsRequired(false);
+            modelBuilder.Entity<MediaPerson>().HasIndex(p => p.MovieId);
+            modelBuilder.Entity<MediaPerson>().Property(x => x.MovieId).IsRequired(false);
+            modelBuilder.Entity<MediaPerson>().HasIndex(p => p.PersonId);
 
-            modelBuilder.Entity<SqlShow>()
+            modelBuilder.Entity<Show>()
                 .HasMany(x => x.People)
                 .WithOne(x => x.Show)
                 .IsRequired()
                 .HasForeignKey(x => x.ShowId);
-            modelBuilder.Entity<SqlMovie>()
+            modelBuilder.Entity<Movie>()
                 .HasMany(x => x.People)
                 .WithOne(x => x.Movie)
                 .IsRequired()
                 .HasForeignKey(x => x.MovieId);
 
-            modelBuilder.Entity<SqlPerson>()
+            modelBuilder.Entity<Person>()
                 .HasMany(x => x.MediaPeople)
                 .WithOne(x => x.Person)
                 .IsRequired()
@@ -138,47 +137,47 @@ namespace EmbyStat.Repositories
 
         private static void BuildShows(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SqlShow>().HasIndex(x => x.Primary);
-            modelBuilder.Entity<SqlShow>().HasIndex(x => x.Logo);
-            modelBuilder.Entity<SqlShow>().HasIndex(x => x.SortName);
-            modelBuilder.Entity<SqlShow>().HasIndex(x => x.Name);
-            modelBuilder.Entity<SqlShow>().HasIndex(x => x.RunTimeTicks);
-            modelBuilder.Entity<SqlShow>().HasIndex(x => x.CommunityRating);
+            modelBuilder.Entity<Show>().HasIndex(x => x.Primary);
+            modelBuilder.Entity<Show>().HasIndex(x => x.Logo);
+            modelBuilder.Entity<Show>().HasIndex(x => x.SortName);
+            modelBuilder.Entity<Show>().HasIndex(x => x.Name);
+            modelBuilder.Entity<Show>().HasIndex(x => x.RunTimeTicks);
+            modelBuilder.Entity<Show>().HasIndex(x => x.CommunityRating);
             
-            modelBuilder.Entity<SqlShow>()
+            modelBuilder.Entity<Show>()
                 .HasMany(x => x.Seasons)
                 .WithOne(x => x.Show)
                 .HasForeignKey(x => x.ShowId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<SqlGenre>()
+            modelBuilder.Entity<Genre>()
                 .HasMany(x => x.Shows)
                 .WithMany(x => x.Genres);
 
-            modelBuilder.Entity<SqlSeason>()
+            modelBuilder.Entity<Season>()
                 .HasMany(x => x.Episodes)
                 .WithOne(x => x.Season)
                 .HasForeignKey(x => x.SeasonId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<SqlEpisode>()
+            modelBuilder.Entity<Episode>()
                 .HasMany(x => x.SubtitleStreams)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<SqlEpisode>()
+            modelBuilder.Entity<Episode>()
                 .HasMany(x => x.MediaSources)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<SqlEpisode>()
+            modelBuilder.Entity<Episode>()
                 .HasMany(x => x.AudioStreams)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<SqlEpisode>()
+            modelBuilder.Entity<Episode>()
                 .HasMany(x => x.VideoStreams)
                 .WithOne(x => x.Episode)
                 .HasForeignKey(x => x.EpisodeId)
@@ -187,32 +186,32 @@ namespace EmbyStat.Repositories
 
         private static void BuildMovies(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.RunTimeTicks);
-            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.SortName);
-            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.Name);
-            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.CommunityRating);
-            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.Primary);
-            modelBuilder.Entity<SqlMovie>().HasIndex(x => x.Logo);
+            modelBuilder.Entity<Movie>().HasIndex(x => x.RunTimeTicks);
+            modelBuilder.Entity<Movie>().HasIndex(x => x.SortName);
+            modelBuilder.Entity<Movie>().HasIndex(x => x.Name);
+            modelBuilder.Entity<Movie>().HasIndex(x => x.CommunityRating);
+            modelBuilder.Entity<Movie>().HasIndex(x => x.Primary);
+            modelBuilder.Entity<Movie>().HasIndex(x => x.Logo);
             
-            modelBuilder.Entity<SqlMovie>()
+            modelBuilder.Entity<Movie>()
                 .HasMany(x => x.Genres)
                 .WithMany(x => x.Movies);
-            modelBuilder.Entity<SqlMovie>()
+            modelBuilder.Entity<Movie>()
                 .HasMany(x => x.SubtitleStreams)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<SqlMovie>()
+            modelBuilder.Entity<Movie>()
                 .HasMany(x => x.MediaSources)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<SqlMovie>()
+            modelBuilder.Entity<Movie>()
                 .HasMany(x => x.AudioStreams)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<SqlMovie>()
+            modelBuilder.Entity<Movie>()
                 .HasMany(x => x.VideoStreams)
                 .WithOne(x => x.Movie)
                 .HasForeignKey(x => x.MovieId)
@@ -228,18 +227,18 @@ namespace EmbyStat.Repositories
             modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Codec);
             modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.BitDepth);
             
-            modelBuilder.Entity<SqlMediaSource>().HasIndex(x => x.SizeInMb);
+            modelBuilder.Entity<MediaSource>().HasIndex(x => x.SizeInMb);
             
-            modelBuilder.Entity<SqlSubtitleStream>().HasIndex(x => x.Language);
+            modelBuilder.Entity<SubtitleStream>().HasIndex(x => x.Language);
 
-            modelBuilder.Entity<SqlGenre>().HasIndex(x => x.Name);
+            modelBuilder.Entity<Genre>().HasIndex(x => x.Name);
         }
         #endregion
 
         #region Seeders
         private static void SeedDatabase(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SqlJob>().HasData(JobSeed.Jobs);
+            modelBuilder.Entity<Job>().HasData(JobSeed.Jobs);
             modelBuilder.Entity<Language>().HasData(LanguageSeed.Languages);
             modelBuilder.Entity<MediaServerStatus>().HasData(MediaServerSeed.Status);
         }

@@ -7,8 +7,8 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite.Shows;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Converters;
@@ -76,11 +76,11 @@ namespace EmbyStat.Services
             return _showRepository.Any();
         }
 
-        public async Task<Page<SqlShow>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount)
+        public async Task<Page<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount)
         {
             var list = await _showRepository.GetShowPage(skip, take, sortField, sortOrder, filters);
 
-            var page = new Page<SqlShow>(list);
+            var page = new Page<Show>(list);
             if (requireTotalCount)
             {
                 page.TotalCount = await _showRepository.Count(filters);
@@ -89,7 +89,7 @@ namespace EmbyStat.Services
             return page;
         }
 
-        public Task<SqlShow> GetShow(string id)
+        public Task<Show> GetShow(string id)
         {
             return _showRepository.GetShowByIdWithEpisodes(id);
         }

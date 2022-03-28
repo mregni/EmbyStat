@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Shows;
-using EmbyStat.Common.SqLite.Users;
 using MediaBrowser.Model.IO;
 
 namespace EmbyStat.Clients.Base.Http
@@ -20,24 +19,24 @@ namespace EmbyStat.Clients.Base.Http
         Task<int> GetMediaCount(string parentId, DateTime? lastSynced, string mediaType);
         Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType);
 
-        Task<IEnumerable<SqlPerson>> GetPeople(int startIndex, int limit);
+        Task<IEnumerable<Person>> GetPeople(int startIndex, int limit);
         Task<int> GetPeopleCount();
-        SqlPerson GetPersonByName(string personName);
+        Person GetPersonByName(string personName);
         
-        Task<SqlShow[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
-        Task<SqlSeason[]> GetSeasons(string parentId, DateTime? lastSynced);
-        Task<SqlEpisode[]> GetEpisodes(string parentId, DateTime? lastSynced);
+        Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
+        Task<Season[]> GetSeasons(string parentId, DateTime? lastSynced);
+        Task<Episode[]> GetEpisodes(string parentId, DateTime? lastSynced);
 
-        Task<List<SqlPluginInfo>> GetInstalledPlugins();
+        Task<List<PluginInfo>> GetInstalledPlugins();
         Task<ServerInfoDto> GetServerInfo();
         List<FileSystemEntryInfo> GetLocalDrives();
-        Task<List<SqlUser>> GetUsers();
-        Task<IEnumerable<SqlDevice>> GetDevices();
+        Task<List<MediaServerUser>> GetUsers();
+        Task<IEnumerable<Device>> GetDevices();
         Task<Library[]> GetLibraries();
 
         bool Ping();
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer();
         
-        Task<IEnumerable<SqlGenre>> GetGenres();
+        Task<IEnumerable<Genre>> GetGenres();
     }
 }

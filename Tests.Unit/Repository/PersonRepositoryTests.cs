@@ -1,5 +1,4 @@
 ﻿using System;
-using EmbyStat.Common.Models.Entities;
 using Xunit;
 
 namespace Tests.Unit.Repository

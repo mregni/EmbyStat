@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Tasks.Enum;
-using EmbyStat.Common.SqLite;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,12 +18,12 @@ public class SqlJobRepository : IJobRepository
         _context = context;
     }
 
-    public IEnumerable<SqlJob> GetAll()
+    public IEnumerable<Job> GetAll()
     {
         return _context.Jobs.AsEnumerable();
     }
 
-    public SqlJob GetById(Guid id)
+    public Job GetById(Guid id)
     {
         return _context.Jobs.FirstOrDefault(x => x.Id == id);
     }

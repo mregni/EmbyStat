@@ -12,10 +12,10 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Movies;
-using EmbyStat.Common.SqLite.Users;
 using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
@@ -36,8 +36,10 @@ namespace EmbyStat.Services
         private readonly Logger _logger;
         private readonly IMapper _mapper;
 
-        public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, IMapper mapper)
+        public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
+            ISessionService sessionService,
+            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository,
+            IMapper mapper)
         {
             _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
@@ -53,13 +55,14 @@ namespace EmbyStat.Services
         }
 
         #region Server
+
         public Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type)
         {
             ChangeClientType(type);
             return _baseHttpClient.SearchServer();
         }
 
-        public async Task<SqlServerInfo> GetServerInfo(bool forceReSync)
+        public async Task<MediaServerInfo> GetServerInfo(bool forceReSync)
         {
             if (forceReSync)
             {
@@ -136,7 +139,7 @@ namespace EmbyStat.Services
 
         #region Plugin
 
-        public Task<List<SqlPluginInfo>> GetAllPlugins()
+        public Task<List<PluginInfo>> GetAllPlugins()
         {
             return _mediaServerRepository.GetAllPlugins();
         }
@@ -145,12 +148,12 @@ namespace EmbyStat.Services
 
         #region Users
 
-        public Task<List<SqlUser>> GetAllUsers()
+        public Task<List<MediaServerUser>> GetAllUsers()
         {
             return _mediaServerRepository.GetAllUsers();
         }
 
-        public async Task<List<SqlUser>> GetAllAdministrators()
+        public async Task<List<MediaServerUser>> GetAllAdministrators()
         {
             var administrators = await _mediaServerRepository.GetAllAdministrators();
 
@@ -226,20 +229,20 @@ namespace EmbyStat.Services
         #endregion
 
         #region Devices
-        
-        public Task<List<SqlDevice>> GetAllDevices()
+
+        public Task<List<Device>> GetAllDevices()
         {
             return _mediaServerRepository.GetAllDevices();
         }
-        
+
         #endregion
-        
+
         #region JobHelpers
 
-        public async Task<SqlServerInfo> GetAndProcessServerInfo()
+        public async Task<MediaServerInfo> GetAndProcessServerInfo()
         {
             var serverDto = await _baseHttpClient.GetServerInfo();
-            var server = _mapper.Map<SqlServerInfo>(serverDto);
+            var server = _mapper.Map<MediaServerInfo>(serverDto);
             await _mediaServerRepository.DeleteAndInsertServerInfo(server);
             return server;
         }
@@ -267,13 +270,14 @@ namespace EmbyStat.Services
         {
             var libraries = await _baseHttpClient.GetLibraries();
             var currentLibraries = await _mediaServerRepository.GetAllLibraries();
-            
+
             foreach (var library in libraries)
             {
                 library.Sync = currentLibraries
                     .FirstOrDefault(x => x.Id == library.Id)?
                     .Sync ?? false;
             }
+
             await _mediaServerRepository.DeleteAndInsertLibraries(libraries);
         }
 
@@ -347,19 +351,15 @@ namespace EmbyStat.Services
                 var playStates = play.PlayStates.Where(x => x.PositionTicks.HasValue).ToList();
                 var watchedTicks = playStates.Max(x => x.PositionTicks) -
                                    playStates.Min(x => x.PositionTicks);
-                watchedPercentage = Math.Round((watchedTicks.Value / (decimal)runTimeTicks) * 1000) / 10;
+                watchedPercentage = Math.Round((watchedTicks.Value / (decimal) runTimeTicks) * 1000) / 10;
             }
 
             return watchedPercentage;
         }
-        private decimal? CalculateWatchedPercentage(Play play, SqlMovie movie)
-        {
-            return CalculateWatchedPercentage(play, movie.RunTimeTicks);
-        }
 
-        private decimal? CalculateWatchedPercentage(Play play, Episode episode)
+        private decimal? CalculateWatchedPercentage(Play play, Extra media)
         {
-            return CalculateWatchedPercentage(play, episode.RunTimeTicks);
+            return CalculateWatchedPercentage(play, media.RunTimeTicks);
         }
 
         private void ChangeClientType(ServerType? type)
@@ -372,9 +372,9 @@ namespace EmbyStat.Services
             settings.MediaServer ??= new MediaServerSettings();
 
             _baseHttpClient.SetDeviceInfo(
-                settings.AppName, 
-                settings.MediaServer.AuthorizationScheme, 
-                appSettings.Version.ToCleanVersionString(), 
+                settings.AppName,
+                settings.MediaServer.AuthorizationScheme,
+                appSettings.Version.ToCleanVersionString(),
                 settings.Id.ToString(),
                 settings.MediaServer.UserId);
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.SqLite.Movies;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 
@@ -14,7 +14,7 @@ namespace EmbyStat.Services.Interfaces
         Task<MovieStatistics> GetStatistics();
         Task<MovieStatistics> CalculateMovieStatistics();
         bool TypeIsPresent();
-        Task<Page<SqlMovie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount);
-        SqlMovie GetMovie(string id);
+        Task<Page<Movie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount);
+        Movie GetMovie(string id);
     }
 }

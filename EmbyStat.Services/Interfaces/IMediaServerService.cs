@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Users;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 
@@ -14,7 +13,7 @@ namespace EmbyStat.Services.Interfaces
     {
         #region Server
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type);
-        Task<SqlServerInfo> GetServerInfo(bool forceReSync);
+        Task<MediaServerInfo> GetServerInfo(bool forceReSync);
         bool TestNewApiKey(string url, string apiKey, ServerType type);
         MediaServerStatus GetMediaServerStatus();
         bool PingMediaServer(string url);
@@ -27,14 +26,14 @@ namespace EmbyStat.Services.Interfaces
 
         #region Plugins
 
-        Task<List<SqlPluginInfo>> GetAllPlugins();
+        Task<List<PluginInfo>> GetAllPlugins();
 
         #endregion
 
         #region Users
 
-        Task<List<SqlUser>>  GetAllUsers();
-        Task<List<SqlUser>>  GetAllAdministrators();
+        Task<List<MediaServerUser>>  GetAllUsers();
+        Task<List<MediaServerUser>>  GetAllAdministrators();
         EmbyUser GetUserById(string id);
         Card<int> GetViewedEpisodeCountByUserId(string id);
         Card<int> GetViewedMovieCountByUserId(string id);
@@ -45,13 +44,13 @@ namespace EmbyStat.Services.Interfaces
 
         #region Devices
 
-        Task<List<SqlDevice>> GetAllDevices();
+        Task<List<Device>> GetAllDevices();
 
         #endregion
 
         #region JobHelpers
 
-        Task<SqlServerInfo> GetAndProcessServerInfo();
+        Task<MediaServerInfo> GetAndProcessServerInfo();
         Task GetAndProcessPluginInfo();
         Task GetAndProcessUsers();
         Task GetAndProcessDevices();

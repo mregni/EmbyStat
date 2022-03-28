@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Users;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,12 +42,12 @@ public class SqlMediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Plugins
-    public Task<List<SqlPluginInfo>> GetAllPlugins()
+    public Task<List<PluginInfo>> GetAllPlugins()
     {
         return _context.Plugins.ToListAsync();
     }
 
-    public async Task InsertPlugins(IEnumerable<SqlPluginInfo> plugins)
+    public async Task InsertPlugins(IEnumerable<PluginInfo> plugins)
     {
         await _context.AddRangeAsync(plugins);
         await _context.SaveChangesAsync();
@@ -62,34 +61,34 @@ public class SqlMediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Server Info
-    public Task<SqlServerInfo> GetServerInfo()
+    public Task<MediaServerInfo> GetServerInfo()
     {
-        return _context.ServerInfo.SingleOrDefaultAsync();
+        return _context.MediaServerInfo.SingleOrDefaultAsync();
     }
 
-    public async Task DeleteAndInsertServerInfo(SqlServerInfo entity)
+    public async Task DeleteAndInsertServerInfo(MediaServerInfo entity)
     {
-        _context.ServerInfo.RemoveRange(_context.ServerInfo);
-        await _context.ServerInfo.AddAsync(entity);
+        _context.MediaServerInfo.RemoveRange(_context.MediaServerInfo);
+        await _context.MediaServerInfo.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteServerInfo()
     {
-        _context.ServerInfo.RemoveRange(_context.ServerInfo);
+        _context.MediaServerInfo.RemoveRange(_context.MediaServerInfo);
         await _context.SaveChangesAsync();
     }
     #endregion
 
     #region MediaServer Users
-    public async Task DeleteAndInsertUsers(IEnumerable<SqlUser> users)
+    public async Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users)
     {
         _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
         await _context.MediaServerUsers.AddRangeAsync(users);
         await _context.SaveChangesAsync();
     }
 
-    public Task<List<SqlUser>> GetAllUsers()
+    public Task<List<MediaServerUser>> GetAllUsers()
     {
         return _context.MediaServerUsers
             .Include(x => x.Configuration)
@@ -97,7 +96,7 @@ public class SqlMediaServerRepository : IMediaServerRepository
             .ToListAsync();
     }
 
-    public Task<List<SqlUser>> GetAllAdministrators()
+    public Task<List<MediaServerUser>> GetAllAdministrators()
     {
         return _context.MediaServerUsers
             .Include(x => x.Configuration)
@@ -119,17 +118,17 @@ public class SqlMediaServerRepository : IMediaServerRepository
     #endregion
 
     #region Devices
-    public Task<List<SqlDevice>> GetAllDevices()
+    public Task<List<Device>> GetAllDevices()
     {
         return _context.Devices.ToListAsync();
     }
 
-    public Task<List<SqlDevice>> GetDeviceById(IEnumerable<string> ids)
+    public Task<List<Device>> GetDeviceById(IEnumerable<string> ids)
     {
         throw new System.NotImplementedException();
     }
 
-    public async Task DeleteAndInsertDevices(IEnumerable<SqlDevice> devices)
+    public async Task DeleteAndInsertDevices(IEnumerable<Device> devices)
     {
         _context.Devices.RemoveRange(_context.Devices);
         await _context.Devices.AddRangeAsync(devices);

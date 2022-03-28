@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.SqLite;
-using EmbyStat.Common.SqLite.Users;
+using EmbyStat.Common.Models.Entities.Users;
 
 namespace EmbyStat.Repositories.Interfaces
 {
@@ -18,29 +17,29 @@ namespace EmbyStat.Repositories.Interfaces
         #endregion
 
         #region MediaServer Plugins
-        Task<List<SqlPluginInfo>>  GetAllPlugins();
-        Task InsertPlugins(IEnumerable<SqlPluginInfo> plugins);
+        Task<List<PluginInfo>>  GetAllPlugins();
+        Task InsertPlugins(IEnumerable<PluginInfo> plugins);
         Task DeleteAllPlugins();
         #endregion
 
         #region MediaServer Server Info
-        Task<SqlServerInfo> GetServerInfo();
-        Task DeleteAndInsertServerInfo(SqlServerInfo entity);
+        Task<MediaServerInfo> GetServerInfo();
+        Task DeleteAndInsertServerInfo(MediaServerInfo entity);
         Task DeleteServerInfo();
         #endregion
 
         #region MediaServer Users
-        Task DeleteAndInsertUsers(IEnumerable<SqlUser> users);
-        Task<List<SqlUser>>  GetAllUsers();
-        Task<List<SqlUser>>  GetAllAdministrators();
+        Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users);
+        Task<List<MediaServerUser>>  GetAllUsers();
+        Task<List<MediaServerUser>>  GetAllAdministrators();
         EmbyUser GetUserById(string id);
         Task DeleteAllUsers();
         #endregion
 
         #region Devices
-        Task<List<SqlDevice>> GetAllDevices();
-        Task<List<SqlDevice>> GetDeviceById(IEnumerable<string> ids);
-        Task DeleteAndInsertDevices(IEnumerable<SqlDevice> devices);
+        Task<List<Device>> GetAllDevices();
+        Task<List<Device>> GetDeviceById(IEnumerable<string> ids);
+        Task DeleteAndInsertDevices(IEnumerable<Device> devices);
         Task DeleteAllDevices();
         #endregion
 
