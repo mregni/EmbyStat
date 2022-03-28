@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub.Models;
-using Microsoft.AspNetCore.Mvc;
+using Refit;
 
 namespace EmbyStat.Clients.GitHub;
 
@@ -10,6 +10,6 @@ public interface IGitHubApi
     /// Fetches all releases from the public EmbyStat repo.
     /// </summary>
     /// <returns>Array of type <see cref="ReleaseObject"/></returns>
-    [HttpGet("/releases")]
+    [Get("/releases")]
     Task<ReleaseObject[]> GetReleases();
 }

@@ -20,25 +20,31 @@ public class SqlMediaServerRepository : IMediaServerRepository
     }
 
     #region MediaServer Status
-    public MediaServerStatus GetEmbyStatus()
+    public Task<MediaServerStatus> GetEmbyStatus()
     {
-        throw new System.NotImplementedException();
+        return _context.MediaServerStatus.FirstOrDefaultAsync();
     }
 
-    public void IncreaseMissedPings()
+    public async Task IncreaseMissedPings()
     {
-        throw new System.NotImplementedException();
+        var status = await _context.MediaServerStatus.FirstOrDefaultAsync();
+        if (status != null)
+        {
+            status.MissedPings += 1;
+            await _context.SaveChangesAsync();
+        }
     }
 
-    public void ResetMissedPings()
+    public async Task ResetMissedPings()
     {
-        throw new System.NotImplementedException();
+        var status = await _context.MediaServerStatus.FirstOrDefaultAsync();
+        if (status != null)
+        {
+            status.MissedPings = 0;
+            await _context.SaveChangesAsync();
+        }
     }
 
-    public void RemoveAllMediaServerData()
-    {
-        throw new System.NotImplementedException();
-    }
     #endregion
 
     #region MediaServer Plugins

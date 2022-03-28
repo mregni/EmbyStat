@@ -31,21 +31,18 @@ namespace EmbyStat.Services
         private readonly ISessionService _sessionService;
         private readonly ISettingsService _settingsService;
         private readonly IMovieRepository _movieRepository;
-        private readonly IShowRepository _showRepository;
         private readonly IClientStrategy _clientStrategy;
         private readonly Logger _logger;
         private readonly IMapper _mapper;
 
         public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
             ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository,
-            IMapper mapper)
+            ISettingsService settingsService, IMovieRepository movieRepository, IMapper mapper)
         {
             _mediaServerRepository = mediaServerRepository;
             _sessionService = sessionService;
             _settingsService = settingsService;
             _movieRepository = movieRepository;
-            _showRepository = showRepository;
             _clientStrategy = clientStrategy;
             _mapper = mapper;
             _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
@@ -91,7 +88,7 @@ namespace EmbyStat.Services
             return false;
         }
 
-        public MediaServerStatus GetMediaServerStatus()
+        public Task<MediaServerStatus> GetMediaServerStatus()
         {
             return _mediaServerRepository.GetEmbyStatus();
         }
@@ -110,29 +107,29 @@ namespace EmbyStat.Services
         public async Task<bool> PingMediaServer(string url)
         {
             _logger.Debug($"Pinging server on {url}");
+            var oldUrl = _baseHttpClient.BaseUrl;
             _baseHttpClient.BaseUrl = url;
+            
+            var result = await _baseHttpClient.Ping();
+
+            _baseHttpClient.BaseUrl = oldUrl;
+            return result;
+        }
+        
+        public async Task<bool> PingMediaServer()
+        {
+            _logger.Debug($"Pinging server on {_settingsService.GetUserSettings().MediaServer.Address}");
             return await _baseHttpClient.Ping();
         }
 
-        public void ResetMissedPings()
+        public Task ResetMissedPings()
         {
-            _mediaServerRepository.ResetMissedPings();
+            return _mediaServerRepository.ResetMissedPings();
         }
 
-        public void IncreaseMissedPings()
+        public Task IncreaseMissedPings()
         {
-            _mediaServerRepository.IncreaseMissedPings();
-        }
-
-        //TODO Add checkbox in settings UI to fully reset the database or not
-        public void ResetMediaServerData()
-        {
-            var settings = _settingsService.GetUserSettings();
-            ChangeClientType(settings.MediaServer.Type);
-            _movieRepository.RemoveAll();
-            _showRepository.RemoveShows();
-            _mediaServerRepository.ResetMissedPings();
-            _mediaServerRepository.RemoveAllMediaServerData();
+            return _mediaServerRepository.IncreaseMissedPings();
         }
 
         #endregion

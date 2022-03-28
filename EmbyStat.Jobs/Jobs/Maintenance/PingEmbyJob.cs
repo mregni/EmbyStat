@@ -14,9 +14,10 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
     {
         private readonly IMediaServerService _mediaServerService;
 
-        public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-            IMediaServerService mediaServerService) 
-            : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob), Constants.LogPrefix.PingMediaServerJob)
+        public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+            IMediaServerService mediaServerService)
+            : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob),
+                Constants.LogPrefix.PingMediaServerJob)
         {
             _mediaServerService = mediaServerService;
             Title = jobRepository.GetById(Id).Title;
@@ -28,22 +29,22 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJobAsync()
         {
-            var result = await _mediaServerService.PingMediaServer(Settings.MediaServer.Address);
+            var result = await _mediaServerService.PingMediaServer();
             await LogProgress(50);
             if (result)
             {
                 await LogInformation("We found your MediaServer server");
-                _mediaServerService.ResetMissedPings();
+                await _mediaServerService.ResetMissedPings();
             }
             else
             {
-                await LogInformation("We could not ping your MediaServer server. Might be because it's turned off or dns is wrong");
-                _mediaServerService.IncreaseMissedPings();
+                await LogWarning(
+                    $"We could not ping your MediaServer server at {Settings.MediaServer.Address}. Might be because it's turned off or dns is wrong");
+                await _mediaServerService.IncreaseMissedPings();
             }
 
-            var status = _mediaServerService.GetMediaServerStatus();
+            var status = await _mediaServerService.GetMediaServerStatus();
             await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
-
         }
     }
 }

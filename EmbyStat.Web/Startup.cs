@@ -277,7 +277,7 @@ namespace EmbyStat.Web
 
         }
 
-        private void SetupDirectories(AppSettings settings)
+        private static void SetupDirectories(AppSettings settings)
         {
             if (Directory.Exists(settings.Dirs.TempUpdate.GetLocalPath()))
             {

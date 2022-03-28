@@ -5,7 +5,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Querying;
-using Microsoft.AspNetCore.Mvc;
 using Refit;
 
 namespace EmbyStat.Clients.Base.Api
@@ -91,7 +90,13 @@ namespace EmbyStat.Clients.Base.Api
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
         
-        [HttpPost("/System/Ping")]
+        /// <summary>
+        /// Ping the media server. He will reply with a message if online.
+        /// </summary>
+        /// <param name="apiKey">Server API key</param>
+        /// <param name="authorization">Fixed authentication string</param>
+        /// <returns><see cref="string"/> that contains the result of the media server</returns>
+        [Post("/System/Ping")]
         Task<string> Ping(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
