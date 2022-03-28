@@ -33,7 +33,7 @@ namespace EmbyStat.Controllers.System
         [Route("startupdate")]
         public async Task<IActionResult> StartUpdate()
         {
-            var result = _updateService.CheckForUpdate();
+            var result = await _updateService.CheckForUpdate();
             if (result.IsUpdateAvailable)
             {
                 await _updateService.DownloadZipAsync(result);

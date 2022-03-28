@@ -61,7 +61,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         public override async Task RunJobAsync()
         {
-            if (!IsMediaServerOnline())
+            if (!await IsMediaServerOnline())
             {
                 await LogWarning(
                     $"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
@@ -274,10 +274,10 @@ namespace EmbyStat.Jobs.Jobs.Sync
 
         #region Helpers
 
-        private bool IsMediaServerOnline()
+        private async Task<bool> IsMediaServerOnline()
         {
             _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
-            return _baseHttpClient.Ping();
+            return await _baseHttpClient.Ping();
         }
 
         private async Task CalculateStatistics()

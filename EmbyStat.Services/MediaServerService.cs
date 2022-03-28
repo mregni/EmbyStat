@@ -107,11 +107,11 @@ namespace EmbyStat.Services
             return libraries;
         }
 
-        public bool PingMediaServer(string url)
+        public async Task<bool> PingMediaServer(string url)
         {
             _logger.Debug($"Pinging server on {url}");
             _baseHttpClient.BaseUrl = url;
-            return _baseHttpClient.Ping();
+            return await _baseHttpClient.Ping();
         }
 
         public void ResetMissedPings()

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
 

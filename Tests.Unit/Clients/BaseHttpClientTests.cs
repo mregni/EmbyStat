@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.Net;
 using FluentAssertions;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using Tests.Unit.Builders;
-using Tests.Unit.Helpers;
 using Xunit;
 
 namespace Tests.Unit.Clients

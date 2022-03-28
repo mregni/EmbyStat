@@ -12,11 +12,12 @@ namespace EmbyStat.Services.Interfaces
     public interface IMediaServerService
     {
         #region Server
+
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type);
         Task<MediaServerInfo> GetServerInfo(bool forceReSync);
         bool TestNewApiKey(string url, string apiKey, ServerType type);
         MediaServerStatus GetMediaServerStatus();
-        bool PingMediaServer(string url);
+        Task<bool> PingMediaServer(string url);
         void ResetMissedPings();
         void IncreaseMissedPings();
         void ResetMediaServerData();
@@ -32,8 +33,8 @@ namespace EmbyStat.Services.Interfaces
 
         #region Users
 
-        Task<List<MediaServerUser>>  GetAllUsers();
-        Task<List<MediaServerUser>>  GetAllAdministrators();
+        Task<List<MediaServerUser>> GetAllUsers();
+        Task<List<MediaServerUser>> GetAllAdministrators();
         EmbyUser GetUserById(string id);
         Card<int> GetViewedEpisodeCountByUserId(string id);
         Card<int> GetViewedMovieCountByUserId(string id);

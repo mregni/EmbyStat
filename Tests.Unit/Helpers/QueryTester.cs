@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using RestSharp;
-
-namespace Tests.Unit.Helpers
+﻿namespace Tests.Unit.Helpers
 {
     public static class QueryTester
     {

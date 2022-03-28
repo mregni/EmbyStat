@@ -1,11 +1,8 @@
 ﻿using System;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Common.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;
-using RestSharp;
-using RestSharp.Serialization;
 using Xunit;
 
 namespace Tests.Unit.Clients

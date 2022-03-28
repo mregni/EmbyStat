@@ -33,7 +33,7 @@ namespace EmbyStat.Jobs.Jobs.Updater
             try
             {
                 await LogInformation("Contacting Github now to see if new version is available.");
-                var update = _updateService.CheckForUpdate(Settings);
+                var update = await _updateService.CheckForUpdate();
                 await LogProgress(20);
                 if (update.IsUpdateAvailable && Settings.AutoUpdate)
                 {

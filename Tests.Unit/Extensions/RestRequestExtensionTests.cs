@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using EmbyStat.Common.Models;
-using FluentAssertions;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
-using RestSharp;
 using Xunit;
 
 namespace Tests.Unit.Extensions

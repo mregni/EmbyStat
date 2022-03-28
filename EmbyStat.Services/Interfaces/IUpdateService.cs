@@ -6,8 +6,7 @@ namespace EmbyStat.Services.Interfaces
 {
     public interface IUpdateService
     {
-        UpdateResult CheckForUpdate();
-        UpdateResult CheckForUpdate(UserSettings settings);
+        Task<UpdateResult> CheckForUpdate();
         Task DownloadZipAsync(UpdateResult result);
         Task UpdateServerAsync();
     }

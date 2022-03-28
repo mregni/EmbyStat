@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
@@ -124,7 +125,7 @@ namespace EmbyStat.Web
                 });
             });
 
-            services.AddRefitClient<INewBaseClient>();
+            services.AddRefitClient<IMediaServerApi>();
 
             services.AddSpaStaticFiles(configuration =>
             {

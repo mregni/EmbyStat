@@ -5,11 +5,12 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Querying;
+using Microsoft.AspNetCore.Mvc;
 using Refit;
 
-namespace EmbyStat.Clients.Base.Http
+namespace EmbyStat.Clients.Base.Api
 {
-    public interface INewBaseClient
+    public interface IMediaServerApi
     {
         #region Items
         
@@ -87,6 +88,11 @@ namespace EmbyStat.Clients.Base.Http
         /// <returns><see cref="ServerInfoDto"/> object holding all the information</returns>
         [Get("/System/Info")]
         Task<ServerInfoDto> GetServerInfo(
+            [Header("X-Emby-Token")] string apiKey,
+            [Header("X-Emby-Authorization")] string authorization);
+        
+        [HttpPost("/System/Ping")]
+        Task<string> Ping(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
         

@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Aiursoft.XelNaga.Services;
 using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby;
@@ -25,7 +26,6 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using RestSharp;
 
 namespace EmbyStat.DI
 {
@@ -97,8 +97,6 @@ namespace EmbyStat.DI
 
         private static void RegisterClients(this IServiceCollection services)
         {
-            services.AddTransient<IRestClient, RestClient>();
-
             services.AddSingleton<IClientStrategy, ClientStrategy>();
             services.AddSingleton<IClientFactory, EmbyClientFactory>();
             services.AddSingleton<IClientFactory, JellyfinClientFactory>();
@@ -107,7 +105,7 @@ namespace EmbyStat.DI
             services.TryAddSingleton<IJellyfinBaseHttpClient, JellyfinBaseHttpClient>();
 
             services.TryAddTransient<ITmdbClient, TmdbClient>();
-            services.TryAddTransient<IGithubClient, GithubClient>();
+            services.TryAddTransient<IGitHubClient, GitHubClient>();
 
             services.TryAddSingleton<IWebSocketApi, WebSocketApi>();
             services.TryAddSingleton<IWebSocketClient, EmbyWebSocketClient>();
@@ -118,7 +116,8 @@ namespace EmbyStat.DI
             services.TryAddTransient<BusinessExceptionFilterAttribute>();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            services.TryAddTransient<IRefitHttpClientFactory<INewBaseClient>, RefitHttpClientFactory<INewBaseClient>>();
+            services.TryAddTransient<IRefitHttpClientFactory<IMediaServerApi>, RefitHttpClientFactory<IMediaServerApi>>();
+            services.TryAddTransient<IRefitHttpClientFactory<IGitHubApi>, RefitHttpClientFactory<IGitHubApi>>();
         }
 
         private static void RegisterSignalR(this IServiceCollection services)

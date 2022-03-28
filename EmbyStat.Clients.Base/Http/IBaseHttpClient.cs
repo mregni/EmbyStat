@@ -6,7 +6,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
-using MediaBrowser.Model.IO;
 
 namespace EmbyStat.Clients.Base.Http
 {
@@ -21,7 +20,6 @@ namespace EmbyStat.Clients.Base.Http
 
         Task<IEnumerable<Person>> GetPeople(int startIndex, int limit);
         Task<int> GetPeopleCount();
-        Person GetPersonByName(string personName);
         
         Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
         Task<Season[]> GetSeasons(string parentId, DateTime? lastSynced);
@@ -29,12 +27,11 @@ namespace EmbyStat.Clients.Base.Http
 
         Task<List<PluginInfo>> GetInstalledPlugins();
         Task<ServerInfoDto> GetServerInfo();
-        List<FileSystemEntryInfo> GetLocalDrives();
         Task<List<MediaServerUser>> GetUsers();
         Task<IEnumerable<Device>> GetDevices();
         Task<Library[]> GetLibraries();
 
-        bool Ping();
+        Task<bool> Ping();
         Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer();
         
         Task<IEnumerable<Genre>> GetGenres();

@@ -33,7 +33,7 @@ namespace EmbyStat.Common.Models.Settings
     {
         public string UpdateAsset { get; set; }
         public string Dll { get; set; }
-        public string GithubUrl { get; set; }
+        public string GitHubUrl { get; set; }
         public string DevString { get; set; }
         public string BetaString { get; set; }
     }

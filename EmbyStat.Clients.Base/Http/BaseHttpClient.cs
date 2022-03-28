@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Clients.Base.Api;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
@@ -13,50 +14,35 @@ using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
-using RestSharp;
 
 namespace EmbyStat.Clients.Base.Http
 {
     public abstract class BaseHttpClient
     {
         private readonly IHttpContextAccessor _accessor;
-        private readonly IRefitHttpClientFactory<INewBaseClient> _refitFactory;
-        protected readonly Logger Logger;
-        protected string DeviceName { get; set; }
-        protected string ApplicationVersion { get; set; }
-        protected string DeviceId { get; set; }
-        protected string UserId { get; set; }
-        protected string apiKey { get; set; }
-        public string ApiKey
-        {
-            get => apiKey;
-            set => apiKey = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
-        }
+        private readonly IRefitHttpClientFactory<IMediaServerApi> _refitFactory;
+        private readonly Logger _logger;
+        private readonly IMapper _mapper;
 
-        public string BaseUrl
-        {
-            get => RestClient?.BaseUrl?.ToString() ?? string.Empty;
-            set => RestClient.BaseUrl = string.IsNullOrWhiteSpace(value) ? null : new Uri(value);
-        }
+        private string DeviceName { get; set; }
+        private string ApplicationVersion { get; set; }
+        private string DeviceId { get; set; }
+        private string UserId { get; set; }
+        public string BaseUrl { get; set; }
+        public string ApiKey { get; set; }
+        private string AuthorizationScheme { get; set; }
+        private string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+        private string AuthorizationString => $"{AuthorizationScheme} {AuthorizationParameter}";
 
-        protected string AuthorizationScheme { get; set; }
-        protected string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
-        private string AuthorizationString => "{AuthorizationScheme} {AuthorizationParameter}";
-
-        protected readonly IRestClient RestClient;
-        protected readonly IMapper Mapper;
-
-        protected BaseHttpClient(IRestClient client, IHttpContextAccessor accessor, 
-            IRefitHttpClientFactory<INewBaseClient> refitFactory, IMapper mapper)
+        protected BaseHttpClient(IHttpContextAccessor accessor, 
+            IRefitHttpClientFactory<IMediaServerApi> refitFactory, IMapper mapper)
         {
             _accessor = accessor;
             _refitFactory = refitFactory;
-            Mapper = mapper;
-            RestClient = client.Initialize();
-            Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
+            _mapper = mapper;
+            _logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
         }
 
         public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId)
@@ -68,58 +54,15 @@ namespace EmbyStat.Clients.Base.Http
             UserId = userId;
         }
 
-        protected string ExecuteCall(IRestRequest request)
-        {
-            request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
-
-            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}/{request.Resource}");
-            var result = RestClient.Execute(request);
-
-            if (!result.IsSuccessful)
-            {
-                Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
-            }
-
-            return result.Content;
-        }
-
-        protected T ExecuteCall<T>(IRestRequest request) where T : new()
-        {
-            request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
-
-            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}{request.Resource}");
-            var result = RestClient.Execute<T>(request);
-
-            if (!result.IsSuccessful)
-            {
-                Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
-            }
-
-            if (result.Data == null)
-            {
-                Logger.Debug($"Returned object cant be parsed to {typeof(T).Name}");
-                Logger.Debug($"RAW content: {result.Content}");
-            }
-
-            return result.Data;
-        }
-
-        protected T ExecuteAuthenticatedCall<T>(IRestRequest request) where T : new()
-        {
-            request.AddHeader("X-Emby-Token", ApiKey);
-            return ExecuteCall<T>(request);
-        }
-
-
         protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
         {
             var list = new List<MediaServerUdpBroadcast>();
             var ownIp = _accessor.HttpContext?.Connection.RemoteIpAddress ?? IPAddress.Any;
-            Logger.Debug($"Own IP detected: {ownIp.MapToIPv4()}");
-            Logger.Debug($"Sending \"{message}\" to following broadcast IPs:");
+            _logger.Debug($"Own IP detected: {ownIp.MapToIPv4()}");
+            _logger.Debug($"Sending \"{message}\" to following broadcast IPs:");
             foreach (var ip in GetBroadCastIps(ownIp))
             {
-                Logger.Debug($"\t{ip.MapToIPv4()}");
+                _logger.Debug($"\t{ip.MapToIPv4()}");
                 await Task.Run(async () =>
                 {
                     var to = new IPEndPoint(ip, 7359);
@@ -140,7 +83,7 @@ namespace EmbyStat.Clients.Base.Http
 
         private IEnumerable<IPAddress> GetBroadCastIps(IPAddress ip)
         {
-            Logger.Debug($"{ip.MapToIPv4()})");
+            _logger.Debug($"{ip.MapToIPv4()})");
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var adapter in interfaces)
             {
@@ -192,34 +135,18 @@ namespace EmbyStat.Clients.Base.Http
             return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
         }
 
-        public bool Ping(string message)
+        public async Task<bool> Ping(string message)
         {
-            var request = new RestRequest("System/Ping", Method.POST) { Timeout = 5000 };
-
-            try
-            {
-                var result = ExecuteCall(request);
-                Logger.Debug($"Ping returned: {result}");
-                return result == message;
-            }
-            catch (System.Exception e)
-            {
-                Logger.Error(e, "Ping failed");
-                return false;
-            }
+            var client = _refitFactory.CreateClient(BaseUrl);
+            var result = await client.Ping(ApiKey, AuthorizationString);
+            _logger.Debug($"Ping returned: {result}");
+            return result == message;
         }
 
         public async Task<ServerInfoDto> GetServerInfo()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            return await client.GetServerInfo(apiKey, AuthorizationString);
-        }
-
-        public Person GetPersonByName(string personName)
-        {
-            var request = new RestRequest($"persons/{personName}", Method.GET);
-            var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return Mapper.Map<Person>(baseItem);
+            return await client.GetServerInfo(ApiKey, AuthorizationString);
         }
 
         public async Task<IEnumerable<Person>> GetPeople(int startIndex, int limit)
@@ -232,8 +159,8 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var client = _refitFactory.CreateClient(BaseUrl);
-            var people = await client.GetPeople(apiKey, AuthorizationString, query);
-            return Mapper.Map<IList<Person>>(people.Items);
+            var people = await client.GetPeople(ApiKey, AuthorizationString, query);
+            return _mapper.Map<IList<Person>>(people.Items);
         }
 
         public async Task<int> GetPeopleCount()
@@ -246,39 +173,33 @@ namespace EmbyStat.Clients.Base.Http
             };
 
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetPeople(apiKey, AuthorizationString, query);
+            var result = await client.GetPeople(ApiKey, AuthorizationString, query);
             return result.TotalRecordCount;
         }
 
         public async Task<Library[]> GetLibraries()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetMediaFolders(apiKey, AuthorizationString);
-            return Mapper.Map<Library[]>(result.Items);
+            var result = await client.GetMediaFolders(ApiKey, AuthorizationString);
+            return _mapper.Map<Library[]>(result.Items);
         }
 
         public Task<List<PluginInfo>> GetInstalledPlugins()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            return client.GetPlugins(apiKey, AuthorizationString);
-        }
-
-        public List<FileSystemEntryInfo> GetLocalDrives()
-        {
-            var request = new RestRequest("Environment/Drives", Method.GET);
-            return ExecuteAuthenticatedCall<List<FileSystemEntryInfo>>(request);
+            return client.GetPlugins(ApiKey, AuthorizationString);
         }
 
         public Task<List<MediaServerUser>> GetUsers()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            return client.GetUsers(apiKey, AuthorizationString);
+            return client.GetUsers(ApiKey, AuthorizationString);
         }
 
         public async Task<IEnumerable<Device>> GetDevices()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            var response = await client.GetDevices(apiKey, AuthorizationString);
+            var response = await client.GetDevices(ApiKey, AuthorizationString);
             return response.Content?.Items;
         }
 
@@ -286,8 +207,8 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery();
             var client = _refitFactory.CreateClient(BaseUrl);
-            var baseItems = await client.GetGenres(apiKey, AuthorizationString, query);
-            return Mapper.Map<IList<Genre>>(baseItems.Items);
+            var baseItems = await client.GetGenres(ApiKey, AuthorizationString, query);
+            return _mapper.Map<IList<Genre>>(baseItems.Items);
         }
 
         public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType)
@@ -315,9 +236,9 @@ namespace EmbyStat.Clients.Base.Http
 
             var paramList = query.ConvertToStringDictionary(UserId);
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
+            var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
-            return Mapper.Map<T[]>(result.Items);
+            return _mapper.Map<T[]>(result.Items);
         }
 
         public async Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
@@ -343,9 +264,9 @@ namespace EmbyStat.Clients.Base.Http
 
             var paramList = query.ConvertToStringDictionary(UserId);
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
+            var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
-            var shows = Mapper.Map<Show[]>(result.Items);
+            var shows = _mapper.Map<Show[]>(result.Items);
             return shows;
         }
 
@@ -371,9 +292,9 @@ namespace EmbyStat.Clients.Base.Http
 
             var paramList = query.ConvertToStringDictionary(UserId);
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
+            var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
-            var seasons = Mapper.Map<Season[]>(result.Items);
+            var seasons = _mapper.Map<Season[]>(result.Items);
             return seasons;
         }
 
@@ -399,9 +320,9 @@ namespace EmbyStat.Clients.Base.Http
 
             var paramList = query.ConvertToStringDictionary(UserId);
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
+            var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
-            var episodes = Mapper.Map<Episode[]>(result.Items);
+            var episodes = _mapper.Map<Episode[]>(result.Items);
             return episodes;
         }
 
@@ -420,7 +341,7 @@ namespace EmbyStat.Clients.Base.Http
 
             var paramList = query.ConvertToStringDictionary(UserId);
             var client = _refitFactory.CreateClient(BaseUrl);
-            var result = await client.GetItems(apiKey, AuthorizationString, paramList);
+            var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
             return result.TotalRecordCount;
         }
     }

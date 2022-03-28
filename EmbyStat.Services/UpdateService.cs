@@ -24,25 +24,38 @@ namespace EmbyStat.Services
 {
     public class UpdateService : IUpdateService
     {
-        private readonly IGithubClient _githubClient;
+        private readonly IGitHubClient _gitHubClient;
         private readonly ISettingsService _settingsService;
         private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly Logger _logger;
 
-        public UpdateService(IGithubClient githubClient, ISettingsService settingsService, IHostApplicationLifetime appLifetime)
+        public UpdateService(IGitHubClient gitHubClient, ISettingsService settingsService,
+            IHostApplicationLifetime appLifetime)
         {
-            _githubClient = githubClient;
+            _gitHubClient = gitHubClient;
             _settingsService = settingsService;
             _applicationLifetime = appLifetime;
             _logger = LogFactory.CreateLoggerForType(typeof(UpdateService), "UPDATE-SERVICE");
         }
 
-        public UpdateResult CheckForUpdate()
+        public async Task<UpdateResult> CheckForUpdate()
         {
             try
             {
                 var settings = _settingsService.GetUserSettings();
-                return CheckForUpdate(settings);
+                var appSettings = _settingsService.GetAppSettings();
+                var currentVersion = new Version(appSettings.Version.ToCleanVersionString());
+                var result = await _gitHubClient.GetGithubVersions(currentVersion, appSettings.Updater.UpdateAsset,
+                    settings.UpdateTrain);
+                var update = CheckForUpdateResult(result, currentVersion, settings.UpdateTrain,
+                    appSettings.Updater.UpdateAsset);
+
+                if (update.IsUpdateAvailable)
+                {
+                    //TODO: Notify everyone that there is an update
+                }
+
+                return update;
             }
             catch (HttpException e)
             {
@@ -52,22 +65,8 @@ namespace EmbyStat.Services
 
         #region CheckForUpdate
 
-        public UpdateResult CheckForUpdate(UserSettings settings)
-        {
-            var appSettings = _settingsService.GetAppSettings();
-            var currentVersion = new Version(appSettings.Version.ToCleanVersionString());
-            var result = _githubClient.GetGithubVersions(currentVersion, appSettings.Updater.UpdateAsset, settings.UpdateTrain);
-            var update = CheckForUpdateResult(result, currentVersion, settings.UpdateTrain, appSettings.Updater.UpdateAsset);
-
-            if (update.IsUpdateAvailable)
-            {
-                //TODO: Notify everyone that there is an update
-            }
-
-            return update;
-        }
-
-        public UpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain, string assetFilename)
+        private UpdateResult CheckForUpdateResult(ReleaseObject[] obj, Version minVersion, UpdateTrain updateTrain,
+            string assetFilename)
         {
             ReleaseObject[] correctTrainReleases = Array.Empty<ReleaseObject>();
             if (updateTrain == UpdateTrain.Release)
@@ -76,11 +75,15 @@ namespace EmbyStat.Services
             }
             else if (updateTrain == UpdateTrain.Beta)
             {
-                correctTrainReleases = obj.Where(i => i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                correctTrainReleases = obj.Where(i =>
+                    i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString,
+                        StringComparison.OrdinalIgnoreCase)).ToArray();
             }
             else if (updateTrain == UpdateTrain.Dev)
             {
-                correctTrainReleases = obj.Where(i => i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.DevString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                correctTrainReleases = obj.Where(i =>
+                    i.PreRelease && i.Name.Contains(_settingsService.GetAppSettings().Updater.DevString,
+                        StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
             var availableUpdate = correctTrainReleases
@@ -115,11 +118,13 @@ namespace EmbyStat.Services
             UpdateTrain classification;
             if (obj.PreRelease)
             {
-                if (obj.Name.Contains(_settingsService.GetAppSettings().Updater.DevString, StringComparison.OrdinalIgnoreCase))
+                if (obj.Name.Contains(_settingsService.GetAppSettings().Updater.DevString,
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     classification = UpdateTrain.Dev;
                 }
-                else if (obj.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString, StringComparison.OrdinalIgnoreCase))
+                else if (obj.Name.Contains(_settingsService.GetAppSettings().Updater.BetaString,
+                             StringComparison.OrdinalIgnoreCase))
                 {
                     classification = UpdateTrain.Beta;
                 }
@@ -158,7 +163,8 @@ namespace EmbyStat.Services
 
         private string CleanUpVersionString(string version)
         {
-            return version.Replace(_settingsService.GetAppSettings().Updater.BetaString, "").Replace(_settingsService.GetAppSettings().Updater.DevString, "");
+            return version.Replace(_settingsService.GetAppSettings().Updater.BetaString, "")
+                .Replace(_settingsService.GetAppSettings().Updater.DevString, "");
         }
 
         #endregion
@@ -172,6 +178,7 @@ namespace EmbyStat.Services
             {
                 Directory.Delete(appSettings.Dirs.TempUpdate, true);
             }
+
             Directory.CreateDirectory(appSettings.Dirs.TempUpdate);
 
             try
@@ -201,8 +208,12 @@ namespace EmbyStat.Services
                 {
                     updaterExtension = ".exe";
                 }
-                var updaterTool = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate, appSettings.Dirs.Updater, $"Updater{updaterExtension}");
-                var workingDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location), appSettings.Dirs.TempUpdate);
+
+                var localPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)
+                                ?? Directory.GetCurrentDirectory();
+                var updaterTool = Path.Combine(localPath, appSettings.Dirs.TempUpdate, appSettings.Dirs.Updater,
+                    $"Updater{updaterExtension}");
+                var workingDirectory = Path.Combine(localPath, appSettings.Dirs.TempUpdate);
 
                 if (!File.Exists(updaterTool))
                 {
@@ -223,7 +234,7 @@ namespace EmbyStat.Services
                     WorkingDirectory = workingDirectory
                 };
 
-                using var proc = new Process { StartInfo = start };
+                using var proc = new Process {StartInfo = start};
                 proc.Start();
                 _applicationLifetime.StopApplication();
             });
@@ -258,11 +269,12 @@ namespace EmbyStat.Services
 
         private string GetArgs(AppSettings appSettings)
         {
-            var currentLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var currentLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) 
+                                  ?? Directory.GetCurrentDirectory();
 
             var sb = new StringBuilder();
             sb.Append($"--applicationPath \"{currentLocation}\"");
-            sb.Append($" --processId {Process.GetCurrentProcess().Id}");
+            sb.Append($" --processId {Environment.ProcessId}");
             sb.Append($" --processName {appSettings.ProcessName}");
             sb.Append($" --port {appSettings.Port}");
             sb.Append($" --listening-urls {appSettings.ListeningUrls}");
@@ -272,5 +284,4 @@ namespace EmbyStat.Services
     }
 
     #endregion
-
 }

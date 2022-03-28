@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities.Helpers;
 using Tests.Unit.Builders;
 using Xunit;
 
