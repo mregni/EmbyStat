@@ -135,7 +135,7 @@ namespace EmbyStat.Clients.Base.Http
             return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
         }
 
-        public async Task<bool> Ping(string message)
+        protected async Task<bool> Ping(string message)
         {
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.Ping(ApiKey, AuthorizationString);

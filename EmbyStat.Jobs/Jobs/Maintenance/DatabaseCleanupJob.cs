@@ -28,7 +28,7 @@ namespace EmbyStat.Jobs.Jobs.Maintenance
 
         public override async Task RunJobAsync()
         {
-            _statisticsRepository.DeleteStatistics();
+            await _statisticsRepository.DeleteStatistics();
             await LogProgress(50);
             await LogInformation("Removed old statistic results.");
         }
