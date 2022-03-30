@@ -63,10 +63,18 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("libraries")]
-        public IActionResult GetLibraries()
+        public async Task<IActionResult> GetLibraries()
         {
-            var result = _movieService.GetMovieLibraries();
+            var result = await _movieService.GetMovieLibraries();
             return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
+        }
+        
+        [HttpPost]
+        [Route("libraries")]
+        public async Task<IActionResult> UpdateLibraries([FromBody] string[] libraryIds)
+        {
+            await _movieService.UpdateLibraries(libraryIds);
+            return Ok();
         }
 
         [HttpGet]

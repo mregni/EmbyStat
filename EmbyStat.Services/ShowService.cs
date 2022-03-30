@@ -93,6 +93,11 @@ namespace EmbyStat.Services
         {
             return _showRepository.GetShowByIdWithEpisodes(id);
         }
+        
+        public Task UpdateLibraries(string[] libraryIds)
+        {
+            return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.TvShow);
+        }
 
         #region Cards
 

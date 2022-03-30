@@ -110,6 +110,11 @@ namespace EmbyStat.Services
             return _movieRepository.GetById(id);
         }
 
+        public Task UpdateLibraries(string[] libraryIds)
+        {
+            return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.Movies);
+        }
+
         #region Cards
 
         private async Task<List<Card<string>>> CalculateCards()

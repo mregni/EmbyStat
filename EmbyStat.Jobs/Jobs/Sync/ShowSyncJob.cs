@@ -197,6 +197,7 @@ namespace EmbyStat.Jobs.Jobs.Sync
             }
             catch (Exception e)
             {
+                await LogError(e.Message);
                 await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
                 Logger.Error(e);
                 show.ExternalSynced = false;

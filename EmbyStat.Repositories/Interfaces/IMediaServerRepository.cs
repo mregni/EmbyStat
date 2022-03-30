@@ -46,6 +46,7 @@ namespace EmbyStat.Repositories.Interfaces
         Task<List<Library>> GetAllLibraries();
         Task<List<Library>> GetAllLibraries(LibraryType type);
         Task<List<Library>> GetAllLibraries(LibraryType type, bool synced);
+        Task SetLibraryAsSynced(string[] libraryIds, LibraryType type);
         Task DeleteAndInsertLibraries(Library[] libraries);
         Task DeleteAllLibraries();
         Task UpdateLibrarySyncDate(string libraryId, DateTime utcNow);

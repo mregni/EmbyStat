@@ -16,5 +16,6 @@ namespace EmbyStat.Services.Interfaces
         bool TypeIsPresent();
         Task<Page<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount);
         Task<Show> GetShow(string id);
+        Task UpdateLibraries(string[] libraryIds);
     }
 }

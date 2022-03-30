@@ -25,11 +25,19 @@ namespace EmbyStat.Controllers.Show
 
         [HttpGet]
         [Route("libraries")]
-        public IActionResult GetLibraries()
+        public async Task<IActionResult> GetLibraries()
         {
-            var result = _showService.GetShowLibraries();
+            var result = await _showService.GetShowLibraries();
             var convert = _mapper.Map<IList<LibraryViewModel>>(result);
             return Ok(convert);
+        }
+        
+        [HttpPost]
+        [Route("libraries")]
+        public async Task<IActionResult> UpdateLibraries([FromBody] string[] libraryIds)
+        {
+            await _showService.UpdateLibraries(libraryIds);
+            return Ok();
         }
 
         [HttpGet]

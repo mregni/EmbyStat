@@ -7,6 +7,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories;
 
@@ -164,6 +165,20 @@ public class SqlMediaServerRepository : IMediaServerRepository
         return _context.Libraries
             .Where(x => x.Type == type && x.Sync == synced)
             .ToListAsync();
+    }
+
+    public async Task SetLibraryAsSynced(string[] libraryIds, LibraryType type)
+    {
+        var libraries = await _context.Libraries.Where(x => x.Type == type).ToListAsync();
+        libraries
+            .Where(x => libraryIds.Any(y => y == x.Id))
+            .ForEach(x => x.Sync = true);
+        
+        libraries
+            .Where(x => libraryIds.All(y => y != x.Id))
+            .ForEach(x => x.Sync = false);
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAndInsertLibraries(Library[] libraries)

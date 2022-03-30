@@ -68,17 +68,17 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpGet]
         [Route("server/status")]
-        public IActionResult GetMediaServerStatus()
+        public async Task<IActionResult> GetMediaServerStatus()
         {
-            var result = _mediaServerService.GetMediaServerStatus();
+            var result = await _mediaServerService.GetMediaServerStatus();
             return Ok(_mapper.Map<EmbyStatusViewModel>(result));
         }
 
         [HttpGet]
         [Route("server/libraries")]
-        public IActionResult GetMediaServerLibraries()
+        public async Task<IActionResult> GetMediaServerLibraries()
         {
-            var result = _mediaServerService.GetMediaServerLibraries();
+            var result = await _mediaServerService.GetMediaServerLibraries();
             return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
         }
 

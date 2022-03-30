@@ -11,14 +11,14 @@ namespace EmbyStat.Common
             public static string VideoStreams => "VideoStreams";
             public static string AudioStreams => "AudioStreams";
             public static string SubtitleStreams => "SubtitleStreams";
-            public static string GenreMovie => "SqlGenreSqlMovie";
+            public static string GenreMovie => "GenreMovie";
             public static string MediaPerson => "MediaPerson";
             public static string People => "People";
             public static string Genres => "Genres";
             public static string Shows => "Shows";
             public static string Seasons => "Seasons";
             public static string Episodes => "Episodes";
-            public static string GenreShow => "SqlGenreSqlShow";
+            public static string GenreShow => "GenreShow";
             public static string Libraries => "Libraries";
         }
         public static class Movies
