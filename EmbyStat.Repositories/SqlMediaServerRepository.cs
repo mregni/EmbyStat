@@ -13,9 +13,9 @@ namespace EmbyStat.Repositories;
 
 public class SqlMediaServerRepository : IMediaServerRepository
 {
-    private readonly DbContext _context;
+    private readonly EsDbContext _context;
 
-    public SqlMediaServerRepository(DbContext context)
+    public SqlMediaServerRepository(EsDbContext context)
     {
         _context = context;
     }

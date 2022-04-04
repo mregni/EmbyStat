@@ -95,8 +95,7 @@ namespace EmbyStat.Clients.Base.Http
                         continue;
                     }
 
-                    if (CheckWhetherInSameNetwork(unicastInfo.Address, unicastInfo.IPv4Mask, ip))
-                        yield return GetBroadcastAddress(unicastInfo);
+                    yield return GetBroadcastAddress(unicastInfo);
                 }
             }
         }
@@ -146,7 +145,9 @@ namespace EmbyStat.Clients.Base.Http
         public async Task<ServerInfoDto> GetServerInfo()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            return await client.GetServerInfo(ApiKey, AuthorizationString);
+            var response = await client.GetServerInfo(ApiKey, AuthorizationString);
+
+            return response.IsSuccessStatusCode ? response.Content : null;
         }
 
         public async Task<IEnumerable<Person>> GetPeople(int startIndex, int limit)

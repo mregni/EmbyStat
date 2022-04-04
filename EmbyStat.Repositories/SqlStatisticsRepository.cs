@@ -10,9 +10,9 @@ namespace EmbyStat.Repositories;
 
 public class SqlStatisticsRepository : IStatisticsRepository
 {
-    private readonly DbContext _context;
+    private readonly EsDbContext _context;
 
-    public SqlStatisticsRepository(DbContext context)
+    public SqlStatisticsRepository(EsDbContext context)
     {
         _context = context;
     }

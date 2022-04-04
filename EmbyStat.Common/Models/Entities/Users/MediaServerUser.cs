@@ -4,12 +4,13 @@ namespace EmbyStat.Common.Models.Entities.Users;
 
 public class MediaServerUser
 {
-    public string Name { get; set; }
-    public string ServerId { get; set; }
     public string Id { get; set; }
+    public string Name { get; set; }    
+    public string ServerId { get; set; }
     public bool HasPassword { get; set; }
     public bool HasConfiguredPassword { get; set; }
     public bool HasConfiguredEasyPassword { get; set; }
+    public string PrimaryImageTag { get; set; }
     public DateTimeOffset? LastLoginDate { get; set; }
     public DateTimeOffset? LastActivityDate { get; set; }
     public Guid ConfigurationId { get; set; }

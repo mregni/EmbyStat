@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using DbContext = EmbyStat.Repositories.DbContext;
 
 #nullable disable
 
 namespace EmbyStat.Migrations.Sqlite
 {
-    [DbContext(typeof(DbContext))]
+    [DbContext(typeof(EsDbContext))]
     [Migration("20220328202022_Init")]
     partial class Init
     {

@@ -11,6 +11,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Streams;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
@@ -50,6 +51,7 @@ namespace EmbyStat.Controllers
             CreateMediaServerMappings();
             CreateSettingMappings();
             CreateLibraryMappings();
+            CreateMediaServerUserMappings();
             
              //USED MAPPINGS
             CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
@@ -101,7 +103,6 @@ namespace EmbyStat.Controllers
             
             //TODO: NOT USED
 
-            CreateMap<LibraryContainer, LibraryContainerViewModel>().ReverseMap();
             CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
             CreateMap<UpdateResult, UpdateResultViewModel>();
             
@@ -118,6 +119,14 @@ namespace EmbyStat.Controllers
             CreateMap<UserMediaView, UserMediaViewViewModel>();
 
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));
+        }
+
+        private void CreateMediaServerUserMappings()
+        {
+            CreateMap<MediaServerUser, UserOverviewViewModel>()
+                .ForMember(x => x.IsAdministrator, x => x.MapFrom(y => y.Policy.IsAdministrator))
+                .ForMember(x => x.IsDisabled, x => x.MapFrom(y => y.Policy.IsDisabled))
+                .ForMember(x => x.IsHidden, x => x.MapFrom(y => y.Policy.IsHidden));
         }
 
         private void CreateSettingMappings()

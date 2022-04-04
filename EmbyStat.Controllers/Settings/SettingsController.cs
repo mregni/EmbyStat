@@ -15,16 +15,14 @@ namespace EmbyStat.Controllers.Settings
     {
         private readonly ISettingsService _settingsService;
         private readonly ILanguageService _languageService;
-        private readonly IStatisticsRepository _statisticsRepository;
         private readonly IMapper _mapper;
         private readonly Logger _logger;
 
-        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository,
+        public SettingsController(ISettingsService settingsService,
             ILanguageService languageService, IMapper mapper)
         {
             _languageService = languageService;
             _settingsService = settingsService;
-            _statisticsRepository = statisticsRepository;
             _mapper = mapper;
             _logger = LogFactory.CreateLoggerForType(typeof(SettingsController), "SETTINGS");
         }
@@ -68,14 +66,6 @@ namespace EmbyStat.Controllers.Settings
         {
             var result = await _languageService.GetLanguages();
             return Ok(_mapper.Map<IList<LanguageViewModel>>(result));
-        }
-
-        [HttpGet]
-        [Route("wizard/state")]
-        public IActionResult GetWizardState()
-        {
-            var result = _settingsService.GetUserSettings();
-            return Ok(result.WizardFinished);
         }
     }
 }

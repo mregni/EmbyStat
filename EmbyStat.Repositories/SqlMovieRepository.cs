@@ -19,9 +19,9 @@ namespace EmbyStat.Repositories
 {
     public class SqlMovieRepository : IMovieRepository
     {
-        private readonly DbContext _context;
+        private readonly EsDbContext _context;
         private readonly ISqliteBootstrap _sqliteBootstrap;
-        public SqlMovieRepository(DbContext context, ISqliteBootstrap sqliteBootstrap)
+        public SqlMovieRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
         {
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;

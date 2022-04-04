@@ -9,9 +9,9 @@ namespace EmbyStat.Repositories;
 
 public class SqlFilterRepository : IFilterRepository
 {
-    private readonly DbContext _context;
+    private readonly EsDbContext _context;
 
-    public SqlFilterRepository(DbContext context)
+    public SqlFilterRepository(EsDbContext context)
     {
         _context = context;
     }

@@ -8,8 +8,8 @@ namespace EmbyStat.Repositories
 {
     public class LanguageRepository : ILanguageRepository
     {
-        private readonly DbContext _context;
-        public LanguageRepository(DbContext context)
+        private readonly EsDbContext _context;
+        public LanguageRepository(EsDbContext context)
         {
             _context = context;
         }

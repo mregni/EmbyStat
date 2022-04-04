@@ -86,7 +86,7 @@ namespace EmbyStat.Clients.Base.Api
         /// <param name="authorization">Fixed authentication string</param>
         /// <returns><see cref="ServerInfoDto"/> object holding all the information</returns>
         [Get("/System/Info")]
-        Task<ServerInfoDto> GetServerInfo(
+        Task<ApiResponse<ServerInfoDto>> GetServerInfo(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
         

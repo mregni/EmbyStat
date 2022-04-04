@@ -10,9 +10,9 @@ namespace EmbyStat.Repositories
     public class SqlPersonRepository : IPersonRepository
     {
         private readonly ISqliteBootstrap _sqliteBootstrap;
-        private readonly DbContext _context;
+        private readonly EsDbContext _context;
 
-        public SqlPersonRepository(DbContext context, ISqliteBootstrap sqliteBootstrap)
+        public SqlPersonRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
         {
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;

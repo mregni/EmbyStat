@@ -133,7 +133,7 @@ namespace EmbyStat.Web
             });
 
             services.AddSignalR();
-            services.AddDbContext<DbContext>();
+            services.AddDbContext<EsDbContext>();
 
             services.AddAuthorization(options =>
             {
@@ -154,7 +154,7 @@ namespace EmbyStat.Web
                     options.User.RequireUniqueEmail = false;
                 })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<DbContext>()
+                .AddEntityFrameworkStores<EsDbContext>()
                 .AddDefaultTokenProviders();
             
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

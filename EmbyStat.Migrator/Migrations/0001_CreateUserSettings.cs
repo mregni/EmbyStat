@@ -32,7 +32,7 @@ namespace EmbyStat.Migrator.Migrations
                     },
                     Tmdb = new TmdbSettings
                     {
-                        ApiKey = "BWLRSNRC0AQUIEYX"
+                        ApiKey = "0ad9610e613fdbf0d62e71c96d903e0c"
                     },
                     EnableRollbarLogging = false
                 };

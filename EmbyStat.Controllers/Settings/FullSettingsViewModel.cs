@@ -12,8 +12,6 @@ namespace EmbyStat.Controllers.Settings
         public int ToShortMovie { get; set; }
         public bool ToShortMovieEnabled { get; set; }
         public int KeepLogsCount { get; set; }
-        public List<LibraryContainerViewModel> MovieLibraries { get; set; }
-        public List<LibraryContainerViewModel> ShowLibraries { get; set; }
         public bool AutoUpdate { get; set; }
         public int UpdateTrain { get; set; }
         public bool UpdateInProgress { get; set; }
@@ -42,12 +40,5 @@ namespace EmbyStat.Controllers.Settings
     {
         public DateTime? LastUpdate { get; set; }
         public string ApiKey { get; set; }
-    }
-
-    public class LibraryContainerViewModel
-    {
-        public string Id { get; set; }
-        public DateTime? LastSynced { get; set; }
-        public string Name { get; set; }
     }
 }

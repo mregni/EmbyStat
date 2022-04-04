@@ -45,9 +45,9 @@ namespace EmbyStat.Controllers.MediaServer
 
         [HttpPost]
         [Route("server/test")]
-        public IActionResult TestApiKey([FromBody] LoginViewModel login)
+        public async Task<IActionResult> TestApiKey([FromBody] LoginViewModel login)
         {
-            var result = _mediaServerService.TestNewApiKey(login.Address, login.ApiKey, login.Type);
+            var result = await _mediaServerService.TestNewApiKey(login.Address, login.ApiKey, login.Type);
             return Ok(result);
         }
 

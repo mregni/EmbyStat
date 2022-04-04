@@ -1,22 +1,26 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Paper from '@material-ui/core/Paper';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useHistory} from 'react-router-dom';
 
-import { WizardContextProvider } from './Context/WizardContextProvider';
-import { useHasAnyAdmins } from '../../shared/hooks';
-import PageLoader from "../../shared/components/pageLoader";
-import { Intro, MediaServerDetails, SearchMediaServer, UserDetails, TestMediaServer, ConfigureLibrary, Finish } from './Steps';
-import { EsButton } from '../../shared/components/buttons';
-import { WizardContext } from './Context/WizardState';
-import { SettingsContext } from '../../shared/context/settings';
-import { updateSettings } from '../../shared/services/SettingsService';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import Paper from '@material-ui/core/Paper';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {KeyboardArrowLeft, KeyboardArrowRight} from '@material-ui/icons';
+
+import {EsButton} from '../../shared/components/buttons';
+import PageLoader from '../../shared/components/pageLoader';
+import {SettingsContext} from '../../shared/context/settings';
+import {useHasAnyAdmins} from '../../shared/hooks';
+import {updateSettings} from '../../shared/services/SettingsService';
+import {WizardContextProvider} from './Context/WizardContextProvider';
+import {WizardContext} from './Context/WizardState';
+import {
+  ConfigureLibrary, Finish, Intro, MediaServerDetails, SearchMediaServer, TestMediaServer,
+  UserDetails,
+} from './Steps';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,8 +118,8 @@ const Wizard = () => {
     //Last step
     if (activeStep === steps - 1) {
       const result = await finishWizard(settings);
-      await load();
       if (result) {
+        await load();
         history.push("/");
         return;
       }
@@ -137,7 +141,7 @@ const Wizard = () => {
 
   return (
     <>
-      { isLoading ? <PageLoader /> :
+      {isLoading ? <PageLoader /> :
         (
           <Grid container justify="center" alignItems="center" className={classes.root}>
             <Grid item xs={11} md={8} xl={6}>
@@ -176,9 +180,7 @@ const Wizard = () => {
                         >
                           {
                             disableControls
-                              ? (
-                                <CircularProgress size={24} />
-                              )
+                              ? (<CircularProgress size={24} />)
                               : (
                                 <>
                                   <span>{activeStep !== (steps - 1) ? t('next') : t('finish')}</span>

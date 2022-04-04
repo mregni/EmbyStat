@@ -78,7 +78,7 @@ public class SystemService : ISystemService
         var url = userSettings.MediaServer.Address;
         var apiKey = userSettings.MediaServer.ApiKey;
         var type = userSettings.MediaServer.Type;
-        var result = _mediaServerService.TestNewApiKey(url, apiKey, type);
+        var result = await _mediaServerService.TestNewApiKey(url, apiKey, type);
         if (result)
         {
             await _mediaServerService.GetAndProcessLibraries();

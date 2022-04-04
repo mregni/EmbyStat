@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Repositories
 {
-    public class DbContext : IdentityDbContext<EmbyStatUser>
+    public class EsDbContext : IdentityDbContext<EmbyStatUser>
     {
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MediaSource> MediaSources { get; set; }
@@ -44,12 +44,12 @@ namespace EmbyStat.Repositories
         public static readonly ILoggerFactory LoggerFactory = 
             Microsoft.Extensions.Logging.LoggerFactory.Create(builder => { builder.AddConsole(); });
 
-        public DbContext()
+        public EsDbContext()
         {
             
         }
 
-        public DbContext(DbContextOptions<DbContext> options): base(options)
+        public EsDbContext(DbContextOptions<EsDbContext> options): base(options)
         {
             
         }

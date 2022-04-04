@@ -21,7 +21,7 @@ namespace EmbyStat.Migrator
         public void Migrate()
         {
             _settingsService.LoadUserSettingsFromFile();
-            long settingsVersion = _settingsService.GetUserSettingsVersion();
+            var settingsVersion = _settingsService.GetUserSettingsVersion();
             var orderedMigrations = GetOrderedMigrations(settingsVersion);
             StartMigrations(orderedMigrations);
         }
@@ -32,7 +32,7 @@ namespace EmbyStat.Migrator
             foreach (var migration in _migrations)
             {
                 var migrationAttribute = migration.GetCustomAttribute<MigrationAttribute>();
-                if (migrationAttribute.Version > settingsVersion)
+                if (migrationAttribute?.Version > settingsVersion)
                 {
                     orderedList.Add(migrationAttribute.Version, migration);
                 }
@@ -43,10 +43,10 @@ namespace EmbyStat.Migrator
 
         private void StartMigrations(SortedList<long, Type> migrations)
         {
-            foreach (var type in migrations)
+            foreach (var (key, value) in migrations)
             {
-                var migration = (IMigration)Activator.CreateInstance(type.Value);
-                migration.MigrateUp(_settingsService, type.Key);
+                var migration = (IMigration)Activator.CreateInstance(value);
+                migration?.MigrateUp(_settingsService, key);
             }
         }
     }

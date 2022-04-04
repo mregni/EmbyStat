@@ -43,11 +43,4 @@ namespace EmbyStat.Common.Models.Settings
         public DateTime? LastUpdate { get; set; }
         public string ApiKey { get; set; }
     }
-
-    public class LibraryContainer
-    {
-        public string Id { get; set; }
-        public DateTime? LastSynced { get; set; }
-        public string Name { get; set; }
-    }
 }

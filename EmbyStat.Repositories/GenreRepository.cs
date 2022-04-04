@@ -11,9 +11,9 @@ namespace EmbyStat.Repositories
     public class GenreRepository : IGenreRepository
     {
         private readonly ISqliteBootstrap _sqliteBootstrap;
-        private readonly DbContext _context;
+        private readonly EsDbContext _context;
 
-        public GenreRepository(ISqliteBootstrap sqliteBootstrap, DbContext context)
+        public GenreRepository(ISqliteBootstrap sqliteBootstrap, EsDbContext context)
         {
             _sqliteBootstrap = sqliteBootstrap;
             _context = context;

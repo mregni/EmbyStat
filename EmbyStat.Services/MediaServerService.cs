@@ -69,7 +69,7 @@ namespace EmbyStat.Services
             return await _mediaServerRepository.GetServerInfo() ?? await GetAndProcessServerInfo();
         }
 
-        public bool TestNewApiKey(string url, string apiKey, ServerType type)
+        public async Task<bool> TestNewApiKey(string url, string apiKey, ServerType type)
         {
             _logger.Debug($"Testing new API key on {url}");
             _logger.Debug($"API key used: {apiKey}");
@@ -77,7 +77,7 @@ namespace EmbyStat.Services
             _baseHttpClient.ApiKey = apiKey;
             _baseHttpClient.BaseUrl = url;
 
-            var info = _baseHttpClient.GetServerInfo();
+            var info = await _baseHttpClient.GetServerInfo();
             if (info != null)
             {
                 _logger.Debug("new API key works!");

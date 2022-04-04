@@ -95,9 +95,9 @@ namespace EmbyStat.Controllers.Account
         [HttpGet]
         [AllowAnonymous]
         [Route("any")]
-        public IActionResult AnyAdmins()
+        public async Task<IActionResult> AnyAdmins()
         {
-            var result = _accountService.AnyAdmins();
+            var result = await _accountService.AnyAdmins();
             return Ok(result);
         }
 
