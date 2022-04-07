@@ -29,7 +29,6 @@ namespace EmbyStat.Repositories.Interfaces
         #endregion
 
         #region Episodes
-        IEnumerable<Episode> GetAllEpisodesForShow(string showId);
         Task<int> GetEpisodeCount(LocationType locationType);
         Task<long> GetTotalRunTimeTicks();
         Task<double> GetTotalDiskSpaceUsed();

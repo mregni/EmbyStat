@@ -26,7 +26,7 @@ namespace EmbyStat.Clients.Base.Http
         Task<Episode[]> GetEpisodes(string parentId, DateTime? lastSynced);
 
         Task<List<PluginInfo>> GetInstalledPlugins();
-        Task<ServerInfoDto> GetServerInfo();
+        Task<MediaServerInfo> GetServerInfo();
         Task<List<MediaServerUser>> GetUsers();
         Task<IEnumerable<Device>> GetDevices();
         Task<Library[]> GetLibraries();

@@ -16,12 +16,12 @@ using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories
 {
-    public class SqlShowRepository : IShowRepository
+    public class ShowRepository : IShowRepository
     {
         private readonly EsDbContext _context;
         private readonly ISqliteBootstrap _sqliteBootstrap;
 
-        public SqlShowRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
+        public ShowRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
         {
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;
@@ -448,16 +448,6 @@ LIMIT {count}";
         #endregion
 
         #region Episodes
-
-        public IEnumerable<Episode> GetAllEpisodesForShow(string showId)
-        {
-            return _context.Shows
-                .Include(x => x.Seasons)
-                .ThenInclude(x => x.Episodes)
-                .Where(x => x.Id == showId)
-                .SelectMany(x => x.Seasons)
-                .SelectMany(x => x.Episodes);
-        }
 
         public Task<int> GetEpisodeCount(LocationType locationType)
         {

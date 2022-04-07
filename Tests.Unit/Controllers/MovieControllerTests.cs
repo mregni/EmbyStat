@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
@@ -33,7 +34,7 @@ namespace Tests.Unit.Controllers
 
             _movieCards = new List<TopCard>
             {
-                new TopCard { Title = "The lord of the rings" }
+                new() {Title = "The lord of the rings"}
             };
 
             var movieStatistics = new MovieStatistics
@@ -42,36 +43,36 @@ namespace Tests.Unit.Controllers
             };
 
             _movieServiceMock = new Mock<IMovieService>();
-            _movieServiceMock.Setup(x => x.GetMovieLibraries()).Returns(_collections);
-            _movieServiceMock.Setup(x => x.GetStatistics(It.IsAny<List<string>>()))
-                .Returns(movieStatistics);
+            _movieServiceMock.Setup(x => x.GetMovieLibraries()).ReturnsAsync(_collections);
+            _movieServiceMock.Setup(x => x.GetStatistics()).ReturnsAsync(movieStatistics);
 
-            var _mapperMock = new Mock<IMapper>();
-            _mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
-                .Returns(new MovieStatisticsViewModel { TopCards = new List<TopCardViewModel> { new TopCardViewModel { Title = "The lord of the rings" } } });
-            _mapperMock.Setup(x => x.Map<IList<LibraryViewModel>>(It.IsAny<List<Library>>())).Returns(
+            var mapperMock = new Mock<IMapper>();
+            mapperMock.Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
+                .Returns(new MovieStatisticsViewModel
+                    {TopCards = new List<TopCardViewModel> {new() {Title = "The lord of the rings"}}});
+            mapperMock.Setup(x => x.Map<IList<LibraryViewModel>>(It.IsAny<List<Library>>())).Returns(
                 new List<LibraryViewModel>
                 {
-                    new LibraryViewModel
+                    new()
                     {
                         Name = "collection1",
-                        PrimaryImage = "image1",
+                        Primary = "image1",
                         Type = (int) LibraryType.Movies
                     },
-                    new LibraryViewModel
+                    new()
                     {
                         Name = "collection2",
-                        PrimaryImage = "image2",
+                        Primary = "image2",
                         Type = (int) LibraryType.Movies
                     }
                 });
-            _subject = new MovieController(_movieServiceMock.Object, _mapperMock.Object);
+            _subject = new MovieController(_movieServiceMock.Object, mapperMock.Object);
         }
 
         [Fact]
-        public void AreMovieCollectionsReturned()
+        public async Task AreMovieCollectionsReturned()
         {
-            var result = _subject.GetLibraries();
+            var result = await _subject.GetLibraries();
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
             var list = resultObject.Should().BeOfType<List<LibraryViewModel>>().Subject;
 
@@ -79,21 +80,21 @@ namespace Tests.Unit.Controllers
             list[0].Name.Should().Be(_collections[0].Name);
             list[1].Name.Should().Be(_collections[1].Name);
             _movieServiceMock.Verify(x => x.GetMovieLibraries(), Times.Once);
+            _movieServiceMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void AreMovieStatsReturned()
+        public async Task AreMovieStatsReturned()
         {
-            var result = _subject.GetGeneralStats(_collections.Select(x => x.Id).ToList());
+            var result = await _subject.GetGeneralStats();
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
             var stat = resultObject.Should().BeOfType<MovieStatisticsViewModel>().Subject;
 
             stat.Should().NotBeNull();
             stat.TopCards.Count.Should().Be(1);
             stat.TopCards[0].Title.Should().Be(_movieCards[0].Title);
-            _movieServiceMock.Verify(x => x.GetStatistics(It.Is<List<string>>(
-                y => y[0] == _collections[0].Id &&
-                     y[1] == _collections[1].Id)), Times.Once);
+            _movieServiceMock.Verify(x => x.GetStatistics(), Times.Once);
+            _movieServiceMock.VerifyNoOtherCalls();
         }
     }
 }

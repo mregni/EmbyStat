@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using AutoMapper;
+using EmbyStat.Clients.Base.Api;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
+using EmbyStat.Controllers;
 using FluentAssertions;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Newtonsoft.Json.Linq;
+using Refit;
 using Tests.Unit.Builders;
 using Xunit;
 
@@ -15,507 +28,354 @@ namespace Tests.Unit.Clients
 {
     public class BaseHttpClientTests
     {
-        private Mock<IRestClient> _restClientMock;
-        private IRestRequest _usedRequest;
-        private EmbyBaseHttpClient CreateClient<T>(T returnObject) where T : new()
-        {
-            var response = new RestResponse<T> { Data = returnObject };
+        private readonly Mock<IMediaServerApi> _restClientMock;
+        private readonly EmbyBaseHttpClient _service;
+        private readonly Mock<IRefitHttpClientFactory<IMediaServerApi>> _factoryMock;
+        private readonly string _authorizationParameter;
 
-            _restClientMock = new Mock<IRestClient>();
-            _restClientMock.Setup(x => x.Execute<T>(It.IsAny<IRestRequest>()))
-                .Callback<IRestRequest>((request) =>
+        public BaseHttpClientTests()
+        {
+            var boe = new QueryResultBuilder("Movies", "1").Build();
+            var boe2 = new QueryResult<BaseItemDto>
+            {
+                Items = new[]
                 {
-                    _usedRequest = request;
-                })
-                .Returns(response);
-            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
+                    new BaseItemDto
+                    {
+                        Id = "1",
+                        Name = "Movies"
+                    }
+                },
+                TotalRecordCount = 1
+            };
+            _restClientMock = new Mock<IMediaServerApi>();
+            _restClientMock
+                .Setup(x => x.GetMediaFolders(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(boe2);
+            _restClientMock
+                .Setup(x => x.GetPlugins(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new List<PluginInfo> {new() {Id = "1", Name = "testPlugin"}});
+            _restClientMock
+                .Setup(x => x.GetServerInfo(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new ApiResponse<MediaServerInfo>(new HttpResponseMessage(HttpStatusCode.Accepted),
+                    new MediaServerInfo {ServerName = "server-name"}, new RefitSettings()));
+            _restClientMock
+                .Setup(x => x.GetUsers(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new List<MediaServerUser> {new() {Id = "1", Name = "Mike"}});
+            _restClientMock
+                .Setup(x => x.GetDevices(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new QueryResult<Device>
+                    {Items = new Device[] {new() {Id = "1", Name = "Web"}}, TotalRecordCount = 1});
+            _restClientMock
+                .Setup(x => x.GetItems(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()))
+                .ReturnsAsync(new QueryResult<BaseItemDto>
+                    {Items = new[] {new BaseItemDto {Id = "1", Name = "Lord of the rings"}}, TotalRecordCount = 1});
+            _restClientMock
+                .Setup(x => x.GetGenres(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ItemQuery>()))
+                .ReturnsAsync(new QueryResult<BaseItemDto>
+                    {Items = new[] {new BaseItemDto {Id = "1", Name = "Action"}}, TotalRecordCount = 1});
+            _restClientMock
+                .Setup(x => x.GetPeople(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ItemQuery>()))
+                .ReturnsAsync(new QueryResult<BaseItemDto>
+                    {Items = new[] {new BaseItemDto {Id = "1", Name = "Will"}, new BaseItemDto {Id = "2", Name = "John"}}, TotalRecordCount = 2});
+            _restClientMock
+                .Setup(x => x.Ping(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("pong");            
+            
+            _factoryMock = new Mock<IRefitHttpClientFactory<IMediaServerApi>>();
+            _factoryMock
+                .Setup(x => x.CreateClient(It.IsAny<string>()))
+                .Returns(_restClientMock.Object);
+
+            var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapProfiles()); });
+            var mapper = mappingConfig.CreateMapper();
 
             var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            _service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, _factoryMock.Object, mapper);
 
-            return new EmbyBaseHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
-        }
-
-        private EmbyBaseHttpClient CreateStringClient(string returnObject)
-        {
-            var response = new RestResponse { Content = returnObject };
-
-            _restClientMock = new Mock<IRestClient>();
-            _restClientMock.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Callback<IRestRequest>((request) =>
-                {
-                    _usedRequest = request;
-                })
-                .Returns(response);
-            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
-
-            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-
-            return new EmbyBaseHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
+            _service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
+                "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
+            _service.BaseUrl = "localhost:9000";
+            _service.ApiKey = "apikey";
+            _authorizationParameter =
+                "mediabrowser RestClient=\"other\", DeviceId=\"c\", Device=\"embystat\", Version=\"0\"";
         }
 
         [Fact]
-        public void SetAddressAndUser_Should_Throw_Exception_If_Url_Is_Empty()
+        public async Task GetMediaFolders_Should_Return_List_Of_Media_Folders()
         {
-            var resultObj = "test";
-            var client = CreateStringClient(resultObj);
-            client.BaseUrl = string.Empty;
-
-            client.BaseUrl.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void SetAddressAndUser_Should_Throw_Exception_If_ApiKey_Is_Empty()
-        {
-            var resultObj = "test";
-            var client = CreateStringClient(resultObj);
-            client.ApiKey = string.Empty;
-
-            client.ApiKey.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void GetPersonByName_Should_Return_Person()
-        {
-            var resultObj = new BaseItemDto { Id = Guid.NewGuid().ToString() };
-
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var name = "test-person";
-            var result = client.GetPersonByName(name);
+            var result = await _service.GetLibraries();
             result.Should().NotBeNull();
-            result.Id.Should().Be(resultObj.Id);
+            result.Length.Should().Be(1);
 
-            _usedRequest.Should().NotBeNull();
+            result[0].Id.Should().Be("1");
+            result[0].Name.Should().Be("Movies");
 
-            _usedRequest?.Parameters.Count.Should().Be(10);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "PremiereDate", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "recursive", "False", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "SeriesStatuses", "", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(9, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
+            _restClientMock.Verify(x => x.GetMediaFolders(_service.ApiKey, _authorizationParameter));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be($"persons/{name}");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetPersonByName_Should_Return_Null_If_No_Response()
+        public async Task GetInstalledPlugins_Should_Return_List_Of_Plugins()
         {
-            var client = CreateClient((BaseItemDto)null);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
+            var result = await _service.GetInstalledPlugins();
+            result.Should().NotBeNull();
+            result.Count.Should().Be(1);
 
-            var name = "test-person";
-            var result = client.GetPersonByName(name);
+            result[0].Id.Should().Be("1");
+            result[0].Name.Should().Be("testPlugin");
+
+            _restClientMock.Verify(x => x.GetPlugins(_service.ApiKey, _authorizationParameter));
+            _restClientMock.VerifyNoOtherCalls();
+
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetGenres_Should_Return_Genres()
+        {
+            var result = await _service.GetGenres();
+            var list = result.ToList();
+            list.Should().NotBeNull();
+
+            list.Count.Should().Be(1);
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Action");
+            
+            _restClientMock.Verify(x => x.GetGenres(_service.ApiKey, _authorizationParameter, It.IsAny<ItemQuery>()));
+            _restClientMock.VerifyNoOtherCalls();
+
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetPeople_Should_Return_People()
+        {
+            var result = await _service.GetPeople(0, 10);
+            var list = result.ToList();
+            list.Should().NotBeNull();
+
+            list.Count.Should().Be(2);
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Will");
+            list[1].Id.Should().Be("2");
+            list[1].Name.Should().Be("John");
+
+            _restClientMock.Verify(x => x.GetPeople(_service.ApiKey,
+                _authorizationParameter,
+                It.Is<ItemQuery>(y =>
+                    y.Recursive &&
+                    y.StartIndex == 0 &&
+                    y.Limit == 10)));
+            _restClientMock.VerifyNoOtherCalls();
+
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetPeopleCount_Should_Return_People()
+        {
+            var result = await _service.GetPeopleCount();
+
+            result.Should().Be(2);
+
+            _restClientMock.Verify(x => x.GetPeople(_service.ApiKey,
+                _authorizationParameter,
+                It.Is<ItemQuery>(y =>
+                    y.Recursive &&
+                    y.EnableTotalRecordCount &&
+                    y.Limit == 0)));
+            _restClientMock.VerifyNoOtherCalls();
+
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetServerInfo_Should_Return_Server_Info()
+        {
+            var result = await _service.GetServerInfo();
+            result.Should().NotBeNull();
+
+            result.ServerName.Should().Be("server-name");
+
+            _restClientMock.Verify(x => x.GetServerInfo(_service.ApiKey, _authorizationParameter));
+            _restClientMock.VerifyNoOtherCalls();
+
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetServerInfo_Should_Return_Null_If_Failed()
+        {
+            var restClientMock = new Mock<IMediaServerApi>();
+            restClientMock
+                .Setup(x => x.GetServerInfo(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new ApiResponse<MediaServerInfo>(new HttpResponseMessage(HttpStatusCode.NotFound),
+                    new MediaServerInfo {ServerName = "server-name"}, new RefitSettings()));
+
+
+            var factoryMock = new Mock<IRefitHttpClientFactory<IMediaServerApi>>();
+            factoryMock
+                .Setup(x => x.CreateClient(It.IsAny<string>()))
+                .Returns(restClientMock.Object);
+
+            var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapProfiles()); });
+            var mapper = mappingConfig.CreateMapper();
+
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            var service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, factoryMock.Object, mapper);
+
+            service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
+                "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
+            service.BaseUrl = "localhost:9000";
+            service.ApiKey = "apikey";
+
+            var result = await service.GetServerInfo();
             result.Should().BeNull();
 
-            _usedRequest.Should().NotBeNull();
+            restClientMock.Verify(x => x.GetServerInfo(service.ApiKey, _authorizationParameter));
+            restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Parameters.Count.Should().Be(10);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "PremiereDate", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "recursive", "False", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "SeriesStatuses", "", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(9, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be($"persons/{name}");
+            factoryMock.Verify(x => x.CreateClient(service.BaseUrl));
+            factoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetMediaFolders_Should_Return_List_Of_Media_Folders()
+        public async Task GetUsers_Should_Return_List_Of_Users()
         {
-            var resultObj = new QueryResult<BaseItemDto>
-            {
-                Items = new[]
-                {
-                    new BaseItemDto {Id = Guid.NewGuid().ToString()}
-                }
-            };
-
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var result = client.GetLibraries();
-            result.Should().NotBeNull();
-            result.Items.Length.Should().Be(1);
-
-            result.Items[0].Id.Should().Be(resultObj.Items[0].Id);
-
-            _usedRequest.Should().NotBeNull();
-
-            _usedRequest?.Parameters.Count.Should().Be(2);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-Emby-Authorization");
-            parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
-            parameters[1].Name.Should().Be("X-Emby-Token");
-            parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("apikey");
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Library/MediaFolders");
-        }
-
-        [Fact]
-        public void GetInstalledPlugins_Should_Return_List_Of_Plugins()
-        {
-            var resultObj = new List<PluginInfo> { new PluginInfo { Id = Guid.NewGuid().ToString() } };
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var result = client.GetInstalledPlugins();
+            var result = await _service.GetUsers();
             result.Should().NotBeNull();
             result.Count.Should().Be(1);
 
-            result[0].Id.Should().Be(resultObj[0].Id);
+            result[0].Id.Should().Be("1");
+            result[0].Name.Should().Be("Mike");
 
-            _usedRequest.Should().NotBeNull();
+            _restClientMock.Verify(x => x.GetUsers(_service.ApiKey, _authorizationParameter));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Parameters.Count.Should().Be(2);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-Emby-Authorization");
-            parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
-            parameters[1].Name.Should().Be("X-Emby-Token");
-            parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("apikey");
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Plugins");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetServerInfo_Should_Return_Server_Info()
+        public async Task GetDevices_Should_Return_List_Of_Devices()
         {
-            var resultObj = new ServerInfoDto { Id = Guid.NewGuid().ToString() };
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
+            var result = await _service.GetDevices();
+            var list = result.ToList();
+            list.Should().NotBeNull();
+            list.Count.Should().Be(1);
 
-            var result = client.GetServerInfo();
-            result.Should().NotBeNull();
-            result.Id.Should().Be(resultObj.Id);
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Web");
 
-            _usedRequest.Should().NotBeNull();
+            _restClientMock.Verify(x => x.GetDevices(_service.ApiKey, _authorizationParameter));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Parameters.Count.Should().Be(2);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-Emby-Authorization");
-            parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
-            parameters[1].Name.Should().Be("X-Emby-Token");
-            parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("apikey");
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("System/Info");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetLocalDrives_Should_Return_List_Of_Drives()
+        public async Task GetMedia_Should_Return_List_Of_Movies()
         {
-            var resultObj = new List<FileSystemEntryInfo> { new FileSystemEntryInfo { Name = "Movies" } };
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
+            var result = await _service.GetMedia<Movie>("1", 0, 10, null, "Movie");
 
-            var result = client.GetLocalDrives();
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
+            var list = result.ToList();
+            list.Should().NotBeNull();
+            list.Count.Should().Be(1);
 
-            result[0].Name.Should().Be(resultObj[0].Name);
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Lord of the rings");
 
-            _usedRequest.Should().NotBeNull();
+            _restClientMock.Verify(x => x.GetItems(_service.ApiKey,
+                _authorizationParameter,
+                It.Is<Dictionary<string, string>>(x =>
+                    x["ParentId"] == "1" &&
+                    x["StartIndex"] == "0" &&
+                    x["Limit"] == "10")));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Parameters.Count.Should().Be(2);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-Emby-Authorization");
-            parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
-            parameters[1].Name.Should().Be("X-Emby-Token");
-            parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("apikey");
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Environment/Drives");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetUsers_Should_Return_List_Of_Users()
+        public async Task GetShows_Should_Return_List_Of_Shows()
         {
-            var resultObj = new JArray { new JObject { { "Id", "username" } } };
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
+            var result = await _service.GetShows("1", 0, 10, null);
 
-            var result = client.GetUsers();
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
+            var list = result.ToList();
+            list.Should().NotBeNull();
+            list.Count.Should().Be(1);
 
-            result[0]["Id"].Value<string>().Should().Be(resultObj[0]["Id"].Value<string>());
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Lord of the rings");
 
-            _usedRequest.Should().NotBeNull();
+            _restClientMock.Verify(x => x.GetItems(_service.ApiKey,
+                _authorizationParameter,
+                It.Is<Dictionary<string, string>>(x =>
+                    x["ParentId"] == "1" &&
+                    x["StartIndex"] == "0" &&
+                    x["Limit"] == "10" &&
+                    x["IncludeItemTypes"] == "Series")));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Parameters.Count.Should().Be(2);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-Emby-Authorization");
-            parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
-            parameters[1].Name.Should().Be("X-Emby-Token");
-            parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("apikey");
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Users");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetDevices_Should_Return_List_Of_Devices()
+        public async Task GetSeasons_Should_Return_List_Of_Season()
         {
-            var resultObj = new JObject { { "Id", Guid.NewGuid().ToString() } };
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
+            var result = await _service.GetSeasons("1",  null);
 
-            var result = client.GetDevices();
-            result.Should().NotBeNull();
-            result["Id"].Value<string>().Should().Be(resultObj["Id"].Value<string>());
+            var list = result.ToList();
+            list.Should().NotBeNull();
+            list.Count.Should().Be(1);
 
-            _usedRequest.Should().NotBeNull();
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Lord of the rings");
 
-            _usedRequest?.Parameters.Count.Should().Be(2);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-            parameters[0].Name.Should().Be("X-Emby-Authorization");
-            parameters[0].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[0].Value.Should().Be("mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"");
-            parameters[1].Name.Should().Be("X-Emby-Token");
-            parameters[1].Type.Should().Be(ParameterType.HttpHeader);
-            parameters[1].Value.Should().Be("apikey");
+            _restClientMock.Verify(x => x.GetItems(_service.ApiKey,
+                _authorizationParameter,
+                It.Is<Dictionary<string, string>>(x =>
+                    x["ParentId"] == "1" &&
+                    x["IncludeItemTypes"] == "Season")));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Devices");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
-
+        
         [Fact]
-        public void GetMovies_Should_Return_List_Of_Movies()
+        public async Task GetEpisodes_Should_Return_List_Of_Episodes()
         {
-            var resultObj = new QueryResult<BaseItemDto>
-            {
-                Items = new[]
-                {
-                    new MovieBuilder("123").BuildBaseItemDto()
-                }
-            };
+            var result = await _service.GetEpisodes("1",  null);
 
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
+            var list = result.ToList();
+            list.Should().NotBeNull();
+            list.Count.Should().Be(1);
 
-            var result = client.GetMovies("123", "0", 1000, 100, DateTime.MinValue);
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
+            list[0].Id.Should().Be("1");
+            list[0].Name.Should().Be("Lord of the rings");
 
-            result[0].Id.Should().Be(resultObj.Items[0].Id);
+            _restClientMock.Verify(x => x.GetItems(_service.ApiKey,
+                _authorizationParameter,
+                It.Is<Dictionary<string, string>>(x =>
+                    x["ParentId"] == "1" &&
+                    x["IncludeItemTypes"] == "Episode")));
+            _restClientMock.VerifyNoOtherCalls();
 
-            _usedRequest.Should().NotBeNull();
-
-            _usedRequest?.Parameters.Count.Should().Be(16);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImages", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "fields", "Genres,DateCreated,MediaSources,ExternalUrls,OriginalTitle,Studios,MediaStreams,Path,Overview,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,RunTimeTicks", ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "IncludeItemTypes", "Movie", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "Limit", "100", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "LocationTypes", "FileSystem", ParameterType.QueryString);
-            parameters.CheckQueryParameter(9, "ParentId", "123", ParameterType.QueryString);
-            parameters.CheckQueryParameter(10, "recursive", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(11, "SeriesStatuses", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(12, "StartIndex", "1000", ParameterType.QueryString);
-            parameters.CheckQueryParameter(13, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(14, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(15, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Items");
-        }
-
-        [Fact]
-        public void GetShows_Should_Return_List_Of_Shows()
-        {
-            var resultObj = new QueryResult<BaseItemDto>
-            {
-                Items = new[]
-                {
-                    new ShowBuilder("12", "23").BuildBaseItemDto() 
-                }
-            };
-
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var result = client.GetShows("123", DateTime.MinValue);
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
-
-            result[0].Id.Should().Be(resultObj.Items[0].Id);
-
-            _usedRequest.Should().NotBeNull();
-
-            _usedRequest?.Parameters.Count.Should().Be(15);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "OriginalTitle,Genres,DateCreated,ExternalUrls,Studios,Path,ProviderIds,SortName,ParentId,People,PremiereDate,CommunityRating,OfficialRating,ProductionYear,Status,RunTimeTicks", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "IncludeItemTypes", "Series", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "LocationTypes", "FileSystem", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "ParentId", "123", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "recursive", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(9, "SeriesStatuses", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(10, "SortBy", "SortName", ParameterType.QueryString);
-            parameters.CheckQueryParameter(11, "sortOrder", "Ascending", ParameterType.QueryString);
-            parameters.CheckQueryParameter(12, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(13, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(14, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Items");
-        }
-
-        [Fact]
-        public void GetSeasons_Should_Return_List_Of_Season()
-        {
-            var resultObj = new QueryResult<BaseItemDto>
-            {
-                Items = new[]
-                {
-                    new SeasonBuilder("12", "23").BuildBaseItemDto()
-                }
-            };
-
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var result = client.GetSeasons("123", DateTime.MinValue);
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
-
-            result[0].Id.Should().Be(resultObj.Items[0].Id);
-
-            _usedRequest.Should().NotBeNull();
-
-            _usedRequest?.Parameters.Count.Should().Be(13);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "OriginalTitle,Genres,DateCreated,ExternalUrls,Studios,Path,Overview,ProviderIds,SortName,ParentId,People,MediaSources,MediaStreams,PremiereDate,CommunityRating,OfficialRating,ProductionYear,Status,RunTimeTicks", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "IncludeItemTypes", "Season", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "LocationTypes", "FileSystem", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "ParentId", "123", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "recursive", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(9, "SeriesStatuses", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(10, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(11, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(12, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Items");
-        }
-
-        [Fact]
-        public void GetEpisodes_Should_Return_List_Of_Episodes()
-        {
-            var resultObj = new QueryResult<BaseItemDto>
-            {
-                Items = new[]
-                {
-                    new EpisodeBuilder("12", "23", "1").BuildBaseItemDto()
-                }
-            };
-
-            var client = CreateClient(resultObj);
-            client.SetDeviceInfo("embystat", "mediabrowser", "0.0.0.0", "cb290477-d048-4b01-b201-8181922c6399", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
-            client.BaseUrl = "localhost:9000";
-            client.ApiKey = "apikey";
-
-            var result = client.GetEpisodes(new []{ "123" }, "12", DateTime.MinValue);
-            result.Should().NotBeNull();
-            result.Count.Should().Be(1);
-
-            result[0].Id.Should().NotBeNullOrEmpty();
-
-            _usedRequest.Should().NotBeNull();
-
-            _usedRequest?.Parameters.Count.Should().Be(13);
-            // ReSharper disable once PossibleNullReferenceException
-            var parameters = _usedRequest.Parameters.OrderBy(x => x.Name).ToArray();
-
-            parameters.CheckQueryParameter(0, "AirDays", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(1, "EnableImageTypes", "Banner,Primary,Thumb,Logo", ParameterType.QueryString);
-            parameters.CheckQueryParameter(2, "fields", "OriginalTitle,Genres,DateCreated,ExternalUrls,Studios,Path,Overview,ProviderIds,SortName,ParentId,People,MediaSources,MediaStreams,PremiereDate,CommunityRating,OfficialRating,ProductionYear,Status,RunTimeTicks", ParameterType.QueryString);
-            parameters.CheckQueryParameter(3, "Filters", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(4, "ImageTypes", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(5, "IncludeItemTypes", "Episode", ParameterType.QueryString);
-            parameters.CheckQueryParameter(6, "LocationTypes", "FileSystem", ParameterType.QueryString);
-            parameters.CheckQueryParameter(7, "ParentId", "123", ParameterType.QueryString);
-            parameters.CheckQueryParameter(8, "recursive", "True", ParameterType.QueryString);
-            parameters.CheckQueryParameter(9, "SeriesStatuses", string.Empty, ParameterType.QueryString);
-            parameters.CheckQueryParameter(10, "UserId", "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246", ParameterType.QueryString);
-            parameters.CheckQueryParameter(11, "X-Emby-Authorization", "mediabrowser RestClient=\"other\", DeviceId=\"cb290477-d048-4b01-b201-8181922c6399\", Device=\"embystat\", Version=\"0.0.0.0\"", ParameterType.HttpHeader);
-            parameters.CheckQueryParameter(12, "X-Emby-Token", "apikey", ParameterType.HttpHeader);
-
-            _usedRequest?.Method.Should().Be(Method.GET);
-            _usedRequest?.Resource.Should().Be("Items");
+            _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+            _factoryMock.VerifyNoOtherCalls();
         }
     }
 }

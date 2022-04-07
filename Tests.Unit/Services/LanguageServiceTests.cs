@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -17,20 +19,20 @@ namespace Tests.Unit.Services
         {
             _languages = new List<Language>
             {
-                new Language{ Name = "Nederlands", Code = "nl-BE", Id = "100" },
-                new Language{ Name = "English", Code = "en-US", Id = "101" }
+                new() {Name = "Nederlands", Code = "nl-BE", Id = "100"},
+                new() {Name = "English", Code = "en-US", Id = "101"}
             };
 
             _languageRepositoryMock = new Mock<ILanguageRepository>();
-            _languageRepositoryMock.Setup(x => x.GetLanguages()).Returns(_languages);
+            _languageRepositoryMock.Setup(x => x.GetLanguages()).ReturnsAsync(_languages);
 
             _languageService = new LanguageService(_languageRepositoryMock.Object);
         }
 
         [Fact]
-        public void GetLanguages()
+        public async Task GetLanguages()
         {
-            var languages = _languageService.GetLanguages().ToList();
+            var languages = await _languageService.GetLanguages();
 
             languages.Should().NotBeNull();
             languages.Count.Should().Be(_languages.Count);
@@ -44,6 +46,7 @@ namespace Tests.Unit.Services
             languages[1].Id.Should().Be("101");
 
             _languageRepositoryMock.Verify(x => x.GetLanguages(), Times.Exactly(1));
+            _languageRepositoryMock.VerifyNoOtherCalls();
         }
     }
 }

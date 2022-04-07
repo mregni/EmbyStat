@@ -11,7 +11,7 @@ namespace EmbyStat.Plugin
 {
     public class Plugin : BasePlugin, IHasWebPages, IHasThumbImage
     {
-        public override Guid Id => new Guid("ffa904b3-7bb1-4c23-ad5c-10a8c0f8b441");
+        public override Guid Id => new("ffa904b3-7bb1-4c23-ad5c-10a8c0f8b441");
         public override string Name => "EmbyStat plugin";
         public override string Description => "Calculate statistics and send it to your EmbyStat server";
 

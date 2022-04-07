@@ -17,7 +17,7 @@ namespace EmbyStat.Controllers.Show
         public int? Tmdb { get; set; }
         public string Tvdb { get; set; }
         public string SortName { get; set; }
-        public float? CommunityRating { get; set; }
+        public decimal? CommunityRating { get; set; }
         public long? RunTime { get; set; }
         public string Banner { get; set; }
         public string Logo { get; set; }

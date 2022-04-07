@@ -90,7 +90,7 @@ namespace EmbyStat.Controllers
             CreateMap<AudioStream, AudioStreamViewModel>();
             CreateMap<MediaSource, MediaSourceViewModel>();
             CreateMap<SubtitleStream, SubtitleStreamViewModel>();
-            CreateMap<SqlVideoStream, VideoStreamViewModel>();
+            CreateMap<VideoStream, VideoStreamViewModel>();
             CreateMap<BaseItemDto, Genre>();
             
             CreateMap<TopCard, TopCardViewModel>();
@@ -206,7 +206,7 @@ namespace EmbyStat.Controllers
                     .Count(z => z.LocationType == LocationType.Disk)))
                 .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(y => y.Name).Distinct()))
                 .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
-                .ForMember(x => x.CumulativeRunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+                .ForMember(x => x.CumulativeRunTime, x => x.MapFrom(y => Math.Round((decimal)(y.CumulativeRunTimeTicks ?? 0) / 600000000)))
 
                 .ForMember(x => x.MissingSeasons, x => x.MapFrom(y => y.Seasons.Where(s => s.IndexNumber != 0 && s.Episodes.Any(e => e.LocationType == LocationType.Virtual))));
 
@@ -253,7 +253,6 @@ namespace EmbyStat.Controllers
 
         private void CreateMediaServerMappings()
         {
-            CreateMap<ServerInfoDto, MediaServerInfo>();
             CreateMap<PluginInfo, PluginViewModel>();
             CreateMap<MediaServerInfo, ServerInfoViewModel>()
                 .ForMember(x => x.ActiveUserCount, x => x.Ignore())
@@ -268,7 +267,7 @@ namespace EmbyStat.Controllers
                 .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()));
             CreateMap<BaseMediaStream, SubtitleStream>()
                 .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()));
-            CreateMap<BaseMediaStream, SqlVideoStream>()
+            CreateMap<BaseMediaStream, VideoStream>()
                 .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()))
                 .ForMember(x => x.AverageFrameRate, x => x.MapFrom(y => y.AverageFrameRate.HasValue ? (float)Math.Round(y.AverageFrameRate.Value, 2) : (float?)null));
             CreateMap<BaseMediaSourceInfo, MediaSource>()

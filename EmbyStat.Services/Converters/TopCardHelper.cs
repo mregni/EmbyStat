@@ -69,7 +69,7 @@ namespace EmbyStat.Services.Converters
             var values = list.Select(x => new TopCardItem
             {
                 Value = x.Value.ToString(),
-                Label = x.Key.SortName,
+                Label = x.Key.Name,
                 MediaId = x.Key.Id,
                 Image = x.Key.Primary
             }).ToArray();
@@ -89,7 +89,7 @@ namespace EmbyStat.Services.Converters
             var values = list.Select(x => new TopCardItem
             {
                 Value = x.SizeInMb.ToString(CultureInfo.CurrentCulture),
-                Label = x.SortName,
+                Label = x.Name,
                 MediaId = x.Id,
                 Image = x.Primary
             }).ToArray();

@@ -102,12 +102,12 @@ namespace EmbyStat.Common
 
         public static class JobIds
         {
-            public static Guid ShowSyncId => new Guid("be68900b-ee1d-41ef-b12f-60ef3106052e");
-            public static Guid MovieSyncId => new Guid("c40555dc-ea57-4c6e-a225-905223d31c3c");
-            public static Guid SmallSyncId => new Guid("41e0bf22-1e6b-4f5d-90be-ec966f746a2f");
-            public static Guid CheckUpdateId => new Guid("78bc2bf0-abd9-48ef-aeff-9c396d644f2a");
-            public static Guid PingEmbyId => new Guid("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e");
-            public static Guid DatabaseCleanupId => new Guid("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
+            public static Guid ShowSyncId => new("be68900b-ee1d-41ef-b12f-60ef3106052e");
+            public static Guid MovieSyncId => new("c40555dc-ea57-4c6e-a225-905223d31c3c");
+            public static Guid SmallSyncId => new("41e0bf22-1e6b-4f5d-90be-ec966f746a2f");
+            public static Guid CheckUpdateId => new("78bc2bf0-abd9-48ef-aeff-9c396d644f2a");
+            public static Guid PingEmbyId => new("ce1fbc9e-21ee-450b-9cdf-58a0e17ea98e");
+            public static Guid DatabaseCleanupId => new("b109ca73-0563-4062-a3e2-f7e6a00b73e9");
         }
 
         public static class Roles
@@ -131,16 +131,5 @@ namespace EmbyStat.Common
 
         //COMMON
         public static string Unknown => "UNKNOWN";
-        
-        //QUALITIES
-        public static string FourK => "4K";
-        public static string Qhd => "1440P";
-        public static string FullHd => "1080P";
-        public static string HdReady => "720P";
-        public static string FourHunderdEighty => "480P";
-        public static string Dvd => "< 480P";
-
-        //DUPLICATE REASONS
-        public static string ByImdb => "BYIMDB";
     }
 }

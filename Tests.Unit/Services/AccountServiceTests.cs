@@ -1,5 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using EmbyStat.Common;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
@@ -51,7 +53,8 @@ namespace Tests.Unit.Services
         {
             var signInManagerMock = new Mock<FakeSignInManager>();
             signInManagerMock
-                .Setup(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password, _loginRequest.RememberMe,
+                .Setup(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password,
+                    _loginRequest.RememberMe,
                     false))
                 .ReturnsAsync(SignInResult.Success);
 
@@ -59,6 +62,8 @@ namespace Tests.Unit.Services
             userManagerMock
                 .Setup(x => x.FindByNameAsync(_loginRequest.Username))
                 .ReturnsAsync(_user);
+
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var settingsServiceMock = new Mock<ISettingsService>();
             settingsServiceMock
@@ -71,7 +76,7 @@ namespace Tests.Unit.Services
                 .Returns("azerty");
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var result = await accountService.Authenticate(_loginRequest, "0.0.0.0");
             result.Should().NotBeNull();
@@ -81,7 +86,9 @@ namespace Tests.Unit.Services
             result.RefreshToken.Should().NotBeEmpty();
 
             signInManagerMock
-                .Verify(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password, _loginRequest.RememberMe, false), Times.Once);
+                .Verify(
+                    x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password, _loginRequest.RememberMe,
+                        false), Times.Once);
             userManagerMock
                 .Verify(x => x.FindByNameAsync(_loginRequest.Username), Times.Once);
             userManagerMock
@@ -95,28 +102,27 @@ namespace Tests.Unit.Services
         {
             var signInManagerMock = new Mock<FakeSignInManager>();
             signInManagerMock
-                .Setup(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password, _loginRequest.RememberMe,
+                .Setup(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password,
+                    _loginRequest.RememberMe,
                     false))
                 .ReturnsAsync(SignInResult.Failed);
 
             var userManagerMock = new Mock<FakeUserManager>();
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var result = await accountService.Authenticate(_loginRequest, "0.0.0.0");
             result.Should().BeNull();
 
             signInManagerMock
-                .Verify(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password, _loginRequest.RememberMe, false), Times.Once);
-            userManagerMock
-                .Verify(x => x.FindByNameAsync(_loginRequest.Username), Times.Never);
-            userManagerMock
-                .Verify(x => x.UpdateAsync(It.IsAny<EmbyStatUser>()), Times.Never);
-            tokenHandler
-                .Verify(x => x.WriteToken(It.IsAny<SecurityToken>()), Times.Never);
+                .Verify(x => x.PasswordSignInAsync(_loginRequest.Username, _loginRequest.Password,
+                    _loginRequest.RememberMe,
+                    false), Times.Once);
+            tokenHandler.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -124,17 +130,24 @@ namespace Tests.Unit.Services
         {
             var signInManagerMock = new Mock<FakeSignInManager>();
             var userManagerMock = new Mock<FakeUserManager>();
-            userManagerMock.Setup(x => x.CreateAsync(It.IsAny<EmbyStatUser>()));
+            userManagerMock.Setup(x => 
+                x.CreateAsync(It.IsAny<EmbyStatUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
-            var register = new AuthenticateRequest { Password = "test", Username = "username" };
+            var register = new AuthenticateRequest {Password = "test", Username = "username"};
             await accountService.Register(register);
 
             userManagerMock.Verify(x => x.CreateAsync(It.IsAny<EmbyStatUser>(), "test"), Times.Once);
+            userManagerMock.Verify(x => x.FindByNameAsync("username"), Times.Once);
+            userManagerMock.Verify(x => x.ConfirmEmailAsync(It.IsAny<EmbyStatUser>(), It.IsAny<string>()), Times.Once);
+            userManagerMock.Verify(x => x.SetLockoutEnabledAsync(It.IsAny<EmbyStatUser>(), It.IsAny<bool>()), Times.Once);
+            userManagerMock.Verify(x => x.AddToRolesAsync(It.IsAny<EmbyStatUser>(), new []{ Constants.Roles.Admin, Constants.Roles.User }), Times.Once);
         }
 
         [Fact]
@@ -145,9 +158,10 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             await accountService.LogOut();
 
@@ -161,16 +175,17 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             userManagerMock
                 .Setup(x => x.FindByNameAsync("test"))
-                .ReturnsAsync(new EmbyStatUser { UserName = "test" });
+                .ReturnsAsync(new EmbyStatUser {UserName = "test"});
             userManagerMock
                 .Setup(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"))
                 .ReturnsAsync(IdentityResult.Success);
 
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var request = new ChangePasswordRequest
             {
@@ -182,7 +197,8 @@ namespace Tests.Unit.Services
             result.Should().BeTrue();
 
             userManagerMock.Verify(x => x.FindByNameAsync("test"), Times.Once);
-            userManagerMock.Verify(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"), Times.Once);
+            userManagerMock.Verify(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"),
+                Times.Once);
         }
 
         [Fact]
@@ -192,12 +208,13 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             userManagerMock
                 .Setup(x => x.FindByNameAsync("test"))
-                .ReturnsAsync((EmbyStatUser)null);
+                .ReturnsAsync((EmbyStatUser) null);
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var request = new ChangePasswordRequest
             {
@@ -209,7 +226,9 @@ namespace Tests.Unit.Services
             result.Should().BeFalse();
 
             userManagerMock.Verify(x => x.FindByNameAsync("test2"), Times.Once);
-            userManagerMock.Verify(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            userManagerMock.Verify(
+                x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
         }
 
         [Fact]
@@ -219,16 +238,17 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             userManagerMock
                 .Setup(x => x.FindByNameAsync("test"))
-                .ReturnsAsync(new EmbyStatUser { UserName = "test" });
+                .ReturnsAsync(new EmbyStatUser {UserName = "test"});
             userManagerMock
                 .Setup(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"))
                 .ReturnsAsync(IdentityResult.Failed(new IdentityError()));
 
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var request = new ChangePasswordRequest
             {
@@ -240,7 +260,8 @@ namespace Tests.Unit.Services
             result.Should().BeFalse();
 
             userManagerMock.Verify(x => x.FindByNameAsync("test"), Times.Once);
-            userManagerMock.Verify(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"), Times.Once);
+            userManagerMock.Verify(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"),
+                Times.Once);
         }
 
         [Fact]
@@ -250,16 +271,17 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             userManagerMock
                 .Setup(x => x.FindByNameAsync("test"))
-                .ReturnsAsync(new EmbyStatUser { UserName = "test" });
+                .ReturnsAsync(new EmbyStatUser {UserName = "test"});
             userManagerMock
                 .Setup(x => x.SetUserNameAsync(It.IsAny<EmbyStatUser>(), "test2"))
                 .ReturnsAsync(IdentityResult.Success);
 
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var request = new ChangeUserNameRequest
             {
@@ -280,13 +302,14 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             userManagerMock
                 .Setup(x => x.FindByNameAsync("test"))
-                .ReturnsAsync((EmbyStatUser)null);
+                .ReturnsAsync((EmbyStatUser) null);
 
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var request = new ChangeUserNameRequest
             {
@@ -307,16 +330,17 @@ namespace Tests.Unit.Services
             var userManagerMock = new Mock<FakeUserManager>();
             userManagerMock
                 .Setup(x => x.FindByNameAsync("test"))
-                .ReturnsAsync(new EmbyStatUser { UserName = "test" });
+                .ReturnsAsync(new EmbyStatUser {UserName = "test"});
             userManagerMock
                 .Setup(x => x.SetUserNameAsync(It.IsAny<EmbyStatUser>(), "test2"))
                 .ReturnsAsync(IdentityResult.Failed(new IdentityError()));
 
             var settingsServiceMock = new Mock<ISettingsService>();
             var tokenHandler = new Mock<JwtSecurityTokenHandler>();
+            var roleManagerMock = new Mock<FakeRoleManager>();
 
             var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-                settingsServiceMock.Object, tokenHandler.Object);
+                settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
 
             var request = new ChangeUserNameRequest
             {

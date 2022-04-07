@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
+using EmbyStat.Services.Models.Charts;
 using FluentAssertions;
 using Moq;
 using Tests.Unit.Builders;
@@ -27,48 +31,44 @@ namespace Tests.Unit.Services
         private readonly Show _showThree;
 
         private readonly Mock<IShowRepository> _showRepositoryMock;
+        private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
 
         public ShowServiceTests()
         {
             _showRepositoryMock = new Mock<IShowRepository>();
-
-            _collections = new List<Library>
-            {
-                new Library{ Id = string.Empty, Name = "collection1", Primary = "image1", Type = LibraryType.TvShow},
-                new Library{ Id = string.Empty, Name = "collection2", Primary = "image2", Type = LibraryType.TvShow}
-            };
+            _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
 
             var showOneId = Guid.NewGuid().ToString();
             var showTwoId = Guid.NewGuid().ToString();
             var showThreeId = Guid.NewGuid().ToString();
 
-            _showOne = new ShowBuilder(showOneId, _collections.First().Id)
+            _showOne = new ShowBuilder(showOneId)
                 .AddName("Chuck")
                 .AddCreateDate(new DateTime(1990, 4, 2))
                 .AddGenre("Comedy", "Action")
                 .AddCommunityRating(null)
                 .Build();
-            _showTwo = new ShowBuilder(showTwoId, _collections.First().Id)
+            _showTwo = new ShowBuilder(showTwoId)
                 .AddName("The 100")
-                .AddMissingEpisodes(10, 1)
-                .AddCommunityRating(8.3f)
+                .AddCommunityRating(8.3M)
                 .AddPremiereDate(new DateTime(1992, 4, 1))
-                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), showTwoId, "1").Build())
-                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), showTwoId, "1").Build())
                 .AddGenre("Drama", "Comedy", "Action")
                 .SetContinuing()
                 .AddOfficialRating("TV-16")
-                .AddActor(_showOne.People.First().Id)
+                .AddActor(_showOne.People.First().Id.ToString())
+                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), "1").Build())
+                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), "1").Build())
+                .AddMissingEpisodes(10, 1)
                 .Build();
-            _showThree = new ShowBuilder(showThreeId, _collections.First().Id)
+            _showThree = new ShowBuilder(showThreeId)
                 .AddName("Dexter")
-                .AddMissingEpisodes(2, 1)
-                .AddCommunityRating(8.4f)
+                .AddCommunityRating(8.4M)
                 .AddPremiereDate(new DateTime(2018, 4, 10))
-                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), showThreeId, "1").Build())
                 .AddCreateDate(new DateTime(2003, 4, 2))
                 .AddGenre("War", "Action")
                 .SetContinuing()
+                .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), "1").Build())
+                .AddMissingEpisodes(2, 1)
                 .Build();
 
             _subject = CreateShowService(_showOne, _showTwo, _showThree);
@@ -77,80 +77,185 @@ namespace Tests.Unit.Services
         private ShowService CreateShowService(params Show[] shows)
         {
             _showRepositoryMock
-                .Setup(x => x.GetAllShows(It.IsAny<IReadOnlyList<string>>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns(shows.ToList());
+                .Setup(x => x.GetAllShowsWithEpisodes())
+                .ReturnsAsync(shows.ToList());
             _showRepositoryMock
-                .Setup(x => x.GetHighestRatedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
-                .Returns(shows.OrderByDescending(x => x.CommunityRating));
+                .Setup(x => x.GetHighestRatedMedia(5))
+                .ReturnsAsync(shows.OrderByDescending(x => x.CommunityRating));
             _showRepositoryMock
-                .Setup(x => x.GetLowestRatedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
-                .Returns(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating));
+                .Setup(x => x.GetLowestRatedMedia(5))
+                .ReturnsAsync(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating));
             _showRepositoryMock
-                .Setup(x => x.GetLatestAddedMedia(It.IsAny<IReadOnlyList<string>>(), 5))
+                .Setup(x => x.GetLatestAddedMedia(5))
                 .Returns(shows.OrderByDescending(x => x.DateCreated));
-            _showRepositoryMock.
-                Setup(x => x.GetMediaCount(It.IsAny<IReadOnlyList<string>>()))
-                .Returns(shows.Length);
             _showRepositoryMock
-                .Setup(x => x.GetNewestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
-                .Returns(shows.OrderByDescending(x => x.PremiereDate));
+                .Setup(x => x.GetNewestPremieredMedia(5))
+                .ReturnsAsync(shows.OrderByDescending(x => x.PremiereDate));
             _showRepositoryMock
-                .Setup(x => x.GetOldestPremieredMedia(It.IsAny<IReadOnlyList<string>>(), 5))
-                .Returns(shows.OrderBy(x => x.PremiereDate));
+                .Setup(x => x.GetOldestPremieredMedia(5))
+                .ReturnsAsync(shows.OrderBy(x => x.PremiereDate));
             _showRepositoryMock
-                .Setup(x => x.GetShowsWithMostEpisodes(It.IsAny<IReadOnlyList<string>>(), 5))
-                .Returns(shows.OrderByDescending(x => x.Episodes.Count).ToDictionary(x => x, x => x.Episodes.Count));
+                .Setup(x => x.GetShowsWithMostEpisodes(5))
+                .ReturnsAsync(shows
+                    .OrderByDescending(x => x.Seasons.SelectMany(y => y.Episodes).Count())
+                    .ToDictionary(x => x, x => x.Seasons.SelectMany(y => y.Episodes).Count()));
             _showRepositoryMock
                 .Setup(x => x.Any())
                 .Returns(true);
+            _showRepositoryMock
+                .Setup(x => x.GetGenreChartValues())
+                .ReturnsAsync(shows
+                    .SelectMany(x => x.Genres)
+                    .GroupBy(x => x.Name)
+                    .OrderBy(x => x.Key)
+                    .ToDictionary(x => x.Key, x => x.Count())
+                );
+            _showRepositoryMock
+                .Setup(x => x.GetOfficialRatingChartValues())
+                .ReturnsAsync(shows
+                    .Select(x => x.OfficialRating)
+                    .GroupBy(x => x)
+                    .ToDictionary(x => x.Key, x => x.Count()));
+            _showRepositoryMock
+                .Setup(x => x.GetShowStatusCharValues())
+                .ReturnsAsync(shows
+                    .Select(x => x.Status)
+                    .GroupBy(x => x)
+                    .OrderBy(x => x.Key)
+                    .ToDictionary(x => x.Key, x => x.Count()));
+            _showRepositoryMock
+                .Setup(x => x.GetCollectedRateChart())
+                .ReturnsAsync(new[] {0.04, 0.26, 0.61});
+            _showRepositoryMock
+                .Setup(x => x.GetPremiereYears())
+                .Returns(shows.Select(x => x.PremiereDate));
+            _showRepositoryMock
+                .Setup(x => x.Count())
+                .ReturnsAsync(shows.Length);
+            _showRepositoryMock
+                .Setup(x => x.GetTotalRunTimeTicks())
+                .ReturnsAsync(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
+            _showRepositoryMock
+                .Setup(x => x.GetEpisodeCount(LocationType.Disk))
+                .ReturnsAsync(shows.SelectMany(x => x.Seasons).SelectMany(x => x.Episodes).Count(x => x.LocationType == LocationType.Disk));
+            _showRepositoryMock
+                .Setup(x => x.GetEpisodeCount(LocationType.Virtual))
+                .ReturnsAsync(shows.SelectMany(x => x.Seasons).SelectMany(x => x.Episodes).Count(x => x.LocationType == LocationType.Virtual));
+            _showRepositoryMock
+                .Setup(x => x.GetTotalDiskSpaceUsed())
+                .ReturnsAsync(shows
+                    .SelectMany(x => x.Seasons)
+                    .SelectMany(x => x.Episodes).Where(x => x.LocationType == LocationType.Disk)
+                    .Sum(x => x.MediaSources.Any() ? x.MediaSources.First().SizeInMb : 0d));
+            _showRepositoryMock
+                .Setup(x => x.GetCommunityRatings())
+                .Returns(shows.Select(x => x.CommunityRating));
+            _showRepositoryMock
+                .Setup(x => x.GetShowByIdWithEpisodes(It.IsAny<string>()))
+                .ReturnsAsync(_showOne);
+            _showRepositoryMock
+                .Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<Filter[]>()))
+                .ReturnsAsync(new[] {_showOne});
+            _showRepositoryMock
+                .Setup(x => x.Count(It.IsAny<Filter[]>()))
+                .ReturnsAsync(11);
+            
+            _mediaServerRepositoryMock.Setup(x => x.GetAllLibraries(It.IsAny<LibraryType>()))
+                .ReturnsAsync(new List<Library>
+                {
+                    new LibraryBuilder(0, LibraryType.TvShow).Build(),
+                    new LibraryBuilder(1, LibraryType.TvShow).Build(),
+                });
 
-            foreach (var show in shows)
-            {
-                _showRepositoryMock.Setup(x => x.GetAllEpisodesForShow(show.Id)).Returns(show.Episodes);
-            }
-
-            var collectionRepositoryMock = new Mock<ILibraryRepository>();
-            collectionRepositoryMock.Setup(x => x.GetLibrariesById(It.IsAny<IEnumerable<string>>())).Returns(_collections);
-
-            var personServiceMock = new Mock<IPersonService>();
-            foreach (var person in shows.SelectMany(x => x.People))
-            {
-                personServiceMock.Setup(x => x.GetPersonByNameForShows(person.Name, It.IsAny<string>())).Returns(
-                    new Person
-                    {
-                        Id = person.Id,
-                        Name = person.Name,
-                        BirthDate = new DateTime(2000, 1, 1),
-                        Primary = "primary.jpg",
-                        MovieCount = 0,
-                        ShowCount = 0
-                    });
-            }
-
-            var settingsServiceMock = new Mock<ISettingsService>();
-            settingsServiceMock
-                .Setup(x => x.GetUserSettings())
-                .Returns(new UserSettings { ShowLibraries = new List<LibraryContainer> { new() { Id = _collections[0].Id}, new() { Id = _collections[1].Id } } });
             var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
             var jobRepositoryMock = new Mock<IJobRepository>();
-            return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object, collectionRepositoryMock.Object, personServiceMock.Object, statisticsRepositoryMock.Object, settingsServiceMock.Object);
+            return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object,
+                statisticsRepositoryMock.Object, _mediaServerRepositoryMock.Object);
+                
         }
 
         #region General
 
         [Fact]
-        public void GetCollectionsFromDatabase()
+        public async Task GetCollectionsFromDatabase()
         {
-            var collections = _subject.GetShowLibraries().ToList();
+            var collections = await _subject.GetShowLibraries();
 
             collections.Should().NotBeNull();
-            collections.Count().Should().Be(2);
+            collections.Count.Should().Be(2);
+            
+            _mediaServerRepositoryMock.Verify(x => x.GetAllLibraries(LibraryType.TvShow));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+            
+            _showRepositoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetShow_Should_Return_Show()
+        {
+            var show = await _subject.GetShow(_showOne.Id);
+
+            show.Should().NotBeNull();
+            show.Id.Should().Be(_showOne.Id);
+            
+            _showRepositoryMock.Verify(x => x.GetShowByIdWithEpisodes(_showOne.Id));
+            _showRepositoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task SetLibraryAsSynced_Should_Update_Libraries()
+        {
+            var list = new[] {"1", "2"};
+            await _subject.SetLibraryAsSynced(list);
+
+            _mediaServerRepositoryMock.Verify(x => x.SetLibraryAsSynced(list, LibraryType.TvShow));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+            
+            _showRepositoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetShowPage_Should_Return_Page_With_Total_Count()
+        {
+            var filters = Array.Empty<Filter>();
+            var result = await _subject.GetShowPage(0, 1, "name", "asc", filters, true);
+            result.Should().NotBeNull();
+
+            result.TotalCount.Should().Be(11);
+            var results = result.Data.ToList();
+            results.Count.Should().Be(1);
+            results[0].Id.Should().Be(_showOne.Id);
+            
+            _showRepositoryMock.Verify(x => x.GetShowPage(0, 1, "name", "asc", filters));
+            _showRepositoryMock.Verify(x => x.Count(filters));
+            _showRepositoryMock.VerifyNoOtherCalls();
+            
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetShowPage_Should_Return_Page_WithoutTotal_Count()
+        {
+            var filters = Array.Empty<Filter>();
+            var result = await _subject.GetShowPage(0, 1, "name", "asc", filters, false);
+            result.Should().NotBeNull();
+
+            result.TotalCount.Should().Be(0);
+            var results = result.Data.ToList();
+            results.Count.Should().Be(1);
+            results[0].Id.Should().Be(_showOne.Id);
+            
+            _showRepositoryMock.Verify(x => x.GetShowPage(0, 1, "name", "asc", filters));
+            _showRepositoryMock.VerifyNoOtherCalls();
+            
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetShowCountStat()
+        public async Task GetShowCountStat()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Cards.Should().NotBeNull();
@@ -162,9 +267,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetTotalEpisodeCount()
+        public async Task GetTotalEpisodeCount()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Cards.Should().NotBeNull();
@@ -172,13 +277,13 @@ namespace Tests.Unit.Services
 
             var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalEpisodes);
             card.Title.Should().Be(Constants.Shows.TotalEpisodes);
-            card.Value.Should().Be("9");
+            card.Value.Should().Be("19");
         }
 
         [Fact]
-        public void GetTotalMissingEpisodeCount()
+        public async Task GetTotalMissingEpisodeCount()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Cards.Should().NotBeNull();
@@ -190,9 +295,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetCalculatePlayableTime()
+        public async Task GetCalculatePlayableTime()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Cards.Should().NotBeNull();
@@ -204,9 +309,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetHighestRatedShow()
+        public async Task GetHighestRatedShow()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.TopCards.Count(x => x.Title == Constants.Shows.HighestRatedShow).Should().Be(1);
@@ -222,9 +327,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetLowestRatedShow()
+        public async Task GetLowestRatedShow()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.TopCards.Count(x => x.Title == Constants.Shows.LowestRatedShow).Should().Be(1);
@@ -240,9 +345,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetOldestPremieredShow()
+        public async Task GetOldestPremieredShow()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.TopCards.Count(x => x.Title == Constants.Shows.OldestPremiered).Should().Be(1);
@@ -258,9 +363,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetShowWithMostEpisodes()
+        public async Task GetShowWithMostEpisodes()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.TopCards.Count(x => x.Title == Constants.Shows.MostEpisodes).Should().Be(1);
@@ -269,16 +374,16 @@ namespace Tests.Unit.Services
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Shows.MostEpisodes);
             card.Unit.Should().Be("#");
-            card.Values[0].Value.Should().Be(_showTwo.Episodes.Count.ToString());
+            card.Values[0].Value.Should().Be(_showTwo.Seasons.SelectMany(x => x.Episodes).Count().ToString());
             card.Values[0].Label.Should().Be(_showTwo.Name);
             card.UnitNeedsTranslation.Should().Be(false);
             card.ValueType.Should().Be(ValueTypeEnum.None);
         }
 
         [Fact]
-        public void GetLatestAddedShow()
+        public async Task GetLatestAddedShow()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.TopCards.Count(x => x.Title == Constants.Shows.LatestAdded).Should().Be(1);
@@ -294,9 +399,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetNewestPremieredShow()
+        public async Task GetNewestPremieredShow()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.TopCards.Count(x => x.Title == Constants.Shows.NewestPremiered).Should().Be(1);
@@ -312,9 +417,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void GetTotalDiskSize()
+        public async Task GetTotalDiskSize()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSpace).Should().Be(1);
@@ -322,7 +427,7 @@ namespace Tests.Unit.Services
             var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSpace);
             card.Should().NotBeNull();
             card.Title.Should().Be(Constants.Common.TotalDiskSpace);
-            card.Value.Should().Be("909");
+            card.Value.Should().Be("1919");
         }
 
         #endregion
@@ -330,134 +435,176 @@ namespace Tests.Unit.Services
         #region Charts
 
         [Fact]
-        public void GetGenreChart()
+        public async Task GetGenreChart()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.BarCharts.Should().NotBeNull();
-            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Count.Should().Be(5);
             stat.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
 
             var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerGenre);
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
-            graph.DataSets.Should().Be("[{\"Label\":\"Action\",\"Val0\":3},{\"Label\":\"Comedy\",\"Val0\":2},{\"Label\":\"Drama\",\"Val0\":1},{\"Label\":\"War\",\"Val0\":1}]");
+            graph.DataSets.Length.Should().Be(4);
+            TestDataSets(graph.DataSets[0], "Action", 3);
+            TestDataSets(graph.DataSets[1], "Comedy", 2);
+            TestDataSets(graph.DataSets[2], "Drama", 1);
+            TestDataSets(graph.DataSets[3], "War", 1);
         }
 
         [Fact]
-        public void GetRatingChart()
+        public async Task GetRatingChart()
         {
-            var showFour = new ShowBuilder(Guid.NewGuid().ToString(), _collections.First().Id).AddCommunityRating(9.3f).Build();
+            var showFour = new ShowBuilder(Guid.NewGuid().ToString()).AddCommunityRating(9.3M)
+                .Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
 
-            var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Should().NotBeNull();
-            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Count.Should().Be(5);
             stat.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
 
             var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCommunityRating);
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
-            var dataSet = "{\"Label\":\"0\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 0.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"1\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 1.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"2\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 2.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"3\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 3.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"4\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 4.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"5\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 5.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"6\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 6.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"7\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 7.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"8\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 8.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":2},";
-            dataSet += "{\"Label\":\"9\",\"Val0\":0},";
-            dataSet += "{\"Label\":\"" + 9.5.ToString(CultureInfo.CurrentCulture) + "\",\"Val0\":1},";
-            dataSet += "{\"Label\":\"UNKNOWN\",\"Val0\":1}";
-            graph.DataSets.Should().Be("[" + dataSet + "]");
+            graph.DataSets.Length.Should().Be(21);
+            TestDataSets(graph.DataSets[0], "0", 0);
+            TestDataSets(graph.DataSets[1], 0.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[2], "1", 0);
+            TestDataSets(graph.DataSets[3], 1.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[4], "2", 0);
+            TestDataSets(graph.DataSets[5], 2.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[6], "3", 0);
+            TestDataSets(graph.DataSets[7], 3.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[8], "4", 0);
+            TestDataSets(graph.DataSets[9], 4.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[10], "5", 0);
+            TestDataSets(graph.DataSets[11], 5.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[12], "6", 0);
+            TestDataSets(graph.DataSets[13], 6.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[14], "7", 0);
+            TestDataSets(graph.DataSets[15], 7.5.ToString(CultureInfo.CurrentCulture), 0);
+            TestDataSets(graph.DataSets[16], "8", 0);
+            TestDataSets(graph.DataSets[17], 8.5.ToString(CultureInfo.CurrentCulture), 2);
+            TestDataSets(graph.DataSets[18], "9", 0);
+            TestDataSets(graph.DataSets[19], 9.5.ToString(CultureInfo.CurrentCulture), 1);
+            TestDataSets(graph.DataSets[20], "UNKNOWN", 1);
         }
 
         [Fact]
-        public void GetPremiereYearChart()
+        public async Task GetPremiereYearChart()
         {
-            var showFour = new ShowBuilder(Guid.NewGuid().ToString(), _collections.First().Id).AddPremiereDate(new DateTime(2002, 1, 10)).Build();
+            var showFour = new ShowBuilder(Guid.NewGuid().ToString())
+                .AddPremiereDate(new DateTime(2002, 1, 10)).Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
 
-            var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Should().NotBeNull();
-            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Count.Should().Be(5);
             stat.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
 
             var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerPremiereYear);
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
-            graph.DataSets.Should().Be("[{\"Label\":\"1990 - 1994\",\"Val0\":1},{\"Label\":\"1995 - 1999\",\"Val0\":0},{\"Label\":\"2000 - 2004\",\"Val0\":2},{\"Label\":\"2005 - 2009\",\"Val0\":0},{\"Label\":\"2010 - 2014\",\"Val0\":0},{\"Label\":\"2015 - 2019\",\"Val0\":1}]");
+            graph.DataSets.Length.Should().Be(6);
+            TestDataSets(graph.DataSets[0], "1990 - 1994", 1);
+            TestDataSets(graph.DataSets[1], "1995 - 1999", 0);
+            TestDataSets(graph.DataSets[2], "2000 - 2004", 2);
+            TestDataSets(graph.DataSets[3], "2005 - 2009", 0);
+            TestDataSets(graph.DataSets[4], "2010 - 2014", 0);
+            TestDataSets(graph.DataSets[5], "2015 - 2019", 1);
         }
 
         [Fact]
-        public void GetCollectedRateChart()
+        public async Task GetCollectedRateChart()
         {
-            var showFour = new ShowBuilder(Guid.NewGuid().ToString(), _collections.First().Id).ClearEpisodes().Build();
+            var showFour = new ShowBuilder(Guid.NewGuid().ToString()).ClearEpisodes().Build();
             var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
-            var stat = subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Should().NotBeNull();
-            stat.BarCharts.Count.Should().Be(4);
+            stat.BarCharts.Count.Should().Be(5);
             stat.BarCharts.Any(x => x.Title == Constants.CountPerCollectedPercentage).Should().BeTrue();
 
             var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCollectedPercentage);
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
-            graph.DataSets.Should().Be("[{\"Label\":\"0% - 4%\",\"Val0\":1},{\"Label\":\"5% - 9%\",\"Val0\":0},{\"Label\":\"10% - 14%\",\"Val0\":0},{\"Label\":\"15% - 19%\",\"Val0\":0},{\"Label\":\"20% - 24%\",\"Val0\":0},{\"Label\":\"25% - 29%\",\"Val0\":1},{\"Label\":\"30% - 34%\",\"Val0\":0},{\"Label\":\"35% - 39%\",\"Val0\":0},{\"Label\":\"40% - 44%\",\"Val0\":0},{\"Label\":\"45% - 49%\",\"Val0\":0},{\"Label\":\"50% - 54%\",\"Val0\":0},{\"Label\":\"55% - 59%\",\"Val0\":0},{\"Label\":\"60% - 64%\",\"Val0\":1},{\"Label\":\"65% - 69%\",\"Val0\":0},{\"Label\":\"70% - 74%\",\"Val0\":0},{\"Label\":\"75% - 79%\",\"Val0\":0},{\"Label\":\"80% - 84%\",\"Val0\":0},{\"Label\":\"85% - 89%\",\"Val0\":0},{\"Label\":\"90% - 94%\",\"Val0\":0},{\"Label\":\"95% - 99%\",\"Val0\":0}]");
+            graph.DataSets.Length.Should().Be(20);
+            TestDataSets(graph.DataSets[0], "0% - 4%", 1);
+            TestDataSets(graph.DataSets[1], "5% - 9%", 0);
+            TestDataSets(graph.DataSets[2], "10% - 14%", 0);
+            TestDataSets(graph.DataSets[3], "15% - 19%", 0);
+            TestDataSets(graph.DataSets[4], "20% - 24%", 0);
+            TestDataSets(graph.DataSets[5], "25% - 29%", 1);
+            TestDataSets(graph.DataSets[6], "30% - 34%", 0);
+            TestDataSets(graph.DataSets[7], "35% - 39%", 0);
+            TestDataSets(graph.DataSets[8], "40% - 44%", 0);
+            TestDataSets(graph.DataSets[9], "45% - 49%", 0);
+            TestDataSets(graph.DataSets[10], "50% - 54%", 0);
+            TestDataSets(graph.DataSets[11], "55% - 59%", 0);
+            TestDataSets(graph.DataSets[12], "60% - 64%", 1);
+            TestDataSets(graph.DataSets[13], "65% - 69%", 0);
+            TestDataSets(graph.DataSets[14], "70% - 74%", 0);
+            TestDataSets(graph.DataSets[15], "75% - 79%", 0);
+            TestDataSets(graph.DataSets[16], "80% - 84%", 0);
+            TestDataSets(graph.DataSets[17], "85% - 89%", 0);
+            TestDataSets(graph.DataSets[18], "90% - 94%", 0);
+            TestDataSets(graph.DataSets[19], "95% - 99%", 0);
+        }
+
+        private void TestDataSets(SimpleChartData set, string label, int value)
+        {
+            set.Label.Should().Be(label);
+            set.Value.Should().Be(value);
         }
 
         [Fact]
-        public void GetOfficialRatingChart()
+        public async Task GetOfficialRatingChart()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Should().NotBeNull();
-            stat.PieCharts.Count.Should().Be(2);
-            stat.PieCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
+            stat.BarCharts.Count.Should().Be(5);
+            stat.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
 
-            var graph = stat.PieCharts.Single(x => x.Title == Constants.CountPerOfficialRating);
+            var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerOfficialRating);
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
-            graph.DataSets.Should().Be("[{\"Label\":\"R\",\"Val0\":2},{\"Label\":\"TV-16\",\"Val0\":1}]");
+            graph.DataSets.Length.Should().Be(2);
+            TestDataSets(graph.DataSets[0], "R", 2);
+            TestDataSets(graph.DataSets[1], "TV-16", 1);
         }
 
         [Fact]
-        public void GetShowStateChart()
+        public async Task GetShowStateChart()
         {
-            var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+            var stat = await _subject.GetStatistics();
 
             stat.Should().NotBeNull();
             stat.Should().NotBeNull();
-            stat.PieCharts.Count.Should().Be(2);
+            stat.PieCharts.Count.Should().Be(1);
             stat.PieCharts.Any(x => x.Title == Constants.Shows.ShowStatusChart).Should().BeTrue();
 
             var graph = stat.PieCharts.Single(x => x.Title == Constants.Shows.ShowStatusChart);
             graph.Should().NotBeNull();
             graph.SeriesCount.Should().Be(1);
-            graph.DataSets.Should().Be("[{\"Label\":\"Continuing\",\"Val0\":2},{\"Label\":\"Ended\",\"Val0\":1}]");
+            graph.DataSets.Length.Should().Be(2);
+            TestDataSets(graph.DataSets[0], "Continuing", 2);
+            TestDataSets(graph.DataSets[1], "Ended", 1);
         }
 
         #endregion
 
         [Fact]
-        public void TypeIsPresent_Should_Return_True()
+        public async Task TypeIsPresent_Should_Return_True()
         {
             var result = _subject.TypeIsPresent();
             result.Should().BeTrue();
@@ -471,7 +618,7 @@ namespace Tests.Unit.Services
         //[Fact]
         //public void GetMostFeaturedActorsPerGenre()
         //{
-        //    var stat = _subject.GetStatistics(_collections.Select(x => x.Id).ToList());
+        //    var stat = await _subject.GetStatistics();
 
         //    stat.People.Should().NotBeNull();
         //    stat.People.MostFeaturedActorsPerGenreCards.Should().NotBeNull();

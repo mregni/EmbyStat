@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -6,6 +8,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
 using Moq;
+using MoreLinq;
 using Xunit;
 
 namespace Tests.Unit.Services
@@ -14,6 +17,7 @@ namespace Tests.Unit.Services
     {
         private readonly Mock<IMovieRepository> _movieRepositoryMock;
         private readonly Mock<IFilterRepository> _filterRepositoryMock;
+        private readonly Mock<IShowRepository> _showRepositoryMock;
 
         private FilterValues _filterValues;
 
@@ -21,49 +25,49 @@ namespace Tests.Unit.Services
         {
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _filterRepositoryMock = new Mock<IFilterRepository>();
+            _showRepositoryMock = new Mock<IShowRepository>();
         }
 
-        private void SetupMovieRepository(string[] libraryIds)
+        private void SetupMovieRepository()
         {
             _movieRepositoryMock
-                .Setup(x => x.CalculateSubtitleFilterValues(libraryIds))
-                .Returns(new[] { new LabelValuePair { Label = "6", Value = "6" }, new LabelValuePair { Label = "7", Value = "7" } });
+                .Setup(x => x.CalculateSubtitleFilterValues())
+                .Returns(new[]
+                    {new LabelValuePair {Label = "6", Value = "6"}, new LabelValuePair {Label = "7", Value = "7"}});
             _movieRepositoryMock
-                .Setup(x => x.CalculateGenreFilterValues(libraryIds))
-                .Returns(new[] { new LabelValuePair { Label = "8", Value = "8" }, new LabelValuePair { Label = "9", Value = "9" } });
+                .Setup(x => x.CalculateGenreFilterValues())
+                .Returns(new[]
+                    {new LabelValuePair {Label = "8", Value = "8"}, new LabelValuePair {Label = "9", Value = "9"}});
             _movieRepositoryMock
-                .Setup(x => x.CalculateContainerFilterValues(libraryIds))
-                .Returns(new[] { new LabelValuePair { Label = "10", Value = "10" }, new LabelValuePair { Label = "11", Value = "11" } });
-            _movieRepositoryMock
-                .Setup(x => x.CalculateCollectionFilterValues())
-                .Returns(new[] { new LabelValuePair { Label = "12", Value = "12" }, new LabelValuePair { Label = "13", Value = "13" } });
+                .Setup(x => x.CalculateContainerFilterValues())
+                .Returns(new[]
+                    {new LabelValuePair {Label = "10", Value = "10"}, new LabelValuePair {Label = "11", Value = "11"}}); 
         }
 
-        private FilterService CreateFilterService(LibraryType type, string field, string[] libraryIds)
+        private FilterService CreateFilterService(LibraryType type, string field)
         {
             _filterValues = new FilterValues
             {
-                Id = "1",
+                Id = 1,
                 Field = field,
-                Values = new[] { new LabelValuePair { Label = "2", Value = "2" }, new LabelValuePair { Label = "3", Value = "3" } },
-                Libraries = libraryIds
+                Values = new[]
+                    {new LabelValuePair {Label = "2", Value = "2"}, new LabelValuePair {Label = "3", Value = "3"}}
             };
 
             _filterRepositoryMock
-                .Setup(x => x.Get(field, libraryIds))
-                .Returns(_filterValues);
+                .Setup(x => x.Get(type, field))
+                .ReturnsAsync(_filterValues);
             _filterRepositoryMock
                 .Setup(x => x.Insert(It.IsAny<FilterValues>()));
 
-            return new FilterService(_filterRepositoryMock.Object, _movieRepositoryMock.Object);
+            return new FilterService(_filterRepositoryMock.Object, _movieRepositoryMock.Object, _showRepositoryMock.Object);
         }
 
         [Fact]
-        public void Get_Should_Return_Existing_FilterValues()
+        public async Task Get_Should_Return_Existing_Movie_FilterValues()
         {
-            var collectionIds = new[] { "4", "5" };
-            var filterService = CreateFilterService(LibraryType.Movies, "subtitle", collectionIds);
-            var values = filterService.GetFilterValues(LibraryType.Movies, "subtitle", collectionIds);
+            var filterService = CreateFilterService(LibraryType.Movies, "subtitle");
+            var values = await filterService.GetFilterValues(LibraryType.Movies, "subtitle");
             values.Should().NotBeNull();
 
             values.Id.Should().Be(_filterValues.Id);
@@ -73,22 +77,17 @@ namespace Tests.Unit.Services
             values.Values[0].Value.Should().Be("2");
             values.Values[1].Label.Should().Be("3");
             values.Values[1].Value.Should().Be("3");
-            values.Libraries.Length.Should().Be(2);
-            values.Libraries[0].Should().Be("4");
-            values.Libraries[1].Should().Be("5");
 
-            _filterRepositoryMock.Verify(x => x.Get("subtitle", collectionIds), Times.Once);
+            _filterRepositoryMock.Verify(x => x.Get(LibraryType.Movies, "subtitle"), Times.Once);
         }
 
         [Fact]
-        public void Get_Should_Calculate_Missing_Subtitle_FilterValues()
+        public async Task Get_Should_Calculate_Missing_Subtitle_FilterValues()
         {
-            var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = new[] { "3" };
-            SetupMovieRepository(usedCollectionIds);
-            var filterService = CreateFilterService(LibraryType.Movies, "subtitle", collectionIds);
+            SetupMovieRepository();
+            var filterService = CreateFilterService(LibraryType.TvShow, "subtitle");
 
-            var values = filterService.GetFilterValues(LibraryType.Movies, "subtitle", usedCollectionIds);
+            var values = await filterService.GetFilterValues(LibraryType.Movies, "subtitle");
 
             values.Field.Should().Be(_filterValues.Field);
             values.Values.Length.Should().Be(2);
@@ -96,25 +95,21 @@ namespace Tests.Unit.Services
             values.Values[0].Value.Should().Be("6");
             values.Values[1].Label.Should().Be("7");
             values.Values[1].Value.Should().Be("7");
-            values.Libraries.Length.Should().Be(1);
-            values.Libraries[0].Should().Be("3");
 
             _filterRepositoryMock.Verify(x => x.Insert(It.IsAny<FilterValues>()));
-            _movieRepositoryMock.Verify(x => x.CalculateSubtitleFilterValues(usedCollectionIds), Times.Once);
-            _movieRepositoryMock.Verify(x => x.CalculateGenreFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateContainerFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateCollectionFilterValues(), Times.Never);
+            _filterRepositoryMock.Verify(x => x.Get(LibraryType.Movies, "subtitle"));
+            _filterRepositoryMock.VerifyNoOtherCalls();
+            _movieRepositoryMock.Verify(x => x.CalculateSubtitleFilterValues(), Times.Once);
+            _movieRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void Get_Should_Calculate_Missing_Genre_FilterValues()
+        public async Task Get_Should_Calculate_Missing_Genre_FilterValues()
         {
-            var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = new[] { "3" };
-            SetupMovieRepository(usedCollectionIds);
-            var filterService = CreateFilterService(LibraryType.Movies, "genre", collectionIds);
+            SetupMovieRepository();
+            var filterService = CreateFilterService(LibraryType.TvShow, "genre");
 
-            var values = filterService.GetFilterValues(LibraryType.Movies, "genre", usedCollectionIds);
+            var values = await filterService.GetFilterValues(LibraryType.Movies, "genre");
 
             values.Field.Should().Be(_filterValues.Field);
             values.Values.Length.Should().Be(2);
@@ -122,25 +117,21 @@ namespace Tests.Unit.Services
             values.Values[0].Label.Should().Be("8");
             values.Values[1].Value.Should().Be("9");
             values.Values[1].Label.Should().Be("9");
-            values.Libraries.Length.Should().Be(1);
-            values.Libraries[0].Should().Be("3");
 
             _filterRepositoryMock.Verify(x => x.Insert(It.IsAny<FilterValues>()));
-            _movieRepositoryMock.Verify(x => x.CalculateSubtitleFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateGenreFilterValues(usedCollectionIds), Times.Once);
-            _movieRepositoryMock.Verify(x => x.CalculateContainerFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateCollectionFilterValues(), Times.Never);
+            _filterRepositoryMock.Verify(x => x.Get(LibraryType.Movies, "genre"));
+            _filterRepositoryMock.VerifyNoOtherCalls();
+            _movieRepositoryMock.Verify(x => x.CalculateGenreFilterValues(), Times.Once);
+            _movieRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void Get_Should_Calculate_Missing_Container_FilterValues()
+        public async Task Get_Should_Calculate_Missing_Container_FilterValues()
         {
-            var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = new[] { "3" };
-            SetupMovieRepository(usedCollectionIds);
-            var filterService = CreateFilterService(LibraryType.Movies, "container", collectionIds);
+            SetupMovieRepository();
+            var filterService = CreateFilterService(LibraryType.TvShow, "container");
 
-            var values = filterService.GetFilterValues(LibraryType.Movies, "container", usedCollectionIds);
+            var values = await filterService.GetFilterValues(LibraryType.Movies, "container");
 
             values.Field.Should().Be(_filterValues.Field);
             values.Values.Length.Should().Be(2);
@@ -148,70 +139,23 @@ namespace Tests.Unit.Services
             values.Values[0].Value.Should().Be("10");
             values.Values[1].Label.Should().Be("11");
             values.Values[1].Value.Should().Be("11");
-            values.Libraries.Length.Should().Be(1);
-            values.Libraries[0].Should().Be("3");
 
             _filterRepositoryMock.Verify(x => x.Insert(It.IsAny<FilterValues>()));
-            _movieRepositoryMock.Verify(x => x.CalculateSubtitleFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateGenreFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateContainerFilterValues(usedCollectionIds), Times.Once);
-            _movieRepositoryMock.Verify(x => x.CalculateCollectionFilterValues(), Times.Never);
+            _movieRepositoryMock.Verify(x => x.CalculateContainerFilterValues(), Times.Once);
+            _movieRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void Get_Should_Return_Null_If_Unknown_Field_Is_Given()
+        public async Task Get_Should_Return_Null_If_Unknown_Field_Is_Given()
         {
-            var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = new[] { "3" };
-            SetupMovieRepository(usedCollectionIds);
-            var filterService = CreateFilterService(LibraryType.Movies, "strangeField", collectionIds);
+            SetupMovieRepository();
+            var filterService = CreateFilterService(LibraryType.TvShow, "strangeField");
 
-            var values = filterService.GetFilterValues(LibraryType.Movies, "strangeField", usedCollectionIds);
+            var values = await filterService.GetFilterValues(LibraryType.Movies, "strangeField");
             values.Should().BeNull();
 
             _filterRepositoryMock.Verify(x => x.Insert(It.IsAny<FilterValues>()), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateSubtitleFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateGenreFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateContainerFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateCollectionFilterValues(), Times.Never);
-        }
-
-        [Fact]
-        public void Get_Should_Calculate_Missing_Collection_FilterValues()
-        {
-            var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = new[] { "3" };
-            SetupMovieRepository(usedCollectionIds);
-            var filterService = CreateFilterService(LibraryType.Movies, "collection", collectionIds);
-
-            var values = filterService.GetFilterValues(LibraryType.Movies, "collection", usedCollectionIds);
-
-            values.Field.Should().Be(_filterValues.Field);
-            values.Values.Length.Should().Be(2);
-            values.Values[0].Label.Should().Be("12");
-            values.Values[0].Value.Should().Be("12");
-            values.Values[1].Label.Should().Be("13");
-            values.Values[1].Value.Should().Be("13");
-            values.Libraries.Length.Should().Be(1);
-            values.Libraries[0].Should().Be("3");
-
-            _filterRepositoryMock.Verify(x => x.Insert(It.IsAny<FilterValues>()));
-            _movieRepositoryMock.Verify(x => x.CalculateSubtitleFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateGenreFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateContainerFilterValues(usedCollectionIds), Times.Never);
-            _movieRepositoryMock.Verify(x => x.CalculateCollectionFilterValues(), Times.Once);
-        }
-
-        [Fact]
-        public void Get_With_Show_Libraries_Should_Return_Null_For_Now()
-        {
-            var collectionIds = new[] { "4", "5" };
-            var usedCollectionIds = Array.Empty<string>();
-            var filterService = CreateFilterService(LibraryType.Movies, "subtitle", collectionIds);
-            var values = filterService.GetFilterValues(LibraryType.TvShow, "subtitle", usedCollectionIds);
-            values.Should().BeNull();
-
-            _filterRepositoryMock.Verify(x => x.Get("subtitle", usedCollectionIds), Times.Once);
+            _movieRepositoryMock.VerifyNoOtherCalls();
         }
     }
 }

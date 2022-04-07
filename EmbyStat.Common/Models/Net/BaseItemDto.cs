@@ -32,7 +32,6 @@ namespace EmbyStat.Common.Models.Net
         public string[] Genres { get; set; }
         public int? IndexNumber { get; set; }
         public int? IndexNumberEnd { get; set; }
-        public string Type { get; set; }
         public string SeriesName { get; set; }
         public string CollectionType { get; set; }
         public string Etag { get; set; }

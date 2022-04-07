@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Net;
+using MoreLinq.Extensions;
 
 namespace Tests.Unit.Builders
 {
@@ -9,26 +13,23 @@ namespace Tests.Unit.Builders
     {
         private readonly Episode _episode;
 
-        public EpisodeBuilder(string id, string showId, string seasonId)
+        public EpisodeBuilder(string id, string seasonId)
         {
             _episode = new Episode
             {
                 Id = id,
                 Path = "path/to/episode",
-                ShowId = showId,
                 Name = "EpisodeName",
-                ParentId = seasonId,
-                CommunityRating = 0.7f,
+                SeasonId = seasonId,
+                CommunityRating = 0.7M,
                 Container = "mkv",
                 DateCreated = new DateTime(2001, 1, 1, 0, 0, 0),
                 IndexNumber = 0,
                 IndexNumberEnd = null,
-                MediaType = "Episode",
                 ProductionYear = 2001,
                 PremiereDate = new DateTime(2001, 1, 1, 0, 0, 0),
                 RunTimeTicks = 10000000,
                 SortName = "0001 - EpisodeName",
-                ShowName = "Chuck",
                 Primary = "123987987987",
                 Thumb = "1234",
                 Banner = "3434",
@@ -38,18 +39,18 @@ namespace Tests.Unit.Builders
                 TMDB = 123456,
                 TVDB = "23456",
                 AudioStreams = new List<AudioStream>{
-                    new AudioStream{ Id = "1", BitRate = 320000, ChannelLayout = "5.1", Channels = 6, Codec = "aac", Language = "en", SampleRate = 48000 }
+                    new() { Id = "1", BitRate = 320000, ChannelLayout = "5.1", Channels = 6, Codec = "aac", Language = "en", SampleRate = 48000 }
                 },
                 SubtitleStreams = new List<SubtitleStream>{
-                    new SubtitleStream{ Codec = "srt", DisplayTitle = "Dut", Id = "123", Language = "dut", IsDefault = true }
+                    new() { Codec = "srt", DisplayTitle = "Dut", Id = "123", Language = "dut", IsDefault = true }
                 },
                 VideoStreams = new List<VideoStream>
                 {
-                    new VideoStream{ AspectRatio = "16:9", AverageFrameRate = 24, BitRate = 1239588, Id = "1234", Language = "eng", Channels = 6, Height = 1080, Width = 1920 }
+                    new() { AspectRatio = "16:9", AverageFrameRate = 24, BitRate = 1239588, Id = "1234", Language = "eng", Channels = 6, Height = 1080, Width = 1920 }
                 },
                 MediaSources = new List<MediaSource>
                 {
-                    new MediaSource { Id = "12345", Path = "path/to/video", BitRate = 123456, Container = "mkv", Protocol = "File", RunTimeTicks = 1230498908, SizeInMb = 101 }
+                    new() { Id = "12345", Path = "path/to/video", BitRate = 123456, Container = "mkv", Protocol = "File", RunTimeTicks = 1230498908, SizeInMb = 101 }
                 }
             };
         }
@@ -76,12 +77,6 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public EpisodeBuilder WithSeasonIndexNumber(int? index)
-        {
-            _episode.SeasonIndexNumber = index;
-            return this;
-        }
-
         public Episode Build()
         {
             return _episode;
@@ -98,7 +93,7 @@ namespace Tests.Unit.Builders
                 IndexNumberEnd = _episode.IndexNumberEnd,
                 Container = _episode.Container,
                 DateCreated = _episode.DateCreated,
-                ParentId = _episode.ParentId,
+                ParentId = _episode.SeasonId,
                 Path = _episode.Path,
                 SortName = _episode.SortName,
                 MediaSources = _episode.MediaSources.Select(x => new BaseMediaSourceInfo
@@ -112,7 +107,6 @@ namespace Tests.Unit.Builders
                     Size = 1000
                 }).ToArray(),
                 RunTimeTicks = _episode.RunTimeTicks,
-                Type = _episode.MediaType,
                 PremiereDate = _episode.PremiereDate,
                 ProductionYear = _episode.ProductionYear,
                 Video3DFormat = _episode.Video3DFormat,

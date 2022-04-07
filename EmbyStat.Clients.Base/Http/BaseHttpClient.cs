@@ -68,7 +68,7 @@ namespace EmbyStat.Clients.Base.Http
                     var to = new IPEndPoint(ip, 7359);
                     using var client = new ServerSearcher(to);
 
-                    client.MediaServerFound += (sender, broadcast) =>
+                    client.MediaServerFound += (_, broadcast) =>
                     {
                         list.Add(broadcast);
                     };
@@ -87,42 +87,22 @@ namespace EmbyStat.Clients.Base.Http
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var adapter in interfaces)
             {
-                foreach (var unicastInfo in adapter.GetIPProperties().UnicastAddresses)
+                foreach (var uniCastInfo in adapter.GetIPProperties().UnicastAddresses)
                 {
-                    if (unicastInfo.Address.AddressFamily != AddressFamily.InterNetwork
-                    || unicastInfo.Address.MapToIPv4().Equals(IPAddress.Parse("127.0.0.1")))
+                    if (uniCastInfo.Address.AddressFamily != AddressFamily.InterNetwork
+                    || uniCastInfo.Address.MapToIPv4().Equals(IPAddress.Parse("127.0.0.1")))
                     {
                         continue;
                     }
 
-                    yield return GetBroadcastAddress(unicastInfo);
+                    yield return GetBroadcastAddress(uniCastInfo);
                 }
             }
         }
 
-        private bool CheckWhetherInSameNetwork(IPAddress firstIp, IPAddress subNet, IPAddress secondIp)
+        private IPAddress GetBroadcastAddress(UnicastIPAddressInformation uniCastAddress)
         {
-            var subnetmaskInInt = ConvertIpToUint(subNet);
-            var firstIpInInt = ConvertIpToUint(firstIp);
-            var secondIpInInt = ConvertIpToUint(secondIp);
-            var networkPortionofFirstIp = firstIpInInt & subnetmaskInInt;
-            var networkPortionofSecondIp = secondIpInInt & subnetmaskInInt;
-            return networkPortionofFirstIp == networkPortionofSecondIp;
-        }
-
-        private static uint ConvertIpToUint(IPAddress ipAddress)
-        {
-            var byteIp = ipAddress.GetAddressBytes();
-            var ipInUint = (uint)byteIp[3] << 24;
-            ipInUint += (uint)byteIp[2] << 16;
-            ipInUint += (uint)byteIp[1] << 8;
-            ipInUint += byteIp[0];
-            return ipInUint;
-        }
-
-        private IPAddress GetBroadcastAddress(UnicastIPAddressInformation unicastAddress)
-        {
-            return GetBroadcastAddress(unicastAddress.Address, unicastAddress.IPv4Mask);
+            return GetBroadcastAddress(uniCastAddress.Address, uniCastAddress.IPv4Mask);
         }
 
         private IPAddress GetBroadcastAddress(IPAddress address, IPAddress mask)
@@ -142,7 +122,7 @@ namespace EmbyStat.Clients.Base.Http
             return result == message;
         }
 
-        public async Task<ServerInfoDto> GetServerInfo()
+        public async Task<MediaServerInfo> GetServerInfo()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
             var response = await client.GetServerInfo(ApiKey, AuthorizationString);
@@ -154,9 +134,9 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery
             {
+                Recursive = true,
                 StartIndex = startIndex,
-                Limit = limit,
-                Fields = new[] { ItemFields.PremiereDate }
+                Limit = limit
             };
 
             var client = _refitFactory.CreateClient(BaseUrl);
@@ -200,8 +180,8 @@ namespace EmbyStat.Clients.Base.Http
         public async Task<IEnumerable<Device>> GetDevices()
         {
             var client = _refitFactory.CreateClient(BaseUrl);
-            var response = await client.GetDevices(ApiKey, AuthorizationString);
-            return response.Content?.Items;
+            var result = await client.GetDevices(ApiKey, AuthorizationString);
+            return result.Items;
         }
 
         public async Task<IEnumerable<Genre>> GetGenres()
@@ -216,6 +196,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery
             {
+                UserId = UserId,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 Recursive = true,
@@ -235,7 +216,7 @@ namespace EmbyStat.Clients.Base.Http
                 }
             };
 
-            var paramList = query.ConvertToStringDictionary(UserId);
+            var paramList = query.ConvertToStringDictionary();
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
@@ -246,6 +227,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery
             {
+                UserId = UserId,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
@@ -263,7 +245,7 @@ namespace EmbyStat.Clients.Base.Http
                 }
             };
 
-            var paramList = query.ConvertToStringDictionary(UserId);
+            var paramList = query.ConvertToStringDictionary();
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
@@ -275,6 +257,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery
             {
+                UserId = UserId,
                 EnableImageTypes = new[] { ImageType.Primary },
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
@@ -291,7 +274,7 @@ namespace EmbyStat.Clients.Base.Http
                 }
             };
 
-            var paramList = query.ConvertToStringDictionary(UserId);
+            var paramList = query.ConvertToStringDictionary();
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
@@ -303,6 +286,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery
             {
+                UserId = UserId,
                 EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
                 ParentId = parentId,
                 LocationTypes = new[] { LocationType.FileSystem },
@@ -319,7 +303,7 @@ namespace EmbyStat.Clients.Base.Http
                     }
             };
 
-            var paramList = query.ConvertToStringDictionary(UserId);
+            var paramList = query.ConvertToStringDictionary();
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
@@ -331,6 +315,7 @@ namespace EmbyStat.Clients.Base.Http
         {
             var query = new ItemQuery
             {
+                UserId = UserId,
                 ParentId = parentId,
                 Recursive = true,
                 IncludeItemTypes = new[] { mediaType },
@@ -340,7 +325,7 @@ namespace EmbyStat.Clients.Base.Http
                 MinDateLastSaved = lastSynced
             };
 
-            var paramList = query.ConvertToStringDictionary(UserId);
+            var paramList = query.ConvertToStringDictionary();
             var client = _refitFactory.CreateClient(BaseUrl);
             var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
             return result.TotalRecordCount;

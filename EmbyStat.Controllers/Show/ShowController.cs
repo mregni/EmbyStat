@@ -36,7 +36,7 @@ namespace EmbyStat.Controllers.Show
         [Route("libraries")]
         public async Task<IActionResult> UpdateLibraries([FromBody] string[] libraryIds)
         {
-            await _showService.UpdateLibraries(libraryIds);
+            await _showService.SetLibraryAsSynced(libraryIds);
             return Ok();
         }
 

@@ -5,15 +5,15 @@ using EmbyStat.Common.Models;
 
 namespace EmbyStat.Common.Extensions
 {
-    public static class RestRequestExtension
+    public static class ItemQueryExtension
     {
-        public static Dictionary<string, string> ConvertToStringDictionary(this ItemQuery query, string userId)
+        public static Dictionary<string, string> ConvertToStringDictionary(this ItemQuery query)
         {
             var paramList = new Dictionary<string, string>();
 
-            if (!string.IsNullOrWhiteSpace(userId))
+            if (!string.IsNullOrWhiteSpace(query.UserId))
             {
-                paramList.TryAdd("UserId", new Guid(userId).ToString());
+                paramList.TryAdd("UserId", query.UserId);
             }
 
             if (!query.EnableTotalRecordCount)
@@ -65,8 +65,6 @@ namespace EmbyStat.Common.Extensions
             {
                 paramList.TryAdd("ExcludeLocationTypes", string.Join(',', query.ExcludeLocationTypes));
             }
-
-            paramList.TryAdd("ExcludeLocationTypes", string.Join(',', query.ExcludeLocationTypes));
 
             paramList.AddIfNotNull("MinDateLastSaved", query.MinDateLastSaved);
             paramList.AddIfNotNull("MinDateLastSavedForUser", query.MinDateLastSaved);

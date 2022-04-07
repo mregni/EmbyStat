@@ -16,7 +16,7 @@ namespace EmbyStat.Repositories
     {
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MediaSource> MediaSources { get; set; }
-        public DbSet<SqlVideoStream> VideoStreams { get; set; }
+        public DbSet<VideoStream> VideoStreams { get; set; }
         public DbSet<AudioStream> AudioStreams { get; set; }
         public DbSet<SubtitleStream> SubtitleStreams { get; set; }
         public DbSet<MediaPerson> MediaPerson { get; set; }
@@ -37,7 +37,7 @@ namespace EmbyStat.Repositories
         public DbSet<Device> Devices { get; set; }
         public DbSet<FilterValues> Filters { get; set; }
         public DbSet<Job> Jobs { get; set; }
-        public DbSet<Language> Languages { get; set; }
+        public virtual DbSet<Language> Languages { get; set; }
         public DbSet<MediaServerStatus> MediaServerStatus { get; set; }
         public DbSet<Statistic> Statistics { get; set; }
 
@@ -220,12 +220,12 @@ namespace EmbyStat.Repositories
 
         private static void AddExtraIndexes(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Width);
-            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Height);
-            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.AverageFrameRate);
-            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.VideoRange);
-            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.Codec);
-            modelBuilder.Entity<SqlVideoStream>().HasIndex(x => x.BitDepth);
+            modelBuilder.Entity<VideoStream>().HasIndex(x => x.Width);
+            modelBuilder.Entity<VideoStream>().HasIndex(x => x.Height);
+            modelBuilder.Entity<VideoStream>().HasIndex(x => x.AverageFrameRate);
+            modelBuilder.Entity<VideoStream>().HasIndex(x => x.VideoRange);
+            modelBuilder.Entity<VideoStream>().HasIndex(x => x.Codec);
+            modelBuilder.Entity<VideoStream>().HasIndex(x => x.BitDepth);
             
             modelBuilder.Entity<MediaSource>().HasIndex(x => x.SizeInMb);
             

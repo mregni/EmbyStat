@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Net;
+using FluentAssertions;
+using Microsoft.IdentityModel.Logging;
+using MoreLinq.Extensions;
 
 namespace Tests.Unit.Builders
 {
@@ -9,44 +16,41 @@ namespace Tests.Unit.Builders
     {
         private readonly Show _show;
 
-        public ShowBuilder(Show show)
-        {
-            _show = show;
-        }
-
-        public ShowBuilder(string id, string libraryId)
+        public ShowBuilder(string id)
         {
             _show = new Show
             {
                 Id = id,
                 Path = "Path/To/Show",
                 Banner = "banner.png",
-                CollectionId = libraryId,
-                CommunityRating = 1.7f,
+                CommunityRating = 1.7M,
                 CumulativeRunTimeTicks = 19400287400000,
                 DateCreated = new DateTime(2001, 01, 01, 0, 0, 0),
                 IMDB = "12345",
                 Logo = "logo.jpg",
                 Name = "Chuck",
                 OfficialRating = "R",
-                ParentId = libraryId,
                 Primary = "primary.jpg",
                 ProductionYear = 2001,
-                RunTimeTicks = 12000000,
+                RunTimeTicks = 1200000000,
                 SortName = "Chuck",
                 Status = "Ended",
                 TMDB = 12345,
+                SizeInMb = 303,
                 TVDB = "12345",
                 Thumb = "thumb.jpg",
-                ExternalSyncFailed = false,
+                ExternalSynced = false,
                 PremiereDate = new DateTime(2001, 01, 01, 0, 0, 0),
-                People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
-                Genres = new[] { "Action" },
-                Episodes = new List<Episode>
+                People = new MediaPerson[]
                 {
-                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithSeasonIndexNumber(1).Build(),
-                    new EpisodeBuilder(Guid.NewGuid().ToString(), id, "1").WithSeasonIndexNumber(1).WithIndexNumber(1).Build(),
+                    new()
+                    {
+                        Id = 1,
+                        Type = PersonType.Actor,
+                        Person = new Person {Name = "Gimli"}
+                    }
                 },
+                Genres = new Genre[] {new() {Id = "1", Name = "Action"}},
                 Seasons = new List<Season>
                 {
                     new SeasonBuilder(Guid.NewGuid().ToString(), id).WithIndexNumber(0).Build(),
@@ -59,11 +63,10 @@ namespace Tests.Unit.Builders
         {
             _show.Name = name;
             _show.SortName = "0001 - " + name;
-            _show.Episodes.ForEach(x => x.ShowName = name);
             return this;
         }
 
-        public ShowBuilder AddCommunityRating(float? value)
+        public ShowBuilder AddCommunityRating(decimal? value)
         {
             _show.CommunityRating = value;
             return this;
@@ -81,26 +84,6 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddEpisode(Episode episode)
-        {
-            _show.Episodes.Add(episode);
-            return this;
-        }
-
-        public ShowBuilder AddSpecialEpisode(string id)
-        {
-            _show.Episodes.Add(new EpisodeBuilder(id, _show.Id, _show.Seasons.First(x => x.IndexNumber == 0).Id)
-                .WithSeasonIndexNumber(0)
-                .WithLocationType(LocationType.Disk).Build());
-            return this;
-        }
-
-        public ShowBuilder ClearEpisodes()
-        {
-            _show.Episodes = new List<Episode>();
-            return this;
-        }
-
         public ShowBuilder AddCreateDate(DateTime date)
         {
             _show.DateCreated = date;
@@ -109,7 +92,7 @@ namespace Tests.Unit.Builders
 
         public ShowBuilder AddGenre(params string[] genres)
         {
-            _show.Genres = genres;
+            _show.Genres = genres.Select(x => new Genre {Name = x}).ToList();
             return this;
         }
 
@@ -119,28 +102,38 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddActor(string id)
+        public ShowBuilder ReplacePersons(MediaPerson person)
         {
-            var list = _show.People.ToList();
-            list.Add(new ExtraPerson { Id = id, Name = "Gimli", Type = PersonType.Actor });
-            _show.People = list.ToArray();
+            _show.People = new[] {person};
             return this;
         }
 
-        public ShowBuilder ReplacePersons(ExtraPerson person)
+        public ShowBuilder AddSeason(string id)
         {
-            _show.People = new[] { person };
+            _show.Seasons.Add(new SeasonBuilder(id, _show.Id).Build());
+            return this;
+        }
+
+        public ShowBuilder AddEpisode(Episode episode)
+        {
+            var season = _show.Seasons.FirstOrDefault(x => x.Id == episode.SeasonId);
+            if (season == null)
+            {
+                _show.Seasons.Add(new SeasonBuilder(episode.SeasonId, _show.Id).Build());
+                season = _show.Seasons.First(x => x.Id == episode.SeasonId);
+            }
+
+            season.Episodes.Add(episode);
             return this;
         }
 
         public ShowBuilder AddMissingEpisodes(int count, int seasonIndex)
         {
-            var season = _show.Seasons[seasonIndex];
+            var season = _show.Seasons.ToArray()[seasonIndex];
             for (var i = 0; i < count; i++)
             {
-                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, season.Id)
+                season.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), season.Id)
                     .WithIndexNumber(i)
-                    .WithSeasonIndexNumber(seasonIndex)
                     .WithLocationType(LocationType.Virtual)
                     .Build());
             }
@@ -148,25 +141,17 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder AddSeason(int indexNumber, int extraEpisodes)
+        public ShowBuilder AddActor(string id)
         {
-            var seasonId = Guid.NewGuid().ToString();
-            _show.Seasons.Add(new SeasonBuilder(seasonId, _show.Id).WithIndexNumber(indexNumber).Build());
-
-            var season = _show.Seasons.First(x => x.Id == seasonId);
-            for (var i = 0; i < extraEpisodes; i++)
-            {
-                _show.Episodes.Add(new EpisodeBuilder(Guid.NewGuid().ToString(), _show.Id, seasonId)
-                    .WithSeasonIndexNumber(season.IndexNumber)
-                    .Build());
-            }
-
+            var list = _show.People.ToList();
+            list.Add(new MediaPerson {PersonId = id});
+            _show.People = list;
             return this;
         }
-
-        public ShowBuilder AddUpdateState(DateTime updated)
+        
+        public ShowBuilder ClearEpisodes()
         {
-            _show.LastUpdated = updated;
+            _show.Seasons.ForEach(x => x.Episodes = new List<Episode>());
             return this;
         }
 
@@ -182,7 +167,6 @@ namespace Tests.Unit.Builders
                 Id = _show.Id,
                 CommunityRating = _show.CommunityRating,
                 DateCreated = _show.DateCreated,
-                ParentId = _show.ParentId,
                 Path = _show.Path,
                 SortName = _show.SortName,
                 RunTimeTicks = _show.RunTimeTicks,
@@ -202,11 +186,11 @@ namespace Tests.Unit.Builders
                     {"Tmdb", _show.TMDB.ToString()},
                     {"Tvdb", _show.TVDB}
                 },
-                Genres = _show.Genres,
+                Genres = _show.Genres.Select(x => x.Name).ToArray(),
                 People = _show.People.Select(x => new BaseItemPerson
                 {
-                    Id = x.Id,
-                    Name = x.Name,
+                    Id = x.Id.ToString(),
+                    Name = x.Person.Name,
                     Type = x.Type
                 }).ToArray()
             };

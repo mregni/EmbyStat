@@ -15,6 +15,7 @@ namespace Tests.Unit.Services
     {
         private readonly SettingsService _subject;
         private Guid DeviceId { get; set; }
+
         public SettingsServiceTests()
         {
             DeviceId = Guid.NewGuid();
@@ -26,7 +27,8 @@ namespace Tests.Unit.Services
             };
 
             var appSettingsMock = new Mock<IOptions<AppSettings>>();
-            appSettingsMock.Setup(x => x.Value).Returns(new AppSettings { Version = "0.0.0.0", Dirs = new Dirs { Config = "config" }, Rollbar = rollbar });
+            appSettingsMock.Setup(x => x.Value).Returns(new AppSettings
+                {Version = "0.0.0.0", Dirs = new Dirs {Config = "config"}, Rollbar = rollbar});
 
             _subject = new SettingsService(appSettingsMock.Object);
         }
@@ -40,9 +42,7 @@ namespace Tests.Unit.Services
                 AppName = "EmbyStat",
                 AutoUpdate = false,
                 KeepLogsCount = 10,
-                Language = "en-US",
-                MovieLibraries = new List<LibraryContainer>(),
-                ShowLibraries = new List<LibraryContainer>()
+                Language = "en-US"
             };
 
             var strJson = JsonConvert.SerializeObject(fileSettings, Formatting.Indented);
@@ -62,8 +62,6 @@ namespace Tests.Unit.Services
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<LibraryContainer>(),
-                ShowLibraries = new List<LibraryContainer>(),
                 MediaServer = new MediaServerSettings()
             };
 
@@ -72,35 +70,14 @@ namespace Tests.Unit.Services
 
             var settingsFilePath = Path.Combine("config", "usersettings.json");
             File.Exists(settingsFilePath).Should().BeTrue();
-            var loadedSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(settingsFilePath));
+            var loadedSettings = JsonConvert.DeserializeObject<UserSettings>(await File.ReadAllTextAsync(settingsFilePath));
 
-            loadedSettings.Id.Should().Be(DeviceId);
+            loadedSettings.Should().NotBeNull();
+            loadedSettings!.Id.Should().Be(DeviceId);
             loadedSettings.AppName.Should().Be("EmbyStat");
             loadedSettings.AutoUpdate.Should().BeFalse();
             loadedSettings.KeepLogsCount.Should().Be(10);
             loadedSettings.Language.Should().Be("en-US");
-        }
-
-        [Fact]
-        public async void SaveUserSettings_Should_Reset_Base_Url()
-        {
-            SetupSettingsFile();
-            var settings = new UserSettings
-            {
-                MediaServer = new MediaServerSettings
-                {
-                    ServerBaseUrl = "/"
-                }
-            };
-
-            _subject.LoadUserSettingsFromFile();
-            await _subject.SaveUserSettingsAsync(settings);
-
-            var settingsFilePath = Path.Combine("config", "usersettings.json");
-            File.Exists(settingsFilePath).Should().BeTrue();
-            var loadedSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(settingsFilePath));
-
-            loadedSettings.MediaServer.ServerBaseUrl.Should().BeEmpty();
         }
 
         [Fact]

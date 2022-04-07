@@ -9,7 +9,7 @@ namespace EmbyStat.Repositories.Interfaces
 {
     public interface IMovieRepository : IMediaRepository
     {
-        Movie GetById(string id);
+        Task<Movie> GetById(string id);
         void RemoveAll();
         Task UpsertRange(IEnumerable<Movie> movies);
         IEnumerable<Movie> GetAll();

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories;
 
-public class SqlFilterRepository : IFilterRepository
+public class FilterRepository : IFilterRepository
 {
     private readonly EsDbContext _context;
 
-    public SqlFilterRepository(EsDbContext context)
+    public FilterRepository(EsDbContext context)
     {
         _context = context;
     }

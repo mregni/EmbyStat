@@ -57,21 +57,26 @@ namespace Tests.Unit.Extensions
         }
 
         [Theory]
-        [InlineData(0, 0)]
-        [InlineData(0.1f, 0)]
-        [InlineData(0.2f, 0)]
-        [InlineData(0.3f, 0.5)]
-        [InlineData(0.4f, 0.5)]
-        [InlineData(0.5f, 0.5)]
-        [InlineData(0.6f, 0.5)]
-        [InlineData(0.7f, 0.5)]
-        [InlineData(0.8f, 1)]
-        [InlineData(0.9f, 1)]
-        [InlineData(1f, 1)]
+        [InlineData(0d, 0)]
+        [InlineData(0.1d, 0)]
+        [InlineData(0.2d, 0)]
+        [InlineData(0.3d, 0.5)]
+        [InlineData(0.4d, 0.5)]
+        [InlineData(0.5d, 0.5)]
+        [InlineData(0.6d, 0.5)]
+        [InlineData(0.7d, 0.5)]
+        [InlineData(0.8d, 1)]
+        [InlineData(0.9d, 1)]
+        [InlineData(1d, 1)]
         [InlineData(null, null)]
-        public void RoundToHalf_Should_Round_Number_To_Half(float? input, double? output)
+        public void RoundToHalf_Should_Round_Number_To_Half(double? input, double? output)
         {
-            var result = input.RoundToHalf();
+            decimal? value = null;
+            if (input != null)
+            {
+                value = Convert.ToDecimal(input);
+            }
+            var result = value.RoundToHalf();
             result.Should().Be(output);
         }
     }

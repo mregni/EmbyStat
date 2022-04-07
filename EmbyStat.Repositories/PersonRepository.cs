@@ -7,12 +7,12 @@ using EmbyStat.Repositories.Interfaces;
 
 namespace EmbyStat.Repositories
 {
-    public class SqlPersonRepository : IPersonRepository
+    public class PersonRepository : IPersonRepository
     {
         private readonly ISqliteBootstrap _sqliteBootstrap;
         private readonly EsDbContext _context;
 
-        public SqlPersonRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
+        public PersonRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
         {
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;

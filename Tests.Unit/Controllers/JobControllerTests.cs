@@ -27,7 +27,7 @@ namespace Tests.Unit.Controllers
         private Mock<IJobService> _jobServiceMock;
         private Mock<IJobInitializer> _jobInitializerMock;
         private Mock<ISettingsService> _settingsServiceMock;
-        private Mock<IHubHelper> jobHubHelperMock;
+        private Mock<IHubHelper> _jobHubHelperMock;
 
         private JobController CreateController(bool disableUpdateJob, params Job[] jobs)
         {
@@ -38,28 +38,30 @@ namespace Tests.Unit.Controllers
             _jobServiceMock = new Mock<IJobService>();
             _jobInitializerMock = new Mock<IJobInitializer>();
             _settingsServiceMock = new Mock<ISettingsService>();
-            jobHubHelperMock = new Mock<IHubHelper>();
+            _jobHubHelperMock = new Mock<IHubHelper>();
 
             _jobServiceMock.Setup(x => x.GetAll()).Returns(jobs);
             foreach (var job in jobs)
             {
                 _jobServiceMock.Setup(x => x.GetById(job.Id)).Returns(job);
-                _jobServiceMock.Setup(x => x.UpdateTrigger(job.Id, It.IsAny<string>())).Returns(true);
+                _jobServiceMock.Setup(x => x.UpdateTrigger(job.Id, It.IsAny<string>())).ReturnsAsync(true);
             }
 
-            jobHubHelperMock.Setup(x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()));
+            _jobHubHelperMock.Setup(x =>
+                x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()));
             _jobInitializerMock.Setup(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>()));
 
-            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings { NoUpdates = disableUpdateJob });
+            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings {NoUpdates = disableUpdateJob});
 
-            return new JobController(mapper, _jobServiceMock.Object, jobHubHelperMock.Object, _jobInitializerMock.Object, _settingsServiceMock.Object);
+            return new JobController(mapper, _jobServiceMock.Object, _jobHubHelperMock.Object,
+                _jobInitializerMock.Object, _settingsServiceMock.Object);
         }
 
         [Fact]
         public void GetAll_Should_Return_All_Jobs()
         {
-            var jobOne = new Job { Id = Guid.NewGuid() };
-            var jobTwo = new Job { Id = Guid.NewGuid() };
+            var jobOne = new Job {Id = Guid.NewGuid()};
+            var jobTwo = new Job {Id = Guid.NewGuid()};
             var controller = CreateController(false, jobOne, jobTwo);
 
             var result = controller.GetAll();
@@ -78,14 +80,18 @@ namespace Tests.Unit.Controllers
 
             _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
             _jobServiceMock.Verify(x => x.GetAll(), Times.Once);
+            
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public void GetAll_Should_Return_All_Jobs_Except_Update_Job()
         {
-            var jobOne = new Job { Id = Guid.NewGuid() };
-            var jobTwo = new Job { Id = Guid.NewGuid() };
-            var jobThree = new Job { Id = Constants.JobIds.CheckUpdateId };
+            var jobOne = new Job {Id = Guid.NewGuid()};
+            var jobTwo = new Job {Id = Guid.NewGuid()};
+            var jobThree = new Job {Id = Constants.JobIds.CheckUpdateId};
             var controller = CreateController(true, jobOne, jobTwo, jobThree);
 
             var result = controller.GetAll();
@@ -105,13 +111,17 @@ namespace Tests.Unit.Controllers
 
             _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
             _jobServiceMock.Verify(x => x.GetAll(), Times.Once);
+            
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public void GetById_Should_Return_Correct_Job()
         {
-            var jobOne = new Job { Id = Guid.NewGuid() };
-            var jobTwo = new Job { Id = Guid.NewGuid() };
+            var jobOne = new Job {Id = Guid.NewGuid()};
+            var jobTwo = new Job {Id = Guid.NewGuid()};
             var controller = CreateController(true, jobOne, jobTwo);
 
             var result = controller.Get(jobTwo.Id);
@@ -123,64 +133,73 @@ namespace Tests.Unit.Controllers
             job.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             job.Id.Should().Be(jobTwo.Id);
-
-            _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Never);
+            
             _jobServiceMock.Verify(x => x.GetById(jobTwo.Id), Times.Once);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public void GetById_Should_Return_NotFound_If_Job_Is_Not_Found()
         {
-            var jobOne = new Job { Id = Guid.NewGuid() };
-            var jobTwo = new Job { Id = Guid.NewGuid() };
+            var jobOne = new Job {Id = Guid.NewGuid()};
+            var jobTwo = new Job {Id = Guid.NewGuid()};
             var controller = CreateController(true, jobOne, jobTwo);
 
             var randomId = Guid.NewGuid();
             var result = controller.Get(randomId);
-            
+
             var res = result as NotFoundResult;
-            res.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            res.Should().NotBeNull();
+            res!.StatusCode.Should().Be((int) HttpStatusCode.NotFound);
 
             _jobServiceMock.Verify(x => x.GetById(randomId), Times.Once);
-            _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Never);
-            _jobServiceMock.Verify(x => x.GetById(jobTwo.Id), Times.Never);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void UpdateTrigger_Should_Update_Correct_Job()
+        public async Task UpdateTrigger_Should_Update_Correct_Job()
         {
-            var jobOne = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
-            var jobTwo = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
+            var jobOne = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
+            var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
             var controller = CreateController(false, jobOne, jobTwo);
 
-            var result = controller.UpdateTrigger(jobOne.Id, "* * * 1 0");
-            
+            var result = await controller.UpdateTrigger(jobOne.Id, "* * * 1 0");
+
             var res = result as NoContentResult;
-            res.StatusCode.Should().Be((int)HttpStatusCode.NoContent);
+            res.Should().NotBeNull();
+            res!.StatusCode.Should().Be((int) HttpStatusCode.NoContent);
 
             _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
             _jobServiceMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0"), Times.Once);
             _jobInitializerMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0", false));
+            
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void UpdateTrigger_Should_Return_Not_found_If_Job_Is_Not_Found()
+        public async Task UpdateTrigger_Should_Return_Not_found_If_Job_Is_Not_Found()
         {
-            var jobOne = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
-            var jobTwo = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
+            var jobOne = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
+            var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
             var controller = CreateController(false, jobOne, jobTwo);
 
             var randomId = Guid.NewGuid();
-            var result = controller.UpdateTrigger(randomId, "* * * 1 0");
+            var result = await controller.UpdateTrigger(randomId, "* * * 1 0");
 
             var res = result as NotFoundResult;
-            res.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            res.Should().NotBeNull();
+            res!.StatusCode.Should().Be((int) HttpStatusCode.NotFound);
 
-            _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Never);
             _jobServiceMock.Verify(x => x.UpdateTrigger(randomId, "* * * 1 0"), Times.Once);
-            _jobServiceMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0"), Times.Never);
-            _jobServiceMock.Verify(x => x.UpdateTrigger(jobTwo.Id, "* * * 1 0"), Times.Never);
-            _jobInitializerMock.Verify(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Never);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -193,35 +212,44 @@ namespace Tests.Unit.Controllers
                 () => DummyCall(),
                 "0 2 * * 1");
 
-            var jobOne = new Job { Id = Constants.JobIds.ShowSyncId, Trigger = "* * * * *" };
-            var jobTwo = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
+            var jobOne = new Job {Id = Constants.JobIds.ShowSyncId, Trigger = "* * * * *"};
+            var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
             var controller = CreateController(false, jobOne, jobTwo);
 
             var result = await controller.FireJob(jobOne.Id);
 
             var res = result as OkResult;
-            res.StatusCode.Should().Be((int)HttpStatusCode.OK);
+            res.Should().NotBeNull();
+            res!.StatusCode.Should().Be((int) HttpStatusCode.OK);
 
             _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Once);
-            jobHubHelperMock.Verify(x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Once);
+            _jobHubHelperMock.Verify(
+                x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()),
+                Times.Once);
+            
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task FireJob_Should_Return_NotFound_If_Job_Is_Not_Found()
         {
-            var jobOne = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
-            var jobTwo = new Job { Id = Guid.NewGuid(), Trigger = "* * * * *" };
+            var jobOne = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
+            var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
             var controller = CreateController(false, jobOne, jobTwo);
 
             var randomId = Guid.NewGuid();
             var result = await controller.FireJob(randomId);
 
             var res = result as NotFoundResult;
-            res.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            res.Should().NotBeNull();
+            res!.StatusCode.Should().Be((int) HttpStatusCode.NotFound);
 
             _jobServiceMock.Verify(x => x.GetById(randomId), Times.Once);
-            _jobServiceMock.Verify(x => x.GetById(jobOne.Id), Times.Never);
-            jobHubHelperMock.Verify(x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()), Times.Never);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _jobServiceMock.VerifyNoOtherCalls();
+            _jobInitializerMock.VerifyNoOtherCalls();
         }
 
         private void DeleteJobs()
@@ -229,6 +257,7 @@ namespace Tests.Unit.Controllers
             RecurringJob.RemoveIfExists(Constants.JobIds.ShowSyncId.ToString());
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static string DummyCall()
         {
             return "test fummy function for hangfire jobs";

@@ -50,9 +50,9 @@ namespace EmbyStat.Controllers.Movie
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetMovie(string id)
+        public async Task<IActionResult> GetMovie(string id)
         {
-            var result = _movieService.GetMovie(id);
+            var result = await _movieService.GetMovie(id);
             if (result != null)
             {
                 var movie = _mapper.Map<MovieViewModel>(result);
@@ -73,7 +73,7 @@ namespace EmbyStat.Controllers.Movie
         [Route("libraries")]
         public async Task<IActionResult> UpdateLibraries([FromBody] string[] libraryIds)
         {
-            await _movieService.UpdateLibraries(libraryIds);
+            await _movieService.SetLibraryAsSynced(libraryIds);
             return Ok();
         }
 

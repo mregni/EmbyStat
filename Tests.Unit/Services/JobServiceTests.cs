@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
@@ -20,14 +21,14 @@ namespace Tests.Unit.Services
         {
             _jobs = new List<Job>
             {
-                new Job{Id = Guid.NewGuid()},
-                new Job{Id = Guid.NewGuid()}
+                new() {Id = Guid.NewGuid()},
+                new() {Id = Guid.NewGuid()}
             };
 
             _jobRepositoryMock = new Mock<IJobRepository>();
             _jobRepositoryMock.Setup(x => x.GetAll()).Returns(_jobs);
             _jobRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(_jobs[0]);
-            _jobRepositoryMock.Setup(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>())).Returns(true);
+            _jobRepositoryMock.Setup(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>())).ReturnsAsync(true);
 
             _jobService = new JobService(_jobRepositoryMock.Object);
         }
@@ -58,9 +59,9 @@ namespace Tests.Unit.Services
         }
 
         [Fact]
-        public void UpdateJobTrigger()
+        public async Task UpdateJobTrigger()
         {
-            var success = _jobService.UpdateTrigger(_jobs[0].Id, "* * * * *");
+            var success = await _jobService.UpdateTrigger(_jobs[0].Id, "* * * * *");
 
             success.Should().BeTrue();
             _jobRepositoryMock.Verify(x => x.UpdateTrigger(_jobs[0].Id, "* * * * *"), Times.Exactly(1));

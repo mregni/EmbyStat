@@ -11,11 +11,11 @@ using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories;
 
-public class SqlMediaServerRepository : IMediaServerRepository
+public class MediaServerRepository : IMediaServerRepository
 {
     private readonly EsDbContext _context;
 
-    public SqlMediaServerRepository(EsDbContext context)
+    public MediaServerRepository(EsDbContext context)
     {
         _context = context;
     }

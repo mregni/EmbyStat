@@ -17,11 +17,11 @@ using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories
 {
-    public class SqlMovieRepository : IMovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly EsDbContext _context;
         private readonly ISqliteBootstrap _sqliteBootstrap;
-        public SqlMovieRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
+        public MovieRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
         {
             _context = context;
             _sqliteBootstrap = sqliteBootstrap;
@@ -139,7 +139,7 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .OrderBy(x => x.SortName);
         }
 
-        public Movie GetById(string id)
+        public Task<Movie> GetById(string id)
         {
             return _context.Movies
                 .Include(x => x.Genres)
@@ -148,7 +148,7 @@ VALUES (@Type, @MovieId, @PersonId)";
                 .Include(x => x.SubtitleStreams)
                 .Include(x => x.VideoStreams)
                 .Include(x => x.Genres)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
@@ -208,11 +208,11 @@ VALUES (@Type, @MovieId, @PersonId)";
             await using var connection = _sqliteBootstrap.CreateConnection();
             await connection.OpenAsync();
 
-            var list = await connection.QueryAsync<Movie, Genre, AudioStream, SqlVideoStream, SubtitleStream, MediaSource, Movie>(query, (m, g, aus, vis, sus, mes) =>
+            var list = await connection.QueryAsync<Movie, Genre, AudioStream, VideoStream, SubtitleStream, MediaSource, Movie>(query, (m, g, aus, vis, sus, mes) =>
             {
                 m.Genres ??= new List<Genre>();
                 m.AudioStreams ??= new List<AudioStream>();
-                m.VideoStreams ??= new List<SqlVideoStream>();
+                m.VideoStreams ??= new List<VideoStream>();
                 m.SubtitleStreams ??= new List<SubtitleStream>();
                 m.MediaSources ??= new List<MediaSource>();
 
@@ -346,8 +346,7 @@ ORDER BY g.Name";
 
         public IEnumerable<decimal?> GetCommunityRatings()
         {
-            return _context.Movies
-                .Select(x => x.CommunityRating);
+            return _context.Movies.Select(x => x.CommunityRating);
         }
 
         public IEnumerable<DateTime?> GetPremiereYears()

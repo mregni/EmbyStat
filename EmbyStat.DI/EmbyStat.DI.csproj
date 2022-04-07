@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Emby\EmbyStat.Clients.Emby.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj" />

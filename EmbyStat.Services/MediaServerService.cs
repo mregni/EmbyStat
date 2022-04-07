@@ -74,6 +74,8 @@ namespace EmbyStat.Services
             _logger.Debug($"Testing new API key on {url}");
             _logger.Debug($"API key used: {apiKey}");
             ChangeClientType(type);
+            var oldApiKey = _baseHttpClient.ApiKey;
+            var oldUrl = _baseHttpClient.BaseUrl;
             _baseHttpClient.ApiKey = apiKey;
             _baseHttpClient.BaseUrl = url;
 
@@ -83,6 +85,9 @@ namespace EmbyStat.Services
                 _logger.Debug("new API key works!");
                 return true;
             }
+            
+            _baseHttpClient.ApiKey = oldApiKey;
+            _baseHttpClient.BaseUrl = oldUrl;
 
             _logger.Debug("new API key not working!");
             return false;
@@ -238,8 +243,7 @@ namespace EmbyStat.Services
 
         public async Task<MediaServerInfo> GetAndProcessServerInfo()
         {
-            var serverDto = await _baseHttpClient.GetServerInfo();
-            var server = _mapper.Map<MediaServerInfo>(serverDto);
+            var server = await _baseHttpClient.GetServerInfo();
             await _mediaServerRepository.DeleteAndInsertServerInfo(server);
             return server;
         }
@@ -280,31 +284,31 @@ namespace EmbyStat.Services
 
         #endregion
 
-        private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
-        {
-            var movie = _movieRepository.GetById(play.MediaId);
-            if (movie == null)
-            {
-                throw new BusinessException("MOVIENOTFOUND");
-            }
-
-            var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
-            var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
-            var watchedTime = endedPlaying - startedPlaying;
-
-            return new UserMediaView
-            {
-                Id = movie.Id,
-                Name = movie.Name,
-                Primary = movie.Primary,
-                StartedWatching = startedPlaying,
-                EndedWatching = endedPlaying,
-                WatchedTime = Math.Round(watchedTime.TotalSeconds),
-                WatchedPercentage = CalculateWatchedPercentage(play, movie),
-                DeviceId = device?.Id ?? string.Empty,
-                DeviceLogo = device?.IconUrl ?? string.Empty
-            };
-        }
+        // private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
+        // {
+        //     var movie = _movieRepository.GetById(play.MediaId);
+        //     if (movie == null)
+        //     {
+        //         throw new BusinessException("MOVIENOTFOUND");
+        //     }
+        //
+        //     var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
+        //     var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
+        //     var watchedTime = endedPlaying - startedPlaying;
+        //
+        //     return new UserMediaView
+        //     {
+        //         Id = movie.Id,
+        //         Name = movie.Name,
+        //         Primary = movie.Primary,
+        //         StartedWatching = startedPlaying,
+        //         EndedWatching = endedPlaying,
+        //         WatchedTime = Math.Round(watchedTime.TotalSeconds),
+        //         WatchedPercentage = CalculateWatchedPercentage(play, movie),
+        //         DeviceId = device?.Id ?? string.Empty,
+        //         DeviceLogo = device?.IconUrl ?? string.Empty
+        //     };
+        // }
 
         private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
         {

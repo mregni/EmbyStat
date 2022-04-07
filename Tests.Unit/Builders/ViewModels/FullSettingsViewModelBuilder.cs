@@ -26,32 +26,11 @@ namespace Tests.Unit.Builders.ViewModels
                 WizardFinished = settings.WizardFinished,
                 MediaServer = new MediaServerSettingsViewModel
                 {
-                    ServerAddress = settings.MediaServer.ServerAddress,
+                    Address = settings.MediaServer.Address,
                     AuthorizationScheme = settings.MediaServer.AuthorizationScheme,
-                    ServerPort = settings.MediaServer.ServerPort,
                     ApiKey = settings.MediaServer.ApiKey,
-                    ServerName = settings.MediaServer.ServerName,
-                    ServerProtocol = (int) settings.MediaServer.ServerProtocol
                 }
             };
-        }
-
-        public FullSettingsViewModelBuilder AddMovieLibraries(IEnumerable<LibraryContainer> libraries)
-        {
-            _model.MovieLibraries = libraries
-                .Select(x => new LibraryContainerViewModel {Id = x.Id, Name = x.Name, LastSynced = x.LastSynced})
-                .ToList();
-
-            return this;
-        }
-
-        public FullSettingsViewModelBuilder AddShowLibraries(IEnumerable<LibraryContainer> libraries)
-        {
-            _model.ShowLibraries = libraries
-                .Select(x => new LibraryContainerViewModel { Id = x.Id, Name = x.Name, LastSynced = x.LastSynced })
-                .ToList();
-
-            return this;
         }
 
         public FullSettingsViewModel Build()

@@ -84,9 +84,9 @@ namespace EmbyStat.Clients.Base.Api
         /// </summary>
         /// <param name="apiKey">Server API key</param>
         /// <param name="authorization">Fixed authentication string</param>
-        /// <returns><see cref="ServerInfoDto"/> object holding all the information</returns>
+        /// <returns><see cref="MediaServerInfo"/> object holding all the information</returns>
         [Get("/System/Info")]
-        Task<ApiResponse<ServerInfoDto>> GetServerInfo(
+        Task<ApiResponse<MediaServerInfo>> GetServerInfo(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
         
@@ -127,7 +127,7 @@ namespace EmbyStat.Clients.Base.Api
         /// <param name="authorization">Fixed authentication string</param>
         /// <returns><see cref="List{T}"/> where T is of type <see cref="Device"/></returns>
         [Get("/Devices")]
-        Task<ApiResponse<QueryResult<Device>>> GetDevices(
+        Task<QueryResult<Device>> GetDevices(
             [Header("X-Emby-Token")] string apiKey,
             [Header("X-Emby-Authorization")] string authorization);
 

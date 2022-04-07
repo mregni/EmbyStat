@@ -70,14 +70,14 @@ namespace EmbyStat.DI
         {
             services.TryAddTransient<ISqliteBootstrap, SqliteBootstrap>();
 
-            services.TryAddTransient<IMovieRepository, SqlMovieRepository>();
-            services.TryAddTransient<IMediaServerRepository, SqlMediaServerRepository>();
-            services.TryAddTransient<IPersonRepository, SqlPersonRepository>();
-            services.TryAddTransient<IFilterRepository, SqlFilterRepository>();
-            services.TryAddTransient<IShowRepository, SqlShowRepository>();
-            services.TryAddTransient<IStatisticsRepository, SqlStatisticsRepository>();
+            services.TryAddTransient<IMovieRepository, MovieRepository>();
+            services.TryAddTransient<IMediaServerRepository, MediaServerRepository>();
+            services.TryAddTransient<IPersonRepository, PersonRepository>();
+            services.TryAddTransient<IFilterRepository, FilterRepository>();
+            services.TryAddTransient<IShowRepository, ShowRepository>();
+            services.TryAddTransient<IStatisticsRepository, StatisticsRepository>();
             services.TryAddTransient<ILanguageRepository, LanguageRepository>();
-            services.TryAddTransient<IJobRepository, SqlJobRepository>();
+            services.TryAddTransient<IJobRepository, JobRepository>();
             services.TryAddTransient<IGenreRepository, GenreRepository>();
         }
 

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -24,24 +25,24 @@ namespace Tests.Unit.Controllers
 
             var values = new FilterValues
             {
-                Id = "1",
+                Id = 1,
                 Field = "2",
-                Values = new[] { new LabelValuePair { Label = "3", Value = "3" }, new LabelValuePair { Label = "4", Value = "4" } },
-                Libraries = new [] { "5", "6" }
+                Values = new[]
+                    {new LabelValuePair {Label = "3", Value = "3"}, new LabelValuePair {Label = "4", Value = "4"}}
             };
 
             var filterServiceMock = new Mock<IFilterService>();
             filterServiceMock
-                .Setup(x => x.GetFilterValues(It.IsAny<LibraryType>(), It.IsAny<string>(), It.IsAny<string[]>()))
-                .Returns(values);
+                .Setup(x => x.GetFilterValues(It.IsAny<LibraryType>(), It.IsAny<string>()))
+                .ReturnsAsync(values);
 
             _controller = new FilterController(filterServiceMock.Object, mapper);
         }
 
         [Fact]
-        public void Get_Should_Return_A_Proper_FilterValues_Object()
+        public async Task Get_Should_Return_A_Proper_FilterValues_Object()
         {
-            var result = _controller.Get(LibraryType.Movies, "subtitle", new[] {"1"});
+            var result = await _controller.Get(LibraryType.Movies, "subtitle");
             var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
             var viewModel = resultObject.Should().BeOfType<FilterValuesViewModel>().Subject;
 
@@ -52,6 +53,8 @@ namespace Tests.Unit.Controllers
             viewModel.Values[0].Value.Should().Be("3");
             viewModel.Values[1].Label.Should().Be("4");
             viewModel.Values[1].Value.Should().Be("4");
+            
+            
         }
     }
 }

@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
   </ItemGroup>
 

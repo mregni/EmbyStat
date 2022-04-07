@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Net;
 
 namespace Tests.Unit.Builders
@@ -13,7 +18,7 @@ namespace Tests.Unit.Builders
         {
             _movie = new Movie
             {
-                CommunityRating = (float)1.7,
+                CommunityRating = 1.7M,
                 Id = id,
                 Name = "The lord of the rings",
                 PremiereDate = new DateTime(2002, 1, 1),
@@ -28,10 +33,17 @@ namespace Tests.Unit.Builders
                 TVDB = "0003",
                 Thumb = "thumbImage",
                 Video3DFormat = Video3DFormat.None,
-                Genres = new[] { "id1" },
-                People = new[] { new ExtraPerson { Id = Guid.NewGuid().ToString(), Name = "Gimli", Type = PersonType.Actor } },
-                MediaSources = new List<MediaSource> { new MediaSource { SizeInMb = 2000 } },
-                CollectionId = "1",
+                Genres = new Genre[] {new() {Id = "1", Name = "Action"}},
+                People = new MediaPerson[]
+                {
+                    new()
+                    {
+                        Id = 1,
+                        Type = PersonType.Actor,
+                        Person = new Person {Name = "Gimli"}
+                    }
+                },
+                MediaSources = new List<MediaSource> {new() {SizeInMb = 2000}},
                 Container = "avi",
                 ProductionYear = 2000,
                 SubtitleStreams = new List<SubtitleStream>
@@ -87,7 +99,7 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder AddCommunityRating(float rating)
+        public MovieBuilder AddCommunityRating(decimal rating)
         {
             _movie.CommunityRating = rating;
             return this;
@@ -99,7 +111,7 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder AddGenres(params string[] genres)
+        public MovieBuilder AddGenres(params Genre[] genres)
         {
             _movie.Genres = genres;
             return this;
@@ -112,7 +124,7 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder AddPerson(ExtraPerson person)
+        public MovieBuilder AddPerson(MediaPerson person)
         {
             var list = _movie.People.ToList();
             list.Add(person);
@@ -120,15 +132,9 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public MovieBuilder ReplacePersons(ExtraPerson person)
+        public MovieBuilder ReplacePersons(MediaPerson person)
         {
-            _movie.People = new[] { person };
-            return this;
-        }
-
-        public MovieBuilder AddCollectionId(string id)
-        {
-            _movie.CollectionId = id;
+            _movie.People = new[] {person};
             return this;
         }
 
@@ -158,7 +164,7 @@ namespace Tests.Unit.Builders
 
         public MovieBuilder ReplaceSubtitleStream(SubtitleStream stream)
         {
-            _movie.SubtitleStreams = new List<SubtitleStream> { stream };
+            _movie.SubtitleStreams = new List<SubtitleStream> {stream};
             return this;
         }
 
@@ -170,13 +176,13 @@ namespace Tests.Unit.Builders
 
         public MovieBuilder ReplaceMediaSources(MediaSource source)
         {
-            _movie.MediaSources = new List<MediaSource> { source };
+            _movie.MediaSources = new List<MediaSource> {source};
             return this;
         }
 
         public MovieBuilder ReplaceVideoStreams(VideoStream stream)
         {
-            _movie.VideoStreams = new List<VideoStream> { stream };
+            _movie.VideoStreams = new List<VideoStream> {stream};
             return this;
         }
 
@@ -193,7 +199,6 @@ namespace Tests.Unit.Builders
                 CommunityRating = _movie.CommunityRating,
                 Container = _movie.Container,
                 DateCreated = _movie.DateCreated,
-                ParentId = _movie.ParentId,
                 OriginalTitle = _movie.OriginalTitle,
                 Path = _movie.Path,
                 SortName = _movie.SortName,
@@ -208,7 +213,6 @@ namespace Tests.Unit.Builders
                     Size = 1000
                 }).ToArray(),
                 RunTimeTicks = _movie.RunTimeTicks,
-                MediaType = _movie.MediaType,
                 OfficialRating = _movie.OfficialRating,
                 PremiereDate = _movie.PremiereDate,
                 ProductionYear = _movie.ProductionYear,
@@ -253,11 +257,11 @@ namespace Tests.Unit.Builders
                     Width = x.Width,
                     Type = MediaStreamType.Video
                 })).ToArray(),
-                Genres = _movie.Genres,
+                Genres = _movie.Genres.Select(x => x.Id).ToArray(),
                 People = _movie.People.Select(x => new BaseItemPerson
                 {
-                    Id = x.Id,
-                    Name = x.Name,
+                    Id = x.Id.ToString(),
+                    Name = x.Person.Name,
                     Type = x.Type
                 }).ToArray()
             };

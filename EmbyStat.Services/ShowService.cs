@@ -66,7 +66,7 @@ namespace EmbyStat.Services
             };
 
             var json = JsonConvert.SerializeObject(statistics);
-            _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.Show);
+            await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.Show);
 
             return statistics;
         }
@@ -94,7 +94,7 @@ namespace EmbyStat.Services
             return _showRepository.GetShowByIdWithEpisodes(id);
         }
         
-        public Task UpdateLibraries(string[] libraryIds)
+        public Task SetLibraryAsSynced(string[] libraryIds)
         {
             return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.TvShow);
         }

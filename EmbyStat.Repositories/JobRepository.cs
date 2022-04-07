@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories;
 
-public class SqlJobRepository : IJobRepository
+public class JobRepository : IJobRepository
 {
     private readonly EsDbContext _context;
 
-    public SqlJobRepository(EsDbContext context)
+    public JobRepository(EsDbContext context)
     {
         _context = context;
     }

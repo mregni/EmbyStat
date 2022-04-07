@@ -3,7 +3,7 @@ using EmbyStat.Common.Models.Entities.Shows;
 
 namespace EmbyStat.Common.Models.Entities.Streams
 {
-    public class SqlVideoStream
+    public class VideoStream
     {
         public string Id { get; set; }
         public string AspectRatio { get; set; }

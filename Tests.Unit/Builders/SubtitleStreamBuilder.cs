@@ -1,4 +1,5 @@
 ﻿using System;
+using EmbyStat.Common.Models.Entities.Streams;
 
 namespace Tests.Unit.Builders
 {

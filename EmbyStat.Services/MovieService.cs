@@ -105,12 +105,12 @@ namespace EmbyStat.Services
             return page;
         }
 
-        public Movie GetMovie(string id)
+        public Task<Movie> GetMovie(string id)
         {
             return _movieRepository.GetById(id);
         }
 
-        public Task UpdateLibraries(string[] libraryIds)
+        public Task SetLibraryAsSynced(string[] libraryIds)
         {
             return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.Movies);
         }

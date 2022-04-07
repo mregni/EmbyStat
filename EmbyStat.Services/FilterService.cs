@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -39,17 +40,25 @@ namespace EmbyStat.Services
                 Type = type
             };
 
+            LabelValuePair[] filterValues;
             switch (type)
             {
                 case LibraryType.Movies:
-                    values.Values = CalculateMovieFilterValues(field).ToArray();
+                    filterValues = CalculateMovieFilterValues(field).ToArray();
                     break;
                 case LibraryType.TvShow:
-                    values.Values = CalculateShowFilterValues(field).ToArray();
+                    filterValues = CalculateShowFilterValues(field).ToArray();
                     break;
                 default:
                     return null;
             }
+
+            if (!filterValues.Any())
+            {
+                return null;
+            }
+
+            values.Values = filterValues;
 
             _filterRepository.Insert(values);
             return values;
@@ -60,7 +69,7 @@ namespace EmbyStat.Services
             return field.ToLowerInvariant() switch
             {
                 "genre" => _showRepository.CalculateGenreFilterValues(),
-                _ => null
+                _ => Array.Empty<LabelValuePair>()
             };
         }
 
@@ -81,7 +90,7 @@ namespace EmbyStat.Services
                     return _movieRepository.CalculateCodecFilterValues().ToArray();
                 case "videorange":
                     return _movieRepository.CalculateVideoRangeFilterValues().ToArray();
-                default: return null;
+                default: return Array.Empty<LabelValuePair>();
             }
         }
     }

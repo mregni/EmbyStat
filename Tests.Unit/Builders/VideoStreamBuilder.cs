@@ -1,4 +1,6 @@
-﻿namespace Tests.Unit.Builders
+﻿using EmbyStat.Common.Models.Entities.Streams;
+
+namespace Tests.Unit.Builders
 {
     public class VideoStreamBuilder
     {

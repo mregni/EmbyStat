@@ -19,9 +19,9 @@ namespace EmbyStat.Common.Helpers
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64)
+                new(JwtRegisteredClaimNames.Sub, user.UserName),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64)
             };
 
             claims.AddRange(identity.Claims);

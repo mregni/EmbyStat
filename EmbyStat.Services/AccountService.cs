@@ -40,9 +40,6 @@ namespace EmbyStat.Services
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest login, string remoteIp)
         {
             var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, false);
-
-            var temp = await _userManager.FindByNameAsync(login.Username);
-            var canSignIn = await _signInManager.CanSignInAsync(temp);
             if (!result.Succeeded)
             {
                 return null;

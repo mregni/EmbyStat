@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Repositories;
 
-public class SqlStatisticsRepository : IStatisticsRepository
+public class StatisticsRepository : IStatisticsRepository
 {
     private readonly EsDbContext _context;
 
-    public SqlStatisticsRepository(EsDbContext context)
+    public StatisticsRepository(EsDbContext context)
     {
         _context = context;
     }

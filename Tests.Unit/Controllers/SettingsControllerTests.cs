@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,6 +22,7 @@ namespace Tests.Unit.Controllers
         private readonly AppSettings _appSettings;
         private readonly UserSettings _userSettings;
         private readonly Mock<ISettingsService> _settingsServiceMock;
+        private readonly Mock<ILanguageService> _languageServiceMock;
 
         private Guid DeviceId { get; set; }
 
@@ -36,8 +36,6 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<LibraryContainer>(),
-                ShowLibraries = new List<LibraryContainer>(),
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = UpdateTrain.Beta,
@@ -45,11 +43,9 @@ namespace Tests.Unit.Controllers
                 MediaServer = new MediaServerSettings
                 {
                     ApiKey = "1234567980",
-                    ServerName = "ServerName",
+                    Name = "ServerName",
                     AuthorizationScheme = "MediaBrowser",
-                    ServerAddress = "localhost",
-                    ServerPort = 8097,
-                    ServerProtocol = ConnectionProtocol.Https,
+                    Address = "https://localhost:8097",
                 },
                 Tmdb = new TmdbSettings
                 {
@@ -61,7 +57,7 @@ namespace Tests.Unit.Controllers
             _appSettings = new AppSettings
             {
                 Version = "0.0.0.0",
-                Dirs = new Dirs { Data = "data-dir", Logs = "log-dir", Config = "config-dir"}
+                Dirs = new Dirs {Data = "data-dir", Logs = "log-dir", Config = "config-dir"}
             };
 
             _settingsServiceMock = new Mock<ISettingsService>();
@@ -70,32 +66,21 @@ namespace Tests.Unit.Controllers
             _settingsServiceMock.Setup(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()))
                 .Returns(Task.FromResult(_userSettings));
 
-            var useSettings = new FullSettingsViewModelBuilder(_userSettings)
-                .AddMovieLibraries(_userSettings.MovieLibraries)
-                .AddShowLibraries(_userSettings.ShowLibraries)
-                .Build();
+            var useSettings = new FullSettingsViewModelBuilder(_userSettings).Build();
             var mapperMock = new Mock<IMapper>();
             mapperMock.Setup(x => x.Map<FullSettingsViewModel>(It.IsAny<UserSettings>()))
                 .Returns(useSettings);
             mapperMock.Setup(x => x.Map<UserSettings>(It.IsAny<FullSettingsViewModel>()))
-                .Returns(new UserSettings
-                {
-                    MovieLibraries = new List<LibraryContainer>(),
-                    ShowLibraries = new List<LibraryContainer>()
-                });
+                .Returns(new UserSettings());
 
-            var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-            statisticsRepositoryMock.Setup(x => x.MarkTypesAsInvalid());
-            statisticsRepositoryMock.Setup(x => x.MarkShowTypesAsInvalid());
-
-            var languageServiceMock = new Mock<ILanguageService>();
-            languageServiceMock.Setup(x => x.GetLanguages()).Returns(new List<Language>
+            _languageServiceMock = new Mock<ILanguageService>();
+            _languageServiceMock.Setup(x => x.GetLanguages()).ReturnsAsync(new List<Language>
             {
-                new Language {Code = "BE", Id = "1", Name = "Dutch"},
-                new Language {Code = "EN", Id = "2", Name = "English"}
+                new() {Code = "BE", Id = "1", Name = "Dutch"},
+                new() {Code = "EN", Id = "2", Name = "English"}
             });
 
-            _subject = new SettingsController(_settingsServiceMock.Object, statisticsRepositoryMock.Object, languageServiceMock.Object, mapperMock.Object);
+            _subject = new SettingsController(_settingsServiceMock.Object, _languageServiceMock.Object, mapperMock.Object);
         }
 
         public void Dispose()
@@ -122,17 +107,11 @@ namespace Tests.Unit.Controllers
             settings.ToShortMovie.Should().Be(_userSettings.ToShortMovie);
             settings.ToShortMovieEnabled.Should().Be(_userSettings.ToShortMovieEnabled);
             settings.UpdateInProgress.Should().Be(_userSettings.UpdateInProgress);
-            settings.UpdateTrain.Should().Be((int)_userSettings.UpdateTrain);
+            settings.UpdateTrain.Should().Be((int) _userSettings.UpdateTrain);
             settings.WizardFinished.Should().Be(_userSettings.WizardFinished);
-            settings.MovieLibraries.Count.Should().Be(_userSettings.MovieLibraries.Count);
-            settings.ShowLibraries.Count.Should().Be(_userSettings.ShowLibraries.Count);
             settings.MediaServer.ApiKey.Should().Be(_userSettings.MediaServer.ApiKey);
             settings.MediaServer.AuthorizationScheme.Should().Be(_userSettings.MediaServer.AuthorizationScheme);
-            settings.MediaServer.ServerAddress.Should().Be(_userSettings.MediaServer.ServerAddress);
-            settings.MediaServer.ServerName.Should().Be(_userSettings.MediaServer.ServerName);
-            settings.MediaServer.ServerPort.Should().Be(_userSettings.MediaServer.ServerPort);
-            settings.MediaServer.ServerProtocol.Should().Be((int)_userSettings.MediaServer.ServerProtocol);
-
+            settings.MediaServer.Address.Should().Be(_userSettings.MediaServer.Address);
 
             settings.DataDir.Should().Be(_appSettings.Dirs.Data);
             settings.LogDir.Should().Be(_appSettings.Dirs.Logs);
@@ -140,6 +119,9 @@ namespace Tests.Unit.Controllers
             settings.Version.Should().Be(_appSettings.Version);
 
             _settingsServiceMock.Verify(x => x.GetUserSettings(), Times.Once);
+            _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _languageServiceMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -152,8 +134,6 @@ namespace Tests.Unit.Controllers
                 AutoUpdate = false,
                 KeepLogsCount = 10,
                 Language = "en-US",
-                MovieLibraries = new List<LibraryContainerViewModel>(),
-                ShowLibraries = new List<LibraryContainerViewModel>(),
                 ToShortMovie = 10,
                 UpdateInProgress = false,
                 UpdateTrain = 0,
@@ -161,11 +141,9 @@ namespace Tests.Unit.Controllers
                 MediaServer = new MediaServerSettingsViewModel
                 {
                     ApiKey = "1234567980",
-                    ServerName = "ServerName",
+                    Name = "ServerName",
                     AuthorizationScheme = "MediaBrowser",
-                    ServerAddress = "localhost",
-                    ServerPort = 8097,
-                    ServerProtocol = 1,
+                    Address = "https://localhost:8097",
                 },
                 Tmdb = new TmdbSettingsViewModel
                 {
@@ -177,13 +155,20 @@ namespace Tests.Unit.Controllers
             await _subject.Update(settings);
 
             _settingsServiceMock.Verify(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()), Times.Once);
+            _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _languageServiceMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void GetLanguages_Should_Return_All_Languages()
+        public async Task GetLanguages_Should_Return_All_Languages()
         {
-            var result = _subject.GetList();
+            var result = await _subject.GetList();
             result.Should().BeOfType<OkObjectResult>();
+            
+            _languageServiceMock.Verify(x => x.GetLanguages(), Times.Once);
+            _settingsServiceMock.VerifyNoOtherCalls();
+            _languageServiceMock.VerifyNoOtherCalls();
         }
     }
 }
