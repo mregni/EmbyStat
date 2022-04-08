@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Services;

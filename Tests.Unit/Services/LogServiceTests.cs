@@ -106,7 +106,7 @@ namespace Tests.Unit.Services
             var embyServiceMock = new Mock<IMediaServerService>();
             embyServiceMock
                 .Setup(x => x.GetServerInfo(false))
-                .ReturnsAsync(new MediaServerInfo() {Id = Guid.NewGuid().ToString()});
+                .ReturnsAsync(new MediaServerInfo {Id = Guid.NewGuid().ToString()});
 
             var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
 

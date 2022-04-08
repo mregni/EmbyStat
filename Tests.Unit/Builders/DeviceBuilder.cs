@@ -9,7 +9,7 @@ public class DeviceBuilder
 
     public DeviceBuilder(string id)
     {
-        _device = new Device()
+        _device = new Device
         {
             Id = id,
             Name = "deviceName",

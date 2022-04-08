@@ -55,8 +55,8 @@ namespace Tests.Unit.Services
                 .AddRunTimeTicks(3, 30, 0)
                 .AddName("The lord of the rings, two towers")
                 .AddSortName("The-lord-of-the-rings,-two-towers")
-                .AddPerson(new MediaPerson {Type = PersonType.Director, Person = new Person(){ Name= "Gimli"}, Id = 2})
-                .AddPerson(new MediaPerson {Type = PersonType.Actor, Person = new Person(){ Name= "Frodo"}, Id = actorIdOne})
+                .AddPerson(new MediaPerson {Type = PersonType.Director, Person = new Person { Name= "Gimli"}, Id = 2})
+                .AddPerson(new MediaPerson {Type = PersonType.Actor, Person = new Person { Name= "Frodo"}, Id = actorIdOne})
                 .AddGenres(new Genre {Name = "Action"}, new Genre {Name = "Comedy"})
                 .AddImdb("0002")
                 .Build();
@@ -69,9 +69,9 @@ namespace Tests.Unit.Services
                 .AddName("The lord of the rings, return of the king")
                 .AddSortName("The-lord-of-the-rings,-return-of-the-king")
                 .AddGenres(new Genre {Name = "Comedy"})
-                .AddPerson(new MediaPerson {Type = PersonType.Actor, Person = new Person(){ Name= "Frodo"}, Id = actorIdOne})
-                .AddPerson(new MediaPerson {Type = PersonType.Director, Person = new Person(){ Name= "Frodo"}, Id = 4})
-                .AddPerson(new MediaPerson {Type = PersonType.Writer, Person = new Person(){ Name= "Frodo"}, Id = 5})
+                .AddPerson(new MediaPerson {Type = PersonType.Actor, Person = new Person { Name= "Frodo"}, Id = actorIdOne})
+                .AddPerson(new MediaPerson {Type = PersonType.Director, Person = new Person { Name= "Frodo"}, Id = 4})
+                .AddPerson(new MediaPerson {Type = PersonType.Writer, Person = new Person { Name= "Frodo"}, Id = 5})
                 .AddImdb("0003")
                 .Build();
 

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub.Models;
-using EmbyStat.Common.Models.Settings;
 
 namespace EmbyStat.Services.Interfaces
 {

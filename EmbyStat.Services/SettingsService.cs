@@ -65,7 +65,7 @@ namespace EmbyStat.Services
                 Transform = payload =>
                 {
                     payload.Data.CodeVersion = _appSettings.Version;
-                    payload.Data.Custom = new Dictionary<string, object>()
+                    payload.Data.Custom = new Dictionary<string, object>
                     {
                         {"Framework", RuntimeInformation.FrameworkDescription},
                         {"OS", RuntimeInformation.OSDescription}

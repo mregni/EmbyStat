@@ -5,18 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
-using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Users;
-using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
-using MediaBrowser.Model.Extensions;
 using Moq;
 using Xunit;
 using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
@@ -50,7 +46,7 @@ namespace Tests.Unit.Services
                 }
             });
 
-            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings()
+            _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings
             {
                 Version = "0.0.0.0"
             });
@@ -139,7 +135,7 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetEmbyStatus_Should_Return_Emby_Status_Object()
         {
-            var embyStatus = new MediaServerStatus() {Id = Guid.NewGuid()};
+            var embyStatus = new MediaServerStatus {Id = Guid.NewGuid()};
             _mediaServerRepositoryMock
                 .Setup(x => x.GetEmbyStatus())
                 .ReturnsAsync(embyStatus);
@@ -212,7 +208,7 @@ namespace Tests.Unit.Services
                 .Setup(x => x.GetUserById(It.IsAny<string>()))
                 .ReturnsAsync(user); 
 
-            var embyStatus = new MediaServerStatus() {Id = Guid.NewGuid()};
+            var embyStatus = new MediaServerStatus {Id = Guid.NewGuid()};
             _mediaServerRepositoryMock
                 .Setup(x => x.GetEmbyStatus())
                 .ReturnsAsync(embyStatus);
@@ -433,7 +429,7 @@ namespace Tests.Unit.Services
 
             _httpClientMock
                 .Setup(x => x.SearchServer())
-                .ReturnsAsync(new[] {new MediaServerUdpBroadcast() {Id = "1"}});
+                .ReturnsAsync(new[] {new MediaServerUdpBroadcast {Id = "1"}});
             strategy
                 .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
                 .Returns(_httpClientMock.Object);

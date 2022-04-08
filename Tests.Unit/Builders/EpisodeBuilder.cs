@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Streams;
-using EmbyStat.Common.Models.Net;
 using MoreLinq.Extensions;
 
 namespace Tests.Unit.Builders

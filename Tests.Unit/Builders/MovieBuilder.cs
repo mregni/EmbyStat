@@ -6,7 +6,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Streams;
-using EmbyStat.Common.Models.Net;
 
 namespace Tests.Unit.Builders
 {

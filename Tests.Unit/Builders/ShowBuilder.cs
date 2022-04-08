@@ -5,9 +5,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
-using EmbyStat.Common.Models.Net;
-using FluentAssertions;
-using Microsoft.IdentityModel.Logging;
 using MoreLinq.Extensions;
 
 namespace Tests.Unit.Builders

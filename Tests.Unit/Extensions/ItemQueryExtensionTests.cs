@@ -13,7 +13,7 @@ public class ItemQueryExtensionTests
     [Fact]
     public void ConvertToStringDictionary_Should_Convert_All()
     {
-        var query = new ItemQuery()
+        var query = new ItemQuery
         {
             Fields = new[] {ItemFields.Bitrate, ItemFields.Chapters},
             UserId = "1234",

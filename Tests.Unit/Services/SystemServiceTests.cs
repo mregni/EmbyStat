@@ -25,9 +25,9 @@ public class SystemServiceTests
         var personRepository = new Mock<IPersonRepository>();
         var hub = new Mock<IHubHelper>();
         var settingsService = new Mock<ISettingsService>();
-        var settings = new UserSettings()
+        var settings = new UserSettings
         {
-            MediaServer = new MediaServerSettings()
+            MediaServer = new MediaServerSettings
             {
                 Address = "localhost:8000",
                 ApiKey = "AZER",

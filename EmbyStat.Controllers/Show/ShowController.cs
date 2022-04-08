@@ -54,7 +54,7 @@ namespace EmbyStat.Controllers.Show
         public async Task<IActionResult> GetShowPageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter)
         {
             var filtersObj = Array.Empty<Filter>();
-            var boe = new Filter() {Field = "name", Operation = "==", Value = "Lord"};
+            var boe = new Filter {Field = "name", Operation = "==", Value = "Lord"};
             var str = JsonConvert.SerializeObject(boe);
             if (filter != null)
             {

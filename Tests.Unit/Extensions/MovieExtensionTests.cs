@@ -1,11 +1,8 @@
-﻿using System.Data.Entity;
-using EmbyStat.Common.Extensions;
+﻿using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories;
 using FluentAssertions;
-using MediaBrowser.Model.Extensions;
 using Tests.Unit.Builders;
-using TMDbLib.Objects.Movies;
 using Xunit;
 
 namespace Tests.Unit.Extensions;

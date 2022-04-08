@@ -1,5 +1,4 @@
 ﻿using EmbyStat.Common.Models.Query;
-using FluentAssertions.Equivalency;
 
 namespace Tests.Unit.Builders;
 

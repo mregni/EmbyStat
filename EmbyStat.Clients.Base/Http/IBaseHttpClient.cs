@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
-using EmbyStat.Common.Models.Entities.Users;
-using EmbyStat.Common.Models.Net;
 using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace EmbyStat.Clients.Base.Http

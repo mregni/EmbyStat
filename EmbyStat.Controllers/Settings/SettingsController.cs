@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Logging;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

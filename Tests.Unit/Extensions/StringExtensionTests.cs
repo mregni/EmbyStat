@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using FluentAssertions;

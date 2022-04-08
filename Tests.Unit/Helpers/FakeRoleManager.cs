@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;

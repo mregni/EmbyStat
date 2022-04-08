@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Movies;
-using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Movie;
-using EmbyStat.Controllers.Show;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Movie;
@@ -80,7 +77,7 @@ namespace Tests.Unit.Controllers
                     });
             mapperMock
                 .Setup(x => x.Map<MovieViewModel>(It.IsAny<Movie>()))
-                .Returns(new MovieViewModel()
+                .Returns(new MovieViewModel
                 {
                     Id = "1"
                 });

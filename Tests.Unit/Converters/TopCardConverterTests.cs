@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
+﻿using System.Collections.Generic;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Services.Converters;
 using EmbyStat.Services.Models.Cards;

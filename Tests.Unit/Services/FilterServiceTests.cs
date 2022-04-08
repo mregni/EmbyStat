@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -8,7 +6,6 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using FluentAssertions;
 using Moq;
-using MoreLinq;
 using Xunit;
 
 namespace Tests.Unit.Services

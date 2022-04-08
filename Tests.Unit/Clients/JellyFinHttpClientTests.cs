@@ -2,7 +2,6 @@
 using AutoMapper;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;
-using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Controllers;
 using FluentAssertions;

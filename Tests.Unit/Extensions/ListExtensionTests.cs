@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using FluentAssertions;
 using Xunit;
@@ -63,7 +62,7 @@ namespace Tests.Unit.Extensions
         [Fact]
         public void AnyNotNull_Should_Return_True()
         {
-            var list = new List<int?>() {1};
+            var list = new List<int?> {1};
             list.AnyNotNull().Should().Be(true);
         }
         

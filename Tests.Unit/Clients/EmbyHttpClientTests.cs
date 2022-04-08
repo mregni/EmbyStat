@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;

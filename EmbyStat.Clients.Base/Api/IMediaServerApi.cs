@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Querying;
 using Refit;
